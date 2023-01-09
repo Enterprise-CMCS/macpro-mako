@@ -1,0 +1,13 @@
+.idea/
+.infra
+node_modules
+testcafe_results
+.DS_Store
+yarn-error.log
+.serverless
+.webpack
+.repack
+.yarn_install
+tsconfig.tsbuildinfo
+build_run
+docs/

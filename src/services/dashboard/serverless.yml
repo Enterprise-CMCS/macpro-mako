@@ -1,0 +1,59 @@
+service: ${self:custom.project}-dashboard
+
+frameworkVersion: "3"
+
+package:
+  individually: true
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-iam-helper"
+  - "@stratiformdigital/serverless-s3-security-helper"
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: ${env:REGION_A}
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+  iam:
+    role:
+      path: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/iam/path, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/iam/path}
+      permissionsBoundary: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/iam/permissionsBoundary, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/iam/permissionsBoundary}
+      statements:
+        - Effect: Allow
+          Action:
+            - cloudwatch:*
+          Resource: "*"
+
+custom:
+  project: ${env:PROJECT}
+  accountId: !Sub "${AWS::AccountId}"
+  serverlessTerminationProtection:
+    stages: # Apply CloudFormation termination protection for these stages
+      - master
+      - val
+      - production
+functions:
+  templatizeCloudWatchDashboard:
+    handler: handlers/templatizeCloudWatchDashboard.handler
+    environment:
+      stage: ${sls:stage}
+      region: ${env:REGION_A}
+      project: ${self:custom.project}
+      accountId: ${aws:accountId}
+      service: ${self:service}
+    maximumRetryAttempts: 0
+  createDashboardTemplateWidget:
+    handler: handlers/createDashboardTemplateWidget.handler
+    environment:
+      lambdaArnToCall: !GetAtt TemplatizeCloudWatchDashboardLambdaFunction.Arn
+resources:
+  Resources:
+    CloudWatchDashboard:
+      Type: AWS::CloudWatch::Dashboard
+      Properties:
+        DashboardName: ${sls:stage}-dashboard
+        DashboardBody: ${file(./templateDashboard.txt)}

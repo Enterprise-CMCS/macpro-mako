@@ -1,0 +1,125 @@
+# Welcome to Jekyll!
+#
+# This is the main configuration file for the documentation site, powered by Jekyll.
+# You can read about Jekyll configuration options here: https://jekyllrb.com/docs/configuration/
+# The variables set in this file are used by Jekyll, and are also referenced by documentation pages
+# throughout the site with the syntax {{ site.my_variable_path_from_config_yml }}
+#   ex:  "This is the {{ site.title }}" ->  "This is the Base Template"
+# That's the short story.  Please update this file for your project.
+# If running Jekyll locally, changes to this file require a full restart of Jekyll.
+# Thanks, and have fun!  
+#   - MACPro Platform Team
+
+title: Base Template
+description: A baseline serverless monorepo project that helps get your project up and running faster.
+# baseurl: "/just-the-docs" # the subpath of your site, e.g. /blog
+url: "https://just-the-docs.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+
+contact_email: bpaige@gswell.com
+
+team:
+  members: # This list automatically populates the Team Introduction page.  Add/Edit as appropriate.
+    - role: Product Owner
+      description: Responsible for project scope, direction, and delivery.
+      name: Berry Davenport
+      email: bdavenport@gswell.com
+    - role: Tech Lead
+      description: Leads tooling, tech, and arch discussions and decisions.
+      name: Mike Dial
+      email: mdial@gswell.com
+  core_hours: 10:00am - 3:00pm ET
+
+meetings:
+  - name: Daily Standup
+    time: 10:00am - 10:30am ET
+    attendance: optional
+    link: Ask for the Hangouts invite on Slack.
+
+repo:
+  org: Enterprise-CMCS
+  name: macpro-base-template
+  url: https://github.com/Enterprise-CMCS/macpro-base-template
+
+slack: 
+  channel_url: https://cmsgov.slack.com/archives/C04D6HXJ3GA
+
+remote_theme: just-the-docs/just-the-docs
+permalink: pretty
+exclude: [".jekyll-cache", "node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json",  "script/", "LICENSE.txt", "lib/", "bin/", "README.md", "Rakefile"]
+
+layout: default
+nav_order: 2
+has_children: true
+has_toc: false
+
+# Default search settings.
+search_enabled: true
+search:
+  heading_level: 2 
+  previews: 2
+  preview_words_before: 3
+  preview_words_after: 3
+  tokenizer_separator: /[\s/]+/
+  rel_url: true
+  button: false
+
+heading_anchors: true
+
+# Aux links for the upper right navigation
+aux_links:
+  "GitHub":
+    - "https://github.com/Enterprise-CMCS/macpro-base-template"
+aux_links_new_tab: false
+
+# Sort order for navigation links
+nav_sort: case_sensitive # Capital letters sorted before lowercase
+
+# External navigation links
+nav_external_links:
+  - title: GitHub
+    url: https://github.com/Enterprise-CMCS/macpro-base-template
+  - title: Slack
+    url: https://cmsgov.slack.com/archives/C04D6HXJ3GA
+
+# Footer content
+# appears at the bottom of every page's main content
+back_to_top: true
+back_to_top_text: "Back to top"
+footer_content: "A work of the MACPRO Platform Team for the Centers for Medicare & Medicaid Services."
+last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter
+last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https://ruby-doc.org/stdlib-2.7.0/libdoc/time/rdoc/Time.html
+
+# Footer "Edit this page on GitHub" link text
+gh_edit_link: true # show or hide edit this page link
+gh_edit_link_text: "Edit this page on GitHub"
+gh_edit_repository: "https://github.com/Enterprise-CMCS/macpro-base-template" # the github URL for your repo
+gh_edit_branch: "master" # the branch that your docs is served from
+gh_edit_source: docs # the source that your files originate from
+gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately
+
+# Color scheme currently only supports "dark", "light"/nil (default), or a custom scheme that you define
+color_scheme: nil
+
+# # Google Analytics Tracking (optional)
+# # e.g, UA-1234567-89
+# ga_tracking: UA-2709176-10
+# ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+
+kramdown:
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  startings: []
+  blanklines: false
+  profile: false
+  # ignore:
+  #   envs: all

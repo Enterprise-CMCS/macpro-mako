@@ -1,0 +1,60 @@
+service: ${self:custom.project}-oidc
+
+frameworkVersion: "3"
+
+package:
+  individually: true
+
+plugins:
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-s3-security-helper"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+
+custom:
+  project: ${env:PROJECT}
+  serverlessTerminationProtection:
+    stages: # Apply CloudFormation termination protection for these stages
+      - master
+      - val
+      - production
+  GitHubIdentityProviderArn: "arn:aws:iam::${aws:accountId}:oidc-provider/token.actions.githubusercontent.com"
+  ManagedPolicyARNs:
+    - arn:aws:iam::${aws:accountId}:policy/ADO-Restriction-Policy
+    - arn:aws:iam::${aws:accountId}:policy/CMSApprovedAWSServices
+    - arn:aws:iam::aws:policy/AdministratorAccess
+  SubjectClaimFilters: "repo:Enterprise-CMCS/macpro-base-template:*"
+resources:
+  Resources:
+    GitHubActionsServiceRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: /delegatedadmin/developer/
+        PermissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/ct-ado-poweruser-permissions-boundary-policy
+        MaxSessionDuration: 10800
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: RoleForGitHubActions
+              Effect: Allow
+              Principal:
+                Federated: ${self:custom.GitHubIdentityProviderArn}
+              Action:
+                - "sts:AssumeRoleWithWebIdentity"
+              Condition:
+                StringEquals:
+                  "token.actions.githubusercontent.com:aud": sts.amazonaws.com
+                StringLike:
+                  "token.actions.githubusercontent.com:sub": ${self:custom.SubjectClaimFilters}
+        Description: Service Role for use in GitHub Actions
+        ManagedPolicyArns: ${self:custom.ManagedPolicyARNs}
+  Outputs:
+    ServiceRoleARN:
+      Description: arn of service role for use in GitHub actions
+      Value: !GetAtt GitHubActionsServiceRole.Arn

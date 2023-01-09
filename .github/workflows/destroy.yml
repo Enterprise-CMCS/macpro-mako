@@ -1,0 +1,74 @@
+name: Destroy
+
+on:
+  delete:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Name of the environment to destroy:"
+        required: true
+
+concurrency:
+  group: ${{ inputs.environment || github.event.ref }}-group
+
+jobs:
+  destroy:
+    if: |
+      (
+        github.event.ref_type == 'branch' &&
+        !startsWith(github.event.ref, 'skipci') &&
+        !contains(fromJson('["master", "staging", "production"]'), github.event.ref)
+      ) ||
+      (
+        inputs.environment != '' &&
+        !contains(fromJson('["master", "staging", "production"]'), inputs.environment)
+      )
+    runs-on: ubuntu-20.04
+    environment:
+      name: ${{ inputs.environment || github.event.ref }}
+    env:
+      STAGE_NAME: ${{ inputs.environment || github.event.ref }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure direnv
+        uses: HatsuneMiku3939/direnv-action@v1
+
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: .nvmrc
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+          role-duration-seconds: 10800
+
+      - name: Destroy
+        run: run destroy --stage $STAGE_NAME --verify false
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        if: env.SLACK_WEBHOOK != '' && failure()
+        env:
+          SLACK_COLOR: ${{job.status}}
+          SLACK_ICON: https://github.com/Enterprise-CMCS.png?size=48
+          SLACK_TITLE: Failure
+          SLACK_USERNAME: ${{ github.repository }} ${{job.status}}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  delete_environment:
+    needs: destroy
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: strumwolf/delete-deployment-environment@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: ${{ inputs.environment || github.event.ref }}
+          onlyRemoveDeployments: true

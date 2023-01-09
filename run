@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+# this is the entrypoint for development. It wraps up compiling and calling run.ts
+# all arguments, changes, etc. should be found in src/run.ts
+
+if ! which direnv > /dev/null ; then
+	echo "direnv not found on the system. See installation and setup instructions at https://direnv.net/"
+	exit 1
+fi
+
+# check node exists
+if ! which node > /dev/null ; then
+	echo "node not found on the system. Install version in .nvmrc based on instructions in README"
+	exit 1
+fi
+
+# check node version
+if ! diff .nvmrc <(node -v) > /dev/null ; then
+	echo "node version does not match the version required in .nvmrc"
+	echo "If using nvm, run 'nvm use'"
+	exit 1
+fi
+
+# check yarn exists
+if ! which yarn > /dev/null ; then
+	echo "yarn not found on the system. On macOS, you can install it with 'brew install yarn'"
+	exit 1
+fi
+
+# Ensure packages are up to date.  To do it efficiently, we have to use slightly different logic for CI systems and local.
+if [ -n "${CI+set}" ] && [ "$CI" == "true" ] ; then # If we're in a CI system, and have no node_modules (cache miss scenario).
+	if [ ! -d "node_modules" ] ; then
+		yarn install --frozen-lockfile
+	fi
+elif [ "yarn.lock" -nt ".yarn_install" ]; then  # We're local, and the install flag is older than the lockfile
+	yarn install --frozen-lockfile
+	touch .yarn_install
+fi
+
+# build and run dev.ts
+./node_modules/.bin/tsc && node ./build_run/run.js "$@"

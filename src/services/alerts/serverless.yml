@@ -1,0 +1,51 @@
+service: ${self:custom.project}-alerts
+
+frameworkVersion: "3"
+
+package:
+  individually: true
+
+plugins:
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-s3-security-helper"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ${env:REGION_A}
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+
+custom:
+  project: ${env:PROJECT}
+  serverlessTerminationProtection:
+    stages: # Apply CloudFormation termination protection for these stages
+      - master
+      - val
+      - production
+
+resources:
+  Resources:
+    AlertsTopic:
+      Type: "AWS::SNS::Topic"
+      Properties:
+        TopicName: Alerts-${self:service}-${sls:stage}
+
+    EventBridgeToToSnsPolicy:
+      Type: AWS::SNS::TopicPolicy
+      Properties:
+        PolicyDocument:
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: events.amazonaws.com
+              Action: sns:Publish
+              Resource: !Ref AlertsTopic
+        Topics:
+          - !Ref AlertsTopic
+
+  Outputs:
+    ECSFailureTopicArn:
+      Description: ECS Failure SNS topic ARN
+      Value: !Ref AlertsTopic
