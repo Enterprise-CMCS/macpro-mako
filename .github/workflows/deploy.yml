@@ -29,24 +29,24 @@ jobs:
           fi
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Configure direnv
         uses: HatsuneMiku3939/direnv-action@v1
 
       - name: Install Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version-file: .nvmrc
 
       - name: Node cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ github.workflow}}-${{ github.job }}${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
@@ -71,4 +71,4 @@ jobs:
           SLACK_ICON: https://github.com/Enterprise-CMCS.png?size=48
           SLACK_TITLE: Failure
           SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
