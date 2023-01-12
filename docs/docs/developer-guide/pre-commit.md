@@ -1,16 +1,14 @@
 ---
 layout: default
-title: Pre-commit
+title: Pre-Commit Usage
 parent: Developer Guide
 nav_order: 8
 ---
 
-# What is Pre-Commit?
+# Pre-Commit Usage
 {: .no_toc }
 
-Pre-commit is two things in the context of our project. It is a git hook that taps into the lifecycle of commits and fires before a commit is made. It is also a python package that enables the development and versioning of these git hooks much easier.
-
-We use pre-commit for a variety of things consisting of, but not limited to running formatting checks against code and ensuring that secrets and keys are not checked into the codebase.
+How to use pre-commit on the project
 
 {: .fs-6 .fw-300 }
 
@@ -22,21 +20,35 @@ We use pre-commit for a variety of things consisting of, but not limited to runn
 
 ---
 
+### Context
+
+[Pre-commit](https://pre-commit.com/) is a python package that enables projects to specifies a list of hooks to run before a commit is made (a pre-commit hook).  This is really useful to enforce standards or conventions, as it prevents non conformant changes from getting committed.  
+
+On this project, we use pre-commit to automate several checks, including:
+- running a code formatting check based on [prettier](https://prettier.io/)
+- checking for large files typically not desired to keep in source control
+- scanning for secret material, such as AWS keys
+
+Aside from these checks being run prior to any commit being pushed, they are also run by a GitHub Actions workflow when a pull request is made.
+
 ### Installation
+
+Good news!  If you completed onboarding and ran the [workspace setup]({{ site.baseurl }}{% link docs/onboarding/workspace-setup.md %}) script, pre-commit should already be installed on your machine.
+
+You can test that it's installed by running `pre-commit -V` in a terminal window.  If you get a nominal return including a version number, you're all set.  If the pre-commit command is not found, please refer back to the Onboarding / Workspace Setup section of this site.
 If pre-commit is not installed it is important to get it installed and setup on your machine. This is a part of the workflow for developing apps in this architecture. Luckily setup is simple.
 
-The first step is two ensure that "Homebrew" is installed.
+### Configuration
 
-[Homebrew](https://brew.sh/)
+Although pre-commit is installed on your workstation, you must configure pre-commit to run for a given repository before it will begin blocking bad commits.
 
-Once homebrew is setup and installed on your machine, run the following command to install pre-commit.
+This procedure needs to only be run once per repository, or once each time the .pre-commit-config.yaml file is changed in the repository (very infrequently).
 
-```
-brew install pre-commit
-```
+- open a terminal
+- install all hooks configured in .pre-commit-config.yaml
+  ```bash
+    cd {{ site.repo.name }}
+    pre-commit install -a
+  ```
 
-This is pretty much it. You can test that pre-commit is installed by running this command in the repository root.
-
-```
-pre-commit
-```
+That's it -- after running the above commands inside the project repository, pre-comit will run the project's configured checks before any commit.

@@ -1,8 +1,15 @@
+---
+### Please visit our [docs site](https://enterprise-cmcs.github.io/macpro-base-template/) for complete documentation.
+---
+
 <h1 align="center" style="border-bottom: none;">macpro-base-template</h1>
 <h3 align="center">A serverless monorepo accelerator tailored for use at Centers for Medicare & Medicaid Services (CMS).</h3>
 <p align="center">
   <a href="https://enterprise-cmcs.github.io/macpro-base-template/">
-    <img alt="Docs" src="https://img.shields.io/badge/Docs-Pages-blue.svg">
+    <img alt="Docs" src="https://img.shields.io/badge/Docs-site-blue.svg">
+  </a>
+  <a href="https://qmacbis.atlassian.net/jira/software/c/projects/OY2/boards/246">
+    <img alt="Jira" src="https://img.shields.io/badge/Jira-board-0052CC.svg">
   </a>
   <a href="https://cmsgov.slack.com/archives/C04D6HXJ3GA">
     <img alt="Slack" src="https://img.shields.io/badge/Slack-channel-purple.svg">
@@ -21,23 +28,19 @@
   </a>
 </p>
 
----
-
-### Please visit our [docs site](https://enterprise-cmcs.github.io/macpro-base-template/) for complete documentation.
-
----
-
 ## Overview
 
 The macpro-base-template project (oftened referenced in the context of this repository as just 'base' or 'base-template') is a serverless monorepo accelerator. The actual application is fairly 'hello world', but the repository support and configuration is full featured. This is by design, to allow for simpler project creation from the template. Full CI/CD support with GitHub Actions, automated security scanning, docs site in GitHub Pages, PR/Issue templates, infrastructure and application deployment workflows, etc. is all included.
 
-![Architecture Diagram](docs/assets/diagram.svg)
+<p align="center">
+  <img width="55%" src="docs/assets/diagram.svg">
+</p>
 
 ## Contributing
 
-Work items for this project is tracked in CMS' Jira. If you have access to our Jira, you can view related work there. While there's not yet a dedicated product view in Jira, the [Platform Team board](https://qmacbis.atlassian.net/jira/software/c/projects/OY2/boards/216/backlog?selectedIssue=OY2-17657&epics=visible&issueLimit=100) is a good stand in.
+Work items for this project are tracked in Jira. Check out the [project kanban board](https://qmacbis.atlassian.net/jira/software/c/projects/OY2/boards/246) to view all work items affecting this repo.
 
-If you don't have access to Jira, would like access to Jira, or would like to discuss any enhancement, bug, idea, or question, please visit the [slack channel](https://cmsgov.slack.com/archives/C0403M0D007). This is a public channel open to anyone in CMS Slack, and all input is welcome!
+If you don't have access to Jira, would like access to Jira, or would like to drop us an idea without pursuing Jira access, please visit the [slack channel](https://cmsgov.slack.com/archives/C0403M0D007).
 
 ## License
 

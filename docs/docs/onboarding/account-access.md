@@ -19,16 +19,21 @@ You'll need access to a few systems to be a fully privileged developer.  This se
 {:toc}
 ---
 
+## Git organization
+
+To be a fully privileged developer on the {{ site.repo.name }} project, you will need access to both the GitHub organization and the repository.
+
+Access to the GitHub organization is governed by a CMS team and CMS Job Codes.  Please follow the [instructions to obtain org access](https://qmacbis.atlassian.net/l/cp/xe4XCoGo).
+
 ## Git Repository
 
 To be a fully privileged developer on the {{ site.repo.name }} project, you will need access to both the GitHub organization and the repository.
 
-To be granted access to the organization (if not already done): please [follow these instructions to obtain GitHub org access]
-
-To be granted access to the repo:, please send an email to mdial@collabralink.com which includes:
+To be granted access to the repo:, please send an email to {{ site.contact_email }} which includes:
 
 - Name
 - GitHub user id
+- Level of access requested (read, write, admin, maintain)
 - Reason for access / who you are
 
 ## AWS and Cloud VPN
@@ -39,7 +44,7 @@ Further, accessing the AWS Console or CLI requires fetching temporary credential
 
 So, to have full AWS access, you will need two things:  access to the Cloud VPN so you can hit Kion, and then permissions for the project's specific AWS accounts.  CMS requests to be granted access to these two systems can be made together, or seperately.
 
-Please [follow this how-to guide](https://qmacbis.atlassian.net/wiki/spaces/DE/pages/2788786177/How+to+request+CMS+AWS+Cloud+VPN+and+or+AWS+Console+Access+via+Cloudtamer) to obtain access to AWS and the Cloud VPN.
+Please [follow this how-to guide](https://qmacbis.atlassian.net/l/cp/yY5s5is2) to obtain access to AWS and the Cloud VPN.
 
 ## Code Climate
 
