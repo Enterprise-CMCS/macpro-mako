@@ -6,7 +6,7 @@ nav_order: 99
 
 # New Project Creation
 
-Standard Operating Procedure for MACPRO Project Creation Output of: <https://qmacbis.atlassian.net/browse/OY2-20437>
+Standard Operating Procedure for MACPRO Project Creation.
 
 ## Introduction
  On MACPRO, we get a lot of ideas. These stem both from the client and our development teams, both aimed at delivering on the project’s charter. These ideas often require a new project to be created. Project in this context refers to a github repository with its own distinct delivery repository and lifecycle. This document aims to be a guide for starting a new project, or a guide on how to take an idea and start delivering it.
@@ -32,7 +32,7 @@ Creating a new project will always involve creating a new GitHub repository, so 
 - The name of the project/repo will be used a lot. It should be accurate, but
 sometimes less is more.
 
-Once you've considered the above points, [follow this how-to guide](https://qmacbis.atlassian.net/wiki/spaces/DE/pages/3095232517/How+to+request+a+new+Github+repository+in+CMSC+Github+Draft) to create a new Git repo.
+Once you've considered the above points, [follow this how-to guide](https://qmacbis.atlassian.net/l/cp/QDuKKWGH) to create a new Git repo.
 
 
 ### Step 2: Request a new set of AWS accounts, if applicable
@@ -113,8 +113,9 @@ For the purposes of these instructions, we will assume your new repository (crea
             </a>
             ``` and replace with the CodeClimate badge block you copied from CodeClimate in a previous step.
         - Update the text in the Overview and Contributing sections, as appropriate.
+    - Open and edit the project's top level package.json file to be accurate.  Updates should include name, description, repository.url, and homepage.
     - Open and edit the Jekyll config file, docs/_config.yml.  Rather than list each place where a value might need replacing/updating, we recommend you walk through this file in detail.  It's a config file, so most of it's information will need updating.
-    - Update the docs site overview, located at docs/docs/overview.md - subsection Overview.  we recommend reusing the overview you put in the README
+    - Update the docs site overview information, located at docs/docs/overview.md - subsection Overview.  we recommend reusing the overview you put in the README
     - Commit and push all changes to your new repository, and check the GitHub Actions for success.
 
 ### Conclusion

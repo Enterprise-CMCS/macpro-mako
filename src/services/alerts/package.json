@@ -1,10 +1,5 @@
 {
   "name": "alerts",
-  "version": "1.0.0",
-  "description": "",
-  "main": "handler.js",
-  "author": "",
-  "license": "ISC",
   "dependencies": {},
   "devDependencies": {}
 }
