@@ -23,9 +23,9 @@ Here's how our team communicates.
 
 Here's a list of recurring meetings you might need.  If you need or want an invite, reach out on [Slack]({{ site.slack.channel_url}} ).
 
-| Meeting | Time | Attendance | Link |
-| ------- | ---- | ---------- | ---- |
-|{% for element in site.meetings %} {{ element.name }} | {{ element.time }} | {{ element.attendance }} | {{ element.link }} |
+| Meeting | Day(s) | Time | Link |
+| ------- | ------ | ---- | ---- |
+|{% for element in site.meetings %} {{ element.name }} | {{ element.days }} |{{ element.time }} | {{ element.link }} |
 {% endfor %}
 
 ## Slack
@@ -36,11 +36,9 @@ Please note that comments related to Pull Requests and Issues are best made on t
 
 However, and please remember this:  do what you feel is best.  Discretion is what allows us to move fast, so don't be afraid to break the guidelines.
 
-## ~~GitHub Issues~~ Jira Tickets
+## Jira
 
-We use ~~GitHub Issues~~ Jira to document work items.  This should be the place where ideas are written down, where acceptance criteria is developed, and where questions/comments/concerns regarding the work should take place.  Specifically, you probably don't want to comment on a work item or its content in Slack, as it's very valuable to have the entire development process on record in the ~~Issue~~ Story.  So, put work item related content in the Issue as much as possible.
-
-~~**Note:**  Absolutely everyone on this project is encourage to create Issues at will, without exception or reservation; if you notice a bug, have an idea for an enhancement, or even read something online that *might* help the project... make an Issue.  Our ideas are our most valuable resource, so don't lose them.  Likewise, anyone and everyone is encouraged to comment on Issues without restriction.~~
+We use Jira to document work items.  This should be the place where ideas are written down, where acceptance criteria is developed, and where questions/comments/concerns pertaining to the work should take place.  Specifically, you probably don't want to comment on a work item or its content in Slack, as it's very valuable to have the entire development process on record in the Jira Task/Story.  So, put work item related content in the Task as much as possible.
 
 ## GitHub Pull Requests (PRs)
 

@@ -15,7 +15,7 @@ description: A baseline serverless monorepo project that helps get your project 
 # baseurl: "/just-the-docs" # the subpath of your site, e.g. /blog
 url: "https://just-the-docs.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
-contact_email: bpaige@gswell.com
+contact_email: mdial@gswell.com
 
 team:
   members: # This list automatically populates the Team Introduction page.  Add/Edit as appropriate.
@@ -30,9 +30,21 @@ team:
   core_hours: 10:00am - 3:00pm ET
 
 meetings:
-  - name: Daily Standup
-    time: 10:00am - 10:30am ET
-    attendance: optional
+  - name: Standup
+    days: Daily
+    time: 10:30am - 11:00am ET
+    link: Ask for the Hangouts invite on Slack.
+  - name: Refinement
+    days: Tues, Thurs
+    time: 11:00am - 11:30am ET
+    link: Ask for the Hangouts invite on Slack.
+  - name: Retro
+    days: every other Wed
+    time: 3:00pm - 4:00pm ET
+    link: Ask for the Hangouts invite on Slack.
+  - name: Planning
+    days: every other Thurs
+    time: 10:30am - 1:00pm ET
     link: Ask for the Hangouts invite on Slack.
 
 repo:
@@ -69,6 +81,10 @@ heading_anchors: true
 aux_links:
   "GitHub":
     - "https://github.com/Enterprise-CMCS/macpro-base-template"
+  "Jira":
+    - "https://qmacbis.atlassian.net/jira/software/c/projects/OY2/boards/246"
+  "Slack":
+    - "https://cmsgov.slack.com/archives/C04D6HXJ3GA"
 aux_links_new_tab: false
 
 # Sort order for navigation links
@@ -78,6 +94,8 @@ nav_sort: case_sensitive # Capital letters sorted before lowercase
 nav_external_links:
   - title: GitHub
     url: https://github.com/Enterprise-CMCS/macpro-base-template
+  - title: Jira
+    url: https://qmacbis.atlassian.net/jira/software/c/projects/OY2/boards/246
   - title: Slack
     url: https://cmsgov.slack.com/archives/C04D6HXJ3GA
 
