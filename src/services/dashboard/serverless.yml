@@ -55,5 +55,5 @@ resources:
     CloudWatchDashboard:
       Type: AWS::CloudWatch::Dashboard
       Properties:
-        DashboardName: ${sls:stage}-dashboard
+        DashboardName: ${self:service}-${sls:stage}
         DashboardBody: ${file(./templateDashboard.txt)}
