@@ -11,7 +11,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   region: ${env:REGION_A}
   stackTags:
     PROJECT: ${self:custom.project}
@@ -31,6 +31,46 @@ resources:
       Type: "AWS::SNS::Topic"
       Properties:
         TopicName: Alerts-${self:service}-${sls:stage}
+        KmsMasterKeyId: !Ref KmsKeyForSns
+
+    KmsKeyForSns:
+      Type: AWS::KMS::Key
+      Properties:
+        EnableKeyRotation: "true"
+        KeyPolicy:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: Allow access for Root User
+              Effect: Allow
+              Principal:
+                AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+              Action: "kms:*"
+              Resource: "*"
+            - Sid: Allow access for Key User (SNS Service Principal)
+              Effect: Allow
+              Principal:
+                Service: "sns.amazonaws.com"
+              Action:
+                - "kms:GenerateDataKey"
+                - "kms:Decrypt"
+              Resource: "*"
+            - Sid: Allow CloudWatch events to use the key
+              Effect: Allow
+              Principal:
+                Service: events.amazonaws.com
+              Action:
+                - "kms:Decrypt"
+                - "kms:GenerateDataKey"
+              Resource: "*"
+            - Sid: Allow CloudWatch for CMK
+              Effect: Allow
+              Principal:
+                Service:
+                  - cloudwatch.amazonaws.com
+              Action:
+                - "kms:Decrypt"
+                - "kms:GenerateDataKey*"
+              Resource: "*"
 
     EventBridgeToToSnsPolicy:
       Type: AWS::SNS::TopicPolicy
@@ -39,7 +79,9 @@ resources:
           Statement:
             - Effect: Allow
               Principal:
-                Service: events.amazonaws.com
+                Service:
+                  - events.amazonaws.com
+                  - cloudwatch.amazonaws.com
               Action: sns:Publish
               Resource: !Ref AlertsTopic
         Topics:
