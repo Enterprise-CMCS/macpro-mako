@@ -26,7 +26,7 @@ The {{ site.repo.name }} project is a serverless monorepo template.  The actual 
 
 A diagram is often the best way to communicate the architecture:
 
-![diagram](../../../assets/diagram.svg)
+![diagram](../assets/diagram.svg)
 
 
 ## Development Metrics (DORA)

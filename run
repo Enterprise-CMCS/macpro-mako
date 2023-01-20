@@ -17,7 +17,7 @@ if ! which node > /dev/null ; then
 fi
 
 # check node version
-if ! diff .nvmrc <(node -v) > /dev/null ; then
+if ! diff  <(cat .nvmrc | tr -d '\n') <(node -v | tr -d '\n') > /dev/null ; then
 	echo "node version does not match the version required in .nvmrc"
 	echo "If using nvm, run 'nvm use'"
 	exit 1

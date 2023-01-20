@@ -36,7 +36,7 @@ jobs:
           do
             yarn --cwd "${i%/*}" upgrade
           done
-          if [ "$(git status --porcelain)" ]; then 
+          if [ "$(git status --porcelain)" ]; then
             echo "::set-output name=changes::true"
           fi
       - name: Commit code to deps branch

@@ -100,9 +100,13 @@ For the purposes of these instructions, we will assume your new repository (crea
     - Go back to Repo Settings
     - Click Badges
     - Copy the HTML version of the Maintainability tag.  Keep this in a notepad for use later in these instructions.
-1. Update project specific values in your codebase; commit and push them to the master branch.
+1. Update project specific values in your codebase.
     - Open and edit acme/.envrc
-        - Update the value for PROJECT.  Shorter is usually better, as it is used extensively for namespacing purposes.  It should be all lower case, only contain letters and hyphens, and be unique in the target AWS accounts; that is, there should not be two repositories deploying to the same AWS account that use the same PROJECT value.
+        - Update the value for PROJECT.
+            - This value is used extensively in deployment, as it drives project namespacing.  It is what enables us to run many products in one AWS account ,if need be.
+            - This value is typically related to your project name.  However, it does not need to match exactly, or really at all.  
+            - To that point, a shorter name is preferred, as it will be put in many resource names.  For instance:  this repository, macpro-base-template, has a PROJECT value of just 'base'.  That's enough to be indicative of what project owns a resource with that tag, but not so long to be askward.
+            - Once you've chosen a new project name during project creation, changing it can be extremely difficult.  So take a minute and make sure it's what you want.
     - Open and edit acme/README.md
         - Find all `https://enterprise-cmcs.github.io/macpro-base-template/` and replace all with the url to your GitHub Pages docs site.
         - Find all `https://cmsgov.slack.com/archives/C04D6HXJ3GA` and replace all with the url to your project Slack channel.
@@ -116,7 +120,38 @@ For the purposes of these instructions, we will assume your new repository (crea
     - Open and edit the project's top level package.json file to be accurate.  Updates should include name, description, repository.url, and homepage.
     - Open and edit the Jekyll config file, docs/_config.yml.  Rather than list each place where a value might need replacing/updating, we recommend you walk through this file in detail.  It's a config file, so most of it's information will need updating.
     - Update the docs site overview information, located at docs/docs/overview.md - subsection Overview.  we recommend reusing the overview you put in the README
-    - Commit and push all changes to your new repository, and check the GitHub Actions for success.
+1. Deploy the OIDC service, and stage the created oidc role information in GitHub Secrets.
+    - This requires a fully configured workstation and a developer to run commands.  Be sure the workstation has successfully run through the workspace setup procedure.
+    - For the 'dev' AWS environment:
+         - Get AWS access keys from Kion, and export them to a terminal.
+         - `cd acme/src/services/.oidc`
+         - `sls deploy --stage master`
+         - Upon the above deploy command's completion, a ServiceRoleARN value should be output to the terminal; it should be near the bottom of all output.  Copy this value to a clipboard or notepad.
+         - Go to your repository in a browser.
+         - Navigate:  Settings -> Secrets and variables -> Actions -> New repository secret
+         - Set a secret named AWS_OIDC_ROLE_TO_ASSUME, and set it's value to the ServiceRoleARN value you copied from the above step.  Click add secret.
+         - This secret will be used by any branch that otherwise doesn't have a higher order secret (val and production will, in this next steps).
+    - For the 'impl' (or maybe called 'val') AWS environment:  (NOTE:  Please read carefully, as the exact commands and github console steps are different than dev above.)
+         - Get AWS access keys from Kion, and export them to a terminal.
+         - `cd acme/src/services/.oidc`
+         - `sls deploy --stage val`
+         - Upon the above deploy command's completion, a ServiceRoleARN value should be output to the terminal; it should be near the bottom of all output.  Copy this value to a clipboard or notepad.
+         - Go to your repository in a browser.
+        - Navigate:  Settings -> Environments -> New environment
+        - Create a new environment named val.
+        - Add a new secret under 'Environment secrets'.  It's name should be AWS_OIDC_ROLE_TO_ASSUME and it's value should should be the ServiceRoleARN value you copied from the above step.
+        - This is a great time to set environment protection rules and required reviewers, but we will skip detaili on that at this stage, as that's optional.
+    - For the 'production' (or maybe called 'prod') AWS environment:  (NOTE:  Please read carefully, as the exact commands and github console steps are different than dev and impl above.)
+         - Get AWS access keys from Kion, and export them to a terminal.
+         - `cd acme/src/services/.oidc`
+         - `sls deploy --stage production`
+         - Upon the above deploy command's completion, a ServiceRoleARN value should be output to the terminal; it should be near the bottom of all output.  Copy this value to a clipboard or notepad.
+         - Go to your repository in a browser.
+        - Navigate:  Settings -> Environments -> New environment
+        - Create a new environment named production.
+        - Add a new secret under 'Environment secrets'.  It's name should be AWS_OIDC_ROLE_TO_ASSUME and it's value should should be the ServiceRoleARN value you copied from the above step.
+        - This is a great time to set environment protection rules and required reviewers, but we will skip detaili on that at this stage, as that's optional.
+1. Commit and push all changes to your repository, and monitor GitHub Actions for success/failure.
 
 ### Conclusion
 If you’ve followed this document, you should have a new GitHub project deployed to AWS and ready for further development. This document is a WIP, and assuredly has errors and omissions, and will change over time. You can help this by reaching out to the MACPRO Platform team on Slack and letting us know about issues you find.
