@@ -28,7 +28,7 @@ This returns a list of currently running stages for this project in the current 
 - Completed all [onboarding]({{ site.baseurl }}{% link docs/onboarding/onboarding.md %})
 
 #### Procedure
-- [Obtain and set AWS CLI credentials]({{ site.baseurl }}{%link docs/development-workflows/aws-auth.md %})
+- [Obtain and set AWS CLI credentials]({{ site.baseurl }}{%link docs/developer-guide/aws-auth.md %})
 - Use the run script:
   ```bash
     nvm use
