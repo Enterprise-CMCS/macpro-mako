@@ -35,13 +35,12 @@ jobs:
 
       - name: Run nvm install
         run: |
-          cat /tmp/rcfile
-          source /tmp/rcfile
+          source /tmp/.profile
           nvm install
 
       - name: Test docs
         run: |
-          source /tmp/rcfile
+          source /tmp/.profile
           nvm use
           colima start
           docker pull busybox
@@ -49,28 +48,28 @@ jobs:
 
       - name: Test install
         run: |
-          source /tmp/rcfile
+          source /tmp/.profile
           nvm use
           direnv allow
           direnv exec run install
 
       - name: Test deploy
         run: |
-          source /tmp/rcfile
+          source /tmp/.profile
           nvm use
           direnv allow
           direnv exec run deploy --stage $STAGE_NAME
 
       - name: Test test
         run: |
-          source /tmp/rcfile
+          source /tmp/.profile
           nvm use
           direnv allow
           direnv exec run test --stage $STAGE_NAME
 
       - name: Test destroy
         run: |
-          source /tmp/rcfile
+          source /tmp/.profile
           nvm use
           direnv allow
           direnv exec run destroy --stage $STAGE_NAME --verify false --wait false
