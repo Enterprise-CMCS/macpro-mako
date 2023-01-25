@@ -51,7 +51,7 @@ jobs:
         env:
           SLACK_MSG_AUTHOR: ${{ github.repository }}
           SLACK_COLOR: ${{job.status}}
-          SLACK_ICON: https://github.com/cmsgov.png?size=48
+          SLACK_ICON: https://github.com/${{ github.repository_owner }}.png?size=48
           SLACK_TITLE: Currently Running Stages
           SLACK_MESSAGE: ${{ steps.runningStages.outputs.runningStages }}
           SLACK_USERNAME: ${{ github.repository }} - ${{ github.workflow }}
@@ -64,7 +64,7 @@ jobs:
         env:
           SLACK_MSG_AUTHOR: ${{ github.repository }}
           SLACK_COLOR: ${{job.status}}
-          SLACK_ICON: https://github.com/cmsgov.png?size=48
+          SLACK_ICON: https://github.com/${{ github.repository_owner }}.png?size=48
           SLACK_TITLE: Failure retrieving currently running stages
           SLACK_MESSAGE: Failure retrieving currently running stages
           SLACK_USERNAME: ${{ github.repository }} - ${{ github.workflow }}
