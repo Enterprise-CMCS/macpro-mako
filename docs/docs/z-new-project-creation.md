@@ -85,13 +85,23 @@ For the purposes of these instructions, we will assume your new repository (crea
     - Enable Dependabot alerts
     - Disable Dependabot security updates
     - Disable version updates
-1. Clone the macpro-base-template's production branch, and push it to your new repository's master branch.
-  ```
-  git clone -b production git@github.com:Enterprise-CMCS/macpro-base-template.git
-  cd macpro-base-template
-  git remote add acme git@github.com:Enterprise-CMCS/acme.git
-  git push acme production:master
-  ```
+1. Clone your new repository.  
+    ```
+    git clone git@github.com:Enterprise-CMCS/acme.git
+    ```
+1. Create val and production branches off of master.
+    ```
+    cd acme
+    git push origin val
+    git push origin production
+    ```
+1. Push macpro-base-template's production branch to your new repository's master branch.
+    ```
+    cd acme
+    git remote add base git@github.com:Enterprise-CMCS/macpro-base-template.git
+    git fetch base
+    git push origin base/production:master
+    ```
 1. Fetch your (newly built) GitHub Pages site's url.
     - Wait for the 'GitHub Pages' workflow, which triggered when you pushed, to finish.
     - Go to the repo in GitHub in a web browser.
@@ -114,12 +124,16 @@ For the purposes of these instructions, we will assume your new repository (crea
     - Click Badges
     - Copy the HTML version of the Maintainability tag.  Keep this in a notepad for use later in these instructions.
 1. Update project specific values in your codebase.
+    - Open your cloned copy of the acme project in an editor.
     - Open and edit acme/.envrc
         - Update the value for PROJECT.
             - This value is used extensively in deployment, as it drives project namespacing.  It is what enables us to run many products in one AWS account ,if need be.
             - This value is typically related to your project name.  However, it does not need to match exactly, or really at all.  
             - To that point, a shorter name is preferred, as it will be put in many resource names.  For instance:  this repository, macpro-base-template, has a PROJECT value of just 'base'.  That's enough to be indicative of what project owns a resource with that tag, but not so long to be askward.
             - Once you've chosen a new project name during project creation, changing it can be extremely difficult.  So take a minute and make sure it's what you want.
+    - Open and edit src/services/.oidc
+        - Find the line that reads `SubjectClaimFilters: "repo:Enterprise-CMCS/macpro-base-template:*"` 
+        - Update that line to reflect your new project org and repo:  `SubjectClaimFilters: "repo:Enterprise-CMCS/acme:*"`
     - Open and edit acme/README.md
         - Find all `https://enterprise-cmcs.github.io/macpro-base-template/` and replace all with the url to your GitHub Pages docs site.
         - Find all `https://cmsgov.slack.com/archives/C04D6HXJ3GA` and replace all with the url to your project Slack channel.
@@ -164,6 +178,10 @@ For the purposes of these instructions, we will assume your new repository (crea
         - Create a new environment named production.
         - Add a new secret under 'Environment secrets'.  It's name should be AWS_OIDC_ROLE_TO_ASSUME and it's value should should be the ServiceRoleARN value you copied from the above step.
         - This is a great time to set environment protection rules and required reviewers, but we will skip detaili on that at this stage, as that's optional.
+1. (optional) Add a SLACK_WEBHOOK GitHub Secret.
+    - Go to your repository in a browser.
+    - Navigate:  Settings -> Secrets and variables -> Actions -> New repository secret
+    - Set a secret named SLACK_WEBHOOK, and paste the value you have.
 1. Commit and push all changes to your repository, and monitor GitHub Actions for success/failure.
 
 ### Conclusion
