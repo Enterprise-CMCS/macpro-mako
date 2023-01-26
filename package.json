@@ -1,7 +1,7 @@
 {
-  "name": "macpro-base-template",
+  "name": "macpro-om-template",
   "type": "module",
-  "description": "A baseline serverless monorepo project that helps get your project up and running faster.",
+  "description": "TBD.",
   "version": "0.0.0-managed-by-semantic-release",
   "private": true,
   "main": "index.js",
@@ -13,10 +13,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Enterprise-CMCS/macpro-base-template"
+    "url": "https://github.com/Enterprise-CMCS/macpro-om-template"
   },
   "license": "CC0-1.0",
-  "homepage": "https://github.com/Enterprise-CMCS/macpro-base-template#readme",
+  "homepage": "https://github.com/Enterprise-CMCS/macpro-om-template#readme",
   "devDependencies": {
     "@enterprise-cmcs/macpro-serverless-running-stages": "^1.0.4",
     "@serverless/compose": "^1.3.0",

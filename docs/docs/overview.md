@@ -20,7 +20,7 @@ The 10,000ft view
 
 ## Overview
 
-The {{ site.repo.name }} project is a serverless monorepo template.  The actual application is 'hello world', but the repository support and configuration is full featured. This is by design, to allow for simpler project creation from the template.  Full CI/CD support with GitHub Actions, automated security scanning, documentation with GH Pages, infrastructure and application deployment workflows, etc. is all included.  There are a few services that apply to almost any project in Amazon, and those are included.
+The {{ site.repo.name }} project is TBD.
 
 ## Architecture
 
