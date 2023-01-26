@@ -58,7 +58,7 @@ Someone with appropriate permissions can follow this procedure to create a new S
     1. Right click -> Copy -> Copy Link. You may put this link somewhere like a notepad as you will use it later. But don’t worry, this can always be found again.
 1. You may add anyone who should have access to the channel.
 
-### Bootstrap the new repository.
+### Step 4: Bootstrap the new repository.
 New MACPRO project repositories are bootstrapped with code from our base template repository. This base template repository is a github repo itself; it’s maintained by the MACPRO Platform Team as the standard MACPRO project structure. It includes patterns for deployment, deployment of dev branches, testing, security scanning, and so forth. There’s a lot of functionality packed into it, without commenting much on the actual application architecture. This is done deliberately, so projects may use the template as a starting point, and build the new project’s services on top of it. In the future, there may be other templates that are more specific, such as a webapp template or a kafka consumer template, but for now there is only the single base template. This step involved getting the latest copy of that template and pushing it to the new project repository.
 
 For the purposes of these instructions, we will assume your new repository (created in the steps above) is called acme, and is in the Enterprise-CMCS organization.  We will also assume the template repository you will bootstrap your project with is called macpro-base-template, in the same org.
@@ -67,24 +67,37 @@ For the purposes of these instructions, we will assume your new repository (crea
     - Click Settings
     - Click Actions (left hand side) -> General
     - Select 'Allow all actions and reusable workflows', if not already selected.  If this option is not already set and not selectable, you will need to open a ticket with the CMS Cloud team.
-1. Clone the macpro-base-template's production branch, and push it to your new repository's master branch.
-  ```
-  git clone -b production git@github.com:Enterprise-CMCS/macpro-base-template.git
-  cd macpro-base-template
-  git remote add acme git@github.com:Enterprise-CMCS/acme.git
-  git push acme master
-  ```
 1. Ensure 'master' is set as the default branch for the new repository.
     - Go to the repo in GitHub in a web browser.
     - Click Settings
     - Click Branches (left hand side)
     - Set master as the default, if not already set.
-1. Trigger the deployment of your repo's GitHub Pages (documentation) site.
+1. Enable GitHub Pages to run on the master branch.
     - Go to the repo in GitHub in a web browser.
-    - Click Actions
-    - Select 'Deploy Jekyll with GitHub Pages' (left hand side)
-    - Click Run Workflow (right hand side).  When the drop down appears, leave the branch set to master, and click Run workflow.
-    - CIRCLEBACK TO GET URL
+    - Click Settings
+    - Click Pages (left hand side)
+    - Under the Source dropdown, select GitHub Actions
+1. Configure Dependabot
+    - Go to the repo in GitHub in a web browser.
+    - Click Settings
+    - Click Code security and analysis
+    - Enable Dependency Graph
+    - Enable Dependabot alerts
+    - Disable Dependabot security updates
+    - Disable version updates
+1. Clone the macpro-base-template's production branch, and push it to your new repository's master branch.
+  ```
+  git clone -b production git@github.com:Enterprise-CMCS/macpro-base-template.git
+  cd macpro-base-template
+  git remote add acme git@github.com:Enterprise-CMCS/acme.git
+  git push acme production:master
+  ```
+1. Fetch your (newly built) GitHub Pages site's url.
+    - Wait for the 'GitHub Pages' workflow, which triggered when you pushed, to finish.
+    - Go to the repo in GitHub in a web browser.
+    - Click Settings
+    - Click Pages
+    - You should see text that says "You site is live at https://xxxxxx".  Copy this url to a notepad; you'll need it in a later step.
 1. Add and configure the repository in Code Climate.
     - Go to [https://codeclimate.com/](https://codeclimate.com/)
     - Click Login -> Quality (top right).
