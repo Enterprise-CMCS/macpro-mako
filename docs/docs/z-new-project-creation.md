@@ -152,7 +152,7 @@ For the purposes of these instructions, we will assume your new repository (crea
     - For the 'dev' AWS environment:
          - Get AWS access keys from Kion, and export them to a terminal.
          - `cd acme/src/services/.oidc`
-         - `sls deploy --stage master`
+         - `CI=true sls deploy --stage master`
          - Upon the above deploy command's completion, a ServiceRoleARN value should be output to the terminal; it should be near the bottom of all output.  Copy this value to a clipboard or notepad.
          - Go to your repository in a browser.
          - Navigate:  Settings -> Secrets and variables -> Actions -> New repository secret
@@ -161,7 +161,7 @@ For the purposes of these instructions, we will assume your new repository (crea
     - For the 'impl' (or maybe called 'val') AWS environment:  (NOTE:  Please read carefully, as the exact commands and github console steps are different than dev above.)
          - Get AWS access keys from Kion, and export them to a terminal.
          - `cd acme/src/services/.oidc`
-         - `sls deploy --stage val`
+         - `CI=true sls deploy --stage val`
          - Upon the above deploy command's completion, a ServiceRoleARN value should be output to the terminal; it should be near the bottom of all output.  Copy this value to a clipboard or notepad.
          - Go to your repository in a browser.
         - Navigate:  Settings -> Environments -> New environment
@@ -171,7 +171,7 @@ For the purposes of these instructions, we will assume your new repository (crea
     - For the 'production' (or maybe called 'prod') AWS environment:  (NOTE:  Please read carefully, as the exact commands and github console steps are different than dev and impl above.)
          - Get AWS access keys from Kion, and export them to a terminal.
          - `cd acme/src/services/.oidc`
-         - `sls deploy --stage production`
+         - `CI=true sls deploy --stage production`
          - Upon the above deploy command's completion, a ServiceRoleARN value should be output to the terminal; it should be near the bottom of all output.  Copy this value to a clipboard or notepad.
          - Go to your repository in a browser.
         - Navigate:  Settings -> Environments -> New environment
