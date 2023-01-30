@@ -55,7 +55,7 @@ jobs:
           SLACK_TITLE: Currently Running Stages
           SLACK_MESSAGE: ${{ steps.runningStages.outputs.runningStages }}
           SLACK_USERNAME: ${{ github.repository }} - ${{ github.workflow }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           MSG_MINIMAL: true
 
       - name: Slack Notification - notify of failure reporting on running stages
@@ -68,5 +68,5 @@ jobs:
           SLACK_TITLE: Failure retrieving currently running stages
           SLACK_MESSAGE: Failure retrieving currently running stages
           SLACK_USERNAME: ${{ github.repository }} - ${{ github.workflow }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           MSG_MINIMAL: true
