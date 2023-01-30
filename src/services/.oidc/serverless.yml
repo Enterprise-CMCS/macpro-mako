@@ -18,9 +18,9 @@ provider:
 
 params:
   production:
-    claimFilter: production
+    claimFilter: environment:production
   val:
-    claimFilter: val
+    claimFilter: environment:val
   default:
     claimFilter: "*"
 
