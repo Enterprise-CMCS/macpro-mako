@@ -9,14 +9,19 @@ provider:
   region: us-east-1
   iam:
     role:
-      path: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
-      permissionsBoundary: ${ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
+      path: /delegatedadmin/developer/
+      permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+      statements:
+        - Effect: Allow
+          Action:
+            - cloudwatch:*
+          Resource: "*"
 
 plugins:
   - serverless-plugin-scripts
   - serverless-stack-termination-protection
-  - serverless-iam-helper
-  - serverless-s3-bucket-helper
+  - "@stratiformdigital/serverless-iam-helper"
+  - "@stratiformdigital/serverless-s3-security-helper"
   - "@enterprise-cmcs/serverless-waf-plugin"
 
 custom:
