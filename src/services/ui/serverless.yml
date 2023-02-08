@@ -1,0 +1,41 @@
+service: ui-src
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-plugin-scripts
+  - serverless-s3-sync
+  - serverless-cloudfront-invalidate
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-s3-security-helper"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  serverlessTerminationProtection:
+    stages:
+      - master
+      - val
+      - production
+  ui_cloudfront_distribution_id: ${cf:ui-infra-${self:custom.stage}.CloudFrontDistributionId}
+  application_endpoint_url: ${cf:ui-infra-${self:custom.stage}.ApplicationEndpointUrl}
+  ui_s3_bucket_name: ${cf:ui-infra-${self:custom.stage}.S3BucketName}
+  s3Sync:
+    - bucketName: ${self:custom.ui_s3_bucket_name}
+      localDir: ./dist
+      deleteRemoved: true
+  cloudfrontInvalidate:
+    - distributionId: ${self:custom.ui_cloudfront_distribution_id}
+      items:
+        - "/*"
+  scripts:
+    hooks:
+      # Build the static archive and populate the config
+      package:initialize: |
+        set -e
+        SKIP_PREFLIGHT_CHECK=true yarn run build

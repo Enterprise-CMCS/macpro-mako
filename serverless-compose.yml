@@ -5,3 +5,6 @@ services:
     path: src/services/dashboard
   ui-infra:
     path: src/services/ui-infra
+  ui:
+    path: src/services/ui
+    dependsOn: ui-infra
