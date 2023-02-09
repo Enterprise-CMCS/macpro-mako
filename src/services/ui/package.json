@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tanstack/react-location": "^3.7.4",
+    "@tanstack/react-location-devtools": "^3.4.4",
     "@tanstack/react-query": "^4.24.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
