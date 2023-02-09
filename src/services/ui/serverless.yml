@@ -35,7 +35,6 @@ custom:
         - "/*"
   scripts:
     hooks:
-      # Build the static archive and populate the config
       package:initialize: |
         set -e
         SKIP_PREFLIGHT_CHECK=true yarn run build

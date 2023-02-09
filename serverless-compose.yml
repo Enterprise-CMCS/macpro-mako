@@ -8,3 +8,7 @@ services:
   ui:
     path: src/services/ui
     dependsOn: ui-infra
+    # params: # params will be added once other services are
+    #   ecsFailureTopicArn: ${alerts.ECSFailureTopicArn}
+    #   mskClusterArn: ${bigmac.MskClusterArn}
+    #   brokerString: ${bigmac.BrokerString}
