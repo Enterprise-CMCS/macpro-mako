@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - "*"
-      - "!skipci*"
 
 concurrency:
   group: ${{ github.ref_name }}-group
@@ -21,6 +20,7 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
+    if: "!startsWith(github.head_ref || github.ref_name, 'skipci-')"
     steps:
       - name: Validate stage name
         run: |
