@@ -8,9 +8,6 @@ on:
         description: "Name of the environment to destroy:"
         required: true
 
-concurrency:
-  group: ${{ inputs.environment || github.event.ref }}-group
-
 jobs:
   destroy:
     if: |

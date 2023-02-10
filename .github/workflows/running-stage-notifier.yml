@@ -2,7 +2,7 @@ name: Running Stage Notifier
 
 on:
   schedule:
-    - cron: "30 15,21 * * *"
+    - cron: "30 21 * * 1-5"
   workflow_dispatch:
 
 jobs:
