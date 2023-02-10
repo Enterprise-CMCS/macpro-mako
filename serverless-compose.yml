@@ -3,3 +3,5 @@ services:
     path: src/services/alerts
   dashboard:
     path: src/services/dashboard
+  database:
+    path: src/services/database

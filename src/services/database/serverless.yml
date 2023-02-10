@@ -1,0 +1,59 @@
+service: ${self:custom.project}-database
+
+frameworkVersion: "3"
+
+package:
+  individually: true
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-s3-security-helper"
+
+provider:
+  name: aws
+  region: us-east-1
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+
+custom:
+  project: ${env:PROJECT}
+  serverlessTerminationProtection:
+    stages: # Apply CloudFormation termination protection for these stages
+      - master
+      - val
+      - production
+  tableName: ${self:custom.project}-${self:service}-table
+  dynamodb:
+    stages:
+      - local
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true    
+ # GitHubIdentityProviderArn: "arn:aws:iam::${aws:accountId}:oidc-provider/token.actions.githubusercontent.com"
+#  ManagedPolicyARNs:
+#    - arn:aws:iam::${aws:accountId}:policy/ADO-Restriction-Policy
+#    - arn:aws:iam::${aws:accountId}:policy/CMSApprovedAWSServices
+#    - arn:aws:iam::aws:policy/AdministratorAccess
+#  SubjectClaimFilters: "repo:Enterprise-CMCS/macpro-om-template:*"
+resources:
+  Resources:
+    Table:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        BillingMode: PAY_PER_REQUEST
+Outputs:
+  TableName:
+    Value: !Ref Table
