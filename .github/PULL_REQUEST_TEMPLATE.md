@@ -10,12 +10,6 @@ _Links to issue(s) that are closed by this PR. Be sure to use the phrase "Closes
 
 _How does this change address the issue?_
 
-## Learning
+## Assorted Notes/Considerations/Learning
 
-_Describe the research stage_
-
-_Links to blog posts, patterns, libraries or addons used to solve this problem_
-
-## Assorted Notes/Considerations
-
-_List any other information that you think is important... a post-merge activity, someone to notify, etc._
+_List any other information that you think is important... a post-merge activity, someone to notify, what you learned, etc._

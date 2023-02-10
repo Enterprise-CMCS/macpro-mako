@@ -1,4 +1,4 @@
-name: cfn-nag
+name: Cfn-nag
 
 on:
   pull_request:
