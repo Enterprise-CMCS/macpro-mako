@@ -200,7 +200,7 @@ resources:
         FunctionConfig:
           Comment: This function adds headers to implement HSTS
           Runtime: cloudfront-js-1.0
-        Name: hsts-${self:custom.project}
+        Name: hsts-${self:custom.project}-${self:custom.stage}
     ###############This code block enables logging on waf and sends all logs to s3.##################################
     WaflogsUploadBucket:
       Type: AWS::S3::Bucket
