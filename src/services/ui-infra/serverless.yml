@@ -33,10 +33,10 @@ custom:
       - master
       - val
       - production
-  route53HostedZoneId: ${ssm:/configuration/${self:custom.stage}/route53/hostedZoneId, ssm:/configuration/default/route53/hostedZoneId, ""}
-  route53DomainName: ${ssm:/configuration/${self:custom.stage}/route53/domainName, ""}
-  cloudfrontCertificateArn: ${ssm:/configuration/${self:custom.stage}/cloudfront/certificateArn, ssm:/configuration/default/cloudfront/certificateArn, ""}
-  cloudfrontDomainName: ${ssm:/configuration/${self:custom.stage}/cloudfront/domainName, ""}
+  route53HostedZoneId: ${ssm:/configuration/${self:service}/${self:custom.stage}/route53/hostedZoneId, ssm:/configuration/default/route53/hostedZoneId, ""}
+  route53DomainName: ${ssm:/configuration/${self:service}/${self:custom.stage}/route53/domainName, ""}
+  cloudfrontCertificateArn: ${ssm:/configuration/${self:service}/${self:custom.stage}/cloudfront/certificateArn, ssm:/configuration/default/cloudfront/certificateArn, ""}
+  cloudfrontDomainName: ${ssm:/configuration/${self:service}/${self:custom.stage}/cloudfront/domainName, ""}
   webAclName: ${self:custom.stage}-${self:service}-webacl
   wafExcludeRules:
     wafScope: CLOUDFRONT
