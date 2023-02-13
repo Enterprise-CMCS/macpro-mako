@@ -32,7 +32,14 @@ custom:
       docker: true
       port: 8000
       inMemory: true
-      migrate: true    
+      migrate: true  
+      seed: true  
+    seed:
+      table:
+        sources:
+          - table: ${self:custom.project}-${self:service}-table
+            sources: [./seed-templates/Table.json]
+
 
 resources:
   Resources:
