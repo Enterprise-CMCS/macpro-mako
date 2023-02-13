@@ -1,5 +1,5 @@
 # Refer to this service's README to configure all required SSM parameters.
-service: ui-infra
+service: ${self:custom.project}-ui-infra
 
 frameworkVersion: "3"
 
