@@ -3,8 +3,8 @@ import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
 import * as fs from "fs";
 import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
-import { SechubGithubSync } from "@stratiformdigital/security-hub-sync";
 import { ServerlessRunningStages } from "@enterprise-cmcs/macpro-serverless-running-stages";
+import { SecurityHubJiraSync } from "@enterprise-cmcs/macpro-security-hub-sync";
 
 // load .env
 dotenv.config();
@@ -187,27 +187,6 @@ yargs(process.argv.slice(2))
     }
   )
   .command(
-    "syncSecurityHubFindings",
-    "Syncs Sec Hub findings to GitHub Issues... usually only run by the CI system.",
-    {
-      auth: { type: "string", demandOption: true },
-      repository: { type: "string", demandOption: true },
-      accountNickname: { type: "string", demandOption: true },
-    },
-    async (options) => {
-      for (let region of [process.env.REGION_A, process.env.REGION_B]) {
-        var sync = new SechubGithubSync({
-          repository: options.repository,
-          auth: options.auth,
-          region: region,
-          accountNickname: options.accountNickname,
-          severity: ["CRITICAL", "HIGH", "MEDIUM"],
-        });
-        await sync.sync();
-      }
-    }
-  )
-  .command(
     "docs",
     "Starts the Jekyll documentation site in a docker container, available on http://localhost:4000.",
     {
@@ -300,6 +279,20 @@ yargs(process.argv.slice(2))
           await ServerlessRunningStages.getAllStagesForRegion(region!);
         console.log(`runningStages=${runningStages.join(",")}`);
       }
+    }
+  )
+  .command(
+    ["securityHubJiraSync", "securityHubSync", "secHubSync"],
+    "Create Jira Issues for Security Hub findings.",
+    {},
+    async () => {
+      await install_deps_for_services();
+      await new SecurityHubJiraSync({
+        customJiraFields: {
+          customfield_14117: [{ value: "Platform Team" }],
+          customfield_14151: [{ value: "Not Applicable " }],
+        },
+      }).sync();
     }
   )
   .strict() // This errors and prints help if you pass an unknown command
