@@ -5,12 +5,10 @@ import {
   Route,
   Router,
 } from "@tanstack/react-location";
-import { Home } from "./pages/Home";
-import { Posts } from "./pages/Posts";
+import * as Page from "./pages";
 import { Header } from "./components/Header";
 import { useQueryClient } from "@tanstack/react-query";
 import { getPosts } from "./hooks/queries/useGetPosts";
-import { Post } from "./pages/Post";
 import { getPostById } from "./hooks/queries/useGetPostById";
 
 const location = new ReactLocation();
@@ -21,11 +19,11 @@ export const AppRouter = () => {
   const routes: Route<DefaultGenerics>[] = [
     {
       path: "/",
-      element: <Home />,
+      element: <Page.Home />,
     },
     {
       path: "/posts",
-      element: <Posts />,
+      element: <Page.Posts />,
       loader: () =>
         queryClient.getQueryData(["posts"]) ??
         queryClient.fetchQuery(["posts"], getPosts),
@@ -41,7 +39,7 @@ export const AppRouter = () => {
             queryClient.fetchQuery(["posts", postId], () =>
               getPostById(postId)
             ),
-          element: <Post />,
+          element: <Page.Post />,
         },
       ],
     },
