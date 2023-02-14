@@ -55,6 +55,15 @@ jobs:
       - name: Deploy
         run: run deploy --stage $STAGE_NAME
 
+      - name: Set URL
+        run: |
+          echo "::set-output name=APPURL::$(
+            aws cloudformation \
+            --region us-east-1 describe-stacks \
+            --stack-name om-ui-infra-vite-poc \
+            --query "Stacks[0].Outputs[0].OutputValue"
+          )"
+
       - name: Test
         run: run test --stage $STAGE_NAME
 
