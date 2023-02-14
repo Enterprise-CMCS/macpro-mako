@@ -63,7 +63,7 @@ jobs:
           echo "APPURL=$(
             aws cloudformation \
             --region us-east-1 describe-stacks \
-            --stack-name $PROJECT-ui-infra-$STAGE_NAME \
+            --stack-name $PROJECT-uijfjfjfj-infra-$STAGE_NAME \
             --query Stacks[0].Outputs[0].OutputValue
           )" | tr -d \'\" >> $GITHUB_OUTPUT
 
