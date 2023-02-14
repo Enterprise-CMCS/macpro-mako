@@ -59,6 +59,7 @@ jobs:
       - name: Set URL
         id: deployment-data
         run: |
+          echo ${{ github.ref_name }}
           echo "APPURL=$(
             aws cloudformation \
             --region us-east-1 describe-stacks \
