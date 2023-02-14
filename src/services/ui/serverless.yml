@@ -23,15 +23,12 @@ custom:
       - master
       - val
       - production
-  ui_cloudfront_distribution_id: ${cf:ui-infra-${self:custom.stage}.CloudFrontDistributionId}
-  application_endpoint_url: ${cf:ui-infra-${self:custom.stage}.ApplicationEndpointUrl}
-  ui_s3_bucket_name: ${cf:ui-infra-${self:custom.stage}.S3BucketName}
   s3Sync:
-    - bucketName: ${self:custom.ui_s3_bucket_name}
+    - bucketName: ${param:S3BucketName}
       localDir: ./dist
       deleteRemoved: true
   cloudfrontInvalidate:
-    - distributionId: ${self:custom.ui_cloudfront_distribution_id}
+    - distributionId: ${param:CloudfrontDistributionId}
       items:
         - "/*"
   scripts:
