@@ -38,7 +38,7 @@ custom:
       table:
         sources:
           - table: ${self:custom.project}-${self:service}-table
-            sources: [./seed-templates/Table.json]
+            rawsources: [./seed-templates/Table.json]
 
 
 resources:
