@@ -38,7 +38,7 @@ custom:
     seed:
       table-seed:
         sources:
-          - table: ${self:custom.project}-${self:service}-table
+          - table: om-om-database-table #${self:custom.project}-${self:service}-table
             sources: [./seed-templates/Table.json]
 
 
