@@ -96,6 +96,12 @@ resources:
               Resource: !Sub arn:aws:s3:::${S3Bucket}/*
               Principal:
                 CanonicalUser: !GetAtt CloudFrontOriginAccessIdentity.S3CanonicalUserId
+            - Effect: Deny
+              Principal: "*"
+              Action: "*"
+              Condition:
+                Bool:
+                  "aws:SecureTransport": false
         Bucket: !Ref S3Bucket
     LoggingBucket:
       Type: "AWS::S3::Bucket"
@@ -122,6 +128,12 @@ resources:
               Resource: !Sub arn:aws:s3:::${LoggingBucket}/*
               Principal:
                 AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            - Effect: Deny
+              Principal: "*"
+              Action: "*"
+              Condition:
+                Bool:
+                  "aws:SecureTransport": false
         Bucket: !Ref LoggingBucket
     CloudFrontOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
