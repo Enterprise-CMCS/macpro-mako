@@ -139,8 +139,8 @@ resources:
               Principal: "*"
               Action: "*"
               Resource:
-                - !Sub "${S3Bucket.Arn}"
-                - !Sub "${S3Bucket.Arn}/*"
+                - !Sub "${LoggingBucket.Arn}"
+                - !Sub "${LoggingBucket.Arn}/*"
               Condition:
                 Bool:
                   "aws:SecureTransport": false
