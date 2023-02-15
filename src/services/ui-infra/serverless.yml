@@ -103,6 +103,9 @@ resources:
             - Effect: Deny
               Principal: "*"
               Action: "*"
+              Resource:
+                - !Sub "${S3Bucket.Arn}"
+                - !Sub "${S3Bucket.Arn}/*"
               Condition:
                 Bool:
                   "aws:SecureTransport": false
@@ -135,6 +138,9 @@ resources:
             - Effect: Deny
               Principal: "*"
               Action: "*"
+              Resource:
+                - !Sub "${S3Bucket.Arn}"
+                - !Sub "${S3Bucket.Arn}/*"
               Condition:
                 Bool:
                   "aws:SecureTransport": false
