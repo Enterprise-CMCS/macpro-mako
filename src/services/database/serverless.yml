@@ -35,10 +35,10 @@ custom:
       migrate: true  
       seed: true  
     seed:
-      table:
+      domain:
         sources:
           - table: ${self:custom.project}-${self:service}-table
-            rawsources: [./seed-templates/Table.json]
+            sources: [./Table.json]
 
 
 resources:
