@@ -58,6 +58,20 @@ jobs:
       - name: Test
         run: run test --stage $STAGE_NAME
 
+      - name: Get CloudFormation templates
+        id: getCfts
+        run: |
+          mkdir -p cftemplates
+          stackList=(`aws cloudformation describe-stacks --query "Stacks[?Tags[?Key=='STAGE' && Value=='$STAGE_NAME'] && Tags[?Key=='PROJECT' && Value=='$PROJECT']].StackName" --output text`)
+          for stack in "${stackList[@]}"; do
+            aws cloudformation get-template --stack-name "$stack" --query TemplateBody > "cftemplates/${stack}.json"
+          done
+
+      - name: Stelligent cfn_nag
+        uses: stelligent/cfn_nag@v0.8.6
+        with:
+          input_path: cftemplates
+
       - name: Release
         run: npx semantic-release
         env:
