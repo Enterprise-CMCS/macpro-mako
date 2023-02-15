@@ -41,6 +41,10 @@ custom:
   wafExcludeRules:
     wafScope: CLOUDFRONT
   firehoseStreamName: aws-waf-logs-${self:service}-${self:custom.stage}-firehose
+  s3SecurityHelper:
+    skipPolicyCreation:
+      - S3Bucket
+      - LoggingBucket
   scripts:
     hooks:
       # Associate the WAF ACL with the Firehose Delivery Stream
