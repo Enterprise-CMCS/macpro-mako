@@ -157,36 +157,6 @@ yargs(process.argv.slice(2))
     }
   )
   .command(
-    "deleteTopics",
-    "Deletes topics from Bigmac which were created by development/ephemeral branches.",
-    {
-      stage: { type: "string", demandOption: true },
-      // verify: { type: "boolean", demandOption: false, default: true },
-    },
-    async (options) => {
-      await install_deps_for_services();
-      await refreshOutputs("master");
-      await runner.run_command_and_output(
-        `Delete Topics`,
-        [
-          "sls",
-          "topics",
-          "invoke",
-          "--stage",
-          "master",
-          "--function",
-          "deleteTopics",
-          "--data",
-          JSON.stringify({
-            project: process.env.PROJECT,
-            stage: options.stage,
-          }),
-        ],
-        "."
-      );
-    }
-  )
-  .command(
     "docs",
     "Starts the Jekyll documentation site in a docker container, available on http://localhost:4000.",
     {
