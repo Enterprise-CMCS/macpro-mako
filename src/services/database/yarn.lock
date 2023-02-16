@@ -53,9 +53,9 @@ available-typed-arrays@^1.0.5:
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
 aws-sdk@^2.7.0:
-  version "2.1315.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1315.0.tgz#24e485c21ea443b0bbc02c219601737ec2e5e1bb"
-  integrity sha512-fDlK3iqA0bpXW6azVBAB8RTKhJ5YUjfe6sqKQF1lKT2cYT5qU4rtH5qUlMixlWkb8oKeSMA2voW3wZZtSpBFKQ==
+  version "2.1316.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1316.0.tgz#4c6cf44ec8c9eaaecfa0c7d4ea141861a246b260"
+  integrity sha512-5y0PR0RcswLlDkIq2E3dF4rvCn7b7yqyVae8SzDv5tcjebwt+YCSD2jJu5Cu7nahqtpWz35I2QGD1OcLK+rlUQ==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -929,10 +929,10 @@ serverless-dynamodb-local@^0.2.39:
     dynamodb-localhost "0.0.9"
     lodash "^4.17.0"
 
-serverless-dynamodb-seed@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/serverless-dynamodb-seed/-/serverless-dynamodb-seed-0.3.0.tgz#1c91337a603d89f09fb5d24a900c6aa419ed2c7c"
-  integrity sha512-wwfFh4wwmisRnMlEkNjx/x4srVv01gkjCR8tCkEtEFColsZe3ROC8eX/yFZl/tebix1nK1xi1oQwGF6QqYVZyQ==
+serverless-v3-dynamodb-seed@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/serverless-v3-dynamodb-seed/-/serverless-v3-dynamodb-seed-0.3.2.tgz#b5a6e03debc6aa46c68404dec2cfad4ab26e46f5"
+  integrity sha512-A+XPjDtpmEPJR4D3XlmTT+tP+9R2Jw8Yb9mbZK2PZ4BWK8hGAn0UvL9XT/L9cdGrz8gENsMMS77BwoifNWhCrg==
   dependencies:
     bluebird "^3.7.2"
 

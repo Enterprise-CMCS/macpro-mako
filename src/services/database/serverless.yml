@@ -7,7 +7,7 @@ package:
 
 plugins:
   - serverless-dynamodb-local
-  - serverless-dynamodb-seed
+  - serverless-v3-dynamodb-seed
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
 
@@ -38,7 +38,7 @@ custom:
     seed:
       table-seed:
         sources:
-          - table: om-om-database-table #${self:custom.project}-${self:service}-table
+          - table: ${self:custom.project}-${self:service}-table
             sources: [./seed-templates/Table.json]
 
 

@@ -6,9 +6,7 @@
   "author": "",
   "license": "CC0-1.0",
   "devDependencies": {
-    "serverless-dynamodb-local": "^0.2.39"
-  },
-  "dependencies": {
-    "serverless-dynamodb-seed": "^0.3.0"
+    "serverless-dynamodb-local": "^0.2.39",
+    "serverless-v3-dynamodb-seed": "^0.3.2"
   }
 }
