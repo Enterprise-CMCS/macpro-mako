@@ -82,7 +82,7 @@ yargs(process.argv.slice(2))
     async (options) => {
       await install_deps_for_services();
       var deployCmd = ["sls", "deploy", "--stage", options.stage];
-      var seedCmd = ["sls", "dynamodb:seed"];
+      var seedCmd = ["sls", "database:seed"];
       if (options.service) {
         await refreshOutputs(options.stage);
         deployCmd = [
