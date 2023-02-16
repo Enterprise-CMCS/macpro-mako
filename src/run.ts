@@ -82,6 +82,7 @@ yargs(process.argv.slice(2))
     async (options) => {
       await install_deps_for_services();
       var deployCmd = ["sls", "deploy", "--stage", options.stage];
+      var seedCmd = ["sls", "dynamodb:seed"];
       if (options.service) {
         await refreshOutputs(options.stage);
         deployCmd = [
@@ -93,6 +94,7 @@ yargs(process.argv.slice(2))
         ];
       }
       await runner.run_command_and_output(`SLS Deploy`, deployCmd, ".");
+      await runner.run_command_and_output(`SLS Deploy`, seedCmd, ".");
     }
   )
   .command(

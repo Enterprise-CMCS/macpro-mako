@@ -1,11 +1,10 @@
-{
-    "om-om-database-table": [
-        {
-            "PutRequest": {
-                "Item": {
-                    "email": {"S":"ishmeal@yahoo"}
-                }
-            }
-        }
-    ]
-}
+[
+    {
+      "id": 1,
+      "email": "ishmeal@yahoo.com"
+    },
+    {
+      "id": 2,
+      "eamil": "brian@gmail.com"
+    }
+  ]
