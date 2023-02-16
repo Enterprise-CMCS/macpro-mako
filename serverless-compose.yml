@@ -4,4 +4,5 @@ services:
   dashboard:
     path: src/services/dashboard
   database:
-    path: src/services/database
+    path: src/services/dynamodb
+    
