@@ -198,7 +198,7 @@ yargs(process.argv.slice(2))
   )
   .command(
     "base-update",
-    "this will upgrade your code to the latest version of the base template",
+    "this will update your code to the latest version of the base template",
     {},
     async () => {
       const addRemoteCommand = [
@@ -210,16 +210,20 @@ yargs(process.argv.slice(2))
       ];
 
       await runner.run_command_and_output(
-        "Upgrade from Base | adding remote",
+        "Update from Base | adding remote",
         addRemoteCommand,
         ".",
-        true
+        true,
+        {
+          stderr: true,
+          close: true,
+        }
       );
 
       const fetchBaseCommand = ["git", "fetch", "base"];
 
       await runner.run_command_and_output(
-        "Upgrade from Base | fetching base template",
+        "Update from Base | fetching base template",
         fetchBaseCommand,
         "."
       );
@@ -227,7 +231,7 @@ yargs(process.argv.slice(2))
       const mergeCommand = ["git", "merge", "base/production", "--no-ff"];
 
       await runner.run_command_and_output(
-        "Upgrade from Base | merging code from base template",
+        "Update from Base | merging code from base template",
         mergeCommand,
         ".",
         true
