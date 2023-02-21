@@ -3,7 +3,6 @@ frameworkVersion: "3"
 package:
   individually: true
 plugins:
-  - serverless-plugin-typescript
   - serverless-bundle
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
