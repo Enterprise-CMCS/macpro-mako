@@ -33,6 +33,7 @@
     "serverless-bundle": "^6.0.0",
     "serverless-disable-functions": "^1.0.0",
     "serverless-plugin-scripts": "^1.0.2",
+    "serverless-plugin-typescript": "^2.1.4",
     "serverless-plugin-warmup": "^7.1.0",
     "serverless-stack-termination-protection": "^2.0.2"
   },
