@@ -55,8 +55,8 @@ resources:
             - lambda.amazonaws.com
           Action:
           - sts:AssumeRole
-      path: /delegatedadmin/developer/
-      permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+      Path: /delegatedadmin/developer/
+      PermissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
       Policies:
         - PolicyName: dynamodbAccessRole
           PolicyDocument:
@@ -83,7 +83,7 @@ resources:
                 var params = {
                   TableName: event.ResourceProperties.DynamoTableName,
                   Item:{
-                      "id": "abc123"
+                      "email": "abc123"
                   }
               };
             docClient.put(params, function(err, data) { if (err) {
@@ -119,8 +119,6 @@ resources:
           Fn::GetAtt: [ InitFunction , "Arn" ]
         DynamoTableName:
           Ref: Table
-
-
-Outputs:
-  TableName:
-    Value: !Ref Table
+#Outputs:
+#  TableName:
+#    Value: !Ref Table
