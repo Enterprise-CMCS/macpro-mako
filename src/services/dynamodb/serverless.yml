@@ -35,11 +35,11 @@ custom:
       inMemory: true
       migrate: true  
       seed: true  
-    seed:
-      table-seed:
-        sources:
-          - table: ${self:custom.project}-${self:service}-table
-            sources: [./seed-templates/Table.json]
+   # seed:
+   #   table-seed:
+   #     sources:
+   #       - table: ${self:custom.project}-${self:service}-table
+   #         sources: [./seed-templates/Table.json]
 
 resources:
   Resources:
@@ -73,11 +73,6 @@ resources:
     InitFunction:
     Type: AWS::Lambda::Function
     Properties:
-      Handler: index.handler
-      Role:
-        Fn::GetAtt: [ LambdaRole , "Arn" ]
-      Runtime: nodejs16.x
-      Timeout: 60
       Code:
         ZipFile: >
           const AWS = require("aws-sdk");
@@ -88,7 +83,7 @@ resources:
               var params = {
                 TableName: event.ResourceProperties.DynamoTableName,
                 Item:{
-                    "email": "joeaero19@yahoo.com"
+                    "id": "abc123"
                 }
             };
           docClient.put(params, function(err, data) { if (err) {
@@ -98,6 +93,11 @@ resources:
           }
           });
           };
+      Handler: index.handler
+      Role:
+        Fn::GetAtt: [ LambdaRole , "Arn" ]
+      Runtime: nodejs4.3
+      Timeout: 60
     Table:
       Type: AWS::DynamoDB::Table
       Properties:
