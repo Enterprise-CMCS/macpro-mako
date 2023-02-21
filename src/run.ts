@@ -5,11 +5,16 @@ import * as fs from "fs";
 import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
 import { SechubGithubSync } from "@stratiformdigital/security-hub-sync";
 import { ServerlessRunningStages } from "@enterprise-cmcs/macpro-serverless-running-stages";
-
+import { Seeder } from 'aws-cdk-dynamodb-seeder';
 // load .env
 dotenv.config();
 
 const runner = new LabeledProcessRunner();
+
+const myTable = new Table(stack, "om-om-database-table", {
+  tableName: "om-om-database-table",
+  partitionKey: { name: "Id", type: AttributeType.STRING },
+});
 
 function touch(file: string) {
   try {
@@ -82,7 +87,6 @@ yargs(process.argv.slice(2))
     async (options) => {
       await install_deps_for_services();
       var deployCmd = ["sls", "deploy", "--stage", options.stage];
-      var seedCmd = ["sls", "dynamodb:seed"];
       if (options.service) {
         await refreshOutputs(options.stage);
         deployCmd = [
@@ -94,7 +98,6 @@ yargs(process.argv.slice(2))
         ];
       }
       await runner.run_command_and_output(`SLS Deploy`, deployCmd, ".");
-      await runner.run_command_and_output(`SLS Deploy`, seedCmd, ".");
     }
   )
   .command(
@@ -265,3 +268,8 @@ yargs(process.argv.slice(2))
   .strict() // This errors and prints help if you pass an unknown command
   .scriptName("run") // This modifies the displayed help menu to show 'run' isntead of 'dev.js'
   .demandCommand(1, "").argv; // this prints out the help if you don't call a subcommand
+new Seeder(stack, "MySeeder", {
+  table: om-om-database-table,
+  setup: require("./services/dynamodb/seed-templates/Table.json]"),
+  refreshOnUpdate: true  // runs setup and teardown on every update, default false
+});
