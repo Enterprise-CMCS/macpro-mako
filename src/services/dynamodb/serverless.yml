@@ -6,8 +6,8 @@ package:
   individually: true
 
 plugins:
-  - serverless-dynamodb-local
-  - serverless-v3-dynamodb-seed
+ # - serverless-dynamodb-local
+ # - serverless-v3-dynamodb-seed
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
 
@@ -26,15 +26,15 @@ custom:
       - val
       - production
   tableName: ${self:custom.project}-${self:service}-table
-  dynamodb:
-    stages:
-      - local
-    start:
-      docker: true
-      port: 8000
-      inMemory: true
-      migrate: true  
-      seed: true  
+ # dynamodb:
+  #  stages:
+  #    - local
+   # start:
+   #   docker: true
+    #  port: 8000
+     # inMemory: true
+     # migrate: true  
+     # seed: true  
    # seed:
    #   table-seed:
    #     sources:
@@ -71,33 +71,33 @@ resources:
               - logs:*
               Resource: "*"
     InitFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      Code:
-        ZipFile: >
-          const AWS = require("aws-sdk");
-          const response = require("cfn-response");
-          const docClient = new AWS.DynamoDB.DocumentClient();
-          exports.handler = function(event, context) {
-              console.log(JSON.stringify(event,null,2));
-              var params = {
-                TableName: event.ResourceProperties.DynamoTableName,
-                Item:{
-                    "id": "abc123"
-                }
+      Type: AWS::Lambda::Function
+      Properties:
+        Code:
+          ZipFile: >
+            const AWS = require("aws-sdk");
+            const response = require("cfn-response");
+            const docClient = new AWS.DynamoDB.DocumentClient();
+            exports.handler = function(event, context) {
+                console.log(JSON.stringify(event,null,2));
+                var params = {
+                  TableName: event.ResourceProperties.DynamoTableName,
+                  Item:{
+                      "id": "abc123"
+                  }
+              };
+            docClient.put(params, function(err, data) { if (err) {
+              response.send(event, context, "FAILED", {});
+            } else {
+              response.send(event, context, "SUCCESS", {});
+            }
+            });
             };
-          docClient.put(params, function(err, data) { if (err) {
-            response.send(event, context, "FAILED", {});
-          } else {
-            response.send(event, context, "SUCCESS", {});
-          }
-          });
-          };
-      Handler: index.handler
-      Role:
-        Fn::GetAtt: [ LambdaRole , "Arn" ]
-      Runtime: nodejs4.3
-      Timeout: 60
+        Handler: index.handler
+        Role:
+          Fn::GetAtt: [ LambdaRole , "Arn" ]
+        Runtime: nodejs4.3
+        Timeout: 60
     Table:
       Type: AWS::DynamoDB::Table
       Properties:
