@@ -1,0 +1,42 @@
+service: ${self:custom.project}-api
+frameworkVersion: "3"
+package:
+  individually: true
+plugins:
+  - serverless-plugin-typescript
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-iam-helper"
+  - "@stratiformdigital/serverless-s3-security-helper"
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${env:REGION_A}
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+  iam:
+    role:
+      path: /delegatedadmin/developer/
+      permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+      statements:
+        - Effect: Allow
+          Action:
+            - cloudwatch:*
+          Resource: "*"
+custom:
+  project: ${env:PROJECT}
+  accountId: !Sub "${AWS::AccountId}"
+  serverlessTerminationProtection:
+    stages: # Apply CloudFormation termination protection for these stages
+      - master
+      - val
+      - production
+functions:
+  getPosts:
+    handler: handlers/getPosts.handler
+    maximumRetryAttempts: 0
+    events:
+      - http:
+          path: /posts
+          method: get
+          cors: true
