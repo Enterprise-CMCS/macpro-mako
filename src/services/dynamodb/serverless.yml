@@ -83,7 +83,7 @@ resources:
                 var params = {
                   TableName: event.ResourceProperties.DynamoTableName,
                   Item:{
-                      "email": "abc123"
+                      "id": "abc123"
                   }
               };
             docClient.put(params, function(err, data) { if (err) {
@@ -101,12 +101,12 @@ resources:
     Table:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.tableName}
+        TableName: ${self:custom.tableName}-test
         AttributeDefinitions:
-          - AttributeName: email
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: email
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
