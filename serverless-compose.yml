@@ -3,6 +3,8 @@ services:
     path: src/services/alerts
   dashboard:
     path: src/services/dashboard
+  api:
+    path: src/services/api
   ui-infra:
     path: src/services/ui-infra
   ui:
