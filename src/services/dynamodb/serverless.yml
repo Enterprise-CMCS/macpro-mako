@@ -26,20 +26,6 @@ custom:
       - val
       - production
   tableName: ${self:custom.project}-${self:service}-table
- # dynamodb:
-  #  stages:
-  #    - local
-   # start:
-   #   docker: true
-    #  port: 8000
-     # inMemory: true
-     # migrate: true  
-     # seed: true  
-   # seed:
-   #   table-seed:
-   #     sources:
-   #       - table: ${self:custom.project}-${self:service}-table
-   #         sources: [./seed-templates/Table.json]
 
 resources:
   Resources:
@@ -101,7 +87,7 @@ resources:
     Table:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.tableName}-test
+        TableName: ${self:custom.tableName}
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
@@ -119,6 +105,3 @@ resources:
           Fn::GetAtt: [ InitFunction , "Arn" ]
         DynamoTableName:
           Ref: Table
-#Outputs:
-#  TableName:
-#    Value: !Ref Table
