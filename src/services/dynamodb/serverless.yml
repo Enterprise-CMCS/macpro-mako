@@ -47,7 +47,7 @@ resources:
     Table:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: om-om-database-table #${self:custom.tableName}
+        TableName: ${self:custom.tableName}
         AttributeDefinitions:
           - AttributeName: email
             AttributeType: S
