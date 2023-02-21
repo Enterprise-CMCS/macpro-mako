@@ -112,13 +112,13 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
     InitializeDynamoDB:
-    Type: Custom::InitFunction
-    DependsOn: Table
-    Properties:
-      ServiceToken:
-         Fn::GetAtt: [ InitFunction , "Arn" ]
-      DynamoTableName:
-        Ref: Table
+      Type: Custom::InitFunction
+      DependsOn: Table
+      Properties:
+        ServiceToken:
+          Fn::GetAtt: [ InitFunction , "Arn" ]
+        DynamoTableName:
+          Ref: Table
 
 
 Outputs:
