@@ -96,7 +96,7 @@ resources:
         Handler: index.handler
         Role:
           Fn::GetAtt: [ LambdaRole , "Arn" ]
-        Runtime: nodejs4.3
+        Runtime: nodejs16.x
         Timeout: 60
     Table:
       Type: AWS::DynamoDB::Table
