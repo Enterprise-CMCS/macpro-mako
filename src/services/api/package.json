@@ -1,0 +1,6 @@
+{
+  "name": "api",
+  "devDependencies": {
+    "aws-lambda": "^1.0.7"
+  }
+}

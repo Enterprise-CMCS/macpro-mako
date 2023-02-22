@@ -40,3 +40,11 @@ functions:
           path: /posts
           method: get
           cors: true
+  getPost:
+    handler: handlers/getPost.handler
+    maximumRetryAttempts: 0
+    events:
+      - http:
+          path: /posts/{id}
+          method: get
+          cors: true
