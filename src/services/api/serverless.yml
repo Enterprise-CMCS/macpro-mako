@@ -48,3 +48,11 @@ functions:
           path: /posts/{id}
           method: get
           cors: true
+  createPost:
+    handler: handlers/createPost.handler
+    maximumRetryAttempts: 0
+    events:
+      - http:
+          path: /posts
+          method: post
+          cors: true
