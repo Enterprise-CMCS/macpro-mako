@@ -1,10 +1,10 @@
 [
-    {
-      "id": 1,
-      "email": "ishmeal@yahoo.com"
-    },
-    {
-      "id": 2,
-      "email": "brian@gmail.com"
-    }
-  ]
+  {
+    "id": 1,
+    "email": "ishmeal@yahoo.com"
+  },
+  {
+    "id": 2,
+    "email": "brian@gmail.com"
+  }
+]

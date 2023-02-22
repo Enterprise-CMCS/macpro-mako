@@ -92,7 +92,6 @@ yargs(process.argv.slice(2))
         ];
       }
       await runner.run_command_and_output(`SLS Deploy`, deployCmd, ".");
-
     }
   )
   .command(

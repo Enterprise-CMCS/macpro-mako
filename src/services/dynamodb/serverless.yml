@@ -6,8 +6,8 @@ package:
   individually: true
 
 plugins:
- # - serverless-dynamodb-local
- # - serverless-v3-dynamodb-seed
+  # - serverless-dynamodb-local
+  # - serverless-v3-dynamodb-seed
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
 
@@ -33,29 +33,29 @@ resources:
       Type: AWS::IAM::Role
       Properties:
         AssumeRolePolicyDocument:
-          Version: '2012-10-17'
+          Version: "2012-10-17"
           Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-              - lambda.amazonaws.com
-            Action:
-            - sts:AssumeRole
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action:
+                - sts:AssumeRole
         Path: /delegatedadmin/developer/
         PermissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
         Policies:
           - PolicyName: dynamodbAccessRole
             PolicyDocument:
-              Version: '2012-10-17'
+              Version: "2012-10-17"
               Statement:
-              - Effect: Allow
-                Action:
-                - dynamodb:*
-                Resource: "*"
-              - Effect: Allow
-                Action:
-                - logs:*
-                Resource: "*"
+                - Effect: Allow
+                  Action:
+                    - dynamodb:*
+                  Resource: "*"
+                - Effect: Allow
+                  Action:
+                    - logs:*
+                  Resource: "*"
     InitFunction:
       Type: AWS::Lambda::Function
       Properties:
@@ -81,7 +81,7 @@ resources:
             };
         Handler: index.handler
         Role:
-          Fn::GetAtt: [ LambdaRole , "Arn" ]
+          Fn::GetAtt: [LambdaRole, "Arn"]
         Runtime: nodejs16.x
         Timeout: 60
     Table:
@@ -102,6 +102,6 @@ resources:
       DependsOn: Table
       Properties:
         ServiceToken:
-          Fn::GetAtt: [ InitFunction , "Arn" ]
+          Fn::GetAtt: [InitFunction, "Arn"]
         DynamoTableName:
           Ref: Table
