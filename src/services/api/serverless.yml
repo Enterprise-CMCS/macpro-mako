@@ -56,3 +56,11 @@ functions:
           path: /posts
           method: post
           cors: true
+  deletePost:
+    handler: handlers/deletePost.handler
+    maximumRetryAttempts: 0
+    events:
+      - http:
+          path: /posts/{id}
+          method: delete
+          cors: true
