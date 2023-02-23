@@ -1,1 +1,5 @@
-{}
+{
+    "compilerOptions": {
+        "rootDirs": ["./", "../../shared/types"]
+    }
+}
