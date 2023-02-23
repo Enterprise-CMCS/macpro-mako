@@ -29,8 +29,11 @@
     "@stratiformdigital/serverless-online": "^3.1.0",
     "@stratiformdigital/serverless-s3-security-helper": "^4.0.0",
     "@stratiformdigital/serverless-stage-destroyer": "^2.0.0",
+    "@testing-library/react": "^14.0.0",
+    "@vitejs/plugin-react": "^3.1.0",
     "@vitest/ui": "^0.26.2",
     "aws-sdk-client-mock": "^2.0.1",
+    "jsdom": "^21.1.0",
     "prettier": "2.7.1",
     "semantic-release": "^19.0.5",
     "serverless": "^3.17.0",
@@ -41,7 +44,6 @@
     "serverless-stack-termination-protection": "^2.0.2",
     "vitest": "^0.26.2"
   },
-  "dependencies": {},
   "release": {
     "branches": [
       "production"
