@@ -18,7 +18,7 @@ export const Posts = () => {
       <h1>Posts</h1>
       <Outlet />
       <ul>
-        {data.data.map((post) => (
+        {data.data.map((post: any) => (
           <li key={post.id}>
             <Link
               onMouseEnter={() => loadRoute({ to: post.id })}
