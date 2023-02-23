@@ -68,7 +68,7 @@ jobs:
           )" | tr -d \'\" >> $GITHUB_OUTPUT
 
       - name: Test
-        run: run test --stage $STAGE_NAME
+        run: yarn test-ci
 
       - name: Release
         run: npx semantic-release
