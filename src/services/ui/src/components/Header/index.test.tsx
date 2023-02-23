@@ -1,7 +1,7 @@
-import { Wrapper } from "../utils/vitest/Wrapper";
+import { Wrapper } from "../../utils/vitest/Wrapper";
 import { describe, expect, test } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { Header } from "./Header";
+import { Header } from ".";
 
 describe("Header test", () => {
   test("should show home text", () => {
