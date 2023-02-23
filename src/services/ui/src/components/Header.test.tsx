@@ -1,5 +1,16 @@
-import { describe, test } from "vitest";
+import { Wrapper } from "../utils/vitest/Wrapper";
+import { describe, expect, test } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { Header } from "./Header";
 
 describe("Header test", () => {
-  test("Should show header", () => {});
+  test("should show home text", () => {
+    render(
+      <Wrapper>
+        <Header />
+      </Wrapper>
+    );
+
+    expect(screen.getByText(/Home/i)).toBeDefined();
+  });
 });
