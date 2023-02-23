@@ -39,7 +39,6 @@ functions:
       - http:
           path: /posts
           method: get
-          cors: true
   getPost:
     handler: handlers/getPost.handler
     maximumRetryAttempts: 0
@@ -47,7 +46,6 @@ functions:
       - http:
           path: /posts/{id}
           method: get
-          cors: true
   createPost:
     handler: handlers/createPost.handler
     maximumRetryAttempts: 0
@@ -55,7 +53,6 @@ functions:
       - http:
           path: /posts
           method: post
-          cors: true
   deletePost:
     handler: handlers/deletePost.handler
     maximumRetryAttempts: 0
@@ -63,7 +60,6 @@ functions:
       - http:
           path: /posts/{id}
           method: delete
-          cors: true
   updatePost:
     handler: handlers/updatePost.handler
     maximumRetryAttempts: 0
@@ -71,4 +67,3 @@ functions:
       - http:
           path: /posts/{id}
           method: put
-          cors: true
