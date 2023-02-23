@@ -3,8 +3,8 @@ services:
     path: src/services/alerts
   dashboard:
     path: src/services/dashboard
-  dynamodb:
-    path: src/services/dynamodb
+  database:
+    path: src/services/database
   ui-infra:
     path: src/services/ui-infra
   ui:
