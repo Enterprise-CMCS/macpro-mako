@@ -4253,6 +4253,31 @@ aws-sdk-client-mock@^2.0.1:
     sinon "^14.0.2"
     tslib "^2.1.0"
 
+aws-sdk-mock@^5.8.0:
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk-mock/-/aws-sdk-mock-5.8.0.tgz#2556a79010a883f4bd5a566ce63bc244cee67579"
+  integrity sha512-s0Vy4DObFmVJ6h1uTw1LGInOop77oF0JXH2N39Lv+1Wss274EowVk9odhM4Sji4mynXcM5oSu68uYqkJRviDRA==
+  dependencies:
+    aws-sdk "^2.1231.0"
+    sinon "^14.0.1"
+    traverse "^0.6.6"
+
+aws-sdk@^2.1231.0:
+  version "2.1322.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1322.0.tgz#9535f5bd66320cd06f24e734bc0db4c60e7efaf2"
+  integrity sha512-y1gSjcxKjL7VT5B8TA2/0etuG/GhrMbPC20zrqpI82LCilRTHkQ8UiXFdWSgoEuqtn16ZK/EbqCNXlgcv90xow==
+  dependencies:
+    buffer "4.9.2"
+    events "1.1.1"
+    ieee754 "1.1.13"
+    jmespath "0.16.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    util "^0.12.4"
+    uuid "8.0.0"
+    xml2js "0.4.19"
+
 aws-sdk@^2.1280.0:
   version "2.1291.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1291.0.tgz#315e64dead4a1222726a55348bb2aa332a1917d4"
@@ -11345,7 +11370,7 @@ simple-git@^3.7.0:
     "@kwsites/promise-deferred" "^1.1.1"
     debug "^4.3.4"
 
-sinon@^14.0.2:
+sinon@^14.0.1, sinon@^14.0.2:
   version "14.0.2"
   resolved "https://registry.yarnpkg.com/sinon/-/sinon-14.0.2.tgz#585a81a3c7b22cf950762ac4e7c28eb8b151c46f"
   integrity sha512-PDpV0ZI3ZCS3pEqx0vpNp6kzPhHrLx72wA0G+ZLaaJjLIYeE0n8INlgaohKuGy7hP0as5tbUd23QWu5U233t+w==
