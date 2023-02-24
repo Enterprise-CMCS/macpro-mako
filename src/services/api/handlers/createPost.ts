@@ -1,4 +1,3 @@
-import { cors } from "middy/middlewares";
 import { handler as h } from "../libs/handler";
 
 export const handler = h(async (event) => {
