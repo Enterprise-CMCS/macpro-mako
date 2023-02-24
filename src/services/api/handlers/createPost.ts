@@ -1,10 +1,9 @@
-import type { APIGatewayEvent } from "aws-lambda";
-import * as middy from "middy";
 import { cors } from "middy/middlewares";
+import { handler as h } from "../libs/handler";
 
-export const handler = middy(async (event: APIGatewayEvent) => {
+export const handler = h(async (event) => {
   return {
     statusCode: 200,
     body: JSON.stringify({ post: {} }),
   };
-}).use(cors());
+});

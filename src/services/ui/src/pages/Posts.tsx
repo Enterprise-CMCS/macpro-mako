@@ -3,6 +3,7 @@ import { useGetPosts } from "../hooks/queries/useGetPosts";
 
 export const Posts = () => {
   const { data, isLoading, isError } = useGetPosts();
+  console.log(data);
   const loadRoute = useLoadRoute();
 
   if (isLoading) {

@@ -1,8 +1,8 @@
-import * as middy from "middy";
-import { cors } from "middy/middlewares";
+import { handler as h } from "../libs/handler";
 
-export const handler = middy(async () => {
+export const handler = h(async () => {
   return {
     statusCode: 200,
+    body: JSON.stringify({ post: { hello: "world" } }),
   };
-}).use(cors());
+});
