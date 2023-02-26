@@ -44,9 +44,9 @@ describe("handler", () => {
   it("should return the replaced dashboard body", async () => {
     cloudWatchClientMock
       .on(GetDashboardCommand)
-      .resolves({ DashboardBody: "test-dashboard-body" });
+      .resolves({ DashboardBody: "test-stage-test-region-body" });
     const result = await handler(mockEvent, mockContext, mockCallback);
 
-    expect(result).toBe("test-dashboard-body");
+    expect(result).toBe("${sls:stage}-${env:REGION_A}-body");
   });
 });
