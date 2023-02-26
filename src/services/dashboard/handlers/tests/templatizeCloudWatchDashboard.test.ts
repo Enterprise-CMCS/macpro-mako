@@ -1,20 +1,17 @@
 import { it, describe, expect, vi, beforeEach } from "vitest";
-import { CloudWatch } from "@aws-sdk/client-cloudwatch";
+import {
+  CloudWatchClient,
+  GetDashboardCommand,
+} from "@aws-sdk/client-cloudwatch";
 import type {
   APIGatewayEvent,
   APIGatewayProxyCallback,
   Context,
 } from "aws-lambda";
 import { handler, replaceStringValues } from "../templatizeCloudWatchDashboard";
+import { mockClient } from "aws-sdk-client-mock";
 
-// Mock the CloudWatch client
-vi.mock("@aws-sdk/client-cloudwatch", () => ({
-  CloudWatch: vi.fn().mockImplementation(() => ({
-    getDashboard: vi.fn().mockResolvedValue({
-      DashboardBody: "test-dashboard-body",
-    }),
-  })),
-}));
+const cloudWatchClientMock = mockClient(CloudWatchClient);
 
 describe("replaceStringValues", () => {
   it("replaces string with correct values", () => {
@@ -37,21 +34,19 @@ describe("handler", () => {
   const mockCallback: APIGatewayProxyCallback = {} as APIGatewayProxyCallback;
 
   beforeEach(() => {
-    vi.clearAllMocks();
     process.env.service = "test-service";
     process.env.accountId = "test-account-id";
     process.env.stage = "test-stage";
     process.env.region = "test-region";
+    cloudWatchClientMock.reset();
   });
 
   it("should return the replaced dashboard body", async () => {
+    cloudWatchClientMock
+      .on(GetDashboardCommand)
+      .resolves({ DashboardBody: "test-dashboard-body" });
     const result = await handler(mockEvent, mockContext, mockCallback);
+
     expect(result).toBe("test-dashboard-body");
-    expect(CloudWatch).toHaveBeenCalledTimes(1);
-    expect(CloudWatch).toHaveBeenCalledWith({});
-    // expect(CloudWatch.getDashboard).toHaveBeenCalledTimes(1);
-    // expect(CloudWatch.prototype.getDashboard).toHaveBeenCalledWith({
-    //   DashboardName: "test-stage-dashboard",
-    // });
   });
 });

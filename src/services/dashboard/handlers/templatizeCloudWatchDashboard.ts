@@ -28,6 +28,7 @@ export const handler = async (
     const dashboard = await client.getDashboard({
       DashboardName: `${stage}-dashboard`,
     });
+
     const replacables = {
       [accountId!]: "${aws:accountId}",
       [stage!]: "${sls:stage}",
