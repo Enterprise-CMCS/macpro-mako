@@ -9,7 +9,6 @@ services:
     path: src/services/ui-infra
   ui:
     path: src/services/ui
-    dependsOn: ui-infra
     params:
       CloudfrontDistributionId: ${ui-infra.CloudFrontDistributionId}
       S3BucketName: ${ui-infra.S3BucketName}
