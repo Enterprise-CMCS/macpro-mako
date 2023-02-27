@@ -1,4 +1,4 @@
-import { it, describe, expect, vi, beforeEach } from "vitest";
+import { it, describe, expect, beforeEach, afterEach } from "vitest";
 import {
   CloudWatchClient,
   GetDashboardCommand,
@@ -38,7 +38,32 @@ describe("handler", () => {
     process.env.accountId = "test-account-id";
     process.env.stage = "test-stage";
     process.env.region = "test-region";
+  });
+  afterEach(() => {
     cloudWatchClientMock.reset();
+    delete process.env.service;
+    delete process.env.accountId;
+    delete process.env.stage;
+    delete process.env.region;
+  });
+
+  it("should return the replaced dashboard template when called with valid inputs", async () => {
+    const dashboardBody =
+      '{"widgets": [{"type": "metric", "properties": {"stage": "test-stage", "view": "timeSeries", "stacked": false, "region": "test-region"}}]}';
+    const expectedReplacedBody =
+      '{"widgets": [{"type": "metric", "properties": {"stage": "${sls:stage}", "view": "timeSeries", "stacked": false, "region": "${env:REGION_A}"}}]}';
+
+    cloudWatchClientMock
+      .on(GetDashboardCommand, {
+        DashboardName: `${process.env.stage}-dashboard`,
+      })
+      .resolves({
+        DashboardBody: dashboardBody,
+      });
+
+    const result = await handler(mockEvent, mockContext, mockCallback);
+
+    expect(result).toEqual(expectedReplacedBody);
   });
 
   it("should return the replaced dashboard body", async () => {
@@ -46,7 +71,15 @@ describe("handler", () => {
       .on(GetDashboardCommand)
       .resolves({ DashboardBody: "test-stage-test-region-body" });
     const result = await handler(mockEvent, mockContext, mockCallback);
-
     expect(result).toBe("${sls:stage}-${env:REGION_A}-body");
+  });
+
+  it("should handle errors", async () => {
+    cloudWatchClientMock.rejects();
+    try {
+      await handler(mockEvent, mockContext, mockCallback);
+    } catch (e) {
+      expect(e).toBeInstanceOf(Error);
+    }
   });
 });
