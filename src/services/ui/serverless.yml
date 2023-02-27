@@ -37,6 +37,6 @@ custom:
         set -e
         echo """
         VITE_APP_API_REGION=${param:ApiRegion}
-        VITE_APP_API_URL=${param:ApiGatewayRestApiUrl}
+        VITE_APP_API_URL=${param:ApiUrl}
         """ > .env.local
         yarn run build
