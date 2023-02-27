@@ -9,8 +9,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "vitest --config ./vitest.config.ts",
-    "test-ci": "vitest run --config ./vitest.config.ts",
+    "test": "vitest --config ./src/vitest.config.ts",
+    "test-ci": "vitest run --config ./src/vitest.config.ts",
     "test-gui": "vitest --ui"
   },
   "repository": {
