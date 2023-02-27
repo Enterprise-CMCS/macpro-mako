@@ -79,10 +79,10 @@ yargs(process.argv.slice(2))
       stage: { type: "string", demandOption: true },
     },
     async (options) => {
-      await install_deps(runner, `src/services/ui`);
+      await install_deps_for_services();
       await runner.run_command_and_output(
         `ui configure`,
-        ["sls", "ui", "package", "--stage", options.stage],
+        ["sls", "deploy", "--stage", options.stage],
         "."
       );
       await runner.run_command_and_output(
