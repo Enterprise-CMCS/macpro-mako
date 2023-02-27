@@ -14,6 +14,8 @@ services:
       CloudfrontDistributionId: ${ui-infra.CloudFrontDistributionId}
       S3BucketName: ${ui-infra.S3BucketName}
       ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
+      ApiRegion: ${api.Region}
+      ApiUrl: ${api.ApiGatewayRestApiUrl}
     # params: # params will be added once other services are
     #   ecsFailureTopicArn: ${alerts.ECSFailureTopicArn}
     #   mskClusterArn: ${bigmac.MskClusterArn}

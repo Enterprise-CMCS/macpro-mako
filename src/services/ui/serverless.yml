@@ -35,4 +35,8 @@ custom:
     hooks:
       package:initialize: |
         set -e
-        SKIP_PREFLIGHT_CHECK=true yarn run build
+        echo """
+        VITE_APP_API_REGION=${param:ApiRegion}
+        VITE_APP_API_URL=${param:ApiGatewayRestApiUrl}
+        """ > .env.local
+        yarn run build
