@@ -73,6 +73,26 @@ yargs(process.argv.slice(2))
     await install_deps_for_services();
   })
   .command(
+    "deployLocalUi",
+    "configure and start a local ui/react against a remote backend",
+    {
+      stage: { type: "string", demandOption: true },
+    },
+    async (options) => {
+      await install_deps(runner, `src/services/ui`);
+      await runner.run_command_and_output(
+        `ui configure`,
+        ["sls", "ui", "package", "--stage", options.stage],
+        "."
+      );
+      await runner.run_command_and_output(
+        `ui start`,
+        ["yarn", "dev"],
+        `src/services/ui`
+      );
+    }
+  )
+  .command(
     "deploy",
     "deploy the project",
     {

@@ -3,6 +3,8 @@ services:
     path: src/services/alerts
   dashboard:
     path: src/services/dashboard
+  api:
+    path: src/services/api
   ui-infra:
     path: src/services/ui-infra
   ui:
@@ -12,6 +14,8 @@ services:
       CloudfrontDistributionId: ${ui-infra.CloudFrontDistributionId}
       S3BucketName: ${ui-infra.S3BucketName}
       ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
+      ApiRegion: ${api.Region}
+      ApiUrl: ${api.ApiGatewayRestApiUrl}
     # params: # params will be added once other services are
     #   ecsFailureTopicArn: ${alerts.ECSFailureTopicArn}
     #   mskClusterArn: ${bigmac.MskClusterArn}
