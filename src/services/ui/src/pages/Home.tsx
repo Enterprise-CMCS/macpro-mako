@@ -11,7 +11,6 @@ export const Home = () => {
         [
           {
             href: '',
-            target: '_blank',
             text: 'Navigational Link'
           },
           {
@@ -58,7 +57,6 @@ export const Home = () => {
           }
         ]
       ],
-      current: '[Circular]'
     },
     {
       buttonText: 'Section',
