@@ -40,33 +40,33 @@ functions:
 
 resources:
   Resources:
-    LambdaRole:
-      Type: AWS::IAM::Role
-      Properties:
-        AssumeRolePolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: Allow
-              Principal:
-                Service:
-                  - lambda.amazonaws.com
-              Action:
-                - sts:AssumeRole
-        Path: /delegatedadmin/developer/
-        PermissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
-        Policies:
-          - PolicyName: dynamodbAccessRole
-            PolicyDocument:
-              Version: "2012-10-17"
-              Statement:
-                - Effect: Allow
-                  Action:
-                    - dynamodb:*
-                  Resource: "*"
-                - Effect: Allow
-                  Action:
-                    - logs:*
-                  Resource: "*"
+    # LambdaRole:
+    #   Type: AWS::IAM::Role
+    #   Properties:
+    #     AssumeRolePolicyDocument:
+    #       Version: "2012-10-17"
+    #       Statement:
+    #         - Effect: Allow
+    #           Principal:
+    #             Service:
+    #               - lambda.amazonaws.com
+    #           Action:
+    #             - sts:AssumeRole
+    #     Path: /delegatedadmin/developer/
+    #     PermissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+    #     Policies:
+    #       - PolicyName: dynamodbAccessRole
+    #         PolicyDocument:
+    #           Version: "2012-10-17"
+    #           Statement:
+    #             - Effect: Allow
+    #               Action:
+    #                 - dynamodb:*
+    #               Resource: "*"
+    #             - Effect: Allow
+    #               Action:
+    #                 - logs:*
+    #               Resource: "*"
     Table:
       Type: AWS::DynamoDB::Table
       Properties:
