@@ -13,12 +13,6 @@ plugins:
 provider:
   name: aws
   region: us-east-1
-  stackTags:
-    PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}
-
-custom:
-  project: ${env:PROJECT}
   iam:
     role:
       path: /delegatedadmin/developer/
@@ -26,8 +20,15 @@ custom:
       statements:
         - Effect: Allow
           Action:
+            - cloudwatch:*
             - dynamodb:*
           Resource: "*"
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+
+custom:
+  project: ${env:PROJECT}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
