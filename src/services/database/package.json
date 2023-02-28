@@ -5,5 +5,8 @@
   "main": "index.js",
   "author": "",
   "license": "CC0-1.0",
-  "devDependencies": {}
+  "devDependencies": {},
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.279.0"
+  }
 }
