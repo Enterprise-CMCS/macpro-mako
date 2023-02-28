@@ -8,6 +8,7 @@ package:
 plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
+  - "@stratiformdigital/serverless-iam-helper"
 
 provider:
   name: aws
@@ -18,6 +19,10 @@ provider:
 
 custom:
   project: ${env:PROJECT}
+  iam:
+    role:
+      path: /delegatedadmin/developer/
+      permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
