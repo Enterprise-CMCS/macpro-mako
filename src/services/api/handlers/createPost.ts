@@ -1,8 +1,17 @@
 import { handler as h } from "../libs/handler";
 
-export const handler = h(async (event) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ post: {} }),
-  };
-});
+export const createPost = async (event) => {
+  try {
+    return {
+      statusCode: 201,
+      body: JSON.stringify({ post: {} }),
+    };
+  } catch (error) {
+    return {
+      statusCode: 404,
+      body: JSON.stringify({ message: error }),
+    };
+  }
+};
+
+export const handler = h(createPost);
