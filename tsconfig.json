@@ -1,9 +1,7 @@
 {
   "exclude": [
     "./docs/**/*",
-    "./src/services/**/*",
-    "./src/libs/**/*",
-    "build_run"
+    "./src/services/**/*"
   ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */

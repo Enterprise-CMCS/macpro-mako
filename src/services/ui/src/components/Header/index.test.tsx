@@ -1,3 +1,7 @@
+/**
+ * @vitest-environment jsdom
+ */
+
 import { Wrapper } from "../../utils/vitest/Wrapper";
 import { describe, expect, test } from "vitest";
 import { render, screen } from "@testing-library/react";
