@@ -22,6 +22,11 @@ describe("getPost", () => {
     const event = { pathParameters: { id: "123" } };
     const result = await getPost(event);
     expect(result.statusCode).toEqual(200);
-    expect(JSON.parse(result.body)).toEqual({ id: "123" });
+    expect(JSON.parse(result.body)).toEqual({
+      post: {
+        id: "123",
+        title: "My first post",
+      },
+    });
   });
 });

@@ -13,7 +13,7 @@ export const getPost = async ({ pathParameters }) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ post: { id, title: "My first post" } }),
     };
   } catch (error) {
     return {
