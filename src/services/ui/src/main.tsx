@@ -6,8 +6,6 @@ import { AppRouter } from "./Router";
 
 const client = new QueryClient();
 
-console.log(import.meta.env.VITE_APP_API_URL);
-
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={client}>
