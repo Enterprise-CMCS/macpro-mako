@@ -5,6 +5,6 @@ export const handler = h(async ({ pathParameters }) => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ id }),
+    body: JSON.stringify({ post: { id, title: "My first post" } }),
   };
 });
