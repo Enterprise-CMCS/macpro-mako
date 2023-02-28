@@ -23,6 +23,11 @@ custom:
     role:
       path: /delegatedadmin/developer/
       permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:*
+          Resource: "*"
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
