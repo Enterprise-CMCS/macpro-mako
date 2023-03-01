@@ -16,7 +16,7 @@ export const Home = () => {
     <Header
       headerLogo={
         <Link href="" title="Project Title">
-          <Logo altText="Project Logo" source={cmsLogo}/>
+          <Logo altText="Project Logo" source={cmsLogo} />
         </Link>
       }
       navData={[
@@ -73,7 +73,7 @@ export const Home = () => {
             ],
           ],
         },
-       {
+        {
           buttonText: "Section",
           columns: [
             [
@@ -109,36 +109,36 @@ export const Home = () => {
           ],
         },
       ]}
-          secondaryComponent={
-            <ActionsMenu
-              links={[
-                {
-                  href: "",
-                  iconName: "person",
-                  onClick: function noRefCheck() {},
-                  target: "_blank",
-                  text: "Manage Profile",
-                },
-                {
-                  href: "",
-                  iconName: "people",
-                  onClick: function noRefCheck() {},
-                  target: "_blank",
-                  text: "Request Role Change",
-                },
-                {
-                  href: "",
-                  iconName: "logout",
-                  onClick: function noRefCheck() {},
-                  target: "_blank",
-                  text: "Log Out",
-                },
-              ]}
-              name="My Account"
-            />
-          }
+      secondaryComponent={
+        <ActionsMenu
+          links={[
+            {
+              href: "",
+              iconName: "person",
+              onClick: function noRefCheck() {},
+              target: "_blank",
+              text: "Manage Profile",
+            },
+            {
+              href: "",
+              iconName: "people",
+              onClick: function noRefCheck() {},
+              target: "_blank",
+              text: "Request Role Change",
+            },
+            {
+              href: "",
+              iconName: "logout",
+              onClick: function noRefCheck() {},
+              target: "_blank",
+              text: "Log Out",
+            },
+          ]}
+          name="My Account"
         />
-      <Footer emailAddress="storybook-test@cms.hhs.gov" />
-    </>
-  );
+      }
+    />
+  <Footer emailAddress="storybook-test@cms.hhs.gov" />
+</>
+);
 };
