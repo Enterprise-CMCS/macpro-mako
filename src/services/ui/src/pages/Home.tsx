@@ -21,89 +21,89 @@ export const Home = () => {
       }
       navData={[
         {
-          buttonText: 'Current Section',
+          buttonText: "Current Section",
           columns: [
             [
               {
                 href: "",
-                text: 'Navigational Link',
+                text: "Navigational Link",
               },
               {
                 href: "",
-                text: 'Navigational Link',
+                text: "Navigational Link",
               },
               {
                 href: "",
-                text: 'Navigational Link',
+                text: "Navigational Link",
               },
               {
                 href: "",
-                text: 'Navigational Link',
+                text: "Navigational Link",
               }
             ],
             [
               {
                 href: "",
-                text: 'Navigational Link',
+                text: "Navigational Link",
               }
             ],
             [
               {
                 href: "",
-                text: 'Navigational Link',
+                text: "Navigational Link",
               },
               {
                 href: "",
-                text: 'Navigational Link',
+                text: "Navigational Link",
               },
               {
                 href: "",
-                text: 'Navigational Link',
+                text: "Navigational Link",
               }
             ],
             [
               {
                 href: "",
-                text: 'Navigational Link',
+                text: "Navigational Link",
               },
               {
                 href: "",
-                text: 'Navigational Link',
+                text: "Navigational Link",
               },
            ],
         ],
     },
     {
-      buttonText: 'Section',
+      buttonText: "Section",
       columns: [
         [
           {
             href: "",
-            text: 'Navigational Link',
+            text: "Navigational Link",
           },
           {
             href: "",
-            text: 'Navigational Link',
+            text: "Navigational Link",
           },
           {
             href: "",
-            text: 'Navigational Link',
+            text: "Navigational Link",
           },
           {
             href: "",
-            text: 'Navigational Link',
+            text: "Navigational Link",
           },
           {
             href: "",
-            text: 'Navigational Link',
+            text: "Navigational Link",
           },
           {
             href: "",
-            text: 'Navigational Link',
+            text: "Navigational Link",
           },
           {
             href: "",
-            text: 'Navigational Link',
+            text: "Navigational Link",
           }
         ]
       ]
