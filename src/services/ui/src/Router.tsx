@@ -6,7 +6,7 @@ import {
   Router,
 } from "@tanstack/react-location";
 import * as Page from "./pages";
-import { Header } from "./components/Header";
+import { Header } from "./components";
 import { useQueryClient } from "@tanstack/react-query";
 import { getPosts } from "./hooks/queries/useGetPosts";
 import { getPostById } from "./hooks/queries/useGetPostById";
