@@ -1,9 +1,11 @@
-import { ActionsMenu, Button, Header, Link, Logo, Footer } from "@enterprise-cmcs/macpro-ux-lib";
+import { ActionsMenu, Button, Header, Link, Logo, Footer, UsaBanner } from "@enterprise-cmcs/macpro-ux-lib";
+import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
+
 
 export const Home = () => {
   return <>
   <Header
-  headerLogo={<Link href="" title="Project Title"><Logo altText="Project Logo" source="static/media/cms_logo.765085cf.png"/></Link>}
+  headerLogo={<Link href="" title="Project Title"><Logo altText="Project Logo" source={cmsLogo}/></Link>}
   navData={[
     {
       buttonText: 'Current Section',
