@@ -72,8 +72,8 @@ export const Home = () => {
               },
            ],
         ],
-    },
-    {
+     },
+     {
       buttonText: "Section",
       columns: [
         [
@@ -133,12 +133,12 @@ export const Home = () => {
                target: "_blank",
                text: "Log Out"
              },
-           ]}
-           name="My Account"
-         />
-       }
-     />
-     <Footer emailAddress="storybook-test@cms.hhs.gov" />
-   </>
+            ]}
+            name="My Account"
+          />
+        }
+      />
+      <Footer emailAddress="storybook-test@cms.hhs.gov" />
+    </>
   );
 };
