@@ -70,45 +70,45 @@ export const Home = () => {
                 href: "",
                 text: "Navigational Link",
               },
-           ],
-        ],
-     },
-     {
-      buttonText: "Section",
-      columns: [
-        [
-          {
-            href: "",
-            text: "Navigational Link",
-          },
-          {
-            href: "",
-            text: "Navigational Link",
-          },
-          {
-            href: "",
-            text: "Navigational Link",
-          },
-          {
-            href: "",
-            text: "Navigational Link",
-          },
-          {
-            href: "",
-            text: "Navigational Link",
-          },
-          {
-            href: "",
-            text: "Navigational Link",
-          },
-          {
-            href: "",
-            text: "Navigational Link",
-          }
-        ]
-      ]
-    }
-  ]}
+            ],
+          ],
+        },
+       {
+          buttonText: "Section",
+          columns: [
+            [
+              {
+                href: "",
+                text: "Navigational Link",
+              },
+              {
+                href: "",
+                text: "Navigational Link",
+              },
+              {
+                href: "",
+                text: "Navigational Link",
+              },
+              {
+                href: "",
+                text: "Navigational Link",
+              },
+              {
+                href: "",
+                text: "Navigational Link",
+              },
+              {
+                href: "",
+                text: "Navigational Link",
+              },
+              {
+                href: "",
+                text: "Navigational Link",
+              },
+            ],
+          ],
+        },
+      ]}
           secondaryComponent={
             <ActionsMenu
               links={[
