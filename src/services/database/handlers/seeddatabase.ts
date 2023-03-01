@@ -23,9 +23,9 @@ import { send, SUCCESS, FAILED } from "cfn-response-async";
 exports.handler = async function (event, context) {
   console.log("Request:", JSON.stringify(event, undefined, 2));
   const responseData = {};
-  let responseStatus: any = SUCCESS;
+  let responseStatus:any = SUCCESS;
   try {
-    console.log("hello world");
+    console.log("lol");
   } catch (error) {
     console.error(error);
     responseStatus = FAILED;
