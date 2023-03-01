@@ -1,5 +1,11 @@
 {
   "name": "libs",
-  "dependencies": {},
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch": "^3.281.0",
+    "@aws-sdk/client-cloudwatch-logs": "^3.281.0",
+    "@aws-sdk/client-dynamodb": "^3.281.0",
+    "@aws-sdk/lib-dynamodb": "^3.281.0",
+    "@aws-sdk/util-dynamodb": "^3.281.0"
+  },
   "devDependencies": {}
 }
