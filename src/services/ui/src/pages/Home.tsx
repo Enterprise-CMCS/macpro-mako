@@ -39,7 +39,7 @@ export const Home = () => {
               {
                 href: "",
                 text: "Navigational Link",
-              }
+              },
             ],
             [
               {
@@ -59,7 +59,7 @@ export const Home = () => {
               {
                 href: "",
                 text: "Navigational Link",
-              }
+              },
             ],
             [
               {
