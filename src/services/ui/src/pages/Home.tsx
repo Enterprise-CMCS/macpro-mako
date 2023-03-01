@@ -109,36 +109,36 @@ export const Home = () => {
       ]
     }
   ]}
-           secondaryComponent={
-             <ActionsMenu
-               links={[
-                 {
-                   href: "",
-                   iconName: "person",
-                   onClick: function noRefCheck() {},
-                   target: "_blank",
-                   text: "Manage Profile",
-                 },
-                 {
-                   href: "",
-                   iconName: "people",
-                   onClick: function noRefCheck() {},
-                   target: "_blank",
-                   text: "Request Role Change",
-                 },
-                 {
-                   href: "",
-                   iconName: "logout",
-                   onClick: function noRefCheck() {},
-                   target: "_blank",
-                   text: "Log Out",
-                 },
-               ]}
-               name="My Account"
-             />
-           }
-         />
-         <Footer emailAddress="storybook-test@cms.hhs.gov" />
-       </>
-     );
-   };
+          secondaryComponent={
+            <ActionsMenu
+              links={[
+                {
+                  href: "",
+                  iconName: "person",
+                  onClick: function noRefCheck() {},
+                  target: "_blank",
+                  text: "Manage Profile",
+                },
+                {
+                  href: "",
+                  iconName: "people",
+                  onClick: function noRefCheck() {},
+                  target: "_blank",
+                  text: "Request Role Change",
+                },
+                {
+                  href: "",
+                  iconName: "logout",
+                  onClick: function noRefCheck() {},
+                  target: "_blank",
+                  text: "Log Out",
+                },
+              ]}
+              name="My Account"
+            />
+          }
+        />
+      <Footer emailAddress="storybook-test@cms.hhs.gov" />
+    </>
+  );
+};
