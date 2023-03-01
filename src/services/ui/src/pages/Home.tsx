@@ -8,8 +8,6 @@ import {
   UsaBanner,
 } from "@enterprise-cmcs/macpro-ux-lib";
 import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
-
-
 export const Home = () => {
   return (
     <>
