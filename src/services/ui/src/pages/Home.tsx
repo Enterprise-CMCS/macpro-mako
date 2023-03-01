@@ -45,7 +45,7 @@ export const Home = () => {
               {
                 href: "",
                 text: "Navigational Link",
-              }
+              },
             ],
             [
               {
