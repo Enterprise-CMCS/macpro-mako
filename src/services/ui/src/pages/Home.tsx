@@ -15,8 +15,8 @@ export const Home = () => {
     <>
     <Header
       headerLogo={
-      <Link href="" title="Project Title">
-        <Logo altText="Project Logo" source={cmsLogo}/>
+        <Link href="" title="Project Title">
+          <Logo altText="Project Logo" source={cmsLogo}/>
         </Link>
       }
       navData={[
@@ -29,45 +29,45 @@ export const Home = () => {
                 text: 'Navigational Link',
               },
               {
-                href: '',
+                href: "",
                 text: 'Navigational Link',
               },
               {
-                href: '',
+                href: "",
                 text: 'Navigational Link',
               },
               {
-                href: '',
+                href: "",
                 text: 'Navigational Link',
               }
             ],
             [
               {
-                href: '',
+                href: "",
                 text: 'Navigational Link',
               }
             ],
             [
               {
-                href: '',
+                href: "",
                 text: 'Navigational Link',
               },
               {
-                href: '',
+                href: "",
                 text: 'Navigational Link',
               },
               {
-                href: '',
+                href: "",
                 text: 'Navigational Link',
               }
             ],
             [
               {
-                href: '',
+                href: "",
                 text: 'Navigational Link',
               },
               {
-                href: '',
+                href: "",
                 text: 'Navigational Link',
               },
            ],
