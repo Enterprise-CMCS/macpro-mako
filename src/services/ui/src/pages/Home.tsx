@@ -26,48 +26,6 @@ export const Home = () => {
                   href: "",
                   text: "Navigational Link",
                 },
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-              ],
-              [
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-              ],
-              [
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-              ],
-              [
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
               ],
             ],
           },
@@ -75,30 +33,6 @@ export const Home = () => {
             buttonText: "Section",
             columns: [
               [
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
-                {
-                  href: "",
-                  text: "Navigational Link",
-                },
                 {
                   href: "",
                   text: "Navigational Link",
@@ -136,7 +70,8 @@ export const Home = () => {
           />
         }
       />
-      <Footer emailAddress="storybook-test@cms.hhs.gov" />
+      <UsaBanner locale="en" />
+      <Footer emailAddress="QPP@cms.hhs.gov" />
     </>
   );
 };
