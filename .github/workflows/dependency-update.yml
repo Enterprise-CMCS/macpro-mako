@@ -20,6 +20,7 @@ jobs:
           ssh-key: ${{ secrets.DEPLOY_KEY }}
           fetch-depth: 0
 
+      # We deliberately do not use the setup action, as we do not want node caching here.
       - name: Configure direnv
         uses: HatsuneMiku3939/direnv-action@v1
 
