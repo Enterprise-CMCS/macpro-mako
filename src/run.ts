@@ -157,36 +157,6 @@ yargs(process.argv.slice(2))
     }
   )
   .command(
-    "deleteTopics",
-    "Deletes topics from Bigmac which were created by development/ephemeral branches.",
-    {
-      stage: { type: "string", demandOption: true },
-      // verify: { type: "boolean", demandOption: false, default: true },
-    },
-    async (options) => {
-      await install_deps_for_services();
-      await refreshOutputs("master");
-      await runner.run_command_and_output(
-        `Delete Topics`,
-        [
-          "sls",
-          "topics",
-          "invoke",
-          "--stage",
-          "master",
-          "--function",
-          "deleteTopics",
-          "--data",
-          JSON.stringify({
-            project: process.env.PROJECT,
-            stage: options.stage,
-          }),
-        ],
-        "."
-      );
-    }
-  )
-  .command(
     "docs",
     "Starts the Jekyll documentation site in a docker container, available on http://localhost:4000.",
     {
@@ -228,7 +198,7 @@ yargs(process.argv.slice(2))
   )
   .command(
     "base-update",
-    "this will upgrade your code to the latest version of the base template",
+    "this will update your code to the latest version of the base template",
     {},
     async () => {
       const addRemoteCommand = [
@@ -240,16 +210,20 @@ yargs(process.argv.slice(2))
       ];
 
       await runner.run_command_and_output(
-        "Upgrade from Base | adding remote",
+        "Update from Base | adding remote",
         addRemoteCommand,
         ".",
-        true
+        true,
+        {
+          stderr: true,
+          close: true,
+        }
       );
 
       const fetchBaseCommand = ["git", "fetch", "base"];
 
       await runner.run_command_and_output(
-        "Upgrade from Base | fetching base template",
+        "Update from Base | fetching base template",
         fetchBaseCommand,
         "."
       );
@@ -257,7 +231,7 @@ yargs(process.argv.slice(2))
       const mergeCommand = ["git", "merge", "base/production", "--no-ff"];
 
       await runner.run_command_and_output(
-        "Upgrade from Base | merging code from base template",
+        "Update from Base | merging code from base template",
         mergeCommand,
         ".",
         true
