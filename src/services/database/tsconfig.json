@@ -1,1 +1,8 @@
-{}
+{
+  "exclude": [
+    "./docs/**/*",
+    "./src/services/**/*",
+    "./src/libs/**/*",
+    "./src/tests/**/**"
+  ]
+}
