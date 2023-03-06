@@ -16,6 +16,14 @@ provider:
     PROJECT: ${self:custom.project}
     SERVICE: ${self:service}
 
+params:
+  production:
+    claimFilter: environment:production
+  val:
+    claimFilter: environment:val
+  default:
+    claimFilter: "*"
+
 custom:
   project: ${env:PROJECT}
   serverlessTerminationProtection:
