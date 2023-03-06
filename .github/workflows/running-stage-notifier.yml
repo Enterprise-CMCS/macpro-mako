@@ -2,7 +2,7 @@ name: Running Stage Notifier
 
 on:
   schedule:
-    - cron: "30 15,21 * * *"
+    - cron: "30 21 * * 1-5"
   workflow_dispatch:
 
 jobs:
@@ -18,19 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Configure direnv
-        uses: HatsuneMiku3939/direnv-action@v1
-
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: .nvmrc
-
-      - name: Node cache
-        uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ github.workflow }}-${{ github.job }}-${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -55,7 +43,7 @@ jobs:
           SLACK_TITLE: Currently Running Stages
           SLACK_MESSAGE: ${{ steps.runningStages.outputs.runningStages }}
           SLACK_USERNAME: ${{ github.repository }} - ${{ github.workflow }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           MSG_MINIMAL: true
 
       - name: Slack Notification - notify of failure reporting on running stages
@@ -68,5 +56,5 @@ jobs:
           SLACK_TITLE: Failure retrieving currently running stages
           SLACK_MESSAGE: Failure retrieving currently running stages
           SLACK_USERNAME: ${{ github.repository }} - ${{ github.workflow }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           MSG_MINIMAL: true
