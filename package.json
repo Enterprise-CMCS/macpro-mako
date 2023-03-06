@@ -9,7 +9,9 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest --config ./src/vitest.config.ts",
+    "test-ci": "vitest run --config ./src/vitest.config.ts",
+    "test-gui": "vitest --ui"
   },
   "repository": {
     "type": "git",
@@ -27,16 +29,23 @@
     "@stratiformdigital/serverless-online": "^3.1.0",
     "@stratiformdigital/serverless-s3-security-helper": "^4.0.0",
     "@stratiformdigital/serverless-stage-destroyer": "^2.0.0",
+    "@testing-library/react": "^14.0.0",
+    "@vitejs/plugin-react": "^3.1.0",
+    "@vitest/ui": "^0.26.2",
+    "aws-sdk-client-mock": "^2.0.1",
     "prettier": "2.7.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "semantic-release": "^19.0.5",
     "serverless": "^3.17.0",
     "serverless-bundle": "^6.0.0",
     "serverless-disable-functions": "^1.0.0",
     "serverless-plugin-scripts": "^1.0.2",
+    "serverless-plugin-typescript": "^2.1.4",
     "serverless-plugin-warmup": "^7.1.0",
-    "serverless-stack-termination-protection": "^2.0.2"
+    "serverless-stack-termination-protection": "^2.0.2",
+    "vitest": "^0.26.2"
   },
-  "dependencies": {},
   "release": {
     "branches": [
       "production"
