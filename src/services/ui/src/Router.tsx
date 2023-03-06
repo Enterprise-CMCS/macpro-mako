@@ -6,7 +6,7 @@ import {
   Router,
 } from "@tanstack/react-location";
 import * as Page from "./pages";
-import { Header } from "./components";
+import { MainWrapper } from "./components";
 import { useQueryClient } from "@tanstack/react-query";
 import { getPosts } from "./hooks/queries/useGetPosts";
 import { getPostById } from "./hooks/queries/useGetPostById";
@@ -30,7 +30,7 @@ export const AppRouter = () => {
       children: [
         {
           path: "/",
-          element: <h1>Select a post</h1>,
+          element: <p>Posts page content</p>,
         },
         {
           path: ":postId",
@@ -48,8 +48,9 @@ export const AppRouter = () => {
   return (
     <>
       <Router location={location} routes={routes}>
-        <Header />
-        <Outlet />
+        <MainWrapper>
+          <Outlet />
+        </MainWrapper>
       </Router>
     </>
   );
