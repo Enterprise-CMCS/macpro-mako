@@ -1,8 +1,7 @@
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
-import { ReactFragment } from "react";
 
-export const MainWrapper = ({ children }: { children: ReactFragment }) => {
+export const MainWrapper = ({ children }: { children: JSX.Element }) => {
   return (
     <div
       style={{
