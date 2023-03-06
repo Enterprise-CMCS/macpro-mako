@@ -11,11 +11,6 @@ provider:
     role:
       path: /delegatedadmin/developer/
       permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
-      statements:
-        - Effect: Allow
-          Action:
-            - cloudwatch:*
-          Resource: "*"
 
 plugins:
   - serverless-plugin-scripts
