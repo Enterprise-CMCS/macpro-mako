@@ -24,6 +24,11 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
+"@enterprise-cmcs/macpro-ux-lib@^1.22.1":
+  version "1.22.1"
+  resolved "https://registry.yarnpkg.com/@enterprise-cmcs/macpro-ux-lib/-/macpro-ux-lib-1.22.1.tgz#6c161ae68f02e3d867bce6bef1ef0dbae1853d2c"
+  integrity sha512-n+vfS/2GsFaZy5XeO4jww+pZkz8obeUZzlyi71zcfPjszz5kr5YwZJQphGj6ks4A3CDUg5uKKQAxKo0b3JM5Wg==
+
 "@esbuild/android-arm64@0.16.17":
   version "0.16.17"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm64/-/android-arm64-0.16.17.tgz#cf91e86df127aa3d141744edafcba0abdc577d23"
