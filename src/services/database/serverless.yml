@@ -36,7 +36,7 @@ custom:
       - master
       - val
       - production
-  tableName: ${self:custom.project}-${self:service}-${sls:stage}-table
+  tableName: ${self:custom.project}-${self:service}-${sls:stage}
 
 parameters:
   fileHash:
