@@ -9,6 +9,7 @@ plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@stratiformdigital/serverless-iam-helper"
+  - serverless-bundle
 
 provider:
   name: aws
