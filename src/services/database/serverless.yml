@@ -9,7 +9,6 @@ plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@stratiformdigital/serverless-iam-helper"
-  - serverless-bundle
 
 provider:
   name: aws
@@ -30,45 +29,27 @@ provider:
 
 custom:
   project: ${env:PROJECT}
+  fileHash: ${file(./handlers/seeddatabase.ts)}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
       - val
       - production
   tableName: ${self:custom.project}-${self:service}-${sls:stage}-table
+
+parameters:
+  fileHash:
+    Type: String
+    Default: ""
+
 functions:
   seeddatabase:
     handler: handlers/seeddatabase.handler
+    environment:
+      FILE_HASH: ${self:custom.fileHash}
 
 resources:
   Resources:
-    # LambdaRole:
-    #   Type: AWS::IAM::Role
-    #   Properties:
-    #     AssumeRolePolicyDocument:
-    #       Version: "2012-10-17"
-    #       Statement:
-    #         - Effect: Allow
-    #           Principal:
-    #             Service:
-    #               - lambda.amazonaws.com
-    #           Action:
-    #             - sts:AssumeRole
-    #     Path: /delegatedadmin/developer/
-    #     PermissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
-    #     Policies:
-    #       - PolicyName: dynamodbAccessRole
-    #         PolicyDocument:
-    #           Version: "2012-10-17"
-    #           Statement:
-    #             - Effect: Allow
-    #               Action:
-    #                 - dynamodb:*
-    #               Resource: "*"
-    #             - Effect: Allow
-    #               Action:git
-    #                 - logs:*
-    #               Resource: "*"
     Table:
       Type: AWS::DynamoDB::Table
       Properties:

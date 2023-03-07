@@ -1,5 +1,6 @@
 import { send, SUCCESS, FAILED } from "cfn-response-async";
 import { putItem } from "../../../libs";
+import { items } from "../items";
 
 exports.handler = async function (event, context) {
   console.log("Request:", JSON.stringify(event, undefined, 2));
@@ -9,9 +10,7 @@ exports.handler = async function (event, context) {
     console.log("lol");
     await putItem({
       tableName: event.ResourceProperties.DynamoTableName,
-      item: {
-        id: "mikewashere",
-      },
+      item: items,
     });
   } catch (error) {
     console.error(error);

@@ -23,6 +23,7 @@ plugins:
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@enterprise-cmcs/serverless-waf-plugin"
+  - serverless-cloudfront-distribution-certificate
 
 custom:
   project: ${env:PROJECT}
@@ -45,6 +46,12 @@ custom:
     skipPolicyCreation:
       - S3Bucket
       - LoggingBucket
+  cfdDomain:
+    domainNames:
+      - !GetAtt CloudFrontDistribution.DomainName
+    cloudFront: CloudFrontDistribution
+    retries: 15
+    minimumProtocolVersion: TLSv1.2_2018
   scripts:
     hooks:
       # Associate the WAF ACL with the Firehose Delivery Stream
