@@ -45,8 +45,6 @@ parameters:
 functions:
   seeddatabase:
     handler: handlers/seeddatabase.handler
-    environment:
-      FILE_HASH: ${self:custom.fileHash}
 
 resources:
   Resources:
@@ -71,3 +69,4 @@ resources:
           Fn::GetAtt: [SeeddatabaseLambdaFunction, "Arn"]
         DynamoTableName:
           Ref: Table
+        FILE_HASH: ${self:custom.fileHash}

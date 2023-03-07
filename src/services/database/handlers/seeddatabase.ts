@@ -16,6 +16,6 @@ exports.handler = async function (event, context) {
     console.error(error);
     responseStatus = FAILED;
   } finally {
-    await send(event, context, responseStatus, responseData, "static1");
+    await send(event, context, responseStatus, responseData, "static");
   }
 };
