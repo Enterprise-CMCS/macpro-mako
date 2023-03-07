@@ -29,7 +29,7 @@ provider:
 
 custom:
   project: ${env:PROJECT}
-  fileHash: ${file(./handlers/seeddatabase.ts)}
+  fileHash: ${file(./items.ts)}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
