@@ -8,9 +8,6 @@ on:
         description: "Name of the environment to destroy:"
         required: true
 
-concurrency:
-  group: ${{ inputs.environment || github.event.ref }}-group
-
 jobs:
   destroy:
     if: |
@@ -35,13 +32,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Configure direnv
-        uses: HatsuneMiku3939/direnv-action@v1
-
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: .nvmrc
+      - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1-node16

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { instance } from "../../lib/axios";
 
 export type Post = {
   id: number;
@@ -9,7 +9,7 @@ export type Post = {
 };
 
 export const getPosts = async () => {
-  return axios.get<Post[]>("https://jsonplaceholder.typicode.com/posts");
+  return instance.get("/posts");
 };
 
 export const useGetPosts = () =>

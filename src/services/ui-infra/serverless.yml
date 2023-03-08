@@ -7,15 +7,13 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
   iam:
     role:
       path: /delegatedadmin/developer/
       permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
-      statements:
-        - Effect: Allow
-          Action:
-            - cloudwatch:*
-          Resource: "*"
 
 plugins:
   - serverless-plugin-scripts

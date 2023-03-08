@@ -5,15 +5,18 @@ services:
     path: src/services/dashboard
   database:
     path: src/services/database
+  api:
+    path: src/services/api
   ui-infra:
     path: src/services/ui-infra
   ui:
     path: src/services/ui
-    dependsOn: ui-infra
     params:
       CloudfrontDistributionId: ${ui-infra.CloudFrontDistributionId}
       S3BucketName: ${ui-infra.S3BucketName}
       ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
+      ApiRegion: ${api.Region}
+      ApiUrl: ${api.ApiGatewayRestApiUrl}
     # params: # params will be added once other services are
     #   ecsFailureTopicArn: ${alerts.ECSFailureTopicArn}
     #   mskClusterArn: ${bigmac.MskClusterArn}

@@ -13,6 +13,9 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
 
 custom:
   project: ${env:PROJECT}
@@ -35,4 +38,8 @@ custom:
     hooks:
       package:initialize: |
         set -e
-        SKIP_PREFLIGHT_CHECK=true yarn run build
+        echo """
+        VITE_APP_API_REGION=${param:ApiRegion}
+        VITE_APP_API_URL=${param:ApiUrl}
+        """ > .env.local
+        yarn run build
