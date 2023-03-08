@@ -4,5 +4,11 @@
     "./src/services/**/*",
     "./src/libs/**/*",
     "./src/tests/**/**"
-  ]
+  ],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true
+  }
 }

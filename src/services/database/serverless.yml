@@ -40,7 +40,7 @@ custom:
       - master
       - val
       - production
-  tableName: ${self:custom.project}-${self:service}-${sls:stage}
+  tableName: ${self:service}-${sls:stage}
 
 parameters:
   fileHash:
@@ -58,11 +58,15 @@ resources:
       Properties:
         TableName: ${self:custom.tableName}
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: name
             AttributeType: S
+          - AttributeName: age
+            AttributeType: N
         KeySchema:
-          - AttributeName: id
+          - AttributeName: name
             KeyType: HASH
+          - AttributeName: age
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
