@@ -3,9 +3,7 @@ import {
   PutItemCommand,
   GetItemCommand,
   GetItemCommandInput,
-  ScanCommand,
 } from "@aws-sdk/client-dynamodb";
-import { sendMetricData } from "./cloudwatch-lib";
 import {
   marshall,
   unmarshall,
@@ -41,15 +39,6 @@ export async function putItem({
     return result;
   } catch (error) {
     console.error("ERROR updating record in dynamodb: ", error);
-    await sendMetricData({
-      Namespace: process.env.namespace,
-      MetricData: [
-        {
-          MetricName: `${tableName}_dynamo_updates`,
-          Value: 1,
-        },
-      ],
-    });
     return;
   }
 }
