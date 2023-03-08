@@ -38,17 +38,6 @@ export async function putItem({
         `Record processed for item: ${item.id}:`,
         JSON.stringify(result, null, 2)
       );
-
-    await sendMetricData({
-      Namespace: process.env.namespace,
-      MetricData: [
-        {
-          MetricName: `${tableName}_dynamo_updates`,
-          Value: 0,
-        },
-      ],
-    });
-
     return result;
   } catch (error) {
     console.error("ERROR updating record in dynamodb: ", error);
