@@ -34,7 +34,7 @@ provider:
 
 custom:
   project: ${env:PROJECT}
-  fileHash: ${file(./items.ts)}
+  fileHash: ${file(./items.json)}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
