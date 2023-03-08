@@ -7,11 +7,13 @@ exports.handler = async function (event, context) {
   const responseData = {};
   let responseStatus: any = SUCCESS;
   try {
-    console.log("lol");
-    await putItem({
-      tableName: event.ResourceProperties.DynamoTableName,
-      item: items,
-    });
+    for (let i = 0; i < items.length; i++) {
+      console.log(items[i].id);
+      await putItem({
+        tableName: event.ResourceProperties.DynamoTableName,
+        item: items[i],
+      });
+    }
   } catch (error) {
     console.error(error);
     responseStatus = FAILED;
