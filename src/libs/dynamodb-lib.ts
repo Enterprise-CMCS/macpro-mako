@@ -63,23 +63,21 @@ export async function putItem({
 
 export async function getItem({
   tableName,
-  id,
+  key,
 }: {
-  tableName: string | undefined;
-  id: string;
+  tableName: string;
+  key: {
+      [key: string]: NativeAttributeValue;
+    };
 }) {
-  const item = (
-    await client.send(
-      new GetItemCommand({
-        TableName: tableName,
-        Key: {
-          id: {
-            S: id,
-          },
-        },
-      })
-    )
-  ).Item;
+
+const getItemCommandInput: GetItemCommandInput = {
+    TableName: tableName,
+    Key: marshall(key),
+  };
+  
+  const item = (await client.send(new GetItemCommand(getItemCommandInput)))
+    .Item;
   if (!item) return null;
 
   /* Converting the DynamoDB record to a JavaScript object. */
