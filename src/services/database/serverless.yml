@@ -21,12 +21,13 @@ provider:
       statements:
         - Effect: Allow
           Action:
-            - logs:CreateLogGroup,
-            - logs:CreateLogStream,
-            - logs:PutLogEvents,
-            - dynamodb:PutItem,
-            - dynamodb:UpdateItem,
-            - dynamodb:DeleteItem"
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:BatchWrite*
           Resource: "*"
   stackTags:
     PROJECT: ${self:custom.project}
