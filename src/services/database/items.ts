@@ -1,5 +1,3 @@
-export const items = [
-  {
-    id: "Mikewashere",
-  },
-];
+export const items = {
+  id: "Mikewashere",
+};
