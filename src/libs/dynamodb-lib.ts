@@ -2,11 +2,15 @@ import {
   DynamoDBClient,
   PutItemCommand,
   GetItemCommand,
+  GetItemCommandInput,
   ScanCommand,
 } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { sendMetricData } from "./cloudwatch-lib";
-import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
+import {
+  marshall,
+  unmarshall,
+  NativeAttributeValue,
+} from "@aws-sdk/util-dynamodb";
 
 const client = new DynamoDBClient({ region: process.env.region });
 
@@ -15,7 +19,7 @@ export async function putItem({
   item,
 }: {
   tableName: string;
-  item: { [key: string]: any };
+  item: { [key: string]: NativeAttributeValue };
 }) {
   const params = {
     TableName: tableName,
@@ -67,15 +71,14 @@ export async function getItem({
 }: {
   tableName: string;
   key: {
-      [key: string]: NativeAttributeValue;
-    };
+    [key: string]: NativeAttributeValue;
+  };
 }) {
-
-const getItemCommandInput: GetItemCommandInput = {
+  const getItemCommandInput: GetItemCommandInput = {
     TableName: tableName,
     Key: marshall(key),
   };
-  
+
   const item = (await client.send(new GetItemCommand(getItemCommandInput)))
     .Item;
   if (!item) return null;
@@ -83,27 +86,3 @@ const getItemCommandInput: GetItemCommandInput = {
   /* Converting the DynamoDB record to a JavaScript object. */
   return unmarshall(item);
 }
-
-const marshallOptions = {
-  convertEmptyValues: true, // false, by default.
-  removeUndefinedValues: true, // false, by default.
-};
-
-// Create the DynamoDB document client.
-const ddbDocClient = DynamoDBDocumentClient.from(client, {
-  marshallOptions,
-});
-
-export const scanTable = async (tableName: string) => {
-  const params = {
-    TableName: tableName,
-  };
-  try {
-    const raw = await ddbDocClient.send(new ScanCommand(params));
-    const data = raw.Items?.map(unmarshall as any);
-    return data;
-  } catch (err) {
-    console.log("Error", err);
-    return;
-  }
-};
