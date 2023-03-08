@@ -34,17 +34,6 @@ export async function putItem({
         `Record processed for item: ${item.id}:`,
         JSON.stringify(result, null, 2)
       );
-
-    await sendMetricData({
-      Namespace: process.env.namespace,
-      MetricData: [
-        {
-          MetricName: `${tableName}_dynamo_updates`,
-          Value: 0,
-        },
-      ],
-    });
-
     return result;
   } catch (error) {
     console.error("ERROR updating record in dynamodb: ", error);
@@ -67,15 +56,14 @@ export async function getItem({
 }: {
   tableName: string;
   key: {
-      [key: string]: NativeAttributeValue;
-    };
+    [key: string]: NativeAttributeValue;
+  };
 }) {
-
-const getItemCommandInput: GetItemCommandInput = {
+  const getItemCommandInput: GetItemCommandInput = {
     TableName: tableName,
     Key: marshall(key),
   };
-  
+
   const item = (await client.send(new GetItemCommand(getItemCommandInput)))
     .Item;
   if (!item) return null;
