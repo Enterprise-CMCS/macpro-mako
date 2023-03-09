@@ -27,13 +27,14 @@ export async function putItem({
   };
 
   try {
-    if (item && item.id) console.log(`Putting item with id: ${item.id}:`);
+    if (item && item.recordId)
+      console.log(`Putting item with id: ${item.recordId}:`);
 
     const command = new PutItemCommand(params);
     const result = await client.send(command);
-    if (item && item.id)
+    if (item && item.recordId)
       console.log(
-        `Record processed for item: ${item.id}:`,
+        `Record processed for item: ${item.recordId}:`,
         JSON.stringify(result, null, 2)
       );
     return result;
