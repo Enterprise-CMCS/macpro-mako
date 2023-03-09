@@ -27,8 +27,11 @@ provider:
             - dynamodb:PutItem
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
+            - dynamodb:Get*
             - dynamodb:BatchWrite*
-          Resource: "*"
+            - dynamodb:BatchGet*
+          Resource: "arn:aws:dynamodb:*:*:table/${self:custom.tableName}"
+
   stackTags:
     PROJECT: ${self:custom.project}
     SERVICE: ${self:service}
