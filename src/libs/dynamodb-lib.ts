@@ -34,7 +34,7 @@ export async function putItem({
     const result = await client.send(command);
     if (result)
       console.log(
-        `Record processed for result:`,
+        `Record processed for item: ${item.recordId}:`,
         JSON.stringify(result, null, 2)
       );
     return result;
