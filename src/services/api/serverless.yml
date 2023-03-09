@@ -10,8 +10,8 @@ plugins:
 provider:
   name: aws
   runtime: nodejs18.x
-  logs:
-    restApi: true
+  # logs:
+  #   restApi: true
   region: ${env:REGION_A}
   stackTags:
     PROJECT: ${self:custom.project}
