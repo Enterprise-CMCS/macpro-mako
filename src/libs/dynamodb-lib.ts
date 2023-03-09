@@ -31,9 +31,9 @@ export async function putItem({
 
     const command = new PutItemCommand(params);
     const result = await client.send(command);
-    if (item && item.id)
+    if (result)
       console.log(
-        `Record processed for item: ${item.id}:`,
+        `Record processed for result:`,
         JSON.stringify(result, null, 2)
       );
     return result;
