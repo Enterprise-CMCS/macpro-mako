@@ -23,10 +23,14 @@ export const handler = async (
   return () => response;
 };
 
-export const response = (
-  currentResponse: APIGatewayProxyResult,
+export function response<T = { [key: string | number]: any }>(
+  currentResponse: {
+    statusCode?: number;
+    body?: T;
+    headers?: { [key: string]: string };
+  },
   options?: { disableCors?: boolean }
-) => {
+) {
   const corsHeaders = {
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Origin": "*",
@@ -35,9 +39,10 @@ export const response = (
 
   return {
     ...currentResponse,
+    body: JSON.stringify(currentResponse?.body ?? {}),
     headers: {
-      ...currentResponse.headers,
       ...(options?.disableCors ? {} : corsHeaders),
+      ...currentResponse.headers,
     },
   };
-};
+}

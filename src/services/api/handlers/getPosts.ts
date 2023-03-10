@@ -1,10 +1,20 @@
 import { response } from "../libs/handler";
 
+type ExamplePostType = {
+  id: string;
+  description: string;
+};
+
 export const getPosts = async () => {
   try {
-    return response({
+    return response<ExamplePostType[]>({
       statusCode: 200,
-      body: JSON.stringify([]),
+      body: [
+        {
+          id: "1",
+          description: "Post 1",
+        },
+      ],
     });
   } catch (error) {
     return response({
