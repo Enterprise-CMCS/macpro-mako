@@ -1,6 +1,6 @@
 import { handler as h } from "../libs/handler";
 
-export const createPost = async (event) => {
+export const createPost = async () => {
   try {
     return {
       statusCode: 201,
