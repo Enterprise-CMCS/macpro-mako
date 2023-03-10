@@ -14,4 +14,4 @@ export const getPosts = async () => {
   }
 };
 
-export const handler = getPosts;
+export const handler = h(getPosts);

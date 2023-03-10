@@ -20,7 +20,7 @@ export const handler = async (
     },
     ...handlerResponse,
   };
-  return response;
+  return () => response;
 };
 
 export const withCors = (currentResponse: APIGatewayProxyResult) => ({
