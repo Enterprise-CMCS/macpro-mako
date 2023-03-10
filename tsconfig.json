@@ -1,5 +1,5 @@
 {
-  "exclude": ["./docs/**/*", "./src/services/**/*"],
+  "exclude": ["./docs/**/*", "./src/services/**/*", "./src/libs/**/*"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
