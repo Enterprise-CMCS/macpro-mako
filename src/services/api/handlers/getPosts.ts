@@ -1,17 +1,17 @@
-import { handler as h, withCors } from "../libs/handler";
+import { response } from "../libs/handler";
 
 export const getPosts = async () => {
   try {
-    return withCors({
+    return response({
       statusCode: 200,
       body: JSON.stringify([]),
     });
   } catch (error) {
-    return withCors({
+    return response({
       statusCode: 404,
       body: JSON.stringify({ message: "Posts not found" }),
     });
   }
 };
 
-export const handler = h(getPosts);
+export const handler = getPosts;
