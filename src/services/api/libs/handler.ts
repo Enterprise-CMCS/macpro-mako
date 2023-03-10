@@ -22,3 +22,13 @@ export const handler = async (
   };
   return response;
 };
+
+export const withCors = (currentResponse: APIGatewayProxyResult) => ({
+  ...currentResponse,
+  headers: {
+    ...currentResponse.headers,
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,DELETE",
+  },
+});
