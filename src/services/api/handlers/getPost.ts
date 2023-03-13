@@ -1,26 +1,26 @@
-import { handler as h } from "../libs/handler";
+import { response } from "../libs/handler";
 
 export const getPost = async ({ pathParameters }) => {
   try {
     const { id } = pathParameters;
 
     if (!id) {
-      return {
+      return response({
         statusCode: 400,
-        body: JSON.stringify({ message: "Invalid request" }),
-      };
+        body: { message: "Invalid request" },
+      });
     }
 
-    return {
+    return response({
       statusCode: 200,
-      body: JSON.stringify({ post: { id, title: "My first post" } }),
-    };
+      body: { post: { id, title: "My first post" } },
+    });
   } catch (error) {
-    return {
+    return response({
       statusCode: 404,
-      body: JSON.stringify({ message: "Post not found" }),
-    };
+      body: { message: "Post not found" },
+    });
   }
 };
 
-export const handler = h(getPost);
+export const handler = getPost;

@@ -1,4 +1,4 @@
-import { handler as h } from "../libs/handler";
+import { response } from "../libs/handler";
 import { Post } from "../types/Post";
 
 export const updatePost = async ({ pathParameters, body }) => {
@@ -6,24 +6,24 @@ export const updatePost = async ({ pathParameters, body }) => {
     const { id } = pathParameters;
 
     if (!body || Object.keys(body).length === 0) {
-      return {
+      return response({
         statusCode: 400,
-        body: JSON.stringify({ message: "Invalid request" }),
-      };
+        body: { message: "Invalid request" },
+      });
     }
 
     // await updatePostById(id, post);
 
-    return {
+    return response({
       statusCode: 200,
-      body: JSON.stringify({ message: `Post with ${id} was updated` }),
-    };
+      body: { message: `Post with ${id} was updated` },
+    });
   } catch (error) {
-    return {
+    return response({
       statusCode: 500,
-      body: JSON.stringify({ message: "Internal server error" }),
-    };
+      body: { message: "Internal server error" },
+    });
   }
 };
 
-export const handler = h(updatePost);
+export const handler = updatePost;

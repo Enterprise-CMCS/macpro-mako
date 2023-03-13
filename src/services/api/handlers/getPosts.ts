@@ -14,7 +14,7 @@ export const getPosts = async () => {
   } catch (error) {
     return response({
       statusCode: 404,
-      body: JSON.stringify({ message: "Posts not found" }),
+      body: { message: "Posts not found" },
     });
   }
 };
