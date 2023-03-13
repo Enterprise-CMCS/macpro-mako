@@ -9,12 +9,7 @@ export const getPosts = async () => {
   try {
     return response<ExamplePostType[]>({
       statusCode: 200,
-      body: [
-        {
-          id: "1",
-          description: "Post 1",
-        },
-      ],
+      body: [],
     });
   } catch (error) {
     return response({
