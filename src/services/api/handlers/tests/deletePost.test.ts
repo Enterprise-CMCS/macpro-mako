@@ -3,7 +3,18 @@ import { deletePost } from "../deletePost";
 
 vi.mock("../../libs/handler", () => {
   return {
-    handler: vi.fn(),
+    response: vi.fn(
+      ({
+        statusCode,
+        body,
+      }: {
+        statusCode: number;
+        body: { [key: string]: any };
+      }) => ({
+        statusCode,
+        body: JSON.stringify(body),
+      })
+    ),
   };
 });
 

@@ -1,12 +1,6 @@
 import { it, describe, expect, vi, afterAll } from "vitest";
 import { getPost } from "../getPost";
 
-vi.mock("../../libs/handler", () => {
-  return {
-    handler: vi.fn(),
-  };
-});
-
 describe("getPost", () => {
   afterAll(() => {
     vi.resetAllMocks();

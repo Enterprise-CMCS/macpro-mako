@@ -2,12 +2,6 @@ import { it, describe, expect, vi, afterAll } from "vitest";
 import type { APIGatewayEvent } from "aws-lambda";
 import { createPost } from "../createPost";
 
-vi.mock("../../libs/handler", () => {
-  return {
-    handler: vi.fn(),
-  };
-});
-
 const mockEvent: APIGatewayEvent = {} as APIGatewayEvent;
 
 describe("creatPost", () => {
