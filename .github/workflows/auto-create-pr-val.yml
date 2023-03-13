@@ -1,0 +1,22 @@
+name: Create Release PR - val
+
+on:
+  push:
+    branches: master
+
+jobs:
+  pull-request:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: val
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: Release to val
+          pr_body: |
+            Release to val.
+
+            #### Please **create a merge commit**

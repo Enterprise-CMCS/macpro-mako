@@ -1,5 +1,8 @@
 {
   "name": "libs",
-  "dependencies": {},
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.281.0",
+    "@aws-sdk/util-dynamodb": "^3.281.0"
+  },
   "devDependencies": {}
 }

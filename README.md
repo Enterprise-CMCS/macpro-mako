@@ -2,8 +2,8 @@
 ### Please visit our [docs site](https://enterprise-cmcs.github.io/macpro-om-template/) for complete documentation.
 ---
 
-<h1 align="center" style="border-bottom: none;">macpro-base-template</h1>
-<h3 align="center">A serverless monorepo accelerator tailored for use at Centers for Medicare & Medicaid Services (CMS).</h3>
+<h1 align="center" style="border-bottom: none;">macpro-om-template</h1>
+<h3 align="center">A new project by the MACPRO Platform Team; description TBD.</h3>
 <p align="center">
   <a href="https://enterprise-cmcs.github.io/macpro-om-template/">
     <img alt="Docs" src="https://img.shields.io/badge/Docs-site-blue.svg">
