@@ -10,3 +10,4 @@ yarn-error.log
 .yarn_install
 tsconfig.tsbuildinfo
 build_run
+.build

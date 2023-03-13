@@ -1,0 +1,12 @@
+{
+  "name": "database",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "",
+  "license": "CC0-1.0",
+  "devDependencies": {},
+  "dependencies": {
+    "cfn-response-async": "^1.0.0"
+  }
+}

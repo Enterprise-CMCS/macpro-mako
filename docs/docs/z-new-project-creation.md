@@ -19,6 +19,20 @@ This SOP is suited for anyone involved with project creation. Parts will be non 
 1. Create a new Slack channel for the project.
 1. Bootstrap the new project with the base template.
 
+## Video Walkthrough
+
+A video walkthrough of this new project creation procedure is provided, to accompany the docs.  It's our longest video walkthrough, so it's cut into 12 minute parts:
+
+[Part 1 - New Project Setup](https://user-images.githubusercontent.com/48921055/215788850-de1fc49a-18c2-419e-af74-da35816a4a03.mp4){:target="_blank"}
+
+[Part 2 - New Project Setup](https://user-images.githubusercontent.com/48921055/215788887-2fae5af6-eb89-40ff-87ba-314a96d06b06.mp4){:target="_blank"}
+
+[Part 3 - New Project Setup](https://user-images.githubusercontent.com/48921055/215788913-b7e2f76a-614a-4139-8a34-cedeb79e5e60.mp4){:target="_blank"}
+
+[Part 4 - New Project Setup](https://user-images.githubusercontent.com/48921055/215788926-4060eef2-c47a-4067-b17f-a138f91db69b.mp4){:target="_blank"}
+
+[Part 5 - New Project Setup](https://user-images.githubusercontent.com/48921055/215788936-71f91418-8fdd-4cc1-901a-b843de355ed7.mp4){:target="_blank"}
+
 ## Details
 
 ### Step 1: Request a new GitHub repository for the project.
@@ -89,18 +103,23 @@ For the purposes of these instructions, we will assume your new repository (crea
     ```
     git clone git@github.com:Enterprise-CMCS/acme.git
     ```
-1. Create val and production branches off of master.
+1. Create val and production branches off of master, then go back to master.
     ```
     cd acme
-    git push origin val
-    git push origin production
+    git checkout -b val
+    git push --set-upstream origin val
+    git checkout -b production
+    git push --set-upstream origin production
+    git checkout master
     ```
 1. Push macpro-base-template's production branch to your new repository's master branch.
     ```
     cd acme
+    git checkout master
     git remote add base git@github.com:Enterprise-CMCS/macpro-base-template.git
     git fetch base
-    git push origin base/production:master
+    git push origin base/production:master --force
+    git reset --hard origin/master
     ```
 1. Fetch your (newly built) GitHub Pages site's url.
     - Wait for the 'GitHub Pages' workflow, which triggered when you pushed, to finish.
@@ -149,20 +168,34 @@ For the purposes of these instructions, we will assume your new repository (crea
     - Update the docs site overview information, located at docs/docs/overview.md - subsection Overview.  we recommend reusing the overview you put in the README
 1. Deploy the OIDC service, and stage the created oidc role information in GitHub Secrets.
     - This requires a fully configured workstation and a developer to run commands.  Be sure the workstation has successfully run through the workspace setup procedure.
+    - Go to the repository, give direnv authorization to modify your shell, and install all dependencies for the project.
+        -   ```
+            cd acme
+            direnv allow
+            run install
+            ```
     - For the 'dev' AWS environment:
          - Get AWS access keys from Kion, and export them to a terminal.
-         - `cd acme/src/services/.oidc`
-         - `sls deploy --stage master`
-         - Upon the above deploy command's completion, a ServiceRoleARN value should be output to the terminal; it should be near the bottom of all output.  Copy this value to a clipboard or notepad.
+         -  ```
+            cd acme/src/services/.oidc
+            CI=true sls deploy --stage master
+            ```
+         - Upon the above deploy command's completion, run the serverless info command to retrieve the ServiceRoleArn value.
+            - `sls info --stage master --verbose`
+            - Find and copy the value for ServiceRoleArn to a notepad.
          - Go to your repository in a browser.
          - Navigate:  Settings -> Secrets and variables -> Actions -> New repository secret
          - Set a secret named AWS_OIDC_ROLE_TO_ASSUME, and set it's value to the ServiceRoleARN value you copied from the above step.  Click add secret.
          - This secret will be used by any branch that otherwise doesn't have a higher order secret (val and production will, in this next steps).
     - For the 'impl' (or maybe called 'val') AWS environment:  (NOTE:  Please read carefully, as the exact commands and github console steps are different than dev above.)
          - Get AWS access keys from Kion, and export them to a terminal.
-         - `cd acme/src/services/.oidc`
-         - `sls deploy --stage val`
-         - Upon the above deploy command's completion, a ServiceRoleARN value should be output to the terminal; it should be near the bottom of all output.  Copy this value to a clipboard or notepad.
+         -  ```
+            cd acme/src/services/.oidc
+            CI=true sls deploy --stage val
+            ```
+         - Upon the above deploy command's completion, run the serverless info command to retrieve the ServiceRoleArn value.
+            - `sls info --stage val --verbose`
+            - Find and copy the value for ServiceRoleArn to a notepad.
          - Go to your repository in a browser.
         - Navigate:  Settings -> Environments -> New environment
         - Create a new environment named val.
@@ -170,9 +203,13 @@ For the purposes of these instructions, we will assume your new repository (crea
         - This is a great time to set environment protection rules and required reviewers, but we will skip detaili on that at this stage, as that's optional.
     - For the 'production' (or maybe called 'prod') AWS environment:  (NOTE:  Please read carefully, as the exact commands and github console steps are different than dev and impl above.)
          - Get AWS access keys from Kion, and export them to a terminal.
-         - `cd acme/src/services/.oidc`
-         - `sls deploy --stage production`
-         - Upon the above deploy command's completion, a ServiceRoleARN value should be output to the terminal; it should be near the bottom of all output.  Copy this value to a clipboard or notepad.
+         -  ```
+            cd acme/src/services/.oidc
+            CI=true sls deploy --stage production
+            ```
+         - Upon the above deploy command's completion, run the serverless info command to retrieve the ServiceRoleArn value.
+            - `sls info --stage production --verbose`
+            - Find and copy the value for ServiceRoleArn to a notepad.
          - Go to your repository in a browser.
         - Navigate:  Settings -> Environments -> New environment
         - Create a new environment named production.
@@ -183,6 +220,28 @@ For the purposes of these instructions, we will assume your new repository (crea
     - Navigate:  Settings -> Secrets and variables -> Actions -> New repository secret
     - Set a secret named SLACK_WEBHOOK, and paste the value you have.
 1. Commit and push all changes to your repository, and monitor GitHub Actions for success/failure.
+1. Force push the master branch to val, and monitor GitHub Actions for success/failure:
+    ```
+    cd acme
+    git checkout val
+    git reset --hard origin/master
+    git push --force
+    ```
+1. Force push the master branch to production, and monitor GitHub Actions for success/failure:
+    ```
+    cd acme
+    git checkout production
+    git reset --hard origin/master
+    git push --force
+    ```
+1. Add branch protection rules for each of the master, val, and production branches:
+    - Go to your repository in a browser.
+    - Navigate: Settings -> Branches, and add a new rule for each of the higher environment branches
+        - Click Add rule
+        - For 'Branch name pattern', enter the branch you want to protect, such as master.
+        - Select any rules you'd like to enforce.  We recommend at least requiring a pull request before merging.
+        - Repeat the above for val and production branches.
+    
 
 ### Conclusion
 If you’ve followed this document, you should have a new GitHub project deployed to AWS and ready for further development. This document is a WIP, and assuredly has errors and omissions, and will change over time. You can help this by reaching out to the MACPRO Platform team on Slack and letting us know about issues you find.

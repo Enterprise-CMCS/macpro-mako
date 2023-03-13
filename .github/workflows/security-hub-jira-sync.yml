@@ -1,0 +1,43 @@
+name: Security Hub Jira Sync
+
+on:
+  schedule:
+    - cron: "0 14-23/2 * * *"
+  workflow_dispatch:
+
+jobs:
+  security-hub-jira-sync:
+    name: Security Hub Jira Sync
+    runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
+      contents: read
+    # This workflow should only run from one project per AWS account.
+    # In other words, if you have many repos deploying to the same AWS account,
+    #   only one of those repos should have this workflow activated.
+    # It's not dangerous if more than one have it active, it's just not ideal.
+    # This flag forces a user to explicitly enable it, allowing consumers of this
+    #   template to decide if they should enable it or not.
+    # To set this flag, make a repository variable entitled ENABLE_SECURITY_HUB_SYNC
+    #   and give it any value.  It's existence is the flag.
+    if: ${{ vars.ENABLE_SECURITY_HUB_SYNC }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: ./.github/actions/setup
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+          role-duration-seconds: 10800
+
+      - name: Invoke Security Hub Jira Sync
+        env:
+          JIRA_HOST: qmacbis.atlassian.net
+          JIRA_PROJECT: OY2
+          JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+          JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
+        run: run securityHubJiraSync
