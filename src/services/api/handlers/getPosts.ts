@@ -1,17 +1,22 @@
-import { handler as h } from "../libs/handler";
+import { response } from "../libs/handler";
+
+type ExamplePostType = {
+  id: string;
+  description: string;
+};
 
 export const getPosts = async () => {
   try {
-    return {
+    return response<ExamplePostType[]>({
       statusCode: 200,
-      body: JSON.stringify([]),
-    };
+      body: [],
+    });
   } catch (error) {
-    return {
+    return response({
       statusCode: 404,
-      body: JSON.stringify({ message: "Posts not found" }),
-    };
+      body: { message: "Posts not found" },
+    });
   }
 };
 
-export const handler = h(getPosts);
+export const handler = getPosts;

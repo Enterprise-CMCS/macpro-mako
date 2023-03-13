@@ -1,17 +1,18 @@
-import { handler as h } from "../libs/handler";
+import type { APIGatewayEvent } from "aws-lambda";
+import { response } from "../libs/handler";
 
-export const createPost = async (event) => {
+export const createPost = async (event: APIGatewayEvent) => {
   try {
-    return {
+    return response({
       statusCode: 201,
-      body: JSON.stringify({ post: {} }),
-    };
+      body: { post: {} },
+    });
   } catch (error) {
-    return {
+    return response({
       statusCode: 404,
-      body: JSON.stringify({ message: error }),
-    };
+      body: { message: error },
+    });
   }
 };
 
-export const handler = h(createPost);
+export const handler = createPost;

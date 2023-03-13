@@ -1,26 +1,26 @@
-import { handler as h } from "../libs/handler";
+import { response } from "../libs/handler";
 
 export const deletePost = async ({ pathParameters }) => {
   try {
     if (!pathParameters || !pathParameters.id) {
-      return {
+      return response({
         statusCode: 400,
-        body: JSON.stringify({ message: "Invalid request" }),
-      };
+        body: { message: "Invalid request" },
+      });
     }
 
     const { id } = pathParameters;
 
-    return {
+    return response({
       statusCode: 200,
-      body: JSON.stringify({ post: `Post with ${id} was deleted` }),
-    };
+      body: { post: `Post with ${id} was deleted` },
+    });
   } catch (error) {
-    return {
+    return response({
       statusCode: 404,
-      body: JSON.stringify({ message: error }),
-    };
+      body: { message: error },
+    });
   }
 };
 
-export const handler = h(deletePost);
+export const handler = deletePost;

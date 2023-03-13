@@ -3,12 +3,46 @@ import type {
   APIGatewayProxyResult,
   Context,
 } from "aws-lambda";
-import * as middy from "middy";
-import { cors } from "middy/middlewares";
 
-export const handler = (
+export const handler = async (
   handler: (
     event?: APIGatewayEvent,
     context?: Context
   ) => Promise<APIGatewayProxyResult>
-) => middy(handler).use(cors());
+) => {
+  const handlerResponse = await handler();
+
+  const response: APIGatewayProxyResult = {
+    headers: {
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,DELETE",
+    },
+    ...handlerResponse,
+  };
+  return () => response;
+};
+
+export function response<T = { [key: string | number]: any }>(
+  currentResponse: {
+    statusCode?: number;
+    body?: T;
+    headers?: { [key: string]: string };
+  },
+  options?: { disableCors?: boolean }
+) {
+  const corsHeaders = {
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,DELETE",
+  };
+
+  return {
+    ...currentResponse,
+    body: JSON.stringify(currentResponse?.body ?? {}),
+    headers: {
+      ...(options?.disableCors ? {} : corsHeaders),
+      ...currentResponse.headers,
+    },
+  };
+}
