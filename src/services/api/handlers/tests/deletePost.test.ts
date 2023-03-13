@@ -1,23 +1,6 @@
 import { it, describe, expect, vi, afterAll } from "vitest";
 import { deletePost } from "../deletePost";
 
-vi.mock("../../libs/handler", () => {
-  return {
-    response: vi.fn(
-      ({
-        statusCode,
-        body,
-      }: {
-        statusCode: number;
-        body: { [key: string]: any };
-      }) => ({
-        statusCode,
-        body: JSON.stringify(body),
-      })
-    ),
-  };
-});
-
 describe("deletePost", () => {
   afterAll(() => {
     vi.resetAllMocks();
