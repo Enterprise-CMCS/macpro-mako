@@ -45,6 +45,11 @@ custom:
       - production
   tableName: ${self:service}-${sls:stage}-table
 
+parameters:
+  fileHash:
+    Type: String
+    Default: ""
+
 functions:
   seeddatabase:
     handler: handlers/seeddatabase.handler
@@ -76,4 +81,4 @@ resources:
           Fn::GetAtt: [SeeddatabaseLambdaFunction, "Arn"]
         DynamoTableName:
           Ref: Table
-        forceUpdate: !Ref AWS::StackName-InitFunction-#{timestamp()}
+        FILE_HASH: ${self:custom.fileHash}
