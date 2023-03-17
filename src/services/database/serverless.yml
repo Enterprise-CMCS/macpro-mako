@@ -53,8 +53,8 @@ parameters:
 functions:
   seeddatabase:
     handler: handlers/seeddatabase.handler
-  jsonplaceplaceholder:
-    handler: handlers/jsonplaceplaceholder.handler
+  jsonplaceholder:
+    handler: handlers/jsonplaceholder.handler
 
 resources:
   Resources:
