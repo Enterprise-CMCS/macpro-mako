@@ -92,3 +92,4 @@ resources:
           Fn::GetAtt: [JsonplaceholderLambdaFunction, "Arn"]
         DynamoTableName:
           Ref: Table
+        forceUpdate: !Sub "${AWS::StackName}-InitFunction-${timestamp()}"
