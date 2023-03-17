@@ -55,3 +55,4 @@ module.exports.seedData = async (event, context) => {
     }
   }
 };
+module.exports = { seedData };
