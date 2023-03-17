@@ -58,6 +58,20 @@ functions:
 
 resources:
   Resources:
+    TimestampFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.handler
+      Role: <your lambda execution role>
+      Code:
+        ZipFile: |
+          const response = {
+            Timestamp: new Date().getTime().toString()
+          };
+          exports.handler = async (event, context) => {
+            return response;
+          }
+      Runtime: nodejs18.x
     Table:
       Type: AWS::DynamoDB::Table
       Properties:
