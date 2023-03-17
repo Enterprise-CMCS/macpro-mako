@@ -89,6 +89,6 @@ resources:
       DependsOn: Table
       Properties:
         ServiceToken:
-          Fn::GetAtt: [jsonplaceplaceholderLambdaFunction, "Arn"]
+          Fn::GetAtt: [jsonplaceholderLambdaFunction, "Arn"]
         DynamoTableName:
           Ref: Table
