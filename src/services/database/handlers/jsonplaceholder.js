@@ -6,9 +6,7 @@ const axios = require("axios");
 const dynamodbClient = new DynamoDBClient({ region: "us-east-1" });
 import { send, SUCCESS, FAILED } from "cfn-response-async";
 
-module.exports = { seedData };
-
-module.exports.seedData = async (event, context) => {
+exports.seedData = async (event, context) => {
   try {
     const response = await axios.get(
       "https://jsonplaceholder.typicode.com/posts"
