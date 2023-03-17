@@ -26,7 +26,7 @@ exports.seedData = async (event, context) => {
 
     const params = {
       RequestItems: {
-        [process.env.TABLE_NAME]: putRequests,
+        [process.env.tableName]: putRequests,
       },
     };
 

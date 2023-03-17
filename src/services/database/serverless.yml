@@ -62,7 +62,6 @@ resources:
     Type: AWS::Lambda::Function
     Properties:
       Handler: index.handler
-      Role: <your lambda execution role>
       Code:
         ZipFile: |
           const response = {
