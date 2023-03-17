@@ -53,6 +53,8 @@ parameters:
 functions:
   seeddatabase:
     handler: handlers/seeddatabase.handler
+  jsonplaceplaceholder:
+    handler: handlers/jsonplaceplaceholder.handler
 
 resources:
   Resources:
@@ -82,3 +84,11 @@ resources:
         DynamoTableName:
           Ref: Table
         FILE_HASH: ${self:custom.fileHash}
+    InitializeSeedData:
+      Type: Custom::InitFunctionDataSeed
+      DependsOn: Table
+      Properties:
+        ServiceToken:
+          Fn::GetAtt: [jsonplaceplaceholderLambdaFunction, "Arn"]
+        DynamoTableName:
+          Ref: Table
