@@ -3,8 +3,8 @@ const {
   BatchWriteItemCommand,
 } = require("@aws-sdk/client-dynamodb");
 const axios = require("axios");
-const { send, SUCCESS, FAILED } = require("cfn-response-async");
 const dynamodbClient = new DynamoDBClient({ region: "us-east-1" });
+import { send, SUCCESS, FAILED } from "cfn-response-async";
 
 module.exports.seedData = async (event, context) => {
   try {
@@ -35,10 +35,18 @@ module.exports.seedData = async (event, context) => {
     return result;
   } catch (err) {
     console.error("Error inserting data:", err);
+    try {
+      const responseStatus = FAILED;
+      const responseData = { message: "Error inserting data" };
+      await send(event, context, responseStatus, responseData, "static");
+    } catch (err) {
+      console.error("Error sending response:", err);
+      return err;
+    }
     return err;
   } finally {
     try {
-      const responseStatus = SUCCESS; // or FAILED
+      const responseStatus = SUCCESS;
       const responseData = { message: "Data inserted successfully" };
       await send(event, context, responseStatus, responseData, "static");
     } catch (err) {
