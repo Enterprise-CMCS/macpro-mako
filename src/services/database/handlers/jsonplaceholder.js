@@ -2,22 +2,23 @@ const {
   DynamoDBClient,
   BatchWriteItemCommand,
 } = require("@aws-sdk/client-dynamodb");
-const axios = require("axios");
+//const axios = require("axios");
 const dynamodbClient = new DynamoDBClient({ region: "us-east-1" });
 import { send, SUCCESS, FAILED } from "cfn-response-async";
 
 exports.seedData = async (event, context) => {
   try {
-    const response = await axios.get(
-      "https://jsonplaceholder.typicode.com/posts"
-    );
-    const items = response.data.map((post) => ({
-      PK: `POST#${post.id}`,
-      SK: `USER#${post.userId}`,
-      title: post.title,
-      body: post.body,
-    }));
-
+    // const response = await axios.get(
+    //   "https://jsonplaceholder.typicode.com/posts"
+    // );
+    // const items = response.data.map((post) => ({
+    //   PK: `POST#${post.id}`,
+    //   SK: `USER#${post.userId}`,
+    //   title: post.title,
+    //   body: post.body,
+    // }));
+    console.log(event);
+    const items = event.bodyitems;
     const putRequests = items.map((item) => ({
       PutRequest: {
         Item: item,

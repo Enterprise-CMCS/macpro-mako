@@ -10,6 +10,7 @@ plugins:
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@stratiformdigital/serverless-iam-helper"
   - serverless-bundle
+  - serverless-plugin-scripts
 
 provider:
   name: aws
@@ -44,6 +45,10 @@ custom:
       - val
       - production
   tableName: ${self:service}-${sls:stage}-table
+  scripts:
+    commands:
+      seed: |
+        ls -la
 
 parameters:
   fileHash:
@@ -55,22 +60,11 @@ functions:
     handler: handlers/seeddatabase.handler
   jsonplaceholder:
     handler: handlers/jsonplaceholder.handler
+    environment:
+      tableName: !Ref Table
 
 resources:
   Resources:
-    TimestampFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      Handler: index.handler
-      Code:
-        ZipFile: |
-          const response = {
-            Timestamp: new Date().getTime().toString()
-          };
-          exports.handler = async (event, context) => {
-            return response;
-          }
-      Runtime: nodejs18.x
     Table:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -97,17 +91,3 @@ resources:
         DynamoTableName:
           Ref: Table
         FILE_HASH: ${self:custom.fileHash}
-    InitializeSeedData:
-      Type: Custom::InitFunctionDataSeed
-      DependsOn: Table
-      Properties:
-        ServiceToken:
-          Fn::GetAtt: [JsonplaceholderLambdaFunction, "Arn"]
-        DynamoTableName:
-          Ref: Table
-        forceUpdate:
-          Fn::Join:
-            - ""
-            - - !Ref AWS::StackName
-              - "-InitFunction-"
-              - !GetAtt [TimestampFunction, "Timestamp"]
