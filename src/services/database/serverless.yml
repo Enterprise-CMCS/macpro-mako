@@ -49,6 +49,7 @@ custom:
     commands:
       seed: |
         ls -la
+        aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-jsonplaceholder --invocation-type RequestResponse --payload file://items.json --log Tail /dev/stdout
 
 parameters:
   fileHash:
