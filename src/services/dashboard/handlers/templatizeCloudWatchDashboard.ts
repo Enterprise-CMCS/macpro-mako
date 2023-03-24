@@ -18,7 +18,7 @@ export const handler = async (
 
   const client = new CloudWatch({});
   const dashboard = await client.getDashboard({
-    DashboardName: `${stage}-dashboard`,
+    DashboardName: `${service}-${stage}`,
   });
   const templateJson = dashboard
     .DashboardBody!.replaceAll(accountId, "${aws:accountId}")
