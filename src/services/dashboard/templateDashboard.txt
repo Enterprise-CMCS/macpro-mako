@@ -1,10 +1,10 @@
 {
     "widgets": [
         {
-            "height": 2,
-            "width": 5,
+            "height": 3,
+            "width": 6,
             "y": 0,
-            "x": 3,
+            "x": 6,
             "type": "custom",
             "properties": {
                 "endpoint": "arn:aws:lambda:${env:REGION_A}:${aws:accountId}:function:${self:service}-${sls:stage}-createDashboardTemplateWidget",
@@ -16,178 +16,48 @@
             }
         },
         {
-            "height": 5,
-            "width": 18,
-            "y": 2,
-            "x": 3,
-            "type": "alarm",
+            "height": 1,
+            "width": 24,
+            "y": 3,
+            "x": 0,
+            "type": "text",
             "properties": {
-                "title": "Alarms",
-                "alarms": [
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-MSKLogsErrorCount",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-PartitionCountTooLow-2",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-PartitionCountTooLow-1",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-PartitionCountTooHigh-2",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-PartitionCountTooLow-3",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-UnderMinIsrPartitionCount-2",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-UnderMinIsrPartitionCount-3",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-PartitionCountTooHigh-1",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-UnderMinIsrPartitionCount-1",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-PartitionCountTooHigh-3",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-CpuUsage-2",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-CpuUsage-3",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-CpuUsage-1",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-RootDiskUsed-2",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-RootDiskUsed-1",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:bigmac-${sls:stage}-RootDiskUsed-3"
-                ]
+                "markdown": "## alerts service",
+                "background": "transparent"
             }
         },
         {
-            "height": 6,
+            "height": 3,
             "width": 6,
-            "y": 7,
-            "x": 3,
-            "type": "metric",
+            "y": 0,
+            "x": 0,
+            "type": "text",
             "properties": {
+                "markdown": "### Made changes, ready to export?\nUse the widget to the right to execute the templatizer lambda, which will export your current, saved dashboard into a format ready for check in.",
+                "background": "transparent"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 4,
+            "width": 8,
+            "height": 8,
+            "properties": {
+                "metrics": [
+                    [
+                        "AWS/SNS",
+                        "NumberOfMessagesPublished",
+                        "TopicName",
+                        "Alerts-base-alerts-${sls:stage}"
+                    ]
+                ],
                 "view": "timeSeries",
                 "stacked": false,
-                "metrics": [
-                    [
-                        "AWS/Kafka",
-                        "UnderMinIsrPartitionCount",
-                        "Cluster Name",
-                        "${sls:stage}-msk",
-                        "Broker ID",
-                        "1"
-                    ],
-                    [
-                        "...",
-                        "2"
-                    ],
-                    [
-                        "...",
-                        "3"
-                    ]
-                ],
-                "region": "${env:REGION_A}"
-            }
-        },
-        {
-            "height": 6,
-            "width": 6,
-            "y": 7,
-            "x": 9,
-            "type": "metric",
-            "properties": {
-                "view": "timeSeries",
-                "stacked": false,
-                "metrics": [
-                    [
-                        "AWS/Kafka",
-                        "CpuUser",
-                        "Cluster Name",
-                        "${sls:stage}-msk",
-                        "Broker ID",
-                        "1"
-                    ],
-                    [
-                        "...",
-                        "2"
-                    ],
-                    [
-                        "...",
-                        "3"
-                    ]
-                ],
-                "region": "${env:REGION_A}"
-            }
-        },
-        {
-            "height": 6,
-            "width": 6,
-            "y": 7,
-            "x": 15,
-            "type": "metric",
-            "properties": {
-                "view": "timeSeries",
-                "stacked": false,
-                "metrics": [
-                    [
-                        "AWS/Kafka",
-                        "RootDiskUsed",
-                        "Cluster Name",
-                        "${sls:stage}-msk",
-                        "Broker ID",
-                        "1"
-                    ],
-                    [
-                        "...",
-                        "2"
-                    ],
-                    [
-                        "...",
-                        "3"
-                    ]
-                ],
-                "region": "${env:REGION_A}"
-            }
-        },
-        {
-            "height": 6,
-            "width": 18,
-            "y": 13,
-            "x": 3,
-            "type": "metric",
-            "properties": {
-                "metrics": [
-                    [
-                        "AWS/Kafka",
-                        "PartitionCount",
-                        "Cluster Name",
-                        "${sls:stage}-msk",
-                        "Broker ID",
-                        "1",
-                        {
-                            "color": "#d62728"
-                        }
-                    ],
-                    [
-                        "...",
-                        "2",
-                        {
-                            "color": "#2ca02c"
-                        }
-                    ],
-                    [
-                        "...",
-                        "3"
-                    ]
-                ],
-                "view": "gauge",
                 "region": "${env:REGION_A}",
-                "yAxis": {
-                    "left": {
-                        "min": 0,
-                        "max": 2000
-                    }
-                },
-                "stat": "Average",
-                "period": 300,
-                "title": "Partition Count"
-            }
-        },
-        {
-            "height": 5,
-            "width": 18,
-            "y": 19,
-            "x": 3,
-            "type": "log",
-            "properties": {
-                "query": "SOURCE '/aws/fargate/bigmac-logs-${sls:stage}-kafka-connect' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 20",
-                "region": "${env:REGION_A}",
-                "stacked": false,
-                "view": "table"
+                "title": "SNS Topic",
+                "period": 60,
+                "stat": "Sum"
             }
         }
     ]
