@@ -2,7 +2,7 @@
 layout: default
 title: Security Hub Jira Sync
 parent: GitHub Workflows
-nav_order: 6
+nav_order: 1
 ---
 
 # Security Hub Jira Sync

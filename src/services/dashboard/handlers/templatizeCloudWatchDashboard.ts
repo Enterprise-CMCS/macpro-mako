@@ -46,7 +46,7 @@ export const handler = async (
     const { service, accountId, stage, region } = process.env;
     const client = new CloudWatch({});
     const dashboard = await client.getDashboard({
-      DashboardName: `${stage}-dashboard`,
+      DashboardName: `${service}-${stage}`,
     });
 
     const replacables = {

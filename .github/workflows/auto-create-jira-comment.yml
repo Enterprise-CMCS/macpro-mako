@@ -1,0 +1,44 @@
+on:
+  pull_request:
+    types: [opened, edited]
+name: Jira Issue Commenter
+
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    name: Search PR for mentioned Jira Issues
+    outputs:
+      issues: ${{ steps.search.outputs.issues }}
+    steps:
+      - name: find issues
+        id: search
+        env:
+          JIRA_BASE_URL: https://qmacbis.atlassian.net/browse/
+          JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
+          BODY: ${{ github.event.pull_request.body }}
+        if: env.JIRA_TOKEN != ''
+        run: |
+          printenv BODY > .tmp.body.txt
+          issues=(`grep -oP "(?<=${JIRA_BASE_URL})[A-Z]+\d+-\d+" .tmp.body.txt || true`)
+          issueJson=`jq -c -n '$ARGS.positional' --args "${issues[@]}"`
+          echo "issues=$issueJson" >> $GITHUB_OUTPUT
+  comment:
+    runs-on: ubuntu-latest
+    name: Comment on Jira Issues
+    needs: search
+    if: needs.search.outputs.issues && needs.search.outputs.issues != '[]'
+    strategy:
+      matrix:
+        value: ${{fromJson(needs.search.outputs.issues)}}
+    steps:
+      - name: Login
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_API_TOKEN: ${{ secrets.JIRA_TOKEN }}
+          JIRA_BASE_URL: https://qmacbis.atlassian.net
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USERNAME }}
+      - name: Comment on issue
+        uses: atlassian/gajira-comment@v3
+        with:
+          issue: ${{ matrix.value }}
+          comment: This issue was mentioned on ${{ github.event.pull_request._links.html.href }}
