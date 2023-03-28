@@ -65,8 +65,6 @@ resources:
             AttributeType: S
           - AttributeName: CreatedAt
             AttributeType: N
-          - AttributeName: Description
-            AttributeType: S
         KeySchema:
           - AttributeName: PostId
             KeyType: HASH
