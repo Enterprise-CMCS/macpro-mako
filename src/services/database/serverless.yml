@@ -44,6 +44,7 @@ custom:
       - val
       - production
   tableName: ${self:service}-${sls:stage}-table
+  postsTableName: ${self:service}-${sls:stage}-posts
 
 parameters:
   fileHash:
@@ -56,6 +57,25 @@ functions:
 
 resources:
   Resources:
+    PostsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: PostId
+            AttributeType: S
+          - AttributeName: CreatedAt
+            AttributeType: N
+          - AttributeName: Description
+            AttributeType: S
+        KeySchema:
+          - AttributeName: PostId
+            KeyType: HASH
+          - AttributeName: CreatedAt
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.postsTableName}
     Table:
       Type: AWS::DynamoDB::Table
       Properties:
