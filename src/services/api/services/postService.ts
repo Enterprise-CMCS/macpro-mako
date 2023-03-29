@@ -1,30 +1,35 @@
-import { DynamoDB } from "@aws-sdk/client-dynamodb";
-import type { Post } from "../types/Post";
+import { ModelType } from "dynamoose/dist/General";
+import { v4 } from "uuid";
+import { Post, PostModel } from "../models/Post";
 
 export class PostService {
-  private db: DynamoDB;
+  #postModel: ModelType<PostModel>;
 
-  constructor(dynamoInstance: DynamoDB) {
-    this.db = dynamoInstance;
+  constructor(postModel: ModelType<PostModel>) {
+    this.#postModel = postModel;
   }
 
-  async getPosts() {
-    console.log("getPosts() called");
+  async createPost(post: Post) {
+    const id = v4();
+
+    return await this.#postModel.create({ id, ...post });
   }
 
   async getPost(id: string) {
-    console.log("getPost() called");
+    return await this.#postModel.get(id);
   }
 
-  async createPost(post: Omit<Post, "id">) {
-    console.log("createPost() called");
-  }
-
-  async updatePost(id: string, post: Omit<Post, "id">) {
-    console.log("updatePost() called");
-  }
+  async getPosts(id: string) {}
 
   async deletePost(id: string) {
-    console.log("deletePost() called");
+    const postToDelete = await this.getPost(id);
+
+    await postToDelete.delete();
+
+    return postToDelete;
+  }
+
+  async editPost(id: string, partialPost: Omit<ModelType<PostModel>, "id">) {
+    return await this.#postModel.update({ id }, { ...partialPost });
   }
 }

@@ -30,6 +30,7 @@
     "@stratiformdigital/serverless-s3-security-helper": "^4.0.0",
     "@stratiformdigital/serverless-stage-destroyer": "^2.0.0",
     "@testing-library/react": "^14.0.0",
+    "@types/uuid": "^9.0.1",
     "@vitejs/plugin-react": "^3.1.0",
     "@vitest/ui": "^0.26.2",
     "aws-sdk-client-mock": "^2.0.1",
@@ -56,5 +57,8 @@
       "@semantic-release/github",
       "@semantic-release/npm"
     ]
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
   }
 }
