@@ -10,12 +10,15 @@ export const postSchema = z.object({
   updatedAt: z.date(),
 });
 
+const validEnvVar = z.string();
+const tableName = validEnvVar.parse("om-database-api-db-posts");
+
 export type Post = z.infer<typeof postSchema>;
 
 export type PostModel = Post & Item;
 
 export const post = dynamoose.model<PostModel>(
-  "Post",
+  tableName,
   new dynamoose.Schema(
     {
       id: String,
@@ -25,5 +28,8 @@ export const post = dynamoose.model<PostModel>(
       updatedAt: Date,
     },
     { timestamps: true }
-  )
+  ),
+  {
+    create: false,
+  }
 );
