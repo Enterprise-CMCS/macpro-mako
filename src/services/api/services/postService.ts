@@ -19,8 +19,6 @@ export class PostService {
     return await this.#postModel.get(id);
   }
 
-  async getPosts(id: string) {}
-
   async deletePost(id: string) {
     const postToDelete = await this.getPost(id);
 
