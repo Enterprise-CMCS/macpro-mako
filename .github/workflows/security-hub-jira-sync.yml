@@ -28,16 +28,46 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
 
       - name: Invoke Security Hub Jira Sync
+        id: jiraUpdates
         env:
           JIRA_HOST: qmacbis.atlassian.net
           JIRA_PROJECT: OY2
           JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
           JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
-        run: run securityHubJiraSync
+        run: |
+          jiraUpdates=$(run securityHubJiraSync)
+          jiraUpdatesFormatted=$(echo "$jiraUpdates" | jq -r '.[] | "\(.action) - <\(.webUrl)|\(.summary)>"' | tr '\n' '\r')
+          echo "jiraUpdates=$jiraUpdatesFormatted" >> $GITHUB_ENV
+
+      - name: Slack Notification - notify of Security Hub Jira issues updates
+        uses: rtCamp/action-slack-notify@v2
+        if: env.SLACK_WEBHOOK != '' && env.jiraUpdates != ''
+        env:
+          SLACK_MSG_AUTHOR: ${{ github.repository }}
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_ICON: https://github.com/${{ github.repository_owner }}.png?size=48
+          SLACK_TITLE: Security Hub Jira Sync
+          SLACK_MESSAGE: ${{ env.jiraUpdates }}
+          SLACK_USERNAME: ${{ github.repository }} - ${{ github.workflow }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          MSG_MINIMAL: true
+
+      - name: Slack Notification - notify of failure reporting on Security Hub Jira issues updates
+        uses: rtCamp/action-slack-notify@v2
+        if: env.SLACK_WEBHOOK != '' && failure()
+        env:
+          SLACK_MSG_AUTHOR: ${{ github.repository }}
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_ICON: https://github.com/${{ github.repository_owner }}.png?size=48
+          SLACK_TITLE: Failure reporting on Security Hub Jira Sync
+          SLACK_MESSAGE: Failure reporting on Security Hub Jira Sync
+          SLACK_USERNAME: ${{ github.repository }} - ${{ github.workflow }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          MSG_MINIMAL: true
