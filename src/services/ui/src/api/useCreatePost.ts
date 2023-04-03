@@ -9,7 +9,7 @@ export const useCreatePost = () => {
     mutationFn: async (post: CreatePost) => {
       const validPost = validateCreatePost(post);
 
-      return await instance.post("/post", validPost);
+      return await instance.post("/posts", validPost);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["posts"]);
