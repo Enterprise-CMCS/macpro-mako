@@ -1,6 +1,6 @@
 import { ModelType } from "dynamoose/dist/General";
 import { v4 } from "uuid";
-import { CreatePost, Post, PostModel } from "../models/Post";
+import { CreatePost, PostModel } from "../models/Post";
 
 export class PostService {
   #postModel: ModelType<PostModel>;
