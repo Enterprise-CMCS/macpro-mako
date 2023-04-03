@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { instance } from "../lib/axios";
 import { CreatePost, validateCreatePost } from "./validators";
 
-const queryClient = useQueryClient();
+export const useCreatePost = () => {
+  const queryClient = useQueryClient();
 
-export const useCreatePost = () =>
-  useMutation({
+  return useMutation({
     mutationFn: async (post: CreatePost) => {
       const validPost = validateCreatePost(post);
 
@@ -15,3 +15,4 @@ export const useCreatePost = () =>
       queryClient.invalidateQueries(["posts"]);
     },
   });
+};
