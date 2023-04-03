@@ -3,9 +3,10 @@ import { useGetPosts } from "../api/useGetPosts";
 import { Post } from "../api/validators";
 
 export const Posts = () => {
-  const { data, isLoading, isError } = useGetPosts();
+  const { data: testData, isLoading, isError } = useGetPosts();
   const loadRoute = useLoadRoute();
 
+  console.log(testData);
   if (isLoading) {
     return <>...Loading</>;
   }
@@ -19,7 +20,7 @@ export const Posts = () => {
       <h1>Posts</h1>
       <Outlet />
       <ul>
-        {data.map((post: Post) => (
+        {/* {data.map((post: Post) => (
           <li key={post.id}>
             <Link
               onMouseEnter={() => loadRoute({ to: post.id })}
@@ -28,7 +29,7 @@ export const Posts = () => {
               {post.title}
             </Link>
           </li>
-        ))}
+        ))} */}
       </ul>
     </>
   );
