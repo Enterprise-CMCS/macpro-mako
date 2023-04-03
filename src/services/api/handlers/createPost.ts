@@ -1,11 +1,11 @@
 import type { APIGatewayEvent } from "aws-lambda";
 import { response } from "../libs/handler";
-import { post, postSchema } from "../models/Post";
+import { createPostSchema, post, postSchema } from "../models/Post";
 import { PostService } from "../services/postService";
 
 export const createPost = async (event: APIGatewayEvent) => {
   try {
-    const validPost = postSchema.parse(event.body);
+    const validPost = createPostSchema.parse(event.body);
 
     const newPost = await new PostService(post).createPost(validPost);
 

@@ -10,6 +10,11 @@ export const postSchema = z.object({
   updatedAt: z.date(),
 });
 
+export const createPostSchema = z.object({
+  title: z.string(),
+  post: z.string(),
+});
+
 const validEnvVar = z.string();
 const tableName = validEnvVar.parse("om-database-api-db-posts");
 
