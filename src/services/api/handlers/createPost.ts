@@ -5,7 +5,7 @@ import { PostService } from "../services/postService";
 
 export const createPost = async (event: APIGatewayEvent) => {
   try {
-    const validPost = createPostSchema.parse(event.body);
+    const validPost = createPostSchema.parse(JSON.parse(event.body));
 
     const newPost = await new PostService(post).createPost(validPost);
 
