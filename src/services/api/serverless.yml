@@ -20,6 +20,19 @@ provider:
     role:
       path: /delegatedadmin/developer/
       permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:DescribeTable
+            - dynamodb:Get*
+            - dynamodb:BatchWrite*
+            - dynamodb:BatchGet*
+          Resource: "*"
 
 custom:
   project: ${env:PROJECT}
