@@ -7,7 +7,9 @@ export const useGetPosts = () =>
     queryKey: ["posts"],
     queryFn: async () => {
       const posts = await instance.get<Post[]>("/posts");
+
       const validPosts = validatePosts(posts.data);
+      console.log(posts, validPosts);
 
       return validPosts;
     },
