@@ -8,8 +8,8 @@ import {
 import * as Page from "./pages";
 import { MainWrapper } from "./components";
 import { useQueryClient } from "@tanstack/react-query";
-import { getPosts } from "./hooks/queries/useGetPosts";
 import { getPostById } from "./hooks/queries/useGetPostById";
+import { getPosts } from "./api/useGetPosts";
 
 const location = new ReactLocation();
 
