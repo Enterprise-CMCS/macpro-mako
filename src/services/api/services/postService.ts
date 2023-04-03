@@ -1,6 +1,6 @@
 import { ModelType } from "dynamoose/dist/General";
 import { v4 } from "uuid";
-import { Post, PostModel } from "../models/Post";
+import { CreatePost, Post, PostModel } from "../models/Post";
 
 export class PostService {
   #postModel: ModelType<PostModel>;
@@ -9,7 +9,7 @@ export class PostService {
     this.#postModel = postModel;
   }
 
-  async createPost(post: Post) {
+  async createPost(post: CreatePost) {
     const id = v4();
 
     return await this.#postModel.create({ id, ...post });
