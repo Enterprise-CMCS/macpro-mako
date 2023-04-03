@@ -29,8 +29,6 @@ export const post = dynamoose.model<PostModel>(
       id: String,
       title: String,
       post: String,
-      createdAt: Date,
-      updatedAt: Date,
     },
     { timestamps: true }
   ),
