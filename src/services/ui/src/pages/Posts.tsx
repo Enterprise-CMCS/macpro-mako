@@ -1,5 +1,6 @@
 import { Link, useLoadRoute, Outlet } from "@tanstack/react-location";
-import { Post, useGetPosts } from "../hooks/queries/useGetPosts";
+import { useGetPosts } from "../api/useGetPosts";
+import { Post } from "../api/validators";
 
 export const Posts = () => {
   const { data, isLoading, isError } = useGetPosts();
@@ -18,7 +19,7 @@ export const Posts = () => {
       <h1>Posts</h1>
       <Outlet />
       <ul>
-        {data.data.map((post: Post) => (
+        {data.map((post: Post) => (
           <li key={post.id}>
             <Link
               onMouseEnter={() => loadRoute({ to: post.id })}
