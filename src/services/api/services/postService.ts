@@ -20,7 +20,7 @@ export class PostService {
   }
 
   async getPosts() {
-    return await this.#postModel.query("createdAt").gt(0).exec();
+    return await this.#postModel.scan().exec();
   }
 
   async deletePost(postId: string) {
