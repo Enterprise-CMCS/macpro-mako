@@ -29,10 +29,10 @@ export const Posts = () => {
       <Outlet />
       <ul>
         {data.map((post) => (
-          <li key={post.id}>
+          <li key={post.postId}>
             <Link
               onMouseEnter={() => loadRoute({ to: post.id })}
-              to={`./${post.id}`}
+              to={`./${post.postId}`}
             >
               {post.title}
             </Link>
