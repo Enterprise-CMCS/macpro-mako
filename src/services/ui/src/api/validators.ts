@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 const postSchema = z.object({
-  id: z.string().uuid(),
+  postId: z.string().uuid(),
   title: z.string(),
   post: z.string(),
-  createdAt: z.number(),
-  updatedAt: z.number(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
 const createPostSchema = z.object({
