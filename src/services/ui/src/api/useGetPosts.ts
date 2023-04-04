@@ -4,9 +4,9 @@ import { Post, validatePosts } from "./validators";
 
 export const getPosts = async () => {
   const posts = await instance.get("/posts");
-  // const validPosts = validatePosts(posts.data);
+  const validPosts = validatePosts(posts.data);
 
-  return posts;
+  return validPosts;
 };
 
 export const useGetPosts = () =>

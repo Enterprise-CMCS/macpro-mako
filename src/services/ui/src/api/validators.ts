@@ -4,8 +4,8 @@ const postSchema = z.object({
   id: z.string().uuid(),
   title: z.string(),
   post: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.number(),
+  updatedAt: z.number(),
 });
 
 const createPostSchema = z.object({
