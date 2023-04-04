@@ -1,5 +1,5 @@
 import { MakeGenerics, useMatch } from "@tanstack/react-location";
-import { useGetPostById } from "../hooks/queries/useGetPostById";
+import { useGetPost } from "../api/useGetPost";
 
 type PostGenerics = MakeGenerics<{
   Params: {
@@ -12,7 +12,7 @@ export const Post = () => {
     params: { postId },
   } = useMatch<PostGenerics>();
 
-  const { data, isError, isLoading } = useGetPostById(postId);
+  const { data, isError, isLoading } = useGetPost(postId);
 
   if (isLoading) {
     return <>...Loading</>;
@@ -24,8 +24,8 @@ export const Post = () => {
 
   return (
     <section>
-      <h3>{data.data.title}</h3>
-      <p>{data.data.body}</p>
+      <h3>{data.title}</h3>
+      <p>{data.post}</p>
     </section>
   );
 };
