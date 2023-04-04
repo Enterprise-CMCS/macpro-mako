@@ -31,7 +31,7 @@ export const Posts = () => {
         {data.map((post) => (
           <li key={post.postId}>
             <Link
-              onMouseEnter={() => loadRoute({ to: post.id })}
+              onMouseEnter={() => loadRoute({ to: post.postId })}
               to={`./${post.postId}`}
             >
               {post.title}
