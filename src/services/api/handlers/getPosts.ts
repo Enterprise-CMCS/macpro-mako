@@ -1,4 +1,6 @@
 import { response } from "../libs/handler";
+import { post } from "../models/Post";
+import { PostService } from "../services/postService";
 
 type ExamplePostType = {
   id: string;
@@ -7,9 +9,11 @@ type ExamplePostType = {
 
 export const getPosts = async () => {
   try {
-    return response<ExamplePostType[]>({
+    const posts = await new PostService(post).getPosts();
+
+    return response({
       statusCode: 200,
-      body: [],
+      body: posts,
     });
   } catch (error) {
     return response({
