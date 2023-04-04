@@ -61,14 +61,14 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: PostId
+          - AttributeName: postId
             AttributeType: S
-          - AttributeName: CreatedAt
+          - AttributeName: createdAt
             AttributeType: N
         KeySchema:
-          - AttributeName: PostId
+          - AttributeName: postId
             KeyType: HASH
-          - AttributeName: CreatedAt
+          - AttributeName: createdAt
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
