@@ -1,6 +1,6 @@
 import type { APIGatewayEvent } from "aws-lambda";
 import { response } from "../libs/handler";
-import { createPostSchema, post, postSchema } from "../models/Post";
+import { createPostSchema, post } from "../models/Post";
 import { PostService } from "../services/postService";
 
 export const createPost = async (event: APIGatewayEvent) => {

@@ -10,24 +10,27 @@ export class PostService {
   }
 
   async createPost(post: CreatePost) {
-    const id = v4();
+    const postId = v4();
 
-    return await this.#postModel.create({ id, ...post });
+    return await this.#postModel.create({ postId, ...post });
   }
 
-  async getPost(id: string) {
-    return await this.#postModel.get(id);
+  async getPost(postId: string) {
+    return await this.#postModel.get(postId);
   }
 
-  async deletePost(id: string) {
-    const postToDelete = await this.getPost(id);
+  async deletePost(postId: string) {
+    const postToDelete = await this.getPost(postId);
 
     await postToDelete.delete();
 
     return postToDelete;
   }
 
-  async editPost(id: string, partialPost: Omit<ModelType<PostModel>, "id">) {
-    return await this.#postModel.update({ id }, { ...partialPost });
+  async editPost(
+    postId: string,
+    partialPost: Omit<ModelType<PostModel>, "postId">
+  ) {
+    return await this.#postModel.update({ postId }, { ...partialPost });
   }
 }

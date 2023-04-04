@@ -3,7 +3,7 @@ import * as dynamoose from "dynamoose";
 import { z } from "zod";
 
 export const postSchema = z.object({
-  id: z.string().uuid(),
+  postId: z.string().uuid(),
   title: z.string(),
   post: z.string(),
   createdAt: z.date(),
@@ -27,7 +27,7 @@ export const post = dynamoose.model<PostModel>(
   tableName,
   new dynamoose.Schema(
     {
-      id: String,
+      postId: String,
       title: String,
       post: String,
     },
