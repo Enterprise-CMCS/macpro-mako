@@ -4,7 +4,7 @@ import { validatePost } from "./validators";
 
 export const getPost = async (id: string) => {
   const post = await instance.get(`/posts/${id}`);
-  const validPost = validatePost(post);
+  const validPost = validatePost(post.data);
 
   return validPost;
 };
