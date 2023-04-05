@@ -11,7 +11,7 @@ export const getPost = async ({ pathParameters }) => {
 
     const params = validParams.parse(pathParameters);
 
-    const foundPost = new PostService(post).getPost(params.id);
+    const foundPost = await new PostService(post).getPost(params.id);
 
     return response({
       statusCode: 200,

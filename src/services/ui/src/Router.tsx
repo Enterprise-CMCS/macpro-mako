@@ -10,6 +10,7 @@ import { MainWrapper } from "./components";
 import { useQueryClient } from "@tanstack/react-query";
 import { getPostById } from "./hooks/queries/useGetPostById";
 import { getPosts } from "./api/useGetPosts";
+import { getPost } from "./api/useGetPost";
 
 const location = new ReactLocation();
 
@@ -36,9 +37,7 @@ export const AppRouter = () => {
           path: ":postId",
           loader: ({ params: { postId } }) =>
             queryClient.getQueryData(["posts", postId]) ??
-            queryClient.fetchQuery(["posts", postId], () =>
-              getPostById(postId)
-            ),
+            queryClient.fetchQuery(["posts", postId], () => getPost(postId)),
           element: <Page.Post />,
         },
       ],
