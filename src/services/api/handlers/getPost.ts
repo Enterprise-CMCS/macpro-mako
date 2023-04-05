@@ -30,6 +30,9 @@ export const getPost = async ({ pathParameters }) => {
         body: { message: error },
       });
     }
+
+    console.log(error);
+
     return response({
       statusCode: 404,
       body: { message: "Post not found" },
