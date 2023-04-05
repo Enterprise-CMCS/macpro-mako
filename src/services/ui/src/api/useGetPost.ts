@@ -13,6 +13,6 @@ export const useGetPost = (id: string) =>
   useQuery({
     queryKey: ["posts", id],
     queryFn: async () => {
-      await getPost(id);
+      return await getPost(id);
     },
   });
