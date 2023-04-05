@@ -16,7 +16,7 @@ export const createPostSchema = z.object({
 });
 
 const validEnvVar = z.string();
-const tableName = validEnvVar.parse("om-database-api-db-post");
+const tableName = validEnvVar.parse("om-database-api-db-posts");
 
 export type Post = z.infer<typeof postSchema>;
 export type CreatePost = z.infer<typeof createPostSchema>;
