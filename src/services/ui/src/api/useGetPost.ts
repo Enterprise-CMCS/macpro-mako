@@ -6,7 +6,7 @@ export const useGetPost = (id: string) =>
   useQuery({
     queryKey: ["posts", id],
     queryFn: async () => {
-      const post = await instance.get(`/post/${id}`);
+      const post = await instance.get(`/posts/${id}`);
       const validPost = validatePost(post);
 
       return validPost;
