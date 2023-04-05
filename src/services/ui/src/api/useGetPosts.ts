@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { instance } from "../lib/axios";
-import { Post, validatePosts } from "./validators";
+import { validatePosts } from "./validators";
 
 export const getPosts = async () => {
   const posts = await instance.get("/posts");
