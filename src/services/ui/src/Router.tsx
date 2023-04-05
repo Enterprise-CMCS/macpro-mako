@@ -8,7 +8,6 @@ import {
 import * as Page from "./pages";
 import { MainWrapper } from "./components";
 import { useQueryClient } from "@tanstack/react-query";
-import { getPostById } from "./hooks/queries/useGetPostById";
 import { getPosts } from "./api/useGetPosts";
 import { getPost } from "./api/useGetPost";
 

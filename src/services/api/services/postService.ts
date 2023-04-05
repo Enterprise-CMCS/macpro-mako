@@ -16,7 +16,7 @@ export class PostService {
   }
 
   async getPost(postId: string) {
-    return await this.#postModel.get(postId);
+    return await this.#postModel.get({ postId });
   }
 
   async getPosts() {
