@@ -1,7 +1,7 @@
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
 
-export const MainWrapper = ({ children }: { children: JSX.Element }) => {
+export default function MainWrapper({ children }: React.PropsWithChildren) {
   return (
     <div
       style={{
@@ -14,7 +14,7 @@ export const MainWrapper = ({ children }: { children: JSX.Element }) => {
       <UI.Header
         headerLogo={
           <UI.Link href="" title="Project Title">
-            <UI.Logo altText="Project Logo" source={cmsLogo} />
+            <UI.Logo altText="Project Logo" source={"/SiteLogo.svg"} />
           </UI.Link>
         }
         navData={[
@@ -76,4 +76,4 @@ export const MainWrapper = ({ children }: { children: JSX.Element }) => {
       <UI.Footer style={{ marginTop: "auto" }} emailAddress="QPP@cms.hhs.gov" />
     </div>
   );
-};
+}

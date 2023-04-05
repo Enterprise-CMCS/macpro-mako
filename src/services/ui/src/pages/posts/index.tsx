@@ -1,11 +1,10 @@
-import { Link, useLoadRoute, Outlet } from "@tanstack/react-location";
-import { useCreatePost } from "../api/useCreatePost";
-import { useGetPosts } from "../api/useGetPosts";
+import Link from "next/link";
+import { useCreatePost } from "../../api/useCreatePost";
+import { useGetPosts } from "../../api/useGetPosts";
 
-export const Posts = () => {
+export default function Posts() {
   const { data, isLoading, isError } = useGetPosts();
   const mutation = useCreatePost();
-  const loadRoute = useLoadRoute();
 
   if (isLoading) {
     return <>...Loading</>;
@@ -25,19 +24,13 @@ export const Posts = () => {
       >
         Temp Test Post Creation
       </button>
-      <Outlet />
       <ul>
         {data.map((post) => (
           <li key={post.postId}>
-            <Link
-              onMouseEnter={() => loadRoute({ to: post.postId })}
-              to={`./${post.postId}`}
-            >
-              {post.title}
-            </Link>
+            <Link href={`posts/${post.postId}`}>{post.title}</Link>
           </li>
         ))}
       </ul>
     </>
   );
-};
+}

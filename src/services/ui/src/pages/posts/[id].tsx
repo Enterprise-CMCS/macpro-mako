@@ -1,5 +1,7 @@
 import { MakeGenerics, useMatch } from "@tanstack/react-location";
-import { useGetPost } from "../api/useGetPost";
+import { useRouter } from "next/router";
+import { z } from "zod";
+import { useGetPost } from "../../api/useGetPost";
 
 type PostGenerics = MakeGenerics<{
   Params: {
@@ -7,12 +9,12 @@ type PostGenerics = MakeGenerics<{
   };
 }>;
 
-export const Post = () => {
-  const {
-    params: { postId },
-  } = useMatch<PostGenerics>();
+export default function Post() {
+  const router = useRouter();
+  const { id } = router.query;
+  const validId = z.string().parse(id);
 
-  const { data, isError, isLoading } = useGetPost(postId);
+  const { data, isError, isLoading } = useGetPost(validId);
 
   if (isLoading) {
     return <>...Loading</>;
@@ -28,4 +30,4 @@ export const Post = () => {
       <p>{data.post}</p>
     </section>
   );
-};
+}
