@@ -45,7 +45,7 @@ custom:
       - val
       - production
   tableName: ${self:service}-${sls:stage}-table
-  postsTableName: ${self:service}-${sls:stage}-post
+  postsTableName: ${self:service}-${sls:stage}-posts
 
 parameters:
   fileHash:
