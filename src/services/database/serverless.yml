@@ -64,13 +64,9 @@ resources:
         AttributeDefinitions:
           - AttributeName: postId
             AttributeType: S
-          - AttributeName: createdAt
-            AttributeType: N
         KeySchema:
           - AttributeName: postId
             KeyType: HASH
-          - AttributeName: createdAt
-            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
