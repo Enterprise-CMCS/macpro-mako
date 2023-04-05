@@ -9,9 +9,15 @@ export const getPost = async ({ pathParameters }) => {
       id: z.string().uuid(),
     });
 
+    console.log(validParams, "valid params");
+
     const params = validParams.parse(pathParameters);
 
+    console.log(params, "params");
+
     const foundPost = await new PostService(post).getPost(params.id);
+
+    console.log(foundPost, "found post");
 
     return response({
       statusCode: 200,
