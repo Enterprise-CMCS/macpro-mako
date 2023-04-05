@@ -11,11 +11,11 @@ export const getPost = async ({ pathParameters }) => {
 
     const params = validParams.parse(pathParameters);
 
-    // const foundPost = new PostService(post).getPost(params.id);
+    const foundPost = new PostService(post).getPost(params.id);
 
     return response({
       statusCode: 200,
-      body: {},
+      body: foundPost,
     });
   } catch (error) {
     if (error instanceof ZodError) {
