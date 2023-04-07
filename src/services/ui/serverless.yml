@@ -45,5 +45,5 @@ custom:
         NEXT_PUBLIC_API_REGION=${param:ApiRegion}
         NEXT_PUBLIC_API_URL=${param:ApiUrl}
         """ > .env.local
-        aws amplify --version
+        aws amplify help
         yarn run build
