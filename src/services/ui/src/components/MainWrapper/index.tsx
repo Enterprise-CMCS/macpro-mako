@@ -1,4 +1,5 @@
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
+import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
 import { Outlet } from "react-router-dom";
 
 export default function MainWrapper({ children }: React.PropsWithChildren) {
@@ -14,7 +15,7 @@ export default function MainWrapper({ children }: React.PropsWithChildren) {
       <UI.Header
         headerLogo={
           <UI.Link href="" title="Project Title">
-            <UI.Logo altText="Project Logo" source={"/SiteLogo.svg"} />
+            <UI.Logo altText="Project Logo" source={cmsLogo} />
           </UI.Link>
         }
         navData={[

@@ -15,11 +15,6 @@ export const Post = () => {
     <div className="mx-auto max-w-sm">
       <h1 className="mb-0">{post.title}</h1>
       <p>Last Updated - {post.updatedAt}</p>
-      <img
-        className="w-full"
-        src="https://placehold.co/200x200"
-        alt="placeholder post"
-      />
       <div>{post.post}</div>
     </div>
   );
