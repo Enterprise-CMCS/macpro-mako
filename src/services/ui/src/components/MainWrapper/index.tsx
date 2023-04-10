@@ -1,4 +1,5 @@
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
+import { Outlet } from "react-router-dom";
 
 export default function MainWrapper({ children }: React.PropsWithChildren) {
   return (
@@ -70,7 +71,7 @@ export default function MainWrapper({ children }: React.PropsWithChildren) {
         }
       />
       <main className="padding-x-5" style={{ flex: 1 }}>
-        {children}
+        <Outlet />
       </main>
       <UI.Footer style={{ marginTop: "auto" }} emailAddress="QPP@cms.hhs.gov" />
     </div>

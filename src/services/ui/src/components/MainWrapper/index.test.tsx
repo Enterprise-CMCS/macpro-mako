@@ -2,10 +2,10 @@
  * @vitest-environment jsdom
  */
 
-import { TestWrapper } from "../../utils/vitest/TestWrapper";
+import { TestWrapper } from "../../lib/TestWrapper";
 import { describe, expect, test } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { MainWrapper } from ".";
+import MainWrapper from ".";
 
 describe("Header test", () => {
   test("should show main wrapper text", () => {
