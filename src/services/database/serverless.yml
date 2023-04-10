@@ -38,7 +38,7 @@ provider:
 
 custom:
   project: ${env:PROJECT}
-  fileHash: ${file(./items.json)}
+  referenceDataHash: ${file(./src/reference/items.json)}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
@@ -48,19 +48,13 @@ custom:
   scripts:
     commands:
       seed: |
-        ls -la
-        aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-jsonplaceholder --invocation-type RequestResponse --payload file://items.json --log Tail /dev/stdout
-
-parameters:
-  fileHash:
-    Type: String
-    Default: ""
+        aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-testDataLoader --invocation-type RequestResponse --payload $(base64 ./src/test/items.json) --log Tail /dev/stdout
 
 functions:
   seeddatabase:
     handler: handlers/seeddatabase.handler
-  jsonplaceholder:
-    handler: handlers/jsonplaceholder.handler
+  testDataLoader:
+    handler: handlers/testDataLoader.handler
     environment:
       tableName: !Ref Table
 
@@ -91,4 +85,4 @@ resources:
           Fn::GetAtt: [SeeddatabaseLambdaFunction, "Arn"]
         DynamoTableName:
           Ref: Table
-        FILE_HASH: ${self:custom.fileHash}
+        Trigger: ${self:custom.referenceDataHash}
