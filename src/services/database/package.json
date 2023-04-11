@@ -7,7 +7,6 @@
   "license": "CC0-1.0",
   "devDependencies": {},
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.293.0",
     "cfn-response-async": "^1.0.0"
   }
 }
