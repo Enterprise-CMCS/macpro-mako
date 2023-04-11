@@ -1,6 +1,6 @@
 import { send, SUCCESS, FAILED } from "cfn-response-async";
 import { putItem } from "../../../libs";
-import * as items from "../items.json";
+import * as items from "../src/reference/items.json";
 
 exports.handler = async function (event: any, context: any) {
   console.log("Request:", JSON.stringify(event, undefined, 2));
