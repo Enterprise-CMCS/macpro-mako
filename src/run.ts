@@ -115,10 +115,26 @@ yargs(process.argv.slice(2))
       await runner.run_command_and_output(`SLS Deploy`, deployCmd, ".");
     }
   )
-  .command("test", "run all available tests.", {}, async () => {
-    await install_deps_for_services();
-    await runner.run_command_and_output(`Unit Tests`, ["yarn", "test-ci"], ".");
-  })
+  .command(
+    "test",
+    "run all available tests.",
+    {
+      stage: { type: "string", demandOption: true },
+    },
+    async (options) => {
+      await install_deps_for_services();
+      await runner.run_command_and_output(
+        `Unit Tests`,
+        ["yarn", "test-ci"],
+        "."
+      );
+      await runner.run_command_and_output(
+        `Load test data`,
+        ["sls", "database", "seed", "--stage", options.stage],
+        "."
+      );
+    }
+  )
   .command("test-gui", "open unit-testing gui for vitest.", {}, async () => {
     await install_deps_for_services();
     await runner.run_command_and_output(
@@ -283,6 +299,8 @@ yargs(process.argv.slice(2))
         customJiraFields: {
           customfield_14117: [{ value: "Platform Team" }],
           customfield_14151: [{ value: "Not Applicable " }],
+          customfield_14068:
+            "* All findings of this type are resolved or suppressed, indicated by a Workflow Status of Resolved or Suppressed.  (Note:  this ticket will automatically close when the AC is met.)",
         },
       }).sync();
     }

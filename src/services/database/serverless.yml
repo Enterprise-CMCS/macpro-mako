@@ -10,6 +10,7 @@ plugins:
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@stratiformdigital/serverless-iam-helper"
   - serverless-bundle
+  - serverless-plugin-scripts
 
 provider:
   name: aws
@@ -38,7 +39,7 @@ provider:
 
 custom:
   project: ${env:PROJECT}
-  fileHash: ${file(./items.json)}
+  referenceDataHash: ${file(./src/reference/items.json)}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
@@ -46,15 +47,29 @@ custom:
       - production
   tableName: ${self:service}-${sls:stage}-table
   postsTableName: ${self:service}-${sls:stage}-posts
-
-parameters:
-  fileHash:
-    Type: String
-    Default: ""
+  scripts:
+    commands:
+      seed: |
+        set -e
+        echo 'Loading test data...'
+        call=`aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-testDataLoader --invocation-type RequestResponse --payload $(base64 ./src/test/items.json) --log Tail /dev/null`
+        error=`echo $call | jq 'select(.FunctionError != null)'`
+        if [ "$error" != "null" -a -n "$error" ]; then
+          echo "An error occured while loading test data.  Error below"
+          echo `echo $call | jq -r '.LogResult'` | base64 --decode
+          exit 1
+        fi
 
 functions:
   seeddatabase:
     handler: handlers/seeddatabase.handler
+    environment:
+      region: ${self:provider.region}
+  testDataLoader:
+    handler: handlers/testDataLoader.handler
+    environment:
+      region: ${self:provider.region}
+      tableName: !Ref Table
 
 resources:
   Resources:
@@ -96,4 +111,4 @@ resources:
           Fn::GetAtt: [SeeddatabaseLambdaFunction, "Arn"]
         DynamoTableName:
           Ref: Table
-        FILE_HASH: ${self:custom.fileHash}
+        Trigger: ${self:custom.referenceDataHash}
