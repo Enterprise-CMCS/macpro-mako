@@ -1,15 +1,20 @@
-// import * as dynamodb from "../../../libs/dynamodb-lib";
+import * as dynamodb from "../../../libs/dynamodb-lib";
 
 exports.handler = async (event, context) => {
   console.log("Request:", JSON.stringify(event, undefined, 2));
-  // const responseData = {};
-  // let responseStatus = "SUCCESS";
   try {
+    let tableName = process.env.tableName;
     console.log("Putting test data...");
-    await new Promise(r => setTimeout(r, 5000));
+    for (const item of event) {
+      console.log(item);
+      await dynamodb.putItem({
+        tableName,
+        item: { PK: item.recordId, SK: item.state },
+      });
+    }
+    return "SUCCESS";
   } catch (error) {
-    console.error(error);
-  } finally {
-    console.log("finally");
+    console.log(error);
+    throw "ERROR";
   }
 };

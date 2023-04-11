@@ -48,14 +48,26 @@ custom:
   scripts:
     commands:
       seed: |
-        aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-testDataLoader --invocation-type RequestResponse --payload $(base64 ./src/test/items.json) --log Tail /dev/stdout
+        set -e
+        echo 'Loading test data...'
+        call=`aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-testDataLoader --invocation-type RequestResponse --payload $(base64 ./src/test/items.json) --log Tail /dev/null`
+        # function_error=`echo $call | jq '.FunctionError'`
+        error=`echo $call | jq 'select(.FunctionError != null)'`
+        if [ "$error" != "null" -a -n "$error" ]; then
+          echo "An error occured while loading test data.  Error below"
+          echo `echo $call | jq -r '.LogResult'` | base64 --decode
+          exit 1
+        fi
 
 functions:
   seeddatabase:
     handler: handlers/seeddatabase.handler
+    environment:
+      region: ${self:provider.region}
   testDataLoader:
     handler: handlers/testDataLoader.handler
     environment:
+      region: ${self:provider.region}
       tableName: !Ref Table
 
 resources:
