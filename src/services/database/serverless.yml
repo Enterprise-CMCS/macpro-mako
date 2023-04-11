@@ -51,7 +51,6 @@ custom:
         set -e
         echo 'Loading test data...'
         call=`aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-testDataLoader --invocation-type RequestResponse --payload $(base64 ./src/test/items.json) --log Tail /dev/null`
-        # function_error=`echo $call | jq '.FunctionError'`
         error=`echo $call | jq 'select(.FunctionError != null)'`
         if [ "$error" != "null" -a -n "$error" ]; then
           echo "An error occured while loading test data.  Error below"
