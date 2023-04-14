@@ -16,7 +16,7 @@ export const createPostSchema = z.object({
 });
 
 const validEnvVar = z.string();
-const tableName = validEnvVar.parse(process.env.postsTableName);
+const tableName = validEnvVar.parse(process.env.postsTable);
 
 export type Post = z.infer<typeof postSchema>;
 export type CreatePost = z.infer<typeof createPostSchema>;
