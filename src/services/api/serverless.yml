@@ -11,7 +11,7 @@ provider:
   name: aws
   runtime: nodejs18.x
   environment:
-    postsTable: ${params:postsTableName}
+    postsTable: ${param:postsTableName}
   logs:
     restApi: true
   region: ${env:REGION_A}
