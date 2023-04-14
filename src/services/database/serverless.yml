@@ -23,6 +23,7 @@ provider:
         - Effect: Allow
           Action:
             - dynamodb:Query
+            - dynamodb:Scan
             - dynamodb:GetItem
             - dynamodb:PutItem
             - dynamodb:UpdateItem
@@ -45,6 +46,7 @@ custom:
       - val
       - production
   tableName: ${self:service}-${sls:stage}-table
+  postsTableName: ${self:service}-${sls:stage}-posts
   scripts:
     commands:
       seed: |
@@ -71,6 +73,19 @@ functions:
 
 resources:
   Resources:
+    PostsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: postId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: postId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.postsTableName}
     Table:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -97,3 +112,7 @@ resources:
         DynamoTableName:
           Ref: Table
         Trigger: ${self:custom.referenceDataHash}
+  Outputs:
+    PostTableName:
+      Description: database table name for posts
+      Value: ${self:custom.postsTableName}

@@ -7,6 +7,8 @@ services:
     path: src/services/database
   api:
     path: src/services/api
+    params:
+      postsTableName: ${database.PostTableName}
   ui-infra:
     path: src/services/ui-infra
   ui:

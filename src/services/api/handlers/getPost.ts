@@ -1,21 +1,30 @@
+import { z, ZodError } from "zod";
 import { response } from "../libs/handler";
+import { post } from "../models/Post";
+import { PostService } from "../services/postService";
 
 export const getPost = async ({ pathParameters }) => {
   try {
-    const { id } = pathParameters;
+    const validParams = z.object({
+      id: z.string().uuid(),
+    });
 
-    if (!id) {
-      return response({
-        statusCode: 400,
-        body: { message: "Invalid request" },
-      });
-    }
+    const params = validParams.parse(pathParameters);
+
+    const foundPost = await new PostService(post).getPost(params.id);
 
     return response({
       statusCode: 200,
-      body: { post: { id, title: "My first post" } },
+      body: foundPost,
     });
   } catch (error) {
+    if (error instanceof ZodError) {
+      return response({
+        statusCode: 404,
+        body: { message: error },
+      });
+    }
+
     return response({
       statusCode: 404,
       body: { message: "Post not found" },

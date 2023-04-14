@@ -1,7 +1,8 @@
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
+import { Outlet } from "react-router-dom";
 
-export const MainWrapper = ({ children }: { children: JSX.Element }) => {
+export default function MainWrapper({ children }: React.PropsWithChildren) {
   return (
     <div
       style={{
@@ -71,9 +72,9 @@ export const MainWrapper = ({ children }: { children: JSX.Element }) => {
         }
       />
       <main className="padding-x-5" style={{ flex: 1 }}>
-        {children}
+        <Outlet />
       </main>
       <UI.Footer style={{ marginTop: "auto" }} emailAddress="QPP@cms.hhs.gov" />
     </div>
   );
-};
+}

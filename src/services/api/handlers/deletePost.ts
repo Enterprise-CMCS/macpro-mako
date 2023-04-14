@@ -1,25 +1,29 @@
+import { z, ZodError } from "zod";
 import { response } from "../libs/handler";
+import { post } from "../models/Post";
+import { PostService } from "../services/postService";
 
 export const deletePost = async ({ pathParameters }) => {
   try {
-    if (!pathParameters || !pathParameters.id) {
-      return response({
-        statusCode: 400,
-        body: { message: "Invalid request" },
-      });
-    }
+    const validParams = z.object({
+      id: z.string().uuid(),
+    });
 
-    const { id } = pathParameters;
+    const params = validParams.parse(pathParameters);
+
+    const postToDelete = await new PostService(post).deletePost(params.id);
 
     return response({
       statusCode: 200,
-      body: { post: `Post with ${id} was deleted` },
+      body: postToDelete,
     });
   } catch (error) {
-    return response({
-      statusCode: 404,
-      body: { message: error },
-    });
+    if (error instanceof ZodError) {
+      return response({
+        statusCode: 404,
+        body: { message: error },
+      });
+    }
   }
 };
 

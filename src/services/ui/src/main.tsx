@@ -1,17 +1,17 @@
-import "@enterprise-cmcs/macpro-ux-lib/build/assets/css/index.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AppRouter } from "./Router";
+import { RouterProvider } from "react-router-dom";
+import "./index.css";
+import "@enterprise-cmcs/macpro-ux-lib/build/assets/css/index.css";
+import { router } from "./router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const client = new QueryClient();
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <QueryClientProvider client={client}>
-      <AppRouter />
-      <ReactQueryDevtools initialIsOpen={false} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   </React.StrictMode>
 );
