@@ -112,3 +112,7 @@ resources:
         DynamoTableName:
           Ref: Table
         Trigger: ${self:custom.referenceDataHash}
+  Outputs:
+    PostTableName:
+      Description: database table name for posts
+      Value: ${self:custom.postsTableName}
