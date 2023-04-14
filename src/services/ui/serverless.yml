@@ -9,11 +9,6 @@ plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
 
-constructs:
-  react:
-    type: single-page-app
-    path: dist
-
 provider:
   name: aws
   runtime: nodejs18.x
