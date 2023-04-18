@@ -17,6 +17,10 @@
     "type": "git",
     "url": "https://github.com/Enterprise-CMCS/macpro-om-template"
   },
+  "workspaces": [
+    "src/services/*",
+    "src/libs"
+  ],
   "license": "CC0-1.0",
   "homepage": "https://github.com/Enterprise-CMCS/macpro-om-template#readme",
   "devDependencies": {
@@ -45,6 +49,7 @@
     "serverless-plugin-typescript": "^2.1.4",
     "serverless-plugin-warmup": "^7.1.0",
     "serverless-stack-termination-protection": "^2.0.2",
+    "turbo": "^1.9.3",
     "vitest": "^0.26.2"
   },
   "release": {
