@@ -82,6 +82,8 @@ resources:
         KeySchema:
           - AttributeName: postId
             KeyType: HASH
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
@@ -100,6 +102,8 @@ resources:
             KeyType: HASH
           - AttributeName: SK
             KeyType: RANGE
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
