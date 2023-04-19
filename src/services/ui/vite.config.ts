@@ -7,5 +7,9 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: "./testing/setup.ts",
+    coverage: {
+      provider: "istanbul",
+      reporter: "json",
+    },
   },
 });
