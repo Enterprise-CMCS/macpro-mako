@@ -5,6 +5,7 @@
       "outputs": ["dist/**"]
     },
     "lint": {},
+    "build:cli": {},
     "test:watch": {},
     "test:gui": {}
   }

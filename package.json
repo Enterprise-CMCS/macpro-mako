@@ -12,6 +12,7 @@
     "test": "turbo test",
     "test-ci": "turbo test",
     "lint": "turbo lint",
+    "build:cli": "turbo build:cli",
     "test:watch": "turbo test:watch",
     "test:gui": "turbo test:gui"
   },
