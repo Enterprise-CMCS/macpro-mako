@@ -4,6 +4,7 @@
   "scripts": {
     "lint": "tsc"
   },
+  "private": true,
   "dependencies": {
     "@enterprise-cmcs/macpro-security-hub-sync": "^1.5.0",
     "@enterprise-cmcs/macpro-serverless-running-stages": "^1.0.6",

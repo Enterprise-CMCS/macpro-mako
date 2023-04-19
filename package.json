@@ -11,7 +11,8 @@
   "scripts": {
     "test": "turbo test",
     "test-ci": "turbo test",
-    "test-gui": "vitest --ui"
+    "test-gui": "vitest --ui",
+    "lint": "turbo lint"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,8 @@
   },
   "workspaces": [
     "src/services/*",
-    "src/libs"
+    "src/libs",
+    "src/cli"
   ],
   "license": "CC0-1.0",
   "homepage": "https://github.com/Enterprise-CMCS/macpro-om-template#readme",

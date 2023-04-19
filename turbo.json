@@ -3,6 +3,7 @@
   "pipeline": {
     "test": {
       "outputs": ["dist/**"]
-    }
+    },
+    "lint": {}
   }
 }
