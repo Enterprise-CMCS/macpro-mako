@@ -11,8 +11,9 @@
   "scripts": {
     "test": "turbo test",
     "test-ci": "turbo test",
-    "test-gui": "vitest --ui",
-    "lint": "turbo lint"
+    "lint": "turbo lint",
+    "test:watch": "turbo test:watch",
+    "test:gui": "turbo test:gui"
   },
   "repository": {
     "type": "git",

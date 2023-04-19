@@ -4,6 +4,8 @@
     "test": {
       "outputs": ["dist/**"]
     },
-    "lint": {}
+    "lint": {},
+    "test:watch": {},
+    "test:gui": {}
   }
 }
