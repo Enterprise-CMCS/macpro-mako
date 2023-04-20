@@ -16,14 +16,12 @@
     "test:watch": "turbo test:watch",
     "test:gui": "turbo test:gui"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Enterprise-CMCS/macpro-om-template"
-  },
+  "repository": "https://github.com/Enterprise-CMCS/macpro-om-template",
   "workspaces": [
     "src/services/*",
     "src/libs",
-    "src/cli"
+    "src/cli",
+    "src/packages/*"
   ],
   "license": "CC0-1.0",
   "homepage": "https://github.com/Enterprise-CMCS/macpro-om-template#readme",
