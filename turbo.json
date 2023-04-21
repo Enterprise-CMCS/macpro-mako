@@ -4,7 +4,9 @@
     "test": {
       "outputs": ["dist/**"]
     },
-    "lint": {},
+    "lint": {
+      "cache": false
+    },
     "build:cli": {},
     "test:watch": {},
     "test:gui": {}

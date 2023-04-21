@@ -3,7 +3,7 @@ import { v4 } from 'uuid'
 import { CreatePost, PostModel } from '../models/Post'
 
 export class PostService {
-  #postModel: ModelType<PostModel>;
+  #postModel: ModelType<PostModel>
 
   constructor(postModel: ModelType<PostModel>) {
     this.#postModel = postModel
