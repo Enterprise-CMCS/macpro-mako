@@ -1,14 +1,14 @@
-import * as UI from "@enterprise-cmcs/macpro-ux-lib";
-import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
-import { Outlet } from "react-router-dom";
+import * as UI from '@enterprise-cmcs/macpro-ux-lib'
+import cmsLogo from '@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg'
+import { Outlet } from 'react-router-dom'
 
 export default function MainWrapper({ children }: React.PropsWithChildren) {
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
       }}
     >
       <UI.UsaBanner locale="en" />
@@ -20,23 +20,23 @@ export default function MainWrapper({ children }: React.PropsWithChildren) {
         }
         navData={[
           {
-            buttonText: "Section One",
+            buttonText: 'Section One',
             columns: [
               [
                 {
-                  href: "/",
-                  text: "Home Page",
+                  href: '/',
+                  text: 'Home Page',
                 },
               ],
             ],
           },
           {
-            buttonText: "Section Two",
+            buttonText: 'Section Two',
             columns: [
               [
                 {
-                  href: "/posts",
-                  text: "Posts",
+                  href: '/posts',
+                  text: 'Posts',
                 },
               ],
             ],
@@ -46,25 +46,25 @@ export default function MainWrapper({ children }: React.PropsWithChildren) {
           <UI.ActionsMenu
             links={[
               {
-                href: "",
-                iconName: "person",
+                href: '',
+                iconName: 'person',
                 onClick: function noRefCheck() {},
-                target: "_blank",
-                text: "Manage Profile",
+                target: '_blank',
+                text: 'Manage Profile',
               },
               {
-                href: "",
-                iconName: "people",
+                href: '',
+                iconName: 'people',
                 onClick: function noRefCheck() {},
-                target: "_blank",
-                text: "Request Role Change",
+                target: '_blank',
+                text: 'Request Role Change',
               },
               {
-                href: "",
-                iconName: "logout",
+                href: '',
+                iconName: 'logout',
                 onClick: function noRefCheck() {},
-                target: "_blank",
-                text: "Log Out",
+                target: '_blank',
+                text: 'Log Out',
               },
             ]}
             name="My Account"
@@ -74,7 +74,7 @@ export default function MainWrapper({ children }: React.PropsWithChildren) {
       <main className="padding-x-5" style={{ flex: 1 }}>
         <Outlet />
       </main>
-      <UI.Footer style={{ marginTop: "auto" }} emailAddress="QPP@cms.hhs.gov" />
+      <UI.Footer style={{ marginTop: 'auto' }} emailAddress="QPP@cms.hhs.gov" />
     </div>
-  );
+  )
 }

@@ -1,14 +1,14 @@
-import { createBrowserRouter } from "react-router-dom";
-import MainWrapper from "./components/MainWrapper";
-import * as P from "./pages";
+import { createBrowserRouter } from 'react-router-dom'
+import MainWrapper from './components/MainWrapper'
+import * as P from './pages'
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <MainWrapper />,
     children: [
-      { path: "/posts", element: <P.Posts /> },
-      { path: "/posts/:id", element: <P.Post /> },
+      { path: '/posts', element: <P.Posts /> },
+      { path: '/posts/:id', element: <P.Post /> },
     ],
   },
-]);
+])
