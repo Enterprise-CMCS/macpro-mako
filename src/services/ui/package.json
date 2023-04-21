@@ -12,6 +12,7 @@
   "dependencies": {
     "@enterprise-cmcs/macpro-ux-lib": "^1.22.1",
     "@heroicons/react": "^2.0.17",
+    "@hookform/resolvers": "^3.1.0",
     "@tanstack/react-query": "^4.29.1",
     "axios": "^1.3.5",
     "date-fns": "^2.29.3",
