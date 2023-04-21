@@ -1,6 +1,7 @@
 {
   "name": "database",
   "description": "",
+  "private": true,
   "version": "0.0.0",
   "main": "index.js",
   "author": "",
@@ -13,5 +14,8 @@
   },
   "dependencies": {
     "cfn-response-async": "^1.0.0"
+  },
+  "scripts": {
+    "lint": "eslint **/*.{ts,js}"
   }
 }

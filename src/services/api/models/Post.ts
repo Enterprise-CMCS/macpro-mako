@@ -1,6 +1,6 @@
-import { Item } from "dynamoose/dist/Item";
-import * as dynamoose from "dynamoose";
-import { z } from "zod";
+import { Item } from 'dynamoose/dist/Item'
+import * as dynamoose from 'dynamoose'
+import { z } from 'zod'
 
 export const postSchema = z.object({
   postId: z.string().uuid(),
@@ -8,15 +8,15 @@ export const postSchema = z.object({
   post: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
-});
+})
 
 export const createPostSchema = z.object({
   title: z.string(),
   post: z.string(),
-});
+})
 
-const validEnvVar = z.string();
-const tableName = validEnvVar.parse(process.env.postsTable);
+const validEnvVar = z.string()
+const tableName = validEnvVar.parse(process.env.postsTable)
 
 export type Post = z.infer<typeof postSchema>;
 export type CreatePost = z.infer<typeof createPostSchema>;
@@ -36,4 +36,4 @@ export const post = dynamoose.model<PostModel>(
   {
     create: false,
   }
-);
+)
