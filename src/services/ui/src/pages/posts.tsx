@@ -14,7 +14,7 @@ export const Posts = () => {
       <h3 className="text-4xl text-center">Posts</h3>
       <ul className="mx-auto max-w-sm flex flex-col gap-4">
         {data.map((post) => (
-          <li>
+          <li key={post.postId}>
             <Link
               to={`/posts/${post.postId}`}
               className="cursor-pointer w-full justify-center items-center flex flex-row shadow-md p-4"
