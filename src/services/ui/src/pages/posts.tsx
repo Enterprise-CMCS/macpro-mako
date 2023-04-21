@@ -2,6 +2,7 @@ import { useGetPosts } from "../api/useGetPosts";
 import { Link } from "react-router-dom";
 import { formatDistance } from "date-fns";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 
 export const Posts = () => {
   const { isLoading, isError, data } = useGetPosts();
@@ -30,6 +31,7 @@ export const Posts = () => {
           </li>
         ))}
       </ul>
+      <UI.Button buttonText="New Post" />
     </>
   );
 };

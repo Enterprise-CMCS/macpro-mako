@@ -38,6 +38,10 @@ export default function MainWrapper({ children }: React.PropsWithChildren) {
                   href: "/posts",
                   text: "Posts",
                 },
+                {
+                  href: "/issues",
+                  text: "Issues",
+                },
               ],
             ],
           },
