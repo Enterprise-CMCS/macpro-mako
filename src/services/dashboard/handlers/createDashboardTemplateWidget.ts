@@ -2,14 +2,14 @@ import type {
   APIGatewayEvent,
   APIGatewayProxyCallback,
   Context,
-} from "aws-lambda";
+} from 'aws-lambda'
 
 export const handler = async (
   _event: APIGatewayEvent,
   _context: Context,
   _callback: APIGatewayProxyCallback
 ) => {
-  const lambdaArnToCall = process.env.lambdaArnToCall!;
+  const lambdaArnToCall = process.env.lambdaArnToCall!
   try {
     const html = `
       <div style="width: 100%; display: flex; justify-content: center;">
@@ -18,15 +18,15 @@ export const handler = async (
       <cwdb-action action="call" endpoint="${lambdaArnToCall}" display="popup">  
        {}
       </cwdb-action> 
-      `;
+      `
 
-    return html;
+    return html
   } catch {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: "An error occured",
+        message: 'An error occured',
       }),
-    };
+    }
   }
-};
+}
