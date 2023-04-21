@@ -16,6 +16,6 @@
     "cfn-response-async": "^1.0.0"
   },
   "scripts": {
-    "lint": "eslint **/*.{ts,js}"
+    "lint": "eslint '**/*.{ts,js}'"
   }
 }

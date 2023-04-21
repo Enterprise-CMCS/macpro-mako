@@ -12,7 +12,7 @@
     "eslint-config-custom-server": "*"
   },
   "scripts": {
-    "lint": "eslint **/*.ts"
+    "lint": "eslint '**/*.ts'"
   },
   "version": "0.0.0"
 }
