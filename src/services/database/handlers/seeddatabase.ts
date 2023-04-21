@@ -1,22 +1,22 @@
-import { send, SUCCESS, FAILED } from "cfn-response-async";
-import { putItem } from "../../../libs";
-import * as items from "../src/reference/items.json";
+import { send, SUCCESS, FAILED } from 'cfn-response-async'
+import { putItem } from '../../../libs'
+import * as items from '../src/reference/items.json'
 
 exports.handler = async function (event: any, context: any) {
-  console.log("Request:", JSON.stringify(event, undefined, 2));
-  const responseData = {};
-  let responseStatus: any = SUCCESS;
+  console.log('Request:', JSON.stringify(event, undefined, 2))
+  const responseData = {}
+  let responseStatus: any = SUCCESS
   try {
     for await (const item of items) {
       putItem({
         tableName: event.ResourceProperties.DynamoTableName,
         item: { PK: item.recordId, SK: item.state },
-      });
+      })
     }
   } catch (error) {
-    console.error(error);
-    responseStatus = FAILED;
+    console.error(error)
+    responseStatus = FAILED
   } finally {
-    await send(event, context, responseStatus, responseData, "static");
+    await send(event, context, responseStatus, responseData, 'static')
   }
-};
+}
