@@ -18,8 +18,8 @@ module.exports = {
   rules: {
     indent: ["error", 2],
     "linebreak-style": ["error", "unix"],
-    quotes: ["error", "single"],
-    semi: ["error", "never"],
+    quotes: ["error", "double"],
+    semi: ["error", "always"],
     "react/react-in-jsx-scope": 0,
   },
   settings: {

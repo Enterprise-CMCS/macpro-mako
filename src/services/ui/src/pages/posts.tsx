@@ -1,13 +1,13 @@
-import { useGetPosts } from '../api/useGetPosts'
-import { Link } from 'react-router-dom'
-import { formatDistance } from 'date-fns'
-import { TrashIcon } from '@heroicons/react/24/outline'
+import { useGetPosts } from "../api/useGetPosts";
+import { Link } from "react-router-dom";
+import { formatDistance } from "date-fns";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 export const Posts = () => {
-  const { isLoading, isError, data } = useGetPosts()
+  const { isLoading, isError, data } = useGetPosts();
 
-  if (isLoading) return <>Loading...</>
-  if (isError) return <>Error...</>
+  if (isLoading) return <>Loading...</>;
+  if (isError) return <>Error...</>;
 
   return (
     <>
@@ -31,5 +31,5 @@ export const Posts = () => {
         ))}
       </ul>
     </>
-  )
-}
+  );
+};

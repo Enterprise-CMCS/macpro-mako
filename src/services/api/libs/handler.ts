@@ -2,7 +2,7 @@ import type {
   APIGatewayEvent,
   APIGatewayProxyResult,
   Context,
-} from 'aws-lambda'
+} from "aws-lambda";
 
 export const handler = async (
   handler: (
@@ -10,18 +10,18 @@ export const handler = async (
     context?: Context
   ) => Promise<APIGatewayProxyResult>
 ) => {
-  const handlerResponse = await handler()
+  const handlerResponse = await handler();
 
   const response: APIGatewayProxyResult = {
     headers: {
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'OPTIONS,POST,GET,PUT,DELETE',
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,DELETE",
     },
     ...handlerResponse,
-  }
-  return () => response
-}
+  };
+  return () => response;
+};
 
 export function response<T = { [key: string | number]: any }>(
   currentResponse: {
@@ -32,10 +32,10 @@ export function response<T = { [key: string | number]: any }>(
   options?: { disableCors?: boolean }
 ) {
   const corsHeaders = {
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET,PUT,DELETE',
-  }
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,DELETE",
+  };
 
   return {
     ...currentResponse,
@@ -44,5 +44,5 @@ export function response<T = { [key: string | number]: any }>(
       ...(options?.disableCors ? {} : corsHeaders),
       ...currentResponse.headers,
     },
-  }
+  };
 }

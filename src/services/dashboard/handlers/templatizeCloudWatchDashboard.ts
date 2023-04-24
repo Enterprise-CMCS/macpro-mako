@@ -1,10 +1,10 @@
-import { CloudWatch } from '@aws-sdk/client-cloudwatch'
-import { checkEnvVars } from '../../../libs'
+import { CloudWatch } from "@aws-sdk/client-cloudwatch";
+import { checkEnvVars } from "../../../libs";
 import type {
   APIGatewayEvent,
   APIGatewayProxyCallback,
   Context,
-} from 'aws-lambda'
+} from "aws-lambda";
 
 /**
  * It takes a string and a dictionary of strings and replaces all the keys in the dictionary with their
@@ -18,11 +18,11 @@ export const replaceStringValues = (
   replacables: Record<string, string>
 ) => {
   const result = string.replace(
-    new RegExp(Object.keys(replacables).join('|'), 'gi'),
+    new RegExp(Object.keys(replacables).join("|"), "gi"),
     (matched) => replacables[matched]
-  )
-  return result
-}
+  );
+  return result;
+};
 
 /**
  * It takes a CloudWatch dashboard template and replaces the values of the dashboard with the values of
@@ -42,24 +42,24 @@ export const handler = async (
 ) => {
   try {
     // Environment variables passed to lambda from serverless.yml
-    checkEnvVars(['service', 'accountId', 'stage', 'region'])
-    const { service, accountId, stage, region } = process.env
-    const client = new CloudWatch({})
+    checkEnvVars(["service", "accountId", "stage", "region"]);
+    const { service, accountId, stage, region } = process.env;
+    const client = new CloudWatch({});
     const dashboard = await client.getDashboard({
       DashboardName: `${service}-${stage}`,
-    })
+    });
 
     const replacables = {
-      [accountId!]: '${aws:accountId}',
-      [stage!]: '${sls:stage}',
-      [region!]: '${env:REGION_A}',
-      [service!]: '${self:service}',
-    }
-    const templateJson = dashboard.DashboardBody!
-    const results = replaceStringValues(templateJson, replacables)
-    return results
+      [accountId!]: "${aws:accountId}",
+      [stage!]: "${sls:stage}",
+      [region!]: "${env:REGION_A}",
+      [service!]: "${self:service}",
+    };
+    const templateJson = dashboard.DashboardBody!;
+    const results = replaceStringValues(templateJson, replacables);
+    return results;
   } catch (error) {
-    console.error(error)
-    throw error
+    console.error(error);
+    throw error;
   }
-}
+};
