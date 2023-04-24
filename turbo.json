@@ -7,7 +7,9 @@
     "lint": {
       "cache": false
     },
-    "build:cli": {},
+    "build:cli": {
+      "cache": false
+    },
     "test:watch": {},
     "test:gui": {}
   }
