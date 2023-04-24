@@ -35,12 +35,12 @@ export default function MainWrapper({ children }: React.PropsWithChildren) {
             columns: [
               [
                 {
-                  href: "/posts",
-                  text: "Posts",
+                  href: "/issue/list",
+                  text: "Issues",
                 },
                 {
-                  href: "/issues",
-                  text: "Issues",
+                  href: "/issue/new",
+                  text: "New Issue",
                 },
               ],
             ],

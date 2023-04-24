@@ -1,9 +1,9 @@
 import { z, ZodError } from "zod";
 import { response } from "../libs/handler";
-import { post } from "../models/Post";
-import { PostService } from "../services/postService";
+import { issue } from "../models/Issue";
+import { IssueService } from "../services/issueService";
 
-export const deletePost = async ({ pathParameters }) => {
+export const getIssue = async ({ pathParameters }) => {
   try {
     const validParams = z.object({
       id: z.string().uuid(),
@@ -11,11 +11,11 @@ export const deletePost = async ({ pathParameters }) => {
 
     const params = validParams.parse(pathParameters);
 
-    const postToDelete = await new PostService(post).deletePost(params.id);
+    const foundIssue = await new IssueService(issue).getIssue(params.id);
 
     return response({
       statusCode: 200,
-      body: postToDelete,
+      body: foundIssue,
     });
   } catch (error) {
     if (error instanceof ZodError) {
@@ -24,7 +24,12 @@ export const deletePost = async ({ pathParameters }) => {
         body: { message: error },
       });
     }
+
+    return response({
+      statusCode: 404,
+      body: { message: "Issue not found" },
+    });
   }
 };
 
-export const handler = deletePost;
+export const handler = getIssue;

@@ -1,20 +1,25 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
-import { IssueSchema, issueSchema } from "../api/validators";
+import { ErrorMessage } from "@hookform/error-message";
+import { CreateIssueSchema, createIssueSchema } from "../../api/validators";
+import { useCreateIssue } from "../../api";
 
-export function Issues() {
+export function NewIssue() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IssueSchema>({ resolver: zodResolver(issueSchema) });
-
-  const onSubmit = (data: IssueSchema) => {
-    console.log(data);
+  } = useForm<CreateIssueSchema>({ resolver: zodResolver(createIssueSchema) });
+  const { isLoading, mutateAsync } = useCreateIssue();
+  const onSubmit = async (data: CreateIssueSchema) => {
+    try {
+      await mutateAsync(data);
+    } catch (err: any) {
+      console.log({ err });
+      alert(err.response.data.message.message);
+    }
   };
-
-  console.log({ errors });
 
   return (
     <form
@@ -39,9 +44,15 @@ export function Issues() {
               errors.title ? "border-red-500" : ""
             }`}
           />
-          {errors.title && (
-            <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>
-          )}
+          <ErrorMessage
+            errors={errors}
+            name="title"
+            render={({ message }) => (
+              <UI.Typography className="text-red-500 text-xs mt-1">
+                {message}
+              </UI.Typography>
+            )}
+          />
         </div>
         <div className="mb-4">
           <label htmlFor="description">
@@ -56,11 +67,15 @@ export function Issues() {
               errors.description ? "border-red-500" : ""
             }`}
           />
-          {errors.description && (
-            <p className="text-red-500 text-xs mt-1">
-              {errors.description.message}
-            </p>
-          )}
+          <ErrorMessage
+            errors={errors}
+            name="description"
+            render={({ message }) => (
+              <UI.Typography className="text-red-500 text-xs mt-1">
+                {message}
+              </UI.Typography>
+            )}
+          />
         </div>
         <div className="mb-4">
           <label htmlFor="priority">
@@ -71,22 +86,27 @@ export function Issues() {
           <select
             {...register("priority")}
             id="priority"
+            defaultValue=""
             className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
               errors.priority ? "border-red-500" : ""
             }`}
           >
-            <option value="" disabled selected>
+            <option value="" disabled>
               -- select --
             </option>
             <option value="high">High</option>
             <option value="medium">Medium</option>
             <option value="low">Low</option>
           </select>
-          {errors.priority && (
-            <p className="text-red-500 text-xs mt-1">
-              {errors.priority.message}
-            </p>
-          )}
+          <ErrorMessage
+            errors={errors}
+            name="priority"
+            render={({ message }) => (
+              <UI.Typography className="text-red-500 text-xs mt-1">
+                {message}
+              </UI.Typography>
+            )}
+          />
         </div>
         <div className="mb-4">
           <label htmlFor="type">
@@ -109,11 +129,22 @@ export function Issues() {
             <option value="functionality">Functionality</option>
             <option value="other">Other</option>
           </select>
-          {errors.type && (
-            <p className="text-red-500 text-xs mt-1">{errors.type.message}</p>
-          )}
+          <ErrorMessage
+            errors={errors}
+            name="type"
+            render={({ message }) => (
+              <UI.Typography className="text-red-500 text-xs mt-1">
+                {message}
+              </UI.Typography>
+            )}
+          />
         </div>
-        <UI.Button buttonText="Submit" type="submit" className="float-right" />
+        <UI.Button
+          buttonText={isLoading ? "Loading" : "Submit"}
+          type="submit"
+          className="float-right"
+          disabled={isLoading}
+        />
       </div>
     </form>
   );

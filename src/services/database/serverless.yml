@@ -31,7 +31,7 @@ provider:
             - dynamodb:Get*
             - dynamodb:BatchWrite*
             - dynamodb:BatchGet*
-          Resource: "arn:aws:dynamodb:*:*:table/${self:custom.tableName}"
+          Resource: "arn:aws:dynamodb:*:*:table/${self:custom.issuesTableName}"
 
   stackTags:
     PROJECT: ${self:custom.project}
@@ -45,8 +45,7 @@ custom:
       - master
       - val
       - production
-  tableName: ${self:service}-${sls:stage}-table
-  postsTableName: ${self:service}-${sls:stage}-posts
+  issuesTableName: ${self:service}-${sls:stage}-issues
   scripts:
     commands:
       seed: |
@@ -69,50 +68,33 @@ functions:
     handler: handlers/testDataLoader.handler
     environment:
       region: ${self:provider.region}
-      tableName: !Ref Table
+      tableName: !Ref IssuesTable
 
 resources:
   Resources:
-    PostsTable:
+    IssuesTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: postId
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: postId
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:custom.postsTableName}
-    Table:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:custom.tableName}
-        AttributeDefinitions:
-          - AttributeName: PK
-            AttributeType: S
-          - AttributeName: SK
-            AttributeType: S
-        KeySchema:
-          - AttributeName: PK
-            KeyType: HASH
-          - AttributeName: SK
-            KeyType: RANGE
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+        TableName: ${self:custom.issuesTableName}
     InitializeDynamoDB:
       Type: Custom::InitFunction
-      DependsOn: Table
+      DependsOn: IssuesTable
       Properties:
         ServiceToken:
           Fn::GetAtt: [SeeddatabaseLambdaFunction, "Arn"]
         DynamoTableName:
-          Ref: Table
+          Ref: IssuesTable
         Trigger: ${self:custom.referenceDataHash}
   Outputs:
-    PostTableName:
-      Description: database table name for posts
-      Value: ${self:custom.postsTableName}
+    IssuesTableName:
+      Description: database table name for issues
+      Value: ${self:custom.issuesTableName}

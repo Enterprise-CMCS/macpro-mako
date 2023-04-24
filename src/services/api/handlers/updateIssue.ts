@@ -1,7 +1,7 @@
 import { response } from "../libs/handler";
-import { Post } from "../types/Post";
+// import { Issue } from "../types/Issue";
 
-export const updatePost = async ({ pathParameters, body }) => {
+export const updateIssue = async ({ pathParameters, body }) => {
   try {
     const { id } = pathParameters;
 
@@ -12,11 +12,11 @@ export const updatePost = async ({ pathParameters, body }) => {
       });
     }
 
-    // await updatePostById(id, post);
+    // await updateIssueById(id, post);
 
     return response({
       statusCode: 200,
-      body: { message: `Post with ${id} was updated` },
+      body: { message: `Issue with ${id} was updated` },
     });
   } catch (error) {
     return response({
@@ -26,4 +26,4 @@ export const updatePost = async ({ pathParameters, body }) => {
   }
 };
 
-export const handler = updatePost;
+export const handler = updateIssue;
