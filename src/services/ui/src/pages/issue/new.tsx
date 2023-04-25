@@ -4,6 +4,7 @@ import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { ErrorMessage } from "@hookform/error-message";
 import { CreateIssueSchema, createIssueSchema } from "../../api/validators";
 import { useCreateIssue } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 export function NewIssue() {
   const {
@@ -12,8 +13,10 @@ export function NewIssue() {
     formState: { errors },
   } = useForm<CreateIssueSchema>({ resolver: zodResolver(createIssueSchema) });
   const { isLoading, mutate, error } = useCreateIssue();
+  const navigate = useNavigate();
   const onSubmit = async (data: CreateIssueSchema) => {
     await mutate(data);
+    navigate("/issue/list");
   };
 
   console.log({ error });

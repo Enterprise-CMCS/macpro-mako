@@ -20,7 +20,7 @@ export default function MainWrapper({ children }: React.PropsWithChildren) {
         }
         navData={[
           {
-            buttonText: "Section One",
+            buttonText: "Home",
             columns: [
               [
                 {
@@ -31,12 +31,12 @@ export default function MainWrapper({ children }: React.PropsWithChildren) {
             ],
           },
           {
-            buttonText: "Section Two",
+            buttonText: "Issues",
             columns: [
               [
                 {
                   href: "/issue/list",
-                  text: "Issues",
+                  text: "All Issues",
                 },
                 {
                   href: "/issue/new",

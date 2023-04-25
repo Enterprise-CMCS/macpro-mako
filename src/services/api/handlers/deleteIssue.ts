@@ -13,16 +13,16 @@ export const deleteIssue = async ({ pathParameters }) => {
 
     const params = validParams.parse(pathParameters);
 
-    const issueToDelete = await new IssueService(dynamoInstance).deleteIssue({
+    await new IssueService(dynamoInstance).deleteIssue({
       id: params.id,
       tableName: process.env.tableName,
     });
 
     return response({
-      statusCode: 200,
-      body: issueToDelete,
+      statusCode: 204,
     });
   } catch (error) {
+    console.error({ error });
     if (error instanceof ZodError) {
       return response({
         statusCode: 404,

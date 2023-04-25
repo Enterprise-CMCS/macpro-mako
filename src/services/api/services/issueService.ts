@@ -67,11 +67,7 @@ export class IssueService {
   async deleteIssue({ id, tableName }: { id: string; tableName: string }) {
     const input = { Key: marshall({ id }), TableName: tableName };
 
-    const result = await this.#dynamoInstance.send(
-      new DeleteItemCommand(input)
-    );
-
-    return unmarshall(result as any);
+    return await this.#dynamoInstance.send(new DeleteItemCommand(input));
   }
 
   async editIssue({
