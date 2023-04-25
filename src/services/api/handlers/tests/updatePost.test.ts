@@ -18,7 +18,7 @@ describe("updatePost", () => {
   it("should return 200 status code and success message when post is updated", async () => {
     const event = {
       pathParameters: { id: "123" },
-      body: '{"title": "Updated Title", "content": "Updated Content"}',
+      body: "{\"title\": \"Updated Title\", \"content\": \"Updated Content\"}",
     };
     const response = await updatePost(event);
     expect(response.statusCode).toBe(200);

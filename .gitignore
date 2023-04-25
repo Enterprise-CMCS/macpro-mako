@@ -11,3 +11,5 @@ yarn-error.log
 tsconfig.tsbuildinfo
 build_run
 .build
+.turbo
+coverage

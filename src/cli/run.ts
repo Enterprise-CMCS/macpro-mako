@@ -123,11 +123,7 @@ yargs(process.argv.slice(2))
     },
     async (options) => {
       await install_deps_for_services();
-      await runner.run_command_and_output(
-        `Unit Tests`,
-        ["yarn", "test-ci"],
-        "."
-      );
+      await runner.run_command_and_output(`Unit Tests`, ["yarn", "test"], ".");
       await runner.run_command_and_output(
         `Load test data`,
         ["sls", "database", "seed", "--stage", options.stage],
