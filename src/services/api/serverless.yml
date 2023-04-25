@@ -50,6 +50,9 @@ functions:
   getIssues:
     handler: handlers/getIssues.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
           path: /issues
@@ -58,6 +61,9 @@ functions:
   getIssue:
     handler: handlers/getIssue.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
           path: /issues/{id}
@@ -66,6 +72,9 @@ functions:
   createIssue:
     handler: handlers/createIssue.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
           path: /issues
@@ -74,6 +83,9 @@ functions:
   deleteIssue:
     handler: handlers/deleteIssue.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
           path: /issues/{id}
@@ -82,6 +94,9 @@ functions:
   updateIssue:
     handler: handlers/updateIssue.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
           path: /issues/{id}

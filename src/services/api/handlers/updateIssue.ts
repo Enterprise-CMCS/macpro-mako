@@ -1,27 +1,30 @@
 import { response } from "../libs/handler";
-// import { Issue } from "../types/Issue";
+import { createIssueSchema } from "../models/Issue";
+import { IssueService } from "../services/issueService";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+
+const dynamoInstance = new DynamoDBClient({ region: process.env.region });
 
 export const updateIssue = async ({ pathParameters, body }) => {
+  const { id } = pathParameters;
+
   try {
-    const { id } = pathParameters;
+    const validIssue = createIssueSchema.parse(JSON.parse(body));
 
-    if (!body || Object.keys(body).length === 0) {
-      return response({
-        statusCode: 400,
-        body: { message: "Invalid request" },
-      });
-    }
-
-    // await updateIssueById(id, post);
+    const newIssue = await new IssueService(dynamoInstance).editIssue({
+      id,
+      issue: validIssue,
+      tableName: process.env.tableName,
+    });
 
     return response({
-      statusCode: 200,
-      body: { message: `Issue with ${id} was updated` },
+      statusCode: 201,
+      body: newIssue,
     });
   } catch (error) {
     return response({
-      statusCode: 500,
-      body: { message: "Internal server error" },
+      statusCode: 404,
+      body: { message: error },
     });
   }
 };

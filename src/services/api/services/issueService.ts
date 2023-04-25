@@ -1,40 +1,95 @@
-import { ModelType } from "dynamoose/dist/General";
 import { v4 } from "uuid";
-import { CreateIssue, IssueModel } from "../models/Issue";
+import { CreateIssue, Issue } from "../models/Issue";
+import {
+  DynamoDBClient,
+  PutItemCommand,
+  DeleteItemCommand,
+  GetItemCommand,
+  ScanCommand,
+} from "@aws-sdk/client-dynamodb";
+import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
 export class IssueService {
-  #issueModel: ModelType<IssueModel>;
+  #dynamoInstance: DynamoDBClient;
 
-  constructor(issueModel: ModelType<IssueModel>) {
-    this.#issueModel = issueModel;
+  constructor(dynamoInstance: DynamoDBClient) {
+    this.#dynamoInstance = dynamoInstance;
   }
 
-  async createIssue(issue: CreateIssue) {
-    const issueId = v4();
+  async createIssue({
+    issue,
+    tableName,
+  }: {
+    issue: CreateIssue;
+    tableName: string;
+  }) {
+    const id = v4();
+    const createdAt = new Date().toISOString();
 
-    return await this.#issueModel.create({ issueId, ...issue });
+    const input = {
+      Item: marshall({ ...issue, id, createdAt }),
+      TableName: tableName,
+    };
+
+    const result = await this.#dynamoInstance.send(new PutItemCommand(input));
+    return result;
   }
 
-  async getIssue(issueId: string) {
-    return await this.#issueModel.get({ issueId });
+  async getIssue({ id, tableName }: { id: string; tableName: string }) {
+    const input = new GetItemCommand({
+      Key: marshall(id),
+      TableName: tableName,
+    });
+    return await this.#dynamoInstance.send(input);
   }
 
-  async getIssues() {
-    return await this.#issueModel.scan().exec();
+  async getIssues({ tableName }: { tableName: string }) {
+    let items: Issue[] = [];
+    let isLastPage = false;
+    let lastEvaluatedKey = null;
+    while (!isLastPage) {
+      const data = await this.#dynamoInstance.send(
+        new ScanCommand({
+          TableName: tableName,
+          ExclusiveStartKey: lastEvaluatedKey,
+        })
+      );
+      items = [...items, ...data.Items];
+      lastEvaluatedKey = data.LastEvaluatedKey;
+      isLastPage = !lastEvaluatedKey;
+    }
+    console.log({ items });
+    // return unmarshall(items as any);
+    return items;
   }
 
-  async deleteIssue(issueId: string) {
-    const issueToDelete = await this.getIssue(issueId);
+  async deleteIssue({ id, tableName }: { id: string; tableName: string }) {
+    const input = { Key: marshall(id), TableName: tableName };
 
-    await issueToDelete.delete();
+    const result = await this.#dynamoInstance.send(
+      new DeleteItemCommand(input)
+    );
 
-    return issueToDelete;
+    return unmarshall(result as any);
   }
 
-  async editIssue(
-    issueId: string,
-    partialIssue: Omit<ModelType<IssueModel>, "issueId">
-  ) {
-    return await this.#issueModel.update({ issueId }, { ...partialIssue });
+  async editIssue({
+    id,
+    issue,
+    tableName,
+  }: {
+    id: string;
+    issue: Omit<Issue, "id">;
+    tableName: string;
+  }) {
+    const updatedAt = new Date().toISOString();
+
+    const input = {
+      Item: marshall({ ...issue, id, updatedAt }),
+      TableName: tableName,
+    };
+    const result = await this.#dynamoInstance.send(new PutItemCommand(input));
+
+    return unmarshall(result as any);
   }
 }

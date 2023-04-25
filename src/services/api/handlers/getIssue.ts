@@ -1,7 +1,9 @@
 import { z, ZodError } from "zod";
 import { response } from "../libs/handler";
-import { issue } from "../models/Issue";
 import { IssueService } from "../services/issueService";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+
+const dynamoInstance = new DynamoDBClient({ region: process.env.region });
 
 export const getIssue = async ({ pathParameters }) => {
   try {
@@ -11,7 +13,10 @@ export const getIssue = async ({ pathParameters }) => {
 
     const params = validParams.parse(pathParameters);
 
-    const foundIssue = await new IssueService(issue).getIssue(params.id);
+    const foundIssue = await new IssueService(dynamoInstance).getIssue({
+      id: params.id,
+      tableName: process.env.tableName,
+    });
 
     return response({
       statusCode: 200,
