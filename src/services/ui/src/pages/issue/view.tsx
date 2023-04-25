@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { z } from "zod";
 import { useGetIssue } from "../../api/useGetIssue";
+import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 
 export const ViewIssue = () => {
   const { id } = useParams();
@@ -13,7 +14,9 @@ export const ViewIssue = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto px-8">
-      <h1>{issue.title}</h1>
+      <UI.Typography size="lg" as="h1">
+        {issue.title}
+      </UI.Typography>
       <p>{issue.description}</p>
     </div>
   );

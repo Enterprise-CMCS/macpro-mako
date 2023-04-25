@@ -6,7 +6,7 @@ import { CreateIssueSchema, createIssueSchema } from "../../api/validators";
 import { useCreateIssue } from "../../api";
 import { useNavigate } from "react-router-dom";
 
-export function NewIssue() {
+export function AddIssueForm({ callback }: { callback?: () => void }) {
   const {
     register,
     handleSubmit,
@@ -16,15 +16,16 @@ export function NewIssue() {
   const navigate = useNavigate();
   const onSubmit = async (data: CreateIssueSchema) => {
     await mutate(data);
-    navigate("/issue/list");
+    navigate("/issues");
+    if (callback) {
+      callback();
+    }
   };
-
-  console.log({ error });
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-screen-lg mx-auto px-8"
+      className="max-w-screen-lg mx-auto px-8 w-80"
     >
       <>
         {error && (
@@ -39,11 +40,7 @@ export function NewIssue() {
             />
           </div>
         )}
-        <div className="max-w-sm">
-          <UI.Typography as="h1" size="md">
-            Add Issue
-          </UI.Typography>
-          <hr />
+        <div className="max-w-md">
           <div className="my-4">
             <label htmlFor="title">
               <UI.Typography as="p" size="sm" className="mb-2">

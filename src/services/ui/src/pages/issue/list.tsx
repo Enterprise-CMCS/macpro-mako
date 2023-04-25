@@ -4,6 +4,8 @@ import { formatDistance } from "date-fns";
 import { FaceFrownIcon, FaceSmileIcon } from "@heroicons/react/24/outline";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { useDeleteIssue } from "../../api/useDeleteIssue";
+import { Modal } from "../../components/Modal";
+import { AddIssueForm } from "../../components";
 
 export const IssueList = () => {
   const { isLoading, isError, data } = useGetIssues();
@@ -18,14 +20,23 @@ export const IssueList = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto px-8">
-      <UI.Table borderless caption="Issues" id="om-issues-table">
+      <div className="flex items-center justify-between my-4">
+        <UI.Typography size="lg" as="h1">
+          Issues
+        </UI.Typography>
+        <Modal title="Add Issue" buttonText="Add">
+          <AddIssueForm />
+        </Modal>
+      </div>
+      <hr />
+      <UI.Table borderless id="om-issues-table">
         <thead>
           <tr>
             <UI.TH>Title</UI.TH>
             <UI.TH>Description</UI.TH>
             <UI.TH>Priority</UI.TH>
             <UI.TH>Type</UI.TH>
-            <UI.TH>Created At</UI.TH>
+            <UI.TH>Created</UI.TH>
             <UI.TH>Resolved</UI.TH>
             <UI.TH> </UI.TH>
           </tr>
@@ -37,7 +48,7 @@ export const IssueList = () => {
                 <UI.TH rowHeader>
                   <Link
                     className="cursor-pointer text-blue-600"
-                    to={`/issue/view/${issue.id}`}
+                    to={`/issues/${issue.id}`}
                   >
                     {issue.title}
                   </Link>

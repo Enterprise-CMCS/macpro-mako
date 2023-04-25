@@ -7,9 +7,8 @@ export const router = createBrowserRouter([
     path: "/",
     element: <MainWrapper />,
     children: [
-      { path: "/issue/list", element: <P.IssueList /> },
-      { path: "/issue/view/:id", element: <P.ViewIssue /> },
-      { path: "/issue/new", element: <P.NewIssue /> },
+      { path: "/issues", element: <P.IssueList /> },
+      { path: "/issues/:id", element: <P.ViewIssue /> },
     ],
   },
 ]);
