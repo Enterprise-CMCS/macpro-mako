@@ -16,8 +16,8 @@ export const issueSchema = z.object({
       message: 'Priority must be one of "low", "medium", or "high"',
     }),
   resolved: z.boolean().default(false),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
 export const createIssueSchema = z.object({

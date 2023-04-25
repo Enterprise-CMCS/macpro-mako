@@ -37,10 +37,11 @@ export function NewIssue() {
           </div>
         )}
         <div className="max-w-sm">
-          <UI.Typography as="h1" size="lg">
+          <UI.Typography as="h1" size="md">
             Add Issue
           </UI.Typography>
-          <div className="mb-4">
+          <hr />
+          <div className="my-4">
             <label htmlFor="title">
               <UI.Typography as="p" size="sm" className="mb-2">
                 Title

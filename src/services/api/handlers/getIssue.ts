@@ -13,16 +13,18 @@ export const getIssue = async ({ pathParameters }) => {
 
     const params = validParams.parse(pathParameters);
 
-    const foundIssue = await new IssueService(dynamoInstance).getIssue({
+    const input = {
       id: params.id,
       tableName: process.env.tableName,
-    });
+    };
+    const foundIssue = await new IssueService(dynamoInstance).getIssue(input);
 
     return response({
       statusCode: 200,
       body: foundIssue,
     });
   } catch (error) {
+    console.log({ error });
     if (error instanceof ZodError) {
       return response({
         statusCode: 404,

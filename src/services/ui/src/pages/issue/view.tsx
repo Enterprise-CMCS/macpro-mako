@@ -12,10 +12,9 @@ export const ViewIssue = () => {
   if (isError) return <>...Error</>;
 
   return (
-    <div className="mx-auto max-w-sm">
-      <h1 className="mb-0">{issue.title}</h1>
-      {/* <p>Last Updated - {issue.updatedAt}</p> */}
-      <div>{issue.title}</div>
+    <div className="max-w-screen-lg mx-auto px-8">
+      <h1>{issue.title}</h1>
+      <p>{issue.description}</p>
     </div>
   );
 };

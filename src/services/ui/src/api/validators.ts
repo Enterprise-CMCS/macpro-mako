@@ -59,6 +59,8 @@ export const listIssueSchema = z
         message: 'Priority must be one of "low", "medium", or "high"',
       }),
     resolved: z.boolean().default(false),
+    createdAt: z.string().min(1),
+    updatedAt: z.string().optional(),
   })
   .array();
 

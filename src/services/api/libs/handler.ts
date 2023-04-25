@@ -23,7 +23,7 @@ export const handler = async (
   return () => response;
 };
 
-export function response<T = { [key: string | number]: any }>(
+export function response<T>(
   currentResponse: {
     statusCode?: number;
     body?: T;

@@ -37,10 +37,13 @@ export class IssueService {
 
   async getIssue({ id, tableName }: { id: string; tableName: string }) {
     const input = new GetItemCommand({
-      Key: marshall(id),
+      Key: marshall({ id }),
       TableName: tableName,
     });
-    return await this.#dynamoInstance.send(input);
+
+    const response = await this.#dynamoInstance.send(input);
+
+    return unmarshall(response.Item);
   }
 
   async getIssues({ tableName }: { tableName: string }) {
@@ -58,13 +61,11 @@ export class IssueService {
       lastEvaluatedKey = data.LastEvaluatedKey;
       isLastPage = !lastEvaluatedKey;
     }
-    console.log({ items });
-    // return unmarshall(items as any);
-    return items;
+    return items.map((issue: any) => unmarshall(issue));
   }
 
   async deleteIssue({ id, tableName }: { id: string; tableName: string }) {
-    const input = { Key: marshall(id), TableName: tableName };
+    const input = { Key: marshall({ id }), TableName: tableName };
 
     const result = await this.#dynamoInstance.send(
       new DeleteItemCommand(input)
