@@ -21,7 +21,12 @@ export const issueSchema = z.object({
 });
 
 export const createIssueSchema = z.object({
-  title: z.string().min(1, { message: "Title is required" }),
+  title: z
+    .string()
+    .min(1, { message: "Title is required" })
+    .refine((value) => value !== "error", {
+      message: 'Title cannot be "error"',
+    }),
   description: z.string().min(1, { message: "Description is required" }),
   type: z
     .string()

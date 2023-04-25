@@ -12,28 +12,32 @@ export function AddIssueForm({ callback }: { callback?: () => void }) {
     handleSubmit,
     formState: { errors },
   } = useForm<CreateIssueSchema>({ resolver: zodResolver(createIssueSchema) });
-  const { isLoading, mutate, error } = useCreateIssue();
+  const { isLoading, mutateAsync, error } = useCreateIssue();
   const navigate = useNavigate();
   const onSubmit = async (data: CreateIssueSchema) => {
-    await mutate(data);
-    navigate("/issues");
-    if (callback) {
-      callback();
+    try {
+      await mutateAsync(data);
+      navigate("/issues");
+      if (callback) {
+        callback();
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-screen-lg mx-auto px-8 w-80"
+      className="max-w-screen-lg mx-auto w-96"
     >
       <>
         {error && (
           <div className="mt-4">
             <UI.Alert
               alertBody={
-                (error as any)?.message ||
-                "An error has occured. Please try again later."
+                (error as any)?.response?.data?.issues[0]?.message ||
+                "An error has occured."
               }
               alertHeading="Error"
               variation="error"
