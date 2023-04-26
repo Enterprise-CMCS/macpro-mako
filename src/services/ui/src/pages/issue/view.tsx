@@ -4,6 +4,7 @@ import { useGetIssue } from "../../api/useGetIssue";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { formatDistance } from "date-fns";
 import { useUpdateissue } from "../../api/useUpdateIssue";
+import { LoadingSpinner } from "../../components";
 
 export const ViewIssue = () => {
   const { id } = useParams();
@@ -12,8 +13,16 @@ export const ViewIssue = () => {
 
   const { isLoading, isError, data: issue, refetch } = useGetIssue(validId);
 
-  if (isLoading) return <>...Loading</>;
-  if (isError) return <>...Error</>;
+  if (isLoading) return <LoadingSpinner />;
+
+  if (isError)
+    return (
+      <UI.Alert
+        alertBody={"An Error Occured. Please try again later."}
+        alertHeading="Error"
+        variation="error"
+      />
+    );
 
   return (
     <div className="max-w-screen-lg mx-auto px-8">
