@@ -32,18 +32,16 @@ export function AddIssueForm({ callback }: { callback?: () => void }) {
       className="max-w-screen-lg mx-auto w-96"
     >
       <>
-        {error && (
-          <div className="mt-4">
-            <UI.Alert
-              alertBody={
-                (error as any)?.response?.data?.issues[0]?.message ||
-                "An error has occured."
-              }
-              alertHeading="Error"
-              variation="error"
-            />
-          </div>
-        )}
+        {error &&
+          error.messages.map(({ message }) => (
+            <div className="mt-4">
+              <UI.Alert
+                alertBody={message}
+                alertHeading="Error"
+                variation="error"
+              />
+            </div>
+          ))}
         <div className="max-w-md">
           <div className="my-4">
             <label htmlFor="title">

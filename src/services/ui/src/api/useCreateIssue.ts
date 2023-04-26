@@ -9,10 +9,19 @@ export const useCreateIssue = () => {
     mutationFn: async (issue: CreateIssueSchema) => {
       const validIssue = validateCreateIssue(issue);
 
-      return await instance.post("/issues", validIssue);
+      try {
+        return await instance.post("/issues", validIssue);
+      } catch (err: any) {
+        throw {
+          messages: err?.response?.data?.issues || [
+            { message: "An Error has occured" },
+          ],
+        };
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["issues"]);
     },
+    onError: (err: { messages: [{ message: string }] }) => err,
   });
 };
