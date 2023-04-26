@@ -18,7 +18,7 @@ export const updateIssue = async ({ pathParameters, body }) => {
     });
 
     return response({
-      statusCode: 201,
+      statusCode: 200,
     });
   } catch (error) {
     console.error({ error });
