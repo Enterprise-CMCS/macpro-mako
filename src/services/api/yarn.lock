@@ -56,7 +56,7 @@
     "@aws-sdk/types" "3.310.0"
     tslib "^2.5.0"
 
-"@aws-sdk/client-dynamodb@^3.142.0", "@aws-sdk/client-dynamodb@^3.276.0":
+"@aws-sdk/client-dynamodb@^3.276.0":
   version "3.316.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.316.0.tgz#fe79f40e9ab5cb761b3eab90e53d04d38601360b"
   integrity sha512-IDeWi5PPfJVYI8TEDa1SIr2UKl5r1QdmowHdlNVirwKWBKxyKfKrMM/lVksxHhDNFiks0LqIuPcN0nlekv8rgQ==
@@ -644,13 +644,6 @@
     "@aws-sdk/types" "3.310.0"
     tslib "^2.5.0"
 
-"@aws-sdk/util-dynamodb@^3.142.0":
-  version "3.316.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.316.0.tgz#0d9cc25f7c8875950980246ed00eb8d4a62a08c3"
-  integrity sha512-9vyn3LJVWkE+hrlHOmCFkcYUn/ds9hng/20HPH87ePXdPH8+mZPjFBLHPSHDv8KyyveDho1xaApaxAFx+qxOEQ==
-  dependencies:
-    tslib "^2.5.0"
-
 "@aws-sdk/util-dynamodb@^3.319.0":
   version "3.319.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.319.0.tgz#73ad9a1cb65a0bc0ebcdedb0b3d126c71cfc17dc"
@@ -819,23 +812,6 @@ commander@^3.0.2:
   resolved "https://registry.yarnpkg.com/commander/-/commander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
   integrity sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==
 
-dynamoose-utils@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/dynamoose-utils/-/dynamoose-utils-3.2.0.tgz#78677bdb841811f921681f2b62d7526a9fa61518"
-  integrity sha512-BdkScZ37UtbYoOMDfuUdcQT8jb/0Ciet/CrjoQfSowk7/F6hOdKOonyAJJSKN2BI5NbVoo6XtfngfNyXIRNbfA==
-  dependencies:
-    js-object-utilities "^2.1.0"
-
-dynamoose@^3.1.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/dynamoose/-/dynamoose-3.2.0.tgz#1fbb288b47383c306ae0212695123bedd2602ae6"
-  integrity sha512-mjztJAMdNUyXOJfsxxA0biJeBpqIY0gwKduxg/CUHSS3NHWmnI2hLo/4dCMzVhg107vXqH5xFYACHVFxSe/GAw==
-  dependencies:
-    "@aws-sdk/client-dynamodb" "^3.142.0"
-    "@aws-sdk/util-dynamodb" "^3.142.0"
-    dynamoose-utils "^3.2.0"
-    js-object-utilities "^2.1.0"
-
 esprima@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
@@ -965,11 +941,6 @@ jmespath@0.16.0:
   version "0.16.0"
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.16.0.tgz#b15b0a85dfd4d930d43e69ed605943c802785076"
   integrity sha512-9FzQjJ7MATs1tSpnco1K6ayiYE3figslrXA72G2HQ/n76RzvYlofyi5QM+iX4YRs/pu3yzxlVQSST23+dMDknw==
-
-js-object-utilities@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/js-object-utilities/-/js-object-utilities-2.1.0.tgz#6ea720e85ce4ca25f55bff2ae819be95e4ec60d1"
-  integrity sha512-X62npvVTfyNELV4gPU4jJSzFZbdxk3zH/FxlBrZ6n+AGKpGyhMpsPs00tjtqTLy582zG4bvaG5fuKMm/zA1gng==
 
 js-yaml@^3.14.1:
   version "3.14.1"

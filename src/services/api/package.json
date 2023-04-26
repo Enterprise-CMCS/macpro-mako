@@ -7,7 +7,6 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.276.0",
     "@aws-sdk/util-dynamodb": "^3.319.0",
-    "dynamoose": "^3.1.0",
     "zod": "^3.21.4"
   }
 }
