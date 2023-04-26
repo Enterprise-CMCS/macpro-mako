@@ -11,13 +11,12 @@ export const getIssues = async () => {
       tableName: process.env.tableName,
     });
 
-    console.log({ issues });
     return response<Issue[]>({
       statusCode: 200,
       body: issues,
     });
   } catch (error) {
-    console.log({ error });
+    console.error({ error });
     return response({
       statusCode: 404,
       body: { message: JSON.stringify(error) },

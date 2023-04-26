@@ -36,6 +36,8 @@ export const getIssueSchema = z.object({
       message: 'Priority must be one of "low", "medium", or "high"',
     }),
   resolved: z.boolean().default(false),
+  createdAt: z.string(),
+  updatedAt: z.string().optional(),
 });
 
 export type GetIssueSchema = z.infer<typeof getIssueSchema>;
@@ -43,26 +45,12 @@ export const validateGetIssue = getIssueSchema.parse;
 
 ///////////////////////
 
-export const listIssueSchema = z
-  .object({
-    id: z.string().min(1),
-    title: z.string().min(1, { message: "Title is required" }),
-    description: z.string().min(1, { message: "Description is required" }),
-    type: z
-      .string()
-      .refine((val) => ["look", "functionality", "other"].includes(val), {
-        message: 'Type must be one of "look", "functionality", or "other"',
-      }),
-    priority: z
-      .string()
-      .refine((val) => ["low", "medium", "high"].includes(val), {
-        message: 'Priority must be one of "low", "medium", or "high"',
-      }),
-    resolved: z.boolean().default(false),
-    createdAt: z.string().min(1),
-    updatedAt: z.string().optional(),
-  })
-  .array();
+export const listIssueSchema = getIssueSchema.array();
 
 export type IssueListSchema = [z.infer<typeof listIssueSchema>];
 export const validateListIssues = listIssueSchema.parse;
+
+///////////////////////
+
+export type UpdateIssueSchema = z.infer<typeof getIssueSchema>;
+export const validateUpdateIssue = getIssueSchema.parse;

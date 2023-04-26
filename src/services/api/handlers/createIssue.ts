@@ -20,7 +20,7 @@ export const createIssue = async (event: APIGatewayEvent) => {
       body: newIssue,
     });
   } catch (error) {
-    console.log({ error });
+    console.error({ error });
     return response({
       statusCode: 404,
       body: error,

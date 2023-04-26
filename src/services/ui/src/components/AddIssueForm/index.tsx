@@ -34,7 +34,7 @@ export function AddIssueForm({ callback }: { callback?: () => void }) {
       <>
         {error &&
           error.messages.map(({ message }) => (
-            <div className="mt-4">
+            <div className="mt-4" key={message}>
               <UI.Alert
                 alertBody={message}
                 alertHeading="Error"

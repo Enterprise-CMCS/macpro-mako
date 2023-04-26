@@ -31,8 +31,7 @@ export class IssueService {
       TableName: tableName,
     };
 
-    const result = await this.#dynamoInstance.send(new PutItemCommand(input));
-    return result;
+    return await this.#dynamoInstance.send(new PutItemCommand(input));
   }
 
   async getIssue({ id, tableName }: { id: string; tableName: string }) {
@@ -41,9 +40,9 @@ export class IssueService {
       TableName: tableName,
     });
 
-    const response = await this.#dynamoInstance.send(input);
+    const result = await this.#dynamoInstance.send(input);
 
-    return unmarshall(response.Item);
+    return unmarshall(result.Item);
   }
 
   async getIssues({ tableName }: { tableName: string }) {
@@ -87,6 +86,6 @@ export class IssueService {
     };
     const result = await this.#dynamoInstance.send(new PutItemCommand(input));
 
-    return unmarshall(result as any);
+    return result;
   }
 }

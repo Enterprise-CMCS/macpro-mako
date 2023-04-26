@@ -17,7 +17,6 @@ export const issueSchema = z.object({
     }),
   resolved: z.boolean().default(false),
   createdAt: z.string(),
-  updatedAt: z.string(),
 });
 
 export const createIssueSchema = z.object({

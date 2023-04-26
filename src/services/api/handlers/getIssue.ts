@@ -24,7 +24,7 @@ export const getIssue = async ({ pathParameters }) => {
       body: foundIssue,
     });
   } catch (error) {
-    console.log({ error });
+    console.error({ error });
     if (error instanceof ZodError) {
       return response({
         statusCode: 404,

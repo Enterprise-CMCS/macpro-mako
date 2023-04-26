@@ -12,5 +12,5 @@ export const getIssue = async (id: string) => {
 export const useGetIssue = (id: string) =>
   useQuery({
     queryFn: () => getIssue(id),
-    queryKey: ["issuess", id],
+    queryKey: ["issues", id],
   });
