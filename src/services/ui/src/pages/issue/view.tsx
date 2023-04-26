@@ -17,11 +17,13 @@ export const ViewIssue = () => {
 
   if (isError)
     return (
-      <UI.Alert
-        alertBody={"An Error Occured. Please try again later."}
-        alertHeading="Error"
-        variation="error"
-      />
+      <div className="max-w-screen-lg mx-auto px-8">
+        <UI.Alert
+          alertBody={"An Error Occured. Please try again later."}
+          alertHeading="Error"
+          variation="error"
+        />
+      </div>
     );
 
   return (
