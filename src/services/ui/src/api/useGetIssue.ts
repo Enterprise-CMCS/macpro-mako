@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { instance } from "../lib/axios";
-import { validateGetIssue } from "./validators";
+import { validateGetIssue } from "shared-types";
 
 export const getIssue = async (id: string) => {
   const issue = await instance.get(`/issues/${id}`);

@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { CreateIssue, Issue } from "../models/Issue";
+import { CreateIssueSchema, Issue } from "shared-types";
 import {
   DynamoDBClient,
   PutItemCommand,
@@ -20,7 +20,7 @@ export class IssueService {
     issue,
     tableName,
   }: {
-    issue: CreateIssue;
+    issue: CreateIssueSchema;
     tableName: string;
   }) {
     const id = v4();
@@ -56,11 +56,11 @@ export class IssueService {
           ExclusiveStartKey: lastEvaluatedKey,
         })
       );
-      items = [...items, ...data.Items];
+      items = [...items, ...data.Items.map((item) => unmarshall(item))];
       lastEvaluatedKey = data.LastEvaluatedKey;
       isLastPage = !lastEvaluatedKey;
     }
-    return items.map((issue: any) => unmarshall(issue));
+    return items;
   }
 
   async deleteIssue({ id, tableName }: { id: string; tableName: string }) {

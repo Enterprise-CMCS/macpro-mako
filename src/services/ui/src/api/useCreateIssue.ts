@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { instance } from "../lib/axios";
-import { CreateIssueSchema, validateCreateIssue } from "./validators";
+import { CreateIssueSchema, validateCreateIssue } from "shared-types";
 
 export const useCreateIssue = () => {
   const queryClient = useQueryClient();

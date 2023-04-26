@@ -1,5 +1,5 @@
 import { response } from "../libs/handler";
-import { issueSchema } from "../models/Issue";
+import { issueSchema } from "shared-types";
 import { IssueService } from "../services/issueService";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 

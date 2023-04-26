@@ -8,7 +8,7 @@ import { Modal } from "../../components/Modal";
 import { AddIssueForm, LoadingSpinner } from "../../components";
 
 export const IssueList = () => {
-  const { isLoading, isError, data, error } = useGetIssues();
+  const { isLoading, isError, data } = useGetIssues();
   const { mutate: deleteIssue } = useDeleteIssue();
 
   if (isLoading) return <LoadingSpinner />;

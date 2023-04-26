@@ -1,7 +1,7 @@
 import { response } from "../libs/handler";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { IssueService } from "../services/issueService";
-import { Issue } from "../models";
+import { Issue } from "shared-types";
 
 const dynamoInstance = new DynamoDBClient({ region: process.env.region });
 

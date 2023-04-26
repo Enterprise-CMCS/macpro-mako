@@ -5,6 +5,7 @@
   "license": "MIT",
   "devDependencies": {
     "eslint": "^8.38.0",
-    "eslint-config-custom-server": "*"
+    "eslint-config-custom-server": "*",
+    "zod": "^3.21.4"
   }
 }

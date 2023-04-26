@@ -1,6 +1,6 @@
 import type { APIGatewayEvent } from "aws-lambda";
 import { response } from "../libs/handler";
-import { createIssueSchema } from "../models/Issue";
+import { createIssueSchema } from "shared-types";
 import { IssueService } from "../services/issueService";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 

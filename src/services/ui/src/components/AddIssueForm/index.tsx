@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { ErrorMessage } from "@hookform/error-message";
-import { CreateIssueSchema, createIssueSchema } from "../../api/validators";
+import { CreateIssueSchema, createIssueSchema } from "shared-types";
 import { useCreateIssue } from "../../api";
 import { useNavigate } from "react-router-dom";
 
