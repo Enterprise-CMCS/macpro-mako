@@ -8,12 +8,12 @@ export const issueSchema = z.object({
   type: z
     .string()
     .refine((val) => ["look", "functionality", "other"].includes(val), {
-      message: 'Type must be one of "look", "functionality", or "other"',
+      message: "Type must be one of \"look\", \"functionality\", or \"other\"",
     }),
   priority: z
     .string()
     .refine((val) => ["low", "medium", "high"].includes(val), {
-      message: 'Priority must be one of "low", "medium", or "high"',
+      message: "Priority must be one of \"low\", \"medium\", or \"high\"",
     }),
   resolved: z.boolean().default(false),
   createdAt: z.string(),
@@ -24,18 +24,18 @@ export const createIssueSchema = z.object({
     .string()
     .min(1, { message: "Title is required" })
     .refine((value) => value !== "error", {
-      message: 'Title cannot be "error"',
+      message: "Title cannot be \"error\"",
     }),
   description: z.string().min(1, { message: "Description is required" }),
   type: z
     .string()
     .refine((val) => ["look", "functionality", "other"].includes(val), {
-      message: 'Type must be one of "look", "functionality", or "other"',
+      message: "Type must be one of \"look\", \"functionality\", or \"other\"",
     }),
   priority: z
     .string()
     .refine((val) => ["low", "medium", "high"].includes(val), {
-      message: 'Priority must be one of "low", "medium", or "high"',
+      message: "Priority must be one of \"low\", \"medium\", or \"high\"",
     }),
   resolved: z.boolean().default(false),
 });

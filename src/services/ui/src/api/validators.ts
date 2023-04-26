@@ -6,12 +6,12 @@ export const createIssueSchema = z.object({
   type: z
     .string()
     .refine((val) => ["look", "functionality", "other"].includes(val), {
-      message: 'Type must be one of "look", "functionality", or "other"',
+      message: "Type must be one of \"look\", \"functionality\", or \"other\"",
     }),
   priority: z
     .string()
     .refine((val) => ["low", "medium", "high"].includes(val), {
-      message: 'Priority must be one of "low", "medium", or "high"',
+      message: "Priority must be one of \"low\", \"medium\", or \"high\"",
     }),
   resolved: z.boolean().default(false),
 });
@@ -28,12 +28,12 @@ export const getIssueSchema = z.object({
   type: z
     .string()
     .refine((val) => ["look", "functionality", "other"].includes(val), {
-      message: 'Type must be one of "look", "functionality", or "other"',
+      message: "Type must be one of \"look\", \"functionality\", or \"other\"",
     }),
   priority: z
     .string()
     .refine((val) => ["low", "medium", "high"].includes(val), {
-      message: 'Priority must be one of "low", "medium", or "high"',
+      message: "Priority must be one of \"low\", \"medium\", or \"high\"",
     }),
   resolved: z.boolean().default(false),
   createdAt: z.string(),
