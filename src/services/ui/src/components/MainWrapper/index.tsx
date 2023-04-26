@@ -48,21 +48,18 @@ export default function MainWrapper({ children }: React.PropsWithChildren) {
               {
                 href: "",
                 iconName: "person",
-                onClick: function noRefCheck() {},
                 target: "_blank",
                 text: "Manage Profile",
               },
               {
                 href: "",
                 iconName: "people",
-                onClick: function noRefCheck() {},
                 target: "_blank",
                 text: "Request Role Change",
               },
               {
                 href: "",
                 iconName: "logout",
-                onClick: function noRefCheck() {},
                 target: "_blank",
                 text: "Log Out",
               },
