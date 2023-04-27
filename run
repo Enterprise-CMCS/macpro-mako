@@ -40,4 +40,4 @@ elif [ "yarn.lock" -nt ".yarn_install" ]; then  # We're local, and the install f
 fi
 
 # build and run dev.ts
-yarn build:cli && node ./src/cli/build_run/run.js "$@"
+yarn build:cli && node ./build_run/run.js "$@"

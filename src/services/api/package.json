@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.276.0",
-    "dynamoose": "^3.1.0",
     "shared-types": "*",
     "zod": "^3.21.4",
     "libs": "*"

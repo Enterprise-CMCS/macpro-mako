@@ -1,3 +1,1 @@
-export type ExampleType = {
-  testing: string
-}
+export * from "./issue";

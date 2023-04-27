@@ -11,7 +11,7 @@ provider:
   name: aws
   runtime: nodejs18.x
   environment:
-    postsTable: ${param:postsTableName}
+    issuesTable: ${param:issuesTableName}
   logs:
     restApi: true
   region: ${env:REGION_A}
@@ -47,44 +47,59 @@ custom:
       - val
       - production
 functions:
-  getPosts:
-    handler: handlers/getPosts.handler
+  getIssues:
+    handler: handlers/getIssues.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
-          path: /posts
+          path: /issues
           method: get
           cors: true
-  getPost:
-    handler: handlers/getPost.handler
+  getIssue:
+    handler: handlers/getIssue.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
-          path: /posts/{id}
+          path: /issues/{id}
           method: get
           cors: true
-  createPost:
-    handler: handlers/createPost.handler
+  createIssue:
+    handler: handlers/createIssue.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
-          path: /posts
+          path: /issues
           method: post
           cors: true
-  deletePost:
-    handler: handlers/deletePost.handler
+  deleteIssue:
+    handler: handlers/deleteIssue.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
-          path: /posts/{id}
+          path: /issues/{id}
           method: delete
           cors: true
-  updatePost:
-    handler: handlers/updatePost.handler
+  updateIssue:
+    handler: handlers/updateIssue.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
-          path: /posts/{id}
+          path: /issues/{id}
           method: put
           cors: true
 resources:

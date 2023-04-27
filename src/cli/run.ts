@@ -1,7 +1,6 @@
 import yargs from "yargs";
 import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
-import * as fs from "fs";
 import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
 import { ServerlessRunningStages } from "@enterprise-cmcs/macpro-serverless-running-stages";
 import { SecurityHubJiraSync } from "@enterprise-cmcs/macpro-security-hub-sync";
@@ -11,52 +10,17 @@ dotenv.config();
 
 const runner = new LabeledProcessRunner();
 
-function touch(file: string) {
-  try {
-    const time = new Date();
-    fs.utimesSync(file, time, time);
-  } catch (err) {
-    fs.closeSync(fs.openSync(file, "w"));
-  }
-}
-
-async function frozenInstall(runner: LabeledProcessRunner, dir: string) {
+async function install_deps(runner: LabeledProcessRunner) {
   await runner.run_command_and_output(
-    `${dir.split("/").slice(-1)} deps`,
-    ["yarn", "install", "--frozen-lockfile"],
-    dir
+    `Installing Dependencies`,
+    ["yarn"],
+    ".",
+    true
   );
 }
 
-async function install_deps(runner: LabeledProcessRunner, dir: string) {
-  if (process.env.CI == "true") {
-    if (!fs.existsSync(`${dir}/node_modules`)) {
-      await frozenInstall(runner, dir);
-    }
-  } else {
-    if (
-      !fs.existsSync(`${dir}/.yarn_install`) ||
-      fs.statSync(`${dir}/.yarn_install`).ctimeMs <
-        fs.statSync(`${dir}/yarn.lock`).ctimeMs
-    ) {
-      await frozenInstall(runner, dir);
-      touch(`${dir}/.yarn_install`);
-    }
-  }
-}
-
 async function install_deps_for_services() {
-  var services = getDirectories("src/services");
-  for (let service of services) {
-    await install_deps(runner, `src/services/${service}`);
-  }
-  await install_deps(runner, "src/libs");
-}
-
-function getDirectories(path: string) {
-  return fs.readdirSync(path).filter(function (file) {
-    return fs.statSync(path + "/" + file).isDirectory();
-  });
+  await install_deps(runner);
 }
 
 async function refreshOutputs(stage: string) {
