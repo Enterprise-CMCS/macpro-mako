@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { instance } from "../lib/axios";
-import { UpdateIssueSchema, validateUpdateIssue } from "shared-types";
+import { UpdateIssue, validateUpdateIssue } from "shared-types";
 
 export const useUpdateissue = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (issue: UpdateIssueSchema) => {
+    mutationFn: async (issue: UpdateIssue) => {
       const validIssue = validateUpdateIssue(issue);
 
       try {

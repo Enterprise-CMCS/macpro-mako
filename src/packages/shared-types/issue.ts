@@ -43,7 +43,7 @@ export const createIssueSchema = z.object({
   resolved: z.boolean().default(false),
 });
 
-export type CreateIssueSchema = z.infer<typeof createIssueSchema>;
+export type CreateIssue = z.infer<typeof createIssueSchema>;
 export const validateCreateIssue = createIssueSchema.parse;
 
 ////////////////////
@@ -67,17 +67,17 @@ export const getIssueSchema = z.object({
   updatedAt: z.string().optional(),
 });
 
-export type GetIssueSchema = z.infer<typeof getIssueSchema>;
+export type GetIssue = z.infer<typeof getIssueSchema>;
 export const validateGetIssue = getIssueSchema.parse;
 
 ///////////////////////
 
 export const listIssueSchema = getIssueSchema.array();
 
-export type IssueListSchema = [z.infer<typeof listIssueSchema>];
+export type IssueList = [z.infer<typeof listIssueSchema>];
 export const validateListIssues = listIssueSchema.parse;
 
 ///////////////////////
 
-export type UpdateIssueSchema = z.infer<typeof getIssueSchema>;
+export type UpdateIssue = z.infer<typeof getIssueSchema>;
 export const validateUpdateIssue = getIssueSchema.parse;

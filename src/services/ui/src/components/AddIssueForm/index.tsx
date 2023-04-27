@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { ErrorMessage } from "@hookform/error-message";
-import { CreateIssueSchema, createIssueSchema } from "shared-types";
+import { CreateIssue, createIssueSchema } from "shared-types";
 import { useCreateIssue } from "../../api";
 import { useNavigate } from "react-router-dom";
 
@@ -11,10 +11,10 @@ export function AddIssueForm({ callback }: { callback?: () => void }) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateIssueSchema>({ resolver: zodResolver(createIssueSchema) });
+  } = useForm<CreateIssue>({ resolver: zodResolver(createIssueSchema) });
   const { isLoading, mutateAsync, error } = useCreateIssue();
   const navigate = useNavigate();
-  const onSubmit = async (data: CreateIssueSchema) => {
+  const onSubmit = async (data: CreateIssue) => {
     try {
       await mutateAsync(data);
       navigate("/issues");

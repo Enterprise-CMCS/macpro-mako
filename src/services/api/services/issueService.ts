@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { CreateIssueSchema, Issue } from "shared-types";
+import { CreateIssue, Issue } from "shared-types";
 import {
   DynamoDBClient,
   PutItemCommand,
@@ -20,7 +20,7 @@ export class IssueService {
     issue,
     tableName,
   }: {
-    issue: CreateIssueSchema;
+    issue: CreateIssue;
     tableName: string;
   }) {
     const id = v4();
