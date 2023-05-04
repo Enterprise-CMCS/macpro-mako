@@ -97,18 +97,28 @@ yargs(process.argv.slice(2))
   )
   .command(
     "test",
-    "run any available tests for an mmdl stage.",
+    "run any available tests.",
     {
       stage: { type: "string", demandOption: true },
     },
     async (options) => {
       await install_deps_for_services();
       await refreshOutputs(options.stage);
-      console.log(
-        `Here, we would run tests for ${options.stage}, but there are no tests yet!`
+      await runner.run_command_and_output(
+        `Unit Tests`,
+        ["yarn", "test-ci"],
+        "."
       );
     }
   )
+  .command("test-gui", "open unit-testing gui for vitest.", {}, async () => {
+    await install_deps_for_services();
+    await runner.run_command_and_output(
+      `Unit Tests`,
+      ["yarn", "test-gui"],
+      "."
+    );
+  })
   .command(
     "destroy",
     "destroy a stage in AWS",
