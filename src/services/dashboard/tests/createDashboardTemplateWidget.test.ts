@@ -14,9 +14,9 @@ describe("templatize cloudwatch dashboard", () => {
       <div style="width: 100%; display: flex; justify-content: center;">
         <a class="btn btn-primary">Get Dashboard Template</a>
       </div>
-      <cwdb-action action="call" endpoint="test-arn" display="popup">  
+      <cwdb-action action="call" endpoint="test-arn" display="popup">
        {}
-      </cwdb-action> 
+      </cwdb-action>
       `;
 
     const result = await handler(
@@ -35,9 +35,9 @@ describe("templatize cloudwatch dashboard", () => {
       <div style="width: 100%; display: flex; justify-content: center;">
         <a class="btn btn-primary">Get Dashboard Template</a>
       </div>
-      <cwdb-action action="call" endpoint="test-arns" display="popup">  
+      <cwdb-action action="call" endpoint="test-arns" display="popup">
        {}
-      </cwdb-action> 
+      </cwdb-action>
       `;
 
     const result = await handler(
