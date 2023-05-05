@@ -19,9 +19,9 @@ export const handler = async (
       <div style="width: 100%; display: flex; justify-content: center;">
         <a class="btn btn-primary">Get Dashboard Template</a>
       </div>
-      <cwdb-action action="call" endpoint="${lambdaArnToCall}" display="popup">  
+      <cwdb-action action="call" endpoint="${lambdaArnToCall}" display="popup">
        {}
-      </cwdb-action> 
+      </cwdb-action>
       `;
 
     return html;
