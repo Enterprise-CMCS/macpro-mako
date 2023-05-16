@@ -13,7 +13,27 @@
 title: Base Template
 description: A baseline serverless monorepo project that helps get your project up and running faster.
 # baseurl: "/just-the-docs" # the subpath of your site, e.g. /blog
-url: "https://just-the-docs.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://enterprise-cmcs.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
+keep_files: ["docs/metrics/_next"]
+include: ["_next", "_app-*.js", "_buildManifest.js", "_ssgManifest.js"]
+exclude:
+  [
+    ".jekyll-cache",
+    "node_modules/",
+    "*.gemspec",
+    "*.gem",
+    "Gemfile",
+    "Gemfile.lock",
+    "package.json",
+    "package-lock.json",
+    "script/",
+    "LICENSE.txt",
+    "lib/",
+    "bin/",
+    "docs/metrics/_next",
+    "README.md",
+    "Rakefile",
+  ]
 
 contact_email: mdial@gswell.com
 
