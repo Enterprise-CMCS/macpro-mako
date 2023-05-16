@@ -2,7 +2,7 @@
 layout: default
 title: Jira Issue Commenter
 parent: GitHub Workflows
-nav_order: 6
+nav_order: 2
 ---
 
 # Jira Issue Commenter
