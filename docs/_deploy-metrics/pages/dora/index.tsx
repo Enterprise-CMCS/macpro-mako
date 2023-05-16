@@ -1,8 +1,8 @@
 import type { InferGetStaticPropsType } from "next";
-import { Cards } from "../components/Cards";
-import { getMeanTimeToRecover } from "../lib/getMeanTimeToRecover";
-import { getPrsToBranch } from "../lib/getPrsToBranch";
-import { getSuccessfulDeploys } from "../lib/getSuccessfulDeploys";
+import { Cards } from "../../components/Cards";
+import { getMeanTimeToRecover } from "../../lib/getMeanTimeToRecover";
+import { getPrsToBranch } from "../../lib/getPrsToBranch";
+import { getSuccessfulDeploys } from "../../lib/getSuccessfulDeploys";
 import {
   Divider,
   Container,
@@ -11,12 +11,11 @@ import {
   Select,
   HStack,
 } from "@chakra-ui/react";
-import { LeadTimeForChanges } from "../components/LeadTimeForChanges";
-import { DeploymentFrequency } from "../components/DeploymentFrequency";
-import { octokitBranchesToUse } from "../lib/octokit";
+import { LeadTimeForChanges } from "../../components/LeadTimeForChanges";
+import { DeploymentFrequency } from "../../components/DeploymentFrequency";
+import { octokitBranchesToUse } from "../../lib/octokit";
 import { useState } from "react";
-import packageJson from "../../../package.json";
-import { capitalizeFirstLetter } from "../lib/capitalizeLetter";
+import packageJson from "../../../../package.json";
 
 export const getStaticProps = async () => {
   const branchData: {
@@ -48,7 +47,7 @@ export const getStaticProps = async () => {
   };
 };
 
-const Home = ({
+const Dora = ({
   branchData,
   repoName,
   branches,
@@ -117,4 +116,4 @@ const Home = ({
   );
 };
 
-export default Home;
+export default Dora;
