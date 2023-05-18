@@ -91,8 +91,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - deploy
-    # environment:
-    #   baseurl: ${{ github.APPURL }}
+    environment:
+      baseurl: ${{ needs.deploy.outputs.APPURL }}
     steps:
     - name: Checkout 
       uses: actions/checkout@v3
