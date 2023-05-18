@@ -92,14 +92,16 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 16
-    - name: Install dependencies
-      run: yarn
-    - name: Install dependencies
-      run: yarn
-    - name: Install Playwright Browsers
-      run: yarn playwright install --with-deps
-    - name: Run Playwright tests
-      run: yarn playwright test
+    # - name: Install dependencies
+    #   run: yarn
+    # - name: Install dependencies
+    #   run: yarn
+    # - name: Install Playwright Browsers
+    #   run: yarn playwright install --with-deps
+    # - name: Run Playwright tests
+    #   run: yarn playwright test
+    - name: Run e2e tests
+      run: run e2e
     - uses: actions/upload-artifact@v3
       if: always()
       with:
