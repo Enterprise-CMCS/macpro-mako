@@ -61,7 +61,6 @@ jobs:
             --stack-name $PROJECT-ui-infra-$STAGE_NAME \
             --query Stacks[0].Outputs[0].OutputValue
           )" | tr -d \'\" >> $GITHUB_OUTPUT
-          echo "MY_VARIABLE=example" >> $GITHUB_ENV
       - name: Export App URL
         run: ${{ steps.deployment-data.outputs.APPURL }} >> $GITHUB_ENV
       - name: Display URL
@@ -92,8 +91,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - deploy
-    environment:
-      baseurl: ${{ github.APPURL }}
+    # environment:
+    #   baseurl: ${{ github.APPURL }}
     steps:
     - name: Checkout 
       uses: actions/checkout@v3
