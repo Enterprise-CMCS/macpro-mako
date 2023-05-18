@@ -43,4 +43,3 @@ custom:
         VITE_API_URL=${param:ApiUrl}
         """ > .env.local
         yarn build
-        commands:
