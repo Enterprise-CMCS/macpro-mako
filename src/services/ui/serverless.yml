@@ -44,5 +44,3 @@ custom:
         """ > .env.local
         yarn build
         commands:
-    connect: |
-      echo "connnection established blah!"
