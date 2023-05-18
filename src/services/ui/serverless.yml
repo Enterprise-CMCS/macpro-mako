@@ -43,3 +43,6 @@ custom:
         VITE_API_URL=${param:ApiUrl}
         """ > .env.local
         yarn build
+        commands:
+    connect: |
+      echo "connnection established blah!"
