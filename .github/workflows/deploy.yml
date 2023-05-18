@@ -1,3 +1,179 @@
+# name: Deploy
+
+# on:
+#   push:
+#     branches:
+#       - "*"
+#       - "!skipci*"
+
+# concurrency:
+#   group: ${{ github.ref_name }}-group
+
+# env:
+#   STAGE_NAME: ${{ github.ref_name }}
+
+# permissions:
+#   id-token: write
+#   contents: write
+#   issues: write
+#   pull-requests: write
+
+# jobs:
+#   init:
+#     runs-on: ubuntu-20.04
+#     steps:
+#       - name: Validate stage name
+#         run: |
+#           if [[ ! $STAGE_NAME =~ ^[a-z][a-z0-9-]*$ ]]; then
+#               echo "ERROR:  Your branch name, $STAGE_NAME, is not a valid Serverless Framework stage name." && exit 1
+#           fi
+
+#   deploy:
+#     runs-on: ubuntu-20.04
+#     needs:
+#       - init
+#     environment:
+#       name: ${{ github.ref_name }}
+#       url: ${{ steps.deployment-data.outputs.APPURL }}
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+
+#       - uses: ./.github/actions/setup
+
+#       - name: Configure AWS credentials
+#         uses: aws-actions/configure-aws-credentials@v2
+#         with:
+#           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+#           aws-region: us-east-1
+#           role-duration-seconds: 10800
+
+#       - name: Deploy
+#         run: run deploy --stage $STAGE_NAME
+
+#       - name: Set URL
+#         id: deployment-data
+#         run: |
+#           echo ${{ github.ref_name }}
+#           echo "APPURL=$(
+#             aws cloudformation \
+#             --region us-east-1 describe-stacks \
+#             --stack-name $PROJECT-ui-infra-$STAGE_NAME \
+#             --query Stacks[0].Outputs[0].OutputValue
+#           )" | tr -d \'\" >> $GITHUB_OUTPUT
+#       - name: Export App URL
+#         run: echo "APPURL=${{ steps.deployment-data.outputs.APPURL }}" >> $GITHUB_ENV
+#       - name: Display URL
+#         run: echo $APPURL
+#   test:
+#     runs-on: ubuntu-20.04
+#     needs:
+#       - deploy
+#     environment:
+#       name: ${{ github.ref_name }}
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+
+#       - uses: ./.github/actions/setup
+
+#       - name: Configure AWS credentials
+#         uses: aws-actions/configure-aws-credentials@v2
+#         with:
+#           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+#           aws-region: us-east-1
+#           role-duration-seconds: 10800
+
+#       - name: Test
+#         run: yarn test-ci
+#   e2e:
+#     timeout-minutes: 5
+#     runs-on: ubuntu-20.04
+#     needs:
+#       - deploy
+#     environment:
+#       baseurl: HERE
+#     steps:
+#     - name: Checkout 
+#       uses: actions/checkout@v3
+#     - name: Setup
+#       uses: ./.github/actions/setup
+#     - name: Install Playwright Browsers
+#       run: yarn playwright install --with-deps
+#     - name: Run e2e tests
+#       run: run e2e
+#     - uses: actions/upload-artifact@v3
+#       if: always()
+#       with:
+#         name: playwright-report
+#         path: playwright-report/
+#         retention-days: 30
+
+#   cfn-nag:
+#     runs-on: ubuntu-20.04
+#     needs:
+#       - deploy
+#     environment:
+#       name: ${{ github.ref_name }}
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+
+#       - uses: ./.github/actions/setup
+
+#       - name: Configure AWS credentials
+#         uses: aws-actions/configure-aws-credentials@v2
+#         with:
+#           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+#           aws-region: us-east-1
+#           role-duration-seconds: 10800
+
+#       - name: Get CloudFormation templates
+#         id: getCfts
+#         run: |
+#           mkdir -p cftemplates
+#           stackList=(`aws cloudformation describe-stacks --query "Stacks[?Tags[?Key=='STAGE' && Value=='$STAGE_NAME'] && Tags[?Key=='PROJECT' && Value=='$PROJECT']].StackName" --output text`)
+#           for stack in "${stackList[@]}"; do
+#             aws cloudformation get-template --stack-name "$stack" --query TemplateBody > "cftemplates/${stack}.json"
+#           done
+
+#       - name: Stelligent cfn_nag
+#         uses: stelligent/cfn_nag@v0.8.6
+#         with:
+#           input_path: cftemplates
+
+#   release:
+#     runs-on: ubuntu-20.04
+#     needs:
+#       - test
+#       - cfn-nag
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+
+#       - uses: ./.github/actions/setup
+
+#       - name: Release
+#         run: npx semantic-release
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+#   notify_of_failure:
+#     runs-on: ubuntu-20.04
+#     needs:
+#       - release
+#     if: failure()
+#     steps:
+#       - name: Slack Notification
+#         uses: rtCamp/action-slack-notify@v2
+#         if: env.SLACK_WEBHOOK != '' && contains(fromJson('["master", "val", "production"]'), env.STAGE_NAME)
+#         env:
+#           SLACK_COLOR: ${{job.status}}
+#           SLACK_ICON: https://github.com/Enterprise-CMCS.png?size=48
+#           SLACK_TITLE: Failure
+#           SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
+#           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
 name: Deploy
 
 on:
@@ -65,6 +241,7 @@ jobs:
         run: echo "APPURL=${{ steps.deployment-data.outputs.APPURL }}" >> $GITHUB_ENV
       - name: Display URL
         run: echo $APPURL
+
   test:
     runs-on: ubuntu-20.04
     needs:
@@ -86,28 +263,29 @@ jobs:
 
       - name: Test
         run: yarn test-ci
+
   e2e:
     timeout-minutes: 5
     runs-on: ubuntu-20.04
     needs:
       - deploy
     environment:
-      baseurl: ${{ needs.deploy.outputs.APPURL }}
+      baseurl: ${{ steps.get-app-url.outputs.app-url }}
     steps:
-    - name: Checkout 
-      uses: actions/checkout@v3
-    - name: Setup
-      uses: ./.github/actions/setup
-    - name: Install Playwright Browsers
-      run: yarn playwright install --with-deps
-    - name: Run e2e tests
-      run: run e2e
-    - uses: actions/upload-artifact@v3
-      if: always()
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+      - name: Checkout 
+        uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Install Playwright Browsers
+        run: yarn playwright install --with-deps
+      - name: Run e2e tests
+        run: run e2e
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
 
   cfn-nag:
     runs-on: ubuntu-20.04
