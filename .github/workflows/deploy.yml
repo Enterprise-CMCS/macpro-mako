@@ -93,7 +93,7 @@ jobs:
     needs:
       - deploy
     environment:
-      baseurl: 'something.com'
+      baseurl: ${{ github.APPURL }}
     steps:
     - name: Checkout 
       uses: actions/checkout@v3
