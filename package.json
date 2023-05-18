@@ -14,7 +14,8 @@
     "lint": "turbo lint",
     "build:cli": "turbo build:cli",
     "test:watch": "turbo test:watch",
-    "test:gui": "turbo test:gui"
+    "test:gui": "turbo test:gui",
+    "e2e": "turbo e2e"
   },
   "repository": "https://github.com/Enterprise-CMCS/macpro-om-template",
   "workspaces": [
