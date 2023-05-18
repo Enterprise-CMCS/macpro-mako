@@ -93,7 +93,7 @@ jobs:
     needs:
       - deploy
     environment:
-      baseurl: $APPURL
+      baseurl: 'something.com'
     steps:
     - name: Checkout 
       uses: actions/checkout@v3
