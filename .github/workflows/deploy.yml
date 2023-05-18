@@ -208,9 +208,8 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - init
-    environment:
-      name: ${{ github.ref_name }}
-      url: ${{ steps.deployment-data.outputs.APPURL }}
+    outputs:
+      app-url: ${{ steps.deployment-data.outputs.APPURL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -270,7 +269,7 @@ jobs:
     needs:
       - deploy
     env:
-      baseurl: ${{ steps.get-app-url.outputs.app-url }}
+      baseurl: ${{ needs.deploy.outputs.app-url }}
     steps:
       - name: Checkout 
         uses: actions/checkout@v3
