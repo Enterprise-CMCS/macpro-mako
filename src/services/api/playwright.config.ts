@@ -1,12 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
-
-/**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
@@ -23,16 +17,13 @@ export default defineConfig({
   reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
+    // currently this isnt working as intended. we need to allow the envar to be defined here
     baseURL:
       process.env.API_URL ||
       "https://u0lqkcipn2.execute-api.us-east-1.amazonaws.com/play",
     extraHTTPHeaders: {
       // We set this header per GitHub guidelines.
       Accept: "application/vnd.github.v3+json",
-      // Add authorization token to all requests.
-      // Assuming personal access token available in the environment.
-      // 'Authorization': `token ${process.env.API_TOKEN}`,
     },
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
@@ -46,11 +37,4 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });

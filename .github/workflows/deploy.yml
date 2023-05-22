@@ -63,7 +63,6 @@ jobs:
             --stack-name $PROJECT-ui-infra-$STAGE_NAME \
             --query Stacks[0].Outputs[0].OutputValue
           )" | tr -d \'\" >> $GITHUB_OUTPUT
-
   test:
     runs-on: ubuntu-20.04
     needs:
