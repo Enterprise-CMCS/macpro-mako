@@ -63,10 +63,6 @@ jobs:
             --stack-name $PROJECT-ui-infra-$STAGE_NAME \
             --query Stacks[0].Outputs[0].OutputValue
           )" | tr -d \'\" >> $GITHUB_OUTPUT
-      # - name: Export App URL
-      #   run: echo "APPURL=${{ steps.deployment-data.outputs.APPURL }}" >> $GITHUB_ENV
-      # - name: Display URL
-      #   run: echo $APPURL
 
   test:
     runs-on: ubuntu-20.04
