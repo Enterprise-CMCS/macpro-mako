@@ -51,7 +51,7 @@ custom:
     commands:
       seturl: |
         set -e
-        api_url=$(aws cloudformation describe-stacks --stack-name om-api-play --query 'Stacks[0].Outputs[?OutputKey==`ApiGatewayRestApiUrl`].OutputValue' --output text)
+        api_url=$(aws cloudformation describe-stacks --stack-name om-api-${self:custom.stage} --query 'Stacks[0].Outputs[?OutputKey==`ApiGatewayRestApiUrl`].OutputValue' --output text)
         echo $api_url
         export API_URL=$api_url
 

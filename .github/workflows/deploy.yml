@@ -101,7 +101,7 @@ jobs:
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
       - name: Run e2e tests
-        run: run e2e
+        run: run e2e --stage $STAGE_NAME
       - uses: actions/upload-artifact@v3
         if: always()
         with:
