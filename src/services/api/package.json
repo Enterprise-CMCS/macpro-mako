@@ -2,7 +2,6 @@
   "name": "api",
   "private": true,
   "devDependencies": {
-    "@playwright/test": "^1.33.0",
     "@types/aws-lambda": "^8.10.111",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",

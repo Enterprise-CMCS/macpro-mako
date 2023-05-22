@@ -24,7 +24,9 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: "https://u0lqkcipn2.execute-api.us-east-1.amazonaws.com/play",
+    baseURL:
+      process.env.API_URL ||
+      "https://u0lqkcipn2.execute-api.us-east-1.amazonaws.com/play",
     extraHTTPHeaders: {
       // We set this header per GitHub guidelines.
       Accept: "application/vnd.github.v3+json",
