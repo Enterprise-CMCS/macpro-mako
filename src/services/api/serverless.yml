@@ -7,7 +7,6 @@ plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
-  - serverless-plugin-scripts
 provider:
   name: aws
   runtime: nodejs18.x
@@ -47,15 +46,7 @@ custom:
       - master
       - val
       - production
-  scripts:
-    commands:
-      seturl: |
-        set -e
-        api_url=$(aws cloudformation describe-stacks --stack-name om-api-${self:custom.stage} --query 'Stacks[0].Outputs[?OutputKey==`ApiGatewayRestApiUrl`].OutputValue' --output text)
-        echo $api_url
-        export API_URL=$api_url
-
-        
+    
 functions:
   getIssues:
     handler: handlers/getIssues.handler

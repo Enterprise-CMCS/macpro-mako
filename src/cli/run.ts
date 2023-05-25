@@ -101,14 +101,8 @@ yargs(process.argv.slice(2))
     {
       stage: { type: "string", demandOption: true },
     },
-    async (options) => {
+    async () => {
       await install_deps_for_services();
-      await refreshOutputs(options.stage);
-      await runner.run_command_and_output(
-        `Export API URL`,
-        ["sls", "api", "seturl", "--stage", options.stage],
-        "."
-      );
       await runner.run_command_and_output(`e2e tests`, ["yarn", "e2e"], ".");
     }
   )

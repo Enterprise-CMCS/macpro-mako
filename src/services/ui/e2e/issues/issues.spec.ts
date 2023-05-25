@@ -28,6 +28,11 @@ test("should be able to create and delete an issue", async ({ page }) => {
   await page.getByRole("button", { name: "Submit button" }).click();
 
   await expect(page).toHaveURL(/.*issues/);
+
+  // you can select react components by name and prop
+  await expect(
+    page.locator(`_react=IssueRow[issue.description = "${testDesc}"]`)
+  ).toBeVisible();
   await expect(page.getByRole("cell", { name: testDesc })).toBeVisible();
 
   // this next bit is tricky because we need to find the row containing the text we just entered and then find the delete button in the same row.

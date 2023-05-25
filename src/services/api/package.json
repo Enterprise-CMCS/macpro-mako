@@ -17,7 +17,6 @@
   },
   "version": "0.0.0",
   "scripts": {
-    "lint": "eslint '**/*.{ts,js}'",
-    "e2e": "playwright test"
+    "lint": "eslint '**/*.{ts,js}'"
   }
 }
