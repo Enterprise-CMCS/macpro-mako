@@ -98,9 +98,7 @@ yargs(process.argv.slice(2))
   .command(
     "e2e",
     "run e2e tests.",
-    {
-      stage: { type: "string", demandOption: true },
-    },
+    {},
     async () => {
       await install_deps_for_services();
       await runner.run_command_and_output(`e2e tests`, ["yarn", "e2e"], ".");

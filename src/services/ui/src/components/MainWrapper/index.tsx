@@ -2,7 +2,7 @@ import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
 import { Outlet } from "react-router-dom";
 
-export default function MainWrapper({ children }: React.PropsWithChildren) {
+export default function MainWrapper() {
   return (
     <div
       style={{
