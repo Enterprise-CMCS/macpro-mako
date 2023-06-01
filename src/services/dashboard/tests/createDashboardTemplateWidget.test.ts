@@ -19,11 +19,7 @@ describe("templatize cloudwatch dashboard", () => {
       </cwdb-action>
       `;
 
-    const result = await handler(
-      {} as APIGatewayEvent,
-      {} as Context,
-      {} as APIGatewayProxyCallback
-    );
+    const result = await handler();
 
     expect(result).toEqual(html);
   });
@@ -40,11 +36,7 @@ describe("templatize cloudwatch dashboard", () => {
       </cwdb-action>
       `;
 
-    const result = await handler(
-      {} as APIGatewayEvent,
-      {} as Context,
-      {} as APIGatewayProxyCallback
-    );
+    const result = await handler();
 
     expect(result).not.toEqual(html);
   });
@@ -52,11 +44,7 @@ describe("templatize cloudwatch dashboard", () => {
   it("should return an error message when there is an error with the lambda arn", async () => {
     process.env = {};
 
-    const result = await handler(
-      {} as APIGatewayEvent,
-      {} as Context,
-      {} as APIGatewayProxyCallback
-    );
+    const result = await handler();
     expect(result).toEqual({
       statusCode: 200,
       body: JSON.stringify({
