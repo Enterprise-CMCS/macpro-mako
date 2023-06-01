@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Page } from "@playwright/test";
 import { v4 as uuidv4 } from "uuid";
 
-async function goToIssuesPage(page) {
+async function goToIssuesPage(page: Page) {
   await page.goto("/");
   await page.getByRole("button", { name: "Issues" }).click();
   await page.getByRole("link", { name: "All Issues" }).click();
