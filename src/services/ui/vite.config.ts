@@ -1,15 +1,15 @@
-import { defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react-swc";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   test: {
-    environment: 'jsdom',
-    setupFiles: './testing/setup.ts',
+    environment: "jsdom",
+    setupFiles: "./testing/setup.ts",
     coverage: {
-      provider: 'istanbul',
-      reporter: 'json',
+      provider: "istanbul",
+      reporter: "json",
     },
   },
-})
+});

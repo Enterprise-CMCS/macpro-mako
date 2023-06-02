@@ -14,7 +14,10 @@
     "lint": "turbo lint",
     "build:cli": "turbo build:cli",
     "test:watch": "turbo test:watch",
-    "test:gui": "turbo test:gui"
+    "test:gui": "turbo test:gui",
+    "coverage": "vitest run --coverage",
+    "test-gui": "vitest --ui",
+    "test-tsc": "tsc --skipLibCheck --noEmit"
   },
   "repository": "https://github.com/Enterprise-CMCS/macpro-om-template",
   "workspaces": [
@@ -36,6 +39,8 @@
     "@stratiformdigital/serverless-stage-destroyer": "^2.0.0",
     "@testing-library/react": "^14.0.0",
     "@types/uuid": "^9.0.1",
+    "@vitest/coverage-c8": "^0.29.8",
+    "@vitest/ui": "^0.29.8",
     "aws-sdk-client-mock": "^2.0.1",
     "prettier": "2.7.1",
     "semantic-release": "^19.0.5",
@@ -47,7 +52,7 @@
     "serverless-plugin-warmup": "^7.1.0",
     "serverless-stack-termination-protection": "^2.0.2",
     "turbo": "^1.9.3",
-    "vitest": "^0.26.2"
+    "vitest": "^0.29.8"
   },
   "release": {
     "branches": [

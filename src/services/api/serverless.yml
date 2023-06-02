@@ -46,6 +46,8 @@ custom:
       - master
       - val
       - production
+  bundle:
+    linting: false
 functions:
   getIssues:
     handler: handlers/getIssues.handler

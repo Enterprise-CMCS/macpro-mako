@@ -45,6 +45,8 @@ custom:
       - master
       - val
       - production
+  bundle:
+    linting: false
   issuesTableName: ${self:service}-${sls:stage}-issues
   scripts:
     commands:
