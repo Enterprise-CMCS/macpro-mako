@@ -1,11 +1,5 @@
 import { CloudWatch } from "@aws-sdk/client-cloudwatch";
 import { checkEnvVars } from "../../../libs";
-import type {
-  APIGatewayEvent,
-  APIGatewayProxyCallback,
-  Context,
-} from "aws-lambda";
-
 /**
  * It takes a string and a dictionary of strings and replaces all the keys in the dictionary with their
  * values in the string
@@ -35,11 +29,7 @@ export const replaceStringValues = (
  * that is called when the lambda is done executing.
  * @returns The dashboard template with the values replaced with the serverless variables.
  */
-export const handler = async (
-  _event: APIGatewayEvent,
-  _context: Context,
-  _callback: APIGatewayProxyCallback
-) => {
+export const handler = async () => {
   try {
     // Environment variables passed to lambda from serverless.yml
     checkEnvVars(["service", "accountId", "stage", "region"]);
@@ -50,12 +40,12 @@ export const handler = async (
     });
 
     const replacables = {
-      [accountId!]: "${aws:accountId}",
-      [stage!]: "${sls:stage}",
-      [region!]: "${env:REGION_A}",
-      [service!]: "${self:service}",
+      [accountId]: "${aws:accountId}",
+      [stage]: "${sls:stage}",
+      [region]: "${env:REGION_A}",
+      [service]: "${self:service}",
     };
-    const templateJson = dashboard.DashboardBody!;
+    const templateJson = dashboard.DashboardBody;
     const results = replaceStringValues(templateJson, replacables);
     return results;
   } catch (error) {
