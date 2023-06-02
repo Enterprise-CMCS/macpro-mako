@@ -10,6 +10,7 @@ plugins:
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@stratiformdigital/serverless-iam-helper"
   - serverless-bundle
+  - serverless-plugin-scripts
 
 provider:
   name: aws
@@ -22,6 +23,7 @@ provider:
         - Effect: Allow
           Action:
             - dynamodb:Query
+            - dynamodb:Scan
             - dynamodb:GetItem
             - dynamodb:PutItem
             - dynamodb:UpdateItem
@@ -29,7 +31,7 @@ provider:
             - dynamodb:Get*
             - dynamodb:BatchWrite*
             - dynamodb:BatchGet*
-          Resource: "arn:aws:dynamodb:*:*:table/${self:custom.tableName}"
+          Resource: "arn:aws:dynamodb:*:*:table/${self:custom.issuesTableName}"
 
   stackTags:
     PROJECT: ${self:custom.project}
@@ -37,48 +39,66 @@ provider:
 
 custom:
   project: ${env:PROJECT}
-  fileHash: ${file(./items.json)}
+  referenceDataHash: ${file(./src/reference/items.json)}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
       - val
       - production
-  tableName: ${self:service}-${sls:stage}-table
-
-parameters:
-  fileHash:
-    Type: String
-    Default: ""
+  bundle:
+    linting: false
+  issuesTableName: ${self:service}-${sls:stage}-issues
+  scripts:
+    commands:
+      seed: |
+        set -e
+        echo 'Loading test data...'
+        call=`aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-testDataLoader --invocation-type RequestResponse --payload $(base64 ./src/test/items.json) --log Tail /dev/null`
+        error=`echo $call | jq 'select(.FunctionError != null)'`
+        if [ "$error" != "null" -a -n "$error" ]; then
+          echo "An error occured while loading test data.  Error below"
+          echo `echo $call | jq -r '.LogResult'` | base64 --decode
+          exit 1
+        fi
 
 functions:
   seeddatabase:
     handler: handlers/seeddatabase.handler
+    environment:
+      region: ${self:provider.region}
+  testDataLoader:
+    handler: handlers/testDataLoader.handler
+    environment:
+      region: ${self:provider.region}
+      tableName: !Ref IssuesTable
 
 resources:
   Resources:
-    Table:
+    IssuesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.tableName}
         AttributeDefinitions:
-          - AttributeName: PK
-            AttributeType: S
-          - AttributeName: SK
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: PK
+          - AttributeName: id
             KeyType: HASH
-          - AttributeName: SK
-            KeyType: RANGE
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        TableName: ${self:custom.issuesTableName}
     InitializeDynamoDB:
       Type: Custom::InitFunction
-      DependsOn: Table
+      DependsOn: IssuesTable
       Properties:
         ServiceToken:
           Fn::GetAtt: [SeeddatabaseLambdaFunction, "Arn"]
         DynamoTableName:
-          Ref: Table
-        FILE_HASH: ${self:custom.fileHash}
+          Ref: IssuesTable
+        Trigger: ${self:custom.referenceDataHash}
+  Outputs:
+    IssuesTableName:
+      Description: database table name for issues
+      Value: ${self:custom.issuesTableName}

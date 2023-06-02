@@ -21,15 +21,6 @@ permissions:
 jobs:
   init:
     runs-on: ubuntu-20.04
-    environment:
-      name: ${{ github.ref_name }}
-    env:
-      STAGE_NAME: ${{ github.ref_name }}
-    permissions:
-      id-token: write
-      contents: write
-      issues: write
-      pull-requests: write
     steps:
       - name: Validate stage name
         run: |
@@ -51,7 +42,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
@@ -83,7 +74,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
@@ -105,7 +96,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
@@ -124,6 +115,42 @@ jobs:
         uses: stelligent/cfn_nag@v0.8.6
         with:
           input_path: cftemplates
+  resources:
+    runs-on: ubuntu-20.04
+    needs:
+      - deploy
+    environment:
+      name: ${{ github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: ./.github/actions/setup
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+          role-duration-seconds: 10800
+
+      - name: Get AWS Stage Resources
+        id: stage-resources
+        run: |
+          mkdir -p resources
+          resourceData=()
+          stackList=(`aws cloudformation describe-stacks --query "Stacks[?Tags[?Key=='STAGE' && Value=='$STAGE_NAME'] && Tags[?Key=='PROJECT' && Value=='$PROJECT']].StackName" --output text`)
+          for stack in "${stackList[@]}"; do
+            resources=$(aws cloudformation list-stack-resources --stack-name "$stack" --query "StackResourceSummaries[].{PhysicalResourceId:PhysicalResourceId, ResourceType:ResourceType, ResourceStatus:ResourceStatus, LogicalResourceId:LogicalResourceId, LastUpdatedTimestamp:LastUpdatedTimestamp}" --output json)
+            resourceData+=( $(echo "$resources" | jq -c --arg stack_name "$stack" '.[] + { StackName: $stack_name }') )
+          done
+          join_by() { local IFS="$1"; shift; echo "$*"; }
+          echo "["$(join_by "," "${resourceData[@]}")"]" > "resources/aws-resources.json"
+      - name: Archive stage resources
+        uses: actions/upload-artifact@v3
+        with:
+          name: aws-resources-${{ github.ref_name }}
+          path: resources/aws-resources.json
 
   release:
     runs-on: ubuntu-20.04

@@ -1,7 +1,8 @@
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
+import { Outlet } from "react-router-dom";
 
-export const MainWrapper = ({ children }: { children: JSX.Element }) => {
+export default function MainWrapper({ children }: React.PropsWithChildren) {
   return (
     <div
       style={{
@@ -19,7 +20,7 @@ export const MainWrapper = ({ children }: { children: JSX.Element }) => {
         }
         navData={[
           {
-            buttonText: "Section One",
+            buttonText: "Home",
             columns: [
               [
                 {
@@ -30,12 +31,12 @@ export const MainWrapper = ({ children }: { children: JSX.Element }) => {
             ],
           },
           {
-            buttonText: "Section Two",
+            buttonText: "Issues",
             columns: [
               [
                 {
-                  href: "/posts",
-                  text: "Posts",
+                  href: "/issues",
+                  text: "All Issues",
                 },
               ],
             ],
@@ -47,21 +48,18 @@ export const MainWrapper = ({ children }: { children: JSX.Element }) => {
               {
                 href: "",
                 iconName: "person",
-                onClick: function noRefCheck() {},
                 target: "_blank",
                 text: "Manage Profile",
               },
               {
                 href: "",
                 iconName: "people",
-                onClick: function noRefCheck() {},
                 target: "_blank",
                 text: "Request Role Change",
               },
               {
                 href: "",
                 iconName: "logout",
-                onClick: function noRefCheck() {},
                 target: "_blank",
                 text: "Log Out",
               },
@@ -71,9 +69,9 @@ export const MainWrapper = ({ children }: { children: JSX.Element }) => {
         }
       />
       <main className="padding-x-5" style={{ flex: 1 }}>
-        {children}
+        <Outlet />
       </main>
       <UI.Footer style={{ marginTop: "auto" }} emailAddress="QPP@cms.hhs.gov" />
     </div>
   );
-};
+}

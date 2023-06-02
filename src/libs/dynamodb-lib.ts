@@ -31,13 +31,13 @@ export async function putItem({
     const result = await client.send(command);
     if (result)
       console.log(
-        `Record processed for item: ${item.recordId}:`,
+        `Record processed for result: `,
         JSON.stringify(result, null, 2)
       );
     return result;
   } catch (error) {
     console.error("ERROR updating record in dynamodb: ", error);
-    return;
+    throw error;
   }
 }
 

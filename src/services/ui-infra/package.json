@@ -1,5 +1,6 @@
 {
   "name": "ui-infra",
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {},
+  "version": "0.0.0"
 }
