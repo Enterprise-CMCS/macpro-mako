@@ -9,15 +9,19 @@ export const handler = async (
   _context: Context,
   _callback: APIGatewayProxyCallback
 ) => {
-  const lambdaArnToCall = process.env.lambdaArnToCall!;
+  const lambdaArnToCall = process.env.lambdaArnToCall;
   try {
+    if (!lambdaArnToCall) {
+      throw new Error("An error occured");
+    }
+
     const html = `
       <div style="width: 100%; display: flex; justify-content: center;">
         <a class="btn btn-primary">Get Dashboard Template</a>
       </div>
-      <cwdb-action action="call" endpoint="${lambdaArnToCall}" display="popup">  
+      <cwdb-action action="call" endpoint="${lambdaArnToCall}" display="popup">
        {}
-      </cwdb-action> 
+      </cwdb-action>
       `;
 
     return html;

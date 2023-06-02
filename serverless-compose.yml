@@ -7,6 +7,8 @@ services:
     path: src/services/database
   api:
     path: src/services/api
+    params:
+      issuesTableName: ${database.IssuesTableName}
   ui-infra:
     path: src/services/ui-infra
   ui:

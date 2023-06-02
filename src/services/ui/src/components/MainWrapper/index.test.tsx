@@ -1,22 +1,23 @@
-/**
- * @vitest-environment jsdom
- */
-
-import { TestWrapper } from "../../utils/vitest/TestWrapper";
 import { describe, expect, test } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { MainWrapper } from ".";
-
+import { RouterProvider, createMemoryRouter } from "react-router-dom";
+import MainWrapper from ".";
 describe("Header test", () => {
   test("should show main wrapper text", () => {
-    render(
-      <TestWrapper>
-        <MainWrapper>
-          <div>Test Children Content</div>
-        </MainWrapper>
-      </TestWrapper>
+    const router = createMemoryRouter(
+      [
+        {
+          path: "/",
+          element: <MainWrapper />,
+          children: [{ path: "test", element: <h3>testing</h3> }],
+        },
+      ],
+      {
+        initialEntries: ["/", "/test"],
+        initialIndex: 1,
+      }
     );
-
-    expect(screen.getByText(/Test Children Content/i)).toBeDefined();
+    render(<RouterProvider router={router} />);
+    expect(screen.getByText(/test/i)).toBeDefined();
   });
 });

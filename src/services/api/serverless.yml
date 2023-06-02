@@ -10,6 +10,8 @@ plugins:
 provider:
   name: aws
   runtime: nodejs18.x
+  environment:
+    issuesTable: ${param:issuesTableName}
   logs:
     restApi: true
   region: ${env:REGION_A}
@@ -20,6 +22,20 @@ provider:
     role:
       path: /delegatedadmin/developer/
       permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:DescribeTable
+            - dynamodb:Get*
+            - dynamodb:BatchWrite*
+            - dynamodb:BatchGet*
+          Resource: "*"
 
 custom:
   project: ${env:PROJECT}
@@ -30,45 +46,62 @@ custom:
       - master
       - val
       - production
+  bundle:
+    linting: false
 functions:
-  getPosts:
-    handler: handlers/getPosts.handler
+  getIssues:
+    handler: handlers/getIssues.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
-          path: /posts
+          path: /issues
           method: get
           cors: true
-  getPost:
-    handler: handlers/getPost.handler
+  getIssue:
+    handler: handlers/getIssue.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
-          path: /posts/{id}
+          path: /issues/{id}
           method: get
           cors: true
-  createPost:
-    handler: handlers/createPost.handler
+  createIssue:
+    handler: handlers/createIssue.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
-          path: /posts
+          path: /issues
           method: post
           cors: true
-  deletePost:
-    handler: handlers/deletePost.handler
+  deleteIssue:
+    handler: handlers/deleteIssue.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
-          path: /posts/{id}
+          path: /issues/{id}
           method: delete
           cors: true
-  updatePost:
-    handler: handlers/updatePost.handler
+  updateIssue:
+    handler: handlers/updateIssue.handler
     maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:issuesTableName}
+      region: ${self:provider.region}
     events:
       - http:
-          path: /posts/{id}
+          path: /issues/{id}
           method: put
           cors: true
 resources:

@@ -1,0 +1,11 @@
+{
+  "name": "shared-types",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.38.0",
+    "eslint-config-custom-server": "*",
+    "zod": "^3.21.4"
+  }
+}

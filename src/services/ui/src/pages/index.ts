@@ -1,5 +1,3 @@
-import { Home } from "./Home";
-import { Post } from "./Post";
-import { Posts } from "./Posts";
-
-export { Home, Post, Posts };
+export * from "./issue/view";
+export * from "./issue/list";
+export * from "./issue";

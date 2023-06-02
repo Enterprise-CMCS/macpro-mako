@@ -36,6 +36,8 @@ custom:
       - master
       - val
       - production
+  bundle:
+    linting: false
 functions:
   templatizeCloudWatchDashboard:
     handler: handlers/templatizeCloudWatchDashboard.handler

@@ -39,7 +39,7 @@ custom:
       package:initialize: |
         set -e
         echo """
-        VITE_APP_API_REGION=${param:ApiRegion}
-        VITE_APP_API_URL=${param:ApiUrl}
+        VITE_API_REGION=${param:ApiRegion}
+        VITE_API_URL=${param:ApiUrl}
         """ > .env.local
-        yarn run build
+        yarn build

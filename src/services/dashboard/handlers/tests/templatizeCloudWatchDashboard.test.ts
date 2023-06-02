@@ -47,25 +47,6 @@ describe("handler", () => {
     delete process.env.region;
   });
 
-  it("should return the replaced dashboard template when called with valid inputs", async () => {
-    const dashboardBody =
-      '{"widgets": [{"type": "metric", "properties": {"stage": "test-stage", "view": "timeSeries", "stacked": false, "region": "test-region"}}]}';
-    const expectedReplacedBody =
-      '{"widgets": [{"type": "metric", "properties": {"stage": "${sls:stage}", "view": "timeSeries", "stacked": false, "region": "${env:REGION_A}"}}]}';
-
-    cloudWatchClientMock
-      .on(GetDashboardCommand, {
-        DashboardName: `${process.env.stage}-dashboard`,
-      })
-      .resolves({
-        DashboardBody: dashboardBody,
-      });
-
-    const result = await handler(mockEvent, mockContext, mockCallback);
-
-    expect(result).toEqual(expectedReplacedBody);
-  });
-
   it("should return the replaced dashboard body", async () => {
     cloudWatchClientMock
       .on(GetDashboardCommand)

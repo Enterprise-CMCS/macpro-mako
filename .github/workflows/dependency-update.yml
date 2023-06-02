@@ -2,8 +2,6 @@ name: Dependency Update
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * MON"
 
 concurrency:
   group: ${{ github.workflow }}
