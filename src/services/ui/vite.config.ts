@@ -16,4 +16,7 @@ export default defineConfig({
     },
     exclude: ["**/e2e/**"],
   },
+  build: {
+    minify: false,
+  },
 });
