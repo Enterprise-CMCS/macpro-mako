@@ -17,6 +17,7 @@ export default defineConfig({
     exclude: ["**/e2e/**"],
   },
   build: {
-    minify: process.env.NODE_ENV === "production",
+    // minify: process.env.NODE_ENV === "production",
+    minify: false,
   },
 });
