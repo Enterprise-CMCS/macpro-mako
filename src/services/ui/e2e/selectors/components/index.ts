@@ -1,1 +1,3 @@
-export * from "./AddIssueForm/index";
+import { AddIssueFormSelectors } from "./AddIssueForm/index";
+
+export { AddIssueFormSelectors };

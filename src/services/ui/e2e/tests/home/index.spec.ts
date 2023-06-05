@@ -9,11 +9,12 @@ test("has title", async ({ page }) => {
 });
 
 test("get issues link", async ({ page }) => {
+  const navSelectors = new $.NavSelectors(page);
   await page.goto("/");
 
   // Click the issues link.
-  await $.nav.issuesDropDown(page).click();
-  await $.nav.allIssuesLink(page).click();
+  await navSelectors.issuesDropDown.click();
+  await navSelectors.allIssuesLink.click();
 
   // Expects the URL to contain intro.
   await expect(page).toHaveURL(/.*issues/);

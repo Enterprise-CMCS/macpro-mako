@@ -3,39 +3,39 @@ import { v4 as uuidv4 } from "uuid";
 import * as $ from "@/selectors";
 
 async function goToIssuesPage(page: Page) {
+  const navSelectors = new $.NavSelectors(page);
   await page.goto("/");
 
   // Click the issues link.
-  await $.nav.issuesDropDown(page).click();
-  await $.nav.allIssuesLink(page).click();
-}
-
-async function clickToAddIssue(page: Page) {
-  await $.addIssueForm.addButton(page).click();
+  await navSelectors.issuesDropDown.click();
+  await navSelectors.allIssuesLink.click();
 }
 
 test("create issue should require description", async ({ page }) => {
+  const addIssuesFormSelectors = new $.AddIssueFormSelectors(page);
   goToIssuesPage(page);
-  clickToAddIssue(page);
 
-  await $.addIssueForm.titleInput(page).fill("Here is a test title");
-  await $.addIssueForm.prioritySelect(page).selectOption("medium");
-  await $.addIssueForm.typeSelect(page).selectOption("other");
-  await $.addIssueForm.submitButton(page).click();
+  await addIssuesFormSelectors.addButton.click();
+  await addIssuesFormSelectors.titleInput.fill("Here is a test title");
+  await addIssuesFormSelectors.prioritySelect.selectOption("medium");
+  await addIssuesFormSelectors.typeSelect.selectOption("other");
+  await addIssuesFormSelectors.submitButton.click();
 
   await expect(page.getByText("Description is required")).toBeVisible();
 });
 
 test("should be able to create and delete an issue", async ({ page }) => {
+  const addIssuesFormSelectors = new $.AddIssueFormSelectors(page);
+
   const testDesc = uuidv4();
   goToIssuesPage(page);
-  clickToAddIssue(page);
 
-  await $.addIssueForm.titleInput(page).fill("Here is a test title");
-  await $.addIssueForm.descriptionInput(page).fill(testDesc);
-  await $.addIssueForm.prioritySelect(page).selectOption("medium");
-  await $.addIssueForm.typeSelect(page).selectOption("other");
-  await $.addIssueForm.submitButton(page).click();
+  await addIssuesFormSelectors.addButton.click();
+  await addIssuesFormSelectors.titleInput.fill("Here is a test title");
+  await addIssuesFormSelectors.descriptionInput.fill(testDesc);
+  await addIssuesFormSelectors.prioritySelect.selectOption("medium");
+  await addIssuesFormSelectors.typeSelect.selectOption("other");
+  await addIssuesFormSelectors.submitButton.click();
 
   await expect(page).toHaveURL(/.*issues/);
   await expect(page.getByRole("cell", { name: testDesc })).toBeVisible();
