@@ -51,9 +51,8 @@ jobs:
           role-duration-seconds: 10800
       
       - name: Set environment variable for production
-        env:
-          NODE_ENV: production
-        if: ${{ github.ref_name }} == 'production'
+        run: echo "NODE_ENV=production" >> $GITHUB_ENV
+        if: github.ref == 'refs/heads/production'
 
       - name: Deploy
         run: run deploy --stage $STAGE_NAME
