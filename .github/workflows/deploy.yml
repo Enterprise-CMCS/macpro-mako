@@ -53,7 +53,7 @@ jobs:
       - name: Set environment variable for production
         env:
           NODE_ENV: production
-        if: github.ref == 'refs/heads/production'
+        if: ${{ github.ref_name }} == 'production'
 
       - name: Deploy
         run: run deploy --stage $STAGE_NAME
