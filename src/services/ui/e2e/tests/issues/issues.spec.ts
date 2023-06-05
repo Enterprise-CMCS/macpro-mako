@@ -1,42 +1,44 @@
 import { test, expect, Page } from "@playwright/test";
 import { v4 as uuidv4 } from "uuid";
+import * as $ from "@/selectors";
 
 async function goToIssuesPage(page: Page) {
   await page.goto("/");
-  await page.getByRole("button", { name: "Issues" }).click();
-  await page.getByRole("link", { name: "All Issues" }).click();
-  await page.getByRole("button", { name: "Add button" }).click();
+
+  // Click the issues link.
+  await $.nav.issuesDropDown(page).click();
+  await $.nav.allIssuesLink(page).click();
+}
+
+async function clickToAddIssue(page: Page) {
+  await $.addIssueForm.addButton(page).click();
 }
 
 test("create issue should require description", async ({ page }) => {
   goToIssuesPage(page);
-  await page.getByLabel("Title").fill("Here is a test title");
-  await page.getByRole("combobox", { name: "Priority" }).selectOption("medium");
-  await page.getByRole("combobox", { name: "Type" }).selectOption("other");
-  await page.getByRole("button", { name: "Submit button" }).click();
+  clickToAddIssue(page);
+
+  await $.addIssueForm.titleInput(page).fill("Here is a test title");
+  await $.addIssueForm.prioritySelect(page).selectOption("medium");
+  await $.addIssueForm.typeSelect(page).selectOption("other");
+  await $.addIssueForm.submitButton(page).click();
+
   await expect(page.getByText("Description is required")).toBeVisible();
 });
 
 test("should be able to create and delete an issue", async ({ page }) => {
   const testDesc = uuidv4();
   goToIssuesPage(page);
+  clickToAddIssue(page);
 
-  await page.getByLabel("Title").fill("Here is a test title");
-  await page.getByLabel("Description").fill(testDesc);
-  await page.getByRole("combobox", { name: "Priority" }).selectOption("medium");
-  await page.getByRole("combobox", { name: "Type" }).selectOption("other");
-  await page.getByRole("button", { name: "Submit button" }).click();
+  await $.addIssueForm.titleInput(page).fill("Here is a test title");
+  await $.addIssueForm.descriptionInput(page).fill(testDesc);
+  await $.addIssueForm.prioritySelect(page).selectOption("medium");
+  await $.addIssueForm.typeSelect(page).selectOption("other");
+  await $.addIssueForm.submitButton(page).click();
 
   await expect(page).toHaveURL(/.*issues/);
-
-  // you can select react components by name and prop
-  await expect(
-    page.locator(`_react=IssueRow[issue.description = "${testDesc}"]`)
-  ).toBeVisible();
   await expect(page.getByRole("cell", { name: testDesc })).toBeVisible();
-
-  // this next bit is tricky because we need to find the row containing the text we just entered and then find the delete button in the same row.
-  // but we can do it using xpath selectors
 
   // Select the "Delete" button using a single XPath selector
   const buttonSelector = `//td[text()='${testDesc}']/following-sibling::td/button[@aria-label='Delete button']`;

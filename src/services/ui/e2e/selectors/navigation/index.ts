@@ -1,4 +1,8 @@
+import { Page } from "@playwright/test";
+
 export const nav = {
-  issuesDropDown: "_react=NavSection[section.buttonText = \"Issues\"]",
-  allIssuesLink: "_react=Link[text = \"All Issues\"]",
+  issuesDropDown: (page: Page) =>
+    page.locator("_react=NavSection[section.buttonText = \"Issues\"]"),
+  allIssuesLink: (page: Page) =>
+    page.locator("_react=Link[text = \"All Issues\"]"),
 };

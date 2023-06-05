@@ -12,8 +12,8 @@ test("get issues link", async ({ page }) => {
   await page.goto("/");
 
   // Click the issues link.
-  await page.locator($.nav.issuesDropDown).click();
-  await page.locator($.nav.allIssuesLink).click();
+  await $.nav.issuesDropDown(page).click();
+  await $.nav.allIssuesLink(page).click();
 
   // Expects the URL to contain intro.
   await expect(page).toHaveURL(/.*issues/);
