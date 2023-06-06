@@ -15,12 +15,14 @@ test("create issue should require description", async ({ page }) => {
   const addIssuesFormSelectors = new $.AddIssueFormSelectors(page);
   goToIssuesPage(page);
 
+  // fills in all inputs except description
   await addIssuesFormSelectors.addButton.click();
   await addIssuesFormSelectors.titleInput.fill("Here is a test title");
   await addIssuesFormSelectors.prioritySelect.selectOption("medium");
   await addIssuesFormSelectors.typeSelect.selectOption("other");
   await addIssuesFormSelectors.submitButton.click();
 
+  // expects required error to be displayed
   await expect(page.getByText("Description is required")).toBeVisible();
 });
 
@@ -30,6 +32,7 @@ test("should be able to create and delete an issue", async ({ page }) => {
   const testDesc = uuidv4();
   goToIssuesPage(page);
 
+  // completes and submits new issues form
   await addIssuesFormSelectors.addButton.click();
   await addIssuesFormSelectors.titleInput.fill("Here is a test title");
   await addIssuesFormSelectors.descriptionInput.fill(testDesc);
@@ -37,7 +40,10 @@ test("should be able to create and delete an issue", async ({ page }) => {
   await addIssuesFormSelectors.typeSelect.selectOption("other");
   await addIssuesFormSelectors.submitButton.click();
 
+  // expect the page to be rerouted
   await expect(page).toHaveURL(/.*issues/);
+
+  // expect the issue row to exist
   await expect(page.getByRole("cell", { name: testDesc })).toBeVisible();
 
   // Select the "Delete" button using a single XPath selector
@@ -46,6 +52,6 @@ test("should be able to create and delete an issue", async ({ page }) => {
   // Click the "Delete" button
   await page.click(buttonSelector);
 
-  // the row should be deleted
+  // expect the row to be deleted
   await expect(page.getByRole("cell", { name: testDesc })).not.toBeVisible();
 });
