@@ -17,7 +17,9 @@ export default defineConfig({
     exclude: ["**/e2e/**"],
   },
   build: {
-    // minify: process.env.NODE_ENV === "production",
-    minify: false,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    minify: import.meta.env.VITE_NODE_ENV === "production",
+    // minify: false,
   },
 });
