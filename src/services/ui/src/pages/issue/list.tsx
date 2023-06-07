@@ -6,6 +6,39 @@ import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { useDeleteIssue } from "../../api/useDeleteIssue";
 import { Modal } from "../../components/Modal";
 import { AddIssueForm, LoadingSpinner } from "../../components";
+import { GetIssue } from "shared-types";
+
+export const IssueRow = ({
+  issue,
+  handleDelete,
+}: {
+  issue: GetIssue;
+  handleDelete: (id: string) => Promise<void>;
+}) => (
+  <tr key={issue.id}>
+    <UI.TH rowHeader>
+      <Link className="cursor-pointer text-blue-600" to={`/issues/${issue.id}`}>
+        {issue.title}
+      </Link>
+    </UI.TH>
+    <UI.TD>{issue.description}</UI.TD>
+    <UI.TD>{issue.priority}</UI.TD>
+    <UI.TD>{issue.type}</UI.TD>
+    <UI.TD>{formatDistance(new Date(issue.createdAt), new Date())} ago</UI.TD>
+    <UI.TD>
+      <div className="w-8">
+        {issue.resolved ? <FaceSmileIcon /> : <FaceFrownIcon />}
+      </div>
+    </UI.TD>
+    <UI.TD>
+      <UI.Button
+        buttonText="Delete"
+        buttonVariation="link"
+        onClick={() => handleDelete(issue.id)}
+      />
+    </UI.TD>
+  </tr>
+);
 
 export const IssueList = () => {
   const { isLoading, isError, data } = useGetIssues();
@@ -54,34 +87,11 @@ export const IssueList = () => {
         <tbody>
           {data.map((issue) => {
             return (
-              <tr key={issue.id}>
-                <UI.TH rowHeader>
-                  <Link
-                    className="cursor-pointer text-blue-600"
-                    to={`/issues/${issue.id}`}
-                  >
-                    {issue.title}
-                  </Link>
-                </UI.TH>
-                <UI.TD>{issue.description}</UI.TD>
-                <UI.TD>{issue.priority}</UI.TD>
-                <UI.TD>{issue.type}</UI.TD>
-                <UI.TD>
-                  {formatDistance(new Date(issue.createdAt), new Date())} ago
-                </UI.TD>
-                <UI.TD>
-                  <div className="w-8">
-                    {issue.resolved ? <FaceSmileIcon /> : <FaceFrownIcon />}
-                  </div>
-                </UI.TD>
-                <UI.TD>
-                  <UI.Button
-                    buttonText="Delete"
-                    buttonVariation="link"
-                    onClick={() => handleDelete(issue.id)}
-                  />
-                </UI.TD>
-              </tr>
+              <IssueRow
+                issue={issue}
+                handleDelete={handleDelete}
+                key={issue.id}
+              />
             );
           })}
         </tbody>

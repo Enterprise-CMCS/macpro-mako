@@ -15,6 +15,7 @@
     "build:cli": "turbo build:cli",
     "test:watch": "turbo test:watch",
     "test:gui": "turbo test:gui",
+    "e2e": "turbo e2e",
     "coverage": "vitest run --coverage",
     "test-gui": "vitest --ui",
     "test-tsc": "tsc --skipLibCheck --noEmit"
