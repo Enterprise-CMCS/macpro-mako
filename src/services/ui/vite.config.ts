@@ -4,6 +4,9 @@ import react from "@vitejs/plugin-react-swc";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    port: 5000,
+  },
   test: {
     environment: "jsdom",
     setupFiles: "./testing/setup.ts",
@@ -11,5 +14,9 @@ export default defineConfig({
       provider: "istanbul",
       reporter: "json",
     },
+    exclude: ["**/e2e/**"],
+  },
+  build: {
+    minify: process.env.VITE_NODE_ENV === "production",
   },
 });

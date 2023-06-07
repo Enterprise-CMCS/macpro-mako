@@ -11,6 +11,7 @@
       "cache": false
     },
     "test:watch": {},
-    "test:gui": {}
+    "test:gui": {},
+    "e2e": {}
   }
 }
