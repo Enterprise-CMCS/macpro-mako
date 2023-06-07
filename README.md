@@ -3,7 +3,7 @@
 ---
 
 <h1 align="center" style="border-bottom: none;">macpro-om-template</h1>
-<h3 align="center">A new project by the MACPRO Platform Team; description TBD.</h3>
+<h3 align="center">A new project by the MACPRO Platform Team</h3>
 <p align="center">
   <a href="https://enterprise-cmcs.github.io/macpro-om-template/">
     <img alt="Docs" src="https://img.shields.io/badge/Docs-site-blue.svg">
@@ -30,7 +30,7 @@
 
 ## Overview
 
-The macpro-om-template project is TBD.
+This project will serve as a starting point for the redesign of onemac.cms.gov
 
 <p align="center">
   <img width="55%" src="docs/assets/diagram.svg">
