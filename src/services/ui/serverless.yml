@@ -41,5 +41,6 @@ custom:
         echo """
         VITE_API_REGION=${param:ApiRegion}
         VITE_API_URL=${param:ApiUrl}
+        VITE_NODE_ENV=${self:custom.stage}
         """ > .env.local
         yarn build

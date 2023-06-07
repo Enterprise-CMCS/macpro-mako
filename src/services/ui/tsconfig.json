@@ -14,8 +14,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/selectors": ["e2e/selectors/index"]
+    }
   },
-  "include": ["src"],
+  "include": ["src", "e2e"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
