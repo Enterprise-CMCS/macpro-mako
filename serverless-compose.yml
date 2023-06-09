@@ -25,7 +25,3 @@ services:
       ApiRegion: ${api.Region}
       ApiUrl: ${api.ApiGatewayRestApiUrl}
       ApiName: ${api.ApiGatewayRestApiName}
-    # params: # params will be added once other services are
-    #   ecsFailureTopicArn: ${alerts.ECSFailureTopicArn}
-    #   mskClusterArn: ${bigmac.MskClusterArn}
-    #   brokerString: ${bigmac.BrokerString}
