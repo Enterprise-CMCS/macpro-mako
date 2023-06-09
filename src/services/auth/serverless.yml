@@ -44,19 +44,16 @@ custom:
       deploy:finalize: |
         if [ "${self:custom.bootstrapUsers}" = "true" ];
         then
-          # Here, we're invoking a function using the aws cli, instead of serverless invoke.
-          # Using serverless invoke did not seem possible when being invoked from inside a node process.  I got stumped.
-          # https://forum.serverless.com/t/any-ideas-on-how-to-call-serverless-invoke-shell-comand-from-another-nodejs-script/9039
           aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-bootstrapUsers --invocation-type RequestResponse /dev/null
         fi
 
 params:
   val:
-    bootstrapUsers: false
+    bootstrapUsers: "false"
   production:
-    bootstrapUsers: false
+    bootstrapUsers: "false"
   default:
-    bootstrapUsers: true
+    bootstrapUsers: "true"
 
 functions:
   bootstrapUsers:
