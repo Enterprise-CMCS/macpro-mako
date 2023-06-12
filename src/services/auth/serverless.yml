@@ -120,11 +120,11 @@ resources:
           - aws.cognito.signin.user.admin # Needed to call Auth.currentUserInfo()
         CallbackURLs:
           - ${param:ApplicationEndpointUrl}
-          - http://localhost:3000/
+          - http://localhost:5000/
         DefaultRedirectURI: ${param:ApplicationEndpointUrl}
         LogoutURLs:
           - ${param:ApplicationEndpointUrl}
-          - http://localhost:3000/
+          - http://localhost:5000/
         SupportedIdentityProviders:
           - COGNITO
           - Fn::If:
