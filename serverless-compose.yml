@@ -25,3 +25,8 @@ services:
       ApiRegion: ${api.Region}
       ApiUrl: ${api.ApiGatewayRestApiUrl}
       ApiName: ${api.ApiGatewayRestApiName}
+      CognitoRegion: ${auth.Region}
+      CognitoIdentityPoolId: ${auth.IdentityPoolId}
+      CognitoUserPoolId: ${auth.UserPoolId}
+      CognitoUserPoolClientId: ${auth.UserPoolClientId}
+      CognitoUserPoolClientDomain: ${auth.UserPoolClientDomain}
