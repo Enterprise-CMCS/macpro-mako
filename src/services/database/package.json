@@ -13,7 +13,11 @@
     "eslint-config-custom-server": "*"
   },
   "dependencies": {
-    "cfn-response-async": "^1.0.0"
+    "@anatine/zod-mock": "^3.12.0",
+    "@faker-js/faker": "^8.0.2",
+    "cfn-response-async": "^1.0.0",
+    "shared-types": "*",
+    "zod": "^3.21.4"
   },
   "scripts": {
     "lint": "eslint '**/*.{ts,js}'"

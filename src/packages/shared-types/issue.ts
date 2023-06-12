@@ -5,17 +5,17 @@ export const issueSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
   description: z.string().min(1, { message: "Description is required" }),
   type: z
-    .string()
-    .refine((val) => ["look", "functionality", "other"].includes(val), {
-      message: "Type must be one of \"look\", \"functionality\", or \"other\"",
-    }),
+    .enum(["look", "functionality", "other"]),
+  // .refine((val) => ["look", "functionality", "other"].includes(val), {
+  //   message: "Type must be one of \"look\", \"functionality\", or \"other\"",
+  // }),
   priority: z
-    .string()
-    .refine((val) => ["low", "medium", "high"].includes(val), {
-      message: "Priority must be one of \"low\", \"medium\", or \"high\"",
-    }),
+    .enum(["low", "medium", "high"]),
+  // .refine((val) => ["low", "medium", "high"].includes(val), {
+  //   message: "Priority must be one of \"low\", \"medium\", or \"high\"",
+  // }),
   resolved: z.boolean().default(false),
-  createdAt: z.string(),
+  createdAt: z.date(),
 });
 
 export type Issue = z.infer<typeof issueSchema>;
