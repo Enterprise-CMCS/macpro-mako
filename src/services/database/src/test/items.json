@@ -1,18 +1,18 @@
 [
   {
-    "recordId": "zz-alpha",
+    "id": "zz-alpha",
     "state": "ZZ"
   },
   {
-    "recordId": "zz-bravo",
+    "id": "zz-bravo",
     "state": "ZZ"
   },
   {
-    "recordId": "zz-charlie",
+    "id": "zz-charlie",
     "state": "ZZ"
   },
   {
-    "recordId": "zz-delta",
+    "id": "zz-delta",
     "state": "ZZ"
   }
 ]

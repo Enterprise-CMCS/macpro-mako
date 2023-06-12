@@ -9,7 +9,7 @@ exports.handler = async (event, context) => {
       console.log(item);
       await dynamodb.putItem({
         tableName,
-        item: { PK: item.recordId, SK: item.state },
+        item: { id: item.id, state: item.state },
       });
     }
     return "SUCCESS";
