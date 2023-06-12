@@ -24,7 +24,7 @@ export class IssueService {
     tableName: string;
   }) {
     const id = v4();
-    const createdAt = new Date().toISOString();
+    const createdAt = Date.now();
 
     const input = {
       Item: marshall({ ...issue, id, createdAt }),
@@ -78,7 +78,7 @@ export class IssueService {
     issue: Omit<Issue, "id">;
     tableName: string;
   }) {
-    const updatedAt = new Date().toISOString();
+    const updatedAt = Date.now();
 
     const input = {
       Item: marshall({ ...issue, id, updatedAt }),

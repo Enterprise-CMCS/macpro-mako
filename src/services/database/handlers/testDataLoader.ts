@@ -1,7 +1,6 @@
 import * as dynamodb from "../../../libs/dynamodb-lib";
 import { generateMock } from '@anatine/zod-mock';
 import { issueSchema } from "shared-types";
-
 exports.handler = async () => {
   try {
     if (!process.env.tableName) {
@@ -12,11 +11,11 @@ exports.handler = async () => {
 
     for (let i = 0; i < 5; i++) {
       let mockData = generateMock(issueSchema, {
-        seed: 100 + i
+        seed: 100 + i,
       });
       await dynamodb.putItem({
         tableName,
-        item: { ...mockData, createdAt: mockData.createdAt.toISOString() },
+        item: { ...mockData, createdAt: Date.now() },
       });
     }
     return "SUCCESS";
