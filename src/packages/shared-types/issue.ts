@@ -15,7 +15,7 @@ export const issueSchema = z.object({
   //   message: "Priority must be one of \"low\", \"medium\", or \"high\"",
   // }),
   resolved: z.boolean().default(false),
-  createdAt: z.date(),
+  createdAt: z.string(),
 });
 
 export type Issue = z.infer<typeof issueSchema>;
