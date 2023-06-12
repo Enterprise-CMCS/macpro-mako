@@ -5,7 +5,7 @@ export async function createUser(params: any): Promise<void> {
   try {
     const command = new AdminCreateUserCommand(params);
     await client.send(command);
-    console.log(`User ${params.username} created successfully.`);
+    console.log(`User ${params.Username} created successfully.`);
   } catch (error) {
     console.error(`Error creating user:`, error);
   }
@@ -17,7 +17,7 @@ export async function setPassword(params: any): Promise<void> {
     const command = new AdminSetUserPasswordCommand(params);
     await client.send(command);
 
-    console.log(`Password for user ${params.username} set successfully.`);
+    console.log(`Password for user ${params.Username} set successfully.`);
   } catch (error) {
     console.error("Error setting user's password:", error);
   }
@@ -28,7 +28,7 @@ export async function updateUserAttributes(params: any): Promise<void> {
     // Update the user's attributes
     const command = new AdminUpdateUserAttributesCommand(params);
     await client.send(command);
-    console.log(`Attributes for user ${params.username} updated successfully.`);
+    console.log(`Attributes for user ${params.Username} updated successfully.`);
   } catch (error) {
     console.error("Error updating user's attributes:", error);
   }
