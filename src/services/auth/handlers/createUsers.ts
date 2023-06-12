@@ -1,8 +1,8 @@
-import * as cognitolib from "../libs/cognito-lib";
+import { createUser, setPassword, updateUserAttributes } from "../../../libs";
 const userPoolId = process.env.userPoolId;
 const users = require("../libs/users.json");
 
-async function myHandler(event, context, callback) {
+exports.handler = async function myHandler(event, context, callback) {
   console.log("USER POOL ID: ");
   console.log(userPoolId);
 
@@ -26,12 +26,10 @@ async function myHandler(event, context, callback) {
       UserAttributes: users[i].attributes,
     };
 
-    await cognitolib.createUser(poolData);
+    await createUser(poolData);
     //userCreate must set a temp password first, calling setPassword to set the password configured in SSM for consistent dev login
-    await cognitolib.setPassword(passwordData);
+    await setPassword(passwordData);
     //if user exists and attributes are updated in this file updateUserAttributes is needed to update the attributes
-    await cognitolib.updateUserAttributes(attributeData);
+    await updateUserAttributes(attributeData);
   }
 }
-
-exports.handler = myHandler;
