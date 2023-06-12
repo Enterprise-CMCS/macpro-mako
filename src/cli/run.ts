@@ -44,9 +44,10 @@ yargs(process.argv.slice(2))
     },
     async (options) => {
       await install_deps_for_services();
+      await refreshOutputs(options.stage);
       await runner.run_command_and_output(
-        `ui config`,
-        ["sls", "deploy", "--stage", options.stage],
+        `config vars`,
+        ["sls", "ui", "package", "--stage", options.stage],
         "."
       );
       await runner.run_command_and_output(
