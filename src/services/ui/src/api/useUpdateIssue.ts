@@ -1,16 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { UpdateIssue, validateUpdateIssue } from "shared-types";
-import { API } from "aws-amplify"
+import { Issue, validateIssue } from "shared-types";
+import { API } from "aws-amplify";
 
 export const useUpdateissue = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (issue: UpdateIssue) => {
-      const validIssue = validateUpdateIssue(issue);
+    mutationFn: async (issue: Issue) => {
+      const validIssue = validateIssue(issue);
 
       try {
-        await API.put("issues", `/issues/${validIssue.id}`, { body: validIssue });
+        await API.put("issues", `/issues/${validIssue.id}`, {
+          body: validIssue,
+        });
         return validIssue;
       } catch (err: any) {
         throw {

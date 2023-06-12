@@ -6,13 +6,13 @@ import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { useDeleteIssue } from "../../api/useDeleteIssue";
 import { Modal } from "../../components/Modal";
 import { AddIssueForm, LoadingSpinner } from "../../components";
-import { GetIssue } from "shared-types";
+import { Issue } from "shared-types";
 
 export const IssueRow = ({
   issue,
   handleDelete,
 }: {
-  issue: GetIssue;
+  issue: Issue;
   handleDelete: (id: string) => Promise<void>;
 }) => (
   <tr key={issue.id}>

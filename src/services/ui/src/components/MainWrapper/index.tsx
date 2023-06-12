@@ -1,29 +1,21 @@
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
 import { Outlet, useLoaderData } from "react-router-dom";
-import { Auth } from 'aws-amplify';
+import { Auth } from "aws-amplify";
 
 export default function MainWrapper() {
-  const albums = useLoaderData() as any;
+  const { isAuth } = useLoaderData() as { isAuth: true };
 
-  async function handleLogin(event: any) {
-    event.preventDefault();
-    try {
-      const authConfig = Auth.configure();
-      const { domain, redirectSignIn, responseType } = authConfig.oauth as any;
-      const clientId = authConfig.userPoolWebClientId;
-      const url = `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
-      window.location.assign(url);
-    } catch (e) {
-      throw (e);
-    }
+  async function handleLogin() {
+    const authConfig = Auth.configure();
+    const { domain, redirectSignIn, responseType } = authConfig.oauth as any;
+    const clientId = authConfig.userPoolWebClientId;
+    const url = `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
+    window.location.assign(url);
   }
 
-  async function handleLogout(event: any) {
-    event.preventDefault();
+  async function handleLogout() {
     await Auth.signOut();
-
-    // history.push("/");
   }
 
   return (
@@ -67,7 +59,7 @@ export default function MainWrapper() {
         ]}
         secondaryComponent={
           <>
-            {albums.spiderman ?
+            {isAuth ? (
               <UI.ActionsMenu
                 links={[
                   {
@@ -83,29 +75,27 @@ export default function MainWrapper() {
                     text: "Request Role Change",
                   },
                   {
-                    href: "",
+                    href: "#",
                     iconName: "logout",
-                    ///@ts-ignore
-                    onClick: (e) => handleLogout(e),
+                    onClick: handleLogout,
                     text: "Log Out",
                   },
                 ]}
                 name="My Account"
-              /> : <UI.ActionsMenu
+              />
+            ) : (
+              <UI.ActionsMenu
                 links={[
                   {
-                    href: "",
+                    href: "#",
                     iconName: "login",
-                    ///@ts-ignore
-                    onClick: (e) => handleLogin(e),
+                    onClick: handleLogin,
                     text: "Login with IDM",
                   },
                 ]}
                 name="Login"
               />
-
-            }
-
+            )}
           </>
         }
       />
