@@ -1,8 +1,12 @@
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLoaderData } from "react-router-dom";
+
 
 export default function MainWrapper() {
+  const albums = useLoaderData();
+  console.log(albums);
+  console.log("SULLY");
   return (
     <div
       style={{
