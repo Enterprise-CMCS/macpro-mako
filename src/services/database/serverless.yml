@@ -89,15 +89,15 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.issuesTableName}
-    InitializeDynamoDB:
-      Type: Custom::InitFunction
-      DependsOn: IssuesTable
-      Properties:
-        ServiceToken:
-          Fn::GetAtt: [SeeddatabaseLambdaFunction, "Arn"]
-        DynamoTableName:
-          Ref: IssuesTable
-        # Trigger: ${self:custom.referenceDataHash}
+    # InitializeDynamoDB:
+    #   Type: Custom::InitFunction
+    #   DependsOn: IssuesTable
+    #   Properties:
+    #     ServiceToken:
+    #       Fn::GetAtt: [SeeddatabaseLambdaFunction, "Arn"]
+    #     DynamoTableName:
+    #       Ref: IssuesTable
+    #     # Trigger: ${self:custom.referenceDataHash}
   Outputs:
     IssuesTableName:
       Description: database table name for issues
