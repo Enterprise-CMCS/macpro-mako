@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { API } from "aws-amplify"
+import { API } from "aws-amplify";
 
 export const useDeleteIssue = () => {
   const queryClient = useQueryClient();
