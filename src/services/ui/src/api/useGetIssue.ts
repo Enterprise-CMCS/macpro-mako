@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { validateGetIssue } from "shared-types";
-import { API } from "aws-amplify"
+import { validateIssue } from "shared-types";
+import { API } from "aws-amplify";
 
 export const getIssue = async (id: string) => {
   const issue = await API.get("issues", `/issues/${id}`, {});
-  const validIssue = validateGetIssue(issue);
+  const validIssue = validateIssue(issue);
 
   return validIssue;
 };

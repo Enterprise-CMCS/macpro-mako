@@ -41,13 +41,13 @@ export const router = createBrowserRouter([
     loader: async () => {
       try {
         await Auth.currentSession();
-        return { spiderman: true };
+        return { isAuth: true };
       } catch (e) {
         if (e !== "No current user") {
-          throw (e);
+          throw e;
         }
-        return { spiderman: false };
+        return { isAuth: false };
       }
-    }
+    },
   },
 ]);
