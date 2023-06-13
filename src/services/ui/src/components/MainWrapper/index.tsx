@@ -2,17 +2,19 @@ import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
 import { Outlet, useLoaderData } from "react-router-dom";
 import { Auth } from "aws-amplify";
+import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
+
+function handleLogin() {
+  const authConfig = Auth.configure();
+  const { domain, redirectSignIn, responseType } =
+    authConfig.oauth as AwsCognitoOAuthOpts;
+  const clientId = authConfig.userPoolWebClientId;
+  const url = `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
+  window.location.assign(url);
+}
 
 export default function MainWrapper() {
   const { isAuth } = useLoaderData() as { isAuth: true };
-
-  async function handleLogin() {
-    const authConfig = Auth.configure();
-    const { domain, redirectSignIn, responseType } = authConfig.oauth as any;
-    const clientId = authConfig.userPoolWebClientId;
-    const url = `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
-    window.location.assign(url);
-  }
 
   async function handleLogout() {
     await Auth.signOut();

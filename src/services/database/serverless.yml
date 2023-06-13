@@ -97,7 +97,7 @@ resources:
           Fn::GetAtt: [SeeddatabaseLambdaFunction, "Arn"]
         DynamoTableName:
           Ref: IssuesTable
-        Trigger: ${self:custom.referenceDataHash}
+        # Trigger: ${self:custom.referenceDataHash}
   Outputs:
     IssuesTableName:
       Description: database table name for issues

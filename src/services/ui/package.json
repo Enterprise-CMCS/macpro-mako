@@ -14,6 +14,7 @@
     "test:gui": "vitest --ui"
   },
   "dependencies": {
+    "@aws-amplify/auth": "^5.4.0",
     "@enterprise-cmcs/macpro-ux-lib": "^1.22.1",
     "@heroicons/react": "^2.0.17",
     "@hookform/error-message": "^2.0.1",
