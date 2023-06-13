@@ -22,7 +22,9 @@ provider:
       statements:
         - Effect: "Allow"
           Action:
-            - "*"
+            - cognito-idp:AdminCreateUser
+            - cognito-idp:AdminSetUserPassword
+            - cognito-idp:AdminUpdateUserAttributes
           Resource: !GetAtt CognitoUserPool.Arn
 
 custom:
