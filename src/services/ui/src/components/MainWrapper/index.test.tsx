@@ -7,7 +7,6 @@ vi.mock("react-router-dom", async () => {
   const actual = (await vi.importActual("react-router-dom")) as any;
   return {
     ...actual,
-    // ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
     useLoaderData: () => ({ isAuth: true }),
   };
 });
