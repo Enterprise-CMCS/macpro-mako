@@ -17,6 +17,14 @@
       {
         "Name": "email_verified",
         "Value": "true"
+      },
+      {
+        "Name": "custom:state_codes",
+        "Value": "[\"VA\"]"
+      },
+      {
+        "Name": "custom:roles",
+        "Value": "[\"macmcrrs-state-user\"]"
       }
     ]
   },
@@ -38,6 +46,14 @@
       {
         "Name": "email_verified",
         "Value": "true"
+      },
+      {
+        "Name": "custom:state_codes",
+        "Value": "[\"VA\"]"
+      },
+      {
+        "Name": "custom:roles",
+        "Value": "[\"macmcrrs-state-user\"]"
       }
     ]
   },
@@ -59,6 +75,14 @@
       {
         "Name": "email_verified",
         "Value": "true"
+      },
+      {
+        "Name": "custom:state_codes",
+        "Value": "[\"VA\"]"
+      },
+      {
+        "Name": "custom:roles",
+        "Value": "[\"macmcrrs-state-user\"]"
       }
     ]
   }

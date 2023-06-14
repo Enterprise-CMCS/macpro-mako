@@ -3,6 +3,7 @@ import MainWrapper from "./components/MainWrapper";
 import * as P from "./pages";
 import { Amplify, Auth } from "aws-amplify";
 import config from "./config";
+import { QueryClient } from "@tanstack/react-query";
 
 Amplify.configure({
   Auth: {
@@ -37,10 +38,17 @@ export const router = createBrowserRouter([
     children: [
       { path: "/issues", element: <P.IssueList /> },
       { path: "/issues/:id", element: <P.ViewIssue /> },
+      { path: "/medicaid", element: <P.Medicaid /> },
+      { path: "/chip", element: <P.Chip /> },
+      { path: "/waiver", element: <P.Waiver /> },
     ],
     loader: async () => {
       try {
-        await Auth.currentSession();
+        const queryClient = new QueryClient();
+        queryClient.fetchQuery({
+          queryFn: () => Auth.currentAuthenticatedUser(),
+          queryKey: ["ben"],
+        });
         return { isAuth: true };
       } catch (e) {
         if (e !== "No current user") {

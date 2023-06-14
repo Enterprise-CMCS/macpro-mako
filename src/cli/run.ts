@@ -133,7 +133,7 @@ yargs(process.argv.slice(2))
       if (options.service) {
         filters.push({
           Key: "SERVICE",
-          Value: `${options.service}`,
+          Value: `${process.env.PROJECT}-${options.service}`,
         });
       }
       await destroyer.destroy(`${process.env.REGION_A}`, options.stage, {

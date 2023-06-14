@@ -105,6 +105,14 @@ resources:
             AttributeDataType: String
             Mutable: true
             Required: false
+          - Name: state_codes
+            AttributeDataType: String
+            Mutable: true
+            Required: false
+          - Name: roles
+            AttributeDataType: String
+            Mutable: true
+            Required: false
     CognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:

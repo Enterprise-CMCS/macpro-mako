@@ -1,6 +1,6 @@
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_logo.svg";
-import { Outlet, useLoaderData } from "react-router-dom";
+import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 
@@ -15,6 +15,7 @@ function handleLogin() {
 
 export default function MainWrapper() {
   const { isAuth } = useLoaderData() as { isAuth: true };
+  const navigate = useNavigate();
 
   async function handleLogout() {
     await Auth.signOut();
@@ -54,6 +55,31 @@ export default function MainWrapper() {
                 {
                   href: "/issues",
                   text: "All Issues",
+                },
+              ],
+            ],
+          },
+          {
+            buttonText: "Packages",
+            columns: [
+              [
+                {
+                  text: "Medicaid",
+                  onClick: () => {
+                    navigate("/medicaid");
+                  },
+                },
+                {
+                  text: "Chip",
+                  onClick: () => {
+                    navigate("/chip");
+                  },
+                },
+                {
+                  text: "Waivers",
+                  onClick: () => {
+                    navigate("/waiver");
+                  },
                 },
               ],
             ],

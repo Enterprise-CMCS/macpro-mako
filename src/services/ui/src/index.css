@@ -16,3 +16,16 @@
   
     background-color: rgba(255, 255, 255, 0.7);
   }
+
+  .usa-overlay .application-logo-container{
+    z-index: 200;
+  }
+
+  .application-logo-container{
+    z-index: auto;
+  }
+
+   
+  .usa-nav {
+  z-index: 800,
+  }
