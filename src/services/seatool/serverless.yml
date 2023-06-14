@@ -93,7 +93,7 @@ resources:
     SinkTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties: 
-        BatchSize: 10000
+        BatchSize: 1
         Enabled: true
         FunctionName: !GetAtt SinkLambdaFunction.Arn
         SelfManagedEventSource: 
