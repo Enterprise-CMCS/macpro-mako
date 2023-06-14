@@ -72,6 +72,9 @@ functions:
     environment:
       region: ${self:provider.region}
       tableName: !Ref Table
+    maximumRetryAttempts: 0
+    timeout: 5
+    memorySize: 512
 
 resources:
   Resources:
@@ -111,7 +114,7 @@ resources:
             URI: subnet:${self:custom.vpc.privateSubnets.2}
           - Type: VPC_SECURITY_GROUP
             URI: !Sub security_group:${SecurityGroup}
-        StartingPosition: TRIM_HORIZON
+        StartingPosition: LATEST
         Topics: 
           - aws.ksqldb.seatool.agg.State_Plan
     SecurityGroup:
