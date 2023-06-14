@@ -5,6 +5,8 @@ services:
     path: src/services/dashboard
   database:
     path: src/services/database
+  seatool:
+    path: src/services/seatool
   api:
     path: src/services/api
     params:

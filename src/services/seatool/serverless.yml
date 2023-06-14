@@ -1,0 +1,131 @@
+service: ${self:custom.project}-seatool
+
+frameworkVersion: "3"
+
+package:
+  individually: true
+
+plugins:
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-s3-security-helper"
+  - "@stratiformdigital/serverless-iam-helper"
+  - serverless-bundle
+  - serverless-plugin-scripts
+
+provider:
+  name: aws
+  region: us-east-1
+  iam:
+    role:
+      path: /delegatedadmin/developer/
+      permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Get*
+            - dynamodb:BatchWrite*
+            - dynamodb:BatchGet*
+          Resource: "arn:aws:dynamodb:*:*:table/${self:custom.tableName}"
+        - Effect: Allow
+          Action:
+            - lambda:CreateEventSourceMapping
+            - lambda:ListEventSourceMappings
+            - lambda:PutFunctionConcurrency
+            - lambda:DeleteEventSourceMapping
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - ec2:CreateNetworkInterface
+            - ec2:DescribeNetworkInterfaces
+            - ec2:DescribeVpcs
+            - ec2:DeleteNetworkInterface
+            - ec2:DescribeSubnets
+            - ec2:DescribeSecurityGroups
+          Resource: "*"
+
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+
+custom:
+  project: ${env:PROJECT}
+  serverlessTerminationProtection:
+    stages: # Apply CloudFormation termination protection for these stages
+      - master
+      - val
+      - production
+  bundle:
+    linting: false
+  vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
+  brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
+  tableName: ${self:service}-${sls:stage}-seatool
+
+functions:
+  sink:
+    handler: handlers/sink.handler
+    environment:
+      region: ${self:provider.region}
+      tableName: !Ref Table
+
+resources:
+  Resources:
+    Table:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableName}
+    SinkTrigger:
+      Type: AWS::Lambda::EventSourceMapping
+      Properties: 
+        BatchSize: 1
+        Enabled: true
+        FunctionName: !GetAtt SinkLambdaFunction.Arn
+        SelfManagedEventSource: 
+          Endpoints:
+            KafkaBootstrapServers: 
+              Fn::Split:
+                - ","
+                - ${self:custom.brokerString}
+        SourceAccessConfigurations: 
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.0}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.1}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.2}
+          - Type: VPC_SECURITY_GROUP
+            URI: !Sub security_group:${SecurityGroup}
+        StartingPosition: LATEST
+        Topics: 
+          - aws.ksqldb.seatool.agg.State_Plan
+    SecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: Security group for Sink Lambda Function.
+        VpcId: ${self:custom.vpc.id}
+    SecurityGroupEgress:
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId: !Ref SecurityGroup
+        IpProtocol: -1
+        CidrIp: 0.0.0.0/0
+  Outputs:
+    TableName:
+      Description: table holding seatool data
+      Value: ${self:custom.tableName}
