@@ -96,7 +96,7 @@ resources:
     SinkTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties: 
-        BatchSize: 10000
+        BatchSize: 1
         Enabled: true
         FunctionName: !GetAtt SinkLambdaFunction.Arn
         SelfManagedEventSource: 
@@ -114,7 +114,7 @@ resources:
             URI: subnet:${self:custom.vpc.privateSubnets.2}
           - Type: VPC_SECURITY_GROUP
             URI: !Sub security_group:${SecurityGroup}
-        StartingPosition: TRIM_HORIZON
+        StartingPosition: LATEST
         Topics: 
           - aws.ksqldb.seatool.agg.State_Plan
     SecurityGroup:
