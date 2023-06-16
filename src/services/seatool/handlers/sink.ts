@@ -26,11 +26,11 @@ export const handler: Handler = async (event) => {
       throw "process.env.tableName cannot be undefined";
     }
 
-    for await (const item of records) {
+    for (const item of records) {
       if (item.isTombstone) {
-        deleteItem({ tableName: process.env.tableName, key: { id: item.id } });
+        await deleteItem({ tableName: process.env.tableName, key: { id: item.id } });
       } else {
-        putItem({
+        await putItem({
           tableName: process.env.tableName,
           item,
         });

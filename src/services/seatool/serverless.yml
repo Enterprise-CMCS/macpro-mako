@@ -74,7 +74,7 @@ functions:
       tableName: !Ref Table
     maximumRetryAttempts: 0
     timeout: 60
-    memorySize: 512
+    memorySize: 2048
 
 resources:
   Resources:
@@ -94,7 +94,7 @@ resources:
     SinkTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties: 
-        BatchSize: 1000
+        BatchSize: 100
         Enabled: true
         FunctionName: !GetAtt SinkLambdaFunction.Arn
         SelfManagedEventSource: 
