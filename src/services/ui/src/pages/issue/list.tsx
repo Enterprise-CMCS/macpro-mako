@@ -48,13 +48,11 @@ export const IssueList = () => {
 
   if (isError)
     return (
-      <div className="max-w-screen-lg mx-auto px-8">
-        <UI.Alert
-          alertBody={"An Error Occured. Please try again later."}
-          alertHeading="Error"
-          variation="error"
-        />
-      </div>
+      <UI.Alert
+        alertBody={"An Error Occured. Please try again later."}
+        alertHeading="Error"
+        variation="error"
+      />
     );
 
   const handleDelete = async (id: string) => {
@@ -62,7 +60,7 @@ export const IssueList = () => {
   };
 
   return (
-    <div className="max-w-screen-lg mx-auto px-8">
+    <>
       <div className="flex items-center justify-between my-4">
         <UI.Typography size="lg" as="h1">
           Issues
@@ -96,6 +94,6 @@ export const IssueList = () => {
           })}
         </tbody>
       </UI.Table>
-    </div>
+    </>
   );
 };

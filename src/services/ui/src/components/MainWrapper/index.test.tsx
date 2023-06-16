@@ -7,7 +7,7 @@ vi.mock("react-router-dom", async () => {
   const actual = (await vi.importActual("react-router-dom")) as any;
   return {
     ...actual,
-    useLoaderData: () => ({ isAuth: true }),
+    useLoaderData: () => ({ user: true }),
   };
 });
 

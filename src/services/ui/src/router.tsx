@@ -3,7 +3,8 @@ import MainWrapper from "./components/MainWrapper";
 import * as P from "./pages";
 import { Amplify, Auth } from "aws-amplify";
 import config from "./config";
-import { QueryClient } from "@tanstack/react-query";
+import { CognitoUserAttributes } from "shared-types";
+import { getParsedObject } from "./utils";
 
 Amplify.configure({
   Auth: {
@@ -31,6 +32,22 @@ Amplify.configure({
   },
 });
 
+export const getLoaderInfo = async () => {
+  try {
+    const authenticatedUser = await Auth.currentAuthenticatedUser();
+    const attributes = await Auth.userAttributes(authenticatedUser);
+    const user = attributes.reduce((obj: { [key: string]: string }, item) => {
+      obj[item.Name] = item.Value;
+      return obj;
+    }, {});
+
+    return { user: getParsedObject(user) as CognitoUserAttributes };
+  } catch (e) {
+    console.log({ e });
+    return { user: null };
+  }
+};
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -42,20 +59,6 @@ export const router = createBrowserRouter([
       { path: "/chip", element: <P.Chip /> },
       { path: "/waiver", element: <P.Waiver /> },
     ],
-    loader: async () => {
-      try {
-        const queryClient = new QueryClient();
-        queryClient.fetchQuery({
-          queryFn: () => Auth.currentAuthenticatedUser(),
-          queryKey: ["ben"],
-        });
-        return { isAuth: true };
-      } catch (e) {
-        if (e !== "No current user") {
-          throw e;
-        }
-        return { isAuth: false };
-      }
-    },
+    loader: getLoaderInfo,
   },
 ]);

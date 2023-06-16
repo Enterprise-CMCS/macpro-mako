@@ -3,6 +3,7 @@ import cmsLogo from "@enterprise-cmcs/macpro-ux-lib/build/assets/img/logos/cms_l
 import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
+import { getLoaderInfo } from "../../router";
 
 function handleLogin() {
   const authConfig = Auth.configure();
@@ -14,7 +15,7 @@ function handleLogin() {
 }
 
 export default function MainWrapper() {
-  const { isAuth } = useLoaderData() as { isAuth: true };
+  const { user } = useLoaderData() as Awaited<ReturnType<typeof getLoaderInfo>>;
   const navigate = useNavigate();
 
   async function handleLogout() {
@@ -87,7 +88,7 @@ export default function MainWrapper() {
         ]}
         secondaryComponent={
           <>
-            {isAuth ? (
+            {user ? (
               <UI.ActionsMenu
                 links={[
                   {
@@ -128,7 +129,12 @@ export default function MainWrapper() {
         }
       />
       <main className="padding-x-5" style={{ flex: 1 }}>
-        <Outlet />
+        <div className="max-w-screen-lg mx-auto px-8 pt-2">
+          {user ? (
+            <UI.Typography size="2xs">Hi {user.given_name}</UI.Typography>
+          ) : null}
+          <Outlet />
+        </div>
       </main>
       <UI.Footer style={{ marginTop: "auto" }} emailAddress="QPP@cms.hhs.gov" />
     </div>
