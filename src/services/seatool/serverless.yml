@@ -73,7 +73,7 @@ functions:
       region: ${self:provider.region}
       tableName: !Ref Table
     maximumRetryAttempts: 0
-    timeout: 5
+    timeout: 60
     memorySize: 512
 
 resources:
@@ -94,7 +94,7 @@ resources:
     SinkTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties: 
-        BatchSize: 1
+        BatchSize: 1000
         Enabled: true
         FunctionName: !GetAtt SinkLambdaFunction.Arn
         SelfManagedEventSource: 
