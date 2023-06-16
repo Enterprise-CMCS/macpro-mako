@@ -112,7 +112,7 @@ resources:
             URI: subnet:${self:custom.vpc.privateSubnets.2}
           - Type: VPC_SECURITY_GROUP
             URI: !Sub security_group:${SecurityGroup}
-        StartingPosition: LATEST
+        StartingPosition: TRIM_HORIZON
         Topics: 
           - aws.ksqldb.seatool.agg.State_Plan
     SecurityGroup:
