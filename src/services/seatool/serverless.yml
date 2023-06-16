@@ -84,14 +84,12 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+        BillingMode: PAY_PER_REQUEST
         KeySchema:
           - AttributeName: id
             KeyType: HASH
         PointInTimeRecoverySpecification:
           PointInTimeRecoveryEnabled: true
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
         TableName: ${self:custom.tableName}
     SinkTrigger:
       Type: AWS::Lambda::EventSourceMapping
