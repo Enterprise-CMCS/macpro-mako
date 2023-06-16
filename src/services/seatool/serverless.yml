@@ -91,7 +91,7 @@ resources:
         PointInTimeRecoverySpecification:
           PointInTimeRecoveryEnabled: true
         TableName: ${self:custom.tableName}
-    SinkTrigger:
+    SinkTrigger2:
       Type: AWS::Lambda::EventSourceMapping
       Properties: 
         BatchSize: 1000
