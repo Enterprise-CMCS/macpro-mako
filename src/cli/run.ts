@@ -51,6 +51,11 @@ yargs(process.argv.slice(2))
         "."
       );
       await runner.run_command_and_output(
+        `config vars`,
+        ["sls", "ui", "useLocalhost", "--stage", options.stage],
+        "."
+      );
+      await runner.run_command_and_output(
         `ui start`,
         ["yarn", "dev"],
         `src/services/ui`
