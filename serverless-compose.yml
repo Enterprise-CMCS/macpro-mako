@@ -11,6 +11,7 @@ services:
     path: src/services/api
     params:
       issuesTableName: ${database.IssuesTableName}
+      seatoolTableName: ${seatool.TableName}
   ui-infra:
     path: src/services/ui-infra
   auth:
