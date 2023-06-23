@@ -36,6 +36,10 @@ provider:
             - dynamodb:BatchWrite*
             - dynamodb:BatchGet*
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - cognito-idp:GetUser
+          Resource: "*"
 
 custom:
   project: ${env:PROJECT}
@@ -62,17 +66,22 @@ functions:
           cors: true
           authorizer: aws_iam
   getSeaTool:
-    handler: handlers/getSeatoolData.handler
+    handler: handlers/getSeatoolData/index.handler
     maximumRetryAttempts: 0
     environment:
       tableName: ${param:seatoolTableName}
       region: ${self:provider.region}
     events:
       - http:
-          path: /seatool
+          path: /seatool/{stateCode}
           method: get
           cors: true
-          authorizer: aws_iam
+          authorizer:
+            name: getSeaToolAuthorizerFunc
+            type: TOKEN
+            identitySource: method.request.header.Authorization
+  getSeaToolAuthorizerFunc:
+    handler: handlers/getSeatoolData/authorizer.handler
   getIssue:
     handler: handlers/getIssue.handler
     maximumRetryAttempts: 0

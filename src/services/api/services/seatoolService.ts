@@ -1,4 +1,4 @@
-import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, QueryCommand } from "@aws-sdk/client-dynamodb";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 
 export class SeatoolService {
@@ -8,10 +8,25 @@ export class SeatoolService {
     this.#dynamoInstance = dynamoInstance;
   }
 
-  async getIssues({ tableName }: { tableName: string }) {
+  async getIssues({
+    tableName,
+    stateCode,
+  }: {
+    tableName: string;
+    stateCode: string;
+  }) {
     const data = await this.#dynamoInstance.send(
-      new ScanCommand({
+      new QueryCommand({
         TableName: tableName,
+        IndexName: "StateAbbreviation-SubmissionDate-index",
+        KeyConditionExpression: "StateAbbreviation = :state",
+
+        ExpressionAttributeValues: {
+          ":state": { S: stateCode },
+        },
+
+        ScanIndexForward: false,
+        Limit: 300,
       })
     );
 

@@ -1,13 +1,17 @@
-import { response } from "../libs/handler";
+import { response } from "../../libs/handler";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { SeatoolService } from "../services/seatoolService";
+import { SeatoolService } from "../../services/seatoolService";
+import { APIGatewayEvent } from "aws-lambda";
 
 const dynamoInstance = new DynamoDBClient({ region: process.env.region });
 
-export const getSeatoolData = async () => {
+export const getSeatoolData = async (event: APIGatewayEvent) => {
   try {
+    const stateCode = event.pathParameters.stateCode;
+
     const seaData = await new SeatoolService(dynamoInstance).getIssues({
       tableName: process.env.tableName,
+      stateCode: stateCode,
     });
 
     return response<unknown>({
@@ -18,7 +22,7 @@ export const getSeatoolData = async () => {
     console.error({ error });
     return response({
       statusCode: 404,
-      body: { message: JSON.stringify(error) },
+      body: { message: error },
     });
   }
 };

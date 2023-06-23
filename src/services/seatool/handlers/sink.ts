@@ -9,14 +9,35 @@ export const handler: Handler = async (event) => {
       ({ key, value }: { key: string; value: string }) => {
         if (!value) {
           records.push({
-            id: JSON.parse(decode(key)),
+            ID: JSON.parse(decode(key)),
             isTombstone: true,
           });
         } else {
-          records.push({
-            id: JSON.parse(decode(key)),
-            ...JSON.parse(decode(value)),
-          });
+          const jsonRecord = { ...JSON.parse(decode(value)) };
+
+          const StateAbbreviation = jsonRecord?.["STATES"]?.[0]?.["STATE_CODE"];
+          const PlanType = jsonRecord?.["PLAN_TYPES"]?.[0]?.["PLAN_TYPE_NAME"];
+          const SubmissionDate =
+            jsonRecord?.["STATE_PLAN"]?.["SUBMISSION_DATE"];
+
+          const record = {
+            ID: JSON.parse(decode(key)),
+            ...jsonRecord,
+          };
+
+          if (StateAbbreviation) {
+            record.StateAbbreviation = StateAbbreviation;
+          }
+
+          if (PlanType) {
+            record.PlanType = PlanType;
+          }
+
+          if (SubmissionDate) {
+            record.SubmissionDate = SubmissionDate;
+          }
+
+          records.push(record);
         }
       }
     );
@@ -28,7 +49,10 @@ export const handler: Handler = async (event) => {
 
     for (const item of records) {
       if (item.isTombstone) {
-        await deleteItem({ tableName: process.env.tableName, key: { id: item.id } });
+        await deleteItem({
+          tableName: process.env.tableName,
+          key: { ID: item.ID },
+        });
       } else {
         await putItem({
           tableName: process.env.tableName,
