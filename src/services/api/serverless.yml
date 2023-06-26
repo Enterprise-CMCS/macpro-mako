@@ -39,6 +39,7 @@ provider:
         - Effect: Allow
           Action:
             - cognito-idp:GetUser
+            - cognito-idp:ListUsers
           Resource: "*"
 
 custom:
@@ -76,10 +77,11 @@ functions:
           path: /seatool/{stateCode}
           method: get
           cors: true
-          authorizer:
-            name: getSeaToolAuthorizerFunc
-            type: TOKEN
-            identitySource: method.request.header.Authorization
+          authorizer: aws_iam
+          # authorizer:
+          #   name: getSeaToolAuthorizerFunc
+          #   type: TOKEN
+          #   identitySource: method.request.header.Authorization
   getSeaToolAuthorizerFunc:
     handler: handlers/getSeatoolData/authorizer.handler
   getIssue:

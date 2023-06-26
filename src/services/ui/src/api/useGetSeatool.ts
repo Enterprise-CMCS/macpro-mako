@@ -7,8 +7,8 @@ export const getSeaToolData = async (stateCode: string) => {
   return seaToolData;
 };
 
-export const useGetSeatool = (stateCode: string) =>
-  useQuery({
-    queryKey: ["seatool", stateCode],
+export const useGetSeatool = (stateCode: string, options?: any) =>
+  useQuery(["seatool", stateCode], {
     queryFn: () => getSeaToolData(stateCode),
+    ...options,
   });

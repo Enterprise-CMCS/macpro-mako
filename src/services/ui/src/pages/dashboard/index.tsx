@@ -15,24 +15,31 @@ export const Row = ({ record }: { record: any }) => (
   </tr>
 );
 
+export const Error = ({
+  error,
+}: {
+  error: { response: { data: { message: string } } };
+}) => {
+  let message = "An error has occured";
+  if (error.response.data.message) {
+    message = error.response.data.message;
+  }
+  return (
+    <UI.Alert alertBody={message} alertHeading="Error" variation="error" />
+  );
+};
+
 export const Dashboard = () => {
-  const [selectedState, setSelectedState] = useState("CO");
-  const { isLoading, isError, data } = useGetSeatool(selectedState);
+  const [selectedState, setSelectedState] = useState("VA");
+  const { isLoading, data, error } = useGetSeatool(selectedState, {
+    retry: false,
+  });
 
   const handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedState(event.target.value);
   };
 
   if (isLoading) return <LoadingSpinner />;
-
-  if (isError)
-    return (
-      <UI.Alert
-        alertBody={"An Error Occured. Please try again later."}
-        alertHeading="Error"
-        variation="error"
-      />
-    );
 
   return (
     <>
@@ -54,21 +61,26 @@ export const Dashboard = () => {
         </div>
       </div>
       <hr />
-      <UI.Table borderless id="om-issues-table">
-        <thead>
-          <tr>
-            <UI.TH>ID</UI.TH>
-            <UI.TH>Submitted</UI.TH>
-            <UI.TH>Type</UI.TH>
-            <UI.TH>State</UI.TH>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((record: any) => {
-            return <Row record={record} key={record.ID} />;
-          })}
-        </tbody>
-      </UI.Table>
+      {error ? (
+        <Error error={error as any} />
+      ) : (
+        <UI.Table borderless id="om-issues-table">
+          <thead>
+            <tr>
+              <UI.TH>ID</UI.TH>
+              <UI.TH>Submitted</UI.TH>
+              <UI.TH>Type</UI.TH>
+              <UI.TH>State</UI.TH>
+            </tr>
+          </thead>
+          <tbody>
+            {data &&
+              data.map((record: any) => {
+                return <Row record={record} key={record.ID} />;
+              })}
+          </tbody>
+        </UI.Table>
+      )}
     </>
   );
 };
