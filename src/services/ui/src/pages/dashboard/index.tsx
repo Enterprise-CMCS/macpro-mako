@@ -1,33 +1,22 @@
 import { useGetSeatool } from "../../api/useGetSeatool";
 import { formatDistance } from "date-fns";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
-import { LoadingSpinner } from "../../components";
+import { LoadingSpinner, ErrorAlert } from "../../components";
 import { ChangeEvent, useState } from "react";
+import { SeatoolData } from "shared-types";
 
-export const Row = ({ record }: { record: any }) => (
-  <tr key={record.ID}>
-    <UI.TH rowHeader>{record.ID}</UI.TH>
-    <UI.TD>
-      {formatDistance(new Date(record.SubmissionDate), new Date())} ago
-    </UI.TD>
-    <UI.TD>{record.PlanType}</UI.TD>
-    <UI.TD>{record.StateAbbreviation}</UI.TD>
-  </tr>
-);
-
-export const Error = ({
-  error,
-}: {
-  error: { response: { data: { message: string } } };
-}) => {
-  let message = "An error has occured";
-  if (error.response.data.message) {
-    message = error.response.data.message;
-  }
+export function Row({ record }: { record: SeatoolData }) {
   return (
-    <UI.Alert alertBody={message} alertHeading="Error" variation="error" />
+    <tr key={record.ID}>
+      <UI.TH rowHeader>{record.ID}</UI.TH>
+      <UI.TD>
+        {formatDistance(new Date(record.SubmissionDate), new Date())} ago
+      </UI.TD>
+      <UI.TD>{record.PlanType}</UI.TD>
+      <UI.TD>{record.StateAbbreviation}</UI.TD>
+    </tr>
   );
-};
+}
 
 export const Dashboard = () => {
   const [selectedState, setSelectedState] = useState("VA");
@@ -62,7 +51,7 @@ export const Dashboard = () => {
       </div>
       <hr />
       {error ? (
-        <Error error={error as any} />
+        <ErrorAlert error={error} />
       ) : (
         <UI.Table borderless id="om-issues-table">
           <thead>
@@ -75,7 +64,7 @@ export const Dashboard = () => {
           </thead>
           <tbody>
             {data &&
-              data.map((record: any) => {
+              data.map((record) => {
                 return <Row record={record} key={record.ID} />;
               })}
           </tbody>
