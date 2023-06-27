@@ -6,23 +6,19 @@ import {
 import { CognitoUserAttributes } from "shared-types";
 import { APIGatewayEvent } from "aws-lambda";
 
+// Retrieve user authentication details from the APIGatewayEvent
 export function getAuthDetails(event: APIGatewayEvent) {
-  try {
-    const authProvider =
-      event.requestContext.identity.cognitoAuthenticationProvider;
-    const parts = authProvider.split(":");
-    const userPoolIdParts = parts[parts.length - 3].split("/");
+  const authProvider =
+    event.requestContext.identity.cognitoAuthenticationProvider;
+  const parts = authProvider.split(":");
+  const userPoolIdParts = parts[parts.length - 3].split("/");
+  const userPoolId = userPoolIdParts[userPoolIdParts.length - 1];
+  const userPoolUserId = parts[parts.length - 1];
 
-    const userPoolId = userPoolIdParts[userPoolIdParts.length - 1];
-    const userPoolUserId = parts[parts.length - 1];
-
-    return { userId: userPoolUserId, poolId: userPoolId };
-  } catch (e) {
-    console.error({ e });
-  }
+  return { userId: userPoolUserId, poolId: userPoolId };
 }
 
-// pulls the data from the cognito user into a dictionary
+// Convert Cognito user attributes to a dictionary format
 function userAttrDict(cognitoUser: CognitoUserType): CognitoUserAttributes {
   const attributes = {};
 
@@ -37,31 +33,40 @@ function userAttrDict(cognitoUser: CognitoUserType): CognitoUserAttributes {
   return attributes as CognitoUserAttributes;
 }
 
+// Parse object values as JSON if possible
 export const getParsedObject = (obj: CognitoUserAttributes) =>
   Object.fromEntries(
     Object.entries(obj).map(([key, value]) => {
       try {
-        return [key, JSON.parse(value as string)];
+        return [key, JSON.parse(value)];
       } catch (error) {
         return [key, value];
       }
     })
   );
 
+// Retrieve and parse user attributes from Cognito using the provided userId and poolId
 export async function lookupUserAttributes(
   userId: string,
   poolId: string
 ): Promise<CognitoUserAttributes> {
   const fetchResult = await fetchUserFromCognito(userId, poolId);
 
-  const currentUser = fetchResult as CognitoUserType;
+  if (fetchResult instanceof Error) {
+    throw fetchResult;
+  }
 
+  const currentUser = fetchResult as CognitoUserType;
   const attributes = userAttrDict(currentUser);
 
   return getParsedObject(attributes) as CognitoUserAttributes;
 }
 
-async function fetchUserFromCognito(userID: string, poolID: string) {
+// Fetch user data from Cognito based on the provided userId and poolId
+async function fetchUserFromCognito(
+  userID: string,
+  poolID: string
+): Promise<CognitoUserType | Error> {
   const cognitoClient = new CognitoIdentityProviderClient({
     region: process.env.region,
   });
@@ -72,15 +77,20 @@ async function fetchUserFromCognito(userID: string, poolID: string) {
     UserPoolId: poolID,
     Filter: subFilter,
   });
-  const listUsersResponse = await cognitoClient.send(commandListUsers);
 
-  if (
-    listUsersResponse.Users === undefined ||
-    listUsersResponse.Users.length !== 1
-  ) {
-    return new Error("No user found with this sub");
+  try {
+    const listUsersResponse = await cognitoClient.send(commandListUsers);
+
+    if (
+      listUsersResponse.Users === undefined ||
+      listUsersResponse.Users.length !== 1
+    ) {
+      throw new Error("No user found with this sub");
+    }
+
+    const currentUser = listUsersResponse.Users[0];
+    return currentUser;
+  } catch (error) {
+    throw new Error("Error fetching user from Cognito");
   }
-
-  const currentUser = listUsersResponse.Users[0];
-  return currentUser;
 }
