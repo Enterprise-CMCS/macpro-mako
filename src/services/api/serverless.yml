@@ -67,7 +67,7 @@ functions:
           cors: true
           authorizer: aws_iam
   getSeaTool:
-    handler: handlers/getSeatoolData/index.handler
+    handler: handlers/getSeatoolData.handler
     maximumRetryAttempts: 0
     environment:
       tableName: ${param:seatoolTableName}
