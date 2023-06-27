@@ -78,12 +78,6 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
-          # authorizer:
-          #   name: getSeaToolAuthorizerFunc
-          #   type: TOKEN
-          #   identitySource: method.request.header.Authorization
-  getSeaToolAuthorizerFunc:
-    handler: handlers/getSeatoolData/authorizer.handler
   getIssue:
     handler: handlers/getIssue.handler
     maximumRetryAttempts: 0
