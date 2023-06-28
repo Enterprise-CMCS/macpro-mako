@@ -14,6 +14,7 @@ plugins:
 
 provider:
   name: aws
+  runtime: nodejs18.x
   region: us-east-1
   iam:
     role:
@@ -82,12 +83,53 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: ID
             AttributeType: S
-        BillingMode: PAY_PER_REQUEST
+          - AttributeName: STATE_CODE
+            AttributeType: S
+          - AttributeName: PLAN_TYPE
+            AttributeType: S
+          - AttributeName: SUBMISSION_DATE
+            AttributeType: N
         KeySchema:
-          - AttributeName: id
+          - AttributeName: ID
             KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: STATE_CODE-SUBMISSION_DATE-index
+            KeySchema:
+              - AttributeName: STATE_CODE
+                KeyType: HASH
+              - AttributeName: SUBMISSION_DATE
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: STATE_CODE-PLAN_TYPE-index
+            KeySchema:
+              - AttributeName: STATE_CODE
+                KeyType: HASH
+              - AttributeName: PLAN_TYPE
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: SUBMISSION_DATE-index
+            KeySchema:
+              - AttributeName: SUBMISSION_DATE
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: STATE_CODE-index
+            KeySchema:
+              - AttributeName: STATE_CODE
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: PLAN_TYPE-index
+            KeySchema:
+              - AttributeName: PLAN_TYPE
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
         PointInTimeRecoverySpecification:
           PointInTimeRecoveryEnabled: true
         TableName: ${self:custom.tableName}
