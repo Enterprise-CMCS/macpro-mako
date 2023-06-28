@@ -65,6 +65,16 @@ custom:
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
   tableName: ${self:service}-${sls:stage}-seatool
+  scripts:
+    commands:
+      rebuildTable: |
+        set -e
+        echo "\n\nInvoking the rebuildTable function...\n\n"
+        call=`aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-rebuildTable --invocation-type RequestResponse --log Tail --cli-read-timeout 900 /dev/stdout`
+        echo $call | jq -r '.LogResult' | base64 --decode
+        if echo $call | grep -q 'FunctionError'; then
+          echo "ERROR" && exit 1
+        fi
 
 functions:
   sink:
@@ -75,6 +85,11 @@ functions:
     maximumRetryAttempts: 0
     timeout: 10
     memorySize: 1024
+  rebuildTable:
+    handler: handlers/rebuildTable.handler
+    environment:
+      region: ${self:provider.region}
+      tableName: !Ref Table
 
 resources:
   Resources:
