@@ -40,7 +40,7 @@ custom:
   cognitoEmailAddress: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/cognitoEmailAddress, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/cognitoEmailAddress, ""}
   okta_metadata_url: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/okta_metadata_url, ""}
   bootstrapUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsers, param:bootstrapUsers}
-  bootstrapUsersPassword: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsersPassword, "asdfASDF1234!@#$"}
+  bootstrapUsersPassword: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsersPassword, ${ssm:/aws/reference/secretsmanager/${self:custom.project}/default/bootstrapUsersPassword}
   scripts:
     hooks:
       deploy:finalize: |
