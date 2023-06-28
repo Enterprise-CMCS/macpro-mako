@@ -81,6 +81,8 @@ resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: True
         UserPoolName: ${sls:stage}-user-pool
         UsernameAttributes:
           - email
