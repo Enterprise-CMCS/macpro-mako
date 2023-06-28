@@ -15,9 +15,9 @@ export const handler: Handler = async (event) => {
         } else {
           const jsonRecord = { ...JSON.parse(decode(value)) };
 
-          const StateAbbreviation = jsonRecord?.["STATES"]?.[0]?.["STATE_CODE"];
-          const PlanType = jsonRecord?.["PLAN_TYPES"]?.[0]?.["PLAN_TYPE_NAME"];
-          const SubmissionDate =
+          const STATE_CODE = jsonRecord?.["STATES"]?.[0]?.["STATE_CODE"];
+          const PLAN_TYPE = jsonRecord?.["PLAN_TYPES"]?.[0]?.["PLAN_TYPE_NAME"];
+          const SUBMISSION_DATE =
             jsonRecord?.["STATE_PLAN"]?.["SUBMISSION_DATE"];
 
           const record = {
@@ -25,16 +25,16 @@ export const handler: Handler = async (event) => {
             ...jsonRecord,
           };
 
-          if (StateAbbreviation) {
-            record.StateAbbreviation = StateAbbreviation;
+          if (STATE_CODE) {
+            record.STATE_CODE = STATE_CODE;
           }
 
-          if (PlanType) {
-            record.PlanType = PlanType;
+          if (PLAN_TYPE) {
+            record.PLAN_TYPE = PLAN_TYPE;
           }
 
-          if (SubmissionDate) {
-            record.SubmissionDate = SubmissionDate;
+          if (SUBMISSION_DATE) {
+            record.SUBMISSION_DATE = SUBMISSION_DATE;
           }
 
           records.push(record);

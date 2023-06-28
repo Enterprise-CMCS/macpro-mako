@@ -38,7 +38,7 @@ export const getParsedObject = (obj: CognitoUserAttributes) =>
   Object.fromEntries(
     Object.entries(obj).map(([key, value]) => {
       try {
-        return [key, JSON.parse(value)];
+        return [key, JSON.parse(value as string)];
       } catch (error) {
         return [key, value];
       }

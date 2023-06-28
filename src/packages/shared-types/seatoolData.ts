@@ -1,6 +1,6 @@
 export interface SeatoolData {
   ID: string;
-  SubmissionDate: number;
-  PlanType: string; // should be enum
-  StateAbbreviation: string; // should be enum
+  SUBMISSION_DATE: number;
+  PLAN_TYPE: string; // should be enum
+  STATE_CODE: string; // should be enum
 }

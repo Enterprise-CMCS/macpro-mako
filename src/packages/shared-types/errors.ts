@@ -1,3 +1,3 @@
-export interface ReactQueryApiError {
+export type ReactQueryApiError = {
   response: { data: { message: string } };
-}
+};

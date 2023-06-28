@@ -10,10 +10,10 @@ export function Row({ record }: { record: SeatoolData }) {
     <tr key={record.ID}>
       <UI.TH rowHeader>{record.ID}</UI.TH>
       <UI.TD>
-        {formatDistance(new Date(record.SubmissionDate), new Date())} ago
+        {formatDistance(new Date(record.SUBMISSION_DATE), new Date())} ago
       </UI.TD>
-      <UI.TD>{record.PlanType}</UI.TD>
-      <UI.TD>{record.StateAbbreviation}</UI.TD>
+      <UI.TD>{record.PLAN_TYPE}</UI.TD>
+      <UI.TD>{record.STATE_CODE}</UI.TD>
     </tr>
   );
 }

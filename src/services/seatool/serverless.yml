@@ -85,47 +85,47 @@ resources:
         AttributeDefinitions:
           - AttributeName: ID
             AttributeType: S
-          - AttributeName: StateAbbreviation
+          - AttributeName: STATE_CODE
             AttributeType: S
-          - AttributeName: PlanType
+          - AttributeName: PLAN_TYPE
             AttributeType: S
-          - AttributeName: SubmissionDate
+          - AttributeName: SUBMISSION_DATE
             AttributeType: N
         KeySchema:
           - AttributeName: ID
             KeyType: HASH
         GlobalSecondaryIndexes:
-          - IndexName: StateAbbreviation-SubmissionDate-index
+          - IndexName: STATE_CODE-SUBMISSION_DATE-index
             KeySchema:
-              - AttributeName: StateAbbreviation
+              - AttributeName: STATE_CODE
                 KeyType: HASH
-              - AttributeName: SubmissionDate
+              - AttributeName: SUBMISSION_DATE
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
-          - IndexName: StateAbbreviation-PlanType-index
+          - IndexName: STATE_CODE-PLAN_TYPE-index
             KeySchema:
-              - AttributeName: StateAbbreviation
+              - AttributeName: STATE_CODE
                 KeyType: HASH
-              - AttributeName: PlanType
+              - AttributeName: PLAN_TYPE
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
-          - IndexName: SubmissionDate-index
+          - IndexName: SUBMISSION_DATE-index
             KeySchema:
-              - AttributeName: SubmissionDate
+              - AttributeName: SUBMISSION_DATE
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
-          - IndexName: StateAbbreviation-index
+          - IndexName: STATE_CODE-index
             KeySchema:
-              - AttributeName: StateAbbreviation
+              - AttributeName: STATE_CODE
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
-          - IndexName: PlanType-index
+          - IndexName: PLAN_TYPE-index
             KeySchema:
-              - AttributeName: PlanType
+              - AttributeName: PLAN_TYPE
                 KeyType: HASH
             Projection:
               ProjectionType: ALL

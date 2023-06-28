@@ -18,8 +18,8 @@ export class SeatoolService {
     const data = await this.#dynamoInstance.send(
       new QueryCommand({
         TableName: tableName,
-        IndexName: "StateAbbreviation-SubmissionDate-index",
-        KeyConditionExpression: "StateAbbreviation = :state",
+        IndexName: "STATE_CODE-SUBMISSION_DATE-index",
+        KeyConditionExpression: "STATE_CODE = :state",
 
         ExpressionAttributeValues: {
           ":state": { S: stateCode },
