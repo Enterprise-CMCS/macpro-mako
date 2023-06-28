@@ -36,6 +36,11 @@ provider:
             - dynamodb:BatchWrite*
             - dynamodb:BatchGet*
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - cognito-idp:GetUser
+            - cognito-idp:ListUsers
+          Resource: "*"
 
 custom:
   project: ${env:PROJECT}
@@ -69,7 +74,7 @@ functions:
       region: ${self:provider.region}
     events:
       - http:
-          path: /seatool
+          path: /seatool/{stateCode}
           method: get
           cors: true
           authorizer: aws_iam

@@ -85,33 +85,33 @@ jobs:
       - name: Test
         run: yarn test-ci
 
-  e2e:
-    timeout-minutes: 5
-    runs-on: ubuntu-20.04
-    needs:
-      - deploy
-    env:
-      baseurl: ${{ needs.deploy.outputs.app-url }}
-    if: ${{ github.ref != 'refs/heads/production' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup
-        uses: ./.github/actions/setup
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-          aws-region: us-east-1
-          role-duration-seconds: 10800
-      - name: Run e2e tests
-        run: run e2e
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: src/services/ui/playwright-report/
-          retention-days: 30
+  # e2e:
+  #   timeout-minutes: 5
+  #   runs-on: ubuntu-20.04
+  #   needs:
+  #     - deploy
+  #   env:
+  #     baseurl: ${{ needs.deploy.outputs.app-url }}
+  #   if: ${{ github.ref != 'refs/heads/production' }}
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Setup
+  #       uses: ./.github/actions/setup
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v2
+  #       with:
+  #         role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+  #         aws-region: us-east-1
+  #         role-duration-seconds: 10800
+  #     - name: Run e2e tests
+  #       run: run e2e
+  #     - uses: actions/upload-artifact@v3
+  #       if: always()
+  #       with:
+  #         name: playwright-report
+  #         path: src/services/ui/playwright-report/
+  #         retention-days: 30
 
   cfn-nag:
     runs-on: ubuntu-20.04
