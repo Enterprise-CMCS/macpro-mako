@@ -44,11 +44,13 @@ jobs:
 
           # Step 2, get a list of all security groups attached to ENIs
           inusesgs=(`aws ec2 describe-network-interfaces \
+              --filters Name=tag:PROJECT,Values="$PROJECT" \
               --query "NetworkInterfaces[].Groups[].GroupId" \
               --output text`)
 
           # Step 3, get a list of all security groups.
           allsgs=(`aws ec2 describe-security-groups \
+              --filters Name=tag:PROJECT,Values="$PROJECT" \
               --query "SecurityGroups[].GroupId" \
               --output text`)
 
