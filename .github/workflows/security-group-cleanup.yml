@@ -33,5 +33,5 @@ jobs:
             --query "SecurityGroups[?Attachments == null].GroupId"`
           for i in "${sglist[@]}"
           do
-            Deleting "$i"...
+            echo "Deleting $i..."
           done
