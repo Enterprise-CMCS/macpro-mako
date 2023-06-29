@@ -159,6 +159,7 @@ resources:
           - aws.ksqldb.seatool.agg.State_Plan
     SecurityGroup:
       Type: AWS::EC2::SecurityGroup
+      DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
       Properties:
         GroupDescription: Security group for Sink Lambda Function.
         VpcId: ${self:custom.vpc.id}
