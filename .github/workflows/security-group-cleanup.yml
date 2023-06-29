@@ -31,29 +31,18 @@ jobs:
       - name: Clean Up Unassigned Security Groups
         id: runningStages
         run: |
-          # Step 1, clean up available ENIs
-          enilist=(`aws ec2 describe-network-interfaces \
-              --filters Name=status,Values="available" \
-              --query "NetworkInterfaces[].NetworkInterfaceId" \
-              --output text`)
-          for i in "${enilist[@]}"
-          do
-          echo "Deleting $i..."
-          aws ec2 delete-network-interface --network-interface-id $i
-          done
-
-          # Step 2, get a list of all security groups attached to ENIs
+          # Step 1, get a list of all security groups attached to ENIs
           inusesgs=(`aws ec2 describe-network-interfaces \
               --query "NetworkInterfaces[].Groups[].GroupId" \
               --output text`)
 
-          # Step 3, get a list of all security groups owned by our project.
+          # Step 2, get a list of all security groups owned by our project.
           allsgs=(`aws ec2 describe-security-groups \
               --filters Name=tag:PROJECT,Values="$PROJECT" \
               --query "SecurityGroups[].GroupId" \
               --output text`)
 
-          # Step 4, delete any security group owned by our project that's not attached to an ENI
+          # Step 3, delete any security group owned by our project that's not attached to an ENI
           for i in "${allsgs[@]}"
           do
               if [[ " ${inusesgs[*]} " =~ " ${i} " ]]; then
