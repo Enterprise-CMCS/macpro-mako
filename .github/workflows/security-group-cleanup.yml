@@ -30,4 +30,4 @@ jobs:
         run: |
           aws ec2 describe-security-groups \
             --filters Name=tag:PROJECT,Values="om" \
-            --query "SecurityGroups[?Attachments == null && CreationDate <= '`date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%S.000Z`'].GroupId"
+            --query "SecurityGroups[?Attachments == null && CreationDate <= '`date -u -d '1 minute ago' +%Y-%m-%dT%H:%M:%S.000Z`'].GroupId"
