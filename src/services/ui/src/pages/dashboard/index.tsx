@@ -1,33 +1,34 @@
 import { useGetSeatool } from "../../api/useGetSeatool";
 import { formatDistance } from "date-fns";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
-import { LoadingSpinner } from "../../components";
+import { LoadingSpinner, ErrorAlert } from "../../components";
+import { ChangeEvent, useState } from "react";
+import { SeatoolData } from "shared-types";
 
-export const Row = ({ record }: { record: any }) => (
-  <tr key={record.id}>
-    <UI.TH rowHeader>{record.id}</UI.TH>
-    <UI.TD>
-      {formatDistance(new Date(record.STATE_PLAN.CHANGED_DATE), new Date())} ago
-    </UI.TD>
-    <UI.TD>{record.STATE_PLAN.SUMMARY_MEMO}</UI.TD>
-  </tr>
-);
+export function Row({ record }: { record: SeatoolData }) {
+  return (
+    <tr key={record.ID}>
+      <UI.TH rowHeader>{record.ID}</UI.TH>
+      <UI.TD>
+        {formatDistance(new Date(record.SUBMISSION_DATE), new Date())} ago
+      </UI.TD>
+      <UI.TD>{record.PLAN_TYPE}</UI.TD>
+      <UI.TD>{record.STATE_CODE}</UI.TD>
+    </tr>
+  );
+}
 
 export const Dashboard = () => {
-  const { isLoading, isError, data } = useGetSeatool();
+  const [selectedState, setSelectedState] = useState("VA");
+  const { isLoading, data, error } = useGetSeatool(selectedState, {
+    retry: false,
+  });
 
-  console.log({ data });
+  const handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedState(event.target.value);
+  };
 
   if (isLoading) return <LoadingSpinner />;
-
-  if (isError)
-    return (
-      <UI.Alert
-        alertBody={"An Error Occured. Please try again later."}
-        alertHeading="Error"
-        variation="error"
-      />
-    );
 
   return (
     <>
@@ -35,22 +36,40 @@ export const Dashboard = () => {
         <UI.Typography size="lg" as="h1">
           Dashboard
         </UI.Typography>
+        <div>
+          <label htmlFor="state-select">Select a state: </label>
+          <select
+            id="state-select"
+            value={selectedState}
+            onChange={handleStateChange}
+          >
+            <option value="VA">VA</option>
+            <option value="OH">OH</option>
+            <option value="SC">SC</option>
+          </select>
+        </div>
       </div>
       <hr />
-      <UI.Table borderless id="om-issues-table">
-        <thead>
-          <tr>
-            <UI.TH>Id</UI.TH>
-            <UI.TH>Last Changed</UI.TH>
-            <UI.TH>Memo</UI.TH>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((record: any) => {
-            return <Row record={record} key={record.id} />;
-          })}
-        </tbody>
-      </UI.Table>
+      {error ? (
+        <ErrorAlert error={error} />
+      ) : (
+        <UI.Table borderless id="om-issues-table">
+          <thead>
+            <tr>
+              <UI.TH>ID</UI.TH>
+              <UI.TH>Submitted</UI.TH>
+              <UI.TH>Type</UI.TH>
+              <UI.TH>State</UI.TH>
+            </tr>
+          </thead>
+          <tbody>
+            {data &&
+              data.map((record) => {
+                return <Row record={record} key={record.ID} />;
+              })}
+          </tbody>
+        </UI.Table>
+      )}
     </>
   );
 };
