@@ -2,7 +2,7 @@ name: Security Group Cleanup
 
 on:
   # schedule:
-  #   - cron: "15 * * * *"
+  #   - cron: "0 2 * * *"
   # workflow_dispatch:
   push:
     branches:
@@ -28,8 +28,10 @@ jobs:
       - name: Clean Up Unassigned Security Groups
         id: runningStages
         run: |
-          timehack=`date -u -d '30 minute ago' +%Y-%m-%dT%H:%M:%S.000Z`
-          echo $timehack
-          aws ec2 describe-security-groups \
+          sglist=`aws ec2 describe-security-groups \
             --filters Name=tag:PROJECT,Values="om" \
-            --query "SecurityGroups[?Attachments == null && CreationDate <= '$timehack'].GroupId"
+            --query "SecurityGroups[?Attachments == null].GroupId"`
+          for i in "${sglist[@]}"
+          do
+            Deleting "$i"...
+          done
