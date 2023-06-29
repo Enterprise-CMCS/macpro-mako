@@ -1,12 +1,9 @@
 name: Security Group Cleanup
 
 on:
-  # schedule:
-  #   - cron: "0 2 * * *"
-  # workflow_dispatch:
-  push:
-    branches:
-      - "dfix"
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
 
 jobs:
   security-group-cleanup:
