@@ -18,6 +18,9 @@ jobs:
       contents: read
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: ./.github/actions/setup # We need this largely for the PROJECT variable setting
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -29,7 +32,7 @@ jobs:
         id: runningStages
         run: |
           sglist=(`aws ec2 describe-security-groups \
-            --filters Name=tag:PROJECT,Values="om" \
+            --filters Name=tag:PROJECT,Values="$PROJECT" \
             --query "SecurityGroups[?Attachments == null].GroupId" \
             --output text`)
           for i in "${sglist[@]}"
