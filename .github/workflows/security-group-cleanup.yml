@@ -33,7 +33,8 @@ jobs:
         run: |
           enilist=(`aws ec2 describe-network-interfaces \
             --filters "Name=status,Values=available" \
-            --query "NetworkInterfaces[].NetworkInterfaceId"`)
+            --query "NetworkInterfaces[].NetworkInterfaceId" \
+            --output text`)
           for i in "${enilist[@]}"
           do
             echo "Deleting $i..."
