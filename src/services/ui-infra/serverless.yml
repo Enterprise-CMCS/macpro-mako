@@ -283,7 +283,7 @@ resources:
     ApplicationEndpointUrl:
       Type: AWS::SSM::Parameter
       Properties:
-        Name: /${self:custom.stage}/ui/application_endpoint
+        Name: /${self:custom.stage}/${self:service}/application_endpoint
         Type: String
         Value:
           Fn::If:
