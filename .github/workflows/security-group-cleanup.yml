@@ -31,22 +31,34 @@ jobs:
       - name: Clean Up Unassigned Security Groups
         id: runningStages
         run: |
+          # Step 1, clean up available ENIs
           enilist=(`aws ec2 describe-network-interfaces \
-            --filters "Name=status,Values=available" \
-            --query "NetworkInterfaces[].NetworkInterfaceId" \
-            --output text`)
+              --filters Name=status,Values="available" \
+              --query "NetworkInterfaces[].NetworkInterfaceId" \
+              --output text`)
           for i in "${enilist[@]}"
           do
-            echo "Deleting $i..."
-            aws ec2 delete-network-interface --network-interface-id $i
+          echo "Deleting $i..."
+          # aws ec2 delete-network-interface --network-interface-id $i
           done
 
-          sglist=(`aws ec2 describe-security-groups \
-            --filters Name=tag:PROJECT,Values="$PROJECT" \
-            --query "SecurityGroups[?attachmentCount==`0`].GroupId" \
-            --output text`)
-          for i in "${sglist[@]}"
+          # Step 2, get a list of all security groups attached to ENIs
+          inusesgs=(`aws ec2 describe-network-interfaces \
+              --query "NetworkInterfaces[].Groups[].GroupId" \
+              --output text`)
+
+          # Step 3, get a list of all security groups.
+          allsgs=(`aws ec2 describe-security-groups \
+              --query "SecurityGroups[].GroupId" \
+              --output text`)
+
+          # Step 4, find the difference and delete
+          for i in "${allsgs[@]}"
           do
-            echo "Deleting $i..."
-            aws ec2 delete-security-group --group-id $i
+              if [[ " ${inusesgs[*]} " =~ " ${i} " ]]; then
+                  echo "Keping $i as it is in use"
+              else
+                  echo "Deleting $i as it is not in use..."
+                  aws ec2 delete-security-group --group-id $i
+              fi
           done
