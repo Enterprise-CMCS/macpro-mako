@@ -29,6 +29,5 @@ jobs:
         id: runningStages
         run: |
           aws ec2 describe-security-groups \
-            --filters Name=vpc-id,Values="" \
-                      Name=tag:aws:cloudformation:stack-name,Values="" \
-            --query "SecurityGroups[?Attachments == null && CreationDate <= '`date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%S.000Z`'].GroupId"
+            --filters Name=tag:PROJECT,Values="om" \
+            --query "SecurityGroups[?Attachments == null].GroupId"
