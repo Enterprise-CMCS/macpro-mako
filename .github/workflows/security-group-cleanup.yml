@@ -28,9 +28,9 @@ jobs:
       - name: Clean Up Unassigned Security Groups
         id: runningStages
         run: |
-          sglist=`aws ec2 describe-security-groups \
+          sglist=(`aws ec2 describe-security-groups \
             --filters Name=tag:PROJECT,Values="om" \
-            --query "SecurityGroups[?Attachments == null].GroupId"`
+            --query "SecurityGroups[?Attachments == null].GroupId"`)
           for i in "${sglist[@]}"
           do
             echo "Deleting $i..."
