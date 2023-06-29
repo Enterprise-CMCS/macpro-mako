@@ -28,5 +28,7 @@ jobs:
       - name: Clean Up Unassigned Security Groups
         id: runningStages
         run: |
-          echo hello
-          aws s3 ls
+          aws ec2 describe-security-groups \
+            --filters Name=vpc-id,Values="" \
+                      Name=tag:aws:cloudformation:stack-name,Values="" \
+            --query "SecurityGroups[?Attachments == null && CreationDate <= '`date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%S.000Z`'].GroupId"
