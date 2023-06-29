@@ -38,5 +38,5 @@ jobs:
           for i in "${sglist[@]}"
           do
             echo "Deleting $i..."
-            aws delete-security-group --group-id $i
+            aws ec2 delete-security-group --group-id $i
           done
