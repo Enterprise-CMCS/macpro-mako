@@ -30,8 +30,9 @@ custom:
       - master
       - val
       - production
-  cloudfrontCertificateArn: ${ssm:/configuration/${self:service}/${sls:stage}/cloudfront/certificateArn, ssm:/configuration/default/cloudfront/certificateArn, ""}
-  cloudfrontDomainName: ${ssm:/configuration/${self:service}/${sls:stage}/cloudfront/domainName, ""}
+  stage: ${sls:stage} # This is junk.. required by the serverless-waf-plugin.  Due for refactor
+  cloudfrontCertificateArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/cloudfront/certificateArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/cloudfront/certificateArn, ""}
+  cloudfrontDomainName: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/cloudfront/domainName, ""}
   webAclName: ${sls:stage}-${self:service}-webacl
   wafExcludeRules:
     wafScope: CLOUDFRONT
@@ -186,17 +187,6 @@ resources:
           Logging:
             Bucket: !Sub "${LoggingBucket}.s3.amazonaws.com"
             Prefix: AWSLogs/CLOUDFRONT/${sls:stage}/
-    Route53DnsRecord:
-      Type: AWS::Route53::RecordSet
-      Condition: CreateDnsRecord
-      Properties:
-        HostedZoneId: ${self:custom.route53HostedZoneId}
-        Name: ${self:custom.route53DomainName}
-        AliasTarget:
-          DNSName: !GetAtt CloudFrontDistribution.DomainName
-          HostedZoneId: Z2FDTNDATAQYW2
-          EvaluateTargetHealth: false
-        Type: A
     HstsCloudfrontFunction:
       Type: AWS::CloudFront::Function
       Properties:
