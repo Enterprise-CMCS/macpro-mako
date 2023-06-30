@@ -39,6 +39,7 @@ provider:
             - lambda:ListEventSourceMappings
             - lambda:PutFunctionConcurrency
             - lambda:DeleteEventSourceMapping
+            - lambda:UpdateEventSourceMapping
           Resource: "*"
         - Effect: Allow
           Action:
