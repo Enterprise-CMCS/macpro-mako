@@ -91,6 +91,7 @@ functions:
     environment:
       region: ${self:provider.region}
       tableName: !Ref Table
+      functions: !Sub "${SinkLambdaFunction}"
 
 resources:
   Resources:
@@ -150,17 +151,17 @@ resources:
         TableName: ${self:custom.tableName}
     SinkTrigger:
       Type: AWS::Lambda::EventSourceMapping
-      Properties: 
+      Properties:
         BatchSize: 100
         Enabled: true
         FunctionName: !GetAtt SinkLambdaFunction.Arn
-        SelfManagedEventSource: 
+        SelfManagedEventSource:
           Endpoints:
-            KafkaBootstrapServers: 
+            KafkaBootstrapServers:
               Fn::Split:
                 - ","
                 - ${self:custom.brokerString}
-        SourceAccessConfigurations: 
+        SourceAccessConfigurations:
           - Type: VPC_SUBNET
             URI: subnet:${self:custom.vpc.privateSubnets.0}
           - Type: VPC_SUBNET
@@ -170,7 +171,7 @@ resources:
           - Type: VPC_SECURITY_GROUP
             URI: !Sub security_group:${SecurityGroup}
         StartingPosition: TRIM_HORIZON
-        Topics: 
+        Topics:
           - aws.ksqldb.seatool.agg.State_Plan
     SecurityGroup:
       Type: AWS::EC2::SecurityGroup
