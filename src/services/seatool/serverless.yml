@@ -10,7 +10,6 @@ plugins:
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@stratiformdigital/serverless-iam-helper"
   - serverless-bundle
-  - serverless-plugin-scripts
   - serverless-step-functions
 
 provider:
@@ -68,16 +67,6 @@ custom:
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
   tableName: ${self:service}-${sls:stage}-seatool
-  # scripts:
-  #   commands:
-  #     rebuildTable: |
-  #       set -e
-  #       echo "\n\nInvoking the rebuildTable function...\n\n"
-  #       call=`aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-disableTriggers --invocation-type RequestResponse --log Tail --cli-read-timeout 900 /dev/stdout`
-  #       echo $call | jq -r '.LogResult' | base64 --decode
-  #       if echo $call | grep -q 'FunctionError'; then
-  #         echo "ERROR" && exit 1
-  #       fi
 
 stepFunctions:
   stateMachines:
@@ -181,19 +170,6 @@ functions:
       region: ${self:provider.region}
       functions: !Sub "${SinkLambdaFunction}"
       brokerString: ${self:custom.brokerString}
-  # rebuildTable:
-  #   handler: handlers/rebuildTable.handler
-  #   timeout: 900
-  #   vpc:
-  #     securityGroupIds:
-  #       - Ref: SecurityGroup
-  #     subnetIds: >-
-  #       ${self:custom.vpc.privateSubnets}
-  #   environment:
-  #     region: ${self:provider.region}
-  #     tableName: !Ref Table
-  #     functions: !Sub "${SinkLambdaFunction}"
-  #     brokerString: ${self:custom.brokerString}
 
 resources:
   Resources:
