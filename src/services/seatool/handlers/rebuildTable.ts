@@ -13,14 +13,14 @@ export const handler: Handler = async () => {
     }
 
     let functions = process.env.functions.split(',');
-    let consumerGroupIds = new Array();
+    let triggerInfo = new Array();
     
     // First, disable all triggers, and collect the consumerGroupIds
     for (const functionName of functions){
       console.log(`Disabling all Kafka triggers for function:  ${functionName}`);
-      consumerGroupIds.push(...(await toggleTriggers(functionName, false)));
+      triggerInfo.push(...(await toggleTriggers(functionName, false)));
     }
-    console.log(`Found consumer group IDs:  ${consumerGroupIds}`);
+    console.log(`Found consumer group IDs:  ${triggerInfo.map(a => a.groupId)}`);
     
     // Second, wait until the consumer group ids are inactive
     const kafka = new Kafka({
@@ -30,10 +30,10 @@ export const handler: Handler = async () => {
     });
     var admin = kafka.admin();
     while(true) {
-      let info = await admin.describeGroups(consumerGroupIds);
+      let info = await admin.describeGroups(triggerInfo.map(a => a.groupId));
       let statuses = info.groups.map(a => a.state.toString());
       console.log(statuses);
-      if(!statuses.includes('Active')){
+      if(!statuses.includes('Stable')){
         console.log("All consumer groups are inactive");
         break;
       }
@@ -41,13 +41,20 @@ export const handler: Handler = async () => {
     }
 
     // Third, reset the consumer group to the earliest offset
-    
+    for (const trigger of triggerInfo){
+      for (const topic of trigger.topics) {
+        console.log(`Resetting group ${trigger.groupId} for topic ${topic}`);
+        await admin.resetOffsets({ groupId: trigger.groupId, topic, earliest: true });
+      }
+    }
+
     await admin.disconnect();
 
     // Fourth, enable all triggers
-    // for (const functionName of functions){
-    //   await toggleTriggers(functionName, false);
-    // }
+    for (const functionName of functions){
+      console.log(`Enabling all Kafka triggers for function:  ${functionName}`);
+      await toggleTriggers(functionName, true);
+    }
 
   } catch (error) {
     console.error(error);
@@ -58,15 +65,18 @@ export const handler: Handler = async () => {
 async function toggleTriggers(functionName: string, enabled: boolean) {
   const lambdaClient = new LambdaClient({});
   const response = await lambdaClient.send((new ListEventSourceMappingsCommand({ FunctionName: functionName })));
-  let consumerGroupIds = []
+  let triggerInfo = []
   for(const eventSourceMapping of response.EventSourceMappings || []) {
     if(eventSourceMapping.SelfManagedKafkaEventSourceConfig){
-      consumerGroupIds.push(eventSourceMapping.SelfManagedKafkaEventSourceConfig.ConsumerGroupId);
+      triggerInfo.push({
+        groupId: eventSourceMapping.SelfManagedKafkaEventSourceConfig.ConsumerGroupId,
+        topics: eventSourceMapping.Topics
+      });
       await lambdaClient.send((new UpdateEventSourceMappingCommand({
         UUID: eventSourceMapping.UUID,
         Enabled: enabled
       })));
     }
   }
-  return consumerGroupIds
+  return triggerInfo;
 }

@@ -89,6 +89,7 @@ functions:
     memorySize: 1024
   rebuildTable:
     handler: handlers/rebuildTable.handler
+    timeout: 900
     vpc:
       securityGroupIds:
         - Ref: SecurityGroup
