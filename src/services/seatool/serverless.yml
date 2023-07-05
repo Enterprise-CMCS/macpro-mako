@@ -118,7 +118,7 @@ stepFunctions:
           Wait60Seconds:
             Type: Wait
             Seconds: 60
-            Next: IsConsumerGroupReady
+            Next: GetConsumerGroupStatus
           ResetConsumerGroups:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-resetConsumerGroups"
