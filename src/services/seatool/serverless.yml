@@ -10,7 +10,7 @@ plugins:
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@stratiformdigital/serverless-iam-helper"
   - serverless-bundle
-  - serverless-plugin-scripts
+  - serverless-step-functions
 
 provider:
   name: aws
@@ -39,6 +39,7 @@ provider:
             - lambda:ListEventSourceMappings
             - lambda:PutFunctionConcurrency
             - lambda:DeleteEventSourceMapping
+            - lambda:UpdateEventSourceMapping
           Resource: "*"
         - Effect: Allow
           Action:
@@ -67,6 +68,61 @@ custom:
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
   tableName: ${self:service}-${sls:stage}-seatool
 
+stepFunctions:
+  stateMachines:
+    rebuild-table:
+      name: ${self:service}-${sls:stage}-rebuild-table
+      id: RebuildTableStateMachine
+      loggingConfig:
+        level: ALL
+        includeExecutionData: true
+        destinations:
+          - !GetAtt StateMachineLogGroup.Arn
+      definition:
+        Comment: "A state machine to rebuild the dynamo table."
+        StartAt: DisableTriggers
+        States:
+          DisableTriggers:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-disableTriggers"
+            Parameters:
+              Context.$: $$
+            Next: GetConsumerGroupStatus
+          GetConsumerGroupStatus:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getConsumerGroupStatus"
+            Parameters:
+              Context.$: $$
+            Next: IsConsumerGroupReady
+          IsConsumerGroupReady:
+            Type: Choice
+            Choices:
+              - Variable: $.ready
+                BooleanEquals: true
+                Next: ResetConsumerGroups
+              - Variable: $.ready
+                BooleanEquals: false
+                Next: Wait60Seconds
+            Default: Wait60Seconds
+          Wait60Seconds:
+            Type: Wait
+            Seconds: 60
+            Next: GetConsumerGroupStatus
+          ResetConsumerGroups:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-resetConsumerGroups"
+            Parameters:
+              Context.$: $$
+            Next: EnableTriggers
+          EnableTriggers:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-enableTriggers"
+            Parameters:
+              Context.$: $$
+            Next: SuccessState
+          SuccessState:
+            Type: Succeed
+
 functions:
   sink:
     handler: handlers/sink.handler
@@ -76,9 +132,51 @@ functions:
     maximumRetryAttempts: 0
     timeout: 10
     memorySize: 1024
+  disableTriggers:
+    handler: handlers/rebuildTable.toggleTriggers
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkLambdaFunction}"
+      enabled: false
+  enableTriggers:
+    handler: handlers/rebuildTable.toggleTriggers
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkLambdaFunction}"
+      enabled: true
+  getConsumerGroupStatus:
+    handler: handlers/rebuildTable.getConsumerGroupStatus
+    timeout: 900
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkLambdaFunction}"
+      brokerString: ${self:custom.brokerString}
+  resetConsumerGroups:
+    handler: handlers/rebuildTable.resetConsumerGroups
+    timeout: 900
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkLambdaFunction}"
+      brokerString: ${self:custom.brokerString}
 
 resources:
   Resources:
+    StateMachineLogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties:
+        LogGroupName: /aws/vendedlogs/states/${self:service}-${sls:stage}-rebuild-table
     Table:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -135,17 +233,17 @@ resources:
         TableName: ${self:custom.tableName}
     SinkTrigger:
       Type: AWS::Lambda::EventSourceMapping
-      Properties: 
+      Properties:
         BatchSize: 100
         Enabled: true
         FunctionName: !GetAtt SinkLambdaFunction.Arn
-        SelfManagedEventSource: 
+        SelfManagedEventSource:
           Endpoints:
-            KafkaBootstrapServers: 
+            KafkaBootstrapServers:
               Fn::Split:
                 - ","
                 - ${self:custom.brokerString}
-        SourceAccessConfigurations: 
+        SourceAccessConfigurations:
           - Type: VPC_SUBNET
             URI: subnet:${self:custom.vpc.privateSubnets.0}
           - Type: VPC_SUBNET
@@ -155,7 +253,7 @@ resources:
           - Type: VPC_SECURITY_GROUP
             URI: !Sub security_group:${SecurityGroup}
         StartingPosition: TRIM_HORIZON
-        Topics: 
+        Topics:
           - aws.ksqldb.seatool.agg.State_Plan
     SecurityGroup:
       Type: AWS::EC2::SecurityGroup
