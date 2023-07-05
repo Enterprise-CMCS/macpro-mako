@@ -87,8 +87,22 @@ functions:
     maximumRetryAttempts: 0
     timeout: 10
     memorySize: 1024
-  rebuildTable:
-    handler: handlers/rebuildTable.handler
+  disableTriggers:
+    handler: handlers/rebuildTable.toggleTriggers
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkLambdaFunction}"
+      enabled: false
+  enableTriggers:
+    handler: handlers/rebuildTable.toggleTriggers
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkLambdaFunction}"
+      enabled: true
+  getConsumerGroupStatus:
+    handler: handlers/rebuildTable.getConsumerGroupStatus
     timeout: 900
     vpc:
       securityGroupIds:
@@ -97,9 +111,33 @@ functions:
         ${self:custom.vpc.privateSubnets}
     environment:
       region: ${self:provider.region}
-      tableName: !Ref Table
       functions: !Sub "${SinkLambdaFunction}"
       brokerString: ${self:custom.brokerString}
+  resetConsumerGroups:
+    handler: handlers/rebuildTable.resetConsumerGroups
+    timeout: 900
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkLambdaFunction}"
+      brokerString: ${self:custom.brokerString}
+  # rebuildTable:
+  #   handler: handlers/rebuildTable.handler
+  #   timeout: 900
+  #   vpc:
+  #     securityGroupIds:
+  #       - Ref: SecurityGroup
+  #     subnetIds: >-
+  #       ${self:custom.vpc.privateSubnets}
+  #   environment:
+  #     region: ${self:provider.region}
+  #     tableName: !Ref Table
+  #     functions: !Sub "${SinkLambdaFunction}"
+  #     brokerString: ${self:custom.brokerString}
 
 resources:
   Resources:
