@@ -1,6 +1,6 @@
 import { Handler } from "aws-lambda";
 // import { deleteItem } from "../../../libs";
-// import { Kafka, ConfigResourceTypes } from "kafkajs";
+import { Kafka, ConfigResourceTypes } from "kafkajs";
 import { LambdaClient, ListEventSourceMappingsCommand, UpdateEventSourceMappingCommand } from "@aws-sdk/client-lambda"
 export const handler: Handler = async () => {
   try {
@@ -13,32 +13,41 @@ export const handler: Handler = async () => {
     }
 
     let functions = process.env.functions.split(',');
-    let consumerGroupIds = [];
+    let consumerGroupIds = new Array();
     
     // First, disable all triggers, and collect the consumerGroupIds
     for (const functionName of functions){
+      console.log(`Disabling all Kafka triggers for function:  ${functionName}`);
       consumerGroupIds.push(...(await toggleTriggers(functionName, false)));
     }
-    console.log(consumerGroupIds);
+    console.log(`Found consumer group IDs:  ${consumerGroupIds}`);
     
     // Second, wait until the consumer group ids are inactive
-    //TODO
+    const kafka = new Kafka({
+      clientId: "consumerGroupResetter",
+      brokers: process.env.brokerString?.split(',') || [],
+      ssl: true,
+    });
+    var admin = kafka.admin();
+    while(true) {
+      let info = await admin.describeGroups(consumerGroupIds);
+      let statuses = info.groups.map(a => a.state.toString());
+      console.log(statuses);
+      if(!statuses.includes('Active')){
+        console.log("All consumer groups are inactive");
+        break;
+      }
+      await new Promise(r => setTimeout(r, 10000));
+    }
 
     // Third, reset the consumer group to the earliest offset
-    // TODO
+    
+    await admin.disconnect();
 
     // Fourth, enable all triggers
     // for (const functionName of functions){
     //   await toggleTriggers(functionName, false);
     // }
-
-    // const kafka = new Kafka({
-    //   clientId: "createTopics",
-    //   brokers: brokers,
-    //   ssl: true,
-    // });
-    // var admin = kafka.admin();
-
 
   } catch (error) {
     console.error(error);

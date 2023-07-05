@@ -89,10 +89,16 @@ functions:
     memorySize: 1024
   rebuildTable:
     handler: handlers/rebuildTable.handler
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
     environment:
       region: ${self:provider.region}
       tableName: !Ref Table
       functions: !Sub "${SinkLambdaFunction}"
+      brokerString: ${self:custom.brokerString}
 
 resources:
   Resources:
