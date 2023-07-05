@@ -28,7 +28,11 @@ export const toggleTriggers: Handler = async () => {
   }
 }
 
-export const getConsumerGroupStatus: Handler = async () => {
+export const getConsumerGroupStatus: Handler = async (event, context, callback) => {
+  let response = {
+    statusCode: 200,
+    ready: false,
+  };
   try {
     if (!process.env.functions) {
       throw "process.env.functions cannot be undefined";
@@ -36,7 +40,7 @@ export const getConsumerGroupStatus: Handler = async () => {
     let triggerInfo = new Array();
     for (const functionName of process.env.functions.split(',')){
       console.log(`Getting consumer groups for function:  ${functionName}`);
-      triggerInfo.push((await getConsumerGroupInfo(functionName)));
+      triggerInfo.push(...(await getConsumerGroupInfo(functionName)));
     }
     const kafka = new Kafka({
       clientId: "consumerGroupResetter",
@@ -48,10 +52,13 @@ export const getConsumerGroupStatus: Handler = async () => {
     let statuses = info.groups.map(a => a.state.toString());
     console.log(statuses);
     await admin.disconnect();
-    return statuses;
+    response.ready = !statuses.includes("Stable") ? true : false;
+    console.log(response);
   } catch(error) {
     console.error(error);
-    throw (error);
+    throw("asdf");
+  } finally {
+    callback(null, response);
   }
 }
 
@@ -63,7 +70,7 @@ export const resetConsumerGroups: Handler = async () => {
     let triggerInfo = new Array();
     for (const functionName of process.env.functions.split(',')){
       console.log(`Getting consumer groups for function:  ${functionName}`);
-      triggerInfo.push((await getConsumerGroupInfo(functionName)));
+      triggerInfo.push(...(await getConsumerGroupInfo(functionName)));
     }
     const kafka = new Kafka({
       clientId: "consumerGroupResetter",

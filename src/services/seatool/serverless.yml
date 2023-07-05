@@ -11,6 +11,7 @@ plugins:
   - "@stratiformdigital/serverless-iam-helper"
   - serverless-bundle
   - serverless-plugin-scripts
+  - serverless-step-functions
 
 provider:
   name: aws
@@ -67,16 +68,71 @@ custom:
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
   tableName: ${self:service}-${sls:stage}-seatool
-  scripts:
-    commands:
-      rebuildTable: |
-        set -e
-        echo "\n\nInvoking the rebuildTable function...\n\n"
-        call=`aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-rebuildTable --invocation-type RequestResponse --log Tail --cli-read-timeout 900 /dev/stdout`
-        echo $call | jq -r '.LogResult' | base64 --decode
-        if echo $call | grep -q 'FunctionError'; then
-          echo "ERROR" && exit 1
-        fi
+  # scripts:
+  #   commands:
+  #     rebuildTable: |
+  #       set -e
+  #       echo "\n\nInvoking the rebuildTable function...\n\n"
+  #       call=`aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-disableTriggers --invocation-type RequestResponse --log Tail --cli-read-timeout 900 /dev/stdout`
+  #       echo $call | jq -r '.LogResult' | base64 --decode
+  #       if echo $call | grep -q 'FunctionError'; then
+  #         echo "ERROR" && exit 1
+  #       fi
+
+stepFunctions:
+  stateMachines:
+    rebuild-table:
+      name: ${self:service}-${sls:stage}-rebuild-table
+      id: RebuildTableStateMachine
+      loggingConfig:
+        level: ALL
+        includeExecutionData: true
+        destinations:
+          - !GetAtt StateMachineLogGroup.Arn
+      definition:
+        Comment: "A state machine to rebuild the dynamo table."
+        StartAt: DisableTriggers
+        States:
+          DisableTriggers:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-disableTriggers"
+            Parameters:
+              Context.$: $$
+            Next: GetConsumerGroupStatus
+          GetConsumerGroupStatus:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getConsumerGroupStatus"
+            Parameters:
+              Context.$: $$
+            Next: IsConsumerGroupReady
+          IsConsumerGroupReady:
+            Type: Choice
+            Choices:
+              - Variable: $.ready
+                BooleanEquals: true
+                Next: ResetConsumerGroups
+              - Variable: $.ready
+                BooleanEquals: false
+                Next: Wait60Seconds
+            Default: Wait60Seconds
+          Wait60Seconds:
+            Type: Wait
+            Seconds: 60
+            Next: IsConsumerGroupReady
+          ResetConsumerGroups:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-resetConsumerGroups"
+            Parameters:
+              Context.$: $$
+            Next: EnableTriggers
+          EnableTriggers:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-enableTriggers"
+            Parameters:
+              Context.$: $$
+            Next: SuccessState
+          SuccessState:
+            Type: Succeed
 
 functions:
   sink:
@@ -141,6 +197,10 @@ functions:
 
 resources:
   Resources:
+    StateMachineLogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties:
+        LogGroupName: /aws/vendedlogs/states/${self:service}-${sls:stage}-rebuild-table
     Table:
       Type: AWS::DynamoDB::Table
       Properties:
