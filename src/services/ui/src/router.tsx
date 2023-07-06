@@ -53,7 +53,8 @@ export const router = createBrowserRouter([
     path: "/",
     element: <MainWrapper />,
     children: [
-      { path: "/", element: <P.Dashboard /> },
+      { path: "/", element: <P.Welcome /> },
+      { path: "/dashboard", element: <P.Dashboard /> },
       { path: "/issues", element: <P.IssueList /> },
       { path: "/issues/:id", element: <P.ViewIssue /> },
       { path: "/medicaid", element: <P.Medicaid /> },
