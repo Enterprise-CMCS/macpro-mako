@@ -16,6 +16,72 @@ function handleLogin() {
 
 export default function MainWrapper() {
   const { user } = useLoaderData() as Awaited<ReturnType<typeof getLoaderInfo>>;
+  let navData: any[] = [
+    {
+      buttonText: "Home",
+      columns: [
+        [
+          {
+            href: "/",
+            text: "Home Page",
+          },
+        ],
+      ],
+    },
+  ];
+
+  if (user) {
+    navData = [
+      {
+        buttonText: "Home",
+        columns: [
+          [
+            {
+              href: "/",
+              text: "Home Page",
+            },
+          ],
+        ],
+      },
+      {
+        buttonText: "Dashboard",
+        columns: [
+          [
+            {
+              href: "/dashboard",
+              text: "Dashboard",
+            },
+          ],
+        ],
+      },
+      {
+        buttonText: "Packages",
+        columns: [
+          [
+            {
+              text: "Medicaid",
+              onClick: () => {
+                navigate("/medicaid");
+              },
+            },
+            {
+              text: "Chip",
+              onClick: () => {
+                navigate("/chip");
+              },
+            },
+            {
+              text: "Waivers",
+              onClick: () => {
+                navigate("/waiver");
+              },
+            },
+          ],
+        ],
+      },
+    ];
+  }
+
   const navigate = useNavigate();
 
   async function handleLogout() {
@@ -37,55 +103,7 @@ export default function MainWrapper() {
             <UI.Logo altText="Project Logo" source={cmsLogo} />
           </UI.Link>
         }
-        navData={[
-          {
-            buttonText: "Home",
-            columns: [
-              [
-                {
-                  href: "/",
-                  text: "Home Page",
-                },
-              ],
-            ],
-          },
-          {
-            buttonText: "Issues",
-            columns: [
-              [
-                {
-                  href: "/issues",
-                  text: "All Issues",
-                },
-              ],
-            ],
-          },
-          {
-            buttonText: "Packages",
-            columns: [
-              [
-                {
-                  text: "Medicaid",
-                  onClick: () => {
-                    navigate("/medicaid");
-                  },
-                },
-                {
-                  text: "Chip",
-                  onClick: () => {
-                    navigate("/chip");
-                  },
-                },
-                {
-                  text: "Waivers",
-                  onClick: () => {
-                    navigate("/waiver");
-                  },
-                },
-              ],
-            ],
-          },
-        ]}
+        navData={navData}
         secondaryComponent={
           <>
             {user ? (
