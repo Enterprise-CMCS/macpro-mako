@@ -1,0 +1,273 @@
+service: ${self:custom.project}-seatool
+
+frameworkVersion: "3"
+
+package:
+  individually: true
+
+plugins:
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-s3-security-helper"
+  - "@stratiformdigital/serverless-iam-helper"
+  - serverless-bundle
+  - serverless-step-functions
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  iam:
+    role:
+      path: /delegatedadmin/developer/
+      permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Get*
+            - dynamodb:BatchWrite*
+            - dynamodb:BatchGet*
+          Resource: "arn:aws:dynamodb:*:*:table/${self:custom.tableName}"
+        - Effect: Allow
+          Action:
+            - lambda:CreateEventSourceMapping
+            - lambda:ListEventSourceMappings
+            - lambda:PutFunctionConcurrency
+            - lambda:DeleteEventSourceMapping
+            - lambda:UpdateEventSourceMapping
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - ec2:CreateNetworkInterface
+            - ec2:DescribeNetworkInterfaces
+            - ec2:DescribeVpcs
+            - ec2:DeleteNetworkInterface
+            - ec2:DescribeSubnets
+            - ec2:DescribeSecurityGroups
+          Resource: "*"
+
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+
+custom:
+  project: ${env:PROJECT}
+  serverlessTerminationProtection:
+    stages: # Apply CloudFormation termination protection for these stages
+      - master
+      - val
+      - production
+  bundle:
+    linting: false
+  vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
+  brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
+  tableName: ${self:service}-${sls:stage}-seatool
+
+stepFunctions:
+  stateMachines:
+    rebuild-table:
+      name: ${self:service}-${sls:stage}-rebuild-table
+      id: RebuildTableStateMachine
+      loggingConfig:
+        level: ALL
+        includeExecutionData: true
+        destinations:
+          - !GetAtt StateMachineLogGroup.Arn
+      definition:
+        Comment: "A state machine to rebuild the dynamo table."
+        StartAt: DisableTriggers
+        States:
+          DisableTriggers:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-disableTriggers"
+            Parameters:
+              Context.$: $$
+            Next: GetConsumerGroupStatus
+          GetConsumerGroupStatus:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getConsumerGroupStatus"
+            Parameters:
+              Context.$: $$
+            Next: IsConsumerGroupReady
+          IsConsumerGroupReady:
+            Type: Choice
+            Choices:
+              - Variable: $.ready
+                BooleanEquals: true
+                Next: ResetConsumerGroups
+              - Variable: $.ready
+                BooleanEquals: false
+                Next: Wait60Seconds
+            Default: Wait60Seconds
+          Wait60Seconds:
+            Type: Wait
+            Seconds: 60
+            Next: GetConsumerGroupStatus
+          ResetConsumerGroups:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-resetConsumerGroups"
+            Parameters:
+              Context.$: $$
+            Next: EnableTriggers
+          EnableTriggers:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-enableTriggers"
+            Parameters:
+              Context.$: $$
+            Next: SuccessState
+          SuccessState:
+            Type: Succeed
+
+functions:
+  sink:
+    handler: handlers/sink.handler
+    environment:
+      region: ${self:provider.region}
+      tableName: !Ref Table
+    maximumRetryAttempts: 0
+    timeout: 10
+    memorySize: 1024
+  disableTriggers:
+    handler: handlers/rebuildTable.toggleTriggers
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkLambdaFunction}"
+      enabled: false
+  enableTriggers:
+    handler: handlers/rebuildTable.toggleTriggers
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkLambdaFunction}"
+      enabled: true
+  getConsumerGroupStatus:
+    handler: handlers/rebuildTable.getConsumerGroupStatus
+    timeout: 900
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkLambdaFunction}"
+      brokerString: ${self:custom.brokerString}
+  resetConsumerGroups:
+    handler: handlers/rebuildTable.resetConsumerGroups
+    timeout: 900
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkLambdaFunction}"
+      brokerString: ${self:custom.brokerString}
+
+resources:
+  Resources:
+    StateMachineLogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties:
+        LogGroupName: /aws/vendedlogs/states/${self:service}-${sls:stage}-rebuild-table
+    Table:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: ID
+            AttributeType: S
+          - AttributeName: STATE_CODE
+            AttributeType: S
+          - AttributeName: PLAN_TYPE
+            AttributeType: S
+          - AttributeName: SUBMISSION_DATE
+            AttributeType: N
+        KeySchema:
+          - AttributeName: ID
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: STATE_CODE-SUBMISSION_DATE-index
+            KeySchema:
+              - AttributeName: STATE_CODE
+                KeyType: HASH
+              - AttributeName: SUBMISSION_DATE
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: STATE_CODE-PLAN_TYPE-index
+            KeySchema:
+              - AttributeName: STATE_CODE
+                KeyType: HASH
+              - AttributeName: PLAN_TYPE
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: SUBMISSION_DATE-index
+            KeySchema:
+              - AttributeName: SUBMISSION_DATE
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: STATE_CODE-index
+            KeySchema:
+              - AttributeName: STATE_CODE
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: PLAN_TYPE-index
+            KeySchema:
+              - AttributeName: PLAN_TYPE
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        TableName: ${self:custom.tableName}
+    SinkTrigger:
+      Type: AWS::Lambda::EventSourceMapping
+      Properties:
+        BatchSize: 100
+        Enabled: true
+        FunctionName: !GetAtt SinkLambdaFunction.Arn
+        SelfManagedEventSource:
+          Endpoints:
+            KafkaBootstrapServers:
+              Fn::Split:
+                - ","
+                - ${self:custom.brokerString}
+        SourceAccessConfigurations:
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.0}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.1}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.2}
+          - Type: VPC_SECURITY_GROUP
+            URI: !Sub security_group:${SecurityGroup}
+        StartingPosition: TRIM_HORIZON
+        Topics:
+          - aws.ksqldb.seatool.agg.State_Plan
+    SecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
+      Properties:
+        GroupDescription: Security group for Sink Lambda Function.
+        VpcId: ${self:custom.vpc.id}
+    SecurityGroupEgress:
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId: !Ref SecurityGroup
+        IpProtocol: -1
+        CidrIp: 0.0.0.0/0
+  Outputs:
+    TableName:
+      Description: table holding seatool data
+      Value: ${self:custom.tableName}

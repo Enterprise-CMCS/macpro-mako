@@ -16,7 +16,7 @@ exports.handler = async function (
     for await (const item of items) {
       putItem({
         tableName: event.ResourceProperties.DynamoTableName,
-        item: { PK: item.recordId, SK: item.state },
+        item: { id: item.id, state: item.state },
       });
     }
   } catch (error) {

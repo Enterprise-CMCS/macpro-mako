@@ -36,6 +36,11 @@ provider:
             - dynamodb:BatchWrite*
             - dynamodb:BatchGet*
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - cognito-idp:GetUser
+            - cognito-idp:ListUsers
+          Resource: "*"
 
 custom:
   project: ${env:PROJECT}
@@ -60,6 +65,19 @@ functions:
           path: /issues
           method: get
           cors: true
+          authorizer: aws_iam
+  getSeaTool:
+    handler: handlers/getSeatoolData.handler
+    maximumRetryAttempts: 0
+    environment:
+      tableName: ${param:seatoolTableName}
+      region: ${self:provider.region}
+    events:
+      - http:
+          path: /seatool/{stateCode}
+          method: get
+          cors: true
+          authorizer: aws_iam
   getIssue:
     handler: handlers/getIssue.handler
     maximumRetryAttempts: 0
@@ -71,6 +89,7 @@ functions:
           path: /issues/{id}
           method: get
           cors: true
+          authorizer: aws_iam
   createIssue:
     handler: handlers/createIssue.handler
     maximumRetryAttempts: 0
@@ -82,6 +101,7 @@ functions:
           path: /issues
           method: post
           cors: true
+          authorizer: aws_iam
   deleteIssue:
     handler: handlers/deleteIssue.handler
     maximumRetryAttempts: 0
@@ -93,6 +113,7 @@ functions:
           path: /issues/{id}
           method: delete
           cors: true
+          authorizer: aws_iam
   updateIssue:
     handler: handlers/updateIssue.handler
     maximumRetryAttempts: 0
@@ -104,6 +125,7 @@ functions:
           path: /issues/{id}
           method: put
           cors: true
+          authorizer: aws_iam
 resources:
   Resources:
     GatewayResponseDefault4XX:

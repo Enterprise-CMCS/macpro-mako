@@ -44,9 +44,15 @@ yargs(process.argv.slice(2))
     },
     async (options) => {
       await install_deps_for_services();
+      await refreshOutputs(options.stage);
       await runner.run_command_and_output(
-        `ui config`,
-        ["sls", "deploy", "--stage", options.stage],
+        `config vars`,
+        ["sls", "ui", "package", "--stage", options.stage],
+        "."
+      );
+      await runner.run_command_and_output(
+        `config vars`,
+        ["sls", "ui", "useLocalhost", "--stage", options.stage],
         "."
       );
       await runner.run_command_and_output(
@@ -101,6 +107,11 @@ yargs(process.argv.slice(2))
     {},
     async () => {
       await install_deps_for_services();
+      await runner.run_command_and_output(
+        `Install playwright`,
+        ["yarn", "playwright", "install", "--with-deps"],
+        "."
+      );
       await runner.run_command_and_output(`e2e tests`, ["yarn", "e2e"], ".");
     }
   )
@@ -132,7 +143,7 @@ yargs(process.argv.slice(2))
       if (options.service) {
         filters.push({
           Key: "SERVICE",
-          Value: `${options.service}`,
+          Value: `${process.env.PROJECT}-${options.service}`,
         });
       }
       await destroyer.destroy(`${process.env.REGION_A}`, options.stage, {

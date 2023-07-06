@@ -5,12 +5,20 @@ services:
     path: src/services/dashboard
   database:
     path: src/services/database
+  seatool:
+    path: src/services/seatool
   api:
     path: src/services/api
     params:
       issuesTableName: ${database.IssuesTableName}
+      seatoolTableName: ${seatool.TableName}
   ui-infra:
     path: src/services/ui-infra
+  auth:
+    path: src/services/auth
+    params:
+      ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
+      ApiName: ${api.ApiGatewayRestApiName}
   ui:
     path: src/services/ui
     params:
@@ -19,7 +27,9 @@ services:
       ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
       ApiRegion: ${api.Region}
       ApiUrl: ${api.ApiGatewayRestApiUrl}
-    # params: # params will be added once other services are
-    #   ecsFailureTopicArn: ${alerts.ECSFailureTopicArn}
-    #   mskClusterArn: ${bigmac.MskClusterArn}
-    #   brokerString: ${bigmac.BrokerString}
+      ApiName: ${api.ApiGatewayRestApiName}
+      CognitoRegion: ${auth.Region}
+      CognitoIdentityPoolId: ${auth.IdentityPoolId}
+      CognitoUserPoolId: ${auth.UserPoolId}
+      CognitoUserPoolClientId: ${auth.UserPoolClientId}
+      CognitoUserPoolClientDomain: ${auth.UserPoolClientDomain}

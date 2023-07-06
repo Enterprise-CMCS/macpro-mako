@@ -1,0 +1,51 @@
+name: Security Group Cleanup
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  security-group-cleanup:
+    name: Security Group Cleanup
+    runs-on: ubuntu-20.04
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: ./.github/actions/setup # We need this largely for the PROJECT variable setting
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+          role-duration-seconds: 10800
+
+      - name: Clean Up Unassigned Security Groups
+        id: runningStages
+        run: |
+          # Step 1, get a list of all security groups attached to ENIs
+          inusesgs=(`aws ec2 describe-network-interfaces \
+              --query "NetworkInterfaces[].Groups[].GroupId" \
+              --output text`)
+
+          # Step 2, get a list of all security groups owned by our project.
+          allsgs=(`aws ec2 describe-security-groups \
+              --filters Name=tag:PROJECT,Values="$PROJECT" \
+              --query "SecurityGroups[].GroupId" \
+              --output text`)
+
+          # Step 3, delete any security group owned by our project that's not attached to an ENI
+          for i in "${allsgs[@]}"
+          do
+              if [[ " ${inusesgs[*]} " =~ " ${i} " ]]; then
+                  echo "Keping $i as it is in use"
+              else
+                  echo "Deleting $i as it is not in use..."
+                  aws ec2 delete-security-group --group-id $i
+              fi
+          done
