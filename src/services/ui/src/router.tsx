@@ -24,7 +24,7 @@ Amplify.configure({
   API: {
     endpoints: [
       {
-        name: "issues",
+        name: "seatool",
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION,
       },
@@ -55,11 +55,10 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <P.Welcome /> },
       { path: "/dashboard", element: <P.Dashboard /> },
-      { path: "/issues", element: <P.IssueList /> },
-      { path: "/issues/:id", element: <P.ViewIssue /> },
       { path: "/medicaid", element: <P.Medicaid /> },
       { path: "/chip", element: <P.Chip /> },
       { path: "/waiver", element: <P.Waiver /> },
+      { path: "/package", element: <P.ViewRecord /> },
     ],
     loader: getLoaderInfo,
   },

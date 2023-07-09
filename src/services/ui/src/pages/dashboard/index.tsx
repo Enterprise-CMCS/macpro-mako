@@ -4,16 +4,43 @@ import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { LoadingSpinner, ErrorAlert } from "../../components";
 import { ChangeEvent, useState } from "react";
 import { SeatoolData } from "shared-types";
+import { Link } from "react-router-dom";
 
 export function Row({ record }: { record: SeatoolData }) {
+  let status = "Unknown"; // not sure what status to use or even what "record.SPW_STATUS[0].SPW_STATUS_DESC" is
+  if (record.SPW_STATUS && record.SPW_STATUS[0]) {
+    status = record.SPW_STATUS[0].SPW_STATUS_DESC;
+  }
+
   return (
     <tr key={record.ID}>
-      <UI.TH rowHeader>{record.ID}</UI.TH>
+      <UI.TH rowHeader>
+        <Link
+          className="cursor-pointer text-blue-600"
+          to={`/package?type=${encodeURIComponent(
+            record.PLAN_TYPE
+          )}&id=${encodeURIComponent(record.ID)}`}
+          target="_blank"
+        >
+          {record.ID}
+        </Link>
+      </UI.TH>
       <UI.TD>
         {formatDistance(new Date(record.SUBMISSION_DATE), new Date())} ago
       </UI.TD>
       <UI.TD>{record.PLAN_TYPE}</UI.TD>
       <UI.TD>{record.STATE_CODE}</UI.TD>
+      <UI.TD>{status}</UI.TD>
+      <UI.TD
+        style={{
+          maxWidth: "260px",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {record.STATE_PLAN.SUMMARY_MEMO}
+      </UI.TD>
     </tr>
   );
 }
@@ -53,13 +80,15 @@ export const Dashboard = () => {
       {error ? (
         <ErrorAlert error={error} />
       ) : (
-        <UI.Table borderless id="om-issues-table">
+        <UI.Table borderless id="om-seatool-table">
           <thead>
             <tr>
               <UI.TH>ID</UI.TH>
               <UI.TH>Submitted</UI.TH>
               <UI.TH>Type</UI.TH>
               <UI.TH>State</UI.TH>
+              <UI.TH>Status</UI.TH>
+              <UI.TH>Summary</UI.TH>
             </tr>
           </thead>
           <tbody>

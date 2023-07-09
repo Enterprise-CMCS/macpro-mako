@@ -5,7 +5,7 @@ import { SeatoolData, ReactQueryApiError } from "shared-types";
 export const getSeaToolData = async (
   stateCode: string
 ): Promise<SeatoolData[]> => {
-  const seaToolData = await API.get("issues", `/seatool/${stateCode}`, {});
+  const seaToolData = await API.get("seatool", `/seatool/${stateCode}`, {});
 
   return seaToolData;
 };
