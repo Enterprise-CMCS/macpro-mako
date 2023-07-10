@@ -17,7 +17,7 @@ export function Row({ record }: { record: SeatoolData }) {
       <UI.TH rowHeader>
         <Link
           className="cursor-pointer text-blue-600"
-          to={`/package?type=${encodeURIComponent(
+          to={`/record?type=${encodeURIComponent(
             record.PLAN_TYPE
           )}&id=${encodeURIComponent(record.ID)}`}
           target="_blank"

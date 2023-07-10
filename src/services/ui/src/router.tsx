@@ -58,7 +58,7 @@ export const router = createBrowserRouter([
       { path: "/medicaid", element: <P.Medicaid /> },
       { path: "/chip", element: <P.Chip /> },
       { path: "/waiver", element: <P.Waiver /> },
-      { path: "/package", element: <P.ViewRecord /> },
+      { path: "/record", element: <P.ViewRecord /> },
     ],
     loader: getLoaderInfo,
   },
