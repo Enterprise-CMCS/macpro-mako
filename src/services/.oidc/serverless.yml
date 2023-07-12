@@ -36,7 +36,7 @@ custom:
     - arn:aws:iam::${aws:accountId}:policy/ADO-Restriction-Policy
     - arn:aws:iam::${aws:accountId}:policy/CMSApprovedAWSServices
     - arn:aws:iam::aws:policy/AdministratorAccess
-  SubjectClaimFilters: "repo:Enterprise-CMCS/mako:${param:claimFilter}"
+  SubjectClaimFilters: "repo:Enterprise-CMCS/macpro-mako:${param:claimFilter}"
 resources:
   Resources:
     GitHubActionsServiceRole:
