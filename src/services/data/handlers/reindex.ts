@@ -1,11 +1,11 @@
 import { Handler } from "aws-lambda";
-// import { deleteItem } from "../../../libs";
 import { Kafka } from "kafkajs";
 import {
   LambdaClient,
   ListEventSourceMappingsCommand,
   UpdateEventSourceMappingCommand,
 } from "@aws-sdk/client-lambda";
+import * as os from "./../../../libs/opensearch-lib";
 
 export const toggleTriggers: Handler = async () => {
   try {
@@ -126,3 +126,15 @@ async function getConsumerGroupInfo(functionName: string) {
   }
   return triggerInfo;
 }
+
+export const deleteIndex: Handler = async () => {
+  try {
+    if (!process.env.osDomain) {
+      throw "process.env.osDomain cannot be undefined";
+    }
+    await os.deleteIndex(process.env.osDomain, "main");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

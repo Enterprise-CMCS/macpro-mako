@@ -109,6 +109,12 @@ stepFunctions:
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-resetConsumerGroups"
             Parameters:
               Context.$: $$
+            Next: DeleteIndex
+          DeleteIndex:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteIndex"
+            Parameters:
+              Context.$: $$
             Next: EnableTriggers
           EnableTriggers:
             Type: Task
@@ -166,6 +172,14 @@ functions:
       region: ${self:provider.region}
       functions: !Sub "${SinkLambdaFunction}"
       brokerString: ${self:custom.brokerString}
+  deleteIndex:
+    handler: handlers/reindex.deleteIndex
+    environment:
+      region: ${self:provider.region}
+      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+    maximumRetryAttempts: 0
+    timeout: 10
+    memorySize: 1024
 
 resources:
   Resources:

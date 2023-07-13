@@ -26,9 +26,15 @@ function createAwsConnector(credentials: any) {
   };
 }
 
-export async function indexData(host:string, indexObject:any) {
+export async function updateData(host:string, indexObject:any) {
   client = client || (await getClient(host));
-  // Add a document to the index.
-  var indexResponse = await client.index(indexObject);
-  console.log(indexResponse.body);
+  // Add a document to the index. 
+  var response = await client.update(indexObject);
+  console.log(response.body);
+}
+
+export async function deleteIndex(host:string, index:string) {
+  client = client || (await getClient(host));
+  var response = await client.indices.delete({index});
+  console.log(response);
 }

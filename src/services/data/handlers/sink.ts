@@ -53,19 +53,15 @@ export const handler: Handler = async (event) => {
     // }
 
     for (const item of records) {
-      if (item.isTombstone) {
-        // await delete here
-        // await deleteItem({
-        //   tableName: process.env.tableName,
-        //   key: { ID: item.ID },
-        // });
-      } else {
-        await os.indexData(host, {
-          id: item.ID,
-          index: indexName,
-          body: item,
-        });  
-      }
+      const doc = item.isTombstone ? {seatool: null} : {seatool: item}
+      await os.updateData(host, {
+        index: indexName,
+        id: item.ID,
+        body: {
+          doc,
+          doc_as_upsert: true,
+        }
+      });  
     }
   } catch (error) {
     console.error(error);
