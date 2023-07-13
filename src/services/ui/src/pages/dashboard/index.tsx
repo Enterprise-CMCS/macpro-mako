@@ -125,8 +125,8 @@ export const Dashboard = () => {
           // onInput={(event: React.ChangeEvent<HTMLInputElement>) => {
           //   setSearchbox(event.target.value);
           // }}
-          onSearch={(event: string) => {
-            setSearchbox(event);
+          onSearch={(value: string) => {
+            setSearchbox(value);
           }}
           placeholder="Enter text"
           variation="default"
