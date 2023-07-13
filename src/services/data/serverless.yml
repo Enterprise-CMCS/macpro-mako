@@ -1,4 +1,4 @@
-service: ${self:custom.project}-seatool
+service: ${self:custom.project}-data
 
 frameworkVersion: "3"
 
@@ -23,18 +23,6 @@ provider:
       statements:
         - Effect: Allow
           Action:
-            - dynamodb:Query
-            - dynamodb:Scan
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
-            - dynamodb:Get*
-            - dynamodb:BatchWrite*
-            - dynamodb:BatchGet*
-          Resource: "arn:aws:dynamodb:*:*:table/${self:custom.tableName}"
-        - Effect: Allow
-          Action:
             - lambda:CreateEventSourceMapping
             - lambda:ListEventSourceMappings
             - lambda:PutFunctionConcurrency
@@ -50,6 +38,15 @@ provider:
             - ec2:DescribeSubnets
             - ec2:DescribeSecurityGroups
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - es:ESHttpHead
+            - es:ESHttpPost
+            - es:ESHttpGet
+            - es:ESHttpPatch
+            - es:ESHttpDelete
+            - es:ESHttpPut
+          Resource: !Sub "${OpenSearch.Arn}/*"
 
   stackTags:
     PROJECT: ${self:custom.project}
@@ -66,20 +63,19 @@ custom:
     linting: false
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
-  tableName: ${self:service}-${sls:stage}-seatool
 
 stepFunctions:
   stateMachines:
-    rebuild-table:
-      name: ${self:service}-${sls:stage}-rebuild-table
-      id: RebuildTableStateMachine
+    reindex:
+      name: ${self:service}-${sls:stage}-reindex
+      id: ReindexDataStateMachine
       loggingConfig:
         level: ALL
         includeExecutionData: true
         destinations:
           - !GetAtt StateMachineLogGroup.Arn
       definition:
-        Comment: "A state machine to rebuild the dynamo table."
+        Comment: "A state machine to reindex the OpenSearch index."
         StartAt: DisableTriggers
         States:
           DisableTriggers:
@@ -102,11 +98,11 @@ stepFunctions:
                 Next: ResetConsumerGroups
               - Variable: $.ready
                 BooleanEquals: false
-                Next: Wait60Seconds
-            Default: Wait60Seconds
-          Wait60Seconds:
+                Next: Wait10Seconds
+            Default: Wait10Seconds
+          Wait10Seconds:
             Type: Wait
-            Seconds: 60
+            Seconds: 10
             Next: GetConsumerGroupStatus
           ResetConsumerGroups:
             Type: Task
@@ -128,26 +124,26 @@ functions:
     handler: handlers/sink.handler
     environment:
       region: ${self:provider.region}
-      tableName: !Ref Table
+      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
     maximumRetryAttempts: 0
     timeout: 10
     memorySize: 1024
   disableTriggers:
-    handler: handlers/rebuildTable.toggleTriggers
+    handler: handlers/reindex.toggleTriggers
     timeout: 60
     environment:
       region: ${self:provider.region}
       functions: !Sub "${SinkLambdaFunction}"
       enabled: false
   enableTriggers:
-    handler: handlers/rebuildTable.toggleTriggers
+    handler: handlers/reindex.toggleTriggers
     timeout: 60
     environment:
       region: ${self:provider.region}
       functions: !Sub "${SinkLambdaFunction}"
       enabled: true
   getConsumerGroupStatus:
-    handler: handlers/rebuildTable.getConsumerGroupStatus
+    handler: handlers/reindex.getConsumerGroupStatus
     timeout: 900
     vpc:
       securityGroupIds:
@@ -159,7 +155,7 @@ functions:
       functions: !Sub "${SinkLambdaFunction}"
       brokerString: ${self:custom.brokerString}
   resetConsumerGroups:
-    handler: handlers/rebuildTable.resetConsumerGroups
+    handler: handlers/reindex.resetConsumerGroups
     timeout: 900
     vpc:
       securityGroupIds:
@@ -176,66 +172,12 @@ resources:
     StateMachineLogGroup:
       Type: AWS::Logs::LogGroup
       Properties:
-        LogGroupName: /aws/vendedlogs/states/${self:service}-${sls:stage}-rebuild-table
-    Table:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: ID
-            AttributeType: S
-          - AttributeName: STATE_CODE
-            AttributeType: S
-          - AttributeName: PLAN_TYPE
-            AttributeType: S
-          - AttributeName: SUBMISSION_DATE
-            AttributeType: N
-        KeySchema:
-          - AttributeName: ID
-            KeyType: HASH
-        GlobalSecondaryIndexes:
-          - IndexName: STATE_CODE-SUBMISSION_DATE-index
-            KeySchema:
-              - AttributeName: STATE_CODE
-                KeyType: HASH
-              - AttributeName: SUBMISSION_DATE
-                KeyType: RANGE
-            Projection:
-              ProjectionType: ALL
-          - IndexName: STATE_CODE-PLAN_TYPE-index
-            KeySchema:
-              - AttributeName: STATE_CODE
-                KeyType: HASH
-              - AttributeName: PLAN_TYPE
-                KeyType: RANGE
-            Projection:
-              ProjectionType: ALL
-          - IndexName: SUBMISSION_DATE-index
-            KeySchema:
-              - AttributeName: SUBMISSION_DATE
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
-          - IndexName: STATE_CODE-index
-            KeySchema:
-              - AttributeName: STATE_CODE
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
-          - IndexName: PLAN_TYPE-index
-            KeySchema:
-              - AttributeName: PLAN_TYPE
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
-        BillingMode: PAY_PER_REQUEST
-        PointInTimeRecoverySpecification:
-          PointInTimeRecoveryEnabled: true
-        TableName: ${self:custom.tableName}
+        LogGroupName: /aws/vendedlogs/states/${self:service}-${sls:stage}-reindex
     SinkTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties:
         BatchSize: 100
-        Enabled: true
+        Enabled: false
         FunctionName: !GetAtt SinkLambdaFunction.Arn
         SelfManagedEventSource:
           Endpoints:
@@ -267,7 +209,119 @@ resources:
         GroupId: !Ref SecurityGroup
         IpProtocol: -1
         CidrIp: 0.0.0.0/0
+
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:service}-${sls:stage}-search
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: True
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+    CognitoUserPoolDomain:
+      Type: AWS::Cognito::UserPoolDomain
+      Properties:
+        Domain: !Sub ${AWS::AccountId}-${sls:stage}-search
+        UserPoolId: !Ref CognitoUserPool
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${sls:stage}-search
+        UserPoolId: !Ref CognitoUserPool
+        ExplicitAuthFlows:
+          - ADMIN_NO_SRP_AUTH
+        GenerateSecret: false #pragma: allowlist secret
+    CognitoIdentityPool:
+      Type: AWS::Cognito::IdentityPool
+      Properties:
+        IdentityPoolName: ${self:service}${sls:stage}search
+        AllowUnauthenticatedIdentities: false
+        CognitoIdentityProviders:
+          - ClientId: !Ref CognitoUserPoolClient
+            ProviderName: !GetAtt CognitoUserPool.ProviderName
+    CognitoIdentityPoolRoles:
+      Type: AWS::Cognito::IdentityPoolRoleAttachment
+      Properties:
+        IdentityPoolId: !Ref CognitoIdentityPool
+        Roles:
+          authenticated: !GetAtt CognitoAuthRole.Arn
+    CognitoAuthRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Federated: "cognito-identity.amazonaws.com"
+              Action:
+                - "sts:AssumeRoleWithWebIdentity"
+              Condition:
+                StringEquals:
+                  "cognito-identity.amazonaws.com:aud": !Ref CognitoIdentityPool
+                "ForAnyValue:StringLike":
+                  "cognito-identity.amazonaws.com:amr": authenticated
+            - Effect: "Allow"
+              Principal:
+                Service: "es.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonCognitoReadOnly
+
+    OpenSearch:
+      Type: AWS::OpenSearchService::Domain
+      Properties:
+        EBSOptions:
+          EBSEnabled: true
+          VolumeType: gp2
+          VolumeSize: 10
+        ClusterConfig:
+          InstanceType: t3.medium.search
+          InstanceCount: 1
+          DedicatedMasterEnabled: false
+        EncryptionAtRestOptions:
+          Enabled: false
+        NodeToNodeEncryptionOptions:
+          Enabled: false
+        EngineVersion: OpenSearch_2.3
+        DomainEndpointOptions:
+          EnforceHTTPS: true
+          TLSSecurityPolicy: Policy-Min-TLS-1-0-2019-07
+        CognitoOptions:
+          Enabled: true
+          IdentityPoolId: !Ref CognitoIdentityPool
+          RoleArn: !GetAtt OpenSearchRole.Arn
+          UserPoolId: !Ref CognitoUserPool
+        AccessPolicies:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                AWS: !GetAtt CognitoAuthRole.Arn
+              Action: "es:ESHttp*"
+              Resource: "*"
+        AdvancedOptions:
+          rest.action.multi.allow_explicit_index: "true"
+    OpenSearchRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service: "es.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonOpenSearchServiceCognitoAccess
   Outputs:
-    TableName:
-      Description: table holding seatool data
-      Value: ${self:custom.tableName}
+    OpenSearchDomainArn:
+      Value: !GetAtt OpenSearch.Arn
+    OpenSearchDomainEndpoint:
+      Value: !Sub https://${OpenSearch.DomainEndpoint}
+    OpenSearchDashboardEndpoint:
+      Value: !Sub https://${OpenSearch.DomainEndpoint}/_dashboards

@@ -1,6 +1,11 @@
 import { Handler } from "aws-lambda";
-import { deleteItem, putItem } from "../../../libs";
 import { decode } from "base-64";
+import * as os from "./../../../libs/opensearch-lib";
+if(!process.env.osDomain) {
+  throw "ERROR:  osDomain env variable is required,"
+}
+const host:string = process.env.osDomain;
+const indexName = "main";
 
 export const handler: Handler = async (event) => {
   const records: Record<string, unknown>[] = [];
@@ -43,21 +48,23 @@ export const handler: Handler = async (event) => {
     );
   }
   try {
-    if (!process.env.tableName) {
-      throw "process.env.tableName cannot be undefined";
-    }
+    // if (!process.env.indexName) {
+    //   throw "process.env.indexName cannot be undefined";
+    // }
 
     for (const item of records) {
       if (item.isTombstone) {
-        await deleteItem({
-          tableName: process.env.tableName,
-          key: { ID: item.ID },
-        });
+        // await delete here
+        // await deleteItem({
+        //   tableName: process.env.tableName,
+        //   key: { ID: item.ID },
+        // });
       } else {
-        await putItem({
-          tableName: process.env.tableName,
-          item,
-        });
+        await os.indexData(host, {
+          id: item.ID,
+          index: indexName,
+          body: item,
+        });  
       }
     }
   } catch (error) {

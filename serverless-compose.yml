@@ -3,12 +3,13 @@ services:
     path: src/services/alerts
   dashboard:
     path: src/services/dashboard
-  seatool:
-    path: src/services/seatool
+  data:
+    path: src/services/data
   api:
     path: src/services/api
     params:
-      seatoolTableName: ${seatool.TableName}
+      osDomainArn: ${data.OpenSearchDomainArn}
+      osDomain: ${data.OpenSearchDomainEndpoint}
   ui-infra:
     path: src/services/ui-infra
   auth:
