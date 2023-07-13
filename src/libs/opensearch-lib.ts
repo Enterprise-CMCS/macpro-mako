@@ -43,21 +43,41 @@ export async function search(host:string, index:string, params:{stateCode:string
   client = client || (await getClient(host));
 
   try {
+    // const query = {
+    //   query: {
+    //     match: {
+    //       "seatool.STATE_CODE": {
+    //         query: params.stateCode,
+    //       },
+    //     },
+    //     // contains: {
+    //     //   "seatool.STATE_PLAN.STATUS_MEMO": {
+    //     //     query: params.searchString,
+    //     //   }
+    //     // }
+    //   },
+    // };
+    
     const query = {
       query: {
-        match: {
-          "seatool.STATE_CODE": {
-            query: params.stateCode,
-          },
-        },
-        contains: {
-          "seatool.STATE_PLAN.STATUS_MEMO": {
-            query: params.searchString,
-          }
+        bool: {
+          must: [
+            {
+              match: {
+                "seatool.STATE_CODE": params.stateCode
+              }
+            },
+          ],
+          should: [
+            {
+              match: {
+                "seatool.STATE_PLAN.STATUS_MEMO": params.searchString
+              }
+            }
+          ]
         }
-      },
-    };
-    
+      }
+    }
     const response = await client.search({
       index: index,
       body: query,
