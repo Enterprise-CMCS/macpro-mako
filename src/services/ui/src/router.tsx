@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import MainWrapper from "./components/MainWrapper";
-import * as P from "./pages";
+import * as P from "@/pages";
 import { Amplify, Auth } from "aws-amplify";
 import config from "./config";
-import { CognitoUserAttributes } from "shared-types";
+import { type CognitoUserAttributes } from "shared-types";
 import { getParsedObject } from "./utils";
+import * as C from "@/components";
 
 Amplify.configure({
   Auth: {
@@ -51,7 +51,7 @@ export const getLoaderInfo = async () => {
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainWrapper />,
+    element: <C.Layout />,
     children: [
       { path: "/", element: <P.Welcome /> },
       { path: "/dashboard", element: <P.Dashboard /> },

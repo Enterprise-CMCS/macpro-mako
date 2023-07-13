@@ -1,7 +1,7 @@
-import { useGetSeatool } from "../../api/useGetSeatool";
+import { useGetSeatool } from "@/app/api";
 import { formatDistance } from "date-fns";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
-import { LoadingSpinner, ErrorAlert } from "../../components";
+import { LoadingSpinner, ErrorAlert } from "@/components";
 import { ChangeEvent, useState } from "react";
 import { SeatoolData } from "shared-types";
 import { Link } from "react-router-dom";
