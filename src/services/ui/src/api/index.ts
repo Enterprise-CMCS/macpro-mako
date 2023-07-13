@@ -1,1 +1,1 @@
-export * from "./useGetSeatool";
+export * from "./useSearch";

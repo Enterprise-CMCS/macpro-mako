@@ -1,10 +1,13 @@
-import { useGetSeatool } from "../../api/useGetSeatool";
+import { useSearch, SearchData } from "../../api/useSearch";
 import { formatDistance } from "date-fns";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { LoadingSpinner, ErrorAlert } from "../../components";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useRef } from "react";
 import { SeatoolData } from "shared-types";
 import { Link } from "react-router-dom";
+import MaterialTable from "material-table";
+import { ThemeProvider, createTheme } from "@mui/material";
+const defaultMaterialTheme = createTheme();
 
 export function Row({ record }: { record: SeatoolData }) {
   let status = "Unknown"; // not sure what status to use or even what "record.SPW_STATUS[0].SPW_STATUS_DESC" is
@@ -47,13 +50,16 @@ export function Row({ record }: { record: SeatoolData }) {
 
 export const Dashboard = () => {
   const [selectedState, setSelectedState] = useState("VA");
-  const { isLoading, data, error } = useGetSeatool(selectedState, {
+  const [searchbox, setSearchbox] = useState("");
+  const { isLoading, data, error } = useSearch({selectedState, searchbox}, {
     retry: false,
   });
-
+  const tableRef = useRef();
   const handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedState(event.target.value);
   };
+
+  console.log(data);
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -63,6 +69,7 @@ export const Dashboard = () => {
         <UI.Typography size="lg" as="h1">
           Dashboard
         </UI.Typography>
+        
         <div>
           <label htmlFor="state-select">Select a state: </label>
           <select
@@ -76,8 +83,11 @@ export const Dashboard = () => {
           </select>
         </div>
       </div>
+      <div className="Search" data-testid="Search-Container">
+          {renderSearch()}
+        </div>
       <hr />
-      {error ? (
+      {/* {error ? (
         <ErrorAlert error={error} />
       ) : (
         <UI.Table borderless id="om-seatool-table">
@@ -98,7 +108,52 @@ export const Dashboard = () => {
               })}
           </tbody>
         </UI.Table>
-      )}
+      )} */}
     </>
   );
+
+  function renderSearch() {
+    return (
+      <div
+        style={{
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <UI.Search
+          // onInput={(event: React.ChangeEvent<HTMLInputElement>) => {
+          //   setSearchbox(event.target.value);
+          // }}
+          onSearch={(event: string) => {
+            setSearchbox(event);
+          }}
+          placeholder="Enter text"
+          variation="default"
+        />
+        <ThemeProvider theme={defaultMaterialTheme}>
+          <MaterialTable
+            tableRef={tableRef}
+            options={{
+              toolbar: false,
+              paging: false,
+            }}
+            columns={[
+              {
+                title: "Transmittal ID Number (TIN)",
+                field: "tin",
+                render: (rowData) => {
+                  // return rowData;
+                  console.log(rowData._source);
+                  console.log('rowData');
+                  return rowData._id;
+                },
+              }
+            ]}
+            data={data?.hits as SearchData[]}
+          />
+        </ThemeProvider>
+      </div>
+    );
+  }
 };

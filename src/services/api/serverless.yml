@@ -23,6 +23,15 @@ provider:
       statements:
         - Effect: Allow
           Action:
+            - es:ESHttpHead
+            - es:ESHttpPost
+            - es:ESHttpGet
+            - es:ESHttpPatch
+            - es:ESHttpDelete
+            - es:ESHttpPut
+          Resource: ${param:osDomainArn}/*
+        - Effect: Allow
+          Action:
             - dynamodb:Query
             - dynamodb:Scan
             - dynamodb:GetItem
@@ -52,15 +61,15 @@ custom:
   bundle:
     linting: false
 functions:
-  getSeaTool:
-    handler: handlers/getSeatoolData.handler
+  search:
+    handler: handlers/search.handler
     maximumRetryAttempts: 0
     environment:
-      tableName: ${param:seatoolTableName}
       region: ${self:provider.region}
+      osDomain: ${param:osDomain}
     events:
       - http:
-          path: /seatool/{stateCode}
+          path: /search/{stateCode}
           method: get
           cors: true
           authorizer: aws_iam

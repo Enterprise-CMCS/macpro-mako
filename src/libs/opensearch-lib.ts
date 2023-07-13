@@ -38,3 +38,29 @@ export async function deleteIndex(host:string, index:string) {
   var response = await client.indices.delete({index});
   console.log(response);
 }
+
+export async function search(host:string, index:string, params:{stateCode:string}){
+  client = client || (await getClient(host));
+
+  try {
+    const query = {
+      query: {
+        match: {
+          "seatool.STATE_CODE": {
+            query: params.stateCode,
+          },
+        },
+      },
+    };
+    
+    const response = await client.search({
+      index: index,
+      body: query,
+    });
+          
+    console.log(response.body.hits);
+    return response.body.hits;
+  } catch(e) {
+    console.log({e})
+  }
+}
