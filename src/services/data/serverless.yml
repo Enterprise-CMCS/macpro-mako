@@ -191,7 +191,7 @@ resources:
       Type: AWS::Lambda::EventSourceMapping
       Properties:
         BatchSize: 100
-        Enabled: false
+        Enabled: true
         FunctionName: !GetAtt SinkLambdaFunction.Arn
         SelfManagedEventSource:
           Endpoints:
