@@ -70,7 +70,7 @@ functions:
     events:
       - http:
           path: /search/{stateCode}
-          method: get
+          method: post
           cors: true
           authorizer: aws_iam
 resources:

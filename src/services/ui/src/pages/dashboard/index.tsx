@@ -148,7 +148,16 @@ export const Dashboard = () => {
                   console.log('rowData');
                   return rowData._id;
                 },
-              }
+              },
+              {
+                title: "Status Memo",
+                field: "seatool.STATE_PLAN.STATUS_MEMO",
+                render: (rowData) => {
+                  console.log('rowData');
+                  console.log(rowData);
+                  return rowData._source.seatool?.STATE_PLAN?.STATUS_MEMO;
+                },
+              },
             ]}
             data={data?.hits as SearchData[]}
           />

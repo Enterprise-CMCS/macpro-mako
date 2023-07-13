@@ -41,9 +41,14 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       });
     }
 
+    console.log("event", JSON.stringify(event));
+    console.log("body", JSON.parse(event.body));
+    console.log("mike", JSON.parse(event.body).searchString || "hello");
+
     // Retrieve Seatool data using the SeatoolService
     const results = await os.search(process.env.osDomain, "main", {
       stateCode,
+      searchString: JSON.parse(event.body).searchString || "",
     });
 
     if (!results) {

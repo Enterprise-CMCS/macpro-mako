@@ -2,7 +2,7 @@ import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError } from "shared-types";
 
-type SearchData = {
+export type SearchData = {
   _index: string;
   _id: string;
   _score: number;
@@ -10,9 +10,12 @@ type SearchData = {
 };
 
 export const getSearchData = async (
-  selectedState: string
+  selectedState: string,
+  searchString: string
 ): Promise<{ hits: SearchData[] }> => {
-  const SearchData = await API.get("seatool", `/search/${selectedState}`, {});
+  const SearchData = await API.post("seatool", `/search/${selectedState}`, {
+    body: { searchString },
+  });
 
   return SearchData;
 };
@@ -20,11 +23,13 @@ export const getSearchData = async (
 export const useSearch = (
   props: { selectedState: string; searchbox: string },
   options?: UseQueryOptions<{ hits: SearchData[] }, ReactQueryApiError>
-) =>
-  useQuery<{ hits: SearchData[] }, ReactQueryApiError>(
+) => {
+  console.log({ props });
+  return useQuery<{ hits: SearchData[] }, ReactQueryApiError>(
     ["seatool", props.selectedState],
     {
-      queryFn: () => getSearchData(props.selectedState),
+      queryFn: () => getSearchData(props.selectedState, props.searchbox),
       ...options,
     }
   );
+};

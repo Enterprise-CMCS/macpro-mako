@@ -39,7 +39,7 @@ export async function deleteIndex(host:string, index:string) {
   console.log(response);
 }
 
-export async function search(host:string, index:string, params:{stateCode:string}){
+export async function search(host:string, index:string, params:{stateCode:string, searchString:string}){
   client = client || (await getClient(host));
 
   try {
@@ -50,6 +50,11 @@ export async function search(host:string, index:string, params:{stateCode:string
             query: params.stateCode,
           },
         },
+        contains: {
+          "seatool.STATE_PLAN.STATUS_MEMO": {
+            query: params.searchString,
+          }
+        }
       },
     };
     
