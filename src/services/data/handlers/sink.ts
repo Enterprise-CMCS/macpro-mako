@@ -2,10 +2,10 @@ import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
 if (!process.env.osDomain) {
-  throw "ERROR:  osDomain env variable is required,";
+  throw "ERROR:  process.env.osDomain is required,";
 }
-const host: string = process.env.osDomain;
-const indexName = "main";
+const osDomain: string = process.env.osDomain;
+const index = "main";
 
 export const seatool: Handler = async (event) => {
   const records: Record<string, unknown>[] = [];
@@ -50,8 +50,8 @@ export const seatool: Handler = async (event) => {
   }
   try {
     for (const item of records) {
-      await os.updateData(host, {
-        index: indexName,
+      await os.updateData(osDomain, {
+        index,
         id: item.key,
         body: {
           doc: item.value,
@@ -91,8 +91,8 @@ export const onemac: Handler = async (event) => {
   }
   try {
     for (const item of records) {
-      await os.updateData(host, {
-        index: indexName,
+      await os.updateData(osDomain, {
+        index,
         id: item.key,
         body: {
           doc: item.value,
