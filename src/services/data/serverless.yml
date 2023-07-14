@@ -316,26 +316,26 @@ resources:
                 - "sts:AssumeRole"
         ManagedPolicyArns:
           - arn:aws:iam::aws:policy/AmazonCognitoReadOnly
-
     OpenSearch:
       Type: AWS::OpenSearchService::Domain
+      DependsOn: OpenSearchLogGroupPolicy
       Properties:
         EBSOptions:
           EBSEnabled: true
           VolumeType: gp2
           VolumeSize: 10
         ClusterConfig:
-          InstanceType: t3.medium.search
-          InstanceCount: 1
+          InstanceType: t3.small.search
+          InstanceCount: 3
           DedicatedMasterEnabled: false
         EncryptionAtRestOptions:
-          Enabled: false
+          Enabled: true
         NodeToNodeEncryptionOptions:
-          Enabled: false
+          Enabled: true
         EngineVersion: OpenSearch_2.3
         DomainEndpointOptions:
           EnforceHTTPS: true
-          TLSSecurityPolicy: Policy-Min-TLS-1-0-2019-07
+          TLSSecurityPolicy: Policy-Min-TLS-1-2-2019-07
         CognitoOptions:
           Enabled: true
           IdentityPoolId: !Ref CognitoIdentityPool
@@ -351,6 +351,18 @@ resources:
               Resource: "*"
         AdvancedOptions:
           rest.action.multi.allow_explicit_index: "true"
+        AdvancedSecurityOptions:
+          Enabled: true
+          InternalUserDatabaseEnabled: false
+          MasterUserOptions:
+            MasterUserARN: !GetAtt CognitoAuthRole.Arn
+        LogPublishingOptions:
+          AUDIT_LOGS:
+            CloudWatchLogsLogGroupArn: !GetAtt OpenSearchAuditLogGroup.Arn
+            Enabled : true
+          ES_APPLICATION_LOGS:
+            CloudWatchLogsLogGroupArn: !GetAtt OpenSearchErrorLogGroup.Arn
+            Enabled : true
     OpenSearchRole:
       Type: AWS::IAM::Role
       Properties:
@@ -364,6 +376,23 @@ resources:
                 - "sts:AssumeRole"
         ManagedPolicyArns:
           - arn:aws:iam::aws:policy/AmazonOpenSearchServiceCognitoAccess
+    OpenSearchAuditLogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties: 
+        LogGroupName: /aws/opensearch/${self:service}-${sls:stage}-audit
+    OpenSearchErrorLogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties: 
+        LogGroupName: /aws/opensearch/${self:service}-${sls:stage}-error
+    OpenSearchLogGroupPolicy:
+      Type: AWS::Logs::ResourcePolicy
+      DependsOn:
+        - OpenSearchAuditLogGroup
+        - OpenSearchErrorLogGroup
+      Properties:
+        PolicyName: ${self:service}-${sls:stage}-audit
+        PolicyDocument: !Sub "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"OpenSearchToCloudwatch\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"es.amazonaws.com\" ] }, \"Action\": [\"logs:PutLogEvents\",\"logs:CreateLogStream\"], \"Resource\": [ \"*\" ] } ] }"
+        # PolicyDocument: !Sub "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"OpenSearchToCloudwatch\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"es.amazonaws.com\" ] }, \"Action\":\"logs:PutLogEvents\", \"Resource\": [ \"${OpenSearchAuditLogGroup.Arn}\", \"${OpenSearchErrorLogGroup.Arn}\" ] } ] }"
   Outputs:
     OpenSearchDomainArn:
       Value: !GetAtt OpenSearch.Arn
