@@ -15,16 +15,18 @@ export const Welcome = () => {
       </div>
       {/* End Hero Section */}
       {/* Two Column Main Layout */}
-      <h3>State Users</h3>
-      <div className="flex">
-        <div className="px-4 pb-10 ring-1 ring-cyan-500">CARD</div>
-        <div>DETAILS</div>
-      </div>
-      <h3>CMS Users</h3>
-      <div className="flex">
-        <div>CARD</div>
-        <div>DETAILS</div>
-      </div>
+      <main className="max-w-screen-lg mx-auto p-4 lg:px-8">
+        <h3>State Users</h3>
+        <div className="flex flex-col md:flex-row">
+          <div className="px-4 pb-10 ring-1 ring-cyan-500">CARD</div>
+          <div>DETAILS</div>
+        </div>
+        <h3>CMS Users</h3>
+        <div className="flex flex-col md:flex-row">
+          <div className="px-4 pb-10 ring-1 ring-cyan-500">CARD</div>
+          <div>DETAILS</div>
+        </div>
+      </main>
     </>
   );
 };

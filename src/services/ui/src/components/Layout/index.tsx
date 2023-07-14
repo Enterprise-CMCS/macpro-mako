@@ -1,9 +1,9 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, NavLinkProps, Outlet } from "react-router-dom";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import oneMacLogo from "@/assets/onemac_logo.svg";
 
 export const Layout = () => {
-  const setClassBasedOnNav = ({ isActive }: { isActive: boolean }) =>
+  const setClassBasedOnNav: NavLinkProps["className"] = ({ isActive }) =>
     isActive ? "underline underline-offset-4 decoration-4" : "";
 
   return (
