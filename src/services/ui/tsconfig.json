@@ -20,7 +20,7 @@
       "@/selectors": ["e2e/selectors/index"],
       "@/components": ["src/components/index"],
       "@/pages": ["src/pages/index"],
-      "@/app/*": ["src/*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src", "e2e"],

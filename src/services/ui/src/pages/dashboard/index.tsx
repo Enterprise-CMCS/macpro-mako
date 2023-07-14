@@ -1,4 +1,4 @@
-import { useGetSeatool } from "@/app/api";
+import { useGetSeatool } from "@/api";
 import { formatDistance } from "date-fns";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { LoadingSpinner, ErrorAlert } from "@/components";
@@ -58,7 +58,7 @@ export const Dashboard = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <>
+    <div className="max-w-screen-lg mx-auto px-4 lg:px-8">
       <div className="flex items-center justify-between my-4">
         <UI.Typography size="lg" as="h1">
           Dashboard
@@ -99,6 +99,6 @@ export const Dashboard = () => {
           </tbody>
         </UI.Table>
       )}
-    </>
+    </div>
   );
 };
