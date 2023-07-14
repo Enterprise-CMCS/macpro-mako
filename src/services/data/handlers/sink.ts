@@ -1,34 +1,30 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-if(!process.env.osDomain) {
-  throw "ERROR:  osDomain env variable is required,"
+if (!process.env.osDomain) {
+  throw "ERROR:  osDomain env variable is required,";
 }
-const host:string = process.env.osDomain;
+const host: string = process.env.osDomain;
 const indexName = "main";
 
-export const handler: Handler = async (event) => {
+export const seatool: Handler = async (event) => {
   const records: Record<string, unknown>[] = [];
   for (const key in event.records) {
     event.records[key].forEach(
       ({ key, value }: { key: string; value: string }) => {
+        const id: string = JSON.parse(decode(key));
         if (!value) {
           records.push({
-            ID: JSON.parse(decode(key)),
-            isTombstone: true,
+            key: id,
+            value: {
+              seatool: null,
+            },
           });
         } else {
-          const jsonRecord = { ...JSON.parse(decode(value)) };
-
-          const STATE_CODE = jsonRecord?.["STATES"]?.[0]?.["STATE_CODE"];
-          const PLAN_TYPE = jsonRecord?.["PLAN_TYPES"]?.[0]?.["PLAN_TYPE_NAME"];
-          const SUBMISSION_DATE =
-            jsonRecord?.["STATE_PLAN"]?.["SUBMISSION_DATE"];
-
-          const record = {
-            ID: JSON.parse(decode(key)),
-            ...jsonRecord,
-          };
+          const record = { ...JSON.parse(decode(value)) };
+          const STATE_CODE = record?.["STATES"]?.[0]?.["STATE_CODE"];
+          const PLAN_TYPE = record?.["PLAN_TYPES"]?.[0]?.["PLAN_TYPE_NAME"];
+          const SUBMISSION_DATE = record?.["STATE_PLAN"]?.["SUBMISSION_DATE"];
 
           if (STATE_CODE) {
             record.STATE_CODE = STATE_CODE;
@@ -42,26 +38,67 @@ export const handler: Handler = async (event) => {
             record.SUBMISSION_DATE = SUBMISSION_DATE;
           }
 
-          records.push(record);
+          records.push({
+            key: id,
+            value: {
+              seatool: record,
+            },
+          });
         }
       }
     );
   }
   try {
-    // if (!process.env.indexName) {
-    //   throw "process.env.indexName cannot be undefined";
-    // }
-
     for (const item of records) {
-      const doc = item.isTombstone ? {seatool: null} : {seatool: item}
       await os.updateData(host, {
         index: indexName,
-        id: item.ID,
+        id: item.key,
         body: {
-          doc,
+          doc: item.value,
           doc_as_upsert: true,
+        },
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const onemac: Handler = async (event) => {
+  const records: Record<string, unknown>[] = [];
+  for (const key in event.records) {
+    event.records[key].forEach(
+      ({ key, value }: { key: string; value: string }) => {
+        const id: string = decode(key);
+        if (!value) {
+          records.push({
+            key: id,
+            value: {
+              onemac: null,
+            },
+          });
+        } else {
+          const record = { ...JSON.parse(decode(value)) };
+          records.push({
+            key: id,
+            value: {
+              onemac: record,
+            },
+          });
         }
-      });  
+      }
+    );
+  }
+  try {
+    for (const item of records) {
+      await os.updateData(host, {
+        index: indexName,
+        id: item.key,
+        body: {
+          doc: item.value,
+          doc_as_upsert: true,
+        },
+      });
     }
   } catch (error) {
     console.error(error);

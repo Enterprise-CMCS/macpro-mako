@@ -126,8 +126,16 @@ stepFunctions:
             Type: Succeed
 
 functions:
-  sink:
-    handler: handlers/sink.handler
+  sinkSeatool:
+    handler: handlers/sink.seatool
+    environment:
+      region: ${self:provider.region}
+      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+    maximumRetryAttempts: 0
+    timeout: 10
+    memorySize: 1024
+  sinkOnemac:
+    handler: handlers/sink.onemac
     environment:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
@@ -139,14 +147,14 @@ functions:
     timeout: 60
     environment:
       region: ${self:provider.region}
-      functions: !Sub "${SinkLambdaFunction}"
+      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
       enabled: false
   enableTriggers:
     handler: handlers/reindex.toggleTriggers
     timeout: 60
     environment:
       region: ${self:provider.region}
-      functions: !Sub "${SinkLambdaFunction}"
+      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
       enabled: true
   getConsumerGroupStatus:
     handler: handlers/reindex.getConsumerGroupStatus
@@ -158,7 +166,7 @@ functions:
         ${self:custom.vpc.privateSubnets}
     environment:
       region: ${self:provider.region}
-      functions: !Sub "${SinkLambdaFunction}"
+      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
       brokerString: ${self:custom.brokerString}
   resetConsumerGroups:
     handler: handlers/reindex.resetConsumerGroups
@@ -170,7 +178,7 @@ functions:
         ${self:custom.vpc.privateSubnets}
     environment:
       region: ${self:provider.region}
-      functions: !Sub "${SinkLambdaFunction}"
+      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
       brokerString: ${self:custom.brokerString}
   deleteIndex:
     handler: handlers/reindex.deleteIndex
@@ -187,12 +195,12 @@ resources:
       Type: AWS::Logs::LogGroup
       Properties:
         LogGroupName: /aws/vendedlogs/states/${self:service}-${sls:stage}-reindex
-    SinkTrigger:
+    SinkSeatoolTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties:
         BatchSize: 100
         Enabled: true
-        FunctionName: !GetAtt SinkLambdaFunction.Arn
+        FunctionName: !GetAtt SinkSeatoolLambdaFunction.Arn
         SelfManagedEventSource:
           Endpoints:
             KafkaBootstrapServers:
@@ -211,6 +219,30 @@ resources:
         StartingPosition: TRIM_HORIZON
         Topics:
           - aws.ksqldb.seatool.agg.State_Plan
+    SinkOnemacTrigger:
+      Type: AWS::Lambda::EventSourceMapping
+      Properties:
+        BatchSize: 100
+        Enabled: true
+        FunctionName: !GetAtt SinkOnemacLambdaFunction.Arn
+        SelfManagedEventSource:
+          Endpoints:
+            KafkaBootstrapServers:
+              Fn::Split:
+                - ","
+                - ${self:custom.brokerString}
+        SourceAccessConfigurations:
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.0}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.1}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.2}
+          - Type: VPC_SECURITY_GROUP
+            URI: !Sub security_group:${SecurityGroup}
+        StartingPosition: TRIM_HORIZON
+        Topics:
+          - aws.onemac.migration.cdc
     SecurityGroup:
       Type: AWS::EC2::SecurityGroup
       DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
