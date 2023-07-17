@@ -1,5 +1,6 @@
 import * as C from "@/components";
 import OneMacLogo from "@/assets/onemac_logo.svg";
+import { AcademicCapIcon } from "@heroicons/react/24/outline";
 
 export const Welcome = () => {
   return (
@@ -21,7 +22,23 @@ export const Welcome = () => {
           <div>
             <h3 className="text-2xl font-bold mb-4">State Users</h3>
             <div className="flex flex-col md:flex-row gap-12">
-              <C.HowItWorks />
+              <C.HowItWorks>
+                <C.Step
+                  icon={<AcademicCapIcon className="min-w-[32px] w-8 h-8" />}
+                  title="Possimus a, odio."
+                  content="Lorem ipsum dolor sit amet."
+                />
+                <C.Step
+                  icon={<AcademicCapIcon className="min-w-[32px] w-8 h-8" />}
+                  title="Possimus a, odio."
+                  content="Lorem ipsum dolor sit amet."
+                />
+                <C.Step
+                  icon={<AcademicCapIcon className="min-w-[32px] w-8 h-8" />}
+                  title="Possimus a, odio."
+                  content="Lorem ipsum dolor sit amet."
+                />
+              </C.HowItWorks>
               <div>
                 <h4 className="font-bold text-xl mb-4">Lorem, ipsum.</h4>
                 <ul className="flex flex-col gap-4">
@@ -48,7 +65,23 @@ export const Welcome = () => {
           <div>
             <h3 className="text-2xl font-bold mb-4">CMS Users</h3>
             <div className="flex flex-col md:flex-row gap-8">
-              <C.HowItWorks />
+              <C.HowItWorks>
+                <C.Step
+                  icon={<AcademicCapIcon className="min-w-[32px] w-8 h-8" />}
+                  title="Possimus a, odio."
+                  content="Lorem ipsum dolor sit amet."
+                />
+                <C.Step
+                  icon={<AcademicCapIcon className="min-w-[32px] w-8 h-8" />}
+                  title="Possimus a, odio."
+                  content="Lorem ipsum dolor sit amet."
+                />
+                <C.Step
+                  icon={<AcademicCapIcon className="min-w-[32px] w-8 h-8" />}
+                  title="Possimus a, odio."
+                  content="Lorem ipsum dolor sit amet."
+                />
+              </C.HowItWorks>
               <div>
                 <h4 className="font-bold text-xl mb-4">Lorem, ipsum.</h4>
                 <ul className="flex flex-col gap-4">
