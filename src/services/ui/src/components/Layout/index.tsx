@@ -4,7 +4,9 @@ import oneMacLogo from "@/assets/onemac_logo.svg";
 
 export const Layout = () => {
   const setClassBasedOnNav: NavLinkProps["className"] = ({ isActive }) =>
-    isActive ? "underline underline-offset-4 decoration-4" : "";
+    isActive
+      ? "underline underline-offset-4 decoration-4 hover:text-white/70"
+      : "hover:text-white/70";
 
   return (
     <div className="min-h-full flex flex-col">
@@ -26,7 +28,7 @@ export const Layout = () => {
               Dashboard
             </NavLink>
             <div className="flex-1"></div>
-            <button className="text-white">Sign In</button>
+            <button className="text-white hover:text-white/70">Sign In</button>
           </div>
         </div>
       </div>
