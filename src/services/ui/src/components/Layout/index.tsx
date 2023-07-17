@@ -4,6 +4,9 @@ import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import { useGetUser } from "@/api/useGetUser";
+import { Auth } from "aws-amplify";
+import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 
 const getLinks = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -61,6 +64,23 @@ type ResponsiveNavProps = {
 const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const [prevMediaQuery, setPrevMediaQuery] = useState(isDesktop);
   const [isOpen, setIsOpen] = useState(false);
+  const { isLoading, isError, data } = useGetUser();
+
+  const handleLogin = () => {
+    const authConfig = Auth.configure();
+    const { domain, redirectSignIn, responseType } =
+      authConfig.oauth as AwsCognitoOAuthOpts;
+    const clientId = authConfig.userPoolWebClientId;
+    const url = `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
+
+    window.location.assign(url);
+  };
+
+  const handleLogout = async () => {
+    await Auth.signOut();
+  };
+
+  if (isLoading || isError) return <></>;
 
   const setClassBasedOnNav: NavLinkProps["className"] = ({ isActive }) =>
     isActive
@@ -76,7 +96,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   if (isDesktop)
     return (
       <>
-        {getLinks(true).map((link) => (
+        {getLinks(!!data.user).map((link) => (
           <NavLink
             to={link.link}
             key={link.name}
@@ -86,7 +106,23 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           </NavLink>
         ))}
         <div className="flex-1"></div>
-        <button className="text-white hover:text-white/70">Sign In</button>
+        <>
+          {data.user ? (
+            <button
+              className="text-white hover:text-white/70"
+              onClick={handleLogout}
+            >
+              Sign Out
+            </button>
+          ) : (
+            <button
+              className="text-white hover:text-white/70"
+              onClick={handleLogin}
+            >
+              Sign In
+            </button>
+          )}
+        </>
       </>
     );
 
@@ -96,7 +132,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       {isOpen && (
         <div className="w-full fixed top-[100px] left-0">
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-2 gap-4 rounded-lg bg-accent">
-            {getLinks(true).map((link) => (
+            {getLinks(!!data.user).map((link) => (
               <li key={link.link}>
                 <Link
                   onClick={() => setIsOpen(false)}

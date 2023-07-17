@@ -1,6 +1,20 @@
 import * as C from "@/components";
 import OneMacLogo from "@/assets/onemac_logo.svg";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
+import { QueryClient } from "@tanstack/react-query";
+import { getUser, useGetUser } from "@/api/useGetUser";
+
+export const loader = (queryClient: QueryClient) => {
+  return async () => {
+    if (!queryClient.getQueryData(["user"])) {
+      return await queryClient.fetchQuery({
+        queryKey: ["user"],
+        queryFn: () => getUser(),
+      });
+    }
+    return queryClient.getQueryData(["user"]);
+  };
+};
 
 export const Welcome = () => {
   return (
