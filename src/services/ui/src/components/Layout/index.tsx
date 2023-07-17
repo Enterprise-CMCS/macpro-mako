@@ -7,7 +7,7 @@ export const Layout = () => {
     isActive ? "underline underline-offset-4 decoration-4" : "";
 
   return (
-    <>
+    <div className="min-h-full flex flex-col">
       <UI.UsaBanner />
       <div className="bg-primary">
         <div className="max-w-screen-lg mx-auto px-4 lg:px-8">
@@ -30,9 +30,10 @@ export const Layout = () => {
           </div>
         </div>
       </div>
-      <main>
+      <main className="flex-1">
         <Outlet />
       </main>
-    </>
+      <UI.Footer emailAddress="test@test.test" />
+    </div>
   );
 };
