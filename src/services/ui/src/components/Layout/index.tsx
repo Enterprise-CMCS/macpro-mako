@@ -14,7 +14,7 @@ export const Layout = () => {
           <div className="h-[70px] flex gap-12 items-center text-white">
             <Link to="/">
               <img
-                className="h-10 w-28 resize-none"
+                className="h-10 w-28 min-w-[112px] resize-none"
                 src={oneMacLogo}
                 alt="One Mac Site Logo"
               />
