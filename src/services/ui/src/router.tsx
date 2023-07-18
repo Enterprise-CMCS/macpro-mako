@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import * as P from "@/pages";
 import { loader as rootLoader } from "@/pages/welcome";
+import { dashboardLoader } from "@/pages/dashboard";
 import "@/api/amplifyConfig";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
@@ -13,7 +14,11 @@ export const router = createBrowserRouter([
     element: <C.Layout />,
     children: [
       { path: "/", index: true, element: <P.Welcome /> },
-      { path: "/dashboard", element: <P.Dashboard /> },
+      {
+        path: "/dashboard",
+        element: <P.Dashboard />,
+        loader: dashboardLoader(queryClient),
+      },
       { path: "/medicaid", element: <P.Medicaid /> },
       { path: "/chip", element: <P.Chip /> },
       { path: "/waiver", element: <P.Waiver /> },

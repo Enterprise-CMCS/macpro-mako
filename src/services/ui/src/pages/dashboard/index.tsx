@@ -4,7 +4,30 @@ import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { LoadingSpinner, ErrorAlert } from "@/components";
 import { ChangeEvent, useState } from "react";
 import { SeatoolData } from "shared-types";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
+import { QueryClient } from "@tanstack/react-query";
+import { getUser } from "@/api/useGetUser";
+
+const loader = (queryClient: QueryClient) => {
+  return async () => {
+    if (!queryClient.getQueryData(["user"])) {
+      await queryClient.fetchQuery({
+        queryKey: ["user"],
+        queryFn: () => getUser(),
+      });
+    }
+
+    const isUser = queryClient.getQueryData(["user"]) as Awaited<
+      ReturnType<typeof getUser>
+    >;
+    if (!isUser.user) {
+      return redirect("/");
+    }
+
+    return {};
+  };
+};
+export const dashboardLoader = loader;
 
 export function Row({ record }: { record: SeatoolData }) {
   let status = "Unknown"; // not sure what status to use or even what "record.SPW_STATUS[0].SPW_STATUS_DESC" is
