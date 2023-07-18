@@ -335,7 +335,9 @@ resources:
       Type: AWS::OpenSearchService::Domain
       DependsOn: OpenSearchLogGroupPolicy
       Properties:
-        DomainName: ${self:service}-${sls:stage}
+        Tags:
+          - Key: STAGE
+            Value: ${sls:stage}
         EBSOptions:
           EBSEnabled: true
           VolumeType: gp2
