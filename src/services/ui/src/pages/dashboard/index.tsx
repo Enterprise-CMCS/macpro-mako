@@ -24,7 +24,7 @@ const loader = (queryClient: QueryClient) => {
       return redirect("/");
     }
 
-    return {};
+    return isUser;
   };
 };
 export const dashboardLoader = loader;

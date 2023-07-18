@@ -32,7 +32,7 @@ export const Welcome = () => {
       {/* End Hero Section */}
       {/* Two Column Main Layout */}
       <main className="max-w-screen-lg mx-auto p-4 lg:px-8">
-        <div className="flex flex-col items-center justify-center gap-8">
+        <div className="flex flex-col justify-center gap-8">
           <div>
             <h3 className="text-2xl font-bold mb-4">State Users</h3>
             <div className="flex flex-col md:flex-row gap-12">
@@ -53,11 +53,11 @@ export const Welcome = () => {
                   content="Lorem ipsum dolor sit amet."
                 />
               </C.HowItWorks>
-              <div>
+              <div className="flex-grow">
                 <h4 className="font-bold text-xl mb-4">Lorem, ipsum.</h4>
                 <ul className="flex flex-col gap-4">
                   <li>
-                    <p className="max-w-sm">
+                    <p>
                       Lorem ipsum dolor sit amet consectetur adipisicing elit.
                       Architecto facilis laboriosam placeat molestias animi
                       atque sint modi accusantium maiores. Aliquam sequi ad
@@ -65,7 +65,7 @@ export const Welcome = () => {
                     </p>
                   </li>
                   <li>
-                    <p className="max-w-sm">
+                    <p>
                       Lorem ipsum dolor sit amet consectetur adipisicing elit.
                       Architecto facilis laboriosam placeat molestias animi
                       atque sint modi accusantium maiores. Aliquam sequi ad
@@ -100,7 +100,7 @@ export const Welcome = () => {
                 <h4 className="font-bold text-xl mb-4">Lorem, ipsum.</h4>
                 <ul className="flex flex-col gap-4">
                   <li>
-                    <p className="max-w-sm">
+                    <p>
                       Lorem ipsum dolor sit amet consectetur adipisicing elit.
                       Architecto facilis laboriosam placeat molestias animi
                       atque sint modi accusantium maiores. Aliquam sequi ad
@@ -108,7 +108,7 @@ export const Welcome = () => {
                     </p>
                   </li>
                   <li>
-                    <p className="max-w-sm">
+                    <p>
                       Lorem ipsum dolor sit amet consectetur adipisicing elit.
                       Architecto facilis laboriosam placeat molestias animi
                       atque sint modi accusantium maiores. Aliquam sequi ad
