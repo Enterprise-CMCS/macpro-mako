@@ -134,6 +134,11 @@ functions:
     maximumRetryAttempts: 0
     timeout: 10
     memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
   sinkOnemac:
     handler: handlers/sink.onemac
     environment:
@@ -142,6 +147,11 @@ functions:
     maximumRetryAttempts: 0
     timeout: 10
     memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
   disableTriggers:
     handler: handlers/reindex.toggleTriggers
     timeout: 60
@@ -188,6 +198,11 @@ functions:
     maximumRetryAttempts: 0
     timeout: 10
     memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
 
 resources:
   Resources:
@@ -320,6 +335,7 @@ resources:
       Type: AWS::OpenSearchService::Domain
       DependsOn: OpenSearchLogGroupPolicy
       Properties:
+        DomainName: ${self:service}-${sls:stage}
         EBSOptions:
           EBSEnabled: true
           VolumeType: gp2
@@ -328,6 +344,9 @@ resources:
           InstanceType: t3.small.search
           InstanceCount: 3
           DedicatedMasterEnabled: false
+          ZoneAwarenessEnabled: true
+          ZoneAwarenessConfig:
+            AvailabilityZoneCount: 3
         EncryptionAtRestOptions:
           Enabled: true
         NodeToNodeEncryptionOptions:
@@ -349,6 +368,16 @@ resources:
                 AWS: !GetAtt CognitoAuthRole.Arn
               Action: "es:ESHttp*"
               Resource: "*"
+            # - Effect: "Allow"
+            #   Principal:
+            #     AWS: !GetAtt IamRoleLambdaExecution.Arn
+            #   Action: "es:ESHttp*"
+            #   Resource: "*"
+            # - Effect: "Allow"
+            #   Principal:
+            #     AWS: !GetAtt IamRoleLambdaExecution.Arn
+            #   Action: "indices:*"
+            #   Resource: "*"
         AdvancedOptions:
           rest.action.multi.allow_explicit_index: "true"
         AdvancedSecurityOptions:
@@ -363,6 +392,11 @@ resources:
           ES_APPLICATION_LOGS:
             CloudWatchLogsLogGroupArn: !GetAtt OpenSearchErrorLogGroup.Arn
             Enabled : true
+        VPCOptions:
+          SecurityGroupIds:
+            - !Ref OpenSearchSecurityGroup
+          SubnetIds: >-
+            ${self:custom.vpc.privateSubnets}
     OpenSearchRole:
       Type: AWS::IAM::Role
       Properties:
@@ -376,6 +410,26 @@ resources:
                 - "sts:AssumeRole"
         ManagedPolicyArns:
           - arn:aws:iam::aws:policy/AmazonOpenSearchServiceCognitoAccess
+    OpenSearchSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      DeletionPolicy: Retain
+      Properties:
+        GroupDescription: Security group for Sink Lambda Function.
+        VpcId: ${self:custom.vpc.id}
+    OpenSearchSecurityGroupEgress:
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId: !Ref OpenSearchSecurityGroup
+        IpProtocol: -1
+        CidrIp: 0.0.0.0/0
+    OpenSearchSecurityGroupIngress:
+      Type: AWS::EC2::SecurityGroupIngress
+      Properties:
+        GroupId: !Ref OpenSearchSecurityGroup
+        IpProtocol: -1
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 10.0.0.0/0
     OpenSearchAuditLogGroup:
       Type: AWS::Logs::LogGroup
       Properties: 
