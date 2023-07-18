@@ -88,12 +88,11 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       : "hover:text-white/70";
 
   if (prevMediaQuery !== isDesktop) {
-    console.log("running");
     setPrevMediaQuery(isDesktop);
     setIsOpen(false);
   }
 
-  if (isDesktop)
+  if (isDesktop) {
     return (
       <>
         {getLinks(!!data.user).map((link) => (
@@ -125,6 +124,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
         </>
       </>
     );
+  }
 
   return (
     <>
