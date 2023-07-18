@@ -136,13 +136,30 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
               <li key={link.link}>
                 <Link
                   onClick={() => setIsOpen(false)}
-                  className='"block py-2 pl-3 pr-4 text-white rounded'
+                  className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
                 >
                   {link.name}
                 </Link>
               </li>
             ))}
+            <>
+              {data.user ? (
+                <button
+                  className="text-left block py-2 pl-3 pr-4 text-white rounded"
+                  onClick={handleLogout}
+                >
+                  Sign Out
+                </button>
+              ) : (
+                <button
+                  className="text-left block py-2 pl-3 pr-4 text-white rounded"
+                  onClick={handleLogin}
+                >
+                  Sign In
+                </button>
+              )}
+            </>
           </ul>
         </div>
       )}
