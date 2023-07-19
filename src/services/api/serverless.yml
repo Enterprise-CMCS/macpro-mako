@@ -60,6 +60,7 @@ custom:
       - production
   bundle:
     linting: false
+    packager: yarn
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
 functions:
   search:
