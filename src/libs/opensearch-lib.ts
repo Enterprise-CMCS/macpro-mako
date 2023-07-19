@@ -2,6 +2,9 @@ import { Client, Connection } from "@opensearch-project/opensearch";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import * as aws4 from "aws4";
 import { OutgoingHttpHeader } from 'http';
+import axios from 'axios';
+import { aws4Interceptor } from "aws4-axios";
+import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 let client:Client;
 
 export async function getClient(host:string) {
@@ -37,6 +40,45 @@ export async function deleteIndex(host:string, index:string) {
   client = client || (await getClient(host));
   var response = await client.indices.delete({index});
   console.log(response);
+}
+
+export async function mapRole(host:string, masterRoleToAssume:string, osRoleName:string, iamRoleName: string) {
+  try {
+    const sts = new STSClient({
+      region: process.env.region,
+    });
+    const assumedRoleCommandData = await sts.send(
+      new AssumeRoleCommand({
+        RoleArn: masterRoleToAssume,
+        RoleSessionName: "RoleMappingSession",
+        ExternalId: "foo",
+      })
+    );
+    const interceptor = aws4Interceptor({
+      options: {
+        region: process.env.region,
+      },
+      credentials: {
+        accessKeyId: assumedRoleCommandData?.Credentials?.AccessKeyId || "",
+        secretAccessKey: assumedRoleCommandData?.Credentials?.SecretAccessKey || "",
+        sessionToken: assumedRoleCommandData?.Credentials?.SessionToken,
+      },
+    });
+    axios.interceptors.request.use(interceptor);
+    const patchResponse = await axios.patch(`${host}/_plugins/_security/api/rolesmapping/${osRoleName}`, [
+      {
+        op: "add",
+        path: "/and_backend_roles",
+        value: [iamRoleName]
+      }
+
+    ]);
+    console.log(patchResponse.data);
+    return patchResponse.data;
+  } catch (error) {
+    console.error('Error making PUT request:', error);
+    throw error;
+  }
 }
 
 export async function search(host:string, index:string, params:{stateCode:string, searchString:string}){

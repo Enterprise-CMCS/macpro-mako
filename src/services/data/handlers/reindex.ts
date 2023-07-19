@@ -133,8 +133,12 @@ export const deleteIndex: Handler = async () => {
       throw "process.env.osDomain cannot be undefined";
     }
     await os.deleteIndex(process.env.osDomain, "main");
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (error: any) {
+    if (error.meta.body.error.type == "index_not_found_exception") {
+      console.log("Index does not exist.");
+    } else {
+      console.error(error);
+      throw error;
+    }
   }
 };
