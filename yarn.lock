@@ -3993,10 +3993,10 @@
     "@aws-sdk/client-cloudformation" "^3.245.0"
     tslint "^6.1.3"
 
-"@enterprise-cmcs/macpro-ux-lib@^1.22.1":
-  version "1.24.0"
-  resolved "https://registry.yarnpkg.com/@enterprise-cmcs/macpro-ux-lib/-/macpro-ux-lib-1.24.0.tgz#ae26ba7e12c6bcfc3419fdeba85b203584caf078"
-  integrity sha512-uoVd1cVuGJXPd2TJ+OGnBkr/75A2rZh1SuCZVWjyUt5zn7kHHvZSpMljWIjxAMUE8nkvlvoeYjLxK08E39JRNg==
+"@enterprise-cmcs/macpro-ux-lib@1.22.1":
+  version "1.22.1"
+  resolved "https://registry.yarnpkg.com/@enterprise-cmcs/macpro-ux-lib/-/macpro-ux-lib-1.22.1.tgz#6c161ae68f02e3d867bce6bef1ef0dbae1853d2c"
+  integrity sha512-n+vfS/2GsFaZy5XeO4jww+pZkz8obeUZzlyi71zcfPjszz5kr5YwZJQphGj6ks4A3CDUg5uKKQAxKo0b3JM5Wg==
 
 "@enterprise-cmcs/serverless-waf-plugin@^1.3.0":
   version "1.3.0"
