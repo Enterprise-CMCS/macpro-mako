@@ -5,9 +5,6 @@ import { LoadingSpinner, ErrorAlert } from "../../components";
 import { ChangeEvent, useState, useRef } from "react";
 import { SeatoolData } from "shared-types";
 import { Link } from "react-router-dom";
-import MaterialTable from "material-table";
-import { ThemeProvider, createTheme } from "@mui/material";
-const defaultMaterialTheme = createTheme();
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 export function Row({ record }: { record: SeatoolData }) {
@@ -110,7 +107,6 @@ console.log(data);
           placeholder="Enter text"
           variation="default"
         />
-        <ThemeProvider theme={defaultMaterialTheme}>
         <DataGrid
             columns={[
               {
@@ -151,7 +147,6 @@ console.log(data);
             toolbar: GridToolbar,
           }}
           />
-        </ThemeProvider>
       </div>
     );
   }
