@@ -5,13 +5,13 @@ services:
     path: src/services/dashboard
   data:
     path: src/services/data
+  ui-infra:
+    path: src/services/ui-infra
   api:
     path: src/services/api
     params:
       osDomainArn: ${data.OpenSearchDomainArn}
       osDomain: ${data.OpenSearchDomainEndpoint}
-  ui-infra:
-    path: src/services/ui-infra
   auth:
     path: src/services/auth
     params:
