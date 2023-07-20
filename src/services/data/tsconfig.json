@@ -1,14 +1,6 @@
 {
-  "exclude": [
-    "./docs/**/*",
-    "./src/services/**/*",
-    "./src/libs/**/*",
-    "./src/tests/**/**"
-  ],
   "compilerOptions": {
-    "resolveJsonModule": true,
-    "target": "ES2017",
-    "module": "commonjs",
-    "strict": true
+    "target": "ES2016",
+    "moduleResolution": "node"
   }
 }

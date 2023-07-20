@@ -60,6 +60,8 @@ custom:
       - production
   bundle:
     linting: false
+    packager: yarn
+  vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
 functions:
   search:
     handler: handlers/search.handler
@@ -73,6 +75,11 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
 resources:
   Resources:
     GatewayResponseDefault4XX:
@@ -91,6 +98,18 @@ resources:
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
         ResponseType: DEFAULT_5XX
         RestApiId: !Ref ApiGatewayRestApi
+    SecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      DeletionPolicy: Retain
+      Properties:
+        GroupDescription: Security group for API Search.
+        VpcId: ${self:custom.vpc.id}
+    SecurityGroupEgress:
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId: !Ref SecurityGroup
+        IpProtocol: -1
+        CidrIp: 0.0.0.0/0
   Outputs:
     ApiGatewayRestApiName:
       Value: !Ref ApiGatewayRestApi

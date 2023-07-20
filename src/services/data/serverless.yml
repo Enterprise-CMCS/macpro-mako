@@ -47,6 +47,10 @@ provider:
             - es:ESHttpDelete
             - es:ESHttpPut
           Resource: !Sub "${OpenSearch.Arn}/*"
+        - Effect: Allow
+          Action:
+            - sts:AssumeRole
+          Resource: !GetAtt OpenSearchMasterRole.Arn
 
   stackTags:
     PROJECT: ${self:custom.project}
@@ -134,6 +138,11 @@ functions:
     maximumRetryAttempts: 0
     timeout: 10
     memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
   sinkOnemac:
     handler: handlers/sink.onemac
     environment:
@@ -142,6 +151,11 @@ functions:
     maximumRetryAttempts: 0
     timeout: 10
     memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
   disableTriggers:
     handler: handlers/reindex.toggleTriggers
     timeout: 60
@@ -188,6 +202,24 @@ functions:
     maximumRetryAttempts: 0
     timeout: 10
     memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  mapRole:
+    handler: handlers/mapRole.handler
+    environment:
+      region: ${self:provider.region}
+      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+    maximumRetryAttempts: 0
+    timeout: 10
+    memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
 
 resources:
   Resources:
@@ -316,26 +348,32 @@ resources:
                 - "sts:AssumeRole"
         ManagedPolicyArns:
           - arn:aws:iam::aws:policy/AmazonCognitoReadOnly
-
     OpenSearch:
       Type: AWS::OpenSearchService::Domain
+      DependsOn: OpenSearchLogGroupPolicy
       Properties:
+        Tags:
+          - Key: STAGE
+            Value: ${sls:stage}
         EBSOptions:
           EBSEnabled: true
           VolumeType: gp2
           VolumeSize: 10
         ClusterConfig:
-          InstanceType: t3.medium.search
-          InstanceCount: 1
+          InstanceType: t3.small.search
+          InstanceCount: 3
           DedicatedMasterEnabled: false
+          ZoneAwarenessEnabled: true
+          ZoneAwarenessConfig:
+            AvailabilityZoneCount: 3
         EncryptionAtRestOptions:
-          Enabled: false
+          Enabled: true
         NodeToNodeEncryptionOptions:
-          Enabled: false
+          Enabled: true
         EngineVersion: OpenSearch_2.3
         DomainEndpointOptions:
           EnforceHTTPS: true
-          TLSSecurityPolicy: Policy-Min-TLS-1-0-2019-07
+          TLSSecurityPolicy: Policy-Min-TLS-1-2-2019-07
         CognitoOptions:
           Enabled: true
           IdentityPoolId: !Ref CognitoIdentityPool
@@ -349,8 +387,35 @@ resources:
                 AWS: !GetAtt CognitoAuthRole.Arn
               Action: "es:ESHttp*"
               Resource: "*"
+            # - Effect: "Allow"
+            #   Principal:
+            #     AWS: !GetAtt IamRoleLambdaExecution.Arn
+            #   Action: "es:ESHttp*"
+            #   Resource: "*"
+            # - Effect: "Allow"
+            #   Principal:
+            #     AWS: !GetAtt IamRoleLambdaExecution.Arn
+            #   Action: "indices:*"
+            #   Resource: "*"
         AdvancedOptions:
           rest.action.multi.allow_explicit_index: "true"
+        AdvancedSecurityOptions:
+          Enabled: true
+          InternalUserDatabaseEnabled: false
+          MasterUserOptions:
+            MasterUserARN: !GetAtt OpenSearchMasterRole.Arn
+        LogPublishingOptions:
+          AUDIT_LOGS:
+            CloudWatchLogsLogGroupArn: !GetAtt OpenSearchAuditLogGroup.Arn
+            Enabled : true
+          ES_APPLICATION_LOGS:
+            CloudWatchLogsLogGroupArn: !GetAtt OpenSearchErrorLogGroup.Arn
+            Enabled : true
+        VPCOptions:
+          SecurityGroupIds:
+            - !Ref OpenSearchSecurityGroup
+          SubnetIds: >-
+            ${self:custom.vpc.privateSubnets}
     OpenSearchRole:
       Type: AWS::IAM::Role
       Properties:
@@ -364,6 +429,68 @@ resources:
                 - "sts:AssumeRole"
         ManagedPolicyArns:
           - arn:aws:iam::aws:policy/AmazonOpenSearchServiceCognitoAccess
+    OpenSearchMasterRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                AWS: !Sub "${AWS::AccountId}"
+              Action:
+                - "sts:AssumeRole"
+            - Effect: "Allow"
+              Principal:
+                Service: "es.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonOpenSearchServiceFullAccess
+    OpenSearchSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      DeletionPolicy: Retain
+      Properties:
+        GroupDescription: Security group for Sink Lambda Function.
+        VpcId: ${self:custom.vpc.id}
+    OpenSearchSecurityGroupEgress:
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId: !Ref OpenSearchSecurityGroup
+        IpProtocol: -1
+        CidrIp: 0.0.0.0/0
+    OpenSearchSecurityGroupIngress:
+      Type: AWS::EC2::SecurityGroupIngress
+      Properties:
+        GroupId: !Ref OpenSearchSecurityGroup
+        IpProtocol: -1
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 10.0.0.0/0
+    OpenSearchAuditLogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties: 
+        LogGroupName: /aws/opensearch/${self:service}-${sls:stage}-audit
+    OpenSearchErrorLogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties: 
+        LogGroupName: /aws/opensearch/${self:service}-${sls:stage}-error
+    OpenSearchLogGroupPolicy:
+      Type: AWS::Logs::ResourcePolicy
+      DependsOn:
+        - OpenSearchAuditLogGroup
+        - OpenSearchErrorLogGroup
+      Properties:
+        PolicyName: ${self:service}-${sls:stage}-audit
+        PolicyDocument: !Sub "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"OpenSearchToCloudwatch\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"es.amazonaws.com\" ] }, \"Action\": [\"logs:PutLogEvents\",\"logs:CreateLogStream\"], \"Resource\": [ \"*\" ] } ] }"
+        # PolicyDocument: !Sub "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"OpenSearchToCloudwatch\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"es.amazonaws.com\" ] }, \"Action\":\"logs:PutLogEvents\", \"Resource\": [ \"${OpenSearchAuditLogGroup.Arn}\", \"${OpenSearchErrorLogGroup.Arn}\" ] } ] }"
+    MapRole:
+      Type: Custom::ClusterInfo
+      Properties:
+        ServiceToken: !GetAtt MapRoleLambdaFunction.Arn
+        MasterRoleToAssume: !GetAtt OpenSearchMasterRole.Arn
+        OSRoleName: all_access
+        IAMRoleName: !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
   Outputs:
     OpenSearchDomainArn:
       Value: !GetAtt OpenSearch.Arn
