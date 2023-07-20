@@ -116,30 +116,35 @@ console.log(data);
               {
                 field: "Transmittal ID Number (TIN)",
                 hideable: false,
+                flex: 1,
                 valueGetter(params) {
                   return params.row._id;
                 },
               },
               {
                 field: "Plan Type",
+                flex: 1,
                 valueGetter(params) {
                   return params.row._source.seatool.PLAN_TYPE;
                 },
               },
               {
                 field: "Submission Date",
+                flex: 1,
                 valueGetter(params) {
                   return (new Date(params.row._source.seatool.SUBMISSION_DATE)).toISOString();
                 },
               },
               {
                 field: "Region",
+                flex: 1,
                 valueGetter(params) {
                   return params.row._source.seatool.REGION[0].REGION_NAME;
                 },
               },
               {
                 field: "Status Memo",
+                flex: 1,
                 valueGetter(params) {
                   return params.row._source.seatool?.STATE_PLAN?.STATUS_MEMO;
                 },
