@@ -1,65 +1,29 @@
 import { createBrowserRouter } from "react-router-dom";
-import MainWrapper from "./components/MainWrapper";
-import * as P from "./pages";
-import { Amplify, Auth } from "aws-amplify";
-import config from "./config";
-import { CognitoUserAttributes } from "shared-types";
-import { getParsedObject } from "./utils";
+import * as P from "@/pages";
+import { loader as rootLoader } from "@/pages/welcome";
+import { dashboardLoader } from "@/pages/dashboard";
+import "@/api/amplifyConfig";
+import * as C from "@/components";
+import { QueryClient } from "@tanstack/react-query";
 
-Amplify.configure({
-  Auth: {
-    mandatorySignIn: true,
-    region: config.cognito.REGION,
-    userPoolId: config.cognito.USER_POOL_ID,
-    identityPoolId: config.cognito.IDENTITY_POOL_ID,
-    userPoolWebClientId: config.cognito.APP_CLIENT_ID,
-    oauth: {
-      domain: config.cognito.APP_CLIENT_DOMAIN,
-      redirectSignIn: config.cognito.REDIRECT_SIGNIN,
-      redirectSignOut: config.cognito.REDIRECT_SIGNOUT,
-      scope: ["email", "openid"],
-      responseType: "code",
-    },
-  },
-  API: {
-    endpoints: [
-      {
-        name: "seatool",
-        endpoint: config.apiGateway.URL,
-        region: config.apiGateway.REGION,
-      },
-    ],
-  },
-});
-
-export const getLoaderInfo = async () => {
-  try {
-    const authenticatedUser = await Auth.currentAuthenticatedUser();
-    const attributes = await Auth.userAttributes(authenticatedUser);
-    const user = attributes.reduce((obj: { [key: string]: string }, item) => {
-      obj[item.Name] = item.Value;
-      return obj;
-    }, {});
-
-    return { user: getParsedObject(user) as CognitoUserAttributes };
-  } catch (e) {
-    console.log({ e });
-    return { user: null };
-  }
-};
+export const queryClient = new QueryClient();
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainWrapper />,
+    element: <C.Layout />,
     children: [
-      { path: "/", element: <P.Welcome /> },
-      { path: "/dashboard", element: <P.Dashboard /> },
+      { path: "/", index: true, element: <P.Welcome /> },
+      {
+        path: "/dashboard",
+        element: <P.Dashboard />,
+        loader: dashboardLoader(queryClient),
+      },
       { path: "/medicaid", element: <P.Medicaid /> },
       { path: "/chip", element: <P.Chip /> },
       { path: "/waiver", element: <P.Waiver /> },
       { path: "/record", element: <P.ViewRecord /> },
     ],
-    loader: getLoaderInfo,
+    loader: rootLoader(queryClient),
   },
 ]);

@@ -54,4 +54,4 @@ custom:
     commands:
       useLocalhost: |
         sed -i '' -e 's|VITE_COGNITO_REDIRECT_SIGNIN=.*|VITE_COGNITO_REDIRECT_SIGNIN=http://localhost:5000/|g' .env.local
-        sed -i '' -e 's|VITE_COGNITO_REDIRECT_SIGNOUT=.*|VITE_COGNITO_REDIRECT_SIGNIN=http://localhost:5000/|g' .env.local
+        sed -i '' -e 's|VITE_COGNITO_REDIRECT_SIGNOUT=.*|VITE_COGNITO_REDIRECT_SIGNOUT=http://localhost:5000/|g' .env.local

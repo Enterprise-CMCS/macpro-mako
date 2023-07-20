@@ -1,13 +1,37 @@
+
 import { useSearch, SearchData } from "../../api/useSearch";
 import { formatDistance } from "date-fns";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
-import { LoadingSpinner, ErrorAlert } from "../../components";
-import { ChangeEvent, useState, useRef, useEffect } from "react";
+import { LoadingSpinner, ErrorAlert } from "@/components";
+import { ChangeEvent, useState, useRef } from "react";
 import { SeatoolData } from "shared-types";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
+import { QueryClient } from "@tanstack/react-query";
+import { getUser } from "@/api/useGetUser";
 import { ThemeProvider, createTheme } from "@mui/material";
 const defaultMaterialTheme = createTheme();
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+
+const loader = (queryClient: QueryClient) => {
+  return async () => {
+    if (!queryClient.getQueryData(["user"])) {
+      await queryClient.fetchQuery({
+        queryKey: ["user"],
+        queryFn: () => getUser(),
+      });
+    }
+
+    const isUser = queryClient.getQueryData(["user"]) as Awaited<
+      ReturnType<typeof getUser>
+    >;
+    if (!isUser.user) {
+      return redirect("/");
+    }
+
+    return isUser;
+  };
+};
+export const dashboardLoader = loader;
 
 export function Row({ record }: { record: SeatoolData }) {
   let status = "Unknown"; // not sure what status to use or even what "record.SPW_STATUS[0].SPW_STATUS_DESC" is
@@ -65,7 +89,7 @@ export const Dashboard = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <>
+    <div className="max-w-screen-lg mx-auto px-4 lg:px-8">
       <div className="flex items-center justify-between my-4">
         <UI.Typography size="lg" as="h1">
           Dashboard
@@ -84,16 +108,10 @@ export const Dashboard = () => {
           </select>
         </div>
       </div>
-      <div className="Search" data-testid="Search-Container">
-          {renderSearch()}
-        </div>
-      <hr />
-    </>
-  );
-console.log(data);
-  function renderSearch() {
-    return (
-      <div
+      {error ? (
+        <ErrorAlert error={error} />
+      ) : (
+        <div
         style={{
           width: "100%",
           alignItems: "center",
@@ -163,6 +181,7 @@ console.log(data);
           />
         </ThemeProvider>
       </div>
-    );
-  }
+      )}
+    </div>
+  );
 };
