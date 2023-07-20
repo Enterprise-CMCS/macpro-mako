@@ -2,10 +2,9 @@ import { useSearch, SearchData } from "../../api/useSearch";
 import { formatDistance } from "date-fns";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { LoadingSpinner, ErrorAlert } from "../../components";
-import { ChangeEvent, useState, useRef } from "react";
+import { ChangeEvent, useState, useRef, useEffect } from "react";
 import { SeatoolData } from "shared-types";
 import { Link } from "react-router-dom";
-import MaterialTable from "material-table";
 import { ThemeProvider, createTheme } from "@mui/material";
 const defaultMaterialTheme = createTheme();
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
@@ -52,6 +51,7 @@ export function Row({ record }: { record: SeatoolData }) {
 export const Dashboard = () => {
   const [selectedState, setSelectedState] = useState("VA");
   const [searchbox, setSearchbox] = useState("");
+  const [rowSelectionModel, setRowSelectionModel] = useState("");
   const { isLoading, data, error } = useSearch({selectedState, searchbox}, {
     retry: false,
   });
@@ -61,7 +61,7 @@ export const Dashboard = () => {
   };
 
   console.log(data);
-
+  console.log(rowSelectionModel)
   if (isLoading) return <LoadingSpinner />;
 
   return (
@@ -153,8 +153,13 @@ console.log(data);
             rows={data?.hits as SearchData[]}
             getRowId={(row) => row._id}
             slots={{
-            toolbar: GridToolbar,
-          }}
+              toolbar: GridToolbar,
+            }}
+            onRowSelectionModelChange={
+              (newRowSelectionModel) => {
+                setRowSelectionModel(newRowSelectionModel.toString());
+            }}
+            rowSelectionModel={rowSelectionModel}
           />
         </ThemeProvider>
       </div>
