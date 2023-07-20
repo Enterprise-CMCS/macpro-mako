@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import MaterialTable from "material-table";
 import { ThemeProvider, createTheme } from "@mui/material";
 const defaultMaterialTheme = createTheme();
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 export function Row({ record }: { record: SeatoolData }) {
   let status = "Unknown"; // not sure what status to use or even what "record.SPW_STATUS[0].SPW_STATUS_DESC" is
@@ -87,31 +88,9 @@ export const Dashboard = () => {
           {renderSearch()}
         </div>
       <hr />
-      {/* {error ? (
-        <ErrorAlert error={error} />
-      ) : (
-        <UI.Table borderless id="om-seatool-table">
-          <thead>
-            <tr>
-              <UI.TH>ID</UI.TH>
-              <UI.TH>Submitted</UI.TH>
-              <UI.TH>Type</UI.TH>
-              <UI.TH>State</UI.TH>
-              <UI.TH>Status</UI.TH>
-              <UI.TH>Summary</UI.TH>
-            </tr>
-          </thead>
-          <tbody>
-            {data &&
-              data.map((record) => {
-                return <Row record={record} key={record.ID} />;
-              })}
-          </tbody>
-        </UI.Table>
-      )} */}
     </>
   );
-
+console.log(data);
   function renderSearch() {
     return (
       <div
@@ -132,34 +111,45 @@ export const Dashboard = () => {
           variation="default"
         />
         <ThemeProvider theme={defaultMaterialTheme}>
-          <MaterialTable
-            tableRef={tableRef}
-            options={{
-              toolbar: false,
-              paging: false,
-            }}
+        <DataGrid
             columns={[
               {
-                title: "Transmittal ID Number (TIN)",
-                field: "tin",
-                render: (rowData) => {
-                  // return rowData;
-                  console.log(rowData._source);
-                  console.log('rowData');
-                  return rowData._id;
+                field: "Transmittal ID Number (TIN)",
+                hideable: false,
+                valueGetter(params) {
+                  return params.row._id;
                 },
               },
               {
-                title: "Status Memo",
-                field: "seatool.STATE_PLAN.STATUS_MEMO",
-                render: (rowData) => {
-                  console.log('rowData');
-                  console.log(rowData);
-                  return rowData._source.seatool?.STATE_PLAN?.STATUS_MEMO;
+                field: "Plan Type",
+                valueGetter(params) {
+                  return params.row._source.seatool.PLAN_TYPE;
+                },
+              },
+              {
+                field: "Submission Date",
+                valueGetter(params) {
+                  return (new Date(params.row._source.seatool.SUBMISSION_DATE)).toISOString();
+                },
+              },
+              {
+                field: "Region",
+                valueGetter(params) {
+                  return params.row._source.seatool.REGION[0].REGION_NAME;
+                },
+              },
+              {
+                field: "Status Memo",
+                valueGetter(params) {
+                  return params.row._source.seatool?.STATE_PLAN?.STATUS_MEMO;
                 },
               },
             ]}
-            data={data?.hits as SearchData[]}
+            rows={data?.hits as SearchData[]}
+            getRowId={(row) => row._id}
+            slots={{
+            toolbar: GridToolbar,
+          }}
           />
         </ThemeProvider>
       </div>
