@@ -1,4 +1,3 @@
-
 import { useSearch, SearchData } from "../../api/useSearch";
 import { formatDistance } from "date-fns";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
@@ -10,7 +9,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
 import { ThemeProvider, createTheme } from "@mui/material";
 const defaultMaterialTheme = createTheme();
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -76,16 +75,19 @@ export const Dashboard = () => {
   const [selectedState, setSelectedState] = useState("VA");
   const [searchbox, setSearchbox] = useState("");
   const [rowSelectionModel, setRowSelectionModel] = useState("");
-  const { isLoading, data, error } = useSearch({selectedState, searchbox}, {
-    retry: false,
-  });
+  const { isLoading, data, error } = useSearch(
+    { selectedState, searchbox },
+    {
+      retry: false,
+    }
+  );
   const tableRef = useRef();
   const handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedState(event.target.value);
   };
 
   console.log(data);
-  console.log(rowSelectionModel)
+  console.log(rowSelectionModel);
   if (isLoading) return <LoadingSpinner />;
 
   return (
@@ -94,7 +96,7 @@ export const Dashboard = () => {
         <UI.Typography size="lg" as="h1">
           Dashboard
         </UI.Typography>
-        
+
         <div>
           <label htmlFor="state-select">Select a state: </label>
           <select
@@ -112,75 +114,76 @@ export const Dashboard = () => {
         <ErrorAlert error={error} />
       ) : (
         <div
-        style={{
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <UI.Search
-          // onInput={(event: React.ChangeEvent<HTMLInputElement>) => {
-          //   setSearchbox(event.target.value);
-          // }}
-          onSearch={(value: string) => {
-            setSearchbox(value);
+          style={{
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          placeholder="Enter text"
-          variation="default"
-        />
-        <ThemeProvider theme={defaultMaterialTheme}>
-        <DataGrid
-            columns={[
-              {
-                field: "Transmittal ID Number (TIN)",
-                hideable: false,
-                flex: 1,
-                valueGetter(params) {
-                  return params.row._id;
+        >
+          <div className="flex items-center border rounded-lg px-3 py-2">
+            <input
+              type="text"
+              className="bg-transparent ml-2 outline-none placeholder-gray-500"
+              placeholder="Search..."
+              onChange={(event: any) => {
+                setSearchbox(event.target.value);
+              }}
+            />
+          </div>
+          <ThemeProvider theme={defaultMaterialTheme}>
+            <DataGrid
+              columns={[
+                {
+                  field: "Transmittal ID Number (TIN)",
+                  hideable: false,
+                  flex: 1,
+                  valueGetter(params) {
+                    return params.row._id;
+                  },
                 },
-              },
-              {
-                field: "Plan Type",
-                flex: 1,
-                valueGetter(params) {
-                  return params.row._source.seatool.PLAN_TYPE;
+                {
+                  field: "Plan Type",
+                  flex: 1,
+                  valueGetter(params) {
+                    return params.row._source.seatool.PLAN_TYPE;
+                  },
                 },
-              },
-              {
-                field: "Submission Date",
-                flex: 1,
-                valueGetter(params) {
-                  return (new Date(params.row._source.seatool.SUBMISSION_DATE)).toISOString();
+                {
+                  field: "Submission Date",
+                  flex: 1,
+                  valueGetter(params) {
+                    return new Date(
+                      params.row._source.seatool.SUBMISSION_DATE
+                    ).toISOString();
+                  },
                 },
-              },
-              {
-                field: "Region",
-                flex: 1,
-                valueGetter(params) {
-                  return params.row._source.seatool.REGION[0].REGION_NAME;
+                {
+                  field: "Region",
+                  flex: 1,
+                  valueGetter(params) {
+                    return params.row._source.seatool.REGION[0].REGION_NAME;
+                  },
                 },
-              },
-              {
-                field: "Status Memo",
-                flex: 1,
-                valueGetter(params) {
-                  return params.row._source.seatool?.STATE_PLAN?.STATUS_MEMO;
+                {
+                  field: "Status Memo",
+                  flex: 1,
+                  valueGetter(params) {
+                    return params.row._source.seatool?.STATE_PLAN?.STATUS_MEMO;
+                  },
                 },
-              },
-            ]}
-            rows={data?.hits as SearchData[]}
-            getRowId={(row) => row._id}
-            slots={{
-              toolbar: GridToolbar,
-            }}
-            onRowSelectionModelChange={
-              (newRowSelectionModel) => {
+              ]}
+              rows={data?.hits as SearchData[]}
+              getRowId={(row) => row._id}
+              slots={{
+                toolbar: GridToolbar,
+              }}
+              onRowSelectionModelChange={(newRowSelectionModel) => {
                 setRowSelectionModel(newRowSelectionModel.toString());
-            }}
-            rowSelectionModel={rowSelectionModel}
-          />
-        </ThemeProvider>
-      </div>
+              }}
+              rowSelectionModel={rowSelectionModel}
+            />
+          </ThemeProvider>
+        </div>
       )}
     </div>
   );
