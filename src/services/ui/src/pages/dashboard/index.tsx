@@ -2,7 +2,7 @@ import { useSearch, SearchData } from "../../api/useSearch";
 import { formatDistance } from "date-fns";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { LoadingSpinner, ErrorAlert } from "@/components";
-import { ChangeEvent, useState, useRef } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { SeatoolData } from "shared-types";
 import { Link, redirect } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
@@ -73,21 +73,36 @@ export function Row({ record }: { record: SeatoolData }) {
 
 export const Dashboard = () => {
   const [selectedState, setSelectedState] = useState("VA");
-  const [searchbox, setSearchbox] = useState("");
   const [rowSelectionModel, setRowSelectionModel] = useState("");
-  const { isLoading, data, error } = useSearch(
-    { selectedState, searchbox },
-    {
-      retry: false,
+  const [searchText, setSearchText] = useState<string>("");
+  const [searchData, setSearchData] = useState<SearchData[] | null>(null);
+  const { mutateAsync, isLoading, error } = useSearch({
+    // Optional: You can provide onSuccess and onError callbacks if needed.
+    // onSuccess: (data) => {},
+    // onError: (error) => {},
+  });
+
+  useEffect(() => {
+    handleSearch(searchText);
+  }, [selectedState]);
+
+  const handleSearch = async (searchText: string) => {
+    try {
+      const data = await mutateAsync({
+        selectedState,
+        searchString: searchText,
+      });
+
+      setSearchData(data.hits);
+    } catch (error) {
+      console.error("Error occurred during search:", error);
     }
-  );
-  const tableRef = useRef();
+  };
+
   const handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedState(event.target.value);
   };
 
-  console.log(data);
-  console.log(rowSelectionModel);
   if (isLoading) return <LoadingSpinner />;
 
   return (
@@ -120,16 +135,11 @@ export const Dashboard = () => {
             justifyContent: "center",
           }}
         >
-          <div className="flex items-center border rounded-lg px-3 py-2">
-            <input
-              type="text"
-              className="bg-transparent ml-2 outline-none placeholder-gray-500"
-              placeholder="Search..."
-              onChange={(event: any) => {
-                setSearchbox(event.target.value);
-              }}
-            />
-          </div>
+          <SearchForm
+            handleSearch={handleSearch}
+            setSearchText={setSearchText}
+            searchText={searchText}
+          />
           <ThemeProvider theme={defaultMaterialTheme}>
             <DataGrid
               columns={[
@@ -165,14 +175,14 @@ export const Dashboard = () => {
                   },
                 },
                 {
-                  field: "Status Memo",
+                  field: "Memo",
                   flex: 1,
                   valueGetter(params) {
-                    return params.row._source.seatool?.STATE_PLAN?.STATUS_MEMO;
+                    return params.row._source.seatool?.STATE_PLAN?.SUMMARY_MEMO;
                   },
                 },
               ]}
-              rows={data?.hits as SearchData[]}
+              rows={(searchData as SearchData[]) || []}
               getRowId={(row) => row._id}
               slots={{
                 toolbar: GridToolbar,
@@ -186,5 +196,52 @@ export const Dashboard = () => {
         </div>
       )}
     </div>
+  );
+};
+
+const SearchForm = ({
+  handleSearch,
+  searchText,
+  setSearchText,
+}: {
+  handleSearch: (searchString: string) => Promise<void>;
+  searchText: string;
+  setSearchText: React.Dispatch<React.SetStateAction<string>>;
+}) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleSearch(searchText);
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="relative">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+        <input
+          type="text"
+          placeholder="Search"
+          className="w-full py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
+          value={searchText}
+          onChange={handleInputChange}
+        />
+      </div>
+    </form>
   );
 };

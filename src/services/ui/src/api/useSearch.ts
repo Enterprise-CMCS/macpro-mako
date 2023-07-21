@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError } from "shared-types";
 
@@ -13,23 +13,23 @@ export const getSearchData = async (
   selectedState: string,
   searchString: string
 ): Promise<{ hits: SearchData[] }> => {
-  const SearchData = await API.post("seatool", `/search/${selectedState}`, {
+  const searchData = await API.post("seatool", `/search/${selectedState}`, {
     body: { searchString },
   });
 
-  return SearchData;
+  return searchData;
 };
 
 export const useSearch = (
-  props: { selectedState: string; searchbox: string },
-  options?: UseQueryOptions<{ hits: SearchData[] }, ReactQueryApiError>
+  options?: UseMutationOptions<
+    { hits: SearchData[] },
+    ReactQueryApiError,
+    { selectedState: string; searchString: string }
+  >
 ) => {
-  console.log({ props });
-  return useQuery<{ hits: SearchData[] }, ReactQueryApiError>(
-    ["seatool", props.selectedState],
-    {
-      queryFn: () => getSearchData(props.selectedState, props.searchbox),
-      ...options,
-    }
-  );
+  return useMutation<
+    { hits: SearchData[] },
+    ReactQueryApiError,
+    { selectedState: string; searchString: string }
+  >((props) => getSearchData(props.selectedState, props.searchString), options);
 };

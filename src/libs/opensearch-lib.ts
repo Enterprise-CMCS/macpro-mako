@@ -113,7 +113,7 @@ export async function search(host:string, index:string, params:{stateCode:string
           should: [
             {
               match: {
-                "seatool.STATE_PLAN.STATUS_MEMO": params.searchString
+                "seatool.STATE_PLAN.SUMMARY_MEMO": params.searchString
               }
             }
           ]
