@@ -81,50 +81,13 @@ export async function mapRole(host:string, masterRoleToAssume:string, osRoleName
   }
 }
 
-export async function search(host:string, index:string, params:{stateCode:string, searchString:string}){
+export async function search(host:string, index:string, query:any){
   client = client || (await getClient(host));
-
   try {
-    // const query = {
-    //   query: {
-    //     match: {
-    //       "seatool.STATE_CODE": {
-    //         query: params.stateCode,
-    //       },
-    //     },
-    //     // contains: {
-    //     //   "seatool.STATE_PLAN.STATUS_MEMO": {
-    //     //     query: params.searchString,
-    //     //   }
-    //     // }
-    //   },
-    // };
-    
-    const query = {
-      query: {
-        bool: {
-          must: [
-            {
-              match: {
-                "seatool.STATE_CODE": params.stateCode
-              }
-            },
-          ],
-          should: [
-            {
-              match: {
-                "seatool.STATE_PLAN.SUMMARY_MEMO": params.searchString
-              }
-            }
-          ]
-        }
-      }
-    }
     const response = await client.search({
       index: index,
       body: query,
     });
-          
     console.log(response.body.hits);
     return response.body.hits;
   } catch(e) {
