@@ -13,8 +13,24 @@ export const getSearchData = async (
   selectedState: string,
   searchString: string
 ): Promise<{ hits: SearchData[] }> => {
+  let query = {};
+  if (searchString) {
+    query = {
+      query: {
+        bool: {
+          should: [
+            {
+              match: {
+                "seatool.STATE_PLAN.SUMMARY_MEMO": searchString,
+              },
+            },
+          ],
+        },
+      },
+    };
+  }
   const searchData = await API.post("seatool", `/search/${selectedState}`, {
-    body: { searchString },
+    body: query,
   });
 
   return searchData;

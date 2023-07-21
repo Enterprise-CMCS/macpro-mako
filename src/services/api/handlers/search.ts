@@ -41,15 +41,33 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       });
     }
 
-    console.log("event", JSON.stringify(event));
-    console.log("body", JSON.parse(event.body));
-    console.log("mike", JSON.parse(event.body).searchString || "hello");
+    const stateMatcher = {
+      match: {
+        "seatool.STATE_CODE": stateCode,
+      },
+    };
+    let query = JSON.parse(event.body);
+    // Please help the below if garbage... the intent is a deep merge.
+    if (query.query?.bool?.must) {
+      query.query.bool.must.push(stateMatcher);
+    } else if (query.query?.bool) {
+      query.query.bool.must = [stateMatcher];
+    } else if (query.query) {
+      query.query.bool = { must: [stateMatcher] };
+    } else {
+      query = {
+        query: {
+          bool: {
+            must: [stateMatcher],
+          },
+        },
+      };
+    }
 
+    console.log("Sending query, built as follow:");
+    console.log(JSON.stringify(query, null, 2));
     // Retrieve Seatool data using the SeatoolService
-    const results = await os.search(process.env.osDomain, "main", {
-      stateCode,
-      searchString: JSON.parse(event.body).searchString || "",
-    });
+    const results = await os.search(process.env.osDomain, "main", query);
 
     if (!results) {
       return response({

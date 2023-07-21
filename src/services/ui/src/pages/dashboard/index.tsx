@@ -7,8 +7,6 @@ import { SeatoolData } from "shared-types";
 import { Link, redirect } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
-import { ThemeProvider, createTheme } from "@mui/material";
-const defaultMaterialTheme = createTheme();
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const loader = (queryClient: QueryClient) => {
@@ -32,44 +30,48 @@ const loader = (queryClient: QueryClient) => {
 };
 export const dashboardLoader = loader;
 
-export function Row({ record }: { record: SeatoolData }) {
-  let status = "Unknown"; // not sure what status to use or even what "record.SPW_STATUS[0].SPW_STATUS_DESC" is
-  if (record.SPW_STATUS && record.SPW_STATUS[0]) {
-    status = record.SPW_STATUS[0].SPW_STATUS_DESC;
-  }
+// NOTE  code below not used, but its the only thing using the seatooldata type, so i dont want to remove the pattern
+// Should we be using the seatool data type in the new data grid?
+// Should we add a 'onemac' data type?
 
-  return (
-    <tr key={record.ID}>
-      <UI.TH rowHeader>
-        <Link
-          className="cursor-pointer text-blue-600"
-          to={`/record?type=${encodeURIComponent(
-            record.PLAN_TYPE
-          )}&id=${encodeURIComponent(record.ID)}`}
-          target="_blank"
-        >
-          {record.ID}
-        </Link>
-      </UI.TH>
-      <UI.TD>
-        {formatDistance(new Date(record.SUBMISSION_DATE), new Date())} ago
-      </UI.TD>
-      <UI.TD>{record.PLAN_TYPE}</UI.TD>
-      <UI.TD>{record.STATE_CODE}</UI.TD>
-      <UI.TD>{status}</UI.TD>
-      <UI.TD
-        style={{
-          maxWidth: "260px",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {record.STATE_PLAN.SUMMARY_MEMO}
-      </UI.TD>
-    </tr>
-  );
-}
+// export function Row({ record }: { record: SeatoolData }) {
+//   let status = "Unknown"; // not sure what status to use or even what "record.SPW_STATUS[0].SPW_STATUS_DESC" is
+//   if (record.SPW_STATUS && record.SPW_STATUS[0]) {
+//     status = record.SPW_STATUS[0].SPW_STATUS_DESC;
+//   }
+
+//   return (
+//     <tr key={record.ID}>
+//       <UI.TH rowHeader>
+//         <Link
+//           className="cursor-pointer text-blue-600"
+//           to={`/record?type=${encodeURIComponent(
+//             record.PLAN_TYPE
+//           )}&id=${encodeURIComponent(record.ID)}`}
+//           target="_blank"
+//         >
+//           {record.ID}
+//         </Link>
+//       </UI.TH>
+//       <UI.TD>
+//         {formatDistance(new Date(record.SUBMISSION_DATE), new Date())} ago
+//       </UI.TD>
+//       <UI.TD>{record.PLAN_TYPE}</UI.TD>
+//       <UI.TD>{record.STATE_CODE}</UI.TD>
+//       <UI.TD>{status}</UI.TD>
+//       <UI.TD
+//         style={{
+//           maxWidth: "260px",
+//           overflow: "hidden",
+//           textOverflow: "ellipsis",
+//           whiteSpace: "nowrap",
+//         }}
+//       >
+//         {record.STATE_PLAN.SUMMARY_MEMO}
+//       </UI.TD>
+//     </tr>
+//   );
+// }
 
 export const Dashboard = () => {
   const [selectedState, setSelectedState] = useState("VA");
@@ -140,59 +142,68 @@ export const Dashboard = () => {
             setSearchText={setSearchText}
             searchText={searchText}
           />
-          <ThemeProvider theme={defaultMaterialTheme}>
-            <DataGrid
-              columns={[
-                {
-                  field: "Transmittal ID Number (TIN)",
-                  hideable: false,
-                  flex: 1,
-                  valueGetter(params) {
-                    return params.row._id;
-                  },
+          <DataGrid
+            columns={[
+              {
+                field: "Transmittal ID Number (TIN)",
+                hideable: false,
+                flex: 1,
+                valueGetter(params) {
+                  return params.row._id;
                 },
-                {
-                  field: "Plan Type",
-                  flex: 1,
-                  valueGetter(params) {
-                    return params.row._source.seatool.PLAN_TYPE;
-                  },
+              },
+              {
+                field: "Plan Type",
+                flex: 1,
+                valueGetter(params) {
+                  return params.row._source.seatool.PLAN_TYPE;
                 },
-                {
-                  field: "Submission Date",
-                  flex: 1,
-                  valueGetter(params) {
-                    return new Date(
-                      params.row._source.seatool.SUBMISSION_DATE
-                    ).toISOString();
-                  },
+              },
+              {
+                field: "Status",
+                flex: 1,
+                valueGetter(params) {
+                  let status = "Unknown"; // not sure what status to use or even what "record.SPW_STATUS[0].SPW_STATUS_DESC" is
+                  if (params.row._source.seatool.SPW_STATUS && params.row._source.seatool.SPW_STATUS[0]) {
+                    status = params.row._source.seatool.SPW_STATUS[0].SPW_STATUS_DESC;
+                  }
+                  return status;
                 },
-                {
-                  field: "Region",
-                  flex: 1,
-                  valueGetter(params) {
-                    return params.row._source.seatool.REGION[0].REGION_NAME;
-                  },
+              },
+              {
+                field: "Submission Date",
+                flex: 1,
+                valueGetter(params) {
+                  return new Date(
+                    params.row._source.seatool.SUBMISSION_DATE
+                  ).toISOString();
                 },
-                {
-                  field: "Memo",
-                  flex: 1,
-                  valueGetter(params) {
-                    return params.row._source.seatool?.STATE_PLAN?.SUMMARY_MEMO;
-                  },
+              },
+              {
+                field: "Region",
+                flex: 1,
+                valueGetter(params) {
+                  return params.row._source.seatool.REGION[0].REGION_NAME;
                 },
-              ]}
-              rows={(searchData as SearchData[]) || []}
-              getRowId={(row) => row._id}
-              slots={{
-                toolbar: GridToolbar,
-              }}
-              onRowSelectionModelChange={(newRowSelectionModel) => {
-                setRowSelectionModel(newRowSelectionModel.toString());
-              }}
-              rowSelectionModel={rowSelectionModel}
-            />
-          </ThemeProvider>
+              },
+              {
+                field: "Memo",
+                flex: 1,
+                valueGetter(params) {
+                  return params.row._source.seatool?.STATE_PLAN?.SUMMARY_MEMO;
+                },
+              },
+            ]}
+            rows={(searchData as SearchData[]) || []}
+            getRowId={(row) => row._id}
+            slots={{
+              toolbar: GridToolbar,
+            }}
+            onRowSelectionModelChange={(newRowSelectionModel) => {
+              setRowSelectionModel(newRowSelectionModel.toString());
+            }}
+            rowSelectionModel={rowSelectionModel}
+          />
         </div>
       )}
     </div>
