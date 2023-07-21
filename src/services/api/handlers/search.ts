@@ -1,14 +1,14 @@
 import { response } from "../libs/handler";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { SeatoolService } from "../services/seatoolService";
 import { APIGatewayEvent } from "aws-lambda";
 import { getAuthDetails, lookupUserAttributes } from "../libs/auth/user";
 
-// Create an instance of DynamoDB client
-const dynamoInstance = new DynamoDBClient({ region: process.env.region });
+import * as os from "./../../../libs/opensearch-lib";
+if (!process.env.osDomain) {
+  throw "ERROR:  osDomain env variable is required,";
+}
 
 // Handler function to get Seatool data
-export const getSeatoolData = async (event: APIGatewayEvent) => {
+export const getSearchData = async (event: APIGatewayEvent) => {
   try {
     // Retrieve authentication details of the user
     const authDetails = getAuthDetails(event);
@@ -41,13 +41,37 @@ export const getSeatoolData = async (event: APIGatewayEvent) => {
       });
     }
 
-    // Retrieve Seatool data using the SeatoolService
-    const seaData = await new SeatoolService(dynamoInstance).getIssues({
-      tableName: process.env.tableName,
-      stateCode: stateCode,
-    });
+    const stateMatcher = {
+      match: {
+        "seatool.STATE_CODE": stateCode,
+      },
+    };
+    let query = JSON.parse(event.body);
+    // Please help the below if garbage... the intent is a deep merge.
+    if (query.query?.bool?.must) {
+      query.query.bool.must.push(stateMatcher);
+    } else if (query.query?.bool) {
+      query.query.bool.must = [stateMatcher];
+    } else if (query.query) {
+      query.query.bool = { must: [stateMatcher] };
+    } else {
+      query = {
+        query: {
+          bool: {
+            must: [stateMatcher],
+          },
+        },
+      };
+    }
+    query.from = query.from || 0;
+    query.size = query.size || 100;
 
-    if (!seaData) {
+    console.log("Sending query, built as follow:");
+    console.log(JSON.stringify(query, null, 2));
+    // Retrieve Seatool data using the SeatoolService
+    const results = await os.search(process.env.osDomain, "main", query);
+
+    if (!results) {
       return response({
         statusCode: 404,
         body: { message: "No Seatool data found for the provided state code" },
@@ -56,7 +80,7 @@ export const getSeatoolData = async (event: APIGatewayEvent) => {
 
     return response<unknown>({
       statusCode: 200,
-      body: seaData,
+      body: results,
     });
   } catch (error) {
     console.error({ error });
@@ -67,4 +91,4 @@ export const getSeatoolData = async (event: APIGatewayEvent) => {
   }
 };
 
-export const handler = getSeatoolData;
+export const handler = getSearchData;
