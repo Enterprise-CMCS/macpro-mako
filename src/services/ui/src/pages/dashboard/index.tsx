@@ -203,6 +203,11 @@ export const Dashboard = () => {
               setRowSelectionModel(newRowSelectionModel.toString());
             }}
             rowSelectionModel={rowSelectionModel}
+            initialState={{
+              ...{searchData},
+              pagination: { paginationModel: { pageSize: 10 } },
+            }}
+            pageSizeOptions={[5, 10, 25]}
           />
         </div>
       )}

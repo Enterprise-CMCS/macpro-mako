@@ -16,6 +16,8 @@ export const getSearchData = async (
   let query = {};
   if (searchString) {
     query = {
+      from: 0,
+      size: 100,
       query: {
         bool: {
           should: [

@@ -63,6 +63,8 @@ export const getSearchData = async (event: APIGatewayEvent) => {
         },
       };
     }
+    query.from = query.from || 0;
+    query.size = query.size || 100;
 
     console.log("Sending query, built as follow:");
     console.log(JSON.stringify(query, null, 2));
