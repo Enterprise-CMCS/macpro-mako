@@ -7,8 +7,6 @@ import { SeatoolData } from "shared-types";
 import { Link, redirect } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
-import { ThemeProvider, createTheme } from "@mui/material";
-const defaultMaterialTheme = createTheme();
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const loader = (queryClient: QueryClient) => {
@@ -140,59 +138,57 @@ export const Dashboard = () => {
             setSearchText={setSearchText}
             searchText={searchText}
           />
-          <ThemeProvider theme={defaultMaterialTheme}>
-            <DataGrid
-              columns={[
-                {
-                  field: "Transmittal ID Number (TIN)",
-                  hideable: false,
-                  flex: 1,
-                  valueGetter(params) {
-                    return params.row._id;
-                  },
+          <DataGrid
+            columns={[
+              {
+                field: "Transmittal ID Number (TIN)",
+                hideable: false,
+                flex: 1,
+                valueGetter(params) {
+                  return params.row._id;
                 },
-                {
-                  field: "Plan Type",
-                  flex: 1,
-                  valueGetter(params) {
-                    return params.row._source.seatool.PLAN_TYPE;
-                  },
+              },
+              {
+                field: "Plan Type",
+                flex: 1,
+                valueGetter(params) {
+                  return params.row._source.seatool.PLAN_TYPE;
                 },
-                {
-                  field: "Submission Date",
-                  flex: 1,
-                  valueGetter(params) {
-                    return new Date(
-                      params.row._source.seatool.SUBMISSION_DATE
-                    ).toISOString();
-                  },
+              },
+              {
+                field: "Submission Date",
+                flex: 1,
+                valueGetter(params) {
+                  return new Date(
+                    params.row._source.seatool.SUBMISSION_DATE
+                  ).toISOString();
                 },
-                {
-                  field: "Region",
-                  flex: 1,
-                  valueGetter(params) {
-                    return params.row._source.seatool.REGION[0].REGION_NAME;
-                  },
+              },
+              {
+                field: "Region",
+                flex: 1,
+                valueGetter(params) {
+                  return params.row._source.seatool.REGION[0].REGION_NAME;
                 },
-                {
-                  field: "Memo",
-                  flex: 1,
-                  valueGetter(params) {
-                    return params.row._source.seatool?.STATE_PLAN?.SUMMARY_MEMO;
-                  },
+              },
+              {
+                field: "Memo",
+                flex: 1,
+                valueGetter(params) {
+                  return params.row._source.seatool?.STATE_PLAN?.SUMMARY_MEMO;
                 },
-              ]}
-              rows={(searchData as SearchData[]) || []}
-              getRowId={(row) => row._id}
-              slots={{
-                toolbar: GridToolbar,
-              }}
-              onRowSelectionModelChange={(newRowSelectionModel) => {
-                setRowSelectionModel(newRowSelectionModel.toString());
-              }}
-              rowSelectionModel={rowSelectionModel}
-            />
-          </ThemeProvider>
+              },
+            ]}
+            rows={(searchData as SearchData[]) || []}
+            getRowId={(row) => row._id}
+            slots={{
+              toolbar: GridToolbar,
+            }}
+            onRowSelectionModelChange={(newRowSelectionModel) => {
+              setRowSelectionModel(newRowSelectionModel.toString());
+            }}
+            rowSelectionModel={rowSelectionModel}
+          />
         </div>
       )}
     </div>
