@@ -75,7 +75,7 @@ export const dashboardLoader = loader;
 
 export const Dashboard = () => {
   const [selectedState, setSelectedState] = useState("VA");
-  const [rowSelectionModel, setRowSelectionModel] = useState("");
+  const [rowSelectionModel, setRowSelectionModel] = useState();
   const [searchText, setSearchText] = useState<string>("");
   const [searchData, setSearchData] = useState<SearchData[] | null>(null);
   const { mutateAsync, isLoading, error } = useSearch({
