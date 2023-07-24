@@ -7,7 +7,7 @@ export const getRecord = async (
   id: string,
   state: string
 ): Promise<{ hits: SearchData[] }> => {
-  const query = { bool: { must: [{ match: { _id: id } }] } };
+  const query = { query: { bool: { must: [{ match: { _id: id } }] } } };
 
   const record = await API.post("seatool", `/search/${state}`, {
     body: query,
