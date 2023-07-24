@@ -1,5 +1,5 @@
 import { useSearch, SearchData } from "../../api/useSearch";
-import { formatDistance } from "date-fns";
+import { format } from "date-fns";
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { LoadingSpinner, ErrorAlert } from "@/components";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -148,8 +148,15 @@ export const Dashboard = () => {
                 field: "Transmittal ID Number (TIN)",
                 hideable: false,
                 flex: 1,
-                valueGetter(params) {
-                  return params.row._id;
+                renderCell(params) {
+                  return (
+                    <Link
+                      className="cursor-pointer text-blue-600"
+                      to={`/record?id=${encodeURIComponent(params.row._id)}`}
+                    >
+                      {params.row._id}
+                    </Link>
+                  );
                 },
               },
               {
@@ -164,8 +171,12 @@ export const Dashboard = () => {
                 flex: 1,
                 valueGetter(params) {
                   let status = "Unknown"; // not sure what status to use or even what "record.SPW_STATUS[0].SPW_STATUS_DESC" is
-                  if (params.row._source.seatool.SPW_STATUS && params.row._source.seatool.SPW_STATUS[0]) {
-                    status = params.row._source.seatool.SPW_STATUS[0].SPW_STATUS_DESC;
+                  if (
+                    params.row._source.seatool.SPW_STATUS &&
+                    params.row._source.seatool.SPW_STATUS[0]
+                  ) {
+                    status =
+                      params.row._source.seatool.SPW_STATUS[0].SPW_STATUS_DESC;
                   }
                   return status;
                 },
@@ -174,9 +185,10 @@ export const Dashboard = () => {
                 field: "Submission Date",
                 flex: 1,
                 valueGetter(params) {
-                  return new Date(
-                    params.row._source.seatool.SUBMISSION_DATE
-                  ).toISOString();
+                  return format(
+                    params.row._source.seatool.SUBMISSION_DATE,
+                    "MM/dd/yyyy"
+                  );
                 },
               },
               {
@@ -184,6 +196,13 @@ export const Dashboard = () => {
                 flex: 1,
                 valueGetter(params) {
                   return params.row._source.seatool.REGION[0].REGION_NAME;
+                },
+              },
+              {
+                field: "Type",
+                flex: 1,
+                valueGetter(params) {
+                  return params.row._source.programType;
                 },
               },
               {
@@ -204,7 +223,7 @@ export const Dashboard = () => {
             }}
             rowSelectionModel={rowSelectionModel}
             initialState={{
-              ...{searchData},
+              ...{ searchData },
               pagination: { paginationModel: { pageSize: 10 } },
             }}
             pageSizeOptions={[5, 10, 25]}

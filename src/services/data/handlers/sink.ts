@@ -64,6 +64,17 @@ export const seatool: Handler = async (event) => {
   }
 };
 
+type ProgramType = "WAIVER" | "MEDICAID" | "CHIP" | "UNKNOWN";
+
+const getProgramType = (record: { componentType: string }) => {
+  let type: ProgramType = "UNKNOWN";
+  if (record.componentType.includes("waiver")) type = "WAIVER";
+  if (record.componentType.includes("medicaid")) type = "MEDICAID";
+  if (record.componentType.includes("chip")) type = "CHIP";
+
+  return type;
+};
+
 export const onemac: Handler = async (event) => {
   const records: Record<string, unknown>[] = [];
   for (const key in event.records) {
@@ -79,10 +90,32 @@ export const onemac: Handler = async (event) => {
           });
         } else {
           const record = { ...JSON.parse(decode(value)) };
+
+          if (record.sk !== "Package") {
+            console.log("Not a package type - ignoring");
+            return;
+          }
+          const programType = getProgramType(record);
+
+          if (
+            record.proposedEffectiveDate &&
+            !(record.proposedEffectiveDate instanceof Date)
+          ) {
+            record.proposedEffectiveDate = null;
+          }
+
+          if (
+            record.finalDispositionDate &&
+            !(record.finalDispositionDate instanceof Date)
+          ) {
+            record.finalDispositionDate = null;
+          }
+
           records.push({
             key: id,
             value: {
-              onemac: record,
+              programType,
+              [programType]: record,
             },
           });
         }
