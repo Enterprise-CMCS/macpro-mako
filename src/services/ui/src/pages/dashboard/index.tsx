@@ -152,7 +152,9 @@ export const Dashboard = () => {
                   return (
                     <Link
                       className="cursor-pointer text-blue-600"
-                      to={`/record?id=${encodeURIComponent(params.row._id)}`}
+                      to={`/record?region=${encodeURIComponent(
+                        params.row._source.seatool.STATE_PLAN.STATE_CODE
+                      )}&id=${encodeURIComponent(params.row._id)}`}
                     >
                       {params.row._id}
                     </Link>
