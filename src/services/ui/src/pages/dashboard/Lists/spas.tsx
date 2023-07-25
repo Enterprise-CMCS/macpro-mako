@@ -1,5 +1,5 @@
 import { SearchData, useSearch } from "@/api";
-import { ErrorAlert, LoadingSpinner, SearchForm } from "@/components";
+import { ErrorAlert, SearchForm } from "@/components";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
@@ -29,8 +29,6 @@ export const SpasList = ({ selectedState }: { selectedState: string }) => {
     }
   };
 
-  if (isLoading) return <LoadingSpinner />;
-
   return error ? (
     <ErrorAlert error={error} />
   ) : (
@@ -39,8 +37,11 @@ export const SpasList = ({ selectedState }: { selectedState: string }) => {
         handleSearch={handleSearch}
         setSearchText={setSearchText}
         searchText={searchText}
+        disabled={isLoading}
       />
       <DataGrid
+        autoHeight
+        loading={isLoading}
         columns={[
           {
             field: "Spa ID",

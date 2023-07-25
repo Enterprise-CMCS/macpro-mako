@@ -2,10 +2,12 @@ export const SearchForm = ({
   handleSearch,
   searchText,
   setSearchText,
+  disabled,
 }: {
   handleSearch: (searchString: string) => Promise<void>;
   searchText: string;
   setSearchText: React.Dispatch<React.SetStateAction<string>>;
+  disabled: boolean;
 }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -39,6 +41,7 @@ export const SearchForm = ({
           className="w-full py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
           value={searchText}
           onChange={handleInputChange}
+          disabled={disabled}
         />
       </div>
     </form>
