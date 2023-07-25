@@ -23,7 +23,18 @@ export const getSearchData = async (
           should: [
             {
               match: {
-                "seatool.STATE_PLAN.SUMMARY_MEMO": searchString,
+                _id: {
+                  query: searchString,
+                  boost: 5,
+                },
+              },
+            },
+            {
+              match: {
+                "seatool.STATE_PLAN.ID_NUMBER": {
+                  query: searchString,
+                  fuzziness: "AUTO",
+                },
               },
             },
           ],
