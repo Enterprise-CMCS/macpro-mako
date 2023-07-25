@@ -11,36 +11,45 @@ export type SearchData = {
 
 export const getSearchData = async (
   selectedState: string,
-  searchString: string
+  searchString: string,
+  programType: string
 ): Promise<{ hits: SearchData[] }> => {
-  let query = {};
+  const query: any = {
+    from: 0,
+    size: 100,
+    query: {
+      bool: {
+        must: [
+          {
+            match: {
+              programType: {
+                query: programType,
+              },
+            },
+          },
+        ],
+      },
+    },
+  };
   if (searchString) {
-    query = {
-      from: 0,
-      size: 100,
-      query: {
-        bool: {
-          should: [
-            {
-              match: {
-                _id: {
-                  query: searchString,
-                  boost: 5,
-                },
-              },
-            },
-            {
-              match: {
-                "seatool.STATE_PLAN.ID_NUMBER": {
-                  query: searchString,
-                  fuzziness: "AUTO",
-                },
-              },
-            },
-          ],
+    query.query.bool.should = [
+      {
+        match: {
+          _id: {
+            query: searchString,
+            boost: 5,
+          },
         },
       },
-    };
+      {
+        match: {
+          "seatool.STATE_PLAN.ID_NUMBER": {
+            query: searchString,
+            fuzziness: "AUTO",
+          },
+        },
+      },
+    ];
   }
   const searchData = await API.post("seatool", `/search/${selectedState}`, {
     body: query,
@@ -53,12 +62,16 @@ export const useSearch = (
   options?: UseMutationOptions<
     { hits: SearchData[] },
     ReactQueryApiError,
-    { selectedState: string; searchString: string }
+    { selectedState: string; searchString: string; programType: string }
   >
 ) => {
   return useMutation<
     { hits: SearchData[] },
     ReactQueryApiError,
-    { selectedState: string; searchString: string }
-  >((props) => getSearchData(props.selectedState, props.searchString), options);
+    { selectedState: string; searchString: string; programType: string }
+  >(
+    (props) =>
+      getSearchData(props.selectedState, props.searchString, props.programType),
+    options
+  );
 };

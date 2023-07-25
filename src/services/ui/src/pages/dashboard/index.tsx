@@ -93,6 +93,8 @@ export const Dashboard = () => {
       const data = await mutateAsync({
         selectedState,
         searchString: searchText,
+        // programType: "WAIVER",
+        programType: "CHIP OR MEDICAID", // This should be set based on the 'tab' your in
       });
 
       setSearchData(data.hits);
