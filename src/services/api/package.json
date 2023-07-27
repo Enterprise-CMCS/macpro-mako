@@ -14,6 +14,7 @@
     "@opensearch-project/opensearch": "^2.3.0",
     "libs": "*",
     "shared-types": "*",
+    "shared-utils": "*",
     "zod": "^3.21.4"
   },
   "version": "0.0.0",

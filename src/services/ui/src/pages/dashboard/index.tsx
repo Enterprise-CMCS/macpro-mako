@@ -63,7 +63,7 @@ export const Dashboard = () => {
   const { data } = useGetUser();
   const userStateCodes = getUserStateCodes(data?.user);
 
-  const [selectedState, setSelectedState] = useState(userStateCodes[0]);
+  const [selectedState, setSelectedState] = useState(userStateCodes?.[0] || "");
 
   const handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedState(event.target.value);

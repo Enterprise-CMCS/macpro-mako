@@ -33,18 +33,6 @@ function userAttrDict(cognitoUser: CognitoUserType): CognitoUserAttributes {
   return attributes as CognitoUserAttributes;
 }
 
-// Parse object values as JSON if possible
-export const getParsedObject = (obj: CognitoUserAttributes) =>
-  Object.fromEntries(
-    Object.entries(obj).map(([key, value]) => {
-      try {
-        return [key, JSON.parse(value as string)];
-      } catch (error) {
-        return [key, value];
-      }
-    })
-  );
-
 // Retrieve and parse user attributes from Cognito using the provided userId and poolId
 export async function lookupUserAttributes(
   userId: string,
@@ -59,7 +47,7 @@ export async function lookupUserAttributes(
   const currentUser = fetchResult as CognitoUserType;
   const attributes = userAttrDict(currentUser);
 
-  return getParsedObject(attributes) as CognitoUserAttributes;
+  return attributes;
 }
 
 // Fetch user data from Cognito based on the provided userId and poolId

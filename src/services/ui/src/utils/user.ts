@@ -1,28 +1,20 @@
 import { CognitoUserAttributes } from "shared-types";
-
-const isAdmin = (user: CognitoUserAttributes) => {
-  const userRoles = user["custom:roles"];
-  const CMS_ADMIN_ROLES = ["cms-admin"]; // this is prob wrong
-
-  for (let i = 0; i < userRoles.length; i++) {
-    const userRole = userRoles[i];
-    if (CMS_ADMIN_ROLES.indexOf(userRole) >= 0) {
-      return true;
-    }
-  }
-  return false;
-};
+import { isCmsUser } from "shared-utils";
 
 export const getUserStateCodes = (
   user: CognitoUserAttributes | null | undefined
 ) => {
   if (!user) return [];
 
-  if (isAdmin(user)) {
+  if (isCmsUser(user)) {
     return ["ALL", ...allStateAbbr];
   }
 
-  return user["custom:state_codes"];
+  if (!user["custom:state"]) {
+    return [];
+  }
+
+  return user["custom:state"]?.split(",");
 };
 
 const allStateAbbr = [
