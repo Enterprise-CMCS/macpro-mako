@@ -41,7 +41,9 @@ export const seatool: Handler = async (event) => {
           // do different things based on authority
           const record = { ...JSON.parse(decode(value)) };
           const planTypeId = record?.STATE_PLAN?.PLAN_TYPE_ID;
-          const rai_received_date = sortAndExtractReceivedDate(record?.["RAI"]);
+          const rai_received_date = record?.["RAI"]
+            ? sortAndExtractReceivedDate(record?.["RAI"])
+            : null;
 
           switch (planTypeId) {
           case 124:
