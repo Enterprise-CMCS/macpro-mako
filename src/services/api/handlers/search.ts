@@ -3,6 +3,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import { getAuthDetails, lookupUserAttributes } from "../libs/auth/user";
 
 import * as os from "./../../../libs/opensearch-lib";
+import { isCmsUser } from "shared-utils";
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
@@ -33,7 +34,8 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     // Check if user is authorized to access the resource based on their attributes
     if (
       !userAttributes ||
-      !userAttributes["custom:state_codes"]?.includes(stateCode)
+      (!isCmsUser(userAttributes) &&
+        !userAttributes["custom:state"]?.includes(stateCode))
     ) {
       return response({
         statusCode: 403,

@@ -107,11 +107,11 @@ resources:
             AttributeDataType: String
             Mutable: true
             Required: false
-          - Name: state_codes
+          - Name: state
             AttributeDataType: String
             Mutable: true
             Required: false
-          - Name: roles
+          - Name: cms-roles
             AttributeDataType: String
             Mutable: true
             Required: false
