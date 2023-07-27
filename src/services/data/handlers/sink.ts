@@ -1,11 +1,32 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
+import { AnyZodObject } from "zod";
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
 }
 const osDomain: string = process.env.osDomain;
 const index = "main";
+
+const planTypeLookup = {
+  121: "1115",
+  122: "1915b_waivers",
+  123: "1915c_waivers",
+  124: "CHIP_SPA",
+  125: "Medicaid_SPA",
+  126: "1115_Indep_Plus",
+  127: "1915c_Indep_Plus",
+  130: "UPL",
+};
+
+type ProgramType = "WAIVER" | "MEDICAID" | "CHIP" | "UNKNOWN";
+
+function sortAndExtractReceivedDate(arr: any) {
+  // Sort the array by RAI_REQUESTED_DATE in ascending order
+  arr.sort((a, b) => a.RAI_REQUESTED_DATE - b.RAI_REQUESTED_DATE);
+
+  return arr[arr.length - 1].RAI_RECEIVED_DATE;
+}
 
 export const seatool: Handler = async (event) => {
   const records: Record<string, unknown>[] = [];
@@ -13,41 +34,59 @@ export const seatool: Handler = async (event) => {
     event.records[key].forEach(
       ({ key, value }: { key: string; value: string }) => {
         const id: string = JSON.parse(decode(key));
+        const eventData: Record<any, any> = {};
         if (!value) {
-          records.push({
-            key: id,
-            value: {
-              seatool: null,
-            },
-          });
+          // handle delete somehow
         } else {
+          // do different things based on authority
           const record = { ...JSON.parse(decode(value)) };
-          const STATE_CODE = record?.["STATES"]?.[0]?.["STATE_CODE"];
-          const PLAN_TYPE = record?.["PLAN_TYPES"]?.[0]?.["PLAN_TYPE_NAME"];
-          const SUBMISSION_DATE = record?.["STATE_PLAN"]?.["SUBMISSION_DATE"];
+          const planTypeId = record?.STATE_PLAN?.PLAN_TYPE_ID;
+          const rai_received_date = sortAndExtractReceivedDate(record?.["RAI"]);
 
-          if (STATE_CODE) {
-            record.STATE_CODE = STATE_CODE;
+          switch (planTypeId) {
+          case 124:
+          case 125:
+            // These are spas
+            eventData.id = id;
+            eventData.planTypeId = planTypeId;
+            eventData.planType = planTypeLookup[planTypeId];
+            eventData.authority = "SPA";
+            eventData.state = record?.["STATES"]?.[0]?.["STATE_CODE"] || null;
+            eventData.submission_date =
+                record?.["STATE_PLAN"]?.["SUBMISSION_DATE"] || null;
+            if (rai_received_date) {
+              eventData.rai_received_date = rai_received_date; // maybe
+            }
+            eventData.status =
+                record?.SPW_STATUS?.[0].SPW_STATUS_DESC || null;
+          case 122:
+          case 123:
+            // These are waivers
+            eventData.id = id;
+            eventData.planTypeId = planTypeId;
+            eventData.planType = planTypeLookup[planTypeId];
+            eventData.authority = "WAIVER";
+            eventData.state = record?.["STATES"]?.[0]?.["STATE_CODE"] || null;
+            eventData.submission_date =
+                record?.["STATE_PLAN"]?.["SUBMISSION_DATE"] || null;
+            if (rai_received_date) {
+              eventData.rai_received_date = rai_received_date; // maybe
+            }
+            eventData.status =
+                record?.SPW_STATUS?.[0].SPW_STATUS_DESC || null;
+          default:
+            // This is not something we're concerned with
           }
-
-          if (PLAN_TYPE) {
-            record.PLAN_TYPE = PLAN_TYPE;
-          }
-
-          if (SUBMISSION_DATE) {
-            record.SUBMISSION_DATE = SUBMISSION_DATE;
-          }
-
           records.push({
             key: id,
-            value: {
-              seatool: record,
-            },
+            value: eventData,
           });
         }
       }
     );
   }
+  console.log(records);
+  console.log("yepyep");
   try {
     for (const item of records) {
       await os.updateData(osDomain, {
@@ -64,8 +103,6 @@ export const seatool: Handler = async (event) => {
   }
 };
 
-type ProgramType = "WAIVER" | "MEDICAID" | "CHIP" | "UNKNOWN";
-
 const getProgramType = (record: { componentType: string }) => {
   let type: ProgramType = "UNKNOWN";
   if (record.componentType.includes("waiver")) type = "WAIVER";
@@ -74,7 +111,6 @@ const getProgramType = (record: { componentType: string }) => {
 
   return type;
 };
-
 export const onemac: Handler = async (event) => {
   const records: Record<string, unknown>[] = [];
   for (const key in event.records) {
