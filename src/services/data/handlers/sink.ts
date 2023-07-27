@@ -40,11 +40,11 @@ export const seatool: Handler = async (event) => {
         } else {
           // do different things based on authority
           const record = { ...JSON.parse(decode(value)) };
-          const planTypeId = record?.STATE_PLAN?.PLAN_TYPE_ID;
+          const planTypeId = record?.STATE_PLAN?.PLAN_TYPE;
           const rai_received_date = record?.["RAI"]
             ? sortAndExtractReceivedDate(record?.["RAI"])
             : null;
-
+          console.log(planTypeId);
           switch (planTypeId) {
           case 124:
           case 125:
@@ -56,9 +56,7 @@ export const seatool: Handler = async (event) => {
             eventData.state = record?.["STATES"]?.[0]?.["STATE_CODE"] || null;
             eventData.submission_date =
                 record?.["STATE_PLAN"]?.["SUBMISSION_DATE"] || null;
-            if (rai_received_date) {
-              eventData.rai_received_date = rai_received_date; // maybe
-            }
+            eventData.rai_received_date = rai_received_date || null;
             eventData.status =
                 record?.SPW_STATUS?.[0].SPW_STATUS_DESC || null;
           case 122:
@@ -71,18 +69,18 @@ export const seatool: Handler = async (event) => {
             eventData.state = record?.["STATES"]?.[0]?.["STATE_CODE"] || null;
             eventData.submission_date =
                 record?.["STATE_PLAN"]?.["SUBMISSION_DATE"] || null;
-            if (rai_received_date) {
-              eventData.rai_received_date = rai_received_date; // maybe
-            }
+            eventData.rai_received_date = rai_received_date || null;
             eventData.status =
                 record?.SPW_STATUS?.[0].SPW_STATUS_DESC || null;
           default:
             // This is not something we're concerned with
           }
-          records.push({
-            key: id,
-            value: eventData,
-          });
+          if (Object.keys(eventData).length) {
+            records.push({
+              key: id,
+              value: eventData,
+            });
+          }
         }
       }
     );
