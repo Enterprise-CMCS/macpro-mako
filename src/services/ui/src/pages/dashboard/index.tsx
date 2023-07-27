@@ -38,7 +38,7 @@ const StateSelector = ({
   userStateCodes: string[];
 }) => {
   if (userStateCodes.length === 1) {
-    return <h3>Region: {userStateCodes[0]}</h3>;
+    return null;
   }
 
   return (

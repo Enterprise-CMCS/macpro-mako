@@ -7,7 +7,7 @@ export const getUserStateCodes = (
   if (!user) return [];
 
   if (isCmsUser(user)) {
-    return ["ALL", ...allStateAbbr];
+    return allStateAbbr;
   }
 
   if (!user["custom:state"]) {

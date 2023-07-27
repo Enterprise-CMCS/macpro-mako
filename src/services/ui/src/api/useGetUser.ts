@@ -8,13 +8,10 @@ export const getUser = async () => {
   try {
     const authenticatedUser = await Auth.currentAuthenticatedUser();
     const attributes = await Auth.userAttributes(authenticatedUser);
-    const user = attributes.reduce(
-      (obj: { [key: string]: string | string[] }, item) => {
-        obj[item.Name] = item.Value;
-        return obj;
-      },
-      {}
-    ) as unknown as CognitoUserAttributes;
+    const user = attributes.reduce((obj: { [key: string]: string }, item) => {
+      obj[item.Name] = item.Value;
+      return obj;
+    }, {}) as unknown as CognitoUserAttributes;
 
     const isCms = isCmsUser(user);
 
