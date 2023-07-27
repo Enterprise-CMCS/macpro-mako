@@ -1,4 +1,4 @@
-export enum CmsRole {
+export enum UserRoles {
   CMS_READ_ONLY = "cms-read-only",
   CMS_REVIEWER = "cms-reviewer",
   HELPDESK = "helpdesk",
@@ -8,11 +8,11 @@ export enum CmsRole {
   STATE_SYSTEM_ADMIN = "state-system-admin",
 }
 
-export type CmsRolesString = `${CmsRole}${"," | ""}`;
+export type UserRolesString = `${UserRoles}${"," | ""}`;
 
 export type CognitoUserAttributes = {
   sub: string;
-  "custom:cms-roles": CmsRolesString; // comma-separated list of CmsRoles ex. "cms-reviewer,helpdesk" or "state-submitter"
+  "custom:cms-roles": UserRolesString; // comma-separated list of UserRoles ex. "cms-reviewer,helpdesk" or "state-submitter"
   email_verified: boolean;
   "custom:state"?: string; // ex. "VA" or "VA,MD,CA" or undefined
   given_name: string;
@@ -21,9 +21,9 @@ export type CognitoUserAttributes = {
 };
 
 export const CMS_ROLES = [
-  CmsRole.CMS_READ_ONLY,
-  CmsRole.CMS_REVIEWER,
-  CmsRole.CMS_ROLE_APPROVER,
-  CmsRole.CMS_SYSTEM_ADMIN,
-  CmsRole.HELPDESK,
+  UserRoles.CMS_READ_ONLY,
+  UserRoles.CMS_REVIEWER,
+  UserRoles.CMS_ROLE_APPROVER,
+  UserRoles.CMS_SYSTEM_ADMIN,
+  UserRoles.HELPDESK,
 ];
