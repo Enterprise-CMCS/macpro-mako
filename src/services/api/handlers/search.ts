@@ -43,7 +43,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
 
     const stateMatcher = {
       match: {
-        "seatool.STATE_CODE": stateCode,
+        state: stateCode,
       },
     };
     let query = JSON.parse(event.body);

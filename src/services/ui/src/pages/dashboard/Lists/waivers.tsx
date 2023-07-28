@@ -55,7 +55,7 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
                 <Link
                   className="cursor-pointer text-blue-600"
                   to={`/record?region=${encodeURIComponent(
-                    params.row._source.seatool.STATE_PLAN.STATE_CODE
+                    params.row._source.state
                   )}&id=${encodeURIComponent(params.row._id)}`}
                 >
                   {params.row._id}
@@ -67,39 +67,21 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             field: "Plan Type",
             flex: 1,
             valueGetter(params) {
-              return params.row._source.seatool.PLAN_TYPE;
+              return params.row._source.planType;
             },
           },
           {
             field: "Status",
             flex: 1,
             valueGetter(params) {
-              let status = "Unknown"; // not sure what status to use or even what "record.SPW_STATUS[0].SPW_STATUS_DESC" is
-              if (
-                params.row._source.seatool.SPW_STATUS &&
-                params.row._source.seatool.SPW_STATUS[0]
-              ) {
-                status =
-                  params.row._source.seatool.SPW_STATUS[0].SPW_STATUS_DESC;
-              }
-              return status;
+              return params.row._source.status;
             },
           },
           {
             field: "Submission Date",
             flex: 1,
             valueGetter(params) {
-              return format(
-                params.row._source.seatool.SUBMISSION_DATE,
-                "MM/dd/yyyy"
-              );
-            },
-          },
-          {
-            field: "Region",
-            flex: 1,
-            valueGetter(params) {
-              return params.row._source.seatool.REGION[0].REGION_NAME;
+              return format(params.row._source.submission_date, "MM/dd/yyyy");
             },
           },
           {
@@ -107,13 +89,6 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             flex: 1,
             valueGetter(params) {
               return params.row._source.programType;
-            },
-          },
-          {
-            field: "Memo",
-            flex: 1,
-            valueGetter(params) {
-              return params.row._source.seatool?.STATE_PLAN?.SUMMARY_MEMO;
             },
           },
         ]}
