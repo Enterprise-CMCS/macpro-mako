@@ -59,6 +59,7 @@ export const seatool: Handler = async (event) => {
             eventData.rai_received_date = rai_received_date || null;
             eventData.status =
                 record?.SPW_STATUS?.[0].SPW_STATUS_DESC || null;
+            break;
           case 122:
           case 123:
             // These are waivers
@@ -72,8 +73,10 @@ export const seatool: Handler = async (event) => {
             eventData.rai_received_date = rai_received_date || null;
             eventData.status =
                 record?.SPW_STATUS?.[0].SPW_STATUS_DESC || null;
+            break;
           default:
             // This is not something we're concerned with
+            break;
           }
           if (Object.keys(eventData).length) {
             records.push({
