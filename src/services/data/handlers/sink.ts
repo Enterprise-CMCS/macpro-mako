@@ -28,6 +28,22 @@ function sortAndExtractReceivedDate(arr: any) {
   return arr[arr.length - 1].RAI_RECEIVED_DATE;
 }
 
+function getLeadAnalyst(eventData) {
+  if (
+    eventData.LEAD_ANALYST &&
+    Array.isArray(eventData.LEAD_ANALYST) &&
+    eventData.STATE_PLAN.LEAD_ANALYST_ID
+  ) {
+    const leadAnalyst = eventData.LEAD_ANALYST.find(
+      (analyst) => analyst.OFFICER_ID === eventData.STATE_PLAN.LEAD_ANALYST_ID
+    );
+    console.log("the lead analsyt is: ", leadAnalyst);
+
+    if (leadAnalyst) return leadAnalyst; // {FIRST_NAME: string, LAST_NAME: string}
+  }
+  return null;
+}
+
 export const seatool: Handler = async (event) => {
   const records: Record<string, unknown>[] = [];
   for (const key in event.records) {
@@ -59,6 +75,7 @@ export const seatool: Handler = async (event) => {
             eventData.rai_received_date = rai_received_date || null;
             eventData.status =
                 record?.SPW_STATUS?.[0].SPW_STATUS_DESC || null;
+            eventData.leadAnalyst = getLeadAnalyst(eventData);
             break;
           case 122:
           case 123:
@@ -73,6 +90,7 @@ export const seatool: Handler = async (event) => {
             eventData.rai_received_date = rai_received_date || null;
             eventData.status =
                 record?.SPW_STATUS?.[0].SPW_STATUS_DESC || null;
+            eventData.leadAnalyst = getLeadAnalyst(eventData);
             break;
           default:
             // This is not something we're concerned with
