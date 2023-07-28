@@ -1,63 +1,5 @@
 [
   {
-    "username": "paul@example.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "paul@example.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "Paul"
-      },
-      {
-        "Name": "family_name",
-        "Value": "McCartney"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:state_codes",
-        "Value": "[\"VA\"]"
-      },
-      {
-        "Name": "custom:roles",
-        "Value": "[\"macmcrrs-state-user\"]"
-      }
-    ]
-  },
-  {
-    "username": "john@example.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "john@example.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "John"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Lennon"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:state_codes",
-        "Value": "[\"VA\"]"
-      },
-      {
-        "Name": "custom:roles",
-        "Value": "[\"macmcrrs-state-user\"]"
-      }
-    ]
-  },
-  {
     "username": "george@example.com",
     "attributes": [
       {
@@ -77,12 +19,244 @@
         "Value": "true"
       },
       {
-        "Name": "custom:state_codes",
-        "Value": "[\"VA\"]"
+        "Name": "custom:state",
+        "Value": "VA,OH,SC,CO,GA"
       },
       {
-        "Name": "custom:roles",
-        "Value": "[\"macmcrrs-state-user\"]"
+        "Name": "custom:cms-roles",
+        "Value": "state-submitter"
+      }
+    ]
+  },
+  {
+    "username": "readonly@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "readonly@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Read"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Only"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "cms-read-only"
+      }
+    ]
+  },
+  {
+    "username": "reviewer@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "reviewer@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "CMS"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Reviewer"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "cms-reviewer"
+      }
+    ]
+  },
+  {
+    "username": "helpdesk@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "helpdesk@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "CMS"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Helpdesk"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "helpdesk"
+      }
+    ]
+  },
+  {
+    "username": "cmsadmin@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "cmsadmin@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "CMS"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Admin"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "cms-system-admin"
+      }
+    ]
+  },
+  {
+    "username": "approver@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "approver@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "CMS"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Approver"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "cms-role-approver"
+      }
+    ]
+  },
+  {
+    "username": "submitter@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "submitter@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Submitter"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "CO"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "state-submitter"
+      }
+    ]
+  },
+  {
+    "username": "stateadmin@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "stateadmin@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Admin"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "VA"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "state-system-admin"
+      }
+    ]
+  },
+  {
+    "username": "statemulti@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "statemulti@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Multi"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "CA,NY,MD"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "state-system-admin,state-submitter"
       }
     ]
   }

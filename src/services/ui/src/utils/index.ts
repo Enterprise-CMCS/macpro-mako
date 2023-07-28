@@ -1,1 +1,1 @@
-export * from "./getParsedObject";
+export * from "./user";
