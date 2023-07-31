@@ -19,6 +19,7 @@ export const ViewRecord = () => {
       <br />
       <h2>Region: {region}</h2>
       <h2>ID: {id}</h2>
+      <p>Lets put stuff here</p>
       {JSON.stringify(data)}
     </div>
   );
