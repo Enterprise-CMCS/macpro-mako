@@ -1,5 +1,6 @@
 import { SearchData, useSearch } from "@/api";
 import { ErrorAlert, SearchForm } from "@/components";
+import { removeUnderscoresAndCapitalize } from "@/utils";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
@@ -67,7 +68,9 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             field: "Plan Type",
             flex: 1,
             valueGetter(params) {
-              return params.row._source.planType;
+              return removeUnderscoresAndCapitalize(
+                params.row._source.planType
+              );
             },
           },
           {
@@ -85,7 +88,7 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             },
           },
           {
-            field: "Type",
+            field: "Program Type",
             flex: 1,
             valueGetter(params) {
               return params.row._source.programType;
