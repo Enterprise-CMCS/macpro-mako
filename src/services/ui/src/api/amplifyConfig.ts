@@ -19,7 +19,7 @@ Amplify.configure({
   API: {
     endpoints: [
       {
-        name: "seatool",
+        name: "os",
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION,
       },

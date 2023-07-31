@@ -43,7 +43,7 @@ export const getSearchData = async (
       },
     ];
   }
-  const searchData = await API.post("seatool", `/search/${selectedState}`, {
+  const searchData = await API.post("os", `/search/${selectedState}`, {
     body: query,
   });
 
