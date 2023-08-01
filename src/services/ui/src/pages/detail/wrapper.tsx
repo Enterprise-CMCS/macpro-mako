@@ -1,9 +1,10 @@
 import { SearchData, useGetItem } from "@/api"; // Assuming useGetItem returns RecordData
 import { LoadingSpinner } from "@/components";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+
 import { useQuery } from "@/hooks";
 import React from "react";
 
-// Define the type for the props
 interface DetailWrapperProps {
   children: React.ReactNode;
 }
@@ -27,13 +28,29 @@ export const DetailWrapper: React.FC<DetailWrapperProps> = ({ children }) => {
 
   // Pass the fetched data down to the children components
   return (
-    <div className="max-w-screen-lg mx-auto px-4 lg:px-8">
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement<ChildComponentProps>(child)) {
-          return React.cloneElement(child, { data: data.hits[0], id });
-        }
-        return child;
-      })}
-    </div>
+    <>
+      <div className="bg-sky-100">
+        <div className="max-w-screen-lg m-auto lg:px-8">
+          <div className="flex items-center">
+            <div className="flex align-middle py-2">
+              <button className="text-sky-800">
+                <ChevronLeftIcon className="w-6 h-6" />
+              </button>
+              <h1 className="text-xl font-medium pl-4">
+                CHIP SPA Submission Details - {id}
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="max-w-screen-lg mx-auto py-8 px-4 lg:px-8">
+        {React.Children.map(children, (child) => {
+          if (React.isValidElement<ChildComponentProps>(child)) {
+            return React.cloneElement(child, { data: data.hits[0], id });
+          }
+          return child;
+        })}
+      </div>
+    </>
   );
 };
