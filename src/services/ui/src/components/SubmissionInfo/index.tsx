@@ -31,6 +31,7 @@ const reviewerDetails = [
 export const SubmissionInfo = () => {
   return (
     <>
+      <hr className="my-4" />
       <div className="grid grid-cols-2 gap-4">
         {submissionDetails.map(({ label, value }) => {
           return (

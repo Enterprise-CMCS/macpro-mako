@@ -8,7 +8,7 @@ export const CardWithTopBorder: React.FC<CardWithTopBorderProps> = ({
   children,
 }: CardWithTopBorderProps) => {
   return (
-    <div className="w-full md:w-80 border mr-12 rounded-sm border-slate-300 mb-4">
+    <div className="border rounded-sm border-slate-300 mb-4 grow md:max-w-sm">
       <div
         style={{
           background: "linear-gradient(90.11deg,#0071bc 49.91%,#02bfe7 66.06%)",

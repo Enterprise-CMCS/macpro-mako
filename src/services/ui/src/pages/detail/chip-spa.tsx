@@ -6,6 +6,7 @@ import {
   Attachmentslist,
   CardWithTopBorder,
   ChipSpaPackageDetails,
+  DetailsSection,
   SubmissionInfo,
 } from "@/components";
 
@@ -13,7 +14,7 @@ const ChipSpa = ({ data }: { data?: SearchData }) => {
   console.log({ data });
   return (
     <div className="block md:flex">
-      <aside className="flex-none font-bold hidden md:block">
+      <aside className="flex-none font-bold hidden md:block pr-8">
         {[
           "Package Overview",
           "Package Details",
@@ -32,10 +33,12 @@ const ChipSpa = ({ data }: { data?: SearchData }) => {
           />
         ))}
       </aside>
-      <div id="package-overview" className="pl-8">
-        <section className="flex flex-wrap mb-8">
+      <div>
+        <section id="package-overview" className="block md:flex mb-8 gap-8">
           <CardWithTopBorder title="Status">
-            <h2 className="text-xl font-semibold mb-2">Pending</h2>
+            <div>
+              <h2 className="text-xl font-semibold mb-2">Pending</h2>
+            </div>
           </CardWithTopBorder>
           <CardWithTopBorder title="Package Actions">
             <div className="flex flex-col gap-y-2">
@@ -59,26 +62,25 @@ const ChipSpa = ({ data }: { data?: SearchData }) => {
             </div>
           </CardWithTopBorder>
         </section>
-        <div id="package-details" className="mb-8">
-          <h2 className="text-xl font-semibold mb-2">
-            CHIP SPA Package Details
-          </h2>
+        <DetailsSection id="package-details" title="CHIP SPA Package Details">
           <ChipSpaPackageDetails />
-        </div>
-        <div id="attachments" className="mb-8">
-          <h2 className="text-xl font-semibold mb-2">Attachments</h2>
-          <p className="mb-2 text-sm">Maximum file size of 80MB.</p>
+        </DetailsSection>
+
+        <DetailsSection
+          id="attachments"
+          title="Attachments"
+          description="Maximum file size of 80MB."
+        >
           <Attachmentslist />
-        </div>
-        <div id="additional-info" className="mb-8">
-          <h2 className="text-xl font-semibold mb-2">Additional Information</h2>
-          <p className="mb-4 text-sm">
-            Add anything else that you would like to share with CMS.
-          </p>
+        </DetailsSection>
+        <DetailsSection
+          id="additional-info"
+          title="Additional Information"
+          description="Add anything else that you would like to share with CMS."
+        >
           <AdditionalInfo />
-          <hr className="my-4" />
           <SubmissionInfo />
-        </div>
+        </DetailsSection>
       </div>
     </div>
   );
