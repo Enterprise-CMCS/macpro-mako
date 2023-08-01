@@ -19,6 +19,10 @@ const getLinks = (isAuthenticated: boolean) => {
         name: "Dashboard",
         link: "/dashboard",
       },
+      {
+        name: "FAQ",
+        link: "/faq",
+      },
     ];
   } else {
     return [
