@@ -55,9 +55,9 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
               return (
                 <Link
                   className="cursor-pointer text-blue-600"
-                  to={`/record?region=${encodeURIComponent(
-                    params.row._source.state
-                  )}&id=${encodeURIComponent(params.row._id)}`}
+                  to={`/detail/${params.row._source.programType.toLowerCase()}?id=${encodeURIComponent(
+                    params.row._id
+                  )}`}
                 >
                   {params.row._id}
                 </Link>
