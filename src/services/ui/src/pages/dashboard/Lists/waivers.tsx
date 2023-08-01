@@ -1,5 +1,6 @@
 import { SearchData, useSearch } from "@/api";
 import { ErrorAlert, SearchForm } from "@/components";
+import { removeUnderscoresAndCapitalize } from "@/utils";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
@@ -54,9 +55,9 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
               return (
                 <Link
                   className="cursor-pointer text-blue-600"
-                  to={`/record?region=${encodeURIComponent(
-                    params.row._source.seatool.STATE_PLAN.STATE_CODE
-                  )}&id=${encodeURIComponent(params.row._id)}`}
+                  to={`/detail/${params.row._source.programType.toLowerCase()}?id=${encodeURIComponent(
+                    params.row._id
+                  )}`}
                 >
                   {params.row._id}
                 </Link>
@@ -67,53 +68,30 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             field: "Plan Type",
             flex: 1,
             valueGetter(params) {
-              return params.row._source.seatool.PLAN_TYPE;
+              return removeUnderscoresAndCapitalize(
+                params.row._source.planType
+              );
             },
           },
           {
             field: "Status",
             flex: 1,
             valueGetter(params) {
-              let status = "Unknown"; // not sure what status to use or even what "record.SPW_STATUS[0].SPW_STATUS_DESC" is
-              if (
-                params.row._source.seatool.SPW_STATUS &&
-                params.row._source.seatool.SPW_STATUS[0]
-              ) {
-                status =
-                  params.row._source.seatool.SPW_STATUS[0].SPW_STATUS_DESC;
-              }
-              return status;
+              return params.row._source.status;
             },
           },
           {
             field: "Submission Date",
             flex: 1,
             valueGetter(params) {
-              return format(
-                params.row._source.seatool.SUBMISSION_DATE,
-                "MM/dd/yyyy"
-              );
+              return format(params.row._source.submission_date, "MM/dd/yyyy");
             },
           },
           {
-            field: "Region",
-            flex: 1,
-            valueGetter(params) {
-              return params.row._source.seatool.REGION[0].REGION_NAME;
-            },
-          },
-          {
-            field: "Type",
+            field: "Program Type",
             flex: 1,
             valueGetter(params) {
               return params.row._source.programType;
-            },
-          },
-          {
-            field: "Memo",
-            flex: 1,
-            valueGetter(params) {
-              return params.row._source.seatool?.STATE_PLAN?.SUMMARY_MEMO;
             },
           },
         ]}

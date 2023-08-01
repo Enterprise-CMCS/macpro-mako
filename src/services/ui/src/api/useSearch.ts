@@ -41,17 +41,9 @@ export const getSearchData = async (
           },
         },
       },
-      {
-        match: {
-          "seatool.STATE_PLAN.ID_NUMBER": {
-            query: searchString,
-            fuzziness: "AUTO",
-          },
-        },
-      },
     ];
   }
-  const searchData = await API.post("seatool", `/search/${selectedState}`, {
+  const searchData = await API.post("os", `/search/${selectedState}`, {
     body: query,
   });
 
