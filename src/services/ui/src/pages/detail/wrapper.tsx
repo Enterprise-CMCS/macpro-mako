@@ -4,6 +4,7 @@ import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 
 import { useQuery } from "@/hooks";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface DetailWrapperProps {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ interface ChildComponentProps {
 }
 
 export const DetailWrapper: React.FC<DetailWrapperProps> = ({ children }) => {
+  const navigate = useNavigate();
   const query = useQuery();
   const id = query.get("id") as string;
   const { data, isLoading, error } = useGetItem(id);
@@ -32,8 +34,8 @@ export const DetailWrapper: React.FC<DetailWrapperProps> = ({ children }) => {
       <div className="bg-sky-100">
         <div className="max-w-screen-lg m-auto lg:px-8">
           <div className="flex items-center">
-            <div className="flex align-middle py-2">
-              <button className="text-sky-800">
+            <div className="flex align-middle py-4">
+              <button className="text-sky-800" onClick={() => navigate(-1)}>
                 <ChevronLeftIcon className="w-6 h-6" />
               </button>
               <h1 className="text-xl font-medium pl-4">

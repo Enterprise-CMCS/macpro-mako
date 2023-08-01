@@ -4,3 +4,7 @@ export * from "./Layout";
 export * from "./HowItWorks";
 export * from "./SearchForm";
 export * from "./Cards";
+export * from "./PackageDetails";
+export * from "./AttachmentsList";
+export * from "./AdditionalInfo";
+export * from "./SubmissionInfo";

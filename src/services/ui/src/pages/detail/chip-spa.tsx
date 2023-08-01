@@ -1,7 +1,13 @@
 import { SearchData } from "@/api";
 import { DetailWrapper } from "./wrapper";
 import { Link } from "@enterprise-cmcs/macpro-ux-lib";
-import { CardWithTopBorder } from "@/components";
+import {
+  AdditionalInfo,
+  Attachmentslist,
+  CardWithTopBorder,
+  ChipSpaPackageDetails,
+  SubmissionInfo,
+} from "@/components";
 
 const ChipSpa = ({ data }: { data?: SearchData }) => {
   console.log({ data });
@@ -12,10 +18,9 @@ const ChipSpa = ({ data }: { data?: SearchData }) => {
           "Package Overview",
           "Package Details",
           "Attachments",
-          "Additional info",
+          "Additional Info",
         ].map((val) => (
           <Link
-            className="w-full"
             key={val}
             href={`#${val.toLowerCase().split(" ").join("-")}`}
             style={{
@@ -28,9 +33,9 @@ const ChipSpa = ({ data }: { data?: SearchData }) => {
         ))}
       </aside>
       <div id="package-overview" className="pl-8">
-        <section className="flex flex-wrap">
+        <section className="flex flex-wrap mb-8">
           <CardWithTopBorder title="Status">
-            <h3 className="text-xl font-semibold mb-2">Pending</h3>
+            <h2 className="text-xl font-semibold mb-2">Pending</h2>
           </CardWithTopBorder>
           <CardWithTopBorder title="Package Actions">
             <div className="flex flex-col gap-y-2">
@@ -54,14 +59,25 @@ const ChipSpa = ({ data }: { data?: SearchData }) => {
             </div>
           </CardWithTopBorder>
         </section>
-        <div id="package-details">
-          <div className="grid grid-cols-2 gap-4">
-            <div>01</div>
-            <div>01</div>
-            <div>01</div>
-            <div>01</div>
-            <div>01</div>
-          </div>
+        <div id="package-details" className="mb-8">
+          <h2 className="text-xl font-semibold mb-2">
+            CHIP SPA Package Details
+          </h2>
+          <ChipSpaPackageDetails />
+        </div>
+        <div id="attachments" className="mb-8">
+          <h2 className="text-xl font-semibold mb-2">Attachments</h2>
+          <p className="mb-2 text-sm">Maximum file size of 80MB.</p>
+          <Attachmentslist />
+        </div>
+        <div id="additional-info" className="mb-8">
+          <h2 className="text-xl font-semibold mb-2">Additional Information</h2>
+          <p className="mb-4 text-sm">
+            Add anything else that you would like to share with CMS.
+          </p>
+          <AdditionalInfo />
+          <hr className="my-4" />
+          <SubmissionInfo />
         </div>
       </div>
     </div>
