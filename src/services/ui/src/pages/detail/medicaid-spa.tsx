@@ -1,12 +1,9 @@
-import { SearchData } from "@/api";
 import { DetailWrapper } from "./wrapper";
-
-const MedicaidSpa = ({ data }: { data?: SearchData }) => {
-  return <>{JSON.stringify(data)}</>;
-};
+import { ChipSpa } from "./chip-spa";
 
 export const MedicaidSpaPage = () => (
   <DetailWrapper>
-    <MedicaidSpa />
+    {/* <MedicaidSpa /> */}
+    <ChipSpa />
   </DetailWrapper>
 );

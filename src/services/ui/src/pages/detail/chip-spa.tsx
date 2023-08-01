@@ -10,7 +10,7 @@ import {
   SubmissionInfo,
 } from "@/components";
 
-const ChipSpa = ({ data }: { data?: SearchData }) => {
+export const ChipSpa = ({ data }: { data?: SearchData }) => {
   console.log({ data });
   return (
     <div className="block md:flex">

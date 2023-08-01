@@ -1,12 +1,9 @@
-import { SearchData } from "@/api";
 import { DetailWrapper } from "./wrapper";
-
-const Waiver = ({ data }: { data?: SearchData }) => {
-  return <>{JSON.stringify(data)}</>;
-};
+import { ChipSpa } from "./chip-spa";
 
 export const WaiverPage = () => (
   <DetailWrapper>
-    <Waiver />
+    {/* <Waiver /> */}
+    <ChipSpa />
   </DetailWrapper>
 );
