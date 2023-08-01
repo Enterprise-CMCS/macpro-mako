@@ -17,7 +17,7 @@ export const TITLE_BAR_ID = "title_bar";
  * @param {Boolean} [enableBackNav] - (optional) enables the back button on the title bar (also enables the light theme styling)
  * @param {String} [backNavConfirmationMessage] - (optional) message to display in browser confirmation window when back nav button is clicked
  */
-const PageTitleBar = ({
+const PageTitleBar = ({  //
   heading,
   rightSideContent,
   enableBackNav,
@@ -72,5 +72,4 @@ const PageTitleBar = ({
     </div>
   );
 };
-
 export default PageTitleBar;
