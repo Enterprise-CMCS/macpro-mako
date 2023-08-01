@@ -7,7 +7,6 @@ if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
 
-// Handler function to get Seatool data
 export const getItemData = async (event: APIGatewayEvent) => {
   try {
     const body = JSON.parse(event.body);

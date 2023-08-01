@@ -28,7 +28,6 @@ export const DetailWrapper: React.FC<DetailWrapperProps> = ({ children }) => {
     return <p>Error</p>;
   }
 
-  // Pass the fetched data down to the children components
   return (
     <>
       <div className="bg-sky-100">
