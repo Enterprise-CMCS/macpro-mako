@@ -5,7 +5,7 @@ test("has title", async ({ page }) => {
   await page.goto("/");
 
   // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/CMS OM Template/);
+  await expect(page).toHaveTitle(/CMS MAKO/);
 });
 
 test("get issues link", async ({ page }) => {
