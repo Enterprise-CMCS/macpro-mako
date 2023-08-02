@@ -5,7 +5,7 @@
 <h1 align="center" style="border-bottom: none;">macpro-mako</h1>
 <h3 align="center">A new project by the MACPRO Platform Team</h3>
 <p align="center">
-  <a href="https://enterprise-cmcs.github.io/macpro-om-template/">
+  <a href="https://enterprise-cmcs.github.io/macpro-mako/">
     <img alt="Docs" src="https://img.shields.io/badge/Docs-site-blue.svg">
   </a>
   <a href="https://qmacbis.atlassian.net/jira/software/c/projects/OY2/boards/257">
