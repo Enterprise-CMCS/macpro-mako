@@ -11,8 +11,8 @@
   <a href="https://qmacbis.atlassian.net/jira/software/c/projects/OY2/boards/257">
     <img alt="Jira" src="https://img.shields.io/badge/Jira-board-0052CC.svg">
   </a>
-  <a href="https://cmsgov.slack.com/archives/C02QU8VNPV4">
-    <img alt="Slack" src="https://cmsgov.slack.com/archives/C05ECGY0F5F">
+  <a href="https://cmsgov.slack.com/archives/C05ECGY0F5F">
+    <img alt="Slack" src="https://img.shields.io/badge/Slack-channel-purple.svg">
   </a>
   <a href="https://codeclimate.com/github/Enterprise-CMCS/macpro-mako/maintainability">
     <img src="https://api.codeclimate.com/v1/badges/81d2233c0cfa7557c7ab/maintainability" />
