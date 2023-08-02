@@ -30,7 +30,7 @@
 
 ## Overview
 
-This project will serve as a starting point for the redesign of onemac.cms.gov
+The macpro-mako project, a.k.a. MAKO, a.k.a. Micro, is a redesign of MACPRO Onemac. The mission to be a modern submission and review portal for select CMS data remains the same, but the architecture is different in some important ways.
 
 <p align="center">
   <img width="55%" src="docs/assets/diagram.svg">
