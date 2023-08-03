@@ -33,7 +33,7 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           />
         ))}
       </aside>
-      <div>
+      <div className="flex-1">
         <section id="package-overview" className="block md:flex mb-8 gap-8">
           <CardWithTopBorder title="Status">
             <div>
@@ -79,18 +79,10 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           />
         </DetailsSection>
 
-        <DetailsSection
-          id="attachments"
-          title="Attachments"
-          description="Maximum file size of 80MB."
-        >
+        <DetailsSection id="attachments" title="Attachments">
           <Attachmentslist {...{ attachments: data?._source.attachments }} />
         </DetailsSection>
-        <DetailsSection
-          id="additional-info"
-          title="Additional Information"
-          description="Add anything else that you would like to share with CMS."
-        >
+        <DetailsSection id="additional-info" title="Additional Information">
           <AdditionalInfo
             {...{ additionalInfo: data?._source.additionalInformation }}
           />
