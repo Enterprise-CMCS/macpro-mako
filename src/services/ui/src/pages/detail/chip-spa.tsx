@@ -39,7 +39,7 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
         <section id="package-overview" className="block md:flex mb-8 gap-8">
           <CardWithTopBorder title="Status">
             <div>
-              <h2 className="text-xl font-semibold mb-2">Pending</h2>
+              <h2 className="text-xl font-semibold mb-2">{data?._source.status || "Unknown"}</h2>
             </div>
           </CardWithTopBorder>
           <CardWithTopBorder title="Package Actions">
