@@ -68,13 +68,13 @@ jobs:
         id: kibana-url
         run: |
           KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
-          echo "KIBANA_URL=$KIBANA_URL" >> $GITHUB_ENV
+          echo "::set-output name=kibana_url::$KIBANA_URL"
 
       - name: Upload Kibana URL as artifact
         uses: actions/upload-artifact@v3
         with:
           name: kibana-url-artifact
-          path: ${{ env.KIBANA_URL }}
+          path: ${{ steps.kibana-url.outputs.kibana_url }}
 
   test:
     runs-on: ubuntu-20.04
