@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
@@ -23,11 +23,11 @@ const PageTitleBar = ({  //
   enableBackNav,
   backTo,
   backNavConfirmationMessage,
-}) => {
-  const history = useHistory();
+}: any) => {
+  const navigate = useNavigate();
   const { confirmAction } = useAppContext() ?? {};
 
-  const handleTravel = () => (backTo ? history.push(backTo) : history.goBack());
+  const handleTravel = () => (backTo ? navigate(backTo) : navigate(-1));
 
   return (
     <div
