@@ -18,7 +18,9 @@ permalink: /
 
 ## Welcome!
 
-The {{ site.repo.name }} project is a serverless monorepo accelerator. The actual application is fairly 'hello world', but the repository support and configuration is full featured. This is by design, to allow for simpler project creation from the template. Full CI/CD support with GitHub Actions, automated security scanning, docs site in GitHub Pages, PR/Issue templates, infrastructure and application deployment workflows, etc. is all included.
+The {{ site.repo.name }} project, a.k.a. MAKO, a.k.a. Micro, is a redesign of MACPRO Onemac. The mission to be a modern submission and review portal for select CMS data remains the same, but the architecture is different in some important ways.
+
+This documentation site is a WIP and currently shows outdated information, as the project hasn't quite reached the 'norming' phase yet.  Thank you for your patience.
 
 ---
 
