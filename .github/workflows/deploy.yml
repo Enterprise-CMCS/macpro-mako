@@ -70,7 +70,7 @@ jobs:
           sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint > kibana_url.txt
 
       - name: Upload URL as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: kibana-url-artifact
           path: kibana_url.txt
