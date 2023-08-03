@@ -1,4 +1,4 @@
-export const AdditionalInfo = (data:any) => {
+export const AdditionalInfo = (data: any) => {
   return (
     <div className="flex flex-col gap-4">
       <p>

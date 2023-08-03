@@ -1,18 +1,16 @@
 import { Link } from "react-router-dom";
 
-export const SubmissionInfo = (data:any) => {
+export const SubmissionInfo = (data: any) => {
   const submissionDetails = [
     {
       label: "Submitter",
-      value: data.submitterName? (
+      value: data.submitterName ? (
         <Link to="#" className="text-lg text-blue-500">
           {data.submitterName}
         </Link>
       ) : (
-        (
-          <p className="text-lg">None</p>
-        )
-      )
+        <p className="text-lg">None</p>
+      ),
     },
     {
       label: "CPOC Name",

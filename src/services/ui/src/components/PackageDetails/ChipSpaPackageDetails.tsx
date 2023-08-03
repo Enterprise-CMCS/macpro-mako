@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 
-export const ChipSpaPackageDetails = (data:any) => {
+export const ChipSpaPackageDetails = (data: any) => {
   const detailFields = [
     {
       label: "SPA ID",
@@ -20,23 +20,33 @@ export const ChipSpaPackageDetails = (data:any) => {
     },
     {
       label: "Initial Submission Date",
-      value: data["Initial Submission Date"] ? format(data["Initial Submission Date"], "MM/dd/yyyy") : "None",
+      value: data["Initial Submission Date"]
+        ? format(data["Initial Submission Date"], "MM/dd/yyyy")
+        : "None",
     },
     {
       label: "Recent Submission Date",
-      value: data["Recent Submission Date"] ? format(data["Recent Submission Date"], "MM/dd/yyyy") : "None",
+      value: data["Recent Submission Date"]
+        ? format(data["Recent Submission Date"], "MM/dd/yyyy")
+        : "None",
     },
     {
       label: "Proposed Effective Date",
-      value: data["Proposed Submission Date"] ? format(data["Proposed Effective Date"], "MM/dd/yyyy") : "None",
+      value: data["Proposed Submission Date"]
+        ? format(data["Proposed Effective Date"], "MM/dd/yyyy")
+        : "None",
     },
     {
       label: "Approved Effective Date",
-      value: data["Approved Submission Date"] ? format(data["Approved Effective Date"], "MM/dd/yyyy") : "None",
+      value: data["Approved Submission Date"]
+        ? format(data["Approved Effective Date"], "MM/dd/yyyy")
+        : "None",
     },
     {
       label: "Change Date",
-      value: data["Change Date"] ? format(data["Change Date"], "MM/dd/yyyy") : "None",
+      value: data["Change Date"]
+        ? format(data["Change Date"], "MM/dd/yyyy")
+        : "None",
     },
     {
       label: "Final Disposition Date",
