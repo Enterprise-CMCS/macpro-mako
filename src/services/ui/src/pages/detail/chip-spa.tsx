@@ -9,8 +9,6 @@ import {
   DetailsSection,
   SubmissionInfo,
 } from "@/components";
-import { format } from "date-fns";
-
 
 export const ChipSpa = ({ data }: { data?: SearchData }) => {
   console.log({ data });
@@ -70,10 +68,10 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
             Type: data?._source.programType,
             State: data?._source.state,
             "Sub-Type": data?._source.planType,
-            "Initial Submission Date": formatOrNull(data?._source.submission_date),
-            "Proposed Effective Date": formatOrNull(data?._source.proposedDate),
-            "Approved Effective Date": formatOrNull(data?._source.approvedEffectiveDate),
-            "Change Date": formatOrNull(data?._source.changedDate),
+            "Initial Submission Date": data?._source.submission_date,
+            "Proposed Effective Date": data?._source.proposedDate,
+            "Approved Effective Date": data?._source.approvedEffectiveDate,
+            "Change Date": data?._source.changedDate,
           }}/>
         </DetailsSection>
 
@@ -102,10 +100,6 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
     </div>
   );
 };
-
-function formatOrNull(timestamp:any) {
-  return timestamp ? format(timestamp, "MM/dd/yyyy") : null
-}
 
 export const ChipSpaPage = () => (
   <DetailWrapper>
