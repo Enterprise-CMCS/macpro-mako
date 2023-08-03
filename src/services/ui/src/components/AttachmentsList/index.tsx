@@ -12,7 +12,7 @@ export const Attachmentslist = (data:any) => {
           </tr>
         </thead>
         <tbody>
-          {data.attachments.map((attachment:any) => {
+          {data.attachments?.map((attachment:any) => {
             return (
                 <tr key={attachment.s3Key}>
                   <TH rowHeader>
@@ -38,14 +38,16 @@ export const Attachmentslist = (data:any) => {
         </tbody>
       </Table>
       <div className="flex justify-end">
-        <Button
-          buttonText="Download All"
-          buttonVariation="secondary"
-          iconName="file_download"
-          target="_self"
-          type="button"
-          style={{ padding: "4px" }}
-        />
+        { data.attachments? (
+            <Button
+            buttonText="Download All"
+            buttonVariation="secondary"
+            iconName="file_download"
+            target="_self"
+            type="button"
+            style={{ padding: "4px" }}
+          />) : (<></>) }
+        
       </div>
     </div>
   );
