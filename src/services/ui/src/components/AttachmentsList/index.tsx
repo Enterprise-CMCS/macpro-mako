@@ -1,8 +1,6 @@
 import { Button, TD, TH, Table } from "@enterprise-cmcs/macpro-ux-lib";
 
 export const Attachmentslist = (attachments:any) => {
-  console.log("MIKE");
-  console.log(attachments);
   return (
     <div>
       <Table borderless className="w-full">
@@ -15,8 +13,6 @@ export const Attachmentslist = (attachments:any) => {
         </thead>
         <tbody>
           {attachments.attachments.map((attachment:any) => {
-            console.log(attachment);
-            console.log("scooby");
             return (
                 <tr key={attachment.s3Key}>
                   <TH rowHeader>
