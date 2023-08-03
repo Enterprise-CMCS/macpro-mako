@@ -37,7 +37,7 @@ jobs:
       url: ${{ steps.deployment-data.outputs.APPURL }}
     outputs:
       app-url: ${{ steps.deployment-data.outputs.APPURL }}
-      kibana-url: ${{ steps.deployment-data.outputs.KIBANA_URL }}
+      # kibana-url: ${{ steps.deployment-data.outputs.KIBANA_URL }}
       
     steps:
       - name: Checkout
@@ -71,15 +71,15 @@ jobs:
         run: |
           KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
           echo "$KIBANA_URL to access Kibana." > kibana_url_link.md
-          echo "KIBANA_URL=$KIBANA_URL" >> $GITHUB_OUTPUT
+        # echo "KIBANA_URL=$KIBANA_URL" >> $GITHUB_OUTPUT
 
- 
-        # echo """
-        # ------------------------------------------------------------------------------------------------
-        # ------------------------------------------------------------------------------------------------
-        #   Kibana endpoint:  $KIBANA_URL
-        # ------------------------------------------------------------------------------------------------
-        # """
+          echo """
+          ------------------------------------------------------------------------------------------------
+          ------------------------------------------------------------------------------------------------
+            Kibana endpoint:  $KIBANA_URL
+          ------------------------------------------------------------------------------------------------
+          """
+
       - name: Upload Kibana URL as artifact
         uses: actions/upload-artifact@v3
         with:
