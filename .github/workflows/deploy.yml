@@ -64,10 +64,16 @@ jobs:
             --query Stacks[0].Outputs[0].OutputValue
           )" | tr -d \'\" >> $GITHUB_OUTPUT
 
-      - name: Set URL
+      - name: Set Kibana URL
         id: kibana-url
         run: |
-          sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint
+          sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint > kibana_url.txt
+
+      - name: Upload URL as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: kibana-url-artifact
+          path: kibana_url.txt
 
   test:
     runs-on: ubuntu-20.04
