@@ -4,9 +4,9 @@ export const SubmissionInfo = (data:any) => {
   const submissionDetails = [
     {
       label: "Submitter",
-      value: data.data.submitterName? (
+      value: data.submitterName? (
         <Link to="#" className="text-lg text-blue-500">
-          {data.data.submitterName}
+          {data.submitterName}
         </Link>
       ) : (
         (
@@ -16,9 +16,9 @@ export const SubmissionInfo = (data:any) => {
     },
     {
       label: "CPOC Name",
-      value: data.data.leadAnalyst ? (
+      value: data.leadAnalyst ? (
         <Link to="#" className="text-lg text-blue-500">
-          {data.data.leadAnalyst || "None"}
+          {data.leadAnalyst || "None"}
         </Link>
       ) : (
         <p className="text-lg">None</p>
@@ -26,7 +26,7 @@ export const SubmissionInfo = (data:any) => {
     },
     {
       label: "Submission Source",
-      value: <p className="text-lg">{data.data.submissionOrigin || "Unknown"}</p>,
+      value: <p className="text-lg">{data.submissionOrigin || "Unknown"}</p>,
     },
   ];
   const reviewerDetails = [

@@ -65,7 +65,7 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           </CardWithTopBorder>
         </section>
         <DetailsSection id="package-details" title="CHIP SPA Package Details">
-          <ChipSpaPackageDetails data={{
+          <ChipSpaPackageDetails {...{
             "SPA ID": data?._id,
             Type: data?._source.programType,
             State: data?._source.state,
@@ -82,15 +82,15 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           title="Attachments"
           description="Maximum file size of 80MB."
         >
-          <Attachmentslist attachments={data?._source.attachments} />
+          <Attachmentslist {...{attachments: data?._source.attachments}} />
         </DetailsSection>
         <DetailsSection
           id="additional-info"
           title="Additional Information"
           description="Add anything else that you would like to share with CMS."
         >
-          <AdditionalInfo additionalInfo={data?._source.additionalInformation}/>
-          <SubmissionInfo data={{
+          <AdditionalInfo {...{additionalInformation: data?._source.additionalInformation}}/>
+          <SubmissionInfo {...{
             submitterName: data?._source.submitterName,
             submitterEmail: data?._source.submitterEmail,
             submissionOrigin: data?._source.submissionOrigin,

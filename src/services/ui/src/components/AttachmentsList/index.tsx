@@ -1,6 +1,6 @@
 import { Button, TD, TH, Table } from "@enterprise-cmcs/macpro-ux-lib";
 
-export const Attachmentslist = (attachments:any) => {
+export const Attachmentslist = (data:any) => {
   return (
     <div>
       <Table borderless className="w-full">
@@ -12,7 +12,7 @@ export const Attachmentslist = (attachments:any) => {
           </tr>
         </thead>
         <tbody>
-          {attachments.attachments.map((attachment:any) => {
+          {data.attachments.map((attachment:any) => {
             return (
                 <tr key={attachment.s3Key}>
                   <TH rowHeader>
@@ -35,40 +35,6 @@ export const Attachmentslist = (attachments:any) => {
                 </tr>
             );
           })}
-          {/* <tr>
-            <TH rowHeader>
-              <p className="text-sm font-bold">CMS Form 197</p>
-            </TH>
-            <TD>
-              <div className="text-sm">
-                <button className="text-blue-600">long file name.pdf</button>
-                <p>(ZIP, 1.2MB)</p>
-              </div>
-            </TD>
-            <TD>
-              <div className="text-slate-500 text-sm">
-                <p>Jun 14, 2021</p>
-                <p>10:30 AM EST </p>
-              </div>
-            </TD>
-          </tr>
-          <tr>
-            <TH rowHeader>
-              <p className="text-sm font-bold">SPA Pages</p>
-            </TH>
-            <TD>
-              <div className="text-sm">
-                <button className="text-blue-600">long file name.pdf</button>
-                <p>(ZIP, 1.2MB)</p>
-              </div>
-            </TD>
-            <TD>
-              <div className="text-slate-500 text-sm">
-                <p>Jun 14, 2021</p>
-                <p>10:30 AM EST </p>
-              </div>
-            </TD>
-          </tr> */}
         </tbody>
       </Table>
       <div className="flex justify-end">

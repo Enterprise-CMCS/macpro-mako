@@ -1,4 +1,4 @@
-const data = [
+const detailFields = [
   {
     label: "SPA ID",
     value: "VA-43-7700-CHIP",
@@ -41,14 +41,14 @@ const data = [
   },
 ];
 
-export const ChipSpaPackageDetails = (recordData:any) => {
+export const ChipSpaPackageDetails = (data:any) => {
   return (
     <div className="grid grid-cols-2 gap-4">
-      {data.map(({ label, value }) => {
+      {detailFields.map(({ label, value }) => {
         return (
           <div key={label}>
             <h3 className="text-sm">{label}</h3>
-            <p className="text-lg">{recordData.data[label] || value}</p>
+            <p className="text-lg">{data[label] || value}</p>
           </div>
         );
       })}
