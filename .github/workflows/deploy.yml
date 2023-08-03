@@ -63,17 +63,18 @@ jobs:
             --stack-name $PROJECT-ui-infra-$STAGE_NAME \
             --query Stacks[0].Outputs[0].OutputValue
           )" | tr -d \'\" >> $GITHUB_OUTPUT
-      # - name: Set Kibana URL
-      #   id: kibana-url
-      #   run: |
-      #     KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
-      #     echo "KIBANA_URL=$KIBANA_URL" >> $GITHUB_ENV
+
+      - name: Set Kibana URL
+        id: kibana-url
+        run: |
+          KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
+          echo "KIBANA_URL=$KIBANA_URL" >> $GITHUB_ENV
 
       - name: Upload Kibana URL as artifact
         uses: actions/upload-artifact@v3
         with:
           name: kibana-url-artifact
-          path: sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint
+          path: ${{ steps.deployment-data.outputs.KIBANA_URL }}
 
   test:
     runs-on: ubuntu-20.04
