@@ -70,7 +70,7 @@ jobs:
         id: kibana-url
         run: |
           KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
-          echo "$KIBANA_URL to access Kibana." > kibana_url_link.md
+          echo "$KIBANA_URL" > kibana_url_link.md
 
           echo """
           ------------------------------------------------------------------------------------------------
