@@ -28,6 +28,27 @@ function sortAndExtractReceivedDate(arr: any) {
   return arr[arr.length - 1].RAI_RECEIVED_DATE;
 }
 
+// This is not good
+function getProgramType(planTypeId: number) {
+  let type: ProgramType = "UNKNOWN";
+  switch (planTypeId) {
+  case 124:
+    type = "CHIP";
+    break;
+  case 125:
+    type = "MEDICAID";
+    break;
+  case 122:
+  case 123:
+    type = "WAIVER";
+    break;
+  default:
+    type = "UNKNOWN";
+    break;
+  }
+  return type;
+}
+
 function getLeadAnalyst(eventData) {
   if (
     eventData.LEAD_ANALYST &&
@@ -66,6 +87,7 @@ export const seatool: Handler = async (event) => {
           case 125:
             // These are spas
             eventData.id = id;
+            eventData.programType = getProgramType(planTypeId);
             eventData.planTypeId = planTypeId;
             eventData.planType = planTypeLookup[planTypeId];
             eventData.authority = "SPA";
@@ -76,11 +98,18 @@ export const seatool: Handler = async (event) => {
             eventData.status =
                 record?.SPW_STATUS?.[0].SPW_STATUS_DESC || null;
             eventData.leadAnalyst = getLeadAnalyst(eventData);
+            eventData.proposedDate =
+                record?.["STATE_PLAN"]?.["PROPOSED_DATE"] || null;
+            eventData.approvedEffectiveDate =
+                record?.["STATE_PLAN"]?.["APPROVED_EFFECTIVE_DATE"] || null;
+            eventData.changedDate =
+                record?.["STATE_PLAN"]?.["CHANGED_DATE"] || null;
             break;
           case 122:
           case 123:
             // These are waivers
             eventData.id = id;
+            eventData.programType = getProgramType(planTypeId);
             eventData.planTypeId = planTypeId;
             eventData.planType = planTypeLookup[planTypeId];
             eventData.authority = "WAIVER";
@@ -124,27 +153,15 @@ export const seatool: Handler = async (event) => {
   }
 };
 
-const getProgramType = (record: { componentType: string }) => {
-  let type: ProgramType = "UNKNOWN";
-  if (record.componentType.includes("waiver")) type = "WAIVER";
-  if (record.componentType.includes("medicaid")) type = "MEDICAID";
-  if (record.componentType.includes("chip")) type = "CHIP";
-
-  return type;
-};
 export const onemac: Handler = async (event) => {
   const records: Record<string, unknown>[] = [];
   for (const key in event.records) {
     event.records[key].forEach(
       ({ key, value }: { key: string; value: string }) => {
         const id: string = decode(key);
+        const eventData: Record<any, any> = {};
         if (!value) {
-          records.push({
-            key: id,
-            value: {
-              onemac: null,
-            },
-          });
+          // handle delete somehow
         } else {
           const record = { ...JSON.parse(decode(value)) };
 
@@ -152,29 +169,55 @@ export const onemac: Handler = async (event) => {
             console.log("Not a package type - ignoring");
             return;
           }
-          const programType = getProgramType(record);
+          // The plan type is derived from sea.  If there's onemac data without a sea record, it shouldn't be shown.
+          // const programType = getProgramType(record);
 
-          if (
-            record.proposedEffectiveDate &&
-            !(record.proposedEffectiveDate instanceof Date)
-          ) {
-            record.proposedEffectiveDate = null;
+          // This comes from sea data
+          // if (
+          //   record.proposedEffectiveDate &&
+          //   !(record.proposedEffectiveDate instanceof Date)
+          // ) {
+          //   record.proposedEffectiveDate = null;
+          // }
+
+          // Idk what this is but I figure its gotta come from sea...
+          // if (
+          //   record.finalDispositionDate &&
+          //   record.finalDispositionDate instanceof Date
+          // ) {
+          //   record.finalDispositionDate = null;
+          // }
+          eventData.attachments = record.attachments || null;
+          if (record.attachments) {
+            eventData.attachments = record.attachments.map((attachment) => {
+              try {
+                return {
+                  ...attachment,
+                  uploadDate: parseInt(attachment.s3Key.split("/")[0]),
+                };
+              } catch (error) {
+                console.log(error);
+                console.log(
+                  "Catching an error in determining the submission timestamp from the s3 key"
+                );
+                return {
+                  ...attachment,
+                  uploadDate: null,
+                };
+              }
+            });
           }
-
-          if (
-            record.finalDispositionDate &&
-            !(record.finalDispositionDate instanceof Date)
-          ) {
-            record.finalDispositionDate = null;
+          if (Object.keys(eventData).length) {
+            records.push({
+              key: id,
+              value: eventData,
+            });
           }
-
-          records.push({
-            key: id,
-            value: {
-              programType,
-              [programType]: record,
-            },
-          });
+          eventData.additionalInformation =
+            record.additionalInformation || null;
+          eventData.submitterName = record.submitterName || null;
+          eventData.submitterEmail = record.submitterEmail || null;
+          eventData.submissionOrigin = "OneMAC";
         }
       }
     );
