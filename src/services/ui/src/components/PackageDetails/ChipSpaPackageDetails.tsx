@@ -17,19 +17,19 @@ const data = [
   },
   {
     label: "Initial Submission Date",
-    value: "Wed, Sep 9 2022, 3:13:07 PM",
+    value: "None",
   },
   {
     label: "Recent Submission Date",
-    value: "Wed, Nov 16 2022, 9:12:44 PM",
+    value: "None",
   },
   {
     label: "Proposed Effective Date",
-    value: "Oct 1, 2022",
+    value: "None",
   },
   {
     label: "Approved Effective Date",
-    value: "– –",
+    value: "None",
   },
   {
     label: "Change Date",
@@ -41,14 +41,16 @@ const data = [
   },
 ];
 
-export const ChipSpaPackageDetails = () => {
+export const ChipSpaPackageDetails = (recordData:any) => {
+  console.log("MIKE");
+  console.log(recordData);
   return (
     <div className="grid grid-cols-2 gap-4">
       {data.map(({ label, value }) => {
         return (
           <div key={label}>
             <h3 className="text-sm">{label}</h3>
-            <p className="text-lg">{value}</p>
+            <p className="text-lg">{recordData.data[label] || value}</p>
           </div>
         );
       })}

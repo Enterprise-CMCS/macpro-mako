@@ -76,6 +76,12 @@ export const seatool: Handler = async (event) => {
             eventData.status =
                 record?.SPW_STATUS?.[0].SPW_STATUS_DESC || null;
             eventData.leadAnalyst = getLeadAnalyst(eventData);
+            eventData.proposedDate =
+                record?.["STATE_PLAN"]?.["PROPOSED_DATE"] || null;
+            eventData.approvedEffectiveDate =
+                record?.["STATE_PLAN"]?.["APPROVED_EFFECTIVE_DATE"] || null;
+            eventData.changedDate =
+                record?.["STATE_PLAN"]?.["CHANGED_DATE"] || null;
             break;
           case 122:
           case 123:
