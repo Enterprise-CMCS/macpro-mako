@@ -90,6 +90,7 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           description="Add anything else that you would like to share with CMS."
         >
           <AdditionalInfo {...{additionalInfo: data?._source.additionalInformation}}/>
+          {/* in general, for all these components, should we be passing the entire record instead?  and keep that this is that logic in the component */}
           <SubmissionInfo {...{
             submitterName: data?._source.submitterName,
             submitterEmail: data?._source.submitterEmail,
