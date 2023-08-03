@@ -181,6 +181,9 @@ export const onemac: Handler = async (event) => {
           }
           eventData.additionalInformation =
             record.additionalInformation || null;
+          eventData.submitterName = record.submitterName || null;
+          eventData.submitterEmail = record.submitterEmail || null;
+          eventData.submissionOrigin = "OneMAC";
         }
       }
     );

@@ -90,7 +90,13 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           description="Add anything else that you would like to share with CMS."
         >
           <AdditionalInfo additionalInfo={data?._source.additionalInformation}/>
-          <SubmissionInfo />
+          <SubmissionInfo data={{
+            submitterName: data?._source.submitterName,
+            submitterEmail: data?._source.submitterEmail,
+            submissionOrigin: data?._source.submissionOrigin,
+            leadAnalyst: data?._source.leadAnalyst
+
+          }}/>
         </DetailsSection>
       </div>
     </div>

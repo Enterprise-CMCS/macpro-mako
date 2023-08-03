@@ -1,34 +1,38 @@
 import { Link } from "react-router-dom";
 
-const submissionDetails = [
-  {
-    label: "Submitter",
-    value: (
-      <Link to="#" className="text-lg text-blue-500">
-        Lisa Quinones
-      </Link>
-    ),
-  },
-  {
-    label: "CPOC Name",
-    value: (
-      <Link to="#" className="text-lg text-blue-500">
-        Kyle Roseborrough
-      </Link>
-    ),
-  },
-  {
-    label: "Submission Source",
-    value: <p className="text-lg">OneMAC</p>,
-  },
-];
-
-const reviewerDetails = [
-  { label: "Reviewing Division", value: "Lorem Ipsum" },
-  { label: "Additional Reviewing Division", value: "Lorem Ipsum" },
-];
-
-export const SubmissionInfo = () => {
+export const SubmissionInfo = (data:any) => {
+  const submissionDetails = [
+    {
+      label: "Submitter",
+      value: data.data.submitterName? (
+        <Link to="#" className="text-lg text-blue-500">
+          {data.data.submitterName}
+        </Link>
+      ) : (
+        (
+          <p className="text-lg">None</p>
+        )
+      )
+    },
+    {
+      label: "CPOC Name",
+      value: data.data.leadAnalyst ? (
+        <Link to="#" className="text-lg text-blue-500">
+          {data.data.leadAnalyst || "None"}
+        </Link>
+      ) : (
+        <p className="text-lg">None</p>
+      ),
+    },
+    {
+      label: "Submission Source",
+      value: <p className="text-lg">{data.data.submissionOrigin || "Unknown"}</p>,
+    },
+  ];
+  const reviewerDetails = [
+    { label: "Reviewing Division", value: "Lorem Ipsum" },
+    { label: "Additional Reviewing Division", value: "Lorem Ipsum" },
+  ];
   return (
     <>
       <hr className="my-4" />
