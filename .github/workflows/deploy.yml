@@ -68,7 +68,14 @@ jobs:
         id: kibana-url
         run: |
           KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
-          echo "Click [here]($KIBANA_URL) to access Kibana." > kibana_url_link.md
+          echo "$KIBANA_URL to access Kibana." > kibana_url_link.md
+
+          echo """
+          ------------------------------------------------------------------------------------------------
+          ------------------------------------------------------------------------------------------------
+          Application endpoint:  `$KIBANA_URL`
+          ------------------------------------------------------------------------------------------------
+          """
 
       - name: Upload Kibana URL as artifact
         uses: actions/upload-artifact@v3
