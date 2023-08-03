@@ -89,7 +89,7 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           title="Additional Information"
           description="Add anything else that you would like to share with CMS."
         >
-          <AdditionalInfo {...{additionalInformation: data?._source.additionalInformation}}/>
+          <AdditionalInfo {...{additionalInfo: data?._source.additionalInformation}}/>
           <SubmissionInfo {...{
             submitterName: data?._source.submitterName,
             submitterEmail: data?._source.submitterEmail,
