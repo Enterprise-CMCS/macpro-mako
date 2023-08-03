@@ -188,6 +188,25 @@ export const onemac: Handler = async (event) => {
           //   record.finalDispositionDate = null;
           // }
           eventData.attachments = record.attachments || null;
+          if (record.attachments) {
+            eventData.attachments = record.attachments.map((attachment) => {
+              try {
+                return {
+                  ...attachment,
+                  uploadDate: parseInt(attachment.s3Key.split("/")[0]),
+                };
+              } catch (error) {
+                console.log(error);
+                console.log(
+                  "Catching an error in determining the submission timestamp from the s3 key"
+                );
+                return {
+                  ...attachment,
+                  uploadDate: null,
+                };
+              }
+            });
+          }
           if (Object.keys(eventData).length) {
             records.push({
               key: id,

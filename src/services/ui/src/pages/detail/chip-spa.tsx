@@ -96,7 +96,6 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
             submitterEmail: data?._source.submitterEmail,
             submissionOrigin: data?._source.submissionOrigin,
             leadAnalyst: data?._source.leadAnalyst
-
           }}/>
         </DetailsSection>
       </div>

@@ -1,6 +1,7 @@
 import { Button, TD, TH, Table } from "@enterprise-cmcs/macpro-ux-lib";
-
+import { format } from "date-fns";
 export const Attachmentslist = (data:any) => {
+  
   return (
     <div>
       <Table borderless className="w-full">
@@ -27,9 +28,14 @@ export const Attachmentslist = (data:any) => {
                   </TD>
                   <TD>
                     <div className="text-slate-500 text-sm">
-                      {/*we want to show the MM/dd/YYYY on line 1, and then the timestamp on line 2.  this data is missing from the attachments info tho, so i wont try to tee that up */}
-                      {/* the timestamp can be inferred by the s3Key.. its an epoch... if we can rely on that, we should do that in the sink, not here */}
-                      <p>{attachment.uploadDate}</p>
+                      {attachment.uploadDate? (
+                        <>
+                          <p>{format(attachment.uploadDate, "MM/dd/yyyy")}</p>
+                          <p>{format(attachment.uploadDate, "h:mm a")}</p>
+                        </>
+                      ) : (
+                        <p>Unknown</p>
+                      )}
                     </div>
                   </TD>
                 </tr>
