@@ -1,23 +1,12 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import { AnyZodObject } from "zod";
+import { transformSeatoolData } from "shared-types/seatool";
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
 }
 const osDomain: string = process.env.osDomain;
 const index = "main";
-
-const planTypeLookup = {
-  121: "1115",
-  122: "1915b_waivers",
-  123: "1915c_waivers",
-  124: "CHIP_SPA",
-  125: "Medicaid_SPA",
-  126: "1115_Indep_Plus",
-  127: "1915c_Indep_Plus",
-  130: "UPL",
-};
 
 type ProgramType = "WAIVER" | "MEDICAID" | "CHIP" | "UNKNOWN";
 
@@ -50,58 +39,18 @@ export const seatool: Handler = async (event) => {
     event.records[key].forEach(
       ({ key, value }: { key: string; value: string }) => {
         const id: string = JSON.parse(decode(key));
-        const eventData: Record<any, any> = {};
         if (!value) {
           // handle delete somehow
         } else {
-          // do different things based on authority
           const record = { ...JSON.parse(decode(value)) };
-          const planTypeId = record?.STATE_PLAN?.PLAN_TYPE;
-          const rai_received_date = record?.["RAI"]
-            ? sortAndExtractReceivedDate(record?.["RAI"])
-            : null;
-          console.log(planTypeId);
-          switch (planTypeId) {
-          case 124:
-          case 125:
-            // These are spas
-            eventData.id = id;
-            eventData.planTypeId = planTypeId;
-            eventData.planType = planTypeLookup[planTypeId];
-            eventData.authority = "SPA";
-            eventData.state = record?.["STATES"]?.[0]?.["STATE_CODE"] || null;
-            eventData.submission_date =
-                record?.["STATE_PLAN"]?.["SUBMISSION_DATE"] || null;
-            eventData.rai_received_date = rai_received_date || null;
-            eventData.status =
-                record?.SPW_STATUS?.[0].SPW_STATUS_DESC || null;
-            eventData.leadAnalyst = getLeadAnalyst(eventData);
-            break;
-          case 122:
-          case 123:
-            // These are waivers
-            eventData.id = id;
-            eventData.planTypeId = planTypeId;
-            eventData.planType = planTypeLookup[planTypeId];
-            eventData.authority = "WAIVER";
-            eventData.state = record?.["STATES"]?.[0]?.["STATE_CODE"] || null;
-            eventData.submission_date =
-                record?.["STATE_PLAN"]?.["SUBMISSION_DATE"] || null;
-            eventData.rai_received_date = rai_received_date || null;
-            eventData.status =
-                record?.SPW_STATUS?.[0].SPW_STATUS_DESC || null;
-            eventData.leadAnalyst = getLeadAnalyst(eventData);
-            break;
-          default:
-            // This is not something we're concerned with
-            break;
-          }
-          if (Object.keys(eventData).length) {
-            records.push({
-              key: id,
-              value: eventData,
-            });
-          }
+          const transformedSeaToolData = transformSeatoolData(id).parse(record);
+          // const rai_received_date = record?.["RAI"]
+          //   ? sortAndExtractReceivedDate(record?.["RAI"])
+          //   : null;
+          records.push({
+            key: id,
+            value: transformedSeaToolData,
+          });
         }
       }
     );
