@@ -42,8 +42,6 @@ const data = [
 ];
 
 export const ChipSpaPackageDetails = (recordData:any) => {
-  console.log("MIKE");
-  console.log(recordData);
   return (
     <div className="grid grid-cols-2 gap-4">
       {data.map(({ label, value }) => {

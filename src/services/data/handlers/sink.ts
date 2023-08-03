@@ -144,13 +144,9 @@ export const onemac: Handler = async (event) => {
     event.records[key].forEach(
       ({ key, value }: { key: string; value: string }) => {
         const id: string = decode(key);
+        const eventData: Record<any, any> = {};
         if (!value) {
-          records.push({
-            key: id,
-            value: {
-              onemac: null,
-            },
-          });
+          // handle delete somehow
         } else {
           const record = { ...JSON.parse(decode(value)) };
 
@@ -158,29 +154,33 @@ export const onemac: Handler = async (event) => {
             console.log("Not a package type - ignoring");
             return;
           }
-          const programType = getProgramType(record);
+          // The plan type is derived from sea.  If there's onemac data without a sea record, it shouldn't be shown.
+          // const programType = getProgramType(record);
 
-          if (
-            record.proposedEffectiveDate &&
-            !(record.proposedEffectiveDate instanceof Date)
-          ) {
-            record.proposedEffectiveDate = null;
+          // This comes from sea data
+          // if (
+          //   record.proposedEffectiveDate &&
+          //   !(record.proposedEffectiveDate instanceof Date)
+          // ) {
+          //   record.proposedEffectiveDate = null;
+          // }
+
+          // Idk what this is but I figure its gotta come from sea...
+          // if (
+          //   record.finalDispositionDate &&
+          //   record.finalDispositionDate instanceof Date
+          // ) {
+          //   record.finalDispositionDate = null;
+          // }
+          eventData.attachments = record.attachments || null;
+          if (Object.keys(eventData).length) {
+            records.push({
+              key: id,
+              value: eventData,
+            });
           }
-
-          if (
-            record.finalDispositionDate &&
-            !(record.finalDispositionDate instanceof Date)
-          ) {
-            record.finalDispositionDate = null;
-          }
-
-          records.push({
-            key: id,
-            value: {
-              programType,
-              [programType]: record,
-            },
-          });
+          eventData.additionalInformation =
+            record.additionalInformation || null;
         }
       }
     );
