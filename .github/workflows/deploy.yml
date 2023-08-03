@@ -74,7 +74,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: kibana-url-artifact
-          path: ${{ steps.deployment-data.outputs.KIBANA_URL }}
+          path: ${{ env.KIBANA_URL }}
 
   test:
     runs-on: ubuntu-20.04
