@@ -37,7 +37,9 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
         <section id="package-overview" className="block md:flex mb-8 gap-8">
           <CardWithTopBorder title="Status">
             <div>
-              <h2 className="text-xl font-semibold mb-2">Pending</h2>
+              <h2 className="text-xl font-semibold mb-2">
+                {data?._source.status || "Unknown"}
+              </h2>
             </div>
           </CardWithTopBorder>
           <CardWithTopBorder title="Package Actions">
@@ -63,7 +65,18 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           </CardWithTopBorder>
         </section>
         <DetailsSection id="package-details" title="CHIP SPA Package Details">
-          <ChipSpaPackageDetails />
+          <ChipSpaPackageDetails
+            {...{
+              "SPA ID": data?._id,
+              Type: data?._source.programType,
+              State: data?._source.state,
+              "Sub-Type": data?._source.planType,
+              "Initial Submission Date": data?._source.submission_date,
+              "Proposed Effective Date": data?._source.proposedDate,
+              "Approved Effective Date": data?._source.approvedEffectiveDate,
+              "Change Date": data?._source.changedDate,
+            }}
+          />
         </DetailsSection>
 
         <DetailsSection
@@ -71,15 +84,25 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           title="Attachments"
           description="Maximum file size of 80MB."
         >
-          <Attachmentslist />
+          <Attachmentslist {...{ attachments: data?._source.attachments }} />
         </DetailsSection>
         <DetailsSection
           id="additional-info"
           title="Additional Information"
           description="Add anything else that you would like to share with CMS."
         >
-          <AdditionalInfo />
-          <SubmissionInfo />
+          <AdditionalInfo
+            {...{ additionalInfo: data?._source.additionalInformation }}
+          />
+          {/* in general, for all these components, should we be passing the entire record instead?  and keep that this is that logic in the component */}
+          <SubmissionInfo
+            {...{
+              submitterName: data?._source.submitterName,
+              submitterEmail: data?._source.submitterEmail,
+              submissionOrigin: data?._source.submissionOrigin,
+              leadAnalyst: data?._source.leadAnalyst,
+            }}
+          />
         </DetailsSection>
       </div>
     </div>
