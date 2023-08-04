@@ -5,6 +5,7 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 import { CognitoUserAttributes } from "shared-types";
 import { APIGatewayEvent } from "aws-lambda";
+import { isCmsUser } from "shared-utils";
 
 // Retrieve user authentication details from the APIGatewayEvent
 export function getAuthDetails(event: APIGatewayEvent) {
@@ -82,3 +83,21 @@ async function fetchUserFromCognito(
     throw new Error("Error fetching user from Cognito");
   }
 }
+
+export const isAuthorized = async (
+  event: APIGatewayEvent,
+  stateCode: string
+) => {
+  // Retrieve authentication details of the user
+  const authDetails = getAuthDetails(event);
+
+  // Look up user attributes from Cognito
+  const userAttributes = await lookupUserAttributes(
+    authDetails.userId,
+    authDetails.poolId
+  );
+  return (
+    isCmsUser(userAttributes) ||
+    userAttributes["custom:state"].includes(stateCode)
+  );
+};

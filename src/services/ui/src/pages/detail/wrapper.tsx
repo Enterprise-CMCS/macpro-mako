@@ -31,7 +31,7 @@ export const DetailWrapper: React.FC<DetailWrapperProps> = ({ children }) => {
       <div className="max-w-screen-lg mx-auto py-8 px-4 lg:px-8">
         {React.Children.map(children, (child) => {
           if (React.isValidElement<ChildComponentProps>(child)) {
-            return React.cloneElement(child, { data: data.hits[0], id });
+            return React.cloneElement(child, { data: data.item, id });
           }
           return child;
         })}

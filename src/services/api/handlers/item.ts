@@ -1,7 +1,7 @@
 import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
-
 import * as os from "../../../libs/opensearch-lib";
+import { isAuthorized } from "../libs/auth/user";
 
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
@@ -34,10 +34,19 @@ export const getItemData = async (event: APIGatewayEvent) => {
       });
     }
 
-    return response<unknown>({
-      statusCode: 200,
-      body: results,
-    });
+    const stateCode = results.hits[0]._source.state;
+
+    if (isAuthorized(event, stateCode)) {
+      return response<unknown>({
+        statusCode: 200,
+        body: results.hits[0],
+      });
+    } else {
+      return response({
+        statusCode: 403,
+        body: { message: "User is not authorized to access this resource" },
+      });
+    }
   } catch (error) {
     console.error({ error });
     return response({
