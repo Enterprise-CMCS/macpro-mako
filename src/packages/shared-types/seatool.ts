@@ -3,7 +3,7 @@ import { z } from "zod";
 type AuthorityType = "SPA" | "WAIVER";
 
 const planTypeLookup = (val: number | null): null | string => {
-  if (val) return null;
+  if (!val) return null;
 
   const lookup: Record<number, string> = {
     121: "1115",
@@ -55,6 +55,14 @@ export const seatoolSchema = z.object({
     SUBMISSION_DATE: z.number(),
     PLAN_TYPE: z.number().nullable(),
   }),
+  RAI: z
+    .array(
+      z.object({
+        RAI_RECEIVED_DATE: z.number(),
+        RAI_REQUESTED_DATE: z.number(),
+      })
+    )
+    .nullable(),
 });
 
 export const transformSeatoolData = (id: string) => {
@@ -65,7 +73,10 @@ export const transformSeatoolData = (id: string) => {
     authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
     state: data.STATES[0].STATE_CODE,
     submissionDate: data.STATE_PLAN.SUBMISSION_DATE,
-    // rai_received_date: rai_received_date, // FIX THIS IN A BIT
+    rai_received_date:
+      data.RAI?.sort((a, b) => a.RAI_REQUESTED_DATE - b.RAI_REQUESTED_DATE)[
+        data.RAI.length - 1
+      ] ?? null,
   }));
 };
 

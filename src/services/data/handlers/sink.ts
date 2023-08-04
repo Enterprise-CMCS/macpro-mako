@@ -10,7 +10,12 @@ const index = "main";
 
 type ProgramType = "WAIVER" | "MEDICAID" | "CHIP" | "UNKNOWN";
 
-function sortAndExtractReceivedDate(arr: any) {
+function sortAndExtractReceivedDate(
+  arr: {
+    RAI_REQUESTED_DATE: number;
+    RAI_RECEIVED_DATE: number;
+  }[]
+) {
   // Sort the array by RAI_REQUESTED_DATE in ascending order
   arr.sort((a, b) => a.RAI_REQUESTED_DATE - b.RAI_REQUESTED_DATE);
 
