@@ -27,7 +27,6 @@ export const Attachmentslist = (data: any) => {
                       onClick={async () => {
                         const url = await getAttachmentUrl(
                           data.id,
-                          data.state,
                           attachment.bucket,
                           attachment.key
                         );

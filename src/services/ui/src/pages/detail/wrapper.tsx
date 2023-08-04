@@ -30,10 +30,8 @@ export const DetailWrapper: React.FC<DetailWrapperProps> = ({ children }) => {
       <DetailNav id={id} />
       <div className="max-w-screen-lg mx-auto py-8 px-4 lg:px-8">
         {React.Children.map(children, (child) => {
-          console.log(data);
-          console.log("meow");
           if (React.isValidElement<ChildComponentProps>(child)) {
-            return React.cloneElement(child, { data: data?.hits[0], id });
+            return React.cloneElement(child, { data: data, id });
           }
           return child;
         })}
