@@ -84,7 +84,7 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           title="Attachments"
           description="Maximum file size of 80MB."
         >
-          <Attachmentslist {...{ attachments: data?._source.attachments }} />
+          <Attachmentslist {...data?._source} />
         </DetailsSection>
         <DetailsSection
           id="additional-info"

@@ -13,6 +13,7 @@
     "@aws-sdk/client-dynamodb": "^3.276.0",
     "@opensearch-project/opensearch": "^2.3.0",
     "libs": "*",
+    "s3-url-parser": "^1.0.3",
     "shared-types": "*",
     "shared-utils": "*",
     "zod": "^3.21.4"

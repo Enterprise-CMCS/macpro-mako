@@ -1,3 +1,4 @@
+import { getAttachmentUrl } from "@/api";
 import { Button, TD, TH, Table } from "@enterprise-cmcs/macpro-ux-lib";
 import { format } from "date-fns";
 export const Attachmentslist = (data: any) => {
@@ -13,14 +14,25 @@ export const Attachmentslist = (data: any) => {
         </thead>
         <tbody>
           {data.attachments?.map((attachment: any) => {
+            console.log(JSON.stringify(attachment, null, 2));
             return (
-              <tr key={attachment.s3Key}>
+              <tr key={attachment.key}>
                 <TH rowHeader>
                   <p className="text-sm font-bold">{attachment.title}</p>
                 </TH>
                 <TD>
                   <div className="text-sm">
-                    <button className="text-blue-600">
+                    <button
+                      className="text-blue-600"
+                      onClick={() => {
+                        getAttachmentUrl(
+                          data.id,
+                          data.state,
+                          attachment.bucket,
+                          attachment.key
+                        );
+                      }}
+                    >
                       {attachment.filename}
                     </button>
                     {/* originally wanted the size as well, but that data is missing*/}
