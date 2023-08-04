@@ -5,6 +5,7 @@ import { AnyZodObject } from "zod";
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
 }
+import s3ParseUrl from "s3-url-parser";
 const osDomain: string = process.env.osDomain;
 const index = "main";
 
@@ -169,48 +170,18 @@ export const onemac: Handler = async (event) => {
             console.log("Not a package type - ignoring");
             return;
           }
-          // The plan type is derived from sea.  If there's onemac data without a sea record, it shouldn't be shown.
-          // const programType = getProgramType(record);
-
-          // This comes from sea data
-          // if (
-          //   record.proposedEffectiveDate &&
-          //   !(record.proposedEffectiveDate instanceof Date)
-          // ) {
-          //   record.proposedEffectiveDate = null;
-          // }
-
-          // Idk what this is but I figure its gotta come from sea...
-          // if (
-          //   record.finalDispositionDate &&
-          //   record.finalDispositionDate instanceof Date
-          // ) {
-          //   record.finalDispositionDate = null;
-          // }
           eventData.attachments = record.attachments || null;
-          if (record.attachments) {
+          if (record.attachments && Array.isArray(record.attachments)) {
             eventData.attachments = record.attachments.map((attachment) => {
-              try {
-                return {
-                  ...attachment,
-                  uploadDate: parseInt(attachment.s3Key.split("/")[0]),
-                };
-              } catch (error) {
-                console.log(error);
-                console.log(
-                  "Catching an error in determining the submission timestamp from the s3 key"
-                );
-                return {
-                  ...attachment,
-                  uploadDate: null,
-                };
-              }
-            });
-          }
-          if (Object.keys(eventData).length) {
-            records.push({
-              key: id,
-              value: eventData,
+              const uploadDate = parseInt(attachment.s3Key.split("/")[0]);
+              delete attachment.s3Key; // Once we have the date, this value is useless to us.  It's not the actual key
+              const { bucket, key } = s3ParseUrl(attachment.url);
+              return {
+                ...attachment,
+                uploadDate,
+                bucket,
+                key,
+              };
             });
           }
           eventData.additionalInformation =
@@ -218,6 +189,12 @@ export const onemac: Handler = async (event) => {
           eventData.submitterName = record.submitterName || null;
           eventData.submitterEmail = record.submitterEmail || null;
           eventData.submissionOrigin = "OneMAC";
+          if (Object.keys(eventData).length) {
+            records.push({
+              key: id,
+              value: eventData,
+            });
+          }
         }
       }
     );

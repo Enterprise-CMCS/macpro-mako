@@ -1,4 +1,4 @@
-import { SearchData, useGetItem } from "@/api"; // Assuming useGetItem returns RecordData
+import { useGetItem } from "@/api"; // Assuming useGetItem returns RecordData
 import { LoadingSpinner } from "@/components";
 import { useQuery } from "@/hooks";
 import React from "react";
@@ -9,7 +9,7 @@ interface DetailWrapperProps {
 }
 
 interface ChildComponentProps {
-  data: SearchData;
+  data: { hits: any[] };
   id: string;
 }
 
@@ -31,7 +31,7 @@ export const DetailWrapper: React.FC<DetailWrapperProps> = ({ children }) => {
       <div className="max-w-screen-lg mx-auto py-8 px-4 lg:px-8">
         {React.Children.map(children, (child) => {
           if (React.isValidElement<ChildComponentProps>(child)) {
-            return React.cloneElement(child, { data: data.hits[0], id });
+            return React.cloneElement(child, { data: data, id });
           }
           return child;
         })}
