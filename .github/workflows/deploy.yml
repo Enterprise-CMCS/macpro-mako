@@ -37,8 +37,6 @@ jobs:
       url: ${{ steps.deployment-data.outputs.APPURL }}
     outputs:
       app-url: ${{ steps.deployment-data.outputs.APPURL }}
-      # kibana-url: ${{ steps.deployment-data.outputs.KIBANA_URL }}
-      
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -78,7 +76,6 @@ jobs:
             Kibana endpoint:  $KIBANA_URL
           ------------------------------------------------------------------------------------------------
           """
-        # echo "KIBANA_URL=$KIBANA_URL" >> $GITHUB_OUTPUT
 
       - name: Upload Kibana URL as artifact
         uses: actions/upload-artifact@v3
