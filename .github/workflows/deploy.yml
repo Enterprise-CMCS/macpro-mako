@@ -63,6 +63,16 @@ jobs:
             --stack-name $PROJECT-ui-infra-$STAGE_NAME \
             --query Stacks[0].Outputs[0].OutputValue
           )" | tr -d \'\" >> $GITHUB_OUTPUT
+      - name: Set Kibana URL
+        id: kibana-url
+        run: |
+          KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
+
+          echo """
+          ------------------------------------------------------------------------------------------------
+          ------------------------------------------------------------------------------------------------
+            Kibana endpoint:  $KIBANA_URL
+          ------
 
   kibana:
     runs-on: ubuntu-20.04
