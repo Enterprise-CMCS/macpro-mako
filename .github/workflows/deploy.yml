@@ -64,11 +64,32 @@ jobs:
             --query Stacks[0].Outputs[0].OutputValue
           )" | tr -d \'\" >> $GITHUB_OUTPUT
 
+  kibana:
+    runs-on: ubuntu-20.04
+    needs:
+      - deploy
+    environment:
+      name: ${{ github.ref_name }}
+    outputs:
+      kibana-url: ${{ steps.kibana-url.outputs.KIBANA }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: ./.github/actions/setup
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+          role-duration-seconds: 10800
+
       - name: Set Kibana URL
         id: kibana-url
         run: |
           KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
-          echo "$KIBANA_URL" > kibana_url_link.md
+          echo "KIBANA=$KIBANA_URL" >> $GITHUB_OUTPUT
 
           echo """
           ------------------------------------------------------------------------------------------------
@@ -77,11 +98,6 @@ jobs:
           ------------------------------------------------------------------------------------------------
           """
 
-      - name: Upload Kibana URL as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: kibana-url-artifact
-          path: kibana_url_link.md
 
   test:
     runs-on: ubuntu-20.04
