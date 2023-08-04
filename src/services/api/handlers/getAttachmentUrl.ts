@@ -1,6 +1,9 @@
 import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
 import { getAuthDetails, lookupUserAttributes } from "../libs/auth/user";
+import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import * as os from "./../../../libs/opensearch-lib";
 import { isCmsUser } from "shared-utils";
@@ -90,13 +93,13 @@ export const handler = async (event: APIGatewayEvent) => {
         body: { message: "Attachment details not found for given record id." },
       });
     }
-    let log = "";
+
     // Now we can generate the presigned url
-    log = process.env.onemacLegacyS3AccessRoleArn;
+    const url = await generatePresignedS3Url(body.bucket, body.key, 60);
 
     return response<unknown>({
       statusCode: 200,
-      body: { log },
+      body: { url },
     });
   } catch (error) {
     console.error({ error });
@@ -106,3 +109,44 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   }
 };
+
+async function generatePresignedS3Url(bucket, key, expirationInSeconds) {
+  // Create an S3 client
+  const roleToAssumeArn = process.env.onemacLegacyS3AccessRoleArn;
+
+  // Create an STS client to make the AssumeRole API call
+  const stsClient = new STSClient({});
+
+  // Assume the role
+  const assumedRoleResponse = await stsClient.send(
+    new AssumeRoleCommand({
+      RoleArn: roleToAssumeArn,
+      RoleSessionName: "AssumedRoleSession",
+    })
+  );
+
+  // Extract the assumed role credentials
+  const assumedCredentials = assumedRoleResponse.Credentials;
+
+  // Create S3 client using the assumed role's credentials
+  const assumedS3Client = new S3Client({
+    credentials: {
+      accessKeyId: assumedCredentials.AccessKeyId,
+      secretAccessKey: assumedCredentials.SecretAccessKey,
+      sessionToken: assumedCredentials.SessionToken,
+    },
+  });
+
+  // Create a command to get the object (you can adjust this according to your use case)
+  const getObjectCommand = new GetObjectCommand({
+    Bucket: bucket,
+    Key: key,
+  });
+
+  // Generate a presigned URL
+  const presignedUrl = await getSignedUrl(assumedS3Client, getObjectCommand, {
+    expiresIn: expirationInSeconds,
+  });
+
+  return presignedUrl;
+}

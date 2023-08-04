@@ -14,7 +14,7 @@ export const Attachmentslist = (data: any) => {
         </thead>
         <tbody>
           {data.attachments?.map((attachment: any) => {
-            console.log(JSON.stringify(attachment, null, 2));
+            // console.log(JSON.stringify(attachment, null, 2));
             return (
               <tr key={attachment.key}>
                 <TH rowHeader>
