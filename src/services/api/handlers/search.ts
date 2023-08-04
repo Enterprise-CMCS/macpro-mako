@@ -38,8 +38,8 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     }
 
     query.query = query?.query || {};
-    query.query.bool = query?.query?.bool || {};
-    query.query.bool.must = query?.query?.bool?.must || [];
+    query.query.bool = query.query?.bool || {};
+    query.query.bool.must = query.query.bool?.must || [];
     query.query.bool.must.push(stateMatcher);
 
     query.from = query.from || 0;
