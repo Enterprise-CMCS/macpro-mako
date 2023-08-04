@@ -5,8 +5,8 @@ export const getAttachmentUrl = async (
   state: string,
   bucket: string,
   key: string
-): Promise<{ url: string }> => {
-  const url = await API.post("os", "/getAttachmentUrl", {
+) => {
+  const response = await API.post("os", "/getAttachmentUrl", {
     body: {
       id,
       state,
@@ -14,6 +14,5 @@ export const getAttachmentUrl = async (
       key,
     },
   });
-  console.log(url);
-  return url;
+  return response.url;
 };

@@ -24,13 +24,15 @@ export const Attachmentslist = (data: any) => {
                   <div className="text-sm">
                     <button
                       className="text-blue-600"
-                      onClick={() => {
-                        getAttachmentUrl(
+                      onClick={async () => {
+                        const url = await getAttachmentUrl(
                           data.id,
                           data.state,
                           attachment.bucket,
                           attachment.key
                         );
+                        console.log(url);
+                        window.open(url);
                       }}
                     >
                       {attachment.filename}

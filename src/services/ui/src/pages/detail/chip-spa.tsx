@@ -11,7 +11,6 @@ import {
 } from "@/components";
 
 export const ChipSpa = ({ data }: { data?: SearchData }) => {
-  console.log({ data });
   return (
     <div className="block md:flex">
       <aside className="flex-none font-bold hidden md:block pr-8">
