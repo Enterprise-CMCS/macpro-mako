@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export const SpasList = ({ selectedState }: { selectedState: string }) => {
   const [rowSelectionModel, setRowSelectionModel] = useState<string>();
   const [searchText, setSearchText] = useState<string>("");
-  const [searchData, setSearchData] = useState<SearchData[] | null>(null);
+  const [searchData, setSearchData] = useState<SearchData | null>(null);
   const { mutateAsync, isLoading, error } = useSearch();
 
   useEffect(() => {
@@ -24,7 +24,8 @@ export const SpasList = ({ selectedState }: { selectedState: string }) => {
         programType: "CHIP OR MEDICAID",
       });
 
-      setSearchData(data.hits);
+      console.log(data);
+      setSearchData(data);
     } catch (error) {
       console.error("Error occurred during search:", error);
     }
@@ -102,7 +103,7 @@ export const SpasList = ({ selectedState }: { selectedState: string }) => {
             },
           },
         ]}
-        rows={(searchData as SearchData[]) || []}
+        rows={searchData?.hits || []}
         getRowId={(row) => row._id}
         slots={{
           toolbar: GridToolbar,
@@ -112,7 +113,6 @@ export const SpasList = ({ selectedState }: { selectedState: string }) => {
         }}
         rowSelectionModel={rowSelectionModel}
         initialState={{
-          ...{ searchData },
           pagination: { paginationModel: { pageSize: 10 } },
         }}
         pageSizeOptions={[5, 10, 25]}

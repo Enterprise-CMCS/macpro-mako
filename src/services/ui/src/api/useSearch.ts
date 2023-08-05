@@ -3,20 +3,29 @@ import { API } from "aws-amplify";
 import { ReactQueryApiError } from "shared-types";
 
 export type SearchData = {
-  _index: string;
-  _id: string;
-  _score: number;
-  _source: any;
+  total: {
+    value: number;
+    relation: string;
+  };
+  max_score: number;
+  hits: [
+    {
+      _index: string;
+      _id: string;
+      _score: number;
+      _source: any;
+    }
+  ];
 };
 
 export const getSearchData = async (
   selectedState: string,
   searchString: string,
   programType: string
-): Promise<{ hits: SearchData[] }> => {
+): Promise<SearchData> => {
   const query: any = {
     from: 0,
-    size: 100,
+    size: 10,
     query: {
       bool: {
         must: [
@@ -49,13 +58,13 @@ export const getSearchData = async (
 
 export const useSearch = (
   options?: UseMutationOptions<
-    { hits: SearchData[] },
+    SearchData,
     ReactQueryApiError,
     { selectedState: string; searchString: string; programType: string }
   >
 ) => {
   return useMutation<
-    { hits: SearchData[] },
+    SearchData,
     ReactQueryApiError,
     { selectedState: string; searchString: string; programType: string }
   >(
