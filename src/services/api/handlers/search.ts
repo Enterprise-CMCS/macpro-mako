@@ -50,13 +50,6 @@ export const getSearchData = async (event: APIGatewayEvent) => {
 
     const results = await os.search(process.env.osDomain, "main", query);
 
-    if (!results) {
-      return response({
-        statusCode: 404,
-        body: { message: "No Seatool data found for the provided state code" },
-      });
-    }
-
     return response<unknown>({
       statusCode: 200,
       body: results,
