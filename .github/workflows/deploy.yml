@@ -37,7 +37,7 @@ jobs:
       url: ${{ steps.deployment-data.outputs.APPURL }}
     outputs:
       app-url: ${{ steps.deployment-data.outputs.APPURL }}
-      kibana-url: ${{ steps.deployment-data.outputs.KIBANAURL }}
+      kibana-url: ${{ steps.kibana-url.outputs.KIBANAURL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
