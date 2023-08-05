@@ -37,6 +37,7 @@ jobs:
       url: ${{ steps.deployment-data.outputs.APPURL }}
     outputs:
       app-url: ${{ steps.deployment-data.outputs.APPURL }}
+      kibana-url: ${{ steps.deployment-data.outputs.KIBANAURL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -63,11 +64,12 @@ jobs:
             --stack-name $PROJECT-ui-infra-$STAGE_NAME \
             --query Stacks[0].Outputs[0].OutputValue
           )" | tr -d \'\" >> $GITHUB_OUTPUT
+
       - name: Set Kibana URL
         id: kibana-url
         run: |
           KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
-
+          echo "KIBANAURL=$KIBANA_URL" >> $GITHUB_OUTPUT
           echo """
           ------------------------------------------------------------------------------------------------
           ------------------------------------------------------------------------------------------------
@@ -79,9 +81,9 @@ jobs:
     needs:
       - deploy
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ github.ref_name }}-kibana
     outputs:
-      kibana-url: ${{ steps.kibana-url.outputs.KIBANA }}
+      kibana-url: ${{ needs.deploy.outputs.kibana-url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -95,18 +97,18 @@ jobs:
           aws-region: us-east-1
           role-duration-seconds: 10800
 
-      - name: Set Kibana URL
-        id: kibana-url
-        run: |
-          KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
-          echo "KIBANA=$KIBANA_URL" >> $GITHUB_OUTPUT
+      # - name: Set Kibana URL
+      #   id: kibana-url
+      #   run: |
+      #     KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
+      #     echo "KIBANA=$KIBANA_URL" >> $GITHUB_OUTPUT
 
-          echo """
-          ------------------------------------------------------------------------------------------------
-          ------------------------------------------------------------------------------------------------
-            Kibana endpoint:  $KIBANA_URL
-          ------------------------------------------------------------------------------------------------
-          """
+      #     echo """
+      #     ------------------------------------------------------------------------------------------------
+      #     ------------------------------------------------------------------------------------------------
+      #       Kibana endpoint:  $KIBANA_URL
+      #     ------------------------------------------------------------------------------------------------
+      #     """
 
 
   test:
