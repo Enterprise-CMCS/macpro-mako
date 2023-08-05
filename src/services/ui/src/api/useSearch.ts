@@ -32,13 +32,12 @@ export const getSearchData = async (
     },
   };
   if (searchString) {
-    query.query.bool.should = [
+    query.query.bool.must = [
       {
-        match: {
-          _id: {
-            query: searchString,
-            boost: 5,
-          },
+        simple_query_string: {
+          query: `${searchString}`,
+          fields: ["id"],
+          boost: 5,
         },
       },
     ];
