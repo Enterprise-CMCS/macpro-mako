@@ -70,7 +70,6 @@ jobs:
         run: |
           KIBANA_RESPONSE=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
           KIBANA_URL=$(echo "$KIBANA_RESPONSE" | awk '{print $NF}')
-          echo "$KIBANA_URL"
           echo "KIBANAURL=$KIBANA_URL" >> $GITHUB_OUTPUT
           echo """
           ------------------------------------------------------------------------------------------------
