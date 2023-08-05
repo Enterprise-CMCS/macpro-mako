@@ -68,7 +68,8 @@ jobs:
       - name: Set Kibana URL
         id: kibana-url
         run: |
-          KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
+          KIBANA_RESPONSE=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
+          KIBANA_URL=$(echo "$KIBANA_RESPONSE" | awk '{print $NF}')
           echo "KIBANAURL=$KIBANA_URL" >> $GITHUB_OUTPUT
           echo """
           ------------------------------------------------------------------------------------------------
@@ -82,8 +83,7 @@ jobs:
       - deploy
     environment:
       name: ${{ github.ref_name }}-kibana
-    outputs:
-      kibana-url: ${{ needs.deploy.outputs.kibana-url }}
+      url: ${{ needs.deploy.outputs.kibana-url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
