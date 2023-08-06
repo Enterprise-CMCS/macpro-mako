@@ -88,6 +88,7 @@ jobs:
           }
 
           ENCODED_KIBANA_URL=$(urlencode "$KIBANA_URL")
+          echo "$KIBANA_URL"
           echo "KIBANAURL=$ENCODED_KIBANA_URL" >> $GITHUB_OUTPUT
           echo """
           ------------------------------------------------------------------------------------------------
