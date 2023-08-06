@@ -70,8 +70,25 @@ jobs:
         run: |
           KIBANA_RESPONSE=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
           KIBANA_URL="$(echo "$KIBANA_RESPONSE" | awk '{print $NF}')"
-          echo "$KIBANA_URL"
-          echo "KIBANAURL=$KIBANA_URL" >> $GITHUB_OUTPUT
+
+          urlencode() {
+            local string="$1"
+            local length="${#string}"
+            local result=""
+      
+            for ((i = 0; i < length; i++)); do
+              local char="${string:i:1}"
+              case "$char" in
+                [a-zA-Z0-9.~_-]) result+="$char" ;;
+                *) result+=$(printf '%%%02X' "'$char") ;;
+              esac
+            done
+      
+            echo "$result"
+          }
+
+          ENCODED_KIBANA_URL=$(urlencode "$KIBANA_URL")
+          echo "KIBANAURL=$ENCODED_KIBANA_URL" >> $GITHUB_OUTPUT
           echo """
           ------------------------------------------------------------------------------------------------
           ------------------------------------------------------------------------------------------------
