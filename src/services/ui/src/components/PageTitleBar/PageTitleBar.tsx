@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+//import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 
 import { useAppContext } from "../../lib/context/contextLib";
@@ -60,7 +60,8 @@ const PageTitleBar = ({  //
               variation="transparent"
             >
               <FontAwesomeIcon
-                icon={faChevronLeft}
+                //icon={faChevronLeft}
+                icon={("chevron-left")}
                 className="title-bar-back-arrow"
               />
             </Button>

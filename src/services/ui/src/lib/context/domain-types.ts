@@ -1,4 +1,29 @@
-import { USER_STATUS, USER_ROLE, RoleEntry } from "cmscommonlib";
+//import { USER_STATUS, USER_ROLE, RoleEntry } from "cmscommonlib";///
+/**
+ * Possible user status
+ */
+type USER_STATUS = {
+  PENDING: "pending",
+  DENIED: "denied",
+  REVOKED: "revoked",
+  ACTIVE: "active",
+};
+
+export enum USER_ROLE {
+  DEFAULT_CMS_USER = "defaultcmsuser",
+  STATE_SUBMITTER = "statesubmitter",
+  CMS_REVIEWER = "cmsreviewer",
+  STATE_SYSTEM_ADMIN = "statesystemadmin",
+  CMS_ROLE_APPROVER = "cmsroleapprover",
+  SYSTEM_ADMIN = "systemadmin",
+  HELPDESK = "helpdesk",
+}
+
+export type RoleEntry = {
+  role: USER_ROLE;
+  status: USER_STATUS;
+  territory?: string;
+};
 
 export type UserProfile = {
   ismemberof: string;
