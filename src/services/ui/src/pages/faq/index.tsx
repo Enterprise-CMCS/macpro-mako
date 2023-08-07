@@ -7,7 +7,8 @@ import { Accordion, AccordionItem } from "@cmsgov/design-system";
 export const FAQ = () => {
 
   const FaqDetails = () => {
-    return oneMACFAQContent.map((section, index) => (
+    return (
+    <>{oneMACFAQContent.map((section, index) => (
       <div key={index} className="faq-section">
         <h2 className="topic-title">{section.sectionTitle}</h2>
         <Accordion>
@@ -26,7 +27,8 @@ export const FAQ = () => {
           ))}
         </Accordion>
       </div>
-    ))
+    ))}</>
+    );
   };
 
   const infoDetails = [
