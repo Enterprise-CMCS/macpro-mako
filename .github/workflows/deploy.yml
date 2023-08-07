@@ -71,7 +71,6 @@ jobs:
           KIBANA_RESPONSE=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
           KIBANA_URL=$(echo "$KIBANA_RESPONSE" | awk '{print $NF}')
 
-          ENCODED_KIBANA_URL=$(urlencode "$KIBANA_URL")
           echo "$KIBANA_URL"
           echo "${{steps.deployment-data.outputs.APPURL}}"
           echo "KIBANAURL=${{steps.deployment-data.outputs.APPURL}}" >> $GITHUB_OUTPUT
