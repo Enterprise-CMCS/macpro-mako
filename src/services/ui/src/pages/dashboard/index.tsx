@@ -75,11 +75,11 @@ export const Dashboard = () => {
         <UI.Typography size="lg" as="h1">
           Dashboard
         </UI.Typography>
-        <StateSelector
+        {/* <StateSelector
           userStateCodes={userStateCodes}
           handleStateChange={handleStateChange}
           selectedState={selectedState}
-        />
+        /> */}
       </div>
       <div
         style={{
