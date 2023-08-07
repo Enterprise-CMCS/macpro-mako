@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-type AuthorityType = "SPA" | "WAIVER";
+type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
 const planTypeLookup = (val: number | null): null | string => {
   if (!val) return null;
@@ -25,14 +25,39 @@ const authorityLookup = (val: number | null): null | string => {
   const lookup: Record<number, AuthorityType> = {
     122: "WAIVER",
     123: "WAIVER",
-    124: "SPA",
-    125: "SPA",
+    124: "CHIP",
+    125: "MEDICAID",
   };
 
   return lookup[val];
 };
 
+function getLeadAnalyst(eventData: SeaToolSink) {
+  if (
+    eventData.LEAD_ANALYST &&
+    Array.isArray(eventData.LEAD_ANALYST) &&
+    eventData.STATE_PLAN.LEAD_ANALYST_ID
+  ) {
+    const leadAnalyst = eventData.LEAD_ANALYST.find(
+      (analyst) => analyst.OFFICER_ID === eventData.STATE_PLAN.LEAD_ANALYST_ID
+    );
+    console.log("the lead analsyt is: ", leadAnalyst);
+
+    if (leadAnalyst) return leadAnalyst; // {FIRST_NAME: string, LAST_NAME: string}
+  }
+  return null;
+}
+
 export const seatoolSchema = z.object({
+  LEAD_ANALYST: z
+    .array(
+      z.object({
+        OFFICER_ID: z.string(), //potentially number,
+        FIRST_NAME: z.string(),
+        LAST_NAME: z.string(),
+      })
+    )
+    .nullable(),
   STATES: z
     .array(
       z.object({
@@ -54,6 +79,7 @@ export const seatoolSchema = z.object({
   STATE_PLAN: z.object({
     SUBMISSION_DATE: z.number(),
     PLAN_TYPE: z.number().nullable(),
+    LEAD_ANALYST_ID: z.string().nullable(), // maybe number
   }),
   RAI: z
     .array(
@@ -77,6 +103,7 @@ export const transformSeatoolData = (id: string) => {
       data.RAI?.sort((a, b) => a.RAI_REQUESTED_DATE - b.RAI_REQUESTED_DATE)[
         data.RAI.length - 1
       ] ?? null,
+    lead_analyst: getLeadAnalyst(data),
   }));
 };
 
