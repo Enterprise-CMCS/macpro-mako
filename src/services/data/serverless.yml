@@ -129,6 +129,16 @@ stepFunctions:
           SuccessState:
             Type: Succeed
 
+params:
+  master:
+    osInstanceType: m5.large.search
+  val:
+    osInstanceType: m5.large.search
+  production:
+    osInstanceType: m5.large.search
+  default:
+    osInstanceType: t3.small.search
+
 functions:
   sinkSeatool:
     handler: handlers/sink.seatool
@@ -360,7 +370,7 @@ resources:
           VolumeType: gp2
           VolumeSize: 10
         ClusterConfig:
-          InstanceType: t3.small.search
+          InstanceType: ${param:osInstanceType}
           InstanceCount: 3
           DedicatedMasterEnabled: false
           ZoneAwarenessEnabled: true
