@@ -89,6 +89,7 @@ jobs:
 
           ENCODED_KIBANA_URL=$(urlencode "$KIBANA_URL")
           echo "$KIBANA_URL"
+          echo "steps.deployment-data.outputs.APPURL"
           echo "KIBANAURL=$ENCODED_KIBANA_URL" >> $GITHUB_OUTPUT
           echo """
           ------------------------------------------------------------------------------------------------
