@@ -240,7 +240,7 @@ resources:
     SinkSeatoolTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties:
-        BatchSize: 100
+        BatchSize: 1000
         Enabled: true
         FunctionName: !GetAtt SinkSeatoolLambdaFunction.Arn
         SelfManagedEventSource:
@@ -264,7 +264,7 @@ resources:
     SinkOnemacTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties:
-        BatchSize: 100
+        BatchSize: 1000
         Enabled: true
         FunctionName: !GetAtt SinkOnemacLambdaFunction.Arn
         SelfManagedEventSource:

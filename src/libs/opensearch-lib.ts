@@ -36,6 +36,24 @@ export async function updateData(host:string, indexObject:any) {
   console.log(response.body);
 }
 
+export async function bulkUpdateData(host:string, arrayOfDocuments:any) {
+  client = client || (await getClient(host));
+  var response = await client.helpers.bulk({
+    datasource: arrayOfDocuments,
+    onDocument (doc:any) {
+      // The update operation always requires a tuple to be returned, with the
+      // first element being the action and the second being the update options.
+      return [
+        {
+          update: { _index: 'main', _id: doc.id }
+        },
+        { doc_as_upsert: true }
+      ]
+    }
+  });
+  console.log(response);
+}
+
 export async function deleteIndex(host:string, index:string) {
   client = client || (await getClient(host));
   var response = await client.indices.delete({index});
