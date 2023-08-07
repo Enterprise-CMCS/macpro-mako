@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import PageTitleBar from "../../components/PageTitleBar/PageTitleBar";
 import { helpDeskContact } from "../../lib/faq/helpDeskContact";
 import { oneMACFAQContent } from "../../lib/faq/faqContent";
@@ -6,35 +5,8 @@ import { oneMACFAQContent } from "../../lib/faq/faqContent";
 import { Accordion, AccordionItem } from "@cmsgov/design-system";
 
 export const FAQ = () => {
-  const [hash, setHash] = useState(window.location.hash.replace("#", ""));
 
-  const hashHandler = () => {
-    setHash((prev: any) => {
-      const newHash = window.location.hash.replace("#", "");
-      if (prev !== newHash) {
-        return newHash;
-      }
-      return prev;
-    });
-  };
-
-  window.addEventListener("hashchange", hashHandler);
-
-  useEffect(() => {
-    if (hash) {
-      const el = document.getElementById(`${hash}-button`);
-      if (el) {
-        el.scrollIntoView();
-        el.focus();
-        el.click();
-      }
-    }
-    return () => {
-      window.removeEventListener("hashchange", hashHandler);
-    };
-  }, [hash]);
-
-  const renderFAQ = () => {
+  const FaqDetails = () => {
     return oneMACFAQContent.map((section, index) => (
       <div key={index} className="faq-section">
         <h2 className="topic-title">{section.sectionTitle}</h2>
@@ -66,7 +38,7 @@ export const FAQ = () => {
     { label: "Email", linkType: "mailto", infoValue: helpDeskContact.email },
   ];
 
-  const renderInfo = () => {
+  const FaqInfo = () => {
     return (
       <dl>
         {infoDetails.map((detail, i) => (
@@ -92,10 +64,12 @@ export const FAQ = () => {
             <div className="faq-border-box"></div>
             <div className="faq-info-box">
               <h2>OneMAC Help Desk Contact Info</h2>
-              {renderInfo()}
+              <FaqInfo/>
             </div>
           </aside>
-          <div className="faq-left-column">{renderFAQ()}</div>
+          <div className="faq-left-column">
+            <FaqDetails/>
+          </div>
         </div>
       </div>
     </div>

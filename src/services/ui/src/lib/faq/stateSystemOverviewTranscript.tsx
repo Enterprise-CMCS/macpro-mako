@@ -1,4 +1,3 @@
-import React from "react";
 import { helpDeskContact } from "./helpDeskContact";
 export const stateSystemOverviewTranscript: JSX.Element = (
   <div>

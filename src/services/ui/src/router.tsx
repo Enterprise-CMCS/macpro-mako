@@ -23,6 +23,7 @@ export const router = createBrowserRouter([
       { path: "/chip", element: <P.Chip /> },
       { path: "/waiver", element: <P.Waiver /> },
       { path: "/record", element: <P.ViewRecord /> },
+      { path: "/faq", element: <P.FAQ /> },
     ],
     loader: rootLoader(queryClient),
   },

@@ -2,10 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@cmsgov/design-system";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-//import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import classNames from "classnames";
-
-import { useAppContext } from "../../lib/context/contextLib";
 
 export const TITLE_BAR_ID = "title_bar";
 
@@ -17,25 +13,20 @@ export const TITLE_BAR_ID = "title_bar";
  * @param {Boolean} [enableBackNav] - (optional) enables the back button on the title bar (also enables the light theme styling)
  * @param {String} [backNavConfirmationMessage] - (optional) message to display in browser confirmation window when back nav button is clicked
  */
-const PageTitleBar = ({  //
+const PageTitleBar = ({ 
   heading,
   rightSideContent,
   enableBackNav,
-  backTo,
-  backNavConfirmationMessage,
+  backTo
 }: any) => {
   const navigate = useNavigate();
-  const { confirmAction } = useAppContext() ?? {};
 
   const handleTravel = () => (backTo ? navigate(backTo) : navigate(-1));
 
   return (
     <div
       id={TITLE_BAR_ID}
-      className={classNames("page-title-bar", {
-        "title-bar-light-theme": enableBackNav,
-        "title-bar-dark-theme": !enableBackNav,
-      })}
+      className={ "page-title-bar title-bar-light-theme" }
     >
       <div className="header-wrapper">
         <div className="title-bar-left-content">
@@ -46,16 +37,7 @@ const PageTitleBar = ({  //
               data-testid="back-button"
               className="title-bar-back-button"
               onClick={() =>
-                backNavConfirmationMessage
-                  ? confirmAction &&
-                    confirmAction(
-                      "Leave this page?",
-                      "Leave Anyway",
-                      "Stay on Page",
-                      backNavConfirmationMessage,
-                      handleTravel
-                    )
-                  : handleTravel()
+                handleTravel()
               }
               variation="transparent"
             >
