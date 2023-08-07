@@ -26,7 +26,7 @@ export const FAQ = () => {
           ))}
         </Accordion>
       </div>
-    ));
+    ))
   };
 
   const infoDetails = [
@@ -68,7 +68,7 @@ export const FAQ = () => {
             </div>
           </aside>
           <div className="faq-left-column">
-            <FaqDetails/>
+           <> <FaqDetails/> </>
           </div>
         </div>
       </div>

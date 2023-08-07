@@ -1,4 +1,3 @@
-import React from "react";
 import { VideoContent } from "../../components/VideoWithTranscipt/VideoWithTranscript";
 import { helpDeskContact } from "./helpDeskContact";
 import { stateSystemOverviewTranscript } from "./stateSystemOverviewTranscript";
