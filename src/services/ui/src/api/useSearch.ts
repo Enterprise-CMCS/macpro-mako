@@ -45,6 +45,13 @@ export const getSearchData = async (
           },
         },
       },
+      {
+        fuzzy: {
+          leadAnalyst: {
+            value: `${searchString}`,
+          },
+        },
+      },
     ];
   } else {
     // If we haven't specified any parameters, lets just sort by changed date
