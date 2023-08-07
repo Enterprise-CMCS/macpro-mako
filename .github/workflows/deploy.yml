@@ -74,7 +74,7 @@ jobs:
 
           echo "$KIBANA_URL"
           echo "${{steps.deployment-data.outputs.APPURL}}"
-          echo "KIBANAURL=$TEST" >> $GITHUB_OUTPUT
+          echo "KIBANAURL='test'" >> $GITHUB_OUTPUT
           echo """
           ------------------------------------------------------------------------------------------------
           ------------------------------------------------------------------------------------------------
