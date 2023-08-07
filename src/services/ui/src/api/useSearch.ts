@@ -32,10 +32,17 @@ export const getSearchData = async (
     },
   };
   if (searchString) {
-    query.query.bool.must = [
+    query.query.bool.should = [
       {
         match_phrase: {
           id: `${searchString}`,
+        },
+      },
+      {
+        fuzzy: {
+          submitterName: {
+            value: `${searchString}`,
+          },
         },
       },
     ];
