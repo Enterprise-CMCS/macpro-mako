@@ -39,6 +39,15 @@ export const getSearchData = async (
         },
       },
     ];
+  } else {
+    // If we haven't specified any parameters, lets just sort by changed date
+    query.sort = [
+      {
+        changedDate: {
+          order: "desc",
+        },
+      },
+    ];
   }
   const searchData = await API.post("os", "/search", {
     body: query,
