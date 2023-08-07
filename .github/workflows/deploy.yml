@@ -70,11 +70,9 @@ jobs:
         run: |
           KIBANA_RESPONSE=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
           KIBANA_URL=$(echo "$KIBANA_RESPONSE" | awk '{print $NF}')
-
-          echo "$KIBANA_URL"
           echo "KIBANAURL=$KIBANA_URL" >> $GITHUB_OUTPUT
 
-  kibana:
+  kibana-url:
     runs-on: ubuntu-20.04
     needs:
       - deploy
@@ -93,20 +91,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
-
-      # - name: Set Kibana URL
-      #   id: kibana-url
-      #   run: |
-      #     KIBANA_URL=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
-      #     echo "KIBANA=$KIBANA_URL" >> $GITHUB_OUTPUT
-
-      #     echo """
-      #     ------------------------------------------------------------------------------------------------
-      #     ------------------------------------------------------------------------------------------------
-      #       Kibana endpoint:  $KIBANA_URL
-      #     ------------------------------------------------------------------------------------------------
-      #     """
-
 
   test:
     runs-on: ubuntu-20.04
