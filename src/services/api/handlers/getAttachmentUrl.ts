@@ -5,7 +5,7 @@ import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import * as os from "./../../../libs/opensearch-lib";
-import { isAuthorized } from "../libs/auth/user";
+import { getStateFilter } from "../libs/auth/user";
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
@@ -15,19 +15,24 @@ export const handler = async (event: APIGatewayEvent) => {
   try {
     const body = JSON.parse(event.body);
 
-    const query = {
+    let query: any = {};
+    query = {
       query: {
         bool: {
           must: [
             {
-              match: {
-                _id: body.id,
+              ids: {
+                values: [body.id],
               },
             },
           ],
         },
       },
     };
+    const stateFilter = await getStateFilter(event);
+    if (stateFilter) {
+      query.query.bool.must.push(stateFilter);
+    }
 
     const results = await os.search(process.env.osDomain, "main", query);
 
@@ -38,35 +43,26 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
 
-    const stateCode = results.hits[0]._source.state;
-
-    if (isAuthorized(event, stateCode)) {
-      if (
-        !results.hits[0]._source.attachments.some((e) => {
-          return e.bucket === body.bucket && e.key === body.key;
-        })
-      ) {
-        return response({
-          statusCode: 500,
-          body: {
-            message: "Attachment details not found for given record id.",
-          },
-        });
-      }
-
-      // Now we can generate the presigned url
-      const url = await generatePresignedS3Url(body.bucket, body.key, 60);
-
-      return response<unknown>({
-        statusCode: 200,
-        body: { url },
-      });
-    } else {
+    if (
+      !results.hits[0]._source.attachments.some((e) => {
+        return e.bucket === body.bucket && e.key === body.key;
+      })
+    ) {
       return response({
-        statusCode: 403,
-        body: { message: "User is not authorized to access this resource" },
+        statusCode: 500,
+        body: {
+          message: "Attachment details not found for given record id.",
+        },
       });
     }
+
+    // Now we can generate the presigned url
+    const url = await generatePresignedS3Url(body.bucket, body.key, 60);
+
+    return response<unknown>({
+      statusCode: 200,
+      body: { url },
+    });
   } catch (error) {
     console.error({ error });
     return response({
