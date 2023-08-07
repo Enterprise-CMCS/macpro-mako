@@ -68,6 +68,7 @@ function getLeadAnalyst(eventData) {
 
 export const seatool: Handler = async (event) => {
   const records: Record<string, unknown>[] = [];
+  const docObject: any = {};
   for (const key in event.records) {
     event.records[key].forEach(
       ({ key, value }: { key: string; value: string }) => {
@@ -82,7 +83,6 @@ export const seatool: Handler = async (event) => {
           const rai_received_date = record?.["RAI"]
             ? sortAndExtractReceivedDate(record?.["RAI"])
             : null;
-          console.log(planTypeId);
           switch (planTypeId) {
           case 124:
           case 125:
@@ -127,28 +127,18 @@ export const seatool: Handler = async (event) => {
             break;
           }
           if (Object.keys(eventData).length) {
-            records.push({
-              key: id,
-              value: eventData,
-            });
+            docObject[id] = eventData;
           }
         }
       }
     );
   }
-  console.log(records);
-  console.log("yepyep");
+  for (const [, b] of Object.entries(docObject)) {
+    const c: Record<any, any> = b; // Idk it wouldn't let me just push b... type thing.
+    records.push(c);
+  }
   try {
-    for (const item of records) {
-      await os.updateData(osDomain, {
-        index,
-        id: item.key,
-        body: {
-          doc: item.value,
-          doc_as_upsert: true,
-        },
-      });
-    }
+    await os.bulkUpdateData(osDomain, records);
   } catch (error) {
     console.error(error);
   }
@@ -156,6 +146,7 @@ export const seatool: Handler = async (event) => {
 
 export const onemac: Handler = async (event) => {
   const records: Record<string, unknown>[] = [];
+  const docObject: any = {};
   for (const key in event.records) {
     event.records[key].forEach(
       ({ key, value }: { key: string; value: string }) => {
@@ -170,6 +161,7 @@ export const onemac: Handler = async (event) => {
             console.log("Not a package type - ignoring");
             return;
           }
+          eventData.id = id;
           eventData.attachments = record.attachments || null;
           if (record.attachments && Array.isArray(record.attachments)) {
             eventData.attachments = record.attachments.map((attachment) => {
@@ -190,26 +182,18 @@ export const onemac: Handler = async (event) => {
           eventData.submitterEmail = record.submitterEmail || null;
           eventData.submissionOrigin = "OneMAC";
           if (Object.keys(eventData).length) {
-            records.push({
-              key: id,
-              value: eventData,
-            });
+            docObject[id] = eventData;
           }
         }
       }
     );
   }
+  for (const [, b] of Object.entries(docObject)) {
+    const c: Record<any, any> = b; // Idk it wouldn't let me just push b... type thing.
+    records.push(c);
+  }
   try {
-    for (const item of records) {
-      await os.updateData(osDomain, {
-        index,
-        id: item.key,
-        body: {
-          doc: item.value,
-          doc_as_upsert: true,
-        },
-      });
-    }
+    await os.bulkUpdateData(osDomain, records);
   } catch (error) {
     console.error(error);
   }
