@@ -70,21 +70,15 @@ jobs:
         run: |
           KIBANA_RESPONSE=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
           KIBANA_URL=$(echo "$KIBANA_RESPONSE" | awk '{print $NF}')
-          TEST=${{steps.deployment-data.outputs.APPURL}}
 
           echo "$KIBANA_URL"
           echo "${{steps.deployment-data.outputs.APPURL}}"
-          echo "KIBANAURL=$(
-            aws cloudformation \
-            --region us-east-1 describe-stacks \
-            --stack-name $PROJECT-ui-infra-$STAGE_NAME \
-            --query Stacks[0].Outputs[0].OutputValue
-          )" | tr -d \'\" >> $GITHUB_OUTPUT
-          echo """
-          ------------------------------------------------------------------------------------------------
-          ------------------------------------------------------------------------------------------------
-            Kibana endpoint:  $KIBANA_URL
-          ------
+      # echo "KIBANAURL=$(
+      #   aws cloudformation \
+      #   --region us-east-1 describe-stacks \
+      #   --stack-name $PROJECT-ui-infra-$STAGE_NAME \
+      #   --query Stacks[0].Outputs[0].OutputValue
+      # )" | tr -d \'\" >> $GITHUB_OUTPUT
 
   kibana:
     runs-on: ubuntu-20.04
