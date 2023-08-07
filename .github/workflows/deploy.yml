@@ -74,7 +74,6 @@ jobs:
 
           echo "$KIBANA_URL"
           echo "${{steps.deployment-data.outputs.APPURL}}"
-          echo "KIBANAURL='test'" >> $GITHUB_OUTPUT 
           echo "KIBANAURL=$(
             aws cloudformation \
             --region us-east-1 describe-stacks \
