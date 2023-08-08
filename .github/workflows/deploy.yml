@@ -106,7 +106,7 @@ jobs:
           ENCODED_URL=${{ needs.deploy.outputs.kibana-url }}
           DECODED_URL=$(python -c "import urllib.parse; print(urllib.parse.unquote('$ENCODED_URL'))")
           echo "Decoded Kibana URL: $DECODED_URL"
-          echo "KIBANAURL=$DECODED_URL" >> $GITHUB_ENV
+          echo "KIBANAURL=$DECODED_URL" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-20.04
