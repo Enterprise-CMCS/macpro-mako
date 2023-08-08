@@ -52,7 +52,7 @@ export const seatoolSchema = z.object({
   LEAD_ANALYST: z
     .array(
       z.object({
-        OFFICER_ID: z.string(), //potentially number,
+        OFFICER_ID: z.number(),
         FIRST_NAME: z.string(),
         LAST_NAME: z.string(),
       })
@@ -79,13 +79,13 @@ export const seatoolSchema = z.object({
   STATE_PLAN: z.object({
     SUBMISSION_DATE: z.number(),
     PLAN_TYPE: z.number().nullable(),
-    LEAD_ANALYST_ID: z.string().nullable(), // maybe number
+    LEAD_ANALYST_ID: z.number().nullable(),
   }),
   RAI: z
     .array(
       z.object({
-        RAI_RECEIVED_DATE: z.number(),
-        RAI_REQUESTED_DATE: z.number(),
+        RAI_RECEIVED_DATE: z.number().nullable(),
+        RAI_REQUESTED_DATE: z.number().nullable(),
       })
     )
     .nullable(),
