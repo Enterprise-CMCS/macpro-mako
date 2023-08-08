@@ -68,11 +68,12 @@ jobs:
       - name: Set Kibana URL
         id: kibana-url
         run: |
-          URL=$(
-            sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint |
-            awk '{print $NF}' | awk '{$1=$1};1' |
-            tr -d \'\"
-          )
+          echo "URL=$(
+            aws cloudformation \
+            --region us-east-1 describe-stacks \
+            --stack-name $PROJECT-ui-infra-$STAGE_NAME \
+            --query Stacks[0].Outputs[0].OutputValue
+          )" | tr -d \'\" >> $GITHUB_OUTPUT
 
           ENCODED_URL=$(python -c "import urllib.parse; print(urllib.parse.quote('''$URL'''))")
 
