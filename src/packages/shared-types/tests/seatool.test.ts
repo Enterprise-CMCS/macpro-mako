@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import seaToolRecords from "./test.json";
+import seaToolRecords from "./test-seatool.json";
 import { seatoolSchema, transformSeatoolData } from "../seatool";
 
 describe("seatool has valid data", () => {
