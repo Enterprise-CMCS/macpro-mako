@@ -68,16 +68,9 @@ jobs:
       - name: Set Kibana URL
         id: kibana-url
         run: |
-          KIBANA_RESPONSE=""
-            while [[ -z "$KIBANA_RESPONSE" ]]; do
-            KIBANA_RESPONSE=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
-            sleep 5  
-          done
-          KIBANA_URL=$(echo "$KIBANA_RESPONSE" | awk '{print $NF}')
-          CLEANED_KIBANA_URL=$(echo "$KIBANA_URL" | tr -d \'\")  # Remove single quotes and double quotes
-          echo "$CLEANED_KIBANA_URL"
-          echo "KIBANAURL=$CLEANED_KIBANA_URL" >> $GITHUB_OUTPUT
-
+          KIBANA_RESPONSE=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
+          KIBANA_URL=$(echo "$KIBANA_RESPONSE" | awk '{print $NF}' | tr -d \'\")
+          echo "KIBANAURL=$KIBANA_URL" >> $GITHUB_OUTPUT
   kibana-url:
     runs-on: ubuntu-20.04
     needs:
