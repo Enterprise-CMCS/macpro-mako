@@ -4,23 +4,11 @@ export const SubmissionInfo = (data: any) => {
   const submissionDetails = [
     {
       label: "Submitter",
-      value: data.submitterName ? (
-        <Link to="#" className="text-lg text-blue-500">
-          {data.submitterName}
-        </Link>
-      ) : (
-        <p className="text-lg">None</p>
-      ),
+      value: <p className="text-lg">{data.submitterName || "None"}</p>,
     },
     {
       label: "CPOC Name",
-      value: data.leadAnalyst ? (
-        <Link to="#" className="text-lg text-blue-500">
-          {data.leadAnalyst || "None"}
-        </Link>
-      ) : (
-        <p className="text-lg">None</p>
-      ),
+      value: <p className="text-lg">{data.leadAnalyst || "None"}</p>,
     },
     {
       label: "Submission Source",
