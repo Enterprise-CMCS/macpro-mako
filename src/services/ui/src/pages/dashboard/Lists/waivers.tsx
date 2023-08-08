@@ -65,6 +65,13 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             },
           },
           {
+            field: "State",
+            flex: 1,
+            valueGetter(params) {
+              return params.row._source.state;
+            },
+          },
+          {
             field: "Plan Type",
             flex: 1,
             valueGetter(params) {
@@ -85,13 +92,6 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             flex: 1,
             valueGetter(params) {
               return format(params.row._source.submission_date, "MM/dd/yyyy");
-            },
-          },
-          {
-            field: "Program Type",
-            flex: 1,
-            valueGetter(params) {
-              return params.row._source.programType;
             },
           },
         ]}
