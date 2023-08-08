@@ -3,14 +3,20 @@ services:
     path: src/services/alerts
   dashboard:
     path: src/services/dashboard
-  database:
-    path: src/services/database
+  data:
+    path: src/services/data
+  ui-infra:
+    path: src/services/ui-infra
   api:
     path: src/services/api
     params:
-      issuesTableName: ${database.IssuesTableName}
-  ui-infra:
-    path: src/services/ui-infra
+      osDomainArn: ${data.OpenSearchDomainArn}
+      osDomain: ${data.OpenSearchDomainEndpoint}
+  auth:
+    path: src/services/auth
+    params:
+      ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
+      ApiName: ${api.ApiGatewayRestApiName}
   ui:
     path: src/services/ui
     params:
@@ -19,7 +25,9 @@ services:
       ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
       ApiRegion: ${api.Region}
       ApiUrl: ${api.ApiGatewayRestApiUrl}
-    # params: # params will be added once other services are
-    #   ecsFailureTopicArn: ${alerts.ECSFailureTopicArn}
-    #   mskClusterArn: ${bigmac.MskClusterArn}
-    #   brokerString: ${bigmac.BrokerString}
+      ApiName: ${api.ApiGatewayRestApiName}
+      CognitoRegion: ${auth.Region}
+      CognitoIdentityPoolId: ${auth.IdentityPoolId}
+      CognitoUserPoolId: ${auth.UserPoolId}
+      CognitoUserPoolClientId: ${auth.UserPoolClientId}
+      CognitoUserPoolClientDomain: ${auth.UserPoolClientDomain}

@@ -3,6 +3,8 @@ import {
   PutItemCommand,
   GetItemCommand,
   GetItemCommandInput,
+  DeleteItemCommand,
+  DeleteItemCommandInput,
 } from "@aws-sdk/client-dynamodb";
 import {
   marshall,
@@ -38,6 +40,31 @@ export async function putItem({
   } catch (error) {
     console.error("ERROR updating record in dynamodb: ", error);
     throw error;
+  }
+}
+
+export async function deleteItem({
+  tableName,
+  key,
+}: {
+  tableName: string;
+  key: Record<string, NativeAttributeValue>;
+}) {
+  try {
+    const deleteItemCommandInput: DeleteItemCommandInput = {
+      TableName: tableName,
+      Key: marshall(key),
+    };
+
+    console.log("DELETING ITEM:", deleteItemCommandInput);
+
+    const results = await client.send(
+      new DeleteItemCommand(deleteItemCommandInput)
+    );
+    return results;
+  } catch (error) {
+    console.log("ERROR Deleting Item: ", error);
+    return error;
   }
 }
 

@@ -1,3 +1,3 @@
-export * from "./issue/view";
-export * from "./issue/list";
-export * from "./issue";
+export * from "./dashboard";
+export * from "./welcome";
+export * from "./detail";

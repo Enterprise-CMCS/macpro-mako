@@ -10,8 +10,6 @@ plugins:
 provider:
   name: aws
   runtime: nodejs18.x
-  environment:
-    issuesTable: ${param:issuesTableName}
   logs:
     restApi: true
   region: ${env:REGION_A}
@@ -25,6 +23,15 @@ provider:
       statements:
         - Effect: Allow
           Action:
+            - es:ESHttpHead
+            - es:ESHttpPost
+            - es:ESHttpGet
+            - es:ESHttpPatch
+            - es:ESHttpDelete
+            - es:ESHttpPut
+          Resource: ${param:osDomainArn}/*
+        - Effect: Allow
+          Action:
             - dynamodb:Query
             - dynamodb:Scan
             - dynamodb:GetItem
@@ -36,6 +43,16 @@ provider:
             - dynamodb:BatchWrite*
             - dynamodb:BatchGet*
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - cognito-idp:GetUser
+            - cognito-idp:ListUsers
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - sts:AssumeRole
+          Resource:
+            - ${self:custom.onemacLegacyS3AccessRoleArn}
 
 custom:
   project: ${env:PROJECT}
@@ -48,62 +65,62 @@ custom:
       - production
   bundle:
     linting: false
+    packager: yarn
+  vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
+  onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
 functions:
-  getIssues:
-    handler: handlers/getIssues.handler
+  search:
+    handler: handlers/search.handler
     maximumRetryAttempts: 0
     environment:
-      tableName: ${param:issuesTableName}
       region: ${self:provider.region}
+      osDomain: ${param:osDomain}
     events:
       - http:
-          path: /issues
-          method: get
-          cors: true
-  getIssue:
-    handler: handlers/getIssue.handler
-    maximumRetryAttempts: 0
-    environment:
-      tableName: ${param:issuesTableName}
-      region: ${self:provider.region}
-    events:
-      - http:
-          path: /issues/{id}
-          method: get
-          cors: true
-  createIssue:
-    handler: handlers/createIssue.handler
-    maximumRetryAttempts: 0
-    environment:
-      tableName: ${param:issuesTableName}
-      region: ${self:provider.region}
-    events:
-      - http:
-          path: /issues
+          path: /search
           method: post
           cors: true
-  deleteIssue:
-    handler: handlers/deleteIssue.handler
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  getAttachmentUrl:
+    handler: handlers/getAttachmentUrl.handler
     maximumRetryAttempts: 0
     environment:
-      tableName: ${param:issuesTableName}
       region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+      onemacLegacyS3AccessRoleArn: ${self:custom.onemacLegacyS3AccessRoleArn}
     events:
       - http:
-          path: /issues/{id}
-          method: delete
+          path: /getAttachmentUrl
+          method: post
           cors: true
-  updateIssue:
-    handler: handlers/updateIssue.handler
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  item:
+    handler: handlers/item.handler
     maximumRetryAttempts: 0
     environment:
-      tableName: ${param:issuesTableName}
       region: ${self:provider.region}
+      osDomain: ${param:osDomain}
     events:
       - http:
-          path: /issues/{id}
-          method: put
+          path: /item
+          method: post
           cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
 resources:
   Resources:
     GatewayResponseDefault4XX:
@@ -122,6 +139,18 @@ resources:
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
         ResponseType: DEFAULT_5XX
         RestApiId: !Ref ApiGatewayRestApi
+    SecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      DeletionPolicy: Retain
+      Properties:
+        GroupDescription: Security group for API Search.
+        VpcId: ${self:custom.vpc.id}
+    SecurityGroupEgress:
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId: !Ref SecurityGroup
+        IpProtocol: -1
+        CidrIp: 0.0.0.0/0
   Outputs:
     ApiGatewayRestApiName:
       Value: !Ref ApiGatewayRestApi

@@ -1,0 +1,510 @@
+service: ${self:custom.project}-data
+
+frameworkVersion: "3"
+
+package:
+  individually: true
+
+plugins:
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-s3-security-helper"
+  - "@stratiformdigital/serverless-iam-helper"
+  - serverless-bundle
+  - serverless-step-functions
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  iam:
+    role:
+      path: /delegatedadmin/developer/
+      permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+      statements:
+        - Effect: Allow
+          Action:
+            - lambda:CreateEventSourceMapping
+            - lambda:ListEventSourceMappings
+            - lambda:PutFunctionConcurrency
+            - lambda:DeleteEventSourceMapping
+            - lambda:UpdateEventSourceMapping
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - ec2:CreateNetworkInterface
+            - ec2:DescribeNetworkInterfaces
+            - ec2:DescribeVpcs
+            - ec2:DeleteNetworkInterface
+            - ec2:DescribeSubnets
+            - ec2:DescribeSecurityGroups
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - es:ESHttpHead
+            - es:ESHttpPost
+            - es:ESHttpGet
+            - es:ESHttpPatch
+            - es:ESHttpDelete
+            - es:ESHttpPut
+          Resource: !Sub "${OpenSearch.Arn}/*"
+        - Effect: Allow
+          Action:
+            - sts:AssumeRole
+          Resource: !GetAtt OpenSearchMasterRole.Arn
+
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+
+custom:
+  project: ${env:PROJECT}
+  serverlessTerminationProtection:
+    stages: # Apply CloudFormation termination protection for these stages
+      - master
+      - val
+      - production
+  bundle:
+    linting: false
+  vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
+  brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
+
+stepFunctions:
+  stateMachines:
+    reindex:
+      name: ${self:service}-${sls:stage}-reindex
+      id: ReindexDataStateMachine
+      loggingConfig:
+        level: ALL
+        includeExecutionData: true
+        destinations:
+          - !GetAtt StateMachineLogGroup.Arn
+      definition:
+        Comment: "A state machine to reindex the OpenSearch index."
+        StartAt: DisableTriggers
+        States:
+          DisableTriggers:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-disableTriggers"
+            Parameters:
+              Context.$: $$
+            Next: GetConsumerGroupStatus
+          GetConsumerGroupStatus:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getConsumerGroupStatus"
+            Parameters:
+              Context.$: $$
+            Next: IsConsumerGroupReady
+          IsConsumerGroupReady:
+            Type: Choice
+            Choices:
+              - Variable: $.ready
+                BooleanEquals: true
+                Next: ResetConsumerGroups
+              - Variable: $.ready
+                BooleanEquals: false
+                Next: Wait10Seconds
+            Default: Wait10Seconds
+          Wait10Seconds:
+            Type: Wait
+            Seconds: 10
+            Next: GetConsumerGroupStatus
+          ResetConsumerGroups:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-resetConsumerGroups"
+            Parameters:
+              Context.$: $$
+            Next: DeleteIndex
+          DeleteIndex:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteIndex"
+            Parameters:
+              Context.$: $$
+            Next: EnableTriggers
+          EnableTriggers:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-enableTriggers"
+            Parameters:
+              Context.$: $$
+            Next: SuccessState
+          SuccessState:
+            Type: Succeed
+
+params:
+  master:
+    osInstanceType: m5.large.search
+  val:
+    osInstanceType: m5.large.search
+  production:
+    osInstanceType: m5.large.search
+  default:
+    osInstanceType: t3.small.search
+
+functions:
+  sinkSeatool:
+    handler: handlers/sink.seatool
+    environment:
+      region: ${self:provider.region}
+      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+    maximumRetryAttempts: 0
+    timeout: 10
+    memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  sinkOnemac:
+    handler: handlers/sink.onemac
+    environment:
+      region: ${self:provider.region}
+      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+    maximumRetryAttempts: 0
+    timeout: 10
+    memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  disableTriggers:
+    handler: handlers/reindex.toggleTriggers
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
+      enabled: false
+  enableTriggers:
+    handler: handlers/reindex.toggleTriggers
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
+      enabled: true
+  getConsumerGroupStatus:
+    handler: handlers/reindex.getConsumerGroupStatus
+    timeout: 900
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
+      brokerString: ${self:custom.brokerString}
+  resetConsumerGroups:
+    handler: handlers/reindex.resetConsumerGroups
+    timeout: 900
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    environment:
+      region: ${self:provider.region}
+      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
+      brokerString: ${self:custom.brokerString}
+  deleteIndex:
+    handler: handlers/reindex.deleteIndex
+    environment:
+      region: ${self:provider.region}
+      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+    maximumRetryAttempts: 0
+    timeout: 10
+    memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  mapRole:
+    handler: handlers/mapRole.handler
+    environment:
+      region: ${self:provider.region}
+      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+    maximumRetryAttempts: 0
+    timeout: 10
+    memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+
+resources:
+  Resources:
+    StateMachineLogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties:
+        LogGroupName: /aws/vendedlogs/states/${self:service}-${sls:stage}-reindex
+    SinkSeatoolTrigger:
+      Type: AWS::Lambda::EventSourceMapping
+      Properties:
+        BatchSize: 1000
+        Enabled: true
+        FunctionName: !GetAtt SinkSeatoolLambdaFunction.Arn
+        SelfManagedEventSource:
+          Endpoints:
+            KafkaBootstrapServers:
+              Fn::Split:
+                - ","
+                - ${self:custom.brokerString}
+        SourceAccessConfigurations:
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.0}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.1}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.2}
+          - Type: VPC_SECURITY_GROUP
+            URI: !Sub security_group:${SecurityGroup}
+        StartingPosition: TRIM_HORIZON
+        Topics:
+          - aws.ksqldb.seatool.agg.State_Plan
+    SinkOnemacTrigger:
+      Type: AWS::Lambda::EventSourceMapping
+      Properties:
+        BatchSize: 1000
+        Enabled: true
+        FunctionName: !GetAtt SinkOnemacLambdaFunction.Arn
+        SelfManagedEventSource:
+          Endpoints:
+            KafkaBootstrapServers:
+              Fn::Split:
+                - ","
+                - ${self:custom.brokerString}
+        SourceAccessConfigurations:
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.0}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.1}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.2}
+          - Type: VPC_SECURITY_GROUP
+            URI: !Sub security_group:${SecurityGroup}
+        StartingPosition: TRIM_HORIZON
+        Topics:
+          - aws.onemac.migration.cdc
+    SecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
+      Properties:
+        GroupDescription: Security group for Sink Lambda Function.
+        VpcId: ${self:custom.vpc.id}
+    SecurityGroupEgress:
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId: !Ref SecurityGroup
+        IpProtocol: -1
+        CidrIp: 0.0.0.0/0
+
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:service}-${sls:stage}-search
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: True
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+    CognitoUserPoolDomain:
+      Type: AWS::Cognito::UserPoolDomain
+      Properties:
+        Domain: !Sub ${AWS::AccountId}-${sls:stage}-search
+        UserPoolId: !Ref CognitoUserPool
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${sls:stage}-search
+        UserPoolId: !Ref CognitoUserPool
+        ExplicitAuthFlows:
+          - ADMIN_NO_SRP_AUTH
+        GenerateSecret: false #pragma: allowlist secret
+    CognitoIdentityPool:
+      Type: AWS::Cognito::IdentityPool
+      Properties:
+        IdentityPoolName: ${self:service}${sls:stage}search
+        AllowUnauthenticatedIdentities: false
+        CognitoIdentityProviders:
+          - ClientId: !Ref CognitoUserPoolClient
+            ProviderName: !GetAtt CognitoUserPool.ProviderName
+    CognitoIdentityPoolRoles:
+      Type: AWS::Cognito::IdentityPoolRoleAttachment
+      Properties:
+        IdentityPoolId: !Ref CognitoIdentityPool
+        Roles:
+          authenticated: !GetAtt CognitoAuthRole.Arn
+    CognitoAuthRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Federated: "cognito-identity.amazonaws.com"
+              Action:
+                - "sts:AssumeRoleWithWebIdentity"
+              Condition:
+                StringEquals:
+                  "cognito-identity.amazonaws.com:aud": !Ref CognitoIdentityPool
+                "ForAnyValue:StringLike":
+                  "cognito-identity.amazonaws.com:amr": authenticated
+            - Effect: "Allow"
+              Principal:
+                Service: "es.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonCognitoReadOnly
+    OpenSearch:
+      Type: AWS::OpenSearchService::Domain
+      DependsOn: OpenSearchLogGroupPolicy
+      Properties:
+        Tags:
+          - Key: STAGE
+            Value: ${sls:stage}
+        EBSOptions:
+          EBSEnabled: true
+          VolumeType: gp2
+          VolumeSize: 10
+        ClusterConfig:
+          InstanceType: ${param:osInstanceType}
+          InstanceCount: 3
+          DedicatedMasterEnabled: false
+          ZoneAwarenessEnabled: true
+          ZoneAwarenessConfig:
+            AvailabilityZoneCount: 3
+        EncryptionAtRestOptions:
+          Enabled: true
+        NodeToNodeEncryptionOptions:
+          Enabled: true
+        EngineVersion: OpenSearch_2.3
+        DomainEndpointOptions:
+          EnforceHTTPS: true
+          TLSSecurityPolicy: Policy-Min-TLS-1-2-2019-07
+        CognitoOptions:
+          Enabled: true
+          IdentityPoolId: !Ref CognitoIdentityPool
+          RoleArn: !GetAtt OpenSearchRole.Arn
+          UserPoolId: !Ref CognitoUserPool
+        AccessPolicies:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                AWS: !GetAtt CognitoAuthRole.Arn
+              Action: "es:ESHttp*"
+              Resource: "*"
+            # - Effect: "Allow"
+            #   Principal:
+            #     AWS: !GetAtt IamRoleLambdaExecution.Arn
+            #   Action: "es:ESHttp*"
+            #   Resource: "*"
+            # - Effect: "Allow"
+            #   Principal:
+            #     AWS: !GetAtt IamRoleLambdaExecution.Arn
+            #   Action: "indices:*"
+            #   Resource: "*"
+        AdvancedOptions:
+          rest.action.multi.allow_explicit_index: "true"
+        AdvancedSecurityOptions:
+          Enabled: true
+          InternalUserDatabaseEnabled: false
+          MasterUserOptions:
+            MasterUserARN: !GetAtt OpenSearchMasterRole.Arn
+        LogPublishingOptions:
+          AUDIT_LOGS:
+            CloudWatchLogsLogGroupArn: !GetAtt OpenSearchAuditLogGroup.Arn
+            Enabled : true
+          ES_APPLICATION_LOGS:
+            CloudWatchLogsLogGroupArn: !GetAtt OpenSearchErrorLogGroup.Arn
+            Enabled : true
+        VPCOptions:
+          SecurityGroupIds:
+            - !Ref OpenSearchSecurityGroup
+          SubnetIds: >-
+            ${self:custom.vpc.privateSubnets}
+    OpenSearchRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service: "es.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonOpenSearchServiceCognitoAccess
+    OpenSearchMasterRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                AWS: !Sub "${AWS::AccountId}"
+              Action:
+                - "sts:AssumeRole"
+            - Effect: "Allow"
+              Principal:
+                Service: "es.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonOpenSearchServiceFullAccess
+    OpenSearchSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      DeletionPolicy: Retain
+      Properties:
+        GroupDescription: Security group for Sink Lambda Function.
+        VpcId: ${self:custom.vpc.id}
+    OpenSearchSecurityGroupEgress:
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId: !Ref OpenSearchSecurityGroup
+        IpProtocol: -1
+        CidrIp: 0.0.0.0/0
+    OpenSearchSecurityGroupIngress:
+      Type: AWS::EC2::SecurityGroupIngress
+      Properties:
+        GroupId: !Ref OpenSearchSecurityGroup
+        IpProtocol: -1
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 10.0.0.0/0
+    OpenSearchAuditLogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties: 
+        LogGroupName: /aws/opensearch/${self:service}-${sls:stage}-audit
+    OpenSearchErrorLogGroup:
+      Type: AWS::Logs::LogGroup
+      Properties: 
+        LogGroupName: /aws/opensearch/${self:service}-${sls:stage}-error
+    OpenSearchLogGroupPolicy:
+      Type: AWS::Logs::ResourcePolicy
+      DependsOn:
+        - OpenSearchAuditLogGroup
+        - OpenSearchErrorLogGroup
+      Properties:
+        PolicyName: ${self:service}-${sls:stage}-audit
+        PolicyDocument: !Sub "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"OpenSearchToCloudwatch\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"es.amazonaws.com\" ] }, \"Action\": [\"logs:PutLogEvents\",\"logs:CreateLogStream\"], \"Resource\": [ \"*\" ] } ] }"
+        # PolicyDocument: !Sub "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"OpenSearchToCloudwatch\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"es.amazonaws.com\" ] }, \"Action\":\"logs:PutLogEvents\", \"Resource\": [ \"${OpenSearchAuditLogGroup.Arn}\", \"${OpenSearchErrorLogGroup.Arn}\" ] } ] }"
+    MapRole:
+      Type: Custom::ClusterInfo
+      Properties:
+        ServiceToken: !GetAtt MapRoleLambdaFunction.Arn
+        MasterRoleToAssume: !GetAtt OpenSearchMasterRole.Arn
+        OSRoleName: all_access
+        IAMRoleName: !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
+  Outputs:
+    OpenSearchDomainArn:
+      Value: !GetAtt OpenSearch.Arn
+    OpenSearchDomainEndpoint:
+      Value: !Sub https://${OpenSearch.DomainEndpoint}
+    OpenSearchDashboardEndpoint:
+      Value: !Sub https://${OpenSearch.DomainEndpoint}/_dashboards
