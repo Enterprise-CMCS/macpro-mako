@@ -73,6 +73,7 @@ jobs:
             awk '{print $NF}' | awk '{$1=$1};1' |
             tr -d \'\"
           )
+          sleep 30  # Wait for 30 seconds
           echo "Captured URL: $URL"
           echo "KIBANAURL=$URL" >> $GITHUB_OUTPUT
 
