@@ -74,9 +74,7 @@ jobs:
             tr -d \'\"
           )
 
-          URL_WITHOUT_DASHBOARDS=$(echo "$URL" | sed 's#/\_dashboards$##')
-
-          ENCODED_URL=$(python -c "import urllib.parse; print(urllib.parse.quote('''$URL_WITHOUT_DASHBOARDS'''))")
+          ENCODED_URL=$(python -c "import urllib.parse; print(urllib.parse.quote('''$URL'''))")
 
           echo "Captured URL: $URL"
           echo "Encoded URL: $ENCODED_URL"
