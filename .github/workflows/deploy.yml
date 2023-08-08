@@ -80,18 +80,13 @@ jobs:
           echo "Encoded URL: $ENCODED_URL"
           echo "KIBANAURL=$ENCODED_URL" >> $GITHUB_OUTPUT
 
-      # echo "KIBANAURL=$(
-      #   sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint |
-      #   awk '{print $NF}' | awk '{$1=$1};1' |
-      #   tr -d \'\"
-      #   )" >> $GITHUB_OUTPUT
   kibana-url:
     runs-on: ubuntu-20.04
     needs:
       - deploy
     environment:
       name: ${{ github.ref_name }}-kibana
-      url: ${{ needs.deploy.outputs.kibana-url }}
+      url: ${{ steps.decode-kibana-url.outputs.KIBANAURL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -104,6 +99,14 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
+
+      - name: Decode Kibana URL
+        id: decode-kibana-url
+        run: |
+          ENCODED_URL=${{ needs.deploy.outputs.kibana-url }}
+          DECODED_URL=$(printf "$ENCODED_URL" | sed 's/%/\\x/g' | xxd -r -p)
+          echo "Decoded Kibana URL: $DECODED_URL"
+          echo "KIBANAURL=$DECODED_URL" >> $GITHUB_ENV
 
   test:
     runs-on: ubuntu-20.04
