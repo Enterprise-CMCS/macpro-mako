@@ -70,12 +70,11 @@ jobs:
         run: |
           KIBANA_RESPONSE=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
           KIBANA_URL=$(echo "$KIBANA_RESPONSE" | awk '{print $NF}')
-          echo "KIBANAURL=$KIBANA_URL" >> $GITHUB_OUTPUT
 
       - name: Set Kibana URL
         id: set-kibana-url
         run: |
-          echo "KIBANAURL=${{ steps.get-kibana-url.outputs.KIBANAURL }}" >> $GITHUB_OUTPUT
+          echo "KIBANAURL=${{ github.workflow.variables.KIBANA_URL }}" >> $GITHUB_OUTPUT
 
   kibana-url:
     runs-on: ubuntu-20.04
