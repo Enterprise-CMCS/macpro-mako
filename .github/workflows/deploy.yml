@@ -73,9 +73,12 @@ jobs:
             awk '{print $NF}' | awk '{$1=$1};1' |
             tr -d \'\"
           )
-          sleep 30  # Wait for 30 seconds
+
+          ENCODED_URL=$(printf "%s" "$URL" | xxd -plain | tr -d '\n' | sed 's/\(..\)/%\1/g')
+
           echo "Captured URL: $URL"
-          echo "KIBANAURL=$URL" >> $GITHUB_OUTPUT
+          echo "Encoded URL: $ENCODED_URL"
+          echo "KIBANAURL=$ENCODED_URL" >> $GITHUB_OUTPUT
 
       # echo "KIBANAURL=$(
       #   sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint |
