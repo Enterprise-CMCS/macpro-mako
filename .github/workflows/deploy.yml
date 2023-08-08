@@ -11,7 +11,6 @@ concurrency:
 
 env:
   STAGE_NAME: ${{ github.ref_name }}
-  KIBANAURL: ""
 
 permissions:
   id-token: write
@@ -82,12 +81,12 @@ jobs:
           echo "KIBANAURL=$ENCODED_URL" >> $GITHUB_OUTPUT
 
   kibana-url:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:
       - deploy
     environment:
       name: ${{ github.ref_name }}-kibana
-      url: ${{ env.KIBANAURL }}
+      url: ${{ steps.decode-kibana-url.outputs.KIBANAURL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -100,14 +99,14 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
-
+          
       - name: Decode Kibana URL
         id: decode-kibana-url
         run: |
-          ENCODED_URL=${{ needs.deploy.outputs.kibana-url }}
-          DECODED_URL=$(python -c "import urllib.parse; print(urllib.parse.unquote('$ENCODED_URL'))")
+          ENCODED_URL=${{ needs.deploy.outputs.kibana-url  }}
+          DECODED_URL=$(printf "$ENCODED_URL" | sed 's/%/\\x/g' | xxd -r -p)
           echo "Decoded Kibana URL: $DECODED_URL"
-          echo "KIBANAURL=$DECODED_URL" >> $GITHUB_ENV
+          echo "KIBANAURL=$DECODED_URL" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-20.04
