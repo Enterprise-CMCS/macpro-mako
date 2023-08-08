@@ -70,10 +70,17 @@ jobs:
         run: |
           KIBANA_RESPONSE=$(sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint)
           KIBANA_URL=$(echo "$KIBANA_RESPONSE" | awk '{print $NF}')
+          echo "KIBANA_URL"
+
+      - name: Sleep for 30 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '30s'
 
       - name: Set Kibana URL
         id: set-kibana-url
         run: |
+          echo ${{ github.workflow.variables.KIBANA_URL }}
           echo "KIBANAURL=${{ github.workflow.variables.KIBANA_URL }}" >> $GITHUB_OUTPUT
 
   kibana-url:
