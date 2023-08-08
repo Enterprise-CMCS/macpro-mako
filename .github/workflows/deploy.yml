@@ -104,7 +104,7 @@ jobs:
         id: decode-kibana-url
         run: |
           ENCODED_URL=${{ needs.deploy.outputs.kibana-url }}
-          DECODED_URL=$(printf "$ENCODED_URL" | sed 's/%/\\x/g' | xxd -r -p)
+          DECODED_URL=$(echo -e "$ENCODED_URL" | sed 's/%/\\x/g')
           echo "Decoded Kibana URL: $DECODED_URL"
           echo "KIBANAURL=$DECODED_URL" >> $GITHUB_ENV
 
