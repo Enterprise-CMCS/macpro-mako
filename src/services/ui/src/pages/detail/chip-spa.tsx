@@ -9,9 +9,11 @@ import {
   DetailsSection,
   SubmissionInfo,
 } from "@/components";
+import { useGetUser } from "@/api/useGetUser";
+import { getStatus } from "../dashboard/Lists/statusHelper";
 
 export const ChipSpa = ({ data }: { data?: SearchData }) => {
-  console.log(data);
+  const { data: user } = useGetUser();
   return (
     <div className="block md:flex">
       <aside className="flex-none font-bold hidden md:block pr-8">
@@ -38,7 +40,7 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           <CardWithTopBorder title="Status">
             <div>
               <h2 className="text-xl font-semibold mb-2">
-                {data?._source.status || "Unknown"}
+                {getStatus(data?._source.status, user?.isCms)}
               </h2>
             </div>
           </CardWithTopBorder>
