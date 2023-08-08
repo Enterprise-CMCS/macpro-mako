@@ -68,11 +68,19 @@ jobs:
       - name: Set Kibana URL
         id: kibana-url
         run: |
-          echo "KIBANAURL=$(
+          URL=$(
             sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint |
             awk '{print $NF}' | awk '{$1=$1};1' |
             tr -d \'\"
-            )" >> $GITHUB_OUTPUT
+          )
+          echo "Captured URL: $URL"
+          echo "KIBANAURL=$URL" >> $GITHUB_OUTPUT
+
+      # echo "KIBANAURL=$(
+      #   sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint |
+      #   awk '{print $NF}' | awk '{$1=$1};1' |
+      #   tr -d \'\"
+      #   )" >> $GITHUB_OUTPUT
   kibana-url:
     runs-on: ubuntu-20.04
     needs:
