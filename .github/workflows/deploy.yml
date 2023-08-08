@@ -68,12 +68,11 @@ jobs:
       - name: Set Kibana URL
         id: kibana-url
         run: |
-          echo "URL=$(
-            aws cloudformation \
-            --region us-east-1 describe-stacks \
-            --stack-name $PROJECT-ui-infra-$STAGE_NAME \
-            --query Stacks[0].Outputs[0].OutputValue
-          )" | tr -d \'\" >> $GITHUB_OUTPUT
+          URL=$(
+            sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint |
+            awk '{print $NF}' | awk '{$1=$1};1' |
+            tr -d \'\"
+          )
 
           ENCODED_URL=$(python -c "import urllib.parse; print(urllib.parse.quote('''$URL'''))")
 
@@ -82,7 +81,7 @@ jobs:
           echo "KIBANAURL=$ENCODED_URL" >> $GITHUB_OUTPUT
 
   kibana-url:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     needs:
       - deploy
     environment:
