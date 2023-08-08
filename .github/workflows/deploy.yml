@@ -75,7 +75,7 @@ jobs:
           done
           KIBANA_URL=$(echo "$KIBANA_RESPONSE" | awk '{print $NF}')
           echo "$KIBANA_URL"
-          echo "KIBANAURL=$KIBANA_URL" >> $GITHUB_OUTPUT
+        # echo "KIBANAURL=$KIBANA_URL" >> $GITHUB_OUTPUT
 
   kibana-url:
     runs-on: ubuntu-20.04
