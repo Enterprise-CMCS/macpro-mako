@@ -75,7 +75,7 @@ jobs:
           done
           KIBANA_URL=$(echo "$KIBANA_RESPONSE" | awk '{print $NF}')
           echo "$KIBANA_URL"
-        # echo "KIBANAURL=$KIBANA_URL" >> $GITHUB_OUTPUT
+          echo "KIBANAURL='https://vpc-opensearch-gbbxww2ftkbi-xshh7vomd4skbh4jplvukrw62q.us-east-1.es.amazonaws.com/_dashboards'" >> $GITHUB_OUTPUT
 
   kibana-url:
     runs-on: ubuntu-20.04
