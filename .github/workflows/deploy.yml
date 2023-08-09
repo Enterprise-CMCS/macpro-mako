@@ -75,15 +75,17 @@ jobs:
             --stack-name $PROJECT-ui-infra-$STAGE_NAME \
             --query Stacks[0].Outputs[0].OutputValue
           )" | tr -d \'\" >> $GITHUB_OUTPUT
-      # URL=$(
-      #   sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint |
-      #   awk '{print $NF}' | awk '{$1=$1};1' |
-      #   tr -d \'\"
-      # )
+          URL=$(
+            sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint |
+            awk '{print $NF}' | awk '{$1=$1};1' |
+            tr -d \'\"
+          )
+          echo "Captured URL: $URL"
+          echo "Alternative URL: $KIBANAURL"
 
       # ENCODED_URL=$(python -c "import urllib.parse; print(urllib.parse.quote('''$URL'''))")
 
-      # echo "Captured URL: $URL"
+        
       # echo "Encoded URL: $ENCODED_URL"
       # echo "KIBANAURL=$ENCODED_URL" >> $GITHUB_OUTPUT
 
