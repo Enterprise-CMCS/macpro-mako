@@ -12,5 +12,8 @@
   },
   "scripts": {
     "test": "vitest"
+  },
+  "dependencies": {
+    "s3-url-parser": "^1.0.3"
   }
 }
