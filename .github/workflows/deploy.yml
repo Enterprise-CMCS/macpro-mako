@@ -68,17 +68,24 @@ jobs:
       - name: Set Kibana URL
         id: kibana-url
         run: |
-          URL=$(
-            sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint |
-            awk '{print $NF}' | awk '{$1=$1};1' |
-            tr -d \'\"
-          )
+          echo ${{ github.ref_name }}
+          echo "KIBANAURL=$(
+            aws cloudformation \
+            --region us-east-1 describe-stacks \
+            --stack-name $PROJECT-ui-infra-$STAGE_NAME \
+            --query Stacks[0].Outputs[0].OutputValue
+          )" | tr -d \'\" >> $GITHUB_OUTPUT
+      # URL=$(
+      #   sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint |
+      #   awk '{print $NF}' | awk '{$1=$1};1' |
+      #   tr -d \'\"
+      # )
 
-          ENCODED_URL=$(python -c "import urllib.parse; print(urllib.parse.quote('''$URL'''))")
+      # ENCODED_URL=$(python -c "import urllib.parse; print(urllib.parse.quote('''$URL'''))")
 
-          echo "Captured URL: $URL"
-          echo "Encoded URL: $ENCODED_URL"
-          echo "KIBANAURL=$ENCODED_URL" >> $GITHUB_OUTPUT
+      # echo "Captured URL: $URL"
+      # echo "Encoded URL: $ENCODED_URL"
+      # echo "KIBANAURL=$ENCODED_URL" >> $GITHUB_OUTPUT
 
   kibana-url:
     runs-on: ubuntu-20.04
@@ -86,7 +93,7 @@ jobs:
       - deploy
     environment:
       name: ${{ github.ref_name }}-kibana
-      url: ${{ steps.decode-kibana-url.outputs.KIBANAURL }}
+      url: ${{ needs.deploy.outputs.kibana-url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -100,13 +107,13 @@ jobs:
           aws-region: us-east-1
           role-duration-seconds: 10800
           
-      - name: Decode Kibana URL
-        id: decode-kibana-url
-        run: |
-          ENCODED_URL=${{ needs.deploy.outputs.kibana-url  }}
-          DECODED_URL=$(python -c "import urllib.parse; print(urllib.parse.unquote('$ENCODED_URL'))")
-          echo "Decoded Kibana URL: $DECODED_URL"
-          echo "KIBANAURL=$DECODED_URL" >> $GITHUB_OUTPUT
+      # - name: Decode Kibana URL
+      #   id: decode-kibana-url
+      #   run: |
+      #     ENCODED_URL=${{ needs.deploy.outputs.kibana-url  }}
+      #     DECODED_URL=$(python -c "import urllib.parse; print(urllib.parse.unquote('$ENCODED_URL'))")
+      #     echo "Decoded Kibana URL: $DECODED_URL"
+      #     echo "KIBANAURL=$DECODED_URL" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-20.04
