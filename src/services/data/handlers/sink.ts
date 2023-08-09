@@ -66,7 +66,7 @@ export const onemac: Handler = async (event) => {
       value: string;
     }[]) {
       const { key, value } = onemacRecord;
-      const id: string = JSON.parse(decode(key));
+      const id: string = decode(key);
       const record = { id, ...JSON.parse(decode(value)) };
 
       if (value && record && record.sk === "Package") {
