@@ -70,9 +70,14 @@ export const onemac: Handler = async (event) => {
       const record = { id, ...JSON.parse(decode(value)) };
 
       if (value && record && record.sk === "Package") {
-        const transformedRecord = transformOnemac(id).parse(record);
-
-        oneMacRecords.push(transformedRecord);
+        try {
+          const transformedRecord = transformOnemac(id).parse(record);
+          oneMacRecords.push(transformedRecord);
+        } catch (err: unknown) {
+          if (err instanceof ZodError) {
+            console.log("validation failed", err.message);
+          }
+        }
       }
     }
   }
