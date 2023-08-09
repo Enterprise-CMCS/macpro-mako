@@ -68,25 +68,12 @@ jobs:
       - name: Set Kibana URL
         id: kibana-url
         run: |
-          echo ${{ github.ref_name }}
-          echo "KIBANAURL=$(
-            aws cloudformation \
-            --region us-east-1 describe-stacks \
-            --stack-name $PROJECT-ui-infra-$STAGE_NAME \
-            --query Stacks[0].Outputs[0].OutputValue
-          )" | tr -d \'\" >> $GITHUB_OUTPUT
-          URL=$(
-            sls info --verbose --stage $STAGE_NAME |& grep OpenSearchDashboardEndpoint |
+          KIBANAURL=$(
+            sls info --verbose --stage $STAGE_NAME |& grep -m 1 OpenSearchDashboardEndpoint |
             awk '{print $NF}' | awk '{$1=$1};1' |
             tr -d \'\"
           )
-          echo "Captured URL: $URL"
-
-      # ENCODED_URL=$(python -c "import urllib.parse; print(urllib.parse.quote('''$URL'''))")
-
-        
-      # echo "Encoded URL: $ENCODED_URL"
-      # echo "KIBANAURL=$ENCODED_URL" >> $GITHUB_OUTPUT
+          echo "Captured URL: $KIBANAURL"
 
   kibana-url:
     runs-on: ubuntu-20.04
@@ -107,14 +94,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
-          
-      # - name: Decode Kibana URL
-      #   id: decode-kibana-url
-      #   run: |
-      #     ENCODED_URL=${{ needs.deploy.outputs.kibana-url  }}
-      #     DECODED_URL=$(python -c "import urllib.parse; print(urllib.parse.unquote('$ENCODED_URL'))")
-      #     echo "Decoded Kibana URL: $DECODED_URL"
-      #     echo "KIBANAURL=$DECODED_URL" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-20.04
