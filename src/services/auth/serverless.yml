@@ -25,7 +25,9 @@ provider:
             - cognito-idp:AdminCreateUser
             - cognito-idp:AdminSetUserPassword
             - cognito-idp:AdminUpdateUserAttributes
-          Resource: !GetAtt CognitoUserPool.Arn
+          Resource: 
+            - !GetAtt CognitoUserPool.Arn
+            - !GetAtt KibanaCognitoUserPool.Arn
 
 custom:
   project: ${env:PROJECT} # This should always be set by direnv.
@@ -40,6 +42,7 @@ custom:
   cognitoEmailAddress: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/cognitoEmailAddress, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/cognitoEmailAddress, ""}
   okta_metadata_url: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/okta_metadata_url, ""}
   bootstrapUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsers, param:bootstrapUsers}
+  bootstrapKibanaUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsers, param:bootstrapUsers}
   bootstrapUsersPassword: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsersPassword, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/bootstrapUsersPassword}
   scripts:
     hooks:
@@ -48,6 +51,11 @@ custom:
         then
           aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-bootstrapUsers --invocation-type RequestResponse /dev/null
         fi
+        if [ "${self:custom.bootstrapKibanaUsers}" = "true" ];
+        then
+          aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-bootstrapKibanaUsers --invocation-type RequestResponse /dev/null
+        fi
+
 
 params:
   val:
@@ -56,12 +64,19 @@ params:
     bootstrapUsers: "false"
   default:
     bootstrapUsers: "true"
+    bootstrapKibanaUsers: "true"
 
 functions:
   bootstrapUsers:
     handler: handlers/createUsers.handler
     environment:
       userPoolId: !Ref CognitoUserPool
+      bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
+      region: ${self:provider.region}
+  bootstrapKibanaUsers:
+    handler: handlers/createKibanaUsers.handler
+    environment:
+      userPoolId: !Ref KibanaCognitoUserPool
       bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
       region: ${self:provider.region}
 
@@ -84,6 +99,43 @@ resources:
         AdminCreateUserConfig:
           AllowAdminCreateUserOnly: True
         UserPoolName: ${sls:stage}-user-pool
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+        EmailConfiguration:
+          Fn::If:
+            - CreateEmailConfiguration
+            - EmailSendingAccount: DEVELOPER
+              SourceArn: !Sub arn:aws:ses:${self:provider.region}:${AWS::AccountId}:identity/${self:custom.cognitoEmailAddress}
+            - EmailSendingAccount: COGNITO_DEFAULT
+        Schema:
+          - Name: given_name
+            AttributeDataType: String
+            Mutable: true
+            Required: true
+          - Name: family_name
+            AttributeDataType: String
+            Mutable: true
+            Required: true
+          - Name: phone_number
+            AttributeDataType: String
+            Mutable: true
+            Required: false
+          - Name: state
+            AttributeDataType: String
+            Mutable: true
+            Required: false
+          - Name: cms-roles
+            AttributeDataType: String
+            Mutable: true
+            Required: false
+    KibanaCognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: True
+        UserPoolName: ${sls:stage}-kibana-user-pool
         UsernameAttributes:
           - email
         AutoVerifiedAttributes:
@@ -143,6 +195,34 @@ resources:
               - BackWithOkta
               - !Ref OktaUserPoolIdentityProvider
               - !Ref AWS::NoValue
+    KibanaCognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${sls:stage}-kibana-user-pool-client
+        UserPoolId: !Ref KibanaCognitoUserPool
+        ExplicitAuthFlows:
+          - ADMIN_NO_SRP_AUTH
+        GenerateSecret: false # pragma: allowlist secret
+        AllowedOAuthFlows:
+          - code
+        AllowedOAuthFlowsUserPoolClient: true
+        AllowedOAuthScopes:
+          - email
+          - openid
+          - aws.cognito.signin.user.admin # Needed to call Auth.currentUserInfo()
+        CallbackURLs:
+          - ${param:ApplicationEndpointUrl}
+          - http://localhost:5000/
+        DefaultRedirectURI: ${param:ApplicationEndpointUrl}
+        LogoutURLs:
+          - ${param:ApplicationEndpointUrl}
+          - http://localhost:5000/
+        SupportedIdentityProviders:
+          - COGNITO
+          - Fn::If:
+              - BackWithOkta
+              - !Ref OktaUserPoolIdentityProvider
+              - !Ref AWS::NoValue
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain
       Properties:
@@ -153,6 +233,16 @@ resources:
               - Ref: CognitoUserPoolClient
         UserPoolId:
           Ref: CognitoUserPool
+    KibanaUserPoolDomain:
+      Type: AWS::Cognito::UserPoolDomain
+      Properties:
+        Domain:
+          Fn::Join:
+            - ""
+            - - ${sls:stage}-login-
+              - Ref: KibanaCognitoUserPoolClient
+        UserPoolId:
+          Ref: KibanaCognitoUserPool
     OktaUserPoolIdentityProvider:
       Condition: BackWithOkta
       Type: AWS::Cognito::UserPoolIdentityProvider
@@ -215,6 +305,12 @@ resources:
       Value: !Ref CognitoUserPoolClient
     UserPoolClientDomain:
       Value: !Sub ${UserPoolDomain}.auth.${self:provider.region}.amazoncognito.com
+    KibanaUserPoolId:
+      Value: !Ref KibanaCognitoUserPool
+    KibanaUserPoolClientId:
+      Value: !Ref KibanaCognitoUserPoolClient
+    KibanaUserPoolClientDomain:
+      Value: !Sub ${KibanaUserPoolDomain}.auth.${self:provider.region}.amazoncognito.com
     IdentityPoolId:
       Value: !Ref CognitoIdentityPool
     Region:
