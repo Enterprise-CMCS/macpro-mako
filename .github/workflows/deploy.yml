@@ -68,7 +68,7 @@ jobs:
       - name: Set Kibana URL
         id: kibana-url
         run: |
-          KIBANAURL=$(
+          echo KIBANAURL=$(
             sls info --verbose --stage $STAGE_NAME |& grep -m 1 OpenSearchDashboardEndpoint |
             awk '{print $NF}' | awk '{$1=$1};1' |
             tr -d \'\"
