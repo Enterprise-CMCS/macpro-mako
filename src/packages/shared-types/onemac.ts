@@ -19,21 +19,6 @@ export const onemacSchema = z.object({
     .nullish(),
 });
 
-// eventData.attachments = record.attachments || null;
-//       if (record.attachments && Array.isArray(record.attachments)) {
-//         eventData.attachments = record.attachments.map((attachment) => {
-//           const uploadDate = parseInt(attachment.s3Key.split("/")[0]);
-//           delete attachment.s3Key; // Once we have the date, this value is useless to us.  It's not the actual key
-//           const { bucket, key } = s3ParseUrl(attachment.url);
-//           return {
-//             ...attachment,
-//             uploadDate,
-//             bucket,
-//             key,
-//           };
-//         });
-//       }
-
 export const transformOnemac = (id: string) => {
   return onemacSchema.transform((data) => ({
     attachments:

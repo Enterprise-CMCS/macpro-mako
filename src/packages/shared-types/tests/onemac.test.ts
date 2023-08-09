@@ -7,7 +7,7 @@ describe("onemac has valid data", () => {
     for (const record of onemacRecords) {
       const transformedData = transformOnemac("randomid").parse(record);
 
-      expect(transformedData).toMatchObject({});
+      expect(transformedData).toHaveProperty(["attachments"]);
     }
   });
 });
