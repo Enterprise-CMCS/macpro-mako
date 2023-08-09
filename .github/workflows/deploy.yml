@@ -81,7 +81,6 @@ jobs:
             tr -d \'\"
           )
           echo "Captured URL: $URL"
-          echo "Alternative URL: $KIBANAURL"
 
       # ENCODED_URL=$(python -c "import urllib.parse; print(urllib.parse.quote('''$URL'''))")
 
