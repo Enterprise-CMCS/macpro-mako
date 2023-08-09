@@ -73,7 +73,6 @@ jobs:
             awk '{print $NF}' | awk '{$1=$1};1' |
             tr -d \'\"
           ) >> $GITHUB_OUTPUT
-          echo "Captured URL: $KIBANAURL"
 
   kibana-url:
     runs-on: ubuntu-20.04
