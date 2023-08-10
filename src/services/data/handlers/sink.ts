@@ -20,6 +20,7 @@ export const seatool: Handler = async (event) => {
     }[]) {
       const { key, value } = seatoolRecord;
       const id: string = JSON.parse(decode(key));
+      console.log("seatool id is: ", id);
       const record = { id, ...JSON.parse(decode(value)) };
 
       // we need to handle the case of null records for value
@@ -65,6 +66,7 @@ export const onemac: Handler = async (event) => {
     }[]) {
       const { key, value } = onemacRecord;
       const id: string = decode(key);
+      console.log("onemac id is: ", id);
       const record = { id, ...JSON.parse(decode(value)) };
 
       if (value && record && record.sk === "Package") {
