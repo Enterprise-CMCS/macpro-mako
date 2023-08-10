@@ -76,7 +76,7 @@ functions:
   bootstrapKibanaUsers:
     handler: handlers/createKibanaUsers.handler
     environment:
-      userPoolId: !Ref KibanaCognitoUserPool
+      kibanaUserPoolId: !Ref KibanaCognitoUserPool
       bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
       region: ${self:provider.region}
 
