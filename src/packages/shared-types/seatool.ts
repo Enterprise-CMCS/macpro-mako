@@ -84,8 +84,8 @@ export const seatoolSchema = z.object({
   RAI: z
     .array(
       z.object({
-        RAI_RECEIVED_DATE: z.number().nullable(),
-        RAI_REQUESTED_DATE: z.number().nullable(),
+        RAI_RECEIVED_DATE: z.number(),
+        RAI_REQUESTED_DATE: z.number(),
       })
     )
     .nullable(),
@@ -99,7 +99,6 @@ export const transformSeatoolData = (id: string) => {
     authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
     state: data.STATES[0].STATE_CODE,
     submissionDate: data.STATE_PLAN.SUBMISSION_DATE,
-    submissionOrigin: "Seatool",
     rai_received_date:
       data.RAI?.sort((a, b) => a.RAI_REQUESTED_DATE - b.RAI_REQUESTED_DATE)[
         data.RAI.length - 1

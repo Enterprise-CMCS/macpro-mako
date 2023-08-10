@@ -1,13 +1,13 @@
 import { SeaToolTransform } from "./seatool";
 import { OneMacTransform } from "./onemac";
 
-type OSData<TData> = {
+type OpenSearchSource<TSource> = {
   hits: {
     _index: string;
     _id: string;
     _score: number;
-    _source: TData;
+    _source: TSource;
   }[];
 };
 
-export type OSSearch = OSData<OneMacTransform & SeaToolTransform>;
+export type OSSearch = OpenSearchSource<OneMacTransform & SeaToolTransform>;

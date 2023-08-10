@@ -24,18 +24,16 @@ export const seatool: Handler = async (event) => {
 
       // we need to handle the case of null records for value
       // this is a delete event so we will need to delete
-
-      try {
-        const transformedRecord = transformSeatoolData(id).parse(record);
-        seaToolRecords.push(transformedRecord);
-      } catch (err: unknown) {
-        if (err instanceof ZodError) {
-          console.log(
-            "The validation and transformation of data failed: ",
-            err.message
-          );
-        } else {
-          console.log("A non validation error occured: ", err);
+      if (value) {
+        try {
+          const transformedRecord = transformSeatoolData(id).parse(record);
+          seaToolRecords.push(transformedRecord);
+        } catch (err: unknown) {
+          if (err instanceof ZodError) {
+            console.log("SeaTool validation failed: ", err.message);
+          } else {
+            console.log("A non validation error occured: ", err);
+          }
         }
       }
     }
@@ -75,7 +73,9 @@ export const onemac: Handler = async (event) => {
           oneMacRecords.push(transformedRecord);
         } catch (err: unknown) {
           if (err instanceof ZodError) {
-            console.log("validation failed", err.message);
+            console.log("OneMac validation failed", err.message);
+          } else {
+            console.log("A non-validation error occured: ", err);
           }
         }
       }
