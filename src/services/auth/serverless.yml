@@ -194,6 +194,7 @@ resources:
           - Fn::If:
               - BackWithOkta
               - !Ref OktaUserPoolIdentityProvider
+              - !Ref KibanaOktaUserPoolIdentityProvider
               - !Ref AWS::NoValue
     KibanaCognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
@@ -259,7 +260,7 @@ resources:
         ProviderType: SAML
         UserPoolId:
           Ref: CognitoUserPool
-    OktaUserPoolIdentityProvider:
+    KibanaOktaUserPoolIdentityProvider:
       Condition: BackWithOkta
       Type: AWS::Cognito::UserPoolIdentityProvider
       Properties:
