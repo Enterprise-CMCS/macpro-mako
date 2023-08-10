@@ -27,8 +27,12 @@ export const seatool: Handler = async (event) => {
       // this is a delete event so we will need to delete
       if (value) {
         try {
+          const validPlanTypeIds = [122, 123, 124, 125];
           const transformedRecord = transformSeatoolData(id).parse(record);
-          seaToolRecords.push(transformedRecord);
+
+          if (validPlanTypeIds.includes(transformedRecord.planTypeId)) {
+            seaToolRecords.push(transformedRecord);
+          }
         } catch (err: unknown) {
           if (err instanceof ZodError) {
             console.log("SeaTool validation failed: ", err.message);
