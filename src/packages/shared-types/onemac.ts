@@ -1,5 +1,5 @@
 import { z } from "zod";
-import s3parse from "s3-url-parser";
+import { s3ParseUrl } from "shared-utils/s3-url-parser";
 
 export const onemacSchema = z.object({
   additionalInformation: z.string().optional(),
@@ -24,10 +24,9 @@ export const transformOnemac = (id: string) => {
     attachments:
       data.attachments?.map((attachment) => {
         const uploadDate = parseInt(attachment.s3Key.split("/")[0]);
-        const { bucket, key } = s3parse(attachment.url) as {
-          bucket: string;
-          key: string;
-        };
+        const parsedUrl = s3ParseUrl(attachment.url);
+        if (!parsedUrl) return null;
+        const { bucket, key } = parsedUrl;
 
         return {
           ...attachment,
