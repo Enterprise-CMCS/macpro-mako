@@ -191,11 +191,10 @@ resources:
           - http://localhost:5000/
         SupportedIdentityProviders:
           - COGNITO
-          - Fn::If:
-              - BackWithOkta
-              - !Ref OktaUserPoolIdentityProvider
-              - !Ref KibanaOktaUserPoolIdentityProvider
-              # - !Ref AWS::NoValue
+          - !If
+            - BackWithOkta
+            - Ref: OktaUserPoolIdentityProvider
+            - Ref: KibanaOktaUserPoolIdentityProvider
     KibanaCognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:
@@ -261,7 +260,7 @@ resources:
         UserPoolId:
           Ref: CognitoUserPool
     KibanaOktaUserPoolIdentityProvider:
-      Condition: BackWithOkta
+      # Condition: BackWithOkta
       Type: AWS::Cognito::UserPoolIdentityProvider
       Properties:
         AttributeMapping:
