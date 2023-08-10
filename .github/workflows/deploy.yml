@@ -37,6 +37,7 @@ jobs:
       url: ${{ steps.deployment-data.outputs.APPURL }}
     outputs:
       app-url: ${{ steps.deployment-data.outputs.APPURL }}
+      kibana-url: ${{ steps.kibana-url.outputs.KIBANAURL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -53,7 +54,7 @@ jobs:
       - name: Deploy
         run: run deploy --stage $STAGE_NAME
 
-      - name: Set URL
+      - name: Set Site URL
         id: deployment-data
         run: |
           echo ${{ github.ref_name }}
@@ -63,6 +64,28 @@ jobs:
             --stack-name $PROJECT-ui-infra-$STAGE_NAME \
             --query Stacks[0].Outputs[0].OutputValue
           )" | tr -d \'\" >> $GITHUB_OUTPUT
+
+      - name: Set Kibana URL
+        id: kibana-url
+        run: |
+          echo KIBANAURL=$(
+            sls info --verbose --stage $STAGE_NAME |& grep -m 1 OpenSearchDashboardEndpoint |
+            awk '{print $NF}' | awk '{$1=$1};1' |
+            tr -d \'\"
+          ) >> $GITHUB_OUTPUT
+
+  kibana-url:
+    runs-on: ubuntu-20.04
+    needs:
+      - deploy
+    environment:
+      name: ${{ github.ref_name }}-kibana
+      url: ${{ needs.deploy.outputs.kibana-url }}
+    steps:
+      - name: Display Kibana URL
+        run: |
+          echo "Kibana URL: ${{ needs.deploy.outputs.kibana-url }}"
+
   test:
     runs-on: ubuntu-20.04
     needs:
