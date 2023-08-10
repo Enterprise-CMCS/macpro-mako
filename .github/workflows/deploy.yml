@@ -81,6 +81,10 @@ jobs:
     environment:
       name: ${{ github.ref_name }}-kibana
       url: ${{ needs.deploy.outputs.kibana-url }}
+    steps:
+      - name: Display Kibana URL
+        run: |
+          echo "Kibana URL: ${{ needs.deploy.outputs.kibana-url }}"
 
   test:
     runs-on: ubuntu-20.04
