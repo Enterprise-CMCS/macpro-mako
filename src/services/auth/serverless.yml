@@ -193,8 +193,8 @@ resources:
           - Fn::If:
               - BackWithOkta
               - !Ref OktaUserPoolIdentityProvider
-              - !Ref KibanaOktaUserPoolIdentityProvider
-              # - !Ref AWS::NoValue
+              # - !Ref KibanaOktaUserPoolIdentityProvider
+              - !Ref AWS::NoValue
     KibanaCognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:
@@ -221,7 +221,7 @@ resources:
           - COGNITO
           - Fn::If:
               - BackWithOkta
-              # - !Ref KibanaOktaUserPoolIdentityProvider
+              - !Ref KibanaOktaUserPoolIdentityProvider
               - !Ref AWS::NoValue
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain
