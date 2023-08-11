@@ -85,6 +85,7 @@ export const onemac: Handler = async (event) => {
           } catch (err: unknown) {
             if (err instanceof ZodError) {
               console.log("OneMac validation failed", err.message);
+              console.log("More detailed error: ", JSON.stringify(err));
             } else {
               console.log("A non-validation error occured: ", err);
             }
