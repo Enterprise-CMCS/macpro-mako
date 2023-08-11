@@ -17,6 +17,7 @@ services:
     params:
       ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
       ApiName: ${api.ApiGatewayRestApiName}
+      OpensearchDomainEndpoint: ${data.OpenSearchDomainEndpoint}
   ui:
     path: src/services/ui
     params:

@@ -193,7 +193,6 @@ resources:
           - Fn::If:
               - BackWithOkta
               - !Ref OktaUserPoolIdentityProvider
-              # - !Ref KibanaOktaUserPoolIdentityProvider
               - !Ref AWS::NoValue
     KibanaCognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
@@ -211,11 +210,11 @@ resources:
           - openid
           - aws.cognito.signin.user.admin # Needed to call Auth.currentUserInfo()
         CallbackURLs:
-          - ${param:ApplicationEndpointUrl}
+          - ${param:OpensearchDomainEndpoin}
           - http://localhost:5000/
-        DefaultRedirectURI: ${param:ApplicationEndpointUrl}
+        DefaultRedirectURI: ${param:OpensearchDomainEndpoin}
         LogoutURLs:
-          - ${param:ApplicationEndpointUrl}
+          - ${param:OpensearchDomainEndpoin}
           - http://localhost:5000/
         SupportedIdentityProviders:
           - COGNITO
