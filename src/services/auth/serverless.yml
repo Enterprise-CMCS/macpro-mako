@@ -283,14 +283,14 @@ resources:
         CognitoIdentityProviders:
           - ClientId: !Ref CognitoUserPoolClient
             ProviderName: !GetAtt CognitoUserPool.ProviderName
-    # KibanaCognitoIdentityPool:
-    #   Type: AWS::Cognito::IdentityPool
-    #   Properties:
-    #     IdentityPoolName: ${sls:stage}KibanaIdentityPool
-    #     AllowUnauthenticatedIdentities: false
-    #     CognitoIdentityProviders:
-    #       - ClientId: !Ref CognitoUserPoolClient
-    #         ProviderName: !GetAtt KibanaCognitoUserPool.ProviderName
+    KibanaCognitoIdentityPool:
+      Type: AWS::Cognito::IdentityPool
+      Properties:
+        IdentityPoolName: ${sls:stage}KibanaIdentityPool
+        AllowUnauthenticatedIdentities: false
+        CognitoIdentityProviders:
+          - ClientId: !Ref KibanaCognitoUserPoolClient
+            ProviderName: !GetAtt KibanaCognitoUserPool.ProviderName
     CognitoIdentityPoolRoles:
       Type: AWS::Cognito::IdentityPoolRoleAttachment
       Properties:
