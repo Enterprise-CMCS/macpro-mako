@@ -210,11 +210,11 @@ resources:
           - openid
           - aws.cognito.signin.user.admin # Needed to call Auth.currentUserInfo()
         CallbackURLs:
-          - ${param:OpensearchDomainEndpoin}
+          - ${param:OpensearchDomainEndpoint}
           - http://localhost:5000/
-        DefaultRedirectURI: ${param:OpensearchDomainEndpoin}
+        DefaultRedirectURI: ${param:OpensearchDomainEndpoint}
         LogoutURLs:
-          - ${param:OpensearchDomainEndpoin}
+          - ${param:OpensearchDomainEndpoint}
           - http://localhost:5000/
         SupportedIdentityProviders:
           - COGNITO
