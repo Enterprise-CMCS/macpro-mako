@@ -38,6 +38,7 @@
     "bootstrap": "^3.3.7",
     "date-fns": "^2.29.3",
     "file-saver": "^2.0.5",
+    "flowbite": "^1.8.1",
     "jszip": "^3.10.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

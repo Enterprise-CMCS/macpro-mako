@@ -1,11 +1,11 @@
 import PageTitleBar from "../../components/PageTitleBar/PageTitleBar";
 import { helpDeskContact } from "../../lib/faq/helpDeskContact";
 import { oneMACFAQContent } from "../../lib/faq/faqContent";
-
+import "flowbite";
 import { Accordion, AccordionItem } from "@cmsgov/design-system";
-
+import {useState} from "react";
 export const FAQ = () => {
-
+/*
   const FaqDetails = () => {
     return (
     <>{oneMACFAQContent.map((section, index) => (
@@ -30,6 +30,76 @@ export const FAQ = () => {
     ))}</>
     );
   };
+*/
+
+  const FAQAccordion = () => {
+    const [activeAccordion, setActiveAccordion] = useState(null || "");
+    const [iconOrientation, setIconOrientation] = useState("M9 5 5 1 1 5");
+  
+    const handleAccordionToggle = (sectionIndex:any, qandaIndex:any) => {
+      if (activeAccordion === `${sectionIndex}-${qandaIndex}`) {
+        setActiveAccordion("");
+        setIconOrientation("M9 5 5 1 1 5");
+      } else {
+        setActiveAccordion(`${sectionIndex}-${qandaIndex}`);
+        setIconOrientation("M9 1 5 5 1 1");
+      }
+    };
+  
+    return (
+      <div id="accordion-collapse" data-accordion="collapse">
+        {oneMACFAQContent.map((section, sectionIndex) => (
+          <div key={sectionIndex}>
+            <h2 className="topic-title">{section.sectionTitle}</h2>
+            {section.qanda.map((qandaItem, qandaIndex) => (
+              <div key={qandaIndex}>
+                <h2 id={`accordion-collapse-heading-${sectionIndex}-${qandaIndex}`}>
+                  
+                  <button
+                    type="button"
+                    className="flex items-center justify-between w-full p-5 font-medium text-left accordion-button-new "
+                    onClick={() => handleAccordionToggle(sectionIndex, qandaIndex)}
+                    aria-expanded={activeAccordion === `${sectionIndex}-${qandaIndex}`}
+                    aria-controls={`accordion-collapse-body-${sectionIndex}-${qandaIndex}`}
+                  >
+                    <span>{qandaItem.question}</span>
+                    <svg
+                      data-accordion-icon
+                      className={`w-3 h-3 rotate-180 shrink-0`}
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 10 6"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d={iconOrientation || "M9 5 5 1 1 5"} 
+                      />
+                    </svg>
+                  </button>
+                </h2>
+                <div
+                  id={`accordion-collapse-body-${sectionIndex}-${qandaIndex}`}
+                  className={`${
+                    activeAccordion === `${sectionIndex}-${qandaIndex}` ? '' : 'hidden'
+                  }`}
+                  aria-labelledby={`accordion-collapse-heading-${sectionIndex}-${qandaIndex}`}
+                >
+                  <div className="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+                    {qandaItem.answerJSX}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
 
   const infoDetails = [
     {
@@ -70,7 +140,8 @@ export const FAQ = () => {
             </div>
           </aside>
           <div className="faq-left-column">
-           <> <FaqDetails/> </>
+           
+           <> <FAQAccordion/> </>
           </div>
         </div>
       </div>

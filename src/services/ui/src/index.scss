@@ -8,6 +8,21 @@ $color-primary-alt-lightest: #f0fafe;
 @tailwind components;
 @tailwind utilities;
 
+.accordion-button-new{
+  //color:#0071bc;
+  
+  //display: block;
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+  //position: relative;
+  padding: 10px;
+  padding-left: 40px;
+  color: #0071bc;
+  background-color: white;
+
+}
+
 .loader-wrapper {
     position: fixed;
     top: 0;
@@ -1457,13 +1472,13 @@ article.form-container {
   text-align: left;
 }
 
-.action-popup a:hover {
-  color: rgba($color-base-inverse, 0.8);
-}
+//.action-popup a:hover {
+//  color: rgba($color-base-inverse, 0.8);
+//}
 
-.action-popup a:hover {
-  color: rgba($color-base-inverse, 0.8);
-}
+//.action-popup a:hover {
+//  color: rgba($color-base-inverse, 0.8);
+//}
 
 // Account dropdown
 
@@ -1497,9 +1512,9 @@ article.form-container {
   text-align: left;
 }
 
-.dropdown-content a:hover {
-  color: rgba($color-base-inverse, 0.8);
-}
+//.dropdown-content a:hover {
+//  color: rgba($color-base-inverse, 0.8);
+//}
 
 // MultiSelectDropDown component
 
