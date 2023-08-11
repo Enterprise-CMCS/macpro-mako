@@ -24,9 +24,7 @@ export const seatool: Handler = async (event) => {
       // this is a delete event so we will need to delete
       if (value) {
         const id: string = JSON.parse(decode(key));
-        console.log("SEATOOL: seatool id is: ", id);
         const record = { id, ...JSON.parse(decode(value)) };
-        console.log("SEATOOL: record is", record);
 
         try {
           const validPlanTypeIds = [122, 123, 124, 125];
@@ -74,21 +72,18 @@ export const onemac: Handler = async (event) => {
 
       if (value) {
         const id: string = decode(key);
-        console.log("ONEMAC: onemac id is: ", id);
         const record = { id, ...JSON.parse(decode(value)) };
-        console.log("ONEMAC: record is", record);
-
         if (record && record.sk === "Package") {
-          try {
-            const transformedRecord = transformOnemac(id).parse(record);
-            oneMacRecords.push(transformedRecord);
-          } catch (err: unknown) {
-            if (err instanceof ZodError) {
-              console.log("OneMac validation failed", err.message);
-              console.log("More detailed error: ", JSON.stringify(err));
-            } else {
-              console.log("A non-validation error occured: ", err);
-            }
+          const result = transformOnemac(id).safeParse(record);
+          if (result.success === false) {
+            console.log(
+              "ONEMAC Validation Error. The following record failed to parse: ",
+              JSON.stringify(record),
+              "Because of the following Reason(s):",
+              result.error.message
+            );
+          } else {
+            oneMacRecords.push(result.data);
           }
         }
       }
