@@ -19,13 +19,14 @@ export const seatool: Handler = async (event) => {
       value: string;
     }[]) {
       const { key, value } = seatoolRecord;
-      const id: string = JSON.parse(decode(key));
-      console.log("seatool id is: ", id);
-      const record = { id, ...JSON.parse(decode(value)) };
 
       // we need to handle the case of null records for value
       // this is a delete event so we will need to delete
       if (value) {
+        const id: string = JSON.parse(decode(key));
+        console.log("seatool id is: ", id);
+        const record = { id, ...JSON.parse(decode(value)) };
+
         try {
           const validPlanTypeIds = [122, 123, 124, 125];
           const transformedRecord = transformSeatoolData(id).parse(record);
@@ -69,19 +70,22 @@ export const onemac: Handler = async (event) => {
       value: string;
     }[]) {
       const { key, value } = onemacRecord;
-      const id: string = decode(key);
-      console.log("onemac id is: ", id);
-      const record = { id, ...JSON.parse(decode(value)) };
 
-      if (value && record && record.sk === "Package") {
-        try {
-          const transformedRecord = transformOnemac(id).parse(record);
-          oneMacRecords.push(transformedRecord);
-        } catch (err: unknown) {
-          if (err instanceof ZodError) {
-            console.log("OneMac validation failed", err.message);
-          } else {
-            console.log("A non-validation error occured: ", err);
+      if (value) {
+        const id: string = decode(key);
+        console.log("onemac id is: ", id);
+        const record = { id, ...JSON.parse(decode(value)) };
+
+        if (record && record.sk === "Package") {
+          try {
+            const transformedRecord = transformOnemac(id).parse(record);
+            oneMacRecords.push(transformedRecord);
+          } catch (err: unknown) {
+            if (err instanceof ZodError) {
+              console.log("OneMac validation failed", err.message);
+            } else {
+              console.log("A non-validation error occured: ", err);
+            }
           }
         }
       }
