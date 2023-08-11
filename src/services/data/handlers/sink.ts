@@ -26,18 +26,18 @@ export const seatool: Handler = async (event) => {
         const id: string = JSON.parse(decode(key));
         const record = { id, ...JSON.parse(decode(value)) };
 
-        try {
-          const validPlanTypeIds = [122, 123, 124, 125];
-          const transformedRecord = transformSeatoolData(id).parse(record);
-
-          if (validPlanTypeIds.includes(transformedRecord.planTypeId)) {
-            seaToolRecords.push(transformedRecord);
-          }
-        } catch (err: unknown) {
-          if (err instanceof ZodError) {
-            console.log("SeaTool validation failed: ", err.message);
-          } else {
-            console.log("A non validation error occured: ", err);
+        const validPlanTypeIds = [122, 123, 124, 125];
+        const result = transformSeatoolData(id).safeParse(record);
+        if (result.success === false) {
+          console.log(
+            "SEATOOL Validation Error. The following record failed to parse: ",
+            JSON.stringify(record),
+            "Because of the following Reason(s):",
+            result.error.message
+          );
+        } else {
+          if (validPlanTypeIds.includes(result.data.planTypeId)) {
+            seaToolRecords.push(result.data);
           }
         }
       }

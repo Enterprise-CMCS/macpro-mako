@@ -33,13 +33,13 @@ export async function updateData(host:string, indexObject:any) {
   client = client || (await getClient(host));
   // Add a document to the index. 
   var response = await client.update(indexObject);
-  console.log(response.body);
+  // console.log(response.body);
 }
 
 export async function deleteIndex(host:string, index:string) {
   client = client || (await getClient(host));
   var response = await client.indices.delete({index});
-  console.log(response);
+  // console.log(response);
 }
 
 export async function mapRole(host:string, masterRoleToAssume:string, osRoleName:string, iamRoleName: string) {
@@ -73,7 +73,7 @@ export async function mapRole(host:string, masterRoleToAssume:string, osRoleName
       }
 
     ]);
-    console.log(patchResponse.data);
+    // console.log(patchResponse.data);
     return patchResponse.data;
   } catch (error) {
     console.error('Error making PUT request:', error);
@@ -88,7 +88,7 @@ export async function search(host:string, index:string, query:any){
       index: index,
       body: query,
     });
-    console.log(response.body.hits);
+    // console.log(response.body.hits);
     return response.body.hits;
   } catch(e) {
     console.log({e})

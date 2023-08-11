@@ -84,8 +84,8 @@ export const seatoolSchema = z.object({
   RAI: z
     .array(
       z.object({
-        RAI_RECEIVED_DATE: z.number(),
-        RAI_REQUESTED_DATE: z.number(),
+        RAI_RECEIVED_DATE: z.number().nullable(),
+        RAI_REQUESTED_DATE: z.number().nullable(),
       })
     )
     .nullable(),
