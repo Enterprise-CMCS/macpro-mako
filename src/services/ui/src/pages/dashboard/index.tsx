@@ -38,7 +38,7 @@ const StateSelector = ({
   userStateCodes: string[];
 }) => {
   if (userStateCodes.length === 1) {
-    return <h3>Region: {userStateCodes[0]}</h3>;
+    return null;
   }
 
   return (
@@ -63,7 +63,7 @@ export const Dashboard = () => {
   const { data } = useGetUser();
   const userStateCodes = getUserStateCodes(data?.user);
 
-  const [selectedState, setSelectedState] = useState(userStateCodes[0]);
+  const [selectedState, setSelectedState] = useState(userStateCodes?.[0] || "");
 
   const handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedState(event.target.value);
@@ -75,11 +75,11 @@ export const Dashboard = () => {
         <UI.Typography size="lg" as="h1">
           Dashboard
         </UI.Typography>
-        <StateSelector
+        {/* <StateSelector
           userStateCodes={userStateCodes}
           handleStateChange={handleStateChange}
           selectedState={selectedState}
-        />
+        /> */}
       </div>
       <div
         style={{

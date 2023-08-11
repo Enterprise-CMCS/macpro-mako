@@ -5,6 +5,7 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 import { CognitoUserAttributes } from "shared-types";
 import { APIGatewayEvent } from "aws-lambda";
+import { isCmsUser } from "shared-utils";
 
 // Retrieve user authentication details from the APIGatewayEvent
 export function getAuthDetails(event: APIGatewayEvent) {
@@ -33,18 +34,6 @@ function userAttrDict(cognitoUser: CognitoUserType): CognitoUserAttributes {
   return attributes as CognitoUserAttributes;
 }
 
-// Parse object values as JSON if possible
-export const getParsedObject = (obj: CognitoUserAttributes) =>
-  Object.fromEntries(
-    Object.entries(obj).map(([key, value]) => {
-      try {
-        return [key, JSON.parse(value as string)];
-      } catch (error) {
-        return [key, value];
-      }
-    })
-  );
-
 // Retrieve and parse user attributes from Cognito using the provided userId and poolId
 export async function lookupUserAttributes(
   userId: string,
@@ -59,7 +48,7 @@ export async function lookupUserAttributes(
   const currentUser = fetchResult as CognitoUserType;
   const attributes = userAttrDict(currentUser);
 
-  return getParsedObject(attributes) as CognitoUserAttributes;
+  return attributes;
 }
 
 // Fetch user data from Cognito based on the provided userId and poolId
@@ -94,3 +83,50 @@ async function fetchUserFromCognito(
     throw new Error("Error fetching user from Cognito");
   }
 }
+
+export const isAuthorized = async (
+  event: APIGatewayEvent,
+  stateCode: string
+) => {
+  // Retrieve authentication details of the user
+  const authDetails = getAuthDetails(event);
+
+  // Look up user attributes from Cognito
+  const userAttributes = await lookupUserAttributes(
+    authDetails.userId,
+    authDetails.poolId
+  );
+  return (
+    isCmsUser(userAttributes) ||
+    userAttributes["custom:state"].includes(stateCode)
+  );
+};
+
+export const getStateFilter = async (event: APIGatewayEvent) => {
+  // Retrieve authentication details of the user
+  const authDetails = getAuthDetails(event);
+
+  // Look up user attributes from Cognito
+  const userAttributes = await lookupUserAttributes(
+    authDetails.userId,
+    authDetails.poolId
+  );
+
+  if (!isCmsUser(userAttributes)) {
+    if (userAttributes["custom:state"]) {
+      const filter = {
+        terms: {
+          state: userAttributes["custom:state"]
+            .split(",")
+            .map((state) => state.toLocaleLowerCase()),
+        },
+      };
+      return filter;
+    } else {
+      throw "State user detected, but no associated states.  Cannot continue";
+    }
+  } else {
+    console.log("CMS User detected.  No state filter required.");
+    return null;
+  }
+};

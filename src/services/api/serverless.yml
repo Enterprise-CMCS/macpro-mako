@@ -48,6 +48,11 @@ provider:
             - cognito-idp:GetUser
             - cognito-idp:ListUsers
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - sts:AssumeRole
+          Resource:
+            - ${self:custom.onemacLegacyS3AccessRoleArn}
 
 custom:
   project: ${env:PROJECT}
@@ -62,6 +67,7 @@ custom:
     linting: false
     packager: yarn
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
+  onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
 functions:
   search:
     handler: handlers/search.handler
@@ -71,7 +77,42 @@ functions:
       osDomain: ${param:osDomain}
     events:
       - http:
-          path: /search/{stateCode}
+          path: /search
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  getAttachmentUrl:
+    handler: handlers/getAttachmentUrl.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+      onemacLegacyS3AccessRoleArn: ${self:custom.onemacLegacyS3AccessRoleArn}
+    events:
+      - http:
+          path: /getAttachmentUrl
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  item:
+    handler: handlers/item.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /item
           method: post
           cors: true
           authorizer: aws_iam

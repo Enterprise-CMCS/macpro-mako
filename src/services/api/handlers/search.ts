@@ -1,82 +1,35 @@
 import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
-import { getAuthDetails, lookupUserAttributes } from "../libs/auth/user";
-
+import { getStateFilter } from "../libs/auth/user";
 import * as os from "./../../../libs/opensearch-lib";
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
 
-// Handler function to get Seatool data
+// Handler function to search index
 export const getSearchData = async (event: APIGatewayEvent) => {
   try {
-    // Retrieve authentication details of the user
-    const authDetails = getAuthDetails(event);
-
-    // Look up user attributes from Cognito
-    const userAttributes = await lookupUserAttributes(
-      authDetails.userId,
-      authDetails.poolId
-    );
-
-    // Retrieve the state code from the path parameters
-    const stateCode = event.pathParameters?.stateCode;
-
-    // Check if stateCode is provided
-    if (!stateCode) {
-      return response({
-        statusCode: 400,
-        body: { message: "State code is missing" },
-      });
+    let query: any = {};
+    if (event.body) {
+      query = JSON.parse(event.body);
     }
 
-    // Check if user is authorized to access the resource based on their attributes
-    if (
-      !userAttributes ||
-      !userAttributes["custom:state_codes"]?.includes(stateCode)
-    ) {
-      return response({
-        statusCode: 403,
-        body: { message: "User is not authorized to access this resource" },
-      });
+    query.query = query?.query || {};
+    query.query.bool = query.query?.bool || {};
+    query.query.bool.must = query.query.bool?.must || [];
+
+    const stateFilter = await getStateFilter(event);
+    if (stateFilter) {
+      query.query.bool.must.push(stateFilter);
     }
 
-    const stateMatcher = {
-      match: {
-        "seatool.STATE_CODE": stateCode,
-      },
-    };
-    let query = JSON.parse(event.body);
-    // Please help the below if garbage... the intent is a deep merge.
-    if (query.query?.bool?.must) {
-      query.query.bool.must.push(stateMatcher);
-    } else if (query.query?.bool) {
-      query.query.bool.must = [stateMatcher];
-    } else if (query.query) {
-      query.query.bool = { must: [stateMatcher] };
-    } else {
-      query = {
-        query: {
-          bool: {
-            must: [stateMatcher],
-          },
-        },
-      };
-    }
     query.from = query.from || 0;
     query.size = query.size || 100;
 
     console.log("Sending query, built as follow:");
     console.log(JSON.stringify(query, null, 2));
-    // Retrieve Seatool data using the SeatoolService
-    const results = await os.search(process.env.osDomain, "main", query);
 
-    if (!results) {
-      return response({
-        statusCode: 404,
-        body: { message: "No Seatool data found for the provided state code" },
-      });
-    }
+    const results = await os.search(process.env.osDomain, "main", query);
 
     return response<unknown>({
       statusCode: 200,

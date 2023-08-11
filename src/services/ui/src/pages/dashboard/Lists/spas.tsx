@@ -1,15 +1,19 @@
 import { SearchData, useSearch } from "@/api";
+import { useGetUser } from "@/api/useGetUser";
 import { ErrorAlert, SearchForm } from "@/components";
+import { removeUnderscoresAndCapitalize } from "@/utils";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getStatus } from "./statusHelper";
 
 export const SpasList = ({ selectedState }: { selectedState: string }) => {
   const [rowSelectionModel, setRowSelectionModel] = useState<string>();
   const [searchText, setSearchText] = useState<string>("");
   const [searchData, setSearchData] = useState<SearchData[] | null>(null);
   const { mutateAsync, isLoading, error } = useSearch();
+  const { data: user } = useGetUser();
 
   useEffect(() => {
     handleSearch(searchText);
@@ -54,9 +58,9 @@ export const SpasList = ({ selectedState }: { selectedState: string }) => {
               return (
                 <Link
                   className="cursor-pointer text-blue-600"
-                  to={`/record?region=${encodeURIComponent(
-                    params.row._source.seatool.STATE_PLAN.STATE_CODE
-                  )}&id=${encodeURIComponent(params.row._id)}`}
+                  to={`/detail/${params.row._source.programType.toLowerCase()}-spa?id=${encodeURIComponent(
+                    params.row._id
+                  )}`}
                 >
                   {params.row._id}
                 </Link>
@@ -64,56 +68,40 @@ export const SpasList = ({ selectedState }: { selectedState: string }) => {
             },
           },
           {
+            field: "State",
+            flex: 1,
+            valueGetter(params) {
+              return params.row._source.state;
+            },
+          },
+          {
             field: "Plan Type",
             flex: 1,
             valueGetter(params) {
-              return params.row._source.seatool.PLAN_TYPE;
+              return removeUnderscoresAndCapitalize(
+                params.row._source.planType
+              );
             },
           },
           {
             field: "Status",
             flex: 1,
             valueGetter(params) {
-              let status = "Unknown"; // not sure what status to use or even what "record.SPW_STATUS[0].SPW_STATUS_DESC" is
-              if (
-                params.row._source.seatool.SPW_STATUS &&
-                params.row._source.seatool.SPW_STATUS[0]
-              ) {
-                status =
-                  params.row._source.seatool.SPW_STATUS[0].SPW_STATUS_DESC;
-              }
-              return status;
+              return getStatus(params.row._source.status, user?.isCms);
             },
           },
           {
             field: "Submission Date",
             flex: 1,
             valueGetter(params) {
-              return format(
-                params.row._source.seatool.SUBMISSION_DATE,
-                "MM/dd/yyyy"
-              );
+              return format(params.row._source.submission_date, "MM/dd/yyyy");
             },
           },
           {
-            field: "Region",
-            flex: 1,
-            valueGetter(params) {
-              return params.row._source.seatool.REGION[0].REGION_NAME;
-            },
-          },
-          {
-            field: "Type",
+            field: "Program Type",
             flex: 1,
             valueGetter(params) {
               return params.row._source.programType;
-            },
-          },
-          {
-            field: "Memo",
-            flex: 1,
-            valueGetter(params) {
-              return params.row._source.seatool?.STATE_PLAN?.SUMMARY_MEMO;
             },
           },
         ]}
