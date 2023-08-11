@@ -192,9 +192,9 @@ resources:
         SupportedIdentityProviders:
           - Fn::If:
               - BackWithOkta
-              # - !Ref OktaUserPoolIdentityProvider
+              - !Ref OktaUserPoolIdentityProvider
               - !Ref KibanaOktaUserPoolIdentityProvider
-              - !Ref AWS::NoValue
+              # - !Ref AWS::NoValue
     KibanaCognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:
