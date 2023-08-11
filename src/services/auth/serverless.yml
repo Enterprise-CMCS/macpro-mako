@@ -221,7 +221,7 @@ resources:
           - COGNITO
           - Fn::If:
               - BackWithOkta
-              - !Ref KibanaOktaUserPoolIdentityProvider
+              # - !Ref KibanaOktaUserPoolIdentityProvider
               - !Ref AWS::NoValue
     UserPoolDomain:
       Type: AWS::Cognito::UserPoolDomain
