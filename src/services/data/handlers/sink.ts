@@ -24,8 +24,9 @@ export const seatool: Handler = async (event) => {
       // this is a delete event so we will need to delete
       if (value) {
         const id: string = JSON.parse(decode(key));
-        console.log("seatool id is: ", id);
+        console.log("SEATOOL: seatool id is: ", id);
         const record = { id, ...JSON.parse(decode(value)) };
+        console.log("SEATOOL: record is", record);
 
         try {
           const validPlanTypeIds = [122, 123, 124, 125];
@@ -73,8 +74,9 @@ export const onemac: Handler = async (event) => {
 
       if (value) {
         const id: string = decode(key);
-        console.log("onemac id is: ", id);
+        console.log("ONEMAC: onemac id is: ", id);
         const record = { id, ...JSON.parse(decode(value)) };
+        console.log("ONEMAC: record is", record);
 
         if (record && record.sk === "Package") {
           try {
