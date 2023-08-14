@@ -7,24 +7,8 @@
         "Value": "george@example.com"
       },
       {
-        "Name": "given_name",
-        "Value": "George"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Harrison"
-      },
-      {
         "Name": "email_verified",
         "Value": "true"
-      },
-      {
-        "Name": "custom:state",
-        "Value": "VA,OH,SC,CO,GA,MD"
-      },
-      {
-        "Name": "custom:cms-roles",
-        "Value": "state-submitter"
       }
     ]
   }
