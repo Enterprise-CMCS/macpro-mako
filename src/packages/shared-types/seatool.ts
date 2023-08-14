@@ -48,6 +48,23 @@ function getLeadAnalyst(eventData: SeaToolSink) {
   return null;
 }
 
+const getReceivedDate = (data: SeaToolSink) => {
+  return (
+    data.RAI?.sort((a, b) => {
+      if (a.RAI_REQUESTED_DATE === null && b.RAI_REQUESTED_DATE === null) {
+        return 0; // Both dates are null, so they're considered equal
+      }
+      if (a.RAI_REQUESTED_DATE === null) {
+        return 1; // a comes after b because its date is null
+      }
+      if (b.RAI_REQUESTED_DATE === null) {
+        return -1; // b comes after a because its date is null
+      }
+      return a.RAI_REQUESTED_DATE - b.RAI_REQUESTED_DATE; // Normal comparison
+    })[data.RAI.length - 1] ?? null
+  );
+};
+
 export const seatoolSchema = z.object({
   LEAD_ANALYST: z
     .array(
@@ -99,10 +116,7 @@ export const transformSeatoolData = (id: string) => {
     authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
     state: data.STATES[0].STATE_CODE,
     submissionDate: data.STATE_PLAN.SUBMISSION_DATE,
-    rai_received_date:
-      data.RAI?.sort((a, b) => a.RAI_REQUESTED_DATE - b.RAI_REQUESTED_DATE)[
-        data.RAI.length - 1
-      ] ?? null,
+    rai_received_date: getReceivedDate(data),
     lead_analyst: getLeadAnalyst(data),
   }));
 };
