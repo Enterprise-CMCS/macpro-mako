@@ -149,7 +149,7 @@ params:
   master:
     osInstanceType: m5.large.search
   val:
-    bootstrapKibanaUsers: "true"
+    bootstrapKibanaUsers: "false"
     osInstanceType: m5.large.search
   production:
     bootstrapKibanaUsers: "false"
