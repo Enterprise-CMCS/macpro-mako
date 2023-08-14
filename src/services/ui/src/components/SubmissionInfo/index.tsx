@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 export const SubmissionInfo = (data: any) => {
   const submissionDetails = [
     {
@@ -8,7 +6,7 @@ export const SubmissionInfo = (data: any) => {
     },
     {
       label: "CPOC Name",
-      value: <p className="text-lg">{data.leadAnalyst || "None"}</p>,
+      value: <p className="text-lg">{data.leadAnalyst.LAST_NAME || "None"}</p>,
     },
     {
       label: "Submission Source",

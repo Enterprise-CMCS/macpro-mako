@@ -5,7 +5,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { getUser, useGetUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
-import { getUserStateCodes } from "@/utils/user";
+import { getUserStateCodes } from "@/utils";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {

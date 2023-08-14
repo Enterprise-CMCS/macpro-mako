@@ -66,7 +66,7 @@ export const Attachmentslist = (data: any) => {
         </tbody>
       </Table>
       <div className="flex justify-end">
-        {data.attachments ? (
+        {data.attachments && (
           <Button
             buttonText="Download All"
             buttonVariation="secondary"
@@ -87,8 +87,6 @@ export const Attachmentslist = (data: any) => {
             type="button"
             style={{ padding: "4px" }}
           />
-        ) : (
-          <></>
         )}
       </div>
     </div>

@@ -35,7 +35,7 @@ export const transformOnemac = (id: string) => {
           bucket,
           key,
         };
-      }) ?? [],
+      }) ?? null,
     additionalInformation: data.additionalInformation,
     submissionOrigin: "OneMAC",
     submitterEmail: data.submitterEmail,
