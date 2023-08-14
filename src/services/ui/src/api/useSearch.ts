@@ -12,7 +12,7 @@ export type SearchData = {
 export const getSearchData = async (
   searchString: string,
   authority: string
-): Promise<{ hits: SearchData[] }> => {
+): Promise<{ hits: SearchData[]; numberOfHits: number }> => {
   const query: any = {
     from: 0,
     size: 100,
@@ -54,13 +54,13 @@ export const getSearchData = async (
     ];
   } else {
     // If we haven't specified any parameters, lets just sort by changed date
-    // query.sort = [
-    //   {
-    //     changedDate: {
-    //       order: "desc",
-    //     },
-    //   },
-    // ];
+    query.sort = [
+      {
+        changedDate: {
+          order: "desc",
+        },
+      },
+    ];
   }
   const searchData = await API.post("os", "/search", {
     body: query,
