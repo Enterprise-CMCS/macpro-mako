@@ -6,9 +6,7 @@ import { OneMacTransform, transformOnemac } from "shared-types/onemac";
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
 }
-import { ZodError } from "zod";
 const osDomain: string = process.env.osDomain;
-const index = "main";
 
 export const seatool: Handler = async (event) => {
   const seaToolRecords: SeaToolTransform[] = [];

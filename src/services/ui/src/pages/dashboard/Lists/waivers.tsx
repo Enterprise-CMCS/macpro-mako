@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getStatus } from "./statusHelper";
+// import { OSSearch } from "shared-types";
 
 export const WaiversList = ({ selectedState }: { selectedState: string }) => {
   const [rowSelectionModel, setRowSelectionModel] = useState<string>();
@@ -24,7 +25,7 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
       const data = await mutateAsync({
         selectedState,
         searchString: searchText,
-        programType: "WAIVER",
+        authority: "WAIVER",
       });
 
       setSearchData(data.hits);
@@ -58,7 +59,7 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
               return (
                 <Link
                   className="cursor-pointer text-blue-600"
-                  to={`/detail/${params.row._source.programType.toLowerCase()}?id=${encodeURIComponent(
+                  to={`/detail/${params.row._source.authority.toLowerCase()}?id=${encodeURIComponent(
                     params.row._id
                   )}`}
                 >
@@ -94,7 +95,7 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             field: "Submission Date",
             flex: 1,
             valueGetter(params) {
-              return format(params.row._source.submission_date, "MM/dd/yyyy");
+              return format(params.row._source.submissionDate, "MM/dd/yyyy");
             },
           },
         ]}

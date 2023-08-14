@@ -97,7 +97,13 @@ export const seatoolSchema = z.object({
     SUBMISSION_DATE: z.number(),
     PLAN_TYPE: z.number().nullable(),
     LEAD_ANALYST_ID: z.number().nullable(),
+    CHANGED_DATE: z.number().nullable(),
   }),
+  SPW_STATUS: z.array(
+    z.object({
+      SPW_STATUS_DESC: z.string().nullable(),
+    })
+  ),
   RAI: z
     .array(
       z.object({
@@ -116,8 +122,10 @@ export const transformSeatoolData = (id: string) => {
     authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
     state: data.STATES[0].STATE_CODE,
     submissionDate: data.STATE_PLAN.SUBMISSION_DATE,
-    rai_received_date: getReceivedDate(data),
-    lead_analyst: getLeadAnalyst(data),
+    raiReceivedDate: getReceivedDate(data),
+    leadAnalyst: getLeadAnalyst(data),
+    changedDate: data.STATE_PLAN.CHANGED_DATE,
+    status: data.SPW_STATUS[0].SPW_STATUS_DESC,
   }));
 };
 

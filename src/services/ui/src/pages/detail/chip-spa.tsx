@@ -70,10 +70,10 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           <ChipSpaPackageDetails
             {...{
               "SPA ID": data?._id,
-              Type: data?._source.programType,
+              Type: data?._source.authority,
               State: data?._source.state,
               "Sub-Type": data?._source.planType,
-              "Initial Submission Date": data?._source.submission_date,
+              "Initial Submission Date": data?._source.submissionDate,
               "Proposed Effective Date": data?._source.proposedDate,
               "Approved Effective Date": data?._source.approvedEffectiveDate,
               "Change Date": data?._source.changedDate,
