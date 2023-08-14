@@ -130,7 +130,7 @@ export const transformSeatoolData = (id: string) => {
     proposedDate: data.STATE_PLAN.PROPOSED_DATE,
     raiReceivedDate: getReceivedDate(data),
     state: data.STATES[0].STATE_CODE,
-    status: data.SPW_STATUS[0].SPW_STATUS_DESC,
+    status: data.SPW_STATUS?.[0].SPW_STATUS_DESC,
     submissionDate: data.STATE_PLAN.SUBMISSION_DATE,
   }));
 };
