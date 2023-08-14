@@ -101,3 +101,32 @@ export const isAuthorized = async (
     userAttributes["custom:state"].includes(stateCode)
   );
 };
+
+export const getStateFilter = async (event: APIGatewayEvent) => {
+  // Retrieve authentication details of the user
+  const authDetails = getAuthDetails(event);
+
+  // Look up user attributes from Cognito
+  const userAttributes = await lookupUserAttributes(
+    authDetails.userId,
+    authDetails.poolId
+  );
+
+  if (!isCmsUser(userAttributes)) {
+    if (userAttributes["custom:state"]) {
+      const filter = {
+        terms: {
+          state: userAttributes["custom:state"]
+            .split(",")
+            .map((state) => state.toLocaleLowerCase()),
+        },
+      };
+      return filter;
+    } else {
+      throw "State user detected, but no associated states.  Cannot continue";
+    }
+  } else {
+    console.log("CMS User detected.  No state filter required.");
+    return null;
+  }
+};

@@ -1,6 +1,8 @@
 import { getAttachmentUrl } from "@/api";
 import { Button, TD, TH, Table } from "@enterprise-cmcs/macpro-ux-lib";
 import { format } from "date-fns";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 export const Attachmentslist = (data: any) => {
   return (
     <div>
@@ -69,6 +71,18 @@ export const Attachmentslist = (data: any) => {
             buttonText="Download All"
             buttonVariation="secondary"
             iconName="file_download"
+            onClick={async () => {
+              const attachments: any = [];
+              for (let i = 0; i < data.attachments.length; i++) {
+                const url = await getAttachmentUrl(
+                  data.id,
+                  data.attachments[i].bucket,
+                  data.attachments[i].key
+                );
+                attachments[i] = { ...data.attachments[i], url };
+              }
+              downloadAll(attachments, data.id);
+            }}
             target="_self"
             type="button"
             style={{ padding: "4px" }}
@@ -80,3 +94,31 @@ export const Attachmentslist = (data: any) => {
     </div>
   );
 };
+
+async function downloadAll(attachments: any, id: string) {
+  const downloadList = (await Promise.all(
+    attachments
+      .map(async (attachment: any) => {
+        try {
+          const resp = await fetch(attachment.url);
+          if (!resp.ok) throw resp;
+          return {
+            filename: attachment.filename,
+            title: attachment.title,
+            contents: await resp.blob(),
+          };
+        } catch (e) {
+          console.error(
+            `Failed to download file: ${attachment.filename} ${attachment.url}`,
+            e
+          );
+        }
+      })
+      .filter(Boolean)
+  )) as { filename: string; title: string; contents: Blob }[];
+  const zip = new JSZip();
+  for (const { filename, title, contents } of downloadList) {
+    zip.file(filename, contents, { comment: title });
+  }
+  saveAs(await zip.generateAsync({ type: "blob" }), `${id || "onemac"}.zip`);
+}

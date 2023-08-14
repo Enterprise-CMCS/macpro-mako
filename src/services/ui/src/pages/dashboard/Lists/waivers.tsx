@@ -1,16 +1,19 @@
 import { SearchData, useSearch } from "@/api";
+import { useGetUser } from "@/api/useGetUser";
 import { ErrorAlert, SearchForm } from "@/components";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getStatus } from "./statusHelper";
 
 export const WaiversList = ({ selectedState }: { selectedState: string }) => {
   const [rowSelectionModel, setRowSelectionModel] = useState<string>();
   const [searchText, setSearchText] = useState<string>("");
   const [searchData, setSearchData] = useState<SearchData[] | null>(null);
   const { mutateAsync, isLoading, error } = useSearch();
+  const { data: user } = useGetUser();
 
   useEffect(() => {
     handleSearch(searchText);
@@ -65,6 +68,13 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             },
           },
           {
+            field: "State",
+            flex: 1,
+            valueGetter(params) {
+              return params.row._source.state;
+            },
+          },
+          {
             field: "Plan Type",
             flex: 1,
             valueGetter(params) {
@@ -77,7 +87,7 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             field: "Status",
             flex: 1,
             valueGetter(params) {
-              return params.row._source.status;
+              return getStatus(params.row._source.status, user?.isCms);
             },
           },
           {
@@ -85,13 +95,6 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             flex: 1,
             valueGetter(params) {
               return format(params.row._source.submission_date, "MM/dd/yyyy");
-            },
-          },
-          {
-            field: "Program Type",
-            flex: 1,
-            valueGetter(params) {
-              return params.row._source.programType;
             },
           },
         ]}

@@ -12,6 +12,7 @@ const index = "main";
 
 export const seatool: Handler = async (event) => {
   const seaToolRecords: SeaToolTransform[] = [];
+  const docObject: Record<string, SeaToolTransform> = {};
 
   for (const recordKey of Object.keys(event.records)) {
     for (const seatoolRecord of event.records[recordKey] as {
@@ -37,24 +38,17 @@ export const seatool: Handler = async (event) => {
           );
         } else {
           if (validPlanTypeIds.includes(result.data.planTypeId)) {
-            seaToolRecords.push(result.data);
+            docObject[id] = result.data;
           }
         }
       }
     }
   }
-
+  for (const [, b] of Object.entries(docObject)) {
+    seaToolRecords.push(b);
+  }
   try {
-    for (const item of seaToolRecords) {
-      await os.updateData(osDomain, {
-        index,
-        id: item.id,
-        body: {
-          doc: item,
-          doc_as_upsert: true,
-        },
-      });
-    }
+    await os.bulkUpdateData(osDomain, seaToolRecords);
   } catch (error) {
     console.error(error);
   }
@@ -62,6 +56,7 @@ export const seatool: Handler = async (event) => {
 
 export const onemac: Handler = async (event) => {
   const oneMacRecords: OneMacTransform[] = [];
+  const docObject: Record<string, OneMacTransform> = {};
 
   for (const recordKey of Object.keys(event.records)) {
     for (const onemacRecord of event.records[recordKey] as {
@@ -83,24 +78,17 @@ export const onemac: Handler = async (event) => {
               result.error.message
             );
           } else {
-            oneMacRecords.push(result.data);
+            docObject[id] = result.data;
           }
         }
       }
     }
   }
-
+  for (const [, b] of Object.entries(docObject)) {
+    oneMacRecords.push(b);
+  }
   try {
-    for (const item of oneMacRecords) {
-      await os.updateData(osDomain, {
-        index,
-        id: item.id,
-        body: {
-          doc: item,
-          doc_as_upsert: true,
-        },
-      });
-    }
+    await os.bulkUpdateData(osDomain, oneMacRecords);
   } catch (error) {
     console.error(error);
   }

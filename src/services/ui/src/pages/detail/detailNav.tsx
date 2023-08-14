@@ -1,8 +1,10 @@
+import { removeUnderscoresAndCapitalize } from "@/utils";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 
-export const DetailNav = ({ id }: { id: string }) => {
+export const DetailNav = ({ id, type }: { id: string; type: string }) => {
   const navigate = useNavigate();
+  const planType = removeUnderscoresAndCapitalize(type);
   return (
     <div className="bg-sky-100">
       <div className="max-w-screen-lg m-auto lg:px-8">
@@ -12,7 +14,7 @@ export const DetailNav = ({ id }: { id: string }) => {
               <ChevronLeftIcon className="w-6 h-6" />
             </button>
             <h1 className="text-xl font-medium pl-4">
-              CHIP SPA Submission Details - {id}
+              {planType} Submission Details - {id}
             </h1>
           </div>
         </div>

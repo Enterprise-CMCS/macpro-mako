@@ -77,7 +77,7 @@ functions:
       osDomain: ${param:osDomain}
     events:
       - http:
-          path: /search/{stateCode}
+          path: /search
           method: post
           cors: true
           authorizer: aws_iam

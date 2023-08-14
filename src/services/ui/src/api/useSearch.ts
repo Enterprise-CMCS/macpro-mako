@@ -34,16 +34,36 @@ export const getSearchData = async (
   if (searchString) {
     query.query.bool.should = [
       {
-        match: {
-          _id: {
-            query: searchString,
-            boost: 5,
+        match_phrase: {
+          id: `${searchString}`,
+        },
+      },
+      {
+        fuzzy: {
+          submitterName: {
+            value: `${searchString}`,
+          },
+        },
+      },
+      {
+        fuzzy: {
+          leadAnalyst: {
+            value: `${searchString}`,
           },
         },
       },
     ];
+  } else {
+    // If we haven't specified any parameters, lets just sort by changed date
+    query.sort = [
+      {
+        changedDate: {
+          order: "desc",
+        },
+      },
+    ];
   }
-  const searchData = await API.post("os", `/search/${selectedState}`, {
+  const searchData = await API.post("os", "/search", {
     body: query,
   });
 

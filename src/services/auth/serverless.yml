@@ -51,7 +51,7 @@ custom:
 
 params:
   val:
-    bootstrapUsers: "false"
+    bootstrapUsers: "true"
   production:
     bootstrapUsers: "false"
   default:
