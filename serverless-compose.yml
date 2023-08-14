@@ -31,6 +31,3 @@ services:
       CognitoUserPoolId: ${auth.UserPoolId}
       CognitoUserPoolClientId: ${auth.UserPoolClientId}
       CognitoUserPoolClientDomain: ${auth.UserPoolClientDomain}
-      KibanaCognitoUserPoolId: ${auth.KibanaUserPoolId}
-      KibanaCognitoUserPoolClientId: ${auth.KibanaUserPoolClientId}
-      KibanaCognitoUserPoolClientDomain: ${auth.KibanaUserPoolClientDomain}
