@@ -98,6 +98,8 @@ export const seatoolSchema = z.object({
     PLAN_TYPE: z.number().nullable(),
     LEAD_ANALYST_ID: z.number().nullable(),
     CHANGED_DATE: z.number().nullable(),
+    APPROVED_EFFECTIVE_DATE: z.number().nullable(),
+    PROPOSED_DATE: z.number().nullable(),
   }),
   SPW_STATUS: z.array(
     z.object({
@@ -117,15 +119,17 @@ export const seatoolSchema = z.object({
 export const transformSeatoolData = (id: string) => {
   return seatoolSchema.transform((data) => ({
     id,
-    planTypeId: data.STATE_PLAN.PLAN_TYPE,
-    planType: planTypeLookup(data.STATE_PLAN.PLAN_TYPE),
+    approvedEffectiveDate: data.STATE_PLAN.APPROVED_EFFECTIVE_DATE,
     authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
-    state: data.STATES[0].STATE_CODE,
-    submissionDate: data.STATE_PLAN.SUBMISSION_DATE,
-    raiReceivedDate: getReceivedDate(data),
-    leadAnalyst: getLeadAnalyst(data),
     changedDate: data.STATE_PLAN.CHANGED_DATE,
+    leadAnalyst: getLeadAnalyst(data),
+    planType: planTypeLookup(data.STATE_PLAN.PLAN_TYPE),
+    planTypeId: data.STATE_PLAN.PLAN_TYPE,
+    proposedDate: data.STATE_PLAN.PROPOSED_DATE,
+    raiReceivedDate: getReceivedDate(data),
+    state: data.STATES[0].STATE_CODE,
     status: data.SPW_STATUS[0].SPW_STATUS_DESC,
+    submissionDate: data.STATE_PLAN.SUBMISSION_DATE,
   }));
 };
 

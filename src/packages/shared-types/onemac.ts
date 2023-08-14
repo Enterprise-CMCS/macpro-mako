@@ -21,6 +21,7 @@ export const onemacSchema = z.object({
 
 export const transformOnemac = (id: string) => {
   return onemacSchema.transform((data) => ({
+    id,
     attachments:
       data.attachments?.map((attachment) => {
         const uploadDate = parseInt(attachment.s3Key.split("/")[0]);
@@ -36,10 +37,9 @@ export const transformOnemac = (id: string) => {
         };
       }) ?? [],
     additionalInformation: data.additionalInformation,
-    submitterName: data.submitterName,
-    submitterEmail: data.submitterEmail,
     submissionOrigin: "Onemac",
-    id,
+    submitterEmail: data.submitterEmail,
+    submitterName: data.submitterName,
   }));
 };
 
