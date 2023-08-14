@@ -67,6 +67,15 @@ custom:
     linting: false
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
+  bootstrapKibanaUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsers, param:bootstrapUsers}
+  bootstrapUsersPassword: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsersPassword, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/bootstrapUsersPassword}
+  scripts:
+    hooks:
+      deploy:finalize: |
+        if [ "${self:custom.bootstrapKibanaUsers}" = "true" ];
+        then
+          aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-bootstrapKibanaUsers --invocation-type RequestResponse /dev/null
+        fi
 
 stepFunctions:
   stateMachines:
@@ -133,10 +142,13 @@ params:
   master:
     osInstanceType: m5.large.search
   val:
+    bootstrapKibanaUsers: "true"
     osInstanceType: m5.large.search
   production:
+    bootstrapKibanaUsers: "false"
     osInstanceType: m5.large.search
   default:
+    bootstrapKibanaUsers: "true"
     osInstanceType: t3.small.search
 
 functions:
@@ -230,6 +242,12 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
+  bootstrapKibanaUsers:
+    handler: handlers/createKibanaUsers.handler
+    environment:
+      kibanaUserPoolId: !Ref CognitoUserPool
+      bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
+      region: ${self:provider.region}
 
 resources:
   Resources:
