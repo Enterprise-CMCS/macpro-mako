@@ -148,8 +148,8 @@ params:
     bootstrapKibanaUsers: "false"
     osInstanceType: m5.large.search
   default:
-    bootstrapKibanaUsers: "true"
     osInstanceType: t3.small.search
+    bootstrapKibanaUsers: "true"
 
 functions:
   sinkSeatool:
