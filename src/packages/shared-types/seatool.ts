@@ -94,18 +94,20 @@ export const seatoolSchema = z.object({
     .nonempty()
     .nullable(),
   STATE_PLAN: z.object({
-    SUBMISSION_DATE: z.number(),
+    SUBMISSION_DATE: z.number().nullable(),
     PLAN_TYPE: z.number().nullable(),
     LEAD_ANALYST_ID: z.number().nullable(),
     CHANGED_DATE: z.number().nullable(),
     APPROVED_EFFECTIVE_DATE: z.number().nullable(),
     PROPOSED_DATE: z.number().nullable(),
   }),
-  SPW_STATUS: z.array(
-    z.object({
-      SPW_STATUS_DESC: z.string().nullable(),
-    })
-  ),
+  SPW_STATUS: z
+    .array(
+      z.object({
+        SPW_STATUS_DESC: z.string().nullable(),
+      })
+    )
+    .nullable(),
   RAI: z
     .array(
       z.object({
