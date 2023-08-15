@@ -108,5 +108,3 @@ export async function search(host:string, index:string, query:any){
     console.log({e})
   }
 }
-
-// 
