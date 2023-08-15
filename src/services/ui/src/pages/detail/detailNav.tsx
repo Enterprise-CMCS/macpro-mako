@@ -2,7 +2,13 @@ import { removeUnderscoresAndCapitalize } from "@/utils";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 
-export const DetailNav = ({ id, type }: { id: string; type: string }) => {
+export const DetailNav = ({
+  id,
+  type,
+}: {
+  id: string;
+  type: string | null;
+}) => {
   const navigate = useNavigate();
   const planType = removeUnderscoresAndCapitalize(type);
   return (

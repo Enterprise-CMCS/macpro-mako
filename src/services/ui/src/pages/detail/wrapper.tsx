@@ -3,13 +3,14 @@ import { LoadingSpinner } from "@/components";
 import { useQuery } from "@/hooks";
 import React from "react";
 import { DetailNav } from "./detailNav";
+import { OsHit, OsMainSourceItem } from "shared-types";
 
 interface DetailWrapperProps {
   children: React.ReactNode;
 }
 
 interface ChildComponentProps {
-  data: { hits: any[] };
+  data: OsHit<OsMainSourceItem>;
   id: string;
 }
 

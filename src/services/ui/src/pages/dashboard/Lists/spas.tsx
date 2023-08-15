@@ -1,4 +1,4 @@
-import { SearchData, useSearch } from "@/api";
+import { useSearch } from "@/api";
 import { useGetUser } from "@/api/useGetUser";
 import { ErrorAlert, SearchForm } from "@/components";
 import { removeUnderscoresAndCapitalize } from "@/utils";
@@ -7,11 +7,12 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getStatus } from "./statusHelper";
+import { SearchData } from "shared-types";
 
 export const SpasList = ({ selectedState }: { selectedState: string }) => {
   const [rowSelectionModel, setRowSelectionModel] = useState<string>();
   const [searchText, setSearchText] = useState<string>("");
-  const [searchData, setSearchData] = useState<SearchData[] | null>(null);
+  const [searchData, setSearchData] = useState<SearchData | null>(null);
   const { mutateAsync, isLoading, error } = useSearch();
   const { data: user } = useGetUser();
 
@@ -24,10 +25,10 @@ export const SpasList = ({ selectedState }: { selectedState: string }) => {
       const data = await mutateAsync({
         selectedState,
         searchString: searchText,
-        programType: "CHIP OR MEDICAID",
+        authority: "CHIP OR MEDICAID",
       });
 
-      setSearchData(data.hits);
+      setSearchData(data);
     } catch (error) {
       console.error("Error occurred during search:", error);
     }
@@ -55,10 +56,12 @@ export const SpasList = ({ selectedState }: { selectedState: string }) => {
               return params.row._id;
             },
             renderCell(params) {
+              if (!params.row._source.authority) return null;
+
               return (
                 <Link
                   className="cursor-pointer text-blue-600"
-                  to={`/detail/${params.row._source.programType.toLowerCase()}-spa?id=${encodeURIComponent(
+                  to={`/detail/${params.row._source.authority.toLowerCase()}-spa?id=${encodeURIComponent(
                     params.row._id
                   )}`}
                 >
@@ -94,18 +97,19 @@ export const SpasList = ({ selectedState }: { selectedState: string }) => {
             field: "Submission Date",
             flex: 1,
             valueGetter(params) {
-              return format(params.row._source.submission_date, "MM/dd/yyyy");
+              if (!params.row._source.submissionDate) return null;
+              return format(params.row._source.submissionDate, "MM/dd/yyyy");
             },
           },
           {
-            field: "Program Type",
+            field: "Authority",
             flex: 1,
             valueGetter(params) {
-              return params.row._source.programType;
+              return params.row._source.authority;
             },
           },
         ]}
-        rows={(searchData as SearchData[]) || []}
+        rows={searchData?.hits || []}
         getRowId={(row) => row._id}
         slots={{
           toolbar: GridToolbar,

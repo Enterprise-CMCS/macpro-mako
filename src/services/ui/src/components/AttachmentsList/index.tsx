@@ -3,7 +3,32 @@ import { Button, TD, TH, Table } from "@enterprise-cmcs/macpro-ux-lib";
 import { format } from "date-fns";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
-export const Attachmentslist = (data: any) => {
+import { OsMainSourceItem } from "shared-types";
+
+const handleDownloadAll = async (data: OsMainSourceItem) => {
+  if (data.attachments && data.attachments.length > 0) {
+    const validAttachments = data.attachments.filter(
+      (attachment): attachment is NonNullable<typeof attachment> =>
+        attachment !== null
+    );
+
+    if (validAttachments.length > 0) {
+      const attachmentPromises = validAttachments.map(async (attachment) => {
+        const url = await getAttachmentUrl(
+          data.id,
+          attachment.bucket,
+          attachment.key
+        );
+        return { ...attachment, url };
+      });
+
+      const resolvedAttachments = await Promise.all(attachmentPromises);
+      downloadAll(resolvedAttachments, data.id);
+    }
+  }
+};
+
+export const Attachmentslist = (data: OsMainSourceItem) => {
   return (
     <div>
       <Table borderless className="w-full">
@@ -15,8 +40,8 @@ export const Attachmentslist = (data: any) => {
           </tr>
         </thead>
         <tbody>
-          {data.attachments?.map((attachment: any) => {
-            // console.log(JSON.stringify(attachment, null, 2));
+          {data.attachments?.map((attachment) => {
+            if (!attachment) return null;
             return (
               <tr key={attachment.key}>
                 <TH rowHeader>
@@ -66,39 +91,37 @@ export const Attachmentslist = (data: any) => {
         </tbody>
       </Table>
       <div className="flex justify-end">
-        {data.attachments ? (
+        {data.attachments && (
           <Button
             buttonText="Download All"
             buttonVariation="secondary"
             iconName="file_download"
-            onClick={async () => {
-              const attachments: any = [];
-              for (let i = 0; i < data.attachments.length; i++) {
-                const url = await getAttachmentUrl(
-                  data.id,
-                  data.attachments[i].bucket,
-                  data.attachments[i].key
-                );
-                attachments[i] = { ...data.attachments[i], url };
-              }
-              downloadAll(attachments, data.id);
-            }}
+            onClick={() => handleDownloadAll(data)}
             target="_self"
             type="button"
             style={{ padding: "4px" }}
           />
-        ) : (
-          <></>
         )}
       </div>
     </div>
   );
 };
 
-async function downloadAll(attachments: any, id: string) {
+type Attachments = {
+  url: string;
+  uploadDate: number;
+  bucket: string;
+  key: string;
+  s3Key: string;
+  filename: string;
+  title: string;
+  contentType: string;
+}[];
+
+async function downloadAll(attachments: Attachments, id: string) {
   const downloadList = (await Promise.all(
     attachments
-      .map(async (attachment: any) => {
+      .map(async (attachment) => {
         try {
           const resp = await fetch(attachment.url);
           if (!resp.ok) throw resp;
