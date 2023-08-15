@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { OsMainSourceItem } from "shared-types";
 
-export const SubmissionInfo = (data: any) => {
+export const SubmissionInfo = (data: OsMainSourceItem) => {
+  const cpocName = `${data.leadAnalyst?.FIRST_NAME} ${data.leadAnalyst?.LAST_NAME}`;
   const submissionDetails = [
     {
       label: "Submitter",
@@ -8,7 +9,7 @@ export const SubmissionInfo = (data: any) => {
     },
     {
       label: "CPOC Name",
-      value: <p className="text-lg">{data.leadAnalyst || "None"}</p>,
+      value: <p className="text-lg">{cpocName || "None"}</p>,
     },
     {
       label: "Submission Source",

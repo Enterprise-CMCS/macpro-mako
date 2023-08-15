@@ -1,4 +1,3 @@
-import { SearchData } from "@/api";
 import { DetailWrapper } from "./wrapper";
 import { Link } from "@enterprise-cmcs/macpro-ux-lib";
 import {
@@ -7,13 +6,16 @@ import {
   CardWithTopBorder,
   ChipSpaPackageDetails,
   DetailsSection,
+  LoadingSpinner,
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import { getStatus } from "../dashboard/Lists/statusHelper";
+import { OsHit, OsMainSourceItem } from "shared-types";
 
-export const ChipSpa = ({ data }: { data?: SearchData }) => {
+export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
   const { data: user } = useGetUser();
+  if (!data?._source) return <LoadingSpinner />;
   return (
     <div className="block md:flex">
       <aside className="flex-none font-bold hidden md:block pr-8">
@@ -67,35 +69,16 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
           </CardWithTopBorder>
         </section>
         <DetailsSection id="package-details" title="CHIP SPA Package Details">
-          <ChipSpaPackageDetails
-            {...{
-              "SPA ID": data?._id,
-              Type: data?._source.programType,
-              State: data?._source.state,
-              "Sub-Type": data?._source.planType,
-              "Initial Submission Date": data?._source.submission_date,
-              "Proposed Effective Date": data?._source.proposedDate,
-              "Approved Effective Date": data?._source.approvedEffectiveDate,
-              "Change Date": data?._source.changedDate,
-            }}
-          />
+          <ChipSpaPackageDetails {...data?._source} />
         </DetailsSection>
         <DetailsSection id="attachments" title="Attachments">
           <Attachmentslist {...data?._source} />
         </DetailsSection>
         <DetailsSection id="additional-info" title="Additional Information">
           <AdditionalInfo
-            {...{ additionalInfo: data?._source.additionalInformation }}
+            additionalInformation={data?._source.additionalInformation}
           />
-          {/* in general, for all these components, should we be passing the entire record instead?  and keep that this is that logic in the component */}
-          <SubmissionInfo
-            {...{
-              submitterName: data?._source.submitterName,
-              submitterEmail: data?._source.submitterEmail,
-              submissionOrigin: data?._source.submissionOrigin,
-              leadAnalyst: data?._source.leadAnalyst,
-            }}
-          />
+          <SubmissionInfo {...data?._source} />
         </DetailsSection>
       </div>
     </div>
