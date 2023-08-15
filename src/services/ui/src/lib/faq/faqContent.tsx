@@ -147,7 +147,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <ul className="file-type-list">
               {FILE_TYPES.map((info) => (
                 <li>
-                  <FileTypesFAQListItem info={info} />
+                  <FileTypesFAQListItem info={info}/>
                 </li>
               ))}
             </ul>

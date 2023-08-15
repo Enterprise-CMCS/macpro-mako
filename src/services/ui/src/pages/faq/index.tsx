@@ -34,7 +34,7 @@ export const FAQ = () => {
 
 const FAQAccordion = () => {
   const [activeAccordion, setActiveAccordion] = useState(null || "");
-  const initIconRotations:any = []
+  const initIconRotations:any = [];
   const [iconRotations, setIconRotations] = useState(initIconRotations);
 
   const handleAccordionToggle = (sectionIndex:any, qandaIndex:any) => {
@@ -44,10 +44,10 @@ const FAQAccordion = () => {
 
     const newIconRotations:any = [...iconRotations];    
     if ( activeAccordion === newActiveAccordion) {
-      newIconRotations[newActiveAccordion] = "M9 5 5 1 1 5"
+      newIconRotations[newActiveAccordion] = "M9 5 5 1 1 5";
       setActiveAccordion("");
     }else{
-      newIconRotations[newActiveAccordion] = "M9 1 5 5 1 1"
+      newIconRotations[newActiveAccordion] = "M9 1 5 5 1 1";
       setActiveAccordion(newActiveAccordion);
     }
     //newIconRotations[newActiveAccordion] = newIconRotations[newActiveAccordion] === "M9 1 5 5 1 1" ? "M9 5 5 1 1 5" : "M9 1 5 5 1 1";
@@ -72,7 +72,7 @@ const FAQAccordion = () => {
                   <span>{qandaItem.question}</span>
                   <svg
                     data-accordion-icon
-                    className={`w-3 h-3 rotate-180 shrink-0`}
+                    className={"w-3 h-3 rotate-180 shrink-0"}
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -92,7 +92,7 @@ const FAQAccordion = () => {
               <div
                 id={`accordion-collapse-body-${sectionIndex}-${qandaIndex}`}
                 className={`${
-                  activeAccordion === `${sectionIndex}-${qandaIndex}` ? '' : 'hidden'
+                  activeAccordion === `${sectionIndex}-${qandaIndex}` ? "" : "hidden"
                 }`}
                 aria-labelledby={`accordion-collapse-heading-${sectionIndex}-${qandaIndex}`}
               >
