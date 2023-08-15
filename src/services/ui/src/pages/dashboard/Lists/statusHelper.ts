@@ -35,7 +35,8 @@ export const statusToDisplayToCmsUser = {
   [SEATOOL_STATUS.PENDING_APPROVAL]: "Under Review",
 };
 
-export const getStatus = (status: string, isCms?: boolean) => {
+export const getStatus = (status?: string | null, isCms?: boolean) => {
+  if (!status) return "N/A";
   return isCms
     ? statusToDisplayToCmsUser[status]
     : statusToDisplayToStateUser[status];

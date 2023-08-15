@@ -1,56 +1,56 @@
 import { format } from "date-fns";
+import { OsMainSourceItem } from "shared-types";
 
-export const ChipSpaPackageDetails = (data: any) => {
+export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
+  if (!data) return null;
   const detailFields = [
     {
       label: "SPA ID",
-      value: data["SPA ID"],
+      value: data.id,
     },
     {
       label: "State",
-      value: data["State"],
+      value: data.state,
     },
     {
       label: "Type",
-      value: data["Type"],
+      value: data.planType,
     },
     {
       label: "Sub-Type",
-      value: data["Sub-Type"],
+      // value: data.subType,
+      value: "Define Me!",
     },
     {
       label: "Initial Submission Date",
-      value: data["Initial Submission Date"]
-        ? format(data["Initial Submission Date"], "MM/dd/yyyy")
+      value: data.submissionDate
+        ? format(data.submissionDate, "MM/dd/yyyy")
         : "None",
     },
     {
       label: "Recent Submission Date",
-      value: data["Recent Submission Date"]
-        ? format(data["Recent Submission Date"], "MM/dd/yyyy")
-        : "None",
+      // value: data.recentSubmissionDate,
+      value: "Define Me!",
     },
     {
       label: "Proposed Effective Date",
-      value: data["Proposed Submission Date"]
-        ? format(data["Proposed Effective Date"], "MM/dd/yyyy")
+      value: data.proposedDate
+        ? format(data.proposedDate, "MM/dd/yyyy")
         : "None",
     },
     {
       label: "Approved Effective Date",
-      value: data["Approved Submission Date"]
-        ? format(data["Approved Effective Date"], "MM/dd/yyyy")
+      value: data.approvedEffectiveDate
+        ? format(data.approvedEffectiveDate, "MM/dd/yyyy")
         : "None",
     },
     {
       label: "Change Date",
-      value: data["Change Date"]
-        ? format(data["Change Date"], "MM/dd/yyyy")
-        : "None",
+      value: data.changedDate ? format(data.changedDate, "MM/dd/yyyy") : "None",
     },
     {
       label: "Final Disposition Date",
-      value: "N/A",
+      value: "Define Me!",
     },
   ];
   return (

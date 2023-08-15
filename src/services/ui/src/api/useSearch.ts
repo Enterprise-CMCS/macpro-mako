@@ -1,18 +1,11 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { OSSearch, ReactQueryApiError } from "shared-types";
-
-export type SearchData = {
-  _index: string;
-  _id: string;
-  _score: number;
-  _source: any;
-};
+import { ReactQueryApiError, SearchData } from "shared-types";
 
 export const getSearchData = async (
   searchString: string,
   authority: string
-): Promise<{ hits: SearchData[]; numberOfHits: number }> => {
+): Promise<SearchData> => {
   const query: any = {
     from: 0,
     size: 100,
@@ -71,13 +64,13 @@ export const getSearchData = async (
 
 export const useSearch = (
   options?: UseMutationOptions<
-    { hits: SearchData[] },
+    SearchData,
     ReactQueryApiError,
     { selectedState: string; searchString: string; authority: string }
   >
 ) => {
   return useMutation<
-    { hits: SearchData[] },
+    SearchData,
     ReactQueryApiError,
     { selectedState: string; searchString: string; authority: string }
   >((props) => getSearchData(props.searchString, props.authority), options);

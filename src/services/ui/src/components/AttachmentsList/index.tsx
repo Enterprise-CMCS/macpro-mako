@@ -3,7 +3,8 @@ import { Button, TD, TH, Table } from "@enterprise-cmcs/macpro-ux-lib";
 import { format } from "date-fns";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
-export const Attachmentslist = (data: any) => {
+import { OsMainSourceItem } from "shared-types";
+export const Attachmentslist = (data: OsMainSourceItem) => {
   return (
     <div>
       <Table borderless className="w-full">
@@ -15,8 +16,8 @@ export const Attachmentslist = (data: any) => {
           </tr>
         </thead>
         <tbody>
-          {data.attachments?.map((attachment: any) => {
-            // console.log(JSON.stringify(attachment, null, 2));
+          {data.attachments?.map((attachment) => {
+            if (!attachment) return null;
             return (
               <tr key={attachment.key}>
                 <TH rowHeader>
@@ -72,16 +73,30 @@ export const Attachmentslist = (data: any) => {
             buttonVariation="secondary"
             iconName="file_download"
             onClick={async () => {
-              const attachments: any = [];
-              for (let i = 0; i < data.attachments.length; i++) {
-                const url = await getAttachmentUrl(
-                  data.id,
-                  data.attachments[i].bucket,
-                  data.attachments[i].key
+              if (data.attachments && data.attachments.length > 0) {
+                const validAttachments = data.attachments.filter(
+                  (attachment): attachment is NonNullable<typeof attachment> =>
+                    attachment !== null
                 );
-                attachments[i] = { ...data.attachments[i], url };
+
+                if (validAttachments.length > 0) {
+                  const attachmentPromises = validAttachments.map(
+                    async (attachment) => {
+                      const url = await getAttachmentUrl(
+                        data.id,
+                        attachment.bucket,
+                        attachment.key
+                      );
+                      return { ...attachment, url };
+                    }
+                  );
+
+                  const resolvedAttachments = await Promise.all(
+                    attachmentPromises
+                  );
+                  downloadAll(resolvedAttachments, data.id);
+                }
               }
-              downloadAll(attachments, data.id);
             }}
             target="_self"
             type="button"

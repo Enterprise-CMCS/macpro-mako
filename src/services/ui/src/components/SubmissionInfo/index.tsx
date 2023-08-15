@@ -1,4 +1,7 @@
-export const SubmissionInfo = (data: any) => {
+import { OsMainSourceItem } from "shared-types";
+
+export const SubmissionInfo = (data: OsMainSourceItem) => {
+  const cpocName = `${data.leadAnalyst?.FIRST_NAME} ${data.leadAnalyst?.LAST_NAME}`;
   const submissionDetails = [
     {
       label: "Submitter",
@@ -6,7 +9,7 @@ export const SubmissionInfo = (data: any) => {
     },
     {
       label: "CPOC Name",
-      value: <p className="text-lg">{data.leadAnalyst.LAST_NAME || "None"}</p>,
+      value: <p className="text-lg">{cpocName || "None"}</p>,
     },
     {
       label: "Submission Source",

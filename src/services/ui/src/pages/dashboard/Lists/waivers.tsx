@@ -1,4 +1,4 @@
-import { SearchData, useSearch } from "@/api";
+import { useSearch } from "@/api";
 import { useGetUser } from "@/api/useGetUser";
 import { ErrorAlert, SearchForm } from "@/components";
 import { removeUnderscoresAndCapitalize } from "@/utils";
@@ -7,12 +7,12 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getStatus } from "./statusHelper";
-// import { OSSearch } from "shared-types";
+import { SearchData } from "shared-types";
 
 export const WaiversList = ({ selectedState }: { selectedState: string }) => {
   const [rowSelectionModel, setRowSelectionModel] = useState<string>();
   const [searchText, setSearchText] = useState<string>("");
-  const [searchData, setSearchData] = useState<SearchData[] | null>(null);
+  const [searchData, setSearchData] = useState<SearchData | null>(null);
   const { mutateAsync, isLoading, error } = useSearch();
   const { data: user } = useGetUser();
 
@@ -28,7 +28,7 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
         authority: "WAIVER",
       });
 
-      setSearchData(data.hits);
+      setSearchData(data);
     } catch (error) {
       console.error("Error occurred during search:", error);
     }
@@ -56,6 +56,7 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
               return params.row._id;
             },
             renderCell(params) {
+              if (!params.row._source.authority) return null;
               return (
                 <Link
                   className="cursor-pointer text-blue-600"
@@ -95,11 +96,12 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             field: "Submission Date",
             flex: 1,
             valueGetter(params) {
+              if (!params.row._source.submissionDate) return null;
               return format(params.row._source.submissionDate, "MM/dd/yyyy");
             },
           },
         ]}
-        rows={(searchData as SearchData[]) || []}
+        rows={searchData?.hits || []}
         getRowId={(row) => row._id}
         slots={{
           toolbar: GridToolbar,
