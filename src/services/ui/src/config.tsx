@@ -1,4 +1,5 @@
 const config = {
+  MAX_ATTACHMENT_SIZE_MB: 80,
   apiGateway: {
     REGION: import.meta.env.VITE_API_REGION,
     URL: import.meta.env.VITE_API_URL,
