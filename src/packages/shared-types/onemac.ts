@@ -37,6 +37,7 @@ export const transformOnemac = (id: string) => {
         };
       }) ?? null,
     additionalInformation: data.additionalInformation,
+    componentType: data.componentType,
     submissionOrigin: "OneMAC",
     submitterEmail: data.submitterEmail,
     submitterName: data.submitterName,
