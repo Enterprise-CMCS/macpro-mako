@@ -9,6 +9,7 @@ plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@stratiformdigital/serverless-iam-helper"
+  - serverless-plugin-scripts
   - serverless-bundle
   - serverless-step-functions
 
@@ -21,6 +22,12 @@ provider:
       path: /delegatedadmin/developer/
       permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
       statements:
+        - Effect: "Allow"
+          Action:
+            - cognito-idp:AdminCreateUser
+            - cognito-idp:AdminSetUserPassword
+            - cognito-idp:AdminUpdateUserAttributes
+          Resource: !GetAtt CognitoUserPool.Arn
         - Effect: Allow
           Action:
             - lambda:CreateEventSourceMapping
@@ -67,6 +74,15 @@ custom:
     linting: false
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
+  bootstrapKibanaUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapKibanaUsers, param:bootstrapKibanaUsers}
+  bootstrapUsersPassword: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsersPassword, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/bootstrapUsersPassword}
+  scripts:
+    hooks:
+      deploy:finalize: |
+        if [ "${self:custom.bootstrapKibanaUsers}" = "true" ];
+        then
+          aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-bootstrapKibanaUsers --invocation-type RequestResponse /dev/null
+        fi
 
 stepFunctions:
   stateMachines:
@@ -135,9 +151,11 @@ params:
   val:
     osInstanceType: m5.large.search
   production:
+    bootstrapKibanaUsers: "false"
     osInstanceType: m5.large.search
   default:
     osInstanceType: t3.small.search
+    bootstrapKibanaUsers: "true"
 
 functions:
   sinkSeatool:
@@ -230,6 +248,12 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
+  bootstrapKibanaUsers:
+    handler: handlers/createKibanaUsers.handler
+    environment:
+      kibanaUserPoolId: !Ref CognitoUserPool
+      bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
+      region: ${self:provider.region}
 
 resources:
   Resources:
