@@ -2,17 +2,10 @@
 layout: default
 title: dashboard
 parent: Services
-# nav_order: 2
 ---
 
 # dashboard
 {: .no_toc }
-
-## Table of contents
-{: .no_toc .text-delta }
-
-- TOC
-{:toc}
 
 ## Why do I need this?
 Part of any good project is a way to determine how well it is working. The purpose of a `CloudWatch Dashboard` is to determine the performance, health, and a variety of other aspects that factor into the product being delivered. What we have done here is provided an easy to use solution that will make creating a dashboard easy and deploying it even easier.

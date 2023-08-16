@@ -7,17 +7,11 @@ parent: Services
 # UI Infra
 {: .no_toc }
 
-## Table of contents
-{: .no_toc .text-delta }
-
-- TOC
-{:toc}
-
-## Overview
+## Summary
 This service provides the appropriate infrastructure for the UI application running on AWS. It creates several resources including an S3 bucket, a bucket policy, a logging bucket, a logging bucket policy, and an IAM role with permissions.
 
 
-## Components
+## Details
 
 - AWS IAM role with permissions for CloudWatch logs and an IAM boundary policy.
 - Serverless plugins to help with deploying and managing the infrastructure.

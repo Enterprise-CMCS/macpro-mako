@@ -7,12 +7,6 @@ parent: Services
 # UI
 {: .no_toc }
 
-## Table of contents
-{: .no_toc .text-delta }
-
-- TOC
-{:toc}
-
 ## Overview
 This service deploys a static web application to an S3 bucket with a CloudFront distribution in front of it for CDN caching and performance optimization. The template uses the serverless framework and includes several plugins to help with deployment and configuration.
 

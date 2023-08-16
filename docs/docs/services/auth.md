@@ -4,7 +4,7 @@ title: auth
 parent: Services
 ---
 
-# Auth
+# auth
 {: .no_toc }
 
 ## Table of contents

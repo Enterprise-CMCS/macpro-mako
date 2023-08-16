@@ -4,11 +4,8 @@ title: data
 parent: Services
 ---
 
-# Data
+# data
 {: .no_toc }
-
-## Table of contents
-{: .no_toc .text-delta }
 
 ## Summary
 wip
