@@ -61,7 +61,7 @@ const StateSelector = ({
 
 export const Dashboard = () => {
   return (
-    <div className="max-w-screen-lg mx-auto px-4 lg:px-8">
+    <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
       <div className="flex items-center justify-between my-4">
         <UI.Typography size="lg" as="h1">
           Dashboard

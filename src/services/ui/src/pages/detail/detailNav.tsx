@@ -13,7 +13,7 @@ export const DetailNav = ({
   const planType = removeUnderscoresAndCapitalize(type);
   return (
     <div className="bg-sky-100">
-      <div className="max-w-screen-lg m-auto lg:px-8">
+      <div className="max-w-screen-xl m-auto lg:px-8">
         <div className="flex items-center">
           <div className="flex align-middle py-4">
             <button className="text-sky-800" onClick={() => navigate(-1)}>
