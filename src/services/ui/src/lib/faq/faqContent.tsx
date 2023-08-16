@@ -696,7 +696,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   <td>Other</td>
                   <td>
                     Any other documents or spreadsheets that are supplemental to
-                    the state's waiver application
+                    the state&apos;s waiver application
                   </td>
                 </tr>
               </tbody>
@@ -732,7 +732,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   <td>Other</td>
                   <td>
                     Any other documents or spreadsheets that are supplemental to
-                    the state's response to RAI{" "}
+                    the state&apos;s response to RAI{" "}
                   </td>
                 </tr>
               </tbody>

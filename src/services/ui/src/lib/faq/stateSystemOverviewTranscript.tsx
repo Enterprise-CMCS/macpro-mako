@@ -3,7 +3,7 @@ export const stateSystemOverviewTranscript: JSX.Element = (
   <div>
     <p>
       The purpose of this video is to provide state users with an overview of
-      OneMAC's new and improved submission package dashboard. We will
+      OneMAC&apos;s new and improved submission package dashboard. We will
       demonstrate the new view along with some additional features and
       functionality that it provides.
     </p>
@@ -84,7 +84,7 @@ export const stateSystemOverviewTranscript: JSX.Element = (
       submission package is in the RAI Issued status, it indicates that CMS has
       requested additional information from the state, and you will have an
       available action to Respond to RAI. This functionality should only be used
-      when submitting your state's official formal RAI response, not a draft RAI
+      when submitting your state&apos;s official formal RAI response, not a draft RAI
       response.
     </p>
     <p>
@@ -109,7 +109,7 @@ export const stateSystemOverviewTranscript: JSX.Element = (
       Selecting the Withdraw Package link under Package Actions will bring up a
       warning message letting you know that if the package is withdrawn, the
       package cannot be resubmitted. If you are certain that you wish to
-      withdraw the submission, select "Yes, withdraw package" to complete the
+      withdraw the submission, select &apos;Yes, withdraw package&apos; to complete the
       task.
     </p>
     <p>
