@@ -1,15 +1,15 @@
 import { useSearch } from "@/api";
 import { useGetUser } from "@/api/useGetUser";
 import { ErrorAlert, SearchForm } from "@/components";
-import { removeUnderscoresAndCapitalize } from "@/utils";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getStatus } from "./statusHelper";
 import { SearchData } from "shared-types";
+import { componentLabel } from "./typehelper";
 
-export const WaiversList = ({ selectedState }: { selectedState: string }) => {
+export const WaiversList = () => {
   const [rowSelectionModel, setRowSelectionModel] = useState<string>();
   const [searchText, setSearchText] = useState<string>("");
   const [searchData, setSearchData] = useState<SearchData | null>(null);
@@ -18,12 +18,11 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
 
   useEffect(() => {
     handleSearch(searchText);
-  }, [selectedState]);
+  }, []);
 
   const handleSearch = async (searchText: string) => {
     try {
       const data = await mutateAsync({
-        selectedState,
         searchString: searchText,
         authority: "WAIVER",
       });
@@ -75,13 +74,20 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
             valueGetter(params) {
               return params.row._source.state;
             },
+            maxWidth: 80,
           },
           {
-            field: "Plan Type",
+            field: "Type",
             flex: 1,
+            minWidth: 260,
             valueGetter(params) {
-              return removeUnderscoresAndCapitalize(
-                params.row._source.planType
+              return componentLabel[params.row._source.componentType];
+            },
+            renderCell(params) {
+              return (
+                <span className="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">
+                  {componentLabel[params.row._source.componentType]}
+                </span>
               );
             },
           },

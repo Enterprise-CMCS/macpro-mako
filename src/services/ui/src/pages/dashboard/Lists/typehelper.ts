@@ -1,0 +1,26 @@
+import { ComponentType } from "shared-types";
+
+export const componentLabel = {
+  [ComponentType.CHIP_SPA]: "CHIP SPA",
+  [ComponentType.MEDICAID_SPA]: "Medicaid SPA",
+  [ComponentType.WAIVER_INITIAL]: "1915(b) Initial Waiver",
+  [ComponentType.WAIVER_RENEWAL]: "1915(b) Waiver Renewal",
+  [ComponentType.WAIVER_APP_K]: "1915(c) Appendix K Amendment",
+  [ComponentType.WAIVER_EXTENSION]: "Temporary Extension",
+  [ComponentType.WAIVER_EXTENSION_B]: "1915(b) Temporary Extension",
+  [ComponentType.WAIVER_EXTENSION_C]: "1915(c) Temporary Extension",
+  [ComponentType.WAIVER_AMENDMENT]: "1915(b) Waiver Amendment",
+  [ComponentType.WAIVER_RAI]: "1915(b) RAI Response",
+  [ComponentType.CHIP_SPA_RAI]: "NOT SURE ABOUT THIS",
+  [ComponentType.CHIP_SPA_WITHDRAW]: "NOT SURE ABOUT THIS",
+  [ComponentType.MEDICAID_SPA_RAI]: "NOT SURE ABOUT THIS",
+  [ComponentType.MEDICAID_SPA_WITHDRAW]: "NOT SURE ABOUT THIS",
+  [ComponentType.WAIVER]: "NOT SURE ABOUT THIS",
+  [ComponentType.WAIVER_INITIAL_WITHDRAW]: "NOT SURE ABOUT THIS",
+  [ComponentType.WAIVER_AMENDMENT_WITHDRAW]: "NOT SURE ABOUT THIS",
+  [ComponentType.WAIVER_RENEWAL_WITHDRAW]: "NOT SURE ABOUT THIS",
+  [ComponentType.WAIVER_APP_K_RAI]: "NOT SURE ABOUT THIS",
+  [ComponentType.WAIVER_APP_K_WITHDRAW]: "NOT SURE ABOUT THIS",
+  [ComponentType.ENABLE_RAI_WITHDRAW]: "NOT SURE ABOUT THIS",
+  [ComponentType.RAI_RESPONSE_WITHDRAW]: "NOT SURE ABOUT THIS",
+};
