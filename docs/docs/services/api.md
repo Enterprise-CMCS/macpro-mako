@@ -2,7 +2,7 @@
 layout: default
 title: api
 parent: Services
-nav_order: 6
+# nav_order: 6
 ---
 
 # API
@@ -14,45 +14,22 @@ nav_order: 6
 - TOC
 {:toc}
 
-## Overview
-This stack is used to deploy a RESTful API service to AWS. The service includes a set of functions that can be used to interact with the API, and it is secured with various AWS security policies.
+## Summary
 
-## Service
-The service name is ${self:custom.project}-api, where ${self:custom.project} is a parameter provided by the user. This ensures that the service name is unique to the user's project.
+The api service deploys a lambda-backed API Gateway that is used by the frontend to interact with the data layer.  Access to any of its endpoints is guarded at a high level by AWS Cognito, ensuring only authenticated users may reach it.  The lambda functions that back each endpoint enforce further fine-grain access according to business rules.
 
-## Package
-The package section is used to configure how the deployment package for the service is generated. The "individually: true" setting is used to generate separate packages for each function in the service. This makes it easier to deploy and update individual functions without having to deploy the entire service.
 
-## Plugins
-The plugins section is used to specify the plugins that will be used during the deployment of the service. The following plugins are used:
+## Detail
 
-serverless-bundle: A plugin that optimizes the packaging and deployment process for serverless applications.
-serverless-stack-termination-protection: A plugin that applies CloudFormation termination protection to the specified stages, ensuring that accidental deletions of the service do not occur.
-"@stratiformdigital/serverless-iam-helper": A plugin that simplifies the creation and management of AWS IAM roles and policies.
-"@stratiformdigital/serverless-s3-security-helper": A plugin that adds security best practices to S3 buckets.
+The largest component of the api service is the API Gateway itself.  This is a standard deployment of a regional, REST API Gateway.  We do not apply custom certificates or DNS names to the api gateway endpoint (yet); instead, our application uses the amazon generated SSL endpoint.  
 
-## Provider
-The provider section is used to configure the cloud provider (AWS), and any additional settings for the provider. The following settings are used:
+There are three endpoints on the api.  Each is guarded by AWS IAM, meaning that while the API Gateway is publicly available, the API will not forward your request to the backing lambda unless you provide valid credentials obtained through AWS Cognito.  This way, only users with an account that we can authenticate may successfully call endpoints.  The three endpoints are:
+- /search (POST):  This endpoint accepts search queries from clients in the form of OpenSearch Query DSL queries.  Once the query is received, the lambda adds extra query filters to ensure fine grain auth.  This works by looking up the user making the call in Cognito, determining what type of user (cms or state) is making the call, determining what states that user has access to (if appropriate), and modifying the query in a way that will only return results for those states.  By design, the only thing the search endpoint adds is related to authentication; the rest of the query building is left to the frontend for faster and more flexible development.
+- /item (POST):  The item endpoint is used to fetch details for exactly one record.  While you can form a query to do this and use the search endpoint, the item endpoint is for convenience.  Simply make a post call containing the ID of the desired record to the item endpoint, and the record will be returned.  Note that fine grain auth is still enforced in an identical way to search, whereby you will only obtain results for that ID if you should have access to that ID.
+- /getAttachmentUrl (POST):  This endpoint is used to generate a presigned url for direct client downloading of S3 data, enforcing fine grain auth along the way.  This is how we securely allow download of submission attachment data.  From the details page, a user may click a file to download.  Once clicked, their client makes a post to /getAttachmentUrl with the attachment metadata.  The lambda function determines if the caller should or should not have access based on identical logic as the other endpoints (the UI would not display something they cannot download, but this guards against bad actors).  If access is allowed, the lambda function generates a presigned url good for 60 seconds and returns it to the client browser, at which point files are downloaded automatically.
 
-- name: aws
--runtime: nodejs18.x
-region: ${env:REGION_A} (This setting retrieves the region value from an environment variable called "REGION_A").
-stackTags: Specifies tags to be applied to the CloudFormation stack. The tags include PROJECT and SERVICE, which are set to the custom.project and service values, respectively.
-iam: Specifies IAM related settings for the CloudFormation stack. The role setting specifies the path and permissions boundary for the IAM role. The statements setting specifies the permissions granted to the role. In this case, the role is granted permission to access all CloudWatch resources.
-Custom:
-The custom section is used to specify custom settings for the service. The following settings are used:
-
-project: ${env:PROJECT} (This setting retrieves the project value from an environment variable called "PROJECT").
-accountId: !Sub "${AWS::AccountId}" (This setting retrieves the account ID for the AWS account in which the stack is deployed).
-stage: ${opt:stage, self:provider.stage} (This setting specifies the deployment stage for the service. It is retrieved from an option called "stage", and if the option is not set, it defaults to the value specified in provider.stage).
-serverlessTerminationProtection: Specifies the stages to which CloudFormation termination protection will be applied.
-
-## Endpoints
-The service is defining an API with five endpoints: getPosts, getPost, createPost, deletePost, and updatePost, which will handle GET, POST, PUT and DELETE requests for /posts and /posts/{id} paths.
-
-## Resources
-The resources section is used to specify the additional AWS resources that the service requires. In this case, two gateway responses are created for 4xx and 5xx responses.
-
-## Outputs
-The output values include the name and URL of the API Gateway, as well as the AWS region in which the stack is deployed.
+All endpoints and backing functions interact with the OpenSearch data layer.  As such, and because OpenSearch is deployed within a VPC, all lambda functions of the api service are VPC based.  The functions share a security group that allows outbound traffic.  They also share an IAM role that allows:
+- OpenSearch permissions to allow access to the data layer
+- Cognito permissions to look up user attributes; allows for enforcement of fine grain auth.
+- AssumeRole permissions for a very specific cross account role, which is required to generate the presigned urls for the legacy OneMac data.
 
