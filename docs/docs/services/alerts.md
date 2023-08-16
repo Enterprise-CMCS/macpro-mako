@@ -2,7 +2,6 @@
 layout: default
 title: alerts
 parent: Services
-nav_order: 1
 ---
 
 # alerts

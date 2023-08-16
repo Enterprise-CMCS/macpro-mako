@@ -2,7 +2,6 @@
 layout: default
 title: api
 parent: Services
-# nav_order: 6
 ---
 
 # API
@@ -28,7 +27,9 @@ There are three endpoints on the api.  Each is guarded by AWS IAM, meaning that 
 - /item (POST):  The item endpoint is used to fetch details for exactly one record.  While you can form a query to do this and use the search endpoint, the item endpoint is for convenience.  Simply make a post call containing the ID of the desired record to the item endpoint, and the record will be returned.  Note that fine grain auth is still enforced in an identical way to search, whereby you will only obtain results for that ID if you should have access to that ID.
 - /getAttachmentUrl (POST):  This endpoint is used to generate a presigned url for direct client downloading of S3 data, enforcing fine grain auth along the way.  This is how we securely allow download of submission attachment data.  From the details page, a user may click a file to download.  Once clicked, their client makes a post to /getAttachmentUrl with the attachment metadata.  The lambda function determines if the caller should or should not have access based on identical logic as the other endpoints (the UI would not display something they cannot download, but this guards against bad actors).  If access is allowed, the lambda function generates a presigned url good for 60 seconds and returns it to the client browser, at which point files are downloaded automatically.
 
-All endpoints and backing functions interact with the OpenSearch data layer.  As such, and because OpenSearch is deployed within a VPC, all lambda functions of the api service are VPC based.  The functions share a security group that allows outbound traffic.  They also share an IAM role that allows:
+All endpoints and backing functions interact with the OpenSearch data layer.  As such, and because OpenSearch is deployed within a VPC, all lambda functions of the api service are VPC based.  The functions share a security group that allows outbound traffic.  
+
+All function share an IAM role.  This is for convenicence; we can do one role per function if we find that valuable.  The permissions include:
 - OpenSearch permissions to allow access to the data layer
 - Cognito permissions to look up user attributes; allows for enforcement of fine grain auth.
 - AssumeRole permissions for a very specific cross account role, which is required to generate the presigned urls for the legacy OneMac data.

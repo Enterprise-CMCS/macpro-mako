@@ -2,7 +2,6 @@
 layout: default
 title: ui-infra
 parent: Services
-nav_order: 5
 ---
 
 # UI Infra
