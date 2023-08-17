@@ -11,10 +11,6 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
       label: "CPOC Name",
       value: <p className="text-lg">{cpocName || "None"}</p>,
     },
-    {
-      label: "Submission Source",
-      value: <p className="text-lg">{data.submissionOrigin || "Unknown"}</p>,
-    },
   ];
   const reviewerDetails = [
     { label: "Reviewing Division", value: "Lorem Ipsum" },
