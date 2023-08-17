@@ -99,7 +99,7 @@ export const seatoolSchema = z.object({
       })
     )
     .nullable(),
-  ACTION_TYPES: z
+  ACTIONTYPES: z
     .array(
       z.object({
         ACTION_ID: z.number(),
@@ -107,14 +107,14 @@ export const seatoolSchema = z.object({
         PLAN_TYPE_ID: z.number(),
       })
     )
-    .nullish(),
+    .nullable(),
 });
 
 export const transformSeatoolData = (id: string) => {
   return seatoolSchema.transform((data) => ({
     id,
-    actionType: data.ACTION_TYPES?.[0].ACTION_NAME,
-    actionTypeId: data.ACTION_TYPES?.[0].ACTION_ID,
+    actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
+    actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
     approvedEffectiveDate: data.STATE_PLAN.APPROVED_EFFECTIVE_DATE,
     authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
     changedDate: data.STATE_PLAN.CHANGED_DATE,
