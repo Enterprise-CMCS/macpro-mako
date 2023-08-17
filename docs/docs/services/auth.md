@@ -18,3 +18,5 @@ The core of the api service is a cognito user pool and identity pool, which work
 - identity pool:  this is associated with the user pool, and allows us to grant certain AWS permissions to authenticated and/or unauthenticated entities.
     - authenticated users may assume a role that gives them permissions to invoke the api gateway, as well as see information about their own cognito user.
     - unauthenticated user may assume a role that gives them no permissions.
+
+In the near future, higher environments will configure IDM as an external identity provider.  Ephemeral/dev environments will continue to use only the cognito user pool.
