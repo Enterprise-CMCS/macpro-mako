@@ -20,7 +20,7 @@ The 10,000ft view
 
 ## Overview
 
-The {{ site.repo.name }} project is TBD.
+The {{ site.repo.name }} project is a redesign of MACPRO Onemac. The mission to be a modern submission and review portal for select CMS data remains the same, but the architecture is different in some important ways.
 
 ## Architecture
 

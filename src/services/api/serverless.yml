@@ -32,19 +32,6 @@ provider:
           Resource: ${param:osDomainArn}/*
         - Effect: Allow
           Action:
-            - dynamodb:Query
-            - dynamodb:Scan
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
-            - dynamodb:DescribeTable
-            - dynamodb:Get*
-            - dynamodb:BatchWrite*
-            - dynamodb:BatchGet*
-          Resource: "*"
-        - Effect: Allow
-          Action:
             - cognito-idp:GetUser
             - cognito-idp:ListUsers
           Resource: "*"
