@@ -6,7 +6,7 @@ export const Faq = () => {
   return (
     <>
       <div className="bg-sky-100">
-        <div className="max-w-screen-xl m-auto lg:px-8">
+        <div className="max-w-screen-xl m-auto px-4 lg:px-8">
           <div className="flex items-center">
             <div className="flex align-middle py-4">
               <h1 className="text-xl font-medium">
@@ -16,7 +16,7 @@ export const Faq = () => {
           </div>
         </div>
       </div>
-      <section className="flex flex-row max-w-screen-xl m-auto lg:px-8 pt-8 gap-10">
+      <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1">
           {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
             <article key={sectionTitle} className="mb-8">
