@@ -12,10 +12,6 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
       value: <p className="text-lg">{cpocName || "None"}</p>,
     },
   ];
-  const reviewerDetails = [
-    { label: "Reviewing Division", value: "Lorem Ipsum" },
-    { label: "Additional Reviewing Division", value: "Lorem Ipsum" },
-  ];
   return (
     <>
       <hr className="my-4" />
@@ -25,16 +21,6 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
             <div key={label}>
               <h3 className="text-sm">{label}</h3>
               {value}
-            </div>
-          );
-        })}
-      </div>
-      <div className="grid grid-cols-2 gap-4 my-4">
-        {reviewerDetails.map(({ label, value }) => {
-          return (
-            <div key={label}>
-              <h3 className="text-sm">{label}</h3>
-              <p className="text-lg">{value}</p>
             </div>
           );
         })}
