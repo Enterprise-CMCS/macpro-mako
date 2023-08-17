@@ -29,11 +29,6 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
         : "None",
     },
     {
-      label: "Recent Submission Date",
-      // value: data.recentSubmissionDate,
-      value: "Define Me!",
-    },
-    {
       label: "Proposed Effective Date",
       value: data.proposedDate
         ? format(data.proposedDate, "MM/dd/yyyy")
@@ -48,10 +43,6 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
     {
       label: "Change Date",
       value: data.changedDate ? format(data.changedDate, "MM/dd/yyyy") : "None",
-    },
-    {
-      label: "Final Disposition Date",
-      value: "Define Me!",
     },
   ];
   return (
