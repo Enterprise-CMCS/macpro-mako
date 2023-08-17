@@ -107,8 +107,7 @@ export const seatoolSchema = z.object({
         PLAN_TYPE_ID: z.number(),
       })
     )
-    .nonempty()
-    .nullable(),
+    .nullish(),
 });
 
 export const transformSeatoolData = (id: string) => {
