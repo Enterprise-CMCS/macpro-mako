@@ -48,6 +48,11 @@ export const seatool: Handler = async (event) => {
         const tombstone = createSeaDeleteRecord(id);
 
         docObject[id] = tombstone;
+
+        console.log(
+          `Record ${id} has been nullified with the following data: `,
+          JSON.stringify(tombstone)
+        );
       }
     }
   }
