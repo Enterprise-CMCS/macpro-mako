@@ -128,7 +128,7 @@ export const createSeaDeleteRecord = (id: string): SeaToolTransform => ({
   planTypeId: null,
   proposedDate: null,
   raiReceivedDate: null,
-  state: undefined,
+  state: null,
   status: null,
   submissionDate: null,
 });
@@ -144,7 +144,7 @@ export const transformSeatoolData = (id: string) => {
     planTypeId: data.STATE_PLAN.PLAN_TYPE,
     proposedDate: data.STATE_PLAN.PROPOSED_DATE,
     raiReceivedDate: getReceivedDate(data),
-    state: data.STATES[0].STATE_CODE,
+    state: data.STATES?.[0].STATE_CODE,
     status: data.SPW_STATUS?.[0].SPW_STATUS_DESC,
     submissionDate: data.STATE_PLAN.SUBMISSION_DATE,
   }));
