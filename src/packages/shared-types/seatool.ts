@@ -118,6 +118,21 @@ export const seatoolSchema = z.object({
     .nullable(),
 });
 
+export const createSeaDeleteRecord = (id: string): SeaToolTransform => ({
+  id,
+  approvedEffectiveDate: null,
+  authority: null,
+  changedDate: null,
+  leadAnalyst: null,
+  planType: null,
+  planTypeId: null,
+  proposedDate: null,
+  raiReceivedDate: null,
+  state: undefined,
+  status: null,
+  submissionDate: null,
+});
+
 export const transformSeatoolData = (id: string) => {
   return seatoolSchema.transform((data) => ({
     id,

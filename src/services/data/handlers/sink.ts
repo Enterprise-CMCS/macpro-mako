@@ -1,7 +1,11 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import { SeaToolTransform, transformSeatoolData } from "shared-types/seatool";
+import {
+  SeaToolTransform,
+  createSeaDeleteRecord,
+  transformSeatoolData,
+} from "shared-types/seatool";
 import { OneMacTransform, transformOnemac } from "shared-types/onemac";
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -39,6 +43,11 @@ export const seatool: Handler = async (event) => {
             docObject[id] = result.data;
           }
         }
+      } else {
+        const id: string = JSON.parse(decode(key));
+        const tombstone = createSeaDeleteRecord(id);
+
+        docObject[id] = tombstone;
       }
     }
   }
