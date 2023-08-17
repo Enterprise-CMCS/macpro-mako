@@ -68,7 +68,7 @@ export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
             </div>
           </CardWithTopBorder> */}
         </section>
-        <DetailsSection id="package-details" title="CHIP SPA Package Details">
+        <DetailsSection id="package-details" title="Package Details">
           <ChipSpaPackageDetails {...data?._source} />
         </DetailsSection>
         <DetailsSection id="attachments" title="Attachments">

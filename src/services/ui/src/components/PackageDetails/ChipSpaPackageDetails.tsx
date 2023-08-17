@@ -1,11 +1,12 @@
 import { format } from "date-fns";
 import { OsMainSourceItem } from "shared-types";
+import { removeUnderscoresAndCapitalize } from "@/utils";
 
 export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
   if (!data) return null;
   const detailFields = [
     {
-      label: "SPA ID",
+      label: "Submission ID",
       value: data.id,
     },
     {
@@ -14,7 +15,7 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
     },
     {
       label: "Type",
-      value: data.planType,
+      value: removeUnderscoresAndCapitalize(data.planType),
     },
     {
       label: "Sub-Type",
