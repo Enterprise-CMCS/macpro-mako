@@ -47,7 +47,7 @@ export const seatool: Handler = async (event) => {
         const id: string = JSON.parse(decode(key));
         const tombstone = createSeaDeleteRecord(id);
 
-        docObject[id] = tombstone;
+        docObject[id] = tombstone as SeaToolTransform;
 
         console.log(
           `Record ${id} has been nullified with the following data: `,

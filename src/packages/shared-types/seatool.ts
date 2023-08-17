@@ -118,7 +118,9 @@ export const seatoolSchema = z.object({
     .nullable(),
 });
 
-export const createSeaDeleteRecord = (id: string): SeaToolTransform => ({
+export const createSeaDeleteRecord = (
+  id: string
+): Partial<SeaToolTransform> => ({
   id,
   approvedEffectiveDate: null,
   authority: null,
@@ -128,7 +130,7 @@ export const createSeaDeleteRecord = (id: string): SeaToolTransform => ({
   planTypeId: null,
   proposedDate: null,
   raiReceivedDate: null,
-  state: null,
+  state: undefined,
   status: null,
   submissionDate: null,
 });
