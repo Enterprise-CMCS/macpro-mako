@@ -46,7 +46,7 @@ export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
               </h2>
             </div>
           </CardWithTopBorder>
-          <CardWithTopBorder title="Package Actions">
+          {/* <CardWithTopBorder title="Package Actions">
             <div className="flex flex-col gap-y-2">
               <Link
                 href="#"
@@ -66,7 +66,7 @@ export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
                 Issue Formal RAI
               </Link>
             </div>
-          </CardWithTopBorder>
+          </CardWithTopBorder> */}
         </section>
         <DetailsSection id="package-details" title="CHIP SPA Package Details">
           <ChipSpaPackageDetails {...data?._source} />
