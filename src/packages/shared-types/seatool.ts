@@ -113,13 +113,13 @@ export const seatoolSchema = z.object({
 export const transformSeatoolData = (id: string) => {
   return seatoolSchema.transform((data) => ({
     id,
-    actionType: data.ACTION_TYPES[0].ACTION_NAME,
-    actionTypeId: data.ACTION_TYPES[0].ACTION_ID,
+    actionType: data.ACTION_TYPES?.[0].ACTION_NAME,
+    actionTypeId: data.ACTION_TYPES?.[0].ACTION_ID,
     approvedEffectiveDate: data.STATE_PLAN.APPROVED_EFFECTIVE_DATE,
     authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
     changedDate: data.STATE_PLAN.CHANGED_DATE,
     leadAnalyst: getLeadAnalyst(data),
-    planType: data.PLAN_TYPES[0].PLAN_TYPE_NAME,
+    planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME,
     planTypeId: data.STATE_PLAN.PLAN_TYPE,
     proposedDate: data.STATE_PLAN.PROPOSED_DATE,
     raiReceivedDate: getReceivedDate(data),
