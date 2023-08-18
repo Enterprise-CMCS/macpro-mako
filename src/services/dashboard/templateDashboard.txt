@@ -22,7 +22,7 @@
             "x": 0,
             "type": "text",
             "properties": {
-                "markdown": "## alerts service",
+                "markdown": "## cloudfront metrics",
                 "background": "transparent"
             }
         },
@@ -38,11 +38,11 @@
             }
         },
         {
-            "type": "metric",
-            "x": 0,
-            "y": 4,
-            "width": 8,
             "height": 8,
+            "width": 8,
+            "y": 30,
+            "x": 0,
+            "type": "metric",
             "properties": {
                 "metrics": [
                     [
@@ -58,6 +58,265 @@
                 "title": "SNS Topic",
                 "period": 60,
                 "stat": "Sum"
+            }
+        },
+        {
+            "height": 7,
+            "width": 8,
+            "y": 22,
+            "x": 0,
+            "type": "alarm",
+            "properties": {
+                "title": "Mako Dashboard undefined Alarms",
+                "alarms": [
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:lambda-search-errors",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-sinkOnemacErrorCount",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-ONEMAC-validation-error",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-SEATOOL-validation-error",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-sinkSeatoolErrorsCount"
+                ]
+            }
+        },
+        {
+            "height": 6,
+            "width": 6,
+            "y": 4,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "view": "timeSeries",
+                "stacked": false,
+                "metrics": [
+                    [
+                        "AWS/CloudFront",
+                        "Requests",
+                        "Region",
+                        "Global",
+                        "DistributionId",
+                        "E1B3O1P6FBTZBE"
+                    ],
+                    [
+                        ".",
+                        "TotalErrorRate",
+                        ".",
+                        ".",
+                        ".",
+                        "."
+                    ],
+                    [
+                        ".",
+                        "4xxErrorRate",
+                        ".",
+                        ".",
+                        ".",
+                        "."
+                    ],
+                    [
+                        ".",
+                        "BytesDownloaded",
+                        ".",
+                        ".",
+                        ".",
+                        "."
+                    ],
+                    [
+                        ".",
+                        "BytesUploaded",
+                        ".",
+                        ".",
+                        ".",
+                        "."
+                    ]
+                ],
+                "region": "${env:REGION_A}",
+                "title": "Cloudfront Distro Metrics"
+            }
+        },
+        {
+            "height": 6,
+            "width": 6,
+            "y": 13,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "view": "timeSeries",
+                "stacked": false,
+                "metrics": [
+                    [
+                        "AWS/ApiGateway",
+                        "Latency",
+                        "ApiName",
+                        "${sls:stage}-om-api"
+                    ],
+                    [
+                        ".",
+                        "Count",
+                        ".",
+                        "."
+                    ],
+                    [
+                        ".",
+                        "IntegrationLatency",
+                        ".",
+                        "."
+                    ],
+                    [
+                        ".",
+                        "4XXError",
+                        ".",
+                        "."
+                    ],
+                    [
+                        ".",
+                        "5XXError",
+                        ".",
+                        "."
+                    ]
+                ],
+                "region": "${env:REGION_A}",
+                "title": "Api Gateway Metrics"
+            }
+        },
+        {
+            "height": 1,
+            "width": 8,
+            "y": 12,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## api gateway",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 1,
+            "width": 9,
+            "y": 21,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## opensearch",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 1,
+            "width": 24,
+            "y": 29,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## alerts service",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 6,
+            "width": 6,
+            "y": 4,
+            "x": 7,
+            "type": "metric",
+            "properties": {
+                "view": "timeSeries",
+                "stacked": false,
+                "metrics": [
+                    [
+                        "AWS/S3",
+                        "BucketSizeBytes",
+                        "StorageType",
+                        "StandardStorage",
+                        "BucketName",
+                        "${aws:accountId}-om-ui-infra-${sls:stage}-waflogs",
+                        {
+                            "period": 86400
+                        }
+                    ],
+                    [
+                        ".",
+                        "NumberOfObjects",
+                        ".",
+                        "AllStorageTypes",
+                        ".",
+                        ".",
+                        {
+                            "period": 86400
+                        }
+                    ],
+                    [
+                        ".",
+                        "BucketSizeBytes",
+                        ".",
+                        "StandardStorage",
+                        ".",
+                        "om-ui-infra-${sls:stage}-cloudfront-logs-${aws:accountId}",
+                        {
+                            "period": 86400
+                        }
+                    ],
+                    [
+                        ".",
+                        "NumberOfObjects",
+                        ".",
+                        "AllStorageTypes",
+                        ".",
+                        ".",
+                        {
+                            "period": 86400
+                        }
+                    ],
+                    [
+                        ".",
+                        "BucketSizeBytes",
+                        ".",
+                        "StandardStorage",
+                        ".",
+                        "om-ui-infra-${sls:stage}-s3bucket-zm3pyjm7bc3o",
+                        {
+                            "period": 86400
+                        }
+                    ],
+                    [
+                        ".",
+                        "NumberOfObjects",
+                        ".",
+                        "AllStorageTypes",
+                        ".",
+                        ".",
+                        {
+                            "period": 86400
+                        }
+                    ]
+                ],
+                "region": "${env:REGION_A}",
+                "title": "S3 Bucket Metrics"
+            }
+        },
+        {
+            "height": 2,
+            "width": 12,
+            "y": 19,
+            "x": 0,
+            "type": "alarm",
+            "properties": {
+                "title": "MAKO Api Gateway Errors",
+                "alarms": [
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-api-400-errors",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-api-500-errors"
+                ]
+            }
+        },
+        {
+            "type": "alarm",
+            "x": 0,
+            "y": 10,
+            "width": 12,
+            "height": 2,
+            "properties": {
+                "title": "Cloudfront Errors",
+                "alarms": [
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-cloudfront-400-errors",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-cloudfront-500-errors"
+                ]
             }
         }
     ]
