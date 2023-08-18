@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getStatus } from "./statusHelper";
 import { SearchData } from "shared-types";
-import { componentLabel } from "./typehelper";
 
 export const SpasList = () => {
   const [rowSelectionModel, setRowSelectionModel] = useState<string>();
@@ -81,12 +80,12 @@ export const SpasList = () => {
             field: "Type",
             flex: 1,
             valueGetter(params) {
-              return componentLabel[params.row._source.componentType];
+              return params.row._source.authority;
             },
             renderCell(params) {
               return (
                 <span className="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">
-                  {componentLabel[params.row._source.componentType]}
+                  {params.row._source.authority}
                 </span>
               );
             },
@@ -104,13 +103,6 @@ export const SpasList = () => {
             valueGetter(params) {
               if (!params.row._source.submissionDate) return null;
               return format(params.row._source.submissionDate, "MM/dd/yyyy");
-            },
-          },
-          {
-            field: "Authority",
-            flex: 1,
-            valueGetter(params) {
-              return params.row._source.authority;
             },
           },
         ]}

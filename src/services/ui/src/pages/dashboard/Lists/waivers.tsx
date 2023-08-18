@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getStatus } from "./statusHelper";
 import { SearchData } from "shared-types";
-import { componentLabel } from "./typehelper";
 
 export const WaiversList = () => {
   const [rowSelectionModel, setRowSelectionModel] = useState<string>();
@@ -77,16 +76,29 @@ export const WaiversList = () => {
             maxWidth: 80,
           },
           {
-            field: "Type",
+            field: "Authority",
             flex: 1,
-            minWidth: 260,
             valueGetter(params) {
-              return componentLabel[params.row._source.componentType];
+              return params.row._source.planType;
             },
             renderCell(params) {
               return (
                 <span className="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">
-                  {componentLabel[params.row._source.componentType]}
+                  {params.row._source.planType}
+                </span>
+              );
+            },
+          },
+          {
+            field: "Type",
+            flex: 1,
+            valueGetter(params) {
+              return params.row._source.actionType;
+            },
+            renderCell(params) {
+              return (
+                <span className="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">
+                  {params.row._source.actionType}
                 </span>
               );
             },
