@@ -60,26 +60,12 @@ const StateSelector = ({
 };
 
 export const Dashboard = () => {
-  const { data } = useGetUser();
-  const userStateCodes = getUserStateCodes(data?.user);
-
-  const [selectedState, setSelectedState] = useState(userStateCodes?.[0] || "");
-
-  const handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedState(event.target.value);
-  };
-
   return (
-    <div className="max-w-screen-lg mx-auto px-4 lg:px-8">
+    <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
       <div className="flex items-center justify-between my-4">
         <UI.Typography size="lg" as="h1">
           Dashboard
         </UI.Typography>
-        {/* <StateSelector
-          userStateCodes={userStateCodes}
-          handleStateChange={handleStateChange}
-          selectedState={selectedState}
-        /> */}
       </div>
       <div
         style={{
@@ -90,10 +76,10 @@ export const Dashboard = () => {
       >
         <UI.Tabs>
           <UI.TabPanel id="tab-panel--spas" tabLabel="SPAs">
-            <SpasList selectedState={selectedState} />
+            <SpasList />
           </UI.TabPanel>
           <UI.TabPanel id="tab-panel--waivers" tabLabel="Waivers">
-            <WaiversList selectedState={selectedState} />
+            <WaiversList />
           </UI.TabPanel>
         </UI.Tabs>
       </div>

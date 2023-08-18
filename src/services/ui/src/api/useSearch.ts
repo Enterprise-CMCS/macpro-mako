@@ -66,12 +66,12 @@ export const useSearch = (
   options?: UseMutationOptions<
     SearchData,
     ReactQueryApiError,
-    { selectedState: string; searchString: string; authority: string }
+    { searchString: string; authority: string }
   >
 ) => {
   return useMutation<
     SearchData,
     ReactQueryApiError,
-    { selectedState: string; searchString: string; authority: string }
+    { searchString: string; authority: string }
   >((props) => getSearchData(props.searchString, props.authority), options);
 };

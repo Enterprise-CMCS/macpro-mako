@@ -3,7 +3,6 @@ import { s3ParseUrl } from "shared-utils/s3-url-parser";
 
 export const onemacSchema = z.object({
   additionalInformation: z.string().optional(),
-  componentType: z.string(),
   submitterName: z.string(),
   submitterEmail: z.string(),
   attachments: z
@@ -37,7 +36,6 @@ export const transformOnemac = (id: string) => {
         };
       }) ?? null,
     additionalInformation: data.additionalInformation,
-    submissionOrigin: "OneMAC",
     submitterEmail: data.submitterEmail,
     submitterName: data.submitterName,
   }));
