@@ -123,7 +123,7 @@ export const transformSeatoolData = (id: string) => {
     planTypeId: data.STATE_PLAN.PLAN_TYPE,
     proposedDate: data.STATE_PLAN.PROPOSED_DATE,
     raiReceivedDate: getReceivedDate(data),
-    state: data.STATES[0].STATE_CODE,
+    state: data.STATES?.[0].STATE_CODE,
     status: data.SPW_STATUS?.[0].SPW_STATUS_DESC,
     submissionDate: data.STATE_PLAN.SUBMISSION_DATE,
   }));
@@ -131,3 +131,9 @@ export const transformSeatoolData = (id: string) => {
 
 export type SeaToolTransform = z.infer<ReturnType<typeof transformSeatoolData>>;
 export type SeaToolSink = z.infer<typeof seatoolSchema>;
+export type RecordsToDelete = Omit<
+  {
+    [Property in keyof SeaToolTransform]: undefined;
+  },
+  "id"
+>;
