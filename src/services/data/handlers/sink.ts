@@ -2,19 +2,20 @@ import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
 import {
+  RecordsToDelete,
   SeaToolTransform,
-  createSeaDeleteRecord,
   transformSeatoolData,
 } from "shared-types/seatool";
 import { OneMacTransform, transformOnemac } from "shared-types/onemac";
+
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
 }
 const osDomain: string = process.env.osDomain;
 
 export const seatool: Handler = async (event) => {
-  const seaToolRecords: SeaToolTransform[] = [];
-  const docObject: Record<string, SeaToolTransform> = {};
+  const seaToolRecords: (SeaToolTransform | RecordsToDelete)[] = [];
+  const docObject: Record<string, SeaToolTransform | RecordsToDelete> = {};
 
   for (const recordKey of Object.keys(event.records)) {
     for (const seatoolRecord of event.records[recordKey] as {
@@ -45,13 +46,25 @@ export const seatool: Handler = async (event) => {
         }
       } else {
         const id: string = JSON.parse(decode(key));
-        const tombstone = createSeaDeleteRecord(id);
+        const seaTombstone: RecordsToDelete = {
+          approvedEffectiveDate: undefined,
+          authority: undefined,
+          changedDate: undefined,
+          leadAnalyst: undefined,
+          planType: undefined,
+          planTypeId: undefined,
+          proposedDate: undefined,
+          raiReceivedDate: undefined,
+          state: undefined,
+          status: undefined,
+          submissionDate: undefined,
+        };
 
-        docObject[id] = tombstone;
+        docObject[id] = seaTombstone;
 
         console.log(
           `Record ${id} has been nullified with the following data: `,
-          JSON.stringify(tombstone)
+          JSON.stringify(seaTombstone)
         );
       }
     }

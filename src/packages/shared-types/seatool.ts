@@ -118,22 +118,6 @@ export const seatoolSchema = z.object({
     .nullable(),
 });
 
-export const createSeaDeleteRecord = (id: string) =>
-  ({
-    id,
-    approvedEffectiveDate: undefined,
-    authority: undefined,
-    changedDate: undefined,
-    leadAnalyst: undefined,
-    planType: undefined,
-    planTypeId: undefined,
-    proposedDate: undefined,
-    raiReceivedDate: undefined,
-    state: undefined,
-    status: undefined,
-    submissionDate: undefined,
-  } as SeaToolTransform);
-
 export const transformSeatoolData = (id: string) => {
   return seatoolSchema.transform((data) => ({
     id,
@@ -153,3 +137,9 @@ export const transformSeatoolData = (id: string) => {
 
 export type SeaToolTransform = z.infer<ReturnType<typeof transformSeatoolData>>;
 export type SeaToolSink = z.infer<typeof seatoolSchema>;
+export type RecordsToDelete = Omit<
+  {
+    [Property in keyof SeaToolTransform]: undefined;
+  },
+  "id"
+>;
