@@ -19,30 +19,29 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
     },
     {
       label: "Sub-Type",
-      // value: data.subType,
-      value: "Define Me!",
+      value: data.actionType || "N/A",
     },
     {
       label: "Initial Submission Date",
       value: data.submissionDate
         ? format(data.submissionDate, "MM/dd/yyyy")
-        : "None",
+        : "N/A",
     },
     {
       label: "Proposed Effective Date",
       value: data.proposedDate
         ? format(data.proposedDate, "MM/dd/yyyy")
-        : "None",
+        : "N/A",
     },
     {
       label: "Approved Effective Date",
       value: data.approvedEffectiveDate
         ? format(data.approvedEffectiveDate, "MM/dd/yyyy")
-        : "None",
+        : "N/A",
     },
     {
       label: "Change Date",
-      value: data.changedDate ? format(data.changedDate, "MM/dd/yyyy") : "None",
+      value: data.changedDate ? format(data.changedDate, "MM/dd/yyyy") : "N/A",
     },
   ];
   return (
