@@ -49,6 +49,7 @@ export const seatool: Handler = async (event) => {
       } else {
         const id: string = JSON.parse(decode(key));
         const seaTombstone: RecordsToDelete = {
+          id,
           actionType: undefined,
           actionTypeId: undefined,
           approvedEffectiveDate: undefined,

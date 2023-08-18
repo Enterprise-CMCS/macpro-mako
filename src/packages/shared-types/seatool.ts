@@ -136,4 +136,4 @@ export type RecordsToDelete = Omit<
     [Property in keyof SeaToolTransform]: undefined;
   },
   "id"
->;
+> & { id: string };
