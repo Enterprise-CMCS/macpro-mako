@@ -2,18 +2,12 @@ import { removeUnderscoresAndCapitalize } from "@/utils";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 
-export const DetailNav = ({
-  id,
-  type,
-}: {
-  id: string;
-  type: string | null;
-}) => {
+export const DetailNav = ({ id, type }: { id: string; type?: string }) => {
   const navigate = useNavigate();
   const planType = removeUnderscoresAndCapitalize(type);
   return (
     <div className="bg-sky-100">
-      <div className="max-w-screen-lg m-auto lg:px-8">
+      <div className="max-w-screen-xl m-auto lg:px-8">
         <div className="flex items-center">
           <div className="flex align-middle py-4">
             <button className="text-sky-800" onClick={() => navigate(-1)}>

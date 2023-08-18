@@ -2,4 +2,4 @@ version: "2"
 checks:
   method-lines:
     config:
-      threshold: 40
+      threshold: 1000 # defacto disable

@@ -421,16 +421,6 @@ resources:
                 AWS: !GetAtt CognitoAuthRole.Arn
               Action: "es:ESHttp*"
               Resource: "*"
-            # - Effect: "Allow"
-            #   Principal:
-            #     AWS: !GetAtt IamRoleLambdaExecution.Arn
-            #   Action: "es:ESHttp*"
-            #   Resource: "*"
-            # - Effect: "Allow"
-            #   Principal:
-            #     AWS: !GetAtt IamRoleLambdaExecution.Arn
-            #   Action: "indices:*"
-            #   Resource: "*"
         AdvancedOptions:
           rest.action.multi.allow_explicit_index: "true"
         AdvancedSecurityOptions:

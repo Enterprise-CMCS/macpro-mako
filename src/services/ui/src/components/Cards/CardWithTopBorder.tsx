@@ -1,10 +1,8 @@
 interface CardWithTopBorderProps {
-  title: string;
   children: React.ReactNode;
 }
 
 export const CardWithTopBorder: React.FC<CardWithTopBorderProps> = ({
-  title,
   children,
 }: CardWithTopBorderProps) => {
   return (
@@ -15,10 +13,7 @@ export const CardWithTopBorder: React.FC<CardWithTopBorderProps> = ({
         }}
         className="h-2 shadow-lg"
       />
-      <div className="p-4">
-        <p className="text-gray-600 font-semibold mb-2">{title}</p>
-        {children}
-      </div>
+      <div className="p-4">{children}</div>
     </div>
   );
 };

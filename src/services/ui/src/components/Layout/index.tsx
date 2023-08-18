@@ -19,12 +19,20 @@ const getLinks = (isAuthenticated: boolean) => {
         name: "Dashboard",
         link: "/dashboard",
       },
+      {
+        name: "FAQ",
+        link: "/faq",
+      },
     ];
   } else {
     return [
       {
         name: "Home",
         link: "/",
+      },
+      {
+        name: "FAQ",
+        link: "/faq",
       },
     ];
   }
@@ -37,7 +45,7 @@ export const Layout = () => {
     <div className="min-h-full flex flex-col">
       <UI.UsaBanner />
       <div className="bg-primary">
-        <div className="max-w-screen-lg mx-auto px-4 lg:px-8">
+        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
             <Link to="/">
               <img

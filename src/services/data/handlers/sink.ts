@@ -1,16 +1,22 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import { SeaToolTransform, transformSeatoolData } from "shared-types/seatool";
+import {
+  RecordsToDelete,
+  SeaToolTransform,
+  transformSeatoolData,
+} from "shared-types/seatool";
 import { OneMacTransform, transformOnemac } from "shared-types/onemac";
+
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
 }
 const osDomain: string = process.env.osDomain;
 
 export const seatool: Handler = async (event) => {
-  const seaToolRecords: SeaToolTransform[] = [];
-  const docObject: Record<string, SeaToolTransform> = {};
+  const seaToolRecords: (SeaToolTransform | RecordsToDelete)[] = [];
+  const docObject: Record<string, SeaToolTransform | RecordsToDelete> = {};
+  const rawArr: any[] = [];
 
   for (const recordKey of Object.keys(event.records)) {
     for (const seatoolRecord of event.records[recordKey] as {
@@ -38,7 +44,33 @@ export const seatool: Handler = async (event) => {
           if (validPlanTypeIds.includes(result.data.planTypeId)) {
             docObject[id] = result.data;
           }
+          rawArr.push(record);
         }
+      } else {
+        const id: string = JSON.parse(decode(key));
+        const seaTombstone: RecordsToDelete = {
+          id,
+          actionType: undefined,
+          actionTypeId: undefined,
+          approvedEffectiveDate: undefined,
+          authority: undefined,
+          changedDate: undefined,
+          leadAnalyst: undefined,
+          planType: undefined,
+          planTypeId: undefined,
+          proposedDate: undefined,
+          raiReceivedDate: undefined,
+          state: undefined,
+          status: undefined,
+          submissionDate: undefined,
+        };
+
+        docObject[id] = seaTombstone;
+
+        console.log(
+          `Record ${id} has been nullified with the following data: `,
+          JSON.stringify(seaTombstone)
+        );
       }
     }
   }
@@ -46,7 +78,8 @@ export const seatool: Handler = async (event) => {
     seaToolRecords.push(b);
   }
   try {
-    await os.bulkUpdateData(osDomain, seaToolRecords);
+    await os.bulkUpdateData(osDomain, "main", seaToolRecords);
+    await os.bulkUpdateData(osDomain, "seatool", rawArr);
   } catch (error) {
     console.error(error);
   }
@@ -86,7 +119,7 @@ export const onemac: Handler = async (event) => {
     oneMacRecords.push(b);
   }
   try {
-    await os.bulkUpdateData(osDomain, oneMacRecords);
+    await os.bulkUpdateData(osDomain, "main", oneMacRecords);
   } catch (error) {
     console.error(error);
   }
