@@ -2,7 +2,7 @@ import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
 import {
-  RecordsToDelete,
+  SeaToolRecordsToDelete,
   SeaToolTransform,
   transformSeatoolData,
 } from "shared-types/seatool";
@@ -14,8 +14,9 @@ if (!process.env.osDomain) {
 const osDomain: string = process.env.osDomain;
 
 export const seatool: Handler = async (event) => {
-  const seaToolRecords: (SeaToolTransform | RecordsToDelete)[] = [];
-  const docObject: Record<string, SeaToolTransform | RecordsToDelete> = {};
+  const seaToolRecords: (SeaToolTransform | SeaToolRecordsToDelete)[] = [];
+  const docObject: Record<string, SeaToolTransform | SeaToolRecordsToDelete> =
+    {};
   const rawArr: any[] = [];
 
   for (const recordKey of Object.keys(event.records)) {
@@ -48,7 +49,7 @@ export const seatool: Handler = async (event) => {
         }
       } else {
         const id: string = JSON.parse(decode(key));
-        const seaTombstone: RecordsToDelete = {
+        const seaTombstone: SeaToolRecordsToDelete = {
           id,
           actionType: undefined,
           actionTypeId: undefined,
