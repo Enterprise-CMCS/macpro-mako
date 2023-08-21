@@ -39,36 +39,44 @@ export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
       </aside>
       <div className="flex-1">
         <section id="package-overview" className="block md:flex mb-8 gap-8">
-          <CardWithTopBorder title="Status">
-            <div>
-              <h2 className="text-xl font-semibold mb-2">
-                {getStatus(data?._source.status, user?.isCms)}
-              </h2>
-            </div>
+          <CardWithTopBorder>
+            <>
+              <p className="text-gray-600 font-semibold mb-2">Status</p>
+              <div>
+                <h2 className="text-xl font-semibold mb-2">
+                  {getStatus(data?._source.status, user?.isCms)}
+                </h2>
+              </div>
+            </>
           </CardWithTopBorder>
-          <CardWithTopBorder title="Package Actions">
-            <div className="flex flex-col gap-y-2">
-              <Link
-                href="#"
-                style={{
-                  textDecoration: "none",
-                  fontWeight: 700,
-                }}
-              >
-                {" "}
-                Withdraw Package
-              </Link>
-              <Link
-                href="#"
-                style={{ textDecoration: "none", fontWeight: 700 }}
-              >
-                {" "}
-                Issue Formal RAI
-              </Link>
-            </div>
-          </CardWithTopBorder>
+          {/* <CardWithTopBorder>
+            <>
+              <p className="text-gray-600 font-semibold mb-2">
+                Package Actions
+              </p>
+              <div className="flex flex-col gap-y-2">
+                <Link
+                  href="#"
+                  style={{
+                    textDecoration: "none",
+                    fontWeight: 700,
+                  }}
+                >
+                  {" "}
+                  Withdraw Package
+                </Link>
+                <Link
+                  href="#"
+                  style={{ textDecoration: "none", fontWeight: 700 }}
+                >
+                  {" "}
+                  Issue Formal RAI
+                </Link>
+              </div>
+            </>
+          </CardWithTopBorder> */}
         </section>
-        <DetailsSection id="package-details" title="CHIP SPA Package Details">
+        <DetailsSection id="package-details" title="Package Details">
           <ChipSpaPackageDetails {...data?._source} />
         </DetailsSection>
         <DetailsSection id="attachments" title="Attachments">

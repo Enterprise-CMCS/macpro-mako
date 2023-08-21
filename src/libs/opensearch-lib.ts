@@ -35,7 +35,7 @@ export async function updateData(host:string, indexObject:any) {
   var response = await client.update(indexObject);
 }
 
-export async function bulkUpdateData(host:string, arrayOfDocuments:any) {
+export async function bulkUpdateData(host:string, index:string, arrayOfDocuments:any) {
   client = client || (await getClient(host));
   var response = await client.helpers.bulk({
     datasource: arrayOfDocuments,
@@ -44,7 +44,7 @@ export async function bulkUpdateData(host:string, arrayOfDocuments:any) {
       // first element being the action and the second being the update options.
       return [
         {
-          update: { _index: 'main', _id: doc.id }
+          update: { _index: index, _id: doc.id }
         },
         { doc_as_upsert: true }
       ]

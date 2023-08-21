@@ -2,23 +2,6 @@ import { z } from "zod";
 
 type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
-const planTypeLookup = (val: number | null): null | string => {
-  if (!val) return null;
-
-  const lookup: Record<number, string> = {
-    121: "1115",
-    122: "1915b_waivers",
-    123: "1915c_waivers",
-    124: "CHIP_SPA",
-    125: "Medicaid_SPA",
-    126: "1115_Indep_Plus",
-    127: "1915c_Indep_Plus",
-    130: "UPL",
-  };
-
-  return lookup[val];
-};
-
 const authorityLookup = (val: number | null): null | string => {
   if (!val) return null;
 
@@ -116,16 +99,27 @@ export const seatoolSchema = z.object({
       })
     )
     .nullable(),
+  ACTIONTYPES: z
+    .array(
+      z.object({
+        ACTION_ID: z.number(),
+        ACTION_NAME: z.string(),
+        PLAN_TYPE_ID: z.number(),
+      })
+    )
+    .nullable(),
 });
 
 export const transformSeatoolData = (id: string) => {
   return seatoolSchema.transform((data) => ({
     id,
+    actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
+    actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
     approvedEffectiveDate: data.STATE_PLAN.APPROVED_EFFECTIVE_DATE,
     authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
     changedDate: data.STATE_PLAN.CHANGED_DATE,
     leadAnalyst: getLeadAnalyst(data),
-    planType: planTypeLookup(data.STATE_PLAN.PLAN_TYPE),
+    planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME,
     planTypeId: data.STATE_PLAN.PLAN_TYPE,
     proposedDate: data.STATE_PLAN.PROPOSED_DATE,
     raiReceivedDate: getReceivedDate(data),
@@ -142,4 +136,4 @@ export type RecordsToDelete = Omit<
     [Property in keyof SeaToolTransform]: undefined;
   },
   "id"
->;
+> & { id: string };
