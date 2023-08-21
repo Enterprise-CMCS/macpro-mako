@@ -6,7 +6,11 @@ import {
   SeaToolTransform,
   transformSeatoolData,
 } from "shared-types/seatool";
-import { OneMacTransform, transformOnemac } from "shared-types/onemac";
+import {
+  OneMacRecordsToDelete,
+  OneMacTransform,
+  transformOnemac,
+} from "shared-types/onemac";
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -87,8 +91,8 @@ export const seatool: Handler = async (event) => {
 };
 
 export const onemac: Handler = async (event) => {
-  const oneMacRecords: OneMacTransform[] = [];
-  const docObject: Record<string, OneMacTransform> = {};
+  const oneMacRecords: (OneMacTransform | OneMacRecordsToDelete)[] = [];
+  const docObject: Record<string, OneMacTransform | OneMacRecordsToDelete> = {};
 
   for (const recordKey of Object.keys(event.records)) {
     for (const onemacRecord of event.records[recordKey] as {
@@ -113,6 +117,22 @@ export const onemac: Handler = async (event) => {
             docObject[id] = result.data;
           }
         }
+      } else {
+        const id: string = JSON.parse(decode(key));
+        const oneMacTombstone: OneMacRecordsToDelete = {
+          id,
+          additionalInformation: undefined,
+          attachments: undefined,
+          submitterEmail: undefined,
+          submitterName: undefined,
+        };
+
+        docObject[id] = oneMacTombstone;
+
+        console.log(
+          `Record ${id} has been nullified with the following data: `,
+          JSON.stringify(oneMacTombstone)
+        );
       }
     }
   }
