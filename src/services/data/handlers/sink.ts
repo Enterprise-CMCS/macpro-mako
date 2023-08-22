@@ -118,7 +118,7 @@ export const onemac: Handler = async (event) => {
           }
         }
       } else {
-        const id: string = JSON.parse(decode(key));
+        const id: string = decode(key);
         const oneMacTombstone: OneMacRecordsToDelete = {
           id,
           additionalInformation: undefined,
