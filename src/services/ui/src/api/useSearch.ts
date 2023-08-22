@@ -8,7 +8,7 @@ export const getSearchData = async (
 ): Promise<SearchData> => {
   const query: any = {
     from: 0,
-    size: 100,
+    size: 10000,
     query: {
       bool: {
         must: [
