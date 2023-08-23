@@ -233,8 +233,8 @@
             "properties": {
                 "title": "Cloudfront Errors",
                 "alarms": [
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-cloudfront-400-errors",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-cloudfront-500-errors"
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-cloudfront-400-errors",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-cloudfront-500-errors"
                 ]
             }
         }
