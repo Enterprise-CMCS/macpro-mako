@@ -8,7 +8,7 @@ parent: Services
 {: .no_toc }
 
 ## Summary
-wip
+The data service deploys our OpenSearch data layer and supporting infrastructure.
 
 ## Detail
-wip
+OpenSearch, Amazon's managed Elasticsearch offering, was selected as the data layer tech.  

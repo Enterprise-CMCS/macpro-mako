@@ -1,6 +1,4 @@
-export function removeUnderscoresAndCapitalize(
-  str: string | null
-): string | null {
+export function removeUnderscoresAndCapitalize(str?: string): string | null {
   if (!str) return null;
 
   // Replace underscores with spaces
