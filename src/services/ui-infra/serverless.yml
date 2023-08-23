@@ -206,7 +206,7 @@ resources:
       Properties:
         DatapointsToAlarm: 1
         AlarmActions:
-          - ${param:ecsFailureTopicArn}
+          - ${param:ECSFailureTopicArn}
         AlarmName: "mako-${sls:stage}-cloudfront-400-errors"
         ComparisonOperator: GreaterThanOrEqualToThreshold
         EvaluationPeriods: 2
@@ -238,7 +238,7 @@ resources:
     Properties:
       DatapointsToAlarm: 1
       AlarmActions:
-        - ${param:ecsFailureTopicArn}
+        - ${param:ECSFailureTopicArn}
       AlarmName: "mako-${sls:stage}-cloudfront-500-errors"
       ComparisonOperator: GreaterThanOrEqualToThreshold
       EvaluationPeriods: 2
