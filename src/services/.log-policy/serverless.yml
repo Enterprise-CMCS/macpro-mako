@@ -1,0 +1,32 @@
+service: ${self:custom.project}-log-policy
+
+frameworkVersion: "3"
+
+package:
+  individually: true
+
+plugins:
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-s3-security-helper"
+
+provider:
+  name: aws
+  region: us-east-1
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+
+custom:
+  project: ${env:PROJECT}
+  serverlessTerminationProtection:
+    stages: # Apply CloudFormation termination protection for these stages
+      - master
+      - val
+      - production
+resources:
+  Resources:
+    OpenSearchLogGroupPolicy:
+      Type: AWS::Logs::ResourcePolicy
+      Properties:
+        PolicyName: ${self:service}-os-log-policy
+        PolicyDocument: !Sub "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"OpenSearchToCloudwatch\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"es.amazonaws.com\" ] }, \"Action\": [\"logs:PutLogEvents\",\"logs:CreateLogStream\"], \"Resource\": [ \"*\" ] } ] }"
