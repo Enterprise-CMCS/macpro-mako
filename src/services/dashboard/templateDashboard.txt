@@ -219,8 +219,8 @@
             "properties": {
                 "title": "MAKO Api Gateway Errors",
                 "alarms": [
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-api-400-errors",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-api-500-errors"
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-api-400-errors",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-api-500-errors"
                 ]
             }
         },
