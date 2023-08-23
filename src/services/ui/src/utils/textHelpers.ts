@@ -1,4 +1,6 @@
-export function removeUnderscoresAndCapitalize(str: string): string {
+export function removeUnderscoresAndCapitalize(str?: string): string | null {
+  if (!str) return null;
+
   // Replace underscores with spaces
   const withoutUnderscores = str.replace(/_/g, " ");
 

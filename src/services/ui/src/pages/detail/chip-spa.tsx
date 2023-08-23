@@ -1,4 +1,3 @@
-import { SearchData } from "@/api";
 import { DetailWrapper } from "./wrapper";
 import { Link } from "@enterprise-cmcs/macpro-ux-lib";
 import {
@@ -7,13 +6,16 @@ import {
   CardWithTopBorder,
   ChipSpaPackageDetails,
   DetailsSection,
+  LoadingSpinner,
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import { getStatus } from "../dashboard/Lists/statusHelper";
+import { OsHit, OsMainSourceItem } from "shared-types";
 
-export const ChipSpa = ({ data }: { data?: SearchData }) => {
+export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
   const { data: user } = useGetUser();
+  if (!data?._source) return <LoadingSpinner />;
   return (
     <div className="block md:flex">
       <aside className="flex-none font-bold hidden md:block pr-8">
@@ -37,65 +39,54 @@ export const ChipSpa = ({ data }: { data?: SearchData }) => {
       </aside>
       <div className="flex-1">
         <section id="package-overview" className="block md:flex mb-8 gap-8">
-          <CardWithTopBorder title="Status">
-            <div>
-              <h2 className="text-xl font-semibold mb-2">
-                {getStatus(data?._source.status, user?.isCms)}
-              </h2>
-            </div>
+          <CardWithTopBorder>
+            <>
+              <p className="text-gray-600 font-semibold mb-2">Status</p>
+              <div>
+                <h2 className="text-xl font-semibold mb-2">
+                  {getStatus(data?._source.status, user?.isCms)}
+                </h2>
+              </div>
+            </>
           </CardWithTopBorder>
-          <CardWithTopBorder title="Package Actions">
-            <div className="flex flex-col gap-y-2">
-              <Link
-                href="#"
-                style={{
-                  textDecoration: "none",
-                  fontWeight: 700,
-                }}
-              >
-                {" "}
-                Withdraw Package
-              </Link>
-              <Link
-                href="#"
-                style={{ textDecoration: "none", fontWeight: 700 }}
-              >
-                {" "}
-                Issue Formal RAI
-              </Link>
-            </div>
-          </CardWithTopBorder>
+          {/* <CardWithTopBorder>
+            <>
+              <p className="text-gray-600 font-semibold mb-2">
+                Package Actions
+              </p>
+              <div className="flex flex-col gap-y-2">
+                <Link
+                  href="#"
+                  style={{
+                    textDecoration: "none",
+                    fontWeight: 700,
+                  }}
+                >
+                  {" "}
+                  Withdraw Package
+                </Link>
+                <Link
+                  href="#"
+                  style={{ textDecoration: "none", fontWeight: 700 }}
+                >
+                  {" "}
+                  Issue Formal RAI
+                </Link>
+              </div>
+            </>
+          </CardWithTopBorder> */}
         </section>
-        <DetailsSection id="package-details" title="CHIP SPA Package Details">
-          <ChipSpaPackageDetails
-            {...{
-              "SPA ID": data?._id,
-              Type: data?._source.programType,
-              State: data?._source.state,
-              "Sub-Type": data?._source.planType,
-              "Initial Submission Date": data?._source.submission_date,
-              "Proposed Effective Date": data?._source.proposedDate,
-              "Approved Effective Date": data?._source.approvedEffectiveDate,
-              "Change Date": data?._source.changedDate,
-            }}
-          />
+        <DetailsSection id="package-details" title="Package Details">
+          <ChipSpaPackageDetails {...data?._source} />
         </DetailsSection>
         <DetailsSection id="attachments" title="Attachments">
           <Attachmentslist {...data?._source} />
         </DetailsSection>
         <DetailsSection id="additional-info" title="Additional Information">
           <AdditionalInfo
-            {...{ additionalInfo: data?._source.additionalInformation }}
+            additionalInformation={data?._source.additionalInformation}
           />
-          {/* in general, for all these components, should we be passing the entire record instead?  and keep that this is that logic in the component */}
-          <SubmissionInfo
-            {...{
-              submitterName: data?._source.submitterName,
-              submitterEmail: data?._source.submitterEmail,
-              submissionOrigin: data?._source.submissionOrigin,
-              leadAnalyst: data?._source.leadAnalyst,
-            }}
-          />
+          <SubmissionInfo {...data?._source} />
         </DetailsSection>
       </div>
     </div>

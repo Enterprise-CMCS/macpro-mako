@@ -12,5 +12,5 @@ export const getAttachmentUrl = async (
       key,
     },
   });
-  return response.url;
+  return response.url as string;
 };

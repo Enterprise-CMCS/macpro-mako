@@ -1,4 +1,4 @@
-import { Client, Connection } from "@opensearch-project/opensearch";
+import { Client, Connection, ApiResponse } from "@opensearch-project/opensearch";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import * as aws4 from "aws4";
 import { OutgoingHttpHeader } from 'http';
@@ -33,10 +33,9 @@ export async function updateData(host:string, indexObject:any) {
   client = client || (await getClient(host));
   // Add a document to the index. 
   var response = await client.update(indexObject);
-  console.log(response.body);
 }
 
-export async function bulkUpdateData(host:string, arrayOfDocuments:any) {
+export async function bulkUpdateData(host:string, index:string, arrayOfDocuments:any) {
   client = client || (await getClient(host));
   var response = await client.helpers.bulk({
     datasource: arrayOfDocuments,
@@ -45,7 +44,7 @@ export async function bulkUpdateData(host:string, arrayOfDocuments:any) {
       // first element being the action and the second being the update options.
       return [
         {
-          update: { _index: 'main', _id: doc.id }
+          update: { _index: index, _id: doc.id }
         },
         { doc_as_upsert: true }
       ]
@@ -57,7 +56,6 @@ export async function bulkUpdateData(host:string, arrayOfDocuments:any) {
 export async function deleteIndex(host:string, index:string) {
   client = client || (await getClient(host));
   var response = await client.indices.delete({index});
-  console.log(response);
 }
 
 export async function mapRole(host:string, masterRoleToAssume:string, osRoleName:string, iamRoleName: string) {
@@ -91,7 +89,6 @@ export async function mapRole(host:string, masterRoleToAssume:string, osRoleName
       }
 
     ]);
-    console.log(patchResponse.data);
     return patchResponse.data;
   } catch (error) {
     console.error('Error making PUT request:', error);
@@ -106,7 +103,6 @@ export async function search(host:string, index:string, query:any){
       index: index,
       body: query,
     });
-    console.log(response.body.hits);
     return response.body.hits;
   } catch(e) {
     console.log({e})

@@ -4,8 +4,17 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
+    "base-64": "^1.0.0",
     "eslint": "^8.38.0",
     "eslint-config-custom-server": "*",
+    "vitest": "^0.34.1",
     "zod": "^3.21.4"
+  },
+  "scripts": {
+    "test": "vitest"
+  },
+  "dependencies": {
+    "s3-url-parser": "^1.0.3",
+    "shared-utils": "*"
   }
 }
