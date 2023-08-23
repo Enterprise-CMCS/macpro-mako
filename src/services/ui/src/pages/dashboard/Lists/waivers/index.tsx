@@ -25,7 +25,7 @@ import {
 } from "@/components/Table";
 import { Pagination } from "@/components/Pagination";
 
-export const SpasList = () => {
+export const WaiversList = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [searchData, setSearchData] = useState<SearchData | null>(null);
   const { mutateAsync, isLoading, error } = useSearch();
@@ -49,7 +49,7 @@ export const SpasList = () => {
           {
             field: "authority.keyword",
             type: "terms",
-            value: ["CHIP", "MEDICAID"],
+            value: ["WAIVER"],
             prefix: "must",
           },
           {
@@ -98,8 +98,9 @@ export const SpasList = () => {
       <Table className="flex-1 border-[1px]">
         <TableHeader className="sticky top-0 bg-white">
           <TableRow>
-            <TableHead className="w-[150px]">Spa ID</TableHead>
+            <TableHead className="w-[150px]">Waiver ID</TableHead>
             <TableHead>State</TableHead>
+            <TableHead>Authority</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Submission Date</TableHead>
@@ -125,9 +126,17 @@ export const SpasList = () => {
               </TableCell>
               <TableCell>{DAT._source.state}</TableCell>
               <TableCell>
-                {removeUnderscoresAndCapitalize(DAT?._source.planType)}
+                <span className="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">
+                  {DAT._source.authority}
+                </span>
               </TableCell>
-              <TableCell>{DAT._source.authority}</TableCell>
+
+              <TableCell>
+                {removeUnderscoresAndCapitalize(DAT?._source.actionType)}
+              </TableCell>
+              <TableCell>
+                {getStatus(DAT._source.status, user?.isCms)}
+              </TableCell>
               <TableCell>
                 {(() => {
                   if (!DAT?._source.submissionDate) return null;
