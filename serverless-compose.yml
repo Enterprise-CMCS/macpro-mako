@@ -9,6 +9,8 @@ services:
     path: src/services/data
   ui-infra:
     path: src/services/ui-infra
+    params:
+      ECSFailureTopicArn: ${alerts.ECSFailureTopicArn}
   api:
     path: src/services/api
     params:
