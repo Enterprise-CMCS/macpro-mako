@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getStatus } from "../statusHelper";
-import { SearchData } from "shared-types";
+import { SearchData, OsFilterable } from "shared-types";
 import { Icon, Typography } from "@enterprise-cmcs/macpro-ux-lib";
 import {
   Sheet,
@@ -39,25 +39,29 @@ export const SpasList = () => {
   }, [pagination]);
 
   const handleSearch = async (search: string) => {
+    const filters: OsFilterable[] = [
+      {
+        field: "authority.keyword",
+        type: "terms",
+        value: ["CHIP", "MEDICAID"],
+        prefix: "must",
+      },
+    ];
+    if (search) {
+      filters.push({
+        type: "global_search",
+        field: "status",
+        value: search,
+        prefix: "must",
+      });
+    }
+
     try {
       // TODO: move to url hash
       const data = await mutateAsync({
         pagination,
-        sort: { field: "changedDate", order: "desc" },
-        filters: [
-          {
-            field: "authority.keyword",
-            type: "terms",
-            value: ["CHIP", "MEDICAID"],
-            prefix: "must",
-          },
-          {
-            type: "global_search",
-            field: "additionalInformation",
-            value: search,
-            prefix: "must",
-          },
-        ],
+        filters,
+        ...(!search && { sort: { field: "changedDate", order: "desc" } }),
       });
 
       setSearchData(data);
@@ -141,7 +145,7 @@ export const SpasList = () => {
         pageNumber={pagination.number}
         onPageChange={(number) => setPagination((s) => ({ ...s, number }))}
         count={searchData?.total?.value || 0}
-        onSizeChange={(size) => setPagination((s) => ({ ...s, size }))}
+        onSizeChange={(size) => setPagination(() => ({ number: 0, size }))}
         pageSize={pagination.size}
       />
     </section>

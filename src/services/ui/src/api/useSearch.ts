@@ -1,4 +1,3 @@
-import { Filterable, QueryState } from "@/components/Opensearch/types";
 import {
   filterQueryBuilder,
   paginationQueryBuilder,
@@ -7,11 +6,12 @@ import {
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError, SearchData } from "shared-types";
+import type { OsFilterable, OsQueryState } from "shared-types";
 
 type QueryProps = {
-  filters: Filterable[];
-  sort: QueryState["sort"];
-  pagination: QueryState["pagination"];
+  filters: OsFilterable[];
+  sort?: OsQueryState["sort"];
+  pagination: OsQueryState["pagination"];
 };
 
 export const getSearchData = async (props: QueryProps): Promise<SearchData> => {
@@ -19,7 +19,7 @@ export const getSearchData = async (props: QueryProps): Promise<SearchData> => {
     body: {
       ...filterQueryBuilder(props.filters),
       ...paginationQueryBuilder(props.pagination),
-      ...sortQueryBuilder(props.sort),
+      ...(!!props.sort && sortQueryBuilder(props.sort)),
     },
   });
 

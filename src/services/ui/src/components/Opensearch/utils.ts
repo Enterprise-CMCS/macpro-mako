@@ -1,15 +1,10 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable camelcase */
-import type {
-  AggregateQuery,
-  Aggregations,
-  Filterable,
-  QueryState,
-} from "./types";
+import { OsAggregations, OsFilterable, OsQueryState } from "shared-types";
 
 const filterMapQueryReducer = (
-  state: Record<Filterable["prefix"], any[]>,
-  filter: Filterable
+  state: Record<OsFilterable["prefix"], any[]>,
+  filter: OsFilterable
 ) => {
   if (filter.type === "match") {
     state[filter.prefix].push({
@@ -33,6 +28,7 @@ const filterMapQueryReducer = (
     if (filter.value) {
       state[filter.prefix].push({
         query_string: {
+          fields: ["id", "submitterName", "leadAnalyst"],
           query: `(${filter.value}) OR (*${filter.value}*)`,
         },
       });
@@ -42,7 +38,7 @@ const filterMapQueryReducer = (
   return state;
 };
 
-export const filterQueryBuilder = (filters: Filterable[]) => {
+export const filterQueryBuilder = (filters: OsFilterable[]) => {
   if (!filters?.length) return {};
 
   return {
@@ -58,7 +54,7 @@ export const filterQueryBuilder = (filters: Filterable[]) => {
 };
 
 export const paginationQueryBuilder = (
-  pagination: QueryState["pagination"]
+  pagination: OsQueryState["pagination"]
 ) => {
   const from = (() => {
     if (!pagination.number) return 0;
@@ -71,11 +67,11 @@ export const paginationQueryBuilder = (
   };
 };
 
-export const sortQueryBuilder = (sort: QueryState["sort"]) => {
+export const sortQueryBuilder = (sort: OsQueryState["sort"]) => {
   return { sort: [{ [sort.field]: sort.order }] };
 };
 
-export const createBucketOptions = (aggregations: Aggregations) => {
+export const createBucketOptions = (aggregations: OsAggregations) => {
   return Object.entries(aggregations).reduce((ACC, [key, value]) => {
     if (!Array.isArray(value?.buckets)) return ACC;
 
@@ -85,5 +81,5 @@ export const createBucketOptions = (aggregations: Aggregations) => {
     }));
 
     return ACC;
-  }, {} as QueryState["buckets"]);
+  }, {} as OsQueryState["buckets"]);
 };
