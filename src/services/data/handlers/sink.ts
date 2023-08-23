@@ -2,11 +2,15 @@ import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
 import {
-  RecordsToDelete,
+  SeaToolRecordsToDelete,
   SeaToolTransform,
   transformSeatoolData,
 } from "shared-types/seatool";
-import { OneMacTransform, transformOnemac } from "shared-types/onemac";
+import {
+  OneMacRecordsToDelete,
+  OneMacTransform,
+  transformOnemac,
+} from "shared-types/onemac";
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -14,8 +18,9 @@ if (!process.env.osDomain) {
 const osDomain: string = process.env.osDomain;
 
 export const seatool: Handler = async (event) => {
-  const seaToolRecords: (SeaToolTransform | RecordsToDelete)[] = [];
-  const docObject: Record<string, SeaToolTransform | RecordsToDelete> = {};
+  const seaToolRecords: (SeaToolTransform | SeaToolRecordsToDelete)[] = [];
+  const docObject: Record<string, SeaToolTransform | SeaToolRecordsToDelete> =
+    {};
   const rawArr: any[] = [];
 
   for (const recordKey of Object.keys(event.records)) {
@@ -48,7 +53,7 @@ export const seatool: Handler = async (event) => {
         }
       } else {
         const id: string = JSON.parse(decode(key));
-        const seaTombstone: RecordsToDelete = {
+        const seaTombstone: SeaToolRecordsToDelete = {
           id,
           actionType: undefined,
           actionTypeId: undefined,
@@ -86,8 +91,8 @@ export const seatool: Handler = async (event) => {
 };
 
 export const onemac: Handler = async (event) => {
-  const oneMacRecords: OneMacTransform[] = [];
-  const docObject: Record<string, OneMacTransform> = {};
+  const oneMacRecords: (OneMacTransform | OneMacRecordsToDelete)[] = [];
+  const docObject: Record<string, OneMacTransform | OneMacRecordsToDelete> = {};
 
   for (const recordKey of Object.keys(event.records)) {
     for (const onemacRecord of event.records[recordKey] as {
@@ -112,6 +117,22 @@ export const onemac: Handler = async (event) => {
             docObject[id] = result.data;
           }
         }
+      } else {
+        const id: string = decode(key);
+        const oneMacTombstone: OneMacRecordsToDelete = {
+          id,
+          additionalInformation: undefined,
+          attachments: undefined,
+          submitterEmail: undefined,
+          submitterName: undefined,
+        };
+
+        docObject[id] = oneMacTombstone;
+
+        console.log(
+          `Record ${id} has been nullified with the following data: `,
+          JSON.stringify(oneMacTombstone)
+        );
       }
     }
   }
