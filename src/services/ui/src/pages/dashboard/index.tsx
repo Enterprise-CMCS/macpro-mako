@@ -75,19 +75,8 @@ export const Dashboard = () => {
         <UI.Typography size="lg" as="h1">
           Dashboard
         </UI.Typography>
-        {/* <StateSelector
-          userStateCodes={userStateCodes}
-          handleStateChange={handleStateChange}
-          selectedState={selectedState}
-        /> */}
       </div>
-      <div
-        style={{
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <div className="w-[100%] items-center justify-center">
         <UI.Tabs>
           <UI.TabPanel id="tab-panel--spas" tabLabel="SPAs">
             <SpasList selectedState={selectedState} />

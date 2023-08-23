@@ -34,9 +34,9 @@ export const WaiversList = ({ selectedState }: { selectedState: string }) => {
     }
   };
 
-  return error ? (
-    <ErrorAlert error={error} />
-  ) : (
+  if (error) return <ErrorAlert error={error} />;
+
+  return (
     <>
       <SearchForm
         handleSearch={handleSearch}

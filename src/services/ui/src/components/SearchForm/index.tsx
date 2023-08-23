@@ -19,7 +19,7 @@ export const SearchForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex-1">
       <div className="relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"

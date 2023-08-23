@@ -10,6 +10,8 @@ export type OsHit<T> = {
 };
 export type OsHits<T> = {
   hits: OsHit<T>[];
+  max_score: number;
+  total: { value: number; relation: "eq" };
 };
 
 export type OsResponse<T> = {
