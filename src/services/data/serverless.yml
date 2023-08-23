@@ -315,12 +315,9 @@ resources:
       Properties:
         GroupDescription: Security group for Sink Lambda Function.
         VpcId: ${self:custom.vpc.id}
-    SecurityGroupEgress:
-      Type: AWS::EC2::SecurityGroupEgress
-      Properties:
-        GroupId: !Ref SecurityGroup
-        IpProtocol: -1
-        CidrIp: 0.0.0.0/0
+        SecurityGroupEgress: 
+          - IpProtocol: -1
+            CidrIp: 0.0.0.0/0
 
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
