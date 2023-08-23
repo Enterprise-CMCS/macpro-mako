@@ -1,3 +1,5 @@
+import { Icon } from "@enterprise-cmcs/macpro-ux-lib";
+
 export const SearchForm = ({
   handleSearch,
   searchText,
@@ -19,7 +21,7 @@ export const SearchForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex-1">
       <div className="relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -43,6 +45,13 @@ export const SearchForm = ({
           onChange={handleInputChange}
           disabled={disabled}
         />
+        {!!searchText && (
+          <Icon
+            className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto right-3"
+            onClick={() => handleSearch("")}
+            name="close"
+          />
+        )}
       </div>
     </form>
   );

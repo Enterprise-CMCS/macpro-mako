@@ -1,77 +1,36 @@
+import {
+  filterQueryBuilder,
+  paginationQueryBuilder,
+  sortQueryBuilder,
+} from "@/components/Opensearch/utils";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError, SearchData } from "shared-types";
+import type { OsFilterable, OsQueryState } from "shared-types";
 
-export const getSearchData = async (
-  searchString: string,
-  authority: string
-): Promise<SearchData> => {
-  const query: any = {
-    from: 0,
-    size: 10000,
-    query: {
-      bool: {
-        must: [
-          {
-            match: {
-              authority: {
-                query: authority,
-              },
-            },
-          },
-        ],
-      },
-    },
-  };
-  if (searchString) {
-    query.query.bool.should = [
-      {
-        match_phrase: {
-          id: `${searchString}`,
-        },
-      },
-      {
-        fuzzy: {
-          submitterName: {
-            value: `${searchString}`,
-          },
-        },
-      },
-      {
-        fuzzy: {
-          leadAnalyst: {
-            value: `${searchString}`,
-          },
-        },
-      },
-    ];
-  } else {
-    // If we haven't specified any parameters, lets just sort by changed date
-    query.sort = [
-      {
-        changedDate: {
-          order: "desc",
-        },
-      },
-    ];
-  }
+type QueryProps = {
+  filters: OsFilterable[];
+  sort?: OsQueryState["sort"];
+  pagination: OsQueryState["pagination"];
+};
+
+export const getSearchData = async (props: QueryProps): Promise<SearchData> => {
   const searchData = await API.post("os", "/search", {
-    body: query,
+    body: {
+      ...filterQueryBuilder(props.filters),
+      ...paginationQueryBuilder(props.pagination),
+      ...(!!props.sort && sortQueryBuilder(props.sort)),
+    },
   });
 
   return searchData;
 };
 
 export const useSearch = (
-  options?: UseMutationOptions<
-    SearchData,
-    ReactQueryApiError,
-    { searchString: string; authority: string }
-  >
+  options?: UseMutationOptions<SearchData, ReactQueryApiError, QueryProps>
 ) => {
-  return useMutation<
-    SearchData,
-    ReactQueryApiError,
-    { searchString: string; authority: string }
-  >((props) => getSearchData(props.searchString, props.authority), options);
+  return useMutation<SearchData, ReactQueryApiError, QueryProps>(
+    (props) => getSearchData(props),
+    options
+  );
 };
