@@ -15,13 +15,12 @@ type QueryProps = {
 };
 
 export const getSearchData = async (props: QueryProps): Promise<SearchData> => {
-  const query = {
-    ...filterQueryBuilder(props.filters),
-    ...paginationQueryBuilder(props.pagination),
-    ...sortQueryBuilder(props.sort),
-  };
   const searchData = await API.post("os", "/search", {
-    body: query,
+    body: {
+      ...filterQueryBuilder(props.filters),
+      ...paginationQueryBuilder(props.pagination),
+      ...sortQueryBuilder(props.sort),
+    },
   });
 
   return searchData;

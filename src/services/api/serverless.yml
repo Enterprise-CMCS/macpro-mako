@@ -32,19 +32,6 @@ provider:
           Resource: ${param:osDomainArn}/*
         - Effect: Allow
           Action:
-            - dynamodb:Query
-            - dynamodb:Scan
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
-            - dynamodb:DescribeTable
-            - dynamodb:Get*
-            - dynamodb:BatchWrite*
-            - dynamodb:BatchGet*
-          Resource: "*"
-        - Effect: Allow
-          Action:
             - cognito-idp:GetUser
             - cognito-idp:ListUsers
           Resource: "*"
@@ -68,6 +55,17 @@ custom:
     packager: yarn
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
+
+params:
+  master:
+    provisionedConcurrency: 10
+  val:
+    provisionedConcurrency: 10
+  production:
+    provisionedConcurrency: 10
+  default:
+    provisionedConcurrency: 1
+
 functions:
   search:
     handler: handlers/search.handler
@@ -86,6 +84,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:provisionedConcurrency}
   getAttachmentUrl:
     handler: handlers/getAttachmentUrl.handler
     maximumRetryAttempts: 0
@@ -104,6 +103,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:provisionedConcurrency}
   item:
     handler: handlers/item.handler
     maximumRetryAttempts: 0
@@ -121,6 +121,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:provisionedConcurrency}
 resources:
   Resources:
     GatewayResponseDefault4XX:
