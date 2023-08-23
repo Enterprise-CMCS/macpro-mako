@@ -21,7 +21,6 @@ import {
   TableRow,
   Table,
   TableHeader,
-  TableCaption,
 } from "@/components/Table";
 import { Pagination } from "@/components/Pagination";
 
@@ -115,7 +114,7 @@ export const WaiversList = () => {
                   return (
                     <Link
                       className="cursor-pointer text-blue-600"
-                      to={`/detail/${DAT?._source?.authority?.toLowerCase()}-spa?id=${encodeURIComponent(
+                      to={`/detail/${DAT?._source?.authority?.toLowerCase()}?id=${encodeURIComponent(
                         DAT?._id
                       )}`}
                     >

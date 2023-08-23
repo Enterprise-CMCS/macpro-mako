@@ -21,7 +21,6 @@ import {
   TableRow,
   Table,
   TableHeader,
-  TableCaption,
 } from "@/components/Table";
 import { Pagination } from "@/components/Pagination";
 
@@ -66,8 +65,6 @@ export const SpasList = () => {
       console.error("Error occurred during search:", error);
     }
   };
-
-  // if (isLoading) return <LoadingSpinner />;
 
   if (error) return <ErrorAlert error={error} />;
 
@@ -127,7 +124,9 @@ export const SpasList = () => {
               <TableCell>
                 {removeUnderscoresAndCapitalize(DAT?._source.planType)}
               </TableCell>
-              <TableCell>{DAT._source.authority}</TableCell>
+              <TableCell>
+                {getStatus(DAT._source.status, user?.isCms)}
+              </TableCell>
               <TableCell>
                 {(() => {
                   if (!DAT?._source.submissionDate) return null;
