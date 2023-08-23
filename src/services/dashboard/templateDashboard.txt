@@ -67,7 +67,7 @@
             "x": 0,
             "type": "alarm",
             "properties": {
-                "title": "Mako Dashboard undefined Alarms",
+                "title": "Mako Dashboard ${sls:stage} Alarms",
                 "alarms": [
                     "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:lambda-search-errors",
                     "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-sinkOnemacErrorCount",
@@ -93,7 +93,7 @@
                         "Region",
                         "Global",
                         "DistributionId",
-                        "E1B3O1P6FBTZBE"
+                        "${CloudfrontDistributionId}"
                     ],
                     [
                         ".",

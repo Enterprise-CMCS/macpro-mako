@@ -3,6 +3,8 @@ services:
     path: src/services/alerts
   dashboard:
     path: src/services/dashboard
+    params:
+      CloudfrontDistributionId: ${ui-infra.CloudFrontDistributionId}
   data:
     path: src/services/data
   ui-infra:
