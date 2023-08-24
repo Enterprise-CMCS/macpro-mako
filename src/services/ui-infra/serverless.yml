@@ -190,8 +190,6 @@ resources:
     CloudFrontLogs400ErrorCount:
       Type: AWS::Logs::MetricFilter
       Properties:
-        LogGroupName: 
-          Ref: "KafkaConnectWorkerLogGroup"
         FilterName: CloudFront400ErrorCount
         FilterPattern: '"HTTP/1.0" 4**'
         MetricTransformations:
@@ -221,8 +219,6 @@ resources:
     CloudFrontLogs500ErrorCount:
       Type: AWS::Logs::MetricFilter
       Properties:
-        LogGroupName: 
-          Ref: "KafkaConnectWorkerLogGroup"
         FilterName: CloudFront500ErrorCount
         FilterPattern: '"HTTP/1.0" 5**'
         MetricTransformations:
