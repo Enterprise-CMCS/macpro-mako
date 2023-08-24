@@ -17,7 +17,7 @@
     "@aws-amplify/auth": "^5.4.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@enterprise-cmcs/macpro-ux-lib": "1.22.1",
+    "@enterprise-cmcs/macpro-ux-lib": "1.25.0",
     "@heroicons/react": "^2.0.17",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.1.0",
