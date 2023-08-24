@@ -23,6 +23,7 @@ import {
   TableHeader,
 } from "@/components/Table";
 import { Pagination } from "@/components/Pagination";
+import { ExportButton } from "@/components/ExportButton";
 
 export const SpasList = () => {
   const [searchText, setSearchText] = useState<string>("");
@@ -73,81 +74,84 @@ export const SpasList = () => {
   if (error) return <ErrorAlert error={error} />;
 
   return (
-    <section className="flex flex-col h-[calc(100vh-250px)]">
-      <div className="flex flex-row gap-2 border-[1px] border-slate-200">
-        <SearchForm
-          handleSearch={handleSearch}
-          setSearchText={setSearchText}
-          searchText={searchText}
-          disabled={isLoading}
-        />
-        <Sheet>
-          <SheetTrigger>
-            <div className="flex flex-row item-center border-slate-100 px-4">
-              <Icon name="filter_list" />
-              <Typography size="md">Filters</Typography>
-            </div>
-          </SheetTrigger>
-          <SheetContent className="bg-white">
-            <SheetHeader>
-              <Typography size="lg">Filters</Typography>
-            </SheetHeader>
-          </SheetContent>
-        </Sheet>
-      </div>
-      {isLoading && <LoadingSpinner />}
-      <Table className="flex-1 border-[1px]">
-        <TableHeader className="sticky top-0 bg-white">
-          <TableRow>
-            <TableHead className="w-[150px]">Spa ID</TableHead>
-            <TableHead>State</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Submission Date</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {searchData?.hits.map((DAT) => (
-            <TableRow key={DAT._source.id}>
-              <TableCell className="font-medium">
-                {(() => {
-                  if (!DAT._source.authority) return null;
-                  return (
-                    <Link
-                      className="cursor-pointer text-blue-600"
-                      to={`/detail/${DAT?._source?.authority?.toLowerCase()}-spa?id=${encodeURIComponent(
-                        DAT?._id
-                      )}`}
-                    >
-                      {DAT?._id}
-                    </Link>
-                  );
-                })()}
-              </TableCell>
-              <TableCell>{DAT._source.state}</TableCell>
-              <TableCell>
-                {removeUnderscoresAndCapitalize(DAT?._source.planType)}
-              </TableCell>
-              <TableCell>
-                {getStatus(DAT._source.status, user?.isCms)}
-              </TableCell>
-              <TableCell>
-                {(() => {
-                  if (!DAT?._source.submissionDate) return null;
-                  return format(DAT?._source.submissionDate, "MM/dd/yyyy");
-                })()}
-              </TableCell>
+    <>
+      <ExportButton csvData={searchData} />
+      <section className="flex flex-col h-[calc(100vh-250px)]">
+        <div className="flex flex-row gap-2 border-[1px] border-slate-200">
+          <SearchForm
+            handleSearch={handleSearch}
+            setSearchText={setSearchText}
+            searchText={searchText}
+            disabled={isLoading}
+          />
+          <Sheet>
+            <SheetTrigger>
+              <div className="flex flex-row item-center border-slate-100 px-4">
+                <Icon name="filter_list" />
+                <Typography size="md">Filters</Typography>
+              </div>
+            </SheetTrigger>
+            <SheetContent className="bg-white">
+              <SheetHeader>
+                <Typography size="lg">Filters</Typography>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        </div>
+        {isLoading && <LoadingSpinner />}
+        <Table className="flex-1 border-[1px]">
+          <TableHeader className="sticky top-0 bg-white">
+            <TableRow>
+              <TableHead className="w-[150px]">Spa ID</TableHead>
+              <TableHead>State</TableHead>
+              <TableHead>Type</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Submission Date</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Pagination
-        pageNumber={pagination.number}
-        onPageChange={(number) => setPagination((s) => ({ ...s, number }))}
-        count={searchData?.total?.value || 0}
-        onSizeChange={(size) => setPagination(() => ({ number: 0, size }))}
-        pageSize={pagination.size}
-      />
-    </section>
+          </TableHeader>
+          <TableBody>
+            {searchData?.hits.map((DAT) => (
+              <TableRow key={DAT._source.id}>
+                <TableCell className="font-medium">
+                  {(() => {
+                    if (!DAT._source.authority) return null;
+                    return (
+                      <Link
+                        className="cursor-pointer text-blue-600"
+                        to={`/detail/${DAT?._source?.authority?.toLowerCase()}-spa?id=${encodeURIComponent(
+                          DAT?._id
+                        )}`}
+                      >
+                        {DAT?._id}
+                      </Link>
+                    );
+                  })()}
+                </TableCell>
+                <TableCell>{DAT._source.state}</TableCell>
+                <TableCell>
+                  {removeUnderscoresAndCapitalize(DAT?._source.planType)}
+                </TableCell>
+                <TableCell>
+                  {getStatus(DAT._source.status, user?.isCms)}
+                </TableCell>
+                <TableCell>
+                  {(() => {
+                    if (!DAT?._source.submissionDate) return null;
+                    return format(DAT?._source.submissionDate, "MM/dd/yyyy");
+                  })()}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <Pagination
+          pageNumber={pagination.number}
+          onPageChange={(number) => setPagination((s) => ({ ...s, number }))}
+          count={searchData?.total?.value || 0}
+          onSizeChange={(size) => setPagination(() => ({ number: 0, size }))}
+          pageSize={pagination.size}
+        />
+      </section>
+    </>
   );
 };
