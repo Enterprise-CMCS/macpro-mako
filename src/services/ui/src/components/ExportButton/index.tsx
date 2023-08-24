@@ -4,6 +4,7 @@ import { type SearchData } from "shared-types";
 
 const csvExporter = new ExportToCsv({
   useKeysAsHeaders: true,
+  filename: "dashboard-view-export",
 });
 
 type Props = {
