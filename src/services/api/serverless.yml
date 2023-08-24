@@ -129,9 +129,7 @@ resources:
       Properties:
         LogGroupName: !Sub /aws/api-gateway/${self:service}-${sls:stage}
         FilterName: ApiGateway400ErrorCount
-        FilterPattern: '
-          [ip, user, timestamp, request, status = 4*]*
-        '
+        FilterPattern: '[ip, user, timestamp, request, status = 4*, * * * * * * * * * * * * * *]'
         MetricTransformations:
           - MetricValue: "1"
             DefaultValue: "0"
@@ -161,9 +159,7 @@ resources:
       Properties:
         LogGroupName: !Sub /aws/api-gateway/${self:service}-${sls:stage}
         FilterName: ApiGateway500ErrorCount
-        FilterPattern: '
-          [ip, user, timestamp, request, status = 5*]*
-        '
+        FilterPattern: '[ip, user, timestamp, request, status = 5*, * * * * * * * * * * * * * *]'
         MetricTransformations:
           - MetricValue: "1"
             DefaultValue: "0"
