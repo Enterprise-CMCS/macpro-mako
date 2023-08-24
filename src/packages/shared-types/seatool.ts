@@ -58,12 +58,10 @@ const getRaiDate = (data: SeaToolSink) => {
     })[data.RAI.length - 1] ?? null;
 
   if (raiDate && raiDate.RAI_RECEIVED_DATE) {
-    // raiReceivedDate = new Date(raiDate.RAI_RECEIVED_DATE).toISOString();
-    raiReceivedDate = raiDate.RAI_RECEIVED_DATE;
+    raiReceivedDate = new Date(raiDate.RAI_RECEIVED_DATE).toISOString();
   }
   if (raiDate && raiDate.RAI_REQUESTED_DATE) {
-    // raiRequestedDate = new Date(raiDate.RAI_REQUESTED_DATE).toISOString();
-    raiRequestedDate = raiDate.RAI_REQUESTED_DATE;
+    raiRequestedDate = new Date(raiDate.RAI_REQUESTED_DATE).toISOString();
   }
   return {
     raiReceivedDate,
@@ -133,6 +131,13 @@ export const seatoolSchema = z.object({
     .nullable(),
 });
 
+const getDateStringOrNullFromEpoc = (epocDate: number | null) => {
+  if (epocDate !== null) {
+    return new Date(epocDate).toISOString();
+  }
+  return null;
+};
+
 export const transformSeatoolData = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
@@ -141,19 +146,23 @@ export const transformSeatoolData = (id: string) => {
       id,
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
       actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
-      approvedEffectiveDate: data.STATE_PLAN.APPROVED_EFFECTIVE_DATE,
+      approvedEffectiveDate: getDateStringOrNullFromEpoc(
+        data.STATE_PLAN.APPROVED_EFFECTIVE_DATE
+      ),
       authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
-      changedDate: data.STATE_PLAN.CHANGED_DATE,
+      changedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.CHANGED_DATE),
       leadAnalystOfficerId,
       leadAnalystName,
       planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME,
       planTypeId: data.STATE_PLAN.PLAN_TYPE,
-      proposedDate: data.STATE_PLAN.PROPOSED_DATE,
+      proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
       state: data.STATES?.[0].STATE_CODE,
       status: data.SPW_STATUS?.[0].SPW_STATUS_DESC,
-      submissionDate: data.STATE_PLAN.SUBMISSION_DATE,
+      submissionDate: getDateStringOrNullFromEpoc(
+        data.STATE_PLAN.SUBMISSION_DATE
+      ),
     };
   });
 };
