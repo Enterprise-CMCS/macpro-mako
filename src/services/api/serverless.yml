@@ -127,7 +127,7 @@ resources:
     ApiGateway400ErrorCount:
       Type: AWS::Logs::MetricFilter
       Properties:
-        LogGroupName: /aws/api-gateway/om-api-wave-dasher
+        LogGroupName: !Sub /aws/api-gateway/${self:service}-${sls:stage}
         FilterName: ApiGateway400ErrorCount
         FilterPattern: '[ip, user, timestamp, request, status = 4*, "* * * * * * * * * * * * * *"]'
         MetricTransformations:
@@ -157,7 +157,7 @@ resources:
     ApiGateway500ErrorCount:
       Type: AWS::Logs::MetricFilter
       Properties:
-        LogGroupName: /aws/api-gateway/om-api-wave-dasher
+        LogGroupName: !Sub /aws/api-gateway/${self:service}-${sls:stage}
         FilterName: ApiGateway500ErrorCount
         FilterPattern: '[ip, user, timestamp, request, status = 5*, "* * * * * * * * * * * * * *"]'
         MetricTransformations:
