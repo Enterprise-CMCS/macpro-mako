@@ -1,11 +1,12 @@
 import { format } from "date-fns";
 import { OsMainSourceItem } from "shared-types";
+import { removeUnderscoresAndCapitalize } from "@/utils";
 
 export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
   if (!data) return null;
   const detailFields = [
     {
-      label: "SPA ID",
+      label: "Submission ID",
       value: data.id,
     },
     {
@@ -14,43 +15,33 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
     },
     {
       label: "Type",
-      value: data.planType,
+      value: removeUnderscoresAndCapitalize(data.planType),
     },
     {
       label: "Sub-Type",
-      // value: data.subType,
-      value: "Define Me!",
+      value: data.actionType || "N/A",
     },
     {
       label: "Initial Submission Date",
       value: data.submissionDate
         ? format(data.submissionDate, "MM/dd/yyyy")
-        : "None",
-    },
-    {
-      label: "Recent Submission Date",
-      // value: data.recentSubmissionDate,
-      value: "Define Me!",
+        : "N/A",
     },
     {
       label: "Proposed Effective Date",
       value: data.proposedDate
         ? format(data.proposedDate, "MM/dd/yyyy")
-        : "None",
+        : "N/A",
     },
     {
       label: "Approved Effective Date",
       value: data.approvedEffectiveDate
         ? format(data.approvedEffectiveDate, "MM/dd/yyyy")
-        : "None",
+        : "N/A",
     },
     {
       label: "Change Date",
-      value: data.changedDate ? format(data.changedDate, "MM/dd/yyyy") : "None",
-    },
-    {
-      label: "Final Disposition Date",
-      value: "Define Me!",
+      value: data.changedDate ? format(data.changedDate, "MM/dd/yyyy") : "N/A",
     },
   ];
   return (

@@ -3,7 +3,6 @@ import { s3ParseUrl } from "shared-utils/s3-url-parser";
 
 export const onemacSchema = z.object({
   additionalInformation: z.string().optional(),
-  componentType: z.string(),
   submitterName: z.string(),
   submitterEmail: z.string(),
   attachments: z
@@ -37,7 +36,6 @@ export const transformOnemac = (id: string) => {
         };
       }) ?? null,
     additionalInformation: data.additionalInformation,
-    submissionOrigin: "OneMAC",
     submitterEmail: data.submitterEmail,
     submitterName: data.submitterName,
   }));
@@ -45,3 +43,9 @@ export const transformOnemac = (id: string) => {
 
 export type OneMacSink = z.infer<typeof onemacSchema>;
 export type OneMacTransform = z.infer<ReturnType<typeof transformOnemac>>;
+export type OneMacRecordsToDelete = Omit<
+  {
+    [Property in keyof OneMacTransform]: undefined;
+  },
+  "id"
+> & { id: string };

@@ -315,12 +315,9 @@ resources:
       Properties:
         GroupDescription: Security group for Sink Lambda Function.
         VpcId: ${self:custom.vpc.id}
-    SecurityGroupEgress:
-      Type: AWS::EC2::SecurityGroupEgress
-      Properties:
-        GroupId: !Ref SecurityGroup
-        IpProtocol: -1
-        CidrIp: 0.0.0.0/0
+        SecurityGroupEgress: 
+          - IpProtocol: -1
+            CidrIp: 0.0.0.0/0
 
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
@@ -384,7 +381,6 @@ resources:
           - arn:aws:iam::aws:policy/AmazonCognitoReadOnly
     OpenSearch:
       Type: AWS::OpenSearchService::Domain
-      DependsOn: OpenSearchLogGroupPolicy
       Properties:
         Tags:
           - Key: STAGE
@@ -421,16 +417,6 @@ resources:
                 AWS: !GetAtt CognitoAuthRole.Arn
               Action: "es:ESHttp*"
               Resource: "*"
-            # - Effect: "Allow"
-            #   Principal:
-            #     AWS: !GetAtt IamRoleLambdaExecution.Arn
-            #   Action: "es:ESHttp*"
-            #   Resource: "*"
-            # - Effect: "Allow"
-            #   Principal:
-            #     AWS: !GetAtt IamRoleLambdaExecution.Arn
-            #   Action: "indices:*"
-            #   Resource: "*"
         AdvancedOptions:
           rest.action.multi.allow_explicit_index: "true"
         AdvancedSecurityOptions:
@@ -509,15 +495,6 @@ resources:
       Type: AWS::Logs::LogGroup
       Properties: 
         LogGroupName: /aws/opensearch/${self:service}-${sls:stage}-error
-    OpenSearchLogGroupPolicy:
-      Type: AWS::Logs::ResourcePolicy
-      DependsOn:
-        - OpenSearchAuditLogGroup
-        - OpenSearchErrorLogGroup
-      Properties:
-        PolicyName: ${self:service}-${sls:stage}-audit
-        PolicyDocument: !Sub "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"OpenSearchToCloudwatch\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"es.amazonaws.com\" ] }, \"Action\": [\"logs:PutLogEvents\",\"logs:CreateLogStream\"], \"Resource\": [ \"*\" ] } ] }"
-        # PolicyDocument: !Sub "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"OpenSearchToCloudwatch\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"es.amazonaws.com\" ] }, \"Action\":\"logs:PutLogEvents\", \"Resource\": [ \"${OpenSearchAuditLogGroup.Arn}\", \"${OpenSearchErrorLogGroup.Arn}\" ] } ] }"
     MapRole:
       Type: Custom::ClusterInfo
       Properties:

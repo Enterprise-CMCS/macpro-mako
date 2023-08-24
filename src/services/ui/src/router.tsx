@@ -22,6 +22,7 @@ export const router = createBrowserRouter([
       { path: "/detail/chip-spa", element: <P.ChipSpaPage /> },
       { path: "/detail/medicaid-spa", element: <P.MedicaidSpaPage /> },
       { path: "/detail/waiver", element: <P.WaiverPage /> },
+      { path: "/faq", element: <P.Faq /> },
     ],
     loader: rootLoader(queryClient),
   },
