@@ -187,6 +187,7 @@ resources:
           Logging:
             Bucket: !Sub "${LoggingBucket}.s3.amazonaws.com"
             Prefix: AWSLogs/CLOUDFRONT/${sls:stage}/
+
     CloudFrontLogs400ErrorCount:
       Type: AWS::Logs::MetricFilter
       Properties:
@@ -198,7 +199,8 @@ resources:
             MetricNamespace: "${self:service}-${sls:stage}/CloudFront/ERRORS"
             MetricName: "CloudFront400ErrorCount"
             Unit: Count
-        DistributionId: !Ref CloudFrontDistribution
+        # DistributionId: !Ref CloudFrontDistribution
+        
     CloudFrontLogs400ErrorCountAlarm:
       Type: AWS::CloudWatch::Alarm
       Properties:
@@ -213,6 +215,9 @@ resources:
         MetricName: CloudFront400ErrorCount
         Namespace: "${self:service}-${sls:stage}/CloudFront/ERRORS"
         Statistic: Sum
+        Dimensions:
+          - Name: DistributionId
+            Value: !Ref DistributionId
 
     CloudFrontLogs500ErrorCount:
       Type: AWS::Logs::MetricFilter
@@ -225,7 +230,7 @@ resources:
             MetricNamespace: "${self:service}-${sls:stage}/CloudFront/ERRORS"
             MetricName: "CloudFront500ErrorCount"
             Unit: Count
-        DistributionId: !Ref CloudFrontDistribution
+        # DistributionId: !Ref CloudFrontDistribution
 
     CloudFrontLogs500ErrorCountAlarm:
       Type: AWS::CloudWatch::Alarm
@@ -241,6 +246,9 @@ resources:
         MetricName: CloudFront500ErrorCount
         Namespace: "${self:service}-${sls:stage}/CloudFront/ERRORS"
         Statistic: Sum
+        Dimensions:
+          - Name: DistributionId
+            Value: !Ref DistributionId
 
     HstsCloudfrontFunction:
       Type: AWS::CloudFront::Function
