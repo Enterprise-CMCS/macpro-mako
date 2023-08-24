@@ -16,6 +16,9 @@ const authorityLookup = (val: number | null): null | string => {
 };
 
 function getLeadAnalyst(eventData: SeaToolSink) {
+  let leadAnalystOfficerId = null;
+  let leadAnalystName = null;
+
   if (
     eventData.LEAD_ANALYST &&
     Array.isArray(eventData.LEAD_ANALYST) &&
@@ -26,21 +29,17 @@ function getLeadAnalyst(eventData: SeaToolSink) {
     );
 
     if (leadAnalyst) {
-      const leadAnalystOfficerId = leadAnalyst.OFFICER_ID;
-      const leadAnalystName = `${leadAnalyst.FIRST_NAME} ${leadAnalyst.LAST_NAME}`;
-      return {
-        leadAnalystOfficerId,
-        leadAnalystName,
-      };
+      leadAnalystOfficerId = leadAnalyst.OFFICER_ID;
+      leadAnalystName = `${leadAnalyst.FIRST_NAME} ${leadAnalyst.LAST_NAME}`;
     }
   }
   return {
-    leadAnalystOfficerId: null,
-    leadAnalystName: null,
+    leadAnalystOfficerId,
+    leadAnalystName,
   };
 }
 
-const getRaiReceivedDate = (data: SeaToolSink) => {
+const getRaiDate = (data: SeaToolSink) => {
   let raiReceivedDate = null;
   let raiRequestedDate = null;
   const raiDate =
@@ -134,7 +133,7 @@ export const seatoolSchema = z.object({
 export const transformSeatoolData = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
-    const { raiReceivedDate, raiRequestedDate } = getRaiReceivedDate(data);
+    const { raiReceivedDate, raiRequestedDate } = getRaiDate(data);
     return {
       id,
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
