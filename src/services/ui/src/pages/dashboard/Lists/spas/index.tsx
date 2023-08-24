@@ -75,7 +75,6 @@ export const SpasList = () => {
 
   return (
     <>
-      <ExportButton csvData={searchData} />
       <section className="flex flex-col h-[calc(100vh-250px)]">
         <div className="flex flex-row gap-2 border-[1px] border-slate-200">
           <SearchForm
@@ -84,11 +83,12 @@ export const SpasList = () => {
             searchText={searchText}
             disabled={isLoading}
           />
+          <ExportButton type="spa" />
           <Sheet>
             <SheetTrigger>
               <div className="flex flex-row item-center border-slate-100 px-4">
                 <Icon name="filter_list" />
-                <Typography size="md">Filters</Typography>
+                <Typography size="sm">Filters</Typography>
               </div>
             </SheetTrigger>
             <SheetContent className="bg-white">
