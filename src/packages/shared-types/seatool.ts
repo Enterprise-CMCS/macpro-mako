@@ -42,6 +42,7 @@ function getLeadAnalyst(eventData: SeaToolSink) {
 const getRaiDate = (data: SeaToolSink) => {
   let raiReceivedDate = null;
   let raiRequestedDate = null;
+
   const raiDate =
     data.RAI?.sort((a, b) => {
       if (a.RAI_REQUESTED_DATE === null && b.RAI_REQUESTED_DATE === null) {
@@ -57,10 +58,12 @@ const getRaiDate = (data: SeaToolSink) => {
     })[data.RAI.length - 1] ?? null;
 
   if (raiDate && raiDate.RAI_RECEIVED_DATE) {
-    raiReceivedDate = new Date(raiDate.RAI_RECEIVED_DATE).toISOString();
+    // raiReceivedDate = new Date(raiDate.RAI_RECEIVED_DATE).toISOString();
+    raiReceivedDate = raiDate.RAI_RECEIVED_DATE;
   }
   if (raiDate && raiDate.RAI_REQUESTED_DATE) {
-    raiRequestedDate = new Date(raiDate.RAI_REQUESTED_DATE).toISOString();
+    // raiRequestedDate = new Date(raiDate.RAI_REQUESTED_DATE).toISOString();
+    raiRequestedDate = raiDate.RAI_REQUESTED_DATE;
   }
   return {
     raiReceivedDate,
