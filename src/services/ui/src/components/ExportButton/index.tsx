@@ -12,8 +12,17 @@ type Props = {
 
 export const ExportButton = ({ csvData }: Props) => {
   const handleExport = () => {
-    const sourceItems = csvData?.hits.map((hit) => ({ ...hit._source }));
-    csvExporter.generateCsv(sourceItems);
+    if (csvData) {
+      const sourceItems = csvData.hits.map((hit) => {
+        const filteredHit = { ...hit._source };
+
+        // Properties to exclude from export
+        Reflect.deleteProperty(filteredHit, "attachments");
+
+        return filteredHit;
+      });
+      csvExporter.generateCsv(sourceItems);
+    }
   };
 
   return <Button className="my-4" onClick={handleExport} buttonText="Export" />;
