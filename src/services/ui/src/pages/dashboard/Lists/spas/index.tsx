@@ -134,7 +134,10 @@ export const SpasList = () => {
               <TableCell>
                 {(() => {
                   if (!DAT?._source.submissionDate) return null;
-                  return format(DAT?._source.submissionDate, "MM/dd/yyyy");
+                  return format(
+                    new Date(DAT?._source.submissionDate),
+                    "MM/dd/yyyy"
+                  );
                 })()}
               </TableCell>
             </TableRow>
