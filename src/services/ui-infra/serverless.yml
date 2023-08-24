@@ -187,65 +187,60 @@ resources:
           Logging:
             Bucket: !Sub "${LoggingBucket}.s3.amazonaws.com"
             Prefix: AWSLogs/CLOUDFRONT/${sls:stage}/
-    # CloudFrontLogs400ErrorCount:
-    #   Type: AWS::Logs::MetricFilter
-    #   Properties:
-    #     FilterName: CloudFront400ErrorCount
-    #     FilterPattern: '"HTTP/1.0" 4**'
-    #     MetricTransformations:
-    #       - MetricValue: "1"
-    #         DefaultValue: "0"
-    #         MetricNamespace: "${self:service}-${sls:stage}/CloudFront/ERRORS"
-    #         MetricName: "CloudFront400ErrorCount"
-    #         Unit: Count
-    #     DistributionId: !Ref CloudFrontDistribution
-    # CloudFrontLogs400ErrorCountAlarm:
-    #   Type: AWS::CloudWatch::Alarm
-    #   Properties:
-    #     DatapointsToAlarm: 1
-    #     AlarmActions:
-    #       - ${param:ECSFailureTopicArn}
-    #     AlarmName: "mako-${sls:stage}-cloudfront-400-errors"
-    #     ComparisonOperator: GreaterThanOrEqualToThreshold
-    #     EvaluationPeriods: 2
-    #     Period: 300
-    #     Threshold: 1
-    #     MetricName: CloudFront400ErrorCount
-    #     Namespace: "${self:service}-${sls:stage}/CloudFront/ERRORS"
-    #     Statistic: Sum
-    #     Dimensions:
-    #       - Name: DistributionId
-    #         Value: !Ref CloudFrontDistribution
-    # CloudFrontLogs500ErrorCount:
-    #   Type: AWS::Logs::MetricFilter
-    #   Properties:
-    #     FilterName: CloudFront500ErrorCount
-    #     FilterPattern: '"HTTP/1.0" 5**'
-    #     MetricTransformations:
-    #       - MetricValue: "1"
-    #         DefaultValue: "0"
-    #         MetricNamespace: "${self:service}-${sls:stage}/CloudFront/ERRORS"
-    #         MetricName: "CloudFront500ErrorCount"
-    #         Unit: Count
-    #     DistributionId: !Ref CloudFrontDistribution
+    CloudFrontLogs400ErrorCount:
+      Type: AWS::Logs::MetricFilter
+      Properties:
+        FilterName: CloudFront400ErrorCount
+        FilterPattern: '"HTTP/1.0" 4**'
+        MetricTransformations:
+          - MetricValue: "1"
+            DefaultValue: "0"
+            MetricNamespace: "${self:service}-${sls:stage}/CloudFront/ERRORS"
+            MetricName: "CloudFront400ErrorCount"
+            Unit: Count
+        DistributionId: !Ref CloudFrontDistribution
+    CloudFrontLogs400ErrorCountAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        DatapointsToAlarm: 1
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
+        AlarmName: "mako-${sls:stage}-cloudfront-400-errors"
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 2
+        Period: 300
+        Threshold: 1
+        MetricName: CloudFront400ErrorCount
+        Namespace: "${self:service}-${sls:stage}/CloudFront/ERRORS"
+        Statistic: Sum
 
-    # CloudFrontLogs500ErrorCountAlarm:
-    #   Type: AWS::CloudWatch::Alarm
-    #   Properties:
-    #     DatapointsToAlarm: 1
-    #     AlarmActions:
-    #       - ${param:ECSFailureTopicArn}
-    #     AlarmName: "mako-${sls:stage}-cloudfront-500-errors"
-    #     ComparisonOperator: GreaterThanOrEqualToThreshold
-    #     EvaluationPeriods: 2
-    #     Period: 300
-    #     Threshold: 1
-    #     MetricName: CloudFront500ErrorCount
-    #     Namespace: "${self:service}-${sls:stage}/CloudFront/ERRORS"
-    #     Statistic: Sum
-    #     Dimensions:
-    #       - Name: DistributionId
-    #         Value: !Ref CloudFrontDistribution
+    CloudFrontLogs500ErrorCount:
+      Type: AWS::Logs::MetricFilter
+      Properties:
+        FilterName: CloudFront500ErrorCount
+        FilterPattern: '"HTTP/1.0" 5**'
+        MetricTransformations:
+          - MetricValue: "1"
+            DefaultValue: "0"
+            MetricNamespace: "${self:service}-${sls:stage}/CloudFront/ERRORS"
+            MetricName: "CloudFront500ErrorCount"
+            Unit: Count
+        DistributionId: !Ref CloudFrontDistribution
+
+    CloudFrontLogs500ErrorCountAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        DatapointsToAlarm: 1
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
+        AlarmName: "mako-${sls:stage}-cloudfront-500-errors"
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 2
+        Period: 300
+        Threshold: 1
+        MetricName: CloudFront500ErrorCount
+        Namespace: "${self:service}-${sls:stage}/CloudFront/ERRORS"
+        Statistic: Sum
 
     HstsCloudfrontFunction:
       Type: AWS::CloudFront::Function
