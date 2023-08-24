@@ -174,7 +174,7 @@ resources:
         DatapointsToAlarm: 1
         AlarmActions:
           - ${param:ECSFailureTopicArn}
-        AlarmName: "mako-${sls:stage}cloudfront-500-errors"
+        AlarmName: "mako-${sls:stage}-cloudfront-500-errors"
         ComparisonOperator: GreaterThanOrEqualToThreshold
         EvaluationPeriods: 2
         Period: 300
