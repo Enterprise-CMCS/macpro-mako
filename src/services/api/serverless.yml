@@ -164,6 +164,7 @@ resources:
         FilterPattern: '
           [ip, user, timestamp, request, status = 5*]*
         '
+        MetricTransformations:
           - MetricValue: "1"
             DefaultValue: "0"
             MetricNamespace: "${self:service}-${sls:stage}/ApiGateway/ERRORS"
