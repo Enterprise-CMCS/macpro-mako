@@ -221,8 +221,8 @@ resources:
         EvaluationPeriods: 1
         Threshold: 1
         ComparisonOperator: "GreaterThanOrEqualToThreshold"
-        # AlarmActions:
-        #   - !Ref LambdaErrorNotificationTopic
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
     SecurityGroup:
       Type: AWS::EC2::SecurityGroup
       DeletionPolicy: Retain
