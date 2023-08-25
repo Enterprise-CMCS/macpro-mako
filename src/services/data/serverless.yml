@@ -300,8 +300,8 @@ resources:
         Period: 300  
         Statistic: Sum
         Threshold: 1  
-        AlarmActions:
-          - !Ref ECSFailureTopicArn
+        # AlarmActions:
+        #   - !Ref ECSFailureTopicArn
 
     SinkOnemacTrigger:
       Type: AWS::Lambda::EventSourceMapping
@@ -343,8 +343,8 @@ resources:
         Period: 300  
         Statistic: Sum
         Threshold: 1  
-        AlarmActions:
-          - !Ref ECSFailureTopicArn
+        # AlarmActions:
+        #   - !Ref ECSFailureTopicArn
 
 
     SecurityGroup:
