@@ -26,6 +26,37 @@ export const getSearchData = async (props: QueryProps): Promise<SearchData> => {
   return searchData;
 };
 
+export const getAllSearchData = async (
+  filters: OsFilterable[]
+): Promise<SearchData["hits"]> => {
+  let gettingData = true;
+  let page = 0;
+  const SIZE = 1000;
+
+  const allHits: SearchData["hits"][] = [];
+
+  while (gettingData && page * SIZE < 10000) {
+    const searchData = (await API.post("os", "/search", {
+      body: {
+        ...filterQueryBuilder(filters),
+        ...paginationQueryBuilder({
+          number: page,
+          size: 1000,
+        }),
+      },
+    })) as SearchData;
+
+    if (searchData?.hits.length === 0) {
+      gettingData = false;
+    } else {
+      allHits.push([...searchData.hits]);
+      page++;
+    }
+  }
+
+  return allHits.flat();
+};
+
 export const useSearch = (
   options?: UseMutationOptions<SearchData, ReactQueryApiError, QueryProps>
 ) => {

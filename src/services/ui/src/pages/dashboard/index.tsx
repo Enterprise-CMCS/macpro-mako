@@ -6,6 +6,7 @@ import { getUser, useGetUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
 import { getUserStateCodes } from "@/utils";
+import { ExportButton } from "@/components/ExportButton";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {

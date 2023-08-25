@@ -23,6 +23,7 @@ import {
   TableHeader,
 } from "@/components/Table";
 import { Pagination } from "@/components/Pagination";
+import { ExportButton } from "@/components/ExportButton";
 
 export const WaiversList = () => {
   const [searchText, setSearchText] = useState<string>("");
@@ -82,11 +83,12 @@ export const WaiversList = () => {
           searchText={searchText}
           disabled={isLoading}
         />
+        <ExportButton type="waiver" />
         <Sheet>
           <SheetTrigger>
             <div className="flex flex-row item-center border-slate-100 px-4">
               <Icon name="filter_list" />
-              <Typography size="md">Filters</Typography>
+              <Typography size="sm">Filters</Typography>
             </div>
           </SheetTrigger>
           <SheetContent className="bg-white">
@@ -142,7 +144,10 @@ export const WaiversList = () => {
               <TableCell>
                 {(() => {
                   if (!DAT?._source.submissionDate) return null;
-                  return format(DAT?._source.submissionDate, "MM/dd/yyyy");
+                  return format(
+                    new Date(DAT?._source.submissionDate),
+                    "MM/dd/yyyy"
+                  );
                 })()}
               </TableCell>
             </TableRow>
