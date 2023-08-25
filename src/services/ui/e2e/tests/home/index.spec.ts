@@ -1,37 +1,38 @@
 import { test, expect } from "@playwright/test";
-import { chromium } from "@playwright/test";
-import * as $ from "@/selectors";
+import * as dotenv from "dotenv";
+import { string } from "zod";
 
-const user = {
-  userName: "george@example.com",
-  password: "bigTUNA1!"
-};
+dotenv.config();
+
+const usersname1 = process.env.bootstrapUsersName;
+const userspassword2 = process.env.bootstrapUsersPassword;
 
 test("has title", async ({ page }) => {
-  await page.goto("https://mako-dev.cms.gov/");
-
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/.*CMS MAKO/);
+  await page.goto("/");
+  await expect(page).toHaveTitle(/CMS MAKO/);
 });
 
 test("has faq Page", async ({ page }) => {
-  await page.goto("https://mako-dev.cms.gov/");
+  await page.goto("/");
   await page.getByRole("link", { name: "FAQ" }).click();
 });
 
-test("log in test", async ({ page }) => {
-  //test.setTimeout(10000);
-  const loggedInIndicator = await page.getByRole("button", { name: "submit" });
-  if (loggedInIndicator) {
-    await page.goto("https://mako-dev.cms.gov/");
-    await page.getByRole("button", { name: "Sign In" }).click();
-    await page.getByRole("textbox", { name: "name@host.com" }).click();
-    await page.getByRole("textbox", { name: "Password" }).click();
-    await page.getByRole("textbox", { name: "Password" }).click();
-    await page.getByRole("button", { name: "submit" }).click();
-    console.log("User successfully logged in!");
+test.only("log in test", async ({ page }) => {
+  await page.goto("https://mako-dev.cms.gov/");
+  await page.getByRole("button", { name: "Sign In" }).click();
+  await page.getByRole("textbox", { name: "name@host.com" }).click();
+  await page.getByRole("textbox", { name: "name@host.com" }).fill(usersname1);
+  await page.getByRole("textbox", { name: "Password" }).click();
+  await page.getByRole("textbox", { name: "Password" }).fill(userspassword2);
+  await page.getByRole("button", { name: "submit" }).click();
+
+  const isLoggedIn = await page.getByRole("link", { name: "Dashboard" }).isVisible();
+  const isFailed = await page.getByRole("paragraph").isVisible();
+
+  if (isLoggedIn) {
+    expect(isFailed).toBeFalsy();
   }
   else {
-    console.log("Login failed.");
+    expect(isFailed).toBeTruthy();
   }
 });

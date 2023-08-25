@@ -226,3 +226,7 @@ resources:
       Value: !Ref CognitoIdentityPool
     Region:
       Value: !Sub ${AWS::Region}
+    BootstrapUsersPassword: 
+      Value: ${self:custom.bootstrapUsersPassword}
+
+
