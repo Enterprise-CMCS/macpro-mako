@@ -46,8 +46,6 @@ export const getAllSearchData = async (
       },
     })) as SearchData;
 
-    console.log(searchData);
-
     if (searchData?.hits.length === 0) {
       gettingData = false;
     } else {
