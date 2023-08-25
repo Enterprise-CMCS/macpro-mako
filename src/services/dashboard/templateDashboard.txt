@@ -49,7 +49,7 @@
                         "AWS/SNS",
                         "NumberOfMessagesPublished",
                         "TopicName",
-                        "Alerts-base-alerts-${sls:stage}"
+                        "Alerts-om-alerts-${sls:stage}"
                     ]
                 ],
                 "view": "timeSeries",
