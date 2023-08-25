@@ -223,20 +223,6 @@
                     "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-api-500-errors"
                 ]
             }
-        },
-        {
-            "type": "alarm",
-            "x": 0,
-            "y": 10,
-            "width": 12,
-            "height": 2,
-            "properties": {
-                "title": "Cloudfront Errors",
-                "alarms": [
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-cloudfront-400-errors",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-cloudfront-500-errors"
-                ]
-            }
         }
     ]
 }
