@@ -5,13 +5,40 @@ import { Download, Loader } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+import { OsFilterable, OsMainSourceItem } from "shared-types";
+import { convertCamelCaseToWords, isISOString } from "@/utils";
+import { getStatus } from "@/pages/dashboard/Lists/statusHelper";
+import { useGetUser } from "@/api/useGetUser";
 
 type Props = {
   type: "waiver" | "spa";
+  filter: OsFilterable;
 };
 
-export const ExportButton = ({ type }: Props) => {
+function formatDataForExport(obj: OsMainSourceItem, isCms?: boolean): any {
+  const result: any = {};
+
+  for (const [key, value] of Object.entries(obj)) {
+    const k = convertCamelCaseToWords(key);
+    if (value === null || value === undefined) {
+      result[k] = "";
+    } else if (typeof value === "object" && !Array.isArray(value)) {
+      result[k] = formatDataForExport(value, isCms);
+    } else if (typeof value === "string" && isISOString(value)) {
+      result[k] = format(new Date(value), "MM/dd/yyyy");
+    } else if (typeof value === "string" && key === "status") {
+      result[k] = getStatus(value, isCms);
+    } else {
+      result[k] = value;
+    }
+  }
+
+  return result;
+}
+
+export const ExportButton = ({ type, filter }: Props) => {
   const [loading, setLoading] = useState(false);
+  const { data: user } = useGetUser();
 
   const handleExport = async () => {
     const csvExporter = new ExportToCsv({
@@ -20,20 +47,12 @@ export const ExportButton = ({ type }: Props) => {
     });
     setLoading(true);
 
-    const osData = await getAllSearchData([
-      {
-        field: "authority.keyword",
-        type: "terms",
-        value: ["CHIP", "MEDICAID"],
-        prefix: "must",
-      },
-    ]);
-
+    const osData = await getAllSearchData([filter]);
     const sourceItems = osData.map((hit) => {
-      const filteredHit = { ...hit._source };
+      const filteredHit = formatDataForExport({ ...hit._source }, user?.isCms);
 
       // Properties to exclude from export
-      Reflect.deleteProperty(filteredHit, "attachments");
+      Reflect.deleteProperty(filteredHit, "Attachments");
 
       return filteredHit;
     });

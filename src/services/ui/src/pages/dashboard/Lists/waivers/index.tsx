@@ -39,15 +39,15 @@ export const WaiversList = () => {
     handleSearch("");
   }, [pagination]);
 
+  const baseFilter = {
+    field: "authority.keyword",
+    type: "terms",
+    value: ["WAIVER"],
+    prefix: "must",
+  } as OsFilterable;
+
   const handleSearch = async (search: string) => {
-    const filters: OsFilterable[] = [
-      {
-        field: "authority.keyword",
-        type: "terms",
-        value: ["WAIVER"],
-        prefix: "must",
-      },
-    ];
+    const filters: OsFilterable[] = [baseFilter];
     if (search) {
       filters.push({
         type: "global_search",
@@ -83,7 +83,7 @@ export const WaiversList = () => {
           searchText={searchText}
           disabled={isLoading}
         />
-        <ExportButton type="waiver" />
+        <ExportButton type="waiver" filter={baseFilter} />
         <Sheet>
           <SheetTrigger>
             <div className="flex flex-row item-center border-slate-100 px-4">

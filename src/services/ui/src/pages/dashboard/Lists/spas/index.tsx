@@ -39,15 +39,15 @@ export const SpasList = () => {
     handleSearch("");
   }, [pagination]);
 
+  const baseFilter = {
+    field: "authority.keyword",
+    type: "terms",
+    value: ["CHIP", "MEDICAID"],
+    prefix: "must",
+  } as OsFilterable;
+
   const handleSearch = async (search: string) => {
-    const filters: OsFilterable[] = [
-      {
-        field: "authority.keyword",
-        type: "terms",
-        value: ["CHIP", "MEDICAID"],
-        prefix: "must",
-      },
-    ];
+    const filters: OsFilterable[] = [baseFilter];
     if (search) {
       filters.push({
         type: "global_search",
@@ -83,7 +83,7 @@ export const SpasList = () => {
             searchText={searchText}
             disabled={isLoading}
           />
-          <ExportButton type="spa" />
+          <ExportButton type="spa" filter={baseFilter} />
           <Sheet>
             <SheetTrigger>
               <div className="flex flex-row item-center border-slate-100 px-4">
