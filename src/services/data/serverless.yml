@@ -350,7 +350,7 @@ resources:
       Type: "AWS::Logs::MetricFilter"
       Properties:
         LogGroupName: /aws/lambda/${self:service}-${sls:stage}-sinkSeatool
-        FilterPattern: "[timestamp=*Z SEATOOL Validation Error*]"
+        FilterPattern: '"SEATOOL Validation Error"'
         MetricTransformations:
           - MetricName: SeatoolValidationErrors
             MetricNamespace: "CustomNamespace"
@@ -376,7 +376,7 @@ resources:
       Type: "AWS::Logs::MetricFilter"
       Properties:
         LogGroupName: /aws/lambda/${self:service}-${sls:stage}-sinkOnemac
-        FilterPattern: "[timestamp=*Z ONEMAC Validation Error*]"
+        FilterPattern: '"ONEMAC Validation Error"'
         MetricTransformations:
           - MetricName: ONEMACValidationErrors
             MetricNamespace: "CustomNamespace"
