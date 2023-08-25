@@ -44,15 +44,15 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
     label: "Initial Submission",
     cell: (data) => {
       if (!data.submissionDate) return null;
-      return format(data.submissionDate, "MM/dd/yyyy");
+      return format(new Date(data.submissionDate), "MM/dd/yyyy");
     },
   },
   {
-    field: "raiReceivedDate.RAI_RECEIVED_DATE",
+    field: "raiReceivedDate",
     label: "Formal Rai Response",
     cell: (data) => {
-      if (!data.raiReceivedDate?.RAI_RECEIVED_DATE) return null;
-      return format(data.raiReceivedDate?.RAI_RECEIVED_DATE, "MM/dd/yyyy");
+      if (!data.raiReceivedDate) return null;
+      return format(new Date(data.raiReceivedDate), "MM/dd/yyyy");
     },
   },
   {
