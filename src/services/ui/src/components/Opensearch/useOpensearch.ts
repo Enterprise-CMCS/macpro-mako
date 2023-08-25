@@ -4,6 +4,31 @@ import { useEffect } from "react";
 import { OsQueryState } from "shared-types";
 import { createSearchFilterable } from "./utils";
 
+type OsTab = "waivers" | "spas";
+
+const DEFAULT_FILTERS: Record<OsTab, Partial<OsParamsState>> = {
+  spas: {
+    filters: [
+      {
+        field: "authority.keyword",
+        type: "terms",
+        value: ["CHIP", "MEDICAID"],
+        prefix: "must",
+      },
+    ],
+  },
+  waivers: {
+    filters: [
+      {
+        field: "authority.keyword",
+        type: "terms",
+        value: ["WAIVER"],
+        prefix: "must",
+      },
+    ],
+  },
+};
+
 /**
  *
  * @summary
@@ -25,6 +50,7 @@ export const useOsQuery = (init?: Partial<OsQueryState>) => {
           filters: [
             ...query.filters,
             ...createSearchFilterable(query.search || ""),
+            ...(DEFAULT_FILTERS[params.state.tab].filters || []),
           ],
         },
         options
@@ -41,15 +67,17 @@ export const useOsQuery = (init?: Partial<OsQueryState>) => {
   return { data, isLoading, error, ...params };
 };
 
-export const useOsParams = (init?: Partial<OsQueryState>) => {
-  return useParams<OsQueryState>({
+export type OsParamsState = OsQueryState & { tab: OsTab };
+
+export const useOsParams = (init?: Partial<OsParamsState>) => {
+  return useParams<OsParamsState>({
     key: "os",
     initValue: {
       filters: [],
       search: "",
+      tab: "spas",
       pagination: { number: 0, size: 100 },
       sort: { field: "changedDate", order: "desc" },
-      ...(!!init && init),
     },
   });
 };

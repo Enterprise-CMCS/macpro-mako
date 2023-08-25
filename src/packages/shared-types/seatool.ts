@@ -16,6 +16,9 @@ const authorityLookup = (val: number | null): null | string => {
 };
 
 function getLeadAnalyst(eventData: SeaToolSink) {
+  let leadAnalystOfficerId = null;
+  let leadAnalystName = null;
+
   if (
     eventData.LEAD_ANALYST &&
     Array.isArray(eventData.LEAD_ANALYST) &&
@@ -24,15 +27,23 @@ function getLeadAnalyst(eventData: SeaToolSink) {
     const leadAnalyst = eventData.LEAD_ANALYST.find(
       (analyst) => analyst.OFFICER_ID === eventData.STATE_PLAN.LEAD_ANALYST_ID
     );
-    console.log("the lead analsyt is: ", leadAnalyst);
 
-    if (leadAnalyst) return leadAnalyst; // {FIRST_NAME: string, LAST_NAME: string}
+    if (leadAnalyst) {
+      leadAnalystOfficerId = leadAnalyst.OFFICER_ID;
+      leadAnalystName = `${leadAnalyst.FIRST_NAME} ${leadAnalyst.LAST_NAME}`;
+    }
   }
-  return null;
+  return {
+    leadAnalystOfficerId,
+    leadAnalystName,
+  };
 }
 
-const getReceivedDate = (data: SeaToolSink) => {
-  return (
+const getRaiDate = (data: SeaToolSink) => {
+  let raiReceivedDate = null;
+  let raiRequestedDate = null;
+
+  const raiDate =
     data.RAI?.sort((a, b) => {
       if (a.RAI_REQUESTED_DATE === null && b.RAI_REQUESTED_DATE === null) {
         return 0; // Both dates are null, so they're considered equal
@@ -44,8 +55,18 @@ const getReceivedDate = (data: SeaToolSink) => {
         return -1; // b comes after a because its date is null
       }
       return a.RAI_REQUESTED_DATE - b.RAI_REQUESTED_DATE; // Normal comparison
-    })[data.RAI.length - 1] ?? null
-  );
+    })[data.RAI.length - 1] ?? null;
+
+  if (raiDate && raiDate.RAI_RECEIVED_DATE) {
+    raiReceivedDate = new Date(raiDate.RAI_RECEIVED_DATE).toISOString();
+  }
+  if (raiDate && raiDate.RAI_REQUESTED_DATE) {
+    raiRequestedDate = new Date(raiDate.RAI_REQUESTED_DATE).toISOString();
+  }
+  return {
+    raiReceivedDate,
+    raiRequestedDate,
+  };
 };
 
 export const seatoolSchema = z.object({
@@ -110,23 +131,40 @@ export const seatoolSchema = z.object({
     .nullable(),
 });
 
+const getDateStringOrNullFromEpoc = (epocDate: number | null) => {
+  if (epocDate !== null) {
+    return new Date(epocDate).toISOString();
+  }
+  return null;
+};
+
 export const transformSeatoolData = (id: string) => {
-  return seatoolSchema.transform((data) => ({
-    id,
-    actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
-    actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
-    approvedEffectiveDate: data.STATE_PLAN.APPROVED_EFFECTIVE_DATE,
-    authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
-    changedDate: data.STATE_PLAN.CHANGED_DATE,
-    leadAnalyst: getLeadAnalyst(data),
-    planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME,
-    planTypeId: data.STATE_PLAN.PLAN_TYPE,
-    proposedDate: data.STATE_PLAN.PROPOSED_DATE,
-    raiReceivedDate: getReceivedDate(data),
-    state: data.STATES?.[0].STATE_CODE,
-    status: data.SPW_STATUS?.[0].SPW_STATUS_DESC,
-    submissionDate: data.STATE_PLAN.SUBMISSION_DATE,
-  }));
+  return seatoolSchema.transform((data) => {
+    const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
+    const { raiReceivedDate, raiRequestedDate } = getRaiDate(data);
+    return {
+      id,
+      actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
+      actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
+      approvedEffectiveDate: getDateStringOrNullFromEpoc(
+        data.STATE_PLAN.APPROVED_EFFECTIVE_DATE
+      ),
+      authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
+      changedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.CHANGED_DATE),
+      leadAnalystOfficerId,
+      leadAnalystName,
+      planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME,
+      planTypeId: data.STATE_PLAN.PLAN_TYPE,
+      proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
+      raiReceivedDate,
+      raiRequestedDate,
+      state: data.STATES?.[0].STATE_CODE,
+      status: data.SPW_STATUS?.[0].SPW_STATUS_DESC,
+      submissionDate: getDateStringOrNullFromEpoc(
+        data.STATE_PLAN.SUBMISSION_DATE
+      ),
+    };
+  });
 };
 
 export type SeaToolTransform = z.infer<ReturnType<typeof transformSeatoolData>>;

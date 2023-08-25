@@ -1,7 +1,6 @@
 import LZ from "lz-string";
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-
 /**
  * useLzQuery syncs a url query parameter with a given state.
  * LZ is a library which can compresses JSON into a uri string

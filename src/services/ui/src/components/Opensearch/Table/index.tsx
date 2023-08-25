@@ -7,9 +7,8 @@ import { VisibilityPopover } from "../Settings";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];
-  queryKey: "spas" | "waivers";
 }> = (props) => {
-  const data = useOsContext();
+  const context = useOsContext();
   const params = useOsParams();
   const [osColumns, setOsColumns] = useState(
     props.columns.map((COL) => ({ ...COL, hidden: false }))
@@ -58,7 +57,7 @@ export const OsTable: FC<{
         </UI.TableRow>
       </UI.TableHeader>
       <UI.TableBody>
-        {data.map((DAT) => (
+        {context.data?.hits.map((DAT) => (
           <UI.TableRow key={DAT._source.id}>
             {osColumns.map((COL) => {
               if (COL.hidden) return null;
