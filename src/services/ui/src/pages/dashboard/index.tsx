@@ -6,6 +6,8 @@ import { getUser, useGetUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
 import { getUserStateCodes } from "@/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
+import { useParams } from "@/hooks";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -60,6 +62,11 @@ const StateSelector = ({
 };
 
 export const Dashboard = () => {
+  const params = useParams<{ value: "spas" | "waivers" }>({
+    key: "tab",
+    initValue: { value: "spas" },
+  });
+
   return (
     <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
       <div className="flex items-center justify-between my-4">
@@ -68,14 +75,41 @@ export const Dashboard = () => {
         </UI.Typography>
       </div>
       <div className="w-[100%] items-center justify-center">
-        <UI.Tabs>
-          <UI.TabPanel id="tab-panel--spas" tabLabel="SPAs">
-            <SpasList />
-          </UI.TabPanel>
-          <UI.TabPanel id="tab-panel--waivers" tabLabel="Waivers">
-            <WaiversList />
-          </UI.TabPanel>
-        </UI.Tabs>
+        <Tabs
+          value={params.state.value}
+          onValueChange={(value) =>
+            params.onSet(() => ({ value: value as any }), true)
+          }
+        >
+          <TabsList>
+            <TabsTrigger value="spas" className="px-6 py-2">
+              <UI.Typography
+                size="md"
+                className="font-bold text-[1.3em]"
+                as="h1"
+              >
+                Spas
+              </UI.Typography>
+            </TabsTrigger>
+            <TabsTrigger value="waivers" className="px-6 py-2">
+              <UI.Typography
+                size="md"
+                className="font-bold text-[1.3em]"
+                as="h1"
+              >
+                Waivers
+              </UI.Typography>
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="spas">
+            {/* this is to prevent rendering when not in view (stop os request) */}
+            {params.state.value === "spas" && <SpasList />}
+          </TabsContent>
+          <TabsContent value="waivers">
+            {/* this is to prevent rendering when not in view (stop os request) */}
+            {params.state.value === "waivers" && <WaiversList />}
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
