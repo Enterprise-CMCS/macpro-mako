@@ -345,6 +345,58 @@ resources:
         Threshold: 1  
         # AlarmActions:
         #   - !Ref ECSFailureTopicArn
+    
+    SeatoolLogMessageMetricFilter:
+      Type: "AWS::Logs::MetricFilter"
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${sls:stage}-sinkSeatool
+        FilterPattern: "[timestamp=*Z SEATOOL Validation Error*]"
+        MetricTransformations:
+          - MetricName: SeatoolValidationErrors
+            MetricNamespace: "CustomNamespace"
+            MetricValue: "1"
+            DefaultValue: "0"
+
+    SeatoolValidationErrorsAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-${sls:stage}-SEATOOL-validation-error
+        AlarmDescription: Alarm for SEATOOL Validation Errors
+        Namespace: CustomNamespace
+        MetricName: SeatoolValidationErrors
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 2
+        Period: 300 
+        Statistic: Sum
+        Threshold: 1 
+        # AlarmActions:
+        #   - !Ref YourSnsTopic  
+
+    OnemacLogMessageMetricFilter:
+      Type: "AWS::Logs::MetricFilter"
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${sls:stage}-sinkSeatool
+        FilterPattern: "[timestamp=*Z ONEMAC Validation Error*]"
+        MetricTransformations:
+          - MetricName: ONEMACValidationErrors
+            MetricNamespace: "CustomNamespace"
+            MetricValue: "1"
+            DefaultValue: "0"
+
+    OnemacValidationErrorsAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-${sls:stage}-ONEMAC-validation-error
+        AlarmDescription: Alarm for ONEMAC Validation Errors
+        Namespace: CustomNamespace
+        MetricName: ONEMACValidationErrors
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 2
+        Period: 300 
+        Statistic: Sum
+        Threshold: 1 
+        # AlarmActions:
+        #   - !Ref YourSnsTopic  
 
 
     SecurityGroup:
