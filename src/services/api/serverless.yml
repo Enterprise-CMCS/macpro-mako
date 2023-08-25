@@ -198,6 +198,31 @@ resources:
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
         ResponseType: DEFAULT_5XX
         RestApiId: !Ref ApiGatewayRestApi
+    LambdaLogMessageMetricFilter:
+      Type: "AWS::Logs::MetricFilter"
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${sls:stage}-search
+        FilterPattern: '"ERROR"'
+        MetricTransformations:
+          - MetricName: LambdaErrorCount
+            MetricNamespace: "CustomNamespace"
+            MetricValue: "1"
+            DefaultValue: "0"
+      
+    LambdaErrorCountAlarm:
+      Type: "AWS::CloudWatch::Alarm"
+      Properties:
+        AlarmName: ${self:service}-lambda-search-${sls:stage}-errors
+        AlarmDescription: "Lambda Error Count Alarm"
+        MetricName: LambdaErrorCount
+        Namespace: "CustomNamespace"
+        Statistic: "Sum"
+        Period: 300
+        EvaluationPeriods: 1
+        Threshold: 1
+        ComparisonOperator: "GreaterThanOrEqualToThreshold"
+        # AlarmActions:
+        #   - !Ref LambdaErrorNotificationTopic
     SecurityGroup:
       Type: AWS::EC2::SecurityGroup
       DeletionPolicy: Retain
