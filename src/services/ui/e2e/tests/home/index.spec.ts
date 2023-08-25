@@ -21,9 +21,9 @@ test.only("log in test", async ({ page }) => {
   await page.goto("https://mako-dev.cms.gov/");
   await page.getByRole("button", { name: "Sign In" }).click();
   await page.getByRole("textbox", { name: "name@host.com" }).click();
-  await page.getByRole("textbox", { name: "name@host.com" }).fill(usersname1);
+  await page.getByRole("textbox", { name: "name@host.com" }).fill("testun");
   await page.getByRole("textbox", { name: "Password" }).click();
-  await page.getByRole("textbox", { name: "Password" }).fill(userspassword2);
+  await page.getByRole("textbox", { name: "Password" }).fill("testpw");
   await page.getByRole("button", { name: "submit" }).click();
 
   const isLoggedIn = await page.getByRole("link", { name: "Dashboard" }).isVisible();
