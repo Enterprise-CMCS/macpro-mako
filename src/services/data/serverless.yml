@@ -300,8 +300,8 @@ resources:
         Period: 300  
         Statistic: Sum
         Threshold: 1  
-        # AlarmActions:
-        #   - !Ref ECSFailureTopicArn
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
 
     SinkOnemacTrigger:
       Type: AWS::Lambda::EventSourceMapping
@@ -343,8 +343,8 @@ resources:
         Period: 300  
         Statistic: Sum
         Threshold: 1  
-        # AlarmActions:
-        #   - !Ref ECSFailureTopicArn
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
     
     SeatoolLogMessageMetricFilter:
       Type: "AWS::Logs::MetricFilter"
@@ -369,8 +369,8 @@ resources:
         Period: 300 
         Statistic: Sum
         Threshold: 1 
-        # AlarmActions:
-        #   - !Ref YourSnsTopic  
+        AlarmActions:
+          - ${param:ECSFailureTopicArn} 
 
     OnemacLogMessageMetricFilter:
       Type: "AWS::Logs::MetricFilter"
@@ -395,8 +395,8 @@ resources:
         Period: 300 
         Statistic: Sum
         Threshold: 1 
-        # AlarmActions:
-        #   - !Ref YourSnsTopic  
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
 
 
     SecurityGroup:
