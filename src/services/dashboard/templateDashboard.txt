@@ -70,10 +70,10 @@
                 "title": "Mako Dashboard ${sls:stage} Alarms",
                 "alarms": [
                     "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:lambda-search-errors",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-sinkOnemacErrorCount",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkOnemacErrorCount",
                     "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-ONEMAC-validation-error",
                     "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-SEATOOL-validation-error",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:mako-${sls:stage}-sinkSeatoolErrorsCount"
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkSeatoolErrorsCount"
                 ]
             }
         },
