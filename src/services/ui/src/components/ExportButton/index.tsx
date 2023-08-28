@@ -5,17 +5,12 @@ import { Download, Loader } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
-import { OsFilterable, OsMainSourceItem } from "shared-types";
+import { OsMainSourceItem } from "shared-types";
 import { convertCamelCaseToWords, isISOString } from "@/utils";
 import { getStatus } from "@/pages/dashboard/Lists/statusHelper";
 import { useGetUser } from "@/api/useGetUser";
 import { DEFAULT_FILTERS, useOsParams } from "../Opensearch";
 import { createSearchFilterable } from "../Opensearch/utils";
-
-type Props = {
-  type: "waiver" | "spa";
-  filter: OsFilterable;
-};
 
 function formatDataForExport(obj: OsMainSourceItem, isCms?: boolean): any {
   const result: any = {};
