@@ -26,9 +26,8 @@ export const getSearchData = async (props: QueryProps): Promise<SearchData> => {
   return searchData;
 };
 
-export const getAllSearchData = async (
-  filters: OsFilterable[]
-): Promise<SearchData["hits"]> => {
+export const getAllSearchData = async (filters?: OsFilterable[]) => {
+  if (!filters) return;
   let gettingData = true;
   let page = 0;
   const SIZE = 1000;

@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { OsQueryState } from "shared-types";
 import { createSearchFilterable } from "./utils";
 
-type OsTab = "waivers" | "spas";
+export type OsTab = "waivers" | "spas";
 
-const DEFAULT_FILTERS: Record<OsTab, Partial<OsParamsState>> = {
+export const DEFAULT_FILTERS: Record<OsTab, Partial<OsParamsState>> = {
   spas: {
     filters: [
       {

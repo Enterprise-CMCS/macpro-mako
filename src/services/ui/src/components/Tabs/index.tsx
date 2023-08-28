@@ -35,7 +35,6 @@ const TabsTrigger = React.forwardRef<
       className
     )}
     {...props}
-    onClick={(s) => console.log(s)}
   />
 ));
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;

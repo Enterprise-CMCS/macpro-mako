@@ -2,7 +2,7 @@ import { z } from "zod";
 import { s3ParseUrl } from "shared-utils/s3-url-parser";
 
 export const onemacSchema = z.object({
-  additionalInformation: z.string().optional(),
+  additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),
   attachments: z

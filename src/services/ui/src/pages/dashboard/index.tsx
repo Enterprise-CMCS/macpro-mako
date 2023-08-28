@@ -1,13 +1,11 @@
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
-import { ChangeEventHandler } from "react";
 import { redirect } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
-import { getUser, useGetUser } from "@/api/useGetUser";
+import { getUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
-import { useParams } from "@/hooks";
-import { OsProvider, useOsParams, useOsQuery } from "@/components/Opensearch";
+import { OsProvider, type OsTab, useOsQuery } from "@/components/Opensearch";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -30,37 +28,6 @@ const loader = (queryClient: QueryClient) => {
 };
 export const dashboardLoader = loader;
 
-const StateSelector = ({
-  selectedState,
-  handleStateChange,
-  userStateCodes,
-}: {
-  selectedState: string;
-  handleStateChange: ChangeEventHandler<HTMLSelectElement>;
-  userStateCodes: string[];
-}) => {
-  if (userStateCodes.length === 1) {
-    return null;
-  }
-
-  return (
-    <div>
-      <label htmlFor="state-select">Select a state: </label>
-      <select
-        id="state-select"
-        value={selectedState}
-        onChange={handleStateChange}
-      >
-        {userStateCodes.map((code) => (
-          <option key={code} value={code}>
-            {code}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-};
-
 export const Dashboard = () => {
   const query = useOsQuery();
 
@@ -82,7 +49,10 @@ export const Dashboard = () => {
           <Tabs
             value={query.state.tab}
             onValueChange={(tab) =>
-              query.onSet((s) => ({ ...s, tab: tab as any }), true)
+              query.onSet(
+                (s) => ({ ...s, tab: tab as OsTab, search: "" }),
+                true
+              )
             }
           >
             <TabsList>

@@ -5,10 +5,37 @@ import { Download, Loader } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
-import { useOsParams } from "../Opensearch";
+import { OsMainSourceItem } from "shared-types";
+import { convertCamelCaseToWords, isISOString } from "@/utils";
+import { getStatus } from "@/pages/dashboard/Lists/statusHelper";
+import { useGetUser } from "@/api/useGetUser";
+import { DEFAULT_FILTERS, useOsParams } from "../Opensearch";
+import { createSearchFilterable } from "../Opensearch/utils";
+
+function formatDataForExport(obj: OsMainSourceItem, isCms?: boolean): any {
+  const result: any = {};
+
+  for (const [key, value] of Object.entries(obj)) {
+    const k = convertCamelCaseToWords(key);
+    if (value === null || value === undefined) {
+      result[k] = "";
+    } else if (typeof value === "object" && !Array.isArray(value)) {
+      result[k] = formatDataForExport(value, isCms);
+    } else if (typeof value === "string" && isISOString(value)) {
+      result[k] = format(new Date(value), "MM/dd/yyyy");
+    } else if (typeof value === "string" && key === "status") {
+      result[k] = getStatus(value, isCms);
+    } else {
+      result[k] = value;
+    }
+  }
+
+  return result;
+}
 
 export const OsExportButton = () => {
   const [loading, setLoading] = useState(false);
+  const { data: user } = useGetUser();
   const params = useOsParams();
 
   const handleExport = async () => {
@@ -21,20 +48,16 @@ export const OsExportButton = () => {
     });
     setLoading(true);
 
-    const osData = await getAllSearchData([
-      {
-        field: "authority.keyword",
-        type: "terms",
-        value: ["CHIP", "MEDICAID"],
-        prefix: "must",
-      },
-    ]);
+    const filters = DEFAULT_FILTERS[params.state.tab]?.filters ?? [];
 
-    const sourceItems = osData.map((hit) => {
-      const filteredHit = { ...hit._source };
+    const searchFilter = createSearchFilterable(params.state.search);
+    const osData = await getAllSearchData([...filters, ...searchFilter]);
+
+    const sourceItems = osData?.map((hit) => {
+      const filteredHit = formatDataForExport({ ...hit._source }, user?.isCms);
 
       // Properties to exclude from export
-      Reflect.deleteProperty(filteredHit, "attachments");
+      Reflect.deleteProperty(filteredHit, "Attachments");
 
       return filteredHit;
     });

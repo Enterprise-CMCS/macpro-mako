@@ -88,7 +88,7 @@ export const sortQueryBuilder = (sort: OsQueryState["sort"]) => {
 //   }, {} as OsQueryState["buckets"]);
 // };
 
-export const createSearchFilterable = (value: string) => {
+export const createSearchFilterable = (value?: string) => {
   if (!value) return [];
   return [
     {

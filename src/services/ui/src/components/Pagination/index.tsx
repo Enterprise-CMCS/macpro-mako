@@ -72,7 +72,7 @@ export const Pagination: FC<Props> = (props) => {
               if (Array.isArray(PAGE))
                 return (
                   <button
-                    key={`page-${PAGE}`}
+                    key={`PAGE-${PAGE}`}
                     className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 cursor-pointer"
                   >
                     ...
