@@ -1,11 +1,6 @@
 import { test, expect } from "@playwright/test";
-import * as dotenv from "dotenv";
-import { string } from "zod";
 
-dotenv.config();
-
-const usersname1 = process.env.bootstrapUsersName;
-const userspassword2 = process.env.bootstrapUsersPassword;
+const password = process.env.VITE_BOOTSTRAP_USERS_PW!;
 
 test("has title", async ({ page }) => {
   await page.goto("/");
@@ -17,22 +12,22 @@ test("has faq Page", async ({ page }) => {
   await page.getByRole("link", { name: "FAQ" }).click();
 });
 
-test.only("log in test", async ({ page }) => {
-  await page.goto("https://mako-dev.cms.gov/");
+test("log in test", async ({ page }) => {
+  await page.goto("/");
   await page.getByRole("button", { name: "Sign In" }).click();
   await page.getByRole("textbox", { name: "name@host.com" }).click();
-  await page.getByRole("textbox", { name: "name@host.com" }).fill("testun");
+  await page.getByRole("textbox", { name: "name@host.com" }).fill("george@example.com");
   await page.getByRole("textbox", { name: "Password" }).click();
-  await page.getByRole("textbox", { name: "Password" }).fill("testpw");
+  await page.getByRole("textbox", { name: "Password" }).fill(password);
   await page.getByRole("button", { name: "submit" }).click();
 
   const isLoggedIn = await page.getByRole("link", { name: "Dashboard" }).isVisible();
-  const isFailed = await page.getByRole("paragraph").isVisible();
+  const isFailed = await page.getByRole("button", { name: "Sign Out" }).isVisible();
 
   if (isLoggedIn) {
-    expect(isFailed).toBeFalsy();
+    expect(isFailed).toBeTruthy();
   }
   else {
-    expect(isFailed).toBeTruthy();
+    expect(isFailed).toBeFalsy();
   }
 });
