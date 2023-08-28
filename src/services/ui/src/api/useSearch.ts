@@ -6,10 +6,10 @@ import {
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError, SearchData } from "shared-types";
-import type { OsFilterable, OsQueryState } from "shared-types";
+import type { OsQueryState, OsFilterable } from "shared-types";
 
 type QueryProps = {
-  filters: OsFilterable[];
+  filters: OsQueryState["filters"];
   sort?: OsQueryState["sort"];
   pagination: OsQueryState["pagination"];
 };
@@ -26,9 +26,8 @@ export const getSearchData = async (props: QueryProps): Promise<SearchData> => {
   return searchData;
 };
 
-export const getAllSearchData = async (
-  filters: OsFilterable[]
-): Promise<SearchData["hits"]> => {
+export const getAllSearchData = async (filters?: OsFilterable[]) => {
+  if (!filters) return;
   let gettingData = true;
   let page = 0;
   const SIZE = 1000;
@@ -57,7 +56,7 @@ export const getAllSearchData = async (
   return allHits.flat();
 };
 
-export const useSearch = (
+export const useOsSearch = (
   options?: UseMutationOptions<SearchData, ReactQueryApiError, QueryProps>
 ) => {
   return useMutation<SearchData, ReactQueryApiError, QueryProps>(

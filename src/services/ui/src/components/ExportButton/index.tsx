@@ -9,6 +9,8 @@ import { OsFilterable, OsMainSourceItem } from "shared-types";
 import { convertCamelCaseToWords, isISOString } from "@/utils";
 import { getStatus } from "@/pages/dashboard/Lists/statusHelper";
 import { useGetUser } from "@/api/useGetUser";
+import { DEFAULT_FILTERS, useOsParams } from "../Opensearch";
+import { createSearchFilterable } from "../Opensearch/utils";
 
 type Props = {
   type: "waiver" | "spa";
@@ -36,19 +38,27 @@ function formatDataForExport(obj: OsMainSourceItem, isCms?: boolean): any {
   return result;
 }
 
-export const ExportButton = ({ type, filter }: Props) => {
+export const OsExportButton = () => {
   const [loading, setLoading] = useState(false);
   const { data: user } = useGetUser();
+  const params = useOsParams();
 
   const handleExport = async () => {
     const csvExporter = new ExportToCsv({
       useKeysAsHeaders: true,
-      filename: `${type}-export-${format(new Date(), "MM/dd/yyyy")}`,
+      filename: `${params.state.tab}-export-${format(
+        new Date(),
+        "MM/dd/yyyy"
+      )}`,
     });
     setLoading(true);
 
-    const osData = await getAllSearchData([filter]);
-    const sourceItems = osData.map((hit) => {
+    const filters = DEFAULT_FILTERS[params.state.tab]?.filters ?? [];
+
+    const searchFilter = createSearchFilterable(params.state.search);
+    const osData = await getAllSearchData([...filters, ...searchFilter]);
+
+    const sourceItems = osData?.map((hit) => {
       const filteredHit = formatDataForExport({ ...hit._source }, user?.isCms);
 
       // Properties to exclude from export

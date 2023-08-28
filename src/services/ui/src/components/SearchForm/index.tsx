@@ -1,23 +1,21 @@
 import { Icon } from "@enterprise-cmcs/macpro-ux-lib";
+import { FC, useState } from "react";
 
-export const SearchForm = ({
-  handleSearch,
-  searchText,
-  setSearchText,
-  disabled,
-}: {
-  handleSearch: (searchString: string) => Promise<void>;
-  searchText: string;
-  setSearchText: React.Dispatch<React.SetStateAction<string>>;
+export const SearchForm: FC<{
+  handleSearch: (s: string) => void;
   disabled: boolean;
-}) => {
+}> = ({ handleSearch, disabled }) => {
+  const [searchText, setSearchText] = useState("");
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     handleSearch(searchText);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value);
+    const updateText = event.target.value;
+    setSearchText(updateText);
+    if (!updateText) handleSearch("");
   };
 
   return (
@@ -48,7 +46,10 @@ export const SearchForm = ({
         {!!searchText && (
           <Icon
             className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto right-3"
-            onClick={() => handleSearch("")}
+            onClick={() => {
+              setSearchText("");
+              handleSearch("");
+            }}
             name="close"
           />
         )}

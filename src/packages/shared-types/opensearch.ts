@@ -51,16 +51,18 @@ export type OsField =
 
 export type OsFilterable = {
   type: OsFilterType;
-  field: OsField;
+  field: OsField | "";
   value: OsFilterValue;
   prefix: "must" | "must_not" | "should" | "filter";
 };
 
 export type OsQueryState<T = any> = {
-  sort: { field: string; order: "asc" | "desc" };
+  sort: { field: OsField; order: "asc" | "desc" };
   pagination: { number: number; size: number };
-  buckets: Record<string, { label: string; value: string }[]>;
-  data: T[];
+  filters: OsFilterable[];
+  search?: string;
+  // buckets: Record<string, { label: string; value: string }[]>;
+  // data: T[];
 };
 
 export type OsAggregateQuery = Record<
