@@ -5,18 +5,19 @@ import { Download, Loader } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+import { useOsParams } from "../Opensearch";
 
-type Props = {
-  type: "waiver" | "spa";
-};
-
-export const ExportButton = ({ type }: Props) => {
+export const OsExportButton = () => {
   const [loading, setLoading] = useState(false);
+  const params = useOsParams();
 
   const handleExport = async () => {
     const csvExporter = new ExportToCsv({
       useKeysAsHeaders: true,
-      filename: `${type}-export-${format(new Date(), "MM/dd/yyyy")}`,
+      filename: `${params.state.tab}-export-${format(
+        new Date(),
+        "MM/dd/yyyy"
+      )}`,
     });
     setLoading(true);
 

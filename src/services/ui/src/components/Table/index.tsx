@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { Icon } from "@enterprise-cmcs/macpro-ux-lib";
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -76,17 +77,34 @@ TableRow.displayName = "TableRow";
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
   React.ThHTMLAttributes<HTMLTableCellElement> & {
+    onClick?: () => void;
     className?: string;
+    isActive?: boolean;
+    icon?: React.ReactNode;
+    desc?: boolean;
   }
->(({ className, ...props }, ref) => (
+>(({ className, children, icon, isActive, desc, ...props }, ref) => (
   <th
     ref={ref}
     className={cn(
-      "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
-      className
+      "h-12 px-4 text-left align-middle font-bold text-base text-muted-foreground [&:has([role=checkbox])]:pr-0",
+      className,
+      { "cursor-pointer": !!props?.onClick }
     )}
     {...props}
-  />
+  >
+    <div className="flex">
+      {children}
+      {icon ? (
+        icon
+      ) : (
+        <Icon
+          name={desc ? "arrow_downward" : "arrow_upward"}
+          className={cn(".1em", { "opacity-0": !isActive })}
+        />
+      )}
+    </div>
+  </th>
 ));
 TableHead.displayName = "TableHead";
 
