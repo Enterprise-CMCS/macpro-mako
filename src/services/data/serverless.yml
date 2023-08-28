@@ -302,7 +302,6 @@ resources:
         Threshold: 1  
         AlarmActions:
           - ${param:ECSFailureTopicArn}
-
     SinkOnemacTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties:
@@ -327,7 +326,6 @@ resources:
         StartingPosition: TRIM_HORIZON
         Topics:
           - aws.onemac.migration.cdc
-
     CloudWatchAlarmForSinkOnemacTriggerErrors:
       Type: AWS::CloudWatch::Alarm
       Properties:
@@ -345,7 +343,6 @@ resources:
         Threshold: 1  
         AlarmActions:
           - ${param:ECSFailureTopicArn}
-    
     SeatoolLogMessageMetricFilter:
       Type: "AWS::Logs::MetricFilter"
       Properties:
@@ -356,7 +353,6 @@ resources:
             MetricNamespace: "CustomNamespace"
             MetricValue: "1"
             DefaultValue: "0"
-
     SeatoolValidationErrorsAlarm:
       Type: AWS::CloudWatch::Alarm
       Properties:
@@ -371,7 +367,6 @@ resources:
         Threshold: 1 
         AlarmActions:
           - ${param:ECSFailureTopicArn} 
-
     OnemacLogMessageMetricFilter:
       Type: "AWS::Logs::MetricFilter"
       Properties:
@@ -382,7 +377,6 @@ resources:
             MetricNamespace: "CustomNamespace"
             MetricValue: "1"
             DefaultValue: "0"
-
     OnemacValidationErrorsAlarm:
       Type: AWS::CloudWatch::Alarm
       Properties:
@@ -397,8 +391,6 @@ resources:
         Threshold: 1 
         AlarmActions:
           - ${param:ECSFailureTopicArn}
-
-
     SecurityGroup:
       Type: AWS::EC2::SecurityGroup
       DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
@@ -408,7 +400,6 @@ resources:
         SecurityGroupEgress: 
           - IpProtocol: -1
             CidrIp: 0.0.0.0/0
-
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:

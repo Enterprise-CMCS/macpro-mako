@@ -136,8 +136,6 @@ resources:
             MetricNamespace: "${self:service}-${sls:stage}/ApiGateway/ERRORS"
             MetricName: "ApiGateway400ErrorCount"
             Unit: Count
-
-    # CloudWatch Alarm for API Gateway 400-level Errors
     ApiGateway400ErrorCountAlarm:
       Type: AWS::CloudWatch::Alarm
       Properties:
@@ -152,8 +150,6 @@ resources:
         MetricName: ApiGateway400ErrorCount
         Namespace: "${self:service}-${sls:stage}/ApiGateway/ERRORS"
         Statistic: Sum
-
-    # Metric Filter for API Gateway 500-level Errors
     ApiGateway500ErrorCount:
       Type: AWS::Logs::MetricFilter
       Properties:
@@ -202,7 +198,7 @@ resources:
       Type: "AWS::Logs::MetricFilter"
       Properties:
         LogGroupName: /aws/lambda/${self:service}-${sls:stage}-search
-        FilterPattern: '"ERROR"'
+        FilterPattern: "ERROR"
         MetricTransformations:
           - MetricName: LambdaErrorCount
             MetricNamespace: "CustomNamespace"
