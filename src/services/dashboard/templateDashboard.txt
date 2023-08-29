@@ -55,7 +55,7 @@
                 "view": "timeSeries",
                 "stacked": false,
                 "region": "${env:REGION_A}",
-                "title": "SNS Topic",
+                "title": "${sls:stage} SNS Topic",
                 "period": 60,
                 "stat": "Sum"
             }
@@ -137,7 +137,7 @@
                     ]
                 ],
                 "region": "${env:REGION_A}",
-                "title": "Cloudfront Distro Metrics"
+                "title": "Cloudfront Distro ${sls:stage} Metrics"
             }
         },
         {
@@ -182,7 +182,7 @@
                     ]
                 ],
                 "region": "${env:REGION_A}",
-                "title": "Api Gateway Metrics"
+                "title": "Api Gateway ${sls:stage} Metrics"
             }
         },
         {
@@ -225,7 +225,7 @@
             "x": 0,
             "type": "alarm",
             "properties": {
-                "title": "MAKO Api Gateway Errors",
+                "title": "MAKO Api Gateway ${sls:stage} Errors",
                 "alarms": [
                     "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-api-${sls:stage}-400-errors",
                     "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-api-${sls:stage}-500-errors"
