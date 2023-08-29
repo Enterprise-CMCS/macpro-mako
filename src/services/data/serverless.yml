@@ -290,7 +290,7 @@ resources:
       Properties:
         AlarmName: ${self:service}-${sls:stage}-sinkSeatoolErrorsCount
         AlarmDescription: Alarm for SinkSeatoolTrigger Lambda Errors
-        Namespace: AWS/Lambda
+        Namespace: ${self:service}-${sls:stage}/lambda/sinkSEATOOL-Errors-Alarm
         MetricName: Errors
         Dimensions:
           - Name: FunctionName
@@ -331,7 +331,7 @@ resources:
       Properties:
         AlarmName: ${self:service}-${sls:stage}-sinkOnemacErrorCount
         AlarmDescription: Alarm for SinkOnemacTrigger Lambda Errors
-        Namespace: AWS/Lambda
+        Namespace: AWS/Lambda/sinkONEMAC-Errors-Alarm
         MetricName: Errors
         Dimensions:
           - Name: FunctionName
@@ -350,7 +350,7 @@ resources:
         FilterPattern: '"SEATOOL Validation Error"'
         MetricTransformations:
           - MetricName: SeatoolValidationErrors
-            MetricNamespace: "${self:service}-${sls:stage}/lambda/SEATOOL-VALIDATION-ERRORS"
+            MetricNamespace: "${self:service}-${sls:stage}/lambda/SEATOOL-Validation-Errors"
             MetricValue: "1"
             DefaultValue: "0"
     SeatoolValidationErrorsAlarm:
@@ -358,7 +358,7 @@ resources:
       Properties:
         AlarmName: ${self:service}-${sls:stage}-SEATOOL-validation-error
         AlarmDescription: Alarm for SEATOOL Validation Errors
-        Namespace: CustomNamespace
+        Namespace: "${self:service}-${sls:stage}/lambda/SEATOOL-Validation-Errors-Alarm"
         MetricName: SeatoolValidationErrors
         ComparisonOperator: GreaterThanOrEqualToThreshold
         EvaluationPeriods: 2
@@ -374,7 +374,7 @@ resources:
         FilterPattern: '"ONEMAC Validation Error"'
         MetricTransformations:
           - MetricName: ONEMACValidationErrors
-            MetricNamespace: "${self:service}-${sls:stage}/lambda/ONEMAC-VALIDATION-ERRORS"
+            MetricNamespace: "${self:service}-${sls:stage}/lambda/ONEMAC-validation-errors"
             MetricValue: "1"
             DefaultValue: "0"
     OnemacValidationErrorsAlarm:
@@ -382,7 +382,7 @@ resources:
       Properties:
         AlarmName: ${self:service}-${sls:stage}-ONEMAC-validation-error
         AlarmDescription: Alarm for ONEMAC Validation Errors
-        Namespace: CustomNamespace
+        Namespace: "${self:service}-${sls:stage}/lambda/ONEMAC-validation-errors-alarm"
         MetricName: ONEMACValidationErrors
         ComparisonOperator: GreaterThanOrEqualToThreshold
         EvaluationPeriods: 2

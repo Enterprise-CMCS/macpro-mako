@@ -133,7 +133,7 @@ resources:
         MetricTransformations:
           - MetricValue: "1"
             DefaultValue: "0"
-            MetricNamespace: "${self:service}-${sls:stage}/ApiGateway/ERRORS"
+            MetricNamespace: "${self:service}-${sls:stage}/ApiGateway/errors"
             MetricName: "ApiGateway400ErrorCount"
             Unit: Count
     ApiGateway400ErrorCountAlarm:
@@ -159,7 +159,7 @@ resources:
         MetricTransformations:
           - MetricValue: "1"
             DefaultValue: "0"
-            MetricNamespace: "${self:service}-${sls:stage}/ApiGateway/ERRORS"
+            MetricNamespace: "${self:service}-${sls:stage}/ApiGateway/errors"
             MetricName: "ApiGateway500ErrorCount"
             Unit: Count
 
@@ -201,7 +201,7 @@ resources:
         FilterPattern: "ERROR"
         MetricTransformations:
           - MetricName: LambdaErrorCount
-            MetricNamespace: "${self:service}-${sls:stage}/lambda-search/ERRORS"
+            MetricNamespace: "${self:service}-${sls:stage}/lambda-search/Errors"
             MetricValue: "1"
             DefaultValue: "0"
     LambdaErrorCountAlarm:
@@ -210,7 +210,7 @@ resources:
         AlarmName: ${self:service}-lambda-search-${sls:stage}-errors
         AlarmDescription: "Lambda Error Count Alarm"
         MetricName: LambdaErrorCount
-        Namespace: "CustomNamespace"
+        Namespace: "${self:service}-${sls:stage}/lambda/search-error-count-alarm"
         Statistic: "Sum"
         Period: 300
         EvaluationPeriods: 2
