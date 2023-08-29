@@ -35,7 +35,6 @@ export const seatool: Handler = async (event) => {
       if (value) {
         const id: string = JSON.parse(decode(key));
         const record = { id, ...JSON.parse(decode(value)) };
-
         const validPlanTypeIds = [122, 123, 124, 125];
         const result = transformSeatoolData(id).safeParse(record);
         if (result.success === false) {
@@ -106,7 +105,12 @@ export const onemac: Handler = async (event) => {
       if (value) {
         const id: string = decode(key);
         const record = { id, ...JSON.parse(decode(value)) };
-        if (record && record.sk === "Package") {
+        if (
+          record &&
+          record.sk === "Package" &&
+          record.submitterName &&
+          record.submitterName !== "-- --" // "-- --" indicates it did not originate from onemac
+        ) {
           const result = transformOnemac(id).safeParse(record);
           if (result.success === false) {
             console.log(
