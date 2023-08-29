@@ -296,8 +296,8 @@ resources:
           - Name: FunctionName
             Value: !GetAtt SinkSeatoolLambdaFunction.Arn
         ComparisonOperator: GreaterThanOrEqualToThreshold
-        EvaluationPeriods: 2
-        Period: 300  
+        EvaluationPeriods: 5
+        Period: 60  
         Statistic: Sum
         Threshold: 1  
         AlarmActions:
@@ -337,8 +337,8 @@ resources:
           - Name: FunctionName
             Value: !GetAtt SinkOnemacLambdaFunction.Arn
         ComparisonOperator: GreaterThanOrEqualToThreshold
-        EvaluationPeriods: 2
-        Period: 300  
+        EvaluationPeriods: 5
+        Period: 60  
         Statistic: Sum
         Threshold: 1  
         AlarmActions:
@@ -361,8 +361,8 @@ resources:
         Namespace: "${self:service}-${sls:stage}/lambda/SEATOOL-Validation-Errors-Alarm"
         MetricName: SeatoolValidationErrors
         ComparisonOperator: GreaterThanOrEqualToThreshold
-        EvaluationPeriods: 2
-        Period: 300 
+        EvaluationPeriods: 5
+        Period: 60 
         Statistic: Sum
         Threshold: 1 
         AlarmActions:
@@ -385,8 +385,8 @@ resources:
         Namespace: "${self:service}-${sls:stage}/lambda/ONEMAC-validation-errors-alarm"
         MetricName: ONEMACValidationErrors
         ComparisonOperator: GreaterThanOrEqualToThreshold
-        EvaluationPeriods: 2
-        Period: 300 
+        EvaluationPeriods: 5
+        Period: 60 
         Statistic: Sum
         Threshold: 1 
         AlarmActions:

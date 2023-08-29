@@ -144,8 +144,8 @@ resources:
           - ${param:ECSFailureTopicArn}
         AlarmName: "${self:service}-${sls:stage}-400-errors"
         ComparisonOperator: GreaterThanOrEqualToThreshold
-        EvaluationPeriods: 2
-        Period: 300
+        EvaluationPeriods: 5
+        Period: 60
         Threshold: 1
         MetricName: ApiGateway400ErrorCount
         Namespace: "${self:service}-${sls:stage}/ApiGateway/ERRORS"
@@ -172,8 +172,8 @@ resources:
           - ${param:ECSFailureTopicArn}
         AlarmName: "${self:service}-${sls:stage}-500-errors"
         ComparisonOperator: GreaterThanOrEqualToThreshold
-        EvaluationPeriods: 2
-        Period: 300
+        EvaluationPeriods: 5
+        Period: 60
         Threshold: 1
         MetricName: ApiGateway500ErrorCount
         Namespace: "${self:service}-${sls:stage}/ApiGateway/ERRORS"
@@ -213,7 +213,7 @@ resources:
         Namespace: "${self:service}-${sls:stage}/lambda/search-error-count-alarm"
         Statistic: "Sum"
         Period: 300
-        EvaluationPeriods: 2
+        EvaluationPeriods: 5
         Threshold: 1
         ComparisonOperator: "GreaterThanOrEqualToThreshold"
         AlarmActions:
