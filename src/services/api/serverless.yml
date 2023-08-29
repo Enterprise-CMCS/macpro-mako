@@ -148,7 +148,7 @@ resources:
         Period: 60
         Threshold: 1
         MetricName: ApiGateway400ErrorCount
-        Namespace: "${self:service}-${sls:stage}/ApiGateway/ERRORS"
+        Namespace: "${self:service}-${sls:stage}/ApiGateway/errors"
         Statistic: Sum
     ApiGateway500ErrorCount:
       Type: AWS::Logs::MetricFilter
@@ -176,7 +176,7 @@ resources:
         Period: 60
         Threshold: 1
         MetricName: ApiGateway500ErrorCount
-        Namespace: "${self:service}-${sls:stage}/ApiGateway/ERRORS"
+        Namespace: "${self:service}-${sls:stage}/ApiGateway/errors"
         Statistic: Sum
     GatewayResponseDefault4XX:
       Type: "AWS::ApiGateway::GatewayResponse"

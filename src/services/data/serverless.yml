@@ -291,7 +291,7 @@ resources:
         AlarmName: ${self:service}-${sls:stage}-sinkSeatoolErrorsCount
         AlarmDescription: Alarm for SinkSeatoolTrigger Lambda Errors
         Namespace: ${self:service}-${sls:stage}/lambda/sinkSEATOOL-Errors-Alarm
-        MetricName: Errors
+        MetricName: SinkSeatoolErrors
         Dimensions:
           - Name: FunctionName
             Value: !GetAtt SinkSeatoolLambdaFunction.Arn
@@ -332,7 +332,7 @@ resources:
         AlarmName: ${self:service}-${sls:stage}-sinkOnemacErrorCount
         AlarmDescription: Alarm for SinkOnemacTrigger Lambda Errors
         Namespace: AWS/Lambda/sinkONEMAC-Errors-Alarm
-        MetricName: Errors
+        MetricName: SinkONEMACErrors
         Dimensions:
           - Name: FunctionName
             Value: !GetAtt SinkOnemacLambdaFunction.Arn
