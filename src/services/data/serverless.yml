@@ -350,7 +350,7 @@ resources:
         FilterPattern: '"SEATOOL Validation Error"'
         MetricTransformations:
           - MetricName: SeatoolValidationErrors
-            MetricNamespace: "CustomNamespace"
+            MetricNamespace: "${self:service}-${sls:stage}/lambda/SEATOOL-VALIDATION-ERRORS"
             MetricValue: "1"
             DefaultValue: "0"
     SeatoolValidationErrorsAlarm:
@@ -374,7 +374,7 @@ resources:
         FilterPattern: '"ONEMAC Validation Error"'
         MetricTransformations:
           - MetricName: ONEMACValidationErrors
-            MetricNamespace: "CustomNamespace"
+            MetricNamespace: "${self:service}-${sls:stage}/lambda/ONEMAC-VALIDATION-ERRORS"
             MetricValue: "1"
             DefaultValue: "0"
     OnemacValidationErrorsAlarm:

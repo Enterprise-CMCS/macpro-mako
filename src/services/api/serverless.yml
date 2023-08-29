@@ -201,10 +201,9 @@ resources:
         FilterPattern: "ERROR"
         MetricTransformations:
           - MetricName: LambdaErrorCount
-            MetricNamespace: "CustomNamespace"
+            MetricNamespace: "${self:service}-${sls:stage}/lambda-search/ERRORS"
             MetricValue: "1"
             DefaultValue: "0"
-      
     LambdaErrorCountAlarm:
       Type: "AWS::CloudWatch::Alarm"
       Properties:
