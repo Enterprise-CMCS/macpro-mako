@@ -6,7 +6,7 @@ export const AdditionalInfo = ({
   additionalInformation: OsMainSourceItem["additionalInformation"];
 }) => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="tw-flex tw-flex-col tw-gap-4">
       <p>{additionalInformation || "None"}</p>
     </div>
   );

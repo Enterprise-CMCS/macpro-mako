@@ -21,11 +21,11 @@ export const SearchForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex-1">
-      <div className="relative">
+    <form onSubmit={handleSubmit} className="tw-flex-1">
+      <div className="tw-relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3"
+          className="tw-absolute tw-top-0 tw-bottom-0 tw-w-6 tw-h-6 tw-my-auto tw-text-gray-400 tw-left-3"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -40,14 +40,14 @@ export const SearchForm = ({
         <input
           type="text"
           placeholder="Search"
-          className="w-full py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
+          className="tw-w-full tw-py-3 tw-pl-12 tw-pr-4 tw-text-gray-500 tw-border tw-border-gray-300 tw-outline-none focus:tw-bg-white focus:tw-border-indigo-600"
           value={searchText}
           onChange={handleInputChange}
           disabled={disabled}
         />
         {!!searchText && (
           <Icon
-            className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto right-3"
+            className="tw-absolute tw-cursor-pointer tw-top-0 tw-bottom-0 tw-w-6 tw-h-6 tw-my-auto tw-right-3"
             onClick={() => handleSearch("")}
             name="close"
           />

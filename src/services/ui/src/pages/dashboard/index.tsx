@@ -61,13 +61,13 @@ const StateSelector = ({
 
 export const Dashboard = () => {
   return (
-    <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
-      <div className="flex items-center justify-between my-4">
+    <div className="tw-max-w-screen-xl tw-mx-auto tw-px-4 lg:tw-px-8">
+      <div className="tw-flex tw-items-center tw-justify-between tw-my-4">
         <UI.Typography size="lg" as="h1">
           Dashboard
         </UI.Typography>
       </div>
-      <div className="w-[100%] items-center justify-center">
+      <div className="w-[100%] tw-items-center tw-justify-center">
         <UI.Tabs>
           <UI.TabPanel id="tab-panel--spas" tabLabel="SPAs">
             <SpasList />

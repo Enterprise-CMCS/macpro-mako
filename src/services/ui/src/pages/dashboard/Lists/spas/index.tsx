@@ -73,8 +73,8 @@ export const SpasList = () => {
   if (error) return <ErrorAlert error={error} />;
 
   return (
-    <section className="flex flex-col h-[calc(100vh-250px)]">
-      <div className="flex flex-row gap-2 border-[1px] border-slate-200">
+    <section className="tw-flex tw-flex-col h-[calc(100vh-250px)]">
+      <div className="tw-flex tw-flex-row tw-gap-2 border-[1px] border-slate-200">
         <SearchForm
           handleSearch={handleSearch}
           setSearchText={setSearchText}
@@ -83,12 +83,12 @@ export const SpasList = () => {
         />
         <Sheet>
           <SheetTrigger>
-            <div className="flex flex-row item-center border-slate-100 px-4">
+            <div className="tw-flex tw-flex-row item-center border-slate-100 tw-px-4">
               <Icon name="filter_list" />
               <Typography size="md">Filters</Typography>
             </div>
           </SheetTrigger>
-          <SheetContent className="bg-white">
+          <SheetContent className="tw-bg-white">
             <SheetHeader>
               <Typography size="lg">Filters</Typography>
             </SheetHeader>
@@ -96,8 +96,8 @@ export const SpasList = () => {
         </Sheet>
       </div>
       {isLoading && <LoadingSpinner />}
-      <Table className="flex-1 border-[1px]">
-        <TableHeader className="sticky top-0 bg-white">
+      <Table className="tw-flex-1 border-[1px]">
+        <TableHeader className="tw-sticky tw-top-0 tw-bg-white">
           <TableRow>
             <TableHead className="w-[150px]">Spa ID</TableHead>
             <TableHead>State</TableHead>
@@ -109,12 +109,12 @@ export const SpasList = () => {
         <TableBody>
           {searchData?.hits.map((DAT) => (
             <TableRow key={DAT._source.id}>
-              <TableCell className="font-medium">
+              <TableCell className="tw-font-medium">
                 {(() => {
                   if (!DAT._source.authority) return null;
                   return (
                     <Link
-                      className="cursor-pointer text-blue-600"
+                      className="tw-cursor-pointer tw-text-blue-600"
                       to={`/detail/${DAT?._source?.authority?.toLowerCase()}-spa?id=${encodeURIComponent(
                         DAT?._id
                       )}`}
