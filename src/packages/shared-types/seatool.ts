@@ -16,8 +16,8 @@ const authorityLookup = (val: number | null): null | string => {
 };
 
 function getLeadAnalyst(eventData: SeaToolSink) {
-  let leadAnalystOfficerId = null;
-  let leadAnalystName = null;
+  let leadAnalystOfficerId: null | number = null;
+  let leadAnalystName: null | string = null;
 
   if (
     eventData.LEAD_ANALYST &&
@@ -40,8 +40,8 @@ function getLeadAnalyst(eventData: SeaToolSink) {
 }
 
 const getRaiDate = (data: SeaToolSink) => {
-  let raiReceivedDate = null;
-  let raiRequestedDate = null;
+  let raiReceivedDate: null | string = null;
+  let raiRequestedDate: null | string = null;
 
   const raiDate =
     data.RAI?.sort((a, b) => {

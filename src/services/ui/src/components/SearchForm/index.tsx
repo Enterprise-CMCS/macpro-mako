@@ -46,7 +46,7 @@ export const SearchForm: FC<{
         </svg>
         <input
           type="text"
-          placeholder="Search"
+          placeholder="Search by Package ID, CPOC Name, or Submitter Name"
           className="w-full py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
           value={searchText}
           onChange={handleInputChange}

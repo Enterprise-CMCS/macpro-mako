@@ -109,7 +109,7 @@ export const onemac: Handler = async (event) => {
           record &&
           record.sk === "Package" &&
           record.submitterName &&
-          record.submitterName !== "-- --" // "-- --" indicates it did not originate from onemac
+          record.submitterName !== "-- --" // these records did not originate from onemac, thus we ignore them
         ) {
           const result = transformOnemac(id).safeParse(record);
           if (result.success === false) {
@@ -131,6 +131,8 @@ export const onemac: Handler = async (event) => {
           attachments: undefined,
           submitterEmail: undefined,
           submitterName: undefined,
+          origin: undefined,
+          raiResponses: undefined,
         };
 
         docObject[id] = oneMacTombstone;

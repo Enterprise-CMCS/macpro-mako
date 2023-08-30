@@ -62,7 +62,7 @@ export const Dashboard = () => {
                   className="font-bold text-[1.3em]"
                   as="h1"
                 >
-                  Spas
+                  SPAs
                 </UI.Typography>
               </TabsTrigger>
               <TabsTrigger value="waivers" className="px-6 py-2">

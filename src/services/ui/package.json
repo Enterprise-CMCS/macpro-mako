@@ -27,6 +27,7 @@
     "@mui/styles": "^5.14.0",
     "@mui/system": "^5.14.1",
     "@mui/x-data-grid": "^6.10.0",
+    "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-popover": "^1.0.6",
     "@radix-ui/react-slot": "^1.0.2",
