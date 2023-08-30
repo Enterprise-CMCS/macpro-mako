@@ -285,6 +285,24 @@ resources:
         StartingPosition: TRIM_HORIZON
         Topics:
           - aws.ksqldb.seatool.agg.State_Plan
+    CloudWatchAlarmForSinkSeatoolTriggerErrors:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-${sls:stage}-sinkSeatoolErrorsCount
+        AlarmDescription: Alarm for SinkSeatoolTrigger Lambda Errors
+        Namespace: ${self:service}-${sls:stage}/lambda/sinkSEATOOL-Errors-Alarm
+        MetricName: SinkSeatoolErrors
+        Dimensions:
+          - Name: FunctionName
+            Value: !GetAtt SinkSeatoolLambdaFunction.Arn
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300  
+        Statistic: Sum
+        TreatMissingData: notBreaching
+        Threshold: 1  
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
     SinkOnemacTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties:
@@ -309,6 +327,74 @@ resources:
         StartingPosition: TRIM_HORIZON
         Topics:
           - aws.onemac.migration.cdc
+    CloudWatchAlarmForSinkOnemacTriggerErrors:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-${sls:stage}-sinkOnemacErrorCount
+        AlarmDescription: Alarm for SinkOnemacTrigger Lambda Errors
+        Namespace: AWS/Lambda/sinkONEMAC-Errors-Alarm
+        MetricName: SinkONEMACErrors
+        Dimensions:
+          - Name: FunctionName
+            Value: !GetAtt SinkOnemacLambdaFunction.Arn
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300  
+        Statistic: Sum
+        TreatMissingData: notBreaching
+        Threshold: 1  
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
+    SeatoolLogMessageMetricFilter:
+      Type: "AWS::Logs::MetricFilter"
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${sls:stage}-sinkSeatool
+        FilterPattern: '"SEATOOL Validation Error"'
+        MetricTransformations:
+          - MetricName: SeatoolValidationErrors
+            MetricNamespace: "${self:service}-${sls:stage}/lambda/SEATOOL-Validation-Errors"
+            MetricValue: "1"
+            DefaultValue: "0"
+    SeatoolValidationErrorsAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-${sls:stage}-SEATOOL-validation-error
+        AlarmDescription: Alarm for SEATOOL Validation Errors
+        Namespace: "${self:service}-${sls:stage}/lambda/SEATOOL-Validation-Errors-Alarm"
+        MetricName: SeatoolValidationErrors
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300 
+        Statistic: Sum
+        TreatMissingData: notBreaching
+        Threshold: 1 
+        AlarmActions:
+          - ${param:ECSFailureTopicArn} 
+    OnemacLogMessageMetricFilter:
+      Type: "AWS::Logs::MetricFilter"
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${sls:stage}-sinkOnemac
+        FilterPattern: '"ONEMAC Validation Error"'
+        MetricTransformations:
+          - MetricName: ONEMACValidationErrors
+            MetricNamespace: "${self:service}-${sls:stage}/lambda/ONEMAC-validation-errors"
+            MetricValue: "1"
+            DefaultValue: "0"
+    OnemacValidationErrorsAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-${sls:stage}-ONEMAC-validation-error
+        AlarmDescription: Alarm for ONEMAC Validation Errors
+        Namespace: "${self:service}-${sls:stage}/lambda/ONEMAC-validation-errors-alarm"
+        MetricName: ONEMACValidationErrors
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300 
+        Statistic: Sum
+        TreatMissingData: notBreaching
+        Threshold: 1 
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
     SecurityGroup:
       Type: AWS::EC2::SecurityGroup
       DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
@@ -318,7 +404,6 @@ resources:
         SecurityGroupEgress: 
           - IpProtocol: -1
             CidrIp: 0.0.0.0/0
-
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:
