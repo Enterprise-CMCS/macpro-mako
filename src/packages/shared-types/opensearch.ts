@@ -51,7 +51,7 @@ export type OsField =
 
 export type OsFilterable = {
   type: OsFilterType;
-  field: OsField | "";
+  field: OsField;
   value: OsFilterValue;
   prefix: "must" | "must_not" | "should" | "filter";
 };
@@ -65,16 +65,20 @@ export type OsQueryState<T = any> = {
   // data: T[];
 };
 
-export type OsAggregateQuery = Record<
-  string,
-  { terms: { field: string; size: number } }
->;
+export type OsAgg = {
+  name: string;
+  type: OsFilterType;
+  field: OsField;
+  size: number;
+};
 
-export type OsAggregations = Record<
+export type OsAggBucket = { key: string; doc_count: number };
+
+export type OsAggResult = Record<
   string,
   {
     doc_count_error_upper_bound: number;
-    sum_other_doc_count: 0;
-    buckets: { key: string; doc_count: number }[];
+    sum_other_doc_count: number;
+    buckets: OsAggBucket[];
   }
 >;

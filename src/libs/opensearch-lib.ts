@@ -103,7 +103,7 @@ export async function search(host:string, index:string, query:any){
       index: index,
       body: query,
     });
-    return response.body.hits; // will need to return the body
+    return response.body; // will need to return the body
   } catch(e) {
     console.log({e})
   }

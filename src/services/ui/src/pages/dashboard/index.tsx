@@ -76,11 +76,9 @@ export const Dashboard = () => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="spas">
-              {/* this is to prevent rendering when not in view (stop os request) */}
               <SpasList />
             </TabsContent>
             <TabsContent value="waivers">
-              {/* this is to prevent rendering when not in view (stop os request) */}
               <WaiversList />
             </TabsContent>
           </Tabs>

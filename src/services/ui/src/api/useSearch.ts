@@ -1,4 +1,5 @@
 import {
+  aggQueryBuilder,
   filterQueryBuilder,
   paginationQueryBuilder,
   sortQueryBuilder,
@@ -6,12 +7,13 @@ import {
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError, SearchData } from "shared-types";
-import type { OsQueryState, OsFilterable } from "shared-types";
+import type { OsQueryState, OsFilterable, OsAgg } from "shared-types";
 
 type QueryProps = {
   filters: OsQueryState["filters"];
   sort?: OsQueryState["sort"];
   pagination: OsQueryState["pagination"];
+  aggs?: OsAgg[];
 };
 
 export const getSearchData = async (props: QueryProps): Promise<SearchData> => {
@@ -20,6 +22,7 @@ export const getSearchData = async (props: QueryProps): Promise<SearchData> => {
       ...filterQueryBuilder(props.filters),
       ...paginationQueryBuilder(props.pagination),
       ...(!!props.sort && sortQueryBuilder(props.sort)),
+      ...(!!props.aggs && aggQueryBuilder(props.aggs)),
     },
   });
 

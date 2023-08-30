@@ -1,4 +1,4 @@
-export * from "./Accordian";
+export * from "./Accordion";
 export * from "./AdditionalInfo";
 export * from "./AttachmentsList";
 export * from "./Cards";

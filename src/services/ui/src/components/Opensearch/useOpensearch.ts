@@ -1,7 +1,7 @@
 import { useOsSearch } from "@/api";
 import { useParams } from "@/hooks/useParams";
-import { useEffect } from "react";
-import { OsQueryState } from "shared-types";
+import { useEffect, useState } from "react";
+import { OsQueryState, SearchData } from "shared-types";
 import { createSearchFilterable } from "./utils";
 
 export type OsTab = "waivers" | "spas";
@@ -39,7 +39,8 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsParamsState>> = {
  */
 export const useOsQuery = (init?: Partial<OsQueryState>) => {
   const params = useOsParams(init);
-  const { data, mutateAsync, isLoading, error } = useOsSearch();
+  const [data, setData] = useState<SearchData>();
+  const { mutateAsync, isLoading, error } = useOsSearch();
 
   const onRequest = async (query: OsQueryState, options?: any) => {
     try {
@@ -53,7 +54,7 @@ export const useOsQuery = (init?: Partial<OsQueryState>) => {
             ...(DEFAULT_FILTERS[params.state.tab].filters || []),
           ],
         },
-        options
+        { ...options, onSuccess: setData }
       );
     } catch (error) {
       console.error("Error occurred during search:", error);

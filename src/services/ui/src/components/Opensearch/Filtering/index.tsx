@@ -10,6 +10,7 @@ import { Icon, Typography } from "@enterprise-cmcs/macpro-ux-lib";
 import { useOsParams } from "../useOpensearch";
 import { OsExportButton } from "@/components/ExportButton";
 import { useOsContext } from "../Provider";
+import { OsFilterDrawer } from "./FilterDrawer";
 
 export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
   const params = useOsParams();
@@ -29,19 +30,7 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
         disabled={!!props.disabled}
       />
       <OsExportButton />
-      <Sheet>
-        <SheetTrigger>
-          <div className="flex flex-row item-center border-slate-100 px-4">
-            <Icon name="filter_list" />
-            <Typography size="md">Filters</Typography>
-          </div>
-        </SheetTrigger>
-        <SheetContent className="bg-white">
-          <SheetHeader>
-            <Typography size="lg">Filters</Typography>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
+      <OsFilterDrawer />
     </div>
   );
 };
