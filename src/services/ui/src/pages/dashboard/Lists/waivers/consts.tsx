@@ -9,7 +9,7 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   {
     props: { className: "w-[150px]" },
     field: "id.keyword",
-    label: "Waiver ID",
+    label: "Waiver Number",
     cell: (data) => {
       if (!data.authority) return <></>;
       return (
@@ -67,5 +67,10 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
     field: "submitterName.keyword",
     label: "Submitted By",
     cell: (data) => data.submitterName,
+  },
+  {
+    field: "leadAnalystName.keyword",
+    label: "CPOC",
+    cell: (data) => data.leadAnalystName,
   },
 ];

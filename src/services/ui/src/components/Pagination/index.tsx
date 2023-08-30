@@ -24,7 +24,7 @@ export const Pagination: FC<Props> = (props) => {
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div className="flex gap-6">
           <p className="flex gap-2 text-sm text-gray-700">
-            items per page:
+            Records per page:
             <select
               className="font-bold cursor-pointer border-[1px] mt-[-1px]"
               value={props.pageSize}
@@ -40,7 +40,7 @@ export const Pagination: FC<Props> = (props) => {
             <span className="font-bold">{state.upperBoundValue}</span>
             of
             <span className="font-bold">{props.count}</span>
-            items
+            records
           </p>
         </div>
         <div>
