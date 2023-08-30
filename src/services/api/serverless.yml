@@ -215,7 +215,7 @@ resources:
         Namespace: "${self:service}-${sls:stage}/lambda/search-error-count-alarm"
         Statistic: "Sum"
         Period: 300
-        EvaluationPeriods: 5
+        EvaluationPeriods: 1
         Threshold: 1
         TreatMissingData: notBreaching
         ComparisonOperator: "GreaterThanOrEqualToThreshold"
