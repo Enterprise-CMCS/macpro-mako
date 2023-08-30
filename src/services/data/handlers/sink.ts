@@ -35,7 +35,6 @@ export const seatool: Handler = async (event) => {
       if (value) {
         const id: string = JSON.parse(decode(key));
         const record = { id, ...JSON.parse(decode(value)) };
-
         const validPlanTypeIds = [122, 123, 124, 125];
         const result = transformSeatoolData(id).safeParse(record);
         if (result.success === false) {
