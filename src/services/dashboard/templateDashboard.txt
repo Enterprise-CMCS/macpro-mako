@@ -40,7 +40,7 @@
         {
             "height": 8,
             "width": 8,
-            "y": 30,
+            "y": 48,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -63,7 +63,7 @@
         {
             "height": 7,
             "width": 8,
-            "y": 22,
+            "y": 40,
             "x": 0,
             "type": "alarm",
             "properties": {
@@ -78,117 +78,9 @@
             }
         },
         {
-            "height": 6,
-            "width": 6,
-            "y": 4,
-            "x": 0,
-            "type": "metric",
-            "properties": {
-                "view": "timeSeries",
-                "stacked": false,
-                "metrics": [
-                    [
-                        "AWS/CloudFront",
-                        "Requests",
-                        "Region",
-                        "Global",
-                        "DistributionId",
-                        "${CloudfrontDistributionId}"
-                    ],
-                    [
-                        ".",
-                        "TotalErrorRate",
-                        ".",
-                        ".",
-                        ".",
-                        "."
-                    ],
-                    [
-                        ".",
-                        "4xxErrorRate",
-                        ".",
-                        ".",
-                        ".",
-                        "."
-                    ],
-                                        [
-                        ".",
-                        "5xxErrorRate",
-                        ".",
-                        ".",
-                        ".",
-                        "."
-                    ],
-                    [
-                        ".",
-                        "BytesDownloaded",
-                        ".",
-                        ".",
-                        ".",
-                        "."
-                    ],
-                    [
-                        ".",
-                        "BytesUploaded",
-                        ".",
-                        ".",
-                        ".",
-                        "."
-                    ]
-                ],
-                "region": "${env:REGION_A}",
-                "title": "Cloudfront Distro ${sls:stage} Metrics"
-            }
-        },
-        {
-            "height": 6,
-            "width": 6,
-            "y": 13,
-            "x": 0,
-            "type": "metric",
-            "properties": {
-                "view": "timeSeries",
-                "stacked": false,
-                "metrics": [
-                    [
-                        "AWS/ApiGateway",
-                        "Latency",
-                        "ApiName",
-                        "${sls:stage}-om-api"
-                    ],
-                    [
-                        ".",
-                        "Count",
-                        ".",
-                        "."
-                    ],
-                    [
-                        ".",
-                        "IntegrationLatency",
-                        ".",
-                        "."
-                    ],
-                    [
-                        ".",
-                        "4XXError",
-                        ".",
-                        "."
-                    ],
-                    [
-                        ".",
-                        "5XXError",
-                        ".",
-                        "."
-                    ]
-                ],
-                "region": "${env:REGION_A}",
-                "title": "Api Gateway ${sls:stage} Metrics"
-            }
-        },
-        {
             "height": 1,
             "width": 8,
-            "y": 12,
+            "y": 20,
             "x": 0,
             "type": "text",
             "properties": {
@@ -199,7 +91,7 @@
         {
             "height": 1,
             "width": 9,
-            "y": 21,
+            "y": 39,
             "x": 0,
             "type": "text",
             "properties": {
@@ -210,7 +102,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 29,
+            "y": 47,
             "x": 0,
             "type": "text",
             "properties": {
@@ -221,7 +113,7 @@
         {
             "height": 2,
             "width": 12,
-            "y": 19,
+            "y": 21,
             "x": 0,
             "type": "alarm",
             "properties": {
@@ -230,6 +122,106 @@
                     "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-api-${sls:stage}-400-errors",
                     "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-api-${sls:stage}-500-errors"
                 ]
+            }
+        },
+        {
+            "height": 16,
+            "width": 24,
+            "y": 23,
+            "x": 0,
+            "type": "explorer",
+            "properties": {
+                "metrics": [
+                    {
+                        "metricName": "Count",
+                        "resourceType": "AWS::ApiGateway::RestApi",
+                        "stat": "Sum"
+                    },
+                    {
+                        "metricName": "5XXError",
+                        "resourceType": "AWS::ApiGateway::RestApi",
+                        "stat": "Sum"
+                    },
+                    {
+                        "metricName": "4XXError",
+                        "resourceType": "AWS::ApiGateway::RestApi",
+                        "stat": "Sum"
+                    },
+                    {
+                        "metricName": "Latency",
+                        "resourceType": "AWS::ApiGateway::RestApi",
+                        "stat": "Average"
+                    }
+                ],
+                "labels": [
+                    {
+                        "key": "STAGE",
+                        "value": "${sls:stage}"
+                    }
+                ],
+                "widgetOptions": {
+                    "legend": {
+                        "position": "bottom"
+                    },
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "rowsPerPage": 50,
+                    "widgetsPerRow": 2
+                },
+                "period": 60,
+                "splitBy": "",
+                "region": "${env:REGION_A}",
+                "title": "API Gateway Explorer"
+            }
+        },
+        {
+            "height": 16,
+            "width": 24,
+            "y": 4,
+            "x": 0,
+            "type": "explorer",
+            "properties": {
+                "metrics": [
+                    {
+                        "metricName": "Requests",
+                        "resourceType": "AWS::CloudFront::Distribution",
+                        "stat": "Sum"
+                    },
+                    {
+                        "metricName": "TotalErrorRate",
+                        "resourceType": "AWS::CloudFront::Distribution",
+                        "stat": "Average"
+                    },
+                    {
+                        "metricName": "4xxErrorRate",
+                        "resourceType": "AWS::CloudFront::Distribution",
+                        "stat": "Average"
+                    },
+                    {
+                        "metricName": "5xxErrorRate",
+                        "resourceType": "AWS::CloudFront::Distribution",
+                        "stat": "Average"
+                    }
+                ],
+                "labels": [
+                    {
+                        "key": "STAGE",
+                        "value": "${sls:stage}"
+                    }
+                ],
+                "widgetOptions": {
+                    "legend": {
+                        "position": "bottom"
+                    },
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "rowsPerPage": 50,
+                    "widgetsPerRow": 2
+                },
+                "period": 60,
+                "splitBy": "",
+                "region": "${env:REGION_A}",
+                "title": "Cloudfront Metric Explorer"
             }
         }
     ]
