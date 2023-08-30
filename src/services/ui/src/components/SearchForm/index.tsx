@@ -1,13 +1,16 @@
 import { useDebounce } from "@/hooks";
 import { Icon } from "@enterprise-cmcs/macpro-ux-lib";
+import { motion } from "framer-motion";
+import { Loader } from "lucide-react";
 import { FC, useEffect, useState } from "react";
 
 export const SearchForm: FC<{
   handleSearch: (s: string) => void;
+  isSearching: boolean;
   disabled: boolean;
-}> = ({ handleSearch, disabled }) => {
+}> = ({ handleSearch, disabled, isSearching }) => {
   const [searchText, setSearchText] = useState("");
-  const debouncedSearchString = useDebounce(searchText, 500);
+  const debouncedSearchString = useDebounce(searchText, 750);
 
   useEffect(() => {
     handleSearch(debouncedSearchString);
@@ -49,6 +52,15 @@ export const SearchForm: FC<{
           onChange={handleInputChange}
           disabled={disabled}
         />
+        {isSearching && (
+          <motion.div
+            className="absolute inset-y-0 w-6 h-6 my-auto right-9 origin-center flex items-center justify-center"
+            animate={{ rotate: "360deg" }}
+            transition={{ repeat: Infinity, duration: 0.5 }}
+          >
+            <Loader className="w-4 h-4 text-slate-950" />
+          </motion.div>
+        )}
         {!!searchText && (
           <Icon
             className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto right-3"

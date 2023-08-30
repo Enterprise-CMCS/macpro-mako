@@ -21,8 +21,8 @@ export const WaiversList = () => {
 
   return (
     <section className="flex flex-col h-[calc(100vh-250px)]">
-      <OsFiltering disabled={context.isLoading} />
-      {context.isLoading && <LoadingSpinner />}
+      <OsFiltering />
+      {/* {context.isLoading && <LoadingSpinner />} */}
       <OsTable columns={columns} />
       <Pagination
         pageNumber={params.state.pagination.number}
