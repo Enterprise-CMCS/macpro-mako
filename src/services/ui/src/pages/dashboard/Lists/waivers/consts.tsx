@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { getStatus } from "../statusHelper";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
+import { LABELS } from "@/lib";
 
 export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   {
@@ -31,8 +32,14 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   },
   {
     field: "planType.keyword",
-    label: "Plan Type",
+    label: "Type",
     cell: (data) => removeUnderscoresAndCapitalize(data.planType),
+  },
+  {
+    field: "actionType.keyword",
+    label: "Sub Type",
+    cell: (data) =>
+      data.actionType ? LABELS[data.actionType as keyof typeof LABELS] : "",
   },
   {
     field: "status.keyword",

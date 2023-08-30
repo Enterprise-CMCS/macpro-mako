@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { OsMainSourceItem } from "shared-types";
 import { removeUnderscoresAndCapitalize } from "@/utils";
+import { LABELS } from "@/lib";
 
 export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
   if (!data) return null;
@@ -18,8 +19,10 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
       value: removeUnderscoresAndCapitalize(data.planType),
     },
     {
-      label: "Sub-Type",
-      value: data.actionType || "N/A",
+      label: "Sub Type",
+      value: data.actionType
+        ? LABELS[data.actionType as keyof typeof LABELS]
+        : "N/A",
     },
     {
       label: "Initial Submission Date",

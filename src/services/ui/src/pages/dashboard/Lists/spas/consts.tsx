@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
-
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { getStatus } from "../statusHelper";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
@@ -31,7 +30,7 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   },
   {
     field: "planType.keyword",
-    label: "Plan Type",
+    label: "Type",
     cell: (data) => removeUnderscoresAndCapitalize(data.planType),
   },
   {
