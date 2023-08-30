@@ -9,7 +9,7 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   {
     props: { className: "w-[150px]" },
     field: "id.keyword",
-    label: "Spa ID",
+    label: "SPA ID",
     cell: (data) => {
       if (!data.authority) return <></>;
       return (
@@ -48,8 +48,16 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
     },
   },
   {
+    field: "raiRequestedDate",
+    label: "Formal RAI Requested",
+    cell: (data) => {
+      if (!data.raiRequestedDate) return null;
+      return format(new Date(data.raiRequestedDate), "MM/dd/yyyy");
+    },
+  },
+  {
     field: "raiReceivedDate",
-    label: "Formal Rai Response",
+    label: "Formal RAI Response",
     cell: (data) => {
       if (!data.raiReceivedDate) return null;
       return format(new Date(data.raiReceivedDate), "MM/dd/yyyy");
