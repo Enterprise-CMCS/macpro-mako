@@ -115,6 +115,20 @@ yargs(process.argv.slice(2))
       await runner.run_command_and_output(`e2e tests`, ["yarn", "e2e"], ".");
     }
   )
+  .command(
+    "e2e:ui",
+    "run e2e:ui tests.",
+    {},
+    async () => {
+      await install_deps_for_services();
+      await runner.run_command_and_output(
+        `Install playwright`,
+        ["yarn", "playwright", "install", "--with-deps"],
+        "."
+      );
+      await runner.run_command_and_output(`e2e:ui tests`, ["yarn", "e2e:ui"], ".");
+    }
+  )
   .command("test-gui", "open unit-testing gui for vitest.", {}, async () => {
     await install_deps_for_services();
     await runner.run_command_and_output(

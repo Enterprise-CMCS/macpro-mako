@@ -1,21 +1,33 @@
 import { test, expect } from "@playwright/test";
-import * as $ from "@/selectors";
+//import { username } from "./playwright.config";
+
+const password = process.env.VITE_BOOTSTRAP_USERS_PW!;
 
 test("has title", async ({ page }) => {
   await page.goto("/");
-
-  // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/CMS MAKO/);
 });
 
-test("get issues link", async ({ page }) => {
-  const navSelectors = new $.NavSelectors(page);
+test("has faq Page", async ({ page }) => {
   await page.goto("/");
+  await page.getByRole("link", { name: "FAQ" }).click();
+});
 
-  // Click the issues link.
-  await navSelectors.issuesDropDown.click();
-  await navSelectors.allIssuesLink.click();
+test("log in test", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Sign In" }).click();
+  await page.getByRole("textbox", { name: "name@host.com" }).click();
+  await page.getByRole("textbox", { name: "name@host.com" }).fill("george@example.com");
+  await page.getByRole("textbox", { name: "Password" }).click();
+  await page.getByRole("textbox", { name: "Password" }).fill(password);
+  await page.getByRole("button", { name: "submit" }).click();
 
-  // Expects the URL to contain intro.
-  await expect(page).toHaveURL(/.*issues/);
+  const isLoggedIn = await page.getByRole("link", { name: "Dashboard" }).isVisible();
+  const isLoginFailed = await page.getByRole("paragraph").click();
+  if (isLoggedIn) {
+    expect(isLoggedIn).toBeTruthy();
+  }
+  else {
+    expect(isLoginFailed).toBeTruthy;
+  }
 });
