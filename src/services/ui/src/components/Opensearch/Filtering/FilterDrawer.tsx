@@ -1,5 +1,5 @@
-import { type DateRange } from "react-day-picker";
 import { Icon, Typography } from "@enterprise-cmcs/macpro-ux-lib";
+import { OsRangeValue } from "shared-types";
 
 import {
   Sheet,
@@ -7,7 +7,6 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@/components/Sheet";
-import { CheckboxGroup } from "@/components/Checkbox";
 import {
   Accordion,
   AccordionContent,
@@ -17,13 +16,12 @@ import {
 
 import { FilterableSelect } from "./FilterableSelect";
 import { FilterableDateRange } from "./FilterableDateRange";
-import { useDrawer } from "./useFilterDrawer";
+import { FilterableCheckbox } from "./FilterableCheckbox";
+import { useFilterDrawer } from "./useFilterDrawer";
 import { mapOsBucketToOption } from "./utils";
-import { MOCK } from "./consts";
 
 export const OsFilterDrawer = () => {
-  const hook = useDrawer();
-  // eventuallly I'll grab the buckets through
+  const hook = useFilterDrawer();
 
   return (
     <Sheet open={hook.open} onOpenChange={hook.onClose}>
@@ -39,7 +37,7 @@ export const OsFilterDrawer = () => {
         </SheetHeader>
         <Accordion
           value={hook.accordionValues}
-          onValueChange={(s) => hook.setAccordionValues(s)}
+          onValueChange={hook.onAccordionChange}
           type="multiple"
         >
           {Object.entries(hook.filters).map(([GF, YS]) => {
@@ -53,23 +51,27 @@ export const OsFilterDrawer = () => {
                     if (YS.component === "multiSelect") {
                       return (
                         <FilterableSelect
-                          value={hook.getValue(YS.type, YS.field) as string[]}
-                          onChange={hook.onChange(YS.type, YS.field)}
-                          options={MOCK.aggregations[YS.field].buckets.map(
-                            mapOsBucketToOption
-                          )}
+                          value={hook.filters[YS.field]?.value as string[]}
+                          onChange={hook.onChange(YS.field)}
+                          options={
+                            hook.aggs?.[YS.field]?.buckets?.map(
+                              mapOsBucketToOption
+                            ) || []
+                          }
                         />
                       );
                     }
 
                     if (YS.component === "multiCheck") {
                       return (
-                        <CheckboxGroup
-                          value={hook.getValue(YS.type, YS.field) as string[]}
-                          onChange={hook.onChange(YS.type, YS.field)}
-                          options={MOCK.aggregations[YS.field].buckets.map(
-                            mapOsBucketToOption
-                          )}
+                        <FilterableCheckbox
+                          value={hook.filters[YS.field]?.value as string[]}
+                          onChange={hook.onChange(YS.field)}
+                          options={
+                            hook.aggs?.[YS.field]?.buckets?.map(
+                              mapOsBucketToOption
+                            ) || []
+                          }
                         />
                       );
                     }
@@ -77,16 +79,8 @@ export const OsFilterDrawer = () => {
                     if (YS.component === "dateRange") {
                       return (
                         <FilterableDateRange
-                          value={hook.getValue(YS.type, YS.field) as DateRange}
-                          onChange={(d) =>
-                            hook.onChange(
-                              YS.type,
-                              YS.field
-                            )({
-                              gte: d.from?.toISOString(),
-                              lte: d.to?.toISOString(),
-                            })
-                          }
+                          value={hook.filters[YS.field]?.value as OsRangeValue}
+                          onChange={hook.onChange(YS.field)}
                         />
                       );
                     }

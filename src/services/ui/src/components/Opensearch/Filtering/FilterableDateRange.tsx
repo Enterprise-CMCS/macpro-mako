@@ -1,6 +1,4 @@
-"use client";
-
-import * as React from "react";
+import { useState, useMemo, useEffect } from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
@@ -9,31 +7,41 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/Button";
 import { Calendar } from "@/components/Calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
+import { OsRangeValue } from "shared-types";
 
-export function FilterableDateRange({
-  value,
-  onChange,
-  ...props
-}: Omit<
+type Props = Omit<
   React.HTMLAttributes<HTMLDivElement>,
   "onChange" | "value" | "onSelect"
 > & {
-  value: DateRange;
-  onChange: (val: DateRange) => void;
+  value: OsRangeValue;
+  onChange: (val: OsRangeValue) => void;
   className?: string;
-}) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: value?.from,
-    to: value?.to,
+};
+
+export function FilterableDateRange({ value, onChange, ...props }: Props) {
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: value?.gte ? new Date(value?.gte) : undefined,
+    to: value?.lte ? new Date(value?.lte) : undefined,
   });
-  const [open, setOpen] = React.useState(false);
 
   const handleClose = (updateOpen: boolean) => {
     setOpen(updateOpen);
   };
 
-  React.useEffect(() => {
-    if (date?.from && date.to) onChange(date);
+  useEffect(() => {
+    if (!!date?.from && !!date.to) {
+      onChange({ gte: date.from.toISOString(), lte: date.to.toISOString() });
+    }
+  }, [date]);
+
+  const label = useMemo(() => {
+    const from = date?.from ? format(date.from, "LLL dd, y") : "";
+    const to = date?.to ? format(date.to, "LLL dd, y") : "";
+
+    if (from && to) return `${from} - ${to}`;
+    if (from) return `${from}`;
+    return "Pick a date";
   }, [date]);
 
   return (
@@ -42,24 +50,13 @@ export function FilterableDateRange({
         <PopoverTrigger>
           <div
             id="date"
-            // variant={"outline"}
             className={cn(
               "flex items-center w-[270px] border-[1px] border-black p-2 justify-start text-left font-normal",
               !value && "text-muted-foreground"
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {(() => {
-              const dateFormat = "LLL dd, y";
-
-              if (!!value.from && !!value.to) {
-                const from = format(value.from, dateFormat);
-                const to = format(value.to, dateFormat);
-                return `${from} - ${to}`;
-              }
-              if (value.from) return `${format(value.from, dateFormat)}`;
-              return <span>Pick a date</span>;
-            })()}
+            {label}
           </div>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
@@ -79,7 +76,7 @@ export function FilterableDateRange({
         className="text-white"
         onClick={() => {
           setDate({ from: undefined, to: undefined });
-          onChange({ from: undefined, to: undefined });
+          onChange({ gte: undefined, lte: undefined });
         }}
       >
         Clear

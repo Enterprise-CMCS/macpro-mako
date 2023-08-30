@@ -1,8 +1,9 @@
-import { useOsSearch } from "@/api";
+import { getSearchData, useOsSearch } from "@/api";
 import { useParams } from "@/hooks/useParams";
 import { useEffect, useState } from "react";
 import { OsQueryState, SearchData } from "shared-types";
 import { createSearchFilterable } from "./utils";
+import { useQuery } from "@tanstack/react-query";
 
 export type OsTab = "waivers" | "spas";
 
@@ -54,7 +55,7 @@ export const useOsQuery = (init?: Partial<OsQueryState>) => {
             ...(DEFAULT_FILTERS[params.state.tab].filters || []),
           ],
         },
-        { ...options, onSuccess: setData }
+        { ...options, onSuccess: (res) => setData(res.hits) }
       );
     } catch (error) {
       console.error("Error occurred during search:", error);
@@ -68,6 +69,41 @@ export const useOsQuery = (init?: Partial<OsQueryState>) => {
   return { data, isLoading, error, ...params };
 };
 
+export const useOsAggregate = () => {
+  const { state } = useOsParams();
+  const aggs = useQuery({
+    queryKey: [state.tab],
+    queryFn: (props) => {
+      return getSearchData({
+        aggs: [
+          {
+            field: "state.keyword",
+            type: "terms",
+            name: "state.keyword",
+            size: 60,
+          },
+          {
+            field: "planType.keyword",
+            type: "terms",
+            name: "planType.keyword",
+            size: 10,
+          },
+          {
+            field: "status.keyword",
+            name: "status.keyword",
+            type: "terms",
+            size: 10,
+          },
+        ],
+        filters: [...(DEFAULT_FILTERS[props.queryKey[0]].filters || [])],
+        pagination: { number: 0, size: 0 },
+      });
+    },
+  });
+
+  return aggs.data?.aggregations;
+};
+
 export type OsParamsState = OsQueryState & { tab: OsTab };
 
 export const useOsParams = (init?: Partial<OsParamsState>) => {
@@ -77,7 +113,7 @@ export const useOsParams = (init?: Partial<OsParamsState>) => {
       filters: [],
       search: "",
       tab: "spas",
-      pagination: { number: 0, size: 100 },
+      pagination: { number: 0, size: 25 },
       sort: { field: "changedDate", order: "desc" },
     },
   });

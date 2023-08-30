@@ -33,8 +33,16 @@ export const FILTER_GROUPS: {
     type: "terms",
     value: [],
   },
+  raiRequestedDate: {
+    label: "RAI Requested Date",
+    field: "raiRequestedDate",
+    component: "dateRange",
+    prefix: "must",
+    type: "range",
+    value: { gte: undefined, lte: undefined },
+  },
   raiReceivedDate: {
-    label: "Rai Received At",
+    label: "RAI Response Date",
     field: "raiReceivedDate",
     component: "dateRange",
     prefix: "must",
