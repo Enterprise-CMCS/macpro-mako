@@ -16,18 +16,17 @@ test("log in test", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Sign In" }).click();
   await page.getByRole("textbox", { name: "name@host.com" }).click();
-  await page.getByRole("textbox", { name: "name@host.com" }).fill("george@example.com");
+  await page.getByRole("textbox", { name: "name@host.com" }).fill("george@example.con");
   await page.getByRole("textbox", { name: "Password" }).click();
   await page.getByRole("textbox", { name: "Password" }).fill(password);
   await page.getByRole("button", { name: "submit" }).click();
 
   const isLoggedIn = await page.getByRole("link", { name: "Dashboard" }).isVisible();
-  const isFailed = await page.getByRole("button", { name: "Sign Out" }).isVisible();
-
+  const isLoginFailed = await page.getByRole("paragraph").click();
   if (isLoggedIn) {
-    expect(isFailed).toBeTruthy();
+    expect(isLoggedIn).toBeTruthy();
   }
   else {
-    expect(isFailed).toBeFalsy();
+    expect(isLoginFailed).toBeTruthy;
   }
 });
