@@ -35,7 +35,6 @@ export const seatool: Handler = async (event) => {
       if (value) {
         const id: string = JSON.parse(decode(key));
         const record = { id, ...JSON.parse(decode(value)) };
-
         const validPlanTypeIds = [122, 123, 124, 125];
         const result = transformSeatoolData(id).safeParse(record);
         if (result.success === false) {
@@ -60,11 +59,13 @@ export const seatool: Handler = async (event) => {
           approvedEffectiveDate: undefined,
           authority: undefined,
           changedDate: undefined,
-          leadAnalyst: undefined,
+          leadAnalystName: undefined,
+          leadAnalystOfficerId: undefined,
           planType: undefined,
           planTypeId: undefined,
           proposedDate: undefined,
           raiReceivedDate: undefined,
+          raiRequestedDate: undefined,
           state: undefined,
           status: undefined,
           submissionDate: undefined,
@@ -104,7 +105,12 @@ export const onemac: Handler = async (event) => {
       if (value) {
         const id: string = decode(key);
         const record = { id, ...JSON.parse(decode(value)) };
-        if (record && record.sk === "Package") {
+        if (
+          record &&
+          record.sk === "Package" &&
+          record.submitterName &&
+          record.submitterName !== "-- --" // these records did not originate from onemac, thus we ignore them
+        ) {
           const result = transformOnemac(id).safeParse(record);
           if (result.success === false) {
             console.log(
@@ -125,6 +131,8 @@ export const onemac: Handler = async (event) => {
           attachments: undefined,
           submitterEmail: undefined,
           submitterName: undefined,
+          origin: undefined,
+          raiResponses: undefined,
         };
 
         docObject[id] = oneMacTombstone;

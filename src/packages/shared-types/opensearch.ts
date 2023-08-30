@@ -57,22 +57,28 @@ export type OsFilterable = {
 };
 
 export type OsQueryState<T = any> = {
-  sort: { field: string; order: "asc" | "desc" };
+  sort: { field: OsField; order: "asc" | "desc" };
   pagination: { number: number; size: number };
-  buckets: Record<string, { label: string; value: string }[]>;
-  data: T[];
+  filters: OsFilterable[];
+  search?: string;
+  // buckets: Record<string, { label: string; value: string }[]>;
+  // data: T[];
 };
 
-export type OsAggregateQuery = Record<
-  string,
-  { terms: { field: string; size: number } }
->;
+export type OsAgg = {
+  name: string;
+  type: OsFilterType;
+  field: OsField;
+  size: number;
+};
 
-export type OsAggregations = Record<
+export type OsAggBucket = { key: string; doc_count: number };
+
+export type OsAggResult = Record<
   string,
   {
     doc_count_error_upper_bound: number;
-    sum_other_doc_count: 0;
-    buckets: { key: string; doc_count: number }[];
+    sum_other_doc_count: number;
+    buckets: OsAggBucket[];
   }
 >;

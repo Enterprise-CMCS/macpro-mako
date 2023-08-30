@@ -29,3 +29,7 @@
   .usa-nav {
   z-index: 800,
   }
+
+  .usa-banner__inner {
+    max-width: 80rem;
+  }

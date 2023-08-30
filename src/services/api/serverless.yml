@@ -124,6 +124,62 @@ functions:
     provisionedConcurrency: ${param:provisionedConcurrency}
 resources:
   Resources:
+    ApiGateway400ErrorCount:
+      Type: AWS::Logs::MetricFilter
+      Properties:
+        LogGroupName: !Sub /aws/api-gateway/${self:service}-${sls:stage}
+        FilterName: ApiGateway400ErrorCount
+        FilterPattern: '[ip, user, timestamp, request, status = 4*]'
+        MetricTransformations:
+          - MetricValue: "1"
+            DefaultValue: "0"
+            MetricNamespace: "${self:service}-${sls:stage}/ApiGateway/errors"
+            MetricName: "ApiGateway400ErrorCount"
+            Unit: Count
+    ApiGateway400ErrorCountAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        DatapointsToAlarm: 1
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
+        AlarmName: "${self:service}-${sls:stage}-400-errors"
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300
+        Threshold: 1
+        MetricName: ApiGateway400ErrorCount
+        Namespace: "${self:service}-${sls:stage}/ApiGateway/errors"
+        Statistic: Sum
+        TreatMissingData: notBreaching
+    ApiGateway500ErrorCount:
+      Type: AWS::Logs::MetricFilter
+      Properties:
+        LogGroupName: !Sub /aws/api-gateway/${self:service}-${sls:stage}
+        FilterName: ApiGateway500ErrorCount
+        FilterPattern: '[ip, user, timestamp, request, status = 5*]'
+        MetricTransformations:
+          - MetricValue: "1"
+            DefaultValue: "0"
+            MetricNamespace: "${self:service}-${sls:stage}/ApiGateway/errors"
+            MetricName: "ApiGateway500ErrorCount"
+            Unit: Count
+
+    # CloudWatch Alarm for API Gateway 500-level Errors
+    ApiGateway500ErrorCountAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        DatapointsToAlarm: 1
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
+        AlarmName: "${self:service}-${sls:stage}-500-errors"
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300
+        Threshold: 1
+        MetricName: ApiGateway500ErrorCount
+        Namespace: "${self:service}-${sls:stage}/ApiGateway/errors"
+        Statistic: Sum
+        TreatMissingData: notBreaching
     GatewayResponseDefault4XX:
       Type: "AWS::ApiGateway::GatewayResponse"
       Properties:
@@ -140,6 +196,31 @@ resources:
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
         ResponseType: DEFAULT_5XX
         RestApiId: !Ref ApiGatewayRestApi
+    LambdaLogMessageMetricFilter:
+      Type: "AWS::Logs::MetricFilter"
+      Properties:
+        LogGroupName: /aws/lambda/${self:service}-${sls:stage}-search
+        FilterPattern: "ERROR"
+        MetricTransformations:
+          - MetricName: LambdaErrorCount
+            MetricNamespace: "${self:service}-${sls:stage}/lambda-search/Errors"
+            MetricValue: "1"
+            DefaultValue: "0"
+    LambdaErrorCountAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-lambda-search-${sls:stage}-errors
+        AlarmDescription: "Lambda Error Count Alarm"
+        MetricName: LambdaErrorCount
+        Namespace: "${self:service}-${sls:stage}/lambda/search-error-count-alarm"
+        Statistic: "Sum"
+        Period: 300
+        EvaluationPeriods: 1
+        Threshold: 1
+        TreatMissingData: notBreaching
+        ComparisonOperator: "GreaterThanOrEqualToThreshold"
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
     SecurityGroup:
       Type: AWS::EC2::SecurityGroup
       DeletionPolicy: Retain

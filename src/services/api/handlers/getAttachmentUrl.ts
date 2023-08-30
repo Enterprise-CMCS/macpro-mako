@@ -6,6 +6,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import * as os from "./../../../libs/opensearch-lib";
 import { getStateFilter } from "../libs/auth/user";
+import { OsMainSourceItem, OsResponse } from "shared-types";
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
@@ -34,7 +35,11 @@ export const handler = async (event: APIGatewayEvent) => {
       query.query.bool.must.push(stateFilter);
     }
 
-    const results = await os.search(process.env.osDomain, "main", query);
+    const results: OsResponse<OsMainSourceItem> = await os.search(
+      process.env.osDomain,
+      "main",
+      query
+    );
 
     if (!results) {
       return response({
@@ -43,8 +48,13 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
 
+    const allAttachments = [
+      ...results.hits[0]._source.attachments,
+      ...results.hits[0]._source.raiResponses.map((R) => R.attachments).flat(),
+    ];
+
     if (
-      !results.hits[0]._source.attachments.some((e) => {
+      !allAttachments.some((e) => {
         return e.bucket === body.bucket && e.key === body.key;
       })
     ) {
