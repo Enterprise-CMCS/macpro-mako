@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable camelcase */
-import { OsAgg, OsFilterable, OsQueryState } from "shared-types";
+import { OsAggQuery, OsFilterable, OsQueryState } from "shared-types";
 
 const filterMapQueryReducer = (
   state: Record<OsFilterable["prefix"], any[]>,
@@ -81,7 +81,7 @@ export const sortQueryBuilder = (sort: OsQueryState["sort"]) => {
   return { sort: [{ [sort.field]: sort.order }] };
 };
 
-export const aggQueryBuilder = (aggs: OsAgg[]) => {
+export const aggQueryBuilder = (aggs: OsAggQuery[]) => {
   return {
     aggs: aggs.reduce((STATE, AGG) => {
       STATE[AGG.name] = {
