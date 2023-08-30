@@ -99,7 +99,7 @@ yargs(process.argv.slice(2))
         ["sls", "database", "seed", "--stage", options.stage],
         "."
       );
-    } 
+    }
   )
   .command(
     "e2e",
@@ -153,13 +153,13 @@ yargs(process.argv.slice(2))
   //   }
   // )
   .command("test-gui", "open unit-testing gui for vitest.", {}, async () => {
-    await install_deps_for_services();
-    await runner.run_command_and_output(
-      `Unit Tests`,
-      ["yarn", "test-gui"],
-      "."
-    );
-  })
+  await install_deps_for_services();
+  await runner.run_command_and_output(
+    `Unit Tests`,
+    ["yarn", "test-gui"],
+    "."
+  );
+})
   .command(
     "destroy",
     "destroy a stage in AWS",

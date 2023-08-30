@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test";
-//import { username } from "../playwright.config";
-
+import { username } from "e2e/utils/users";
 
 const password = process.env.VITE_BOOTSTRAP_USERS_PW!;
 
@@ -9,7 +8,7 @@ test("has title", async ({ page }) => {
   await expect(page).toHaveTitle(/CMS MAKO/);
 });
 
-test.only("has faq Page", async ({ page }) => {
+test("has faq Page", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: "FAQ" }).click();
   expect(page).toHaveURL(/.*faq/);
@@ -19,7 +18,7 @@ test("log in pass test", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Sign In" }).click();
   await page.getByRole("textbox", { name: "name@host.com" }).click();
-  await page.getByRole("textbox", { name: "name@host.com" }).fill("george@example.com");
+  await page.getByRole("textbox", { name: "name@host.com" }).fill(username);
   await page.getByRole("textbox", { name: "Password" }).click();
   await page.getByRole("textbox", { name: "Password" }).fill(password);
   await page.getByRole("button", { name: "submit" }).click();
@@ -48,4 +47,3 @@ test("log in fail test", async ({ page }) => {
     expect(isLoginFailed).toBeTruthy;
   }
 });
-
