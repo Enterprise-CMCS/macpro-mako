@@ -1,11 +1,17 @@
+import { useDebounce } from "@/hooks";
 import { Icon } from "@enterprise-cmcs/macpro-ux-lib";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 export const SearchForm: FC<{
   handleSearch: (s: string) => void;
   disabled: boolean;
 }> = ({ handleSearch, disabled }) => {
   const [searchText, setSearchText] = useState("");
+  const debouncedSearchString = useDebounce(searchText, 500);
+
+  useEffect(() => {
+    handleSearch(debouncedSearchString);
+  }, [debouncedSearchString]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
