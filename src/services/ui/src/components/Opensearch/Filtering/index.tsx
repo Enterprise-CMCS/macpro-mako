@@ -16,7 +16,7 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
   const context = useOsContext();
 
   return (
-    <div className="flex flex-row gap-2 border-[1px] border-slate-200">
+    <div className="tw-flex tw-flex-row tw-gap-2 tw-border-[1px] tw-border-slate-200">
       <SearchForm
         isSearching={context.isLoading}
         handleSearch={(search) =>
@@ -31,12 +31,12 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
       <OsExportButton />
       <Sheet>
         <SheetTrigger>
-          <div className="flex flex-row item-center border-slate-100 px-4">
+          <div className="tw-flex tw-flex-row tw-item-center tw-border-slate-100 tw-px-4">
             <Icon name="filter_list" />
             <Typography size="md">Filters</Typography>
           </div>
         </SheetTrigger>
-        <SheetContent className="bg-white">
+        <SheetContent className="tw-bg-white">
           <SheetHeader>
             <Typography size="lg">Filters</Typography>
           </SheetHeader>

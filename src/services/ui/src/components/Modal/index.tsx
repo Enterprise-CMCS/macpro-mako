@@ -33,7 +33,7 @@ export function Modal({
               {/*content*/}
               <div className="tw-border-0 tw-rounded-lg tw-shadow-lg tw-relative tw-flex tw-flex-col tw-w-full tw-bg-white tw-outline-none focus:tw-outline-none">
                 {/*header*/}
-                <div className="tw-flex tw-items-start tw-justify-between tw-p-5 tw-border-b tw-border-solid border-slate-200 tw-rounded-t">
+                <div className="tw-flex tw-items-start tw-justify-between tw-p-5 tw-border-b tw-border-solid tw-border-slate-200 tw-rounded-t">
                   <UI.Typography size="lg" as="h2">
                     {title}
                   </UI.Typography>

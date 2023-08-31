@@ -26,7 +26,7 @@ export const Pagination: FC<Props> = (props) => {
           <p className="tw-flex tw-gap-2 tw-text-sm tw-text-gray-700">
             items per page:
             <select
-              className="tw-font-bold tw-cursor-pointer border-[1px] mt-[-1px]"
+              className="tw-font-bold tw-cursor-pointer tw-border-[1px] tw-mt-[-1px]"
               value={props.pageSize}
               onChange={(e) => props.onSizeChange?.(Number(e.target.value))}
             >
@@ -45,13 +45,13 @@ export const Pagination: FC<Props> = (props) => {
         </div>
         <div>
           <nav
-            className="isolate tw-inline-flex tw--space-x-px tw-rounded-md tw-shadow-sm"
+            className="tw-isolate tw-inline-flex -tw-space-x-px tw-rounded-md tw-shadow-sm"
             aria-label="Pagination"
           >
             <button
               onClick={() => props.onPageChange(props.pageNumber - 1)}
               disabled={state.prevDisabled}
-              className="tw-relative tw-inline-flex tw-items-center tw-rounded-l-md tw-px-2 tw-py-2 tw-text-gray-400 tw-ring-1 tw-ring-inset tw-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:outline-offset-0"
+              className="tw-relative tw-inline-flex tw-items-center tw-rounded-l-md tw-px-2 tw-py-2 tw-text-gray-400 tw-ring-1 tw-ring-inset tw-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:tw-outline-offset-0"
             >
               <span className="tw-sr-only">Previous</span>
               <svg
@@ -73,7 +73,7 @@ export const Pagination: FC<Props> = (props) => {
                 return (
                   <button
                     key={`PAGE-${PAGE}`}
-                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 cursor-pointer"
+                    className="tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-700 tw-ring-1 tw-ring-inset tw-ring-gray-300 focus:tw-outline-offset-0 tw-cursor-pointer"
                   >
                     ...
                     <select
@@ -97,10 +97,10 @@ export const Pagination: FC<Props> = (props) => {
                   key={`PAGE-${PAGE}`}
                   onClick={() => props.onPageChange(PAGE - 1)}
                   className={cn(
-                    "tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-900 tw-ring-1 tw-ring-inset tw-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:outline-offset-0",
+                    "tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-900 tw-ring-1 tw-ring-inset tw-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:tw-outline-offset-0",
                     {
                       "tw-bg-blue-500": isActive,
-                      "focus-visible:outline-indigo-600": isActive,
+                      "focus-visible:tw-outline-indigo-600": isActive,
                       "tw-text-white": isActive,
                       "hover:tw-bg-blue-500": isActive,
                     }
@@ -114,7 +114,7 @@ export const Pagination: FC<Props> = (props) => {
             <button
               disabled={state.nextDisabled}
               onClick={() => props.onPageChange(props.pageNumber + 1)}
-              className="tw-relative tw-inline-flex tw-items-center tw-rounded-r-md tw-px-2 tw-py-2 tw-text-gray-400 tw-ring-1 tw-ring-inset tw-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:outline-offset-0"
+              className="tw-relative tw-inline-flex tw-items-center tw-rounded-r-md tw-px-2 tw-py-2 tw-text-gray-400 tw-ring-1 tw-ring-inset tw-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:tw-outline-offset-0"
             >
               <span className="tw-sr-only">Next</span>
               <svg

@@ -116,14 +116,14 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
         <>
           {data.user ? (
             <button
-              className="tw-text-white hover:text-white/70"
+              className="tw-text-white hover:tw-text-white/70"
               onClick={handleLogout}
             >
               Sign Out
             </button>
           ) : (
             <button
-              className="tw-text-white hover:text-white/70"
+              className="tw-text-white hover:tw-text-white/70"
               onClick={handleLogin}
             >
               Sign In
@@ -176,8 +176,8 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           setIsOpen((prev) => !prev);
         }}
       >
-        {!isOpen && <Bars3Icon className="tw-w-6 tw-h-6 min-w-[24px]" />}
-        {isOpen && <XMarkIcon className="tw-w-6 tw-h-6 min-w-[24px]" />}
+        {!isOpen && <Bars3Icon className="tw-w-6 tw-h-6 tw-min-w-[24px]" />}
+        {isOpen && <XMarkIcon className="tw-w-6 tw-h-6 tw-min-w-[24px]" />}
       </button>
     </>
   );

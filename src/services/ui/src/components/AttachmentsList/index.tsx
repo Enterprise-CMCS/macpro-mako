@@ -64,12 +64,14 @@ export const Attachmentslist = (data: AttachmentList) => {
               return (
                 <tr key={attachment.key}>
                   <TH rowHeader>
-                    <p className="text-sm font-bold">{attachment.title}</p>
+                    <p className="tw-text-sm tw-font-bold">
+                      {attachment.title}
+                    </p>
                   </TH>
                   <TD>
-                    <div className="text-sm">
+                    <div className="tw-text-sm">
                       <button
-                        className="text-blue-600"
+                        className="tw-text-blue-600"
                         onClick={async () => {
                           const url = await getAttachmentUrl(
                             data.id,
@@ -85,7 +87,7 @@ export const Attachmentslist = (data: AttachmentList) => {
                     </div>
                   </TD>
                   <TD>
-                    <div className="text-slate-500 text-sm">
+                    <div className="tw-text-slate-500 tw-text-sm">
                       {attachment.uploadDate ? (
                         <>
                           <p>{format(attachment.uploadDate, "MM/dd/yyyy")}</p>
@@ -100,7 +102,9 @@ export const Attachmentslist = (data: AttachmentList) => {
               );
             })
           ) : (
-            <p className="text-sm font-bold p-4">No Attachments To Show</p>
+            <p className="tw-text-sm tw-font-bold tw-p-4">
+              No Attachments To Show
+            </p>
           )}
         </tbody>
       </Table>

@@ -12,7 +12,7 @@ const Table = React.forwardRef<
   <div className="tw-w-full tw-overflow-auto">
     <table
       ref={ref}
-      className={cn("tw-w-full caption-bottom tw-text-sm", className)}
+      className={cn("tw-w-full tw-caption-bottom tw-text-sm", className)}
       {...props}
     />
   </div>
@@ -52,7 +52,7 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      "bg-primary tw-font-medium text-primary-foreground",
+      "tw-bg-primary tw-font-medium tw-text-primary-foreground",
       className
     )}
     {...props}
@@ -69,7 +69,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "tw-border-b tw-transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
+      "tw-border-b tw-transition-colors hover:tw-bg-muted/50 data-[state=selected]:tw-bg-muted",
       className
     )}
     {...props}
@@ -90,20 +90,20 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-12 px-4 text-left align-middle font-bold text-base text-muted-foreground [&:has([role=checkbox])]:pr-0",
+      "tw-h-12 tw-px-4 tw-text-left tw-align-middle tw-font-bold tw-text-base tw-text-muted-foreground [&:has([role=checkbox])]:tw-pr-0",
       className,
       { "cursor-pointer": !!props?.onClick }
     )}
     {...props}
   >
-    <div className="flex">
+    <div className="tw-flex">
       {children}
       {icon ? (
         icon
       ) : (
         <Icon
           name={desc ? "arrow_downward" : "arrow_upward"}
-          className={cn(".1em", { "opacity-0": !isActive })}
+          className={cn(".1em", { "tw-opacity-0": !isActive })}
         />
       )}
     </div>
@@ -136,7 +136,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn("tw-mt-4 tw-text-sm text-muted-foreground", className)}
+    className={cn("tw-mt-4 tw-text-sm tw-text-muted-foreground", className)}
     {...props}
   />
 ));
