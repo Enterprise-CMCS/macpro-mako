@@ -348,7 +348,7 @@ resources:
     SeatoolLogMessageMetricFilter:
       Type: "AWS::Logs::MetricFilter"
       Properties:
-        LogGroupName: /aws/lambda/${self:service}-${sls:stage}-sinkSeatool
+        LogGroupName: !Ref SinkSeatoolLogGroup
         FilterPattern: '"SEATOOL Validation Error"'
         MetricTransformations:
           - MetricName: SeatoolValidationErrors
@@ -373,7 +373,7 @@ resources:
     OnemacLogMessageMetricFilter:
       Type: "AWS::Logs::MetricFilter"
       Properties:
-        LogGroupName: /aws/lambda/${self:service}-${sls:stage}-sinkOnemac
+        LogGroupName: !Ref SinkOnemacLogGroup
         FilterPattern: '"ONEMAC Validation Error"'
         MetricTransformations:
           - MetricName: ONEMACValidationErrors
