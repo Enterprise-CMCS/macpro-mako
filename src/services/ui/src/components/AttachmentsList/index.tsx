@@ -4,8 +4,25 @@ import { format } from "date-fns";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { OsMainSourceItem } from "shared-types";
+import { useState } from "react";
 
-const handleDownloadAll = async (data: OsMainSourceItem) => {
+type AttachmentList = {
+  id: string;
+  attachments:
+    | ({
+        uploadDate: number;
+        bucket: string;
+        key: string;
+        s3Key: string;
+        filename: string;
+        title: string;
+        contentType: string;
+        url: string;
+      } | null)[]
+    | null;
+};
+
+const handleDownloadAll = async (data: AttachmentList) => {
   if (data.attachments && data.attachments.length > 0) {
     const validAttachments = data.attachments.filter(
       (attachment): attachment is NonNullable<typeof attachment> =>
@@ -28,7 +45,8 @@ const handleDownloadAll = async (data: OsMainSourceItem) => {
   }
 };
 
-export const Attachmentslist = (data: OsMainSourceItem) => {
+export const Attachmentslist = (data: AttachmentList) => {
+  const [loading, setLoading] = useState(false);
   return (
     <div>
       <Table borderless className="tw-w-full">
@@ -40,63 +58,64 @@ export const Attachmentslist = (data: OsMainSourceItem) => {
           </tr>
         </thead>
         <tbody>
-          {data.attachments?.map((attachment) => {
-            if (!attachment) return null;
-            return (
-              <tr key={attachment.key}>
-                <TH rowHeader>
-                  <p className="tw-text-sm tw-font-bold">{attachment.title}</p>
-                </TH>
-                <TD>
-                  <div className="tw-text-sm">
-                    <button
-                      className="tw-text-blue-600"
-                      onClick={async () => {
-                        const url = await getAttachmentUrl(
-                          data.id,
-                          attachment.bucket,
-                          attachment.key
-                        );
-                        console.log(url);
-                        window.open(url);
-                      }}
-                    >
-                      {attachment.filename}
-                    </button>
-                    {/* originally wanted the size as well, but that data is missing*/}
-                    <p>
-                      (
-                      {attachment.contentType
-                        ? attachment.contentType.split("/").slice(-1)
-                        : "Unknown"}
-                      )
-                    </p>
-                  </div>
-                </TD>
-                <TD>
-                  <div className="text-slate-500 tw-text-sm">
-                    {attachment.uploadDate ? (
-                      <>
-                        <p>{format(attachment.uploadDate, "MM/dd/yyyy")}</p>
-                        <p>{format(attachment.uploadDate, "h:mm a")}</p>
-                      </>
-                    ) : (
-                      <p>Unknown</p>
-                    )}
-                  </div>
-                </TD>
-              </tr>
-            );
-          })}
+          {data.attachments ? (
+            data.attachments.map((attachment) => {
+              if (!attachment) return null;
+              return (
+                <tr key={attachment.key}>
+                  <TH rowHeader>
+                    <p className="text-sm font-bold">{attachment.title}</p>
+                  </TH>
+                  <TD>
+                    <div className="text-sm">
+                      <button
+                        className="text-blue-600"
+                        onClick={async () => {
+                          const url = await getAttachmentUrl(
+                            data.id,
+                            attachment.bucket,
+                            attachment.key
+                          );
+                          console.log(url);
+                          window.open(url);
+                        }}
+                      >
+                        {attachment.filename}
+                      </button>
+                    </div>
+                  </TD>
+                  <TD>
+                    <div className="text-slate-500 text-sm">
+                      {attachment.uploadDate ? (
+                        <>
+                          <p>{format(attachment.uploadDate, "MM/dd/yyyy")}</p>
+                          <p>{format(attachment.uploadDate, "h:mm a")}</p>
+                        </>
+                      ) : (
+                        <p>Unknown</p>
+                      )}
+                    </div>
+                  </TD>
+                </tr>
+              );
+            })
+          ) : (
+            <p className="text-sm font-bold p-4">No Attachments To Show</p>
+          )}
         </tbody>
       </Table>
       <div className="tw-flex tw-justify-end">
         {data.attachments && (
           <Button
-            buttonText="Download All"
+            buttonText={loading ? "Downloading" : "Download All"}
             buttonVariation="secondary"
+            disabled={loading}
             iconName="file_download"
-            onClick={() => handleDownloadAll(data)}
+            onClick={async () => {
+              setLoading(true);
+              await handleDownloadAll(data);
+              setLoading(false);
+            }}
             target="_self"
             type="button"
             style={{ padding: "4px" }}
@@ -107,21 +126,15 @@ export const Attachmentslist = (data: OsMainSourceItem) => {
   );
 };
 
-type Attachments = {
-  url: string;
-  uploadDate: number;
-  bucket: string;
-  key: string;
-  s3Key: string;
-  filename: string;
-  title: string;
-  contentType: string;
-}[];
-
-async function downloadAll(attachments: Attachments, id: string) {
+async function downloadAll(
+  attachments: OsMainSourceItem["attachments"],
+  id: string
+) {
+  if (!attachments) return null;
   const downloadList = (await Promise.all(
     attachments
       .map(async (attachment) => {
+        if (!attachment) return null;
         try {
           const resp = await fetch(attachment.url);
           if (!resp.ok) throw resp;

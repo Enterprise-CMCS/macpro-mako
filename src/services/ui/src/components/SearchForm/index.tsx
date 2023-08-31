@@ -1,23 +1,30 @@
+import { useDebounce } from "@/hooks";
 import { Icon } from "@enterprise-cmcs/macpro-ux-lib";
+import { motion } from "framer-motion";
+import { Loader } from "lucide-react";
+import { FC, useEffect, useState } from "react";
 
-export const SearchForm = ({
-  handleSearch,
-  searchText,
-  setSearchText,
-  disabled,
-}: {
-  handleSearch: (searchString: string) => Promise<void>;
-  searchText: string;
-  setSearchText: React.Dispatch<React.SetStateAction<string>>;
+export const SearchForm: FC<{
+  handleSearch: (s: string) => void;
+  isSearching: boolean;
   disabled: boolean;
-}) => {
+}> = ({ handleSearch, disabled, isSearching }) => {
+  const [searchText, setSearchText] = useState("");
+  const debouncedSearchString = useDebounce(searchText, 750);
+
+  useEffect(() => {
+    handleSearch(debouncedSearchString);
+  }, [debouncedSearchString]);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     handleSearch(searchText);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value);
+    const updateText = event.target.value;
+    setSearchText(updateText);
+    if (!updateText) handleSearch("");
   };
 
   return (
@@ -39,16 +46,28 @@ export const SearchForm = ({
         </svg>
         <input
           type="text"
-          placeholder="Search"
-          className="tw-w-full tw-py-3 tw-pl-12 tw-pr-4 tw-text-gray-500 tw-border tw-border-gray-300 tw-outline-none focus:tw-bg-white focus:tw-border-indigo-600"
+          placeholder="Search by Package ID, CPOC Name, or Submitter Name"
+          className="w-full py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
           value={searchText}
           onChange={handleInputChange}
           disabled={disabled}
         />
+        {isSearching && (
+          <motion.div
+            className="absolute inset-y-0 w-6 h-6 my-auto right-9 origin-center flex items-center justify-center"
+            animate={{ rotate: "360deg" }}
+            transition={{ repeat: Infinity, duration: 0.5 }}
+          >
+            <Loader className="w-4 h-4 text-slate-950" />
+          </motion.div>
+        )}
         {!!searchText && (
           <Icon
-            className="tw-absolute tw-cursor-pointer tw-top-0 tw-bottom-0 tw-w-6 tw-h-6 tw-my-auto tw-right-3"
-            onClick={() => handleSearch("")}
+            className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto right-3"
+            onClick={() => {
+              setSearchText("");
+              handleSearch("");
+            }}
             name="close"
           />
         )}

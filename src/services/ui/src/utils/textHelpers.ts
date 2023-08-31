@@ -13,3 +13,10 @@ export function removeUnderscoresAndCapitalize(str?: string): string | null {
   // Remove 's' from the end if it exists
   return capitalized.endsWith("s") ? capitalized.slice(0, -1) : capitalized;
 }
+
+export function convertCamelCaseToWords(input: string) {
+  return input
+    .replace(/([a-z])([A-Z])/g, "$1 $2") // Insert space between lowercase and uppercase letters
+    .replace(/^./, (str) => str.toUpperCase()) // Capitalize the first letter
+    .trim(); // Remove any leading/trailing spaces
+}

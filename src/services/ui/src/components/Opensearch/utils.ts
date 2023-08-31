@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable camelcase */
-import { OsAggregations, OsFilterable, OsQueryState } from "shared-types";
+import { OsFilterable, OsQueryState } from "shared-types";
 
 const filterMapQueryReducer = (
   state: Record<OsFilterable["prefix"], any[]>,
@@ -28,7 +28,11 @@ const filterMapQueryReducer = (
     if (filter.value) {
       state[filter.prefix].push({
         query_string: {
-          fields: ["id", "submitterName", "leadAnalyst"],
+          fields: [
+            "id.keyword",
+            "submitterName.keyword",
+            "leadAnalyst.keyword",
+          ],
           query: `(${filter.value}) OR (*${filter.value}*)`,
         },
       });
@@ -71,15 +75,27 @@ export const sortQueryBuilder = (sort: OsQueryState["sort"]) => {
   return { sort: [{ [sort.field]: sort.order }] };
 };
 
-export const createBucketOptions = (aggregations: OsAggregations) => {
-  return Object.entries(aggregations).reduce((ACC, [key, value]) => {
-    if (!Array.isArray(value?.buckets)) return ACC;
+// export const createBucketOptions = (aggregations: OsAggregations) => {
+//   return Object.entries(aggregations).reduce((ACC, [key, value]) => {
+//     if (!Array.isArray(value?.buckets)) return ACC;
 
-    ACC[key] = value.buckets.map((BUCK) => ({
-      label: `${BUCK.key} (${BUCK.doc_count})`,
-      value: BUCK.key,
-    }));
+//     ACC[key] = value.buckets.map((BUCK) => ({
+//       label: `${BUCK.key} (${BUCK.doc_count})`,
+//       value: BUCK.key,
+//     }));
 
-    return ACC;
-  }, {} as OsQueryState["buckets"]);
+//     return ACC;
+//   }, {} as OsQueryState["buckets"]);
+// };
+
+export const createSearchFilterable = (value?: string) => {
+  if (!value) return [];
+  return [
+    {
+      type: "global_search",
+      field: "",
+      value,
+      prefix: "must",
+    } as const,
+  ];
 };

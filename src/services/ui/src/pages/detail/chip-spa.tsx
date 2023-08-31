@@ -7,6 +7,7 @@ import {
   ChipSpaPackageDetails,
   DetailsSection,
   LoadingSpinner,
+  RaiResponses,
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
@@ -87,12 +88,13 @@ export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
         <DetailsSection id="attachments" title="Attachments">
           <Attachmentslist {...data?._source} />
         </DetailsSection>
+        <RaiResponses {...data?._source} />
         <DetailsSection id="additional-info" title="Additional Information">
           <AdditionalInfo
             additionalInformation={data?._source.additionalInformation}
           />
-          <SubmissionInfo {...data?._source} />
         </DetailsSection>
+        <SubmissionInfo {...data?._source} />
       </div>
     </div>
   );
