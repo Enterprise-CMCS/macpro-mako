@@ -33,3 +33,20 @@
   .usa-banner__inner {
     max-width: 80rem;
   }
+
+  .usa-footer__primary-section div:first-child {
+    max-width: 80rem;
+    margin:auto
+  }
+
+  .usa-footer__secondary-section div:first-child {
+    max-width: 80rem;
+    margin:auto;
+  }
+
+  @media (min-width: 1350px) {
+    .usa-footer__secondary-section div:first-child {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+  }

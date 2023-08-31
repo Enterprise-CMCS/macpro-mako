@@ -24,7 +24,7 @@ export const Pagination: FC<Props> = (props) => {
       <div className="tw-hidden sm:tw-flex sm:tw-flex-1 sm:tw-items-center sm:tw-justify-between">
         <div className="tw-flex tw-gap-6">
           <p className="tw-flex tw-gap-2 tw-text-sm tw-text-gray-700">
-            items per page:
+            Records per page:
             <select
               className="tw-font-bold tw-cursor-pointer tw-border-[1px] tw-mt-[-1px]"
               value={props.pageSize}
@@ -40,7 +40,7 @@ export const Pagination: FC<Props> = (props) => {
             <span className="tw-font-bold">{state.upperBoundValue}</span>
             of
             <span className="tw-font-bold">{props.count}</span>
-            items
+            records
           </p>
         </div>
         <div>

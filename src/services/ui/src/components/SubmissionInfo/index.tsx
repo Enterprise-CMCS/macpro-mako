@@ -7,7 +7,7 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
   }
   const submissionDetails = [
     {
-      label: "Submitter",
+      label: "Submitted By",
       value: <p className="text-lg">{data.submitterName || "None"}</p>,
     },
     {
