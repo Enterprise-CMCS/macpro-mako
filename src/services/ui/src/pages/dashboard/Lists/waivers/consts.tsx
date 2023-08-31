@@ -39,7 +39,9 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
     field: "actionType.keyword",
     label: "Sub Type",
     cell: (data) =>
-      data.actionType ? LABELS[data.actionType as keyof typeof LABELS] : "",
+      data.actionType
+        ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
+        : "",
   },
   {
     field: "status.keyword",

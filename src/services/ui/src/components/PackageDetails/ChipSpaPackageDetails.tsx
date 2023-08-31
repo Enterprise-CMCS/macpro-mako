@@ -21,7 +21,7 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
     {
       label: "Sub Type",
       value: data.actionType
-        ? LABELS[data.actionType as keyof typeof LABELS]
+        ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
         : "N/A",
     },
     {
