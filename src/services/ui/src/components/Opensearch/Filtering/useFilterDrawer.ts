@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import type { OsField } from "./types";
 import * as Consts from "./consts";
 import { useOsAggregate, useOsParams } from "../useOpensearch";
 import { OsFilterValue, OsRangeValue } from "shared-types";
+import { useLabelMapping } from "@/hooks/useLabelMappings";
 
 export const useFilterDrawer = () => {
   const [filters, setFilters] = useState(Consts.FILTER_GROUPS);
   const [open, setOpen] = useState(false);
   const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const params = useOsParams();
-  const aggs = useOsAggregate();
+  const labelMap = useLabelMapping();
+  const _aggs = useOsAggregate();
 
   const onClose = (updateOpen: boolean): void => {
     setOpen(updateOpen);
@@ -79,6 +81,18 @@ export const useFilterDrawer = () => {
     });
     setAccordionValues(updateAccordions);
   }, [open]);
+
+  const aggs = useMemo(() => {
+    return Object.entries(_aggs || {}).reduce((STATE, [KEY, AGG]) => {
+      return {
+        ...STATE,
+        [KEY]: AGG.buckets.map((BUCK) => ({
+          label: `${labelMap[BUCK.key] || BUCK.key} (${BUCK.doc_count})`,
+          value: BUCK.key,
+        })),
+      };
+    }, {} as Record<OsField, { label: string; value: string }[]>);
+  }, [_aggs]);
 
   return {
     aggs,

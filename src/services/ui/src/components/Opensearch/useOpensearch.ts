@@ -38,8 +38,8 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsParamsState>> = {
  * - TODO: add index scope
  * - FIX: Initial render fires useEffect twice - 2 os requests
  */
-export const useOsQuery = (init?: Partial<OsQueryState>) => {
-  const params = useOsParams(init);
+export const useOsQuery = () => {
+  const params = useOsParams();
   const [data, setData] = useState<SearchData>();
   const { mutateAsync, isLoading, error } = useOsSearch();
 
@@ -72,6 +72,7 @@ export const useOsQuery = (init?: Partial<OsQueryState>) => {
 export const useOsAggregate = () => {
   const { state } = useOsParams();
   const aggs = useQuery({
+    refetchOnWindowFocus: false,
     queryKey: [state.tab],
     queryFn: (props) => {
       return getSearchData({
@@ -95,8 +96,8 @@ export const useOsAggregate = () => {
             size: 10,
           },
         ],
-        filters: [...(DEFAULT_FILTERS[props.queryKey[0]].filters || [])],
-        pagination: { number: 0, size: 0 },
+        filters: DEFAULT_FILTERS[props.queryKey[0]].filters || [],
+        pagination: { number: 0, size: 1 },
       });
     },
   });
@@ -106,7 +107,7 @@ export const useOsAggregate = () => {
 
 export type OsParamsState = OsQueryState & { tab: OsTab };
 
-export const useOsParams = (init?: Partial<OsParamsState>) => {
+export const useOsParams = () => {
   return useParams<OsParamsState>({
     key: "os",
     initValue: {

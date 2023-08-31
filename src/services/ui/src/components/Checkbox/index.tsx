@@ -55,7 +55,7 @@ export const CheckboxGroup: React.FC<{
       {props.options.map((OPT) => (
         <Checkbox
           key={`CHECK-${OPT.value}`}
-          label={OPT.value}
+          label={OPT.label}
           checked={props.value.includes(OPT.value)}
           onCheckedChange={(c) => {
             const filtered = props.value.filter((f) => f !== OPT.value);
