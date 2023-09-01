@@ -25,15 +25,18 @@ const filterMapQueryReducer = (
   }
 
   if (filter.type === "global_search") {
+    const query = [`(${filter.value})`, `(*${filter.value}*)`]
+      .flatMap((s) => [s, s.toUpperCase(), s.toLocaleLowerCase()])
+      .join(" OR ");
     if (filter.value) {
       state[filter.prefix].push({
         query_string: {
           fields: [
             "id.keyword",
             "submitterName.keyword",
-            "leadAnalyst.keyword",
+            "leadAnalystName.keyword",
           ],
-          query: `(${filter.value}) OR (*${filter.value}*)`,
+          query,
         },
       });
     }
