@@ -37,7 +37,7 @@ const filterMapQueryReducer = (
           fields: [
             "id.keyword",
             "submitterName.keyword",
-            "leadAnalyst.keyword",
+            "leadAnalystName.keyword",
           ],
           query,
         },
