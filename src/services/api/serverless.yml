@@ -93,6 +93,7 @@ functions:
       region: ${self:provider.region}
       osDomain: ${param:osDomain}
       onemacLegacyS3AccessRoleArn: ${self:custom.onemacLegacyS3AccessRoleArn}
+    memorySize: 256
     events:
       - http:
           path: /getAttachmentUrl
