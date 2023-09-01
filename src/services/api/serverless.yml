@@ -64,7 +64,7 @@ params:
   production:
     provisionedConcurrency: 10
   default:
-    provisionedConcurrency: 1
+    provisionedConcurrency: 0
 
 functions:
   search:
