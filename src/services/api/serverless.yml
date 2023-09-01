@@ -58,13 +58,21 @@ custom:
 
 params:
   master:
-    provisionedConcurrency: 10
+    searchProvisionedConcurrency: 4
+    itemProvisionedConcurrency: 2
+    getAttachmentUrlProvisionedConcurrency: 2
   val:
-    provisionedConcurrency: 10
+    searchProvisionedConcurrency: 4
+    itemProvisionedConcurrency: 2
+    getAttachmentUrlProvisionedConcurrency: 2
   production:
-    provisionedConcurrency: 10
+    searchProvisionedConcurrency: 10
+    itemProvisionedConcurrency: 5
+    getAttachmentUrlProvisionedConcurrency: 5
   default:
-    provisionedConcurrency: 1
+    searchProvisionedConcurrency: 1
+    itemProvisionedConcurrency: 1
+    getAttachmentUrlProvisionedConcurrency: 0
 
 functions:
   search:
@@ -84,7 +92,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:provisionedConcurrency}
+    provisionedConcurrency: ${param:searchProvisionedConcurrency}
   getAttachmentUrl:
     handler: handlers/getAttachmentUrl.handler
     maximumRetryAttempts: 0
@@ -103,7 +111,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:provisionedConcurrency}
+    provisionedConcurrency: ${param:getAttachmentUrlProvisionedConcurrency}
   item:
     handler: handlers/item.handler
     maximumRetryAttempts: 0
@@ -121,7 +129,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:provisionedConcurrency}
+    provisionedConcurrency: ${param:itemProvisionedConcurrency}
 resources:
   Resources:
     ApiGateway400ErrorCount:
