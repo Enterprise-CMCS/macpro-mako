@@ -58,13 +58,25 @@ custom:
 
 params:
   master:
-    provisionedConcurrency: 10
+    provisionedConcurrency: 
+      search: 4
+      item: 2
+      getAttachmentUrl: 2
   val:
-    provisionedConcurrency: 10
+    provisionedConcurrency: 
+      search: 4
+      item: 2
+      getAttachmentUrl: 2
   production:
-    provisionedConcurrency: 10
+    provisionedConcurrency: 
+      search: 10
+      item: 5
+      getAttachmentUrl: 5
   default:
-    provisionedConcurrency: 0
+    provisionedConcurrency: 
+      search: 1
+      item: 1
+      getAttachmentUrl: 0
 
 functions:
   search:
@@ -73,7 +85,6 @@ functions:
     environment:
       region: ${self:provider.region}
       osDomain: ${param:osDomain}
-    memorySize: 256
     events:
       - http:
           path: /search
@@ -85,7 +96,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:provisionedConcurrency}
+    provisionedConcurrency: ${param:provisionedConcurrency.search}
   getAttachmentUrl:
     handler: handlers/getAttachmentUrl.handler
     maximumRetryAttempts: 0
@@ -93,7 +104,6 @@ functions:
       region: ${self:provider.region}
       osDomain: ${param:osDomain}
       onemacLegacyS3AccessRoleArn: ${self:custom.onemacLegacyS3AccessRoleArn}
-    memorySize: 256
     events:
       - http:
           path: /getAttachmentUrl
@@ -105,14 +115,13 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:provisionedConcurrency}
+    provisionedConcurrency: ${param:provisionedConcurrency.getAttachmentUrl}
   item:
     handler: handlers/item.handler
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
       osDomain: ${param:osDomain}
-    memorySize: 256
     events:
       - http:
           path: /item
@@ -124,7 +133,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:provisionedConcurrency}
+    provisionedConcurrency: ${param:provisionedConcurrency.item}
 resources:
   Resources:
     ApiGateway400ErrorCount:
