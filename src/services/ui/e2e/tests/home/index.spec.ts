@@ -19,10 +19,8 @@ test("see frequesntly asked questions header when in faq page", async ({ page })
 test("see dahsboard link when log in", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Sign In" }).click();
-  await page.getByRole("textbox", { name: "name@host.com" }).click();
-  await page.getByRole("textbox", { name: "name@host.com" }).fill(testUsers.state);
-  await page.getByRole("textbox", { name: "Password" }).click();
-  await page.getByRole("textbox", { name: "Password" }).fill(password);
+  await page.getByRole("textbox", { name: "name@host.com" }).type(testUsers.state);
+  await page.getByRole("textbox", { name: "Password" }).type(password);
   await page.getByRole("button", { name: "submit" }).click();
   await page.getByRole("link", { name: "Dashboard" }).click();
 
@@ -33,12 +31,10 @@ test("see dahsboard link when log in", async ({ page }) => {
 test("failed incorrect login username", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Sign In" }).click();
-  await page.getByRole("textbox", { name: "name@host.com" }).click();
-  await page.getByRole("textbox", { name: "name@host.com" }).fill(".");
-  await page.getByRole("textbox", { name: "Password" }).click();
-  await page.getByRole("textbox", { name: "Password" }).fill(testUsers.state);
+  await page.getByRole("textbox", { name: "name@host.com" }).type(".");
+  await page.getByRole("textbox", { name: "Password" }).type(password);
   await page.getByRole("button", { name: "submit" }).click();
   await page.getByRole("paragraph").isVisible();
-  const paragraph = await page.$("p:has-text(\"The username or password you entered is invalid\")");
-  expect(paragraph).toBeTruthy();
+  const invalidInputTest = await page.$("p:has-text(\"The username or password you entered is invalid\")");
+  expect(invalidInputTest).toBeTruthy();
 });
