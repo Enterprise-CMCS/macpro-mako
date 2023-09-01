@@ -21,7 +21,7 @@ if [ "$CI" != "true" ]; then
     case $selectedshell in
       "zsh")
         shell=$selectedshell
-        shellprofile="$HOME/.zshrc"
+        shellprofile="$HOME/.zshenv"
         macprorcfile="$HOME/.macprorc"
         ;;
 
