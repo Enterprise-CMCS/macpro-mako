@@ -1,12 +1,5 @@
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTrigger,
-} from "@/components/Sheet";
 import { SearchForm } from "@/components";
 import { FC } from "react";
-import { Icon, Typography } from "@enterprise-cmcs/macpro-ux-lib";
 import { useOsParams } from "../useOpensearch";
 import { OsExportButton } from "@/components/ExportButton";
 import { useOsContext } from "../Provider";

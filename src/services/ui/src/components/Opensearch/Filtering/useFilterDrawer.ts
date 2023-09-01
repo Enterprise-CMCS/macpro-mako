@@ -3,7 +3,7 @@ import type { OsField } from "./types";
 import * as Consts from "./consts";
 import { useOsAggregate, useOsParams } from "../useOpensearch";
 import { OsFilterValue, OsRangeValue } from "shared-types";
-import { useLabelMapping } from "@/hooks/useLabelMappings";
+import { useLabelMapping } from "@/hooks";
 
 export const useFilterDrawer = () => {
   const [filters, setFilters] = useState(Consts.FILTER_GROUPS);
