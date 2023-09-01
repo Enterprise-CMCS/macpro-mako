@@ -112,6 +112,7 @@ functions:
     environment:
       region: ${self:provider.region}
       osDomain: ${param:osDomain}
+    memorySize: 256
     events:
       - http:
           path: /item
