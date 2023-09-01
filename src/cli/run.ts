@@ -101,34 +101,6 @@ yargs(process.argv.slice(2))
       );
     }
   )
-  // .command(
-  //   "e2e",
-  //   "run e2e tests.",
-  //   {},
-  //   async () => {
-  //     await install_deps_for_services();
-  //     await runner.run_command_and_output(
-  //       `Install playwright`,
-  //       ["yarn", "playwright", "install", "--with-deps"],
-  //       "."
-  //     );
-  //     await runner.run_command_and_output(`e2e tests`, ["yarn", "e2e"], ".");
-  //   }
-  // )
-  // .command(
-  //   "e2e:ui",
-  //   "run e2e:ui tests.",
-  //   {},
-  //   async () => {
-  //     await install_deps_for_services();
-  //     await runner.run_command_and_output(
-  //       `Install playwright`,
-  //       ["yarn", "playwright", "install", "--with-deps"],
-  //       "."
-  //     );
-  //     await runner.run_command_and_output(`e2e:ui tests`, ["yarn", "e2e:ui"], ".");
-  //   }
-  // )
   .command(
     "e2e",
     "run e2e tests.",

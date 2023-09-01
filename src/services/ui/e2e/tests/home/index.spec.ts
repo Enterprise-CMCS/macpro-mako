@@ -1,35 +1,38 @@
 import { test, expect } from "@playwright/test";
-import { username } from "e2e/utils/users";
+import { testUsers } from "e2e/utils/users";
+import { text } from "stream/consumers";
+//testUsers = { state: "george@example.com", cmsAdmin: "cmsadmin@example.com" }
 
-const password = process.env.VITE_BOOTSTRAP_USERS_PW!;
+const password = process.env.BOOTSTRAP_USERS_PW!;
 
 test("has title", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle(/CMS MAKO/);
 });
 
-test("has faq Page", async ({ page }) => {
+test("see frequesntly asked questions header when in faq page", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: "FAQ" }).click();
-  expect(page).toHaveURL(/.*faq/);
+
+  const foundFaqHeading = await page.getByRole("heading", { name: "Frequently Asked Questions" }).isVisible();
+  expect(foundFaqHeading).toBeTruthy();
 });
 
-test("log in pass test", async ({ page }) => {
+test("see dahsboard link when log in", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Sign In" }).click();
   await page.getByRole("textbox", { name: "name@host.com" }).click();
-  await page.getByRole("textbox", { name: "name@host.com" }).fill(username);
+  await page.getByRole("textbox", { name: "name@host.com" }).fill(testUsers.state);
   await page.getByRole("textbox", { name: "Password" }).click();
   await page.getByRole("textbox", { name: "Password" }).fill(password);
   await page.getByRole("button", { name: "submit" }).click();
+  await page.getByRole("link", { name: "Dashboard" }).click();
 
-  const isLoggedIn = await page.getByRole("link", { name: "Dashboard" }).isVisible();
-  if (isLoggedIn) {
-    expect(isLoggedIn).toBeTruthy();
-  }
+  const dashboardLinkVisible = await page.getByRole("link", { name: "Dashboard" }).isVisible();
+  expect(dashboardLinkVisible).toBeTruthy();
 });
 
-test("log in fail test", async ({ page }) => {
+test("failed incorrect login username", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Sign In" }).click();
   await page.getByRole("textbox", { name: "name@host.com" }).click();
@@ -37,13 +40,6 @@ test("log in fail test", async ({ page }) => {
   await page.getByRole("textbox", { name: "Password" }).click();
   await page.getByRole("textbox", { name: "Password" }).fill(password);
   await page.getByRole("button", { name: "submit" }).click();
-
-  const isLoggedIn = await page.getByRole("link", { name: "Dashboard" }).isVisible();
-  const isLoginFailed = await page.getByRole("paragraph").click();
-  if (isLoggedIn) {
-    expect(isLoggedIn).toBeTruthy();
-  }
-  else {
-    expect(isLoginFailed).toBeTruthy;
-  }
+  const logginErrorMessage = await page.getByRole("paragraph", { name: "The username or password you entered is invalid" }).isVisible();
+  expect(logginErrorMessage).toBeTruthy;
 });
