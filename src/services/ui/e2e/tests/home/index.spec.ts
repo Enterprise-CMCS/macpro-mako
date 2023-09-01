@@ -1,7 +1,5 @@
 import { test, expect } from "@playwright/test";
 import { testUsers } from "e2e/utils/users";
-import { text } from "stream/consumers";
-//testUsers = { state: "george@example.com", cmsAdmin: "cmsadmin@example.com" }
 
 const password = process.env.BOOTSTRAP_USERS_PW!;
 
@@ -38,8 +36,9 @@ test("failed incorrect login username", async ({ page }) => {
   await page.getByRole("textbox", { name: "name@host.com" }).click();
   await page.getByRole("textbox", { name: "name@host.com" }).fill(".");
   await page.getByRole("textbox", { name: "Password" }).click();
-  await page.getByRole("textbox", { name: "Password" }).fill(password);
+  await page.getByRole("textbox", { name: "Password" }).fill(testUsers.state);
   await page.getByRole("button", { name: "submit" }).click();
-  const logginErrorMessage = await page.getByRole("paragraph", { name: "The username or password you entered is invalid" }).isVisible();
-  expect(logginErrorMessage).toBeTruthy;
+  await page.getByRole("paragraph").isVisible();
+  const paragraph = await page.$("p:has-text(\"The username or password you entered is invalid\")");
+  expect(paragraph).toBeTruthy();
 });
