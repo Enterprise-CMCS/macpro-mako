@@ -51,7 +51,11 @@ export const OsExportButton = () => {
     const filters = DEFAULT_FILTERS[params.state.tab]?.filters ?? [];
 
     const searchFilter = createSearchFilterable(params.state.search);
-    const osData = await getAllSearchData([...filters, ...searchFilter]);
+    const osData = await getAllSearchData([
+      ...params.state.filters,
+      ...filters,
+      ...searchFilter,
+    ]);
 
     const sourceItems = osData?.map((hit) => {
       const filteredHit = formatDataForExport({ ...hit._source }, user?.isCms);

@@ -23,7 +23,7 @@ export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
 
   return (
-    <Sheet open={hook.open} onOpenChange={hook.onClose}>
+    <Sheet open={hook.open} onOpenChange={hook.onDrawerChange}>
       <SheetTrigger>
         <div className="flex flex-row item-center border-slate-100 px-4">
           <Icon name="filter_list" />
@@ -48,21 +48,21 @@ export const OsFilterDrawer = () => {
                 {PK.component === "multiSelect" && (
                   <FilterableSelect
                     value={hook.filters[PK.field]?.value as string[]}
-                    onChange={hook.onChange(PK.field)}
+                    onChange={hook.onFilterChange(PK.field)}
                     options={hook.aggs?.[PK.field]}
                   />
                 )}
                 {PK.component === "multiCheck" && (
                   <FilterableCheckbox
                     value={hook.filters[PK.field]?.value as string[]}
-                    onChange={hook.onChange(PK.field)}
+                    onChange={hook.onFilterChange(PK.field)}
                     options={hook.aggs?.[PK.field]}
                   />
                 )}
                 {PK.component === "dateRange" && (
                   <FilterableDateRange
                     value={hook.filters[PK.field]?.value as OsRangeValue}
-                    onChange={hook.onChange(PK.field)}
+                    onChange={hook.onFilterChange(PK.field)}
                   />
                 )}
               </AccordionContent>

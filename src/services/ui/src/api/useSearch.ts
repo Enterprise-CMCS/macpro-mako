@@ -6,9 +6,9 @@ import {
 } from "@/components/Opensearch/utils";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactQueryApiError, SearchData } from "shared-types";
 import type {
   OsQueryState,
+  ReactQueryApiError,
   OsFilterable,
   OsAggQuery,
   OsMainSearchResponse,
@@ -38,32 +38,22 @@ export const getSearchData = async (
 
 export const getAllSearchData = async (filters?: OsFilterable[]) => {
   if (!filters) return;
-  let gettingData = true;
-  let page = 0;
-  const SIZE = 1000;
 
-  const allHits: SearchData["hits"][] = [];
-
-  while (gettingData && page * SIZE < 10000) {
-    const searchData = (await API.post("os", "/search", {
+  const recursiveSearch = async (
+    startPage: number
+  ): Promise<OsMainSearchResponse["hits"]["hits"]> => {
+    const searchData = await API.post("os", "/search", {
       body: {
         ...filterQueryBuilder(filters),
-        ...paginationQueryBuilder({
-          number: page,
-          size: 1000,
-        }),
+        ...paginationQueryBuilder({ number: startPage, size: 1000 }),
       },
-    })) as OsMainSearchResponse;
+    });
 
-    if (searchData?.hits.hits.length === 0) {
-      gettingData = false;
-    } else {
-      allHits.push([...searchData.hits.hits]);
-      page++;
-    }
-  }
+    if (searchData?.hits.hits.length < 1000) return searchData.hits.hits || [];
+    return searchData.hits.hits.concat(await recursiveSearch(startPage + 1));
+  };
 
-  return allHits.flat();
+  return await recursiveSearch(0);
 };
 
 export const useOsSearch = (

@@ -13,7 +13,7 @@ export const useFilterDrawer = () => {
   const labelMap = useLabelMapping();
   const _aggs = useOsAggregate();
 
-  const onClose = (updateOpen: boolean): void => {
+  const onDrawerChange = (updateOpen: boolean) => {
     setOpen(updateOpen);
     if (updateOpen) return;
 
@@ -38,7 +38,7 @@ export const useFilterDrawer = () => {
     }));
   };
 
-  const onChange = (field: OsField) => {
+  const onFilterChange = (field: OsField) => {
     return (value: OsFilterValue) => {
       setFilters((state: any) => {
         const copyState = { ...state };
@@ -99,8 +99,8 @@ export const useFilterDrawer = () => {
     open,
     accordionValues,
     filters,
-    onChange,
-    onClose,
+    onFilterChange,
+    onDrawerChange,
     onAccordionChange,
   };
 };
