@@ -50,7 +50,7 @@ export const Dashboard = () => {
             value={query.state.tab}
             onValueChange={(tab) =>
               query.onSet(
-                (s) => ({ ...s, tab: tab as OsTab, search: "" }),
+                (s) => ({ ...s, filters: [], tab: tab as OsTab, search: "" }),
                 true
               )
             }

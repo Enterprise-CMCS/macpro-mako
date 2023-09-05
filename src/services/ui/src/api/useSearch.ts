@@ -6,23 +6,31 @@ import {
 } from "@/components/Opensearch/utils";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactQueryApiError, SearchData } from "shared-types";
-import type { OsQueryState, OsFilterable, OsAgg } from "shared-types";
+import type {
+  OsQueryState,
+  ReactQueryApiError,
+  OsFilterable,
+  OsAggQuery,
+  OsMainSearchResponse,
+} from "shared-types";
 
 type QueryProps = {
   filters: OsQueryState["filters"];
   sort?: OsQueryState["sort"];
   pagination: OsQueryState["pagination"];
-  aggs?: OsAgg[];
+  aggs?: OsAggQuery[];
 };
 
-export const getSearchData = async (props: QueryProps): Promise<SearchData> => {
+export const getSearchData = async (
+  props: QueryProps
+): Promise<OsMainSearchResponse> => {
   const searchData = await API.post("os", "/search", {
     body: {
       ...filterQueryBuilder(props.filters),
       ...paginationQueryBuilder(props.pagination),
       ...(!!props.sort && sortQueryBuilder(props.sort)),
       ...(!!props.aggs && aggQueryBuilder(props.aggs)),
+      track_total_hits: true,
     },
   });
 
@@ -31,38 +39,32 @@ export const getSearchData = async (props: QueryProps): Promise<SearchData> => {
 
 export const getAllSearchData = async (filters?: OsFilterable[]) => {
   if (!filters) return;
-  let gettingData = true;
-  let page = 0;
-  const SIZE = 1000;
 
-  const allHits: SearchData["hits"][] = [];
-
-  while (gettingData && page * SIZE < 10000) {
-    const searchData = (await API.post("os", "/search", {
+  const recursiveSearch = async (
+    startPage: number
+  ): Promise<OsMainSearchResponse["hits"]["hits"]> => {
+    const searchData = await API.post("os", "/search", {
       body: {
         ...filterQueryBuilder(filters),
-        ...paginationQueryBuilder({
-          number: page,
-          size: 1000,
-        }),
+        ...paginationQueryBuilder({ number: startPage, size: 1000 }),
       },
-    })) as SearchData;
+    });
 
-    if (searchData?.hits.length === 0) {
-      gettingData = false;
-    } else {
-      allHits.push([...searchData.hits]);
-      page++;
-    }
-  }
+    if (searchData?.hits.hits.length < 1000) return searchData.hits.hits || [];
+    return searchData.hits.hits.concat(await recursiveSearch(startPage + 1));
+  };
 
-  return allHits.flat();
+  return await recursiveSearch(0);
 };
 
 export const useOsSearch = (
-  options?: UseMutationOptions<SearchData, ReactQueryApiError, QueryProps>
+  options?: UseMutationOptions<
+    OsMainSearchResponse,
+    ReactQueryApiError,
+    QueryProps
+  >
 ) => {
-  return useMutation<SearchData, ReactQueryApiError, QueryProps>(
+  return useMutation<OsMainSearchResponse, ReactQueryApiError, QueryProps>(
     (props) => getSearchData(props),
     options
   );

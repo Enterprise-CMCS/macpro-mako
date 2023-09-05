@@ -15,7 +15,7 @@
     <img alt="Slack" src="https://img.shields.io/badge/Slack-channel-purple.svg">
   </a>
   <a href="https://codeclimate.com/github/Enterprise-CMCS/macpro-mako/maintainability">
-    <img src="https://api.codeclimate.com/v1/badges/81d2233c0cfa7557c7ab/maintainability" />
+    <img src="https://api.codeclimate.com/v1/badges/f4480e77af640e6fa864/maintainability" />
   </a>
   <a href="https://dependabot.com/">
     <img alt="Dependabot" src="https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot">

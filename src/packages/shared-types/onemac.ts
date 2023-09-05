@@ -66,7 +66,7 @@ export const transformOnemac = (id: string) => {
     additionalInformation: data.additionalInformation,
     submitterEmail: data.submitterEmail,
     submitterName: data.submitterName,
-    origin: "OneMAC",
+    origin: "oneMAC",
   }));
 };
 

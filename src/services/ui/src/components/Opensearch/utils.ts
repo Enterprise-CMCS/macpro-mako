@@ -1,6 +1,4 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable camelcase */
-import { OsAgg, OsFilterable, OsQueryState } from "shared-types";
+import { OsAggQuery, OsFilterable, OsQueryState } from "shared-types";
 
 const filterMapQueryReducer = (
   state: Record<OsFilterable["prefix"], any[]>,
@@ -27,19 +25,12 @@ const filterMapQueryReducer = (
   }
 
   if (filter.type === "global_search") {
-    const query = [`(${filter.value})`, `(*${filter.value}*)`]
-      .flatMap((s) => [s, s.toUpperCase(), s.toLocaleLowerCase()])
-      .join(" OR ");
-
     if (filter.value) {
       state[filter.prefix].push({
-        query_string: {
-          fields: [
-            "id.keyword",
-            "submitterName.keyword",
-            "leadAnalyst.keyword",
-          ],
-          query,
+        multi_match: {
+          type: "best_fields",
+          query: filter.value,
+          fields: ["id", "submitterName", "leadAnalystName"],
         },
       });
     }
@@ -81,13 +72,13 @@ export const sortQueryBuilder = (sort: OsQueryState["sort"]) => {
   return { sort: [{ [sort.field]: sort.order }] };
 };
 
-export const aggQueryBuilder = (aggs: OsAgg[]) => {
+export const aggQueryBuilder = (aggs: OsAggQuery[]) => {
   return {
     aggs: aggs.reduce((STATE, AGG) => {
       STATE[AGG.name] = {
         [AGG.type]: {
           field: AGG.field,
-          size: AGG.size,
+          ...(AGG.size && { size: AGG.size }),
         },
       };
       return STATE;

@@ -1,5 +1,5 @@
-import { type DateRange } from "react-day-picker";
 import { Icon, Typography } from "@enterprise-cmcs/macpro-ux-lib";
+import { OsRangeValue } from "shared-types";
 
 import {
   Sheet,
@@ -7,7 +7,6 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@/components/Sheet";
-import { CheckboxGroup } from "@/components/Checkbox";
 import {
   Accordion,
   AccordionContent,
@@ -17,16 +16,14 @@ import {
 
 import { FilterableSelect } from "./FilterableSelect";
 import { FilterableDateRange } from "./FilterableDateRange";
-import { useDrawer } from "./useFilterDrawer";
-import { mapOsBucketToOption } from "./utils";
-import { MOCK } from "./consts";
+import { FilterableCheckbox } from "./FilterableCheckbox";
+import { useFilterDrawer } from "./useFilterDrawer";
 
 export const OsFilterDrawer = () => {
-  const hook = useDrawer();
-  // eventuallly I'll grab the buckets through
+  const hook = useFilterDrawer();
 
   return (
-    <Sheet open={hook.open} onOpenChange={hook.onClose}>
+    <Sheet open={hook.open} onOpenChange={hook.onDrawerChange}>
       <SheetTrigger>
         <div className="flex flex-row item-center border-slate-100 px-4">
           <Icon name="filter_list" />
@@ -39,62 +36,38 @@ export const OsFilterDrawer = () => {
         </SheetHeader>
         <Accordion
           value={hook.accordionValues}
-          onValueChange={(s) => hook.setAccordionValues(s)}
+          onValueChange={hook.onAccordionChange}
           type="multiple"
         >
-          {Object.entries(hook.filters).map(([GF, YS]) => {
-            return (
-              <AccordionItem key={`filter-${GF}`} value={GF}>
-                <AccordionTrigger className="underline">
-                  {YS.label}
-                </AccordionTrigger>
-                <AccordionContent>
-                  {(() => {
-                    if (YS.component === "multiSelect") {
-                      return (
-                        <FilterableSelect
-                          value={hook.getValue(YS.type, YS.field) as string[]}
-                          onChange={hook.onChange(YS.type, YS.field)}
-                          options={MOCK.aggregations[YS.field].buckets.map(
-                            mapOsBucketToOption
-                          )}
-                        />
-                      );
-                    }
-
-                    if (YS.component === "multiCheck") {
-                      return (
-                        <CheckboxGroup
-                          value={hook.getValue(YS.type, YS.field) as string[]}
-                          onChange={hook.onChange(YS.type, YS.field)}
-                          options={MOCK.aggregations[YS.field].buckets.map(
-                            mapOsBucketToOption
-                          )}
-                        />
-                      );
-                    }
-
-                    if (YS.component === "dateRange") {
-                      return (
-                        <FilterableDateRange
-                          value={hook.getValue(YS.type, YS.field) as DateRange}
-                          onChange={(d) =>
-                            hook.onChange(
-                              YS.type,
-                              YS.field
-                            )({
-                              gte: d.from?.toISOString(),
-                              lte: d.to?.toISOString(),
-                            })
-                          }
-                        />
-                      );
-                    }
-                  })()}
-                </AccordionContent>
-              </AccordionItem>
-            );
-          })}
+          {Object.values(hook.filters).map((PK) => (
+            <AccordionItem key={`filter-${PK.field}`} value={PK.field}>
+              <AccordionTrigger className="underline">
+                {PK.label}
+              </AccordionTrigger>
+              <AccordionContent>
+                {PK.component === "multiSelect" && (
+                  <FilterableSelect
+                    value={hook.filters[PK.field]?.value as string[]}
+                    onChange={hook.onFilterChange(PK.field)}
+                    options={hook.aggs?.[PK.field]}
+                  />
+                )}
+                {PK.component === "multiCheck" && (
+                  <FilterableCheckbox
+                    value={hook.filters[PK.field]?.value as string[]}
+                    onChange={hook.onFilterChange(PK.field)}
+                    options={hook.aggs?.[PK.field]}
+                  />
+                )}
+                {PK.component === "dateRange" && (
+                  <FilterableDateRange
+                    value={hook.filters[PK.field]?.value as OsRangeValue}
+                    onChange={hook.onFilterChange(PK.field)}
+                  />
+                )}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
         </Accordion>
       </SheetContent>
     </Sheet>
