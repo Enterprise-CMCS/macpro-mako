@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:gui": "vitest --ui"
+    "test:gui": "vitest --ui",
+    "e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@aws-amplify/auth": "^5.4.0",
