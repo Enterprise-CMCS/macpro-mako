@@ -40,7 +40,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
     } else {
       return response<unknown>({
         statusCode: 200,
-        body: results.hits[0],
+        body: results.hits.hits[0],
       });
     }
   } catch (error) {
