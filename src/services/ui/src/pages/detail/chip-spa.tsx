@@ -30,7 +30,7 @@ export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
             key={val}
             href={`#${val.toLowerCase().split(" ").join("-")}`}
             style={{
-              display: "tw-block",
+              display: "block",
               textDecoration: "none",
               marginBottom: "16px",
             }}
