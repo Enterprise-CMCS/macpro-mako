@@ -11,6 +11,7 @@ const config = {
     IDENTITY_POOL_ID: import.meta.env.VITE_COGNITO_IDENTITY_POOL_ID,
     REDIRECT_SIGNIN: import.meta.env.VITE_COGNITO_REDIRECT_SIGNIN,
     REDIRECT_SIGNOUT: import.meta.env.VITE_COGNITO_REDIRECT_SIGNOUT,
+    BOOTSTRAP_USERS_PW: import.meta.env.BOOTSTRAP_USERS_PW,
   },
 };
 
