@@ -100,7 +100,7 @@ export async function search(host:string, index:string, query:any){
   client = client || (await getClient(host));
   try {
     const response = await client.search({
-      index: index,
+      index: index, // index/_doc/id
       body: query,
     });
     return response.body; // will need to return the body
