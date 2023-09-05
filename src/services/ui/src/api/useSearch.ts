@@ -30,6 +30,7 @@ export const getSearchData = async (
       ...paginationQueryBuilder(props.pagination),
       ...(!!props.sort && sortQueryBuilder(props.sort)),
       ...(!!props.aggs && aggQueryBuilder(props.aggs)),
+      track_total_hits: true,
     },
   });
 

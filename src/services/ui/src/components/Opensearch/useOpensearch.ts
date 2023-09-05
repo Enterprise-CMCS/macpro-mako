@@ -95,6 +95,12 @@ export const useOsAggregate = () => {
             type: "terms",
             size: 10,
           },
+          {
+            field: "leadAnalystName.keyword",
+            name: "leadAnalystName.keyword",
+            type: "terms",
+            size: 200,
+          },
         ],
         filters: DEFAULT_FILTERS[props.queryKey[0]].filters || [],
         pagination: { number: 0, size: 1 },

@@ -6,6 +6,15 @@ type DrawerFilterableGroup = {
   component: OsFilterComponentType;
 };
 
+/**
+ * @desc
+ * - label: ui label
+ * - field: opensearch field property (should match key)
+ * - component: filterable component type
+ * - prefix: query prefix
+ * - type: query type
+ * - value: query value
+ */
 export const FILTER_GROUPS: {
   [Key in OsField]?: OsFilterable & DrawerFilterableGroup;
 } = {
@@ -33,9 +42,9 @@ export const FILTER_GROUPS: {
     type: "terms",
     value: [],
   },
-  raiRequestedDate: {
-    label: "RAI Requested Date",
-    field: "raiRequestedDate",
+  submissionDate: {
+    label: "Initial Submission",
+    field: "submissionDate",
     component: "dateRange",
     prefix: "must",
     type: "range",
@@ -48,5 +57,13 @@ export const FILTER_GROUPS: {
     prefix: "must",
     type: "range",
     value: { gte: undefined, lte: undefined },
+  },
+  "leadAnalystName.keyword": {
+    label: "CPOC",
+    field: "leadAnalystName.keyword",
+    component: "multiSelect",
+    prefix: "must",
+    type: "terms",
+    value: [],
   },
 };

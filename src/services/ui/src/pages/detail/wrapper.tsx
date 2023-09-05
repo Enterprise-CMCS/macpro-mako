@@ -18,7 +18,6 @@ export const DetailWrapper: React.FC<DetailWrapperProps> = ({ children }) => {
   const query = useQuery();
   const id = query.get("id") as string;
   const { data, isLoading, error } = useGetItem(id);
-
   if (isLoading) {
     return <LoadingSpinner />;
   }

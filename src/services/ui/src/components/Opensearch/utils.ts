@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable camelcase */
 import { OsAggQuery, OsFilterable, OsQueryState } from "shared-types";
 
 const filterMapQueryReducer = (
@@ -27,19 +25,12 @@ const filterMapQueryReducer = (
   }
 
   if (filter.type === "global_search") {
-    const query = [`(${filter.value})`, `(*${filter.value}*)`]
-      .flatMap((s) => [s, s.toUpperCase(), s.toLocaleLowerCase()])
-      .join(" OR ");
-
     if (filter.value) {
       state[filter.prefix].push({
-        query_string: {
-          fields: [
-            "id.keyword",
-            "submitterName.keyword",
-            "leadAnalystName.keyword",
-          ],
-          query,
+        multi_match: {
+          type: "best_fields",
+          query: filter.value,
+          fields: ["id", "submitterName", "leadAnalystName"],
         },
       });
     }
@@ -87,7 +78,7 @@ export const aggQueryBuilder = (aggs: OsAggQuery[]) => {
       STATE[AGG.name] = {
         [AGG.type]: {
           field: AGG.field,
-          size: AGG.size,
+          ...(AGG.size && { size: AGG.size }),
         },
       };
       return STATE;
