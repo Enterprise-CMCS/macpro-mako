@@ -39,13 +39,13 @@ export const Dashboard = () => {
         isLoading: query.isLoading,
       }}
     >
-      <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between my-4">
+      <div className="tw-max-w-screen-xl tw-mx-auto tw-px-4 lg:tw-px-8">
+        <div className="tw-flex tw-items-center tw-justify-between tw-my-4">
           <UI.Typography size="lg" as="h1">
             Dashboard
           </UI.Typography>
         </div>
-        <div className="w-[100%] items-center justify-center">
+        <div className="tw-w-[100%] tw-items-center tw-justify-center">
           <Tabs
             value={query.state.tab}
             onValueChange={(tab) =>
@@ -56,19 +56,19 @@ export const Dashboard = () => {
             }
           >
             <TabsList>
-              <TabsTrigger value="spas" className="px-6 py-2">
+              <TabsTrigger value="spas" className="tw-px-6 tw-py-2">
                 <UI.Typography
                   size="md"
-                  className="font-bold text-[1.3em]"
+                  className="tw-font-bold tw-text-[1.3em]"
                   as="h1"
                 >
                   SPAs
                 </UI.Typography>
               </TabsTrigger>
-              <TabsTrigger value="waivers" className="px-6 py-2">
+              <TabsTrigger value="waivers" className="tw-px-6 tw-py-2">
                 <UI.Typography
                   size="md"
-                  className="font-bold text-[1.3em]"
+                  className="tw-font-bold tw-text-[1.3em]"
                   as="h1"
                 >
                   Waivers

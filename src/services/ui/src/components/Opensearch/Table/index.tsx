@@ -24,8 +24,8 @@ export const OsTable: FC<{
   };
 
   return (
-    <UI.Table className="flex-1 border-[1px]">
-      <UI.TableHeader className="sticky top-0 bg-white">
+    <UI.Table className="tw-flex-1 tw-border-[1px]">
+      <UI.TableHeader className="tw-sticky tw-top-0 tw-bg-white">
         <UI.TableRow>
           {osColumns.map((TH) => {
             if (TH.hidden) return null;
@@ -51,7 +51,7 @@ export const OsTable: FC<{
           })}
 
           <UI.TableHead
-            className="w-[10px]"
+            className="tw-w-[10px]"
             icon={<VisibilityPopover list={osColumns} onItemClick={onToggle} />}
           />
         </UI.TableRow>
@@ -64,7 +64,7 @@ export const OsTable: FC<{
               return (
                 <UI.TableCell
                   key={`${COL.field}-${DAT._source.id}`}
-                  className="font-medium"
+                  className="tw-font-medium"
                 >
                   {COL.cell(DAT._source)}
                 </UI.TableCell>

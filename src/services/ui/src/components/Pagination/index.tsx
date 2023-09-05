@@ -12,21 +12,21 @@ export const Pagination: FC<Props> = (props) => {
   });
 
   return (
-    <div className="flex items-center justify-between border-t border-gray-200 bg-white py-3">
-      <div className="flex flex-1 justify-between sm:hidden">
-        <div className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+    <div className="tw-flex tw-items-center tw-justify-between tw-border-t tw-border-gray-200 tw-bg-white tw-py-3">
+      <div className="tw-flex tw-flex-1 tw-justify-between sm:tw-hidden">
+        <div className="tw-relative tw-inline-flex tw-items-center tw-rounded-md tw-border tw-border-gray-300 tw-bg-white tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-text-gray-700 hover:tw-bg-gray-50">
           Previous
         </div>
-        <div className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+        <div className="tw-relative tw-ml-3 tw-inline-flex tw-items-center tw-rounded-md tw-border tw-border-gray-300 tw-bg-white tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-text-gray-700 hover:tw-bg-gray-50">
           Next
         </div>
       </div>
-      <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-        <div className="flex gap-6">
-          <p className="flex gap-2 text-sm text-gray-700">
+      <div className="tw-hidden sm:tw-flex sm:tw-flex-1 sm:tw-items-center sm:tw-justify-between">
+        <div className="tw-flex tw-gap-6">
+          <p className="tw-flex tw-gap-2 tw-text-sm tw-text-gray-700">
             Records per page:
             <select
-              className="font-bold cursor-pointer border-[1px] mt-[-1px]"
+              className="tw-font-bold tw-cursor-pointer tw-border-[1px] tw-mt-[-1px]"
               value={props.pageSize}
               onChange={(e) => props.onSizeChange?.(Number(e.target.value))}
             >
@@ -35,27 +35,27 @@ export const Pagination: FC<Props> = (props) => {
               ))}
             </select>
           </p>
-          <p className="flex gap-1 text-sm text-gray-700">
-            <span className="font-bold">{state.lowerBoundValue}</span>-
-            <span className="font-bold">{state.upperBoundValue}</span>
+          <p className="tw-flex tw-gap-1 tw-text-sm tw-text-gray-700">
+            <span className="tw-font-bold">{state.lowerBoundValue}</span>-
+            <span className="tw-font-bold">{state.upperBoundValue}</span>
             of
-            <span className="font-bold">{props.count}</span>
+            <span className="tw-font-bold">{props.count}</span>
             records
           </p>
         </div>
         <div>
           <nav
-            className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+            className="tw-isolate tw-inline-flex -tw-space-x-px tw-rounded-md tw-shadow-sm"
             aria-label="Pagination"
           >
             <button
               onClick={() => props.onPageChange(props.pageNumber - 1)}
               disabled={state.prevDisabled}
-              className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+              className="tw-relative tw-inline-flex tw-items-center tw-rounded-l-md tw-px-2 tw-py-2 tw-text-gray-400 tw-ring-1 tw-ring-inset tw-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:tw-outline-offset-0"
             >
-              <span className="sr-only">Previous</span>
+              <span className="tw-sr-only">Previous</span>
               <svg
-                className="h-5 w-5"
+                className="tw-h-5 tw-w-5"
                 viewBox="0 0 20 20"
                 fill="currentColor"
                 aria-hidden="true"
@@ -73,14 +73,14 @@ export const Pagination: FC<Props> = (props) => {
                 return (
                   <button
                     key={`PAGE-${PAGE}`}
-                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 cursor-pointer"
+                    className="tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-700 tw-ring-1 tw-ring-inset tw-ring-gray-300 focus:tw-outline-offset-0 tw-cursor-pointer"
                   >
                     ...
                     <select
                       onChange={(v) =>
                         props.onPageChange(Number(v.currentTarget.value) - 1)
                       }
-                      className="absolute w-auto h-auto opacity-0 cursor-pointer"
+                      className="tw-absolute tw-w-auto tw-h-auto tw-opacity-0 tw-cursor-pointer"
                     >
                       {PAGE.map((P) => (
                         <option key={`child-page-${P}`} value={P}>
@@ -97,12 +97,12 @@ export const Pagination: FC<Props> = (props) => {
                   key={`PAGE-${PAGE}`}
                   onClick={() => props.onPageChange(PAGE - 1)}
                   className={cn(
-                    "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0",
+                    "tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-900 tw-ring-1 tw-ring-inset tw-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:tw-outline-offset-0",
                     {
-                      "bg-blue-500": isActive,
-                      "focus-visible:outline-indigo-600": isActive,
-                      "text-white": isActive,
-                      "hover:bg-blue-500": isActive,
+                      "tw-bg-blue-500": isActive,
+                      "focus-visible:tw-outline-indigo-600": isActive,
+                      "tw-text-white": isActive,
+                      "hover:tw-bg-blue-500": isActive,
                     }
                   )}
                 >
@@ -114,11 +114,11 @@ export const Pagination: FC<Props> = (props) => {
             <button
               disabled={state.nextDisabled}
               onClick={() => props.onPageChange(props.pageNumber + 1)}
-              className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+              className="tw-relative tw-inline-flex tw-items-center tw-rounded-r-md tw-px-2 tw-py-2 tw-text-gray-400 tw-ring-1 tw-ring-inset tw-ring-gray-300 hover:tw-bg-gray-50 focus:tw-z-20 focus:tw-outline-offset-0"
             >
-              <span className="sr-only">Next</span>
+              <span className="tw-sr-only">Next</span>
               <svg
-                className="h-5 w-5"
+                className="tw-h-5 tw-w-5"
                 viewBox="0 0 20 20"
                 fill="currentColor"
                 aria-hidden="true"

@@ -10,7 +10,7 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
   const context = useOsContext();
 
   return (
-    <div className="flex flex-row gap-2 border-[1px] border-slate-200">
+    <div className="tw-flex tw-flex-row tw-gap-2 tw-border-[1px] tw-border-slate-200">
       <SearchForm
         isSearching={context.isLoading}
         handleSearch={(search) =>

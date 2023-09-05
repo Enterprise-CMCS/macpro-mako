@@ -6,14 +6,14 @@ import { OsTableColumn } from "@/components/Opensearch/Table/types";
 
 export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   {
-    props: { className: "w-[150px]" },
+    props: { className: "tw-w-[150px]" },
     field: "id.keyword",
     label: "SPA ID",
     cell: (data) => {
       if (!data.authority) return <></>;
       return (
         <Link
-          className="cursor-pointer text-blue-600"
+          className="tw-cursor-pointer tw-text-blue-600"
           to={`/details?id=${encodeURIComponent(data.id)}`}
         >
           {data.id}

@@ -75,17 +75,17 @@ export const OsExportButton = () => {
       variant="ghost"
       onClick={handleExport}
       disabled={loading}
-      className="hover:bg-transparent h-full flex gap-2"
+      className="hover:tw-bg-transparent tw-h-full tw-flex tw-gap-2"
     >
       {loading && (
         <motion.div
           animate={{ rotate: "360deg" }}
           transition={{ repeat: Infinity, duration: 0.5 }}
         >
-          <Loader className="w-4 h-4" />
+          <Loader className="tw-w-4 tw-h-4" />
         </motion.div>
       )}
-      {!loading && <Download className="w-4 h-4" />}
+      {!loading && <Download className="tw-w-4 tw-h-4" />}
       Export
     </Button>
   );

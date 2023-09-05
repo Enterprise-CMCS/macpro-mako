@@ -25,12 +25,12 @@ export const OsFilterDrawer = () => {
   return (
     <Sheet open={hook.open} onOpenChange={hook.onDrawerChange}>
       <SheetTrigger>
-        <div className="flex flex-row item-center border-slate-100 px-4">
+        <div className="tw-flex tw-flex-row tw-item-center tw-border-slate-100 tw-px-4">
           <Icon name="filter_list" />
           <Typography size="md">Filters</Typography>
         </div>
       </SheetTrigger>
-      <SheetContent className="bg-white">
+      <SheetContent className="tw-bg-white">
         <SheetHeader>
           <Typography size="lg">Filters</Typography>
         </SheetHeader>

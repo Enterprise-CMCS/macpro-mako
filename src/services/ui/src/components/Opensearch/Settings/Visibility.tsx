@@ -15,8 +15,8 @@ export const VisibilityPopover = <T extends Item>(props: Props<T>) => {
       <UI.PopoverTrigger>
         <Icon name="visibility" />
       </UI.PopoverTrigger>
-      <UI.PopoverContent className="bg-white">
-        <div className="flex flex-col gap-2">
+      <UI.PopoverContent className="tw-bg-white">
+        <div className="tw-flex tw-flex-col tw-gap-2">
           <VisibilityMenu {...props} />
         </div>
       </UI.PopoverContent>
@@ -29,20 +29,20 @@ export const VisiblityItem = <T extends Item>(
 ) => {
   return (
     <div
-      className={cn("flex flex-row gap-2 cursor-pointer", {
-        "text-gray-800": !props.hidden,
-        "text-gray-400": props.hidden,
+      className={cn("tw-flex tw-flex-row tw-gap-2 tw-cursor-pointer", {
+        "tw-text-gray-800": !props.hidden,
+        "tw-text-gray-400": props.hidden,
       })}
       onClick={props.onClick}
     >
       <Icon
         name={!props.hidden ? "visibility" : "visibility_off"}
         className={cn({
-          "text-gray-800": !props.hidden,
-          "text-gray-400": props.hidden,
+          "tw-text-gray-800": !props.hidden,
+          "tw-text-gray-400": props.hidden,
         })}
       />
-      <Typography size="md" className="mt-[-1px]">
+      <Typography size="md" className="tw-mt-[-1px]">
         {props.label}
       </Typography>
     </div>
@@ -51,7 +51,7 @@ export const VisiblityItem = <T extends Item>(
 
 export const VisibilityMenu = <T extends Item>(props: Props<T>) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="tw-flex tw-flex-col tw-gap-2">
       {props.list.map((IT) => (
         <VisiblityItem
           key={`vis-${IT.field}`}
