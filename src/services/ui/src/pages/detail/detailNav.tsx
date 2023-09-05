@@ -10,7 +10,7 @@ export const DetailNav = ({ id, type }: { id: string; type?: string }) => {
       <div className="max-w-screen-xl m-auto lg:px-8">
         <div className="flex items-center">
           <div className="flex align-middle py-4">
-            <button className="text-sky-800" onClick={() => navigate(-1)}>
+            <button className="text-sky-800" onClick={() => navigate(-1)} aria-label="Go Back">
               <ChevronLeftIcon className="w-6 h-6" />
             </button>
             <h1 className="text-xl font-medium pl-4">
