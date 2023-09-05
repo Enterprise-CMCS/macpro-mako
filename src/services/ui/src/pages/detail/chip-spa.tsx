@@ -18,8 +18,8 @@ export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
   const { data: user } = useGetUser();
   if (!data?._source) return <LoadingSpinner />;
   return (
-    <div className="block md:flex">
-      <aside className="flex-none font-bold hidden md:block pr-8">
+    <div className="tw-block md:tw-flex">
+      <aside className="tw-flex-none tw-font-bold tw-hidden md:tw-block tw-pr-8">
         {[
           "Package Overview",
           "Package Details",
@@ -38,13 +38,18 @@ export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
           />
         ))}
       </aside>
-      <div className="flex-1">
-        <section id="package-overview" className="block md:flex mb-8 gap-8">
+      <div className="tw-flex-1">
+        <section
+          id="package-overview"
+          className="tw-block md:tw-flex tw-mb-8 tw-gap-8"
+        >
           <CardWithTopBorder>
             <>
-              <p className="text-gray-600 font-semibold mb-2">Status</p>
+              <p className="tw-text-gray-600 tw-font-semibold tw-mb-2">
+                Status
+              </p>
               <div>
-                <h2 className="text-xl font-semibold mb-2">
+                <h2 className="tw-text-xl tw-font-semibold tw-mb-2">
                   {getStatus(data?._source.status, user?.isCms)}
                 </h2>
               </div>
@@ -52,10 +57,10 @@ export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
           </CardWithTopBorder>
           {/* <CardWithTopBorder>
             <>
-              <p className="text-gray-600 font-semibold mb-2">
+              <p className="tw-text-gray-600 tw-font-semibold tw-mb-2">
                 Package Actions
               </p>
-              <div className="flex flex-col gap-y-2">
+              <div className="tw-flex tw-flex-col tw-gap-y-2">
                 <Link
                   href="#"
                   style={{

@@ -6,24 +6,26 @@ export const Faq = () => {
   return (
     <>
       <div className="bg-sky-100">
-        <div className="max-w-screen-xl m-auto px-4 lg:px-8">
-          <div className="flex items-center">
-            <div className="flex align-middle py-4">
-              <h1 className="text-xl font-medium">
+        <div className="tw-max-w-screen-xl tw-m-auto tw-px-4 lg:tw-px-8">
+          <div className="tw-flex tw-items-center">
+            <div className="tw-flex tw-align-middle tw-py-4">
+              <h1 className="tw-text-xl tw-font-medium">
                 Frequently Asked Questions
               </h1>
             </div>
           </div>
         </div>
       </div>
-      <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
-        <div className="flex-1">
+      <section className="tw-block md:tw-flex md:tw-flex-row tw-max-w-screen-xl tw-m-auto tw-px-4 lg:tw-px-8 tw-pt-8 tw-gap-10">
+        <div className="tw-flex-1">
           {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
-            <article key={sectionTitle} className="mb-8">
-              <h2 className="text-2xl mb-4 text-accent">{sectionTitle}</h2>
+            <article key={sectionTitle} className="tw-mb-8">
+              <h2 className="tw-text-2xl tw-mb-4 text-accent">
+                {sectionTitle}
+              </h2>
               {qanda.map(({ anchorText, answerJSX, question }) => (
                 <AccordionGroup key={anchorText}>
-                  <Accordion hidden id="accordion-1" label={question}>
+                  <Accordion tw-hidden id="accordion-1" label={question}>
                     {answerJSX}
                   </Accordion>
                 </AccordionGroup>
@@ -34,18 +36,18 @@ export const Faq = () => {
         <div>
           <CardWithTopBorder>
             <>
-              <h3 className="text-lg text-bold mb-4">
+              <h3 className="tw-text-lg text-bold tw-mb-4">
                 OneMAC Help Desk Contact Info
               </h3>
               <div>
                 <b>Phone Number</b>
-                <p className="mb-4 text-blue-700">
+                <p className="tw-mb-4 tw-text-blue-700">
                   <a href={`tel:${helpDeskContact.phone}`}>
                     {helpDeskContact.phone}
                   </a>
                 </p>
                 <b>Email</b>
-                <p className="text-blue-700">
+                <p className="tw-text-blue-700">
                   <a href={`mailto:${helpDeskContact.email}`}>
                     {helpDeskContact.email}
                   </a>

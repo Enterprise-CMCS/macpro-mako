@@ -141,12 +141,14 @@ export const oneMACFAQContent: FAQContent[] = [
                 Unfortunately, we are unable to accept .zip or compressed files.
               </i>
             </p>
-            <h3 className="text-bold pt-4 pb-4">Acceptable File Formats</h3>
-            <table className="table-auto">
+            <h3 className="text-bold tw-pt-4 tw-pb-4">
+              Acceptable File Formats
+            </h3>
+            <table className="tw-table-auto">
               <tbody>
                 {FILE_TYPES.map(({ extension, description }, index) => (
                   <tr key={index}>
-                    <td className="pr-8 text-bold">{extension}</td>
+                    <td className="tw-pr-8 text-bold">{extension}</td>
                     <td>{description}</td>
                   </tr>
                 ))}

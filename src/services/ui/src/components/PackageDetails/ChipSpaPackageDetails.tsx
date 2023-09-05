@@ -50,12 +50,12 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
     },
   ];
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="tw-grid tw-grid-cols-2 tw-gap-4">
       {detailFields.map(({ label, value }) => {
         return (
           <div key={label}>
-            <h3 className="text-sm">{label}</h3>
-            <p className="text-lg">{value}</p>
+            <h3 className="tw-text-sm">{label}</h3>
+            <p className="tw-text-lg">{value}</p>
           </div>
         );
       })}

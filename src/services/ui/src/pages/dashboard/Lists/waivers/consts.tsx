@@ -8,14 +8,14 @@ import { LABELS } from "@/lib";
 
 export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   {
-    props: { className: "w-[150px]" },
+    props: { className: "tw-w-[150px]" },
     field: "id.keyword",
     label: "Waiver Number",
     cell: (data) => {
       if (!data.authority) return <></>;
       return (
         <Link
-          className="cursor-pointer text-blue-600"
+          className="tw-cursor-pointer tw-text-blue-600"
           to={`/detail/${data.authority?.toLowerCase()}?id=${encodeURIComponent(
             data.id
           )}`}

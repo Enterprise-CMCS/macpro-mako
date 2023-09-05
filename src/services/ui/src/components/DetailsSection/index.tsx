@@ -12,9 +12,9 @@ export const DetailsSection: React.FC<DetailsSectionProps> = ({
   id,
 }: DetailsSectionProps) => {
   return (
-    <div id={id} className="mb-8">
-      <h2 className="text-xl font-semibold mb-2">{title}</h2>
-      {description && <p className="mb-4 text-sm">{description}</p>}
+    <div id={id} className="tw-mb-8">
+      <h2 className="tw-text-xl tw-font-semibold tw-mb-2">{title}</h2>
+      {description && <p className="tw-mb-4 tw-text-sm">{description}</p>}
 
       {children}
     </div>
