@@ -14,9 +14,7 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
       return (
         <Link
           className="cursor-pointer text-blue-600"
-          to={`/detail/${data.authority?.toLowerCase()}-spa?id=${encodeURIComponent(
-            data.id
-          )}`}
+          to={`/details?id=${encodeURIComponent(data.id)}`}
         >
           {data.id}
         </Link>
