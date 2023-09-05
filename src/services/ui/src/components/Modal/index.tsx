@@ -25,6 +25,7 @@ export function Modal({
         buttonText={buttonText}
         type="button"
         onClick={() => setShowModal(true)}
+        aria-label="Close Modal"
       />
       {showModal ? (
         <>
