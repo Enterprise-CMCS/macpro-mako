@@ -1,5 +1,5 @@
 import { useDebounce } from "@/hooks";
-import { Icon } from "@enterprise-cmcs/macpro-ux-lib";
+import { XIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
 import { FC, useEffect, useState } from "react";
@@ -62,7 +62,7 @@ export const SearchForm: FC<{
           </motion.div>
         )}
         {!!searchText && (
-          <Icon
+          <XIcon
             className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto right-3"
             onClick={() => {
               setSearchText("");

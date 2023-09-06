@@ -90,7 +90,7 @@ export const OsExportButton = () => {
         </motion.div>
       )}
       {!loading && <Download className="w-4 h-4" />}
-      Export
+      <p className="prose-sm">Export</p>
     </Button>
   );
 };

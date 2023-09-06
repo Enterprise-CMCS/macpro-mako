@@ -1,4 +1,4 @@
-import { Icon, Typography } from "@enterprise-cmcs/macpro-ux-lib";
+import { FilterIcon } from "lucide-react";
 import { OsRangeValue } from "shared-types";
 
 import {
@@ -25,14 +25,14 @@ export const OsFilterDrawer = () => {
   return (
     <Sheet open={hook.open} onOpenChange={hook.onDrawerChange}>
       <SheetTrigger>
-        <div className="flex flex-row item-center border-slate-100 px-4">
-          <Icon name="filter_list" />
-          <Typography size="md">Filters</Typography>
+        <div className="flex flex-row gap-2 items-center border-slate-100 px-4">
+          <FilterIcon className="w-4 h-4" />
+          <p className="prose-sm">Filters</p>
         </div>
       </SheetTrigger>
       <SheetContent className="bg-white">
         <SheetHeader>
-          <Typography size="lg">Filters</Typography>
+          <h4 className="prose-2xl">Filters</h4>
         </SheetHeader>
         <Accordion
           value={hook.accordionValues}
