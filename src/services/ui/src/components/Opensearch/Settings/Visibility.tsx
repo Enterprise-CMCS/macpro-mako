@@ -13,7 +13,8 @@ export const VisibilityPopover = <T extends Item>(props: Props<T>) => {
   return (
     <UI.Popover>
       <UI.PopoverTrigger>
-        <Icon name="visibility" aria-label="Visibility" />
+      <div className="sr-only">Open Filters</div>
+        <Icon name="visibility" />
       </UI.PopoverTrigger>
       <UI.PopoverContent className="bg-white">
         <div className="flex flex-col gap-2">
@@ -57,7 +58,6 @@ export const VisibilityMenu = <T extends Item>(props: Props<T>) => {
           key={`vis-${IT.field}`}
           onClick={() => props.onItemClick(IT.field)}
           {...IT}
-          aria-label={IT.label}
         />
       ))}
     </div>

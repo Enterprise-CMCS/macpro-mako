@@ -59,7 +59,7 @@ export const Dashboard = () => {
               <TabsTrigger value="spas" className="px-6 py-2">
                 <UI.Typography
                   size="md"
-                  className="font-bold text-[1.3em]"
+                  className="font-bold text-black text-[1.3em]"
                   as="h1"
                 >
                   SPAs
@@ -68,7 +68,7 @@ export const Dashboard = () => {
               <TabsTrigger value="waivers" className="px-6 py-2">
                 <UI.Typography
                   size="md"
-                  className="font-bold text-[1.3em]"
+                  className="font-bold text-black text-[1.3em]"
                   as="h1"
                 >
                   Waivers
