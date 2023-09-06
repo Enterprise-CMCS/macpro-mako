@@ -21,50 +21,51 @@ function Calendar({
       fromYear={1960}
       toYear={2050}
       showOutsideDays={showOutsideDays}
-      className={cn("p-3", className)}
+      className={cn("tw-p-3", className)}
       classNames={{
-        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-        month: "space-y-4",
-        nav: "space-x-1 flex items-center",
+        months:
+          "tw-flex tw-flex-col tw-sm:flex-row tw-space-y-4 tw-sm:space-x-4 tw-sm:space-y-0",
+        month: "tw-space-y-4",
+        nav: "tw-space-x-1 tw-flex tw-items-center",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+          "tw-h-7 tw-w-7 tw-bg-transparent tw-p-0 tw-opacity-50 tw-hover:opacity-100"
         ),
-        nav_button_previous: "absolute left-1",
-        nav_button_next: "absolute right-1",
-        table: "w-full border-collapse space-y-1",
-        head_row: "flex",
+        nav_button_previous: "tw-absolute tw-left-1",
+        nav_button_next: "tw-absolute tw-right-1",
+        table: "tw-w-full tw-border-collapse tw-space-y-1",
+        head_row: "tw-flex",
         head_cell:
-          "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
-        row: "flex w-full mt-2",
-        cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+          "tw-text-muted-foreground tw-rounded-md tw-w-9 tw-font-normal tw-text-[0.8rem]",
+        row: "tw-flex tw-w-full tw-mt-2",
+        cell: "tw-text-center tw-text-sm tw-p-0 tw-relative tw-[&:has([aria-selected])]:bg-accent tw-first:[&:has([aria-selected])]:rounded-l-md tw-last:[&:has([aria-selected])]:rounded-r-md tw-focus-within:relative tw-focus-within:z-20",
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+          "tw-h-9 tw-w-9 tw-p-0 tw-font-normal tw-aria-selected:opacity-100"
         ),
-        vhidden: "hidden",
-        caption_dropdowns: "flex flex-row justify-center",
-        caption: "flex flex-col",
-        caption_label: "hidden",
+        vhidden: "tw-hidden",
+        caption_dropdowns: "tw-flex tw-flex-row tw-justify-center",
+        caption: "tw-flex tw-flex-col",
+        caption_label: "tw-hidden",
         day_selected:
-          "bg-primary text-white hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-        day_today: "bg-gray-200 text-accent-foreground",
-        day_outside: "text-muted-foreground opacity-50",
-        day_disabled: "text-muted-foreground opacity-50",
+          "tw-bg-primary tw-text-white tw-hover:bg-primary tw-hover:text-primary-foreground tw-focus:bg-primary tw-focus:text-primary-foreground",
+        day_today: "tw-bg-gray-200 tw-text-accent-foreground",
+        day_outside: "tw-text-muted-foreground tw-opacity-50",
+        day_disabled: "tw-text-muted-foreground tw-opacity-50",
         day_range_middle:
-          "aria-selected:bg-accent aria-selected:text-accent-foreground",
-        day_hidden: "invisible",
+          "tw-aria-selected:bg-accent tw-aria-selected:text-accent-foreground",
+        day_hidden: "tw-invisible",
         ...classNames,
       }}
       captionLayout="dropdown-buttons"
       components={{
         Dropdown: ({ caption, className, ...props }: any) => {
           return (
-            <button className="relative mx-1">
+            <button className="tw-relative tw-mx-1">
               {caption}
               <select
                 className={cn(
-                  "absolute left-0 w-auto h-auto opacity-0 cursor-pointer",
+                  "tw-absolute tw-left-0 tw-w-auto tw-h-auto tw-opacity-0 tw-cursor-pointer",
                   className
                 )}
                 {...props}

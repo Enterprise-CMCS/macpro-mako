@@ -45,35 +45,35 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   }, [date]);
 
   return (
-    <div className="flex items-center">
+    <div className="tw-flex tw-items-center">
       <Popover open={open} onOpenChange={handleClose}>
         <PopoverTrigger>
           <div
             id="date"
             className={cn(
-              "flex items-center w-[270px] border-[1px] border-black p-2 justify-start text-left font-normal",
-              !value && "text-muted-foreground"
+              "tw-flex tw-items-center tw-w-[270px] tw-border-[1px] tw-border-black tw-p-2 tw-justify-start tw-text-left tw-font-normal",
+              !value && "tw-text-muted-foreground"
             )}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
+            <CalendarIcon className="tw-mr-2 tw-h-4 tw-w-4" />
             {label}
           </div>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent className="tw-w-auto tw-p-0" align="start">
           <Calendar
             initialFocus
             mode="range"
             defaultMonth={date?.from}
             selected={date}
             numberOfMonths={2}
-            className="bg-white"
+            className="tw-bg-white"
             onSelect={setDate}
             {...props}
           />
         </PopoverContent>
       </Popover>
       <Button
-        className="text-white"
+        className="tw-text-white"
         onClick={() => {
           setDate({ from: undefined, to: undefined });
           onChange({ gte: undefined, lte: undefined });

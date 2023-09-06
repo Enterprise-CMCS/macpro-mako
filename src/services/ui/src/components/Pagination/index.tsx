@@ -21,7 +21,7 @@ export const Pagination: FC<Props> = (props) => {
           Next
         </div>
       </div>
-      <div className="tw-hidden sm:tw-flex sm:tw-flex-1 sm:tw-items-center sm:tw-justify-between">
+      <div className="tw-hidden tw-sm:tw-flex tw-sm:tw-flex-1 tw-sm:tw-items-center tw-sm:tw-justify-between">
         <div className="tw-flex tw-gap-6">
           <p className="tw-flex tw-gap-2 tw-text-sm tw-text-gray-700">
             Records per page:

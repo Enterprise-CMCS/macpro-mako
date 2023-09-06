@@ -17,6 +17,9 @@ function formatDataForExport(obj: OsMainSourceItem, isCms?: boolean): any {
 
   for (const [key, value] of Object.entries(obj)) {
     const k = convertCamelCaseToWords(key);
+    if (value === "undefined") {
+      console.log("dum");
+    }
     if (value === null || value === undefined) {
       result[k] = "";
     } else if (typeof value === "object" && !Array.isArray(value)) {
@@ -62,6 +65,7 @@ export const OsExportButton = () => {
 
       // Properties to exclude from export
       Reflect.deleteProperty(filteredHit, "Attachments");
+      Reflect.deleteProperty(filteredHit, "Rai Responses");
 
       return filteredHit;
     });

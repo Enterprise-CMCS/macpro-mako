@@ -41,7 +41,7 @@ export const OsFilterDrawer = () => {
         >
           {Object.values(hook.filters).map((PK) => (
             <AccordionItem key={`filter-${PK.field}`} value={PK.field}>
-              <AccordionTrigger className="underline">
+              <AccordionTrigger className="tw-underline">
                 {PK.label}
               </AccordionTrigger>
               <AccordionContent>

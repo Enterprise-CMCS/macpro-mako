@@ -18,7 +18,7 @@ export const FilterableCheckbox = (props: Props) => {
 
   return (
     <>
-      <div className="flex gap-2 my-2">
+      <div className="tw-flex tw-gap-2 tw-my-2">
         <Button size="sm" onClick={onSelectAll}>
           Select All
         </Button>
