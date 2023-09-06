@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { testUsers } from "e2e/utils/users";
 
-const password = process.env.BOOTSTRAP_USERS_PW;
+const password = process.env.BOOTSTRAP_USERS_PW!;
 
 test("has title", async ({ page }) => {
   await page.goto("/");
