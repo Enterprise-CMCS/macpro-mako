@@ -51,22 +51,6 @@ custom:
         VITE_COGNITO_REDIRECT_SIGNOUT=${param:ApplicationEndpointUrl}
         BOOTSTRAP_USERS_PW=${param:BootstrapUsersPassword}
         """ > .env.local
-
-        set -e
-        echo """
-        VITE_API_REGION=${param:ApiRegion}
-        VITE_API_URL=${param:ApiUrl}
-        VITE_NODE_ENV=${self:custom.stage}
-        VITE_COGNITO_REGION=${param:CognitoRegion}
-        VITE_COGNITO_IDENTITY_POOL_ID=${param:CognitoIdentityPoolId}
-        VITE_COGNITO_USER_POOL_ID=${param:CognitoUserPoolId}
-        VITE_COGNITO_USER_POOL_CLIENT_ID=${param:CognitoUserPoolClientId}
-        VITE_COGNITO_USER_POOL_CLIENT_DOMAIN=${param:CognitoUserPoolClientDomain}
-        VITE_COGNITO_REDIRECT_SIGNIN=${param:ApplicationEndpointUrl}
-        VITE_COGNITO_REDIRECT_SIGNOUT=${param:ApplicationEndpointUrl}
-        BOOTSTRAP_USERS_PW=${param:BootstrapUsersPassword}
-        """ > .env
-        yarn build
     commands:
       useLocalhost: |
         sed -i '' -e 's|VITE_COGNITO_REDIRECT_SIGNIN=.*|VITE_COGNITO_REDIRECT_SIGNIN=http://localhost:5000/|g' .env.local
