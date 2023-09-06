@@ -28,21 +28,21 @@ export function Modal({
       />
       {showModal ? (
         <>
-          <div className="tw-justify-center tw-items-center tw-flex tw-overflow-x-hidden tw-overflow-y-auto tw-fixed tw-inset-0 tw-z-50 tw-outline-none focus:tw-outline-none">
-            <div className="tw-relative tw-w-auto tw-my-2 tw-mx-auto">
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-auto my-2 mx-auto">
               {/*content*/}
-              <div className="tw-border-0 tw-rounded-lg tw-shadow-lg tw-relative tw-flex tw-flex-col tw-w-full tw-bg-white tw-outline-none focus:tw-outline-none">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
-                <div className="tw-flex tw-items-start tw-justify-between tw-p-5 tw-border-b tw-border-solid tw-border-slate-200 tw-rounded-t">
+                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                   <UI.Typography size="lg" as="h2">
                     {title}
                   </UI.Typography>
-                  <div className="tw-w-8 tw-cursor-pointer">
+                  <div className="w-8 cursor-pointer">
                     <XMarkIcon onClick={() => setShowModal(false)} />
                   </div>
                 </div>
                 {/*body*/}
-                <div className="tw-relative tw-p-6 tw-flex-auto">
+                <div className="relative p-6 flex-auto">
                   {children &&
                     cloneElement(children, {
                       callback: () => setShowModal(false),
@@ -51,7 +51,7 @@ export function Modal({
               </div>
             </div>
           </div>
-          <div className="tw-opacity-25 tw-fixed tw-inset-0 tw-z-40 tw-bg-black"></div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
     </>

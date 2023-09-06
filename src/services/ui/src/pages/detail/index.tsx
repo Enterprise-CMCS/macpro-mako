@@ -25,8 +25,8 @@ export const DetailsContent = ({
   const { data: user } = useGetUser();
   if (!data?._source) return <LoadingSpinner />;
   return (
-    <div className="tw-block md:tw-flex">
-      <aside className="tw-flex-none tw-font-bold tw-hidden md:tw-block tw-pr-8">
+    <div className="block md:flex">
+      <aside className="flex-none font-bold hidden md:block pr-8">
         {[
           "Package Overview",
           "Package Details",
@@ -45,18 +45,13 @@ export const DetailsContent = ({
           />
         ))}
       </aside>
-      <div className="tw-flex-1">
-        <section
-          id="package-overview"
-          className="tw-block md:tw-flex tw-mb-8 tw-gap-8"
-        >
+      <div className="flex-1">
+        <section id="package-overview" className="block md:flex mb-8 gap-8">
           <CardWithTopBorder>
             <>
-              <p className="tw-text-gray-600 tw-font-semibold tw-mb-2">
-                Status
-              </p>
+              <p className="text-gray-600 font-semibold mb-2">Status</p>
               <div>
-                <h2 className="tw-text-xl tw-font-semibold tw-mb-2">
+                <h2 className="text-xl font-semibold mb-2">
                   {getStatus(data?._source.status, user?.isCms)}
                 </h2>
               </div>
@@ -95,7 +90,7 @@ export const Details = () => {
   return (
     <>
       <DetailNav id={id} type={data?._source.planType} />
-      <div className="tw-max-w-screen-xl tw-mx-auto tw-py-8 tw-px-4 tw-lg:px-8">
+      <div className="max-w-screen-xl mx-auto py-8 px-4 lg:px-8">
         <DetailsContent data={data} />
       </div>
     </>

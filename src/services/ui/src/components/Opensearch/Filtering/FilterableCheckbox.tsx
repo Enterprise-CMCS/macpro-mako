@@ -18,11 +18,16 @@ export const FilterableCheckbox = (props: Props) => {
 
   return (
     <>
-      <div className="tw-flex tw-gap-2 tw-my-2">
-        <Button size="sm" onClick={onSelectAll}>
+      <div className="flex gap-2 my-2">
+        <Button size="sm" className="text-white" onClick={onSelectAll}>
           Select All
         </Button>
-        <Button size="sm" variant="outline" onClick={onClear}>
+        <Button
+          size="sm"
+          variant="outline"
+          className="hover:text-white"
+          onClick={onClear}
+        >
           Clear
         </Button>
       </div>

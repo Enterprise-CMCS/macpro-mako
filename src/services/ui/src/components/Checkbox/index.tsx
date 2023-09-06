@@ -12,37 +12,33 @@ const Checkbox = React.forwardRef<
     description?: string;
   }
 >(({ className, ...props }, ref) => (
-  <div className="tw-items-top tw-flex tw-space-x-2 tw-items-center">
+  <div className="items-top flex space-x-2 items-center">
     <CheckboxPrimitive.Root
       ref={ref}
       id={props.label}
       className={cn(
-        "tw-peer tw-h-5 tw-w-5 tw-shrink-0 tw-rounded-sm tw-border tw-border-primary tw-ring-offset-background tw-focus-visible:outline-none tw-focus-visible:ring-2 tw-focus-visible:ring-ring tw-focus-visible:ring-offset-2 tw-disabled:cursor-not-allowed tw-disabled:opacity-50 tw-data-[state=checked]:bg-primary tw-data-[state=checked]:text-primary-foreground",
+        "peer h-5 w-5 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
         className
       )}
       {...props}
     >
       <CheckboxPrimitive.Indicator
-        className={cn(
-          "tw-flex tw-items-center tw-justify-center tw-text-white"
-        )}
+        className={cn("flex items-center justify-center text-white")}
       >
-        <Check className="tw-h-4 tw-w-4" />
+        <Check className="h-4 w-4" />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
-    <div className="tw-grid tw-gap-1.5 tw-leading-none">
+    <div className="grid gap-1.5 leading-none">
       {!!props.label && (
         <label
           htmlFor={props.label}
-          className="tw-text-md tw-font-medium tw-leading-none tw-peer-disabled:cursor-not-allowed tw-peer-disabled:opacity-70"
+          className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           {props.label}
         </label>
       )}
       {!!props.description && (
-        <p className="tw-text-sm tw-text-muted-foreground">
-          {props.description}
-        </p>
+        <p className="text-sm text-muted-foreground">{props.description}</p>
       )}
     </div>
   </div>
@@ -55,7 +51,7 @@ export const CheckboxGroup: React.FC<{
   options: { label: string; value: string }[];
 }> = (props) => {
   return (
-    <div className="tw-flex tw-flex-col tw-gap-2">
+    <div className="flex flex-col gap-2">
       {props.options.map((OPT) => (
         <Checkbox
           key={`CHECK-${OPT.value}`}

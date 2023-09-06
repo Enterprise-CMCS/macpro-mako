@@ -43,6 +43,9 @@
     max-width: 80rem;
     margin:auto;
   }
+  .application-logo-container img {
+    max-width: 4rem;
+  }
 
   @media (min-width: 1350px) {
     .usa-footer__secondary-section div:first-child {
@@ -50,3 +53,4 @@
       padding-right: 2.5rem;
     }
   }
+  

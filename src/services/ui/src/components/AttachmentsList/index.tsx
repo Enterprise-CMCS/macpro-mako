@@ -49,7 +49,7 @@ export const Attachmentslist = (data: AttachmentList) => {
   const [loading, setLoading] = useState(false);
   return (
     <div>
-      <Table borderless className="tw-w-full">
+      <Table borderless className="w-full">
         <thead>
           <tr>
             <TH>Document Type</TH>
@@ -64,14 +64,12 @@ export const Attachmentslist = (data: AttachmentList) => {
               return (
                 <tr key={attachment.key}>
                   <TH rowHeader>
-                    <p className="tw-text-sm tw-font-bold">
-                      {attachment.title}
-                    </p>
+                    <p className="text-sm font-bold">{attachment.title}</p>
                   </TH>
                   <TD>
-                    <div className="tw-text-sm">
+                    <div className="text-sm">
                       <button
-                        className="tw-text-blue-600"
+                        className="text-blue-600"
                         onClick={async () => {
                           const url = await getAttachmentUrl(
                             data.id,
@@ -87,7 +85,7 @@ export const Attachmentslist = (data: AttachmentList) => {
                     </div>
                   </TD>
                   <TD>
-                    <div className="tw-text-slate-500 tw-text-sm">
+                    <div className="text-slate-500 text-sm">
                       {attachment.uploadDate ? (
                         <>
                           <p>{format(attachment.uploadDate, "MM/dd/yyyy")}</p>
@@ -102,13 +100,11 @@ export const Attachmentslist = (data: AttachmentList) => {
               );
             })
           ) : (
-            <p className="tw-text-sm tw-font-bold tw-p-4">
-              No Attachments To Show
-            </p>
+            <p className="text-sm font-bold p-4">No Attachments To Show</p>
           )}
         </tbody>
       </Table>
-      <div className="tw-flex tw-justify-end">
+      <div className="flex justify-end">
         {data.attachments && (
           <Button
             buttonText={loading ? "Downloading" : "Download All"}
