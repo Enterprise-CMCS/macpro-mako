@@ -2,7 +2,6 @@ import * as React from "react";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { Icon } from "@enterprise-cmcs/macpro-ux-lib";
 import { cn } from "@/lib/utils";
 
 const Sheet = SheetPrimitive.Root;

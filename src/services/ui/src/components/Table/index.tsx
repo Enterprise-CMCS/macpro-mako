@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { Icon } from "@enterprise-cmcs/macpro-ux-lib";
 import { ArrowUp, ArrowDown } from "lucide-react";
 
 const Table = React.forwardRef<
