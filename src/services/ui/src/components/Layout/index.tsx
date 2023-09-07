@@ -8,6 +8,7 @@ import { useGetUser } from "@/api/useGetUser";
 import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Footer } from "../Footer";
+import { UsaBanner } from "../UsaBanner";
 
 const getLinks = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -44,6 +45,7 @@ export const Layout = () => {
 
   return (
     <div className="min-h-full flex flex-col">
+      <UsaBanner />
       <UI.UsaBanner />
       <div className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
