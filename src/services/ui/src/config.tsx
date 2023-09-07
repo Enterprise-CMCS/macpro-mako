@@ -12,9 +12,6 @@ const config = {
     REDIRECT_SIGNIN: import.meta.env.VITE_COGNITO_REDIRECT_SIGNIN,
     REDIRECT_SIGNOUT: import.meta.env.VITE_COGNITO_REDIRECT_SIGNOUT,
   },
-  test: {
-    BOOTSTRAP_USERS_PW: import.meta.env.VITE_BOOTSTRAP_USERS_PW,
-  },
 };
 
 export default config;

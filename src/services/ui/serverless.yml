@@ -17,7 +17,7 @@ provider:
     PROJECT: ${self:custom.project}
     SERVICE: ${self:service}
   environment:
-    BOOTSTRAP_USERS_PW: ${param:BootstrapUsersPassword}
+    VITE_BOOTSTRAP_USERS_PW: ${param:BootstrapUsersPassword}
 
 custom:
   project: ${env:PROJECT}

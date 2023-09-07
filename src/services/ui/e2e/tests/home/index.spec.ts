@@ -1,8 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { testUsers } from "e2e/utils/users";
-import config from "@/config";
 
-const password = config.test.BOOTSTRAP_USERS_PW as string;
+const password = import.meta.env.VITE_BOOTSTRAP_USERS_PW as string;
 
 test("has title", async ({ page }) => {
   await page.goto("/");
