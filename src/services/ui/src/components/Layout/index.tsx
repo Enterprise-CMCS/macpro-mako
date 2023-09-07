@@ -1,5 +1,4 @@
 import { Link, NavLink, NavLinkProps, Outlet } from "react-router-dom";
-import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -46,7 +45,6 @@ export const Layout = () => {
   return (
     <div className="min-h-full flex flex-col">
       <UsaBanner />
-      <UI.UsaBanner />
       <div className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
