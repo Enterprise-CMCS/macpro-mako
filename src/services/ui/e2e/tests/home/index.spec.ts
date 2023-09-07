@@ -27,7 +27,7 @@ test("see dashboard link when log in", async ({ page }) => {
   await page
     .getByRole("textbox", { name: "name@host.com" })
     .type(testUsers.state);
-  await page.getByRole("textbox", { name: "Password" }).type(password);
+  await page.getByRole("textbox", { name: "Password" }).type("test");
   await page.getByRole("button", { name: "submit" }).click();
   await page.getByRole("link", { name: "Dashboard" }).click();
 
@@ -41,7 +41,7 @@ test("failed incorrect login username", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Sign In" }).click();
   await page.getByRole("textbox", { name: "name@host.com" }).type(".");
-  await page.getByRole("textbox", { name: "Password" }).type(password);
+  await page.getByRole("textbox", { name: "Password" }).type("test");
   await page.getByRole("button", { name: "submit" }).click();
   await page.getByRole("paragraph").isVisible();
   const invalidInputTest = await page.$(
