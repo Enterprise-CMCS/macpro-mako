@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useGetUser } from "@/api/useGetUser";
 import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
+import { Footer } from "../Footer";
 
 const getLinks = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -61,6 +62,7 @@ export const Layout = () => {
       <main className="flex-1">
         <Outlet />
       </main>
+      <Footer />
       <UI.Footer emailAddress="test@test.test" />
     </div>
   );
