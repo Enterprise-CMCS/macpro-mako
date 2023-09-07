@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { testUsers } from "e2e/utils/users";
-
+console.log("log1", process.env);
+console.log("log2", import.meta?.env);
 const password = process.env.BOOTSTRAP_USERS_PW as string;
 
 test("has title", async ({ page }) => {
@@ -8,7 +9,7 @@ test("has title", async ({ page }) => {
   await expect(page).toHaveTitle(/CMS MAKO/);
 });
 
-test("see frequesntly asked questions header when in faq page", async ({
+test("see frequently asked questions header when in faq page", async ({
   page,
 }) => {
   await page.goto("/");
@@ -20,7 +21,7 @@ test("see frequesntly asked questions header when in faq page", async ({
   expect(foundFaqHeading).toBeTruthy();
 });
 
-test("see dahsboard link when log in", async ({ page }) => {
+test("see dashboard link when log in", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Sign In" }).click();
   await page
@@ -44,7 +45,7 @@ test("failed incorrect login username", async ({ page }) => {
   await page.getByRole("button", { name: "submit" }).click();
   await page.getByRole("paragraph").isVisible();
   const invalidInputTest = await page.$(
-    'p:has-text("The username or password you entered is invalid")'
+    "p:has-text('The username or password you entered is invalid')"
   );
   expect(invalidInputTest).toBeTruthy();
 });
