@@ -62,8 +62,15 @@ export const Layout = () => {
       <main className="flex-1">
         <Outlet />
       </main>
-      <Footer />
-      <UI.Footer emailAddress="test@test.test" />
+      <Footer
+        email="OneMAC_Helpdesk@cms.hhs.gov"
+        address={{
+          city: "Baltimore",
+          state: "MD",
+          street: "7500 Security Boulevard",
+          zip: 21244,
+        }}
+      />
     </div>
   );
 };
