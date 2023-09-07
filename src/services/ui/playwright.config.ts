@@ -9,7 +9,7 @@ console.log(
   `Loading .env.local from: ${path.resolve(__dirname, ".env.local")}`
 );
 dotenv.config({ path: path.resolve(__dirname, ".env.local") });
-
+console.log(process.env);
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
