@@ -1,6 +1,9 @@
 import { test, expect } from "@playwright/test";
 import { testUsers } from "e2e/utils/users";
+import dotenv from "dotenv";
 
+const test = dotenv.config();
+console.log(test);
 const password = import.meta.env.VITE_BOOTSTRAP_USERS_PW as string;
 
 test("has title", async ({ page }) => {
