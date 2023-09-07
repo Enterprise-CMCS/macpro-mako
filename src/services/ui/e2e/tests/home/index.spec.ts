@@ -1,9 +1,14 @@
 import { test, expect } from "@playwright/test";
 import { testUsers } from "e2e/utils/users";
+import dotenv from "dotenv";
+import path from "path";
+
+dotenv.config({ path: path.resolve(__dirname, ".env.local") });
 console.log("log1", process.env);
 console.log("log2", import.meta?.env);
-// const password = process.env.BOOTSTRAP_USERS_PW as string;
 
+const password = process.env.BOOTSTRAP_USERS_PW as string;
+console.log("password", password);
 test("has title", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle(/CMS MAKO/);
