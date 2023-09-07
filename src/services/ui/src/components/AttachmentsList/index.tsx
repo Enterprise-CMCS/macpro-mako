@@ -1,5 +1,5 @@
 import { getAttachmentUrl } from "@/api";
-import { Button, TD, TH, Table } from "@enterprise-cmcs/macpro-ux-lib";
+import { Button } from "@enterprise-cmcs/macpro-ux-lib";
 import { format } from "date-fns";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -49,12 +49,12 @@ export const Attachmentslist = (data: AttachmentList) => {
   const [loading, setLoading] = useState(false);
   return (
     <div>
-      <Table borderless className="w-full">
+      <table className="w-full">
         <thead>
           <tr>
-            <TH>Document Type</TH>
-            <TH>Attached File</TH>
-            <TH>Upload Date</TH>
+            <th className="text-left">Document Type</th>
+            <th className="text-left">Attached File</th>
+            <th className="text-left">Upload Date</th>
           </tr>
         </thead>
         <tbody>
@@ -63,10 +63,10 @@ export const Attachmentslist = (data: AttachmentList) => {
               if (!attachment) return null;
               return (
                 <tr key={attachment.key}>
-                  <TH rowHeader>
+                  <th>
                     <p className="text-sm font-bold">{attachment.title}</p>
-                  </TH>
-                  <TD>
+                  </th>
+                  <td>
                     <div className="text-sm">
                       <button
                         className="text-blue-600"
@@ -83,8 +83,8 @@ export const Attachmentslist = (data: AttachmentList) => {
                         {attachment.filename}
                       </button>
                     </div>
-                  </TD>
-                  <TD>
+                  </td>
+                  <td>
                     <div className="text-slate-500 text-sm">
                       {attachment.uploadDate ? (
                         <>
@@ -95,7 +95,7 @@ export const Attachmentslist = (data: AttachmentList) => {
                         <p>Unknown</p>
                       )}
                     </div>
-                  </TD>
+                  </td>
                 </tr>
               );
             })
@@ -103,7 +103,7 @@ export const Attachmentslist = (data: AttachmentList) => {
             <p className="text-sm font-bold p-4">No Attachments To Show</p>
           )}
         </tbody>
-      </Table>
+      </table>
       <div className="flex justify-end">
         {data.attachments && (
           <Button
