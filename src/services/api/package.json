@@ -3,6 +3,7 @@
   "private": true,
   "devDependencies": {
     "@types/aws-lambda": "^8.10.111",
+    "@types/mssql": "^8.1.2",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
     "aws-lambda": "^1.0.7",
@@ -16,6 +17,8 @@
     "@aws-sdk/s3-request-presigner": "^3.383.0",
     "@opensearch-project/opensearch": "^2.3.0",
     "libs": "*",
+    "mssql": "^10.0.0",
+    "prisma": "^5.2.0",
     "s3-url-parser": "^1.0.3",
     "shared-types": "*",
     "shared-utils": "*",
