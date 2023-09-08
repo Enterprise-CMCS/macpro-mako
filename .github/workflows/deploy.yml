@@ -132,6 +132,8 @@ jobs:
           role-duration-seconds: 10800
       - name: Print Working Directory
         run: pwd
+      - name: Change Working Directory
+        run: cd /home/runner/work/macpro-mako/macpro-mako/src/services/ui
       - name: Check .env.local Folder Existence
         run: ls -la /home/runner/work/macpro-mako/macpro-mako/src/services/ui
       - name: Use .env.local File
