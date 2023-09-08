@@ -1,6 +1,12 @@
-import { Accordion, AccordionGroup } from "@enterprise-cmcs/macpro-ux-lib";
+// import { Accordion, AccordionGroup } from "@enterprise-cmcs/macpro-ux-lib";
 import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
-import { CardWithTopBorder } from "@/components";
+import {
+  Accordion,
+  CardWithTopBorder,
+  AccordionItem,
+  AccordionContent,
+  AccordionTrigger,
+} from "@/components";
 
 export const Faq = () => {
   return (
@@ -21,13 +27,14 @@ export const Faq = () => {
           {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
             <article key={sectionTitle} className="mb-8">
               <h2 className="text-2xl mb-4 text-accent">{sectionTitle}</h2>
-              {qanda.map(({ anchorText, answerJSX, question }) => (
-                <AccordionGroup key={anchorText}>
-                  <Accordion hidden id="accordion-1" label={question}>
-                    {answerJSX}
-                  </Accordion>
-                </AccordionGroup>
-              ))}
+              <Accordion type="multiple">
+                {qanda.map(({ anchorText, answerJSX, question }) => (
+                  <AccordionItem key={anchorText} value={question}>
+                    <AccordionTrigger>{question}</AccordionTrigger>
+                    <AccordionContent>{answerJSX}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </article>
           ))}
         </div>
