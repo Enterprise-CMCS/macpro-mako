@@ -56,6 +56,8 @@ custom:
         VITE_COGNITO_REDIRECT_SIGNOUT=${param:ApplicationEndpointUrl}
         BOOTSTRAP_USERS_PW=${param:BootstrapUsersPassword}
         """ > .env.local
+        echo ".env.local content:"
+        cat .env.local  # Print the content of .env.local
         echo ".env.local file generated successfully."
         yarn build
     commands:
