@@ -143,7 +143,9 @@ jobs:
       - name: Check .env.local File Permissions
         run: ls -l /home/runner/work/macpro-mako/macpro-mako/src/services/ui/.env.local
       - name: Run e2e tests
-        run: run e2e
+        run: |
+          sleep 10  # Add a delay of 10 seconds
+          run e2e
       - uses: actions/upload-artifact@v3
         if: always()
         with:
