@@ -2,12 +2,12 @@ import { useForm, Controller } from "react-hook-form";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError } from "shared-types";
+import { useRef, useEffect, useState } from "react";
 import { Button } from "@/components/Button";
 
 type FormData = {
   id: string;
   authority: string;
-  date: string;
   state: string;
 };
 
@@ -31,9 +31,15 @@ export const useCreateSeatoolRecord = (
 export const Create = () => {
   const { handleSubmit, control } = useForm<FormData>();
   const { mutate } = useCreateSeatoolRecord();
+  const [dropDownValue, setDropDownValue] = useState("");
 
   const onSubmit = (data: FormData) => {
-    mutate(data);
+    const newData: FormData = {
+      ...data,
+      id: `${dropDownValue}-${data.id}`,
+      state: dropDownValue,
+    };
+    mutate(newData);
   };
 
   return (
@@ -49,66 +55,6 @@ export const Create = () => {
       </div>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-4">
-            <label htmlFor="id" className="block text-gray-700">
-              ID:
-            </label>
-            <Controller
-              name="id"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  id="id"
-                  placeholder="Enter ID"
-                  className="w-full px-3 py-2 placeholder-gray-300 border rounded-sm focus:ring focus:ring-indigo-300 focus:border-indigo-400 outline-none"
-                />
-              )}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="authority" className="block text-gray-700">
-              Authority:
-            </label>
-            <Controller
-              name="authority"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  id="authority"
-                  placeholder="Enter Authority"
-                  className="w-full px-3 py-2 placeholder-gray-300 border rounded-sm focus:ring focus:ring-indigo-300 focus:border-indigo-400 outline-none"
-                />
-              )}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="date" className="block text-gray-700">
-              Date:
-            </label>
-            <Controller
-              name="date"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  id="date"
-                  placeholder="Enter date"
-                  className="w-full px-3 py-2 placeholder-gray-300 border rounded-sm focus:ring focus:ring-indigo-300 focus:border-indigo-400 outline-none"
-                />
-              )}
-            />
-          </div>
-
           <div className="flex flex-col space-y-2">
             <label htmlFor="state" className="text-gray-600 font-semibold">
               State:
@@ -121,6 +67,8 @@ export const Create = () => {
                 <div className="relative">
                   <select
                     {...field}
+                    value={dropDownValue}
+                    onChange={(val) => setDropDownValue(val.target.value)}
                     id="state"
                     className="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   >
@@ -144,6 +92,54 @@ export const Create = () => {
                     </svg>
                   </div>
                 </div>
+              )}
+            />
+          </div>
+          <div className="my-4">
+            <label htmlFor="id" className="block text-gray-700">
+              ID:
+            </label>
+            <div className="flex items-center">
+              <input
+                type="text"
+                readOnly
+                value={dropDownValue}
+                className="w-12 text-center px-3 py-2 placeholder-gray-300 border rounded-sm focus:ring focus:ring-indigo-300 focus:border-indigo-400 outline-none"
+              />
+              <div className="mx-2 text-3xl">-</div>
+              <Controller
+                name="id"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    id="id"
+                    placeholder={"Enter an ID"}
+                    className="w-full px-3 py-2 placeholder-gray-300 border rounded-sm focus:ring focus:ring-indigo-300 focus:border-indigo-400 outline-none"
+                  />
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="authority" className="block text-gray-700">
+              Authority:
+            </label>
+            <Controller
+              name="authority"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="text"
+                  id="authority"
+                  placeholder="Enter Authority"
+                  className="w-full px-3 py-2 placeholder-gray-300 border rounded-sm focus:ring focus:ring-indigo-300 focus:border-indigo-400 outline-none"
+                />
               )}
             />
           </div>
