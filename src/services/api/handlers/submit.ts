@@ -1,6 +1,7 @@
 import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
 import * as sql from "mssql";
+import { isAuthorized } from "../libs/auth/user";
 
 const user = process.env.dbUser;
 const password = process.env.dbPassword;
@@ -18,6 +19,13 @@ export const submit = async (event: APIGatewayEvent) => {
   try {
     const body = JSON.parse(event.body);
     console.log(body);
+
+    if (!(await isAuthorized(event, body.state))) {
+      return response({
+        statusCode: 403,
+        body: { message: "Unauthorized" },
+      });
+    }
 
     const pool = await sql.connect(config);
 
@@ -39,6 +47,7 @@ export const submit = async (event: APIGatewayEvent) => {
 
     const result = await sql.query(query);
     console.log(result);
+
     await pool.close();
 
     return response({
