@@ -74,6 +74,9 @@ jobs:
             tr -d \'\"
           ) >> $GITHUB_OUTPUT
 
+      - name: Check .env.local File Existence
+        run: ls -la /home/runner/work/macpro-mako/macpro-mako/src/services/ui/.env.local
+
   kibana-url:
     runs-on: ubuntu-20.04
     needs:
