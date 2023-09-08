@@ -6,14 +6,14 @@ export const DetailNav = ({ id, type }: { id: string; type?: string }) => {
   const navigate = useNavigate();
   const planType = removeUnderscoresAndCapitalize(type);
   return (
-    <div className="tw-bg-sky-100">
-      <div className="tw-max-w-screen-xl tw-m-auto lg:tw-px-8">
-        <div className="tw-flex tw-items-center">
-          <div className="tw-flex tw-align-middle tw-py-4">
-            <button className="tw-text-sky-800" onClick={() => navigate(-1)}>
-              <ChevronLeftIcon className="tw-w-6 tw-h-6" />
+    <div className="bg-sky-100">
+      <div className="max-w-screen-xl m-auto lg:px-8">
+        <div className="flex items-center">
+          <div className="flex align-middle py-4">
+            <button className="text-sky-800" onClick={() => navigate(-1)}>
+              <ChevronLeftIcon className="w-6 h-6" />
             </button>
-            <h1 className="tw-text-xl tw-font-medium tw-pl-4">
+            <h1 className="text-xl font-medium pl-4">
               {planType} Submission Details - {id}
             </h1>
           </div>

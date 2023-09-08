@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { Icon } from "@enterprise-cmcs/macpro-ux-lib";
+import { ArrowUp, ArrowDown } from "lucide-react";
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -9,10 +9,10 @@ const Table = React.forwardRef<
     className?: string;
   }
 >(({ className, ...props }, ref) => (
-  <div className="tw-w-full tw-overflow-auto">
+  <div className="w-full overflow-auto">
     <table
       ref={ref}
-      className={cn("tw-w-full tw-caption-bottom tw-text-sm", className)}
+      className={cn("w-full caption-bottom text-sm", className)}
       {...props}
     />
   </div>
@@ -25,7 +25,7 @@ const TableHeader = React.forwardRef<
     className?: string;
   }
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("[&_tr]:tw-border-b", className)} {...props} />
+  <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
 ));
 TableHeader.displayName = "TableHeader";
 
@@ -37,7 +37,7 @@ const TableBody = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tbody
     ref={ref}
-    className={cn("[&_tr:last-child]:tw-border-0", className)}
+    className={cn("[&_tr:last-child]:border-0", className)}
     {...props}
   />
 ));
@@ -51,10 +51,7 @@ const TableFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tfoot
     ref={ref}
-    className={cn(
-      "tw-bg-primary tw-font-medium tw-text-primary-foreground",
-      className
-    )}
+    className={cn("bg-primary font-medium text-primary-foreground", className)}
     {...props}
   />
 ));
@@ -69,7 +66,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "tw-border-b tw-transition-colors hover:tw-bg-muted/50 data-[state=selected]:tw-bg-muted",
+      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
       className
     )}
     {...props}
@@ -90,21 +87,29 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "tw-h-12 tw-px-4 tw-text-left tw-align-middle tw-font-bold tw-text-base tw-text-muted-foreground [&:has([role=checkbox])]:tw-pr-0",
+      "h-12 px-4 text-left align-middle font-bold text-base text-muted-foreground [&:has([role=checkbox])]:pr-0",
       className,
       { "cursor-pointer": !!props?.onClick }
     )}
     {...props}
   >
-    <div className="tw-flex">
+    <div className="flex items-center gap-1">
       {children}
       {icon ? (
         icon
       ) : (
-        <Icon
-          name={desc ? "arrow_downward" : "arrow_upward"}
-          className={cn(".1em", { "tw-opacity-0": !isActive })}
-        />
+        <>
+          {desc && (
+            <ArrowDown
+              className={cn(".1em w-5 h-5", { "opacity-0": !isActive })}
+            />
+          )}
+          {!desc && (
+            <ArrowUp
+              className={cn(".1em w-5 h-5", { "opacity-0": !isActive })}
+            />
+          )}
+        </>
       )}
     </div>
   </th>
@@ -119,10 +124,7 @@ const TableCell = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <td
     ref={ref}
-    className={cn(
-      "tw-p-4 tw-align-middle [&:has([role=checkbox])]:tw-pr-0",
-      className
-    )}
+    className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
     {...props}
   />
 ));
@@ -136,7 +138,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn("tw-mt-4 tw-text-sm tw-text-muted-foreground", className)}
+    className={cn("mt-4 text-sm text-muted-foreground", className)}
     {...props}
   />
 ));

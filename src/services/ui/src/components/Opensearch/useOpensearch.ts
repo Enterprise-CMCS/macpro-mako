@@ -1,8 +1,9 @@
-import { useOsSearch } from "@/api";
+import { getSearchData, useOsSearch } from "@/api";
 import { useParams } from "@/hooks/useParams";
-import { useEffect } from "react";
-import { OsQueryState } from "shared-types";
+import { useEffect, useState } from "react";
+import { OsQueryState, SearchData } from "shared-types";
 import { createSearchFilterable } from "./utils";
+import { useQuery } from "@tanstack/react-query";
 
 export type OsTab = "waivers" | "spas";
 
@@ -37,9 +38,10 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsParamsState>> = {
  * - TODO: add index scope
  * - FIX: Initial render fires useEffect twice - 2 os requests
  */
-export const useOsQuery = (init?: Partial<OsQueryState>) => {
-  const params = useOsParams(init);
-  const { data, mutateAsync, isLoading, error } = useOsSearch();
+export const useOsQuery = () => {
+  const params = useOsParams();
+  const [data, setData] = useState<SearchData>();
+  const { mutateAsync, isLoading, error } = useOsSearch();
 
   const onRequest = async (query: OsQueryState, options?: any) => {
     try {
@@ -53,7 +55,7 @@ export const useOsQuery = (init?: Partial<OsQueryState>) => {
             ...(DEFAULT_FILTERS[params.state.tab].filters || []),
           ],
         },
-        options
+        { ...options, onSuccess: (res) => setData(res.hits) }
       );
     } catch (error) {
       console.error("Error occurred during search:", error);
@@ -67,16 +69,58 @@ export const useOsQuery = (init?: Partial<OsQueryState>) => {
   return { data, isLoading, error, ...params };
 };
 
+export const useOsAggregate = () => {
+  const { state } = useOsParams();
+  const aggs = useQuery({
+    refetchOnWindowFocus: false,
+    queryKey: [state.tab],
+    queryFn: (props) => {
+      return getSearchData({
+        aggs: [
+          {
+            field: "state.keyword",
+            type: "terms",
+            name: "state.keyword",
+            size: 60,
+          },
+          {
+            field: "planType.keyword",
+            type: "terms",
+            name: "planType.keyword",
+            size: 10,
+          },
+          {
+            field: "status.keyword",
+            name: "status.keyword",
+            type: "terms",
+            size: 10,
+          },
+          {
+            field: "leadAnalystName.keyword",
+            name: "leadAnalystName.keyword",
+            type: "terms",
+            size: 200,
+          },
+        ],
+        filters: DEFAULT_FILTERS[props.queryKey[0]].filters || [],
+        pagination: { number: 0, size: 1 },
+      });
+    },
+  });
+
+  return aggs.data?.aggregations;
+};
+
 export type OsParamsState = OsQueryState & { tab: OsTab };
 
-export const useOsParams = (init?: Partial<OsParamsState>) => {
+export const useOsParams = () => {
   return useParams<OsParamsState>({
     key: "os",
     initValue: {
       filters: [],
       search: "",
       tab: "spas",
-      pagination: { number: 0, size: 100 },
+      pagination: { number: 0, size: 25 },
       sort: { field: "changedDate", order: "desc" },
     },
   });

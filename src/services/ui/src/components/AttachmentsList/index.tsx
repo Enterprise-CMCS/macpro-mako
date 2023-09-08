@@ -1,10 +1,19 @@
 import { getAttachmentUrl } from "@/api";
-import { Button, TD, TH, Table } from "@enterprise-cmcs/macpro-ux-lib";
 import { format } from "date-fns";
+import { DownloadIcon } from "lucide-react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { OsMainSourceItem } from "shared-types";
 import { useState } from "react";
+import { Button } from "../Button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../Table";
 
 type AttachmentList = {
   id: string;
@@ -49,29 +58,27 @@ export const Attachmentslist = (data: AttachmentList) => {
   const [loading, setLoading] = useState(false);
   return (
     <div>
-      <Table borderless className="tw-w-full">
-        <thead>
-          <tr>
-            <TH>Document Type</TH>
-            <TH>Attached File</TH>
-            <TH>Upload Date</TH>
-          </tr>
-        </thead>
-        <tbody>
+      <Table className="w-full">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="text-left">Document Type</TableHead>
+            <TableHead className="text-left">Attached File</TableHead>
+            <TableHead className="text-left">Upload Date</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {data.attachments ? (
             data.attachments.map((attachment) => {
               if (!attachment) return null;
               return (
-                <tr key={attachment.key}>
-                  <TH rowHeader>
-                    <p className="tw-text-sm tw-font-bold">
-                      {attachment.title}
-                    </p>
-                  </TH>
-                  <TD>
-                    <div className="tw-text-sm">
+                <TableRow key={attachment.key}>
+                  <TableHead>
+                    <p className="text-sm font-bold">{attachment.title}</p>
+                  </TableHead>
+                  <TableCell>
+                    <div className="text-sm">
                       <button
-                        className="tw-text-blue-600"
+                        className="text-blue-600"
                         onClick={async () => {
                           const url = await getAttachmentUrl(
                             data.id,
@@ -85,9 +92,9 @@ export const Attachmentslist = (data: AttachmentList) => {
                         {attachment.filename}
                       </button>
                     </div>
-                  </TD>
-                  <TD>
-                    <div className="tw-text-slate-500 tw-text-sm">
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-slate-500 text-sm">
                       {attachment.uploadDate ? (
                         <>
                           <p>{format(attachment.uploadDate, "MM/dd/yyyy")}</p>
@@ -97,33 +104,30 @@ export const Attachmentslist = (data: AttachmentList) => {
                         <p>Unknown</p>
                       )}
                     </div>
-                  </TD>
-                </tr>
+                  </TableCell>
+                </TableRow>
               );
             })
           ) : (
-            <p className="tw-text-sm tw-font-bold tw-p-4">
-              No Attachments To Show
-            </p>
+            <p className="text-sm font-bold p-4">No Attachments To Show</p>
           )}
-        </tbody>
+        </TableBody>
       </Table>
-      <div className="tw-flex tw-justify-end">
+      <div className="flex justify-end">
         {data.attachments && (
           <Button
-            buttonText={loading ? "Downloading" : "Download All"}
-            buttonVariation="secondary"
+            variant={"secondary"}
             disabled={loading}
-            iconName="file_download"
             onClick={async () => {
               setLoading(true);
               await handleDownloadAll(data);
               setLoading(false);
             }}
-            target="_self"
             type="button"
-            style={{ padding: "4px" }}
-          />
+          >
+            <DownloadIcon className="w-4 h-4" />
+            {loading ? "Downloading" : "Download All"}
+          </Button>
         )}
       </div>
     </div>

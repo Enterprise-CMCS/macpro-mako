@@ -1,5 +1,5 @@
 import { useGetUser } from "@/api/useGetUser";
-import { ErrorAlert, LoadingSpinner } from "@/components";
+import { ErrorAlert } from "@/components";
 
 import { Pagination } from "@/components/Pagination";
 import {
@@ -20,9 +20,8 @@ export const WaiversList = () => {
   const columns = TABLE_COLUMNS({ isCms: user?.isCms });
 
   return (
-    <section className="tw-flex tw-flex-col tw-h-[calc(100vh-250px)]">
+    <section className="flex flex-col h-[calc(100vh-250px)]">
       <OsFiltering />
-      {/* {context.isLoading && <LoadingSpinner />} */}
       <OsTable columns={columns} />
       <Pagination
         pageNumber={params.state.pagination.number}

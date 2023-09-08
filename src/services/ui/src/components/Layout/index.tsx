@@ -1,5 +1,4 @@
 import { Link, NavLink, NavLinkProps, Outlet } from "react-router-dom";
-import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -7,6 +6,8 @@ import { useState } from "react";
 import { useGetUser } from "@/api/useGetUser";
 import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
+import { Footer } from "../Footer";
+import { UsaBanner } from "../UsaBanner";
 
 const getLinks = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -42,14 +43,14 @@ export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   return (
-    <div className="tw-min-h-full tw-flex tw-flex-col">
-      <UI.UsaBanner />
-      <div className="tw-bg-primary">
-        <div className="tw-max-w-screen-xl tw-mx-auto tw-px-4 lg:tw-px-8">
-          <div className="tw-h-[70px] tw-flex tw-gap-12 tw-items-center tw-text-white">
+    <div className="min-h-full flex flex-col">
+      <UsaBanner />
+      <div className="bg-primary">
+        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
+          <div className="h-[70px] flex gap-12 items-center text-white">
             <Link to="/">
               <img
-                className="tw-h-10 tw-w-28 tw-min-w-[112px] tw-resize-none"
+                className="h-10 w-28 min-w-[112px] resize-none"
                 src={oneMacLogo}
                 alt="One Mac Site Logo"
               />
@@ -58,10 +59,18 @@ export const Layout = () => {
           </div>
         </div>
       </div>
-      <main className="tw-flex-1">
+      <main className="flex-1">
         <Outlet />
       </main>
-      <UI.Footer emailAddress="test@test.test" />
+      <Footer
+        email="OneMAC_Helpdesk@cms.hhs.gov"
+        address={{
+          city: "Baltimore",
+          state: "MD",
+          street: "7500 Security Boulevard",
+          zip: 21244,
+        }}
+      />
     </div>
   );
 };
@@ -92,8 +101,8 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
 
   const setClassBasedOnNav: NavLinkProps["className"] = ({ isActive }) =>
     isActive
-      ? "tw-underline tw-underline-offset-4 tw-decoration-4 hover:tw-text-white/70"
-      : "hover:tw-text-white/70";
+      ? "underline underline-offset-4 decoration-4 hover:text-white/70"
+      : "hover:text-white/70";
 
   if (prevMediaQuery !== isDesktop) {
     setPrevMediaQuery(isDesktop);
@@ -112,18 +121,18 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             {link.name}
           </NavLink>
         ))}
-        <div className="tw-flex-1"></div>
+        <div className="flex-1"></div>
         <>
           {data.user ? (
             <button
-              className="tw-text-white hover:tw-text-white/70"
+              className="text-white hover:text-white/70"
               onClick={handleLogout}
             >
               Sign Out
             </button>
           ) : (
             <button
-              className="tw-text-white hover:tw-text-white/70"
+              className="text-white hover:text-white/70"
               onClick={handleLogin}
             >
               Sign In
@@ -136,15 +145,15 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
 
   return (
     <>
-      <div className="tw-flex-1"></div>
+      <div className="flex-1"></div>
       {isOpen && (
-        <div className="tw-w-full tw-fixed tw-top-[100px] tw-left-0">
-          <ul className="tw-font-medium tw-flex tw-flex-col tw-p-4 md:tw-p-0 tw-mt-2 tw-gap-4 tw-rounded-lg tw-bg-accent">
+        <div className="w-full fixed top-[100px] left-0">
+          <ul className="font-medium flex flex-col p-4 md:p-0 mt-2 gap-4 rounded-lg bg-accent">
             {getLinks(!!data.user).map((link) => (
               <li key={link.link}>
                 <Link
                   onClick={() => setIsOpen(false)}
-                  className="tw-block tw-py-2 tw-pl-3 tw-pr-4 tw-text-white tw-rounded"
+                  className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
                 >
                   {link.name}
@@ -154,14 +163,14 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             <>
               {data.user ? (
                 <button
-                  className="tw-text-left tw-block tw-py-2 tw-pl-3 tw-pr-4 tw-text-white tw-rounded"
+                  className="text-left block py-2 pl-3 pr-4 text-white rounded"
                   onClick={handleLogout}
                 >
                   Sign Out
                 </button>
               ) : (
                 <button
-                  className="tw-text-left tw-block tw-py-2 tw-pl-3 tw-pr-4 tw-text-white tw-rounded"
+                  className="text-left block py-2 pl-3 pr-4 text-white rounded"
                   onClick={handleLogin}
                 >
                   Sign In
@@ -176,8 +185,8 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           setIsOpen((prev) => !prev);
         }}
       >
-        {!isOpen && <Bars3Icon className="tw-w-6 tw-h-6 tw-min-w-[24px]" />}
-        {isOpen && <XMarkIcon className="tw-w-6 tw-h-6 tw-min-w-[24px]" />}
+        {!isOpen && <Bars3Icon className="w-6 h-6 min-w-[24px]" />}
+        {isOpen && <XMarkIcon className="w-6 h-6 min-w-[24px]" />}
       </button>
     </>
   );

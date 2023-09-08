@@ -1,11 +1,11 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable camelcase */
-import { OsFilterable, OsQueryState } from "shared-types";
+import { OsAggQuery, OsFilterable, OsQueryState } from "shared-types";
 
 const filterMapQueryReducer = (
   state: Record<OsFilterable["prefix"], any[]>,
   filter: OsFilterable
 ) => {
+  if (!filter.value) return state;
+
   if (filter.type === "match") {
     state[filter.prefix].push({
       match: { [filter.field]: filter.value },
@@ -25,18 +25,12 @@ const filterMapQueryReducer = (
   }
 
   if (filter.type === "global_search") {
-    const query = [`(${filter.value})`, `(*${filter.value}*)`]
-      .flatMap((s) => [s, s.toUpperCase(), s.toLocaleLowerCase()])
-      .join(" OR ");
     if (filter.value) {
       state[filter.prefix].push({
-        query_string: {
-          fields: [
-            "id.keyword",
-            "submitterName.keyword",
-            "leadAnalystName.keyword",
-          ],
-          query,
+        multi_match: {
+          type: "best_fields",
+          query: filter.value,
+          fields: ["id", "submitterName", "leadAnalystName"],
         },
       });
     }
@@ -78,18 +72,19 @@ export const sortQueryBuilder = (sort: OsQueryState["sort"]) => {
   return { sort: [{ [sort.field]: sort.order }] };
 };
 
-// export const createBucketOptions = (aggregations: OsAggregations) => {
-//   return Object.entries(aggregations).reduce((ACC, [key, value]) => {
-//     if (!Array.isArray(value?.buckets)) return ACC;
-
-//     ACC[key] = value.buckets.map((BUCK) => ({
-//       label: `${BUCK.key} (${BUCK.doc_count})`,
-//       value: BUCK.key,
-//     }));
-
-//     return ACC;
-//   }, {} as OsQueryState["buckets"]);
-// };
+export const aggQueryBuilder = (aggs: OsAggQuery[]) => {
+  return {
+    aggs: aggs.reduce((STATE, AGG) => {
+      STATE[AGG.name] = {
+        [AGG.type]: {
+          field: AGG.field,
+          ...(AGG.size && { size: AGG.size }),
+        },
+      };
+      return STATE;
+    }, {} as any),
+  };
+};
 
 export const createSearchFilterable = (value?: string) => {
   if (!value) return [];
@@ -99,6 +94,6 @@ export const createSearchFilterable = (value?: string) => {
       field: "",
       value,
       prefix: "must",
-    } as const,
+    } as unknown as OsFilterable,
   ];
 };

@@ -17,6 +17,9 @@ function formatDataForExport(obj: OsMainSourceItem, isCms?: boolean): any {
 
   for (const [key, value] of Object.entries(obj)) {
     const k = convertCamelCaseToWords(key);
+    if (value === "undefined") {
+      console.log("dum");
+    }
     if (value === null || value === undefined) {
       result[k] = "";
     } else if (typeof value === "object" && !Array.isArray(value)) {
@@ -51,13 +54,18 @@ export const OsExportButton = () => {
     const filters = DEFAULT_FILTERS[params.state.tab]?.filters ?? [];
 
     const searchFilter = createSearchFilterable(params.state.search);
-    const osData = await getAllSearchData([...filters, ...searchFilter]);
+    const osData = await getAllSearchData([
+      ...params.state.filters,
+      ...filters,
+      ...searchFilter,
+    ]);
 
     const sourceItems = osData?.map((hit) => {
       const filteredHit = formatDataForExport({ ...hit._source }, user?.isCms);
 
       // Properties to exclude from export
       Reflect.deleteProperty(filteredHit, "Attachments");
+      Reflect.deleteProperty(filteredHit, "Rai Responses");
 
       return filteredHit;
     });
@@ -71,18 +79,18 @@ export const OsExportButton = () => {
       variant="ghost"
       onClick={handleExport}
       disabled={loading}
-      className="hover:tw-bg-transparent tw-h-full tw-flex tw-gap-2"
+      className="hover:bg-transparent h-full flex gap-2"
     >
       {loading && (
         <motion.div
           animate={{ rotate: "360deg" }}
           transition={{ repeat: Infinity, duration: 0.5 }}
         >
-          <Loader className="tw-w-4 tw-h-4" />
+          <Loader className="w-4 h-4" />
         </motion.div>
       )}
-      {!loading && <Download className="tw-w-4 tw-h-4" />}
-      Export
+      {!loading && <Download className="w-4 h-4" />}
+      <p className="prose-sm">Export</p>
     </Button>
   );
 };
