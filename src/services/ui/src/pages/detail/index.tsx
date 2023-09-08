@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-import { Link } from "react-router-dom";
->>>>>>> b2ea9f3a56eded28254d3fd383f1504ebc3017a4
 import {
   AdditionalInfo,
   Attachmentslist,
