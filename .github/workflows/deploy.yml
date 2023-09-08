@@ -117,6 +117,10 @@ jobs:
       baseurl: ${{ needs.deploy.outputs.app-url }}
     if: ${{ github.ref != 'refs/heads/production' }}
     steps:
+      - name: Debug .env.local
+        run: |
+          ls -la src/services/ui
+          cat src/services/ui/.env.local
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup
