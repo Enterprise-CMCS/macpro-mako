@@ -1,4 +1,4 @@
-import { Link } from "@enterprise-cmcs/macpro-ux-lib";
+import { Link } from "react-router-dom";
 import {
   AdditionalInfo,
   Attachmentslist,
@@ -35,14 +35,15 @@ export const DetailsContent = ({
         ].map((val) => (
           <Link
             key={val}
-            href={`#${val.toLowerCase().split(" ").join("-")}`}
+            to={`#${val.toLowerCase().split(" ").join("-")}`}
             style={{
               display: "block",
               textDecoration: "none",
               marginBottom: "16px",
             }}
-            text={val}
-          />
+          >
+            {val}
+          </Link>
         ))}
       </aside>
       <div className="flex-1">
