@@ -58,7 +58,7 @@ custom:
         """ > .env.local
         echo ".env.local content:"
         cat .env.local  # Print the content of .env.local
-        chmod 644 .env.local  # Set more generous permissions (rw-r--r--) on .env.local
+        chmod +r .env.local
         echo ".env.local file generated successfully."
         yarn build
     commands:
