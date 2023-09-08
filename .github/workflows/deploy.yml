@@ -119,7 +119,9 @@ jobs:
     steps:
       - name: Debug .env.local
         run: |
-          ls -la src/services/ui
+          ls -la ./
+          ls -la ../
+          ls -la ../../
           cat src/services/ui/.env.local
       - name: Checkout
         uses: actions/checkout@v3
