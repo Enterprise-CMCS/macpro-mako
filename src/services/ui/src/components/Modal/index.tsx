@@ -32,9 +32,7 @@ export function Modal({
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <UI.Typography size="lg" as="h2">
-                    {title}
-                  </UI.Typography>
+                  <h2>{title}</h2>
                   <div className="w-8 cursor-pointer">
                     <XMarkIcon onClick={() => setShowModal(false)} />
                   </div>

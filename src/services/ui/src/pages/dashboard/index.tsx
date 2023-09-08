@@ -1,11 +1,12 @@
 import * as UI from "@enterprise-cmcs/macpro-ux-lib";
-import { redirect } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
-import { getUser } from "@/api/useGetUser";
+import { getUser, useGetUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
 import { OsProvider, type OsTab, useOsQuery } from "@/components/Opensearch";
+import { Button } from "@/components/Button";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -29,6 +30,7 @@ const loader = (queryClient: QueryClient) => {
 export const dashboardLoader = loader;
 
 export const Dashboard = () => {
+  const { data: user } = useGetUser();
   const query = useOsQuery();
 
   return (
@@ -44,6 +46,11 @@ export const Dashboard = () => {
           <UI.Typography size="lg" as="h1">
             Dashboard
           </UI.Typography>
+          {!user?.isCms && (
+            <Button>
+              <Link to={"/create"}>New Submission</Link>
+            </Button>
+          )}
         </div>
         <div className="w-[100%] items-center justify-center">
           <Tabs

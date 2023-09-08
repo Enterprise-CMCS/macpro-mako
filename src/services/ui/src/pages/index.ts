@@ -1,3 +1,4 @@
+export * from "./create";
 export * from "./dashboard";
 export * from "./welcome";
 export * from "./detail";
