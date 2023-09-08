@@ -1,10 +1,11 @@
-import { redirect } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
-import { getUser } from "@/api/useGetUser";
+import { getUser, useGetUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
 import { OsProvider, type OsTab, useOsQuery } from "@/components/Opensearch";
+import { Button } from "@/components/Button";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -28,6 +29,7 @@ const loader = (queryClient: QueryClient) => {
 export const dashboardLoader = loader;
 
 export const Dashboard = () => {
+  const { data: user } = useGetUser();
   const query = useOsQuery();
 
   return (
@@ -41,6 +43,11 @@ export const Dashboard = () => {
       <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between my-4">
           <h1 className="text-xl">Dashboard</h1>
+          {!user?.isCms && (
+            <Button>
+              <Link to={"/create"}>New Submission</Link>
+            </Button>
+          )}
         </div>
         <div className="w-[100%] items-center justify-center">
           <Tabs
