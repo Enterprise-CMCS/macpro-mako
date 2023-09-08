@@ -127,6 +127,18 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
+      - name: Print Working Directory
+        run: pwd
+      - name: Check .env.local File Existence
+        run: ls -la /home/runner/work/macpro-mako/macpro-mako/src/services/ui/.env.local
+      - name: Use .env.local File
+        run: |
+          echo "Loading .env.local from: $PWD/.env.local"
+          # Use the absolute path to access the file
+          # Example: cat $PWD/.env.local
+        working-directory: /home/runner/work/macpro-mako/macpro-mako/src/services/ui
+      - name: Check .env.local File Permissions
+        run: ls -l /home/runner/work/macpro-mako/macpro-mako/src/services/ui/.env.local
       - name: Run e2e tests
         run: run e2e
       - uses: actions/upload-artifact@v3
