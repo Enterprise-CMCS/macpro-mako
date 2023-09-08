@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { testUsers } from "e2e/utils/users";
 
-const password = import.meta.env.VITE_BOOTSTRAP_USERS_PW as string;
+const password = import.meta?.env?.VITE_API_REGION as string;
 console.log("password", password);
 test("has title", async ({ page }) => {
   await page.goto("/");
