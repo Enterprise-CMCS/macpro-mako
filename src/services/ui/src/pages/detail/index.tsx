@@ -1,4 +1,3 @@
-import { Link } from "@enterprise-cmcs/macpro-ux-lib";
 import {
   AdditionalInfo,
   Attachmentslist,
@@ -33,16 +32,16 @@ export const DetailsContent = ({
           "Attachments",
           "Additional Info",
         ].map((val) => (
-          <Link
+          <a
+            className="block mb-4 text-blue-700"
             key={val}
-            href={`#${val.toLowerCase().split(" ").join("-")}`}
-            style={{
-              display: "block",
-              textDecoration: "none",
-              marginBottom: "16px",
-            }}
-            text={val}
-          />
+            href={`?id=${encodeURIComponent(data._id)}#${val
+              .toLowerCase()
+              .split(" ")
+              .join("-")}`}
+          >
+            {val}
+          </a>
         ))}
       </aside>
       <div className="flex-1">
