@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import fs from "fs";
 
 import dotenv from "dotenv";
 import path from "path";
@@ -8,8 +9,20 @@ const __dirname = path.dirname(__filename);
 console.log(
   `Loading .env.local from: ${path.resolve(__dirname, ".env.local")}`
 );
-dotenv.config({ path: "./.env.local" });
+dotenv.config({ path: path.resolve(__dirname, ".env.local") });
 console.log("inside playwright", process.env.BOOTSTRAP_USERS_PW);
+
+const envFilePath = path.resolve(__dirname, ".env.local");
+
+// Check if the file exists
+if (fs.existsSync(envFilePath)) {
+  // The .env.local file exists, so load its content
+  console.log("TEST, FILE WAS FOUND", fs.existsSync(envFilePath));
+  dotenv.config({ path: envFilePath });
+} else {
+  console.error(`The .env.local file does not exist at ${envFilePath}`);
+}
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
