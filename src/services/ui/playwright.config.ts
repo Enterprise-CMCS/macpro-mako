@@ -14,6 +14,9 @@ console.log("inside playwright", process.env.BOOTSTRAP_USERS_PW);
 
 const envFilePath = path.resolve(__dirname, ".env.local");
 
+const filesInDirectory = fs.readdirSync(__dirname);
+console.log("Files in the directory:", filesInDirectory);
+
 // Check if the file exists
 if (fs.existsSync(envFilePath)) {
   // The .env.local file exists, so load its content
