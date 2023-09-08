@@ -12,11 +12,10 @@ type FormData = {
 };
 
 export const getSubmissionData = async (props: FormData): Promise<any> => {
-  const results = await API.post("os", "/newSubmission", {
-    // this isnt a thing yet
+  const results = await API.post("os", "/submit", {
     body: props,
   });
-
+  console.log(results);
   return results;
 };
 
