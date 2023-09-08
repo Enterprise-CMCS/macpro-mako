@@ -2,8 +2,11 @@ import { useForm, Controller } from "react-hook-form";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError } from "shared-types";
-import { useRef, useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/Button";
+import { getUserStateCodes } from "@/utils";
+import { useGetUser } from "@/api/useGetUser";
+import { useParams } from "react-router-dom";
 
 type FormData = {
   id: string;
@@ -29,6 +32,11 @@ export const useCreateSeatoolRecord = (
 };
 
 export const Create = () => {
+  const { authority } = useParams();
+
+  console.log(authority);
+  const { data: user } = useGetUser();
+  const stateCodes = getUserStateCodes(user?.user);
   const { handleSubmit, control } = useForm<FormData>();
   const { mutate } = useCreateSeatoolRecord();
   const [dropDownValue, setDropDownValue] = useState("");
@@ -38,6 +46,7 @@ export const Create = () => {
       ...data,
       id: `${dropDownValue}-${data.id}`,
       state: dropDownValue,
+      authority: authority!.split("-").join(" "),
     };
     mutate(newData);
   };
@@ -72,10 +81,12 @@ export const Create = () => {
                     id="state"
                     className="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   >
-                    <option value="">Select State</option>
-                    <option value="NY">New York</option>
-                    <option value="CA">California</option>
-                    <option value="TX">Texas</option>
+                    <option key=" " value=""></option>
+                    {stateCodes.map((VAL) => (
+                      <option key={VAL} value={VAL}>
+                        {VAL}
+                      </option>
+                    ))}
                     {/* Add more state options as needed */}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -124,7 +135,7 @@ export const Create = () => {
             </div>
           </div>
 
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label htmlFor="authority" className="block text-gray-700">
               Authority:
             </label>
@@ -142,7 +153,7 @@ export const Create = () => {
                 />
               )}
             />
-          </div>
+          </div> */}
 
           <Button className="mt-4" type="submit">
             Submit

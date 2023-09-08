@@ -45,7 +45,7 @@ export const Dashboard = () => {
           <h1 className="text-xl">Dashboard</h1>
           {!user?.isCms && (
             <Button>
-              <Link to={"/create"}>New Submission</Link>
+              <Link to={"/authority"}>New Submission</Link>
             </Button>
           )}
         </div>
