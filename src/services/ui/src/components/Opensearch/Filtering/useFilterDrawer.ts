@@ -15,35 +15,33 @@ export const useFilterDrawer = () => {
 
   const onDrawerChange = (updateOpen: boolean) => {
     setOpen(updateOpen);
-    if (updateOpen) return;
-
-    const updateFilters = Object.values(filters).filter((FIL) => {
-      if (FIL.type === "terms") {
-        const value = FIL.value as string[];
-        return value?.length;
-      }
-
-      if (FIL.type === "range") {
-        const value = FIL.value as OsRangeValue;
-        return !!value?.gte && !!value?.lte;
-      }
-
-      return true;
-    });
-
-    params.onSet((state) => ({
-      ...state,
-      filters: updateFilters,
-      pagination: { ...state.pagination, number: 0 },
-    }));
   };
 
   const onFilterChange = (field: OsField) => {
     return (value: OsFilterValue) => {
-      setFilters((state: any) => {
-        const copyState = { ...state };
-        copyState[field] = { ...copyState[field], value };
-        return copyState;
+      setFilters((state) => {
+        const updateState = { ...state, [field]: { ...state[field], value } };
+        const updateFilters = Object.values(updateState).filter((FIL) => {
+          if (FIL.type === "terms") {
+            const value = FIL.value as string[];
+            return value?.length;
+          }
+
+          if (FIL.type === "range") {
+            const value = FIL.value as OsRangeValue;
+            return !!value?.gte && !!value?.lte;
+          }
+
+          return true;
+        });
+
+        params.onSet((state) => ({
+          ...state,
+          filters: updateFilters,
+          pagination: { ...state.pagination, number: 0 },
+        }));
+
+        return updateState;
       });
     };
   };
@@ -58,8 +56,6 @@ export const useFilterDrawer = () => {
     const updateAccordions = [] as any[];
 
     setFilters((state: any) => {
-      const copy = { ...state };
-
       params.state.filters.forEach((FIL) => {
         if (FIL.type === "terms") {
           const value = FIL.value as string[];
@@ -71,13 +67,13 @@ export const useFilterDrawer = () => {
           if (!!value?.gte && !!value?.lte) updateAccordions.push(FIL.field);
         }
 
-        copy[FIL.field] = {
+        state[FIL.field] = {
           ...(state[FIL.field] && state[FIL.field]),
           value: FIL.value,
         };
       });
 
-      return copy;
+      return state;
     });
     setAccordionValues(updateAccordions);
   }, [open]);
