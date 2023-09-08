@@ -1,4 +1,3 @@
-// import { Accordion, AccordionGroup } from "@enterprise-cmcs/macpro-ux-lib";
 import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
 import {
   Accordion,

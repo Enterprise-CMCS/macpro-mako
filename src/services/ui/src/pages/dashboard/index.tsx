@@ -1,4 +1,3 @@
-import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import { redirect } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
@@ -41,9 +40,7 @@ export const Dashboard = () => {
     >
       <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between my-4">
-          <UI.Typography size="lg" as="h1">
-            Dashboard
-          </UI.Typography>
+          <h1 className="text-xl">Dashboard</h1>
         </div>
         <div className="w-[100%] items-center justify-center">
           <Tabs
@@ -57,22 +54,10 @@ export const Dashboard = () => {
           >
             <TabsList>
               <TabsTrigger value="spas" className="px-6 py-2">
-                <UI.Typography
-                  size="md"
-                  className="font-bold text-[1.3em]"
-                  as="h1"
-                >
-                  SPAs
-                </UI.Typography>
+                <h4 className="font-bold text-[1.3em]">SPAs</h4>
               </TabsTrigger>
               <TabsTrigger value="waivers" className="px-6 py-2">
-                <UI.Typography
-                  size="md"
-                  className="font-bold text-[1.3em]"
-                  as="h1"
-                >
-                  Waivers
-                </UI.Typography>
+                <h4 className="font-bold text-[1.3em]">Waivers</h4>
               </TabsTrigger>
             </TabsList>
             <TabsContent value="spas">
