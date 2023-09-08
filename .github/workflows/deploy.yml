@@ -122,7 +122,6 @@ jobs:
           ls -la ./
           ls -la ../
           ls -la ../../
-          cat src/services/ui/.env.local
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup
