@@ -1,16 +1,10 @@
 import { defineConfig, devices } from "@playwright/test";
-import fs from "fs";
-
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-console.log(
-  `Loading .env.local from: ${path.resolve(__dirname, ".env.local")}`
-);
 dotenv.config({ path: path.resolve(__dirname, ".env.local") });
-console.log("inside playwright", process.env.BOOTSTRAP_USERS_PW);
 
 /**
  * See https://playwright.dev/docs/test-configuration.
