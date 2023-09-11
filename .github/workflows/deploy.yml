@@ -140,8 +140,8 @@ jobs:
           aws-region: us-east-1
           role-duration-seconds: 10800
       - name: Set BOOTSTRAP_USERS_PW as an environment variable
-        env:
-          BOOTSTRAP_USERS_PW: ${{ secrets.BOOTSTRAP_USERS_PW }}
+        # env:
+        #   BOOTSTRAP_USERS_PW: ${{ secrets.BOOTSTRAP_USERS_PW }}
         run: |
           echo "BOOTSTRAP_USERS_PW=${BOOTSTRAP_USERS_PW}" >> $GITHUB_ENV
       - name: Run e2e tests
