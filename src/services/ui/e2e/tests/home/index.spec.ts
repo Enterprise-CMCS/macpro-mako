@@ -20,20 +20,21 @@ test("see frequently asked questions header when in faq page", async ({
   expect(foundFaqHeading).toBeTruthy();
 });
 
-// test("see dashboard link when log in", async ({ page }) => {
-//   await page.goto("/");
-//   await page.getByRole("button", { name: "Sign In" }).click();
-//   await page
-//     .getByRole("textbox", { name: "name@host.com" })
-//     .type(testUsers.state);//   await page.getByRole("textbox", { name: "Password" }).type("test");
-//   await page.getByRole("button", { name: "submit" }).click();
-//   await page.getByRole("link", { name: "Dashboard" }).click();
+test("see dashboard link when log in", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Sign In" }).click();
+  await page
+    .getByRole("textbox", { name: "name@host.com" })
+    .type(testUsers.state);
+  await page.getByRole("textbox", { name: "Password" }).type(password);
+  await page.getByRole("button", { name: "submit" }).click();
+  await page.getByRole("link", { name: "Dashboard" }).click();
 
-//   const dashboardLinkVisible = await page
-//     .getByRole("link", { name: "Dashboard" })
-//     .isVisible();
-//   expect(dashboardLinkVisible).toBeTruthy();
-// });
+  const dashboardLinkVisible = await page
+    .getByRole("link", { name: "Dashboard" })
+    .isVisible();
+  expect(dashboardLinkVisible).toBeTruthy();
+});
 
 test("failed incorrect login username", async ({ page }) => {
   await page.goto("/");
