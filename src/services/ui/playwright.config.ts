@@ -12,24 +12,6 @@ console.log(
 dotenv.config({ path: path.resolve(__dirname, ".env.local") });
 console.log("inside playwright", process.env.BOOTSTRAP_USERS_PW);
 
-const envFilePath = path.resolve(__dirname, ".env.local");
-
-const filesInDirectory = fs.readdirSync(__dirname);
-const filesInDirectory2 = fs.readdirSync(`${__dirname}/src`);
-const filesInDirectory3 = fs.readdirSync(`${__dirname}/e2e`);
-console.log("Files in the directory:", filesInDirectory);
-console.log("Files in the directory:", filesInDirectory2);
-console.log("Files in the directory:", filesInDirectory3);
-
-// Check if the file exists
-if (fs.existsSync(envFilePath)) {
-  // The .env.local file exists, so load its content
-  console.log("TEST, FILE WAS FOUND", fs.existsSync(envFilePath));
-  dotenv.config({ path: envFilePath });
-} else {
-  console.error(`The .env.local file does not exist at ${envFilePath}`);
-}
-
 /**
  * See https://playwright.dev/docs/test-configuration.
  */

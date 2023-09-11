@@ -31,7 +31,7 @@ test("see dashboard link when log in", async ({ page }) => {
   await page
     .getByRole("textbox", { name: "name@host.com" })
     .type(testUsers.state);
-  await page.getByRole("textbox", { name: "Password" }).type(password);
+  await page.getByRole("textbox", { name: "Password" }).type("password");
   await page.getByRole("button", { name: "submit" }).click();
   await page.getByRole("link", { name: "Dashboard" }).click();
 
