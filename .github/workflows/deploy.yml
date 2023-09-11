@@ -73,6 +73,19 @@ jobs:
             awk '{print $NF}' | awk '{$1=$1};1' |
             tr -d \'\"
           ) >> $GITHUB_OUTPUT
+
+      - name: Extract BOOTSTRAP_USERS_PW from .env.local
+        run: |
+          # Read the value of BOOTSTRAP_USERS_PW from .env.local
+          BOOTSTRAP_USERS_PW=$(grep -oP 'BOOTSTRAP_USERS_PW=\K.*' /home/runner/work/macpro-mako/macpro-mako/src/services/ui/.env.local)
+
+          # Set BOOTSTRAP_USERS_PW as an environment variable
+          echo "BOOTSTRAP_USERS_PW=${BOOTSTRAP_USERS_PW}" >> $GITHUB_ENV
+
+          # Print the extracted value for verification
+          echo "Extracted BOOTSTRAP_USERS_PW: $BOOTSTRAP_USERS_PW"
+        working-directory: /home/runner/work/macpro-mako/macpro-mako/src/services/ui
+
   kibana-url:
     runs-on: ubuntu-20.04
     needs:
@@ -126,11 +139,9 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
-      - name: Rerun package:initialize
-        run: |
-          yarn run serverless package:initialize --file ./serverless.ui.yml
       - name: Run e2e tests
         run: |
+          echo "BOOTSTRAP_USERS_PW: $BOOTSTRAP_USERS_PW"
           run e2e
       - uses: actions/upload-artifact@v3
         if: always()
