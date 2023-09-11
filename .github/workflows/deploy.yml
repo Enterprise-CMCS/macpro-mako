@@ -74,17 +74,17 @@ jobs:
             tr -d \'\"
           ) >> $GITHUB_OUTPUT
 
-      - name: Extract BOOTSTRAP_USERS_PW from .env.local
-        run: |
-          # Read the value of BOOTSTRAP_USERS_PW from .env.local
-          BOOTSTRAP_USERS_PW=$(grep -oP 'BOOTSTRAP_USERS_PW=\K.*' /home/runner/work/macpro-mako/macpro-mako/src/services/ui/.env.local)
+      # - name: Extract BOOTSTRAP_USERS_PW from .env.local
+      #   run: |
+      #     # Read the value of BOOTSTRAP_USERS_PW from .env.local
+      #     BOOTSTRAP_USERS_PW=$(grep -oP 'BOOTSTRAP_USERS_PW=\K.*' /home/runner/work/macpro-mako/macpro-mako/src/services/ui/.env.local)
 
-          # Set BOOTSTRAP_USERS_PW as an environment variable
-          echo "BOOTSTRAP_USERS_PW=${BOOTSTRAP_USERS_PW}" >> $GITHUB_ENV
+      #     # Set BOOTSTRAP_USERS_PW as an environment variable
+      #     echo "BOOTSTRAP_USERS_PW=${BOOTSTRAP_USERS_PW}" >> $GITHUB_ENV
 
-          # Print the extracted value for verification
-          echo "Extracted BOOTSTRAP_USERS_PW: $BOOTSTRAP_USERS_PW"
-        working-directory: /home/runner/work/macpro-mako/macpro-mako/src/services/ui
+      #     # Print the extracted value for verification
+      #     echo "Extracted BOOTSTRAP_USERS_PW: $BOOTSTRAP_USERS_PW"
+      #   working-directory: /home/runner/work/macpro-mako/macpro-mako/src/services/ui
 
   kibana-url:
     runs-on: ubuntu-20.04
@@ -139,14 +139,8 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
-      # - name: Set BOOTSTRAP_USERS_PW as an environment variable
-      #   # env:
-      #   #   BOOTSTRAP_USERS_PW: ${{ secrets.BOOTSTRAP_USERS_PW }}
-      #   run: |
-      #     echo "BOOTSTRAP_USERS_PW=${BOOTSTRAP_USERS_PW}" >> $GITHUB_ENV
       - name: Run e2e tests
-        run: |
-          run e2e
+        run: run e2e
       - uses: actions/upload-artifact@v3
         if: always()
         with:
