@@ -131,8 +131,8 @@ resources:
           - openid
           - aws.cognito.signin.user.admin # Needed to call Auth.currentUserInfo()
         CallbackURLs:
-          - ${param:ApplicationEndpointUrl}
-          - http://localhost:5000/
+          - ${param:ApplicationEndpointUrl}/dashboard
+          - http://localhost:5000/dashboard
         DefaultRedirectURI: ${param:ApplicationEndpointUrl}
         LogoutURLs:
           - ${param:ApplicationEndpointUrl}

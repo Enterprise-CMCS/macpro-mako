@@ -18,9 +18,11 @@ export const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.DISAPPROVED]: "Disapproved",
   [SEATOOL_STATUS.WITHDRAWN]: "Package Withdrawn",
   [SEATOOL_STATUS.TERMINATED]: "Waiver Terminated",
-  [SEATOOL_STATUS.PENDING_CONCURRENCE]: "Under Review",
+  // [SEATOOL_STATUS.PENDING_CONCURRENCE]: "Under Review",
+  [SEATOOL_STATUS.PENDING_CONCURRENCE]: "Pending Concurrence",
   [SEATOOL_STATUS.UNSUBMITTED]: "Unsubmitted",
-  [SEATOOL_STATUS.PENDING_APPROVAL]: "Under Review",
+  // [SEATOOL_STATUS.PENDING_APPROVAL]: "Under Review",
+  [SEATOOL_STATUS.PENDING_APPROVAL]: "Pending Approval",
 };
 
 export const statusToDisplayToCmsUser = {
@@ -30,9 +32,11 @@ export const statusToDisplayToCmsUser = {
   [SEATOOL_STATUS.DISAPPROVED]: "Disapproved",
   [SEATOOL_STATUS.WITHDRAWN]: "Package Withdrawn",
   [SEATOOL_STATUS.TERMINATED]: "Waiver Terminated",
-  [SEATOOL_STATUS.PENDING_CONCURRENCE]: "Under Review",
+  // [SEATOOL_STATUS.PENDING_CONCURRENCE]: "Under Review",
+  [SEATOOL_STATUS.PENDING_CONCURRENCE]: "Pending Concurrence",
   [SEATOOL_STATUS.UNSUBMITTED]: "Unsubmitted",
-  [SEATOOL_STATUS.PENDING_APPROVAL]: "Under Review",
+  // [SEATOOL_STATUS.PENDING_APPROVAL]: "Under Review",
+  [SEATOOL_STATUS.PENDING_APPROVAL]: "Pending Approval",
 };
 
 export const getStatus = (status?: string | null, isCms?: boolean) => {
