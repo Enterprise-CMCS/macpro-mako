@@ -74,11 +74,17 @@ jobs:
             tr -d \'\"
           ) >> $GITHUB_OUTPUT
 
-      - name: Check .env.local File Existence
-        run: ls -la /home/runner/work/macpro-mako/macpro-mako/src/services/ui/.env.local
+      - name: Extract BOOTSTRAP_USERS_PW from .env.local
+        run: |
+          # Read the value of BOOTSTRAP_USERS_PW from .env.local
+          BOOTSTRAP_USERS_PW=$(grep -oP 'BOOTSTRAP_USERS_PW=\K.*' /home/runner/work/macpro-mako/macpro-mako/src/services/ui/.env.local)
 
-      - name: Extract and Set BOOTSTRAP_USERS_PW
-        run: echo "BOOTSTRAP_USERS_PW=${{ secrets.BOOTSTRAP_USERS_PW }}" >> $GITHUB_ENV
+          # Set BOOTSTRAP_USERS_PW as an environment variable
+          echo "BOOTSTRAP_USERS_PW=${BOOTSTRAP_USERS_PW}" >> $GITHUB_ENV
+
+          # Print the extracted value for verification
+          echo "Extracted BOOTSTRAP_USERS_PW: $BOOTSTRAP_USERS_PW"
+        working-directory: /home/runner/work/macpro-mako/macpro-mako/src/services/ui
 
       - name: Use the value
         run: |
