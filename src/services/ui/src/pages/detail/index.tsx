@@ -1,11 +1,10 @@
-import { DetailWrapper } from "./wrapper";
-import { Link } from "@enterprise-cmcs/macpro-ux-lib";
 import {
   AdditionalInfo,
   Attachmentslist,
   CardWithTopBorder,
   ChipSpaPackageDetails,
   DetailsSection,
+  ErrorAlert,
   LoadingSpinner,
   RaiResponses,
   SubmissionInfo,
@@ -13,8 +12,15 @@ import {
 import { useGetUser } from "@/api/useGetUser";
 import { getStatus } from "../dashboard/Lists/statusHelper";
 import { OsHit, OsMainSourceItem } from "shared-types";
+import { useQuery } from "@/hooks";
+import { useGetItem } from "@/api";
+import { DetailNav } from "./detailNav";
 
-export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
+export const DetailsContent = ({
+  data,
+}: {
+  data?: OsHit<OsMainSourceItem>;
+}) => {
   const { data: user } = useGetUser();
   if (!data?._source) return <LoadingSpinner />;
   return (
@@ -26,16 +32,16 @@ export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
           "Attachments",
           "Additional Info",
         ].map((val) => (
-          <Link
+          <a
+            className="block mb-4 text-blue-700"
             key={val}
-            href={`#${val.toLowerCase().split(" ").join("-")}`}
-            style={{
-              display: "block",
-              textDecoration: "none",
-              marginBottom: "16px",
-            }}
-            text={val}
-          />
+            href={`?id=${encodeURIComponent(data._id)}#${val
+              .toLowerCase()
+              .split(" ")
+              .join("-")}`}
+          >
+            {val}
+          </a>
         ))}
       </aside>
       <div className="flex-1">
@@ -50,32 +56,6 @@ export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
               </div>
             </>
           </CardWithTopBorder>
-          {/* <CardWithTopBorder>
-            <>
-              <p className="text-gray-600 font-semibold mb-2">
-                Package Actions
-              </p>
-              <div className="flex flex-col gap-y-2">
-                <Link
-                  href="#"
-                  style={{
-                    textDecoration: "none",
-                    fontWeight: 700,
-                  }}
-                >
-                  {" "}
-                  Withdraw Package
-                </Link>
-                <Link
-                  href="#"
-                  style={{ textDecoration: "none", fontWeight: 700 }}
-                >
-                  {" "}
-                  Issue Formal RAI
-                </Link>
-              </div>
-            </>
-          </CardWithTopBorder> */}
         </section>
         <DetailsSection id="package-details" title="Package Details">
           <ChipSpaPackageDetails {...data?._source} />
@@ -95,8 +75,23 @@ export const ChipSpa = ({ data }: { data?: OsHit<OsMainSourceItem> }) => {
   );
 };
 
-export const ChipSpaPage = () => (
-  <DetailWrapper>
-    <ChipSpa />
-  </DetailWrapper>
-);
+export const Details = () => {
+  const query = useQuery();
+  const id = query.get("id") as string;
+  const { data, isLoading, error } = useGetItem(id);
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  if (error) {
+    return <ErrorAlert error={error} />;
+  }
+
+  return (
+    <>
+      <DetailNav id={id} type={data?._source.planType} />
+      <div className="max-w-screen-xl mx-auto py-8 px-4 lg:px-8">
+        <DetailsContent data={data} />
+      </div>
+    </>
+  );
+};

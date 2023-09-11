@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { Icon } from "@enterprise-cmcs/macpro-ux-lib";
+import { ArrowUp, ArrowDown } from "lucide-react";
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -93,15 +93,23 @@ const TableHead = React.forwardRef<
     )}
     {...props}
   >
-    <div className="flex">
+    <div className="flex items-center gap-1">
       {children}
       {icon ? (
         icon
       ) : (
-        <Icon
-          name={desc ? "arrow_downward" : "arrow_upward"}
-          className={cn(".1em", { "opacity-0": !isActive })}
-        />
+        <>
+          {desc && (
+            <ArrowDown
+              className={cn(".1em w-5 h-5", { "opacity-0": !isActive })}
+            />
+          )}
+          {!desc && (
+            <ArrowUp
+              className={cn(".1em w-5 h-5", { "opacity-0": !isActive })}
+            />
+          )}
+        </>
       )}
     </div>
   </th>

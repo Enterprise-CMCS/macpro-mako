@@ -17,6 +17,9 @@ function formatDataForExport(obj: OsMainSourceItem, isCms?: boolean): any {
 
   for (const [key, value] of Object.entries(obj)) {
     const k = convertCamelCaseToWords(key);
+    if (value === "undefined") {
+      console.log("dum");
+    }
     if (value === null || value === undefined) {
       result[k] = "";
     } else if (typeof value === "object" && !Array.isArray(value)) {
@@ -51,13 +54,18 @@ export const OsExportButton = () => {
     const filters = DEFAULT_FILTERS[params.state.tab]?.filters ?? [];
 
     const searchFilter = createSearchFilterable(params.state.search);
-    const osData = await getAllSearchData([...filters, ...searchFilter]);
+    const osData = await getAllSearchData([
+      ...params.state.filters,
+      ...filters,
+      ...searchFilter,
+    ]);
 
     const sourceItems = osData?.map((hit) => {
       const filteredHit = formatDataForExport({ ...hit._source }, user?.isCms);
 
       // Properties to exclude from export
       Reflect.deleteProperty(filteredHit, "Attachments");
+      Reflect.deleteProperty(filteredHit, "Rai Responses");
 
       return filteredHit;
     });
@@ -82,7 +90,7 @@ export const OsExportButton = () => {
         </motion.div>
       )}
       {!loading && <Download className="w-4 h-4" />}
-      Export
+      <p className="prose-sm">Export</p>
     </Button>
   );
 };

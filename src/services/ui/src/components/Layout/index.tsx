@@ -1,5 +1,4 @@
 import { Link, NavLink, NavLinkProps, Outlet } from "react-router-dom";
-import * as UI from "@enterprise-cmcs/macpro-ux-lib";
 import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -7,6 +6,8 @@ import { useState } from "react";
 import { useGetUser } from "@/api/useGetUser";
 import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
+import { Footer } from "../Footer";
+import { UsaBanner } from "../UsaBanner";
 
 const getLinks = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -43,7 +44,7 @@ export const Layout = () => {
 
   return (
     <div className="min-h-full flex flex-col">
-      <UI.UsaBanner />
+      <UsaBanner />
       <div className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
@@ -61,7 +62,15 @@ export const Layout = () => {
       <main className="flex-1">
         <Outlet />
       </main>
-      <UI.Footer emailAddress="test@test.test" />
+      <Footer
+        email="OneMAC_Helpdesk@cms.hhs.gov"
+        address={{
+          city: "Baltimore",
+          state: "MD",
+          street: "7500 Security Boulevard",
+          zip: 21244,
+        }}
+      />
     </div>
   );
 };

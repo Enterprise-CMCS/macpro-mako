@@ -2,6 +2,7 @@ import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
 import * as os from "../../../libs/opensearch-lib";
 import { getStateFilter } from "../libs/auth/user";
+import { OsHit, OsMainSourceItem } from "shared-types";
 
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
@@ -11,28 +12,27 @@ export const getItemData = async (event: APIGatewayEvent) => {
   try {
     const body = JSON.parse(event.body);
 
-    let query: any = {};
-    query = {
-      query: {
-        bool: {
-          must: [
-            {
-              ids: {
-                values: [body.id],
-              },
-            },
-          ],
-        },
-      },
-    };
     const stateFilter = await getStateFilter(event);
-    if (stateFilter) {
-      query.query.bool.must.push(stateFilter);
+
+    const result = (await os.getItem(
+      process.env.osDomain,
+      "main",
+      body.id
+    )) as OsHit<OsMainSourceItem> & { found: boolean };
+
+    if (
+      stateFilter &&
+      !stateFilter.terms.state.includes(
+        result._source.state.toLocaleLowerCase()
+      )
+    ) {
+      return response({
+        statusCode: 401,
+        body: { message: "Not authorized to view this resource" },
+      });
     }
 
-    const results = await os.search(process.env.osDomain, "main", query);
-
-    if (!results) {
+    if (!result.found) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },
@@ -40,7 +40,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
     } else {
       return response<unknown>({
         statusCode: 200,
-        body: results.hits[0],
+        body: result,
       });
     }
   } catch (error) {

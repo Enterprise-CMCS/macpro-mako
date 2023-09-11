@@ -28,6 +28,7 @@ export type OsResponse<T> = {
   max_score: number | null;
   took: number;
   timed_out: boolean;
+  aggregations?: OsAggResult;
 };
 
 export type OsMainSourceItem = OneMacTransform & SeaToolTransform;
@@ -51,7 +52,7 @@ export type OsField =
 
 export type OsFilterable = {
   type: OsFilterType;
-  field: OsField | "";
+  field: OsField;
   value: OsFilterValue;
   prefix: "must" | "must_not" | "should" | "filter";
 };
@@ -61,20 +62,22 @@ export type OsQueryState<T = any> = {
   pagination: { number: number; size: number };
   filters: OsFilterable[];
   search?: string;
-  // buckets: Record<string, { label: string; value: string }[]>;
-  // data: T[];
 };
 
-export type OsAggregateQuery = Record<
-  string,
-  { terms: { field: string; size: number } }
->;
+export type OsAggQuery = {
+  name: string;
+  type: OsFilterType;
+  field: OsField;
+  size: number;
+};
 
-export type OsAggregations = Record<
+export type OsAggBucket = { key: string; doc_count: number };
+
+export type OsAggResult = Record<
   string,
   {
     doc_count_error_upper_bound: number;
-    sum_other_doc_count: 0;
-    buckets: { key: string; doc_count: number }[];
+    sum_other_doc_count: number;
+    buckets: OsAggBucket[];
   }
 >;

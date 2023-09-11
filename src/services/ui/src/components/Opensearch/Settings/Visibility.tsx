@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Icon, Typography } from "@enterprise-cmcs/macpro-ux-lib";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import * as UI from "@/components/Popover";
 
 type Item = { label: string; field: string; hidden: boolean };
@@ -13,7 +13,7 @@ export const VisibilityPopover = <T extends Item>(props: Props<T>) => {
   return (
     <UI.Popover>
       <UI.PopoverTrigger>
-        <Icon name="visibility" />
+        <EyeIcon className="w-6 h-6" />
       </UI.PopoverTrigger>
       <UI.PopoverContent className="bg-white">
         <div className="flex flex-col gap-2">
@@ -27,6 +27,11 @@ export const VisibilityPopover = <T extends Item>(props: Props<T>) => {
 export const VisiblityItem = <T extends Item>(
   props: T & { onClick: () => void }
 ) => {
+  const eyeStyles = cn("flex flex-row gap-2 cursor-pointer", {
+    "text-gray-800": !props.hidden,
+    "text-gray-400": props.hidden,
+  });
+
   return (
     <div
       className={cn("flex flex-row gap-2 cursor-pointer", {
@@ -35,16 +40,9 @@ export const VisiblityItem = <T extends Item>(
       })}
       onClick={props.onClick}
     >
-      <Icon
-        name={!props.hidden ? "visibility" : "visibility_off"}
-        className={cn({
-          "text-gray-800": !props.hidden,
-          "text-gray-400": props.hidden,
-        })}
-      />
-      <Typography size="md" className="mt-[-1px]">
-        {props.label}
-      </Typography>
+      {props.hidden && <EyeOffIcon className={eyeStyles} />}
+      {!props.hidden && <EyeIcon className={eyeStyles} />}
+      <div className="mt-[-1px] prose-base">{props.label}</div>
     </div>
   );
 };

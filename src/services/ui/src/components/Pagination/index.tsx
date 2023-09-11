@@ -102,6 +102,7 @@ export const Pagination: FC<Props> = (props) => {
                       "bg-blue-500": isActive,
                       "focus-visible:outline-indigo-600": isActive,
                       "text-white": isActive,
+                      "hover:text-black": isActive,
                       "hover:bg-blue-500": isActive,
                     }
                   )}

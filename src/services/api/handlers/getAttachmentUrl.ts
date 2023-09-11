@@ -35,11 +35,11 @@ export const handler = async (event: APIGatewayEvent) => {
       query.query.bool.must.push(stateFilter);
     }
 
-    const results: OsResponse<OsMainSourceItem> = await os.search(
+    const results = (await os.search(
       process.env.osDomain,
       "main",
       query
-    );
+    )) as OsResponse<OsMainSourceItem>;
 
     if (!results) {
       return response({

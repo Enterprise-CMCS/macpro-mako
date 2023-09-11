@@ -34,18 +34,21 @@ export const useParams = <T>(props: { key: string; initValue?: T }) => {
       JSON.stringify(val)
     );
 
-    setParams((s) => {
-      const prevParams = (() => {
-        if (shouldIsolate) return {};
-        const nextVal = {} as Record<string, string>;
-        for (const param of s.keys()) {
-          nextVal[param] = s.get(param) || "";
-        }
-        return nextVal;
-      })();
+    setParams(
+      (s) => {
+        const prevParams = (() => {
+          if (shouldIsolate) return {};
+          const nextVal = {} as Record<string, string>;
+          for (const param of s.keys()) {
+            nextVal[param] = s.get(param) || "";
+          }
+          return nextVal;
+        })();
 
-      return { ...prevParams, [props.key]: compressedValue };
-    });
+        return { ...prevParams, [props.key]: compressedValue };
+      },
+      { replace: true }
+    );
   };
 
   const onClear = () => {
