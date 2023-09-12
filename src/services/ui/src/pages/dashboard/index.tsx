@@ -4,7 +4,12 @@ import { getUser, useGetUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
-import { OsProvider, type OsTab, useOsQuery } from "@/components/Opensearch";
+import {
+  OsProvider,
+  type OsTab,
+  useOsQuery,
+  FilterChips,
+} from "@/components/Opensearch";
 import { Button } from "@/components/Button";
 
 const loader = (queryClient: QueryClient) => {
@@ -31,6 +36,8 @@ export const dashboardLoader = loader;
 export const Dashboard = () => {
   const { data: user } = useGetUser();
   const query = useOsQuery();
+
+  console.log(query);
 
   return (
     <OsProvider
@@ -68,9 +75,11 @@ export const Dashboard = () => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="spas">
+              <FilterChips />
               <SpasList />
             </TabsContent>
             <TabsContent value="waivers">
+              <FilterChips />
               <WaiversList />
             </TabsContent>
           </Tabs>
