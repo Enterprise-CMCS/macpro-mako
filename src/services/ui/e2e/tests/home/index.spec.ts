@@ -3,11 +3,11 @@ import { test, expect } from "@playwright/test";
 import { testUsers } from "e2e/utils/users";
 console.log("test1");
 console.log("processenv", process.env);
-const secretId = "om/default/bootstrapUsersPassword";
+const secretId = `${process.env.PROJECT}/default/bootstrapUsersPassword`;
 console.log("secreid", secretId);
 
 const password = await Libs.getSecretsValue(
-  process.env.region as string,
+  process.env.REGION_A as string,
   secretId
 );
 
