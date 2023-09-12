@@ -11,6 +11,7 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
     props: { className: "w-[150px]" },
     field: "id.keyword",
     label: "Waiver Number",
+    locked: true,
     cell: (data) => {
       if (!data.authority) return <></>;
       return (
@@ -26,6 +27,7 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   {
     field: "state.keyword",
     label: "State",
+    visible: false,
     cell: (data) => data.state,
   },
   {
@@ -57,6 +59,7 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   {
     field: "raiRequestedDate",
     label: "Formal RAI Requested",
+    visible: false,
     cell: (data) => {
       if (!data.raiRequestedDate) return null;
       return format(new Date(data.raiRequestedDate), "MM/dd/yyyy");
@@ -78,6 +81,7 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   {
     field: "leadAnalystName.keyword",
     label: "CPOC",
+    visible: false,
     cell: (data) => data.leadAnalystName,
   },
 ];
