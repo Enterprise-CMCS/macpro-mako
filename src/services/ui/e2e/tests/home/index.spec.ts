@@ -29,7 +29,7 @@ test("see frequesntly asked questions header when in faq page", async ({
   expect(foundFaqHeading).toBeTruthy();
 });
 
-test("see dahsboard link when log in", async ({ page }) => {
+test("see dashboard link when log in", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Sign In" }).click();
   await page
