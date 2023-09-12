@@ -38,9 +38,6 @@ custom:
     hooks:
       package:initialize: |
         set -e
-        echo "Current working directory:"
-        pwd
-        echo "Generating .env.local file..."
         echo """
         VITE_API_REGION=${param:ApiRegion}
         VITE_API_URL=${param:ApiUrl}
@@ -54,10 +51,6 @@ custom:
         VITE_COGNITO_REDIRECT_SIGNOUT=${param:ApplicationEndpointUrl}
         BOOTSTRAP_USERS_PW=${param:BootstrapUsersPassword}
         """ > .env.local
-        echo ".env.local content:"
-        cat .env.local  # Print the content of .env.local
-        chmod +r .env.local
-        echo ".env.local file generated successfully."
         yarn build
     commands:
       useLocalhost: |
