@@ -10,8 +10,13 @@ export const OsTable: FC<{
 }> = (props) => {
   const context = useOsContext();
   const params = useOsParams();
+
   const [osColumns, setOsColumns] = useState(
-    props.columns.map((COL) => ({ ...COL, hidden: false }))
+    props.columns.map((COL) => ({
+      ...COL,
+      hidden: !(COL?.visible ?? true),
+      locked: COL?.locked ?? false,
+    }))
   );
 
   const onToggle = (field: string) => {
@@ -52,7 +57,12 @@ export const OsTable: FC<{
 
           <UI.TableHead
             className="w-[10px]"
-            icon={<VisibilityPopover list={osColumns} onItemClick={onToggle} />}
+            icon={
+              <VisibilityPopover
+                list={osColumns.filter((COL) => !COL.locked)}
+                onItemClick={onToggle}
+              />
+            }
           />
         </UI.TableRow>
       </UI.TableHeader>
