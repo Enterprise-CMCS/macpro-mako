@@ -3,6 +3,7 @@ import OneMacLogo from "@/assets/onemac_logo.svg";
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
+import { Button } from "@/components/Button";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -168,6 +169,14 @@ export const Welcome = () => {
                 </ul>
               </div>
             </div>
+          </div>
+          <div className="my-6 flex flex-row justify-center items-center gap-x-24">
+            <p className="text-xl">Do you have questions or need support?</p>
+            <Button>
+              <a href="/faq" className="text">
+                View FAQ
+              </a>
+            </Button>
           </div>
         </div>
       </main>
