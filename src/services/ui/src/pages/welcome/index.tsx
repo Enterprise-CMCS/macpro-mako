@@ -1,6 +1,6 @@
 import * as C from "@/components";
 import OneMacLogo from "@/assets/onemac_logo.svg";
-import { AcademicCapIcon } from "@heroicons/react/24/outline";
+import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
 
@@ -38,17 +38,23 @@ export const Welcome = () => {
             <div className="flex flex-col md:flex-row gap-12">
               <C.HowItWorks>
                 <C.Step
-                  icon={<AcademicCapIcon className="min-w-[32px] w-8 h-8" />}
+                  icon={
+                    <Heroicons.ArrowRightOnRectangleIcon className="min-w-[32px] w-8 h-8" />
+                  }
                   title="Login with IDM"
                   content="Login with your IDM username and password to access your SPA and Waiver dashboard."
                 />
                 <C.Step
-                  icon={<AcademicCapIcon className="min-w-[32px] w-8 h-8" />}
+                  icon={
+                    <Heroicons.DocumentArrowUpIcon className="min-w-[32px] w-8 h-8" />
+                  }
                   title="Attach your documents"
                   content="Select a submission type and attach required documents relevant to your SPA and/or Waiver submission."
                 />
                 <C.Step
-                  icon={<AcademicCapIcon className="min-w-[32px] w-8 h-8" />}
+                  icon={
+                    <Heroicons.EnvelopeIcon className="min-w-[32px] w-8 h-8" />
+                  }
                   title="Receive an email confirmation"
                   content="After you submit, you will receive an email confirmation that your submission was successful, marking the start of the 90-day review process."
                 />
@@ -106,17 +112,23 @@ export const Welcome = () => {
             <div className="flex flex-col md:flex-row gap-8">
               <C.HowItWorks>
                 <C.Step
-                  icon={<AcademicCapIcon className="min-w-[32px] w-8 h-8" />}
+                  icon={
+                    <Heroicons.ArrowRightOnRectangleIcon className="min-w-[32px] w-8 h-8" />
+                  }
                   title="Receive an email for submission notification"
                   content="After a state adds a submission to OneMAC, you will receive an email notification that a submission was made requiring your review and the submission is on the clock."
                 />
                 <C.Step
-                  icon={<AcademicCapIcon className="min-w-[32px] w-8 h-8" />}
+                  icon={
+                    <Heroicons.DocumentArrowUpIcon className="min-w-[32px] w-8 h-8" />
+                  }
                   title="Login with EUA"
                   content="Login with your EUA username and password to access the SPA and Waiver dashboard."
                 />
                 <C.Step
-                  icon={<AcademicCapIcon className="min-w-[32px] w-8 h-8" />}
+                  icon={
+                    <Heroicons.EnvelopeIcon className="min-w-[32px] w-8 h-8" />
+                  }
                   title="Review your assigned submission"
                   content="Search the submission ID from the email and click on the submission to view and review details and attachments."
                 />
