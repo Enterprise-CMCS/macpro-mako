@@ -80,7 +80,7 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   },
   {
     field: "leadAnalystName.keyword",
-    label: "CPOC",
+    label: "CPOC Name",
     visible: false,
     cell: (data) => data.leadAnalystName,
   },
