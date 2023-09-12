@@ -74,18 +74,6 @@ jobs:
             tr -d \'\"
           ) >> $GITHUB_OUTPUT
 
-      # - name: Extract BOOTSTRAP_USERS_PW from .env.local
-      #   run: |
-      #     # Read the value of BOOTSTRAP_USERS_PW from .env.local
-      #     BOOTSTRAP_USERS_PW=$(grep -oP 'BOOTSTRAP_USERS_PW=\K.*' /home/runner/work/macpro-mako/macpro-mako/src/services/ui/.env.local)
-
-      #     # Set BOOTSTRAP_USERS_PW as an environment variable
-      #     echo "BOOTSTRAP_USERS_PW=${BOOTSTRAP_USERS_PW}" >> $GITHUB_ENV
-
-      #     # Print the extracted value for verification
-      #     echo "Extracted BOOTSTRAP_USERS_PW: $BOOTSTRAP_USERS_PW"
-      #   working-directory: /home/runner/work/macpro-mako/macpro-mako/src/services/ui
-
   kibana-url:
     runs-on: ubuntu-20.04
     needs:

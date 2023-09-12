@@ -1,16 +1,16 @@
 import * as Libs from "../../../../../libs/secrets-manager-lib";
 import { test, expect } from "@playwright/test";
 import { testUsers } from "e2e/utils/users";
-console.log("test1");
-console.log("processenv", process.env);
-const secretId = `${process.env.PROJECT}/default/bootstrapUsersPassword`;
+const stage =
+  process.env.STAGE_NAME === "production" || process.env.STAGE_NAME === "val"
+    ? process.env.STAGE_NAME
+    : "default";
+const secretId = `${process.env.PROJECT}/${stage}/bootstrapUsersPassword`;
 
 const password = (await Libs.getSecretsValue(
   process.env.REGION_A as string,
   secretId
 )) as string;
-
-console.log("PASSWORD TEST:", password);
 
 test("has title", async ({ page }) => {
   await page.goto("/");

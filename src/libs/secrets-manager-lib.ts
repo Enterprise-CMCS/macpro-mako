@@ -9,17 +9,9 @@ export const getSecretsValue = async (region: string, secretId: string) => {
   const input = { SecretId: secretId };
   const command = new GetSecretValueCommand(input);
 
-  console.log("client", client);
-  console.log("input", input);
-  console.log("command", command);
   try {
-    console.log("try");
     const response = await client.send(command);
-    console.log("response", response);
-    console.log("result", response.SecretString);
-
     const result = response.SecretString ?? "";
-    console.log("result", result);
     return result;
   } catch (e) {
     console.log("ERROR getting secrets value", JSON.stringify(e, null, 2));
