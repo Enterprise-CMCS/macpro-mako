@@ -5,11 +5,9 @@ console.log("test1");
 console.log("processenv", process.env);
 const secretId = `${process.env.PROJECT}/default/bootstrapUsersPassword`;
 console.log("secreid", secretId);
+console.log("region", process.env.REGION_A);
 
-const password = await Libs.getSecretsValue(
-  process.env.REGION_A as string,
-  secretId
-);
+const password = await Libs.getSecretsValue("us-east-1", secretId);
 
 console.log("PASSWORD TEST:", password);
 
