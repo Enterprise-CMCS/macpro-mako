@@ -17,13 +17,11 @@ export const getSecretsValue = async (region: string, secretId: string) => {
     const response = await client.send(command);
     console.log("response", response);
     console.log("result", response.SecretString);
-    console.log(JSON.parse(response.SecretString ?? ""));
 
-    const result = JSON.parse(response.SecretString ?? "");
+    const result = response.SecretString ?? "";
     console.log("result", result);
     return result;
   } catch (e) {
-    console.log("error2", e);
     console.log("ERROR getting secrets value", JSON.stringify(e, null, 2));
   }
 };

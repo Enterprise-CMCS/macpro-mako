@@ -4,10 +4,11 @@ import { testUsers } from "e2e/utils/users";
 console.log("test1");
 console.log("processenv", process.env);
 const secretId = `${process.env.PROJECT}/default/bootstrapUsersPassword`;
-console.log("secreid", secretId);
-console.log("region", process.env.REGION_A);
 
-const password = await Libs.getSecretsValue("us-east-1", secretId);
+const password = (await Libs.getSecretsValue(
+  process.env.REGION_A as string,
+  secretId
+)) as string;
 
 console.log("PASSWORD TEST:", password);
 
@@ -52,7 +53,7 @@ test("failed incorrect login username", async ({ page }) => {
   await page.getByRole("button", { name: "submit" }).click();
   await page.getByRole("paragraph").isVisible();
   const invalidInputTest = await page.$(
-    'p:has-text("The username or password you entered is invalid")'
+    "p:has-text('The username or password you entered is invalid')"
   );
   expect(invalidInputTest).toBeTruthy();
 });
