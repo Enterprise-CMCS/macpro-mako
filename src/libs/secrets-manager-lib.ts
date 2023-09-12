@@ -16,6 +16,9 @@ export const getSecretsValue = async (region: string, secretId: string) => {
     console.log("try");
     const response = await client.send(command);
     console.log("response", response);
+    console.log("result", response.SecretString);
+    console.log(JSON.parse(response.SecretString ?? ""));
+
     const result = JSON.parse(response.SecretString ?? "");
     console.log("result", result);
     return result;
