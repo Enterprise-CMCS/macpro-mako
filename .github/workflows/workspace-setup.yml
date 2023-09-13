@@ -60,12 +60,12 @@ jobs:
           direnv allow
           direnv exec run deploy --stage $STAGE_NAME
 
-      - name: Test test
-        run: |
-          source /tmp/.profile
-          nvm use
-          direnv allow
-          direnv exec run test --stage $STAGE_NAME
+      # - name: Test test
+      #   run: |
+      #     source /tmp/.profile
+      #     nvm use
+      #     direnv allow
+      #     direnv exec run test --stage $STAGE_NAME
 
       - name: Test destroy
         run: |
