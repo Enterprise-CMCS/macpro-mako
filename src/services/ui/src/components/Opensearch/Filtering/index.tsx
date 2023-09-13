@@ -29,3 +29,4 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
 };
 
 export * from "./FilterChips";
+export * from "./FilterProvider";

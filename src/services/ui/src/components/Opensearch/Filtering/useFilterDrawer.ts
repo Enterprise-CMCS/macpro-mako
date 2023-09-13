@@ -1,20 +1,21 @@
 import { useState, useEffect, useMemo } from "react";
 import type { OsField } from "./types";
 import * as Consts from "./consts";
-import { useOsAggregate, useOsParams } from "../useOpensearch";
+import { DEFAULT_FILTERS, useOsAggregate, useOsParams } from "../useOpensearch";
 import { OsFilterValue, OsRangeValue } from "shared-types";
 import { useLabelMapping } from "@/hooks";
+import { useFilterDrawerContext } from "./FilterProvider";
 
 export const useFilterDrawer = () => {
-  const [filters, setFilters] = useState(Consts.FILTER_GROUPS);
-  const [open, setOpen] = useState(false);
+  const { filters, setFilters, drawerOpen, setDrawerState } =
+    useFilterDrawerContext();
   const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const params = useOsParams();
   const labelMap = useLabelMapping();
   const _aggs = useOsAggregate();
 
   const onDrawerChange = (updateOpen: boolean) => {
-    setOpen(updateOpen);
+    setDrawerState(updateOpen);
   };
 
   const onFilterChange = (field: OsField) => {
@@ -46,13 +47,25 @@ export const useFilterDrawer = () => {
     };
   };
 
+  const resetFilters = () => {
+    setFilters(() => {
+      params.onSet((state) => ({
+        ...state,
+        filters: DEFAULT_FILTERS[state.tab].filters || [],
+        pagination: { ...state.pagination, number: 0 },
+      }));
+
+      return Consts.FILTER_GROUPS;
+    });
+  };
+
   const onAccordionChange = (updateAccordion: string[]) => {
     setAccordionValues(updateAccordion);
   };
 
   // update initial filter state + accordion default open items
   useEffect(() => {
-    if (!open) return;
+    if (!drawerOpen) return;
     const updateAccordions = [] as any[];
 
     setFilters((state: any) => {
@@ -76,7 +89,7 @@ export const useFilterDrawer = () => {
       return state;
     });
     setAccordionValues(updateAccordions);
-  }, [open]);
+  }, [drawerOpen]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce((STATE, [KEY, AGG]) => {
@@ -92,11 +105,12 @@ export const useFilterDrawer = () => {
 
   return {
     aggs,
-    open,
+    open: drawerOpen,
     accordionValues,
     filters,
     onFilterChange,
     onDrawerChange,
     onAccordionChange,
+    resetFilters,
   };
 };
