@@ -74,6 +74,12 @@ jobs:
           direnv allow
           direnv exec run destroy --stage $STAGE_NAME --verify false --wait false
 
+  notify_of_failure:
+    runs-on: ubuntu-20.04
+    needs:
+      - release
+    if: failure()
+    steps:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         if: env.SLACK_WEBHOOK != '' && failure()
