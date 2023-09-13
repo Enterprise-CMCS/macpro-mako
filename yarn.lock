@@ -7136,7 +7136,7 @@
   dependencies:
     lodash "^4.17.21"
 
-"@stratiformdigital/serverless-idempotency-helper@^3.1.0":
+"@stratiformdigital/serverless-idempotency-helper@^3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@stratiformdigital/serverless-idempotency-helper/-/serverless-idempotency-helper-3.2.0.tgz#673de76c0d31af7064e9d53c6219f2410baf67b7"
   integrity sha512-Drsl02ceaQMABEF/JGbBfHqB1GWr2CkEmvPD2S/Ulruxwu2PM1h6wDWJ7xr8ElAVT4To284vD6dmtm2jhMVMgg==
