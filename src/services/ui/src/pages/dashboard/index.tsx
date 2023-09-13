@@ -37,8 +37,6 @@ export const Dashboard = () => {
   const { data: user } = useGetUser();
   const query = useOsQuery();
 
-  console.log(query);
-
   return (
     <OsProvider
       value={{
