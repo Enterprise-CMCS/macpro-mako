@@ -3,7 +3,7 @@ service: ${self:custom.project}-dashboard
 frameworkVersion: "3"
 
 package:
-  individually: true
+  individually: false
 
 plugins:
   - serverless-bundle

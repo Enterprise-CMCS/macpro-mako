@@ -1,7 +1,7 @@
 service: ${self:custom.project}-api
 frameworkVersion: "3"
 package:
-  individually: true
+  individually: false
 plugins:
   - serverless-bundle
   - serverless-stack-termination-protection

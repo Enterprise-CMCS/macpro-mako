@@ -3,7 +3,7 @@ service: ${self:custom.project}-log-policy
 frameworkVersion: "3"
 
 package:
-  individually: true
+  individually: false
 
 plugins:
   - serverless-stack-termination-protection
