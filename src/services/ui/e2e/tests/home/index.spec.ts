@@ -17,7 +17,7 @@ test("has title", async ({ page }) => {
   await expect(page).toHaveTitle(/CMS MAKO/);
 });
 
-test("see frequesntly asked questions header when in faq page", async ({
+test("see frequently asked questions header when in faq page", async ({
   page,
 }) => {
   await page.goto("/");

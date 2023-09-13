@@ -44,6 +44,7 @@
     "@vitest/coverage-c8": "^0.29.8",
     "@vitest/ui": "^0.29.8",
     "aws-sdk-client-mock": "^2.0.1",
+    "playwright": "^1.37.1",
     "prettier": "2.7.1",
     "semantic-release": "^19.0.5",
     "serverless": "^3.17.0",

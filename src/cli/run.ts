@@ -109,11 +109,11 @@ yargs(process.argv.slice(2))
     },
     async (argv: any) => {
       await install_deps_for_services();
-      await runner.run_command_and_output(
-        `Install playwright`,
-        ["yarn", "playwright", "install", "--with-deps"],
-        "."
-      );
+      // await runner.run_command_and_output(
+      //   `Install playwright`,
+      //   ["yarn", "playwright", "install", "--with-deps"],
+      //   "."
+      // );
 
       if (argv.ui) {
         await runner.run_command_and_output(
