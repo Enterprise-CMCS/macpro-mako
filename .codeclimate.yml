@@ -3,3 +3,5 @@ checks:
   method-lines:
     config:
       threshold: 1000 # defacto disable
+exclude_paths:
+  - src/services/ui/src/pages/faq/**"
