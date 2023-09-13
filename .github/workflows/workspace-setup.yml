@@ -78,7 +78,7 @@ jobs:
   notify_of_failure:
     runs-on: ubuntu-20.04
     needs:
-      - release
+      - test
     if: failure()
     steps:
       - name: Slack Notification
