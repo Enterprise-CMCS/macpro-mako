@@ -10,7 +10,7 @@ const chipVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-slate-50 hover:bg-primary/90",
-        function: "bg-slate-400 hover:bg-primary/90 hover:text-slate-50",
+        function: "bg-slate-300 hover:bg-primary/90 hover:text-slate-50",
         noIcon: "bg-primary text-slate-50 hover:bg-primary/90",
       },
     },
