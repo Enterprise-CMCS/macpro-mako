@@ -80,6 +80,8 @@ export const FilterChips: FC = () => {
     filters.length > 1 ||
     (Array.isArray(filters?.[0]?.value) && filters[0].value.length > 1);
 
+  console.log(filters);
+
   return (
     <div className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2">
       {filters.map((filter, index) => {
@@ -95,11 +97,7 @@ export const FilterChips: FC = () => {
         });
       })}
       {multipleFilters && (
-        <Chip
-          variant={"function"}
-          onChipClick={openDrawer}
-          onIconClick={() => resetFilters()}
-        >
+        <Chip variant={"destructive"} onChipClick={() => resetFilters()}>
           Clear All
         </Chip>
       )}

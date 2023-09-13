@@ -12,6 +12,7 @@ const chipVariants = cva(
         default: "bg-primary text-slate-50 hover:bg-primary/90",
         function: "bg-slate-300 hover:bg-primary/90 hover:text-slate-50",
         noIcon: "bg-primary text-slate-50 hover:bg-primary/90",
+        destructive: "bg-slate-300 hover:bg-destructive hover:text-slate-50",
       },
     },
     defaultVariants: {
@@ -33,18 +34,16 @@ const Chip = ({
   variant,
   ...props
 }: React.PropsWithChildren<ChipProps>) => {
+  const noIcon = variant === "noIcon" || variant === "destructive";
   return (
     <div
       className={cn(chipVariants({ variant, className }), "h-8 py-2")}
       {...props}
     >
-      <button
-        onClick={onChipClick}
-        className={variant === "noIcon" ? "px-2" : "pl-2 pr-1"}
-      >
+      <button onClick={onChipClick} className={noIcon ? "px-2" : "pl-2 pr-1"}>
         {props.children}
       </button>
-      {variant !== "noIcon" && (
+      {!noIcon && (
         <button
           onClick={onIconClick}
           className="p-1 m-1 hover:bg-slate-300 rounded-md justify-center items-center transition-colors"

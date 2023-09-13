@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import type { OsField } from "./types";
 import * as Consts from "./consts";
-import { DEFAULT_FILTERS, useOsAggregate, useOsParams } from "../useOpensearch";
+import { useOsAggregate, useOsParams } from "../useOpensearch";
 import { OsFilterValue, OsRangeValue } from "shared-types";
 import { useLabelMapping } from "@/hooks";
 import { useFilterDrawerContext } from "./FilterProvider";
@@ -51,7 +51,7 @@ export const useFilterDrawer = () => {
     setFilters(() => {
       params.onSet((state) => ({
         ...state,
-        filters: DEFAULT_FILTERS[state.tab].filters || [],
+        filters: [],
         pagination: { ...state.pagination, number: 0 },
       }));
 
