@@ -59,7 +59,7 @@ export type OsFilterable = {
   prefix: "must" | "must_not" | "should" | "filter";
 };
 
-export type OsQueryState<T = any> = {
+export type OsQueryState = {
   sort: { field: OsField; order: "asc" | "desc" };
   pagination: { number: number; size: number };
   filters: OsFilterable[];
