@@ -12,6 +12,7 @@ plugins:
   - serverless-plugin-scripts
   - serverless-bundle
   - serverless-step-functions
+  - "@stratiformdigital/serverless-idempotency-helper"
 
 provider:
   name: aws
