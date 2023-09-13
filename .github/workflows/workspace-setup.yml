@@ -19,7 +19,6 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - run: breakkkkkkk
       - name: Checkout
         uses: actions/checkout@v3
 
