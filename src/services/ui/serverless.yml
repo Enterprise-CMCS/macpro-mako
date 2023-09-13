@@ -30,10 +30,6 @@ custom:
     - bucketName: ${param:S3BucketName}
       localDir: ./dist
       deleteRemoved: true
-  cloudfrontInvalidate:
-    - distributionId: ${param:CloudfrontDistributionId}
-      items:
-        - "/*"
   scripts:
     hooks:
       package:initialize: |
@@ -52,6 +48,9 @@ custom:
         BOOTSTRAP_USERS_PW=${param:BootstrapUsersPassword}
         """ > .env.local
         yarn build
+      deploy:finalize: |
+        set -e
+        aws cloudfront create-invalidation --region ${self:provider.region} --distribution-id ${param:CloudfrontDistributionId} --paths "/*"
     commands:
       useLocalhost: |
         sed -i '' -e 's|VITE_COGNITO_REDIRECT_SIGNIN=.*|VITE_COGNITO_REDIRECT_SIGNIN=http://localhost:5000/|g' .env.local
