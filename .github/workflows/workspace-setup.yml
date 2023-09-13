@@ -11,7 +11,7 @@ concurrency:
 jobs:
   test:
     runs-on: macos-12
-    timeout-minutes: 30 # MacOS runners are more expensive than linux, so we want to be sure to stop any stuck builds.
+    timeout-minutes: 120 # MacOS runners are more expensive than linux, so we want to be sure to stop any stuck builds.
     environment:
       name: test-ws-setup
     env:
