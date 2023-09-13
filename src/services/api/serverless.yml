@@ -7,6 +7,7 @@ plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
+  - "@stratiformdigital/serverless-idempotency-helper"
 provider:
   name: aws
   runtime: nodejs18.x
