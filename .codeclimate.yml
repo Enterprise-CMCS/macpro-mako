@@ -4,4 +4,17 @@ checks:
     config:
       threshold: 1000 # defacto disable
 exclude_patterns:
-  - src/services/ui/src/pages/faq/**/*"
+  - "config/"
+  - "db/"
+  - "dist/"
+  - "features/"
+  - "**/node_modules/"
+  - "script/"
+  - "**/spec/"
+  - "**/test/"
+  - "**/tests/"
+  - "Tests/"
+  - "**/vendor/"
+  - "**/*_test.go"
+  - "**/*.d.ts"
+  - "src/services/ui/src/pages/faq/**"
