@@ -34,7 +34,7 @@ const renderMultipleValues: FC<RenderProps> = ({
             key={`${index}-${filter.field}-${val}-${valIndex}`}
             onChipClick={openDrawer}
             onIconClick={() => {
-              valArr.splice(1, valIndex);
+              valArr.splice(valIndex, 1);
               update(valArr);
             }}
           >
