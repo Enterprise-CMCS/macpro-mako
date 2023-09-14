@@ -3,13 +3,11 @@ frameworkVersion: "3"
 package:
   individually: false
 plugins:
-  # - serverless-bundle
   - serverless-esbuild
   - serverless-stack-termination-protection
   - serverless-plugin-scripts
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
-  # - "@stratiformdigital/serverless-idempotency-helper"
 provider:
   name: aws
   runtime: nodejs18.x
