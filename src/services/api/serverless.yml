@@ -12,12 +12,14 @@ plugins:
 provider:
   name: aws
   runtime: nodejs18.x
-  logs:
-    restApi: true
   region: ${env:REGION_A}
   stackTags:
     PROJECT: ${self:custom.project}
     SERVICE: ${self:service}
+  httpApi:
+    cors: true
+  logs:
+    httpApi: true
   iam:
     role:
       path: /delegatedadmin/developer/
@@ -84,11 +86,11 @@ functions:
       region: ${self:provider.region}
       osDomain: ${param:osDomain}
     events:
-      - http:
+      - httpApi:
           path: /search
           method: post
-          cors: true
-          authorizer: aws_iam
+          authorizer: 
+            type: aws_iam
     vpc:
       securityGroupIds:
         - Ref: SecurityGroup
@@ -103,11 +105,11 @@ functions:
       osDomain: ${param:osDomain}
       onemacLegacyS3AccessRoleArn: ${self:custom.onemacLegacyS3AccessRoleArn}
     events:
-      - http:
+      - httpApi:
           path: /getAttachmentUrl
           method: post
-          cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: aws_iam
     vpc:
       securityGroupIds:
         - Ref: SecurityGroup
@@ -121,11 +123,11 @@ functions:
       region: ${self:provider.region}
       osDomain: ${param:osDomain}
     events:
-      - http:
+      - httpApi:
           path: /item
           method: post
-          cors: true
-          authorizer: aws_iam
+          authorizer:
+            type: aws_iam
     vpc:
       securityGroupIds:
         - Ref: SecurityGroup
@@ -137,7 +139,7 @@ resources:
     ApiGateway400ErrorCount:
       Type: AWS::Logs::MetricFilter
       Properties:
-        LogGroupName: !Ref ApiGatewayLogGroup
+        LogGroupName: !Ref HttpApiLogGroup
         FilterName: ApiGateway400ErrorCount
         FilterPattern: '[ip, user, timestamp, request, status = 4*]'
         MetricTransformations:
@@ -164,7 +166,7 @@ resources:
     ApiGateway500ErrorCount:
       Type: AWS::Logs::MetricFilter
       Properties:
-        LogGroupName: !Ref ApiGatewayLogGroup
+        LogGroupName: !Ref HttpApiLogGroup
         FilterName: ApiGateway500ErrorCount
         FilterPattern: '[ip, user, timestamp, request, status = 5*]'
         MetricTransformations:
@@ -190,22 +192,22 @@ resources:
         Namespace: "${self:service}-${sls:stage}/ApiGateway/errors"
         Statistic: Sum
         TreatMissingData: notBreaching
-    GatewayResponseDefault4XX:
-      Type: "AWS::ApiGateway::GatewayResponse"
-      Properties:
-        ResponseParameters:
-          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
-        ResponseType: DEFAULT_4XX
-        RestApiId: !Ref ApiGatewayRestApi
-    GatewayResponseDefault5XX:
-      Type: "AWS::ApiGateway::GatewayResponse"
-      Properties:
-        ResponseParameters:
-          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
-        ResponseType: DEFAULT_5XX
-        RestApiId: !Ref ApiGatewayRestApi
+    # GatewayResponseDefault4XX:
+    #   Type: "AWS::ApiGateway::GatewayResponse"
+    #   Properties:
+    #     ResponseParameters:
+    #       gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+    #       gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+    #     ResponseType: DEFAULT_4XX
+    #     RestApiId: !GetAtt HttpApi.ApiId
+    # GatewayResponseDefault5XX:
+    #   Type: "AWS::ApiGateway::GatewayResponse"
+    #   Properties:
+    #     ResponseParameters:
+    #       gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+    #       gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+    #     ResponseType: DEFAULT_5XX
+    #     RestApiId: !GetAtt HttpApi.ApiId
     LambdaLogMessageMetricFilter:
       Type: "AWS::Logs::MetricFilter"
       Properties:
@@ -245,8 +247,8 @@ resources:
         CidrIp: 0.0.0.0/0
   Outputs:
     ApiGatewayRestApiName:
-      Value: !Ref ApiGatewayRestApi
+      Value: !GetAtt HttpApi.ApiId
     ApiGatewayRestApiUrl:
-      Value: !Sub https://${ApiGatewayRestApi}.execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}
+      Value: !Sub https://${HttpApi.ApiId}.execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}
     Region:
       Value: !Sub ${AWS::Region}
