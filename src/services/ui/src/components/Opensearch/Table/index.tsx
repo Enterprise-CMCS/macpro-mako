@@ -4,6 +4,7 @@ import { OsTableColumn } from "./types";
 import { useOsContext } from "../Provider";
 import { useOsParams } from "../useOpensearch";
 import { VisibilityPopover } from "../Settings";
+// import { BLANK_VALUE } from "@/pages/dashboard/Lists/spas/consts";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];
@@ -76,7 +77,7 @@ export const OsTable: FC<{
                   key={`${COL.field}-${DAT._source.id}`}
                   className="font-medium"
                 >
-                  {COL.cell(DAT._source)}
+                  {COL.cell(DAT._source) ?? "-- --"}
                 </UI.TableCell>
               );
             })}
