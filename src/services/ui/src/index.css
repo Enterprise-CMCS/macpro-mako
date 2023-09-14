@@ -124,13 +124,6 @@
   max-width: 4rem;
 }
 
-
-
-
-
-
-
-
 .faq_container a{
   text-decoration: underline;
   color: #0000ee;
@@ -142,12 +135,10 @@
   color: #0000ee;
 }
 
-
 .faq_card{
   position: sticky;
   top: 30px;
 }
-
 
 .home-footer-angle-box {
   border-right: 100vw solid transparent;
@@ -155,7 +146,6 @@
   bottom: 0;
   left: 0;
 }
-
 
 .home-footer-container {
 background:#E1F3F8;
@@ -178,20 +168,15 @@ justify-content: space-around;
 align-items: center;
 }
 
-
-
-
 .home-footer-container .home-footer-faq-callout {
 font-size: 24px;
 width: 100%;
 padding: 40px 40px;
 }
 
-
 .usa-accordion__button[aria-expanded=true]{
  background-image: url('./assets/remove.png'),linear-gradient(transparent,transparent); 
 }
-
 
 .footerViewFaqButton{
 background-color: #0071bc;
@@ -201,19 +186,6 @@ background-color: #0071bc;
   padding: 10px 12px;
   font-weight: bold;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @media (min-width: 1350px) {
   .usa-footer__secondary-section div:first-child {
