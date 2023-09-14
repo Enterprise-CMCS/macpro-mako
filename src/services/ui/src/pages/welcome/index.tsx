@@ -114,14 +114,14 @@ export const Welcome = () => {
               <C.HowItWorks>
                 <C.Step
                   icon={
-                    <Heroicons.ArrowRightOnRectangleIcon className="min-w-[32px] w-8 h-8" />
+                    <Heroicons.DocumentArrowUpIcon className="min-w-[32px] w-8 h-8" />
                   }
                   title="Receive an email for submission notification"
                   content="After a state adds a submission to OneMAC, you will receive an email notification that a submission was made requiring your review and the submission is on the clock."
                 />
                 <C.Step
                   icon={
-                    <Heroicons.DocumentArrowUpIcon className="min-w-[32px] w-8 h-8" />
+                    <Heroicons.ArrowRightOnRectangleIcon className="min-w-[32px] w-8 h-8" />
                   }
                   title="Login with EUA"
                   content="Login with your EUA username and password to access the SPA and Waiver dashboard."
