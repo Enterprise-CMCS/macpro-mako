@@ -7,16 +7,12 @@ import { useLabelMapping } from "@/hooks";
 import { useFilterDrawerContext } from "./FilterProvider";
 
 export const useFilterDrawer = () => {
-  const { filters, setFilters, drawerOpen, setDrawerState } =
-    useFilterDrawerContext();
+  const { drawerOpen, setDrawerState } = useFilterDrawerContext();
+  const [filters, setFilters] = useState(Consts.FILTER_GROUPS);
   const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const params = useOsParams();
   const labelMap = useLabelMapping();
   const _aggs = useOsAggregate();
-
-  const onDrawerChange = (updateOpen: boolean) => {
-    setDrawerState(updateOpen);
-  };
 
   const onFilterChange = (field: OsField) => {
     return (value: OsFilterValue) => {
@@ -47,18 +43,6 @@ export const useFilterDrawer = () => {
     };
   };
 
-  const resetFilters = () => {
-    setFilters(() => {
-      params.onSet((state) => ({
-        ...state,
-        filters: [],
-        pagination: { ...state.pagination, number: 0 },
-      }));
-
-      return Consts.FILTER_GROUPS;
-    });
-  };
-
   const onAccordionChange = (updateAccordion: string[]) => {
     setAccordionValues(updateAccordion);
   };
@@ -68,28 +52,28 @@ export const useFilterDrawer = () => {
     if (!drawerOpen) return;
     const updateAccordions = [] as any[];
 
-    setFilters((state: any) => {
-      params.state.filters.forEach((FIL) => {
-        if (FIL.type === "terms") {
-          const value = FIL.value as string[];
-          if (value.length) updateAccordions.push(FIL.field);
-        }
+    setFilters((s) => {
+      return Object.entries(s).reduce((STATE, [KEY, VAL]) => {
+        const updateFilter = params.state.filters.find(
+          (FIL) => FIL.field === KEY
+        );
 
-        if (FIL.type === "range") {
-          const value = FIL.value as OsRangeValue;
-          if (!!value?.gte && !!value?.lte) updateAccordions.push(FIL.field);
-        }
+        const value = (() => {
+          if (updateFilter) {
+            updateAccordions.push(KEY);
+            return updateFilter.value;
+          }
+          if (VAL.type === "terms") return [] as string[];
+          return { gte: undefined, lte: undefined } as OsRangeValue;
+        })();
 
-        state[FIL.field] = {
-          ...(state[FIL.field] && state[FIL.field]),
-          value: FIL.value,
-        };
-      });
+        STATE[KEY] = { ...VAL, value };
 
-      return state;
+        return STATE;
+      }, {} as any);
     });
     setAccordionValues(updateAccordions);
-  }, [drawerOpen]);
+  }, [params.state.filters, drawerOpen]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce((STATE, [KEY, AGG]) => {
@@ -105,12 +89,11 @@ export const useFilterDrawer = () => {
 
   return {
     aggs,
-    open: drawerOpen,
+    drawerOpen,
     accordionValues,
     filters,
     onFilterChange,
-    onDrawerChange,
+    setDrawerState,
     onAccordionChange,
-    resetFilters,
   };
 };

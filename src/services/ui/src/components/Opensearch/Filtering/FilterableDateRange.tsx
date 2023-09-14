@@ -29,12 +29,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     setOpen(updateOpen);
   };
 
-  useEffect(() => {
-    if (!!date?.from && !!date.to) {
-      onChange({ gte: date.from.toISOString(), lte: date.to.toISOString() });
-    }
-  }, [date]);
-
   const label = useMemo(() => {
     const from = date?.from ? format(date.from, "LLL dd, y") : "";
     const to = date?.to ? format(date.to, "LLL dd, y") : "";
@@ -67,7 +61,15 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             selected={date}
             numberOfMonths={2}
             className="bg-white"
-            onSelect={setDate}
+            onSelect={(d) => {
+              setDate(d);
+              if (!!d?.from && !!d.to) {
+                onChange({
+                  gte: d.from.toISOString(),
+                  lte: d.to.toISOString(),
+                });
+              }
+            }}
             {...props}
           />
         </PopoverContent>
