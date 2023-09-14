@@ -3,7 +3,7 @@ import OneMacLogo from "@/assets/onemac_logo.svg";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
-import {Link}from 'react-router-dom'
+import {Link}from "react-router-dom";
 export const loader = (queryClient: QueryClient) => {
   return async () => {
     if (!queryClient.getQueryData(["user"])) {
