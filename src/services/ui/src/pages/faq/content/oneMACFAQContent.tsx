@@ -45,6 +45,29 @@ export const oneMACFAQContent: FAQContent[] = [
     sectionTitle: "General",
     qanda: [
       {
+        anchorText: "system",
+        question: "Which system should I use for my state’s submission?",
+        answerJSX: (
+          <>
+            <p>
+              Check which system to submit your state plan in with this
+              crosswalk training document.
+            </p>
+            <ul>
+              <li>
+                <a
+                  // href={`${process.env.PUBLIC_URL}/assets/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf`}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Crosswalk from Paper-based State Plan to MACPro and MMDL.pdf
+                </a>
+              </li>
+            </ul>
+          </>
+        ),
+      },
+      {
         anchorText: "browsers",
         question: "What browsers can I use to access the system?",
         answerJSX: (
@@ -153,6 +176,42 @@ export const oneMACFAQContent: FAQContent[] = [
               </tbody>
             </table>
           </section>
+        ),
+      },
+      {
+        anchorText: "onboarding-materials",
+        question: "Onboarding Materials",
+        answerJSX: (
+          <>
+            <ul>
+              {[
+                ["WelcometoOneMAC.pdf", "Welcome to OneMAC"],
+                [
+                  "IDMInstructionsforOneMACUsers.pdf",
+                  "IDM Instructions for OneMAC Users",
+                ],
+                ["OneMACIDMGuide.pdf", "OneMAC IDM Guide"],
+                ["OneMACStateUserGuide.pdf", "OneMAC State User Guide"],
+                ["OneMACCMSUserGuide.pdf", "OneMAC CMS User Guide"],
+              ].map(([filename, label]) => (
+                <li key={filename}>
+                  <a
+                    // href={`${process.env.PUBLIC_URL}/assets/onboarding/${filename}`}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            {/* <VideoContent
+              title="OneMAC State System Overview"
+              introText="Watch this video for an overview on Package View."
+              src={`${process.env.PUBLIC_URL}/assets/onboarding/OneMACPackageViewStateDemo.mp4`}
+              transcript={stateSystemOverviewTranscript}
+            /> */}
+          </>
         ),
       },
     ],

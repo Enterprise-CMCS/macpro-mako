@@ -21,7 +21,7 @@ export const Faq = () => {
           </div>
         </div>
       </div>
-      <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
+      <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10 faq_container">
         <div className="flex-1">
           {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
             <article key={sectionTitle} className="mb-8">

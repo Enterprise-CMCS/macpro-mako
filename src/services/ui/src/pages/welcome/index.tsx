@@ -3,7 +3,7 @@ import OneMacLogo from "@/assets/onemac_logo.svg";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
-
+import {Link}from 'react-router-dom'
 export const loader = (queryClient: QueryClient) => {
   return async () => {
     if (!queryClient.getQueryData(["user"])) {
@@ -121,6 +121,23 @@ export const Welcome = () => {
           </div>
         </div>
       </main>
+      <section className="home-footer-container">
+          <div className="home-footer-angle-box"></div>
+          <div className="home-footer-faq-callout  ">
+            <div className="">
+              Do you have questions or need support?
+            </div>
+            <div className="ds-l-col--3 ds-u-margin-left--auto">
+              <Link
+                target="tab-faq"
+                to="/faq"
+                className="footerViewFaqButton"
+              >
+                View FAQ
+              </Link>
+            </div>
+          </div>
+        </section>
     </>
   );
 };

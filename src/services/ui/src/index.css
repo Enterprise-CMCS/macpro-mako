@@ -124,6 +124,97 @@
   max-width: 4rem;
 }
 
+
+
+
+
+
+
+
+.faq_container a{
+  text-decoration: underline;
+  color: #0000ee;
+}
+
+
+.faq_container a:hover{
+  text-decoration: none;
+  color: #0000ee;
+}
+
+
+.faq_card{
+  position: sticky;
+  top: 30px;
+}
+
+
+.home-footer-angle-box {
+  border-right: 100vw solid transparent;
+  border-top: 120px solid #fff;
+  bottom: 0;
+  left: 0;
+}
+
+
+.home-footer-container {
+background:#E1F3F8;
+height: 295px;
+width: 100%;
+}
+.home-footer-angle-box {
+border-right: 100vw solid transparent;
+border-top: 120px solid #fff;
+bottom: 0;
+height: 117px;
+left: 0;
+}
+
+.home-footer-faq-callout{
+display: flex;
+flex-direction: row;
+width: 100%;
+justify-content: space-around;
+align-items: center;
+}
+
+
+
+
+.home-footer-container .home-footer-faq-callout {
+font-size: 24px;
+width: 100%;
+padding: 40px 40px;
+}
+
+
+.usa-accordion__button[aria-expanded=true]{
+ background-image: url('./assets/remove.png'),linear-gradient(transparent,transparent); 
+}
+
+
+.footerViewFaqButton{
+background-color: #0071bc;
+  border-color: transparent;
+  color: #fff;
+  font-size: 1rem;
+  padding: 10px 12px;
+  font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @media (min-width: 1350px) {
   .usa-footer__secondary-section div:first-child {
     padding-left: 2.5rem;
