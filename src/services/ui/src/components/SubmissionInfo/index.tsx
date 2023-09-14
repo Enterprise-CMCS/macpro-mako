@@ -8,15 +8,15 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
   const submissionDetails = [
     {
       label: "Submitted By",
-      value: <p className="text-lg">{data.submitterName || "None"}</p>,
+      value: <p className="text-lg">{data.submitterName || "-- --"}</p>,
     },
     {
       label: "CPOC Name",
-      value: <p className="text-lg">{cpocName || "None"}</p>,
+      value: <p className="text-lg">{cpocName || "-- --"}</p>,
     },
     {
       label: "Origin",
-      value: <p className="text-lg">{data.origin || "unknown"}</p>,
+      value: <p className="text-lg">{data.origin || "-- --"}</p>,
     },
   ];
   return (
