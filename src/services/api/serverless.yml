@@ -7,6 +7,7 @@ plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
+  - serverless-scriptable-plugin
 provider:
   name: aws
   runtime: nodejs18.x
@@ -55,7 +56,9 @@ custom:
     packager: yarn
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
-
+  scriptable:
+    hooks:
+      package:compileEvents: ${file(./handlers/repack.js):repack, "echo 'rezipped'"}
 params:
   master:
     searchProvisionedConcurrency: 4
