@@ -34,6 +34,14 @@ export const FILTER_GROUPS: {
     type: "terms",
     value: [],
   },
+  "actionType.keyword": {
+    label: "Action Type",
+    field: "actionType.keyword",
+    component: "multiCheck",
+    prefix: "must",
+    type: "terms",
+    value: [],
+  },
   "status.keyword": {
     label: "Status",
     field: "status.keyword",

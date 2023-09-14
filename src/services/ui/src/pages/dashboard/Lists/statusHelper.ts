@@ -8,7 +8,8 @@ export const SEATOOL_STATUS = {
   PENDING_CONCURRENCE: "Pending-Concurrence",
   UNSUBMITTED: "Unsubmitted",
   PENDING_APPROVAL: "Pending-Approval",
-  UNKNOWN: "unknown",
+  UNKNOWN: "Unknown",
+  PENDING_OFF_THE_CLOCK: "Pending-Off the Clock",
 };
 
 export const statusToDisplayToStateUser = {
@@ -18,11 +19,10 @@ export const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.DISAPPROVED]: "Disapproved",
   [SEATOOL_STATUS.WITHDRAWN]: "Package Withdrawn",
   [SEATOOL_STATUS.TERMINATED]: "Waiver Terminated",
-  // [SEATOOL_STATUS.PENDING_CONCURRENCE]: "Under Review",
   [SEATOOL_STATUS.PENDING_CONCURRENCE]: "Pending Concurrence",
   [SEATOOL_STATUS.UNSUBMITTED]: "Unsubmitted",
-  // [SEATOOL_STATUS.PENDING_APPROVAL]: "Under Review",
   [SEATOOL_STATUS.PENDING_APPROVAL]: "Pending Approval",
+  [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
 };
 
 export const statusToDisplayToCmsUser = {
@@ -32,11 +32,10 @@ export const statusToDisplayToCmsUser = {
   [SEATOOL_STATUS.DISAPPROVED]: "Disapproved",
   [SEATOOL_STATUS.WITHDRAWN]: "Package Withdrawn",
   [SEATOOL_STATUS.TERMINATED]: "Waiver Terminated",
-  // [SEATOOL_STATUS.PENDING_CONCURRENCE]: "Under Review",
   [SEATOOL_STATUS.PENDING_CONCURRENCE]: "Pending Concurrence",
   [SEATOOL_STATUS.UNSUBMITTED]: "Unsubmitted",
-  // [SEATOOL_STATUS.PENDING_APPROVAL]: "Under Review",
   [SEATOOL_STATUS.PENDING_APPROVAL]: "Pending Approval",
+  [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
 };
 
 export const getStatus = (status?: string | null, isCms?: boolean) => {

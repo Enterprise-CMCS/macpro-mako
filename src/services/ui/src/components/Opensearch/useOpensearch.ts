@@ -90,6 +90,12 @@ export const useOsAggregate = () => {
             size: 10,
           },
           {
+            field: "actionType.keyword",
+            type: "terms",
+            name: "actionType.keyword",
+            size: 10,
+          },
+          {
             field: "status.keyword",
             name: "status.keyword",
             type: "terms",
