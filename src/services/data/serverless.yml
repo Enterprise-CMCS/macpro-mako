@@ -10,9 +10,10 @@ plugins:
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@stratiformdigital/serverless-iam-helper"
   - serverless-plugin-scripts
-  - serverless-bundle
+  # - serverless-bundle
+  - serverless-esbuild
   - serverless-step-functions
-  - "@stratiformdigital/serverless-idempotency-helper"
+  # - "@stratiformdigital/serverless-idempotency-helper"
 
 provider:
   name: aws
