@@ -58,7 +58,7 @@ custom:
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
   scriptable:
     hooks:
-      package:compileEvents: ${file(./handlers/repack.js):repack, "echo 'rezipped'"}
+      package:compileEvents: ./handlers/repack.js
 params:
   master:
     searchProvisionedConcurrency: 4
