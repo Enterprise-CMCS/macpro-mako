@@ -101,7 +101,7 @@ export const Attachmentslist = (data: AttachmentList) => {
                           <p>{format(attachment.uploadDate, "h:mm a")}</p>
                         </>
                       ) : (
-                        <p>Unknown</p>
+                        <p>-- --</p>
                       )}
                     </div>
                   </TableCell>
