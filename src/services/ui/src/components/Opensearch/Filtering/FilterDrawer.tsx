@@ -23,14 +23,14 @@ export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
 
   return (
-    <Sheet open={hook.open} onOpenChange={hook.onDrawerChange}>
+    <Sheet open={hook.drawerOpen} onOpenChange={hook.setDrawerState}>
       <SheetTrigger>
         <div className="flex flex-row gap-2 items-center border-slate-100 px-4">
           <FilterIcon className="w-4 h-4" />
           <p className="prose-sm">Filters</p>
         </div>
       </SheetTrigger>
-      <SheetContent className="bg-white">
+      <SheetContent className="bg-white overflow-auto">
         <SheetHeader>
           <h4 className="prose-2xl">Filters</h4>
         </SheetHeader>
