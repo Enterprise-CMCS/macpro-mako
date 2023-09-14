@@ -1,7 +1,5 @@
 service: ${self:custom.project}-api
 frameworkVersion: "3"
-package:
-  individually: false
 plugins:
   - serverless-esbuild
   - serverless-stack-termination-protection
@@ -51,9 +49,6 @@ custom:
       - master
       - val
       - production
-  bundle:
-    linting: false
-    packager: yarn
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
   scriptable:

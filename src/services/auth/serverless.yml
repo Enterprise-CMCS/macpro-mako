@@ -1,7 +1,5 @@
 service: ${self:custom.project}-auth
 frameworkVersion: "3"
-package:
-  individually: false
 plugins:
   - serverless-esbuild
   - serverless-stack-termination-protection
@@ -35,8 +33,6 @@ custom:
       - master
       - val
       - production
-  bundle:
-    linting: false
   cognitoEmailAddress: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/cognitoEmailAddress, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/cognitoEmailAddress, ""}
   okta_metadata_url: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/okta_metadata_url, ""}
   bootstrapUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsers, param:bootstrapUsers}

@@ -2,9 +2,6 @@ service: ${self:custom.project}-oidc
 
 frameworkVersion: "3"
 
-package:
-  individually: false
-
 plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
