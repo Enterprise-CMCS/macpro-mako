@@ -30,3 +30,8 @@ resources:
       Properties:
         PolicyName: ${self:service}-os-log-policy
         PolicyDocument: !Sub "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"OpenSearchToCloudwatch\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"es.amazonaws.com\" ] }, \"Action\": [\"logs:PutLogEvents\",\"logs:CreateLogStream\"], \"Resource\": [ \"*\" ] } ] }"
+    VendedLogsPolicy:
+      Type: AWS::Logs::ResourcePolicy
+      Properties:
+        PolicyName: ${self:service}-vendedlogs-policy
+        PolicyDocument: !Sub "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"AWSLogDeliveryWrite\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"delivery.logs.amazonaws.com\"},\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":[\"arn:aws:logs:us-east-1:${AWS::AccountId}:log-group:/aws/vendedlogs/*\",\"arn:aws:logs:${self:provider.region}:${AWS::AccountId}:log-group:/aws/http-api/*:log-stream:*\"],\"Condition\":{\"StringEquals\":{\"aws:SourceAccount\":\"${AWS::AccountId}\"},\"ArnLike\":{\"aws:SourceArn\":\"arn:aws:logs:${self:provider.region}:${AWS::AccountId}:*\"}}}]}"
