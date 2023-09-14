@@ -109,7 +109,9 @@ export const Attachmentslist = (data: AttachmentList) => {
               );
             })
           ) : (
-            <p className="text-sm font-bold p-4">No Attachments To Show</p>
+            <p className="text-sm font-bold p-4">
+              No attachments have been submitted.
+            </p>
           )}
         </TableBody>
       </Table>

@@ -27,25 +27,25 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
     {
       label: "Initial Submission Date",
       value: data.submissionDate
-        ? format(new Date(data.submissionDate), "MM/dd/yyyy")
+        ? format(new Date(data.submissionDate), "MM/dd/yyyy h:mm:ss a")
         : "-- --",
     },
     {
       label: "Proposed Effective Date",
       value: data.proposedDate
-        ? format(new Date(data.proposedDate), "MM/dd/yyyy")
+        ? format(new Date(data.proposedDate), "MM/dd/yyyy h:mm:ss a")
         : "-- --",
     },
     {
       label: "Approved Effective Date",
       value: data.approvedEffectiveDate
-        ? format(new Date(data.approvedEffectiveDate), "MM/dd/yyyy")
+        ? format(new Date(data.approvedEffectiveDate), "MM/dd/yyyy h:mm:ss a")
         : "-- --",
     },
     {
       label: "Change Date",
       value: data.changedDate
-        ? format(new Date(data.changedDate), "MM/dd/yyyy")
+        ? format(new Date(data.changedDate), "MM/dd/yyyy h:mm:ss a")
         : "-- --",
     },
   ];

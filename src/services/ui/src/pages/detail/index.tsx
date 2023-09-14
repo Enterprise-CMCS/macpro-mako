@@ -60,16 +60,18 @@ export const DetailsContent = ({
         <DetailsSection id="package-details" title="Package Details">
           <ChipSpaPackageDetails {...data?._source} />
         </DetailsSection>
+        <SubmissionInfo {...data?._source} />
+        {/* Below is used for spacing. Keep it simple */}
+        <div className="mb-4" />
         <DetailsSection id="attachments" title="Attachments">
           <Attachmentslist {...data?._source} />
         </DetailsSection>
-        <RaiResponses {...data?._source} />
         <DetailsSection id="additional-info" title="Additional Information">
           <AdditionalInfo
             additionalInformation={data?._source.additionalInformation}
           />
         </DetailsSection>
-        <SubmissionInfo {...data?._source} />
+        <RaiResponses {...data?._source} />
       </div>
     </div>
   );
