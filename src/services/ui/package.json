@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "e2e": "yarn playwright test",
+    "e2e": "yarn playwright test --ui",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "build": "tsc && vite build",
     "preview": "vite preview",
