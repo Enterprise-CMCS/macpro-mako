@@ -1,12 +1,11 @@
 service: ${self:custom.project}-api
 frameworkVersion: "3"
-package:
-  individually: true
 plugins:
-  - serverless-bundle
+  - serverless-esbuild
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
+  - serverless-scriptable-plugin
 provider:
   name: aws
   runtime: nodejs18.x
@@ -50,12 +49,11 @@ custom:
       - master
       - val
       - production
-  bundle:
-    linting: false
-    packager: yarn
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
-
+  scriptable:
+    hooks:
+      package:compileEvents: ./handlers/repack.js
 params:
   master:
     searchProvisionedConcurrency: 4
