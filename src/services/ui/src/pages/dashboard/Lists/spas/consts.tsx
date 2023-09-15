@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { getStatus } from "../statusHelper";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
 import { LABELS } from "@/lib";
 
@@ -41,9 +40,9 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
         : "",
   },
   {
-    field: "status.keyword",
+    field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
     label: "Status",
-    cell: (data) => getStatus(data.status, props?.isCms),
+    cell: (data) => (props?.isCms ? data.cmsStatus : data.stateStatus),
   },
   {
     field: "submissionDate",

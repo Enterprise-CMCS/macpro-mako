@@ -1,4 +1,4 @@
-export const SEATOOL_STATUS = {
+const SEATOOL_STATUS = {
   PENDING: "Pending",
   PENDING_RAI: "Pending-RAI",
   APPROVED: "Approved",
@@ -12,7 +12,7 @@ export const SEATOOL_STATUS = {
   PENDING_OFF_THE_CLOCK: "Pending-Off the Clock",
 };
 
-export const statusToDisplayToStateUser = {
+const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.PENDING]: "Under Review",
   [SEATOOL_STATUS.PENDING_RAI]: "RAI Issued",
   [SEATOOL_STATUS.APPROVED]: "Approved",
@@ -25,7 +25,7 @@ export const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
 };
 
-export const statusToDisplayToCmsUser = {
+const statusToDisplayToCmsUser = {
   [SEATOOL_STATUS.PENDING]: "Pending",
   [SEATOOL_STATUS.PENDING_RAI]: "Pending RAI",
   [SEATOOL_STATUS.APPROVED]: "Approved",
@@ -38,9 +38,8 @@ export const statusToDisplayToCmsUser = {
   [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
 };
 
-export const getStatus = (status?: string | null, isCms?: boolean) => {
-  if (!status) return "N/A";
-  return isCms
-    ? statusToDisplayToCmsUser[status]
-    : statusToDisplayToStateUser[status];
+export const getStatus = (seatoolStatus?: string | null) => {
+  const stateStatus = statusToDisplayToStateUser[seatoolStatus ?? "Unknown"];
+  const cmsStatus = statusToDisplayToCmsUser[seatoolStatus ?? "Unknown"];
+  return { stateStatus, cmsStatus };
 };
