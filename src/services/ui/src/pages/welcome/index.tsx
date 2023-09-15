@@ -121,9 +121,9 @@ export const Welcome = () => {
           </div>
         </div>
       </main>
-      <section className="home-footer-container">
-          <div className="home-footer-angle-box"></div>
-          <div className="home-footer-faq-callout  ">
+      <section className="text-2xl w-full p-10">
+          <div className="border-r-[100vw] border-t-[120vw] bottom-0 h-28 left-0"></div>
+          <div className="flex flex-row w-full justify-around items-center">
             <div className="">
               Do you have questions or need support?
             </div>
