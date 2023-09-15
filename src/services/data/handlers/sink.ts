@@ -66,7 +66,8 @@ export const seatool: Handler = async (event) => {
           raiReceivedDate: undefined,
           raiRequestedDate: undefined,
           state: undefined,
-          status: undefined,
+          cmsStatus: undefined,
+          stateStatus: undefined,
           submissionDate: undefined,
         };
 
