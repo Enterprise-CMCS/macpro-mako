@@ -33,7 +33,6 @@
   "devDependencies": {
     "@enterprise-cmcs/macpro-serverless-running-stages": "^1.0.4",
     "@enterprise-cmcs/serverless-waf-plugin": "^1.3.0",
-    "@playwright/test": "^1.34.0",
     "@serverless/compose": "^1.3.0",
     "@stratiformdigital/serverless-iam-helper": "^3.2.0",
     "@stratiformdigital/serverless-idempotency-helper": "^3.1.0",
@@ -45,9 +44,6 @@
     "@vitest/coverage-c8": "^0.29.8",
     "@vitest/ui": "^0.29.8",
     "aws-sdk-client-mock": "^2.0.1",
-    "playwright-chromium": "^1.38.0",
-    "playwright-webkit": "^1.38.0",
-    "playwright-firefox": "^1.38.0",
     "prettier": "2.7.1",
     "semantic-release": "^19.0.5",
     "serverless": "^3.17.0",

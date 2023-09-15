@@ -77,6 +77,7 @@
     "eslint-config-custom": "*",
     "eslint-plugin-react": "^7.32.2",
     "jsdom": "^21.1.1",
+    "playwright": "^1.38.0",
     "playwright-chromium": "^1.38.0",
     "playwright-webkit": "^1.38.0",
     "playwright-firefox": "^1.38.0",

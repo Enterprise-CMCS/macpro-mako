@@ -16456,6 +16456,15 @@ playwright-webkit@^1.38.0:
   dependencies:
     playwright-core "1.38.0"
 
+playwright@^1.38.0:
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.38.0.tgz#0ee19d38512b7b1f961c0eb44008a6fed373d206"
+  integrity sha512-fJGw+HO0YY+fU/F1N57DMO+TmXHTrmr905J05zwAQE9xkuwP/QLDk63rVhmyxh03dYnEhnRbsdbH9B0UVVRB3A==
+  dependencies:
+    playwright-core "1.38.0"
+  optionalDependencies:
+    fsevents "2.3.2"
+
 posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
