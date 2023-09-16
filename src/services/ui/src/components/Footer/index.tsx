@@ -13,6 +13,7 @@ type Props = {
 
 export const Footer = ({ email, address }: Props) => {
   return (
+    <div >
     <footer>
       <section className="bg-[#E1F3F8]">
         <div className="grid grid-cols-12 gap-4 px-10 py-4 max-w-screen-xl mx-auto">
@@ -49,5 +50,6 @@ export const Footer = ({ email, address }: Props) => {
         </div>
       </div>
     </footer>
+    </div>
   );
 };

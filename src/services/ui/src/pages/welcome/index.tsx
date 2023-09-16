@@ -3,7 +3,8 @@ import OneMacLogo from "@/assets/onemac_logo.svg";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
-import {Link}from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/Button";
 export const loader = (queryClient: QueryClient) => {
   return async () => {
     if (!queryClient.getQueryData(["user"])) {
@@ -15,11 +16,21 @@ export const loader = (queryClient: QueryClient) => {
     return queryClient.getQueryData(["user"]);
   };
 };
+type NavigateFunction = (path: string) => void;
+
 
 export const Welcome = () => {
+  const navigation=useNavigate();
+  const navigate: NavigateFunction = (path) => {
+    navigation(path);
+  };
+
+
+
+
+
   return (
     <>
-      {/*  Hero Section */}
       <div className="w-full bg-accent p-2 md:p-4">
         <div className="max-w-screen-xl flex flex-col sm:flex-row sm:items-center gap-4 mx-auto p-4 lg:px-8">
           <img src={OneMacLogo} alt="One Mac Logo" className="p-4" />
@@ -121,23 +132,24 @@ export const Welcome = () => {
           </div>
         </div>
       </main>
-      <section className="text-2xl w-full p-10">
-          <div className="border-r-[100vw] border-t-[120vw] bottom-0 h-28 left-0"></div>
-          <div className="flex flex-row w-full justify-around items-center">
-            <div className="">
-              Do you have questions or need support?
-            </div>
-            <div className="ds-l-col--3 ds-u-margin-left--auto">
-              <Link
-                target="tab-faq"
-                to="/faq"
-                className="footerViewFaqButton"
-              >
-                View FAQ
-              </Link>
-            </div>
-          </div>
-        </section>
+      <div className="bg-[#E1F3F8]"     >
+    <section className="  home-footer-container ">
+<div className="home-footer-angle-box  border-t-120 border-r-[100vw] border-transparent bottom-0 left-0 mb-20 h-117 border-solid border-t-24 border-r-screen"></div>
+<div className="home-footer-faq-callout flex justify-around items-center text-xl py-10 px-10 py-4 max-w-screen-xl mx-auto ">
+<div>
+  Do you have questions or need support?
+</div>
+<div className="ml-auto">
+<Button   variant='default'  onClick={()=>{
+  navigate("/faq");
+}}  >
+View FAQ
+</Button>
+  {/* <Link to="/faq" className="footerViewFaqButton bg-blue-700 text-white text-base font-bold py-2 px-3">View FAQ</Link> */}
+</div>
+</div>
+</section>
+    </div>
     </>
   );
 };
