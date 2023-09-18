@@ -16,18 +16,9 @@ export const loader = (queryClient: QueryClient) => {
     return queryClient.getQueryData(["user"]);
   };
 };
-type NavigateFunction = (path: string) => void;
-
 
 export const Welcome = () => {
-  const navigation=useNavigate();
-  const navigate: NavigateFunction = (path) => {
-    navigation(path);
-  };
-
-
-
-
+  const navigation = useNavigate();
 
   return (
     <>
@@ -141,8 +132,8 @@ export const Welcome = () => {
 </div>
 <div className="ml-auto">
 <Button   variant='default'  onClick={()=>{
-  navigate("/faq");
-}}  >
+  navigation("/faq");
+}} >
 View FAQ
 </Button>
   {/* <Link to="/faq" className="footerViewFaqButton bg-blue-700 text-white text-base font-bold py-2 px-3">View FAQ</Link> */}

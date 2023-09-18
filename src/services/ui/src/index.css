@@ -124,17 +124,6 @@
   max-width: 4rem;
 }
 
-
-/* .home-footer-angle-box {
-border-right: 100vw solid transparent;
-border-top: 120px solid #fff;
-bottom: 0;
-height: 117px;
-margin-bottom: 20px;
-left: 0;
-} */
-
-
 .usa-accordion_button[aria-expanded="true"]{
   background-image: url('./assets/remove.png'),linear-gradient(transparent,transparent); 
   background-repeat: no-repeat;
