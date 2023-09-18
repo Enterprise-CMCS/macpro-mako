@@ -133,7 +133,7 @@ jobs:
       - name: Run e2e tests
         run: |
           run e2e
-        working-directory: /home/runner/work/macpro-mako/macpro-mako/src/services/ui
+        # working-directory: /home/runner/work/macpro-mako/macpro-mako/src/services/ui
 
       - uses: actions/upload-artifact@v3
         if: always()
