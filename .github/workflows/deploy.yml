@@ -130,10 +130,17 @@ jobs:
       - name: Print Current Directory
         run: |
           pwd  # Print the current working directory
+      - name: Set Node.js version
+        run: |
+          nvm install   # This will install the Node.js version specified in .nvmrc
+          nvm use       # This will activate the specified Node.js version
+        working-directory: src/services/ui
+
       - name: Run e2e tests
         run: |
-          cd src/services/ui   
           run e2e
+        working-directory: src/services/ui
+
       - uses: actions/upload-artifact@v3
         if: always()
         with:

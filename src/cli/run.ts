@@ -116,6 +116,12 @@ yargs(process.argv.slice(2))
         "."
       );
 
+      // await runner.run_command_and_output(
+      //   `Install playwright`,
+      //   ["yarn", "playwright", "install", "--with-deps"],
+      //   "."
+      // );
+
       await runner.run_command_and_output(
         `e2e:ui tests`,
         ["yarn", "list"],
