@@ -130,11 +130,12 @@ jobs:
       - name: Print Current Directory
         run: |
           pwd  # Print the current working directory
-      - name: Run e2e tests
-        run: |
-          run e2e
-        # working-directory: /home/runner/work/macpro-mako/macpro-mako/src/services/ui
 
+      - name: Print Current Directory
+        run: |
+          cd /home/runner/work/macpro-mako/macpro-mako/src/services/ui
+      - name: Run e2e tests
+        run: run e2e
       - uses: actions/upload-artifact@v3
         if: always()
         with:
