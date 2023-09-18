@@ -4,9 +4,11 @@ import * as Consts from "./consts";
 import { useOsAggregate, useOsParams } from "../useOpensearch";
 import { OsFilterValue, OsRangeValue } from "shared-types";
 import { useLabelMapping } from "@/hooks";
+import { useGetUser } from "@/api/useGetUser";
 
 export const useFilterDrawer = () => {
-  const [filters, setFilters] = useState(Consts.FILTER_GROUPS);
+  const { data: user } = useGetUser();
+  const [filters, setFilters] = useState(Consts.FILTER_GROUPS(user?.isCms));
   const [open, setOpen] = useState(false);
   const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const params = useOsParams();
