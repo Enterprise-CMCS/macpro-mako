@@ -3,7 +3,7 @@ import OneMacLogo from "@/assets/onemac_logo.svg";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/Button";
 export const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -18,8 +18,6 @@ export const loader = (queryClient: QueryClient) => {
 };
 
 export const Welcome = () => {
-  const navigation = useNavigate();
-
   return (
     <>
       <div className="w-full bg-accent p-2 md:p-4">
@@ -124,21 +122,12 @@ export const Welcome = () => {
         </div>
       </main>
       <div className="bg-[#E1F3F8]">
-        <section className="  home-footer-container ">
-          <div className="home-footer-angle-box  border-t-120 border-r-[100vw] border-transparent bottom-0 left-0 mb-20 h-117 border-solid border-t-24 border-r-screen"></div>
-          <div className="home-footer-faq-callout flex justify-around items-center text-xl py-10 px-10 py-4 max-w-screen-xl mx-auto ">
-            <div>Do you have questions or need support?</div>
-            <div className="ml-auto">
-              <Button
-                variant="default"
-                onClick={() => {
-                  navigation("/faq");
-                }}
-              >
-                View FAQ
-              </Button>
-              {/* <Link to="/faq" className="footerViewFaqButton bg-blue-700 text-white text-base font-bold py-2 px-3">View FAQ</Link> */}
-            </div>
+        <section>
+          <div className="flex justify-around items-center text-xl px-10 py-4 max-w-screen-xl mx-auto">
+            <h4>Do you have questions or need support?</h4>
+            <Button asChild>
+              <Link to="/faq">View FAQ</Link>
+            </Button>
           </div>
         </section>
       </div>
