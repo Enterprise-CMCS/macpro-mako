@@ -5,7 +5,6 @@ import { useOsContext } from "../Provider";
 import { useOsParams } from "../useOpensearch";
 import { VisibilityPopover } from "../Settings";
 import { BLANK_VALUE } from "consts";
-// import { BLANK_VALUE } from "@/pages/dashboard/Lists/spas/consts";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];
