@@ -108,19 +108,13 @@ yargs(process.argv.slice(2))
       ui: { type: "boolean", demandOption: false, default: false },
     },
     async (argv: any) => {
-      await install_deps_for_services();
-
-      await runner.run_command_and_output(
-        `Install playwright`,
-        ["yarn", "list", "--pattern", "@playwright/test"],
-        "."
-      );
-
       await runner.run_command_and_output(
         `Install playwright`,
         ["yarn", "playwright", "install-deps"],
         "."
       );
+
+      await install_deps_for_services();
 
       if (argv.ui) {
         await runner.run_command_and_output(
