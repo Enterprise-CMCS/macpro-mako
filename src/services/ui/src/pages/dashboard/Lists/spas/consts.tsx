@@ -47,6 +47,13 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
     },
   },
   {
+    field: "origin",
+    label: "Submission Source",
+    cell: (data) => {
+      return data.origin;
+    },
+  },
+  {
     field: "raiRequestedDate",
     label: "Formal RAI Requested",
     visible: false,

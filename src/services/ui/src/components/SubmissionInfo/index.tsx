@@ -15,7 +15,7 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
       value: <p className="text-lg">{cpocName || "-- --"}</p>,
     },
     {
-      label: "Origin",
+      label: "Submission Source",
       value: <p className="text-lg">{data.origin || "-- --"}</p>,
     },
   ];
