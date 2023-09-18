@@ -1,3 +1,4 @@
+import { BLANK_VALUE } from "consts";
 import { OsMainSourceItem } from "shared-types";
 
 export const SubmissionInfo = (data: OsMainSourceItem) => {
@@ -8,15 +9,15 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
   const submissionDetails = [
     {
       label: "Submitted By",
-      value: <p className="text-lg">{data.submitterName || "-- --"}</p>,
+      value: <p className="text-lg">{data.submitterName || BLANK_VALUE}</p>,
     },
     {
       label: "CPOC Name",
-      value: <p className="text-lg">{cpocName || "-- --"}</p>,
+      value: <p className="text-lg">{cpocName || BLANK_VALUE}</p>,
     },
     {
       label: "Submission Source",
-      value: <p className="text-lg">{data.origin || "-- --"}</p>,
+      value: <p className="text-lg">{data.origin || BLANK_VALUE}</p>,
     },
   ];
   return (

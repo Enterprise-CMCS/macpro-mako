@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { OsMainSourceItem } from "shared-types";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { LABELS } from "@/lib";
+import { BLANK_VALUE } from "consts";
 
 export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
   if (!data) return null;
@@ -22,31 +23,31 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
       label: "Sub Type",
       value: data.actionType
         ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
-        : "-- --",
+        : BLANK_VALUE,
     },
     {
       label: "Initial Submission Date",
       value: data.submissionDate
         ? format(new Date(data.submissionDate), "MM/dd/yyyy h:mm:ss a")
-        : "-- --",
+        : BLANK_VALUE,
     },
     {
       label: "Proposed Effective Date",
       value: data.proposedDate
         ? format(new Date(data.proposedDate), "MM/dd/yyyy h:mm:ss a")
-        : "-- --",
+        : BLANK_VALUE,
     },
     {
       label: "Approved Effective Date",
       value: data.approvedEffectiveDate
         ? format(new Date(data.approvedEffectiveDate), "MM/dd/yyyy h:mm:ss a")
-        : "-- --",
+        : BLANK_VALUE,
     },
     {
       label: "Change Date",
       value: data.changedDate
         ? format(new Date(data.changedDate), "MM/dd/yyyy h:mm:ss a")
-        : "-- --",
+        : BLANK_VALUE,
     },
   ];
   return (

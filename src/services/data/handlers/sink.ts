@@ -109,7 +109,7 @@ export const onemac: Handler = async (event) => {
           record &&
           record.sk === "Package" &&
           record.submitterName &&
-          record.submitterName !== "-- --" // these records did not originate from onemac, thus we ignore them
+          record.submitterName !== BLANK // these records did not originate from onemac, thus we ignore them
         ) {
           const result = transformOnemac(id).safeParse(record);
           if (result.success === false) {
