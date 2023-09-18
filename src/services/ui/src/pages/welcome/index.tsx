@@ -123,24 +123,25 @@ export const Welcome = () => {
           </div>
         </div>
       </main>
-      <div className="bg-[#E1F3F8]"     >
-    <section className="  home-footer-container ">
-<div className="home-footer-angle-box  border-t-120 border-r-[100vw] border-transparent bottom-0 left-0 mb-20 h-117 border-solid border-t-24 border-r-screen"></div>
-<div className="home-footer-faq-callout flex justify-around items-center text-xl py-10 px-10 py-4 max-w-screen-xl mx-auto ">
-<div>
-  Do you have questions or need support?
-</div>
-<div className="ml-auto">
-<Button   variant='default'  onClick={()=>{
-  navigation("/faq");
-}} >
-View FAQ
-</Button>
-  {/* <Link to="/faq" className="footerViewFaqButton bg-blue-700 text-white text-base font-bold py-2 px-3">View FAQ</Link> */}
-</div>
-</div>
-</section>
-    </div>
+      <div className="bg-[#E1F3F8]">
+        <section className="  home-footer-container ">
+          <div className="home-footer-angle-box  border-t-120 border-r-[100vw] border-transparent bottom-0 left-0 mb-20 h-117 border-solid border-t-24 border-r-screen"></div>
+          <div className="home-footer-faq-callout flex justify-around items-center text-xl py-10 px-10 py-4 max-w-screen-xl mx-auto ">
+            <div>Do you have questions or need support?</div>
+            <div className="ml-auto">
+              <Button
+                variant="default"
+                onClick={() => {
+                  navigation("/faq");
+                }}
+              >
+                View FAQ
+              </Button>
+              {/* <Link to="/faq" className="footerViewFaqButton bg-blue-700 text-white text-base font-bold py-2 px-3">View FAQ</Link> */}
+            </div>
+          </div>
+        </section>
+      </div>
     </>
   );
 };

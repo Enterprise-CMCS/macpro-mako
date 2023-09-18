@@ -1,3 +1,6 @@
+import eligibilityPDF from "../../../assets/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf";
+import WelcometoOneMAC from "../../../assets/onboarding/WelcometoOneMAC.pdf";
+
 type QuestionAnswer = {
   anchorText: string;
   question: string;
@@ -56,8 +59,8 @@ export const oneMACFAQContent: FAQContent[] = [
             <ul>
               <li>
                 <a
-                className="text-blue-800 underline hover:no-underline "
-                  // href={`${process.env.PUBLIC_URL}/assets/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf`}
+                  className="text-blue-800 underline hover:no-underline "
+                  href={eligibilityPDF}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -85,9 +88,10 @@ export const oneMACFAQContent: FAQContent[] = [
           <p>
             Refresh your inbox, check your SPAM filters, then contact the OneMAC
             Help Desk{" "}
-            <a  
-             className="text-blue-800 underline hover:no-underline "
-            href={`mailto:${helpDeskContact.email}`}>
+            <a
+              className="text-blue-800 underline hover:no-underline "
+              href={`mailto:${helpDeskContact.email}`}
+            >
               {helpDeskContact.email}
             </a>{" "}
             or call {helpDeskContact.phone} or contact your state lead.
@@ -188,7 +192,7 @@ export const oneMACFAQContent: FAQContent[] = [
           <>
             <ul>
               {[
-                ["WelcometoOneMAC.pdf", "Welcome to OneMAC"],
+                [WelcometoOneMAC, "Welcome to OneMAC"],
                 [
                   "IDMInstructionsforOneMACUsers.pdf",
                   "IDM Instructions for OneMAC Users",
@@ -196,11 +200,11 @@ export const oneMACFAQContent: FAQContent[] = [
                 ["OneMACIDMGuide.pdf", "OneMAC IDM Guide"],
                 ["OneMACStateUserGuide.pdf", "OneMAC State User Guide"],
                 ["OneMACCMSUserGuide.pdf", "OneMAC CMS User Guide"],
-              ].map(([filename, label]) => (
-                <li key={filename}>
+              ].map(([file, label]) => (
+                <li key={label}>
                   <a
-                   className="text-blue-800 underline hover:no-underline "
-                    // href={`${process.env.PUBLIC_URL}/assets/onboarding/${filename}`}
+                    className="text-blue-800 underline hover:no-underline "
+                    href={file}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
@@ -254,7 +258,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <p>
               SPA submission requirements can be found in regulation&nbsp;
               <a
-               className="text-blue-800 underline hover:no-underline "
+                className="text-blue-800 underline hover:no-underline "
                 href="https://www.ecfr.gov/cgi-bin/text-idx?SID=7d639b87112e05a57ff40731d647bd05&mc=true&node=se42.4.430_112&rgn=div8"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -614,9 +618,10 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <p>
             Email{" "}
-            <a 
-             className="text-blue-800 underline hover:no-underline "
-            href="mailto:MCOGDMCOActions@cms.hhs.gov">
+            <a
+              className="text-blue-800 underline hover:no-underline "
+              href="mailto:MCOGDMCOActions@cms.hhs.gov"
+            >
               MCOGDMCOActions@cms.hhs.gov
             </a>{" "}
             to get support with determining the correct 1915(b) Waiver Number.
