@@ -110,7 +110,7 @@ yargs(process.argv.slice(2))
     async (argv: any) => {
       await runner.run_command_and_output(
         `Install playwright`,
-        ["yarn", "playwright", "install-deps"],
+        ["yarn", "playwright", "install-deps", "chromium"],
         "."
       );
 
