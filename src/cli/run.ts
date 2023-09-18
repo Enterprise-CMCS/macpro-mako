@@ -121,13 +121,6 @@ yargs(process.argv.slice(2))
       //   ["yarn", "playwright", "install", "--with-deps"],
       //   "."
       // );
-
-      await runner.run_command_and_output(
-        `e2e:ui tests`,
-        ["yarn", "list"],
-        "."
-      );
-
       if (argv.ui) {
         await runner.run_command_and_output(
           `e2e:ui tests`,
