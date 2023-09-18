@@ -131,7 +131,7 @@ jobs:
           role-duration-seconds: 10800
       - name: Install dependencies
         run: |
-          npx playwright install-deps
+          yarn playwright install-deps
       - name: Run e2e tests
         run: run e2e
       - uses: actions/upload-artifact@v3
