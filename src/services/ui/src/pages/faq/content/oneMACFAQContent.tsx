@@ -1,5 +1,9 @@
 import eligibilityPDF from "../../../assets/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf";
 import WelcometoOneMAC from "../../../assets/onboarding/WelcometoOneMAC.pdf";
+import IDMInstructionsforOneMACUsers from "../../../assets/onboarding/IDMInstructionsforOneMACUsers.pdf";
+import OneMACIDMGuide from "../../../assets/onboarding/OneMACIDMGuide.pdf";
+import OneMACStateUserGuide from "../../../assets/onboarding/OneMACStateUserGuide.pdf";
+import OneMACCMSUserGuide from "../../../assets/onboarding/OneMACCMSUserGuide.pdf";
 
 type QuestionAnswer = {
   anchorText: string;
@@ -194,12 +198,12 @@ export const oneMACFAQContent: FAQContent[] = [
               {[
                 [WelcometoOneMAC, "Welcome to OneMAC"],
                 [
-                  "IDMInstructionsforOneMACUsers.pdf",
+                  IDMInstructionsforOneMACUsers,
                   "IDM Instructions for OneMAC Users",
                 ],
-                ["OneMACIDMGuide.pdf", "OneMAC IDM Guide"],
-                ["OneMACStateUserGuide.pdf", "OneMAC State User Guide"],
-                ["OneMACCMSUserGuide.pdf", "OneMAC CMS User Guide"],
+                [OneMACIDMGuide, "OneMAC IDM Guide"],
+                [OneMACStateUserGuide, "OneMAC State User Guide"],
+                [OneMACCMSUserGuide, "OneMAC CMS User Guide"],
               ].map(([file, label]) => (
                 <li key={label}>
                   <a
@@ -213,12 +217,6 @@ export const oneMACFAQContent: FAQContent[] = [
                 </li>
               ))}
             </ul>
-            {/* <VideoContent
-              title="OneMAC State System Overview"
-              introText="Watch this video for an overview on Package View."
-              src={`${process.env.PUBLIC_URL}/assets/onboarding/OneMACPackageViewStateDemo.mp4`}
-              transcript={stateSystemOverviewTranscript}
-            /> */}
           </>
         ),
       },

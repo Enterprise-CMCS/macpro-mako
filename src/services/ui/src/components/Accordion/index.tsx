@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDown, PlusIcon } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 const Accordion = AccordionPrimitive.Root;
 type AccordionItemProps = {
@@ -27,17 +27,18 @@ const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   AccordionTriggerProps
 >(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex px-3 py-3 no-underline  text-lg font-bold">
+  <AccordionPrimitive.Header className="flex px-3 py-3 no-underline text-lg font-bold">
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        "usa-accordion_button flex flex-1 items-center justify-between py-4 font-medium hover:underline [&[data-state=open]>svg]:hidden  ",
+        "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
         className
       )}
       {...props}
     >
       {children}
-      <PlusIcon   size={20} className="h-5 w-5" />
+      <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
+      {/* <PlusIcon size={20} className="h-5 w-5" /> */}
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ));
@@ -53,10 +54,7 @@ const AccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className={cn(
-      "text-sm transition-all px-3",
-      className
-    )}
+    className={cn("text-sm transition-all px-3", className)}
     {...props}
   >
     <div className="pb-4 pt-0">{children}</div>

@@ -124,18 +124,9 @@
   max-width: 4rem;
 }
 
-.usa-accordion_button[aria-expanded="true"]{
-  background-image: url('./assets/remove.png'),linear-gradient(transparent,transparent); 
-  background-repeat: no-repeat;
-  background-position: right;
-  width: 4px;
-  height: 4px;
- }
-
 @media (min-width: 1350px) {
   .usa-footer__secondary-section div:first-child {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
   }
 }
-
