@@ -21,7 +21,7 @@ test("see frequently asked questions header when in faq page", async ({
   page,
 }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "FAQ" }).click();
+  await page.getByRole("link", { name: "FAQ" }).first().click();
 
   const foundFaqHeading = await page
     .getByRole("heading", { name: "Frequently Asked Questions" })
