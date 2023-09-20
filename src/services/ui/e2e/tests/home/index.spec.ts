@@ -51,7 +51,5 @@ test("failed incorrect login username", async ({ page }) => {
   await page.getByRole("textbox", { name: "name@host.com" }).type(".");
   await page.getByRole("textbox", { name: "Password" }).type(password);
   await page.getByRole("button", { name: "submit" }).click();
-  await page.locator("#loginErrorMessage").isVisible();
-  const invalidInputTest = await page.locator("#loginErrorMessage").isVisible();
-  expect(invalidInputTest).toBeTruthy();
+  await page.locator("#loginErrorMessage").first().isVisible();
 });
