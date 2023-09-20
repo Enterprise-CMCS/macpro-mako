@@ -11,11 +11,6 @@ concurrency:
 
 env:
   STAGE_NAME: ${{ github.ref_name }}
-  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-  PLAYWRIGHT_BROWSERS_PATH: /usr/lib/playwright yarn add playwright-chromium@1.11.1
-  PLAYWRIGHT_BROWSERS_PATH: /usr/lib/playwright yarn add playwright-webkit@1.11.1
-  PLAYWRIGHT_BROWSERS_PATH: /usr/lib/playwright yarn add playwright-firefox@1.11.1
-  PLAYWRIGHT_BROWSERS_PATH: /usr/lib/playwright yarn test
 
 permissions:
   id-token: write
@@ -132,9 +127,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
-      # - name: Install dependencies
-      #   run: |
-      #     yarn playwright install-deps
       - name: Run e2e tests
         run: run e2e
       - uses: actions/upload-artifact@v3
