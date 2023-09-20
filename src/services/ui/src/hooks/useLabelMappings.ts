@@ -1,6 +1,4 @@
 import { useMemo } from "react";
-import * as STATUS from "@/pages/dashboard/Lists/statusHelper";
-import { useGetUser } from "@/api/useGetUser";
 
 export const SUB_TYPES = {
   New: "Initial",
@@ -69,14 +67,7 @@ export const STATES = {
 };
 
 export const useLabelMapping = () => {
-  const { data } = useGetUser();
-
   return useMemo(() => {
-    const statuses = (() => {
-      if (data?.isCms) return STATUS.statusToDisplayToCmsUser;
-      return STATUS.statusToDisplayToStateUser;
-    })();
-
-    return { ...statuses, ...STATES, ...SUB_TYPES } as Record<string, string>; // add other label mappings
-  }, [data?.isCms]);
+    return { ...STATES, ...SUB_TYPES } as Record<string, string>; // add other label mappings
+  }, []);
 };

@@ -19,7 +19,7 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
       value: removeUnderscoresAndCapitalize(data.planType),
     },
     {
-      label: "Sub Type",
+      label: "Action Type",
       value: data.actionType
         ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
         : "N/A",
