@@ -1,12 +1,11 @@
 service: ${self:custom.project}-api
 frameworkVersion: "3"
-package:
-  individually: true
 plugins:
-  - serverless-bundle
+  - serverless-esbuild
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
+  - serverless-scriptable-plugin
 provider:
   name: aws
   runtime: nodejs18.x
@@ -50,13 +49,12 @@ custom:
       - master
       - val
       - production
-  bundle:
-    linting: false
-    packager: yarn
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
   dbInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/seatool/dbInfo, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/seatool/dbInfo}
-
+  scriptable:
+    hooks:
+      package:compileEvents: ./handlers/repack.js
 params:
   master:
     searchProvisionedConcurrency: 4
@@ -163,7 +161,7 @@ resources:
       Properties:
         LogGroupName: !Ref ApiGatewayLogGroup
         FilterName: ApiGateway400ErrorCount
-        FilterPattern: '[ip, user, timestamp, request, status = 4*]'
+        FilterPattern: "[ip, user, timestamp, request, status = 4*]"
         MetricTransformations:
           - MetricValue: "1"
             DefaultValue: "0"
@@ -190,7 +188,7 @@ resources:
       Properties:
         LogGroupName: !Ref ApiGatewayLogGroup
         FilterName: ApiGateway500ErrorCount
-        FilterPattern: '[ip, user, timestamp, request, status = 5*]'
+        FilterPattern: "[ip, user, timestamp, request, status = 5*]"
         MetricTransformations:
           - MetricValue: "1"
             DefaultValue: "0"

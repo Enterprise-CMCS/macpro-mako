@@ -2,9 +2,6 @@ service: ${self:custom.project}-alerts
 
 frameworkVersion: "3"
 
-package:
-  individually: true
-
 plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { OsQueryState, SearchData } from "shared-types";
 import { createSearchFilterable } from "./utils";
 import { useQuery } from "@tanstack/react-query";
+import { useGetUser } from "@/api/useGetUser";
 
 export type OsTab = "waivers" | "spas";
 
@@ -70,6 +71,7 @@ export const useOsQuery = () => {
 };
 
 export const useOsAggregate = () => {
+  const { data: user } = useGetUser();
   const { state } = useOsParams();
   const aggs = useQuery({
     refetchOnWindowFocus: false,
@@ -90,8 +92,14 @@ export const useOsAggregate = () => {
             size: 10,
           },
           {
-            field: "status.keyword",
-            name: "status.keyword",
+            field: "actionType.keyword",
+            type: "terms",
+            name: "actionType.keyword",
+            size: 10,
+          },
+          {
+            field: user?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
+            name: user?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
             type: "terms",
             size: 10,
           },
