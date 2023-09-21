@@ -10,7 +10,6 @@ import {
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { getStatus } from "../dashboard/Lists/statusHelper";
 import { OsHit, OsMainSourceItem } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
@@ -51,7 +50,9 @@ export const DetailsContent = ({
               <p className="text-gray-600 font-semibold mb-2">Status</p>
               <div>
                 <h2 className="text-xl font-semibold mb-2">
-                  {getStatus(data?._source.status, user?.isCms)}
+                  {user?.isCms
+                    ? data._source.cmsStatus
+                    : data._source.stateStatus}
                 </h2>
               </div>
             </>

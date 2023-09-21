@@ -2,15 +2,12 @@ service: ${self:custom.project}-data
 
 frameworkVersion: "3"
 
-package:
-  individually: true
-
 plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@stratiformdigital/serverless-iam-helper"
   - serverless-plugin-scripts
-  - serverless-bundle
+  - serverless-esbuild
   - serverless-step-functions
 
 provider:
@@ -70,8 +67,6 @@ custom:
       - master
       - val
       - production
-  bundle:
-    linting: false
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
   bootstrapKibanaUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapKibanaUsers, param:bootstrapKibanaUsers}

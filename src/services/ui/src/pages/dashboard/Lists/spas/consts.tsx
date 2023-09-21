@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { getStatus } from "../statusHelper";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
+import { LABELS } from "@/lib";
 
 export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   {
@@ -34,9 +34,17 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
     cell: (data) => removeUnderscoresAndCapitalize(data.planType),
   },
   {
-    field: "status.keyword",
+    field: "actionType.keyword",
+    label: "Action Type",
+    cell: (data) =>
+      data.actionType
+        ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
+        : "",
+  },
+  {
+    field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
     label: "Status",
-    cell: (data) => getStatus(data.status, props?.isCms),
+    cell: (data) => (props?.isCms ? data.cmsStatus : data.stateStatus),
   },
   {
     field: "submissionDate",
