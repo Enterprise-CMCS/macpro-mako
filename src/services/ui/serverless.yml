@@ -44,7 +44,6 @@ custom:
         VITE_COGNITO_USER_POOL_CLIENT_DOMAIN=${param:CognitoUserPoolClientDomain}
         VITE_COGNITO_REDIRECT_SIGNIN=${param:ApplicationEndpointUrl}
         VITE_COGNITO_REDIRECT_SIGNOUT=${param:ApplicationEndpointUrl}
-        BOOTSTRAP_USERS_PW=${param:BootstrapUsersPassword}
         """ > .env.local
         yarn build
       deploy:finalize: |
