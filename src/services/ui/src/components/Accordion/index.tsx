@@ -27,7 +27,7 @@ const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   AccordionTriggerProps
 >(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex px-3 py-3 no-underline text-lg font-bold">
+  <AccordionPrimitive.Header className="flex">
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
@@ -38,7 +38,6 @@ const AccordionTrigger = React.forwardRef<
     >
       {children}
       <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-      {/* <PlusIcon size={20} className="h-5 w-5" /> */}
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ));
