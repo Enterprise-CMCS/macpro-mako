@@ -18,7 +18,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 3,
+            "y": 20,
             "x": 0,
             "type": "text",
             "properties": {
@@ -40,7 +40,7 @@
         {
             "height": 8,
             "width": 8,
-            "y": 48,
+            "y": 58,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -61,26 +61,23 @@
             }
         },
         {
-            "height": 7,
-            "width": 8,
-            "y": 40,
+            "height": 4,
+            "width": 5,
+            "y": 5,
             "x": 0,
             "type": "alarm",
             "properties": {
-                "title": "Mako Dashboard ${sls:stage} Alarms",
+                "title": "Alarms",
                 "alarms": [
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-api-lambda-search-${sls:stage}-errors",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkOnemacErrorCount",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-ONEMAC-validation-error",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-SEATOOL-validation-error",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkSeatoolErrorsCount"
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkSeatoolErrorsCount",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-SEATOOL-validation-error"
                 ]
             }
         },
         {
             "height": 1,
             "width": 8,
-            "y": 20,
+            "y": 37,
             "x": 0,
             "type": "text",
             "properties": {
@@ -91,7 +88,7 @@
         {
             "height": 1,
             "width": 9,
-            "y": 39,
+            "y": 56,
             "x": 0,
             "type": "text",
             "properties": {
@@ -102,7 +99,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 47,
+            "y": 57,
             "x": 0,
             "type": "text",
             "properties": {
@@ -113,7 +110,7 @@
         {
             "height": 2,
             "width": 12,
-            "y": 21,
+            "y": 38,
             "x": 0,
             "type": "alarm",
             "properties": {
@@ -127,7 +124,7 @@
         {
             "height": 16,
             "width": 24,
-            "y": 23,
+            "y": 40,
             "x": 0,
             "type": "explorer",
             "properties": {
@@ -177,7 +174,7 @@
         {
             "height": 16,
             "width": 24,
-            "y": 4,
+            "y": 21,
             "x": 0,
             "type": "explorer",
             "properties": {
@@ -222,6 +219,218 @@
                 "splitBy": "",
                 "region": "${env:REGION_A}",
                 "title": "Cloudfront Metric Explorer"
+            }
+        },
+        {
+            "height": 1,
+            "width": 24,
+            "y": 3,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "# data",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 7,
+            "width": 6,
+            "y": 5,
+            "x": 5,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [
+                        "AWS/Lambda",
+                        "Invocations",
+                        "FunctionName",
+                        "om-data-${sls:stage}-sinkSeatool",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ],
+                    [
+                        ".",
+                        "Throttles",
+                        ".",
+                        ".",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ],
+                    [
+                        ".",
+                        "Errors",
+                        ".",
+                        ".",
+                        {
+                            "region": "${env:REGION_A}",
+                            "color": "#d62728"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "${env:REGION_A}",
+                "title": "Lambda",
+                "period": 60,
+                "stat": "Sum"
+            }
+        },
+        {
+            "height": 7,
+            "width": 13,
+            "y": 5,
+            "x": 11,
+            "type": "log",
+            "properties": {
+                "query": "SOURCE '/aws/lambda/om-data-${sls:stage}-sinkSeatool' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
+                "region": "${env:REGION_A}",
+                "stacked": false,
+                "title": "Logs",
+                "view": "table"
+            }
+        },
+        {
+            "height": 7,
+            "width": 6,
+            "y": 13,
+            "x": 5,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [
+                        "AWS/Lambda",
+                        "Invocations",
+                        "FunctionName",
+                        "om-data-${sls:stage}-sinkOnemac",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ],
+                    [
+                        ".",
+                        "Throttles",
+                        ".",
+                        ".",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ],
+                    [
+                        ".",
+                        "Errors",
+                        ".",
+                        ".",
+                        {
+                            "region": "${env:REGION_A}",
+                            "color": "#d62728"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "${env:REGION_A}",
+                "title": "Lambda",
+                "period": 60,
+                "stat": "Sum"
+            }
+        },
+        {
+            "height": 7,
+            "width": 13,
+            "y": 13,
+            "x": 11,
+            "type": "log",
+            "properties": {
+                "query": "SOURCE '/aws/lambda/om-data-${sls:stage}-sinkOnemac' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
+                "region": "${env:REGION_A}",
+                "stacked": false,
+                "title": "Logs",
+                "view": "table"
+            }
+        },
+        {
+            "height": 4,
+            "width": 5,
+            "y": 13,
+            "x": 0,
+            "type": "alarm",
+            "properties": {
+                "title": "Alarms",
+                "alarms": [
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkOnemacErrorCount",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-ONEMAC-validation-error"
+                ]
+            }
+        },
+        {
+            "height": 3,
+            "width": 5,
+            "y": 9,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [
+                        "AWS/Lambda",
+                        "OffsetLag",
+                        "FunctionName",
+                        "om-data-${sls:stage}-sinkSeatool",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ]
+                ],
+                "sparkline": true,
+                "view": "singleValue",
+                "region": "${env:REGION_A}",
+                "period": 60,
+                "stat": "Maximum"
+            }
+        },
+        {
+            "height": 3,
+            "width": 5,
+            "y": 17,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [
+                        "AWS/Lambda",
+                        "OffsetLag",
+                        "FunctionName",
+                        "om-data-${sls:stage}-sinkOnemac"
+                    ]
+                ],
+                "sparkline": true,
+                "view": "singleValue",
+                "region": "${env:REGION_A}",
+                "period": 60,
+                "stat": "Maximum"
+            }
+        },
+        {
+            "height": 1,
+            "width": 24,
+            "y": 4,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## seatool sink",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 1,
+            "width": 24,
+            "y": 12,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## onemac sink",
+                "background": "transparent"
             }
         }
     ]
