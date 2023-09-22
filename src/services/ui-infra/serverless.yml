@@ -24,21 +24,19 @@ plugins:
 
 custom:
   project: ${env:PROJECT}
-  stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
   serverlessTerminationProtection:
     stages:
       - master
       - val
       - production
-  route53HostedZoneId: ${ssm:/configuration/${self:service}/${self:custom.stage}/route53/hostedZoneId, ssm:/configuration/default/route53/hostedZoneId, ""}
-  route53DomainName: ${ssm:/configuration/${self:service}/${self:custom.stage}/route53/domainName, ""}
-  cloudfrontCertificateArn: ${ssm:/configuration/${self:service}/${self:custom.stage}/cloudfront/certificateArn, ssm:/configuration/default/cloudfront/certificateArn, ""}
-  cloudfrontDomainName: ${ssm:/configuration/${self:service}/${self:custom.stage}/cloudfront/domainName, ""}
-  webAclName: ${self:custom.stage}-${self:service}-webacl
+  stage: ${sls:stage} # This is junk.. required by the serverless-waf-plugin.  Due for refactor
+  cloudfrontCertificateArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/cloudfront/certificateArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/cloudfront/certificateArn, ""}
+  cloudfrontDomainName: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/cloudfront/domainName, ""}
+  webAclName: ${sls:stage}-${self:service}-webacl
   wafExcludeRules:
     wafScope: CLOUDFRONT
-  firehoseStreamName: aws-waf-logs-${self:service}-${self:custom.stage}-firehose
+  firehoseStreamName: aws-waf-logs-${self:service}-${sls:stage}-firehose
   s3SecurityHelper:
     skipPolicyCreation:
       - S3Bucket
@@ -55,16 +53,6 @@ custom:
 
 resources:
   Conditions:
-    CreateDnsRecord:
-      Fn::And:
-        - Fn::Not:
-            - Fn::Equals:
-                - ""
-                - ${self:custom.route53HostedZoneId}
-        - Fn::Not:
-            - Fn::Equals:
-                - ""
-                - ${self:custom.route53DomainName}
     CreateCustomCloudFrontDomain:
       Fn::And:
         - Fn::Not:
@@ -111,7 +99,7 @@ resources:
     LoggingBucket:
       Type: "AWS::S3::Bucket"
       Properties:
-        BucketName: !Sub ${self:service}-${self:custom.stage}-cloudfront-logs-${AWS::AccountId}
+        BucketName: !Sub ${self:service}-${sls:stage}-cloudfront-logs-${AWS::AccountId}
         PublicAccessBlockConfiguration:
           BlockPublicAcls: true
           BlockPublicPolicy: true
@@ -198,18 +186,7 @@ resources:
           WebACLId: !GetAtt WafPluginAcl.Arn
           Logging:
             Bucket: !Sub "${LoggingBucket}.s3.amazonaws.com"
-            Prefix: AWSLogs/CLOUDFRONT/${self:custom.stage}/
-    Route53DnsRecord:
-      Type: AWS::Route53::RecordSet
-      Condition: CreateDnsRecord
-      Properties:
-        HostedZoneId: ${self:custom.route53HostedZoneId}
-        Name: ${self:custom.route53DomainName}
-        AliasTarget:
-          DNSName: !GetAtt CloudFrontDistribution.DomainName
-          HostedZoneId: Z2FDTNDATAQYW2
-          EvaluateTargetHealth: false
-        Type: A
+            Prefix: AWSLogs/CLOUDFRONT/${sls:stage}/
     HstsCloudfrontFunction:
       Type: AWS::CloudFront::Function
       Properties:
@@ -224,12 +201,12 @@ resources:
         FunctionConfig:
           Comment: This function adds headers to implement HSTS
           Runtime: cloudfront-js-1.0
-        Name: hsts-${self:custom.project}-${self:custom.stage}
+        Name: hsts-${self:custom.project}-${sls:stage}
     ###############This code block enables logging on waf and sends all logs to s3.##################################
     WaflogsUploadBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: !Sub ${AWS::AccountId}-${self:service}-${self:custom.stage}-waflogs
+        BucketName: !Sub ${AWS::AccountId}-${self:service}-${sls:stage}-waflogs
         BucketEncryption:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
@@ -241,7 +218,7 @@ resources:
         ExtendedS3DestinationConfiguration:
           RoleARN: !GetAtt DeliveryRole.Arn
           BucketARN: !GetAtt WaflogsUploadBucket.Arn
-          Prefix: AWSLogs/WAF/${self:custom.stage}/
+          Prefix: AWSLogs/WAF/${sls:stage}/
           BufferingHints:
             IntervalInSeconds: 300
             SizeInMBs: 5
@@ -283,7 +260,7 @@ resources:
     ApplicationEndpointUrl:
       Type: AWS::SSM::Parameter
       Properties:
-        Name: /${self:custom.stage}/ui/application_endpoint
+        Name: /${self:custom.stage}/${self:service}/application_endpoint
         Type: String
         Value:
           Fn::If:

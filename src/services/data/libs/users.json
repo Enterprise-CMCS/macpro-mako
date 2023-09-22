@@ -1,0 +1,15 @@
+[
+  {
+    "username": "george@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "george@example.com"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      }
+    ]
+  }
+]

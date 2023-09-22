@@ -5,7 +5,6 @@ frameworkVersion: "3"
 plugins:
   - serverless-plugin-scripts
   - serverless-s3-sync
-  - serverless-cloudfront-invalidate
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
 
@@ -30,10 +29,6 @@ custom:
     - bucketName: ${param:S3BucketName}
       localDir: ./dist
       deleteRemoved: true
-  cloudfrontInvalidate:
-    - distributionId: ${param:CloudfrontDistributionId}
-      items:
-        - "/*"
   scripts:
     hooks:
       package:initialize: |
@@ -42,5 +37,20 @@ custom:
         VITE_API_REGION=${param:ApiRegion}
         VITE_API_URL=${param:ApiUrl}
         VITE_NODE_ENV=${self:custom.stage}
+        VITE_COGNITO_REGION=${param:CognitoRegion}
+        VITE_COGNITO_IDENTITY_POOL_ID=${param:CognitoIdentityPoolId}
+        VITE_COGNITO_USER_POOL_ID=${param:CognitoUserPoolId}
+        VITE_COGNITO_USER_POOL_CLIENT_ID=${param:CognitoUserPoolClientId}
+        VITE_COGNITO_USER_POOL_CLIENT_DOMAIN=${param:CognitoUserPoolClientDomain}
+        VITE_COGNITO_REDIRECT_SIGNIN=${param:ApplicationEndpointUrl}
+        VITE_COGNITO_REDIRECT_SIGNOUT=${param:ApplicationEndpointUrl}
+        BOOTSTRAP_USERS_PW=${param:BootstrapUsersPassword}
         """ > .env.local
         yarn build
+      deploy:finalize: |
+        set -e
+        aws cloudfront create-invalidation --region ${self:provider.region} --distribution-id ${param:CloudfrontDistributionId} --paths "/*"
+    commands:
+      useLocalhost: |
+        sed -i '' -e 's|VITE_COGNITO_REDIRECT_SIGNIN=.*|VITE_COGNITO_REDIRECT_SIGNIN=http://localhost:5000/|g' .env.local
+        sed -i '' -e 's|VITE_COGNITO_REDIRECT_SIGNOUT=.*|VITE_COGNITO_REDIRECT_SIGNOUT=http://localhost:5000/|g' .env.local

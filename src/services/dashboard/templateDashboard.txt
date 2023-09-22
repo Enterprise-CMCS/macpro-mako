@@ -22,7 +22,7 @@
             "x": 0,
             "type": "text",
             "properties": {
-                "markdown": "## alerts service",
+                "markdown": "## cloudfront metrics",
                 "background": "transparent"
             }
         },
@@ -38,26 +38,190 @@
             }
         },
         {
-            "type": "metric",
-            "x": 0,
-            "y": 4,
-            "width": 8,
             "height": 8,
+            "width": 8,
+            "y": 48,
+            "x": 0,
+            "type": "metric",
             "properties": {
                 "metrics": [
                     [
                         "AWS/SNS",
                         "NumberOfMessagesPublished",
                         "TopicName",
-                        "Alerts-base-alerts-${sls:stage}"
+                        "Alerts-om-alerts-${sls:stage}"
                     ]
                 ],
                 "view": "timeSeries",
                 "stacked": false,
                 "region": "${env:REGION_A}",
-                "title": "SNS Topic",
+                "title": "${sls:stage} SNS Topic",
                 "period": 60,
                 "stat": "Sum"
+            }
+        },
+        {
+            "height": 7,
+            "width": 8,
+            "y": 40,
+            "x": 0,
+            "type": "alarm",
+            "properties": {
+                "title": "Mako Dashboard ${sls:stage} Alarms",
+                "alarms": [
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-api-lambda-search-${sls:stage}-errors",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkOnemacErrorCount",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-ONEMAC-validation-error",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-SEATOOL-validation-error",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkSeatoolErrorsCount"
+                ]
+            }
+        },
+        {
+            "height": 1,
+            "width": 8,
+            "y": 20,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## api gateway",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 1,
+            "width": 9,
+            "y": 39,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## opensearch",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 1,
+            "width": 24,
+            "y": 47,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## alerts service",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 2,
+            "width": 12,
+            "y": 21,
+            "x": 0,
+            "type": "alarm",
+            "properties": {
+                "title": "MAKO Api Gateway ${sls:stage} Errors",
+                "alarms": [
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-api-${sls:stage}-400-errors",
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-api-${sls:stage}-500-errors"
+                ]
+            }
+        },
+        {
+            "height": 16,
+            "width": 24,
+            "y": 23,
+            "x": 0,
+            "type": "explorer",
+            "properties": {
+                "metrics": [
+                    {
+                        "metricName": "Count",
+                        "resourceType": "AWS::ApiGateway::RestApi",
+                        "stat": "Sum"
+                    },
+                    {
+                        "metricName": "5XXError",
+                        "resourceType": "AWS::ApiGateway::RestApi",
+                        "stat": "Sum"
+                    },
+                    {
+                        "metricName": "4XXError",
+                        "resourceType": "AWS::ApiGateway::RestApi",
+                        "stat": "Sum"
+                    },
+                    {
+                        "metricName": "Latency",
+                        "resourceType": "AWS::ApiGateway::RestApi",
+                        "stat": "Average"
+                    }
+                ],
+                "labels": [
+                    {
+                        "key": "STAGE",
+                        "value": "${sls:stage}"
+                    }
+                ],
+                "widgetOptions": {
+                    "legend": {
+                        "position": "bottom"
+                    },
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "rowsPerPage": 50,
+                    "widgetsPerRow": 2
+                },
+                "period": 60,
+                "splitBy": "",
+                "region": "${env:REGION_A}",
+                "title": "API Gateway Explorer"
+            }
+        },
+        {
+            "height": 16,
+            "width": 24,
+            "y": 4,
+            "x": 0,
+            "type": "explorer",
+            "properties": {
+                "metrics": [
+                    {
+                        "metricName": "Requests",
+                        "resourceType": "AWS::CloudFront::Distribution",
+                        "stat": "Sum"
+                    },
+                    {
+                        "metricName": "TotalErrorRate",
+                        "resourceType": "AWS::CloudFront::Distribution",
+                        "stat": "Average"
+                    },
+                    {
+                        "metricName": "4xxErrorRate",
+                        "resourceType": "AWS::CloudFront::Distribution",
+                        "stat": "Average"
+                    },
+                    {
+                        "metricName": "5xxErrorRate",
+                        "resourceType": "AWS::CloudFront::Distribution",
+                        "stat": "Average"
+                    }
+                ],
+                "labels": [
+                    {
+                        "key": "STAGE",
+                        "value": "${sls:stage}"
+                    }
+                ],
+                "widgetOptions": {
+                    "legend": {
+                        "position": "bottom"
+                    },
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "rowsPerPage": 50,
+                    "widgetsPerRow": 2
+                },
+                "period": 60,
+                "splitBy": "",
+                "region": "${env:REGION_A}",
+                "title": "Cloudfront Metric Explorer"
             }
         }
     ]

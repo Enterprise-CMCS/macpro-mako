@@ -44,9 +44,15 @@ yargs(process.argv.slice(2))
     },
     async (options) => {
       await install_deps_for_services();
+      await refreshOutputs(options.stage);
       await runner.run_command_and_output(
-        `ui config`,
-        ["sls", "deploy", "--stage", options.stage],
+        `config vars`,
+        ["sls", "ui", "package", "--stage", options.stage],
+        "."
+      );
+      await runner.run_command_and_output(
+        `config vars`,
+        ["sls", "ui", "useLocalhost", "--stage", options.stage],
         "."
       );
       await runner.run_command_and_output(
@@ -98,10 +104,26 @@ yargs(process.argv.slice(2))
   .command(
     "e2e",
     "run e2e tests.",
-    {},
-    async () => {
+    {
+      ui: { type: "boolean", demandOption: false, default: false },
+    },
+    async (argv: any) => {
       await install_deps_for_services();
-      await runner.run_command_and_output(`e2e tests`, ["yarn", "e2e"], ".");
+      await runner.run_command_and_output(
+        `Install playwright`,
+        ["yarn", "playwright", "install", "--with-deps"],
+        "."
+      );
+
+      if (argv.ui) {
+        await runner.run_command_and_output(
+          `e2e:ui tests`,
+          ["yarn", "e2e:ui"],
+          "."
+        );
+      } else {
+        await runner.run_command_and_output(`e2e tests`, ["yarn", "e2e"], ".");
+      }
     }
   )
   .command("test-gui", "open unit-testing gui for vitest.", {}, async () => {
@@ -132,7 +154,7 @@ yargs(process.argv.slice(2))
       if (options.service) {
         filters.push({
           Key: "SERVICE",
-          Value: `${options.service}`,
+          Value: `${process.env.PROJECT}-${options.service}`,
         });
       }
       await destroyer.destroy(`${process.env.REGION_A}`, options.stage, {

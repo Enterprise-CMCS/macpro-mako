@@ -2,9 +2,6 @@ service: ${self:custom.project}-oidc
 
 frameworkVersion: "3"
 
-package:
-  individually: true
-
 plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
@@ -36,7 +33,7 @@ custom:
     - arn:aws:iam::${aws:accountId}:policy/ADO-Restriction-Policy
     - arn:aws:iam::${aws:accountId}:policy/CMSApprovedAWSServices
     - arn:aws:iam::aws:policy/AdministratorAccess
-  SubjectClaimFilters: "repo:Enterprise-CMCS/macpro-base-template:${param:claimFilter}"
+  SubjectClaimFilters: "repo:Enterprise-CMCS/macpro-mako:${param:claimFilter}"
 resources:
   Resources:
     GitHubActionsServiceRole:

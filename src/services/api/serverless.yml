@@ -1,17 +1,14 @@
 service: ${self:custom.project}-api
 frameworkVersion: "3"
-package:
-  individually: true
 plugins:
-  - serverless-bundle
+  - serverless-esbuild
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
+  - serverless-scriptable-plugin
 provider:
   name: aws
   runtime: nodejs18.x
-  environment:
-    issuesTable: ${param:issuesTableName}
   logs:
     restApi: true
   region: ${env:REGION_A}
@@ -25,17 +22,23 @@ provider:
       statements:
         - Effect: Allow
           Action:
-            - dynamodb:Query
-            - dynamodb:Scan
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
-            - dynamodb:DescribeTable
-            - dynamodb:Get*
-            - dynamodb:BatchWrite*
-            - dynamodb:BatchGet*
+            - es:ESHttpHead
+            - es:ESHttpPost
+            - es:ESHttpGet
+            - es:ESHttpPatch
+            - es:ESHttpDelete
+            - es:ESHttpPut
+          Resource: ${param:osDomainArn}/*
+        - Effect: Allow
+          Action:
+            - cognito-idp:GetUser
+            - cognito-idp:ListUsers
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - sts:AssumeRole
+          Resource:
+            - ${self:custom.onemacLegacyS3AccessRoleArn}
 
 custom:
   project: ${env:PROJECT}
@@ -46,66 +49,143 @@ custom:
       - master
       - val
       - production
-  bundle:
-    linting: false
+  vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
+  onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
+  scriptable:
+    hooks:
+      package:compileEvents: ./handlers/repack.js
+params:
+  master:
+    searchProvisionedConcurrency: 4
+    itemProvisionedConcurrency: 2
+    getAttachmentUrlProvisionedConcurrency: 2
+  val:
+    searchProvisionedConcurrency: 4
+    itemProvisionedConcurrency: 2
+    getAttachmentUrlProvisionedConcurrency: 2
+  production:
+    searchProvisionedConcurrency: 10
+    itemProvisionedConcurrency: 5
+    getAttachmentUrlProvisionedConcurrency: 5
+  default:
+    searchProvisionedConcurrency: 1
+    itemProvisionedConcurrency: 1
+    getAttachmentUrlProvisionedConcurrency: 0
+
 functions:
-  getIssues:
-    handler: handlers/getIssues.handler
+  search:
+    handler: handlers/search.handler
     maximumRetryAttempts: 0
     environment:
-      tableName: ${param:issuesTableName}
       region: ${self:provider.region}
+      osDomain: ${param:osDomain}
     events:
       - http:
-          path: /issues
-          method: get
-          cors: true
-  getIssue:
-    handler: handlers/getIssue.handler
-    maximumRetryAttempts: 0
-    environment:
-      tableName: ${param:issuesTableName}
-      region: ${self:provider.region}
-    events:
-      - http:
-          path: /issues/{id}
-          method: get
-          cors: true
-  createIssue:
-    handler: handlers/createIssue.handler
-    maximumRetryAttempts: 0
-    environment:
-      tableName: ${param:issuesTableName}
-      region: ${self:provider.region}
-    events:
-      - http:
-          path: /issues
+          path: /search
           method: post
           cors: true
-  deleteIssue:
-    handler: handlers/deleteIssue.handler
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:searchProvisionedConcurrency}
+  getAttachmentUrl:
+    handler: handlers/getAttachmentUrl.handler
     maximumRetryAttempts: 0
     environment:
-      tableName: ${param:issuesTableName}
       region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+      onemacLegacyS3AccessRoleArn: ${self:custom.onemacLegacyS3AccessRoleArn}
     events:
       - http:
-          path: /issues/{id}
-          method: delete
+          path: /getAttachmentUrl
+          method: post
           cors: true
-  updateIssue:
-    handler: handlers/updateIssue.handler
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:getAttachmentUrlProvisionedConcurrency}
+  item:
+    handler: handlers/item.handler
     maximumRetryAttempts: 0
     environment:
-      tableName: ${param:issuesTableName}
       region: ${self:provider.region}
+      osDomain: ${param:osDomain}
     events:
       - http:
-          path: /issues/{id}
-          method: put
+          path: /item
+          method: post
           cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:itemProvisionedConcurrency}
 resources:
   Resources:
+    ApiGateway400ErrorCount:
+      Type: AWS::Logs::MetricFilter
+      Properties:
+        LogGroupName: !Ref ApiGatewayLogGroup
+        FilterName: ApiGateway400ErrorCount
+        FilterPattern: '[ip, user, timestamp, request, status = 4*]'
+        MetricTransformations:
+          - MetricValue: "1"
+            DefaultValue: "0"
+            MetricNamespace: "${self:service}-${sls:stage}/ApiGateway/errors"
+            MetricName: "ApiGateway400ErrorCount"
+            Unit: Count
+    ApiGateway400ErrorCountAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        DatapointsToAlarm: 1
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
+        AlarmName: "${self:service}-${sls:stage}-400-errors"
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300
+        Threshold: 1
+        MetricName: ApiGateway400ErrorCount
+        Namespace: "${self:service}-${sls:stage}/ApiGateway/errors"
+        Statistic: Sum
+        TreatMissingData: notBreaching
+    ApiGateway500ErrorCount:
+      Type: AWS::Logs::MetricFilter
+      Properties:
+        LogGroupName: !Ref ApiGatewayLogGroup
+        FilterName: ApiGateway500ErrorCount
+        FilterPattern: '[ip, user, timestamp, request, status = 5*]'
+        MetricTransformations:
+          - MetricValue: "1"
+            DefaultValue: "0"
+            MetricNamespace: "${self:service}-${sls:stage}/ApiGateway/errors"
+            MetricName: "ApiGateway500ErrorCount"
+            Unit: Count
+
+    # CloudWatch Alarm for API Gateway 500-level Errors
+    ApiGateway500ErrorCountAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        DatapointsToAlarm: 1
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
+        AlarmName: "${self:service}-${sls:stage}-500-errors"
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300
+        Threshold: 1
+        MetricName: ApiGateway500ErrorCount
+        Namespace: "${self:service}-${sls:stage}/ApiGateway/errors"
+        Statistic: Sum
+        TreatMissingData: notBreaching
     GatewayResponseDefault4XX:
       Type: "AWS::ApiGateway::GatewayResponse"
       Properties:
@@ -122,6 +202,43 @@ resources:
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
         ResponseType: DEFAULT_5XX
         RestApiId: !Ref ApiGatewayRestApi
+    LambdaLogMessageMetricFilter:
+      Type: "AWS::Logs::MetricFilter"
+      Properties:
+        LogGroupName: !Ref SearchLogGroup
+        FilterPattern: "ERROR"
+        MetricTransformations:
+          - MetricName: LambdaErrorCount
+            MetricNamespace: "${self:service}-${sls:stage}/lambda-search/Errors"
+            MetricValue: "1"
+            DefaultValue: "0"
+    LambdaErrorCountAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-lambda-search-${sls:stage}-errors
+        AlarmDescription: "Lambda Error Count Alarm"
+        MetricName: LambdaErrorCount
+        Namespace: "${self:service}-${sls:stage}/lambda/search-error-count-alarm"
+        Statistic: "Sum"
+        Period: 300
+        EvaluationPeriods: 1
+        Threshold: 1
+        TreatMissingData: notBreaching
+        ComparisonOperator: "GreaterThanOrEqualToThreshold"
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
+    SecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      DeletionPolicy: Retain
+      Properties:
+        GroupDescription: Security group for API Search.
+        VpcId: ${self:custom.vpc.id}
+    SecurityGroupEgress:
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId: !Ref SecurityGroup
+        IpProtocol: -1
+        CidrIp: 0.0.0.0/0
   Outputs:
     ApiGatewayRestApiName:
       Value: !Ref ApiGatewayRestApi

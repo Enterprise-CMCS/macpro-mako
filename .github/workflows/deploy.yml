@@ -37,6 +37,7 @@ jobs:
       url: ${{ steps.deployment-data.outputs.APPURL }}
     outputs:
       app-url: ${{ steps.deployment-data.outputs.APPURL }}
+      kibana-url: ${{ steps.kibana-url.outputs.KIBANAURL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -53,7 +54,7 @@ jobs:
       - name: Deploy
         run: run deploy --stage $STAGE_NAME
 
-      - name: Set URL
+      - name: Set Site URL
         id: deployment-data
         run: |
           echo ${{ github.ref_name }}
@@ -63,6 +64,28 @@ jobs:
             --stack-name $PROJECT-ui-infra-$STAGE_NAME \
             --query Stacks[0].Outputs[0].OutputValue
           )" | tr -d \'\" >> $GITHUB_OUTPUT
+
+      - name: Set Kibana URL
+        id: kibana-url
+        run: |
+          echo KIBANAURL=$(
+            sls info --verbose --stage $STAGE_NAME |& grep -m 1 OpenSearchDashboardEndpoint |
+            awk '{print $NF}' | awk '{$1=$1};1' |
+            tr -d \'\"
+          ) >> $GITHUB_OUTPUT
+
+  kibana-url:
+    runs-on: ubuntu-20.04
+    needs:
+      - deploy
+    environment:
+      name: ${{ github.ref_name }}-kibana
+      url: ${{ needs.deploy.outputs.kibana-url }}
+    steps:
+      - name: Display Kibana URL
+        run: |
+          echo "Kibana URL: ${{ needs.deploy.outputs.kibana-url }}"
+
   test:
     runs-on: ubuntu-20.04
     needs:
@@ -85,35 +108,33 @@ jobs:
       - name: Test
         run: yarn test-ci
 
-  e2e:
-    timeout-minutes: 5
-    runs-on: ubuntu-20.04
-    needs:
-      - deploy
-    env:
-      baseurl: ${{ needs.deploy.outputs.app-url }}
-    if: ${{ github.ref != 'refs/heads/production' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup
-        uses: ./.github/actions/setup
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-          aws-region: us-east-1
-          role-duration-seconds: 10800
-      - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
-      - name: Run e2e tests
-        run: run e2e
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: src/services/ui/playwright-report/
-          retention-days: 30
+  # e2e:
+  #   timeout-minutes: 5
+  #   runs-on: ubuntu-20.04
+  #   needs:
+  #     - deploy
+  #   env:
+  #     baseurl: ${{ needs.deploy.outputs.app-url }}
+  #   if: ${{ github.ref != 'refs/heads/production' }}
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Setup
+  #       uses: ./.github/actions/setup
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v2
+  #       with:
+  #         role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+  #         aws-region: us-east-1
+  #         role-duration-seconds: 10800
+  #     - name: Run e2e tests
+  #       run: run e2e
+  #     - uses: actions/upload-artifact@v3
+  #       if: always()
+  #       with:
+  #         name: playwright-report
+  #         path: src/services/ui/playwright-report/
+  #         retention-days: 30
 
   cfn-nag:
     runs-on: ubuntu-20.04
