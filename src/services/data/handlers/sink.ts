@@ -30,8 +30,6 @@ export const seatool: Handler = async (event) => {
     }[]) {
       const { key, value } = seatoolRecord;
 
-      // we need to handle the case of null records for value
-      // this is a delete event so we will need to delete
       if (value) {
         const id: string = JSON.parse(decode(key));
         const record = { id, ...JSON.parse(decode(value)) };
@@ -51,6 +49,7 @@ export const seatool: Handler = async (event) => {
           rawArr.push(record);
         }
       } else {
+        // to handle deletes
         const id: string = JSON.parse(decode(key));
         const seaTombstone: SeaToolRecordsToDelete = {
           id,
@@ -67,7 +66,8 @@ export const seatool: Handler = async (event) => {
           raiReceivedDate: undefined,
           raiRequestedDate: undefined,
           state: undefined,
-          status: undefined,
+          cmsStatus: undefined,
+          stateStatus: undefined,
           submissionDate: undefined,
         };
 
