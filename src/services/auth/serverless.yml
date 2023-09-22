@@ -72,7 +72,7 @@ resources:
       Fn::Not:
         - Fn::Equals:
             - ""
-            - ${self:custom.idmInfo}
+            - ${self:custom.idmInfo.oidc_issuer, ""}
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
