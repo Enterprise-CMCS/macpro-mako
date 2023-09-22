@@ -36,7 +36,7 @@ custom:
   cognitoEmailAddress: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/cognitoEmailAddress, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/cognitoEmailAddress, ""}
   bootstrapUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsers, param:bootstrapUsers}
   bootstrapUsersPassword: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsersPassword, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/bootstrapUsersPassword}
-  idm_info: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/idmInfo, ""}
+  idmInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/idmInfo, ""}
   scripts:
     hooks:
       deploy:finalize: |
@@ -72,7 +72,7 @@ resources:
       Fn::Not:
         - Fn::Equals:
             - ""
-            - ${self:custom.idm_info}
+            - ${self:custom.idmInfo}
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
@@ -170,9 +170,9 @@ resources:
         IdpIdentifiers:
           - IdpIdentifier
         ProviderDetails:
-          client_id: ${self:custom.idm_info.oidc_client_id}
-          client_secret: ${self:custom.idm_info.oidc_client_secret}
-          oidc_issuer: ${self:custom.idm_info.oidc_issuer}
+          client_id: ${self:custom.idmInfo.oidc_client_id}
+          client_secret: ${self:custom.idmInfo.oidc_client_secret}
+          oidc_issuer: ${self:custom.idmInfo.oidc_issuer}
           attributes_request_method: GET
           authorize_scopes: "email openid profile phone"
         ProviderName: IDM
