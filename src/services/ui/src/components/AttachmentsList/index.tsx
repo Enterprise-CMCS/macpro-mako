@@ -1,11 +1,37 @@
 import { getAttachmentUrl } from "@/api";
-import { Button, TD, TH, Table } from "@enterprise-cmcs/macpro-ux-lib";
 import { format } from "date-fns";
+import { DownloadIcon } from "lucide-react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { OsMainSourceItem } from "shared-types";
+import { useState } from "react";
+import { Button } from "../Button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../Table";
 
-const handleDownloadAll = async (data: OsMainSourceItem) => {
+type AttachmentList = {
+  id: string;
+  attachments:
+    | ({
+        uploadDate: number;
+        bucket: string;
+        key: string;
+        s3Key: string;
+        filename: string;
+        title: string;
+        contentType: string;
+        url: string;
+      } | null)[]
+    | null;
+};
+
+const handleDownloadAll = async (data: AttachmentList) => {
   if (data.attachments && data.attachments.length > 0) {
     const validAttachments = data.attachments.filter(
       (attachment): attachment is NonNullable<typeof attachment> =>
@@ -28,100 +54,95 @@ const handleDownloadAll = async (data: OsMainSourceItem) => {
   }
 };
 
-export const Attachmentslist = (data: OsMainSourceItem) => {
+export const Attachmentslist = (data: AttachmentList) => {
+  const [loading, setLoading] = useState(false);
   return (
     <div>
-      <Table borderless className="w-full">
-        <thead>
-          <tr>
-            <TH>Document Type</TH>
-            <TH>Attached File</TH>
-            <TH>Upload Date</TH>
-          </tr>
-        </thead>
-        <tbody>
-          {data.attachments?.map((attachment) => {
-            if (!attachment) return null;
-            return (
-              <tr key={attachment.key}>
-                <TH rowHeader>
-                  <p className="text-sm font-bold">{attachment.title}</p>
-                </TH>
-                <TD>
-                  <div className="text-sm">
-                    <button
-                      className="text-blue-600"
-                      onClick={async () => {
-                        const url = await getAttachmentUrl(
-                          data.id,
-                          attachment.bucket,
-                          attachment.key
-                        );
-                        console.log(url);
-                        window.open(url);
-                      }}
-                    >
-                      {attachment.filename}
-                    </button>
-                    {/* originally wanted the size as well, but that data is missing*/}
-                    <p>
-                      (
-                      {attachment.contentType
-                        ? attachment.contentType.split("/").slice(-1)
-                        : "Unknown"}
-                      )
-                    </p>
-                  </div>
-                </TD>
-                <TD>
-                  <div className="text-slate-500 text-sm">
-                    {attachment.uploadDate ? (
-                      <>
-                        <p>{format(attachment.uploadDate, "MM/dd/yyyy")}</p>
-                        <p>{format(attachment.uploadDate, "h:mm a")}</p>
-                      </>
-                    ) : (
-                      <p>Unknown</p>
-                    )}
-                  </div>
-                </TD>
-              </tr>
-            );
-          })}
-        </tbody>
+      <Table className="w-full">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="text-left">Document Type</TableHead>
+            <TableHead className="text-left">Attached File</TableHead>
+            <TableHead className="text-left">Upload Date</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.attachments ? (
+            data.attachments.map((attachment) => {
+              if (!attachment) return null;
+              return (
+                <TableRow key={attachment.key}>
+                  <TableHead>
+                    <p className="text-sm font-bold">{attachment.title}</p>
+                  </TableHead>
+                  <TableCell>
+                    <div className="text-sm">
+                      <button
+                        className="text-blue-600"
+                        onClick={async () => {
+                          const url = await getAttachmentUrl(
+                            data.id,
+                            attachment.bucket,
+                            attachment.key
+                          );
+                          console.log(url);
+                          window.open(url);
+                        }}
+                      >
+                        {attachment.filename}
+                      </button>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-slate-500 text-sm">
+                      {attachment.uploadDate ? (
+                        <>
+                          <p>{format(attachment.uploadDate, "MM/dd/yyyy")}</p>
+                          <p>{format(attachment.uploadDate, "h:mm a")}</p>
+                        </>
+                      ) : (
+                        <p>Unknown</p>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })
+          ) : (
+            <p className="text-sm font-bold p-4">No Attachments To Show</p>
+          )}
+        </TableBody>
       </Table>
       <div className="flex justify-end">
         {data.attachments && (
           <Button
-            buttonText="Download All"
-            buttonVariation="secondary"
-            iconName="file_download"
-            onClick={() => handleDownloadAll(data)}
-            target="_self"
+            variant={"secondary"}
+            disabled={loading}
+            onClick={async () => {
+              setLoading(true);
+              await handleDownloadAll(data);
+              setLoading(false);
+            }}
             type="button"
-            style={{ padding: "4px" }}
-          />
+          >
+            <DownloadIcon className="w-4 h-4" />
+            {loading ? "Downloading" : "Download All"}
+          </Button>
         )}
       </div>
     </div>
   );
 };
 
-type Attachments = {
-  url: string;
-  uploadDate: number;
-  bucket: string;
-  key: string;
-  s3Key: string;
-  filename: string;
-  title: string;
-  contentType: string;
-}[];
-
-async function downloadAll(attachments: Attachments, id: string) {
+async function downloadAll(
+  attachments: OsMainSourceItem["attachments"],
+  id: string
+) {
+  if (!attachments) return null;
   const downloadList = (await Promise.all(
     attachments
       .map(async (attachment) => {
+        if (!attachment) return null;
         try {
           const resp = await fetch(attachment.url);
           if (!resp.ok) throw resp;

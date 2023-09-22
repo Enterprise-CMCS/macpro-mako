@@ -2,17 +2,21 @@ import { OsMainSourceItem } from "shared-types";
 
 export const SubmissionInfo = (data: OsMainSourceItem) => {
   let cpocName = "";
-  if (data.leadAnalyst?.FIRST_NAME && data.leadAnalyst?.LAST_NAME) {
-    cpocName = `${data.leadAnalyst?.FIRST_NAME} ${data.leadAnalyst?.LAST_NAME}`;
+  if (data.leadAnalystName) {
+    cpocName = data.leadAnalystName;
   }
   const submissionDetails = [
     {
-      label: "Submitter",
+      label: "Submitted By",
       value: <p className="text-lg">{data.submitterName || "None"}</p>,
     },
     {
       label: "CPOC Name",
       value: <p className="text-lg">{cpocName || "None"}</p>,
+    },
+    {
+      label: "Origin",
+      value: <p className="text-lg">{data.origin || "unknown"}</p>,
     },
   ];
   return (

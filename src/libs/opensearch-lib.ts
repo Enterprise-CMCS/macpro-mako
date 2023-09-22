@@ -103,7 +103,17 @@ export async function search(host:string, index:string, query:any){
       index: index,
       body: query,
     });
-    return response.body.hits;
+    return response.body;
+  } catch(e) {
+    console.log({e})
+  }
+}
+
+export async function getItem(host:string, index:string, id:string){
+  client = client || (await getClient(host));
+  try {
+    const response = await client.get({id, index})
+    return response.body;
   } catch(e) {
     console.log({e})
   }

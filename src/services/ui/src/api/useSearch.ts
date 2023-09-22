@@ -1,77 +1,71 @@
+import {
+  aggQueryBuilder,
+  filterQueryBuilder,
+  paginationQueryBuilder,
+  sortQueryBuilder,
+} from "@/components/Opensearch/utils";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactQueryApiError, SearchData } from "shared-types";
+import type {
+  OsQueryState,
+  ReactQueryApiError,
+  OsFilterable,
+  OsAggQuery,
+  OsMainSearchResponse,
+} from "shared-types";
+
+type QueryProps = {
+  filters: OsQueryState["filters"];
+  sort?: OsQueryState["sort"];
+  pagination: OsQueryState["pagination"];
+  aggs?: OsAggQuery[];
+};
 
 export const getSearchData = async (
-  searchString: string,
-  authority: string
-): Promise<SearchData> => {
-  const query: any = {
-    from: 0,
-    size: 100,
-    query: {
-      bool: {
-        must: [
-          {
-            match: {
-              authority: {
-                query: authority,
-              },
-            },
-          },
-        ],
-      },
-    },
-  };
-  if (searchString) {
-    query.query.bool.should = [
-      {
-        match_phrase: {
-          id: `${searchString}`,
-        },
-      },
-      {
-        fuzzy: {
-          submitterName: {
-            value: `${searchString}`,
-          },
-        },
-      },
-      {
-        fuzzy: {
-          leadAnalyst: {
-            value: `${searchString}`,
-          },
-        },
-      },
-    ];
-  } else {
-    // If we haven't specified any parameters, lets just sort by changed date
-    query.sort = [
-      {
-        changedDate: {
-          order: "desc",
-        },
-      },
-    ];
-  }
+  props: QueryProps
+): Promise<OsMainSearchResponse> => {
   const searchData = await API.post("os", "/search", {
-    body: query,
+    body: {
+      ...filterQueryBuilder(props.filters),
+      ...paginationQueryBuilder(props.pagination),
+      ...(!!props.sort && sortQueryBuilder(props.sort)),
+      ...(!!props.aggs && aggQueryBuilder(props.aggs)),
+      track_total_hits: true,
+    },
   });
 
   return searchData;
 };
 
-export const useSearch = (
+export const getAllSearchData = async (filters?: OsFilterable[]) => {
+  if (!filters) return;
+
+  const recursiveSearch = async (
+    startPage: number
+  ): Promise<OsMainSearchResponse["hits"]["hits"]> => {
+    const searchData = await API.post("os", "/search", {
+      body: {
+        ...filterQueryBuilder(filters),
+        ...paginationQueryBuilder({ number: startPage, size: 1000 }),
+      },
+    });
+
+    if (searchData?.hits.hits.length < 1000) return searchData.hits.hits || [];
+    return searchData.hits.hits.concat(await recursiveSearch(startPage + 1));
+  };
+
+  return await recursiveSearch(0);
+};
+
+export const useOsSearch = (
   options?: UseMutationOptions<
-    SearchData,
+    OsMainSearchResponse,
     ReactQueryApiError,
-    { searchString: string; authority: string }
+    QueryProps
   >
 ) => {
-  return useMutation<
-    SearchData,
-    ReactQueryApiError,
-    { searchString: string; authority: string }
-  >((props) => getSearchData(props.searchString, props.authority), options);
+  return useMutation<OsMainSearchResponse, ReactQueryApiError, QueryProps>(
+    (props) => getSearchData(props),
+    options
+  );
 };

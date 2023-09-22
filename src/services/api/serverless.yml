@@ -1,12 +1,11 @@
 service: ${self:custom.project}-api
 frameworkVersion: "3"
-package:
-  individually: true
 plugins:
-  - serverless-bundle
+  - serverless-esbuild
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
+  - serverless-scriptable-plugin
 provider:
   name: aws
   runtime: nodejs18.x
@@ -50,21 +49,28 @@ custom:
       - master
       - val
       - production
-  bundle:
-    linting: false
-    packager: yarn
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
-
+  scriptable:
+    hooks:
+      package:compileEvents: ./handlers/repack.js
 params:
   master:
-    provisionedConcurrency: 10
+    searchProvisionedConcurrency: 4
+    itemProvisionedConcurrency: 2
+    getAttachmentUrlProvisionedConcurrency: 2
   val:
-    provisionedConcurrency: 10
+    searchProvisionedConcurrency: 4
+    itemProvisionedConcurrency: 2
+    getAttachmentUrlProvisionedConcurrency: 2
   production:
-    provisionedConcurrency: 10
+    searchProvisionedConcurrency: 10
+    itemProvisionedConcurrency: 5
+    getAttachmentUrlProvisionedConcurrency: 5
   default:
-    provisionedConcurrency: 1
+    searchProvisionedConcurrency: 1
+    itemProvisionedConcurrency: 1
+    getAttachmentUrlProvisionedConcurrency: 0
 
 functions:
   search:
@@ -84,7 +90,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:provisionedConcurrency}
+    provisionedConcurrency: ${param:searchProvisionedConcurrency}
   getAttachmentUrl:
     handler: handlers/getAttachmentUrl.handler
     maximumRetryAttempts: 0
@@ -103,7 +109,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:provisionedConcurrency}
+    provisionedConcurrency: ${param:getAttachmentUrlProvisionedConcurrency}
   item:
     handler: handlers/item.handler
     maximumRetryAttempts: 0
@@ -121,9 +127,65 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:provisionedConcurrency}
+    provisionedConcurrency: ${param:itemProvisionedConcurrency}
 resources:
   Resources:
+    ApiGateway400ErrorCount:
+      Type: AWS::Logs::MetricFilter
+      Properties:
+        LogGroupName: !Ref ApiGatewayLogGroup
+        FilterName: ApiGateway400ErrorCount
+        FilterPattern: '[ip, user, timestamp, request, status = 4*]'
+        MetricTransformations:
+          - MetricValue: "1"
+            DefaultValue: "0"
+            MetricNamespace: "${self:service}-${sls:stage}/ApiGateway/errors"
+            MetricName: "ApiGateway400ErrorCount"
+            Unit: Count
+    ApiGateway400ErrorCountAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        DatapointsToAlarm: 1
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
+        AlarmName: "${self:service}-${sls:stage}-400-errors"
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300
+        Threshold: 1
+        MetricName: ApiGateway400ErrorCount
+        Namespace: "${self:service}-${sls:stage}/ApiGateway/errors"
+        Statistic: Sum
+        TreatMissingData: notBreaching
+    ApiGateway500ErrorCount:
+      Type: AWS::Logs::MetricFilter
+      Properties:
+        LogGroupName: !Ref ApiGatewayLogGroup
+        FilterName: ApiGateway500ErrorCount
+        FilterPattern: '[ip, user, timestamp, request, status = 5*]'
+        MetricTransformations:
+          - MetricValue: "1"
+            DefaultValue: "0"
+            MetricNamespace: "${self:service}-${sls:stage}/ApiGateway/errors"
+            MetricName: "ApiGateway500ErrorCount"
+            Unit: Count
+
+    # CloudWatch Alarm for API Gateway 500-level Errors
+    ApiGateway500ErrorCountAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        DatapointsToAlarm: 1
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
+        AlarmName: "${self:service}-${sls:stage}-500-errors"
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300
+        Threshold: 1
+        MetricName: ApiGateway500ErrorCount
+        Namespace: "${self:service}-${sls:stage}/ApiGateway/errors"
+        Statistic: Sum
+        TreatMissingData: notBreaching
     GatewayResponseDefault4XX:
       Type: "AWS::ApiGateway::GatewayResponse"
       Properties:
@@ -140,6 +202,31 @@ resources:
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
         ResponseType: DEFAULT_5XX
         RestApiId: !Ref ApiGatewayRestApi
+    LambdaLogMessageMetricFilter:
+      Type: "AWS::Logs::MetricFilter"
+      Properties:
+        LogGroupName: !Ref SearchLogGroup
+        FilterPattern: "ERROR"
+        MetricTransformations:
+          - MetricName: LambdaErrorCount
+            MetricNamespace: "${self:service}-${sls:stage}/lambda-search/Errors"
+            MetricValue: "1"
+            DefaultValue: "0"
+    LambdaErrorCountAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-lambda-search-${sls:stage}-errors
+        AlarmDescription: "Lambda Error Count Alarm"
+        MetricName: LambdaErrorCount
+        Namespace: "${self:service}-${sls:stage}/lambda/search-error-count-alarm"
+        Statistic: "Sum"
+        Period: 300
+        EvaluationPeriods: 1
+        Threshold: 1
+        TreatMissingData: notBreaching
+        ComparisonOperator: "GreaterThanOrEqualToThreshold"
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
     SecurityGroup:
       Type: AWS::EC2::SecurityGroup
       DeletionPolicy: Retain

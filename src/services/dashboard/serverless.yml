@@ -2,11 +2,8 @@ service: ${self:custom.project}-dashboard
 
 frameworkVersion: "3"
 
-package:
-  individually: true
-
 plugins:
-  - serverless-bundle
+  - serverless-esbuild
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
@@ -36,8 +33,6 @@ custom:
       - master
       - val
       - production
-  bundle:
-    linting: false
 functions:
   templatizeCloudWatchDashboard:
     handler: handlers/templatizeCloudWatchDashboard.handler

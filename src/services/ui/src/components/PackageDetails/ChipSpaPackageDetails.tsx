@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { OsMainSourceItem } from "shared-types";
 import { removeUnderscoresAndCapitalize } from "@/utils";
+import { LABELS } from "@/lib";
 
 export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
   if (!data) return null;
@@ -18,30 +19,34 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
       value: removeUnderscoresAndCapitalize(data.planType),
     },
     {
-      label: "Sub-Type",
-      value: data.actionType || "N/A",
+      label: "Action Type",
+      value: data.actionType
+        ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
+        : "N/A",
     },
     {
       label: "Initial Submission Date",
       value: data.submissionDate
-        ? format(data.submissionDate, "MM/dd/yyyy")
+        ? format(new Date(data.submissionDate), "MM/dd/yyyy")
         : "N/A",
     },
     {
       label: "Proposed Effective Date",
       value: data.proposedDate
-        ? format(data.proposedDate, "MM/dd/yyyy")
+        ? format(new Date(data.proposedDate), "MM/dd/yyyy")
         : "N/A",
     },
     {
       label: "Approved Effective Date",
       value: data.approvedEffectiveDate
-        ? format(data.approvedEffectiveDate, "MM/dd/yyyy")
+        ? format(new Date(data.approvedEffectiveDate), "MM/dd/yyyy")
         : "N/A",
     },
     {
       label: "Change Date",
-      value: data.changedDate ? format(data.changedDate, "MM/dd/yyyy") : "N/A",
+      value: data.changedDate
+        ? format(new Date(data.changedDate), "MM/dd/yyyy")
+        : "N/A",
     },
   ];
   return (

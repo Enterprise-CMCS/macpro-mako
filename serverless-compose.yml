@@ -3,13 +3,18 @@ services:
     path: src/services/alerts
   dashboard:
     path: src/services/dashboard
+    params:
+      CloudfrontDistributionId: ${ui-infra.CloudFrontDistributionId}
   data:
     path: src/services/data
+    params:
+      ECSFailureTopicArn: ${alerts.ECSFailureTopicArn}
   ui-infra:
     path: src/services/ui-infra
   api:
     path: src/services/api
     params:
+      ECSFailureTopicArn: ${alerts.ECSFailureTopicArn}
       osDomainArn: ${data.OpenSearchDomainArn}
       osDomain: ${data.OpenSearchDomainEndpoint}
   auth:
@@ -31,3 +36,4 @@ services:
       CognitoUserPoolId: ${auth.UserPoolId}
       CognitoUserPoolClientId: ${auth.UserPoolClientId}
       CognitoUserPoolClientDomain: ${auth.UserPoolClientDomain}
+      BootstrapUsersPassword: ${auth.BootstrapUsersPassword}

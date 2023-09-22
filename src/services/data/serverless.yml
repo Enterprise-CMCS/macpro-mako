@@ -2,15 +2,12 @@ service: ${self:custom.project}-data
 
 frameworkVersion: "3"
 
-package:
-  individually: true
-
 plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@stratiformdigital/serverless-iam-helper"
   - serverless-plugin-scripts
-  - serverless-bundle
+  - serverless-esbuild
   - serverless-step-functions
 
 provider:
@@ -70,8 +67,6 @@ custom:
       - master
       - val
       - production
-  bundle:
-    linting: false
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
   bootstrapKibanaUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapKibanaUsers, param:bootstrapKibanaUsers}
@@ -285,6 +280,24 @@ resources:
         StartingPosition: TRIM_HORIZON
         Topics:
           - aws.ksqldb.seatool.agg.State_Plan
+    CloudWatchAlarmForSinkSeatoolTriggerErrors:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-${sls:stage}-sinkSeatoolErrorsCount
+        AlarmDescription: Alarm for SinkSeatoolTrigger Lambda Errors
+        Namespace: ${self:service}-${sls:stage}/lambda/sinkSEATOOL-Errors-Alarm
+        MetricName: SinkSeatoolErrors
+        Dimensions:
+          - Name: FunctionName
+            Value: !GetAtt SinkSeatoolLambdaFunction.Arn
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300  
+        Statistic: Sum
+        TreatMissingData: notBreaching
+        Threshold: 1  
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
     SinkOnemacTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties:
@@ -309,19 +322,83 @@ resources:
         StartingPosition: TRIM_HORIZON
         Topics:
           - aws.onemac.migration.cdc
+    CloudWatchAlarmForSinkOnemacTriggerErrors:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-${sls:stage}-sinkOnemacErrorCount
+        AlarmDescription: Alarm for SinkOnemacTrigger Lambda Errors
+        Namespace: AWS/Lambda/sinkONEMAC-Errors-Alarm
+        MetricName: SinkONEMACErrors
+        Dimensions:
+          - Name: FunctionName
+            Value: !GetAtt SinkOnemacLambdaFunction.Arn
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300  
+        Statistic: Sum
+        TreatMissingData: notBreaching
+        Threshold: 1  
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
+    SeatoolLogMessageMetricFilter:
+      Type: "AWS::Logs::MetricFilter"
+      Properties:
+        LogGroupName: !Ref SinkSeatoolLogGroup
+        FilterPattern: '"SEATOOL Validation Error"'
+        MetricTransformations:
+          - MetricName: SeatoolValidationErrors
+            MetricNamespace: "${self:service}-${sls:stage}/lambda/SEATOOL-Validation-Errors"
+            MetricValue: "1"
+            DefaultValue: "0"
+    SeatoolValidationErrorsAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-${sls:stage}-SEATOOL-validation-error
+        AlarmDescription: Alarm for SEATOOL Validation Errors
+        Namespace: "${self:service}-${sls:stage}/lambda/SEATOOL-Validation-Errors-Alarm"
+        MetricName: SeatoolValidationErrors
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300 
+        Statistic: Sum
+        TreatMissingData: notBreaching
+        Threshold: 1 
+        AlarmActions:
+          - ${param:ECSFailureTopicArn} 
+    OnemacLogMessageMetricFilter:
+      Type: "AWS::Logs::MetricFilter"
+      Properties:
+        LogGroupName: !Ref SinkOnemacLogGroup
+        FilterPattern: '"ONEMAC Validation Error"'
+        MetricTransformations:
+          - MetricName: ONEMACValidationErrors
+            MetricNamespace: "${self:service}-${sls:stage}/lambda/ONEMAC-validation-errors"
+            MetricValue: "1"
+            DefaultValue: "0"
+    OnemacValidationErrorsAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-${sls:stage}-ONEMAC-validation-error
+        AlarmDescription: Alarm for ONEMAC Validation Errors
+        Namespace: "${self:service}-${sls:stage}/lambda/ONEMAC-validation-errors-alarm"
+        MetricName: ONEMACValidationErrors
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300 
+        Statistic: Sum
+        TreatMissingData: notBreaching
+        Threshold: 1 
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
     SecurityGroup:
       Type: AWS::EC2::SecurityGroup
       DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
       Properties:
         GroupDescription: Security group for Sink Lambda Function.
         VpcId: ${self:custom.vpc.id}
-    SecurityGroupEgress:
-      Type: AWS::EC2::SecurityGroupEgress
-      Properties:
-        GroupId: !Ref SecurityGroup
-        IpProtocol: -1
-        CidrIp: 0.0.0.0/0
-
+        SecurityGroupEgress: 
+          - IpProtocol: -1
+            CidrIp: 0.0.0.0/0
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:
@@ -384,7 +461,6 @@ resources:
           - arn:aws:iam::aws:policy/AmazonCognitoReadOnly
     OpenSearch:
       Type: AWS::OpenSearchService::Domain
-      DependsOn: OpenSearchLogGroupPolicy
       Properties:
         Tags:
           - Key: STAGE
@@ -499,15 +575,6 @@ resources:
       Type: AWS::Logs::LogGroup
       Properties: 
         LogGroupName: /aws/opensearch/${self:service}-${sls:stage}-error
-    OpenSearchLogGroupPolicy:
-      Type: AWS::Logs::ResourcePolicy
-      DependsOn:
-        - OpenSearchAuditLogGroup
-        - OpenSearchErrorLogGroup
-      Properties:
-        PolicyName: ${self:service}-${sls:stage}-audit
-        PolicyDocument: !Sub "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"OpenSearchToCloudwatch\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"es.amazonaws.com\" ] }, \"Action\": [\"logs:PutLogEvents\",\"logs:CreateLogStream\"], \"Resource\": [ \"*\" ] } ] }"
-        # PolicyDocument: !Sub "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"OpenSearchToCloudwatch\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": [ \"es.amazonaws.com\" ] }, \"Action\":\"logs:PutLogEvents\", \"Resource\": [ \"${OpenSearchAuditLogGroup.Arn}\", \"${OpenSearchErrorLogGroup.Arn}\" ] } ] }"
     MapRole:
       Type: Custom::ClusterInfo
       Properties:
