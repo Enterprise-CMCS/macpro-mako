@@ -14,7 +14,7 @@ type Props = {
 export const Footer = ({ email, address }: Props) => {
   return (
     <footer>
-      <section className="bg-[#E1F3F8]">
+      <section className="bg-sky-100">
         <div className="grid grid-cols-12 gap-4 px-10 py-4 max-w-screen-xl mx-auto">
           <img
             src={MedicaidLogo}
@@ -33,7 +33,7 @@ export const Footer = ({ email, address }: Props) => {
           </p>
         </div>
       </section>
-      <div className="w-full bg-[#0171BC]">
+      <div className="w-full bg-accent">
         <div className="px-10 py-4 text-white text-[.8rem] flex flex-col items-center sm:flex-row max-w-screen-xl mx-auto">
           <div>
             Email <strong className="font-bold">{email}</strong> for help or

@@ -3,7 +3,7 @@ import OneMacLogo from "@/assets/onemac_logo.svg";
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/Inputs";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {

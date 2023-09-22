@@ -2,7 +2,7 @@ import { useForm, Controller } from "react-hook-form";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError } from "shared-types";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/Inputs";
 
 type FormData = {
   id: string;
