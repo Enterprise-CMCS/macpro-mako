@@ -15,9 +15,9 @@ type DrawerFilterableGroup = {
  * - type: query type
  * - value: query value
  */
-export const FILTER_GROUPS: (isCms?: boolean) => {
-  [Key in OsField]?: OsFilterable & DrawerFilterableGroup;
-} = (isCms?: boolean) => {
+export const FILTER_GROUPS = (
+  isCms?: boolean
+): Partial<Record<OsField, OsFilterable & DrawerFilterableGroup>> => {
   return {
     "state.keyword": {
       label: "States",
