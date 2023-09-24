@@ -22,6 +22,7 @@ export const router = createBrowserRouter([
       { path: "/details", element: <P.Details /> },
       { path: "/faq", element: <P.Faq /> },
       { path: "/create", element: <P.Create /> },
+      { path: "/form", element: <P.ExampleForm /> },
     ],
     loader: rootLoader(queryClient),
   },
