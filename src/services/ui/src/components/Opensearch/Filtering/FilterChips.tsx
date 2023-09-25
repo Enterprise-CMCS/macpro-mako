@@ -92,7 +92,6 @@ export const FilterChips: FC = () => {
         filters = filters.filter((f) => f.field !== filter.field);
       }
 
-      console.log(filters);
       return {
         ...s,
         filters: filters,

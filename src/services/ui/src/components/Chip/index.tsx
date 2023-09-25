@@ -9,7 +9,7 @@ const chipVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-slate-50 hover:bg-primary/90",
+        default: "bg-primary/80 text-slate-50 hover:bg-primary/70 ",
         function: "bg-slate-300 hover:bg-primary/90 hover:text-slate-50",
         noIcon: "bg-primary text-slate-50 hover:bg-primary/90",
         destructive: "bg-slate-300 hover:bg-destructive hover:text-slate-50",
@@ -37,16 +37,21 @@ const Chip = ({
   const noIcon = variant === "noIcon" || variant === "destructive";
   return (
     <div
-      className={cn(chipVariants({ variant, className }), "h-8 py-2")}
+      className={cn(
+        chipVariants({ variant, className }),
+        "h-8 py-2 cursor-pointer"
+      )}
       {...props}
+      onClick={onChipClick}
     >
-      <button onClick={onChipClick} className={noIcon ? "px-2" : "pl-2 pr-1"}>
-        {props.children}
-      </button>
+      <div className={noIcon ? "px-2" : "pl-2 pr-1"}>{props.children}</div>
       {!noIcon && (
         <button
-          onClick={onIconClick}
-          className="p-1 m-1 hover:bg-slate-300 rounded-md justify-center items-center transition-colors"
+          onClick={(e) => {
+            onIconClick?.();
+            e.stopPropagation();
+          }}
+          className="p-1 m-1 hover:bg-slate-300 hover:text-slate-700 rounded-md justify-center items-center "
         >
           <XIcon className="w-4 h-4" />
         </button>
