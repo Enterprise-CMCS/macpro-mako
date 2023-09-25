@@ -61,7 +61,7 @@ export const OsTable: FC<{
       <UI.TableBody>
         {/* TODO: Add a skeleton loader after discussing with HCD.
         See https://qmacbis.atlassian.net/browse/OY2-25623 */}
-        {!context.data && (
+        {context.isLoading && (
           <div className="p-4">
             <LoadingSpinner />
           </div>
