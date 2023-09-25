@@ -11,7 +11,7 @@ import {
   FilterChips,
   FilterDrawerProvider,
 } from "@/components/Opensearch";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/Inputs";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {

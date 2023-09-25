@@ -32,7 +32,7 @@ export const DetailsContent = ({
           "Additional Info",
         ].map((val) => (
           <a
-            className="block mb-4 text-blue-700"
+            className="block mb-4 text-primary"
             key={val}
             href={`?id=${encodeURIComponent(data._id)}#${val
               .toLowerCase()
