@@ -33,7 +33,7 @@ export const Footer = ({ email, address }: Props) => {
           </p>
         </div>
       </section>
-      <div className="w-full bg-accent">
+      <div className="w-full bg-primary">
         <div className="px-10 py-4 text-white text-[.8rem] flex flex-col items-center sm:flex-row max-w-screen-xl mx-auto">
           <div>
             Email <strong className="font-bold">{email}</strong> for help or

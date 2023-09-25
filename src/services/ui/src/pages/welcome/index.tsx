@@ -21,7 +21,7 @@ export const loader = (queryClient: QueryClient) => {
 export const Welcome = () => {
   return (
     <>
-      <div className="w-full bg-accent p-2 md:p-4">
+      <div className="w-full bg-primary p-2 md:p-4">
         <div className="max-w-screen-xl flex flex-col sm:flex-row sm:items-center gap-4 mx-auto p-4 lg:px-8">
           <img src={OneMacLogo} alt="One Mac Logo" className="p-4" />
           <p className="text-center text-white/90 font-light text-xl font-sans">
@@ -169,14 +169,6 @@ export const Welcome = () => {
                 </ul>
               </div>
             </div>
-          </div>
-          <div className="my-6 flex flex-row justify-center items-center gap-x-24">
-            <p className="text-xl">Do you have questions or need support?</p>
-            <Button>
-              <a href="/faq" className="text">
-                View FAQ
-              </a>
-            </Button>
           </div>
         </div>
       </main>
