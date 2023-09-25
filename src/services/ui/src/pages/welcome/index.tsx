@@ -4,8 +4,8 @@ import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/Button";
-        
+import { Button } from "@/components/Inputs";
+
 export const loader = (queryClient: QueryClient) => {
   return async () => {
     if (!queryClient.getQueryData(["user"])) {
