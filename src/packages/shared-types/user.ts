@@ -8,7 +8,7 @@ export enum UserRoles {
   STATE_SYSTEM_ADMIN = "state-system-admin",
 }
 
-export type UserRolesString = `${UserRoles}${"," | ""}`;
+export type UserRolesString = `${UserRoles}${"," | ""}` | "";
 
 export type CognitoUserAttributes = {
   sub: string;

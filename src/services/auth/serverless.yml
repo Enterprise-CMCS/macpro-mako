@@ -99,10 +99,6 @@ resources:
             AttributeDataType: String
             Mutable: true
             Required: true
-          - Name: phone_number
-            AttributeDataType: String
-            Mutable: true
-            Required: false
           - Name: state
             AttributeDataType: String
             Mutable: true
@@ -164,7 +160,6 @@ resources:
           email: email
           given_name: given_name
           family_name: family_name
-          phone_number: phone_number
           state: state
           cms-roles: cms-roles
         IdpIdentifiers:
