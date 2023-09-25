@@ -5,24 +5,39 @@ import { Download, Loader } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
-import { OsMainSourceItem } from "shared-types";
+import { type OsHit, type OsMainSourceItem } from "shared-types";
 import { convertCamelCaseToWords, isISOString } from "@/utils";
 import { useGetUser } from "@/api/useGetUser";
 import { DEFAULT_FILTERS, useOsParams } from "../Opensearch";
 import { createSearchFilterable } from "../Opensearch/utils";
 
-function formatDataForExport(obj: OsMainSourceItem, isCms?: boolean): any {
+function getUniqueKeys(data: OsHit<OsMainSourceItem>[] | undefined) {
+  const uniqueKeys = new Set<string>();
+
+  data?.forEach((osResult) => {
+    for (const [key] of Object.entries(osResult._source)) {
+      uniqueKeys.add(key);
+    }
+  });
+
+  return uniqueKeys;
+}
+
+function formatDataForExport(
+  obj: Record<string, any>,
+  uniqueKeys: Set<string>,
+  isCms?: boolean
+): any {
   const result: any = {};
 
-  for (const [key, value] of Object.entries(obj)) {
+  for (const key of uniqueKeys) {
+    const value = obj[key];
     const k = convertCamelCaseToWords(key);
-    if (value === "undefined") {
-      console.log("dum");
-    }
-    if (value === null || value === undefined) {
+
+    if (value === null || !Object.hasOwn(obj, key)) {
       result[k] = "";
     } else if (typeof value === "object" && !Array.isArray(value)) {
-      result[k] = formatDataForExport(value, isCms);
+      result[k] = formatDataForExport(value, uniqueKeys, isCms);
     } else if (typeof value === "string" && isISOString(value)) {
       result[k] = format(new Date(value), "MM/dd/yyyy");
     } else if (typeof value === "string" && key === "cmsStatus") {
@@ -65,12 +80,20 @@ export const OsExportButton = () => {
       ...searchFilter,
     ]);
 
+    const uniqueKeys = getUniqueKeys(osData);
+
     const sourceItems = osData?.map((hit) => {
-      const filteredHit = formatDataForExport({ ...hit._source }, user?.isCms);
+      const filteredHit = formatDataForExport(
+        { ...hit._source },
+        uniqueKeys,
+        user?.isCms
+      );
 
       // Properties to exclude from export
       Reflect.deleteProperty(filteredHit, "Attachments");
       Reflect.deleteProperty(filteredHit, "Rai Responses");
+      Reflect.deleteProperty(filteredHit, "Cms Status");
+      Reflect.deleteProperty(filteredHit, "State Status");
 
       return filteredHit;
     });
