@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
       },
       { path: ROUTES.DETAILS, element: <P.Details /> },
       { path: ROUTES.FAQ, element: <P.Faq /> },
-      { path: ROUTES.NEW_SUBMISSION, element: <P.Create /> },
+      { path: ROUTES.NEW_SUBMISSION, element: <P.NewSubmissionOptions /> },
       { path: "/form", element: <P.ExampleForm /> },
     ],
     loader: rootLoader(queryClient),
