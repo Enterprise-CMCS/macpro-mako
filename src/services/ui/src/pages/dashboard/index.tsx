@@ -5,7 +5,7 @@ import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
 import { OsProvider, type OsTab, useOsQuery } from "@/components/Opensearch";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/Inputs";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {

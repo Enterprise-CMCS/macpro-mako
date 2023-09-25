@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-import { UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { API } from "aws-amplify";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/Inputs";
 
 export const Authority = () => {
   return (

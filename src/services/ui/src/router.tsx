@@ -23,6 +23,7 @@ export const router = createBrowserRouter([
       { path: "/faq", element: <P.Faq /> },
       { path: "/authority", element: <P.Authority /> },
       { path: "/create/:authority", element: <P.Create /> },
+      { path: "/form", element: <P.ExampleForm /> },
     ],
     loader: rootLoader(queryClient),
   },

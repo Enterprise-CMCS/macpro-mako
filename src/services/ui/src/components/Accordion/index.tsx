@@ -1,11 +1,8 @@
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ChevronDown } from "lucide-react";
-
 import { cn } from "@/lib/utils";
-
 const Accordion = AccordionPrimitive.Root;
-
 type AccordionItemProps = {
   className?: string; // Add className to prop type definition
 } & React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>;
@@ -56,10 +53,7 @@ const AccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className={cn(
-      "text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
-      className
-    )}
+    className={cn("text-sm transition-all px-3", className)}
     {...props}
   >
     <div className="pb-4 pt-0">{children}</div>
