@@ -78,6 +78,7 @@ export const aggQueryBuilder = (aggs: OsAggQuery[]) => {
       STATE[AGG.name] = {
         [AGG.type]: {
           field: AGG.field,
+          order: { _term: "asc" },
           ...(AGG.size && { size: AGG.size }),
         },
       };

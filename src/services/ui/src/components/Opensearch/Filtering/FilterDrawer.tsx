@@ -30,7 +30,7 @@ export const OsFilterDrawer = () => {
           <p className="prose-sm">Filters</p>
         </div>
       </SheetTrigger>
-      <SheetContent className="bg-white overflow-auto">
+      <SheetContent className="bg-white overflow-scroll">
         <SheetHeader>
           <h4 className="prose-2xl">Filters</h4>
         </SheetHeader>

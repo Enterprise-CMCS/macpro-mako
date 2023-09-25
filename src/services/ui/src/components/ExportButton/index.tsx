@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { OsMainSourceItem } from "shared-types";
 import { convertCamelCaseToWords, isISOString } from "@/utils";
-import { getStatus } from "@/pages/dashboard/Lists/statusHelper";
 import { useGetUser } from "@/api/useGetUser";
 import { DEFAULT_FILTERS, useOsParams } from "../Opensearch";
 import { createSearchFilterable } from "../Opensearch/utils";
@@ -26,8 +25,14 @@ function formatDataForExport(obj: OsMainSourceItem, isCms?: boolean): any {
       result[k] = formatDataForExport(value, isCms);
     } else if (typeof value === "string" && isISOString(value)) {
       result[k] = format(new Date(value), "MM/dd/yyyy");
-    } else if (typeof value === "string" && key === "status") {
-      result[k] = getStatus(value, isCms);
+    } else if (typeof value === "string" && key === "cmsStatus") {
+      if (isCms) {
+        result["Status"] = value;
+      }
+    } else if (typeof value === "string" && key === "stateStatus") {
+      if (!isCms) {
+        result["Status"] = value;
+      }
     } else {
       result[k] = value;
     }
