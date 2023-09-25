@@ -1,5 +1,5 @@
 import { useGetUser } from "@/api/useGetUser";
-import { ErrorAlert } from "@/components";
+import { ErrorAlert, LoadingSpinner } from "@/components";
 
 import { Pagination } from "@/components/Pagination";
 import {
@@ -22,6 +22,9 @@ export const SpasList = () => {
   return (
     <section className="flex flex-col h-[calc(100vh-250px)]">
       <OsFiltering />
+
+      {!context.data && <LoadingSpinner />}
+
       <OsTable columns={columns} />
       <Pagination
         pageNumber={params.state.pagination.number}
