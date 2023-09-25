@@ -23,6 +23,14 @@ function getUniqueKeys(data: OsHit<OsMainSourceItem>[] | undefined) {
   return uniqueKeys;
 }
 
+function generateColumnNames(key: string) {
+  if (key === "leadAnalystName") {
+    return "CPOC Name";
+  } else {
+    return convertCamelCaseToWords(key);
+  }
+}
+
 function formatDataForExport(
   obj: Record<string, any>,
   uniqueKeys: Set<string>,
@@ -32,7 +40,7 @@ function formatDataForExport(
 
   for (const key of uniqueKeys) {
     const value = obj[key];
-    const k = convertCamelCaseToWords(key);
+    const k = generateColumnNames(key);
 
     if (value === null || !Object.hasOwn(obj, key)) {
       result[k] = "";
