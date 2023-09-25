@@ -22,9 +22,6 @@ export const SpasList = () => {
   return (
     <section className="flex flex-col h-[calc(100vh-250px)]">
       <OsFiltering />
-
-      {!context.data && <LoadingSpinner />}
-
       <OsTable columns={columns} />
       <Pagination
         pageNumber={params.state.pagination.number}
