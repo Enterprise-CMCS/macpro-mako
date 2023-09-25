@@ -160,8 +160,9 @@ resources:
           email: email
           given_name: given_name
           family_name: family_name
-          state: state
-          cms-roles: cms-roles
+          "custom:state": state
+          "custom:cms-roles": cmsRoles
+
         IdpIdentifiers:
           - IdpIdentifier
         ProviderDetails:

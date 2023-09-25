@@ -68,8 +68,8 @@ params:
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
   default:
-    searchProvisionedConcurrency: 1
-    itemProvisionedConcurrency: 1
+    searchProvisionedConcurrency: 0
+    itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
 
 functions:
