@@ -2,6 +2,7 @@ export * from "./Accordion";
 export * from "./AdditionalInfo";
 export * from "./AttachmentsList";
 export * from "./Cards";
+export * from "./Chip";
 export * from "./DetailsSection";
 export * from "./ErrorAlert";
 export * from "./HowItWorks";

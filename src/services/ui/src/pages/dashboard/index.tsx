@@ -4,7 +4,13 @@ import { getUser, useGetUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
-import { OsProvider, type OsTab, useOsQuery } from "@/components/Opensearch";
+import {
+  OsProvider,
+  type OsTab,
+  useOsQuery,
+  FilterChips,
+  FilterDrawerProvider,
+} from "@/components/Opensearch";
 import { Button } from "@/components/Inputs";
 
 const loader = (queryClient: QueryClient) => {
@@ -40,42 +46,46 @@ export const Dashboard = () => {
         isLoading: query.isLoading,
       }}
     >
-      <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between my-4">
-          <h1 className="text-xl">Dashboard</h1>
-          {!user?.isCms && (
-            <Button>
-              <Link to={"/create"}>New Submission</Link>
-            </Button>
-          )}
+      <FilterDrawerProvider>
+        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
+          <div className="flex items-center justify-between my-4">
+            <h1 className="text-xl">Dashboard</h1>
+            {!user?.isCms && (
+              <Button>
+                <Link to={"/create"}>New Submission</Link>
+              </Button>
+            )}
+          </div>
+          <div className="w-[100%] items-center justify-center">
+            <Tabs
+              value={query.state.tab}
+              onValueChange={(tab) =>
+                query.onSet(
+                  (s) => ({ ...s, filters: [], tab: tab as OsTab, search: "" }),
+                  true
+                )
+              }
+            >
+              <TabsList>
+                <TabsTrigger value="spas" className="px-6 py-2">
+                  <h4 className="font-bold text-[1.3em]">SPAs</h4>
+                </TabsTrigger>
+                <TabsTrigger value="waivers" className="px-6 py-2">
+                  <h4 className="font-bold text-[1.3em]">Waivers</h4>
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="spas">
+                <FilterChips />
+                <SpasList />
+              </TabsContent>
+              <TabsContent value="waivers">
+                <FilterChips />
+                <WaiversList />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
-        <div className="w-[100%] items-center justify-center">
-          <Tabs
-            value={query.state.tab}
-            onValueChange={(tab) =>
-              query.onSet(
-                (s) => ({ ...s, filters: [], tab: tab as OsTab, search: "" }),
-                true
-              )
-            }
-          >
-            <TabsList>
-              <TabsTrigger value="spas" className="px-6 py-2">
-                <h4 className="font-bold text-[1.3em]">SPAs</h4>
-              </TabsTrigger>
-              <TabsTrigger value="waivers" className="px-6 py-2">
-                <h4 className="font-bold text-[1.3em]">Waivers</h4>
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="spas">
-              <SpasList />
-            </TabsContent>
-            <TabsContent value="waivers">
-              <WaiversList />
-            </TabsContent>
-          </Tabs>
-        </div>
-      </div>
+      </FilterDrawerProvider>
     </OsProvider>
   );
 };
