@@ -24,6 +24,12 @@ export const NewSubmissionOptions = () => {
                     description={<p>Submit a Medicaid or CHIP State Plan Amendment</p>}
                     linkTo={ROUTES.HOME}
                 />
+                <OptionCard
+                    title="Waiver Action"
+                    description={<p>Submit Waivers, Amendments, Renewals, and Temporary Extensions</p>}
+                    linkTo={ROUTES.HOME}
+                    altBg
+                />
             </OptionFieldset>
         </SimplePageContainer>
     );

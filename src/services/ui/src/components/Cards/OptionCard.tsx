@@ -1,5 +1,4 @@
 import React, {PropsWithChildren, ReactNode} from "react";
-import {CardWithTopBorder} from "@/components";
 import {Link} from "react-router-dom";
 import {ROUTES} from "@/router";
 
@@ -10,38 +9,60 @@ export type MACFieldsetOption = {
     title: string,
     description: ReactNode,
     linkTo: ROUTES | string;
+    altBg?: boolean;
 };
-/** A styled MACCard for nesting {@link OptionCard} with a fieldset and
- * legend */
+/** Styled wrapper for use in MACCards with a gradient top border. */
+export const MACCardWrapper = ({
+   children,
+}: PropsWithChildren) => {
+    return (
+        <div>
+            <div style={{
+                background: "linear-gradient(90.11deg,#0071bc 49.91%,#02bfe7 66.06%)",
+                borderRadius: "3px 3px 0px 0px",
+                height: "8px",
+            }}/>
+            <div className="border border-t-0 rounded-b-sm border-slate-300">
+                {children}
+            </div>
+        </div>
+    );
+};
+/** A fieldset for nesting {@link OptionCard} with MACCard styling */
 export const OptionFieldset = ({
    children,
    legend,
 }: OptionCardFieldsetProps) => {
     return (
-        <section>
+        <section className="max-w-2xl mx-auto mb-6">
             <fieldset>
-                <legend className="text-xl font-bold py-8">{legend}</legend>
-                <CardWithTopBorder>
+                <legend className="text-2xl font-bold py-8">{legend}</legend>
+                <MACCardWrapper>
                     {children}
-                </CardWithTopBorder>
+                </MACCardWrapper>
             </fieldset>
         </section>
     );
 };
 /** An element for use in options lists that lead to a destination, such as
- * the triage options found in {@link NewSubmissionOptions} */
+ * the new submission options found in {@link NewSubmissionOptions} */
 export const OptionCard = ({
-  title,
-  description,
-  linkTo,
+   title,
+   description,
+   linkTo,
+   altBg = false
 }: MACFieldsetOption) => {
     return (
         <label>
             <Link to={linkTo}>
-                <div>
+                <div className={`flex items-center justify-between gap-6 max-w-2xl px-6 py-4 ${altBg ? "bg-slate-100" : "bg-white"}`}>
                     <div>
-                        <h3>{title}</h3>
-                        {description}
+                        <h3 className="text-lg text-sky-600 font-bold my-2">
+                            {title}
+                        </h3>
+                        <p className="my-2 text-slate-600">
+                            {description}
+                        </p>
                     </div>
                     {/*  TODO: Chevron Icon  */}
                     {/*<FontAwesomeIcon*/}
@@ -49,6 +70,7 @@ export const OptionCard = ({
                     {/*    icon={faChevronRight}*/}
                     {/*    className="choice-item-arrow"*/}
                     {/*/>*/}
+                    <span>ICON</span>
                 </div>
             </Link>
         </label>
