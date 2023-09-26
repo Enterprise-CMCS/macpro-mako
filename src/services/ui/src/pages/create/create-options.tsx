@@ -20,7 +20,7 @@ type OptionsPageProps = {
     title: string
     fieldsetLegend: string
 }
-
+/** A page for rendering an array of {@link OptionData} */
 const OptionsPage = ({ options, title, fieldsetLegend }: OptionsPageProps) => {
     return (
         <SimplePageContainer>
@@ -37,7 +37,7 @@ const OptionsPage = ({ options, title, fieldsetLegend }: OptionsPageProps) => {
         </SimplePageContainer>
     );
 };
-
+/** Initial set of options for a New Submission */
 export const NewSubmissionInitialOptions = () => (
     <OptionsPage
         title="Submission Type"
@@ -45,6 +45,7 @@ export const NewSubmissionInitialOptions = () => (
         options={AUTHORITY_OPTIONS}
     />
 );
+/** Choice between the main SPA types when creating a New Submission */
 export const SPASubmissionOptions = () => (
     <OptionsPage
         title="SPA Type"
