@@ -4,8 +4,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/Button";
-import { Calendar } from "@/components/Calendar";
+import { Button, Calendar } from "@/components/Inputs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import { OsRangeValue } from "shared-types";
 
@@ -28,12 +27,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   const handleClose = (updateOpen: boolean) => {
     setOpen(updateOpen);
   };
-
-  useEffect(() => {
-    if (!!date?.from && !!date.to) {
-      onChange({ gte: date.from.toISOString(), lte: date.to.toISOString() });
-    }
-  }, [date]);
 
   const label = useMemo(() => {
     const from = date?.from ? format(date.from, "LLL dd, y") : "";
@@ -68,7 +61,15 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             selected={date}
             numberOfMonths={2}
             className="bg-white"
-            onSelect={setDate}
+            onSelect={(d) => {
+              setDate(d);
+              if (!!d?.from && !!d.to) {
+                onChange({
+                  gte: d.from.toISOString(),
+                  lte: d.to.toISOString(),
+                });
+              }
+            }}
             {...props}
           />
         </PopoverContent>
