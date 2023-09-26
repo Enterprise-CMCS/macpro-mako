@@ -3,7 +3,7 @@
         {
             "height": 3,
             "width": 6,
-            "y": 0,
+            "y": 86,
             "x": 6,
             "type": "custom",
             "properties": {
@@ -18,18 +18,18 @@
         {
             "height": 1,
             "width": 24,
-            "y": 45,
+            "y": 60,
             "x": 0,
             "type": "text",
             "properties": {
-                "markdown": "## cloudfront metrics",
+                "markdown": "# ui-infra",
                 "background": "transparent"
             }
         },
         {
             "height": 3,
             "width": 6,
-            "y": 0,
+            "y": 86,
             "x": 0,
             "type": "text",
             "properties": {
@@ -40,7 +40,7 @@
         {
             "height": 8,
             "width": 8,
-            "y": 83,
+            "y": 78,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -63,7 +63,7 @@
         {
             "height": 3,
             "width": 5,
-            "y": 5,
+            "y": 2,
             "x": 0,
             "type": "alarm",
             "properties": {
@@ -76,41 +76,19 @@
         },
         {
             "height": 1,
-            "width": 8,
-            "y": 62,
-            "x": 0,
-            "type": "text",
-            "properties": {
-                "markdown": "## api gateway",
-                "background": "transparent"
-            }
-        },
-        {
-            "height": 1,
-            "width": 9,
-            "y": 81,
-            "x": 0,
-            "type": "text",
-            "properties": {
-                "markdown": "## opensearch",
-                "background": "transparent"
-            }
-        },
-        {
-            "height": 1,
             "width": 24,
-            "y": 82,
+            "y": 77,
             "x": 0,
             "type": "text",
             "properties": {
-                "markdown": "## alerts service",
+                "markdown": "# alerts",
                 "background": "transparent"
             }
         },
         {
             "height": 2,
             "width": 12,
-            "y": 63,
+            "y": 18,
             "x": 0,
             "type": "alarm",
             "properties": {
@@ -124,7 +102,7 @@
         {
             "height": 16,
             "width": 24,
-            "y": 65,
+            "y": 20,
             "x": 0,
             "type": "explorer",
             "properties": {
@@ -174,7 +152,7 @@
         {
             "height": 16,
             "width": 24,
-            "y": 46,
+            "y": 61,
             "x": 0,
             "type": "explorer",
             "properties": {
@@ -224,7 +202,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 3,
+            "y": 0,
             "x": 0,
             "type": "text",
             "properties": {
@@ -235,7 +213,7 @@
         {
             "height": 7,
             "width": 6,
-            "y": 5,
+            "y": 2,
             "x": 5,
             "type": "metric",
             "properties": {
@@ -280,7 +258,7 @@
         {
             "height": 7,
             "width": 13,
-            "y": 5,
+            "y": 2,
             "x": 11,
             "type": "log",
             "properties": {
@@ -294,7 +272,7 @@
         {
             "height": 7,
             "width": 6,
-            "y": 13,
+            "y": 10,
             "x": 5,
             "type": "metric",
             "properties": {
@@ -339,7 +317,7 @@
         {
             "height": 7,
             "width": 13,
-            "y": 13,
+            "y": 10,
             "x": 11,
             "type": "log",
             "properties": {
@@ -353,7 +331,7 @@
         {
             "height": 3,
             "width": 5,
-            "y": 13,
+            "y": 10,
             "x": 0,
             "type": "alarm",
             "properties": {
@@ -367,7 +345,7 @@
         {
             "height": 4,
             "width": 5,
-            "y": 8,
+            "y": 5,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -392,7 +370,7 @@
         {
             "height": 4,
             "width": 5,
-            "y": 16,
+            "y": 13,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -414,7 +392,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 4,
+            "y": 1,
             "x": 0,
             "type": "text",
             "properties": {
@@ -425,7 +403,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 12,
+            "y": 9,
             "x": 0,
             "type": "text",
             "properties": {
@@ -436,7 +414,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 20,
+            "y": 17,
             "x": 0,
             "type": "text",
             "properties": {
@@ -447,7 +425,7 @@
         {
             "height": 7,
             "width": 6,
-            "y": 22,
+            "y": 37,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -492,7 +470,7 @@
         {
             "height": 7,
             "width": 18,
-            "y": 22,
+            "y": 37,
             "x": 6,
             "type": "log",
             "properties": {
@@ -506,7 +484,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 21,
+            "y": 36,
             "x": 0,
             "type": "text",
             "properties": {
@@ -517,7 +495,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 29,
+            "y": 44,
             "x": 0,
             "type": "text",
             "properties": {
@@ -528,7 +506,7 @@
         {
             "height": 7,
             "width": 6,
-            "y": 30,
+            "y": 45,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -566,7 +544,7 @@
         {
             "height": 7,
             "width": 18,
-            "y": 30,
+            "y": 45,
             "x": 6,
             "type": "log",
             "properties": {
@@ -580,7 +558,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 37,
+            "y": 52,
             "x": 0,
             "type": "text",
             "properties": {
@@ -591,7 +569,7 @@
         {
             "height": 7,
             "width": 6,
-            "y": 38,
+            "y": 53,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -629,7 +607,7 @@
         {
             "height": 7,
             "width": 18,
-            "y": 38,
+            "y": 53,
             "x": 6,
             "type": "log",
             "properties": {
