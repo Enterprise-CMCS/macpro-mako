@@ -1,3 +1,10 @@
+import eligibilityPDF from "../../../assets/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf";
+import WelcometoOneMAC from "../../../assets/onboarding/WelcometoOneMAC.pdf";
+import IDMInstructionsforOneMACUsers from "../../../assets/onboarding/IDMInstructionsforOneMACUsers.pdf";
+import OneMACIDMGuide from "../../../assets/onboarding/OneMACIDMGuide.pdf";
+import OneMACStateUserGuide from "../../../assets/onboarding/OneMACStateUserGuide.pdf";
+import OneMACCMSUserGuide from "../../../assets/onboarding/OneMACCMSUserGuide.pdf";
+
 type QuestionAnswer = {
   anchorText: string;
   question: string;
@@ -45,6 +52,30 @@ export const oneMACFAQContent: FAQContent[] = [
     sectionTitle: "General",
     qanda: [
       {
+        anchorText: "system",
+        question: "Which system should I use for my state’s submission?",
+        answerJSX: (
+          <>
+            <p>
+              Check which system to submit your state plan in with this
+              crosswalk training document.
+            </p>
+            <ul>
+              <li>
+                <a
+                  className="text-blue-800 underline hover:no-underline "
+                  href={eligibilityPDF}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Crosswalk from Paper-based State Plan to MACPro and MMDL.pdf
+                </a>
+              </li>
+            </ul>
+          </>
+        ),
+      },
+      {
         anchorText: "browsers",
         question: "What browsers can I use to access the system?",
         answerJSX: (
@@ -61,7 +92,10 @@ export const oneMACFAQContent: FAQContent[] = [
           <p>
             Refresh your inbox, check your SPAM filters, then contact the OneMAC
             Help Desk{" "}
-            <a href={`mailto:${helpDeskContact.email}`}>
+            <a
+              className="text-blue-800 underline hover:no-underline "
+              href={`mailto:${helpDeskContact.email}`}
+            >
               {helpDeskContact.email}
             </a>{" "}
             or call {helpDeskContact.phone} or contact your state lead.
@@ -155,6 +189,37 @@ export const oneMACFAQContent: FAQContent[] = [
           </section>
         ),
       },
+      {
+        anchorText: "onboarding-materials",
+        question: "Onboarding Materials",
+        answerJSX: (
+          <>
+            <ul>
+              {[
+                [WelcometoOneMAC, "Welcome to OneMAC"],
+                [
+                  IDMInstructionsforOneMACUsers,
+                  "IDM Instructions for OneMAC Users",
+                ],
+                [OneMACIDMGuide, "OneMAC IDM Guide"],
+                [OneMACStateUserGuide, "OneMAC State User Guide"],
+                [OneMACCMSUserGuide, "OneMAC CMS User Guide"],
+              ].map(([file, label]) => (
+                <li key={label}>
+                  <a
+                    className="text-blue-800 underline hover:no-underline "
+                    href={file}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        ),
+      },
     ],
   },
   {
@@ -191,6 +256,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <p>
               SPA submission requirements can be found in regulation&nbsp;
               <a
+                className="text-blue-800 underline hover:no-underline "
                 href="https://www.ecfr.gov/cgi-bin/text-idx?SID=7d639b87112e05a57ff40731d647bd05&mc=true&node=se42.4.430_112&rgn=div8"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -550,7 +616,10 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <p>
             Email{" "}
-            <a href="mailto:MCOGDMCOActions@cms.hhs.gov">
+            <a
+              className="text-blue-800 underline hover:no-underline "
+              href="mailto:MCOGDMCOActions@cms.hhs.gov"
+            >
               MCOGDMCOActions@cms.hhs.gov
             </a>{" "}
             to get support with determining the correct 1915(b) Waiver Number.

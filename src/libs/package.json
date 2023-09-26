@@ -5,6 +5,7 @@
     "@aws-sdk/client-cognito-identity-provider": "^3.350.0",
     "@aws-sdk/client-dynamodb": "^3.281.0",
     "@aws-sdk/credential-provider-node": "^3.369.0",
+    "@aws-sdk/client-secrets-manager": "^3.410.0",
     "@aws-sdk/util-dynamodb": "^3.281.0",
     "@opensearch-project/opensearch": "^2.3.0",
     "@types/aws4": "^1.11.3",
