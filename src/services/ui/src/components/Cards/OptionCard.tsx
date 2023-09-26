@@ -1,6 +1,7 @@
 import React, {PropsWithChildren, ReactNode} from "react";
 import {Link} from "react-router-dom";
 import {ROUTES} from "@/routes";
+import {ChevronRight} from "lucide-react";
 
 export type OptionCardFieldsetProps = PropsWithChildren<{
     legend: string;
@@ -36,7 +37,7 @@ export const OptionFieldset = ({
     return (
         <section className="max-w-3xl mx-auto mb-6">
             <fieldset>
-                <legend className="text-2xl font-bold py-8">{legend}</legend>
+                <legend className="text-2xl font-medium py-8">{legend}</legend>
                 <MACCardWrapper>
                     {children}
                 </MACCardWrapper>
@@ -64,13 +65,7 @@ export const OptionCard = ({
                             {description}
                         </p>
                     </div>
-                    {/*  TODO: Chevron Icon  */}
-                    {/*<FontAwesomeIcon*/}
-                    {/*    data-testid="chevron-right"*/}
-                    {/*    icon={faChevronRight}*/}
-                    {/*    className="choice-item-arrow"*/}
-                    {/*/>*/}
-                    <span>ICON</span>
+                    <ChevronRight className="text-sky-600 w-8 h-8" />
                 </div>
             </Link>
         </label>
