@@ -2,6 +2,7 @@ interface CardWithTopBorderProps {
   children: React.ReactNode;
 }
 
+/** TODO: Adjust styles to match rounded gradient bar from OneMAC */
 export const CardWithTopBorder: React.FC<CardWithTopBorderProps> = ({
   children,
 }: CardWithTopBorderProps) => {
