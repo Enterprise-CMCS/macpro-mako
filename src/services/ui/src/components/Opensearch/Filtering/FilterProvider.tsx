@@ -1,5 +1,4 @@
 import { ReactNode, useState } from "react";
-import { FILTER_GROUPS as FC } from "./consts";
 import { createContextProvider } from "@/utils";
 
 export const [FilterDrawerContextProvider, useFilterDrawerContext] =

@@ -5,10 +5,12 @@ import { useOsAggregate, useOsParams } from "../useOpensearch";
 import { OsFilterValue, OsRangeValue } from "shared-types";
 import { useLabelMapping } from "@/hooks";
 import { useFilterDrawerContext } from "./FilterProvider";
+import { useGetUser } from "@/api/useGetUser";
 
 export const useFilterDrawer = () => {
   const { drawerOpen, setDrawerState } = useFilterDrawerContext();
-  const [filters, setFilters] = useState(Consts.FILTER_GROUPS);
+  const { data: user } = useGetUser();
+  const [filters, setFilters] = useState(Consts.FILTER_GROUPS(user?.isCms));
   const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const params = useOsParams();
   const labelMap = useLabelMapping();
