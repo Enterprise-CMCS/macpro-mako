@@ -23,7 +23,11 @@ provider:
             - cognito-idp:AdminCreateUser
             - cognito-idp:AdminSetUserPassword
             - cognito-idp:AdminUpdateUserAttributes
-          Resource: !GetAtt CognitoUserPool.Arn
+          Resource: !Sub arn:aws:cognito-idp:${self:provider.region}:${AWS::AccountId}:userpool/us-east-*
+        - Effect: "Allow"
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource: !Sub arn:aws:secretsmanager:${self:provider.region}:${AWS::AccountId}:secret:${self:custom.authzInfoPath}*
 
 custom:
   project: ${env:PROJECT} # This should always be set by direnv.
@@ -37,6 +41,7 @@ custom:
   bootstrapUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsers, param:bootstrapUsers}
   bootstrapUsersPassword: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsersPassword, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/bootstrapUsersPassword}
   idmInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/idmInfo, ""}
+  authzInfoPath: ${self:custom.project}/${sls:stage}/authzInfo
   scripts:
     hooks:
       deploy:finalize: |
@@ -60,7 +65,10 @@ functions:
       userPoolId: !Ref CognitoUserPool
       bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
       region: ${self:provider.region}
-
+  postAuth:
+    handler: handlers/postAuth.handler
+    environment:
+      authzInfoPath: ${self:custom.project}/${sls:stage}/authzInfo
 resources:
   Conditions:
     CreateEmailConfiguration:
@@ -90,6 +98,8 @@ resources:
             - EmailSendingAccount: DEVELOPER
               SourceArn: !Sub arn:aws:ses:${self:provider.region}:${AWS::AccountId}:identity/${self:custom.cognitoEmailAddress}
             - EmailSendingAccount: COGNITO_DEFAULT
+        LambdaConfig:
+          PostAuthentication: !GetAtt PostAuthLambdaFunction.Arn
         Schema:
           - Name: given_name
             AttributeDataType: String
@@ -107,6 +117,14 @@ resources:
             AttributeDataType: String
             Mutable: true
             Required: false
+    PostAuthLambdaResourcePolicy:
+      Type: AWS::Lambda::Permission
+      Properties:
+        FunctionName: !GetAtt PostAuthLambdaFunction.Arn
+        Principal: cognito-idp.amazonaws.com
+        Action: lambda:InvokeFunction
+        SourceAccount: !Sub ${AWS::AccountId}
+        SourceArn: !GetAtt CognitoUserPool.Arn
     CognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:

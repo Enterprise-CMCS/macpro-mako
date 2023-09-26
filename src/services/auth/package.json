@@ -1,5 +1,8 @@
 {
   "name": "auth",
   "private": true,
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.418.0"
+  }
 }
