@@ -2,6 +2,7 @@ import React, {PropsWithChildren, ReactNode} from "react";
 import {Link} from "react-router-dom";
 import {ROUTES} from "@/routes";
 import {ChevronRight} from "lucide-react";
+import {CardWithTopBorder} from "@/components";
 
 export type OptionCardFieldsetProps = PropsWithChildren<{
     legend: string;
@@ -12,23 +13,6 @@ export type MACFieldsetOption = {
     linkTo: ROUTES | string;
     altBg?: boolean;
 };
-/** Styled wrapper for use in MACCards with a gradient top border. */
-export const MACCardWrapper = ({
-   children,
-}: PropsWithChildren) => {
-    return (
-        <div>
-            <div style={{
-                background: "linear-gradient(90.11deg,#0071bc 49.91%,#02bfe7 66.06%)",
-                borderRadius: "3px 3px 0px 0px",
-                height: "8px",
-            }}/>
-            <div className="border border-t-0 rounded-b-sm border-slate-300">
-                {children}
-            </div>
-        </div>
-    );
-};
 /** A fieldset for nesting {@link OptionCard} with MACCard styling */
 export const OptionFieldset = ({
    children,
@@ -38,9 +22,9 @@ export const OptionFieldset = ({
         <section className="max-w-3xl mx-auto mb-6">
             <fieldset>
                 <legend className="text-2xl font-medium py-8">{legend}</legend>
-                <MACCardWrapper>
+                <CardWithTopBorder>
                     {children}
-                </MACCardWrapper>
+                </CardWithTopBorder>
             </fieldset>
         </section>
     );
