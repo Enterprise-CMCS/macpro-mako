@@ -17,13 +17,15 @@ export const SimplePageTitle = ({ title }: { title: string }) => (
 export type OptionData = Omit<MACFieldsetOption, "altBg">
 type OptionsPageProps = {
     options: OptionData[]
+    title: string
+    fieldsetLegend: string
 }
 
-const OptionsPage = ({ options }: OptionsPageProps) => {
+const OptionsPage = ({ options, title, fieldsetLegend }: OptionsPageProps) => {
     return (
         <SimplePageContainer>
-            <SimplePageTitle title={"New Submission"}/>
-            <OptionFieldset legend={"Select a Submission Type"}>
+            <SimplePageTitle title={title}/>
+            <OptionFieldset legend={fieldsetLegend}>
                 {options.map((opt, idx) =>
                     <OptionCard
                         key={idx}
@@ -36,5 +38,16 @@ const OptionsPage = ({ options }: OptionsPageProps) => {
     );
 };
 
-export const NewSubmissionInitialOptions = () => <OptionsPage options={AUTHORITY_OPTIONS} />;
-export const SPASubmissionOptions = () => <OptionsPage options={SPA_OPTIONS} />;
+export const NewSubmissionInitialOptions = () => (
+    <OptionsPage
+        title="Submission Type"
+        fieldsetLegend="Select a Submission Type"
+        options={AUTHORITY_OPTIONS}
+    />
+);
+export const SPASubmissionOptions = () => (
+    <OptionsPage
+        title="SPA Type"
+        fieldsetLegend="Select a SPA type to start your submission"
+        options={SPA_OPTIONS} />
+);
