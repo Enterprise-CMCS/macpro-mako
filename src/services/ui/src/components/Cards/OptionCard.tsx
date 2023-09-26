@@ -34,7 +34,7 @@ export const OptionFieldset = ({
    legend,
 }: OptionCardFieldsetProps) => {
     return (
-        <section className="max-w-2xl mx-auto mb-6">
+        <section className="max-w-3xl mx-auto mb-6">
             <fieldset>
                 <legend className="text-2xl font-bold py-8">{legend}</legend>
                 <MACCardWrapper>
@@ -55,7 +55,7 @@ export const OptionCard = ({
     return (
         <label>
             <Link to={linkTo}>
-                <div className={`flex items-center justify-between gap-6 max-w-2xl px-6 py-4 ${altBg ? "bg-slate-100" : "bg-white"}`}>
+                <div className={`flex items-center justify-between gap-6 px-6 py-4 ${altBg ? "bg-slate-100" : "bg-white"} hover:bg-sky-100`}>
                     <div>
                         <h3 className="text-lg text-sky-600 font-bold my-2">
                             {title}
