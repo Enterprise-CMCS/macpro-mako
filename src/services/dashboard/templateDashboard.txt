@@ -18,7 +18,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 20,
+            "y": 45,
             "x": 0,
             "type": "text",
             "properties": {
@@ -40,7 +40,7 @@
         {
             "height": 8,
             "width": 8,
-            "y": 58,
+            "y": 83,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -61,7 +61,7 @@
             }
         },
         {
-            "height": 4,
+            "height": 3,
             "width": 5,
             "y": 5,
             "x": 0,
@@ -77,7 +77,7 @@
         {
             "height": 1,
             "width": 8,
-            "y": 37,
+            "y": 62,
             "x": 0,
             "type": "text",
             "properties": {
@@ -88,7 +88,7 @@
         {
             "height": 1,
             "width": 9,
-            "y": 56,
+            "y": 81,
             "x": 0,
             "type": "text",
             "properties": {
@@ -99,7 +99,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 57,
+            "y": 82,
             "x": 0,
             "type": "text",
             "properties": {
@@ -110,7 +110,7 @@
         {
             "height": 2,
             "width": 12,
-            "y": 38,
+            "y": 63,
             "x": 0,
             "type": "alarm",
             "properties": {
@@ -124,7 +124,7 @@
         {
             "height": 16,
             "width": 24,
-            "y": 40,
+            "y": 65,
             "x": 0,
             "type": "explorer",
             "properties": {
@@ -174,7 +174,7 @@
         {
             "height": 16,
             "width": 24,
-            "y": 21,
+            "y": 46,
             "x": 0,
             "type": "explorer",
             "properties": {
@@ -351,7 +351,7 @@
             }
         },
         {
-            "height": 4,
+            "height": 3,
             "width": 5,
             "y": 13,
             "x": 0,
@@ -365,9 +365,9 @@
             }
         },
         {
-            "height": 3,
+            "height": 4,
             "width": 5,
-            "y": 9,
+            "y": 8,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -390,9 +390,9 @@
             }
         },
         {
-            "height": 3,
+            "height": 4,
             "width": 5,
-            "y": 17,
+            "y": 16,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -431,6 +431,213 @@
             "properties": {
                 "markdown": "## onemac sink",
                 "background": "transparent"
+            }
+        },
+        {
+            "height": 1,
+            "width": 24,
+            "y": 20,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "# api",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 7,
+            "width": 6,
+            "y": 22,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [
+                        "AWS/Lambda",
+                        "Invocations",
+                        "FunctionName",
+                        "om-api-${sls:stage}-search",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ],
+                    [
+                        ".",
+                        "Throttles",
+                        ".",
+                        ".",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ],
+                    [
+                        ".",
+                        "Errors",
+                        ".",
+                        ".",
+                        {
+                            "region": "${env:REGION_A}",
+                            "color": "#d62728"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "${env:REGION_A}",
+                "title": "Lambda",
+                "period": 60,
+                "stat": "Sum"
+            }
+        },
+        {
+            "height": 7,
+            "width": 18,
+            "y": 22,
+            "x": 6,
+            "type": "log",
+            "properties": {
+                "query": "SOURCE '/aws/lambda/om-api-${sls:stage}-search' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
+                "region": "${env:REGION_A}",
+                "stacked": false,
+                "title": "Logs",
+                "view": "table"
+            }
+        },
+        {
+            "height": 1,
+            "width": 24,
+            "y": 21,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## search",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 1,
+            "width": 24,
+            "y": 29,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## item",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 7,
+            "width": 6,
+            "y": 30,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [
+                        "AWS/Lambda",
+                        "Invocations",
+                        "FunctionName",
+                        "om-api-${sls:stage}-item"
+                    ],
+                    [
+                        ".",
+                        "Throttles",
+                        ".",
+                        "."
+                    ],
+                    [
+                        ".",
+                        "Errors",
+                        ".",
+                        ".",
+                        {
+                            "color": "#d62728"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "${env:REGION_A}",
+                "title": "Lambda",
+                "period": 60,
+                "stat": "Sum"
+            }
+        },
+        {
+            "height": 7,
+            "width": 18,
+            "y": 30,
+            "x": 6,
+            "type": "log",
+            "properties": {
+                "query": "SOURCE '/aws/lambda/om-data-${sls:stage}-bootstrapKibanaUsers' | SOURCE '/aws/lambda/om-api-${sls:stage}-item' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
+                "region": "${env:REGION_A}",
+                "stacked": false,
+                "title": "Logs",
+                "view": "table"
+            }
+        },
+        {
+            "height": 1,
+            "width": 24,
+            "y": 37,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## getAttachmentUrl",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 7,
+            "width": 6,
+            "y": 38,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [
+                        "AWS/Lambda",
+                        "Invocations",
+                        "FunctionName",
+                        "om-api-${sls:stage}-getAttachmentUrl"
+                    ],
+                    [
+                        ".",
+                        "Throttles",
+                        ".",
+                        "."
+                    ],
+                    [
+                        ".",
+                        "Errors",
+                        ".",
+                        ".",
+                        {
+                            "color": "#d62728"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "${env:REGION_A}",
+                "title": "Lambda",
+                "period": 60,
+                "stat": "Sum"
+            }
+        },
+        {
+            "height": 7,
+            "width": 18,
+            "y": 38,
+            "x": 6,
+            "type": "log",
+            "properties": {
+                "query": "SOURCE '/aws/lambda/om-api-${sls:stage}-getAttachmentUrl' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
+                "region": "${env:REGION_A}",
+                "stacked": false,
+                "title": "Logs",
+                "view": "table"
             }
         }
     ]
