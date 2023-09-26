@@ -30,7 +30,7 @@ export const OptionFieldset = ({
     );
 };
 /** An element for use in options lists that lead to a destination, such as
- * the new submission options found in {@link NewSubmissionOptions} */
+ * the new submission options found in {@link NewSubmissionInitialOptions} */
 export const OptionCard = ({
    title,
    description,
