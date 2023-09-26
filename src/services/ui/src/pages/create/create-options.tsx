@@ -1,6 +1,6 @@
 import React, {PropsWithChildren} from "react";
 import {MACFieldsetOption, OptionCard, OptionFieldset} from "@/components/Cards/OptionCard";
-import {ROUTES} from "@/router";
+import {AUTHORITY_OPTIONS, SPA_OPTIONS} from "@/pages/create/options";
 
 export const SimplePageContainer = ({ children }: PropsWithChildren) => (
     <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
@@ -14,25 +14,17 @@ export const SimplePageTitle = ({ title }: { title: string }) => (
     </div>
 );
 
-const OPTIONS: Omit<MACFieldsetOption, "altBg">[] = [
-    {
-        title: "State Plan Amendment (SPA)",
-        description: <p>Submit a Medicaid or CHIP State Plan Amendment</p>,
-        linkTo: ROUTES.HOME
-    },
-    {
-        title: "Waiver Action",
-        description: <p>Submit Waivers, Amendments, Renewals, and Temporary Extensions</p>,
-        linkTo: ROUTES.HOME
-    },
-];
+export type OptionData = Omit<MACFieldsetOption, "altBg">
+type OptionsPageProps = {
+    options: OptionData[]
+}
 
-export const NewSubmissionOptions = () => {
+const OptionsPage = ({ options }: OptionsPageProps) => {
     return (
         <SimplePageContainer>
             <SimplePageTitle title={"New Submission"}/>
             <OptionFieldset legend={"Select a Submission Type"}>
-                {OPTIONS.map((opt, idx) =>
+                {options.map((opt, idx) =>
                     <OptionCard
                         key={idx}
                         {...opt}
@@ -43,3 +35,6 @@ export const NewSubmissionOptions = () => {
         </SimplePageContainer>
     );
 };
+
+export const NewSubmissionInitialOptions = () => <OptionsPage options={AUTHORITY_OPTIONS} />;
+export const SPASubmissionOptions = () => <OptionsPage options={SPA_OPTIONS} />;

@@ -1,2 +1,2 @@
 export { Create } from "./create-form";
-export { NewSubmissionOptions } from "./create-options";
+export { NewSubmissionInitialOptions, SPASubmissionOptions } from "./create-options";

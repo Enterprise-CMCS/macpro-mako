@@ -1,6 +1,6 @@
 import React, {PropsWithChildren, ReactNode} from "react";
 import {Link} from "react-router-dom";
-import {ROUTES} from "@/router";
+import {ROUTES} from "@/routes";
 
 export type OptionCardFieldsetProps = PropsWithChildren<{
     legend: string;

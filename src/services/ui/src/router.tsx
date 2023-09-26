@@ -5,15 +5,7 @@ import { dashboardLoader } from "@/pages/dashboard";
 import "@/api/amplifyConfig";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
-
-/** TODO: Implement enum values where `to` or `href` is currently just a string. */
-export enum ROUTES {
-  HOME = "/",
-  DASHBOARD = "/dashboard",
-  DETAILS = "/details",
-  FAQ = "/faq",
-  NEW_SUBMISSION = "/create",
-}
+import {ROUTES} from "@/routes";
 export const queryClient = new QueryClient();
 
 export const router = createBrowserRouter([
@@ -29,7 +21,9 @@ export const router = createBrowserRouter([
       },
       { path: ROUTES.DETAILS, element: <P.Details /> },
       { path: ROUTES.FAQ, element: <P.Faq /> },
-      { path: ROUTES.NEW_SUBMISSION, element: <P.NewSubmissionOptions /> },
+      { path: ROUTES.NEW_SUBMISSION_OPTIONS, element: <P.NewSubmissionInitialOptions /> },
+      { path: ROUTES.SPA_SUBMISSION_OPTIONS, element: <P.SPASubmissionOptions /> },
+      { path: ROUTES.CREATE, element: <P.Create /> },
       { path: "/form", element: <P.ExampleForm /> },
     ],
     loader: rootLoader(queryClient),
