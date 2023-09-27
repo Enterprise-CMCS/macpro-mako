@@ -41,7 +41,7 @@ const renderDateChip: FC<RenderProp> = ({
         value.gte || ""
       ).toLocaleDateString()} - ${new Date(
         value.lte || ""
-      ).toLocaleDateString()}}`}
+      ).toLocaleDateString()}`}
     </Chip>
   );
 };
