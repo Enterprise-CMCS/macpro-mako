@@ -4,7 +4,7 @@ import {OptionData} from "@/pages/create/create-options";
 export const AUTHORITY_OPTIONS: OptionData[] = [
     {
         title: "State Plan Amendment (SPA)",
-        description: "Submit a Medicaid or CHIP State Plan Amendment",
+        description: "Submit a new Medicaid or CHIP State Plan Amendment",
         linkTo: ROUTES.SPA_SUBMISSION_OPTIONS
     },
     {
