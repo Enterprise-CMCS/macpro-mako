@@ -64,6 +64,7 @@ functions:
     handler: handlers/postAuth.handler
     environment:
       apiKey: ${self:custom.idmInfo.api_key}
+      apiEndpoint: ${self:custom.idmInfo.api_endpoint}
 resources:
   Conditions:
     CreateEmailConfiguration:

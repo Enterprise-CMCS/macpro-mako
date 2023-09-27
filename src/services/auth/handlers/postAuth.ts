@@ -7,6 +7,11 @@ if (!process.env.apiKey) {
 }
 const apiKey: string = process.env.apiKey;
 
+if (!process.env.apiEndpoint) {
+  throw "ERROR:  process.env.apiEndpoint is required,";
+}
+const apiEndpoint: string = process.env.apiEndpoint;
+
 export const handler: Handler = async (event, context) => {
   console.log(JSON.stringify(event,null,2));
   const { request, response } = event;
@@ -20,13 +25,12 @@ export const handler: Handler = async (event, context) => {
     try {
       const identity = JSON.parse(userAttributes.identities).find((obj: any) => obj.providerName === 'IDM')
       const userId = identity.userId;
-      const url = `https://test.idp.idm.cms.gov/api/v1/authz/id/?userId=${userId}`
-      const response = await fetch(url, {
+      const response = await fetch(`${apiEndpoint}/authz/id?userId=${userId}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': `SSWS ${apiKey}`
+          'x-api-key': apiKey,
         }
       });
       console.log(response);
