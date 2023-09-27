@@ -24,10 +24,6 @@ provider:
             - cognito-idp:AdminSetUserPassword
             - cognito-idp:AdminUpdateUserAttributes
           Resource: !Sub arn:aws:cognito-idp:${self:provider.region}:${AWS::AccountId}:userpool/us-east-*
-        - Effect: "Allow"
-          Action:
-            - secretsmanager:GetSecretValue
-          Resource: !Sub arn:aws:secretsmanager:${self:provider.region}:${AWS::AccountId}:secret:${self:custom.authzInfoPath}*
 
 custom:
   project: ${env:PROJECT} # This should always be set by direnv.
@@ -41,7 +37,6 @@ custom:
   bootstrapUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsers, param:bootstrapUsers}
   bootstrapUsersPassword: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsersPassword, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/bootstrapUsersPassword}
   idmInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/idmInfo, ""}
-  authzInfoPath: ${self:custom.project}/${sls:stage}/authzInfo
   scripts:
     hooks:
       deploy:finalize: |
@@ -68,7 +63,7 @@ functions:
   postAuth:
     handler: handlers/postAuth.handler
     environment:
-      authzInfoPath: ${self:custom.project}/${sls:stage}/authzInfo
+      apiKey: ${self:custom.idmInfo.api_key}
 resources:
   Conditions:
     CreateEmailConfiguration:

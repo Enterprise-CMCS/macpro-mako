@@ -1,12 +1,11 @@
 import { Handler } from "aws-lambda";
-import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
-const client = new SecretsManagerClient({});
 import * as cognitolib from "../../../libs/cognito-lib";
+import { Client } from '@okta/okta-sdk-nodejs'
 
-if (!process.env.authzInfoPath) {
-  throw "ERROR:  process.env.authzInfoPath is required,";
+if (!process.env.apiKey) {
+  throw "ERROR:  process.env.apiKey is required,";
 }
-const authzInfoPath: string = process.env.authzInfoPath;
+const apiKey: string = process.env.apiKey;
 
 export const handler: Handler = async (event, context) => {
   console.log(JSON.stringify(event,null,2));
@@ -17,16 +16,21 @@ export const handler: Handler = async (event, context) => {
     console.log("User is not managed externally.  Nothing to do.");
   } else {
     console.log("Getting user attributes from external API");
-
-    const params = {
-      SecretId: authzInfoPath, // Replace with the name of your secret
-    };
-  
-    const command = new GetSecretValueCommand(params);
   
     try {
-      const data = await client.send(command);
-      const info = JSON.parse(data.SecretString || "");
+      const identity = JSON.parse(userAttributes.identities).find((obj: any) => obj.providerName === 'IDM')
+      const userId = identity.userId;
+      const url = `https://test.idp.idm.cms.gov/api/v1/authz/id/?userId=${userId}`
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `SSWS ${apiKey}`
+        }
+      });
+      console.log(response);
+
       var attributeData :any = {
         Username: event.userName,
         UserPoolId: event.userPoolId,
