@@ -1,5 +1,5 @@
 import { useGetUser } from "@/api/useGetUser";
-import { ErrorAlert } from "@/components";
+import { ErrorAlert, LoadingSpinner } from "@/components";
 
 import { Pagination } from "@/components/Pagination";
 import {

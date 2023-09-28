@@ -3,7 +3,8 @@ import OneMacLogo from "@/assets/onemac_logo.svg";
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
-import { Button } from "@/components/Button";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/Inputs";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -20,8 +21,7 @@ export const loader = (queryClient: QueryClient) => {
 export const Welcome = () => {
   return (
     <>
-      {/*  Hero Section */}
-      <div className="w-full bg-accent p-2 md:p-4">
+      <div className="w-full bg-primary p-2 md:p-4">
         <div className="max-w-screen-xl flex flex-col sm:flex-row sm:items-center gap-4 mx-auto p-4 lg:px-8">
           <img src={OneMacLogo} alt="One Mac Logo" className="p-4" />
           <p className="text-center text-white/90 font-light text-xl font-sans">
@@ -170,16 +170,16 @@ export const Welcome = () => {
               </div>
             </div>
           </div>
-          <div className="my-6 flex flex-row justify-center items-center gap-x-24">
-            <p className="text-xl">Do you have questions or need support?</p>
-            <Button>
-              <a href="/faq" className="text">
-                View FAQ
-              </a>
-            </Button>
-          </div>
         </div>
       </main>
+      <section>
+        <div className="flex justify-around items-center text-xl py-10 px-10 py-4 max-w-screen-xl mx-auto">
+          <h4>Do you have questions or need support?</h4>
+          <Button asChild>
+            <Link to="/faq">View FAQ</Link>
+          </Button>
+        </div>
+      </section>
     </>
   );
 };
