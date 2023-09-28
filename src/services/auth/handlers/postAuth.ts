@@ -1,6 +1,5 @@
 import { Handler } from "aws-lambda";
 import * as cognitolib from "../../../libs/cognito-lib";
-import { Client } from '@okta/okta-sdk-nodejs'
 
 if (!process.env.apiKey) {
   throw "ERROR:  process.env.apiKey is required,";

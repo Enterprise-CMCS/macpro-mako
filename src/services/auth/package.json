@@ -1,9 +1,5 @@
 {
   "name": "auth",
   "private": true,
-  "version": "0.0.0",
-  "dependencies": {
-    "@okta/okta-auth-js": "^7.4.2",
-    "@okta/okta-sdk-nodejs": "^7.0.1"
-  }
+  "version": "0.0.0"
 }
