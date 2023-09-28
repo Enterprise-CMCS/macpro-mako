@@ -1,17 +1,36 @@
 import { send, SUCCESS, FAILED } from "cfn-response-async";
-import * as topics from "../libs/topics-lib.js";
+import { CloudFormationCustomResourceEvent, Context } from "aws-lambda";
+import * as topics from "../libs/topics-lib";
+type ResponseStatus = typeof SUCCESS | typeof FAILED;
 
-exports.handler = async function (event, context) {
+interface TopicConfig {
+  topic: string;
+  numPartitions: number;
+  replicationFactor: number;
+}
+
+interface ResourceProperties {
+  TopicsToCreate: TopicConfig[];
+  BrokerString: string;
+}
+
+export const handler = async function (
+  event: CloudFormationCustomResourceEvent,
+  context: Context
+) {
   console.log("Request:", JSON.stringify(event, undefined, 2));
-  const responseData = {};
-  let responseStatus = SUCCESS;
+  const responseData: any = {};
+  let responseStatus: ResponseStatus = SUCCESS;
   try {
-    const TopicsToCreate = event.ResourceProperties.TopicsToCreate;
-    const BrokerString = event.ResourceProperties.BrokerString;
-    const topicConfig = TopicsToCreate.map(function (element) {
-      const topic = element.name;
-      const replicationFactor = element.replicationFactor || 3;
-      const numPartitions = element.numPartitions || 1;
+    const resourceProperties: ResourceProperties = event.ResourceProperties;
+    const TopicsToCreate: TopicConfig[] = resourceProperties.TopicsToCreate;
+    const BrokerString: string = resourceProperties.BrokerString;
+    const topicConfig: TopicConfig[] = TopicsToCreate.map(function (
+      element: TopicConfig
+    ) {
+      const topic: string = element.topic;
+      const replicationFactor: number = element.replicationFactor || 3;
+      const numPartitions: number = element.numPartitions || 1;
       if (!topic) {
         throw "Invalid configuration for TopicsToCreate.  All entries must have a 'name' key with a string value.";
       }
