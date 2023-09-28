@@ -147,7 +147,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     <>
       <div className="flex-1"></div>
       {isOpen && (
-        <div className="w-full fixed top-[100px] left-0">
+        <div className="w-full fixed top-[100px] left-0 z-50">
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-2 gap-4 rounded-lg bg-accent">
             {getLinks(!!data.user).map((link) => (
               <li key={link.link}>

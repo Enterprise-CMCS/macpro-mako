@@ -52,12 +52,14 @@ export type OsField =
 
 export type OsFilterable = {
   type: OsFilterType;
+  label?: string;
+  component?: string;
   field: OsField;
   value: OsFilterValue;
   prefix: "must" | "must_not" | "should" | "filter";
 };
 
-export type OsQueryState<T = any> = {
+export type OsQueryState = {
   sort: { field: OsField; order: "asc" | "desc" };
   pagination: { number: number; size: number };
   filters: OsFilterable[];
