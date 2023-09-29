@@ -1,6 +1,6 @@
 import { SearchForm } from "@/components";
 import { FC } from "react";
-import { useOsParams } from "../useOpensearch";
+import { DEFAULT_FILTERS, useOsParams } from "../useOpensearch";
 import { NewExportButton, OsExportButton } from "@/components/ExportButton";
 import { useOsContext } from "../Provider";
 import { OsFilterDrawer } from "./FilterDrawer";
@@ -12,6 +12,7 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
   const params = useOsParams();
   const context = useOsContext();
   const user = useGetUser();
+  const filters = DEFAULT_FILTERS[params.state.tab]?.filters ?? [];
 
   return (
     <div className="flex flex-row gap-2 border-[1px] border-slate-200">
@@ -27,7 +28,7 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
         disabled={!!props.disabled}
       />
       <NewExportButton
-        data={() => getAllSearchData(params.state.filters)}
+        data={() => getAllSearchData([...params.state.filters, ...filters])}
         headers={[
           {
             name: "SPA ID",
@@ -47,6 +48,22 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
               console.log(data.cmsStatus, data.stateStatus);
               return user.data?.isCms ? data.cmsStatus : data.stateStatus;
             },
+          },
+          {
+            name: "Initial Submission",
+            transform: (data) => data?.submissionDate ?? "",
+          },
+          {
+            name: "Formal RAI Response",
+            transform: (data) => data.raiRequestedDate ?? "",
+          },
+          {
+            name: "CPOC Name",
+            transform: (data) => data.leadAnalystName ?? "",
+          },
+          {
+            name: "Submitted By",
+            transform: (data) => data.submitterName ?? "",
           },
         ]}
       />
