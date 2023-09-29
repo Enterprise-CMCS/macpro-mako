@@ -160,7 +160,7 @@ functions:
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
   forms:
     handler: handlers/forms.handler
-    # layers: !Ref formsLayer
+    layers: !Ref formsLayer
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
@@ -177,12 +177,12 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
-# layers:
-#   formsLayer:
-#     path: ./handlers/layers/forms.layer
-#     compatibleRuntimes:
-#       - nodejs18.x
-#     description: Lambda Layer for forms function
+layers:
+  formsLayer:
+    path: handlers/layers/forms
+    compatibleRuntimes:
+      - nodejs18.x
+    description: Lambda Layer for forms function
 resources:
   Resources:
     ApiGateway400ErrorCount:
