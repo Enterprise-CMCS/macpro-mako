@@ -31,7 +31,14 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
         data={() => getAllSearchData([...params.state.filters, ...filters])}
         headers={[
           {
-            name: "SPA ID",
+            name: (() => {
+              if (params.state.tab === "spas") {
+                return "SPA ID";
+              } else if (params.state.tab === "waivers") {
+                return "Waiver Number";
+              }
+              return "";
+            })(),
             transform: (data) => data.id,
           },
           {
