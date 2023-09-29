@@ -20,6 +20,7 @@
     "base-64": "^1.0.0",
     "cfn-response-async": "^1.0.0",
     "kafkajs": "^2.2.4",
+    "lodash": "^4.17.21",
     "serverless-step-functions": "^3.13.1",
     "shared-types": "*",
     "zod": "^3.21.4"
