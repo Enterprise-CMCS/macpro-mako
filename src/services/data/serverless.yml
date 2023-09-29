@@ -448,8 +448,14 @@ resources:
         GroupDescription: Security group for Sink Lambda Function.
         VpcId: ${self:custom.vpc.id}
         SecurityGroupEgress:
-          - IpProtocol: -1
+          - IpProtocol: tcp
             CidrIp: 0.0.0.0/0
+            FromPort: 443
+            ToPort: 443
+          - IpProtocol: tcp
+            CidrIp: 10.0.0.0/8
+            FromPort: 9094
+            ToPort: 9094
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:
@@ -604,20 +610,14 @@ resources:
       Properties:
         GroupDescription: Security group for Sink Lambda Function.
         VpcId: ${self:custom.vpc.id}
-    OpenSearchSecurityGroupEgress:
-      Type: AWS::EC2::SecurityGroupEgress
-      Properties:
-        GroupId: !Ref OpenSearchSecurityGroup
-        IpProtocol: -1
-        CidrIp: 0.0.0.0/0
     OpenSearchSecurityGroupIngress:
       Type: AWS::EC2::SecurityGroupIngress
       Properties:
         GroupId: !Ref OpenSearchSecurityGroup
-        IpProtocol: -1
+        IpProtocol: tcp
         FromPort: 443
         ToPort: 443
-        CidrIp: 10.0.0.0/0
+        CidrIp: 10.0.0.0/8
     OpenSearchAuditLogGroup:
       Type: AWS::Logs::LogGroup
       Properties:
