@@ -1,7 +1,7 @@
 import { SearchForm } from "@/components";
 import { FC } from "react";
 import { DEFAULT_FILTERS, useOsParams } from "../useOpensearch";
-import { NewExportButton, OsExportButton } from "@/components/ExportButton";
+import { ExportButton } from "@/components/ExportButton";
 import { useOsContext } from "../Provider";
 import { OsFilterDrawer } from "./FilterDrawer";
 import { getAllSearchData } from "@/api";
@@ -27,7 +27,7 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
         }
         disabled={!!props.disabled}
       />
-      <NewExportButton
+      <ExportButton
         data={() => getAllSearchData([...params.state.filters, ...filters])}
         headers={[
           {
@@ -74,7 +74,6 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
           },
         ]}
       />
-      <OsExportButton />
       <OsFilterDrawer />
     </div>
   );

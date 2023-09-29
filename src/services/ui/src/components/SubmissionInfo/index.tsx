@@ -6,6 +6,14 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
   if (data.leadAnalystName) {
     cpocName = data.leadAnalystName;
   }
+
+  const submissionSource = () => {
+    if (data?.origin.toLowerCase() === "onemac") {
+      return "OneMAC";
+    } else {
+      return BLANK_VALUE;
+    }
+  };
   const submissionDetails = [
     {
       label: "Submitted By",
@@ -17,7 +25,7 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
     },
     {
       label: "Submission Source",
-      value: <p className="text-lg">{data.origin || BLANK_VALUE}</p>,
+      value: <p className="text-lg">{submissionSource()}</p>,
     },
   ];
   return (

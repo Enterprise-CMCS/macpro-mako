@@ -80,14 +80,14 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
     },
   },
   {
-    field: "submitterName.keyword",
-    label: "Submitted By",
-    cell: (data) => data.submitterName,
-  },
-  {
     field: "leadAnalystName.keyword",
     label: "CPOC Name",
     visible: false,
     cell: (data) => data.leadAnalystName,
+  },
+  {
+    field: "submitterName.keyword",
+    label: "Submitted By",
+    cell: (data) => data.submitterName,
   },
 ];
