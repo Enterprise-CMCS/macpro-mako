@@ -1,13 +1,18 @@
 import { send, SUCCESS, FAILED } from "cfn-response-async";
-import * as topics from "../libs/topics-lib.js";
+import { CloudFormationCustomResourceEvent, Context } from "aws-lambda";
+import * as topics from "../libs/topics-lib";
+type ResponseStatus = typeof SUCCESS | typeof FAILED;
 
-exports.handler = async function (event, context) {
+export const handler = async function (
+  event: CloudFormationCustomResourceEvent,
+  context: Context
+): Promise<void> {
   console.log("Request:", JSON.stringify(event, undefined, 2));
-  const responseData = {};
-  let responseStatus = SUCCESS;
+  const responseData: any = {};
+  let responseStatus: ResponseStatus = SUCCESS;
   try {
-    const BrokerString = event.ResourceProperties.BrokerString;
-    const TopicPatternsToDelete =
+    const BrokerString: string = event.ResourceProperties.BrokerString;
+    const TopicPatternsToDelete: string[] =
       event.ResourceProperties.TopicPatternsToDelete;
     if (event.RequestType === "Create" || event.RequestType == "Update") {
       console.log("This resource does nothing on Create and Update events.");
