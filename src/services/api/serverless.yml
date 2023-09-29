@@ -183,6 +183,9 @@ layers:
     compatibleRuntimes:
       - nodejs18.x
     description: Lambda Layer for forms function
+    allowedAccounts:
+      - '*' # ALL accounts!
+
 resources:
   Resources:
     ApiGateway400ErrorCount:
