@@ -518,6 +518,8 @@ resources:
           - arn:aws:iam::aws:policy/AmazonCognitoReadOnly
     OpenSearch:
       Type: AWS::OpenSearchService::Domain
+      UpdatePolicy:
+        EnableVersionUpgrade: true
       Properties:
         Tags:
           - Key: STAGE
@@ -537,7 +539,7 @@ resources:
           Enabled: true
         NodeToNodeEncryptionOptions:
           Enabled: true
-        EngineVersion: OpenSearch_2.3
+        EngineVersion: OpenSearch_2.9
         DomainEndpointOptions:
           EnforceHTTPS: true
           TLSSecurityPolicy: Policy-Min-TLS-1-2-2019-07
