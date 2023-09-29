@@ -88,22 +88,20 @@ export const OsExportButton = () => {
       ...searchFilter,
     ]);
 
-    const uniqueKeys = getUniqueKeys(osData);
+    // const uniqueKeys = getUniqueKeys(osData);
 
     const sourceItems = osData?.map((hit) => {
-      const filteredHit = formatDataForExport(
-        { ...hit._source },
-        uniqueKeys,
-        user?.isCms
-      );
-
-      // Properties to exclude from export
-      Reflect.deleteProperty(filteredHit, "Attachments");
-      Reflect.deleteProperty(filteredHit, "Rai Responses");
-      Reflect.deleteProperty(filteredHit, "Cms Status");
-      Reflect.deleteProperty(filteredHit, "State Status");
-
-      return filteredHit;
+      // const filteredHit = formatDataForExport(
+      //   { ...hit._source },
+      //   uniqueKeys,
+      //   user?.isCms
+      // );
+      // // Properties to exclude from export
+      // Reflect.deleteProperty(filteredHit, "Attachments");
+      // Reflect.deleteProperty(filteredHit, "Rai Responses");
+      // Reflect.deleteProperty(filteredHit, "Cms Status");
+      // Reflect.deleteProperty(filteredHit, "State Status");
+      // return filteredHit;
     });
     csvExporter.generateCsv(sourceItems);
 
@@ -128,5 +126,108 @@ export const OsExportButton = () => {
       {!loading && <Download className="w-4 h-4" />}
       <p className="prose-sm">Export</p>
     </Button>
+  );
+};
+
+type HeaderOptions<TData> = {
+  transform: (data: TData) => string;
+  name: string;
+};
+
+type Props<TData extends Record<string, any>> = {
+  data: TData[] | (() => Promise<TData[]>);
+  headers: HeaderOptions<TData>[];
+  // | Record<string, HeaderOptions<TData>>
+};
+
+export const NewExportButton = <TData extends Record<string, any>>({
+  data,
+  headers,
+}: Props<TData>) => {
+  const [loading, setLoading] = useState(false);
+  const params = useOsParams();
+
+  const generateExport = async (): Promise<Record<any, any>> => {
+    setLoading(true);
+
+    const exportData: Record<any, any>[] = [];
+    let resolvedData: TData[];
+
+    if (data instanceof Function) {
+      resolvedData = await data();
+      console.log(resolvedData);
+    } else {
+      resolvedData = data;
+    }
+
+    for (const item of resolvedData) {
+      const column: Record<any, any> = {};
+
+      for (const header of headers) {
+        column[header.name] = header.transform(item);
+      }
+      exportData.push(column);
+    }
+
+    setLoading(false);
+
+    return exportData;
+  };
+
+  const handleExport = (data: Record<any, any>) => {
+    console.log(Object.keys(data[0]));
+    const csvExporter = new ExportToCsv({
+      useKeysAsHeaders: true,
+      filename: `${params.state.tab}-export-${format(
+        new Date(),
+        "MM/dd/yyyy"
+      )}`,
+    });
+
+    csvExporter.generateCsv(data);
+  };
+
+  return (
+    <>
+      <Button
+        variant="ghost"
+        onClick={async () => {
+          handleExport(await generateExport());
+        }}
+        disabled={loading}
+        className="hover:bg-transparent h-full flex gap-2"
+      >
+        {loading && (
+          <motion.div
+            animate={{ rotate: "360deg" }}
+            transition={{ repeat: Infinity, duration: 0.5 }}
+          >
+            <Loader className="w-4 h-4" />
+          </motion.div>
+        )}
+        {!loading && <Download className="w-4 h-4" />}
+        <p className="prose-sm">Export</p>
+      </Button>
+    </>
+  );
+};
+
+export const Test = () => {
+  return (
+    <NewExportButton
+      data={[
+        {
+          test: "",
+        },
+      ]}
+      headers={[
+        {
+          transform(data) {
+            return data.test;
+          },
+          name: "",
+        },
+      ]}
+    />
   );
 };
