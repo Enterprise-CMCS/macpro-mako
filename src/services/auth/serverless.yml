@@ -37,6 +37,7 @@ custom:
   bootstrapUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsers, param:bootstrapUsers}
   bootstrapUsersPassword: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsersPassword, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/bootstrapUsersPassword}
   idmInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/idmInfo, ""}
+  vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   scripts:
     hooks:
       deploy:finalize: |
@@ -62,6 +63,11 @@ functions:
       region: ${self:provider.region}
   postAuth:
     handler: handlers/postAuth.handler
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
     environment:
       apiKey: ${self:custom.idmInfo.api_key}
       apiEndpoint: ${self:custom.idmInfo.api_endpoint}
@@ -228,6 +234,15 @@ resources:
                   Action:
                     - "execute-api:Invoke"
                   Resource: !Sub arn:aws:execute-api:${self:provider.region}:${AWS::AccountId}:${param:ApiName}/*
+    SecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
+      Properties:
+        GroupDescription: Security group for Sink Lambda Function.
+        VpcId: ${self:custom.vpc.id}
+        SecurityGroupEgress:
+          - IpProtocol: tcp
+            CidrIp: 0.0.0.0/0
   Outputs:
     UserPoolId:
       Value: !Ref CognitoUserPool
