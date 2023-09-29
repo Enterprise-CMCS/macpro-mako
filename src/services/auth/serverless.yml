@@ -241,7 +241,7 @@ resources:
         GroupDescription: Security group for Sink Lambda Function.
         VpcId: ${self:custom.vpc.id}
         SecurityGroupEgress:
-          - IpProtocol: tcp
+          - IpProtocol: -1
             CidrIp: 0.0.0.0/0
   Outputs:
     UserPoolId:
