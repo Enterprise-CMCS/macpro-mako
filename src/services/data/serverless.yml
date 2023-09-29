@@ -151,8 +151,6 @@ params:
     bootstrapKibanaUsers: "false"
     osInstanceType: m5.large.search
     topicNamespace: ""
-  longfin:
-    topicNamespace: ""
   default:
     osInstanceType: t3.small.search
     bootstrapKibanaUsers: "true"
