@@ -45,7 +45,6 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
           {
             name: "Status",
             transform(data) {
-              console.log(data.cmsStatus, data.stateStatus);
               return user.data?.isCms ? data.cmsStatus : data.stateStatus;
             },
           },
@@ -54,6 +53,7 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
             transform: (data) => data?.submissionDate ?? "",
           },
           {
+            // TODO: Get more info on what property Formal Rai Response should be???
             name: "Formal RAI Response",
             transform: (data) => data.raiRequestedDate ?? "",
           },
