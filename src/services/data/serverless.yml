@@ -639,7 +639,7 @@ resources:
         ServiceToken: !GetAtt CreateTopicsLambdaFunction.Arn
         BrokerString: ${self:custom.brokerString}
         TopicsToCreate:
-          - name: ${param:topicNamespace}aws.onemac.migration.cdc
+          - topic: ${param:topicNamespace}aws.onemac.migration.cdc
     CleanupTopics:
       Type: AWS::CloudFormation::CustomResource
       Condition: isDev # We only clean up topics in lower environments where isDev is true
