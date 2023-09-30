@@ -10,5 +10,3 @@ if (!process.env.osDomain) {
 export const formsLayer = async (event: APIGatewayEvent) => {
   return console.log("layer test");
 };
-
-export const handler = formsLayer;
