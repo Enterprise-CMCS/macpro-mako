@@ -160,7 +160,8 @@ functions:
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
   forms:
     handler: handlers/forms.handler
-    layers: !Ref formsLayer
+    layers:
+      - !Ref formsLayer
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
