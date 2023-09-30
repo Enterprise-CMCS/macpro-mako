@@ -620,6 +620,14 @@ resources:
         FromPort: 443
         ToPort: 443
         CidrIp: 10.0.0.0/8
+    OpenSearchSecurityGroupEgress: # If we don't specify egress, all is allowed by default; this basically shuts off outbound
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId: !Ref OpenSearchSecurityGroup
+        IpProtocol: tcp
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 127.0.0.1/32
     OpenSearchAuditLogGroup:
       Type: AWS::Logs::LogGroup
       Properties:
