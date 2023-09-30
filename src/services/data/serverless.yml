@@ -76,7 +76,7 @@ custom:
       deploy:finalize: |
         if [ "${self:custom.bootstrapKibanaUsers}" = "true" ];
         then
-          aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-bootstrapKibanaUsers --invocation-type RequestResponse /dev/null
+          aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-bootstrapUsers --invocation-type RequestResponse /dev/null
         fi
 
 stepFunctions:
