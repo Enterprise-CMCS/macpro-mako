@@ -530,11 +530,22 @@ resources:
           VolumeSize: 10
         ClusterConfig:
           InstanceType: ${param:osInstanceType}
-          InstanceCount: 3
+          InstanceCount:
+            Fn::If:
+              - isDev
+              - 1
+              - 3
           DedicatedMasterEnabled: false
-          ZoneAwarenessEnabled: true
+          ZoneAwarenessEnabled:
+            Fn::If:
+              - isDev
+              - false
+              - true
           ZoneAwarenessConfig:
-            AvailabilityZoneCount: 3
+            Fn::If:
+              - isDev
+              - !Ref AWS::NoValue
+              - AvailabilityZoneCount: 3
         EncryptionAtRestOptions:
           Enabled: true
         NodeToNodeEncryptionOptions:
