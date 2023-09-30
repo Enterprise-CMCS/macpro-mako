@@ -39,7 +39,7 @@ export const Faq = () => {
         </div>
         <div>
           <CardWithTopBorder>
-            <>
+            <div className="p-4">
               <h3 className="text-lg text-bold mb-4">
                 OneMAC Help Desk Contact Info
               </h3>
@@ -57,7 +57,7 @@ export const Faq = () => {
                   </a>
                 </p>
               </div>
-            </>
+            </div>
           </CardWithTopBorder>
         </div>
       </section>
