@@ -263,10 +263,10 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-  bootstrapKibanaUsers:
-    handler: handlers/createKibanaUsers.handler
+  bootstrapUsers:
+    handler: handlers/createUsers.handler
     environment:
-      kibanaUserPoolId: !Ref CognitoUserPool
+      userPoolId: !Ref CognitoUserPool
       bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
       region: ${self:provider.region}
 
