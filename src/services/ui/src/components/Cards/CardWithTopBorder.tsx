@@ -1,19 +1,22 @@
-interface CardWithTopBorderProps {
-  children: React.ReactNode;
-}
+import {FC, ReactNode} from "react";
 
-export const CardWithTopBorder: React.FC<CardWithTopBorderProps> = ({
+interface CardWithTopBorderProps {
+  children: ReactNode;
+}
+export const CardWithTopBorder: FC<CardWithTopBorderProps> = ({
   children,
 }: CardWithTopBorderProps) => {
   return (
-    <div className="border rounded-sm border-slate-300 mb-4 grow md:max-w-sm">
+    <div className="mb-4">
       <div
-        style={{
-          background: "linear-gradient(90.11deg,#0071bc 49.91%,#02bfe7 66.06%)",
-        }}
+          style={{
+              background: "linear-gradient(90.11deg,#0071bc 49.91%,#02bfe7 66.06%)",
+              borderRadius: "3px 3px 0px 0px",
+              height: "8px",
+          }}
         className="h-2 shadow-lg"
       />
-      <div className="p-4">{children}</div>
+      <div className="border border-t-0 rounded-b-sm border-slate-300">{children}</div>
     </div>
   );
 };

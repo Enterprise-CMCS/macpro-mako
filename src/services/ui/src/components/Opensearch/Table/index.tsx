@@ -1,4 +1,5 @@
 import * as UI from "@/components/Table";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { FC, useState } from "react";
 import { OsTableColumn } from "./types";
 import { useOsContext } from "../Provider";
@@ -67,7 +68,16 @@ export const OsTable: FC<{
           })}
         </UI.TableRow>
       </UI.TableHeader>
+
       <UI.TableBody>
+        {/* TODO: Add a skeleton loader after discussing with HCD.
+        See https://qmacbis.atlassian.net/browse/OY2-25623 */}
+        {!context.data && (
+          <div className="p-4">
+            <LoadingSpinner />
+          </div>
+        )}
+
         {context.data?.hits.map((DAT) => (
           <UI.TableRow key={DAT._source.id}>
             <UI.TableCell className="fixed" />

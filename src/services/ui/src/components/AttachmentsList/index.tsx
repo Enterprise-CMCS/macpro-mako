@@ -6,7 +6,7 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { OsMainSourceItem } from "shared-types";
 import { useState } from "react";
-import { Button } from "../Button";
+import { Button } from "../Inputs/button";
 import {
   Table,
   TableBody,

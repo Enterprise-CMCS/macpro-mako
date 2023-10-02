@@ -32,7 +32,7 @@ export const DetailsContent = ({
           "Additional Info",
         ].map((val) => (
           <a
-            className="block mb-4 text-blue-700"
+            className="block mb-4 text-primary"
             key={val}
             href={`?id=${encodeURIComponent(data._id)}#${val
               .toLowerCase()
@@ -46,7 +46,7 @@ export const DetailsContent = ({
       <div className="flex-1">
         <section id="package-overview" className="block md:flex mb-8 gap-8">
           <CardWithTopBorder>
-            <>
+            <div className="p-4">
               <p className="text-gray-600 font-semibold mb-2">Status</p>
               <div>
                 <h2 className="text-xl font-semibold mb-2">
@@ -55,7 +55,7 @@ export const DetailsContent = ({
                     : data._source.stateStatus}
                 </h2>
               </div>
-            </>
+            </div>
           </CardWithTopBorder>
         </section>
         <DetailsSection id="package-details" title="Package Details">

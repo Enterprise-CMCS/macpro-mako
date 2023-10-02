@@ -1,5 +1,5 @@
 import { ExportToCsv } from "export-to-csv";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/Inputs";
 import { Download, Loader } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";

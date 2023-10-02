@@ -111,3 +111,6 @@ export const OsFiltering: FC<{
     </div>
   );
 };
+
+export * from "./FilterChips";
+export * from "./FilterProvider";
