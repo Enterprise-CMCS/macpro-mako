@@ -75,7 +75,7 @@ export const OsTable: FC<{
               return (
                 <UI.TableCell
                   key={`${COL.field}-${DAT._source.id}`}
-                  className="font-medium"
+                  className="font-medium whitespace-nowrap"
                 >
                   {COL.cell(DAT._source) ?? BLANK_VALUE}
                 </UI.TableCell>

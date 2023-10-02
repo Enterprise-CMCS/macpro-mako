@@ -45,6 +45,10 @@ export const getAllSearchData = async (filters?: OsFilterable[]) => {
   const recursiveSearch = async (
     startPage: number
   ): Promise<OsMainSourceItem[]> => {
+    if (startPage * 1000 >= 10000) {
+      return [];
+    }
+
     const searchData = await API.post("os", "/search", {
       body: {
         ...filterQueryBuilder(filters),
