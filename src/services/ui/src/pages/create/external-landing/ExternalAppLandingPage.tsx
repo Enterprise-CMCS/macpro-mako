@@ -81,7 +81,7 @@ export const MedicaidABPLandingPage = () => (
                             target="_blank"
                             rel="noreferrer"
                         >
-                            Medicaid Model Data Lab (MMDL) system
+                            Medicaid Model Data Lab (MMDL)
                         </a>
                         .
                     </b>
@@ -144,7 +144,7 @@ export const CHIPEligibilityLandingPage = () => (
                             target="_blank"
                             rel="noreferrer"
                         >
-                            Medicaid Model Data Lab (MMDL) system
+                            Medicaid Model Data Lab (MMDL)
                         </a>
                         .
                     </b>
