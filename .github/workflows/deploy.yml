@@ -52,9 +52,7 @@ jobs:
           role-duration-seconds: 10800
 
       - name: Deploy
-        run: |
-          pwd
-          run deploy --stage $STAGE_NAME
+        run: run deploy --stage $STAGE_NAME
 
       - name: Set Site URL
         id: deployment-data
