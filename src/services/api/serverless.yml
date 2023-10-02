@@ -161,7 +161,7 @@ functions:
   forms:
     handler: handlers/forms.handler
     layers:
-      - !Ref formsLayer
+      - !Ref FormsLambdaLayer
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
@@ -179,10 +179,8 @@ functions:
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
 layers:
-  formsLayer:
+  forms:
     path: layers/formsLayer
-    include:
-      - "*.ts"
     description: Lambda Layer for forms function
 
 resources:
