@@ -18,12 +18,12 @@ export const SPA_OPTIONS: OptionData[] = [
     {
         title: "Medicaid SPA",
         description: "Submit a new Medicaid State Plan Amendment",
-        linkTo: ROUTES.CREATE
+        linkTo: ROUTES.MEDICAID_SPA_SUB_OPTIONS
     },
     {
         title: "CHIP SPA",
         description: "Submit a new CHIP State Plan Amendment",
-        linkTo: ROUTES.DASHBOARD
+        linkTo: ROUTES.CHIP_SPA_SUB_OPTIONS
     },
 ];
 
@@ -31,12 +31,12 @@ export const MEDICAID_SPA_OPTIONS: OptionData[] = [
     {
         title: "Medicaid Eligibility, Enrollment, Administration, and Health Homes",
         description: "Redirects to the MACPro Appian submission system",
-        linkTo: ROUTES.DASHBOARD // TODO: Landing page route
+        linkTo: ROUTES.MEDICAID_ELIGIBILITY_LANDING
     },
     {
         title: "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing",
         description: "Redirects to the MMDL submission system",
-        linkTo: ROUTES.DASHBOARD // TODO: Landing page route
+        linkTo: ROUTES.MEDICAID_ABP_LANDING
     },
     {
         title: "All Other Medicaid SPA Submissions",
@@ -49,7 +49,7 @@ export const CHIP_SPA_OPTIONS: OptionData[] = [
     {
         title: "CHIP Eligibility",
         description: "Redirects to the MMDL submission system",
-        linkTo: ROUTES.DASHBOARD // TODO: Landing page route
+        linkTo: ROUTES.CHIP_ELIGIBILITY_LANDING
     },
     {
         title: "All Other CHIP SPA Submissions",

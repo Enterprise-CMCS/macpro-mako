@@ -25,7 +25,12 @@ export const router = createBrowserRouter([
       { path: ROUTES.SPA_SUBMISSION_OPTIONS, element: <P.SPASubmissionOptions /> },
       { path: ROUTES.MEDICAID_SPA_SUB_OPTIONS, element: <P.MedicaidSPASubmissionOptions /> },
       { path: ROUTES.CHIP_SPA_SUB_OPTIONS, element: <P.ChipSPASubmissionOptions /> },
+      { path: ROUTES.MEDICAID_ABP_LANDING, element: <P.MedicaidABPLandingPage/> },
+      { path: ROUTES.MEDICAID_ELIGIBILITY_LANDING, element: <P.MedicaidEligibilityLandingPage/> },
+      { path: ROUTES.CHIP_ELIGIBILITY_LANDING, element: <P.CHIPEligibilityLandingPage/> },
       { path: ROUTES.CREATE, element: <P.Create /> },
+        // TODO: Remove "/form" and ExampleForm if there's no usage; the Create page
+        //  is our current SEATool integration test form.
       { path: "/form", element: <P.ExampleForm /> },
     ],
     loader: rootLoader(queryClient),

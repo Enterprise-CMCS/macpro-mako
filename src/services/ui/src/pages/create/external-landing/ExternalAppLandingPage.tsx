@@ -1,7 +1,7 @@
 import {Button} from "@/components/Inputs";
 import {Link} from "react-router-dom";
 import {ReactElement} from "react";
-export enum ExternalSystem {
+export enum EXTERNAL_APP {
     MAC_PRO = "https://www.medicaid.gov/resources-for-states/medicaid-and-chip-program-macpro-portal/index.html#MACPro",
     MMDL = "https://wms-mmdl.cms.gov/MMDL/faces/portal.jsp",
 }
@@ -11,7 +11,7 @@ export interface ExternalAppLandingPageConfig {
     image: ReactElement;
     description: ReactElement;
     buttonLabel: string;
-    buttonLink: string;
+    buttonLink: EXTERNAL_APP;
 }
 
 /* TODO: Get desired FAQ `target` from Wale */
@@ -53,4 +53,34 @@ const ExternalAppLandingPage = ({
     );
 };
 
-export default ExternalAppLandingPage;
+const MACProLogo = () => <img src={"/images/logos/macpro.png"} alt={"MACPro system logo"}/>;
+const MMDLLogo = () => <img src={"/images/logos/mmdl.png"} alt={"MMDL system logo"}/>;
+export const MedicaidABPLandingPage = () => (
+    <ExternalAppLandingPage
+        pageTitle={""}
+        image={<MACProLogo />}
+        description={<p>Test</p>}
+        buttonLabel={"Enter the MACPro system"}
+        buttonLink={EXTERNAL_APP.MAC_PRO}
+    />
+);
+
+export const MedicaidEligibilityLandingPage = () => (
+    <ExternalAppLandingPage
+        pageTitle={""}
+        image={<MMDLLogo />}
+        description={<p>Test</p>}
+        buttonLabel={"Enter the MMDL system"}
+        buttonLink={EXTERNAL_APP.MMDL}
+    />
+);
+
+export const CHIPEligibilityLandingPage = () => (
+    <ExternalAppLandingPage
+        pageTitle={""}
+        image={<MMDLLogo />}
+        description={<p>Test</p>}
+        buttonLabel={"Enter the MMDL system"}
+        buttonLink={EXTERNAL_APP.MMDL}
+    />
+);
