@@ -8,7 +8,7 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
   }
 
   const submissionSource = () => {
-    if (data?.origin.toLowerCase() === "onemac") {
+    if (data?.origin?.toLowerCase() === "onemac") {
       return "OneMAC";
     } else {
       return BLANK_VALUE;
