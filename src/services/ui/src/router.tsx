@@ -23,6 +23,8 @@ export const router = createBrowserRouter([
       { path: ROUTES.FAQ, element: <P.Faq /> },
       { path: ROUTES.NEW_SUBMISSION_OPTIONS, element: <P.NewSubmissionInitialOptions /> },
       { path: ROUTES.SPA_SUBMISSION_OPTIONS, element: <P.SPASubmissionOptions /> },
+      { path: ROUTES.MEDICAID_SPA_SUB_OPTIONS, element: <P.MedicaidSPASubmissionOptions /> },
+      { path: ROUTES.CHIP_SPA_SUB_OPTIONS, element: <P.ChipSPASubmissionOptions /> },
       { path: ROUTES.CREATE, element: <P.Create /> },
       { path: "/form", element: <P.ExampleForm /> },
     ],

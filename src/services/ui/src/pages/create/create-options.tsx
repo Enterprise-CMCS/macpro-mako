@@ -1,6 +1,6 @@
 import React, {PropsWithChildren} from "react";
 import {MACFieldsetOption, OptionCard, OptionFieldset} from "@/components/Cards/OptionCard";
-import {AUTHORITY_OPTIONS, SPA_OPTIONS} from "@/pages/create/options";
+import {AUTHORITY_OPTIONS, CHIP_SPA_OPTIONS, MEDICAID_SPA_OPTIONS, SPA_OPTIONS} from "@/pages/create/options";
 
 /** I didn't see a page container already present in the repo, so to better standardize
  * we can extract this and use it on more pages where currently each page has its own. (KH) */
@@ -53,4 +53,18 @@ export const SPASubmissionOptions = () => (
         title="SPA Type"
         fieldsetLegend="Select a SPA type to start your submission"
         options={SPA_OPTIONS} />
+);
+/** Sub-choices for Medicaid SPAs */
+export const MedicaidSPASubmissionOptions = () => (
+    <OptionsPage
+        title="Medicaid SPA Type"
+        fieldsetLegend="Select a Medicaid SPA type to create your submission"
+        options={MEDICAID_SPA_OPTIONS} />
+);
+/** Sub-choices for CHIP SPAs */
+export const ChipSPASubmissionOptions = () => (
+    <OptionsPage
+        title="CHIP SPA Type"
+        fieldsetLegend="Select a CHIP SPA type to start your submission"
+        options={CHIP_SPA_OPTIONS} />
 );
