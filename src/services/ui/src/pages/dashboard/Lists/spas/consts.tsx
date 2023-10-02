@@ -59,6 +59,9 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
     field: "origin",
     label: "Submission Source",
     cell: (data) => {
+      if (data.origin?.toLowerCase() === "onemac") {
+        return "OneMAC";
+      }
       return data.origin;
     },
   },
