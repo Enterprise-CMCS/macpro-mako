@@ -7,6 +7,9 @@ import { OsFilterDrawer } from "./FilterDrawer";
 import { getAllSearchData } from "@/api";
 import { isCmsUser } from "shared-utils";
 import { useGetUser } from "@/api/useGetUser";
+import { BLANK_VALUE } from "consts";
+import { format } from "date-fns";
+import { LABELS } from "@/lib/labels";
 
 export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
   const params = useOsParams();
@@ -47,30 +50,59 @@ export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
           },
           {
             name: "Type",
-            transform: (data) => data?.actionType ?? "",
+            transform: (data) => data.planType ?? BLANK_VALUE,
+          },
+          {
+            name: "Sub-Type",
+            transform: (data) => {
+              if (data.actionType === undefined) {
+                return BLANK_VALUE;
+              }
+
+              return (
+                LABELS[data.actionType as keyof typeof LABELS] ||
+                data.actionType
+              );
+            },
           },
           {
             name: "Status",
             transform(data) {
-              return user.data?.isCms ? data.cmsStatus : data.stateStatus;
+              if (user.data?.isCms) {
+                if (data.cmsStatus) {
+                  return data.cmsStatus;
+                }
+                return BLANK_VALUE;
+              } else {
+                if (data.stateStatus) {
+                  return data.stateStatus;
+                }
+                return BLANK_VALUE;
+              }
             },
           },
           {
             name: "Initial Submission",
-            transform: (data) => data?.submissionDate ?? "",
+            transform: (data) =>
+              data?.submissionDate
+                ? format(new Date(data.submissionDate), "MM/dd/yyyy")
+                : BLANK_VALUE,
           },
           {
             // TODO: Get more info on what property Formal Rai Response should be???
             name: "Formal RAI Response",
-            transform: (data) => data.raiRequestedDate ?? "",
+            transform: (data) =>
+              data?.raiRequestedDate
+                ? format(new Date(data.raiRequestedDate), "MM/dd/yyyy")
+                : BLANK_VALUE,
           },
           {
             name: "CPOC Name",
-            transform: (data) => data.leadAnalystName ?? "",
+            transform: (data) => data.leadAnalystName ?? BLANK_VALUE,
           },
           {
             name: "Submitted By",
-            transform: (data) => data.submitterName ?? "",
+            transform: (data) => data.submitterName ?? BLANK_VALUE,
           },
         ]}
       />
