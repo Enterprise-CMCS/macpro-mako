@@ -89,7 +89,7 @@ export const MedicaidABPLandingPage = () => (
                 </p>
             </LandingPageDescription>
         }
-        buttonLabel={"Enter the MACPro system"}
+        buttonLabel={"Enter the MMDL system"}
         buttonLink={EXTERNAL_APP.MMDL}
     />
 );
@@ -121,7 +121,7 @@ export const MedicaidEligibilityLandingPage = () => (
                 </p>
             </LandingPageDescription>
         }
-        buttonLabel={"Enter the MMDL system"}
+        buttonLabel={"Enter the MACPro system"}
         buttonLink={EXTERNAL_APP.MAC_PRO}
     />
 );
