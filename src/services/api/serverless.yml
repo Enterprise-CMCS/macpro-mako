@@ -180,7 +180,9 @@ functions:
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
 layers:
   formsLayer:
-    path: ./layers/formsLayer/formsLayer.ts
+    path: ./layers/formsLayer
+    include:
+      - "*.ts"
     description: Lambda Layer for forms function
 
 resources:
