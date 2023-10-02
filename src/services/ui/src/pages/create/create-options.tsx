@@ -1,14 +1,7 @@
-import React, {PropsWithChildren} from "react";
 import {MACFieldsetOption, OptionCard, OptionFieldset} from "@/components/Cards/OptionCard";
 import {AUTHORITY_OPTIONS, CHIP_SPA_OPTIONS, MEDICAID_SPA_OPTIONS, SPA_OPTIONS} from "@/pages/create/options";
+import {SimplePageContainer} from "@/components";
 
-/** I didn't see a page container already present in the repo, so to better standardize
- * we can extract this and use it on more pages where currently each page has its own. (KH) */
-export const SimplePageContainer = ({ children }: PropsWithChildren) => (
-    <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
-        {children}
-    </div>
-);
 /** Can be removed once page title bar with back nav is integrated */
 export const SimplePageTitle = ({ title }: { title: string }) => (
     <div className="flex items-center justify-between my-4">
