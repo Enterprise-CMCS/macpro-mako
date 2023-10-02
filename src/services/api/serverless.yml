@@ -180,7 +180,7 @@ functions:
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
 layers:
   formsLayer:
-    path: ./layers
+    path: ./layers/formsLayer
     description: Lambda Layer for forms function
 
 resources:
