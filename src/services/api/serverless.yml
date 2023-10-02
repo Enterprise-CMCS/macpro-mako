@@ -180,7 +180,7 @@ functions:
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
 layers:
   formsLayer:
-    path: layers
+    path: /layers
     compatibleRuntimes:
       - nodejs14.x
     description: Lambda Layer for forms function
