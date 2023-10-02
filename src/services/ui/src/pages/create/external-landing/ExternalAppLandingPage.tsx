@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {PropsWithChildren, ReactElement} from "react";
 import {SimplePageTitle} from "@/pages/create/create-options";
 import {SimplePageContainer} from "@/components";
+import {ROUTES} from "@/routes";
 export enum EXTERNAL_APP {
     MAC_PRO = "https://www.medicaid.gov/resources-for-states/medicaid-and-chip-program-macpro-portal/index.html#MACPro",
     MMDL = "https://wms-mmdl.cms.gov/MMDL/faces/portal.jsp",
@@ -15,14 +16,18 @@ export interface ExternalAppLandingPageConfig {
     buttonLabel: string;
     buttonLink: EXTERNAL_APP;
 }
-
-/* TODO: Get desired FAQ `target` from Wale */
+const MACProLogo = () => <img src={"/images/logos/macpro.png"} alt={"MACPro system logo"}/>;
+const MMDLLogo = () => <img src={"/images/logos/mmdl.png"} alt={"MMDL system logo"}/>;
 const FAQHelperText = () => (
     <span className="max-w-xl">
     <i>
       For additional information on where to submit, refer to the{" "}
-        {/* TODO: Replace `to` with ROUTES constant */}
-        <Link className="text-sky-600 hover:text-sky-800 underline" target={"_faq"} to={"/faq"}>
+        {/* TODO: Get desired FAQ `target` from Wale */}
+        <Link
+            className="text-sky-600 hover:text-sky-800 underline"
+            target={"_faq"}
+            to={ROUTES.FAQ}
+        >
             Crosswalk from Paper-based State Plan to MACPro and MMDL
         </Link>{" "}
         document in our FAQ section.
@@ -60,8 +65,6 @@ const ExternalAppLandingPage = ({
     );
 };
 
-const MACProLogo = () => <img src={"/images/logos/macpro.png"} alt={"MACPro system logo"}/>;
-const MMDLLogo = () => <img src={"/images/logos/mmdl.png"} alt={"MMDL system logo"}/>;
 export const MedicaidABPLandingPage = () => (
     <ExternalAppLandingPage
         pageTitle={"Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing"}
