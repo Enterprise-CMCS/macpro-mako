@@ -5,13 +5,14 @@ import { ExportButton } from "@/components/ExportButton";
 import { useOsContext } from "../Provider";
 import { OsFilterDrawer } from "./FilterDrawer";
 import { getAllSearchData } from "@/api";
-import { isCmsUser } from "shared-utils";
 import { useGetUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "consts";
 import { format } from "date-fns";
 import { LABELS } from "@/lib/labels";
 
-export const OsFiltering: FC<{ disabled?: boolean }> = (props) => {
+export const OsFiltering: FC<{
+  disabled?: boolean;
+}> = (props) => {
   const params = useOsParams();
   const context = useOsContext();
   const user = useGetUser();
