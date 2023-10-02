@@ -7,6 +7,6 @@ if (!process.env.osDomain) {
 }
 
 // Handler function to search index
-export const formsLayer = async (event: APIGatewayEvent) => {
+export const formsLayer = async (event) => {
   return console.log("layer test");
 };
