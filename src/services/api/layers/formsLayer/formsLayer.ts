@@ -1,7 +1,4 @@
-export const addNumbers = (a: number, b: number): number => {
-  return a + b;
-};
-
-export const formatDate = (date: Date): string => {
-  return date.toISOString();
+// Handler function to search index
+export const formsLayer = async (event: APIGatewayEvent) => {
+  return console.log("layer test");
 };

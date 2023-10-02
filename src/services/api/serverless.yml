@@ -160,8 +160,8 @@ functions:
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
   forms:
     handler: handlers/forms.handler
-    # layers:
-    #   - !Ref formsLayer
+    layers:
+      - !Ref formsLayer
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
@@ -180,7 +180,7 @@ functions:
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
 layers:
   formsLayer:
-    path: layers/formsLayer
+    path: ./layers/formsLayer/formsLayer.ts
     description: Lambda Layer for forms function
 
 resources:
