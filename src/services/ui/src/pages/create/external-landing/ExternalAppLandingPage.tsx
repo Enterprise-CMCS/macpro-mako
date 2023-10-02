@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {PropsWithChildren, ReactElement} from "react";
 import {SimplePageTitle} from "@/pages/create/create-options";
 import {SimplePageContainer} from "@/components";
-import {ROUTES} from "@/routes";
+import {FAQ_SECTION, ROUTES} from "@/routes";
 export enum EXTERNAL_APP {
     MAC_PRO = "https://www.medicaid.gov/resources-for-states/medicaid-and-chip-program-macpro-portal/index.html#MACPro",
     MMDL = "https://wms-mmdl.cms.gov/MMDL/faces/portal.jsp",
@@ -26,7 +26,7 @@ const FAQHelperText = () => (
         <Link
             className="text-sky-600 hover:text-sky-800 underline"
             target={"_faq"}
-            to={ROUTES.FAQ}
+            to={`${ROUTES.FAQ}/#${FAQ_SECTION.SYSTEM}`}
         >
             Crosswalk from Paper-based State Plan to MACPro and MMDL
         </Link>{" "}

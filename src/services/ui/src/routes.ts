@@ -15,3 +15,7 @@ export enum ROUTES {
     CHIP_ELIGIBILITY_LANDING = "/landing/chip-eligibility",
     CREATE = "/create"
 }
+
+export enum FAQ_SECTION {
+    SYSTEM = "system"
+}
