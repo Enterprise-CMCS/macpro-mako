@@ -12,6 +12,7 @@ import {
   FilterDrawerProvider,
 } from "@/components/Opensearch";
 import { Button } from "@/components/Inputs";
+import { ROUTES } from "@/routes";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -52,7 +53,7 @@ export const Dashboard = () => {
             <h1 className="text-xl">Dashboard</h1>
             {!user?.isCms && (
               <Button>
-                <Link to={"/create"}>New Submission</Link>
+                <Link to={ROUTES.NEW_SUBMISSION_OPTIONS}>New Submission</Link>
               </Button>
             )}
           </div>

@@ -143,14 +143,18 @@ stepFunctions:
 params:
   master:
     osInstanceType: m5.large.search
+    topicNamespace: ""
   val:
     osInstanceType: m5.large.search
+    topicNamespace: ""
   production:
     bootstrapKibanaUsers: "false"
     osInstanceType: m5.large.search
+    topicNamespace: ""
   default:
     osInstanceType: t3.small.search
     bootstrapKibanaUsers: "true"
+    topicNamespace: --${self:custom.project}--${sls:stage}--
 
 functions:
   sinkSeatool:
@@ -230,6 +234,22 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
+  createTopics:
+    handler: handlers/createTopics.handler
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    timeout: 300
+  cleanupKafka:
+    handler: handlers/cleanupKafka.handler
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    timeout: 300
   mapRole:
     handler: handlers/mapRole.handler
     environment:
@@ -251,6 +271,12 @@ functions:
       region: ${self:provider.region}
 
 resources:
+  Conditions:
+    isDev:
+      Fn::Not:
+        - Fn::Equals:
+            - ${param:topicNamespace}
+            - ""
   Resources:
     StateMachineLogGroup:
       Type: AWS::Logs::LogGroup
@@ -292,10 +318,10 @@ resources:
             Value: !GetAtt SinkSeatoolLambdaFunction.Arn
         ComparisonOperator: GreaterThanOrEqualToThreshold
         EvaluationPeriods: 1
-        Period: 300  
+        Period: 300
         Statistic: Sum
         TreatMissingData: notBreaching
-        Threshold: 1  
+        Threshold: 1
         AlarmActions:
           - ${param:ECSFailureTopicArn}
     SinkOnemacTrigger:
@@ -321,7 +347,32 @@ resources:
             URI: !Sub security_group:${SecurityGroup}
         StartingPosition: TRIM_HORIZON
         Topics:
-          - aws.onemac.migration.cdc
+          - aws.onemac.migration.cdc # We always want to sink onemacs data
+    SinkOnemacNamespacedTopicTrigger:
+      Type: AWS::Lambda::EventSourceMapping
+      Condition: isDev # We will only sink the namespaced topic if we're in a dev env
+      Properties:
+        BatchSize: 1000
+        Enabled: true
+        FunctionName: !GetAtt SinkOnemacLambdaFunction.Arn
+        SelfManagedEventSource:
+          Endpoints:
+            KafkaBootstrapServers:
+              Fn::Split:
+                - ","
+                - ${self:custom.brokerString}
+        SourceAccessConfigurations:
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.0}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.1}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.2}
+          - Type: VPC_SECURITY_GROUP
+            URI: !Sub security_group:${SecurityGroup}
+        StartingPosition: TRIM_HORIZON
+        Topics:
+          - ${param:topicNamespace}aws.onemac.migration.cdc
     CloudWatchAlarmForSinkOnemacTriggerErrors:
       Type: AWS::CloudWatch::Alarm
       Properties:
@@ -334,10 +385,10 @@ resources:
             Value: !GetAtt SinkOnemacLambdaFunction.Arn
         ComparisonOperator: GreaterThanOrEqualToThreshold
         EvaluationPeriods: 1
-        Period: 300  
+        Period: 300
         Statistic: Sum
         TreatMissingData: notBreaching
-        Threshold: 1  
+        Threshold: 1
         AlarmActions:
           - ${param:ECSFailureTopicArn}
     SeatoolLogMessageMetricFilter:
@@ -359,12 +410,12 @@ resources:
         MetricName: SeatoolValidationErrors
         ComparisonOperator: GreaterThanOrEqualToThreshold
         EvaluationPeriods: 1
-        Period: 300 
+        Period: 300
         Statistic: Sum
         TreatMissingData: notBreaching
-        Threshold: 1 
+        Threshold: 1
         AlarmActions:
-          - ${param:ECSFailureTopicArn} 
+          - ${param:ECSFailureTopicArn}
     OnemacLogMessageMetricFilter:
       Type: "AWS::Logs::MetricFilter"
       Properties:
@@ -384,10 +435,10 @@ resources:
         MetricName: ONEMACValidationErrors
         ComparisonOperator: GreaterThanOrEqualToThreshold
         EvaluationPeriods: 1
-        Period: 300 
+        Period: 300
         Statistic: Sum
         TreatMissingData: notBreaching
-        Threshold: 1 
+        Threshold: 1
         AlarmActions:
           - ${param:ECSFailureTopicArn}
     SecurityGroup:
@@ -396,7 +447,7 @@ resources:
       Properties:
         GroupDescription: Security group for Sink Lambda Function.
         VpcId: ${self:custom.vpc.id}
-        SecurityGroupEgress: 
+        SecurityGroupEgress:
           - IpProtocol: -1
             CidrIp: 0.0.0.0/0
     CognitoUserPool:
@@ -507,10 +558,10 @@ resources:
         LogPublishingOptions:
           AUDIT_LOGS:
             CloudWatchLogsLogGroupArn: !GetAtt OpenSearchAuditLogGroup.Arn
-            Enabled : true
+            Enabled: true
           ES_APPLICATION_LOGS:
             CloudWatchLogsLogGroupArn: !GetAtt OpenSearchErrorLogGroup.Arn
-            Enabled : true
+            Enabled: true
         VPCOptions:
           SecurityGroupIds:
             - !Ref OpenSearchSecurityGroup
@@ -569,11 +620,11 @@ resources:
         CidrIp: 10.0.0.0/0
     OpenSearchAuditLogGroup:
       Type: AWS::Logs::LogGroup
-      Properties: 
+      Properties:
         LogGroupName: /aws/opensearch/${self:service}-${sls:stage}-audit
     OpenSearchErrorLogGroup:
       Type: AWS::Logs::LogGroup
-      Properties: 
+      Properties:
         LogGroupName: /aws/opensearch/${self:service}-${sls:stage}-error
     MapRole:
       Type: Custom::ClusterInfo
@@ -582,6 +633,21 @@ resources:
         MasterRoleToAssume: !GetAtt OpenSearchMasterRole.Arn
         OSRoleName: all_access
         IAMRoleName: !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
+    CreateTopics:
+      Type: AWS::CloudFormation::CustomResource
+      Properties:
+        ServiceToken: !GetAtt CreateTopicsLambdaFunction.Arn
+        BrokerString: ${self:custom.brokerString}
+        TopicsToCreate:
+          - topic: ${param:topicNamespace}aws.onemac.migration.cdc
+    CleanupTopics:
+      Type: AWS::CloudFormation::CustomResource
+      Condition: isDev # We only clean up topics in lower environments where isDev is true
+      Properties:
+        ServiceToken: !GetAtt CleanupKafkaLambdaFunction.Arn
+        BrokerString: ${self:custom.brokerString}
+        TopicPatternsToDelete:
+          - ${param:topicNamespace}aws.onemac.migration.cdc
   Outputs:
     OpenSearchDomainArn:
       Value: !GetAtt OpenSearch.Arn
