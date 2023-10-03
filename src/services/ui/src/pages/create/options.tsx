@@ -111,7 +111,7 @@ export const B4_WAIVER_OPTIONS: OptionData[] = [
         linkTo: ROUTES.DASHBOARD
     },
 ];
-export const BCOMP_WAIVER_OPTIONS: OptionData[] = [
+export const BCAP_WAIVER_OPTIONS: OptionData[] = [
     {
         title: "1915(b) Comprehensive (Capitated) New Initial Waiver",
         description: "Create a new 1915(b) Comprehensive (Capitated) Initial Waiver",

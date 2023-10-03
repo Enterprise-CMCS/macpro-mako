@@ -1,6 +1,6 @@
 import {MACFieldsetOption, OptionCard, OptionFieldset} from "@/components/Cards/OptionCard";
 import {
-    AUTHORITY_OPTIONS, B4_WAIVER_OPTIONS, B_WAIVER_OPTIONS,
+    AUTHORITY_OPTIONS, B4_WAIVER_OPTIONS, B_WAIVER_OPTIONS, BCAP_WAIVER_OPTIONS,
     CHIP_SPA_OPTIONS,
     MEDICAID_SPA_OPTIONS,
     SPA_OPTIONS,
@@ -89,5 +89,5 @@ export const BCapWaiverSubmissionOptions = () => (
     <OptionsPage
         title="1915(b) Comprehensive (Capitated) Waiver Authority"
         fieldsetLegend="Select a Waiver type to start your submission."
-        options={B4_WAIVER_OPTIONS} />
+        options={BCAP_WAIVER_OPTIONS} />
 );
