@@ -8,14 +8,14 @@ export const forms: APIGatewayProxyHandler = async (event) => {
 
     const filePath = getFilepathForIdAndVersion(fileId, version);
     console.log(filePath);
-    const jsonData = require(`/opt/myLayer/form_v1.json`);
+    // const jsonData = require("/opt/myLayer/form_v1.json");
 
     return {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
       },
-      body: jsonData,
+      body: "test",
     };
   } catch (error) {
     console.error("Error:", error);
