@@ -73,7 +73,7 @@ export const MedicaidSPASubmissionOptions = () => (
 export const ChipSPASubmissionOptions = () => (
   <OptionsPage
     title="CHIP SPA Type"
-    fieldsetLegend="Select a CHIP SPA type to start your submission"
+    fieldsetLegend="Select a CHIP SPA type to create your submission"
     options={CHIP_SPA_OPTIONS}
   />
 );

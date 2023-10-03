@@ -117,7 +117,7 @@ export const B4_WAIVER_OPTIONS: OptionData[] = [
     linkTo: ROUTES.DASHBOARD,
   },
   {
-    title: "1915(b)(4) FFS Selective Selective Contracting Waiver Amendment",
+    title: "1915(b)(4) FFS Selective Contracting Waiver Amendment",
     description:
       "Amend an existing 1915(b)(4) FFS Selective Contracting Waiver",
     linkTo: ROUTES.DASHBOARD,
