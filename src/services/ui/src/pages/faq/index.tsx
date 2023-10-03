@@ -46,13 +46,13 @@ export const Faq = () => {
               <div>
                 <b>Phone Number</b>
                 <p className="mb-4 text-primary">
-                  <a href={`tel:${helpDeskContact.phone}`}>
+                  <a className="underline" href={`tel:${helpDeskContact.phone}`}>
                     {helpDeskContact.phone}
                   </a>
                 </p>
                 <b>Email</b>
                 <p className="text-primary">
-                  <a href={`mailto:${helpDeskContact.email}`}>
+                  <a className="underline" href={`mailto:${helpDeskContact.email}`}>
                     {helpDeskContact.email}
                   </a>
                 </p>
