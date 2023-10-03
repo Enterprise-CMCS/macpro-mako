@@ -23,7 +23,7 @@
     "lodash": "^4.17.21",
     "serverless-step-functions": "^3.13.1",
     "shared-types": "*",
-    "zod": "^3.21.4"
+    "zod": "^3.22.3"
   },
   "scripts": {
     "lint": "eslint '**/*.{ts,js}'"
