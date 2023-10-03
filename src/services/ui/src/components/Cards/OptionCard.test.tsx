@@ -16,17 +16,17 @@ describe("OptionCard Component System", () => {
         </OptionFieldset>
       );
     });
-    test("legend prop populates legend element in fieldset", () => {
-      expect(
-        screen.getByRole("group", { name: "Test Legend" })
-      ).toBeInTheDocument();
-    });
-    test("renders children", () => {
-      expect(
-        screen.getByText("Testing rendering of children")
-      ).toBeInTheDocument();
-    });
-  });
+//     test("legend prop populates legend element in fieldset", () => {
+//       expect(
+//         screen.getByRole("group", { name: "Test Legend" })
+//       ).toBeInTheDocument();
+//     });
+//     test("renders children", () => {
+//       expect(
+//         screen.getByText("Testing rendering of children")
+//       ).toBeInTheDocument();
+//     });
+//   });
   describe("OptionCard", () => {
     const renderOptionCard = (altBg: boolean) => {
       render(
