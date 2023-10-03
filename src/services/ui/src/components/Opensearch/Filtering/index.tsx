@@ -90,14 +90,10 @@ export const OsFiltering: FC<{
                 : BLANK_VALUE,
           },
           {
-            // TODO: Get more info on what property Formal Rai Response should be???
             name: "Formal RAI Response",
             transform: (data) => {
-              return data.raiResponses && data.raiResponses.length > 0
-                ? format(
-                    new Date(data.raiResponses[0].submissionTimestamp),
-                    "MM/dd/yyyy"
-                  )
+              return data.raiReceivedDate
+                ? format(new Date(data.raiReceivedDate), "MM/dd/yyyy")
                 : BLANK_VALUE;
             },
           },
