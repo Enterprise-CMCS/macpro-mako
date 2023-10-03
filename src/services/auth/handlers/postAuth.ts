@@ -22,17 +22,25 @@ export const handler: Handler = async (event, context) => {
     console.log("Getting user attributes from external API");
   
     try {
-      const identity = JSON.parse(userAttributes.identities).find((obj: any) => obj.providerName === 'IDM')
-      const userId = identity.userId;
-      const response = await fetch(`${apiEndpoint}/authz/id?userId=${userId}`, {
+      const username = userAttributes["custom:username"]; // This is the four letter IDM username
+      const response = await fetch(`${apiEndpoint}/api/v1/authz/id/all?userId=${username}`, {
         method: 'GET',
         headers: {
-          'Accept': 'application/json',
           'Content-Type': 'application/json',
           'x-api-key': apiKey,
         }
       });
-      console.log(response);
+      if (!response.ok) {
+        console.log(response)
+        throw new Error('Network response was not ok');
+      }
+      let data = await response.json();
+      console.log(JSON.stringify(data, null, 2))
+      let roleArray :any = [];
+      data.userProfileAppRoles.userRolesInfoList.forEach((element :any) => {
+        console.log(element)
+        roleArray.push(element.roleName);
+      });
 
       var attributeData :any = {
         Username: event.userName,
@@ -40,14 +48,14 @@ export const handler: Handler = async (event, context) => {
         UserAttributes: [
           {
             "Name": "custom:cms-roles",
-            "Value": "cms-system-admin"
+            "Value": roleArray.join()
           }
         ],
       };
       await cognitolib.updateUserAttributes(attributeData);
 
     } catch (error) {
-      console.error("Error fetching secret:", error);
+      console.error("Error performing post auth:", error);
     }
 
   }

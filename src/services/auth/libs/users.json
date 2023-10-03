@@ -24,7 +24,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "state-submitter"
+        "Value": "onemac-micro-statesubmitter"
       }
     ]
   },
@@ -53,7 +53,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "cms-read-only"
+        "Value": "onemac-micro-readonly"
       }
     ]
   },
@@ -82,12 +82,12 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "cms-reviewer"
+        "Value": "onemac-micro-reviewer"
       }
     ]
   },
   {
-    "username": "helpdesk@example.com",
+    "username": "onemac-micro-helpdesk@example.com",
     "attributes": [
       {
         "Name": "email",
@@ -111,7 +111,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "helpdesk"
+        "Value": "onemac-micro-helpdesk"
       }
     ]
   },
@@ -140,7 +140,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "cms-system-admin"
+        "Value": "onemac-micro-sysadmin"
       }
     ]
   },
@@ -169,7 +169,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "cms-role-approver"
+        "Value": "onemac-micro-roleapprover"
       }
     ]
   },
@@ -198,7 +198,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "state-submitter"
+        "Value": "onemac-micro-statesubmitter"
       }
     ]
   },
@@ -227,7 +227,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "state-system-admin"
+        "Value": "onemac-micro-statesysadmin"
       }
     ]
   },
@@ -256,7 +256,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "state-system-admin,state-submitter"
+        "Value": "onemac-micro-statesysadmin,onemac-micro-statesubmitter"
       }
     ]
   }

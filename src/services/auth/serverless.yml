@@ -101,7 +101,7 @@ resources:
               SourceArn: !Sub arn:aws:ses:${self:provider.region}:${AWS::AccountId}:identity/${self:custom.cognitoEmailAddress}
             - EmailSendingAccount: COGNITO_DEFAULT
         LambdaConfig:
-          PostAuthentication: !GetAtt PostAuthLambdaFunction.Arn
+          PreTokenGeneration: !GetAtt PostAuthLambdaFunction.Arn
         Schema:
           - Name: given_name
             AttributeDataType: String
@@ -116,6 +116,10 @@ resources:
             Mutable: true
             Required: false
           - Name: cms-roles
+            AttributeDataType: String
+            Mutable: true
+            Required: false
+          - Name: username
             AttributeDataType: String
             Mutable: true
             Required: false
@@ -180,9 +184,7 @@ resources:
           email: email
           given_name: given_name
           family_name: family_name
-          "custom:state": state
-          "custom:cms-roles": cmsRoles
-
+          "custom:username": "preferred_username"
         IdpIdentifiers:
           - IdpIdentifier
         ProviderDetails:
