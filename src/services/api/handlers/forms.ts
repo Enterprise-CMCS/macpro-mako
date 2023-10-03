@@ -1,14 +1,38 @@
-import { response } from "../libs/handler";
-import { APIGatewayEvent } from "aws-lambda";
-import { getStateFilter } from "../libs/auth/user";
-import * as os from "../../../libs/opensearch-lib";
-if (!process.env.osDomain) {
-  throw "ERROR:  osDomain env variable is required,";
-}
+import { APIGatewayProxyHandler } from "aws-lambda";
 
-// Handler function to search index
-export const forms = async (event: APIGatewayEvent) => {
-  return console.log("layer test");
+export const forms: APIGatewayProxyHandler = async (event) => {
+  try {
+    console.log(event.body);
+    const fileId = event.queryStringParameters?.formId;
+    const version = event.queryStringParameters?.version;
+
+    const filePath = getFilepathForIdAndVersion(fileId, version);
+    console.log(filePath);
+    const jsonData = require(`/opt/myLayer/form_v1.json`);
+
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonData,
+    };
+  } catch (error) {
+    console.error("Error:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Internal server error" }),
+    };
+  }
 };
 
-export const handler = forms;
+function getFilepathForIdAndVersion(
+  fileId: string,
+  version: string
+): string | undefined {
+  if (fileId && version) {
+    return `path/to/${fileId}_${version}.json`;
+  }
+
+  return undefined;
+}
