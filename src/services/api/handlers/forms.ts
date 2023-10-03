@@ -1,6 +1,4 @@
-import { APIGatewayProxyHandler } from "aws-lambda";
-
-export const forms: APIGatewayProxyHandler = async (event) => {
+export const forms = async (event) => {
   try {
     console.log(event.body);
     const fileId = event.queryStringParameters?.formId;
@@ -8,14 +6,14 @@ export const forms: APIGatewayProxyHandler = async (event) => {
 
     const filePath = getFilepathForIdAndVersion(fileId, version);
     console.log(filePath);
-    // const jsonData = require("/opt/myLayer/form_v1.json");
+    const jsonData = require("/opt/myLayer/form_v1.json");
 
     return {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
       },
-      body: "test",
+      body: jsonData,
     };
   } catch (error) {
     console.error("Error:", error);
@@ -36,3 +34,5 @@ function getFilepathForIdAndVersion(
 
   return undefined;
 }
+
+export const handler = forms;
