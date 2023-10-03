@@ -54,7 +54,7 @@ export const OsFiltering: FC<{
             transform: (data) => data.planType ?? BLANK_VALUE,
           },
           {
-            name: "Sub-Type",
+            name: "Action Type",
             transform: (data) => {
               if (data.actionType === undefined) {
                 return BLANK_VALUE;
@@ -92,10 +92,14 @@ export const OsFiltering: FC<{
           {
             // TODO: Get more info on what property Formal Rai Response should be???
             name: "Formal RAI Response",
-            transform: (data) =>
-              data?.raiRequestedDate
-                ? format(new Date(data.raiRequestedDate), "MM/dd/yyyy")
-                : BLANK_VALUE,
+            transform: (data) => {
+              return data.raiResponses && data.raiResponses.length > 0
+                ? format(
+                    new Date(data.raiResponses[0].submissionTimestamp),
+                    "MM/dd/yyyy"
+                  )
+                : BLANK_VALUE;
+            },
           },
           {
             name: "CPOC Name",
