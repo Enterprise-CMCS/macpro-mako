@@ -1,5 +1,11 @@
 import {MACFieldsetOption, OptionCard, OptionFieldset} from "@/components/Cards/OptionCard";
-import {AUTHORITY_OPTIONS, CHIP_SPA_OPTIONS, MEDICAID_SPA_OPTIONS, SPA_OPTIONS} from "@/pages/create/options";
+import {
+    AUTHORITY_OPTIONS, B4_WAIVER_OPTIONS, B_WAIVER_OPTIONS,
+    CHIP_SPA_OPTIONS,
+    MEDICAID_SPA_OPTIONS,
+    SPA_OPTIONS,
+    WAIVER_OPTIONS
+} from "@/pages/create/options";
 import {SimplePageContainer} from "@/components";
 
 /** Can be removed once page title bar with back nav is integrated */
@@ -60,4 +66,28 @@ export const ChipSPASubmissionOptions = () => (
         title="CHIP SPA Type"
         fieldsetLegend="Select a CHIP SPA type to start your submission"
         options={CHIP_SPA_OPTIONS} />
+);
+export const WaiverSubmissionOptions = () => (
+    <OptionsPage
+        title="Waiver Action Type"
+        fieldsetLegend="Select a Waiver type to start your submission."
+        options={WAIVER_OPTIONS} />
+);
+export const BWaiverSubmissionOptions = () => (
+    <OptionsPage
+        title="1915(b) Waiver Action Type"
+        fieldsetLegend="Select a 1915(b) Waiver type for your submission."
+        options={B_WAIVER_OPTIONS} />
+);
+export const B4WaiverSubmissionOptions = () => (
+    <OptionsPage
+        title="1915(b)(4) FFS Selective Contracting Waiver Authority"
+        fieldsetLegend="Select a Waiver type to start your submission."
+        options={B4_WAIVER_OPTIONS} />
+);
+export const BCapWaiverSubmissionOptions = () => (
+    <OptionsPage
+        title="1915(b) Comprehensive (Capitated) Waiver Authority"
+        fieldsetLegend="Select a Waiver type to start your submission."
+        options={B4_WAIVER_OPTIONS} />
 );

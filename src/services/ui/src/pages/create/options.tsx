@@ -10,7 +10,7 @@ export const AUTHORITY_OPTIONS: OptionData[] = [
     {
         title: "Waiver Action",
         description: "Submit Waivers, Amendments, Renewals, and Temporary Extensions",
-        linkTo: ROUTES.DASHBOARD
+        linkTo: ROUTES.WAIVER_SUBMISSION_OPTIONS
     },
 ];
 
@@ -62,17 +62,17 @@ export const WAIVER_OPTIONS: OptionData[] = [
     {
         title: "Request Temporary Extension",
         description: "Submit for 1915(b) or 1915(c)",
-        linkTo: ROUTES.DASHBOARD
+        linkTo: ROUTES.CREATE
     },
     {
         title: "1915(b) Waiver Actions",
         description: "Submit 1915(b) Waivers, Amendments, and Renewals",
-        linkTo: ROUTES.DASHBOARD
+        linkTo: ROUTES.B_WAIVER_SUBMISSION_OPTIONS
     },
     {
         title: "1915(c) Appendix K Amendment",
         description: "Create a 1915(c) Appendix K Amendment",
-        linkTo: ROUTES.DASHBOARD
+        linkTo: ROUTES.CREATE
     },
 ];
 
@@ -80,17 +80,17 @@ export const B_WAIVER_OPTIONS: OptionData[] = [
     {
         title: "1915(b)(4) FFS Selective Contracting Waivers",
         description: "Submit 1915(b)(4) FFS Selective Contracting Waivers, Amendments, and Renewals",
-        linkTo: ROUTES.DASHBOARD
+        linkTo: ROUTES.B4_WAIVER_OPTIONS
     },
     {
         title: "1915(b) Comprehensive (Capitated) Waiver Authority",
         description: (
             <>
-                Submit 1915(b) Comprehensive (Capitated) Waivers, Amendments and Renewals
+                Submit 1915(b) Comprehensive (Capitated) Waivers, Amendments and Renewals <br/>
                 <b><em>Not applicable for 1915(b)(4) FFS Selective Contracting Waiver actions</em></b>
             </>
         ),
-        linkTo: ROUTES.DASHBOARD
+        linkTo: ROUTES.BCAP_WAIVER_OPTIONS
     },
 ];
 

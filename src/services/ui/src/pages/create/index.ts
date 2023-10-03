@@ -3,7 +3,11 @@ export {
     NewSubmissionInitialOptions,
     SPASubmissionOptions,
     MedicaidSPASubmissionOptions,
-    ChipSPASubmissionOptions
+    ChipSPASubmissionOptions,
+    WaiverSubmissionOptions,
+    BWaiverSubmissionOptions,
+    B4WaiverSubmissionOptions,
+    BCapWaiverSubmissionOptions
 } from "./create-options";
 export {
     MedicaidABPLandingPage,
