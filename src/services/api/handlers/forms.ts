@@ -1,7 +1,7 @@
 export const forms = async (event) => {
   try {
-    const body = JSON.parse(event.body);
-    console.log(body);
+    console.log("event:::", event);
+    // const body = JSON.parse(event.body);
     const fileId = event.queryStringParameters?.formId;
     const version = event.queryStringParameters?.version;
 
