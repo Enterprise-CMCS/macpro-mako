@@ -4,9 +4,9 @@ export const forms = async (event: APIGatewayEvent) => {
   try {
     const body = event.body ? JSON.parse(event.body) : {};
     const fileId = body.fileId;
-    const version = body.version;
+    const formVersion = body.formVersion;
 
-    const filePath = getFilepathForIdAndVersion(fileId, version);
+    const filePath = getFilepathForIdAndVersion(fileId, formVersion);
     console.log(filePath);
     const jsonData = await require(filePath);
     console.log(jsonData);
@@ -29,10 +29,10 @@ export const forms = async (event: APIGatewayEvent) => {
 
 function getFilepathForIdAndVersion(
   fileId: string,
-  version: string
+  formVersion: string
 ): string | undefined {
-  if (fileId && version) {
-    return `/opt/${fileId}_v${version}.json`;
+  if (fileId && formVersion) {
+    return `/opt/${fileId}_v${formVersion}.json`;
   }
 
   return "/opt/form_v1.json";
