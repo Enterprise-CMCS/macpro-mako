@@ -37,9 +37,17 @@ export const handler: Handler = async (event, context) => {
       let data = await response.json();
       console.log(JSON.stringify(data, null, 2))
       let roleArray :any = [];
+      let stateArray :any = [];
       data.userProfileAppRoles.userRolesInfoList.forEach((element :any) => {
-        console.log(element)
-        roleArray.push(element.roleName);
+        let role = element.roleName;
+        roleArray.push(role);
+        if(["onemac-micro-statesubmitter", "onemac-micro-statesysadmin"].includes(role)){
+          element.roleAttributes.forEach((attr :any) => {
+            if(attr.name = "State/Territory"){
+              stateArray.push(attr.value);
+            }
+          })
+        }
       });
 
       var attributeData :any = {
@@ -49,9 +57,15 @@ export const handler: Handler = async (event, context) => {
           {
             "Name": "custom:cms-roles",
             "Value": roleArray.join()
+          },
+          {
+            "Name": "custom:state",
+            "Value": stateArray.join()
           }
         ],
       };
+      console.log("Putting user attributes as: ");
+      console.log(JSON.stringify(attributeData,null,2));
       await cognitolib.updateUserAttributes(attributeData);
 
     } catch (error) {
