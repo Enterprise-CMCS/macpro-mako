@@ -1,5 +1,5 @@
+import fs from "fs";
 import { APIGatewayEvent } from "aws-lambda";
-const fs = require("fs");
 
 export const forms = async (event: APIGatewayEvent) => {
   try {
@@ -7,8 +7,15 @@ export const forms = async (event: APIGatewayEvent) => {
     const fileId = body.fileId;
     const formVersion = body.formVersion;
 
-    const files = fs.readdirSync("/opt/");
-    console.log("dir:", files);
+    if (!fileId) {
+      return {
+        statusCode: 404,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ error: "File Not Found" }),
+      };
+    }
 
     const filePath = getFilepathForIdAndVersion(fileId, formVersion);
     console.log(filePath);
@@ -39,7 +46,18 @@ function getFilepathForIdAndVersion(
     return `/opt/${fileId}/v${formVersion}.json`;
   }
 
-  return "/opt/testform/v1.json";
+  const files = fs.readdirSync(`/opt/${fileId}`);
+
+  const versionNumbers = files.map((fileName: string) => {
+    const match = fileName.match(/^v(\d+)\./);
+    if (match) {
+      return parseInt(match[1], 10); // Parse the version number as an integer
+    }
+    return 1;
+  });
+  const maxVersion = Math.max(...versionNumbers);
+
+  return `/opt/${fileId}/v${maxVersion}.json`;
 }
 
 export const handler = forms;
