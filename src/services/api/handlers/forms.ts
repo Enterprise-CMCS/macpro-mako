@@ -8,14 +8,15 @@ export const forms = async (event) => {
     const filePath = getFilepathForIdAndVersion(fileId, version);
     console.log(filePath);
 
-    const jsonData3 = require("/opt/form_v1.json");
+    const jsonData = require("/opt/form_v1.json");
+    console.log(jsonData);
 
     return {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
       },
-      body: jsonData3,
+      body: jsonData,
     };
   } catch (error) {
     console.error("Error:", error);
