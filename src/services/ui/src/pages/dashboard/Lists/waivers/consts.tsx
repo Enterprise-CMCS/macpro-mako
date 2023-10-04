@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
 import { LABELS } from "@/lib";
-import { BLANK_VALUE } from "constant-values";
+import { BLANK_VALUE } from "@/consts";
 
 export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   {

@@ -6,7 +6,7 @@ import { useOsContext } from "../Provider";
 import { OsFilterDrawer } from "./FilterDrawer";
 import { getAllSearchData } from "@/api";
 import { useGetUser } from "@/api/useGetUser";
-import { BLANK_VALUE } from "constant-values";
+import { BLANK_VALUE } from "@/consts";
 import { format } from "date-fns";
 import { LABELS } from "@/lib/labels";
 
