@@ -46,7 +46,9 @@ export const Create = () => {
       ...data,
       id: `${dropDownValue}-${data.id}`,
       state: dropDownValue,
-      authority: authority!.split("-").join(" "),
+      // authority: authority!.split("-").join(" "),
+      // This will become dynamic again once forms are introduced (KH)
+      authority: "medicaid spa",
     };
     mutate(newData);
   };

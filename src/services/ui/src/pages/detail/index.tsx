@@ -46,7 +46,7 @@ export const DetailsContent = ({
       <div className="flex-1">
         <section id="package-overview" className="block md:flex mb-8 gap-8">
           <CardWithTopBorder>
-            <>
+            <div className="p-4">
               <p className="text-gray-600 font-semibold mb-2">Status</p>
               <div>
                 <h2 className="text-xl font-semibold mb-2">
@@ -55,22 +55,24 @@ export const DetailsContent = ({
                     : data._source.stateStatus}
                 </h2>
               </div>
-            </>
+            </div>
           </CardWithTopBorder>
         </section>
         <DetailsSection id="package-details" title="Package Details">
           <ChipSpaPackageDetails {...data?._source} />
         </DetailsSection>
+        <SubmissionInfo {...data?._source} />
+        {/* Below is used for spacing. Keep it simple */}
+        <div className="mb-4" />
         <DetailsSection id="attachments" title="Attachments">
           <Attachmentslist {...data?._source} />
         </DetailsSection>
-        <RaiResponses {...data?._source} />
         <DetailsSection id="additional-info" title="Additional Information">
           <AdditionalInfo
             additionalInformation={data?._source.additionalInformation}
           />
         </DetailsSection>
-        <SubmissionInfo {...data?._source} />
+        <RaiResponses {...data?._source} />
       </div>
     </div>
   );
