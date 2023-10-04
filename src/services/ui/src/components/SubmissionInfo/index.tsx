@@ -1,4 +1,4 @@
-import { BLANK_VALUE } from "consts";
+import { BLANK_VALUE } from "constant-values";
 import { OsMainSourceItem } from "shared-types";
 
 export const SubmissionInfo = (data: OsMainSourceItem) => {

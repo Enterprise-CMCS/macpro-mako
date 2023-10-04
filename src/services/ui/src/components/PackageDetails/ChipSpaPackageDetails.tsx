@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { OsMainSourceItem } from "shared-types";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { LABELS } from "@/lib";
-import { BLANK_VALUE } from "consts";
+import { BLANK_VALUE } from "constant-values";
 
 export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
   if (!data) return null;
