@@ -45,7 +45,6 @@
     "aws-amplify": "^5.2.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
-    "constant-values": "*",
     "shared-types": "*",
     "shared-utils": "*",
     "date-fns": "^2.30.0",
