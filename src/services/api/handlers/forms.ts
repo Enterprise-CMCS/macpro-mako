@@ -32,7 +32,7 @@ function getFilepathForIdAndVersion(
   version: string
 ): string | undefined {
   if (fileId && version) {
-    return `/opt/${fileId}_${version}.json`;
+    return `/opt/${fileId}_v${version}.json`;
   }
 
   return "/opt/form_v1.json";
