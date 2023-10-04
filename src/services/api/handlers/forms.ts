@@ -1,12 +1,13 @@
 export const forms = async (event) => {
   try {
-    console.log(event.body);
+    const body = JSON.parse(event.body);
+    console.log(body);
     const fileId = event.queryStringParameters?.formId;
     const version = event.queryStringParameters?.version;
 
     const filePath = getFilepathForIdAndVersion(fileId, version);
     console.log(filePath);
-    const jsonData = require("/opt/myLayer/form_v1.json");
+    const jsonData = require("/opt/layer/form_v1.json");
 
     return {
       statusCode: 200,
