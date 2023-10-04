@@ -7,7 +7,7 @@ export const forms = async (event: APIGatewayEvent) => {
     const fileId = body.fileId;
     const formVersion = body.formVersion;
 
-    const files = fs.readdirSync(/opt/);
+    const files = fs.readdirSync("/opt/");
     console.log("dir:", files);
 
     const filePath = getFilepathForIdAndVersion(fileId, formVersion);
