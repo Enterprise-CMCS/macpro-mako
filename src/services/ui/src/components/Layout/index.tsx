@@ -114,7 +114,14 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       <>
         {getLinks(!!data.user).map((link) => (
           <NavLink
-            to={link.link}
+            to={
+              link.name !== "FAQ" && link.name !== "Dashboard" ? link.link : ""
+            }
+            onClick={() => {
+              if (link.name === "FAQ" || link.name === "Dashboard") {
+                window.open(link.link, "myWindow");
+              }
+            }}
             key={link.name}
             className={setClassBasedOnNav}
           >
@@ -152,9 +159,18 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             {getLinks(!!data.user).map((link) => (
               <li key={link.link}>
                 <Link
-                  onClick={() => setIsOpen(false)}
                   className="block py-2 pl-3 pr-4 text-white rounded"
-                  to={link.link}
+                  to={
+                    link.name !== "FAQ" && link.name !== "Dashboard"
+                      ? link.link
+                      : ""
+                  }
+                  onClick={() => {
+                    setIsOpen(false);
+                    if (link.name === "FAQ" || link.name === "Dashboard") {
+                      window.open(link.link, "myWindow");
+                    }
+                  }}
                 >
                   {link.name}
                 </Link>

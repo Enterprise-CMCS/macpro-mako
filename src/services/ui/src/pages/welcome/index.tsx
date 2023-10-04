@@ -176,7 +176,14 @@ export const Welcome = () => {
         <div className="flex justify-around items-center text-xl py-10 px-10 py-4 max-w-screen-xl mx-auto">
           <h4>Do you have questions or need support?</h4>
           <Button asChild>
-            <Link to="/faq">View FAQ</Link>
+            <Link
+              to=""
+              onClick={() => {
+                window.open("/faq", "myWindow");
+              }}
+            >
+              View FAQ
+            </Link>
           </Button>
         </div>
       </section>
