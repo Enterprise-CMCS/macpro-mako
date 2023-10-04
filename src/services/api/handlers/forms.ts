@@ -9,7 +9,6 @@ export const forms = async (event) => {
     console.log(filePath);
     const cwd = process.cwd();
     console.log("CWD", cwd);
-    const jsonData2 = require("/opt/forms/form_v1.json");
     const jsonData3 = require("/opt/FormsLambdaLayer/form_v1.json");
 
     console.log(jsonData, jsonData2, jsonData3);
