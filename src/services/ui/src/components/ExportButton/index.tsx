@@ -81,7 +81,7 @@ export const ExportButton = <TData extends Record<string, any>>({
           </motion.div>
         )}
         {!loading && <Download className="w-4 h-4" />}
-        <p className="prose-sm">Export</p>
+        <span className="prose-sm">Export</span>
       </Button>
     </>
   );
