@@ -11,7 +11,7 @@ export const forms = async (event) => {
     console.log(filePath);
     const cwd = process.cwd();
     console.log("CWD", cwd);
-    if (fs.existsSync("/opt/forms")) {
+    if (fs.existsSync("/opt")) {
       console.log("Directory exists");
       // You can proceed with reading files or performing other operations within the directory
     } else {
