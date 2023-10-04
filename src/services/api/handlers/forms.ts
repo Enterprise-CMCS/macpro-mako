@@ -7,6 +7,8 @@ export const forms = async (event) => {
 
     const filePath = getFilepathForIdAndVersion(fileId, version);
     console.log(filePath);
+    const cwd = process.cwd();
+    console.log("CWD", cwd);
     const jsonData = require("/opt/layer/form_v1.json");
 
     return {
