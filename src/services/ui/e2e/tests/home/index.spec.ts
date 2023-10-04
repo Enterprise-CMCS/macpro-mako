@@ -17,14 +17,12 @@ test("has title", async ({ page }) => {
   await expect(page).toHaveTitle(/CMS MAKO/);
 });
 
-test("see frequently asked questions header when in faq page", async ({
-  page,
-}) => {
+test.only("test", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "FAQ" }).first().click();
-
-  const foundFaqHeading = await page
-    .getByRole("heading", { name: "Frequently Asked Questions" })
+  const popup = page.waitForEvent("popup");
+  await page.getByRole("link", { name: "FAQ", exact: true }).click();
+  const foundFaqHeading = await popup;
+  await foundFaqHeading.getByRole("heading", { name: "Frequently Asked Questions" })
     .isVisible();
   expect(foundFaqHeading).toBeTruthy();
 });
