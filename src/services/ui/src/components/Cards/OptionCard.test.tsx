@@ -5,9 +5,6 @@ import { ROUTES } from "@/routes";
 import { BrowserRouter } from "react-router-dom";
 
 describe("OptionCard Component System", () => {
-  test("testing the tests", () => {
-    expect(1).toEqual(1);
-  });
   describe("OptionFieldset", () => {
     beforeEach(() => {
       render(
@@ -40,9 +37,6 @@ describe("OptionCard Component System", () => {
         </BrowserRouter>
       );
     };
-    test("test", () => {
-      expect(1).toEqual(1);
-    });
     test("default background is white", () => {
       renderOptionCard(false);
       const innerWrapper = screen.getByTestId("card-inner-wrapper");
