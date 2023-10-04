@@ -9,7 +9,7 @@ export const forms = async (event) => {
     console.log(filePath);
     const cwd = process.cwd();
     console.log("CWD", cwd);
-    const jsonData3 = require("/opt/FormsLambdaLayer/form_v1.json");
+    const jsonData3 = require("/opt/forms");
 
     console.log(jsonData, jsonData2, jsonData3);
     return {
@@ -17,7 +17,7 @@ export const forms = async (event) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: jsonData,
+      body: jsonData3,
     };
   } catch (error) {
     console.error("Error:", error);
