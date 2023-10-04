@@ -17,7 +17,7 @@ test("has title", async ({ page }) => {
   await expect(page).toHaveTitle(/CMS MAKO/);
 });
 
-test.only("test", async ({ page }) => {
+test("see frequently asked questions header when in faq page", async ({ page }) => {
   await page.goto("/");
   const popup = page.waitForEvent("popup");
   await page.getByRole("link", { name: "FAQ", exact: true }).click();
