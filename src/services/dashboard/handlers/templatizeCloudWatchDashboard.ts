@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { CloudWatch } from "@aws-sdk/client-cloudwatch";
 import { checkEnvVars } from "../../../libs";
 
@@ -42,10 +41,10 @@ export const handler = async () => {
     });
 
     const replacables = {
-      [accountId!]: "${aws:accountId}",
-      [stage!]: "${sls:stage}",
-      [region!]: "${env:REGION_A}",
-      [service!]: "${self:service}",
+      [accountId]: "${aws:accountId}",
+      [stage]: "${sls:stage}",
+      [region]: "${env:REGION_A}",
+      [service]: "${self:service}",
     };
     const templateJson = dashboard.DashboardBody;
     const results = replaceStringValues(templateJson, replacables);
