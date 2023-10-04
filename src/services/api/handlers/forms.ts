@@ -1,10 +1,14 @@
 import { APIGatewayEvent } from "aws-lambda";
+const fs = require("fs");
 
 export const forms = async (event: APIGatewayEvent) => {
   try {
     const body = event.body ? JSON.parse(event.body) : {};
     const fileId = body.fileId;
     const formVersion = body.formVersion;
+
+    const files = fs.readdirSync(/opt/);
+    console.log("dir:", files);
 
     const filePath = getFilepathForIdAndVersion(fileId, formVersion);
     console.log(filePath);
@@ -32,10 +36,10 @@ function getFilepathForIdAndVersion(
   formVersion: string
 ): string | undefined {
   if (fileId && formVersion) {
-    return `/opt/${fileId}_v${formVersion}.json`;
+    return `/opt/${fileId}/v${formVersion}.json`;
   }
 
-  return "/opt/form_v1.json";
+  return "/opt/testform/v1.json";
 }
 
 export const handler = forms;
