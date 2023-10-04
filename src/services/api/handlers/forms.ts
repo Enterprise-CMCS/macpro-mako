@@ -51,7 +51,7 @@ function getFilepathForIdAndVersion(
   const versionNumbers = files.map((fileName: string) => {
     const match = fileName.match(/^v(\d+)\./);
     if (match) {
-      return parseInt(match[1], 10); // Parse the version number as an integer
+      return parseInt(match[1], 10);
     }
     return 1;
   });
