@@ -1,6 +1,5 @@
 import { getAttachmentUrl } from "@/api";
 import { format } from "date-fns";
-import { BLANK_VALUE } from "consts";
 import { DownloadIcon } from "lucide-react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -15,6 +14,8 @@ import {
   TableHeader,
   TableRow,
 } from "../Table";
+
+const BLANK_VALUE = "-- --";
 
 type AttachmentList = {
   id: string;
