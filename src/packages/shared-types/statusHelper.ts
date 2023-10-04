@@ -1,4 +1,4 @@
-const SEATOOL_STATUS = {
+export const SEATOOL_STATUS = {
   PENDING: "Pending",
   PENDING_RAI: "Pending-RAI",
   APPROVED: "Approved",
