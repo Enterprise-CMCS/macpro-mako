@@ -1,31 +1,15 @@
-const fs = require("fs");
-
 export const forms = async (event) => {
   try {
     console.log("event:::", event);
     // const body = JSON.parse(event.body);
-    const fileId = event.queryStringParameters?.formId;
-    const version = event.queryStringParameters?.version;
+    const fileId = event.formId;
+    const version = event.version;
 
     const filePath = getFilepathForIdAndVersion(fileId, version);
     console.log(filePath);
-    const cwd = process.cwd();
-    console.log("CWD", cwd);
-    if (fs.existsSync("/opt")) {
-      const files = fs.readdirSync("/opt");
 
-      // Log the files in the directory
-      console.log("Files in directory:", files);
-      console.log("Directory exists");
-      // You can proceed with reading files or performing other operations within the directory
-    } else {
-      console.log("Directory does not exist");
-      // Handle the case where the directory does not exist
-    }
+    const jsonData3 = require("/opt/form_v1.json");
 
-    const jsonData3 = require("/opt/forms/form_v1.json");
-
-    console.log(jsonData, jsonData2, jsonData3);
     return {
       statusCode: 200,
       headers: {
