@@ -1,14 +1,14 @@
-export const forms = async (event) => {
+import { APIGatewayEvent } from "aws-lambda";
+
+export const forms = async (event: APIGatewayEvent) => {
   try {
-    console.log("event:::", event);
-    // const body = JSON.parse(event.body);
-    const fileId = event.formId;
-    const version = event.version;
+    const body = event.body ? JSON.parse(event.body) : {};
+    const fileId = body.fileId;
+    const version = body.version;
 
     const filePath = getFilepathForIdAndVersion(fileId, version);
     console.log(filePath);
-
-    const jsonData = require("/opt/form_v1.json");
+    const jsonData = await require(filePath);
     console.log(jsonData);
 
     return {
@@ -32,10 +32,10 @@ function getFilepathForIdAndVersion(
   version: string
 ): string | undefined {
   if (fileId && version) {
-    return `path/to/${fileId}_${version}.json`;
+    return `/opt/${fileId}_${version}.json`;
   }
 
-  return undefined;
+  return "/opt/form_v1.json";
 }
 
 export const handler = forms;
