@@ -12,6 +12,10 @@ export const forms = async (event) => {
     const cwd = process.cwd();
     console.log("CWD", cwd);
     if (fs.existsSync("/opt")) {
+      const files = fs.readdirSync("/opt");
+
+      // Log the files in the directory
+      console.log("Files in directory:", files);
       console.log("Directory exists");
       // You can proceed with reading files or performing other operations within the directory
     } else {
