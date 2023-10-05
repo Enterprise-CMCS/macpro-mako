@@ -319,9 +319,11 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
 }) => {
   return (
     <div className="py-4">
-      <div className="mb-6">
-        <FormLabel className="font-bold">{props.form?.description}</FormLabel>
-      </div>
+      {props.form.description && (
+        <div className="mb-6">
+          <FormLabel className="font-bold">{props.form?.description}</FormLabel>
+        </div>
+      )}
       <FormField
         control={props.control}
         name={props.form.slot.name}
@@ -337,9 +339,11 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
 }) => {
   return (
     <div className="py-4">
-      <div className="mb-6">
-        <FormLabel className="font-bold">{props.section.title}</FormLabel>
-      </div>
+      {props.section.title && (
+        <div className="mb-6">
+          <FormLabel className="font-bold">{props.section.title}</FormLabel>
+        </div>
+      )}
       {props.section.form.map((FORM, index) => (
         <RHFFormGroup
           key={`rhf-form-${index}-${FORM.description}`}
