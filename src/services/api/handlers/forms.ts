@@ -13,14 +13,22 @@ export const forms = async (event: APIGatewayEvent) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ error: "File Not Found" }),
+        body: JSON.stringify({ error: "File ID was not provided" }),
       };
     }
 
     const filePath = getFilepathForIdAndVersion(fileId, formVersion);
-    console.log(filePath);
+    if (!filePath) {
+      return {
+        statusCode: 404,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ error: "File Not Found" }),
+      };
+    }
+
     const jsonData = await require(filePath);
-    console.log(jsonData);
 
     return {
       statusCode: 200,
@@ -40,7 +48,7 @@ export const forms = async (event: APIGatewayEvent) => {
 
 function getFilepathForIdAndVersion(
   fileId: string,
-  formVersion: string
+  formVersion: string | undefined
 ): string | undefined {
   if (fileId && formVersion) {
     return `/opt/${fileId}/v${formVersion}.json`;
@@ -56,6 +64,10 @@ function getFilepathForIdAndVersion(
     return 1;
   });
   const maxVersion = Math.max(...versionNumbers);
+
+  if (!maxVersion) {
+    return undefined;
+  }
 
   return `/opt/${fileId}/v${maxVersion}.json`;
 }
