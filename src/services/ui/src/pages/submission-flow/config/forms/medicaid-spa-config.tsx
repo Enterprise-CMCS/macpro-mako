@@ -1,4 +1,5 @@
 import { FormPageConfig } from "@/pages/submission-flow/renderers/FormPage";
+import { ROUTES } from "@/routes";
 
 export const MEDICAID_SPA_FORM: FormPageConfig = {
   pageTitle: "Submit New Medicaid SPA",
@@ -17,7 +18,11 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
   fields: [
     {
       id: "spa-id",
-      heading: "SPA ID",
+      heading: {
+        text: "SPA ID",
+        linkText: "What is my SPA ID?",
+        linkRoute: ROUTES.FAQ,
+      },
       instructions: <p></p>,
       content: <></>,
     },
