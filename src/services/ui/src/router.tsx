@@ -65,9 +65,8 @@ export const router = createBrowserRouter([
         path: ROUTES.CHIP_ELIGIBILITY_LANDING,
         element: <P.CHIPEligibilityLandingPage />,
       },
+      { path: ROUTES.MEDICAID_SPA_FORM, element: <P.SampleFormPage /> },
       { path: ROUTES.CREATE, element: <P.Create /> },
-      // TODO: Remove "/form" and ExampleForm if there's no usage; the Create page
-      //  is our current SEATool integration test form.
       { path: "/form", element: <P.ExampleForm /> },
     ],
     loader: rootLoader(queryClient),

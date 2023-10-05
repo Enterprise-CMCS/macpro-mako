@@ -14,3 +14,4 @@ export {
   MedicaidEligibilityLandingPage,
   CHIPEligibilityLandingPage,
 } from "./renderers/ExternalAppLandingPage";
+export { SampleFormPage } from "./renderers/FormPage";
