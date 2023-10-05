@@ -65,7 +65,7 @@ export const transformOnemac = (id: string) => {
       }) ?? null,
     additionalInformation: data.additionalInformation,
     submitterEmail: data.submitterEmail,
-    submitterName: data.submitterName,
+    submitterName: data.submitterName === "-- --" ? null : data.submitterName,
     origin: "oneMAC",
   }));
 };

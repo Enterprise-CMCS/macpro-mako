@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 export type OsTableColumn = {
   field: OsField;
   label: string;
+  visible?: boolean;
+  locked?: boolean;
   props?: any;
   cell: (data: OsHit<OsMainSourceItem>["_source"]) => ReactNode;
 };
