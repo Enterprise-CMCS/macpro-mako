@@ -36,8 +36,8 @@ export const handler: Handler = async (event, context) => {
       }
       let data = await response.json();
       console.log(JSON.stringify(data, null, 2))
-      let roleArray :any = [];
-      let stateArray :any = [];
+      let roleArray :string[] = [];
+      let stateArray :string[] = [];
       data.userProfileAppRoles.userRolesInfoList.forEach((element :any) => {
         let role = element.roleName;
         roleArray.push(role);
