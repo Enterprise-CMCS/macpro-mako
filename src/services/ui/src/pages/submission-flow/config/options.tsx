@@ -1,5 +1,5 @@
 import { ROUTES } from "@/routes";
-import { OptionData } from "@/pages/create/create-options";
+import { OptionData } from "@/pages/submission-flow/renderers/OptionsPage";
 
 export const AUTHORITY_OPTIONS: OptionData[] = [
   {

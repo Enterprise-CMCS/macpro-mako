@@ -8,9 +8,9 @@ export {
   BWaiverSubmissionOptions,
   B4WaiverSubmissionOptions,
   BCapWaiverSubmissionOptions,
-} from "./create-options";
+} from "./renderers/OptionsPage";
 export {
   MedicaidABPLandingPage,
   MedicaidEligibilityLandingPage,
   CHIPEligibilityLandingPage,
-} from "./external-landing/ExternalAppLandingPage";
+} from "./renderers/ExternalAppLandingPage";

@@ -12,7 +12,7 @@ import {
   MEDICAID_SPA_OPTIONS,
   SPA_OPTIONS,
   WAIVER_OPTIONS,
-} from "@/pages/create/options";
+} from "@/pages/submission-flow/config/options";
 import { SimplePageContainer } from "@/components";
 
 /** Can be removed once page title bar with back nav is integrated */

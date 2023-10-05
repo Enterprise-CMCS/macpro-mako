@@ -1,7 +1,7 @@
 import { Button } from "@/components/Inputs";
 import { Link } from "react-router-dom";
 import { PropsWithChildren, ReactElement } from "react";
-import { SimplePageTitle } from "@/pages/create/create-options";
+import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
 import { SimplePageContainer } from "@/components";
 import { FAQ_SECTION, ROUTES } from "@/routes";
 export enum EXTERNAL_APP {
