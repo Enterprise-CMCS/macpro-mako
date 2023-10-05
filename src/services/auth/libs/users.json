@@ -116,64 +116,6 @@
     ]
   },
   {
-    "username": "cmsadmin@example.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "cmsadmin@example.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "CMS"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Admin"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:state",
-        "Value": ""
-      },
-      {
-        "Name": "custom:cms-roles",
-        "Value": "onemac-micro-sysadmin"
-      }
-    ]
-  },
-  {
-    "username": "approver@example.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "approver@example.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "CMS"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Approver"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:state",
-        "Value": ""
-      },
-      {
-        "Name": "custom:cms-roles",
-        "Value": "onemac-micro-roleapprover"
-      }
-    ]
-  },
-  {
     "username": "submitter@example.com",
     "attributes": [
       {
@@ -203,35 +145,6 @@
     ]
   },
   {
-    "username": "stateadmin@example.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "stateadmin@example.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "State"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Admin"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:state",
-        "Value": "VA"
-      },
-      {
-        "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesysadmin"
-      }
-    ]
-  },
-  {
     "username": "statemulti@example.com",
     "attributes": [
       {
@@ -256,7 +169,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesysadmin,onemac-micro-statesubmitter"
+        "Value": "onemac-micro-statesubmitter"
       }
     ]
   }
