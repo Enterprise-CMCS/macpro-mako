@@ -31,8 +31,8 @@ export const handler: Handler = async (event, context) => {
         }
       });
       if (!response.ok) {
-        console.log(response)
-        throw new Error('Network response was not ok');
+        console.log(response);
+        throw new Error(`Network response was not ok.  Response was ${response.status}: ${response.statusText}`);
       }
       let data = await response.json();
       console.log(JSON.stringify(data, null, 2))
