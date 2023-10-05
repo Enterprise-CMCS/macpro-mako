@@ -28,6 +28,20 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import { cn } from "@/lib";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import {
+  FormSection,
+  RHFFormGroup,
+  RHFInput,
+  RHFSlot,
+  RHFSlotGroup,
+} from "@/components/RHF/RHFInput";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/Accordion";
+import { ABP1 } from "./proto";
 
 const items = [
   {
@@ -57,249 +71,197 @@ const items = [
 ] as const;
 
 const FormSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  alt_benefit_plan_population_name: z.string().min(2, {
+    message: "must be at least 2 characters.",
   }),
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
+  eligibility_groups: z.array(
+    z.object({
+      eligibility_group: z.string(),
+      mandatory_voluntary: z.enum(["mandatory", "voluntary"]),
     })
-    .email(),
-  bio: z
-    .string()
-    .min(10, {
-      message: "Bio must be at least 10 characters.",
+  ),
+  is_enrollment_available: z.enum(["yes", "no"]),
+  target_criteria: z.array(z.string()),
+  income_target: z.string(),
+  income_definition: z.string(),
+  income_definition_specific: z.string(),
+  income_definition_specific_statewide: z.array(
+    z.object({
+      household_size: z.string(),
+      standard: z.number(),
     })
-    .max(160, {
-      message: "Bio must not be longer than 30 characters.",
-    }),
-  marketing_emails: z.boolean().default(false).optional(),
-  security_emails: z.boolean(),
-  type: z.enum(["all", "mentions", "none"], {
-    required_error: "You need to select a notification type.",
-  }),
-  dob: z.date({
-    required_error: "A date of birth is required.",
-  }),
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "You have to select at least one item.",
-  }),
+  ),
+  is_incremental_amount: z.boolean(),
+  dollar_incremental_amount: z.string(),
+  // username: z.string().min(2, {
+  //   message: "Username must be at least 2 characters.",
+  // }),
+  // email: z
+  //   .string({
+  //     required_error: "Please select an email to display.",
+  //   })
+  //   .email(),
+  // bio: z
+  //   .string()
+  //   .min(10, {
+  //     message: "Bio must be at least 10 characters.",
+  //   })
+  //   .max(160, {
+  //     message: "Bio must not be longer than 30 characters.",
+  //   }),
+  // marketing_emails: z.boolean().default(false).optional(),
+  // security_emails: z.boolean(),
+  // type: z.enum(["all", "mentions", "none"], {
+  //   required_error: "You need to select a notification type.",
+  // }),
+  // dob: z.date({
+  //   required_error: "A date of birth is required.",
+  // }),
+  // items: z.array(z.string()).refine((value) => value.some((item) => item), {
+  //   message: "You have to select at least one item.",
+  // }),
 });
 
 export function ExampleForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      items: ["recents", "home"],
+      alt_benefit_plan_population_name: "",
+      eligibility_groups: [],
+      is_enrollment_available: "no",
+      target_criteria: [],
+      income_target: "",
+      income_definition: "",
+      income_definition_specific: "",
+      income_definition_specific_statewide: [],
+      is_incremental_amount: false,
+      dollar_incremental_amount: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log({ data });
-  }
+  const onSubmit = form.handleSubmit((data) => {
+    console.log(data);
+  });
 
   return (
     <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-2/3 space-y-6"
-        >
-          <FormField
+        <form onSubmit={onSubmit} className="w-2/3 space-y-6">
+          <Accordion type="multiple" className="w-auto">
+            {ABP1.sections.map((SEC) => (
+              <AccordionItem value="sd" defaultChecked key={SEC.title}>
+                <AccordionTrigger className="bg-primary p-4 w-full text-white text-xl">
+                  {SEC.title}
+                </AccordionTrigger>
+
+                <AccordionContent>
+                  {SEC.form.map((GP) => {
+                    return (
+                      <RHFFormGroup
+                        key={GP.description}
+                        control={form.control}
+                        form={GP}
+                      />
+                    );
+                  })}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+          {/* <RHFSlotGroup control={form.control} /> */}
+          {/* <FormField
             control={form.control}
             name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="jimmy somethin" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={RHFSlot({
+              RHF: "Input",
+              label: "Username",
+              placeholder: "jimmy something",
+              description: "This is your public display name.",
+            })}
           />
           <FormField
             control={form.control}
             name="bio"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Bio</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Tell us a little bit about yourself"
-                    className="resize-none"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>
+            render={RHFSlot({
+              RHF: "Textarea",
+              label: "Bio",
+              placeholder: "Tell us a little bit about yourself",
+              className: "resize-none",
+              description: (
+                <>
                   You can <span>@mention</span> other users and organizations.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+                </>
+              ),
+            })}
           />
-          <div>
-            <h3 className="mb-4 text-lg font-medium">Email Notifications</h3>
-            <div className="space-y-4">
-              <FormField
-                control={form.control}
-                name="marketing_emails"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                    <div className="space-y-0.5">
-                      <FormLabel>Marketing emails</FormLabel>
-                      <FormDescription>
-                        Receive emails about new products, features, and more.
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="security_emails"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                    <div className="space-y-0.5">
-                      <FormLabel>Security emails</FormLabel>
-                      <FormDescription>
-                        Receive emails about your account security.
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        // disabled
-                        aria-readonly
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
+
+          <FormField
+            control={form.control}
+            name="marketing_emails"
+            render={RHFSlot({
+              RHF: "Switch",
+              label: "Marketing emails",
+              placeholder: "Tell us a little bit about yourself",
+              className: "resize-none",
+              description: (
+                <>
+                  You can <span>@mention</span> other users and organizations.
+                </>
+              ),
+            })}
+          />
+          <FormField
+            control={form.control}
+            name="security_emails"
+            render={RHFSlot({
+              RHF: "Switch",
+              label: "Security emails",
+              placeholder: "Tell us a little bit about yourself",
+              className: "resize-none",
+              description: (
+                <>
+                  You can <span>@mention</span> other users and organizations.
+                </>
+              ),
+            })}
+          />
           <FormField
             control={form.control}
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a verified email to display" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="m@example.com">m@example.com</SelectItem>
-                    <SelectItem value="m@google.com">m@google.com</SelectItem>
-                    <SelectItem value="m@support.com">m@support.com</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>
-                  You can manage email addresses in your{" "}
-                  <Link to="/examples/forms">email settings</Link>.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={RHFSlot({
+              RHF: "Select",
+              label: "Email",
+              options: [
+                { label: "m@example.com", value: "m@example.com" },
+                { label: "m@google.com", value: "m@google.com" },
+                { label: "m@support.com", value: "m@support.com" },
+              ],
+            })}
           />
           <FormField
             control={form.control}
             name="type"
-            render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel>Notify me about...</FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="flex flex-col space-y-1"
-                  >
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="all" />
-                      </FormControl>
-                      <FormLabel className="font-normal">
-                        All new messages
-                      </FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="mentions" />
-                      </FormControl>
-                      <FormLabel className="font-normal">
-                        Direct messages and mentions
-                      </FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="none" />
-                      </FormControl>
-                      <FormLabel className="font-normal">Nothing</FormLabel>
-                    </FormItem>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={RHFSlot({
+              RHF: "Radio",
+              label: "Notify me about...",
+              options: [
+                { label: "All new messages", value: "all" },
+                { label: "Direct messages and mentions", value: "mentions" },
+                { label: "Nothing", value: "nothing" },
+              ],
+            })}
           />
           <FormField
             control={form.control}
             name="dob"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Date of birth</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormDescription>
-                  Your date of birth is used to calculate your age.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={RHFSlot({
+              RHF: "DatePicker",
+              label: "Date of birth",
+              mode: "single",
+              initialFocus: true,
+              disabled: (date) =>
+                date > new Date() || date < new Date("1900-01-01"),
+            })}
           />
           <FormField
             control={form.control}
@@ -350,6 +312,7 @@ export function ExampleForm() {
               </FormItem>
             )}
           />
+          <Button type="submit">Submit</Button> */}
           <Button type="submit">Submit</Button>
         </form>
       </Form>
