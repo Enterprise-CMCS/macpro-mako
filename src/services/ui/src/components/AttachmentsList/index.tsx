@@ -1,5 +1,6 @@
 import { getAttachmentUrl } from "@/api";
 import { format } from "date-fns";
+import { BLANK_VALUE } from "@/consts";
 import { DownloadIcon } from "lucide-react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -101,7 +102,7 @@ export const Attachmentslist = (data: AttachmentList) => {
                           <p>{format(attachment.uploadDate, "h:mm a")}</p>
                         </>
                       ) : (
-                        <p>Unknown</p>
+                        <p>{BLANK_VALUE}</p>
                       )}
                     </div>
                   </TableCell>
@@ -109,7 +110,9 @@ export const Attachmentslist = (data: AttachmentList) => {
               );
             })
           ) : (
-            <p className="text-sm font-bold p-4">No Attachments To Show</p>
+            <p className="text-sm font-bold p-4">
+              No attachments have been submitted.
+            </p>
           )}
         </TableBody>
       </Table>
