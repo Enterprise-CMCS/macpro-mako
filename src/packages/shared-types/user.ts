@@ -2,10 +2,7 @@ export enum UserRoles {
   CMS_READ_ONLY = "onemac-micro-readonly",
   CMS_REVIEWER = "onemac-micro-reviewer",
   HELPDESK = "onemac-micro-helpdesk",
-  CMS_SYSTEM_ADMIN = "onemac-micro-sysadmin",
-  CMS_ROLE_APPROVER = "onemac-micro-roleapprover",
   STATE_SUBMITTER = "onemac-micro-statesubmitter",
-  STATE_SYSTEM_ADMIN = "onemac-micro-statesysadmin",
 }
 
 export type UserRolesString = `${UserRoles}${"," | ""}` | "";
@@ -23,7 +20,7 @@ export type CognitoUserAttributes = {
 export const CMS_ROLES = [
   UserRoles.CMS_READ_ONLY,
   UserRoles.CMS_REVIEWER,
-  UserRoles.CMS_ROLE_APPROVER,
-  UserRoles.CMS_SYSTEM_ADMIN,
   UserRoles.HELPDESK,
 ];
+
+export const STATE_ROLES = [UserRoles.STATE_SUBMITTER];

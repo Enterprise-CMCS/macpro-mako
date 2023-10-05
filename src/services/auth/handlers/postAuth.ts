@@ -1,5 +1,6 @@
 import { Handler } from "aws-lambda";
 import * as cognitolib from "../../../libs/cognito-lib";
+import { UserRoles, STATE_ROLES } from "shared-types"
 
 if (!process.env.apiKey) {
   throw "ERROR:  process.env.apiKey is required,";
@@ -40,17 +41,19 @@ export const handler: Handler = async (event, context) => {
       let stateArray :string[] = [];
       data.userProfileAppRoles.userRolesInfoList.forEach((element :any) => {
         let role = element.roleName;
-        roleArray.push(role);
-        if(["onemac-micro-statesubmitter", "onemac-micro-statesysadmin"].includes(role)){
-          element.roleAttributes.forEach((attr :any) => {
-            if(attr.name = "State/Territory"){
-              stateArray.push(attr.value);
-            }
-          })
+        if(Object.values(UserRoles).includes(role)){
+          roleArray.push(role);
+          if(STATE_ROLES.includes(role)){
+            element.roleAttributes.forEach((attr :any) => {
+              if(attr.name = "State/Territory"){
+                stateArray.push(attr.value);
+              }
+            })
+          }
         }
       });
 
-      var attributeData :any = {
+      let attributeData :any = {
         Username: event.userName,
         UserPoolId: event.userPoolId,
         UserAttributes: [
