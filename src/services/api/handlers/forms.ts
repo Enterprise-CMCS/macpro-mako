@@ -1,4 +1,4 @@
-import fs from "fs";
+import * as fs from "fs";
 import { APIGatewayEvent } from "aws-lambda";
 
 export const forms = async (event: APIGatewayEvent) => {
@@ -9,7 +9,7 @@ export const forms = async (event: APIGatewayEvent) => {
 
     if (!fileId) {
       return {
-        statusCode: 404,
+        statusCode: 400,
         headers: {
           "Content-Type": "application/json",
         },
@@ -18,17 +18,7 @@ export const forms = async (event: APIGatewayEvent) => {
     }
 
     const filePath = getFilepathForIdAndVersion(fileId, formVersion);
-    if (!filePath) {
-      return {
-        statusCode: 404,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ error: "File Not Found" }),
-      };
-    }
-
-    const jsonData = await require(filePath);
+    const jsonData = await fs.promises.readFile(filePath, "utf-8");
 
     return {
       statusCode: 200,
@@ -41,12 +31,14 @@ export const forms = async (event: APIGatewayEvent) => {
     console.error("Error:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Internal server error" }),
+      body: JSON.stringify({
+        error: error.message ? error.message : "Internal server error",
+      }),
     };
   }
 };
 
-function getFilepathForIdAndVersion(
+export function getFilepathForIdAndVersion(
   fileId: string,
   formVersion: string | undefined
 ): string | undefined {
@@ -55,8 +47,8 @@ function getFilepathForIdAndVersion(
   }
 
   const files = fs.readdirSync(`/opt/${fileId}`);
-
-  const versionNumbers = files.map((fileName: string) => {
+  if (!files) return undefined;
+  const versionNumbers = files?.map((fileName: string) => {
     const match = fileName.match(/^v(\d+)\./);
     if (match) {
       return parseInt(match[1], 10);
@@ -65,9 +57,7 @@ function getFilepathForIdAndVersion(
   });
   const maxVersion = Math.max(...versionNumbers);
 
-  if (!maxVersion) {
-    return undefined;
-  }
+  if (!maxVersion) return undefined;
 
   return `/opt/${fileId}/v${maxVersion}.json`;
 }
