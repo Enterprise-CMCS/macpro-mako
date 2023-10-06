@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getStatus } from "./statusHelper";
+import { SEATOOL_STATUS, getStatus } from "./statusHelper";
 
 type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
@@ -163,8 +163,8 @@ export const transformSeatoolData = (id: string) => {
       raiReceivedDate,
       raiRequestedDate,
       state: data.STATES?.[0].STATE_CODE,
-      stateStatus,
-      cmsStatus,
+      stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
+      cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       submissionDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.SUBMISSION_DATE
       ),

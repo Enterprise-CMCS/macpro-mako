@@ -75,9 +75,9 @@ params:
     getAttachmentUrlProvisionedConcurrency: 5
     submitProvisionedConcurrency: 5
   default:
-    formsProvisionedConcurrency: 1
-    searchProvisionedConcurrency: 1
-    itemProvisionedConcurrency: 1
+    formsProvisionedConcurrency: 0
+    searchProvisionedConcurrency: 0
+    itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
     submitProvisionedConcurrency: 0
 

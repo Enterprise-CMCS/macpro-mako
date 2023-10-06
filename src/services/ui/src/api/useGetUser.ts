@@ -12,10 +12,13 @@ export const getUser = async () => {
       obj[item.Name] = item.Value;
       return obj;
     }, {}) as unknown as CognitoUserAttributes;
-
-    const isCms = isCmsUser(user);
-
-    return { user, isCms };
+    if (user["custom:cms-roles"]) {
+      const isCms = isCmsUser(user);
+      return { user, isCms };
+    } else {
+      user["custom:cms-roles"] = "";
+      return { user, isCms: false };
+    }
   } catch (e) {
     console.log({ e });
     return { user: null };

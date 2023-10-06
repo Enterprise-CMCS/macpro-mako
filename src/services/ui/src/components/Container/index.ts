@@ -1,0 +1,1 @@
+export { SimplePageContainer } from "./SimplePageContainer";
