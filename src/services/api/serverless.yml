@@ -181,7 +181,7 @@ functions:
 layers:
   forms:
     path: lambdaLayer
-    description: Lambda Layers for forms function
+    description: Lambda Layer for forms function
 
 resources:
   Resources:
