@@ -19,7 +19,7 @@ export const forms = async (event: APIGatewayEvent) => {
 
     const filePath = getFilepathForIdAndVersion(fileId, formVersion);
     const jsonData = await fs.promises.readFile(filePath, "utf-8");
-
+    console.log(jsonData);
     return {
       statusCode: 200,
       headers: {
