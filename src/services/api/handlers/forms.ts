@@ -19,6 +19,18 @@ export const forms = async (event: APIGatewayEvent) => {
 
     const filePath = getFilepathForIdAndVersion(fileId, formVersion);
     const jsonData = await fs.promises.readFile(filePath, "utf-8");
+
+    if (!jsonData) {
+      return {
+        statusCode: 404,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          error: "No file was found with provided formId and formVersion",
+        }),
+      };
+    }
     console.log(jsonData);
     return {
       statusCode: 200,
