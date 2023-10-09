@@ -23,3 +23,5 @@ export enum ROUTES {
 export enum FAQ_SECTION {
   SYSTEM = "system",
 }
+
+export const FAQ_TERGET = "faq-terget" as const;

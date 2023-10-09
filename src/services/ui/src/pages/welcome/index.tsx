@@ -5,6 +5,8 @@ import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/Inputs";
+import { link } from "fs";
+import { FAQ_TERGET } from "@/routes";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -176,7 +178,11 @@ export const Welcome = () => {
         <div className="flex justify-around items-center text-xl py-10 px-10 py-4 max-w-screen-xl mx-auto">
           <h4>Do you have questions or need support?</h4>
           <Button asChild>
-            <Link to="/faq" target="myFrameName">
+            <Link
+              to="/faq"
+              // eslint-disable-next-line no-constant-condition
+              target={"/faq" ? FAQ_TERGET : undefined}
+            >
               View FAQ
             </Link>
           </Button>

@@ -8,6 +8,7 @@ import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
+import { FAQ_TERGET } from "@/routes";
 
 const getLinks = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -103,25 +104,17 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     isActive
       ? "underline underline-offset-4 decoration-4 hover:text-white/70"
       : "hover:text-white/70";
-
   if (prevMediaQuery !== isDesktop) {
     setPrevMediaQuery(isDesktop);
     setIsOpen(false);
   }
-
   if (isDesktop) {
     return (
       <>
         {getLinks(!!data.user).map((link) => (
           <NavLink
-            to={
-              link.name !== "FAQ" && link.name !== "Dashboard" ? link.link : ""
-            }
-            onClick={() => {
-              if (link.name === "FAQ" || link.name === "Dashboard") {
-                window.open(link.link, "myWindow");
-              }
-            }}
+            to={link.link}
+            target={link.link === "/faq" ? FAQ_TERGET : undefined}
             key={link.name}
             className={setClassBasedOnNav}
           >
@@ -160,17 +153,8 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
               <li key={link.link}>
                 <Link
                   className="block py-2 pl-3 pr-4 text-white rounded"
-                  to={
-                    link.name !== "FAQ" && link.name !== "Dashboard"
-                      ? link.link
-                      : ""
-                  }
-                  onClick={() => {
-                    setIsOpen(false);
-                    if (link.name === "FAQ" || link.name === "Dashboard") {
-                      window.open(link.link, "myWindow");
-                    }
-                  }}
+                  to={link.link}
+                  target={link.link === "/faq" ? FAQ_TERGET : undefined}
                 >
                   {link.name}
                 </Link>
