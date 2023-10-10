@@ -191,9 +191,9 @@ resources:
         IdpIdentifiers:
           - IdpIdentifier
         ProviderDetails:
-          client_id: ${self:custom.idmInfo.oidc_client_id}
-          client_secret: ${self:custom.idmInfo.oidc_client_secret}
-          oidc_issuer: ${self:custom.idmInfo.oidc_issuer}
+          client_id: ${self:custom.idmInfo.oidc_client_id, ""}
+          client_secret: ${self:custom.idmInfo.oidc_client_secret, ""}
+          oidc_issuer: ${self:custom.idmInfo.oidc_issuer, ""}
           attributes_request_method: GET
           authorize_scopes: "email openid profile phone"
         ProviderName: IDM
