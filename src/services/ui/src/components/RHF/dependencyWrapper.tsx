@@ -1,12 +1,29 @@
 import { PropsWithChildren, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
+type ConditionRules =
+  | {
+      type: "valueExists" | "valueNotExist";
+    }
+  | {
+      type: "expectedValue";
+      expectedValue: unknown;
+    };
+
+type Condition = { name: string } & ConditionRules;
+
+type Effects =
+  | {
+      type: "show" | "hide";
+    }
+  | {
+      type: "setValue";
+      newValue: unknown;
+    };
+
 export interface DependencyRule {
-  name: string;
-  condition: "valueExists" | "expectedValue" | "valueNotExist";
-  effect: "show" | "hide" | "setValue";
-  expectedValue?: unknown;
-  newValue?: unknown;
+  conditions: Condition[];
+  effect: Effects;
 }
 
 interface DependencyWrapperProps {
@@ -15,39 +32,53 @@ interface DependencyWrapperProps {
 }
 
 const checkTriggeringValue = (
-  dependentValue: unknown,
+  dependentValue: unknown[],
   dependency?: DependencyRule
 ) => {
-  switch (dependency?.condition ?? "") {
-    case "expectedValue":
-      return dependentValue === dependency?.expectedValue;
-    case "valueExists":
-      return !!dependentValue;
-    case "valueNotExist":
-      return !dependentValue;
-  }
-  return false;
+  return !!dependency?.conditions?.every((d, i) => {
+    switch (d.type) {
+      case "expectedValue":
+        return dependentValue[i] === d?.expectedValue;
+      case "valueExists":
+        return (
+          (Array.isArray(dependentValue[i]) &&
+            (dependentValue[i] as unknown[]).length > 0) ||
+          !!dependentValue[i]
+        );
+      case "valueNotExist":
+        return (
+          (Array.isArray(dependentValue[i]) &&
+            (dependentValue[i] as unknown[]).length === 0) ||
+          !dependentValue[i]
+        );
+    }
+  });
 };
 
 export const DependencyWrapper = ({
   name,
   dependency,
   children,
-  ...props
 }: PropsWithChildren<DependencyWrapperProps>) => {
-  const { watch, setValue } = useFormContext();
-  const dependentValue = watch(dependency?.name ?? "");
-  const isTriggered = checkTriggeringValue(dependentValue, dependency);
-  // console.log(name, dependency, dependentValue, isTriggered, props);
+  const { watch, setValue, getValues } = useFormContext();
+  const dependentValues = watch(
+    dependency?.conditions?.map((c) => c.name) ?? []
+  );
+  const isTriggered =
+    dependency && checkTriggeringValue(dependentValues, dependency);
+  // if (dependency) console.log("getValues()", getValues());
 
   useEffect(() => {
-    if (dependency?.effect === "setValue" && isTriggered && !!name)
-      setValue(name, dependency.newValue);
-  }, [dependentValue]);
+    if (dependency?.effect.type === "setValue" && isTriggered && !!name)
+      setValue(name, dependency.effect.newValue);
+  }, [dependentValues]);
 
-  switch (dependency?.effect) {
+  switch (dependency?.effect.type) {
     case "hide":
-      if (isTriggered) return null;
+      if (isTriggered) {
+        console.log("should be hiding");
+        return null;
+      }
       break;
     case "show":
       if (isTriggered) return <>{children}</>;

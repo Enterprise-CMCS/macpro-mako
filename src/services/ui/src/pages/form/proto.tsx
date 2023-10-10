@@ -15,11 +15,16 @@ export const ABP1: Document = {
             label: "Alternative Benefit Plan population name",
             placeholder: "enter name",
             dependency: {
-              // example of a value changing field
-              condition: "expectedValue",
-              expectedValue: "no",
-              effect: "setValue",
-              newValue: "Ben",
+              // example of a value changing field, with multi-conditions
+              conditions: [
+                {
+                  name: "geographic_variation",
+                  type: "expectedValue",
+                  expectedValue: "by_region",
+                },
+                {},
+              ],
+              effect: { type: "setValue", newValue: "Ben" },
             },
           },
         },
@@ -85,9 +90,13 @@ export const ABP1: Document = {
             ],
             dependency: {
               //example of a conditionally revealed field
-              condition: "valueExists",
-              effect: "show",
-              name: "alt_benefit_plan_population_name",
+              conditions: [
+                {
+                  name: "alt_benefit_plan_population_name",
+                  type: "valueExists",
+                },
+              ],
+              effect: { type: "show" },
             },
           },
         },
@@ -97,10 +106,14 @@ export const ABP1: Document = {
       title: "Targeting criteria",
       dependency: {
         // example of conditionally hidden section
-        name: "alt_benefit_plan_population_name",
-        condition: "expectedValue",
-        expectedValue: "hide",
-        effect: "hide",
+        conditions: [
+          {
+            name: "alt_benefit_plan_population_name",
+            type: "expectedValue",
+            expectedValue: "hide",
+          },
+        ],
+        effect: { type: "hide" },
       },
       form: [
         {

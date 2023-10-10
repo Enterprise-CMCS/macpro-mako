@@ -158,7 +158,6 @@ export const RHFSlot = <
   TName
 >["render"] =>
   function Slot({ field }) {
-    if (props.dependency) console.log("dep props", props);
     return (
       <DependencyWrapper {...props}>
         <FormItem className="flex flex-col gap-1">
