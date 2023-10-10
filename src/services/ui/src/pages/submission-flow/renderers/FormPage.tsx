@@ -1,21 +1,22 @@
 import { SimplePageContainer } from "@/components";
 import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
 import { MEDICAID_SPA_FORM } from "@/pages/submission-flow/config/forms/medicaid-spa-config";
-import { ReactElement } from "react";
+import { ChangeEvent, ReactElement, useState } from "react";
 import { ROUTES } from "@/routes";
 import { Link } from "react-router-dom";
-import { RequiredIndicator } from "@/components/Inputs";
+import { Button, RequiredIndicator } from "@/components/Inputs";
 
 type HeadingWithLink = {
   text: string;
   linkText: string;
   linkRoute: ROUTES;
 };
+export type Handler = (e: ChangeEvent<any>) => void;
 type FormSection = {
   id: string;
   heading: string | HeadingWithLink;
   instructions: ReactElement;
-  content: ReactElement;
+  field: (func: Handler) => ReactElement;
   //TODO: Required boolean
 };
 type FormDescription = Pick<FormSection, "instructions"> & {
@@ -28,8 +29,15 @@ export interface FormPageConfig {
   description: FormDescription;
   fields: FormSection[];
 }
-
 const FormPage = ({ pageTitle, description, fields }: FormPageConfig) => {
+  const [data, setData] = useState({});
+  const updateData = (e: ChangeEvent<any>) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <SimplePageContainer>
       <SimplePageTitle title={pageTitle} />
@@ -40,7 +48,12 @@ const FormPage = ({ pageTitle, description, fields }: FormPageConfig) => {
         </p>
         {description.instructions}
       </section>
-      <form>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          console.log(data);
+        }}
+      >
         {fields.map((section, idx) => (
           <section
             className="my-3 max-w-4xl"
@@ -63,9 +76,10 @@ const FormPage = ({ pageTitle, description, fields }: FormPageConfig) => {
               <h3 className="text-lg font-bold">{section.heading}</h3>
             )}
             {section.instructions}
-            {section.content}
+            {section.field(updateData)}
           </section>
         ))}
+        <Button type="submit">Submit</Button>
       </form>
     </SimplePageContainer>
   );

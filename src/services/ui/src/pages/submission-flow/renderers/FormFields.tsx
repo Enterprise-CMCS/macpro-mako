@@ -1,4 +1,5 @@
 import { RequiredIndicator } from "@/components/Inputs";
+import { Handler } from "@/pages/submission-flow/renderers/FormPage";
 
 export const FormIntro = () => (
   <p className="my-3">
@@ -21,16 +22,23 @@ export const SpaIDIntro = () => (
   </p>
 );
 
-export const SpaIDInput = () => (
+export const SpaIDInput = ({ handler }: { handler: Handler }) => (
   <input
     type="text"
     id="input-spa-id"
-    name="input-spa-id"
+    name="spaId"
     aria-describedby="desc-spa-id"
     className="border-[1.5px] border-gray-400 rounded-sm h-8 w-[250px] mt-4 p-1"
+    onChange={(event) => handler(event)}
     required
   />
 );
+
+export const EffectiveDateIntro = () => (
+  <p className="text-gray-500 font-light mt-1">For example: 4/28/1986</p>
+);
+
+export const EffectiveDateField = ({ handler }: { handler: Handler }) => {};
 
 export const AttachmentsIntro = () => (
   <>
@@ -55,7 +63,7 @@ export const AdditionalInfoIntro = () => (
   </p>
 );
 
-export const AdditionalInfoInput = () => (
+export const AdditionalInfoInput = ({ handler }: { handler: Handler }) => (
   <textarea
     aria-invalid="false"
     aria-describedby="character-count"
@@ -65,5 +73,6 @@ export const AdditionalInfoInput = () => (
     aria-live="off"
     aria-multiline="true"
     id="additional-information"
+    onChange={(event) => handler(event)}
   />
 );

@@ -4,6 +4,7 @@ import {
   AdditionalInfoInput,
   AdditionalInfoIntro,
   AttachmentsIntro,
+  EffectiveDateIntro,
   FormIntro,
   SpaIDInput,
   SpaIDIntro,
@@ -24,27 +25,25 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
         linkRoute: ROUTES.FAQ,
       },
       instructions: <SpaIDIntro />,
-      content: <SpaIDInput />,
+      field: (func) => <SpaIDInput handler={func} />,
     },
     {
       id: "proposed-effective-date",
       heading: "Proposed Effective Date of Medicaid SPA",
-      instructions: (
-        <p className="text-gray-500 font-light mt-1">For example: 4/28/1986</p>
-      ),
-      content: <></>,
+      instructions: <EffectiveDateIntro />,
+      field: () => <></>,
     },
     {
       id: "attachments",
       heading: "Attachments",
       instructions: <AttachmentsIntro />,
-      content: <></>,
+      field: () => <></>,
     },
     {
       id: "additional-info",
       heading: "Additional Information",
       instructions: <AdditionalInfoIntro />,
-      content: <AdditionalInfoInput />,
+      field: (func) => <AdditionalInfoInput handler={func} />,
     },
   ],
 };
