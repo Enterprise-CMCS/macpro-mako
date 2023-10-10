@@ -8,7 +8,7 @@ import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
-import { FAQ_TERGET } from "@/routes";
+import { FAQ_TARGET } from "@/routes";
 
 const getLinks = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -114,7 +114,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
         {getLinks(!!data.user).map((link) => (
           <NavLink
             to={link.link}
-            target={link.link === "/faq" ? FAQ_TERGET : undefined}
+            target={link.link === "/faq" ? FAQ_TARGET : undefined}
             key={link.name}
             className={setClassBasedOnNav}
           >
@@ -154,7 +154,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 <Link
                   className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
-                  target={link.link === "/faq" ? FAQ_TERGET : undefined}
+                  target={link.link === "/faq" ? FAQ_TARGET : undefined}
                 >
                   {link.name}
                 </Link>

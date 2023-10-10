@@ -24,4 +24,4 @@ export enum FAQ_SECTION {
   SYSTEM = "system",
 }
 
-export const FAQ_TERGET = "faq-terget" as const;
+export const FAQ_TARGET = "faq-terget" as const;
