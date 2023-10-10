@@ -34,7 +34,7 @@ describe("Forms Lambda Tests", () => {
     );
 
     const event = {
-      body: JSON.stringify({ fileId: "test", formVersion: "1" }),
+      body: JSON.stringify({ fileId: "testform", formVersion: "1" }),
     } as APIGatewayProxyEvent;
     const result = await forms(event);
 
