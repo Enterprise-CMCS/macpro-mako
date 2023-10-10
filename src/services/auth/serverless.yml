@@ -69,8 +69,8 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     environment:
-      apiKey: ${self:custom.idmInfo.api_key}
-      apiEndpoint: ${self:custom.idmInfo.api_endpoint}
+      apiKey: ${self:custom.idmInfo.api_key, ""}
+      apiEndpoint: ${self:custom.idmInfo.api_endpoint, ""}
 resources:
   Conditions:
     CreateEmailConfiguration:
@@ -101,7 +101,10 @@ resources:
               SourceArn: !Sub arn:aws:ses:${self:provider.region}:${AWS::AccountId}:identity/${self:custom.cognitoEmailAddress}
             - EmailSendingAccount: COGNITO_DEFAULT
         LambdaConfig:
-          PreTokenGeneration: !GetAtt PostAuthLambdaFunction.Arn
+          Fn::If:
+            - BackWithIDM
+            - PreTokenGeneration: !GetAtt PostAuthLambdaFunction.Arn
+            - !Ref AWS::NoValue
         Schema:
           - Name: given_name
             AttributeDataType: String
