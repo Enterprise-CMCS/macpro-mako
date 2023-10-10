@@ -14,6 +14,13 @@ export const ABP1: Document = {
             name: "alt_benefit_plan_population_name",
             label: "Alternative Benefit Plan population name",
             placeholder: "enter name",
+            dependency: {
+              // example of a value changing field
+              condition: "expectedValue",
+              expectedValue: "no",
+              effect: "setValue",
+              newValue: "Ben",
+            },
           },
         },
         {
@@ -76,12 +83,25 @@ export const ABP1: Document = {
               { label: "Yes", value: "yes" },
               { label: "No", value: "no" },
             ],
+            dependency: {
+              //example of a conditionally revealed field
+              condition: "valueExists",
+              effect: "show",
+              name: "alt_benefit_plan_population_name",
+            },
           },
         },
       ],
     },
     {
       title: "Targeting criteria",
+      dependency: {
+        // example of conditionally hidden section
+        name: "alt_benefit_plan_population_name",
+        condition: "expectedValue",
+        expectedValue: "hide",
+        effect: "hide",
+      },
       form: [
         {
           description: "targeting criteria (select all that apply)",

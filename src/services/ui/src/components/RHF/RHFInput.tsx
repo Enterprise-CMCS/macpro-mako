@@ -34,14 +34,13 @@ import {
   Calendar,
   CalendarProps,
   FormField,
-  CheckboxGroup,
   Checkbox,
 } from "../Inputs";
-import { CalendarIcon, Trash2, TrashIcon } from "lucide-react";
+import { CalendarIcon, Trash2 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import { cn } from "@/lib";
 import { format } from "date-fns";
-import { Chip } from "../Chip";
+import { DependencyRule, DependencyWrapper } from "./dependencyWrapper";
 
 type TextFieldProps = InputProps & {
   label?: ReactElement | string;
@@ -50,11 +49,12 @@ type TextFieldProps = InputProps & {
 
 type ComponentKey = keyof RHFComponentMap;
 
-type RHFSlotProps<T extends ComponentKey = any> = {
+type RHFSlotProps<T extends ComponentKey = ComponentKey> = {
   rhf: ComponentKey;
   name: string;
   label?: ReactElement | string;
   description?: ReactElement | string;
+  dependency?: DependencyRule;
 } & RHFComponentMap[T];
 
 type RHFComponentMap = {
@@ -77,6 +77,7 @@ type FormGroup = {
 export interface Section {
   title: string;
   form: FormGroup[];
+  dependency?: DependencyRule;
 }
 
 export interface Document {
@@ -157,159 +158,164 @@ export const RHFSlot = <
   TName
 >["render"] =>
   function Slot({ field }) {
+    if (props.dependency) console.log("dep props", props);
     return (
-      <FormItem className="flex flex-col gap-1">
-        {label && <FormLabel>{label}</FormLabel>}
-        <FormControl>
-          <>
-            {rhf === "Input" && <Input {...props} {...field} />}
-            {rhf === "Textarea" && <Textarea {...props} {...field} />}
-            {rhf === "Switch" && <Switch {...props} {...field} />}
-            {rhf === "Select" && (
-              <Select
-                {...props}
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-              >
-                <SelectTrigger {...props}>
-                  <SelectValue placeholder="Select a verified email to display" />
-                </SelectTrigger>
-                <SelectContent>
+      <DependencyWrapper {...props}>
+        <FormItem className="flex flex-col gap-1">
+          {label && <FormLabel>{label}</FormLabel>}
+          <FormControl>
+            <>
+              {rhf === "Input" && <Input {...props} {...field} />}
+              {rhf === "Textarea" && <Textarea {...props} {...field} />}
+              {rhf === "Switch" && <Switch {...props} {...field} />}
+              {rhf === "Select" && (
+                <Select
+                  {...props}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger {...props}>
+                    <SelectValue placeholder="Select a verified email to display" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {props.options.map((OPT: any) => (
+                      <SelectItem key={`OPT-${OPT.value}`} value={OPT.value}>
+                        {OPT.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+
+              {rhf === "Radio" && (
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col space-y-1"
+                >
                   {props.options.map((OPT: any) => (
-                    <SelectItem key={`OPT-${OPT.value}`} value={OPT.value}>
-                      {OPT.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
+                    <div key={`OPT-${OPT.value}`} className="flex flex-col">
+                      <div className="flex gap-2">
+                        <RadioGroupItem value={OPT.value} />
+                        <FormLabel className="font-normal">
+                          {OPT.label}
+                        </FormLabel>
+                      </div>
+                      {field.value === OPT.value &&
+                        OPT.form &&
+                        OPT.form.map((FORM: any, index: any) => (
+                          <div
+                            className="ml-2 p-4 border-l-2 border-l-primary"
+                            key={`rhf-form-${index}-${FORM.description}`}
+                          >
+                            <RHFFormGroup form={FORM} control={props.control} />
+                          </div>
+                        ))}
 
-            {rhf === "Radio" && (
-              <RadioGroup
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-                className="flex flex-col space-y-1"
-              >
-                {props.options.map((OPT: any) => (
-                  <div key={`OPT-${OPT.value}`} className="flex flex-col">
-                    <div className="flex gap-2">
-                      <RadioGroupItem value={OPT.value} />
-                      <FormLabel className="font-normal">{OPT.label}</FormLabel>
+                      {field.value === OPT.value && OPT.slot && (
+                        <div className="ml-2 p-4 border-l-2 border-l-primary">
+                          <FormField
+                            control={props.control}
+                            name={OPT.slot.name}
+                            render={RHFSlot(OPT.slot)}
+                          />
+                        </div>
+                      )}
                     </div>
-                    {field.value === OPT.value &&
-                      OPT.form &&
-                      OPT.form.map((FORM: any, index: any) => (
-                        <div
-                          className="ml-2 p-4 border-l-2 border-l-primary"
-                          key={`rhf-form-${index}-${FORM.description}`}
-                        >
-                          <RHFFormGroup form={FORM} control={props.control} />
+                  ))}
+                </RadioGroup>
+                // <RadioGroup_
+                //   control={control}
+                //   onValueChange={field.onChange}
+                //   defaultValue={field.value}
+                //   options={props.options}
+                //   {...props}
+                // />
+              )}
+
+              {rhf === "FieldArray" && (
+                <FieldArray
+                  control={props.control}
+                  name={props.name as any}
+                  fields={props.fields}
+                />
+              )}
+
+              {rhf === "Checkbox" && (
+                <div className="flex flex-col gap-2">
+                  {props.options.map((OPT: any) => (
+                    <div key={`CHECK-${OPT.value}`}>
+                      <Checkbox
+                        label={OPT.label}
+                        checked={field.value?.includes(OPT.value)}
+                        onCheckedChange={(c) => {
+                          const filtered = field.value?.filter(
+                            (f: any) => f !== OPT.value
+                          );
+                          if (!c) return field.onChange(filtered);
+                          field.onChange([...filtered, OPT.value]);
+                        }}
+                      />
+                      {field.value?.includes(OPT.value) && !!OPT.slot && (
+                        <div className="ml-2 p-4 border-l-2 border-l-primary">
+                          <FormField
+                            control={props.control}
+                            name={OPT.slot.name}
+                            render={RHFSlot(OPT.slot)}
+                          />
                         </div>
-                      ))}
+                      )}
 
-                    {field.value === OPT.value && OPT.slot && (
-                      <div className="ml-2 p-4 border-l-2 border-l-primary">
-                        <FormField
-                          control={props.control}
-                          name={OPT.slot.name}
-                          render={RHFSlot(OPT.slot)}
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </RadioGroup>
-              // <RadioGroup_
-              //   control={control}
-              //   onValueChange={field.onChange}
-              //   defaultValue={field.value}
-              //   options={props.options}
-              //   {...props}
-              // />
-            )}
+                      {field.value?.includes(OPT.value) &&
+                        !!OPT.form &&
+                        OPT.form.map((FORM: any) => (
+                          <div
+                            key={`CHECK-${OPT.value}-form-${FORM.description}`}
+                            className="ml-2 p-4 border-l-2 border-l-primary"
+                          >
+                            <RHFFormGroup control={props.control} form={FORM} />
+                          </div>
+                        ))}
+                    </div>
+                  ))}
+                </div>
+              )}
 
-            {rhf === "FieldArray" && (
-              <FieldArray
-                control={props.control}
-                name={props.name as any}
-                fields={props.fields}
-              />
-            )}
-
-            {rhf === "Checkbox" && (
-              <div className="flex flex-col gap-2">
-                {props.options.map((OPT: any) => (
-                  <div key={`CHECK-${OPT.value}`}>
-                    <Checkbox
-                      label={OPT.label}
-                      checked={field.value?.includes(OPT.value)}
-                      onCheckedChange={(c) => {
-                        const filtered = field.value?.filter(
-                          (f: any) => f !== OPT.value
-                        );
-                        if (!c) return field.onChange(filtered);
-                        field.onChange([...filtered, OPT.value]);
-                      }}
+              {rhf === "DatePicker" && (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[240px] pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      {...props}
+                      selected={field.value}
+                      onSelect={field.onChange}
                     />
-                    {field.value?.includes(OPT.value) && !!OPT.slot && (
-                      <div className="ml-2 p-4 border-l-2 border-l-primary">
-                        <FormField
-                          control={props.control}
-                          name={OPT.slot.name}
-                          render={RHFSlot(OPT.slot)}
-                        />
-                      </div>
-                    )}
-
-                    {field.value?.includes(OPT.value) &&
-                      !!OPT.form &&
-                      OPT.form.map((FORM: any) => (
-                        <div
-                          key={`CHECK-${OPT.value}-form-${FORM.description}`}
-                          className="ml-2 p-4 border-l-2 border-l-primary"
-                        >
-                          <RHFFormGroup control={props.control} form={FORM} />
-                        </div>
-                      ))}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {rhf === "DatePicker" && (
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    {...props}
-                    selected={field.value}
-                    onSelect={field.onChange}
-                  />
-                </PopoverContent>
-              </Popover>
-            )}
-          </>
-        </FormControl>
-        {description && <FormDescription>{description}</FormDescription>}
-        <FormMessage />
-      </FormItem>
+                  </PopoverContent>
+                </Popover>
+              )}
+            </>
+          </FormControl>
+          {description && <FormDescription>{description}</FormDescription>}
+          <FormMessage />
+        </FormItem>
+      </DependencyWrapper>
     );
   };
 
@@ -338,20 +344,22 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
   control: Control<TFieldValues>;
 }) => {
   return (
-    <div className="py-4">
-      {props.section.title && (
-        <div className="mb-6">
-          <FormLabel className="font-bold">{props.section.title}</FormLabel>
-        </div>
-      )}
-      {props.section.form.map((FORM, index) => (
-        <RHFFormGroup
-          key={`rhf-form-${index}-${FORM.description}`}
-          control={props.control}
-          form={FORM}
-        />
-      ))}
-    </div>
+    <DependencyWrapper dependency={props.section.dependency}>
+      <div className="py-4">
+        {props.section.title && (
+          <div className="mb-6">
+            <FormLabel className="font-bold">{props.section.title}</FormLabel>
+          </div>
+        )}
+        {props.section.form.map((FORM, index) => (
+          <RHFFormGroup
+            key={`rhf-form-${index}-${FORM.description}`}
+            control={props.control}
+            form={FORM}
+          />
+        ))}
+      </div>
+    </DependencyWrapper>
   );
 };
 
