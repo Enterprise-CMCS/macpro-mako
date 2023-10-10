@@ -78,7 +78,6 @@ custom:
         then
           aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-bootstrapUsers --invocation-type RequestResponse /dev/null
         fi
-
 stepFunctions:
   stateMachines:
     reindex:
@@ -665,3 +664,5 @@ resources:
       Value: !Sub https://${OpenSearch.DomainEndpoint}
     OpenSearchDashboardEndpoint:
       Value: !Sub https://${OpenSearch.DomainEndpoint}/_dashboards
+    TopicName:
+      Value: ${param:topicNamespace}aws.onemac.migration.cdc
