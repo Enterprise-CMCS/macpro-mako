@@ -27,11 +27,24 @@ jobs:
           if [[ ! $STAGE_NAME =~ ^[a-z][a-z0-9-]*$ ]]; then
               echo "ERROR:  Your branch name, $STAGE_NAME, is not a valid Serverless Framework stage name." && exit 1
           fi
+  cache:
+    runs-on: ubuntu-20.04
+    needs:
+      - init
+    environment:
+      name: ${{ github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: ./.github/actions/setup
+
+      - run: run install
 
   deploy:
     runs-on: ubuntu-20.04
     needs:
-      - init
+      - cache
     environment:
       name: ${{ github.ref_name }}
       url: ${{ steps.deployment-data.outputs.APPURL }}
@@ -89,7 +102,7 @@ jobs:
   test:
     runs-on: ubuntu-20.04
     needs:
-      - deploy
+      - cache
     environment:
       name: ${{ github.ref_name }}
     steps:
@@ -210,6 +223,7 @@ jobs:
     needs:
       - test
       - cfn-nag
+      - e2e
     steps:
       - name: Checkout
         uses: actions/checkout@v3
