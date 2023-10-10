@@ -22,7 +22,11 @@ export const ABP1: Document = {
                   type: "expectedValue",
                   expectedValue: "by_region",
                 },
-                {},
+                {
+                  name: "is_geographic_area",
+                  type: "expectedValue",
+                  expectedValue: "yes",
+                },
               ],
               effect: { type: "setValue", newValue: "Ben" },
             },

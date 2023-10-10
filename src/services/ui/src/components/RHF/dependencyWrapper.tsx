@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 type ConditionRules =
@@ -61,22 +61,30 @@ export const DependencyWrapper = ({
   children,
 }: PropsWithChildren<DependencyWrapperProps>) => {
   const { watch, setValue, getValues } = useFormContext();
+  const [wasSetLast, setWasSetLast] = useState(false);
   const dependentValues = watch(
     dependency?.conditions?.map((c) => c.name) ?? []
   );
   const isTriggered =
     dependency && checkTriggeringValue(dependentValues, dependency);
-  // if (dependency) console.log("getValues()", getValues());
 
   useEffect(() => {
-    if (dependency?.effect.type === "setValue" && isTriggered && !!name)
+    if (
+      !wasSetLast &&
+      dependency?.effect.type === "setValue" &&
+      isTriggered &&
+      !!name
+    ) {
       setValue(name, dependency.effect.newValue);
+      setWasSetLast(true);
+    } else if (!isTriggered && wasSetLast) {
+      setWasSetLast(false);
+    }
   }, [dependentValues]);
 
   switch (dependency?.effect.type) {
     case "hide":
       if (isTriggered) {
-        console.log("should be hiding");
         return null;
       }
       break;
