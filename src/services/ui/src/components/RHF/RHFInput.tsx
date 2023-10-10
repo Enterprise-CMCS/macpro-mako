@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import {
   Control,
-  Controller,
   ControllerProps,
   FieldArrayPath,
   FieldPath,
