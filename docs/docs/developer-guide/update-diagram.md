@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Updating Diagram
+parent: Developer Guide
 nav_order: 1
 ---
 
