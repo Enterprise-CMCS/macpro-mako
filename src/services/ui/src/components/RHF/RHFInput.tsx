@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import {
   Control,
-  Controller,
   ControllerProps,
   FieldArrayPath,
   FieldPath,
@@ -34,14 +33,13 @@ import {
   Calendar,
   CalendarProps,
   FormField,
-  CheckboxGroup,
   Checkbox,
 } from "../Inputs";
-import { CalendarIcon, Trash2, TrashIcon } from "lucide-react";
+import { CalendarIcon, Trash2 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import { cn } from "@/lib";
 import { format } from "date-fns";
-import { Chip } from "../Chip";
+import { DependencyRule, DependencyWrapper } from "./dependencyWrapper";
 
 type TextFieldProps = InputProps & {
   label?: ReactElement | string;
@@ -50,11 +48,12 @@ type TextFieldProps = InputProps & {
 
 type ComponentKey = keyof RHFComponentMap;
 
-type RHFSlotProps<T extends ComponentKey = any> = {
+type RHFSlotProps<T extends ComponentKey = ComponentKey> = {
   rhf: ComponentKey;
   name: string;
   label?: ReactElement | string;
   description?: ReactElement | string;
+  dependency?: DependencyRule;
 } & RHFComponentMap[T];
 
 type RHFComponentMap = {
@@ -77,6 +76,7 @@ type FormGroup = {
 export interface Section {
   title: string;
   form: FormGroup[];
+  dependency?: DependencyRule;
 }
 
 export interface Document {
@@ -318,18 +318,22 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
   control: Control<TFieldValues>;
 }) => {
   return (
-    <div className="py-4">
-      {props.form.description && (
-        <div className="mb-6">
-          <FormLabel className="font-bold">{props.form?.description}</FormLabel>
-        </div>
-      )}
-      <FormField
-        control={props.control}
-        name={props.form.slot.name}
-        render={RHFSlot(props.form.slot)}
-      />
-    </div>
+    <DependencyWrapper {...props.form?.slot}>
+      <div className="py-4">
+        {props.form.description && (
+          <div className="mb-6">
+            <FormLabel className="font-bold">
+              {props.form?.description}
+            </FormLabel>
+          </div>
+        )}
+        <FormField
+          control={props.control}
+          name={props.form.slot.name}
+          render={RHFSlot(props.form.slot)}
+        />
+      </div>
+    </DependencyWrapper>
   );
 };
 
@@ -338,20 +342,22 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
   control: Control<TFieldValues>;
 }) => {
   return (
-    <div className="py-4">
-      {props.section.title && (
-        <div className="mb-6">
-          <FormLabel className="font-bold">{props.section.title}</FormLabel>
-        </div>
-      )}
-      {props.section.form.map((FORM, index) => (
-        <RHFFormGroup
-          key={`rhf-form-${index}-${FORM.description}`}
-          control={props.control}
-          form={FORM}
-        />
-      ))}
-    </div>
+    <DependencyWrapper {...props.section}>
+      <div className="py-4">
+        {props.section.title && (
+          <div className="mb-6">
+            <FormLabel className="font-bold">{props.section.title}</FormLabel>
+          </div>
+        )}
+        {props.section.form.map((FORM, index) => (
+          <RHFFormGroup
+            key={`rhf-form-${index}-${FORM.description}`}
+            control={props.control}
+            form={FORM}
+          />
+        ))}
+      </div>
+    </DependencyWrapper>
   );
 };
 
