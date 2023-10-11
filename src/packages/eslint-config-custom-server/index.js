@@ -10,11 +10,10 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint", "eslint-plugin-tsdoc"],
+  plugins: ["@typescript-eslint"],
   rules: {
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "always"],
-    "tsdoc/syntax": "warn",
   },
 };
