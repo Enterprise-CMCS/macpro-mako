@@ -587,7 +587,7 @@ resources:
           SubnetIds:
             Fn::If:
               - isDev
-              - - ${self:custom.vpc.privateSubnets[0]}
+              - - ${self:custom.vpc.privateSubnets.0}
               - >-
                 ${self:custom.vpc.privateSubnets}
 
