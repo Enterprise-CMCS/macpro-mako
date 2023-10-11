@@ -37,13 +37,7 @@ export const OptionCard = ({
 }: MACFieldsetOption) => {
   return (
     <label>
-      <Link
-        to={linkTo}
-        relative={"path"}
-        state={{
-          pageNames: ["dashboard", "test"],
-        }}
-      >
+      <Link to={linkTo} relative={"path"}>
         <div
           data-testid={"card-inner-wrapper"}
           className={`flex items-center justify-between gap-6 px-6 py-4 ${
