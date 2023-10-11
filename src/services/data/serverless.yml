@@ -536,7 +536,11 @@ resources:
               - 1
               - 3
           DedicatedMasterEnabled: false
-          ZoneAwarenessEnabled: true
+          ZoneAwarenessEnabled:
+            Fn::If:
+              - isDev
+              - false
+              - true
           ZoneAwarenessConfig:
             Fn::If:
               - isDev
