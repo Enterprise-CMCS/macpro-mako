@@ -65,4 +65,6 @@ describe("Bread Crumb Tests", () => {
       expect(itemBreadCrumb.classList.contains("underline")).toBeFalsy();
     });
   });
+
+  // TODO: Write a test to test the functionality of the BreadCrumbs component with a test config passed in
 });
