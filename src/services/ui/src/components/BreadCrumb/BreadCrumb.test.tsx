@@ -45,7 +45,7 @@ describe("Bread Crumb Tests", () => {
           <BreadCrumb data-testid="dashboard" to="/test">
             Test Dashboard
           </BreadCrumb>
-          <BreadCrumb data-testid="item" to="/test/:id" active>
+          <BreadCrumb data-testid="item" to="/test/:id" active={false}>
             Test Item
           </BreadCrumb>
         </BreadCrumbBar>,
@@ -60,9 +60,9 @@ describe("Bread Crumb Tests", () => {
       const dashboardBreadCrumb = screen.getByText("Test Dashboard");
       const itemBreadCrumb = screen.getByText("Test Item");
 
-      expect(homeBreadCrumb.classList.contains("underline")).toBeFalsy();
-      expect(dashboardBreadCrumb.classList.contains("underline")).toBeFalsy();
-      expect(itemBreadCrumb.classList.contains("underline")).toBeTruthy();
+      expect(homeBreadCrumb.classList.contains("underline")).toBeTruthy();
+      expect(dashboardBreadCrumb.classList.contains("underline")).toBeTruthy();
+      expect(itemBreadCrumb.classList.contains("underline")).toBeFalsy();
     });
   });
 });
