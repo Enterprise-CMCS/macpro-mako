@@ -14,12 +14,13 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint"],
+  plugins: ["react", "@typescript-eslint", "eslint-plugin-tsdoc"],
   rules: {
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "always"],
     "react/react-in-jsx-scope": 0,
+    "tsdoc/syntax": "warn",
   },
   settings: {
     react: {
