@@ -586,6 +586,13 @@ resources:
             - !Ref OpenSearchSecurityGroup
           SubnetIds: >-
             ${self:custom.vpc.privateSubnets}
+          SubnetIds:
+            Fn::If:
+              - isDev
+              - - ${self:custom.vpc.privateSubnets[0]}
+              - >-
+                ${self:custom.vpc.privateSubnets}
+              
     OpenSearchRole:
       Type: AWS::IAM::Role
       Properties:
