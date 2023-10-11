@@ -143,7 +143,7 @@ functions:
       dbPort: ${self:custom.dbInfo.port}
       dbUser: ${self:custom.dbInfo.user}
       dbPassword: ${self:custom.dbInfo.password}
-      topicName: ${self:custom.topicName}
+      topicName: ${param:topicName}
       brokerString: ${self:custom.brokerString}
     events:
       - http:
