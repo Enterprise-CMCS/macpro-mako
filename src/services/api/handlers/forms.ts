@@ -4,10 +4,10 @@ import { APIGatewayEvent } from "aws-lambda";
 export const forms = async (event: APIGatewayEvent) => {
   try {
     const body = event.body ? JSON.parse(event.body) : {};
-    const fileId = body.fileId;
+    const formId = body.formId;
     const formVersion = body.formVersion;
 
-    if (!fileId) {
+    if (!formId) {
       return {
         statusCode: 400,
         headers: {
@@ -17,7 +17,7 @@ export const forms = async (event: APIGatewayEvent) => {
       };
     }
 
-    const filePath = getFilepathForIdAndVersion(fileId, formVersion);
+    const filePath = getFilepathForIdAndVersion(formId, formVersion);
     const jsonData = await fs.promises.readFile(filePath, "utf-8");
 
     if (!jsonData) {
@@ -51,14 +51,14 @@ export const forms = async (event: APIGatewayEvent) => {
 };
 
 export function getFilepathForIdAndVersion(
-  fileId: string,
+  formId: string,
   formVersion: string | undefined
 ): string | undefined {
-  if (fileId && formVersion) {
-    return `/opt/${fileId}/v${formVersion}.json`;
+  if (formId && formVersion) {
+    return `/opt/${formId}/v${formVersion}.json`;
   }
 
-  const files = fs.readdirSync(`/opt/${fileId}`);
+  const files = fs.readdirSync(`/opt/${formId}`);
   if (!files) return undefined;
   const versionNumbers = files?.map((fileName: string) => {
     const match = fileName.match(/^v(\d+)\./);
@@ -71,7 +71,7 @@ export function getFilepathForIdAndVersion(
 
   if (!maxVersion) return undefined;
 
-  return `/opt/${fileId}/v${maxVersion}.json`;
+  return `/opt/${formId}/v${maxVersion}.json`;
 }
 
 export const handler = forms;

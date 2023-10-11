@@ -4,7 +4,7 @@ import { forms } from "../forms";
 import { APIGatewayProxyEvent } from "aws-lambda/trigger/api-gateway-proxy";
 
 describe("Forms Lambda Tests", () => {
-  it("should return 400 with error message if fileId is not provided", async () => {
+  it("should return 400 with error message if formId is not provided", async () => {
     const event = {
       body: JSON.stringify({}),
     } as APIGatewayProxyEvent;
@@ -18,7 +18,7 @@ describe("Forms Lambda Tests", () => {
 
   it("should return 500 with error message if filePath is not found", async () => {
     const event = {
-      body: JSON.stringify({ fileId: "test", formVersion: "1" }),
+      body: JSON.stringify({ formId: "test", formVersion: "1" }),
     } as APIGatewayProxyEvent;
     const result = await forms(event);
 
@@ -34,7 +34,7 @@ describe("Forms Lambda Tests", () => {
     );
 
     const event = {
-      body: JSON.stringify({ fileId: "testform", formVersion: "1" }),
+      body: JSON.stringify({ formId: "testform", formVersion: "1" }),
     } as APIGatewayProxyEvent;
     const result = await forms(event);
 
@@ -48,7 +48,7 @@ describe("Forms Lambda Tests", () => {
     );
 
     const event = {
-      body: JSON.stringify({ fileId: "testform", formVersion: "1" }),
+      body: JSON.stringify({ formId: "testform", formVersion: "1" }),
     } as APIGatewayProxyEvent;
 
     const result = await forms(event);
@@ -70,10 +70,10 @@ describe("Forms Lambda Tests", () => {
     });
 
     const eventV1 = {
-      body: JSON.stringify({ fileId: "testform", formVersion: "1" }),
+      body: JSON.stringify({ formId: "testform", formVersion: "1" }),
     } as APIGatewayProxyEvent;
     const eventV2 = {
-      body: JSON.stringify({ fileId: "testform", formVersion: "2" }),
+      body: JSON.stringify({ formId: "testform", formVersion: "2" }),
     } as APIGatewayProxyEvent;
 
     const resultV1 = await forms(eventV1);
