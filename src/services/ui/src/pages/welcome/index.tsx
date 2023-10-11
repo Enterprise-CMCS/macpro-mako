@@ -5,8 +5,6 @@ import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/Inputs";
-import { BreadCrumb, BreadCrumbBar } from "@/components/BreadCrumb";
-import { ChevronRight } from "lucide-react";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -35,13 +33,6 @@ export const Welcome = () => {
       {/* End Hero Section */}
       {/* Two Column Main Layout */}
       <main className="max-w-screen-xl mx-auto p-4 lg:px-8">
-        <BreadCrumbBar>
-          <BreadCrumb to="/dashboard" showSeperator={false}>
-            Submission Type
-          </BreadCrumb>
-          <BreadCrumb to="/dashboard">SPA Type</BreadCrumb>
-          <BreadCrumb to="/dashboard">Medicaid SPA Type</BreadCrumb>
-        </BreadCrumbBar>
         <div className="flex flex-col justify-center gap-8">
           <div>
             <h3 className="text-2xl font-bold mb-4">State Users</h3>
