@@ -15,6 +15,22 @@ const config = {
   database: "SEA",
 };
 
+import { Kafka, KafkaMessage } from "kafkajs";
+
+const kafka = new Kafka({
+  clientId: "submit",
+  brokers: process.env.brokerString.split(","),
+  retry: {
+    initialRetryTime: 300,
+    retries: 8,
+  },
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+const producer = kafka.producer();
+
 export const submit = async (event: APIGatewayEvent) => {
   try {
     const body = JSON.parse(event.body);
@@ -50,6 +66,14 @@ export const submit = async (event: APIGatewayEvent) => {
 
     await pool.close();
 
+    const message = { ...body, newfield: "newvalue" };
+    console.log(message);
+    await produceMessage(
+      process.env.topicName,
+      body.id,
+      JSON.stringify(message)
+    );
+
     return response({
       statusCode: 200,
       body: { message: "success" },
@@ -62,5 +86,29 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 };
+
+async function produceMessage(topic, key, value) {
+  await producer.connect();
+
+  const message: KafkaMessage = {
+    key: key,
+    value: value,
+    partition: 0,
+    headers: { source: "mako" },
+  };
+  console.log(message);
+
+  try {
+    await producer.send({
+      topic,
+      messages: [message],
+    });
+    console.log("Message sent successfully");
+  } catch (error) {
+    console.error("Error sending message:", error);
+  } finally {
+    await producer.disconnect();
+  }
+}
 
 export const handler = submit;
