@@ -17,6 +17,21 @@ enum MEDICAID_SPA_VALUES {
   ATTACHMENTS = "attachments",
   ADDITIONAL_INFO = "additionalInfo",
 }
+export type AttachmentRequirement = { label: string; required: boolean };
+const medicaidSpaAttachments: AttachmentRequirement[] = [
+  { label: "CMS 179", required: true },
+  { label: "SPA Pages", required: true },
+  { label: "Cover Letter", required: false },
+  {
+    label: "Document Demonstrating Good-Faith Tribal Engagement",
+    required: false,
+  },
+  { label: "Existing State Plan Page(s)", required: false },
+  { label: "Public Notice", required: false },
+  { label: "Standard Funding Questions (SFQs)", required: false },
+  { label: "Tribal Consultation", required: false },
+  { label: "Other", required: false },
+];
 export const MEDICAID_SPA_FORM: FormPageConfig = {
   pageTitle: "Submit New Medicaid SPA",
   description: {
@@ -44,7 +59,12 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
       id: "attachments",
       heading: "Attachments",
       instructions: <AttachmentsIntro />,
-      field: (func) => <AttachmentsFields handler={func} />,
+      field: (func) => (
+        <AttachmentsFields
+          handler={func}
+          attachmentsConfig={medicaidSpaAttachments}
+        />
+      ),
     },
     {
       id: "additional-info",

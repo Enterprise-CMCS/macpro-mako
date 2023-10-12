@@ -5,10 +5,12 @@ import {
   Textarea,
 } from "@/components/Inputs";
 import { Handler } from "@/pages/submission-flow/renderers/FormPage";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import { cn } from "@/lib";
 import { Calendar as CalendarIcon } from "lucide-react";
+import { useDropzone } from "react-dropzone";
+import { AttachmentRequirement } from "@/pages/submission-flow/config/forms/medicaid-spa-config";
 
 export const FormIntro = () => (
   <p className="my-3">
@@ -47,6 +49,8 @@ export const EffectiveDateIntro = () => (
   <p className="text-gray-500 font-light mt-1">For example: 4/28/1986</p>
 );
 
+/** This borrows a lot from {@link FilterableDateRange} and commonalities can later
+ * be extracted for more concise code */
 export const EffectiveDateField = ({ handler }: { handler: Handler }) => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>();
@@ -78,7 +82,9 @@ export const EffectiveDateField = ({ handler }: { handler: Handler }) => {
           numberOfMonths={1}
           className="bg-white"
           onSelect={(date) => {
-            setDate(date); // purely for UI purposes
+            // purely for UI purposes
+            setDate(date);
+            // updates the actual form state object
             handler({
               target: {
                 name: "proposedEffectiveDate",
@@ -110,7 +116,61 @@ export const AttachmentsIntro = () => (
   </>
 );
 
-export const AttachmentsFields = ({ handler }: { handler: Handler }) => <></>;
+export const AttachmentsFields = ({
+  handler,
+  attachmentsConfig,
+}: {
+  handler: Handler;
+  attachmentsConfig: AttachmentRequirement[];
+}) => {
+  /* The template for a drag-n-drop upload section */
+  const DropZone = () => {
+    const onDrop = useCallback(() => {
+      // Do something with the files
+    }, []);
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+      onDrop,
+    });
+
+    return (
+      <div
+        {...getRootProps()}
+        className="border border-dashed rounded-md h-20 p-4 flex justify-center align-middle"
+      >
+        <input {...getInputProps()} />
+        {isDragActive ? (
+          <p className="my-auto">Drop the files here ...</p>
+        ) : (
+          <p className="my-auto">
+            Drag file here or{" "}
+            <span className="text-sky-600 underline hover:cursor-pointer">
+              {/* The whole DropZone is clickable, so this is just a fun little
+                 not-a-link link to make this look clickable per the Figma */}
+              choose from folder
+            </span>
+          </p>
+        )}
+      </div>
+    );
+  };
+  return (
+    <section>
+      {attachmentsConfig.map((req, idx) => (
+        <>
+          <label key={`${req.label}-${idx}`}>
+            <span className="font-bold text-sm">{req.label}</span>
+            {req.required ? <RequiredIndicator /> : null}
+          </label>
+          <DropZone />
+          {/* Does not show under final dropzone */}
+          {idx !== attachmentsConfig.length - 1 ? (
+            <hr className="my-6" />
+          ) : null}
+        </>
+      ))}
+    </section>
+  );
+};
 
 export const AdditionalInfoIntro = () => (
   <p className="text-gray-500 font-light mt-1">
