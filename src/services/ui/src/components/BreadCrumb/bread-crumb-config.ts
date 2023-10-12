@@ -20,12 +20,12 @@ export const BREAD_CRUMB_CONFIG: BreadCrumbConfig[] = [
     order: 2,
   },
   {
-    displayText: "New Submissions",
+    displayText: "SPA Type",
     to: ROUTES.SPA_SUBMISSION_OPTIONS,
     order: 3,
   },
   {
-    displayText: "New Waiver",
+    displayText: "Waiver Type",
     to: ROUTES.WAIVER_SUBMISSION_OPTIONS,
     order: 3,
   },
@@ -43,6 +43,21 @@ export const BREAD_CRUMB_CONFIG: BreadCrumbConfig[] = [
     displayText: "Chip SPA Type",
     to: ROUTES.CHIP_SPA_SUB_OPTIONS,
     order: 4,
+  },
+  {
+    displayText: "CHIP Eligibility SPAs",
+    to: ROUTES.CHIP_ELIGIBILITY_LANDING,
+    order: 5,
+  },
+  {
+    displayText: "Medicaid Alternative Benefits Plans (ABP)",
+    to: ROUTES.MEDICAID_ABP_LANDING,
+    order: 5,
+  },
+  {
+    displayText: "Medicaid Eligibility",
+    to: ROUTES.MEDICAID_ELIGIBILITY_LANDING,
+    order: 5,
   },
   {
     displayText: "1915(b)(4) Waiver Types",
