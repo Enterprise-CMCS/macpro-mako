@@ -33,11 +33,17 @@ export const SpaIDIntro = () => (
   </p>
 );
 
-export const SpaIDInput = ({ handler }: { handler: Handler }) => (
+export const SpaIDInput = ({
+  handler,
+  fieldName,
+}: {
+  handler: Handler;
+  fieldName: string;
+}) => (
   <Input
     type="text"
     id="input-spa-id"
-    name="spaId"
+    name={fieldName}
     className="max-w-sm mt-4"
     aria-describedby="desc-spa-id"
     onChange={(event) => handler(event)}
@@ -51,7 +57,13 @@ export const EffectiveDateIntro = () => (
 
 /** This borrows a lot from {@link FilterableDateRange} and commonalities can later
  * be extracted for more concise code */
-export const EffectiveDateField = ({ handler }: { handler: Handler }) => {
+export const EffectiveDateField = ({
+  handler,
+  fieldName,
+}: {
+  handler: Handler;
+  fieldName: string;
+}) => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>();
   const handleClose = (updateOpen: boolean) => {
@@ -87,7 +99,7 @@ export const EffectiveDateField = ({ handler }: { handler: Handler }) => {
             // updates the actual form state object
             handler({
               target: {
-                name: "proposedEffectiveDate",
+                name: fieldName,
                 value: date,
               },
             } as ChangeEvent<any>);
@@ -124,9 +136,15 @@ export const AttachmentsFields = ({
   attachmentsConfig: AttachmentRequirement[];
 }) => {
   /* The template for a drag-n-drop upload section */
-  const DropZone = () => {
-    const onDrop = useCallback(() => {
+  const DropZone = ({ multiple }: { multiple: boolean }) => {
+    const [fileNames, setFileNames] = useState<string[]>([]);
+    const onDrop = useCallback((acceptedFiles: File[]) => {
       // Do something with the files
+      console.log(acceptedFiles);
+      setFileNames((prevState) => [
+        ...prevState,
+        ...acceptedFiles.map((file) => file.name),
+      ]);
     }, []);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
       onDrop,
@@ -137,8 +155,13 @@ export const AttachmentsFields = ({
         {...getRootProps()}
         className="border border-dashed rounded-md h-20 p-4 flex justify-center align-middle"
       >
-        <input {...getInputProps()} />
-        {isDragActive ? (
+        <input {...getInputProps()} multiple={multiple} />
+        {fileNames.length ? (
+          /* TODO: Currently no guidance on how to display files when loaded. Should
+           *   get HCD's opinion */
+          <p className="my-auto">{fileNames.join(", ")}</p>
+        ) : isDragActive ? (
+          /* Only shows when file drag is happening */
           <p className="my-auto">Drop the files here ...</p>
         ) : (
           <p className="my-auto">
@@ -156,17 +179,17 @@ export const AttachmentsFields = ({
   return (
     <section>
       {attachmentsConfig.map((req, idx) => (
-        <>
-          <label key={`${req.label}-${idx}`}>
+        <div key={`${req.label}- ${idx}`}>
+          <label>
             <span className="font-bold text-sm">{req.label}</span>
             {req.required ? <RequiredIndicator /> : null}
           </label>
-          <DropZone />
+          <DropZone multiple={req.multiple} />
           {/* Does not show under final dropzone */}
           {idx !== attachmentsConfig.length - 1 ? (
             <hr className="my-6" />
           ) : null}
-        </>
+        </div>
       ))}
     </section>
   );
@@ -178,14 +201,20 @@ export const AdditionalInfoIntro = () => (
   </p>
 );
 
-export const AdditionalInfoInput = ({ handler }: { handler: Handler }) => {
+export const AdditionalInfoInput = ({
+  handler,
+  fieldName,
+}: {
+  handler: Handler;
+  fieldName: string;
+}) => {
   const [len, setLen] = useState(0);
   return (
     <>
       <Textarea
         aria-invalid="false"
         aria-describedby="character-count"
-        name="additionalInformation"
+        name={fieldName}
         maxLength={4000}
         aria-live="off"
         aria-multiline="true"

@@ -17,20 +17,29 @@ enum MEDICAID_SPA_VALUES {
   ATTACHMENTS = "attachments",
   ADDITIONAL_INFO = "additionalInfo",
 }
-export type AttachmentRequirement = { label: string; required: boolean };
+export type AttachmentRequirement = {
+  label: string;
+  required: boolean;
+  multiple: boolean;
+};
 const medicaidSpaAttachments: AttachmentRequirement[] = [
-  { label: "CMS 179", required: true },
-  { label: "SPA Pages", required: true },
-  { label: "Cover Letter", required: false },
+  { label: "CMS 179", required: true, multiple: false },
+  { label: "SPA Pages", required: true, multiple: true },
+  { label: "Cover Letter", required: false, multiple: true },
   {
     label: "Document Demonstrating Good-Faith Tribal Engagement",
     required: false,
+    multiple: true,
   },
-  { label: "Existing State Plan Page(s)", required: false },
-  { label: "Public Notice", required: false },
-  { label: "Standard Funding Questions (SFQs)", required: false },
-  { label: "Tribal Consultation", required: false },
-  { label: "Other", required: false },
+  { label: "Existing State Plan Page(s)", required: false, multiple: true },
+  { label: "Public Notice", required: false, multiple: true },
+  {
+    label: "Standard Funding Questions (SFQs)",
+    required: false,
+    multiple: true,
+  },
+  { label: "Tribal Consultation", required: false, multiple: true },
+  { label: "Other", required: false, multiple: true },
 ];
 export const MEDICAID_SPA_FORM: FormPageConfig = {
   pageTitle: "Submit New Medicaid SPA",
@@ -47,13 +56,20 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
         linkRoute: ROUTES.FAQ,
       },
       instructions: <SpaIDIntro />,
-      field: (func) => <SpaIDInput handler={func} />,
+      field: (func) => (
+        <SpaIDInput handler={func} fieldName={MEDICAID_SPA_VALUES.SPA_ID} />
+      ),
     },
     {
       id: "proposed-effective-date",
       heading: "Proposed Effective Date of Medicaid SPA",
       instructions: <EffectiveDateIntro />,
-      field: (func) => <EffectiveDateField handler={func} />,
+      field: (func) => (
+        <EffectiveDateField
+          handler={func}
+          fieldName={MEDICAID_SPA_VALUES.PROPOSED_EFFECTIVE_DATE}
+        />
+      ),
     },
     {
       id: "attachments",
@@ -70,7 +86,12 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
       id: "additional-info",
       heading: "Additional Information",
       instructions: <AdditionalInfoIntro />,
-      field: (func) => <AdditionalInfoInput handler={func} />,
+      field: (func) => (
+        <AdditionalInfoInput
+          handler={func}
+          fieldName={MEDICAID_SPA_VALUES.ADDITIONAL_INFO}
+        />
+      ),
     },
   ],
 };
