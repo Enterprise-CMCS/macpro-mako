@@ -17,6 +17,7 @@ services:
       ECSFailureTopicArn: ${alerts.ECSFailureTopicArn}
       osDomainArn: ${data.OpenSearchDomainArn}
       osDomain: ${data.OpenSearchDomainEndpoint}
+      topicName: ${data.TopicName}
   auth:
     path: src/services/auth
     params:
