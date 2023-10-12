@@ -60,12 +60,12 @@ export const BREAD_CRUMB_CONFIG: BreadCrumbConfig[] = [
     order: 5,
   },
   {
-    displayText: "1915(b)(4) Waiver Types",
+    displayText: "1915(b)(4) FFS Selective Contracting Waiver Types",
     to: ROUTES.B4_WAIVER_OPTIONS,
     order: 5,
   },
   {
-    displayText: "1915(b) Capitated Waiver Types",
+    displayText: "1915(b) Comprehensive (Capitated) Waiver Authority Types",
     to: ROUTES.BCAP_WAIVER_OPTIONS,
     order: 5,
   },
