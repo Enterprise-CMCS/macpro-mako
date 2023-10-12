@@ -63,13 +63,13 @@ params:
     getAttachmentUrlProvisionedConcurrency: 2
     submitProvisionedConcurrency: 2
   val:
-    formsProvisionedConcurrency: 1
+    formsProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
     submitProvisionedConcurrency: 2
   production:
-    formsProvisionedConcurrency: 1
+    formsProvisionedConcurrency: 5
     searchProvisionedConcurrency: 10
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
