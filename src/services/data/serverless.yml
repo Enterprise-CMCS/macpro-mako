@@ -529,11 +529,22 @@ resources:
           VolumeSize: 10
         ClusterConfig:
           InstanceType: ${param:osInstanceType}
-          InstanceCount: 3
+          InstanceCount:
+            Fn::If:
+              - isDev
+              - 1
+              - 3
           DedicatedMasterEnabled: false
-          ZoneAwarenessEnabled: true
+          ZoneAwarenessEnabled:
+            Fn::If:
+              - isDev
+              - false
+              - true
           ZoneAwarenessConfig:
-            AvailabilityZoneCount: 3
+            Fn::If:
+              - isDev
+              - !Ref AWS::NoValue
+              - AvailabilityZoneCount: 3
         EncryptionAtRestOptions:
           Enabled: true
         NodeToNodeEncryptionOptions:
@@ -572,8 +583,13 @@ resources:
         VPCOptions:
           SecurityGroupIds:
             - !Ref OpenSearchSecurityGroup
-          SubnetIds: >-
-            ${self:custom.vpc.privateSubnets}
+          SubnetIds:
+            Fn::If:
+              - isDev
+              - - ${self:custom.vpc.privateSubnets.0}
+              - >-
+                ${self:custom.vpc.privateSubnets}
+
     OpenSearchRole:
       Type: AWS::IAM::Role
       Properties:
