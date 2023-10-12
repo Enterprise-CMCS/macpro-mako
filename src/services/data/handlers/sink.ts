@@ -11,6 +11,11 @@ import {
   OneMacTransform,
   transformOnemac,
 } from "shared-types/onemac";
+import {
+  MakoRecordsToDelete,
+  MakoTransform,
+  transformMako,
+} from "shared-types";
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -92,8 +97,19 @@ export const seatool: Handler = async (event) => {
 };
 
 export const onemac: Handler = async (event) => {
-  const oneMacRecords: (OneMacTransform | OneMacRecordsToDelete)[] = [];
-  const docObject: Record<string, OneMacTransform | OneMacRecordsToDelete> = {};
+  const oneMacRecords: (
+    | OneMacTransform
+    | OneMacRecordsToDelete
+    | MakoTransform
+    | MakoRecordsToDelete
+  )[] = [];
+  const docObject: Record<
+    string,
+    | OneMacTransform
+    | OneMacRecordsToDelete
+    | MakoTransform
+    | MakoRecordsToDelete
+  > = {};
 
   for (const recordKey of Object.keys(event.records)) {
     for (const onemacRecord of event.records[recordKey] as {
@@ -108,12 +124,23 @@ export const onemac: Handler = async (event) => {
         console.log(record);
         if (
           record &&
-          (record.origin == "mako" || // if we're a mako record
-            (record.sk === "Package" && // testing if we're a onemac package record
-              record.submitterName &&
-              record.submitterName !== "-- --"))
+          record.sk === "Package" && // testing if we're a onemac package record
+          record.submitterName &&
+          record.submitterName !== "-- --"
         ) {
           const result = transformOnemac(id).safeParse(record);
+          if (result.success === false) {
+            console.log(
+              "ONEMAC Validation Error. The following record failed to parse: ",
+              JSON.stringify(record),
+              "Because of the following Reason(s):",
+              result.error.message
+            );
+          } else {
+            docObject[id] = result.data;
+          }
+        } else if (record && record.origin === "mako") {
+          const result = transformMako(id).safeParse(record);
           if (result.success === false) {
             console.log(
               "ONEMAC Validation Error. The following record failed to parse: ",

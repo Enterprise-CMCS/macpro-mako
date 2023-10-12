@@ -23,7 +23,7 @@ export const onemacSchema = z.object({
       })
     )
     .nullish(),
-  origin: z.string().nullable().default("oneMAC"),
+  origin: z.string().nullable(),
 });
 
 export const transformOnemac = (id: string) => {
@@ -67,7 +67,7 @@ export const transformOnemac = (id: string) => {
     additionalInformation: data.additionalInformation,
     submitterEmail: data.submitterEmail,
     submitterName: data.submitterName === "-- --" ? null : data.submitterName,
-    origin: data.origin,
+    origin: "oneMAC",
   }));
 };
 
