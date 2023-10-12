@@ -16,6 +16,7 @@ const config = {
 };
 
 import { Kafka, KafkaMessage } from "kafkajs";
+import { OneMacSink } from "shared-types";
 
 const kafka = new Kafka({
   clientId: "submit",
@@ -66,7 +67,14 @@ export const submit = async (event: APIGatewayEvent) => {
 
     await pool.close();
 
-    const message = { ...body, newfield: "newvalue" };
+    const message: OneMacSink = {
+      // adding to the spread of body is just for POC.  these values should come through the api.
+      ...body,
+      additionalInformation: "blah blah blah",
+      origin: "mako",
+      submitterName: "Jake",
+      submitterEmail: "jake@example.com",
+    };
     console.log(message);
     await produceMessage(
       process.env.topicName,
