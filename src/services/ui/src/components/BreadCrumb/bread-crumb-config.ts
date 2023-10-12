@@ -7,7 +7,7 @@ export type BreadCrumbConfig = {
   displayText: string;
 };
 
-export const BREAD_CRUMB_CONFIG: BreadCrumbConfig[] = [
+export const BREAD_CRUMB_CONFIG_NEW_SUBMISSION: BreadCrumbConfig[] = [
   {
     default: true,
     displayText: "Dashboard",
@@ -68,5 +68,22 @@ export const BREAD_CRUMB_CONFIG: BreadCrumbConfig[] = [
     displayText: "1915(b) Comprehensive (Capitated) Waiver Authority Types",
     to: ROUTES.BCAP_WAIVER_OPTIONS,
     order: 5,
+  },
+];
+
+export const BREAD_CRUMB_CONFIG_PACKAGE_DETAILS = (data: {
+  type: string;
+  id: string;
+}): BreadCrumbConfig[] => [
+  {
+    displayText: "Dashboard",
+    order: 1,
+    default: true,
+    to: ROUTES.DASHBOARD,
+  },
+  {
+    displayText: `${data.id}`,
+    order: 2,
+    to: ROUTES.DETAILS,
   },
 ];

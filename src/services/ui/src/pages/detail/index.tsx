@@ -14,6 +14,8 @@ import { OsHit, OsMainSourceItem } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { DetailNav } from "./detailNav";
+import { BreadCrumbs } from "@/components/BreadCrumb";
+import { BREAD_CRUMB_CONFIG_PACKAGE_DETAILS } from "@/components/BreadCrumb/bread-crumb-config";
 
 export const DetailsContent = ({
   data,
@@ -82,6 +84,7 @@ export const Details = () => {
   const query = useQuery();
   const id = query.get("id") as string;
   const { data, isLoading, error } = useGetItem(id);
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -91,8 +94,13 @@ export const Details = () => {
 
   return (
     <>
-      <DetailNav id={id} type={data?._source.planType} />
-      <div className="max-w-screen-xl mx-auto py-8 px-4 lg:px-8">
+      {/* <DetailNav id={id} type={data?._source.planType} /> */}
+      <div className="max-w-screen-xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
+        <BreadCrumbs
+          options={BREAD_CRUMB_CONFIG_PACKAGE_DETAILS({
+            id,
+          })}
+        />
         <DetailsContent data={data} />
       </div>
     </>
