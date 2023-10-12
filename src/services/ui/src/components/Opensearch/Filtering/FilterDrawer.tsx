@@ -26,7 +26,8 @@ export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
   const params = useOsParams();
 
-  const filtersExist = checkMultiFilter(params.state.filters, 1);
+  const filtersApplied = checkMultiFilter(params.state.filters, 1);
+  const handleFilterReset = () => resetFilters(params.onSet);
   return (
     <Sheet open={hook.drawerOpen} onOpenChange={hook.setDrawerState}>
       <SheetTrigger>
@@ -42,8 +43,8 @@ export const OsFilterDrawer = () => {
         <Button
           className="w-full my-2"
           variant="outline"
-          disabled={!filtersExist}
-          onClick={() => resetFilters(params.onSet)}
+          disabled={!filtersApplied}
+          onClick={handleFilterReset}
         >
           Reset
         </Button>

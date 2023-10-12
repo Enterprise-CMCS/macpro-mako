@@ -53,6 +53,7 @@ const ChipList: FC<RenderProp> = ({
   return (
     <Fragment key={`${index}-${filter.field}-fragment`}>
       {filter.value.map((v, vindex) => {
+        const chipText = `${filter?.label + ": " ?? ""}${labelMap[v] ?? v}`;
         return (
           <Chip
             key={`${index}-${vindex}-${filter.field}`}
@@ -60,7 +61,9 @@ const ChipList: FC<RenderProp> = ({
             onIconClick={() => {
               clearFilter(filter, vindex);
             }}
-          >{`${filter?.label + ": " ?? ""}${labelMap[v] ?? v}`}</Chip>
+          >
+            {chipText}
+          </Chip>
         );
       })}
     </Fragment>
@@ -72,7 +75,7 @@ export const FilterChips: FC = () => {
   const { setDrawerState } = useFilterDrawerContext();
 
   const openDrawer = useCallback(() => setDrawerState(true), [setDrawerState]);
-  const multipleFilters = checkMultiFilter(params.state.filters, 2);
+  const twoOrMoreFiltersApplied = checkMultiFilter(params.state.filters, 2);
   const clearFilter = (filter: OsFilterable, valIndex?: number) => {
     params.onSet((s) => {
       let filters = s.filters;
@@ -95,6 +98,8 @@ export const FilterChips: FC = () => {
     });
   };
 
+  const handleChipClick = () => resetFilters(params.onSet);
+
   return (
     <div className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2">
       {params.state.filters.map((filter, index) => {
@@ -103,11 +108,8 @@ export const FilterChips: FC = () => {
         if (filter.type === "terms") return <ChipList {...props} />;
         return null;
       })}
-      {multipleFilters && (
-        <Chip
-          variant={"destructive"}
-          onChipClick={() => resetFilters(params.onSet)}
-        >
+      {twoOrMoreFiltersApplied && (
+        <Chip variant={"destructive"} onChipClick={handleChipClick}>
           Clear All
         </Chip>
       )}
