@@ -11,7 +11,12 @@ import {
   SpaIDInput,
   SpaIDIntro,
 } from "@/pages/submission-flow/renderers/FormFields";
-
+enum MEDICAID_SPA_VALUES {
+  SPA_ID = "spaId",
+  PROPOSED_EFFECTIVE_DATE = "proposedEffectiveDate",
+  ATTACHMENTS = "attachments",
+  ADDITIONAL_INFO = "additionalInfo",
+}
 export const MEDICAID_SPA_FORM: FormPageConfig = {
   pageTitle: "Submit New Medicaid SPA",
   description: {

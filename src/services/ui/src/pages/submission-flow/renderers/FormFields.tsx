@@ -1,6 +1,14 @@
-import { Input, RequiredIndicator, Textarea } from "@/components/Inputs";
+import {
+  Calendar,
+  Input,
+  RequiredIndicator,
+  Textarea,
+} from "@/components/Inputs";
 import { Handler } from "@/pages/submission-flow/renderers/FormPage";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
+import { cn } from "@/lib";
+import { Calendar as CalendarIcon } from "lucide-react";
 
 export const FormIntro = () => (
   <p className="my-3">
@@ -28,7 +36,7 @@ export const SpaIDInput = ({ handler }: { handler: Handler }) => (
     type="text"
     id="input-spa-id"
     name="spaId"
-    className="max-w-sm mt-6"
+    className="max-w-sm mt-4"
     aria-describedby="desc-spa-id"
     onChange={(event) => handler(event)}
     required
@@ -39,7 +47,51 @@ export const EffectiveDateIntro = () => (
   <p className="text-gray-500 font-light mt-1">For example: 4/28/1986</p>
 );
 
-export const EffectiveDateField = ({ handler }: { handler: Handler }) => <></>;
+export const EffectiveDateField = ({ handler }: { handler: Handler }) => {
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState<Date | undefined>();
+  const handleClose = (updateOpen: boolean) => {
+    setOpen(updateOpen);
+  };
+  const today = new Date();
+  return (
+    <Popover open={open} onOpenChange={handleClose}>
+      <PopoverTrigger>
+        <div
+          id="date"
+          className={cn(
+            "flex items-center w-[270px] border border-input rounded-md p-2 mt-4 justify-start text-left font-normal",
+            !date && "text-muted-foreground"
+          )}
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {date ? date.toDateString() : "Select a date"}
+        </div>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          disabled={[{ before: today }]}
+          initialFocus
+          mode="single"
+          defaultMonth={today}
+          selected={date}
+          numberOfMonths={1}
+          className="bg-white"
+          onSelect={(date) => {
+            setDate(date); // purely for UI purposes
+            handler({
+              target: {
+                name: "proposedEffectiveDate",
+                value: date,
+              },
+            } as ChangeEvent<any>);
+            setOpen(false);
+          }}
+        />
+      </PopoverContent>
+    </Popover>
+  );
+};
 
 export const AttachmentsIntro = () => (
   <>
@@ -78,7 +130,7 @@ export const AdditionalInfoInput = ({ handler }: { handler: Handler }) => {
         aria-live="off"
         aria-multiline="true"
         id="additional-information"
-        className="h-[300px] mt-6"
+        className="h-[300px] mt-4"
         onChange={(event) => {
           handler(event);
           setLen(event.target.value.length);

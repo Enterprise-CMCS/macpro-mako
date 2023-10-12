@@ -56,7 +56,7 @@ const FormPage = ({ pageTitle, description, fields }: FormPageConfig) => {
       >
         {fields.map((section, idx) => (
           <section
-            className="my-3 max-w-4xl"
+            className="my-6 max-w-4xl"
             key={`${idx}-${section.id}`}
             id={section.id}
           >
@@ -64,7 +64,9 @@ const FormPage = ({ pageTitle, description, fields }: FormPageConfig) => {
               /* Some headings require an additional link to the FAQ. Those
                * are provided in configs as HeadingWithLink objects. */
               <div className="flex justify-between">
-                <h3 className="text-lg font-bold">{section.heading.text}</h3>
+                <label htmlFor={section.id} className="text-lg font-bold">
+                  {section.heading.text}
+                </label>
                 <Link
                   className="text-sky-600 hover:text-sky-800 underline"
                   to={section.heading.linkRoute}
@@ -73,7 +75,9 @@ const FormPage = ({ pageTitle, description, fields }: FormPageConfig) => {
                 </Link>
               </div>
             ) : (
-              <h3 className="text-lg font-bold">{section.heading}</h3>
+              <label htmlFor={section.id} className="text-lg font-bold">
+                {section.heading}
+              </label>
             )}
             {section.instructions}
             {section.field(updateData)}
