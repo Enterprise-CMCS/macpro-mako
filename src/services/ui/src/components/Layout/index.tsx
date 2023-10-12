@@ -8,6 +8,7 @@ import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
+import { FAQ_TARGET } from "@/routes";
 
 const getLinks = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -103,18 +104,17 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     isActive
       ? "underline underline-offset-4 decoration-4 hover:text-white/70"
       : "hover:text-white/70";
-
   if (prevMediaQuery !== isDesktop) {
     setPrevMediaQuery(isDesktop);
     setIsOpen(false);
   }
-
   if (isDesktop) {
     return (
       <>
         {getLinks(!!data.user).map((link) => (
           <NavLink
             to={link.link}
+            target={link.link === "/faq" ? FAQ_TARGET : undefined}
             key={link.name}
             className={setClassBasedOnNav}
           >
@@ -152,9 +152,9 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             {getLinks(!!data.user).map((link) => (
               <li key={link.link}>
                 <Link
-                  onClick={() => setIsOpen(false)}
                   className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
+                  target={link.link === "/faq" ? FAQ_TARGET : undefined}
                 >
                   {link.name}
                 </Link>
