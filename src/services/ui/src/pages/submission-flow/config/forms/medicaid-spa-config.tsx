@@ -3,7 +3,9 @@ import { ROUTES } from "@/routes";
 import {
   AdditionalInfoInput,
   AdditionalInfoIntro,
+  AttachmentsFields,
   AttachmentsIntro,
+  EffectiveDateField,
   EffectiveDateIntro,
   FormIntro,
   SpaIDInput,
@@ -31,13 +33,13 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
       id: "proposed-effective-date",
       heading: "Proposed Effective Date of Medicaid SPA",
       instructions: <EffectiveDateIntro />,
-      field: () => <></>,
+      field: (func) => <EffectiveDateField handler={func} />,
     },
     {
       id: "attachments",
       heading: "Attachments",
       instructions: <AttachmentsIntro />,
-      field: () => <></>,
+      field: (func) => <AttachmentsFields handler={func} />,
     },
     {
       id: "additional-info",

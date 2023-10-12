@@ -1,5 +1,6 @@
-import { RequiredIndicator } from "@/components/Inputs";
+import { Input, RequiredIndicator, Textarea } from "@/components/Inputs";
 import { Handler } from "@/pages/submission-flow/renderers/FormPage";
+import { useState } from "react";
 
 export const FormIntro = () => (
   <p className="my-3">
@@ -23,12 +24,12 @@ export const SpaIDIntro = () => (
 );
 
 export const SpaIDInput = ({ handler }: { handler: Handler }) => (
-  <input
+  <Input
     type="text"
     id="input-spa-id"
     name="spaId"
+    className="max-w-sm mt-6"
     aria-describedby="desc-spa-id"
-    className="border-[1.5px] border-gray-400 rounded-sm h-8 w-[250px] mt-4 p-1"
     onChange={(event) => handler(event)}
     required
   />
@@ -38,7 +39,7 @@ export const EffectiveDateIntro = () => (
   <p className="text-gray-500 font-light mt-1">For example: 4/28/1986</p>
 );
 
-export const EffectiveDateField = ({ handler }: { handler: Handler }) => {};
+export const EffectiveDateField = ({ handler }: { handler: Handler }) => <></>;
 
 export const AttachmentsIntro = () => (
   <>
@@ -57,22 +58,41 @@ export const AttachmentsIntro = () => (
   </>
 );
 
+export const AttachmentsFields = ({ handler }: { handler: Handler }) => <></>;
+
 export const AdditionalInfoIntro = () => (
   <p className="text-gray-500 font-light mt-1">
     Add anything else that you would like to share with CMS.
   </p>
 );
 
-export const AdditionalInfoInput = ({ handler }: { handler: Handler }) => (
-  <textarea
-    aria-invalid="false"
-    aria-describedby="character-count"
-    className="border-[1.5px] border-gray-400 rounded-sm w-full h-[200px] mt-4"
-    name="additionalInformation"
-    maxLength={4000}
-    aria-live="off"
-    aria-multiline="true"
-    id="additional-information"
-    onChange={(event) => handler(event)}
-  />
-);
+export const AdditionalInfoInput = ({ handler }: { handler: Handler }) => {
+  const [len, setLen] = useState(0);
+  return (
+    <>
+      <Textarea
+        aria-invalid="false"
+        aria-describedby="character-count"
+        name="additionalInformation"
+        maxLength={4000}
+        aria-live="off"
+        aria-multiline="true"
+        id="additional-information"
+        className="h-[300px] mt-6"
+        onChange={(event) => {
+          handler(event);
+          setLen(event.target.value.length);
+        }}
+      />
+      <span
+        tabIndex={0}
+        id="character-count"
+        aria-label="character-count"
+        aria-live="polite"
+        className="text-gray-500 font-light"
+      >
+        {`${4000 - len} characters remaining`}
+      </span>
+    </>
+  );
+};
