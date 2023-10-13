@@ -72,7 +72,6 @@ export const BREAD_CRUMB_CONFIG_NEW_SUBMISSION: BreadCrumbConfig[] = [
 ];
 
 export const BREAD_CRUMB_CONFIG_PACKAGE_DETAILS = (data: {
-  type: string;
   id: string;
 }): BreadCrumbConfig[] => [
   {
