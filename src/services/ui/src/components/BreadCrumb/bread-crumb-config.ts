@@ -40,7 +40,7 @@ export const BREAD_CRUMB_CONFIG_NEW_SUBMISSION: BreadCrumbConfig[] = [
     order: 4,
   },
   {
-    displayText: "Chip SPA Type",
+    displayText: "CHIP SPA Type",
     to: ROUTES.CHIP_SPA_SUB_OPTIONS,
     order: 4,
   },
@@ -50,12 +50,14 @@ export const BREAD_CRUMB_CONFIG_NEW_SUBMISSION: BreadCrumbConfig[] = [
     order: 5,
   },
   {
-    displayText: "Medicaid Alternative Benefits Plans (ABP)",
+    displayText:
+      "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing",
     to: ROUTES.MEDICAID_ABP_LANDING,
     order: 5,
   },
   {
-    displayText: "Medicaid Eligibility",
+    displayText:
+      "Medicaid Eligibility, Enrollment, Administration, and Health Homes",
     to: ROUTES.MEDICAID_ELIGIBILITY_LANDING,
     order: 5,
   },
