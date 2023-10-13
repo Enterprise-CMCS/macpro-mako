@@ -60,7 +60,7 @@ export const DependencyWrapper = ({
   dependency,
   children,
 }: PropsWithChildren<DependencyWrapperProps>) => {
-  const { watch, setValue, getValues } = useFormContext();
+  const { watch, setValue } = useFormContext();
   const [wasSetLast, setWasSetLast] = useState(false);
   const dependentValues = watch(
     dependency?.conditions?.map((c) => c.name) ?? []
