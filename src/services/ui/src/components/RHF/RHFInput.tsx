@@ -320,7 +320,7 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
   control: Control<TFieldValues>;
 }) => {
   return (
-    <DependencyWrapper {...props.form?.dependency}>
+    <DependencyWrapper {...props.form}>
       <div className="py-4">
         {props.form.description && (
           <div className="mb-6">
@@ -332,12 +332,13 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
         <div className={props.form.wrapperStyling}>
           {props.form.slots.map((slot) => {
             return (
-              <FormField
-                key={slot.name}
-                control={props.control}
-                name={slot.name}
-                render={RHFSlot(slot)}
-              />
+              <DependencyWrapper key={slot.name} {...slot}>
+                <FormField
+                  control={props.control}
+                  name={slot.name}
+                  render={RHFSlot(slot)}
+                />
+              </DependencyWrapper>
             );
           })}
         </div>

@@ -86,6 +86,16 @@ export const ABP1: Document = {
         {
           description:
             "Is enrollment available for all individuals in these eligibility groups?",
+          dependency: {
+            //example of a conditionally revealed field
+            conditions: [
+              {
+                name: "alt_benefit_plan_population_name",
+                type: "valueExists",
+              },
+            ],
+            effect: { type: "show" },
+          },
           slots: [
             {
               rhf: "Select",
@@ -97,16 +107,6 @@ export const ABP1: Document = {
                 { label: "Yes", value: "yes" },
                 { label: "No", value: "no" },
               ],
-              dependency: {
-                //example of a conditionally revealed field
-                conditions: [
-                  {
-                    name: "alt_benefit_plan_population_name",
-                    type: "valueExists",
-                  },
-                ],
-                effect: { type: "show" },
-              },
             },
           ],
         },
