@@ -11,12 +11,7 @@ import {
   SpaIDInput,
   SpaIDIntro,
 } from "@/pages/submission-flow/renderers/FormFields";
-enum MEDICAID_SPA_VALUES {
-  SPA_ID = "spaId",
-  PROPOSED_EFFECTIVE_DATE = "proposedEffectiveDate",
-  ATTACHMENTS = "attachments",
-  ADDITIONAL_INFO = "additionalInfo",
-}
+
 export type AttachmentRequirement = {
   label: string;
   required: boolean;
@@ -42,6 +37,10 @@ const medicaidSpaAttachments: AttachmentRequirement[] = [
   { label: "Other", required: false, multiple: true },
 ];
 export const MEDICAID_SPA_FORM: FormPageConfig = {
+  meta: {
+    origin: "mako",
+    authority: "medicaid-spa",
+  },
   pageTitle: "Submit New Medicaid SPA",
   description: {
     heading: "Medicaid SPA Details",
@@ -56,20 +55,13 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
         linkRoute: ROUTES.FAQ,
       },
       instructions: <SpaIDIntro />,
-      field: (func) => (
-        <SpaIDInput handler={func} fieldName={MEDICAID_SPA_VALUES.SPA_ID} />
-      ),
+      field: (func) => <SpaIDInput handler={func} />,
     },
     {
       id: "proposed-effective-date",
       heading: "Proposed Effective Date of Medicaid SPA",
       instructions: <EffectiveDateIntro />,
-      field: (func) => (
-        <EffectiveDateField
-          handler={func}
-          fieldName={MEDICAID_SPA_VALUES.PROPOSED_EFFECTIVE_DATE}
-        />
-      ),
+      field: (func) => <EffectiveDateField handler={func} />,
     },
     {
       id: "attachments",
@@ -86,12 +78,7 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
       id: "additional-info",
       heading: "Additional Information",
       instructions: <AdditionalInfoIntro />,
-      field: (func) => (
-        <AdditionalInfoInput
-          handler={func}
-          fieldName={MEDICAID_SPA_VALUES.ADDITIONAL_INFO}
-        />
-      ),
+      field: (func) => <AdditionalInfoInput handler={func} />,
     },
   ],
 };

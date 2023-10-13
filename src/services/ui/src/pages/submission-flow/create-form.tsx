@@ -4,7 +4,7 @@ import { useState } from "react";
 import { getUserStateCodes } from "@/utils";
 import { useGetUser } from "@/api/useGetUser";
 import { useParams } from "react-router-dom";
-import { useCreateSeatoolRecord, FormData } from "@/api/submit";
+import { useSubmissionMutation } from "@/api/submit";
 
 export const Create = () => {
   const { authority } = useParams();
@@ -13,7 +13,7 @@ export const Create = () => {
   const { data: user } = useGetUser();
   const stateCodes = getUserStateCodes(user?.user);
   const { handleSubmit, control } = useForm<FormData>();
-  const { mutate } = useCreateSeatoolRecord();
+  const { mutate } = useSubmissionMutation();
   const [dropDownValue, setDropDownValue] = useState("");
 
   const onSubmit = (data: FormData) => {

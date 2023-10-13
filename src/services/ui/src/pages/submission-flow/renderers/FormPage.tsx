@@ -5,6 +5,9 @@ import { ChangeEvent, ReactElement, useState } from "react";
 import { ROUTES } from "@/routes";
 import { Link } from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
+import { SubmissionAPIBody, useSubmissionMutation } from "@/api/submit";
+import { MakoTransform } from "shared-types";
+import { useGetUser } from "@/api/useGetUser";
 
 type HeadingWithLink = {
   text: string;
@@ -26,13 +29,27 @@ type FormDescription = Pick<FormSection, "instructions"> & {
   // is needed at this level.
   heading: string;
 };
+type FormMeta = { origin: string; authority: string };
 export interface FormPageConfig {
+  meta: FormMeta;
   pageTitle: string;
   description: FormDescription;
   fields: FormSection[];
 }
-const FormPage = ({ pageTitle, description, fields }: FormPageConfig) => {
-  const [data, setData] = useState({});
+const FormPage = ({ meta, pageTitle, description, fields }: FormPageConfig) => {
+  const { data: user } = useGetUser();
+  const [data, setData] = useState<SubmissionAPIBody>({
+    additionalInformation: "",
+    attachments: [],
+    id: "",
+    raiResponses: [],
+    origin: meta.origin,
+    authority: meta.authority,
+    submitterEmail: user?.user?.email || "",
+    submitterName: `${user?.user?.given_name} ${user?.user?.family_name}`,
+    state: "",
+  });
+  const api = useSubmissionMutation();
   const updateData = (e: ChangeEvent<any>) => {
     setData({
       ...data,
@@ -54,7 +71,13 @@ const FormPage = ({ pageTitle, description, fields }: FormPageConfig) => {
         onSubmit={(event) => {
           event.preventDefault();
           // plug in the API call with data
-          console.log(data);
+          api.mutate({
+            ...data,
+            state: data.id.split("-")[0],
+          });
+          console.log({
+            ...data,
+          });
         }}
       >
         {fields.map((section, idx) => (

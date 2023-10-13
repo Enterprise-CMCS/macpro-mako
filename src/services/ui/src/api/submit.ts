@@ -1,14 +1,14 @@
 import { API } from "aws-amplify";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { ReactQueryApiError } from "shared-types";
+import { MakoTransform, ReactQueryApiError } from "shared-types";
 
-export type FormData = {
-  id: string;
+export type SubmissionAPIBody = MakoTransform & {
   authority: string;
   state: string;
 };
-
-export const getSubmissionData = async (props: FormData): Promise<any> => {
+export const postSubmissionData = async (
+  props: SubmissionAPIBody
+): Promise<any> => {
   const results = await API.post("os", "/submit", {
     body: props,
   });
@@ -16,11 +16,11 @@ export const getSubmissionData = async (props: FormData): Promise<any> => {
   return results;
 };
 
-export const useCreateSeatoolRecord = (
-  options?: UseMutationOptions<any, ReactQueryApiError, FormData>
+export const useSubmissionMutation = (
+  options?: UseMutationOptions<any, ReactQueryApiError, SubmissionAPIBody>
 ) => {
-  return useMutation<any, ReactQueryApiError, FormData>(
-    (props) => getSubmissionData(props),
+  return useMutation<any, ReactQueryApiError, SubmissionAPIBody>(
+    (props) => postSubmissionData(props),
     options
   );
 };

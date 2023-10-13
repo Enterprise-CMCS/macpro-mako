@@ -12,6 +12,13 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { AttachmentRequirement } from "@/pages/submission-flow/config/forms/medicaid-spa-config";
 
+enum SUBMISSION_BODY {
+  SPA_ID = "id",
+  PROPOSED_EFFECTIVE_DATE = "proposedEffectiveDate",
+  ATTACHMENTS = "attachments",
+  ADDITIONAL_INFO = "additionalInformation",
+}
+
 export const FormIntro = () => (
   <p className="my-3">
     Once you submit this form, a confirmation email is sent to you and to CMS.
@@ -33,17 +40,11 @@ export const SpaIDIntro = () => (
   </p>
 );
 
-export const SpaIDInput = ({
-  handler,
-  fieldName,
-}: {
-  handler: Handler;
-  fieldName: string;
-}) => (
+export const SpaIDInput = ({ handler }: { handler: Handler }) => (
   <Input
     type="text"
     id="input-spa-id"
-    name={fieldName}
+    name={SUBMISSION_BODY.SPA_ID}
     className="max-w-sm mt-4"
     aria-describedby="desc-spa-id"
     onChange={(event) => handler(event)}
@@ -57,13 +58,7 @@ export const EffectiveDateIntro = () => (
 
 /** This borrows a lot from {@link FilterableDateRange} and commonalities can later
  * be extracted for more concise code */
-export const EffectiveDateField = ({
-  handler,
-  fieldName,
-}: {
-  handler: Handler;
-  fieldName: string;
-}) => {
+export const EffectiveDateField = ({ handler }: { handler: Handler }) => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>();
   const handleClose = (updateOpen: boolean) => {
@@ -99,8 +94,8 @@ export const EffectiveDateField = ({
             // updates the actual form state object
             handler({
               target: {
-                name: fieldName,
-                value: date,
+                name: SUBMISSION_BODY.PROPOSED_EFFECTIVE_DATE,
+                value: date?.getTime() || undefined,
               },
             } as ChangeEvent<any>);
             setOpen(false);
@@ -202,20 +197,14 @@ export const AdditionalInfoIntro = () => (
   </p>
 );
 
-export const AdditionalInfoInput = ({
-  handler,
-  fieldName,
-}: {
-  handler: Handler;
-  fieldName: string;
-}) => {
+export const AdditionalInfoInput = ({ handler }: { handler: Handler }) => {
   const [len, setLen] = useState(0);
   return (
     <>
       <Textarea
         aria-invalid="false"
         aria-describedby="character-count"
-        name={fieldName}
+        name={SUBMISSION_BODY.ADDITIONAL_INFO}
         maxLength={4000}
         aria-live="off"
         aria-multiline="true"

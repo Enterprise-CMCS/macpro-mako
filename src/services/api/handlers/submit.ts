@@ -16,7 +16,7 @@ const config = {
 };
 
 import { Kafka, KafkaMessage } from "kafkajs";
-import { OneMacSink } from "shared-types";
+import { OneMacSink, transformMako } from "shared-types";
 
 const kafka = new Kafka({
   clientId: "submit",
@@ -45,7 +45,7 @@ export const submit = async (event: APIGatewayEvent) => {
     }
 
     const pool = await sql.connect(config);
-
+    console.log(body.state);
     const query = `
       Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
         values ('${body.id}'
@@ -67,25 +67,29 @@ export const submit = async (event: APIGatewayEvent) => {
 
     await pool.close();
 
-    const message: OneMacSink = {
-      // adding to the spread of body is just for POC.  these values should come through the api.
-      ...body,
-      additionalInformation: "blah blah blah",
-      origin: "mako",
-      submitterName: "Jake",
-      submitterEmail: "jake@example.com",
-    };
-    console.log(message);
-    await produceMessage(
-      process.env.topicName,
-      body.id,
-      JSON.stringify(message)
-    );
+    const message: OneMacSink = body;
+    const makoBody = transformMako(body.id).safeParse(message);
+    if (makoBody.success === false) {
+      // handle
+      console.log(
+        "MAKO Validation Error. The following record failed to parse: ",
+        JSON.stringify(message),
+        "Because of the following Reason(s): ",
+        makoBody.error.message
+      );
+    } else {
+      console.log(message);
+      await produceMessage(
+        process.env.topicName,
+        body.id,
+        JSON.stringify(message)
+      );
 
-    return response({
-      statusCode: 200,
-      body: { message: "success" },
-    });
+      return response({
+        statusCode: 200,
+        body: { message: "success" },
+      });
+    }
   } catch (error) {
     console.error({ error });
     return response({
