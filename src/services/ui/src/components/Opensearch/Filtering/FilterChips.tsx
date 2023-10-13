@@ -4,6 +4,8 @@ import { Chip } from "@/components/Chip";
 import { useOsParams } from "@/components/Opensearch/useOpensearch";
 import { OsFilterable, OsRangeValue } from "shared-types";
 import { useFilterDrawerContext } from "./FilterProvider";
+import { checkMultiFilter, resetFilters } from "../utils";
+import { useLabelMapping } from "@/hooks";
 
 interface RenderProp {
   filter: OsFilterable;
@@ -12,17 +14,8 @@ interface RenderProp {
   clearFilter: (filter: OsFilterable, valIndex?: number) => void;
 }
 
-const checkMultiFilter = (filters: OsFilterable[]) => {
-  return (
-    filters.length > 1 ||
-    filters.some(
-      (filter) => Array.isArray(filter.value) && filter.value.length > 1
-    )
-  );
-};
-
-// render function for simple date range chips
-const renderDateChip: FC<RenderProp> = ({
+// simple date range chips
+const DateChip: FC<RenderProp> = ({
   filter,
   index,
   openDrawer,
@@ -46,18 +39,21 @@ const renderDateChip: FC<RenderProp> = ({
   );
 };
 
-// render function for array value chips
-const renderChipList: FC<RenderProp> = ({
+// array value chips
+const ChipList: FC<RenderProp> = ({
   filter,
   index,
   clearFilter,
   openDrawer,
 }) => {
+  const labelMap = useLabelMapping();
+
   if (!Array.isArray(filter.value)) return null;
 
   return (
     <Fragment key={`${index}-${filter.field}-fragment`}>
       {filter.value.map((v, vindex) => {
+        const chipText = `${filter?.label + ": " ?? ""}${labelMap[v] ?? v}`;
         return (
           <Chip
             key={`${index}-${vindex}-${filter.field}`}
@@ -65,7 +61,9 @@ const renderChipList: FC<RenderProp> = ({
             onIconClick={() => {
               clearFilter(filter, vindex);
             }}
-          >{`${filter?.label + ": " ?? ""}${v}`}</Chip>
+          >
+            {chipText}
+          </Chip>
         );
       })}
     </Fragment>
@@ -77,7 +75,7 @@ export const FilterChips: FC = () => {
   const { setDrawerState } = useFilterDrawerContext();
 
   const openDrawer = useCallback(() => setDrawerState(true), [setDrawerState]);
-  const multipleFilters = checkMultiFilter(params.state.filters);
+  const twoOrMoreFiltersApplied = checkMultiFilter(params.state.filters, 2);
   const clearFilter = (filter: OsFilterable, valIndex?: number) => {
     params.onSet((s) => {
       let filters = s.filters;
@@ -99,24 +97,19 @@ export const FilterChips: FC = () => {
       };
     });
   };
-  const resetFilters = () => {
-    params.onSet((s) => ({
-      ...s,
-      filters: [],
-      pagination: { ...s.pagination, number: 0 },
-    }));
-  };
+
+  const handleChipClick = () => resetFilters(params.onSet);
 
   return (
     <div className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2">
       {params.state.filters.map((filter, index) => {
         const props: RenderProp = { clearFilter, openDrawer, filter, index };
-        if (filter.type === "range") return renderDateChip(props);
-        if (filter.type === "terms") return renderChipList(props);
+        if (filter.type === "range") return <DateChip {...props} />;
+        if (filter.type === "terms") return <ChipList {...props} />;
         return null;
       })}
-      {multipleFilters && (
-        <Chip variant={"destructive"} onChipClick={resetFilters}>
+      {twoOrMoreFiltersApplied && (
+        <Chip variant={"destructive"} onChipClick={handleChipClick}>
           Clear All
         </Chip>
       )}
