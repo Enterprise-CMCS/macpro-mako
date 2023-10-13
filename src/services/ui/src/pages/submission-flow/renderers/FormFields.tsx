@@ -157,18 +157,19 @@ export const AttachmentsFields = ({
       >
         <input {...getInputProps()} multiple={multiple} />
         {fileNames.length ? (
-          /* TODO: Currently no guidance on how to display files when loaded. Should
-           *   get HCD's opinion */
+          /* TODO: Later to be replaced with HCD designs; were not present
+           *   upon starting this work. */
+          /* Shows when a file is presently selected for upload */
           <p className="my-auto">{fileNames.join(", ")}</p>
         ) : isDragActive ? (
           /* Only shows when file drag is happening */
           <p className="my-auto">Drop the files here ...</p>
         ) : (
+          /* The whole DropZone is clickable, so this is just a fun little
+           * not-a-link link to make this look clickable per the Figma */
           <p className="my-auto">
             Drag file here or{" "}
             <span className="text-sky-600 underline hover:cursor-pointer">
-              {/* The whole DropZone is clickable, so this is just a fun little
-                 not-a-link link to make this look clickable per the Figma */}
               choose from folder
             </span>
           </p>

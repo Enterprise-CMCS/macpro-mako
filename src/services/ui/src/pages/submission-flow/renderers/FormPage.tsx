@@ -19,6 +19,8 @@ type FormSection = {
   field: (func: Handler) => ReactElement;
   //TODO: Required boolean
 };
+// TODO: Instructions may be universal? If so, just plug it in jsx
+//  without the need for a config prop
 type FormDescription = Pick<FormSection, "instructions"> & {
   // Limits the higher form header to just a string, no HeadingWithLink
   // is needed at this level.
@@ -51,6 +53,7 @@ const FormPage = ({ pageTitle, description, fields }: FormPageConfig) => {
       <form
         onSubmit={(event) => {
           event.preventDefault();
+          // plug in the API call with data
           console.log(data);
         }}
       >

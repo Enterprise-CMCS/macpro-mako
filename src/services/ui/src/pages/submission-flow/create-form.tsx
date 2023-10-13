@@ -1,35 +1,10 @@
 import { useForm, Controller } from "react-hook-form";
-import { UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { API } from "aws-amplify";
-import { ReactQueryApiError } from "shared-types";
 import { Button } from "@/components/Inputs";
 import { useState } from "react";
 import { getUserStateCodes } from "@/utils";
 import { useGetUser } from "@/api/useGetUser";
 import { useParams } from "react-router-dom";
-
-type FormData = {
-  id: string;
-  authority: string;
-  state: string;
-};
-
-export const getSubmissionData = async (props: FormData): Promise<any> => {
-  const results = await API.post("os", "/submit", {
-    body: props,
-  });
-  console.log(results);
-  return results;
-};
-
-export const useCreateSeatoolRecord = (
-  options?: UseMutationOptions<any, ReactQueryApiError, FormData>
-) => {
-  return useMutation<any, ReactQueryApiError, FormData>(
-    (props) => getSubmissionData(props),
-    options
-  );
-};
+import { useCreateSeatoolRecord, FormData } from "@/api/submit";
 
 export const Create = () => {
   const { authority } = useParams();
