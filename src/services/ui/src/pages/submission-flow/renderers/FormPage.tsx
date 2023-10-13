@@ -6,7 +6,6 @@ import { ROUTES } from "@/routes";
 import { Link } from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
 import { SubmissionAPIBody, useSubmissionMutation } from "@/api/submit";
-import { MakoTransform } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 
 type HeadingWithLink = {
@@ -70,14 +69,13 @@ const FormPage = ({ meta, pageTitle, description, fields }: FormPageConfig) => {
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          // plug in the API call with data
-          api.mutate({
+          const submission = {
             ...data,
             state: data.id.split("-")[0],
-          });
-          console.log({
-            ...data,
-          });
+          };
+          // plug in the API call with data
+          api.mutate(submission);
+          console.log(submission);
         }}
       >
         {fields.map((section, idx) => (
