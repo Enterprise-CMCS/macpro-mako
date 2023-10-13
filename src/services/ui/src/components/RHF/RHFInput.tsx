@@ -70,7 +70,9 @@ type RHFComponentMap = {
 
 type FormGroup = {
   description: string;
-  slot: RHFSlotProps;
+  slots: RHFSlotProps[];
+  wrapperStyling?: string;
+  dependency?: DependencyRule;
 };
 
 export interface Section {
@@ -318,7 +320,7 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
   control: Control<TFieldValues>;
 }) => {
   return (
-    <DependencyWrapper {...props.form?.slot}>
+    <DependencyWrapper {...props.form}>
       <div className="py-4">
         {props.form.description && (
           <div className="mb-6">
@@ -327,11 +329,19 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
             </FormLabel>
           </div>
         )}
-        <FormField
-          control={props.control}
-          name={props.form.slot.name}
-          render={RHFSlot(props.form.slot)}
-        />
+        <div className={props.form.wrapperStyling}>
+          {props.form.slots.map((slot) => {
+            return (
+              <DependencyWrapper key={slot.name} {...slot}>
+                <FormField
+                  control={props.control}
+                  name={slot.name}
+                  render={RHFSlot(slot)}
+                />
+              </DependencyWrapper>
+            );
+          })}
+        </div>
       </div>
     </DependencyWrapper>
   );
