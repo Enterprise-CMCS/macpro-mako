@@ -425,8 +425,7 @@ export const FieldArray = <TFields extends FieldValues>(
               );
             })}
             <Trash2
-              color="gray"
-              className="self-end mb-2 cursor-pointer"
+              className="self-end mb-2 cursor-pointer stroke-primary"
               onClick={() => fieldArr.remove(index)}
             />
           </div>
