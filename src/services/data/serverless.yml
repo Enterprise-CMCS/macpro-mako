@@ -76,7 +76,7 @@ custom:
       deploy:finalize: |
         if [ "${self:custom.bootstrapKibanaUsers}" = "true" ];
         then
-          aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-bootstrapKibanaUsers --invocation-type RequestResponse /dev/null
+          aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-bootstrapUsers --invocation-type RequestResponse /dev/null
         fi
 
 stepFunctions:
@@ -263,10 +263,10 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-  bootstrapKibanaUsers:
-    handler: handlers/createKibanaUsers.handler
+  bootstrapUsers:
+    handler: handlers/createUsers.handler
     environment:
-      kibanaUserPoolId: !Ref CognitoUserPool
+      userPoolId: !Ref CognitoUserPool
       bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
       region: ${self:provider.region}
 
@@ -448,8 +448,14 @@ resources:
         GroupDescription: Security group for Sink Lambda Function.
         VpcId: ${self:custom.vpc.id}
         SecurityGroupEgress:
-          - IpProtocol: -1
+          - IpProtocol: tcp
             CidrIp: 0.0.0.0/0
+            FromPort: 443
+            ToPort: 443
+          - IpProtocol: tcp
+            CidrIp: 10.0.0.0/8
+            FromPort: 9094
+            ToPort: 9094
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:
@@ -512,6 +518,8 @@ resources:
           - arn:aws:iam::aws:policy/AmazonCognitoReadOnly
     OpenSearch:
       Type: AWS::OpenSearchService::Domain
+      UpdatePolicy:
+        EnableVersionUpgrade: true
       Properties:
         Tags:
           - Key: STAGE
@@ -522,11 +530,22 @@ resources:
           VolumeSize: 10
         ClusterConfig:
           InstanceType: ${param:osInstanceType}
-          InstanceCount: 3
+          InstanceCount:
+            Fn::If:
+              - isDev
+              - 1
+              - 3
           DedicatedMasterEnabled: false
-          ZoneAwarenessEnabled: true
+          ZoneAwarenessEnabled:
+            Fn::If:
+              - isDev
+              - false
+              - true
           ZoneAwarenessConfig:
-            AvailabilityZoneCount: 3
+            Fn::If:
+              - isDev
+              - !Ref AWS::NoValue
+              - AvailabilityZoneCount: 3
         EncryptionAtRestOptions:
           Enabled: true
         NodeToNodeEncryptionOptions:
@@ -565,8 +584,13 @@ resources:
         VPCOptions:
           SecurityGroupIds:
             - !Ref OpenSearchSecurityGroup
-          SubnetIds: >-
-            ${self:custom.vpc.privateSubnets}
+          SubnetIds:
+            Fn::If:
+              - isDev
+              - - ${self:custom.vpc.privateSubnets.0}
+              - >-
+                ${self:custom.vpc.privateSubnets}
+
     OpenSearchRole:
       Type: AWS::IAM::Role
       Properties:
@@ -604,20 +628,22 @@ resources:
       Properties:
         GroupDescription: Security group for Sink Lambda Function.
         VpcId: ${self:custom.vpc.id}
-    OpenSearchSecurityGroupEgress:
-      Type: AWS::EC2::SecurityGroupEgress
-      Properties:
-        GroupId: !Ref OpenSearchSecurityGroup
-        IpProtocol: -1
-        CidrIp: 0.0.0.0/0
     OpenSearchSecurityGroupIngress:
       Type: AWS::EC2::SecurityGroupIngress
       Properties:
         GroupId: !Ref OpenSearchSecurityGroup
-        IpProtocol: -1
+        IpProtocol: tcp
         FromPort: 443
         ToPort: 443
-        CidrIp: 10.0.0.0/0
+        CidrIp: 10.0.0.0/8
+    OpenSearchSecurityGroupEgress: # If we don't specify egress, all is allowed by default; this basically shuts off outbound
+      Type: AWS::EC2::SecurityGroupEgress
+      Properties:
+        GroupId: !Ref OpenSearchSecurityGroup
+        IpProtocol: tcp
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 127.0.0.1/32
     OpenSearchAuditLogGroup:
       Type: AWS::Logs::LogGroup
       Properties:

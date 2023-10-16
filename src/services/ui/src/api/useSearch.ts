@@ -12,6 +12,8 @@ import type {
   OsFilterable,
   OsAggQuery,
   OsMainSearchResponse,
+  OsHits,
+  OsMainSourceItem,
 } from "shared-types";
 
 type QueryProps = {
@@ -38,11 +40,15 @@ export const getSearchData = async (
 };
 
 export const getAllSearchData = async (filters?: OsFilterable[]) => {
-  if (!filters) return;
+  if (!filters) return [];
 
   const recursiveSearch = async (
     startPage: number
-  ): Promise<OsMainSearchResponse["hits"]["hits"]> => {
+  ): Promise<OsMainSourceItem[]> => {
+    if (startPage * 1000 >= 10000) {
+      return [];
+    }
+
     const searchData = await API.post("os", "/search", {
       body: {
         ...filterQueryBuilder(filters),
@@ -50,8 +56,15 @@ export const getAllSearchData = async (filters?: OsFilterable[]) => {
       },
     });
 
-    if (searchData?.hits.hits.length < 1000) return searchData.hits.hits || [];
-    return searchData.hits.hits.concat(await recursiveSearch(startPage + 1));
+    if (searchData?.hits.hits.length < 1000) {
+      return searchData.hits.hits.map((hit: any) => ({ ...hit._source })) || [];
+    }
+
+    return searchData.hits.hits
+      .map((hit: any) => ({
+        ...hit._source,
+      }))
+      .concat(await recursiveSearch(startPage + 1));
   };
 
   return await recursiveSearch(0);
