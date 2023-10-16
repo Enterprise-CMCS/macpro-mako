@@ -48,16 +48,18 @@ type TextFieldProps = InputProps & {
   description?: ReactElement | string;
 };
 
-type ComponentKey = keyof RHFComponentMap;
-
-type RHFSlotProps<T extends ComponentKey = any> = {
-  rhf: ComponentKey;
+export type RHFSlotProps = {
   name: string;
   label?: ReactElement | string;
   description?: ReactElement | string;
-} & RHFComponentMap[T];
+} & {
+  [K in keyof RHFComponentMap]: {
+    rhf: K;
+    props?: RHFComponentMap[K];
+  };
+}[keyof RHFComponentMap];
 
-type RHFComponentMap = {
+interface RHFComponentMap {
   Text: TextFieldProps;
   Textarea: TextareaProps;
   Switch: SwitchProps;
@@ -66,9 +68,7 @@ type RHFComponentMap = {
   DatePicker: CalendarProps;
   Checkbox: any;
   FieldArray: any;
-  //   "Checkbox":''
-};
-
+}
 type FormGroup = {
   description: string;
   slot: RHFSlotProps;
@@ -90,7 +90,7 @@ type FieldArrayProps<
 > = {
   control: Control<T, any>;
   name: TFieldArrayName;
-  fields: RHFSlotProps<any>[];
+  fields: RHFSlotProps[];
 };
 
 // -----------------------------------------------------------------
@@ -152,17 +152,14 @@ export const RHFSlot = <
   label,
   description,
   ...props
-}: RHFSlotProps<ComponentKey>): ControllerProps<
-  TFieldValues,
-  TName
->["render"] =>
+}: RHFSlotProps): ControllerProps<TFieldValues, TName>["render"] =>
   function Slot({ field }) {
     return (
       <FormItem className="flex flex-col gap-1">
         {label && <FormLabel>{label}</FormLabel>}
         <FormControl>
           <>
-            {rhf === "Input" && <Input {...props} {...field} />}
+            {rhf === "Text" && <Input {...props} {...field} />}
             {rhf === "Textarea" && <Textarea {...props} {...field} />}
             {rhf === "Switch" && <Switch {...props} {...field} />}
             {rhf === "Select" && (
@@ -326,7 +323,7 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
       )}
       <FormField
         control={props.control}
-        name={props.form.slot.name}
+        name={props.form.slot.name as any}
         render={RHFSlot(props.form.slot)}
       />
     </div>
@@ -388,7 +385,7 @@ export const FieldArray = <TFields extends FieldValues>(
       props.fields.reduce((ACC, S) => {
         ACC[S.name] = "";
         return ACC;
-      }, {})
+      }, {} as any)
     );
   };
 

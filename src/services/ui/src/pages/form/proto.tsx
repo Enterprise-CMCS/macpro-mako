@@ -1,4 +1,4 @@
-import { Document } from "@/components/RHF/RHFInput";
+import { Document, RHFSlotProps } from "@/components/RHF/RHFInput";
 
 export const ABP1: Document = {
   header: "ABP1: Alternative Benefit Plan",
@@ -10,10 +10,10 @@ export const ABP1: Document = {
           description:
             "identifiy and define the population that will participate",
           slot: {
-            rhf: "Input",
             name: "alt_benefit_plan_population_name",
             label: "Alternative Benefit Plan population name",
-            placeholder: "enter name",
+            rhf: "Text",
+            props: { placeholder: "" },
           },
         },
         {
@@ -22,45 +22,49 @@ export const ABP1: Document = {
           slot: {
             rhf: "FieldArray",
             name: "eligibility_groups",
-            fields: [
-              {
-                rhf: "Select",
-                placeholder: "enter name",
-                className: "w-[300px]",
-                label: "Eligibility group",
-                name: "eligibility_group",
-                options: [
-                  {
-                    label: "Extended medicaid due to earnings",
-                    value: "option1",
+            props: {
+              fields: [
+                {
+                  rhf: "Select",
+                  className: "w-[300px]",
+                  label: "Eligibility group",
+                  name: "eligibility_group",
+                  props: {
+                    placeholder: "enter name",
+                    options: [
+                      {
+                        label: "Extended medicaid due to earnings",
+                        value: "option1",
+                      },
+                      {
+                        label: "Extended medicaid due to bling",
+                        value: "option2",
+                      },
+                      {
+                        label: "Extended medicaid due to bankrupcy",
+                        value: "option3",
+                      },
+                    ],
                   },
-                  {
-                    label: "Extended medicaid due to bling",
-                    value: "option2",
-                  },
-                  {
-                    label: "Extended medicaid due to bankrupcy",
-                    value: "option3",
-                  },
-                ],
-              },
-              {
-                rhf: "Select",
-                name: "mandatory_voluntary",
-                className: "w-[200px]",
-                label: "Mandatory or voluntary",
-                options: [
-                  {
-                    label: "Mandatory",
-                    value: "mandatory",
-                  },
-                  {
-                    label: "Voluntary",
-                    value: "voluntary",
-                  },
-                ],
-              },
-            ],
+                },
+                {
+                  rhf: "Select",
+                  name: "mandatory_voluntary",
+                  className: "w-[200px]",
+                  label: "Mandatory or voluntary",
+                  options: [
+                    {
+                      label: "Mandatory",
+                      value: "mandatory",
+                    },
+                    {
+                      label: "Voluntary",
+                      value: "voluntary",
+                    },
+                  ],
+                },
+              ],
+            },
           },
         },
         {
@@ -70,12 +74,13 @@ export const ABP1: Document = {
             rhf: "Select",
             label: "Alternative Benefit Plan population name",
             name: "is_enrollment_available",
-            className: "w-[150px]",
-            placeholder: "Select",
-            options: [
-              { label: "Yes", value: "yes" },
-              { label: "No", value: "no" },
-            ],
+            props: {
+              className: "w-[150px]",
+              options: [
+                { label: "Yes", value: "yes" },
+                { label: "No", value: "no" },
+              ],
+            },
           },
         },
       ],
@@ -89,159 +94,178 @@ export const ABP1: Document = {
             rhf: "Checkbox",
             name: "target_criteria",
             label: "Mandatory or voluntary",
-            options: [
-              {
-                value: "income_standard",
-                label: "Income standard",
-                form: [
-                  {
-                    description: "Income standard target",
-                    slot: {
-                      rhf: "Radio",
-                      name: "income_target",
-                      options: [
-                        {
-                          label:
-                            "Households with income at or below the standard",
-                          value: "income_target_below",
+            props: {
+              options: [
+                {
+                  value: "income_standard",
+                  label: "Income standard",
+                  form: [
+                    {
+                      description: "Income standard target",
+                      slot: {
+                        rhf: "Radio",
+                        name: "income_target",
+                        props: {
+                          options: [
+                            {
+                              label:
+                                "Households with income at or below the standard",
+                              value: "income_target_below",
+                            },
+                            {
+                              label:
+                                "Households with income above the standard",
+                              value: "income_target_above",
+                            },
+                          ],
                         },
-                        {
-                          label: "Households with income above the standard",
-                          value: "income_target_above",
-                        },
-                      ],
+                      },
                     },
-                  },
-                  {
-                    description: "Income standard definition",
-                    slot: {
-                      rhf: "Radio",
-                      name: "income_definition",
-                      options: [
-                        {
-                          label: "A percentage",
-                          value: "income_definition_percentage",
-                        },
-                        {
-                          label: "A specific amount",
-                          value: "income_definition_specific",
-                          slot: {
-                            rhf: "Radio",
-                            name: "income_definition_specific",
-                            options: [
-                              {
-                                label: "Statewide standard",
-                                value: "statewide_standard",
-                                form: [
-                                  {
-                                    slot: {
-                                      rhf: "FieldArray",
-                                      name: "income_definition_specific_statewide",
-                                      fields: [
+                    {
+                      description: "Income standard definition",
+                      slot: {
+                        rhf: "Radio",
+                        name: "income_definition",
+                        props: {
+                          options: [
+                            {
+                              label: "A percentage",
+                              value: "income_definition_percentage",
+                            },
+                            {
+                              label: "A specific amount",
+                              value: "income_definition_specific",
+                              slot: {
+                                rhf: "Radio",
+                                name: "income_definition_specific",
+                                props: {
+                                  options: [
+                                    {
+                                      label: "Statewide standard",
+                                      value: "statewide_standard",
+                                      form: [
                                         {
-                                          rhf: "Input",
-                                          placeholder: "enter size",
-                                          className: "w-[300px]",
-                                          label: "Household Size",
-                                          name: "household_size",
+                                          slot: {
+                                            rhf: "FieldArray",
+                                            name: "income_definition_specific_statewide",
+                                            fields: [
+                                              {
+                                                rhf: "Input",
+                                                name: "household_size",
+                                                props: {
+                                                  placeholder: "enter size",
+                                                  className: "w-[300px]",
+                                                  label: "Household Size",
+                                                },
+                                              },
+                                              {
+                                                rhf: "Input",
+                                                name: "standard",
+                                                props: {
+                                                  className: "w-[200px]",
+                                                  placenholder: "enter amount",
+                                                  label: "Standard ($)",
+                                                },
+                                              },
+                                            ],
+                                          },
                                         },
                                         {
-                                          rhf: "Input",
-                                          name: "standard",
-                                          className: "w-[200px]",
-                                          placenholder: "enter amount",
-                                          label: "Standard ($)",
+                                          description:
+                                            "Is there an additional incremental amount",
+                                          slot: {
+                                            rhf: "Switch",
+                                            name: "is_incremental_amount",
+                                          },
+                                        },
+                                        {
+                                          description:
+                                            "Enter incremental dollar amount",
+                                          slot: {
+                                            rhf: "Text",
+                                            name: "doller_incremental_amount",
+                                          },
                                         },
                                       ],
                                     },
-                                  },
-                                  {
-                                    description:
-                                      "Is there an additional incremental amount",
-                                    slot: {
-                                      rhf: "Switch",
-                                      name: "is_incremental_amount",
+                                    {
+                                      label: "Standard Varies by region",
+                                      value: "region_standard",
                                     },
-                                  },
-                                  {
-                                    description:
-                                      "Enter incremental dollar amount",
-                                    slot: {
-                                      rhf: "Text",
-                                      name: "doller_incremental_amount",
+                                    {
+                                      label:
+                                        "standard varies by living arrangement",
+                                      value: "living_standard",
                                     },
-                                  },
-                                ],
+                                    {
+                                      label:
+                                        "standard varies by some other way",
+                                      value: "other_standard",
+                                    },
+                                  ],
+                                },
                               },
-                              {
-                                label: "Standard Varies by region",
-                                value: "region_standard",
-                              },
-                              {
-                                label: "standard varies by living arrangement",
-                                value: "living_standard",
-                              },
-                              {
-                                label: "standard varies by some other way",
-                                value: "other_standard",
-                              },
-                            ],
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  ],
+                },
+                {
+                  value: "health",
+                  label: "Disease, condition, diagnosis, or disorder",
+                  slot: {
+                    rhf: "Checkbox",
+                    name: "health_conditions",
+                    props: {
+                      options: [
+                        {
+                          label: "Physical disability",
+                          value: "physical_disability",
+                        },
+                        {
+                          label: "Brain Injury",
+                          value: "brain_injury",
+                        },
+                        {
+                          label: "HIV / AIDS",
+                          value: "hiv_aids",
+                        },
+                        {
+                          label: "Medically frail",
+                          value: "ben",
+                        },
+                        {
+                          label: "Technology dependent",
+                          value: "technology_dependent",
+                        },
+                        {
+                          label: "Other",
+                          value: "other",
+                          slot: {
+                            rhf: "Input",
+                            name: "other_description",
+                            label: "Describe",
                           },
                         },
                       ],
                     },
                   },
-                ],
-              },
-              {
-                value: "health",
-                label: "Disease, condition, diagnosis, or disorder",
-                slot: {
-                  rhf: "Checkbox",
-                  name: "health_conditions",
-                  options: [
-                    {
-                      label: "Physical disability",
-                      value: "physical_disability",
-                    },
-                    {
-                      label: "Brain Injury",
-                      value: "brain_injury",
-                    },
-                    {
-                      label: "HIV / AIDS",
-                      value: "hiv_aids",
-                    },
-                    {
-                      label: "Medically frail",
-                      value: "ben",
-                    },
-                    {
-                      label: "Technology dependent",
-                      value: "technology_dependent",
-                    },
-                    {
-                      label: "Other",
-                      value: "other",
-                      slot: {
-                        rhf: "Input",
-                        name: "other_description",
-                        label: "Describe",
-                      },
-                    },
-                  ],
                 },
-              },
-              {
-                label: "Other targeting criteria",
-                value: "other_targeting_criteria",
-                slot: {
-                  rhf: "Input",
-                  name: "other_targeting_criteria_description",
-                  label: "Describe",
+                {
+                  label: "Other targeting criteria",
+                  value: "other_targeting_criteria",
+                  slot: {
+                    rhf: "Input",
+                    name: "other_targeting_criteria_description",
+                    props: {
+                      label: "Describe",
+                    },
+                  },
                 },
-              },
-            ],
+              ],
+            },
           },
         },
       ],
@@ -254,12 +278,14 @@ export const ABP1: Document = {
             "Will the Alternative Benefit Plan population include individuals from the entire state or territory?",
           slot: {
             rhf: "Select",
-            className: "w-[150px]",
             name: "is_geographic_area",
-            options: [
-              { label: "Yes", value: "yes" },
-              { label: "No", value: "no" },
-            ],
+            props: {
+              className: "w-[150px]",
+              options: [
+                { label: "Yes", value: "yes" },
+                { label: "No", value: "no" },
+              ],
+            },
           },
         },
         {
@@ -267,12 +293,14 @@ export const ABP1: Document = {
           slot: {
             rhf: "Radio",
             name: "geographic_variation",
-            options: [
-              { label: "By country", value: "by_country" },
-              { label: "By region", value: "by_region" },
-              { label: "By city or town", value: "by_city_town" },
-              { label: "Other geographic area", value: "other" },
-            ],
+            props: {
+              options: [
+                { label: "By country", value: "by_country" },
+                { label: "By region", value: "by_region" },
+                { label: "By city or town", value: "by_city_town" },
+                { label: "Other geographic area", value: "other" },
+              ],
+            },
           },
         },
         {
