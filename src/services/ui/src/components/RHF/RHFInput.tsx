@@ -202,7 +202,7 @@ export const RHFSlot = <
                       OPT.form &&
                       OPT.form.map((FORM: any, index: any) => (
                         <div
-                          className="ml-2 p-4 border-l-2 border-l-primary"
+                          className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
                           key={`rhf-form-${index}-${FORM.description}`}
                         >
                           <RHFFormGroup form={FORM} control={props.control} />
@@ -210,7 +210,7 @@ export const RHFSlot = <
                       ))}
 
                     {field.value === OPT.value && OPT.slot && (
-                      <div className="ml-2 p-4 border-l-2 border-l-primary">
+                      <div className="ml-[0.7rem] px-4 border-l-4 border-l-primary">
                         <FormField
                           control={props.control}
                           name={OPT.slot.name}
@@ -254,7 +254,7 @@ export const RHFSlot = <
                       }}
                     />
                     {field.value?.includes(OPT.value) && !!OPT.slot && (
-                      <div className="ml-2 p-4 border-l-2 border-l-primary">
+                      <div className="ml-[0.7rem] px-4 border-l-4 border-l-primary">
                         <FormField
                           control={props.control}
                           name={OPT.slot.name}
@@ -268,7 +268,7 @@ export const RHFSlot = <
                       OPT.form.map((FORM: any) => (
                         <div
                           key={`CHECK-${OPT.value}-form-${FORM.description}`}
-                          className="ml-2 p-4 border-l-2 border-l-primary"
+                          className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
                         >
                           <RHFFormGroup control={props.control} form={FORM} />
                         </div>
