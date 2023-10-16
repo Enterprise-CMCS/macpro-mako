@@ -412,7 +412,7 @@ export const FieldArray = <TFields extends FieldValues>(
     <div className="flex flex-col gap-4 w-max">
       {fieldArr.fields.map((FLD, index) => {
         return (
-          <div className="flex flex-row gap-3" key={FLD.id}>
+          <div className="flex flex-row gap-6" key={FLD.id}>
             {props.fields.map((SLOT) => {
               return (
                 <FormField
