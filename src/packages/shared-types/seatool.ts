@@ -89,7 +89,8 @@ export const seatoolSchema = z.object({
         PRIORITY_FLAG: z.boolean(),
       })
     )
-    .nonempty(),
+    .nonempty()
+    .nullable(),
   PLAN_TYPES: z
     .array(
       z.object({
