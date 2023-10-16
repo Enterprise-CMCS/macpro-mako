@@ -5,7 +5,11 @@ import { ChangeEvent, ReactElement, useState } from "react";
 import { ROUTES } from "@/routes";
 import { Link } from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
-import { SubmissionAPIBody, useSubmissionMutation } from "@/api/submit";
+import {
+  SubmissionAPIBody,
+  submissionApiSchema,
+  useSubmissionMutation,
+} from "@/api/submit";
 import { useGetUser } from "@/api/useGetUser";
 
 type HeadingWithLink = {
@@ -19,7 +23,7 @@ type FormSection = {
   heading: string | HeadingWithLink;
   instructions: ReactElement;
   field: (func: Handler) => ReactElement;
-  //TODO: Required boolean
+  required: boolean;
 };
 // TODO: Instructions may be universal? If so, just plug it in jsx
 //  without the need for a config prop
@@ -73,8 +77,20 @@ const FormPage = ({ meta, pageTitle, description, fields }: FormPageConfig) => {
             ...data,
             state: data.id.split("-")[0],
           };
-          api.mutate(submission);
           console.log(submission);
+          const result = submissionApiSchema.safeParse(submission);
+          if (result.success) {
+            api.mutate(submission);
+          } else {
+            console.error(
+              "SCHEMA PARSE ERROR: ",
+              result.error.errors.map((e) => ({
+                message: e.message,
+                path: e.path,
+              }))
+            );
+          }
+          // TODO: route back to dashboard on success
         }}
       >
         {fields.map((section, idx) => (
@@ -89,6 +105,7 @@ const FormPage = ({ meta, pageTitle, description, fields }: FormPageConfig) => {
               <div className="flex justify-between">
                 <label htmlFor={section.id} className="text-lg font-bold">
                   {section.heading.text}
+                  {section.required && <RequiredIndicator />}
                 </label>
                 <Link
                   className="text-sky-600 hover:text-sky-800 underline"
@@ -100,6 +117,7 @@ const FormPage = ({ meta, pageTitle, description, fields }: FormPageConfig) => {
             ) : (
               <label htmlFor={section.id} className="text-lg font-bold">
                 {section.heading}
+                {section.required && <RequiredIndicator />}
               </label>
             )}
             {section.instructions}

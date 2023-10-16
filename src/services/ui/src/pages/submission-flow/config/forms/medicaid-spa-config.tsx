@@ -17,6 +17,7 @@ export type AttachmentRequirement = {
   required: boolean;
   multiple: boolean;
 };
+
 const medicaidSpaAttachments: AttachmentRequirement[] = [
   { label: "CMS 179", required: true, multiple: false },
   { label: "SPA Pages", required: true, multiple: true },
@@ -36,6 +37,7 @@ const medicaidSpaAttachments: AttachmentRequirement[] = [
   { label: "Tribal Consultation", required: false, multiple: true },
   { label: "Other", required: false, multiple: true },
 ];
+
 export const MEDICAID_SPA_FORM: FormPageConfig = {
   meta: {
     origin: "mako",
@@ -54,18 +56,21 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
         linkText: "What is my SPA ID?",
         linkRoute: ROUTES.FAQ,
       },
+      required: true,
       instructions: <SpaIDIntro />,
       field: (func) => <SpaIDInput handler={func} />,
     },
     {
       id: "proposed-effective-date",
       heading: "Proposed Effective Date of Medicaid SPA",
+      required: true,
       instructions: <EffectiveDateIntro />,
       field: (func) => <EffectiveDateField handler={func} />,
     },
     {
       id: "attachments",
       heading: "Attachments",
+      required: false,
       instructions: <AttachmentsIntro />,
       field: (func) => (
         <AttachmentsFields
@@ -77,6 +82,7 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
     {
       id: "additional-info",
       heading: "Additional Information",
+      required: false,
       instructions: <AdditionalInfoIntro />,
       field: (func) => <AdditionalInfoInput handler={func} />,
     },

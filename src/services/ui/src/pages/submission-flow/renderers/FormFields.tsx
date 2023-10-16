@@ -14,6 +14,7 @@ import { AttachmentRequirement } from "@/pages/submission-flow/config/forms/medi
 
 enum SUBMISSION_BODY {
   SPA_ID = "id",
+  // TODO: Proposed Effective Date needs wiring
   PROPOSED_EFFECTIVE_DATE = "proposedEffectiveDate",
   ATTACHMENTS = "attachments",
   ADDITIONAL_INFO = "additionalInformation",
