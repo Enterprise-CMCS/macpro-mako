@@ -3,7 +3,7 @@ import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { MakoTransform, ReactQueryApiError } from "shared-types";
 
 export type SubmissionAPIBody = MakoTransform & {
-  authority: string;
+  authority: number;
   state: string;
 };
 export const postSubmissionData = async (

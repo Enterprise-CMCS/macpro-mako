@@ -28,7 +28,7 @@ type FormDescription = Pick<FormSection, "instructions"> & {
   // is needed at this level.
   heading: string;
 };
-type FormMeta = { origin: string; authority: string };
+type FormMeta = { origin: string; authority: number };
 export interface FormPageConfig {
   meta: FormMeta;
   pageTitle: string;
