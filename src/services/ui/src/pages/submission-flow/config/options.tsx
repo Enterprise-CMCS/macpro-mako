@@ -43,7 +43,7 @@ export const MEDICAID_SPA_OPTIONS: OptionData[] = [
   {
     title: "All Other Medicaid SPA Submissions",
     description: "Create a new Medicaid State Plan Amendment",
-    linkTo: ROUTES.CREATE,
+    linkTo: ROUTES.MEDICAID_SPA_FORM,
   },
 ];
 

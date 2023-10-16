@@ -73,7 +73,6 @@ const FormPage = ({ meta, pageTitle, description, fields }: FormPageConfig) => {
             ...data,
             state: data.id.split("-")[0],
           };
-          // plug in the API call with data
           api.mutate(submission);
           console.log(submission);
         }}

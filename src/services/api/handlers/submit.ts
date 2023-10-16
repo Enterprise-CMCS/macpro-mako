@@ -100,7 +100,9 @@ export const submit = async (event: APIGatewayEvent) => {
 };
 
 async function produceMessage(topic, key, value) {
+  console.log("about to connect");
   await producer.connect();
+  console.log("connected");
 
   const message: KafkaMessage = {
     key: key,
