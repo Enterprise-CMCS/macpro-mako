@@ -3,6 +3,7 @@ import { ROUTES } from "@/routes";
 import {
   AdditionalInfoInput,
   AdditionalInfoIntro,
+  AttachmentFieldOption,
   AttachmentsFields,
   AttachmentsIntro,
   EffectiveDateField,
@@ -11,14 +12,10 @@ import {
   SpaIDInput,
   SpaIDIntro,
 } from "@/pages/submission-flow/renderers/FormFields";
+import { AUTHORITY, FORM_ORIGIN, SUBMISSION_FORM } from "@/consts/forms";
 
-export type AttachmentRequirement = {
-  label: string;
-  required: boolean;
-  multiple: boolean;
-};
-
-const medicaidSpaAttachments: AttachmentRequirement[] = [
+/** List of attachment drop zones to render */
+const medicaidSpaAttachments: AttachmentFieldOption[] = [
   { label: "CMS 179", required: true, multiple: false },
   { label: "SPA Pages", required: true, multiple: true },
   { label: "Cover Letter", required: false, multiple: true },
@@ -38,10 +35,11 @@ const medicaidSpaAttachments: AttachmentRequirement[] = [
   { label: "Other", required: false, multiple: true },
 ];
 
+/** Config for the Medicaid SPA form */
 export const MEDICAID_SPA_FORM: FormPageConfig = {
   meta: {
-    origin: "mako",
-    authority: "medicaid spa",
+    origin: FORM_ORIGIN,
+    authority: AUTHORITY.MEDICAID_SPA,
   },
   pageTitle: "Submit New Medicaid SPA",
   description: {
@@ -50,7 +48,7 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
   },
   fields: [
     {
-      id: "spa-id",
+      id: SUBMISSION_FORM.SPA_ID,
       heading: {
         text: "SPA ID",
         linkText: "What is my SPA ID?",
@@ -61,14 +59,14 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
       field: (func) => <SpaIDInput handler={func} />,
     },
     {
-      id: "proposed-effective-date",
+      id: SUBMISSION_FORM.PROPOSED_EFFECTIVE_DATE,
       heading: "Proposed Effective Date of Medicaid SPA",
       required: true,
       instructions: <EffectiveDateIntro />,
       field: (func) => <EffectiveDateField handler={func} />,
     },
     {
-      id: "attachments",
+      id: SUBMISSION_FORM.ATTACHMENTS,
       heading: "Attachments",
       required: false,
       instructions: <AttachmentsIntro />,
@@ -80,7 +78,7 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
       ),
     },
     {
-      id: "additional-info",
+      id: SUBMISSION_FORM.ADDITIONAL_INFO,
       heading: "Additional Information",
       required: false,
       instructions: <AdditionalInfoIntro />,

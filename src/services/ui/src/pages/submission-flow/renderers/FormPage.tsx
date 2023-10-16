@@ -3,7 +3,7 @@ import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
 import { MEDICAID_SPA_FORM } from "@/pages/submission-flow/config/forms/medicaid-spa-config";
 import { ChangeEvent, ReactElement, useState } from "react";
 import { ROUTES } from "@/routes";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
 import {
   SubmissionAPIBody,
@@ -12,6 +12,7 @@ import {
 } from "@/api/submit";
 import { useGetUser } from "@/api/useGetUser";
 
+/* Some headers need an additional link to an FAQ section */
 type HeadingWithLink = {
   text: string;
   linkText: string;
@@ -25,8 +26,6 @@ type FormSection = {
   field: (func: Handler) => ReactElement;
   required: boolean;
 };
-// TODO: Instructions may be universal? If so, just plug it in jsx
-//  without the need for a config prop
 type FormDescription = Pick<FormSection, "instructions"> & {
   // Limits the higher form header to just a string, no HeadingWithLink
   // is needed at this level.
@@ -77,7 +76,6 @@ const FormPage = ({ meta, pageTitle, description, fields }: FormPageConfig) => {
             ...data,
             state: data.id.split("-")[0],
           };
-          console.log(submission);
           const result = submissionApiSchema.safeParse(submission);
           if (result.success) {
             api.mutate(submission);

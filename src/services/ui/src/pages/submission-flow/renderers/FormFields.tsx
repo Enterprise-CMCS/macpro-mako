@@ -10,15 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import { cn } from "@/lib";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
-import { AttachmentRequirement } from "@/pages/submission-flow/config/forms/medicaid-spa-config";
-
-enum SUBMISSION_BODY {
-  SPA_ID = "id",
-  // TODO: Proposed Effective Date needs wiring
-  PROPOSED_EFFECTIVE_DATE = "proposedEffectiveDate",
-  ATTACHMENTS = "attachments",
-  ADDITIONAL_INFO = "additionalInformation",
-}
+import { SUBMISSION_FORM } from "@/consts/forms";
 
 export const FormIntro = () => (
   <p className="my-3">
@@ -41,20 +33,37 @@ export const SpaIDIntro = () => (
   </p>
 );
 
+export const EffectiveDateIntro = () => (
+  <p className="text-gray-500 font-light mt-1">For example: 4/28/1986</p>
+);
+
+export const AttachmentsIntro = () => (
+  <>
+    <p className="mt-1 mb-4">
+      Maximum file size of 80 MB per attachment. You can add multiple files per
+      attachment type. Read the description for each of the attachment types on
+      the FAQ Page.
+    </p>
+    <p className="my-4">
+      We accept the following file formats:{" "}
+      <b>.docx, .jpg, .pdf, .png, .xlsx</b>. See the full list on the FAQ Page.
+    </p>
+    <p className="my-4">
+      <RequiredIndicator /> At least one attachment is required.
+    </p>
+  </>
+);
+
 export const SpaIDInput = ({ handler }: { handler: Handler }) => (
   <Input
     type="text"
     id="input-spa-id"
-    name={SUBMISSION_BODY.SPA_ID}
+    name={SUBMISSION_FORM.SPA_ID}
     className="max-w-sm mt-4"
     aria-describedby="desc-spa-id"
     onChange={(event) => handler(event)}
     required
   />
-);
-
-export const EffectiveDateIntro = () => (
-  <p className="text-gray-500 font-light mt-1">For example: 4/28/1986</p>
 );
 
 /** This borrows a lot from {@link FilterableDateRange} and commonalities can later
@@ -95,7 +104,7 @@ export const EffectiveDateField = ({ handler }: { handler: Handler }) => {
             // updates the actual form state object
             handler({
               target: {
-                name: SUBMISSION_BODY.PROPOSED_EFFECTIVE_DATE,
+                name: SUBMISSION_FORM.PROPOSED_EFFECTIVE_DATE,
                 value: date?.getTime() || undefined,
               },
             } as ChangeEvent<any>);
@@ -107,29 +116,18 @@ export const EffectiveDateField = ({ handler }: { handler: Handler }) => {
   );
 };
 
-export const AttachmentsIntro = () => (
-  <>
-    <p className="mt-1 mb-4">
-      Maximum file size of 80 MB per attachment. You can add multiple files per
-      attachment type. Read the description for each of the attachment types on
-      the FAQ Page.
-    </p>
-    <p className="my-4">
-      We accept the following file formats:{" "}
-      <b>.docx, .jpg, .pdf, .png, .xlsx</b>. See the full list on the FAQ Page.
-    </p>
-    <p className="my-4">
-      <RequiredIndicator /> At least one attachment is required.
-    </p>
-  </>
-);
-
+/* Attachment information necessary for rendering fields */
+export type AttachmentFieldOption = {
+  label: string;
+  required: boolean;
+  multiple: boolean;
+};
 export const AttachmentsFields = ({
   handler,
   attachmentsConfig,
 }: {
   handler: Handler;
-  attachmentsConfig: AttachmentRequirement[];
+  attachmentsConfig: AttachmentFieldOption[];
 }) => {
   /* The template for a drag-n-drop upload section */
   const DropZone = ({ multiple }: { multiple: boolean }) => {
@@ -205,7 +203,7 @@ export const AdditionalInfoInput = ({ handler }: { handler: Handler }) => {
       <Textarea
         aria-invalid="false"
         aria-describedby="character-count"
-        name={SUBMISSION_BODY.ADDITIONAL_INFO}
+        name={SUBMISSION_FORM.ADDITIONAL_INFO}
         maxLength={4000}
         aria-live="off"
         aria-multiline="true"

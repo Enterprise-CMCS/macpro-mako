@@ -4,6 +4,7 @@ import { ReactQueryApiError } from "shared-types";
 import { z } from "zod";
 import { STATES } from "@/consts";
 
+/** Schema for Zod validation */
 export const submissionApiSchema = z.object({
   id: z
     .string()
@@ -23,7 +24,7 @@ export const submissionApiSchema = z.object({
   submitterName: z.string(),
 });
 export type SubmissionAPIBody = z.infer<typeof submissionApiSchema>;
-
+/** REST API post call */
 export const postSubmissionData = async (
   props: SubmissionAPIBody
 ): Promise<any> => {
@@ -33,7 +34,7 @@ export const postSubmissionData = async (
   console.log(results);
   return results;
 };
-
+/** React Hook for utilizing the REST API post call */
 export const useSubmissionMutation = (
   options?: UseMutationOptions<any, ReactQueryApiError, SubmissionAPIBody>
 ) => {
