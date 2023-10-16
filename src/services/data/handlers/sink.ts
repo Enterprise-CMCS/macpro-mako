@@ -15,7 +15,7 @@ import {
   MakoRecordsToDelete,
   MakoTransform,
   transformMako,
-} from "shared-types";
+} from "shared-types/mako";
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -48,7 +48,9 @@ export const seatool: Handler = async (event) => {
             result.error.message
           );
         } else {
+          console.log("before if", result.data);
           if (validPlanTypeIds.includes(result.data.planTypeId)) {
+            console.log("inside the if", result.data);
             docObject[id] = result.data;
           }
           rawArr.push(record);
