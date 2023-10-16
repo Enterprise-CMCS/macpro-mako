@@ -47,7 +47,7 @@ export const OsFiltering: FC<{
           },
           {
             name: "State",
-            transform: (data) => data.state,
+            transform: (data) => data.state ?? BLANK_VALUE,
           },
           {
             name: "Type",
