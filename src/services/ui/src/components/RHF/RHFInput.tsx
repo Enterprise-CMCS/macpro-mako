@@ -409,7 +409,7 @@ export const FieldArray = <TFields extends FieldValues>(
   };
 
   return (
-    <div className="flex flex-col gap-2 w-max">
+    <div className="flex flex-col gap-4 w-max">
       {fieldArr.fields.map((FLD, index) => {
         return (
           <div className="flex flex-row gap-3" key={FLD.id}>
@@ -431,8 +431,7 @@ export const FieldArray = <TFields extends FieldValues>(
           </div>
         );
       })}
-      <div className="flex items-center gap-3 mt-2">
-        <div className="flex-1 h-1 border-b-[2px]" />
+      <div className="flex items-center mt-2">
         <Button type="button" size="sm" onClick={onAppend} variant="outline">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -444,7 +443,6 @@ export const FieldArray = <TFields extends FieldValues>(
           </svg>
           New row
         </Button>
-        <div className="flex-1 h-1 border-b-[2px]" />
       </div>
     </div>
   );
