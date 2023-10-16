@@ -39,7 +39,7 @@ const medicaidSpaAttachments: AttachmentRequirement[] = [
 export const MEDICAID_SPA_FORM: FormPageConfig = {
   meta: {
     origin: "mako",
-    authority: 125,
+    authority: "medicaid spa",
   },
   pageTitle: "Submit New Medicaid SPA",
   description: {
