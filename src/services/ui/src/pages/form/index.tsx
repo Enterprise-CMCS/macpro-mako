@@ -3,12 +3,6 @@ import { useForm } from "react-hook-form";
 import { Button, Form } from "@/components/Inputs";
 
 import { RHFFormGroup } from "@/components/RHF/RHFInput";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/Accordion";
 import { ABP1 } from "./proto";
 
 export const JsonFormSchema = {
@@ -54,28 +48,25 @@ export function ExampleForm() {
   return (
     <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
       <Form {...form}>
-        <form onSubmit={onSubmit} className="w-2/3 space-y-6">
-          <Accordion type="multiple" className="w-auto">
-            {ABP1.sections.map((SEC) => (
-              <AccordionItem value="sd" defaultChecked key={SEC.title}>
-                <AccordionTrigger className="bg-primary p-4 w-full text-white text-xl">
-                  {SEC.title}
-                </AccordionTrigger>
+        <form onSubmit={onSubmit} className="space-y-6">
+          <h1 className="text-3xl">{ABP1.header}</h1>
+          {ABP1.sections.map((SEC) => (
+            <section key={SEC.title}>
+              <div className="bg-primary p-4 w-full text-white text-xl">
+                <h2>{SEC.title}</h2>
+              </div>
 
-                <AccordionContent>
-                  {SEC.form.map((GP) => {
-                    return (
-                      <RHFFormGroup
-                        key={GP.description}
-                        control={form.control}
-                        form={GP}
-                      />
-                    );
-                  })}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+              {SEC.form.map((GP) => {
+                return (
+                  <RHFFormGroup
+                    key={GP.description}
+                    control={form.control}
+                    form={GP}
+                  />
+                );
+              })}
+            </section>
+          ))}
           <Button type="submit">Submit</Button>
         </form>
       </Form>

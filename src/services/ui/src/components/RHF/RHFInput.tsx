@@ -99,21 +99,25 @@ type FieldArrayProps<
 export const RadioGroup_ = (props: any) => {
   return (
     <RadioGroup {...props} className="flex flex-col space-y-1">
-      {props.options.map((OPT: any) => (
-        <div key={`OPT-${OPT.value}`} className="flex gap-2">
-          <RadioGroupItem value={OPT.value} />
-          <FormLabel className="font-normal">{OPT.label}</FormLabel>
-          {props.value === OPT.value &&
-            props.form &&
-            props.form.map((FORM: any, index: any) => (
-              <RHFFormGroup
-                form={FORM}
-                key={`rhf-form-${index}-${FORM.description}`}
-                control={props}
-              />
-            ))}
-        </div>
-      ))}
+      {props.options.map((OPT: any) => {
+        console.log("hi");
+        console.log(props.value, OPT.value);
+        return (
+          <div key={`OPT-${OPT.value}`} className="flex gap-2">
+            <RadioGroupItem value={OPT.value} />
+            <FormLabel className="font-normal">{OPT.label}</FormLabel>
+            {props.value === OPT.value &&
+              props.form &&
+              props.form.map((FORM: any, index: any) => (
+                <RHFFormGroup
+                  form={FORM}
+                  key={`rhf-form-${index}-${FORM.description}`}
+                  control={props}
+                />
+              ))}
+          </div>
+        );
+      })}
     </RadioGroup>
   );
 };
@@ -192,34 +196,42 @@ export const RHFSlot = <
                 defaultValue={field.value}
                 className="flex flex-col space-y-1"
               >
-                {props.options.map((OPT: any) => (
-                  <div key={`OPT-${OPT.value}`} className="flex flex-col">
-                    <div className="flex gap-2">
-                      <RadioGroupItem value={OPT.value} />
-                      <FormLabel className="font-normal">{OPT.label}</FormLabel>
-                    </div>
-                    {field.value === OPT.value &&
-                      OPT.form &&
-                      OPT.form.map((FORM: any, index: any) => (
-                        <div
-                          className="ml-2 p-4 border-l-2 border-l-primary"
-                          key={`rhf-form-${index}-${FORM.description}`}
-                        >
-                          <RHFFormGroup form={FORM} control={props.control} />
-                        </div>
-                      ))}
-
-                    {field.value === OPT.value && OPT.slot && (
-                      <div className="ml-2 p-4 border-l-2 border-l-primary">
-                        <FormField
-                          control={props.control}
-                          name={OPT.slot.name}
-                          render={RHFSlot(OPT.slot)}
-                        />
+                {props.options.map((OPT: any) => {
+                  return (
+                    <div key={`OPT-${OPT.value}`} className="flex flex-col">
+                      <div className="flex gap-2">
+                        <RadioGroupItem value={OPT.value} />
+                        <FormLabel className="font-normal">
+                          {OPT.label}
+                        </FormLabel>
                       </div>
-                    )}
-                  </div>
-                ))}
+                      {field.value === OPT.value &&
+                        OPT.form &&
+                        OPT.form.map((FORM: any, index: any) => (
+                          <div
+                            className="ml-2 p-4 border-l-2 border-l-primary"
+                            key={`rhf-form-${index}-${FORM.description}`}
+                          >
+                            <RHFFormGroup form={FORM} control={props.control} />
+                          </div>
+                        ))}
+                      {field.value === OPT.value &&
+                        OPT.slots &&
+                        OPT.slots.map((SLOT: any, index: any) => (
+                          <div
+                            className="ml-2 p-4 border-l-2 border-l-primary"
+                            key={SLOT.name + index}
+                          >
+                            <FormField
+                              control={props.control}
+                              name={SLOT.name}
+                              render={RHFSlot(SLOT)}
+                            />
+                          </div>
+                        ))}
+                    </div>
+                  );
+                })}
               </RadioGroup>
               // <RadioGroup_
               //   control={control}
@@ -246,22 +258,29 @@ export const RHFSlot = <
                       label={OPT.label}
                       checked={field.value?.includes(OPT.value)}
                       onCheckedChange={(c) => {
-                        const filtered = field.value?.filter(
-                          (f: any) => f !== OPT.value
-                        );
+                        console.log({ field });
+                        const filtered =
+                          field.value?.filter((f: any) => f !== OPT.value) ||
+                          [];
                         if (!c) return field.onChange(filtered);
                         field.onChange([...filtered, OPT.value]);
                       }}
                     />
-                    {field.value?.includes(OPT.value) && !!OPT.slot && (
-                      <div className="ml-2 p-4 border-l-2 border-l-primary">
-                        <FormField
-                          control={props.control}
-                          name={OPT.slot.name}
-                          render={RHFSlot(OPT.slot)}
-                        />
-                      </div>
-                    )}
+                    {field.value?.includes(OPT.value) &&
+                      !!OPT.slots &&
+                      OPT.slots &&
+                      OPT.slots.map((SLOT: any, index: any) => (
+                        <div
+                          className="ml-2 p-4 border-l-2 border-l-primary"
+                          key={`rhf-form-${index}-${SLOT.name}`}
+                        >
+                          <FormField
+                            control={props.control}
+                            name={SLOT.name}
+                            render={RHFSlot(SLOT)}
+                          />
+                        </div>
+                      ))}
 
                     {field.value?.includes(OPT.value) &&
                       !!OPT.form &&
@@ -330,13 +349,13 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
           </div>
         )}
         <div className={props.form.wrapperStyling}>
-          {props.form.slots.map((slot) => {
+          {props.form.slots.map((SLOT) => {
             return (
-              <DependencyWrapper key={slot.name} {...slot}>
+              <DependencyWrapper key={SLOT.name} {...SLOT}>
                 <FormField
                   control={props.control}
-                  name={slot.name}
-                  render={RHFSlot(slot)}
+                  name={SLOT.name}
+                  render={RHFSlot(SLOT)}
                 />
               </DependencyWrapper>
             );

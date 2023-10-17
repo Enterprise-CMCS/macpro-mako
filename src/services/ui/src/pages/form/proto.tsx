@@ -36,7 +36,7 @@ export const ABP1: Document = {
         },
         {
           description:
-            "Identify Eligibility groups that are included in the Alternative Benefit Plan's population and which may contain individuals that meet any targeting criteria used to further define the ben",
+            "Identify eligibility groups that are included in the Alternative Benefit Plan's population, and which may contain individuals that meet any targeting criteria used to further define the population.",
           slots: [
             {
               rhf: "FieldArray",
@@ -127,7 +127,7 @@ export const ABP1: Document = {
       },
       form: [
         {
-          description: "targeting criteria (select all that apply)",
+          description: "Targeting criteria (select all that apply):",
           slots: [
             {
               rhf: "Checkbox",
@@ -221,7 +221,7 @@ export const ABP1: Document = {
                                             "Enter incremental dollar amount",
                                           slots: [
                                             {
-                                              rhf: "Text",
+                                              rhf: "Input",
                                               name: "doller_incremental_amount",
                                             },
                                           ],
@@ -350,7 +350,7 @@ export const ABP1: Document = {
           slots: [
             {
               name: "specify_countries",
-              rhf: "Text",
+              rhf: "Input",
             },
           ],
         },
