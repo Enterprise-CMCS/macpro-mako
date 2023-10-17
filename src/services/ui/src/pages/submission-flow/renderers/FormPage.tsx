@@ -64,8 +64,11 @@ export const FormPage = ({
       <form
         onSubmit={(event) => {
           event.preventDefault();
+          // Get pre signed urls for upload
+          // Upload files and get S3 bucket/key
           const submission = {
             ...data,
+            // Set attachments with S3 buckets/keys
             state: data.id.split("-")[0],
           };
           const result = submissionApiSchema.safeParse(submission);
