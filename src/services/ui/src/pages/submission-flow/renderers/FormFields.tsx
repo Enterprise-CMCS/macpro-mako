@@ -148,6 +148,9 @@ export const AttachmentsFields = ({
     }, []);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
       onDrop,
+      multiple, // Set here instead of `input` attributes
+      maxSize: 80 * 1000000, // 80mb max per attachment
+      //TODO: Limit accepted filetypes
     });
     // Used for UI inside drop zone when files are added
     const [fileNames, setFileNames] = useState<string[]>([]);
@@ -161,7 +164,6 @@ export const AttachmentsFields = ({
           {...getInputProps({
             /* Plug additional `input` props in here so they
              * are not overridden */
-            multiple: multiple, // TODO: not working?
             required: required, // TODO: working TOO well? won't submit even with requirement filled
             name: name(label),
             id: name(label),
