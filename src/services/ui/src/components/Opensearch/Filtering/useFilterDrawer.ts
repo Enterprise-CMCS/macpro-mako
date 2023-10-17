@@ -82,7 +82,7 @@ export const useFilterDrawer = () => {
       return {
         ...STATE,
         [KEY]: AGG.buckets.map((BUCK) => ({
-          label: `${labelMap[BUCK.key] || BUCK.key} (${BUCK.doc_count})`,
+          label: `${labelMap[BUCK.key] || BUCK.key}`,
           value: BUCK.key,
         })),
       };
