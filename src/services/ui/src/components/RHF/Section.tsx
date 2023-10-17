@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Control, FieldValues } from "react-hook-form";
 import { FormLabel } from "../Inputs";
-import { DependencyWrapper } from "./DependencyWrapper";
+import { DependencyWrapper } from "./dependencyWrapper";
 import { Section } from "./types";
 import { RHFFormGroup } from "./FormGroup";
 
