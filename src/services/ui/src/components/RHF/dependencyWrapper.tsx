@@ -1,35 +1,6 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-
-type ConditionRules =
-  | {
-      type: "valueExists" | "valueNotExist";
-    }
-  | {
-      type: "expectedValue";
-      expectedValue: unknown;
-    };
-
-type Condition = { name: string } & ConditionRules;
-
-type Effects =
-  | {
-      type: "show" | "hide";
-    }
-  | {
-      type: "setValue";
-      newValue: unknown;
-    };
-
-export interface DependencyRule {
-  conditions: Condition[];
-  effect: Effects;
-}
-
-interface DependencyWrapperProps {
-  name?: string;
-  dependency?: DependencyRule;
-}
+import { DependencyRule, DependencyWrapperProps } from "./types";
 
 const checkTriggeringValue = (
   dependentValue: unknown[],

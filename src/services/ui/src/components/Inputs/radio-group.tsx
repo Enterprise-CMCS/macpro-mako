@@ -21,7 +21,6 @@ RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
 export type RadioProps = React.ComponentPropsWithoutRef<
   typeof RadioGroupPrimitive.Root
 > & {
-  options: { label: string; value: any }[];
   className?: string;
 };
 
