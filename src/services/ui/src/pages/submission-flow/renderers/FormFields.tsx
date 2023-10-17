@@ -4,13 +4,13 @@ import {
   RequiredIndicator,
   Textarea,
 } from "@/components/Inputs";
-import { Handler } from "@/pages/submission-flow/renderers/FormPage";
 import { ChangeEvent, useCallback, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import { cn } from "@/lib";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { SUBMISSION_FORM } from "@/consts/forms";
+import { Handler } from "@/pages/submission-flow/config/forms/common";
 
 export const FormIntro = () => (
   <p className="my-3">

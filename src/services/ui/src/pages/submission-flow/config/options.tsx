@@ -56,7 +56,7 @@ export const CHIP_SPA_OPTIONS: OptionData[] = [
   {
     title: "All Other CHIP SPA Submissions",
     description: "Create a new CHIP State Plan Amendment",
-    linkTo: ROUTES.CREATE,
+    linkTo: ROUTES.CHIP_SPA_FORM,
   },
 ];
 

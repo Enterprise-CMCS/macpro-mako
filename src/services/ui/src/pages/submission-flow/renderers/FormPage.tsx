@@ -1,6 +1,6 @@
 import { SimplePageContainer } from "@/components";
 import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
-import { MEDICAID_SPA_FORM } from "@/pages/submission-flow/config/forms/medicaid-spa-config";
+import { MEDICAID_SPA_FORM } from "@/pages/submission-flow/config/forms/medicaidSpaConfig";
 import { ChangeEvent, ReactElement, useState } from "react";
 import { ROUTES } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,21 +11,8 @@ import {
   useSubmissionMutation,
 } from "@/api/submit";
 import { useGetUser } from "@/api/useGetUser";
+import { FormSection } from "@/pages/submission-flow/config/forms/common";
 
-/* Some headers need an additional link to an FAQ section */
-type HeadingWithLink = {
-  text: string;
-  linkText: string;
-  linkRoute: ROUTES;
-};
-export type Handler = (e: ChangeEvent<any>) => void;
-type FormSection = {
-  id: string;
-  heading: string | HeadingWithLink;
-  instructions: ReactElement;
-  field: (func: Handler) => ReactElement;
-  required: boolean;
-};
 type FormDescription = Pick<FormSection, "instructions"> & {
   // Limits the higher form header to just a string, no HeadingWithLink
   // is needed at this level.
@@ -38,7 +25,12 @@ export interface FormPageConfig {
   description: FormDescription;
   fields: FormSection[];
 }
-const FormPage = ({ meta, pageTitle, description, fields }: FormPageConfig) => {
+export const FormPage = ({
+  meta,
+  pageTitle,
+  description,
+  fields,
+}: FormPageConfig) => {
   const { data: user } = useGetUser();
   const [data, setData] = useState<SubmissionAPIBody>({
     additionalInformation: "",
@@ -127,5 +119,3 @@ const FormPage = ({ meta, pageTitle, description, fields }: FormPageConfig) => {
     </SimplePageContainer>
   );
 };
-
-export const SampleFormPage = () => <FormPage {...MEDICAID_SPA_FORM} />;

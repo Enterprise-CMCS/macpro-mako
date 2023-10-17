@@ -13,4 +13,5 @@ export {
   MedicaidEligibilityLandingPage,
   CHIPEligibilityLandingPage,
 } from "./renderers/ExternalAppLandingPage";
-export { SampleFormPage } from "./renderers/FormPage";
+export { MedicaidSpaForm } from "./config/forms/medicaidSpaConfig";
+export { ChipSpaForm } from "./config/forms/chipSpaConfig";

@@ -1,6 +1,7 @@
 export const FORM_ORIGIN = "mako";
 export enum AUTHORITY {
   MEDICAID_SPA = "medicaid spa",
+  CHIP_SPA = "chip spa",
 }
 /** String values for input `name` property in submission form fields */
 export enum SUBMISSION_FORM {
