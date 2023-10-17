@@ -100,8 +100,6 @@ export const RadioGroup_ = (props: any) => {
   return (
     <RadioGroup {...props} className="flex flex-col space-y-1">
       {props.options.map((OPT: any) => {
-        console.log("hi");
-        console.log(props.value, OPT.value);
         return (
           <div key={`OPT-${OPT.value}`} className="flex gap-2">
             <RadioGroupItem value={OPT.value} />
