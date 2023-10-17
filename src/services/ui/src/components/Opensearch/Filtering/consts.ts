@@ -20,7 +20,7 @@ export const FILTER_GROUPS = (
 ): Partial<Record<OsField, OsFilterable & DrawerFilterableGroup>> => {
   return {
     "state.keyword": {
-      label: "States",
+      label: "State",
       field: "state.keyword",
       component: "multiSelect",
       prefix: "must",
