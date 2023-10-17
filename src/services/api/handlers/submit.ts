@@ -45,9 +45,9 @@ export const submit = async (event: APIGatewayEvent) => {
     }
 
     const pool = await sql.connect(config);
-    console.log(body.state);
+    console.log(body);
     const query = `
-      Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
+      Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
         values ('${body.id}'
           ,'${body.state}'
           ,(Select Region_ID from SEA.dbo.States where State_Code = '${
@@ -58,6 +58,9 @@ export const submit = async (event: APIGatewayEvent) => {
           }')
           ,dateadd(s, convert(int, left(${Date.now()}, 10)), cast('19700101' as datetime))
           ,dateadd(s, convert(int, left(${Date.now()}, 10)), cast('19700101' as datetime))
+          ,dateadd(s, convert(int, left(${
+            body.proposedEffectiveDate
+          }, 10)), cast('19700101' as datetime))
           ,(Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = 'Pending')
           ,0)
     `;
