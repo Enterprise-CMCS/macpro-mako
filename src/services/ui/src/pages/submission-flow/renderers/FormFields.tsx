@@ -54,6 +54,12 @@ export const AttachmentsIntro = () => (
   </>
 );
 
+export const AdditionalInfoIntro = () => (
+  <p className="text-gray-500 font-light mt-1">
+    Add anything else that you would like to share with CMS.
+  </p>
+);
+
 export const SpaIDInput = ({ handler }: { handler: Handler }) => (
   <Input
     type="text"
@@ -131,7 +137,7 @@ export const AttachmentsFields = ({
 }) => {
   // Common constructor for attachment field id/name attributes
   const name = (label: string) => `${SUBMISSION_FORM.ATTACHMENTS}-${label}`;
-  /* The template for a drag-n-drop upload section */
+  // The template for a drag-n-drop upload section
   const DropZone = ({ label, multiple, required }: AttachmentFieldOption) => {
     const onDrop = useCallback((acceptedFiles: File[]) => {
       console.log(acceptedFiles);
@@ -140,10 +146,11 @@ export const AttachmentsFields = ({
         ...acceptedFiles.map((file) => file.name),
       ]);
     }, []);
-    const [fileNames, setFileNames] = useState<string[]>([]);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
       onDrop,
     });
+    // Used for UI inside drop zone when files are added
+    const [fileNames, setFileNames] = useState<string[]>([]);
 
     return (
       <div
@@ -199,12 +206,6 @@ export const AttachmentsFields = ({
     </section>
   );
 };
-
-export const AdditionalInfoIntro = () => (
-  <p className="text-gray-500 font-light mt-1">
-    Add anything else that you would like to share with CMS.
-  </p>
-);
 
 export const AdditionalInfoInput = ({ handler }: { handler: Handler }) => {
   const [len, setLen] = useState(0);
