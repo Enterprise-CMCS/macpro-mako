@@ -14,6 +14,8 @@ import {
   WAIVER_OPTIONS,
 } from "@/pages/create/options";
 import { SimplePageContainer } from "@/components";
+import { BreadCrumbs } from "@/components/BreadCrumb";
+import { BREAD_CRUMB_CONFIG_NEW_SUBMISSION } from "@/components/BreadCrumb/bread-crumb-config";
 
 /** Can be removed once page title bar with back nav is integrated */
 export const SimplePageTitle = ({ title }: { title: string }) => (
@@ -32,6 +34,7 @@ type OptionsPageProps = {
 const OptionsPage = ({ options, title, fieldsetLegend }: OptionsPageProps) => {
   return (
     <SimplePageContainer>
+      <BreadCrumbs options={BREAD_CRUMB_CONFIG_NEW_SUBMISSION} />
       <SimplePageTitle title={title} />
       <OptionFieldset legend={fieldsetLegend}>
         {options.map((opt, idx) => (
