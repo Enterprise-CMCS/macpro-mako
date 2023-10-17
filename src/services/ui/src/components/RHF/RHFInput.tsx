@@ -256,7 +256,6 @@ export const RHFSlot = <
                       label={OPT.label}
                       checked={field.value?.includes(OPT.value)}
                       onCheckedChange={(c) => {
-                        console.log({ field });
                         const filtered =
                           field.value?.filter((f: any) => f !== OPT.value) ||
                           [];
@@ -372,8 +371,8 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
     <DependencyWrapper {...props.section}>
       <div className="py-4">
         {props.section.title && (
-          <div className="mb-6">
-            <FormLabel className="font-bold">{props.section.title}</FormLabel>
+          <div className="bg-primary p-4 w-full text-white">
+            <FormLabel className="text-xl">{props.section.title}</FormLabel>
           </div>
         )}
         {props.section.form.map((FORM, index) => (
@@ -395,7 +394,9 @@ export const RHFDocument = <TFieldValues extends FieldValues>(props: {
   return (
     <div className="py-4">
       <div className="mb-6">
-        <FormLabel className="font-bold">{props.document.header}</FormLabel>
+        <FormLabel className="font-bold text-3xl">
+          {props.document.header}
+        </FormLabel>
       </div>
       {props.document.sections.map((SEC, index) => (
         <RHFSection
