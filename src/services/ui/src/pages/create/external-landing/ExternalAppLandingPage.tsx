@@ -4,6 +4,8 @@ import { PropsWithChildren, ReactElement } from "react";
 import { SimplePageTitle } from "@/pages/create/create-options";
 import { SimplePageContainer } from "@/components";
 import { FAQ_SECTION, ROUTES } from "@/routes";
+import { BreadCrumbs } from "@/components/BreadCrumb";
+import { BREAD_CRUMB_CONFIG_NEW_SUBMISSION } from "@/components/BreadCrumb/bread-crumb-config";
 export enum EXTERNAL_APP {
   MAC_PRO = "https://www.medicaid.gov/resources-for-states/medicaid-and-chip-program-macpro-portal/index.html#MACPro",
   MMDL = "https://wms-mmdl.cms.gov/MMDL/faces/portal.jsp",
@@ -53,6 +55,7 @@ const ExternalAppLandingPage = ({
 }: ExternalAppLandingPageConfig) => {
   return (
     <SimplePageContainer>
+      <BreadCrumbs options={BREAD_CRUMB_CONFIG_NEW_SUBMISSION} />
       {/* TODO: Replace simple page title bar with breadcrumbs */}
       <SimplePageTitle title={pageTitle} />
       <div className="flex flex-col items-center justify-center m-4 pt-4 pb-12">
