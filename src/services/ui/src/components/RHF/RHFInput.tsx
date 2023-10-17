@@ -210,7 +210,7 @@ export const RHFSlot = <
                         OPT.form &&
                         OPT.form.map((FORM: any, index: any) => (
                           <div
-                            className="ml-2 p-4 border-l-2 border-l-primary"
+                            className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
                             key={`rhf-form-${index}-${FORM.description}`}
                           >
                             <RHFFormGroup form={FORM} control={props.control} />
@@ -220,7 +220,7 @@ export const RHFSlot = <
                         OPT.slots &&
                         OPT.slots.map((SLOT: any, index: any) => (
                           <div
-                            className="ml-2 p-4 border-l-2 border-l-primary"
+                            className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
                             key={SLOT.name + index}
                           >
                             <FormField
@@ -271,7 +271,7 @@ export const RHFSlot = <
                       OPT.slots &&
                       OPT.slots.map((SLOT: any, index: any) => (
                         <div
-                          className="ml-2 p-4 border-l-2 border-l-primary"
+                          className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
                           key={`rhf-form-${index}-${SLOT.name}`}
                         >
                           <FormField
@@ -287,7 +287,7 @@ export const RHFSlot = <
                       OPT.form.map((FORM: any) => (
                         <div
                           key={`CHECK-${OPT.value}-form-${FORM.description}`}
-                          className="ml-2 p-4 border-l-2 border-l-primary"
+                          className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
                         >
                           <RHFFormGroup control={props.control} form={FORM} />
                         </div>
@@ -430,10 +430,10 @@ export const FieldArray = <TFields extends FieldValues>(
   };
 
   return (
-    <div className="flex flex-col gap-2 w-max">
+    <div className="flex flex-col gap-4 w-max">
       {fieldArr.fields.map((FLD, index) => {
         return (
-          <div className="flex flex-row gap-3" key={FLD.id}>
+          <div className="flex flex-row gap-6" key={FLD.id}>
             {props.fields.map((SLOT) => {
               return (
                 <FormField
@@ -446,19 +446,24 @@ export const FieldArray = <TFields extends FieldValues>(
               );
             })}
             <Trash2
-              color="gray"
-              className="self-end mb-2 cursor-pointer"
+              className="self-end mb-2 cursor-pointer stroke-primary"
               onClick={() => fieldArr.remove(index)}
             />
           </div>
         );
       })}
-      <div className="flex items-center gap-3 mt-2">
-        <div className="flex-1 h-1 border-b-[2px]" />
-        <Button type="button" size="sm" onClick={onAppend}>
-          + New row
+      <div className="flex items-center mt-2">
+        <Button type="button" size="sm" onClick={onAppend} variant="outline">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="w-5 h-5 mr-2"
+          >
+            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+          </svg>
+          New row
         </Button>
-        <div className="flex-1 h-1 border-b-[2px]" />
       </div>
     </div>
   );

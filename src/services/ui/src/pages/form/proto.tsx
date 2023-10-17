@@ -377,7 +377,7 @@ export const ABP1: Document = {
       form: [
         {
           description: "A test of horizontal layouts with no slot styles",
-          wrapperStyling: "flex flex-wrap gap-2",
+          wrapperStyling: "flex flex-wrap gap-6",
           slots: [
             {
               name: "example1_1",
@@ -398,7 +398,7 @@ export const ABP1: Document = {
         },
         {
           description: "A test of horizontal layouts with slot styles",
-          wrapperStyling: "flex flex-wrap gap-2",
+          wrapperStyling: "flex flex-wrap gap-6",
           slots: [
             {
               name: "example2_1",
