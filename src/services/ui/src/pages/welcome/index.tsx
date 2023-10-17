@@ -24,7 +24,11 @@ export const Welcome = () => {
     <>
       <div className="w-full bg-primary p-2 md:p-4">
         <div className="max-w-screen-xl flex flex-col sm:flex-row sm:items-center gap-4 mx-auto p-4 lg:px-8">
-          <img src={OneMacLogo} alt="One Mac Logo" className="p-4" />
+          <img
+            src={OneMacLogo}
+            alt="One Mac Logo"
+            className="p-4 min-w-[400px]"
+          />
           <p className="text-center text-white/90 font-light text-xl font-sans">
             Welcome to the official submission system for paper-based state plan
             amendments (SPAs) and section 1915 waivers.

@@ -36,7 +36,7 @@ export const Footer = ({ email, address }: Props) => {
       <div className="w-full bg-primary">
         <div className="px-10 py-4 text-white text-[.8rem] flex flex-col items-center sm:flex-row max-w-screen-xl mx-auto">
           <div>
-            Email <strong className="font-bold">{email}</strong> for help or
+            Email <a href={`mailto:${email}`} className="font-bold underline">{email}</a> for help or
             feedback
           </div>
           <div className="flex-1"></div>
