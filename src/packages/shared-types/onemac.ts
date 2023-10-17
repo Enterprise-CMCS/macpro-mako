@@ -23,7 +23,7 @@ export const onemacSchema = z.object({
       })
     )
     .nullish(),
-  origin: z.string().nullable(),
+  origin: z.string(),
 });
 
 export const transformOnemac = (id: string) => {
