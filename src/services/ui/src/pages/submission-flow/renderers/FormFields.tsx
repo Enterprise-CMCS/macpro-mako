@@ -129,17 +129,18 @@ export const AttachmentsFields = ({
   handler: Handler;
   attachmentsConfig: AttachmentFieldOption[];
 }) => {
+  // Common constructor for attachment field id/name attributes
+  const name = (label: string) => `${SUBMISSION_FORM.ATTACHMENTS}-${label}`;
   /* The template for a drag-n-drop upload section */
-  const DropZone = ({ multiple }: { multiple: boolean }) => {
-    const [fileNames, setFileNames] = useState<string[]>([]);
+  const DropZone = ({ label, multiple, required }: AttachmentFieldOption) => {
     const onDrop = useCallback((acceptedFiles: File[]) => {
-      // Do something with the files
       console.log(acceptedFiles);
       setFileNames((prevState) => [
         ...prevState,
         ...acceptedFiles.map((file) => file.name),
       ]);
     }, []);
+    const [fileNames, setFileNames] = useState<string[]>([]);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
       onDrop,
     });
@@ -149,7 +150,16 @@ export const AttachmentsFields = ({
         {...getRootProps()}
         className="border border-dashed rounded-md h-20 p-4 flex justify-center align-middle"
       >
-        <input {...getInputProps()} multiple={multiple} />
+        <input
+          {...getInputProps({
+            /* Plug additional `input` props in here so they
+             * are not overridden */
+            multiple: multiple, // TODO: not working?
+            required: required, // TODO: working TOO well? won't submit even with requirement filled
+            name: name(label),
+            id: name(label),
+          })}
+        />
         {fileNames.length ? (
           /* TODO: Later to be replaced with HCD designs; were not present
            *   upon starting this work. */
@@ -175,11 +185,11 @@ export const AttachmentsFields = ({
     <section>
       {attachmentsConfig.map((req, idx) => (
         <div key={`${req.label}- ${idx}`}>
-          <label>
+          <label htmlFor={name(req.label)}>
             <span className="font-bold text-sm">{req.label}</span>
             {req.required ? <RequiredIndicator /> : null}
           </label>
-          <DropZone multiple={req.multiple} />
+          <DropZone {...req} />
           {/* Does not show under final dropzone */}
           {idx !== attachmentsConfig.length - 1 ? (
             <hr className="my-6" />
