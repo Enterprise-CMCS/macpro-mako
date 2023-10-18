@@ -16,10 +16,10 @@ import { cn } from "@/lib";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { FormFieldName } from "@/consts/forms";
-import { SubmissionAPIBody } from "@/api/submit";
+import { SpaSubmissionBody } from "@/api/submit";
 
 type FieldArgs<T = NonNullable<unknown>> = {
-  handler: Dispatch<SetStateAction<SubmissionAPIBody>>;
+  handler: Dispatch<SetStateAction<SpaSubmissionBody>>;
   name: FormFieldName;
 } & T;
 
@@ -178,7 +178,7 @@ export const AttachmentsFields = ({
       // Pass the file into the form data state
       // TODO: Do we need any meta for which files map to which document upload
       //  requirement?
-      handler((prev: SubmissionAPIBody) => ({
+      handler((prev: SpaSubmissionBody) => ({
         ...prev,
         [name]: [...prev.attachments, ...acceptedFiles],
       }));

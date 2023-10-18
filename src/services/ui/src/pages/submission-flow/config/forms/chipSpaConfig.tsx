@@ -13,6 +13,7 @@ import {
   proposedEffectiveField,
   spaIdField,
 } from "@/pages/submission-flow/config/forms/common";
+import { spaSubmissionSchema } from "@/api/submit";
 /** List of attachment drop zones to render */
 const chipSpaAttachments: AttachmentFieldOption[] = [
   { label: "Current State Plan", required: true, multiple: true },
@@ -31,6 +32,7 @@ export const CHIP_SPA_FORM: FormPageConfig = {
   meta: {
     origin: FORM_ORIGIN,
     authority: AUTHORITY.CHIP_SPA,
+    validator: spaSubmissionSchema,
   },
   pageTitle: "Submit New CHIP SPA",
   description: {

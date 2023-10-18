@@ -3,23 +3,21 @@ import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
-import {
-  SubmissionAPIBody,
-  submissionApiSchema,
-  useSubmissionMutation,
-} from "@/api/submit";
+import { SpaSubmissionBody, useSubmissionMutation } from "@/api/submit";
 import { useGetUser } from "@/api/useGetUser";
 import { FormSection } from "@/pages/submission-flow/config/forms/common";
-import { FieldName } from "react-hook-form";
-import { FormFieldName } from "@/consts/forms";
-import { ZodIssue } from "zod";
+import { ZodIssue, ZodObject } from "zod";
 
 type FormDescription = Pick<FormSection, "instructions"> & {
   // Limits the higher form header to just a string, no HeadingWithLink
   // is needed at this level.
   heading: string;
 };
-type FormMeta = { origin: string; authority: string };
+type FormMeta = {
+  origin: string;
+  authority: string;
+  validator: ZodObject<any>;
+};
 export interface FormPageConfig {
   meta: FormMeta;
   pageTitle: string;
@@ -35,18 +33,24 @@ export const FormPage = ({
 }: FormPageConfig) => {
   const [fieldErrors, setFieldErrors] = useState<ZodIssue[]>([]);
   const { data: user } = useGetUser();
-  const [data, setData] = useState<SubmissionAPIBody>({
+  // This shape will change with other authorities like Waivers.
+  // One approach could be generics?
+  const [data, setData] = useState<SpaSubmissionBody>({
     additionalInformation: "",
     attachments: [],
     id: "",
     raiResponses: [],
+    state: "",
+    proposedEffectiveDate: 0,
+    // Values below are universal for all authorities (waiver & spa)
     origin: meta.origin,
     authority: meta.authority,
     submitterEmail: user?.user?.email || "",
     submitterName: `${user?.user?.given_name} ${user?.user?.family_name}`,
-    state: "",
-    proposedEffectiveDate: 0,
   });
+  // Which API we send to may be something that changes with Waiver authorities
+  // unless we hit a single endpoint that further routes based on the value(s)
+  // given (it does not currently)
   const api = useSubmissionMutation();
   return (
     <SimplePageContainer>
@@ -63,26 +67,21 @@ export const FormPage = ({
           event.preventDefault();
           // Get pre signed urls for upload
           // Upload files and get S3 bucket/key
-          const submission = {
+          const payload = {
             ...data,
             // TODO: Set attachments with S3 buckets/keys
             state: data.id?.split("-")[0] || undefined,
           };
-          console.log(submission);
-          const result = submissionApiSchema.safeParse(submission);
+          console.log(payload);
+          const result = meta.validator.safeParse(payload);
           if (result.success) {
             // api.mutate(submission);
+            setFieldErrors([]);
           } else {
             // Send errors to state
             setFieldErrors(result.error.errors);
             // Console log 'em
-            console.error(
-              "SCHEMA PARSE ERROR: ",
-              result.error.errors.map((e) => ({
-                message: e.message,
-                path: e.path,
-              }))
-            );
+            console.error("SCHEMA PARSE ERROR(S): ", result.error.errors);
           }
           // TODO: route back to dashboard on success
         }}

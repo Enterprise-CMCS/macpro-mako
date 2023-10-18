@@ -12,7 +12,7 @@ import {
   SpaIDIntro,
 } from "@/pages/submission-flow/renderers/FormFields";
 import { Dispatch, ReactElement, SetStateAction } from "react";
-import { SubmissionAPIBody } from "@/api/submit";
+import { SpaSubmissionBody } from "@/api/submit";
 
 /* Some headers need an additional link to an FAQ section */
 type HeadingWithLink = {
@@ -24,7 +24,7 @@ export type FormSection = {
   id: string;
   heading: string | HeadingWithLink;
   instructions: ReactElement;
-  field: (func: Dispatch<SetStateAction<SubmissionAPIBody>>) => ReactElement;
+  field: (func: Dispatch<SetStateAction<SpaSubmissionBody>>) => ReactElement;
   required: boolean;
 };
 

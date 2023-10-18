@@ -13,6 +13,7 @@ import {
   proposedEffectiveField,
   spaIdField,
 } from "@/pages/submission-flow/config/forms/common";
+import { spaSubmissionSchema } from "@/api/submit";
 
 /** List of attachment drop zones to render */
 const medicaidSpaAttachments: AttachmentFieldOption[] = [
@@ -40,6 +41,7 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
   meta: {
     origin: FORM_ORIGIN,
     authority: AUTHORITY.MEDICAID_SPA,
+    validator: spaSubmissionSchema,
   },
   pageTitle: "Submit New Medicaid SPA",
   description: {
