@@ -12,11 +12,14 @@ import { downloadAVDefinitions, scanLocalFile } from "./clamav";
 import * as utils from "./utils";
 import * as constants from "./constants";
 
-const s3Client = new S3Client();
+const s3Client: S3Client = new S3Client();
 
-export async function isS3FileTooBig(key, bucket) {
+export async function isS3FileTooBig(
+  key: string,
+  bucket: string
+): Promise<boolean> {
   try {
-    const res = await s3Client.send(
+    const res: HeadObjectCommandOutput = await s3Client.send(
       new HeadObjectCommand({ Key: key, Bucket: bucket })
     );
     return res.ContentLength > constants.MAX_FILE_SIZE;
@@ -28,13 +31,16 @@ export async function isS3FileTooBig(key, bucket) {
   }
 }
 
-async function downloadFileFromS3(s3ObjectKey, s3ObjectBucket) {
+async function downloadFileFromS3(
+  s3ObjectKey: string,
+  s3ObjectBucket: string
+): Promise<string> {
   if (!fs.existsSync(constants.TMP_DOWNLOAD_PATH)) {
     fs.mkdirSync(constants.TMP_DOWNLOAD_PATH);
   }
 
-  const localPath = `${constants.TMP_DOWNLOAD_PATH}${randomUUID()}.tmp`;
-  const writeStream = fs.createWriteStream(localPath);
+  const localPath: string = `${constants.TMP_DOWNLOAD_PATH}${randomUUID()}.tmp`;
+  const writeStream: fs.WriteStream = fs.createWriteStream(localPath);
 
   utils.generateSystemMessage(
     `Downloading file s3://${s3ObjectBucket}/${s3ObjectKey}`
@@ -58,12 +64,15 @@ async function downloadFileFromS3(s3ObjectKey, s3ObjectBucket) {
   }
 }
 
-const scanAndTagS3Object = async (s3ObjectKey, s3ObjectBucket) => {
+const scanAndTagS3Object = async (
+  s3ObjectKey: string,
+  s3ObjectBucket: string
+): Promise<string> => {
   utils.generateSystemMessage(
     `S3 Bucket and Key\n ${s3ObjectBucket}\n${s3ObjectKey}`
   );
 
-  let virusScanStatus;
+  let virusScanStatus: string;
 
   if (await isS3FileTooBig(s3ObjectKey, s3ObjectBucket)) {
     virusScanStatus = constants.STATUS_SKIPPED_FILE;
@@ -74,7 +83,10 @@ const scanAndTagS3Object = async (s3ObjectKey, s3ObjectBucket) => {
     utils.generateSystemMessage("Download AV Definitions");
     await downloadAVDefinitions();
     utils.generateSystemMessage("Download File from S3");
-    const fileLoc = await downloadFileFromS3(s3ObjectKey, s3ObjectBucket);
+    const fileLoc: string = await downloadFileFromS3(
+      s3ObjectKey,
+      s3ObjectBucket
+    );
     utils.generateSystemMessage("Set virusScanStatus");
     virusScanStatus = scanLocalFile(fileLoc);
     utils.generateSystemMessage(`virusScanStatus=${virusScanStatus}`);
@@ -96,12 +108,12 @@ const scanAndTagS3Object = async (s3ObjectKey, s3ObjectBucket) => {
   return virusScanStatus;
 };
 
-export async function lambdaHandleEvent(event) {
+export async function lambdaHandleEvent(event: any): Promise<string> {
   utils.generateSystemMessage(
     `Start avScan with event ${JSON.stringify(event, null, 2)}`
   );
 
-  let s3ObjectKey, s3ObjectBucket;
+  let s3ObjectKey: string, s3ObjectBucket: string;
 
   if (event.s3ObjectKey && event.s3ObjectBucket) {
     s3ObjectKey = event.s3ObjectKey;

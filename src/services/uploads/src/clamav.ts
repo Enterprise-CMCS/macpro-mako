@@ -5,16 +5,16 @@ import {
   PutObjectCommand,
   DeleteObjectsCommand,
 } from "@aws-sdk/client-s3";
-import { spawnSync } from "child_process";
+import { spawnSync, SpawnSyncReturns } from "child_process";
 import path from "path";
 import fs from "fs";
 import asyncfs from "fs/promises";
 import * as constants from "./constants";
 import * as utils from "./utils";
 
-const s3Client = new S3Client();
+const s3Client: S3Client = new S3Client();
 
-export async function listBucketFiles(bucketName) {
+export async function listBucketFiles(bucketName: string): Promise<string[]> {
   try {
     const listFilesResult = await s3Client.send(
       new ListObjectsV2Command({ Bucket: bucketName })
@@ -23,7 +23,7 @@ export async function listBucketFiles(bucketName) {
     console.log(listFilesResult);
     console.log("cha cha real smooth");
     if (listFilesResult.Contents) {
-      const keys = listFilesResult.Contents.map((c) => c.Key);
+      const keys: string[] = listFilesResult.Contents.map((c) => c.Key);
       return keys;
     } else {
       return [];
@@ -37,9 +37,9 @@ export async function listBucketFiles(bucketName) {
   }
 }
 
-export const updateAVDefinitonsWithFreshclam = () => {
+export const updateAVDefinitonsWithFreshclam = (): boolean => {
   try {
-    const { stdout, stderr, error } = spawnSync(
+    const { stdout, stderr, error }: SpawnSyncReturns<Buffer> = spawnSync(
       `${constants.PATH_TO_FRESHCLAM}`,
       [
         `--config-file=${constants.FRESHCLAM_CONFIG}`,
@@ -68,48 +68,54 @@ export const updateAVDefinitonsWithFreshclam = () => {
  * Download the Antivirus definition from S3.
  * The definitions are stored on the local disk, ensure there's enough space.
  */
-export const downloadAVDefinitions = async () => {
+export const downloadAVDefinitions = async (): Promise<void[]> => {
   // list all the files in that bucket
   utils.generateSystemMessage("Downloading Definitions");
-  const allFileKeys = await listBucketFiles(constants.CLAMAV_BUCKET_NAME);
+  const allFileKeys: string[] = await listBucketFiles(
+    constants.CLAMAV_BUCKET_NAME
+  );
 
-  const definitionFileKeys = allFileKeys
+  const definitionFileKeys: string[] = allFileKeys
     .filter((key) => key.startsWith(constants.PATH_TO_AV_DEFINITIONS))
     .map((fullPath) => path.basename(fullPath));
 
   // download each file in the bucket.
-  const downloadPromises = definitionFileKeys.map((filenameToDownload) => {
-    return new Promise(async (resolve, reject) => {
-      const destinationFile = path.join(
-        constants.FRESHCLAM_WORK_DIR,
-        filenameToDownload
-      );
-
-      utils.generateSystemMessage(
-        `Downloading ${filenameToDownload} from S3 to ${destinationFile}`
-      );
-
-      const localFileWriteStream = fs.createWriteStream(destinationFile);
-
-      const options = {
-        Bucket: constants.CLAMAV_BUCKET_NAME,
-        Key: `${constants.PATH_TO_AV_DEFINITIONS}/${filenameToDownload}`,
-      };
-
-      try {
-        const { Body } = await s3Client.send(new GetObjectCommand(options));
-        await asyncfs.writeFile(destinationFile, Body);
-        utils.generateSystemMessage(`Finished download ${filenameToDownload}`);
-        resolve();
-      } catch (err) {
-        utils.generateSystemMessage(
-          `Error downloading definition file ${filenameToDownload}`
+  const downloadPromises: Promise<void>[] = definitionFileKeys.map(
+    (filenameToDownload) => {
+      return new Promise<void>(async (resolve, reject) => {
+        const destinationFile: string = path.join(
+          constants.FRESHCLAM_WORK_DIR,
+          filenameToDownload
         );
-        console.log(err);
-        reject();
-      }
-    });
-  });
+
+        utils.generateSystemMessage(
+          `Downloading ${filenameToDownload} from S3 to ${destinationFile}`
+        );
+
+        const localFileWriteStream = fs.createWriteStream(destinationFile);
+
+        const options = {
+          Bucket: constants.CLAMAV_BUCKET_NAME,
+          Key: `${constants.PATH_TO_AV_DEFINITIONS}/${filenameToDownload}`,
+        };
+
+        try {
+          const { Body } = await s3Client.send(new GetObjectCommand(options));
+          await asyncfs.writeFile(destinationFile, Body);
+          utils.generateSystemMessage(
+            `Finished download ${filenameToDownload}`
+          );
+          resolve();
+        } catch (err) {
+          utils.generateSystemMessage(
+            `Error downloading definition file ${filenameToDownload}`
+          );
+          console.log(err);
+          reject();
+        }
+      });
+    }
+  );
 
   return await Promise.all(downloadPromises);
 };
@@ -117,12 +123,14 @@ export const downloadAVDefinitions = async () => {
 /**
  * Uploads the AV definitions to the S3 bucket.
  */
-export const uploadAVDefinitions = async () => {
+export const uploadAVDefinitions = async (): Promise<void[]> => {
   // delete all the definitions currently in the bucket.
   // first list them.
   utils.generateSystemMessage("Uploading Definitions");
-  const s3AllFullKeys = await listBucketFiles(constants.CLAMAV_BUCKET_NAME);
-  const s3DefinitionFileFullKeys = s3AllFullKeys.filter((key) =>
+  const s3AllFullKeys: string[] = await listBucketFiles(
+    constants.CLAMAV_BUCKET_NAME
+  );
+  const s3DefinitionFileFullKeys: string[] = s3AllFullKeys.filter((key) =>
     key.startsWith(constants.PATH_TO_AV_DEFINITIONS)
   );
 
@@ -153,37 +161,41 @@ export const uploadAVDefinitions = async () => {
   }
 
   // list all the files in the work dir for upload
-  const definitionFiles = fs.readdirSync(constants.FRESHCLAM_WORK_DIR);
+  const definitionFiles: string[] = fs.readdirSync(
+    constants.FRESHCLAM_WORK_DIR
+  );
 
-  const uploadPromises = definitionFiles.map((filenameToUpload) => {
-    return new Promise(async (resolve, reject) => {
-      utils.generateSystemMessage(
-        `Uploading updated definitions for file ${filenameToUpload} ---`
-      );
-
-      const options = {
-        Bucket: constants.CLAMAV_BUCKET_NAME,
-        Key: `${constants.PATH_TO_AV_DEFINITIONS}/${filenameToUpload}`,
-        Body: fs.readFileSync(
-          path.join(constants.FRESHCLAM_WORK_DIR, filenameToUpload)
-        ),
-      };
-
-      try {
-        await s3Client.send(new PutObjectCommand(options));
-        resolve();
+  const uploadPromises: Promise<void>[] = definitionFiles.map(
+    (filenameToUpload) => {
+      return new Promise<void>(async (resolve, reject) => {
         utils.generateSystemMessage(
-          `--- Finished uploading ${filenameToUpload} ---`
+          `Uploading updated definitions for file ${filenameToUpload} ---`
         );
-      } catch (err) {
-        utils.generateSystemMessage(
-          `--- Error uploading ${filenameToUpload} ---`
-        );
-        console.log(err);
-        reject();
-      }
-    });
-  });
+
+        const options = {
+          Bucket: constants.CLAMAV_BUCKET_NAME,
+          Key: `${constants.PATH_TO_AV_DEFINITIONS}/${filenameToUpload}`,
+          Body: fs.readFileSync(
+            path.join(constants.FRESHCLAM_WORK_DIR, filenameToUpload)
+          ),
+        };
+
+        try {
+          await s3Client.send(new PutObjectCommand(options));
+          resolve();
+          utils.generateSystemMessage(
+            `--- Finished uploading ${filenameToUpload} ---`
+          );
+        } catch (err) {
+          utils.generateSystemMessage(
+            `--- Error uploading ${filenameToUpload} ---`
+          );
+          console.log(err);
+          reject();
+        }
+      });
+    }
+  );
 
   return await Promise.all(uploadPromises);
 };
@@ -199,16 +211,19 @@ export const uploadAVDefinitions = async () => {
  *
  * @param pathToFile Path in the filesystem where the file is stored.
  */
-export const scanLocalFile = (pathToFile) => {
+export const scanLocalFile = (pathToFile: string): string | null => {
   try {
-    const avResult = spawnSync(constants.PATH_TO_CLAMAV, [
-      "--stdout",
-      "-v",
-      "-a",
-      "-d",
-      constants.FRESHCLAM_WORK_DIR,
-      pathToFile,
-    ]);
+    const avResult: SpawnSyncReturns<Buffer> = spawnSync(
+      constants.PATH_TO_CLAMAV,
+      [
+        "--stdout",
+        "-v",
+        "-a",
+        "-d",
+        constants.FRESHCLAM_WORK_DIR,
+        pathToFile,
+      ]
+    );
 
     // status 1 means that the file is infected.
     if (avResult.status === 1) {
