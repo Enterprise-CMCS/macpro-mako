@@ -22,6 +22,9 @@ export const submissionApiSchema = z.object({
   origin: z.string(),
   submitterEmail: z.string().email(),
   submitterName: z.string(),
+  proposedEffectiveDate: z
+    .number()
+    .refine((arg) => arg > 0, "Please enter a valid date"),
 });
 export type SubmissionAPIBody = z.infer<typeof submissionApiSchema>;
 /** REST API post call */

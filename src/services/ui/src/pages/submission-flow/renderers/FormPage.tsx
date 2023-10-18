@@ -10,6 +10,9 @@ import {
 } from "@/api/submit";
 import { useGetUser } from "@/api/useGetUser";
 import { FormSection } from "@/pages/submission-flow/config/forms/common";
+import { FieldName } from "react-hook-form";
+import { FormFieldName } from "@/consts/forms";
+import { ZodIssue } from "zod";
 
 type FormDescription = Pick<FormSection, "instructions"> & {
   // Limits the higher form header to just a string, no HeadingWithLink
@@ -23,12 +26,14 @@ export interface FormPageConfig {
   description: FormDescription;
   fields: FormSection[];
 }
+
 export const FormPage = ({
   meta,
   pageTitle,
   description,
   fields,
 }: FormPageConfig) => {
+  const [fieldErrors, setFieldErrors] = useState<ZodIssue[]>([]);
   const { data: user } = useGetUser();
   const [data, setData] = useState<SubmissionAPIBody>({
     additionalInformation: "",
@@ -40,6 +45,7 @@ export const FormPage = ({
     submitterEmail: user?.user?.email || "",
     submitterName: `${user?.user?.given_name} ${user?.user?.family_name}`,
     state: "",
+    proposedEffectiveDate: 0,
   });
   const api = useSubmissionMutation();
   return (
@@ -59,14 +65,17 @@ export const FormPage = ({
           // Upload files and get S3 bucket/key
           const submission = {
             ...data,
-            // Set attachments with S3 buckets/keys
-            state: data.id.split("-")[0],
+            // TODO: Set attachments with S3 buckets/keys
+            state: data.id?.split("-")[0] || undefined,
           };
           console.log(submission);
           const result = submissionApiSchema.safeParse(submission);
           if (result.success) {
             // api.mutate(submission);
           } else {
+            // Send errors to state
+            setFieldErrors(result.error.errors);
+            // Console log 'em
             console.error(
               "SCHEMA PARSE ERROR: ",
               result.error.errors.map((e) => ({
@@ -105,11 +114,34 @@ export const FormPage = ({
                 {section.required && <RequiredIndicator />}
               </label>
             )}
+            {/* Render field instruction */}
             {section.instructions}
+            {/* Render error messages pertaining to field */}
+            {fieldErrors
+              .filter((err) => err.path.includes(section.id))
+              .map((err) => (
+                <>
+                  <span
+                    key={`${err.path[0]}-err-msg`}
+                    className="text-red-600 text-sm"
+                  >
+                    {err.message}
+                  </span>
+                  <br />
+                </>
+              ))}
+            {/* Render field inputs */}
             {section.field(setData)}
           </section>
         ))}
-        <Button type="submit">Submit</Button>
+        <div className="flex gap-3">
+          <Button className="md:px-12" type="submit">
+            Submit
+          </Button>
+          <Button className="xs:w-full md:px-12" variant="outline">
+            Cancel
+          </Button>
+        </div>
       </form>
     </SimplePageContainer>
   );
