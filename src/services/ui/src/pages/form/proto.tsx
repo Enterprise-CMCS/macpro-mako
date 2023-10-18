@@ -8,7 +8,7 @@ export const ABP1: Document = {
       form: [
         {
           description:
-            "identifiy and define the population that will participate",
+            "Identify and define the population that will participate in the Alternative Benefit Plan.",
           slots: [
             {
               rhf: "Input",
@@ -49,12 +49,11 @@ export const ABP1: Document = {
                   name: "eligibility_group",
                   label: "Eligibility group",
                   props: {
-                    placeholder: "enter name",
                     className: "w-[300px]",
                     options: [
                       {
-                        label: "Extended medicaid due to earnings",
-                        value: "option1",
+                        label: "Parents and Other Caretaker Relatives",
+                        value: "Parents and Other Caretaker Relatives",
                       },
                       {
                         label: "Extended medicaid due to bling",
@@ -92,16 +91,16 @@ export const ABP1: Document = {
         {
           description:
             "Is enrollment available for all individuals in these eligibility groups?",
-          dependency: {
-            //example of a conditionally revealed field
-            conditions: [
-              {
-                name: "alt_benefit_plan_population_name",
-                type: "valueExists",
-              },
-            ],
-            effect: { type: "show" },
-          },
+          // dependency: {
+          //   //example of a conditionally revealed field
+          //   conditions: [
+          //     {
+          //       name: "alt_benefit_plan_population_name",
+          //       type: "valueExists",
+          //     },
+          //   ],
+          //   effect: { type: "show" },
+          // },
           slots: [
             {
               rhf: "Select",
@@ -125,12 +124,12 @@ export const ABP1: Document = {
         // example of conditionally hidden section
         conditions: [
           {
-            name: "alt_benefit_plan_population_name",
+            name: "is_enrollment_available",
             type: "expectedValue",
-            expectedValue: "hide",
+            expectedValue: "no",
           },
         ],
-        effect: { type: "hide" },
+        effect: { type: "show" },
       },
       form: [
         {
@@ -180,6 +179,58 @@ export const ABP1: Document = {
                                 {
                                   label: "A percentage",
                                   value: "income_definition_percentage",
+                                  slots: [
+                                    {
+                                      rhf: "Radio",
+                                      name: "income_definition_percentage",
+                                      props: {
+                                        options: [
+                                          {
+                                            label: "Federal Poverty Level",
+                                            value: "federal_poverty_level",
+                                            slots: [
+                                              {
+                                                rhf: "Input",
+                                                name: "federal_poverty_level_percentage",
+                                                label:
+                                                  "Enter the Federal Poverty Level percentage",
+                                              },
+                                            ],
+                                          },
+                                          {
+                                            label:
+                                              "SSI Federal Benefit Amount.",
+                                            value: "ssi_federal_benefit_amount",
+                                            slots: [
+                                              {
+                                                rhf: "Input",
+                                                name: "ssi_federal_benefit_percentage",
+                                                label:
+                                                  "Enter the SSI Federal Benefit Rate percentage",
+                                              },
+                                            ],
+                                          },
+                                          {
+                                            label: "Other.",
+                                            value: "other",
+                                            slots: [
+                                              {
+                                                rhf: "Input",
+                                                name: "other_percentage",
+                                                label:
+                                                  "Enter the Other percentage",
+                                              },
+                                              {
+                                                rhf: "Textarea",
+                                                name: "other_describe",
+                                                label: "Describe:",
+                                              },
+                                            ],
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
                                 },
                                 {
                                   label: "A specific amount",
@@ -250,7 +301,62 @@ export const ABP1: Document = {
                                           },
                                           {
                                             label: "Standard Varies by region",
-                                            value: "region_standard",
+                                            value: "region_standard", //
+
+                                            form: [
+                                              {
+                                                slots: [
+                                                  {
+                                                    rhf: "FieldArray",
+                                                    name: "income_definition_specific_statewide",
+                                                    fields: [
+                                                      {
+                                                        rhf: "Input",
+                                                        label: "Household Size",
+                                                        name: "household_size",
+                                                        props: {
+                                                          placeholder:
+                                                            "enter size",
+                                                          className:
+                                                            "w-[300px]",
+                                                        },
+                                                      },
+                                                      {
+                                                        rhf: "Input",
+                                                        name: "standard",
+                                                        label: "Standard ($)",
+                                                        props: {
+                                                          className:
+                                                            "w-[200px]",
+                                                          placenholder:
+                                                            "enter amount",
+                                                        },
+                                                      },
+                                                    ],
+                                                  },
+                                                ],
+                                              },
+                                              {
+                                                description:
+                                                  "Is there an additional incremental amount",
+                                                slots: [
+                                                  {
+                                                    rhf: "Switch",
+                                                    name: "is_incremental_amount",
+                                                  },
+                                                ],
+                                              },
+                                              {
+                                                description:
+                                                  "Enter incremental dollar amount",
+                                                slots: [
+                                                  {
+                                                    rhf: "Input",
+                                                    name: "doller_incremental_amount",
+                                                  },
+                                                ],
+                                              },
+                                            ],
                                           },
                                           {
                                             label:
@@ -359,27 +465,84 @@ export const ABP1: Document = {
         },
         {
           description: "Select a method of geographic variation",
+          dependency: {
+            conditions: [
+              {
+                name: "is_geographic_area",
+                type: "expectedValue",
+                expectedValue: "no",
+              },
+            ],
+            effect: { type: "show" },
+          },
           slots: [
             {
               rhf: "Radio",
               name: "geographic_variation",
               props: {
                 options: [
-                  { label: "By country", value: "by_country" },
-                  { label: "By region", value: "by_region" },
-                  { label: "By city or town", value: "by_city_town" },
-                  { label: "Other geographic area", value: "other" },
+                  {
+                    label: "By county",
+                    value: "by_county",
+                    form: [
+                      {
+                        description: "Specify Counties",
+                        slots: [
+                          {
+                            name: "specify_counties",
+                            rhf: "Textarea",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    label: "By region",
+                    value: "by_region",
+                    form: [
+                      {
+                        description: "Specify Regions",
+                        slots: [
+                          {
+                            name: "specify_regions",
+                            rhf: "Textarea",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    label: "By city or town",
+                    value: "by_city_town",
+                    form: [
+                      {
+                        description: "Specify Cities and Towns",
+                        slots: [
+                          {
+                            name: "specify_cities_towns",
+                            rhf: "Textarea",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    label: "Other geographic area",
+                    value: "other",
+                    form: [
+                      {
+                        description: "Specify Other",
+                        slots: [
+                          {
+                            name: "specify_other",
+                            rhf: "Textarea",
+                          },
+                        ],
+                      },
+                    ],
+                  },
                 ],
               },
-            },
-          ],
-        },
-        {
-          description: "Specify Countries",
-          slots: [
-            {
-              name: "specify_countries",
-              rhf: "Input",
             },
           ],
         },
@@ -400,61 +563,61 @@ export const ABP1: Document = {
         },
       ],
     },
-    {
-      title: "Testing Alt Layouts",
-      form: [
-        {
-          description: "A test of horizontal layouts with no slot styles",
-          wrapperStyling: "flex flex-wrap gap-6",
-          slots: [
-            {
-              name: "example1_1",
-              label: "Example 1.1",
-              rhf: "Input",
-            },
-            {
-              name: "example1_2",
-              label: "Example 1.2",
-              rhf: "Input",
-            },
-            {
-              name: "example1_3",
-              label: "Example 1.3",
-              rhf: "Input",
-            },
-          ],
-        },
-        {
-          description: "A test of horizontal layouts with slot styles",
-          wrapperStyling: "flex flex-wrap gap-6",
-          slots: [
-            {
-              name: "example2_1",
-              label: "Example 2.1",
-              rhf: "Input",
-              props: {
-                className: "w-80",
-              },
-            },
-            {
-              name: "example2_2",
-              label: "Example 2.2",
-              rhf: "Input",
-              props: {
-                className: "w-30",
-              },
-            },
-            {
-              name: "example2_3",
-              label: "Example 2.3",
-              rhf: "Input",
-              props: {
-                className: "w-120",
-              },
-            },
-          ],
-        },
-      ],
-    },
+    // {
+    //   title: "Testing Alt Layouts",
+    //   form: [
+    //     {
+    //       description: "A test of horizontal layouts with no slot styles",
+    //       wrapperStyling: "flex flex-wrap gap-6",
+    //       slots: [
+    //         {
+    //           name: "example1_1",
+    //           label: "Example 1.1",
+    //           rhf: "Input",
+    //         },
+    //         {
+    //           name: "example1_2",
+    //           label: "Example 1.2",
+    //           rhf: "Input",
+    //         },
+    //         {
+    //           name: "example1_3",
+    //           label: "Example 1.3",
+    //           rhf: "Input",
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       description: "A test of horizontal layouts with slot styles",
+    //       wrapperStyling: "flex flex-wrap gap-6",
+    //       slots: [
+    //         {
+    //           name: "example2_1",
+    //           label: "Example 2.1",
+    //           rhf: "Input",
+    //           props: {
+    //             className: "w-80",
+    //           },
+    //         },
+    //         {
+    //           name: "example2_2",
+    //           label: "Example 2.2",
+    //           rhf: "Input",
+    //           props: {
+    //             className: "w-30",
+    //           },
+    //         },
+    //         {
+    //           name: "example2_3",
+    //           label: "Example 2.3",
+    //           rhf: "Input",
+    //           props: {
+    //             className: "w-120",
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
   ],
 };

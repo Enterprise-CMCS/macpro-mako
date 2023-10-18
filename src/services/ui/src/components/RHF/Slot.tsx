@@ -46,7 +46,7 @@ export const RHFSlot = <
 >["render"] =>
   function Slot({ field }) {
     return (
-      <FormItem className="flex flex-col gap-1">
+      <FormItem className="flex flex-col gap-1 py-2">
         {label && <FormLabel>{label}</FormLabel>}
         <FormControl>
           <>
@@ -82,7 +82,7 @@ export const RHFSlot = <
                     defaultValue={field.value}
                   >
                     <SelectTrigger {...hops}>
-                      <SelectValue placeholder="Select a verified email to display" />
+                      <SelectValue {...hops} />
                     </SelectTrigger>
                     <SelectContent>
                       {hops.options.map((OPT: any) => (

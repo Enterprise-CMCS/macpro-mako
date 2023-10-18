@@ -29,15 +29,16 @@ export function ExampleForm() {
     resolver: ajvResolver(JsonFormSchema as any),
     defaultValues: {
       alt_benefit_plan_population_name: "",
-      eligibility_groups: [],
+      eligibility_groups: [{}],
       is_enrollment_available: "no",
       target_criteria: [],
       income_target: "",
       income_definition: "",
       income_definition_specific: "",
-      income_definition_specific_statewide: [],
+      income_definition_specific_statewide: [{}],
       is_incremental_amount: false,
       dollar_incremental_amount: "",
+      is_geographic_area: "no",
     },
   });
 
