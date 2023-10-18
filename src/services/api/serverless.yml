@@ -57,21 +57,25 @@ custom:
       package:compileEvents: ./handlers/repack.js
 params:
   master:
+    formsProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
     submitProvisionedConcurrency: 2
   val:
+    formsProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
     submitProvisionedConcurrency: 2
   production:
+    formsProvisionedConcurrency: 5
     searchProvisionedConcurrency: 10
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
     submitProvisionedConcurrency: 5
   default:
+    formsProvisionedConcurrency: 0
     searchProvisionedConcurrency: 0
     itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
@@ -154,6 +158,31 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
+  forms:
+    handler: handlers/forms.handler
+    layers:
+      - !Ref FormsLambdaLayer
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /forms
+          method: get
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:searchProvisionedConcurrency}
+layers:
+  forms:
+    path: layers
+    description: Lambda Layer for forms function
+
 resources:
   Resources:
     ApiGateway400ErrorCount:
