@@ -1,8 +1,6 @@
 import { SimplePageContainer } from "@/components";
 import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
-import { MEDICAID_SPA_FORM } from "@/pages/submission-flow/config/forms/medicaidSpaConfig";
-import { ChangeEvent, ReactElement, useState } from "react";
-import { ROUTES } from "@/routes";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
 import {
