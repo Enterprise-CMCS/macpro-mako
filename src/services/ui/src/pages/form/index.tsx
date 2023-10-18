@@ -2,7 +2,7 @@ import { ajvResolver } from "@hookform/resolvers/ajv";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "@/components/Inputs";
 
-import { RHFDocument, RHFFormGroup } from "@/components/RHF/RHFInput";
+import { RHFDocument } from "@/components/RHF";
 import { ABP1 } from "./proto";
 
 export const JsonFormSchema = {
