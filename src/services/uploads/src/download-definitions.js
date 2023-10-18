@@ -21,7 +21,6 @@ export async function lambdaHandleEvent() {
   utils.generateSystemMessage(`AV definition update start time: ${new Date()}`);
 
   await utils.cleanupFolder(constants.FRESHCLAM_WORK_DIR);
-  console.log("I AM HERE");
   if (await clamav.updateAVDefinitonsWithFreshclam()) {
     utils.generateSystemMessage("Folder content after freshclam ");
     await clamav.uploadAVDefinitions();
@@ -33,3 +32,21 @@ export async function lambdaHandleEvent() {
     return "DEFINITION UPDATE FAILED";
   }
 }
+
+import { send, SUCCESS, FAILED } from "cfn-response-async";
+export const initialDownload = async (event, context) => {
+  console.log("request:", JSON.stringify(event, undefined, 2));
+  const responseData = {};
+  let responseStatus = SUCCESS;
+  try {
+    if (event.RequestType == "Create" || event.RequestType == "Update") {
+      await lambdaHandleEvent();
+    }
+  } catch (error) {
+    console.log(error);
+    responseStatus = FAILED;
+  } finally {
+    console.log("finally");
+    await send(event, context, responseStatus, responseData);
+  }
+};

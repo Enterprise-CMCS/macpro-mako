@@ -55,7 +55,6 @@ custom:
         curl -L --output lambda_layer.zip https://github.com/CMSgov/lambda-clamav-layer/releases/download/0.7/lambda_layer.zip
       deploy:finalize: |
         rm lambda_layer.zip
-        serverless invoke --stage ${self:custom.stage} --function avDownloadDefinitions -t Event
 
 layers:
   clamDefs:
@@ -77,6 +76,15 @@ functions:
     handler: src/download-definitions.lambdaHandleEvent
     events:
       - schedule: cron(0 10 */1 * ? *)
+    timeout: 300 # 300 seconds = 5 minutes
+    memorySize: 1024
+    layers:
+      - !Ref ClamDefsLambdaLayer
+    environment:
+      CLAMAV_BUCKET_NAME: !Ref ClamDefsBucket
+      PATH_TO_AV_DEFINITIONS: "lambda/s3-antivirus/av-definitions"
+  initialDownload:
+    handler: src/download-definitions.initialDownload
     timeout: 300 # 300 seconds = 5 minutes
     memorySize: 1024
     layers:
@@ -184,6 +192,10 @@ resources:
               Condition:
                 Bool:
                   "aws:SecureTransport": "false"
+    InitialDownload:
+      Type: Custom::DownloadDefinitions
+      Properties:
+        ServiceToken: !GetAtt InitialDownloadLambdaFunction.Arn
   Outputs:
     AttachmentsBucketName:
       Value:
