@@ -5,7 +5,8 @@ import {
   PutObjectTaggingCommand,
 } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
-import fs from "fs/promises";
+import fs from "fs";
+import asyncfs from "fs/promises";
 
 import { downloadAVDefinitions, scanLocalFile } from "./clamav";
 import * as utils from "./utils";
@@ -29,7 +30,7 @@ export async function isS3FileTooBig(key, bucket) {
 
 async function downloadFileFromS3(s3ObjectKey, s3ObjectBucket) {
   if (!fs.existsSync(constants.TMP_DOWNLOAD_PATH)) {
-    await fs.mkdir(constants.TMP_DOWNLOAD_PATH);
+    fs.mkdirSync(constants.TMP_DOWNLOAD_PATH);
   }
 
   const localPath = `${constants.TMP_DOWNLOAD_PATH}${randomUUID()}.tmp`;
@@ -46,7 +47,7 @@ async function downloadFileFromS3(s3ObjectKey, s3ObjectBucket) {
 
   try {
     const { Body } = await s3Client.send(new GetObjectCommand(options));
-    await fs.writeFile(localPath, Body);
+    await asyncfs.writeFile(localPath, Body);
     utils.generateSystemMessage(
       `Finished downloading new object ${s3ObjectKey}`
     );

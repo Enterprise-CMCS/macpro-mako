@@ -8,6 +8,7 @@ import {
 import { spawnSync } from "child_process";
 import path from "path";
 import fs from "fs";
+import asyncfs from "fs/promises";
 import * as constants from "./constants";
 import * as utils from "./utils";
 
@@ -97,7 +98,7 @@ export const downloadAVDefinitions = async () => {
 
       try {
         const { Body } = await s3Client.send(new GetObjectCommand(options));
-        await fs.writeFile(destinationFile, Body);
+        await asyncfs.writeFile(destinationFile, Body);
         utils.generateSystemMessage(`Finished download ${filenameToDownload}`);
         resolve();
       } catch (err) {
