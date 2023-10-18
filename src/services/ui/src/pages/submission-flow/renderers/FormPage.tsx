@@ -44,13 +44,6 @@ export const FormPage = ({
     state: "",
   });
   const api = useSubmissionMutation();
-  const updateData = (e: ChangeEvent<any>) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   return (
     <SimplePageContainer>
       <SimplePageTitle title={pageTitle} />
@@ -71,9 +64,10 @@ export const FormPage = ({
             // Set attachments with S3 buckets/keys
             state: data.id.split("-")[0],
           };
+          console.log(submission);
           const result = submissionApiSchema.safeParse(submission);
           if (result.success) {
-            api.mutate(submission);
+            // api.mutate(submission);
           } else {
             console.error(
               "SCHEMA PARSE ERROR: ",
@@ -114,7 +108,7 @@ export const FormPage = ({
               </label>
             )}
             {section.instructions}
-            {section.field(updateData)}
+            {section.field(setData)}
           </section>
         ))}
         <Button type="submit">Submit</Button>

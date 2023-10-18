@@ -36,6 +36,7 @@ export const transformMako = (id: string) => {
 
 export type MakoSink = z.infer<typeof makoSchema>;
 export type MakoTransform = z.infer<ReturnType<typeof transformMako>>;
+export type MakoAttachment = z.infer<typeof makoAttachmentSchema>;
 export type MakoRecordsToDelete = Omit<
   {
     [Property in keyof MakoTransform]: undefined;

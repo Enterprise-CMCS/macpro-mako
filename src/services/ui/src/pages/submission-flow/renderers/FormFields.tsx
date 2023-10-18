@@ -4,16 +4,23 @@ import {
   RequiredIndicator,
   Textarea,
 } from "@/components/Inputs";
-import { ChangeEvent, useCallback, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import { cn } from "@/lib";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { FormFieldName } from "@/consts/forms";
-import { Handler } from "@/pages/submission-flow/config/forms/common";
+import { SubmissionAPIBody } from "@/api/submit";
 
 type FieldArgs<T = NonNullable<unknown>> = {
-  handler: Handler;
+  handler: Dispatch<SetStateAction<SubmissionAPIBody>>;
   name: FormFieldName;
 } & T;
 
@@ -72,7 +79,12 @@ export const SpaIDInput = ({ handler, name }: FieldArgs) => (
     name={name}
     className="max-w-sm mt-4"
     aria-describedby="desc-spa-id"
-    onChange={(event) => handler(event)}
+    onChange={(event) =>
+      handler((prev) => ({
+        ...prev,
+        [name]: event.target.value,
+      }))
+    }
     required
   />
 );
@@ -113,12 +125,10 @@ export const SingleDateField = ({ handler, name }: FieldArgs) => {
             // purely for UI purposes
             setDate(date);
             // updates the actual form state object
-            handler({
-              target: {
-                name: name,
-                value: date?.getTime() || undefined,
-              },
-            } as ChangeEvent<any>);
+            handler((prev) => ({
+              ...prev,
+              [name]: date?.getTime() || undefined,
+            }));
             setOpen(false);
           }}
         />
@@ -140,16 +150,39 @@ export const AttachmentsFields = ({
 }: FieldArgs<{
   attachmentsConfig: AttachmentFieldOption[];
 }>) => {
+  // Used for UI inside dropzone when files are added
+  const [allZoneFilenames, setAllZoneFilenames] = useState<
+    { forField: string; fileName: string }[]
+  >([]);
   // Common constructor for attachment field id/name attributes
   const fieldName = (label: string) => `${name}-${label}`;
   // The template for a drag-n-drop upload section
   const DropZone = ({ label, multiple, required }: AttachmentFieldOption) => {
+    // Getting names of files in this dropzone for UI
+    const fileNamesInZone = useMemo(
+      () =>
+        allZoneFilenames
+          .filter((v) => v.forField === label)
+          .map((v) => v.fileName),
+      [allZoneFilenames, label]
+    );
     const onDrop = useCallback((acceptedFiles: File[]) => {
       console.log(acceptedFiles);
-      setFileNames((prevState) => [
+      // Update filenames state
+      setAllZoneFilenames((prevState) => [
+        ...acceptedFiles.map((file) => ({
+          fileName: file.name,
+          forField: label,
+        })),
         ...prevState,
-        ...acceptedFiles.map((file) => file.name),
       ]);
+      // Pass the file into the form data state
+      // TODO: Do we need any meta for which files map to which document upload
+      //  requirement?
+      handler((prev: SubmissionAPIBody) => ({
+        ...prev,
+        [name]: [...prev.attachments, ...acceptedFiles],
+      }));
     }, []);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
       onDrop,
@@ -157,8 +190,6 @@ export const AttachmentsFields = ({
       maxSize: 80 * 1000000, // 80mb max per attachment
       //TODO: Limit accepted filetypes
     });
-    // Used for UI inside drop zone when files are added
-    const [fileNames, setFileNames] = useState<string[]>([]);
 
     return (
       <div
@@ -174,11 +205,11 @@ export const AttachmentsFields = ({
             id: fieldName(label),
           })}
         />
-        {fileNames.length ? (
+        {fileNamesInZone.length ? (
           /* TODO: Later to be replaced with HCD designs; were not present
            *   upon starting this work. */
           /* Shows when a file is presently selected for upload */
-          <p className="my-auto">{fileNames.join(", ")}</p>
+          <p className="my-auto">{fileNamesInZone.join(", ")}</p>
         ) : isDragActive ? (
           /* Only shows when file drag is happening */
           <p className="my-auto">Drop the files here ...</p>
@@ -228,7 +259,10 @@ export const AdditionalInfoInput = ({ handler, name }: FieldArgs) => {
         id="additional-information"
         className="h-[300px] mt-4"
         onChange={(event) => {
-          handler(event);
+          handler((prev) => ({
+            ...prev,
+            [name]: event.target.value,
+          }));
           setLen(event.target.value.length);
         }}
       />

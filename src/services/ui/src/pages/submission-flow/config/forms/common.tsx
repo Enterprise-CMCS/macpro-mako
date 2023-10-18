@@ -11,9 +11,9 @@ import {
   SpaIDInput,
   SpaIDIntro,
 } from "@/pages/submission-flow/renderers/FormFields";
-import { ChangeEvent, ReactElement } from "react";
+import { Dispatch, ReactElement, SetStateAction } from "react";
+import { SubmissionAPIBody } from "@/api/submit";
 
-export type Handler = (e: ChangeEvent<any>) => void;
 /* Some headers need an additional link to an FAQ section */
 type HeadingWithLink = {
   text: string;
@@ -24,7 +24,7 @@ export type FormSection = {
   id: string;
   heading: string | HeadingWithLink;
   instructions: ReactElement;
-  field: (func: Handler) => ReactElement;
+  field: (func: Dispatch<SetStateAction<SubmissionAPIBody>>) => ReactElement;
   required: boolean;
 };
 
