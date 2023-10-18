@@ -32,21 +32,3 @@ export async function lambdaHandleEvent() {
     return "DEFINITION UPDATE FAILED";
   }
 }
-
-import { send, SUCCESS, FAILED } from "cfn-response-async";
-export const initialDownload = async (event, context) => {
-  console.log("request:", JSON.stringify(event, undefined, 2));
-  const responseData = {};
-  let responseStatus = SUCCESS;
-  try {
-    if (event.RequestType == "Create" || event.RequestType == "Update") {
-      await lambdaHandleEvent();
-    }
-  } catch (error) {
-    console.log(error);
-    responseStatus = FAILED;
-  } finally {
-    console.log("finally");
-    await send(event, context, responseStatus, responseData);
-  }
-};

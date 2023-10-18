@@ -38,6 +38,11 @@ provider:
           Resource:
             - !Sub arn:aws:s3:::${self:service}-${self:custom.stage}-attachments-${AWS::AccountId}
             - !Sub arn:aws:s3:::${self:service}-${self:custom.stage}-avscan-${AWS::AccountId}
+        - Effect: "Allow"
+          Action:
+            - lambda:InvokeFunction
+          Resource:
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-avDownloadDefinitions
 
 custom:
   project: ${env:PROJECT}
@@ -83,15 +88,10 @@ functions:
     environment:
       CLAMAV_BUCKET_NAME: !Ref ClamDefsBucket
       PATH_TO_AV_DEFINITIONS: "lambda/s3-antivirus/av-definitions"
-  initialDownload:
-    handler: src/download-definitions.initialDownload
+  triggerInitialDownload:
+    handler: src/triggerInitialDownload.handler
     timeout: 300 # 300 seconds = 5 minutes
     memorySize: 1024
-    layers:
-      - !Ref ClamDefsLambdaLayer
-    environment:
-      CLAMAV_BUCKET_NAME: !Ref ClamDefsBucket
-      PATH_TO_AV_DEFINITIONS: "lambda/s3-antivirus/av-definitions"
 resources:
   Resources:
     AttachmentsBucket:
@@ -192,10 +192,11 @@ resources:
               Condition:
                 Bool:
                   "aws:SecureTransport": "false"
-    InitialDownload:
-      Type: Custom::DownloadDefinitions
+    TriggerInitialDownload:
+      Type: Custom::TriggerInitialDownload
       Properties:
-        ServiceToken: !GetAtt InitialDownloadLambdaFunction.Arn
+        ServiceToken: !GetAtt TriggerInitialDownloadLambdaFunction.Arn
+        FunctionName: !GetAtt AvDownloadDefinitionsLambdaFunction.Arn
   Outputs:
     AttachmentsBucketName:
       Value:
