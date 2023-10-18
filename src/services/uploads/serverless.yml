@@ -52,7 +52,7 @@ custom:
     hooks:
       package:initialize: |
         set -e
-        curl -L --output lambda_layer.zip https://github.com/CMSgov/lambda-clamav-layer/releases/download/0.7/lambda_layer.zip
+        curl -s -L --output lambda_layer.zip https://github.com/CMSgov/lambda-clamav-layer/releases/download/0.7/lambda_layer.zip
       deploy:finalize: |
         rm lambda_layer.zip
 
