@@ -9,8 +9,13 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import { cn } from "@/lib";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
-import { SUBMISSION_FORM } from "@/consts/forms";
+import { FormFieldName } from "@/consts/forms";
 import { Handler } from "@/pages/submission-flow/config/forms/common";
+
+type FieldArgs<T = NonNullable<unknown>> = {
+  handler: Handler;
+  name: FormFieldName;
+} & T;
 
 export const FormIntro = () => (
   <p className="my-3">
@@ -60,11 +65,11 @@ export const AdditionalInfoIntro = () => (
   </p>
 );
 
-export const SpaIDInput = ({ handler }: { handler: Handler }) => (
+export const SpaIDInput = ({ handler, name }: FieldArgs) => (
   <Input
     type="text"
     id="input-spa-id"
-    name={SUBMISSION_FORM.SPA_ID}
+    name={name}
     className="max-w-sm mt-4"
     aria-describedby="desc-spa-id"
     onChange={(event) => handler(event)}
@@ -74,7 +79,7 @@ export const SpaIDInput = ({ handler }: { handler: Handler }) => (
 
 /** This borrows a lot from {@link FilterableDateRange} and commonalities can later
  * be extracted for more concise code */
-export const EffectiveDateField = ({ handler }: { handler: Handler }) => {
+export const SingleDateField = ({ handler, name }: FieldArgs) => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>();
   const handleClose = (updateOpen: boolean) => {
@@ -110,7 +115,7 @@ export const EffectiveDateField = ({ handler }: { handler: Handler }) => {
             // updates the actual form state object
             handler({
               target: {
-                name: SUBMISSION_FORM.PROPOSED_EFFECTIVE_DATE,
+                name: name,
                 value: date?.getTime() || undefined,
               },
             } as ChangeEvent<any>);
@@ -130,13 +135,13 @@ export type AttachmentFieldOption = {
 };
 export const AttachmentsFields = ({
   handler,
+  name,
   attachmentsConfig,
-}: {
-  handler: Handler;
+}: FieldArgs<{
   attachmentsConfig: AttachmentFieldOption[];
-}) => {
+}>) => {
   // Common constructor for attachment field id/name attributes
-  const name = (label: string) => `${SUBMISSION_FORM.ATTACHMENTS}-${label}`;
+  const fieldName = (label: string) => `${name}-${label}`;
   // The template for a drag-n-drop upload section
   const DropZone = ({ label, multiple, required }: AttachmentFieldOption) => {
     const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -164,9 +169,9 @@ export const AttachmentsFields = ({
           {...getInputProps({
             /* Plug additional `input` props in here so they
              * are not overridden */
-            required: required, // TODO: working TOO well? won't submit even with requirement filled
-            name: name(label),
-            id: name(label),
+            // required: required, // TODO: working TOO well? won't submit even with requirement filled
+            name: fieldName(label),
+            id: fieldName(label),
           })}
         />
         {fileNames.length ? (
@@ -194,7 +199,7 @@ export const AttachmentsFields = ({
     <section>
       {attachmentsConfig.map((req, idx) => (
         <div key={`${req.label}- ${idx}`}>
-          <label htmlFor={name(req.label)}>
+          <label htmlFor={fieldName(req.label)}>
             <span className="font-bold text-sm">{req.label}</span>
             {req.required ? <RequiredIndicator /> : null}
           </label>
@@ -209,14 +214,14 @@ export const AttachmentsFields = ({
   );
 };
 
-export const AdditionalInfoInput = ({ handler }: { handler: Handler }) => {
+export const AdditionalInfoInput = ({ handler, name }: FieldArgs) => {
   const [len, setLen] = useState(0);
   return (
     <>
       <Textarea
         aria-invalid="false"
         aria-describedby="character-count"
-        name={SUBMISSION_FORM.ADDITIONAL_INFO}
+        name={name}
         maxLength={4000}
         aria-live="off"
         aria-multiline="true"
