@@ -193,6 +193,16 @@ resources:
               Condition:
                 Bool:
                   "aws:SecureTransport": "false"
+            - Action:
+                - "s3:GetObject"
+              Effect: "Deny"
+              Resource: !Sub ${AttachmentsBucket.Arn}/*
+              Principal: "*"
+              Condition:
+                StringNotEquals:
+                  s3:ExistingObjectTag/virusScanStatus:
+                    - "CLEAN"
+                  aws:PrincipalArn: !GetAtt IamRoleLambdaExecution.Arn
     TriggerInitialDownload:
       Type: Custom::TriggerInitialDownload
       Properties:
