@@ -160,6 +160,17 @@ resources:
               Condition:
                 Bool:
                   "aws:SecureTransport": "false"
+            - Effect: "Deny"
+              Principal: "*"
+              Action:
+                - "s3:GetObject"
+              Resource:
+                - !Sub ${AttachmentsBucket.Arn}/*
+              Condition:
+                StringNotEquals:
+                  s3:ExistingObjectTag/virusScanStatus:
+                    - "CLEAN"
+                  aws:PrincipalArn: !GetAtt IamRoleLambdaExecution.Arn
     LambdaInvokePermission:
       Type: AWS::Lambda::Permission
       Properties:
@@ -193,16 +204,6 @@ resources:
               Condition:
                 Bool:
                   "aws:SecureTransport": "false"
-            - Action:
-                - "s3:GetObject"
-              Effect: "Deny"
-              Resource: !Sub ${AttachmentsBucket.Arn}/*
-              Principal: "*"
-              Condition:
-                StringNotEquals:
-                  s3:ExistingObjectTag/virusScanStatus:
-                    - "CLEAN"
-                  aws:PrincipalArn: !GetAtt IamRoleLambdaExecution.Arn
     TriggerInitialDownload:
       Type: Custom::TriggerInitialDownload
       Properties:
