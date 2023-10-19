@@ -19,17 +19,12 @@ export async function listBucketFiles(bucketName: string): Promise<string[]> {
     const listFilesResult = await s3Client.send(
       new ListObjectsV2Command({ Bucket: bucketName })
     );
-    console.log(bucketName);
-    console.log(listFilesResult);
-    console.log("cha cha real smooth");
     if (listFilesResult.Contents) {
       const keys: string[] = listFilesResult.Contents.map((c) => c.Key);
       return keys;
     } else {
       return [];
     }
-    // const keys = listFilesResult.Contents.map((c) => c.Key);
-    // return keys;
   } catch (err) {
     utils.generateSystemMessage("Error listing files");
     console.error(err);
