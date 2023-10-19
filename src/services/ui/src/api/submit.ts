@@ -21,9 +21,12 @@ export const spaSubmissionSchema = z.object({
       /^[A-Z]{2}-[0-9]{2}-[0-9]{4}(-[0-9]{4})?$/g,
       "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-xxxx"
     ),
-  state: z
-    .string()
-    .refine((arg) => STATES.includes(arg), "State from ID is invalid"),
+  state: z.string().refine(
+    (arg) => STATES.includes(arg),
+    (arg) => ({
+      message: `${arg} is not a valid state code`,
+    })
+  ),
   additionalInformation: z.string().max(4000),
   attachments: z
     .array(spaSubmissionAttachment)

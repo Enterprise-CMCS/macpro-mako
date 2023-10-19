@@ -149,7 +149,11 @@ export const FormPage = ({
             {section.instructions}
             {/* Render error messages pertaining to field */}
             {fieldErrors
-              .filter((err) => err.path.includes(section.id))
+              .filter((err) => {
+                  return (err.path[0] === "state" && section.id === "id") ?
+                      true :
+                      err.path.includes(section.id);
+              })
               .map((err) => (
                 <>
                   <span
