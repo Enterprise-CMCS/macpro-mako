@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
 import { SpaSubmissionBody, useSubmissionMutation } from "@/api/submit";
+import { grabPreSignedURL, uploadAttachments } from "@/api/uploadAttachments";
 import { useGetUser } from "@/api/useGetUser";
 import { FormSection } from "@/pages/submission-flow/config/forms/common";
 import { ZodIssue, ZodObject } from "zod";
@@ -63,10 +64,17 @@ export const FormPage = ({
         {description.instructions}
       </section>
       <form
-        onSubmit={(event) => {
+        onSubmit={async (event) => {
           event.preventDefault();
           // Get pre signed urls for upload
           // Upload files and get S3 bucket/key
+          for (let i = 0; i < data.attachments.length; i++) {
+            console.log(data.attachments[i]);
+            const url = await grabPreSignedURL();
+            console.log(url);
+          }
+
+          // throw "asdf";
           const payload = {
             ...data,
             // TODO: Set attachments with S3 buckets/keys

@@ -13,12 +13,13 @@ const s3 = new S3Client({
 export const handler = async (event: APIGatewayEvent) => {
   try {
     const body = JSON.parse(event.body);
-
+    const bucket = process.env.attachmentsBucketName;
+    const key = uuidv4();
     const url = await getSignedUrl(
       s3,
       new PutObjectCommand({
-        Bucket: process.env.attachmentsBucketName,
-        Key: uuidv4(),
+        Bucket: bucket,
+        Key: key,
       }),
       {
         expiresIn: 60,
@@ -27,7 +28,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
     return response<unknown>({
       statusCode: 200,
-      body: { url },
+      body: { url, bucket, key },
     });
   } catch (error) {
     console.error({ error });
