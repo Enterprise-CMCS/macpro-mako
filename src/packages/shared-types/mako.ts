@@ -1,9 +1,10 @@
 import { z } from "zod";
 
-const makoAttachmentSchema = z.object({
+export const makoAttachmentSchema = z.object({
   key: z.string(),
   bucket: z.string(),
   date: z.number(),
+  label: z.string().default("other"),
   title: z.string(),
   contentType: z.string(),
 });

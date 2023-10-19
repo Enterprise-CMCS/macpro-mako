@@ -1,18 +1,22 @@
+import { MakoAttachment } from "shared-types";
 import { SimplePageContainer } from "@/components";
 import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
-import { SpaSubmissionBody, useSubmissionMutation } from "@/api/submit";
 import {
+  Attachment,
+  SpaSubmissionBody,
+  useSubmissionMutation,
+} from "@/api/submit";
+import {
+  UploadRecipe,
   grabAllPreSignedURLs,
-  grabPreSignedURL,
   uploadAllAttachments,
-  uploadAttachments,
 } from "@/api/uploadAttachments";
 import { useGetUser } from "@/api/useGetUser";
 import { FormSection } from "@/pages/submission-flow/config/forms/common";
-import { ZodIssue, ZodObject } from "zod";
+import { z, ZodIssue, ZodObject } from "zod";
 
 type FormDescription = Pick<FormSection, "instructions"> & {
   // Limits the higher form header to just a string, no HeadingWithLink
@@ -72,22 +76,38 @@ export const FormPage = ({
         onSubmit={async (event) => {
           event.preventDefault();
           // Get pre signed urls for upload
-          const preSignedURLs = await grabAllPreSignedURLs(data.attachments);
-          // Upload attachments with pre signed urls
-          const uploadResponses = await uploadAllAttachments(
-            data.attachments,
-            preSignedURLs
+          const preSignedURLs = await grabAllPreSignedURLs(data.attachments as Attachment[]);
+          // Give URLs to attachments
+          const attachmentsToSend: UploadRecipe[] = (data.attachments as Attachment[]).map(
+            (attachment: Attachment, idx) => ({
+              attachment,
+              s3Info: preSignedURLs[idx],
+            })
           );
+          console.log(attachmentsToSend);
+          // Upload attachments with pre signed urls
+          const uploadResponses = await uploadAllAttachments(attachmentsToSend);
+          // TODO: Handle file upload failure
           console.log(uploadResponses);
-          const payload = {
+          const payload: SpaSubmissionBody = {
             ...data,
-            // TODO: Set attachments with S3 buckets/keys
-            state: data.id?.split("-")[0] || undefined,
+            attachments: attachmentsToSend.map(
+              ({ attachment, s3Info }) =>
+                ({
+                  key: s3Info.key,
+                  bucket: s3Info.bucket,
+                  date: Date.now(),
+                  label: attachment.label,
+                  title: attachment.source.name,
+                  contentType: attachment.source.type,
+                } satisfies MakoAttachment)
+            ),
+            state: data.id!.split("-")[0],
           };
           console.log(payload);
           const result = meta.validator.safeParse(payload);
           if (result.success) {
-            // api.mutate(submission);
+            api.mutate(payload);
             setFieldErrors([]);
           } else {
             // Send errors to state

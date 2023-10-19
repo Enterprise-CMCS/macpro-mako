@@ -1,11 +1,15 @@
-import { MakoAttachment } from "shared-types";
 import { API } from "aws-amplify";
-import { SpaSubmissionAttachment } from "@/api/submit";
+import { Attachment } from "@/api/submit";
 
 type PreSignedURL = {
   url: URL;
   key: string;
   bucket: string;
+};
+
+export type UploadRecipe = {
+  s3Info: PreSignedURL;
+  attachment: Attachment;
 };
 
 export const grabPreSignedURL = async () => {
@@ -15,19 +19,14 @@ export const grabPreSignedURL = async () => {
   });
   return response as any; // this should contain a url, bucket, and key.  need to type it
 };
-export const grabAllPreSignedURLs = async (
-  attachments: SpaSubmissionAttachment[]
-) => {
+export const grabAllPreSignedURLs = async (attachments: Attachment[]) => {
   const promises = Promise.all<PreSignedURL>(
-    attachments.map((a) => {
-      console.log(a);
-      return grabPreSignedURL();
-    })
+    attachments.map(() => grabPreSignedURL())
   );
   return await Promise.resolve(promises);
 };
 export const uploadAttachments = async (
-  attachment: SpaSubmissionAttachment,
+  attachment: Attachment,
   s3Meta: PreSignedURL
 ) => {
   const response = fetch(s3Meta.url, {
@@ -37,15 +36,12 @@ export const uploadAttachments = async (
   return await response;
 };
 export const uploadAllAttachments = async (
-  attachments: SpaSubmissionAttachment[],
-  s3Metas: PreSignedURL[]
+  attachmentsToUpload: UploadRecipe[]
 ) => {
   const uploadPromises = Promise.all(
-    attachments.map((attachment, idx) => {
-      const promise = uploadAttachments(attachment, s3Metas[idx]);
-      console.log(promise);
-      return promise;
-    })
+    attachmentsToUpload.map(({ attachment, s3Info }) =>
+      uploadAttachments(attachment, s3Info)
+    )
   );
   return await Promise.resolve(uploadPromises);
 };
