@@ -3,7 +3,10 @@ import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { ReactQueryApiError } from "shared-types";
 import { z } from "zod";
 import { STATES } from "@/consts";
-
+const spaSubmissionAttachment = z.object({
+  source: z.instanceof(File),
+  label: z.string(),
+});
 /** Schema for Zod validation */
 export const spaSubmissionSchema = z.object({
   // Baseline attributes
@@ -22,18 +25,14 @@ export const spaSubmissionSchema = z.object({
     .string()
     .refine((arg) => STATES.includes(arg), "State from ID is invalid"),
   additionalInformation: z.string().max(4000),
-  attachments: z.array(
-    z.object({
-      source: z.instanceof(File),
-      label: z.string(),
-    })
-  ),
+  attachments: z.array(spaSubmissionAttachment),
   raiResponses: z.array(z.object({})),
   proposedEffectiveDate: z
     .number()
     .refine((arg) => arg > 0, "Please enter a valid date"),
 });
 export type SpaSubmissionBody = z.infer<typeof spaSubmissionSchema>;
+export type SpaSubmissionAttachment = z.infer<typeof spaSubmissionAttachment>;
 /** REST API post call */
 export const postSubmissionData = async (
   props: SpaSubmissionBody
