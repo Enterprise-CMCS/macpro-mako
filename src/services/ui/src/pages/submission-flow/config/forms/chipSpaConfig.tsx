@@ -45,6 +45,7 @@ export const CHIP_SPA_FORM: FormPageConfig = {
     attachmentsFieldWithRequirement(chipSpaAttachments),
     additionalInfoField,
   ],
+  attachmentRequirements: chipSpaAttachments,
 };
 
 export const ChipSpaForm = () => <FormPage {...CHIP_SPA_FORM} />;

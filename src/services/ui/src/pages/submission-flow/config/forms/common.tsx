@@ -58,7 +58,7 @@ export const attachmentsFieldWithRequirement = (
 ): FormSection => ({
   id: SUBMISSION_FORM.ATTACHMENTS,
   heading: "Attachments",
-  required: false,
+  required: false, // AttachmentsFields handles required attachments
   instructions: <AttachmentsIntro />,
   field: (func) => (
     <AttachmentsFields

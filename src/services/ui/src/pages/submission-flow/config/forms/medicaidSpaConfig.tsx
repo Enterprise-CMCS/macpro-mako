@@ -54,6 +54,7 @@ export const MEDICAID_SPA_FORM: FormPageConfig = {
     attachmentsFieldWithRequirement(medicaidSpaAttachments),
     additionalInfoField,
   ],
+  attachmentRequirements: medicaidSpaAttachments,
 };
 
 export const MedicaidSpaForm = () => <FormPage {...MEDICAID_SPA_FORM} />;

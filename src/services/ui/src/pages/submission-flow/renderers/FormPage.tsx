@@ -17,6 +17,10 @@ import {
 import { useGetUser } from "@/api/useGetUser";
 import { FormSection } from "@/pages/submission-flow/config/forms/common";
 import { z, ZodIssue, ZodObject } from "zod";
+import {AttachmentFieldOption} from "@/pages/submission-flow/renderers/FormFields";
+import {SUBMISSION_FORM} from "@/consts/forms";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
 
 type FormDescription = Pick<FormSection, "instructions"> & {
   // Limits the higher form header to just a string, no HeadingWithLink
@@ -33,6 +37,8 @@ export interface FormPageConfig {
   pageTitle: string;
   description: FormDescription;
   fields: FormSection[];
+  // For easy validation when using attachments field
+  attachmentRequirements?: AttachmentFieldOption[];
 }
 
 export const FormPage = ({
@@ -40,6 +46,7 @@ export const FormPage = ({
   pageTitle,
   description,
   fields,
+  attachmentRequirements
 }: FormPageConfig) => {
   const [fieldErrors, setFieldErrors] = useState<ZodIssue[]>([]);
   const { data: user } = useGetUser();
@@ -75,45 +82,76 @@ export const FormPage = ({
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-          // Get pre signed urls for upload
-          const preSignedURLs = await grabAllPreSignedURLs(data.attachments as Attachment[]);
-          // Give URLs to attachments
-          const attachmentsToSend: UploadRecipe[] = (data.attachments as Attachment[]).map(
-            (attachment: Attachment, idx) => ({
-              attachment,
-              s3Info: preSignedURLs[idx],
-            })
-          );
-          console.log(attachmentsToSend);
-          // Upload attachments with pre signed urls
-          const uploadResponses = await uploadAllAttachments(attachmentsToSend);
-          // TODO: Handle file upload failure
-          console.log(uploadResponses);
+          // Re-initiate field errors
+          setFieldErrors([]);
+          // Check attachment requirements manually
+          let attachmentsReady = true; // For the trigger on submit
+          if (attachmentRequirements) {
+            // Get given file labels
+            const fileLabelsGiven = (data.attachments as Attachment[]).map(att => att.label);
+            // Get required file labels
+            const requiredFilesByLabel = attachmentRequirements?.filter(req => req.required);
+            const reqsMet = requiredFilesByLabel.map(req => fileLabelsGiven.includes(req.label));
+            if (reqsMet.includes(false)) {
+              const missing = requiredFilesByLabel.filter(req => !fileLabelsGiven.includes(req.label));
+              console.log("Missing required attachments: ", missing.map(req => req.label).join(", "));
+              // Build the ZodError for each missing required file
+              const errors = missing.map(req => ({
+                path: [SUBMISSION_FORM.ATTACHMENTS],
+                message: `${req.label} is missing from the required files upload`
+              } as ZodIssue));
+              setFieldErrors(prev => [...prev, ...errors]);
+              attachmentsReady = false; // Sets the trigger to not fire
+            }
+          }
+          // Build payload from data state
           const payload: SpaSubmissionBody = {
             ...data,
-            attachments: attachmentsToSend.map(
-              ({ attachment, s3Info }) =>
-                ({
-                  key: s3Info.key,
-                  bucket: s3Info.bucket,
-                  date: Date.now(),
-                  label: attachment.label,
-                  title: attachment.source.name,
-                  contentType: attachment.source.type,
-                } satisfies MakoAttachment)
-            ),
             state: data.id!.split("-")[0],
           };
           console.log(payload);
           const result = meta.validator.safeParse(payload);
-          if (result.success) {
-            api.mutate(payload);
-            setFieldErrors([]);
+          console.log(result);
+          if (!(result.success) || !attachmentsReady) {
+            // API flight won't take off
+            setFieldErrors(prev => [...prev, ...(result as z.SafeParseError<any>).error.errors]);
+            console.error("SCHEMA PARSE ERROR(S): ", fieldErrors);
           } else {
-            // Send errors to state
-            setFieldErrors(result.error.errors);
-            // Console log 'em
-            console.error("SCHEMA PARSE ERROR(S): ", result.error.errors);
+            // API flight begins here with file uploads first
+            // Get pre signed urls for upload
+            const preSignedURLs = await grabAllPreSignedURLs(data.attachments as Attachment[]);
+            // Assign one preSignedURL to one Attachment
+            const attachmentsToSend: UploadRecipe[] = (data.attachments as Attachment[]).map(
+              (attachment: Attachment, idx) => ({
+                attachment,
+                s3Info: preSignedURLs[idx],
+              })
+            );
+            // Upload attachments with pre signed urls
+            await uploadAllAttachments(attachmentsToSend).then(res => {
+              // Give attachments info to data state
+              setData({
+                ...data,
+                attachments: attachmentsToSend.map(
+                  ({ attachment, s3Info }) =>
+                    // Transform Attachment to MakoAttachment
+                    ({
+                      key: s3Info.key,
+                      bucket: s3Info.bucket,
+                      date: Date.now(),
+                      label: attachment.label,
+                      title: attachment.source.name,
+                      contentType: attachment.source.type,
+                    } satisfies MakoAttachment)
+                )
+              });
+              // API is sent the rest of the payload with attachments metadata
+              api.mutate(payload);
+            }).catch(err => {
+              // Error uploading attachments
+              // TODO: Handle file upload failure
+              console.log(err);
+            });
           }
           // TODO: route back to dashboard on success
         }}

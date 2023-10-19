@@ -176,8 +176,6 @@ export const AttachmentsFields = ({
         ...prevState,
       ]);
       // Pass the file into the form data state
-      // TODO: Do we need any meta for which files map to which document upload
-      //  requirement?
       handler((prev: SpaSubmissionBody) => ({
         ...prev,
         [name]: [
