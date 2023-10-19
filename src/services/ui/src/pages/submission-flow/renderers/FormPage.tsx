@@ -70,11 +70,10 @@ export const FormPage = ({
           // Upload files and get S3 bucket/key
           for (let i = 0; i < data.attachments.length; i++) {
             console.log(data.attachments[i]);
-            const url = await grabPreSignedURL();
-            console.log(url);
+            const response = await grabPreSignedURL();
+            console.log(response);
           }
 
-          // throw "asdf";
           const payload = {
             ...data,
             // TODO: Set attachments with S3 buckets/keys
