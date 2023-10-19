@@ -1,56 +1,57 @@
 import { SimplePageContainer } from "@/components";
 import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
-import { MEDICAID_SPA_FORM } from "@/pages/submission-flow/config/forms/medicaidSpaConfig";
-import { ChangeEvent, ReactElement, useState } from "react";
-import { ROUTES } from "@/routes";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
-import {
-  SubmissionAPIBody,
-  submissionApiSchema,
-  useSubmissionMutation,
-} from "@/api/submit";
+import { SpaSubmissionBody, useSubmissionMutation } from "@/api/submit";
 import { useGetUser } from "@/api/useGetUser";
 import { FormSection } from "@/pages/submission-flow/config/forms/common";
+import { ZodIssue, ZodObject } from "zod";
 
 type FormDescription = Pick<FormSection, "instructions"> & {
   // Limits the higher form header to just a string, no HeadingWithLink
   // is needed at this level.
   heading: string;
 };
-type FormMeta = { origin: string; authority: string };
+type FormMeta = {
+  origin: string;
+  authority: string;
+  validator: ZodObject<any>;
+};
 export interface FormPageConfig {
   meta: FormMeta;
   pageTitle: string;
   description: FormDescription;
   fields: FormSection[];
 }
+
 export const FormPage = ({
   meta,
   pageTitle,
   description,
   fields,
 }: FormPageConfig) => {
+  const [fieldErrors, setFieldErrors] = useState<ZodIssue[]>([]);
   const { data: user } = useGetUser();
-  const [data, setData] = useState<SubmissionAPIBody>({
+  // This shape will change with other authorities like Waivers.
+  // One approach could be generics?
+  const [data, setData] = useState<SpaSubmissionBody>({
     additionalInformation: "",
     attachments: [],
     id: "",
     raiResponses: [],
+    state: "",
+    proposedEffectiveDate: 0,
+    // Values below are universal for all authorities (waiver & spa)
     origin: meta.origin,
     authority: meta.authority,
     submitterEmail: user?.user?.email || "",
     submitterName: `${user?.user?.given_name} ${user?.user?.family_name}`,
-    state: "",
   });
+  // Which API we send to may be something that changes with Waiver authorities
+  // unless we hit a single endpoint that further routes based on the value(s)
+  // given (it does not currently)
   const api = useSubmissionMutation();
-  const updateData = (e: ChangeEvent<any>) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   return (
     <SimplePageContainer>
       <SimplePageTitle title={pageTitle} />
@@ -66,22 +67,21 @@ export const FormPage = ({
           event.preventDefault();
           // Get pre signed urls for upload
           // Upload files and get S3 bucket/key
-          const submission = {
+          const payload = {
             ...data,
-            // Set attachments with S3 buckets/keys
-            state: data.id.split("-")[0],
+            // TODO: Set attachments with S3 buckets/keys
+            state: data.id?.split("-")[0] || undefined,
           };
-          const result = submissionApiSchema.safeParse(submission);
+          console.log(payload);
+          const result = meta.validator.safeParse(payload);
           if (result.success) {
-            api.mutate(submission);
+            // api.mutate(submission);
+            setFieldErrors([]);
           } else {
-            console.error(
-              "SCHEMA PARSE ERROR: ",
-              result.error.errors.map((e) => ({
-                message: e.message,
-                path: e.path,
-              }))
-            );
+            // Send errors to state
+            setFieldErrors(result.error.errors);
+            // Console log 'em
+            console.error("SCHEMA PARSE ERROR(S): ", result.error.errors);
           }
           // TODO: route back to dashboard on success
         }}
@@ -113,11 +113,34 @@ export const FormPage = ({
                 {section.required && <RequiredIndicator />}
               </label>
             )}
+            {/* Render field instruction */}
             {section.instructions}
-            {section.field(updateData)}
+            {/* Render error messages pertaining to field */}
+            {fieldErrors
+              .filter((err) => err.path.includes(section.id))
+              .map((err) => (
+                <>
+                  <span
+                    key={`${err.path[0]}-err-msg`}
+                    className="text-red-600 text-sm"
+                  >
+                    {err.message}
+                  </span>
+                  <br />
+                </>
+              ))}
+            {/* Render field inputs */}
+            {section.field(setData)}
           </section>
         ))}
-        <Button type="submit">Submit</Button>
+        <div className="flex gap-3">
+          <Button className="md:px-12" type="submit">
+            Submit
+          </Button>
+          <Button className="xs:w-full md:px-12" variant="outline">
+            Cancel
+          </Button>
+        </div>
       </form>
     </SimplePageContainer>
   );

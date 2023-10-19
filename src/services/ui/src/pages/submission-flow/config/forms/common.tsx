@@ -6,14 +6,14 @@ import {
   AttachmentFieldOption,
   AttachmentsFields,
   AttachmentsIntro,
-  EffectiveDateField,
+  SingleDateField,
   EffectiveDateIntro,
   SpaIDInput,
   SpaIDIntro,
 } from "@/pages/submission-flow/renderers/FormFields";
-import { ChangeEvent, ReactElement } from "react";
+import { Dispatch, ReactElement, SetStateAction } from "react";
+import { SpaSubmissionBody } from "@/api/submit";
 
-export type Handler = (e: ChangeEvent<any>) => void;
 /* Some headers need an additional link to an FAQ section */
 type HeadingWithLink = {
   text: string;
@@ -24,7 +24,7 @@ export type FormSection = {
   id: string;
   heading: string | HeadingWithLink;
   instructions: ReactElement;
-  field: (func: Handler) => ReactElement;
+  field: (func: Dispatch<SetStateAction<SpaSubmissionBody>>) => ReactElement;
   required: boolean;
 };
 
@@ -37,7 +37,7 @@ export const spaIdField: FormSection = {
   },
   required: true,
   instructions: <SpaIDIntro />,
-  field: (func) => <SpaIDInput handler={func} />,
+  field: (func) => <SpaIDInput handler={func} name={SUBMISSION_FORM.SPA_ID} />,
 };
 
 export const proposedEffectiveField: FormSection = {
@@ -45,7 +45,12 @@ export const proposedEffectiveField: FormSection = {
   heading: "Proposed Effective Date of Medicaid SPA",
   required: true,
   instructions: <EffectiveDateIntro />,
-  field: (func) => <EffectiveDateField handler={func} />,
+  field: (func) => (
+    <SingleDateField
+      handler={func}
+      name={SUBMISSION_FORM.PROPOSED_EFFECTIVE_DATE}
+    />
+  ),
 };
 
 export const attachmentsFieldWithRequirement = (
@@ -56,7 +61,11 @@ export const attachmentsFieldWithRequirement = (
   required: false,
   instructions: <AttachmentsIntro />,
   field: (func) => (
-    <AttachmentsFields handler={func} attachmentsConfig={requirement} />
+    <AttachmentsFields
+      handler={func}
+      name={SUBMISSION_FORM.ATTACHMENTS}
+      attachmentsConfig={requirement}
+    />
   ),
 });
 
@@ -65,5 +74,10 @@ export const additionalInfoField: FormSection = {
   heading: "Additional Information",
   required: false,
   instructions: <AdditionalInfoIntro />,
-  field: (func) => <AdditionalInfoInput handler={func} />,
+  field: (func) => (
+    <AdditionalInfoInput
+      handler={func}
+      name={SUBMISSION_FORM.ADDITIONAL_INFO}
+    />
+  ),
 };
