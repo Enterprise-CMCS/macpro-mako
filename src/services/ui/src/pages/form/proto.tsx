@@ -269,7 +269,7 @@ export const ABP1: Document = {
                                                         props: {
                                                           className:
                                                             "w-[200px]",
-                                                          placenholder:
+                                                          placeholder:
                                                             "enter amount",
                                                         },
                                                       },
@@ -307,52 +307,59 @@ export const ABP1: Document = {
                                               {
                                                 slots: [
                                                   {
-                                                    rhf: "FieldArray",
-                                                    name: "income_definition_specific_statewide",
+                                                    rhf: "FieldGroup",
+                                                    name: "income_definition_specific_statewide_arr",
+                                                    props: {
+                                                      appendText: "Add Region",
+                                                    },
                                                     fields: [
                                                       {
-                                                        rhf: "Input",
-                                                        label: "Household Size",
-                                                        name: "household_size",
-                                                        props: {
-                                                          placeholder:
-                                                            "enter size",
-                                                          className:
-                                                            "w-[300px]",
-                                                        },
+                                                        rhf: "FieldArray",
+                                                        name: "income_definition_specific_statewide",
+                                                        fields: [
+                                                          {
+                                                            rhf: "Input",
+                                                            label:
+                                                              "Household Size",
+                                                            name: "household_size",
+                                                            props: {
+                                                              placeholder:
+                                                                "enter size",
+                                                              className:
+                                                                "w-[300px]",
+                                                            },
+                                                          },
+                                                          {
+                                                            rhf: "Input",
+                                                            name: "standard",
+                                                            label:
+                                                              "Standard ($)",
+                                                            props: {
+                                                              className:
+                                                                "w-[200px]",
+                                                              placeholder:
+                                                                "enter amount",
+                                                            },
+                                                          },
+                                                        ],
+                                                      },
+                                                      {
+                                                        rhf: "Switch",
+                                                        label:
+                                                          "Is there an additional incremental amount?",
+                                                        labelStyling:
+                                                          "font-bold mb-2",
+                                                        name: "is_incremental_amount",
                                                       },
                                                       {
                                                         rhf: "Input",
-                                                        name: "standard",
-                                                        label: "Standard ($)",
-                                                        props: {
-                                                          className:
-                                                            "w-[200px]",
-                                                          placenholder:
-                                                            "enter amount",
-                                                        },
+                                                        label:
+                                                          "Enter incremental dollar amount:",
+                                                        labelStyling:
+                                                          "font-bold mb-2",
+                                                        name: "doller_incremental_amount",
                                                       },
                                                     ],
-                                                  },
-                                                ],
-                                              },
-                                              {
-                                                description:
-                                                  "Is there an additional incremental amount",
-                                                slots: [
-                                                  {
-                                                    rhf: "Switch",
-                                                    name: "is_incremental_amount",
-                                                  },
-                                                ],
-                                              },
-                                              {
-                                                description:
-                                                  "Enter incremental dollar amount",
-                                                slots: [
-                                                  {
-                                                    rhf: "Input",
-                                                    name: "doller_incremental_amount",
                                                   },
                                                 ],
                                               },
