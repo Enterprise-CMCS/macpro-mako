@@ -1,7 +1,7 @@
 import { Document } from "@/components/RHF/types";
 
 export const ABP1: Document = {
-  header: "ABP1: Alternative Benefit Plan",
+  header: "ABP 1: Alternative Benefit Plan Populations",
   sections: [
     {
       title: "Population identification",

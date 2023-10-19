@@ -40,7 +40,7 @@ export const RHFFieldArray = <TFields extends FieldValues>(
               );
             })}
             <Trash2
-              className="self-end mb-2 cursor-pointer stroke-primary"
+              className="self-end mb-4 cursor-pointer stroke-primary"
               onClick={() => fieldArr.remove(index)}
             />
           </div>
