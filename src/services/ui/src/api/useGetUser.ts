@@ -4,7 +4,9 @@ import { Auth } from "aws-amplify";
 import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser } from "shared-utils";
 
-export const getUser = async () => {
+export type OneMacUser = { isCms?: boolean, user: CognitoUserAttributes | null }
+
+export const getUser = async (): Promise<OneMacUser> => {
   try {
     const authenticatedUser = await Auth.currentAuthenticatedUser();
     const attributes = await Auth.userAttributes(authenticatedUser);
@@ -14,14 +16,14 @@ export const getUser = async () => {
     }, {}) as unknown as CognitoUserAttributes;
     if (user["custom:cms-roles"]) {
       const isCms = isCmsUser(user);
-      return { user, isCms };
+      return { user, isCms } satisfies OneMacUser;
     } else {
       user["custom:cms-roles"] = "";
-      return { user, isCms: false };
+      return { user, isCms: false } satisfies OneMacUser;
     }
   } catch (e) {
     console.log({ e });
-    return { user: null };
+    return { user: null } satisfies OneMacUser;
   }
 };
 

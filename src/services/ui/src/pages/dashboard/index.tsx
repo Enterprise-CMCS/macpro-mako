@@ -13,6 +13,7 @@ import {
 } from "@/components/Opensearch";
 import { Button } from "@/components/Inputs";
 import { ROUTES } from "@/routes";
+import { useUserContext } from "@/components/Context/userContext";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -36,7 +37,7 @@ const loader = (queryClient: QueryClient) => {
 export const dashboardLoader = loader;
 
 export const Dashboard = () => {
-  const { data: user } = useGetUser();
+  const userContext = useUserContext();
   const query = useOsQuery();
 
   return (
@@ -51,7 +52,7 @@ export const Dashboard = () => {
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between my-4">
             <h1 className="text-xl">Dashboard</h1>
-            {!user?.isCms && (
+            {!userContext?.isCms && (
               <Button>
                 <Link to={ROUTES.NEW_SUBMISSION_OPTIONS}>New Submission</Link>
               </Button>

@@ -87,7 +87,7 @@
     ]
   },
   {
-    "username": "onemac-micro-helpdesk@example.com",
+    "username": "helpdesk@example.com",
     "attributes": [
       {
         "Name": "email",
