@@ -108,7 +108,7 @@ export const RHFSlot = <
                     {hops.options.map((OPT: any) => {
                       return (
                         <div key={`OPT-${OPT.value}`} className="flex flex-col">
-                          <div className="flex gap-2">
+                          <div className="flex gap-2 items-center">
                             <RadioGroupItem value={OPT.value} />
                             <FormLabel className="font-normal">
                               {OPT.label}
@@ -118,7 +118,7 @@ export const RHFSlot = <
                             OPT.form &&
                             OPT.form.map((FORM: any, index: any) => (
                               <div
-                                className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
+                                className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
                                 key={`rhf-form-${index}-${FORM.description}`}
                               >
                                 <RHFFormGroup form={FORM} control={control} />
@@ -128,7 +128,7 @@ export const RHFSlot = <
                             OPT.slots &&
                             OPT.slots.map((SLOT: any, index: any) => (
                               <div
-                                className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
+                                className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
                                 key={SLOT.name + index}
                               >
                                 <FormField
