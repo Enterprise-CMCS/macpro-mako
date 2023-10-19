@@ -180,7 +180,14 @@ export const AttachmentsFields = ({
       //  requirement?
       handler((prev: SpaSubmissionBody) => ({
         ...prev,
-        [name]: [...prev.attachments, ...acceptedFiles],
+        [name]: [
+          ...prev.attachments,
+          ...acceptedFiles.map((file) => ({
+            source: file,
+            // Add any file meta necessary from the file requirement
+            label: label, // file label (i.e. Tribal Consultation, Public Notice)
+          })),
+        ],
       }));
     }, []);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({

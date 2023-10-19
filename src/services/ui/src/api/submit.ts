@@ -22,7 +22,12 @@ export const spaSubmissionSchema = z.object({
     .string()
     .refine((arg) => STATES.includes(arg), "State from ID is invalid"),
   additionalInformation: z.string().max(4000),
-  attachments: z.array(z.object({})),
+  attachments: z.array(
+    z.object({
+      source: z.instanceof(File),
+      label: z.string(),
+    })
+  ),
   raiResponses: z.array(z.object({})),
   proposedEffectiveDate: z
     .number()
