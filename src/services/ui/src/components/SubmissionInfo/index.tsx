@@ -8,11 +8,10 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
   }
 
   const submissionSource = () => {
-    if (data?.origin?.toLowerCase() === "onemac") {
-      return "OneMAC";
-    } else {
-      return BLANK_VALUE;
-    }
+    const source = data?.origin?.toLowerCase();
+    if (source === "seatool" || !source) return BLANK_VALUE;
+    if (source === "onemac") return "OneMAC";
+    return data?.origin;
   };
   const submissionDetails = [
     {
