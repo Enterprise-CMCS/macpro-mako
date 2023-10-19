@@ -116,6 +116,17 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:getAttachmentUrlProvisionedConcurrency}
+  getUploadUrl:
+    handler: handlers/getUploadUrl.handler
+    environment:
+      attachmentsBucketName: ${param:attachmentsBucketName}
+      attachmentsBucketRegion: ${param:attachmentsBucketRegion}
+    events:
+      - http:
+          path: /getUploadUrl
+          method: post
+          cors: true
+          authorizer: aws_iam
   item:
     handler: handlers/item.handler
     maximumRetryAttempts: 0
