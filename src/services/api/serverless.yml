@@ -39,6 +39,12 @@ provider:
             - sts:AssumeRole
           Resource:
             - ${self:custom.onemacLegacyS3AccessRoleArn}
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:PutObjectTagging
+          Resource:
+            - ${param:attachmentsBucketArn}/*
 
 custom:
   project: ${env:PROJECT}

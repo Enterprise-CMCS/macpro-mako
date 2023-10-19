@@ -22,6 +22,7 @@ services:
       topicName: ${data.TopicName}
       attachmentsBucketName: ${uploads.AttachmentsBucketName}
       attachmentsBucketRegion: ${uploads.AttachmentsBucketRegion}
+      attachmentsBucketArn: ${uploads.AttachmentsBucketArn}
   auth:
     path: src/services/auth
     params:
