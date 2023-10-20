@@ -128,30 +128,6 @@ resources:
         PolicyDocument:
           Statement:
             - Effect: Deny
-              Action: "s3:PutObject"
-              Principal: "*"
-              NotResource:
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.bmp
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.csv
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.doc
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.docx
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.gif
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.jpg
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.jpeg
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.odp
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.ods
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.odt
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.png
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.pdf
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.ppt
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.pptx
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.rtf
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.tif
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.tiff
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.txt
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.xls
-                - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*.xlsx
-            - Effect: Deny
               Principal: "*"
               Action: "s3:*"
               Resource:
