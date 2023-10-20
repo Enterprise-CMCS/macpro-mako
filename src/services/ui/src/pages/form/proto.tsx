@@ -311,6 +311,8 @@ export const ABP1: Document = {
                                                     name: "income_definition_specific_statewide_arr",
                                                     props: {
                                                       appendText: "Add Region",
+                                                      removeText:
+                                                        "Remove Region",
                                                     },
                                                     fields: [
                                                       {

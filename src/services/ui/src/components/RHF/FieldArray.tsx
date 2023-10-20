@@ -23,8 +23,8 @@ export const RHFFieldArray = <TFields extends FieldValues>(
     );
   };
 
-  console.log("props", props);
-  console.log("fieldArr", fieldArr);
+  console.log("1props", props);
+  console.log("1fieldArr", fieldArr);
 
   return (
     <div className="flex flex-col gap-4 w-max">
@@ -38,7 +38,11 @@ export const RHFFieldArray = <TFields extends FieldValues>(
                   key={`${SLOT.name}-${index}`}
                   control={props.control}
                   name={`${props.name}.${index}.${SLOT.name}` as any}
-                  render={RHFSlot({ ...SLOT, control: props.control })}
+                  render={RHFSlot({
+                    ...SLOT,
+                    control: props.control,
+                    name: `${props.name}.${index}.${SLOT.name}`,
+                  })}
                 />
               );
             })}

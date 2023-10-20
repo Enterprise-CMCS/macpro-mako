@@ -60,7 +60,8 @@ export type RHFComponentMap = {
   };
   FieldArray: any;
   FieldGroup: {
-    appendText: string;
+    appendText?: string;
+    removeText?: string;
   };
 };
 
@@ -86,7 +87,7 @@ export type FieldArrayProps<
   T extends FieldValues,
   TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
 > = {
-  control: Control<T>;
+  control: Control<T, any>;
   name: TFieldArrayName;
   fields: RHFSlotProps[];
 };
@@ -95,10 +96,11 @@ export type FieldGroupProps<
   T extends FieldValues,
   TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
 > = {
-  control: Control<T>;
+  control: Control<T, any>;
   name: TFieldArrayName;
   fields: RHFSlotProps[];
   appendText?: string;
+  removeText?: string;
 };
 
 type ConditionRules =

@@ -27,7 +27,7 @@ export const JsonFormSchema = {
 export function ExampleForm() {
   const form = useForm({
     resolver: ajvResolver(JsonFormSchema as any),
-    shouldUnregister: true,
+    // shouldUnregister: true,
     defaultValues: {
       alt_benefit_plan_population_name: "",
       eligibility_groups: [{}],

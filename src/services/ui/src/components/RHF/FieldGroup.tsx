@@ -22,6 +22,9 @@ export const FieldGroup = <TFields extends FieldValues>(
     );
   };
 
+  console.log("2props", props);
+  console.log("2fieldArr", fieldArr);
+
   return (
     <div className="flex flex-col gap-4 w-max">
       {fieldArr.fields.map((FLD, index) => {
@@ -34,10 +37,28 @@ export const FieldGroup = <TFields extends FieldValues>(
                   key={`${SLOT.name}-${index}`}
                   control={props.control}
                   name={`${props.name}.${index}.${SLOT.name}` as any}
-                  render={RHFSlot({ ...SLOT, control: props.control })}
+                  render={RHFSlot({
+                    ...SLOT,
+                    control: props.control,
+                    name: `${props.name}.${index}.${SLOT.name}`,
+                  })}
                 />
               );
             })}
+            {index >= 1 && (
+              <Button
+                className="self-end m-2 mr-0"
+                variant={"destructive"}
+                onClick={() => {
+                  fieldArr.remove(index);
+                }}
+              >
+                {props.removeText ?? "Remove Group"}
+              </Button>
+            )}
+            {fieldArr.fields.length > 1 && (
+              <div className="w-full border-slate-300 border-2" />
+            )}
           </div>
         );
       })}
