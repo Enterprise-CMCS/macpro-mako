@@ -54,7 +54,6 @@ const checkRequiredAttachments = (
   const reqsMet = requiredFilesByLabel.map(req => fileLabelsGiven.includes(req.label));
   if (reqsMet.includes(false)) {
     const missing = requiredFilesByLabel.filter(req => !fileLabelsGiven.includes(req.label));
-    console.log("Missing required attachments: ", missing.map(req => req.label).join(", "));
     // Build the ZodError for each missing required file
     const errors = missing.map(req => ({
       path: [SUBMISSION_FORM.ATTACHMENTS],
@@ -64,6 +63,40 @@ const checkRequiredAttachments = (
     attachmentsReady = false; // Sets the trigger to not fire
   }
   return attachmentsReady;
+};
+
+const attachmentsWithS3Location = async (attachments: Attachment[]): Promise<UploadRecipe[]> => {
+  // Get pre signed urls for upload
+  const preSignedURLs = await grabAllPreSignedURLs(attachments);
+  // Assign one preSignedURL to one Attachment
+  return attachments.map(
+    (attachment: Attachment, idx) => ({
+      attachment,
+      s3Info: preSignedURLs[idx],
+    })
+  );
+};
+
+const sendAttachments = async (recipes: UploadRecipe[]): Promise<MakoAttachment[]> => {
+  // Upload attachments with pre signed urls
+  return await uploadAllAttachments(recipes).then(res => {
+    console.log(res);
+    return recipes.map(
+      ({attachment, s3Info}) =>
+        // Transform Attachment to MakoAttachment
+        ({
+          key: s3Info.key,
+          bucket: s3Info.bucket,
+          uploadDate: Date.now(),
+          title: attachment.label,
+          filename: attachment.source.name,
+          contentType: attachment.source.type,
+        } satisfies MakoAttachment)
+    ) as MakoAttachment[];
+  }).catch(err => {
+    console.error(err);
+    return [];
+  });
 };
 
 export const FormPage = ({
@@ -112,60 +145,41 @@ export const FormPage = ({
           // Check attachment requirements manually
           const attachmentsReady =
             !attachmentRequirements ?
+              // No requirements, always true
               true :
+              // otherwise we check
               checkRequiredAttachments(
                 (data.attachments as Attachment[]),
                 attachmentRequirements,
                 setFieldErrors
               );
+          // Failed to meet requirements, early exit
+          if (!attachmentsReady) {
+            console.log("Attachments failed to meet the requirement. Check errors in UI.");
+            return;
+          }
+          let uploadedAttachments: MakoAttachment[] = [];
+          // API flight begins here with file uploads first IF there are attachments
+          if (data.attachments && attachmentsReady) {
+            const uploadRecipes = await attachmentsWithS3Location(data.attachments as Attachment[]);
+            uploadedAttachments = await sendAttachments(uploadRecipes);
+          }
           // Build payload from data state
           const payload: SpaSubmissionBody = {
             ...data,
-            state: data.id!.split("-")[0],
+            state: data.id!.split("-")[0], // Derive state from ID
+            attachments: uploadedAttachments // Empty array if no attachments/requirements
           };
           console.log(payload);
           const result = meta.validator.safeParse(payload);
           console.log(result);
-          if (!(result.success) || !attachmentsReady) {
+          if (!result.success) {
             // API flight won't take off
-            setFieldErrors(prev => [...prev, ...(result as z.SafeParseError<any>).error.errors]);
+            setFieldErrors(prev => [...prev, ...result.error.errors]);
             console.error("SCHEMA PARSE ERROR(S): ", fieldErrors);
           } else {
-            // API flight begins here with file uploads first
-            // Get pre signed urls for upload
-            const preSignedURLs = await grabAllPreSignedURLs(data.attachments as Attachment[]);
-            // Assign one preSignedURL to one Attachment
-            const attachmentsToSend: UploadRecipe[] = (data.attachments as Attachment[]).map(
-              (attachment: Attachment, idx) => ({
-                attachment,
-                s3Info: preSignedURLs[idx],
-              })
-            );
-            // Upload attachments with pre signed urls
-            await uploadAllAttachments(attachmentsToSend).then(res => {
-              // Give attachments info to data state
-              setData({
-                ...data,
-                attachments: attachmentsToSend.map(
-                  ({ attachment, s3Info }) =>
-                    // Transform Attachment to MakoAttachment
-                    ({
-                      key: s3Info.key,
-                      bucket: s3Info.bucket,
-                      uploadDate: Date.now(),
-                      title: attachment.label,
-                      filename: attachment.source.name,
-                      contentType: attachment.source.type,
-                    } satisfies MakoAttachment)
-                )
-              });
-              // API is sent the rest of the payload with attachments metadata
-              api.mutate(payload);
-            }).catch(err => {
-              // Error uploading attachments
-              // TODO: Handle file upload failure
-              console.log(err);
-            });
+            // API is sent the rest of the payload with attachments metadata
+            api.mutate(payload);
           }
           // TODO: route back to dashboard on success
         }}
@@ -206,10 +220,10 @@ export const FormPage = ({
                       true :
                       err.path.includes(section.id);
               })
-              .map((err) => (
+              .map((err, idx) => (
                 <>
                   <span
-                    key={`${err.path[0]}-err-msg`}
+                    key={`${err.path[0]}-err-msg-${idx}`}
                     className="text-red-600 text-sm"
                   >
                     {err.message}
