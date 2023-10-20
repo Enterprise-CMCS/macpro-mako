@@ -39,6 +39,10 @@ export interface FormPageConfig {
   // For easy validation when using attachments field
   attachmentRequirements?: AttachmentFieldOption[];
 }
+type FileCheckStatus = {
+  status: boolean[];
+  invalidFiles: string[];
+}
 
 const SubmissionInstruction = () => (
   <p className="font-light mb-6 max-w-4xl">
@@ -67,23 +71,57 @@ const FAQCallout = () => (
   </div>
 );
 
-const checkRequiredAttachments = (
+const checkMultipleFiles = (
+  requirements: AttachmentFieldOption[],
+  givenFiles: string[]
+): FileCheckStatus => {
+  const singleFileOnly = requirements.filter(req => !req.multiple).map(req => req.label);
+  return {
+    status: singleFileOnly.map(reqLabel =>
+      givenFiles.filter(label => label === reqLabel).length <= 1
+    ),
+    invalidFiles: singleFileOnly.filter(reqLabel =>
+      givenFiles.filter(givenLabel => givenLabel === reqLabel)
+    )
+  };
+};
+
+const checkRequiredFiles = (
+  requirements: AttachmentFieldOption[],
+  givenFiles: string[]
+): FileCheckStatus => {
+  // Get required file labels
+  const requiredFiles = requirements?.filter(req => req.required);
+  return {
+    status: requiredFiles.map(req => givenFiles.includes(req.label)),
+    invalidFiles: requiredFiles.map(req => req.label).filter(label => !givenFiles.includes(label))
+  };
+};
+
+const validateAttachments = (
   attachmentsData: Attachment[],
   requirements: AttachmentFieldOption[],
   setErrors: Dispatch<SetStateAction<ZodIssue[]>>
 ) => {
   let attachmentsReady = true; // For the trigger on submit
-  // Get given file labels
+  // Get just the label for each attachment (simplifies checks)
   const fileLabelsGiven = attachmentsData.map(att => att.label);
-  // Get required file labels
-  const requiredFilesByLabel = requirements?.filter(req => req.required);
-  const reqsMet = requiredFilesByLabel.map(req => fileLabelsGiven.includes(req.label));
-  if (reqsMet.includes(false)) {
-    const missing = requiredFilesByLabel.filter(req => !fileLabelsGiven.includes(req.label));
-    // Build the ZodError for each missing required file
-    const errors = missing.map(req => ({
+  // Check for invalid multiples or missing required files
+  const invalidMultiples = checkMultipleFiles(requirements, fileLabelsGiven);
+  const missingRequiredFiles = checkRequiredFiles(requirements, fileLabelsGiven);
+  // Add errors in from file checks
+  if (missingRequiredFiles.status.includes(false)) {
+    const errors = missingRequiredFiles.invalidFiles.map(label => ({
       path: [SUBMISSION_FORM.ATTACHMENTS],
-      message: `${req.label} is missing from the required files upload`
+      message: `${label} is missing from the required files upload`
+    } as ZodIssue));
+    setErrors(prev => [...prev, ...errors]);
+    attachmentsReady = false; // Sets the trigger to not fire
+  }
+  if (invalidMultiples.status.includes(false)) {
+    const errors = invalidMultiples.invalidFiles.map(label => ({
+      path: [SUBMISSION_FORM.ATTACHMENTS],
+      message: `${label} was given multiple files but only requires one`
     } as ZodIssue));
     setErrors(prev => [...prev, ...errors]);
     attachmentsReady = false; // Sets the trigger to not fire
@@ -155,7 +193,7 @@ export const FormPage = ({
   // given (it does not currently)
   const api = useSubmissionMutation();
   return (
-    <SimplePageContainer>
+    <SimplePageContainer width="lg">
       <SimplePageTitle title={pageTitle} />
       <section id="description" className="max-w-4xl">
         <h2 className="text-2xl font-bold">{description.heading}</h2>
@@ -175,15 +213,14 @@ export const FormPage = ({
               // No requirements, always true
               true :
               // otherwise we check
-              checkRequiredAttachments(
+              validateAttachments(
                 (data.attachments as Attachment[]),
                 attachmentRequirements,
                 setFieldErrors
               );
-          // Failed to meet requirements, early exit
+          // Failed to meet requirements
           if (!attachmentsReady) {
             console.log("Attachments failed to meet the requirement. Check errors in UI.");
-            return;
           }
           let uploadedAttachments: MakoAttachment[] = [];
           // API flight begins here with file uploads first IF there are attachments
@@ -199,12 +236,11 @@ export const FormPage = ({
           };
           console.log(payload);
           const result = meta.validator.safeParse(payload);
-          console.log(result);
           if (!result.success) {
             // API flight won't take off
             setFieldErrors(prev => [...prev, ...result.error.errors]);
-            console.error("SCHEMA PARSE ERROR(S): ", fieldErrors);
-          } else {
+            return;
+          } else if (result.success && attachmentsReady) {
             // API is sent the rest of the payload with attachments metadata
             api.mutate(payload);
             // TODO: handle payload upload errors
