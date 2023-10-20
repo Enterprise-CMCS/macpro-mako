@@ -95,6 +95,7 @@ const sendAttachments = async (recipes: UploadRecipe[]): Promise<MakoAttachment[
     ) as MakoAttachment[];
   }).catch(err => {
     console.error(err);
+    // TODO: Handle errors from upload service
     return [];
   });
 };
@@ -180,6 +181,7 @@ export const FormPage = ({
           } else {
             // API is sent the rest of the payload with attachments metadata
             api.mutate(payload);
+            // TODO: handle payload upload errors
           }
           // TODO: route back to dashboard on success
         }}

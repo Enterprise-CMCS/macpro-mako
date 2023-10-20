@@ -28,9 +28,7 @@ export const spaSubmissionSchema = z.object({
     })
   ),
   additionalInformation: z.string().max(4000),
-  attachments: z
-    .array(spaSubmissionAttachment)
-    .or(z.array(makoAttachmentSchema)),
+  attachments: z.array(makoAttachmentSchema),
   raiResponses: z.array(z.object({})),
   proposedEffectiveDate: z
     .number()
