@@ -16,11 +16,10 @@ import {
 } from "@/api/uploadAttachments";
 import { useGetUser } from "@/api/useGetUser";
 import { FormSection } from "@/pages/submission-flow/config/forms/common";
-import { z, ZodIssue, ZodObject } from "zod";
+import { ZodIssue, ZodObject } from "zod";
 import {AttachmentFieldOption} from "@/pages/submission-flow/renderers/FormFields";
 import {SUBMISSION_FORM} from "@/consts/forms";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
+import {FAQ_TARGET, ROUTES} from "@/routes";
 
 type FormDescription = Pick<FormSection, "instructions"> & {
   // Limits the higher form header to just a string, no HeadingWithLink
@@ -40,6 +39,33 @@ export interface FormPageConfig {
   // For easy validation when using attachments field
   attachmentRequirements?: AttachmentFieldOption[];
 }
+
+const SubmissionInstruction = () => (
+  <p className="font-light mb-6 max-w-4xl">
+    <i>
+      Once you submit this form, a confirmation email is sent to you and to CMS.
+      CMS will use this content to review your package, and you will not be able
+      to edit this form. If CMS needs any additional information, they will
+      follow up by email. If you leave this page, you will lose your progress on
+      this form.
+    </i>
+  </p>
+);
+
+const FAQCallout = () => (
+  <div className="flex justify-between bg-[#f0fafe] py-10 px-20 my-10">
+    <span className="text-2xl font-light">Do you have questions or need support?</span>
+    <a
+      target={FAQ_TARGET}
+      href={ROUTES.FAQ}
+      className=""
+    >
+      <Button>
+        View FAQ
+      </Button>
+    </a>
+  </div>
+);
 
 const checkRequiredAttachments = (
   attachmentsData: Attachment[],
@@ -188,7 +214,7 @@ export const FormPage = ({
       >
         {fields.map((section, idx) => (
           <section
-            className="my-6 max-w-4xl"
+            className="my-6"
             key={`${idx}-${section.id}`}
             id={section.id}
           >
@@ -237,6 +263,7 @@ export const FormPage = ({
             {section.field(setData)}
           </section>
         ))}
+        <SubmissionInstruction />
         <div className="flex gap-3">
           <Button className="md:px-12" type="submit">
             Submit
@@ -245,6 +272,7 @@ export const FormPage = ({
             Cancel
           </Button>
         </div>
+        <FAQCallout />
       </form>
     </SimplePageContainer>
   );
