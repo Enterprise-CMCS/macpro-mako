@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import { FieldValues, useFieldArray } from "react-hook-form";
+import { Plus } from "lucide-react";
 
 import { RHFSlot } from "./Slot";
 import { Button, FormField } from "../Inputs";
@@ -21,9 +21,6 @@ export const FieldGroup = <TFields extends FieldValues>(
       }, {} as any)
     );
   };
-
-  console.log("2props", props);
-  console.log("2fieldArr", fieldArr);
 
   return (
     <div className="flex flex-col gap-4 w-max">
@@ -64,14 +61,7 @@ export const FieldGroup = <TFields extends FieldValues>(
       })}
       <div className="flex items-center mt-2 self-end">
         <Button type="button" size="sm" onClick={onAppend} variant="default">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            className="w-5 h-5 mr-2"
-          >
-            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-          </svg>
+          <Plus className="h-5 w-5 mr-2" />
           {props.appendText ?? "New Group"}
         </Button>
       </div>

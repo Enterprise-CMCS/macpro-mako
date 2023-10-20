@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { FieldValues, useFieldArray } from "react-hook-form";
 import { Trash2 } from "lucide-react";
 
@@ -22,9 +21,6 @@ export const RHFFieldArray = <TFields extends FieldValues>(
       }, {} as any)
     );
   };
-
-  console.log("1props", props);
-  console.log("1fieldArr", fieldArr);
 
   return (
     <div className="flex flex-col gap-4 w-max">
