@@ -3,9 +3,9 @@ import { z } from "zod";
 export const makoAttachmentSchema = z.object({
   key: z.string(),
   bucket: z.string(),
-  date: z.number(),
-  label: z.string().default("other"),
-  title: z.string(),
+  uploadDate: z.number(),
+  title: z.string().default("other"),
+  filename: z.string(),
   contentType: z.string(),
 });
 

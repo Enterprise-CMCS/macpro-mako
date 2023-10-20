@@ -138,9 +138,9 @@ export const FormPage = ({
                     ({
                       key: s3Info.key,
                       bucket: s3Info.bucket,
-                      date: Date.now(),
-                      label: attachment.label,
-                      title: attachment.source.name,
+                      uploadDate: Date.now(),
+                      title: attachment.label,
+                      filename: attachment.source.name,
                       contentType: attachment.source.type,
                     } satisfies MakoAttachment)
                 )
