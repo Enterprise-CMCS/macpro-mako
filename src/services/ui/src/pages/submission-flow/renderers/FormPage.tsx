@@ -71,6 +71,8 @@ const FAQCallout = () => (
   </div>
 );
 
+/** Takes the requirements and the labels for each file given to check for
+ * invalid multiples for a single-file field (i.e. CMS 179) */
 const checkMultipleFiles = (
   requirements: AttachmentFieldOption[],
   givenFiles: string[]
@@ -86,6 +88,8 @@ const checkMultipleFiles = (
   };
 };
 
+/** Takes the requirements and the labels for each file given to check that
+ * all required files have been given */
 const checkRequiredFiles = (
   requirements: AttachmentFieldOption[],
   givenFiles: string[]
@@ -98,6 +102,8 @@ const checkRequiredFiles = (
   };
 };
 
+/** Takes the requirements and the attachments given to run all file checks.
+ * Sets errors using the `setError` function passed in */
 const validateAttachments = (
   attachmentsData: Attachment[],
   requirements: AttachmentFieldOption[],
@@ -129,6 +135,7 @@ const validateAttachments = (
   return attachmentsReady;
 };
 
+/** Gets ample pre-signed urls for upload, and matches 1:1 with the given Attachments[] */
 const attachmentsWithS3Location = async (attachments: Attachment[]): Promise<UploadRecipe[]> => {
   // Get pre signed urls for upload
   const preSignedURLs = await grabAllPreSignedURLs(attachments);
@@ -141,6 +148,8 @@ const attachmentsWithS3Location = async (attachments: Attachment[]): Promise<Upl
   );
 };
 
+/** Uses the s3Info of each UploadRecipe to upload the file to its designated
+ * bucket and transforms the recipes into MakoAttachments */
 const sendAttachments = async (recipes: UploadRecipe[]): Promise<MakoAttachment[]> => {
   // Upload attachments with pre signed urls
   return await uploadAllAttachments(recipes).then(res => {
