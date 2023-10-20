@@ -1,7 +1,7 @@
 import { MakoAttachment } from "shared-types";
 import { SimplePageContainer } from "@/components";
 import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
-import { useState } from "react";
+import {Dispatch, SetStateAction, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
 import {
@@ -40,6 +40,31 @@ export interface FormPageConfig {
   // For easy validation when using attachments field
   attachmentRequirements?: AttachmentFieldOption[];
 }
+
+const checkRequiredAttachments = (
+  attachmentsData: Attachment[],
+  requirements: AttachmentFieldOption[],
+  setErrors: Dispatch<SetStateAction<ZodIssue[]>>
+) => {
+  let attachmentsReady = true; // For the trigger on submit
+  // Get given file labels
+  const fileLabelsGiven = attachmentsData.map(att => att.label);
+  // Get required file labels
+  const requiredFilesByLabel = requirements?.filter(req => req.required);
+  const reqsMet = requiredFilesByLabel.map(req => fileLabelsGiven.includes(req.label));
+  if (reqsMet.includes(false)) {
+    const missing = requiredFilesByLabel.filter(req => !fileLabelsGiven.includes(req.label));
+    console.log("Missing required attachments: ", missing.map(req => req.label).join(", "));
+    // Build the ZodError for each missing required file
+    const errors = missing.map(req => ({
+      path: [SUBMISSION_FORM.ATTACHMENTS],
+      message: `${req.label} is missing from the required files upload`
+    } as ZodIssue));
+    setErrors(prev => [...prev, ...errors]);
+    attachmentsReady = false; // Sets the trigger to not fire
+  }
+  return attachmentsReady;
+};
 
 export const FormPage = ({
   meta,
@@ -85,25 +110,14 @@ export const FormPage = ({
           // Re-initiate field errors
           setFieldErrors([]);
           // Check attachment requirements manually
-          let attachmentsReady = true; // For the trigger on submit
-          if (attachmentRequirements) {
-            // Get given file labels
-            const fileLabelsGiven = (data.attachments as Attachment[]).map(att => att.label);
-            // Get required file labels
-            const requiredFilesByLabel = attachmentRequirements?.filter(req => req.required);
-            const reqsMet = requiredFilesByLabel.map(req => fileLabelsGiven.includes(req.label));
-            if (reqsMet.includes(false)) {
-              const missing = requiredFilesByLabel.filter(req => !fileLabelsGiven.includes(req.label));
-              console.log("Missing required attachments: ", missing.map(req => req.label).join(", "));
-              // Build the ZodError for each missing required file
-              const errors = missing.map(req => ({
-                path: [SUBMISSION_FORM.ATTACHMENTS],
-                message: `${req.label} is missing from the required files upload`
-              } as ZodIssue));
-              setFieldErrors(prev => [...prev, ...errors]);
-              attachmentsReady = false; // Sets the trigger to not fire
-            }
-          }
+          const attachmentsReady =
+            !attachmentRequirements ?
+              true :
+              checkRequiredAttachments(
+                (data.attachments as Attachment[]),
+                attachmentRequirements,
+                setFieldErrors
+              );
           // Build payload from data state
           const payload: SpaSubmissionBody = {
             ...data,
