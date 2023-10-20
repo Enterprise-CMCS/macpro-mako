@@ -28,7 +28,11 @@ export const spaSubmissionSchema = z.object({
     })
   ),
   additionalInformation: z.string().max(4000),
-  attachments: z.array(makoAttachmentSchema),
+  attachments: z
+    // Needs to be here as part of the data state's shape
+    .array(spaSubmissionAttachment)
+    // THIS is the attachment schema we actually send over the wire
+    .or(z.array(makoAttachmentSchema)),
   raiResponses: z.array(z.object({})),
   proposedEffectiveDate: z
     .number()
