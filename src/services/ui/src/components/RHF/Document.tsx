@@ -11,7 +11,7 @@ export const RHFDocument = <TFieldValues extends FieldValues>(props: {
   return (
     <div className="py-4">
       <div className="mb-5">
-        <FormLabel className="font-bold text-3xl px-6 font-serif">
+        <FormLabel className="font-bold text-4xl px-8 font-serif">
           {props.document.header}
         </FormLabel>
       </div>
