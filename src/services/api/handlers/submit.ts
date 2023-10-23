@@ -44,6 +44,16 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
+    if (body.authority !== "medicaid spa") {
+      return response({
+        statusCode: 400,
+        body: {
+          message:
+            "The Mako Submissions API only supports Medicaid SPA at this time",
+        },
+      });
+    }
+
     const pool = await sql.connect(config);
     console.log(body);
     const query = `

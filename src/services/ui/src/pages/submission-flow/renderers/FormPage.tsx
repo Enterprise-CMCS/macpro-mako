@@ -270,7 +270,6 @@ export const FormPage = ({
             // API is sent the rest of the payload with attachments metadata
             api.mutate(payload);
           }
-          // TODO: route back to dashboard on success
         }}
       >
         {fields.map((section, idx) => (
@@ -326,7 +325,7 @@ export const FormPage = ({
         ))}
         <SubmissionInstruction />
         <div className="flex gap-3">
-          <Button className="md:px-12" type="submit">
+          <Button disabled={api.status === "loading"} className="md:px-12" type="submit">
             Submit
           </Button>
           <Button className="xs:w-full md:px-12" variant="outline">
