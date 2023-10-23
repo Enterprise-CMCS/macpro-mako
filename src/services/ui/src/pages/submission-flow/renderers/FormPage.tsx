@@ -2,7 +2,7 @@ import {MakoAttachment, ReactQueryApiError} from "shared-types";
 import { SimplePageContainer } from "@/components";
 import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
 import {Dispatch, SetStateAction, useMemo, useState} from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {Link, Navigate, useNavigate} from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
 import {
   Attachment,
@@ -207,7 +207,7 @@ export const FormPage = ({
   // unless we hit a single endpoint that further routes based on the value(s)
   // given (it does not currently)
   const api = useSubmissionMutation();
-  return (
+  return api.status === "success" ? <Navigate to={ROUTES.DASHBOARD} /> : (
     <SimplePageContainer width="lg">
       <SimplePageTitle title={pageTitle} />
       {api.error && <FormSubmissionError {...api.error} />}
