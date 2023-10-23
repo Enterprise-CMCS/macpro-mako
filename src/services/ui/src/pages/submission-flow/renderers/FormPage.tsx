@@ -2,11 +2,11 @@ import {MakoAttachment, ReactQueryApiError} from "shared-types";
 import { SimplePageContainer } from "@/components";
 import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
 import {Dispatch, SetStateAction, useMemo, useState} from "react";
-import {Link, Navigate, useNavigate} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
 import {
   Attachment,
-  SpaSubmissionBody, spaSubmissionId,
+  SpaSubmissionBody,
   useSubmissionMutation,
 } from "@/api/submit";
 import {
@@ -328,9 +328,11 @@ export const FormPage = ({
           <Button disabled={api.status === "loading"} className="md:px-12" type="submit">
             Submit
           </Button>
-          <Button className="xs:w-full md:px-12" variant="outline">
-            Cancel
-          </Button>
+          <Link to={ROUTES.DASHBOARD}>
+            <Button type="button" className="xs:w-full md:px-12" variant="outline">
+              Cancel
+            </Button>
+          </Link>
         </div>
         <FAQCallout />
       </form>

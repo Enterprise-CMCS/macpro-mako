@@ -52,8 +52,8 @@ export const AttachmentsIntro = () => (
   <>
     <p className="mt-1 mb-4">
       Maximum file size of 80 MB per attachment. You can add multiple files per
-      attachment type. Read the description for each of the attachment types on
-      the FAQ Page.
+      attachment type, except for the CMS Form 179. Read the description for
+      each of the attachment types on the FAQ Page.
     </p>
     <p className="my-4">
       We accept the following file formats:{" "}
