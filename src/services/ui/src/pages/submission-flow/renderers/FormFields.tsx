@@ -190,7 +190,7 @@ export const AttachmentsFields = ({
         ],
       }));
     }, []);
-    const onRemove = useCallback((fileName: string, field: string) => {
+    const onRemove = useCallback((fileName: string) => {
       // Update filenames state
       setAllZoneFilenames((prevState) => [
         ...prevState.filter((val) => val.fileName !== fileName),
@@ -224,7 +224,7 @@ export const AttachmentsFields = ({
               >
                 <span className="text-sky-500">{fileName}</span>
                 <Button
-                  onClick={() => onRemove(fileName, label)}
+                  onClick={() => onRemove(fileName)}
                   variant="ghost"
                   className="p-0 h-0"
                 >
