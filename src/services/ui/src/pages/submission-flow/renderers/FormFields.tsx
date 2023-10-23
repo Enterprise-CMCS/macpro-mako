@@ -1,4 +1,5 @@
 import {
+  Button,
   Calendar,
   Input,
   RequiredIndicator,
@@ -16,7 +17,8 @@ import { cn } from "@/lib";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { FormFieldName } from "@/consts/forms";
-import { SpaSubmissionBody } from "@/api/submit";
+import { Attachment, SpaSubmissionBody } from "@/api/submit";
+import { X } from "lucide-react";
 
 type FieldArgs<T = NonNullable<unknown>> = {
   handler: Dispatch<SetStateAction<SpaSubmissionBody>>;
@@ -188,6 +190,19 @@ export const AttachmentsFields = ({
         ],
       }));
     }, []);
+    const onRemove = useCallback((fileName: string, field: string) => {
+      // Update filenames state
+      setAllZoneFilenames((prevState) => [
+        ...prevState.filter((val) => val.fileName !== fileName),
+      ]);
+      // Remove from form data
+      handler((prev) => ({
+        ...prev,
+        attachments: (prev.attachments as Attachment[]).filter(
+          (att: Attachment) => att.source.name !== fileName
+        ),
+      }));
+    }, []);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
       onDrop,
       multiple, // Set here instead of `input` attributes
@@ -196,38 +211,57 @@ export const AttachmentsFields = ({
     });
 
     return (
-      <div
-        {...getRootProps()}
-        className="border border-dashed rounded-md h-20 p-4 flex justify-center align-middle"
-      >
-        <input
-          {...getInputProps({
-            /* Plug additional `input` props in here so they
-             * are not overridden */
-            // required: required, // TODO: working TOO well? won't submit even with requirement filled
-            name: fieldName(label),
-            id: fieldName(label),
-          })}
-        />
+      <>
         {fileNamesInZone.length ? (
           /* TODO: Later to be replaced with HCD designs; were not present
            *   upon starting this work. */
           /* Shows when a file is presently selected for upload */
-          <p className="my-auto">{fileNamesInZone.join(", ")}</p>
-        ) : isDragActive ? (
-          /* Only shows when file drag is happening */
-          <p className="my-auto">Drop the files here ...</p>
-        ) : (
-          /* The whole DropZone is clickable, so this is just a fun little
-           * not-a-link link to make this look clickable per the Figma */
-          <p className="my-auto">
-            Drag file here or{" "}
-            <span className="text-sky-600 underline hover:cursor-pointer">
-              choose from folder
-            </span>
-          </p>
-        )}
-      </div>
+          <div className="my-2 flex gap-2">
+            {fileNamesInZone.map((fileName, idx) => (
+              <div
+                className="flex border-2 rounded-md py-1 pl-2.5 pr-1 border-sky-500 items-center"
+                key={`${name}-${idx}`}
+              >
+                <span className="text-sky-500">{fileName}</span>
+                <Button
+                  onClick={() => onRemove(fileName, label)}
+                  variant="ghost"
+                  className="p-0 h-0"
+                >
+                  <X className="ml-2 text-sky-500 w-5" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        ) : null}
+        <div
+          {...getRootProps()}
+          className="border border-dashed rounded-md h-20 p-4 flex justify-center align-middle"
+        >
+          <input
+            {...getInputProps({
+              /* Plug additional `input` props in here so they
+               * are not overridden */
+              // required: required, // TODO: working TOO well? won't submit even with requirement filled
+              name: fieldName(label),
+              id: fieldName(label),
+            })}
+          />
+          {isDragActive ? (
+            /* Only shows when file drag is happening */
+            <p className="my-auto">Drop the files here ...</p>
+          ) : (
+            /* The whole DropZone is clickable, so this is just a fun little
+             * not-a-link link to make this look clickable per the Figma */
+            <p className="my-auto">
+              Drag file here or{" "}
+              <span className="text-sky-600 underline hover:cursor-pointer">
+                choose from folder
+              </span>
+            </p>
+          )}
+        </div>
+      </>
     );
   };
   return (
