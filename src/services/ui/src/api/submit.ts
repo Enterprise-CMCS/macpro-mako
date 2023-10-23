@@ -7,6 +7,19 @@ const spaSubmissionAttachment = z.object({
   source: z.instanceof(File),
   label: z.string(),
 });
+export const spaSubmissionId = z
+  .string()
+  .regex(
+    /^[A-Z]{2}-\d{2}-\d{4}(-\d{4})?$/,
+    "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-xxxx"
+  );
+
+export const stateCode = z.string().refine(
+  (arg) => STATES.includes(arg),
+  (arg) => ({
+    message: `${arg} is not a valid state code`,
+  })
+);
 /** Schema for Zod validation */
 export const spaSubmissionSchema = z.object({
   // Baseline attributes
@@ -15,18 +28,8 @@ export const spaSubmissionSchema = z.object({
   submitterEmail: z.string().email(),
   submitterName: z.string(),
   // SPAcific (lol) attributes
-  id: z
-    .string()
-    .regex(
-      /^[A-Z]{2}-[0-9]{2}-[0-9]{4}(-[0-9]{4})?$/g,
-      "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-xxxx"
-    ),
-  state: z.string().refine(
-    (arg) => STATES.includes(arg),
-    (arg) => ({
-      message: `${arg} is not a valid state code`,
-    })
-  ),
+  id: spaSubmissionId,
+  state: stateCode,
   additionalInformation: z.string().max(4000),
   attachments: z
     // Needs to be here as part of the data state's shape

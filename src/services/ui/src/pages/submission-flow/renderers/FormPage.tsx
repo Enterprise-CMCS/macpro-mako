@@ -1,12 +1,12 @@
 import { MakoAttachment } from "shared-types";
 import { SimplePageContainer } from "@/components";
 import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
-import {Dispatch, SetStateAction, useState} from "react";
+import {Dispatch, SetStateAction, useMemo, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, RequiredIndicator } from "@/components/Inputs";
 import {
   Attachment,
-  SpaSubmissionBody,
+  SpaSubmissionBody, spaSubmissionId,
   useSubmissionMutation,
 } from "@/api/submit";
 import {
@@ -182,6 +182,7 @@ export const FormPage = ({
 }: FormPageConfig) => {
   const [fieldErrors, setFieldErrors] = useState<ZodIssue[]>([]);
   const { data: user } = useGetUser();
+  const userStates = useMemo(() => user?.user?.["custom:state"]?.split(","), [user]);
   // This shape will change with other authorities like Waivers.
   // One approach could be generics?
   const [data, setData] = useState<SpaSubmissionBody>({
@@ -231,6 +232,16 @@ export const FormPage = ({
           if (!attachmentsReady) {
             console.log("Attachments failed to meet the requirement. Check errors in UI.");
           }
+          // Derive state code from ID
+          const stateCode = data.id!.split("-")[0];
+          // Check user access to state
+          if (!userStates || !userStates.includes(stateCode)) {
+            setFieldErrors((errs) => [...errs, {
+              path: [SUBMISSION_FORM.SPA_ID],
+              message: `User does not have access to the given state: ${stateCode}`
+            } as ZodIssue]);
+            return;
+          }
           let uploadedAttachments: MakoAttachment[] = [];
           // API flight begins here with file uploads first IF there are attachments
           if (data.attachments && attachmentsReady) {
@@ -240,7 +251,7 @@ export const FormPage = ({
           // Build payload from data state
           const payload: SpaSubmissionBody = {
             ...data,
-            state: data.id!.split("-")[0], // Derive state from ID
+            state: stateCode, // Derive state from ID
             attachments: uploadedAttachments // Empty array if no attachments/requirements
           };
           console.log(payload);
