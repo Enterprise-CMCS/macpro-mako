@@ -17,6 +17,7 @@ import {
 export type RHFSlotProps = {
   name: string;
   label?: ReactElement | string;
+  labelStyling?: string;
   description?: ReactElement | string;
   dependency?: DependencyRule;
 } & {
@@ -24,8 +25,11 @@ export type RHFSlotProps = {
     rhf: K;
     props?: RHFComponentMap[K];
     rules?: RegisterOptions;
-    // TODO: type out FieldArray.fields
-    fields?: K extends "FieldArray" ? any : never;
+    fields?: K extends "FieldArray"
+      ? RHFSlotProps[]
+      : K extends "FieldGroup"
+      ? RHFSlotProps[]
+      : never;
   };
 }[keyof RHFComponentMap];
 
@@ -55,6 +59,10 @@ export type RHFComponentMap = {
     }[];
   };
   FieldArray: any;
+  FieldGroup: {
+    appendText?: string;
+    removeText?: string;
+  };
 };
 
 export type FormGroup = {
@@ -82,6 +90,17 @@ export type FieldArrayProps<
   control: Control<T, any>;
   name: TFieldArrayName;
   fields: RHFSlotProps[];
+};
+
+export type FieldGroupProps<
+  T extends FieldValues,
+  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
+> = {
+  control: Control<T, any>;
+  name: TFieldArrayName;
+  fields: RHFSlotProps[];
+  appendText?: string;
+  removeText?: string;
 };
 
 type ConditionRules =

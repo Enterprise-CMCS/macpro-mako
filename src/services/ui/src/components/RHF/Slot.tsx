@@ -27,6 +27,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
 import { cn } from "@/lib";
 import { format } from "date-fns";
 import { RHFFieldArray } from "./FieldArray";
+import { FieldGroup } from "./FieldGroup";
 import type { RHFSlotProps, RHFComponentMap } from "./types";
 
 export const RHFSlot = <
@@ -39,6 +40,7 @@ export const RHFSlot = <
   description,
   name,
   props,
+  labelStyling,
   ...rest
 }: RHFSlotProps & { control: any }): ControllerProps<
   TFieldValues,
@@ -47,7 +49,7 @@ export const RHFSlot = <
   function Slot({ field }) {
     return (
       <FormItem className="flex flex-col gap-1 py-2">
-        {label && <FormLabel>{label}</FormLabel>}
+        {label && <FormLabel className={labelStyling}>{label}</FormLabel>}
         <FormControl>
           <>
             {/* ----------------------------------------------------------------------------- */}
@@ -239,7 +241,17 @@ export const RHFSlot = <
               <RHFFieldArray
                 control={control}
                 name={name}
-                fields={rest.fields}
+                fields={rest.fields ?? []}
+              />
+            )}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "FieldGroup" && (
+              <FieldGroup
+                control={control}
+                name={name}
+                fields={rest.fields ?? []}
+                {...(props as RHFComponentMap["FieldGroup"])}
               />
             )}
           </>
