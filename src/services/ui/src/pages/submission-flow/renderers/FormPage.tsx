@@ -72,6 +72,10 @@ const FAQCallout = () => (
   </div>
 );
 
+const FormSubmissionError = ({ response }: ReactQueryApiError) => {
+  return <Alert className="my-8" variant="destructive">Error submitting: {response.data.message}</Alert>;
+};
+
 /** Takes the requirements and the labels for each file given to check for
  * invalid multiples for a single-file field (i.e. CMS 179) */
 const checkMultipleFiles = (
@@ -172,10 +176,6 @@ const sendAttachments = async (recipes: UploadRecipe[]): Promise<MakoAttachment[
     // TODO: Handle errors from upload service
     return [];
   });
-};
-
-const FormSubmissionError = ({ response }: ReactQueryApiError) => {
-  return <Alert className="my-8" variant="destructive">Error submitting: {response.data.message}</Alert>;
 };
 
 export const FormPage = ({
