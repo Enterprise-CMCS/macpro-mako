@@ -27,7 +27,7 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   {
     field: "state.keyword",
     label: "State",
-    visible: false,
+    visible: true,
     cell: (data) => data.state,
   },
   {

@@ -4,10 +4,14 @@ import { LockIcon } from "../LockIcon";
 import { GovernmentBuildingIcon } from "../GovernmentBuildingIcon";
 import UsFlag from "@/assets/us_flag_small.png";
 import { useMediaQuery } from "@/hooks";
+import { useUserContext } from "../Context/userContext";
 
 export const UsaBanner = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 640px)");
+  const userContext = useUserContext();
+  const role =
+    userContext?.user?.["custom:cms-roles"] === "onemac-micro-statesubmitter";
 
   return (
     <div className="bg-[#f0f0f0]">
@@ -59,6 +63,16 @@ export const UsaBanner = () => {
           </div>
         </button>
       )}
+      {role && (
+        <div className="w-full  px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center justify-center bg-red-200 ">
+          <p className="text-center text-base">
+            You do not have access to view the entire application.{" "}
+            <span className="text-blue-600">Please visit IDM</span> to request
+            the appropriate user Role(s).
+          </p>
+        </div>
+      )}
+
       {isOpen && (
         <div className="flex flex-col gap-3 px-3 mt-3 sm:flex-row max-w-screen-lg mx-auto pb-4">
           <div className="flex gap-2">

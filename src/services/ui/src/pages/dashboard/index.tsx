@@ -1,4 +1,4 @@
-import { Link, redirect } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser, useGetUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
@@ -14,8 +14,11 @@ import {
 import { Button } from "@/components/Inputs";
 import { ROUTES } from "@/routes";
 import { useUserContext } from "@/components/Context/userContext";
+import { useNavigation } from "react-router-dom";
 
 const loader = (queryClient: QueryClient) => {
+  const user = getUser();
+
   return async () => {
     if (!queryClient.getQueryData(["user"])) {
       await queryClient.fetchQuery({
@@ -34,11 +37,18 @@ const loader = (queryClient: QueryClient) => {
     return isUser;
   };
 };
+
 export const dashboardLoader = loader;
 
 export const Dashboard = () => {
+  const navigate = useNavigate();
   const userContext = useUserContext();
   const query = useOsQuery();
+  const { isLoading, isError, data } = useGetUser();
+
+  if (data?.user?.["custom:cms-roles"] === "onemac-micro-statesubmitter") {
+    return navigate("/");
+  }
 
   return (
     <OsProvider
