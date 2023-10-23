@@ -1,4 +1,4 @@
-import { MakoAttachment } from "shared-types";
+import {MakoAttachment, ReactQueryApiError} from "shared-types";
 import { SimplePageContainer } from "@/components";
 import { SimplePageTitle } from "@/pages/submission-flow/renderers/OptionsPage";
 import {Dispatch, SetStateAction, useMemo, useState} from "react";
@@ -20,6 +20,7 @@ import { ZodIssue, ZodObject } from "zod";
 import {AttachmentFieldOption} from "@/pages/submission-flow/renderers/FormFields";
 import {SUBMISSION_FORM} from "@/consts/forms";
 import {FAQ_TARGET, ROUTES} from "@/routes";
+import {Alert} from "@/components/Alert";
 
 type FormDescription = Pick<FormSection, "instructions"> & {
   // Limits the higher form header to just a string, no HeadingWithLink
@@ -173,6 +174,10 @@ const sendAttachments = async (recipes: UploadRecipe[]): Promise<MakoAttachment[
   });
 };
 
+const FormSubmissionError = ({ response }: ReactQueryApiError) => {
+  return <Alert className="my-8" variant="destructive">Error submitting: {response.data.message}</Alert>;
+};
+
 export const FormPage = ({
   meta,
   pageTitle,
@@ -205,6 +210,7 @@ export const FormPage = ({
   return (
     <SimplePageContainer width="lg">
       <SimplePageTitle title={pageTitle} />
+      {api.error && <FormSubmissionError {...api.error} />}
       <section id="description" className="max-w-4xl">
         <h2 className="text-2xl font-bold">{description.heading}</h2>
         <p className="my-1">
@@ -263,7 +269,6 @@ export const FormPage = ({
           } else if (result.success && attachmentsReady) {
             // API is sent the rest of the payload with attachments metadata
             api.mutate(payload);
-            // TODO: handle payload upload errors
           }
           // TODO: route back to dashboard on success
         }}
