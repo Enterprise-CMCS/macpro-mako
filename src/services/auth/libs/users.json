@@ -182,23 +182,15 @@
       },
       {
         "Name": "given_name",
-        "Value": "State"
+        "Value": "bad"
       },
       {
         "Name": "family_name",
-        "Value": "Submitter"
+        "Value": "football"
       },
       {
         "Name": "email_verified",
         "Value": "true"
-      },
-      {
-        "Name": "custom:state",
-        "Value": "CO"
-      },
-      {
-        "Name": "custom:cms-roles",
-        "Value": "bad-football-role"
       }
     ]
   }
