@@ -39,6 +39,14 @@ provider:
             - sts:AssumeRole
           Resource:
             - ${self:custom.onemacLegacyS3AccessRoleArn}
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:PutObjectTagging
+            - s3:GetObject
+            - s3:GetObjectTagging
+          Resource:
+            - ${param:attachmentsBucketArn}/*
 
 custom:
   project: ${env:PROJECT}
@@ -52,6 +60,7 @@ custom:
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
   dbInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/seatool/dbInfo, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/seatool/dbInfo}
+  brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
   scriptable:
     hooks:
       package:compileEvents: ./handlers/repack.js
@@ -115,6 +124,17 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:getAttachmentUrlProvisionedConcurrency}
+  getUploadUrl:
+    handler: handlers/getUploadUrl.handler
+    environment:
+      attachmentsBucketName: ${param:attachmentsBucketName}
+      attachmentsBucketRegion: ${param:attachmentsBucketRegion}
+    events:
+      - http:
+          path: /getUploadUrl
+          method: post
+          cors: true
+          authorizer: aws_iam
   item:
     handler: handlers/item.handler
     maximumRetryAttempts: 0
@@ -142,6 +162,8 @@ functions:
       dbPort: ${self:custom.dbInfo.port}
       dbUser: ${self:custom.dbInfo.user}
       dbPassword: ${self:custom.dbInfo.password}
+      topicName: ${param:topicName}
+      brokerString: ${self:custom.brokerString}
     events:
       - http:
           path: /submit

@@ -9,6 +9,8 @@ services:
     path: src/services/data
     params:
       ECSFailureTopicArn: ${alerts.ECSFailureTopicArn}
+  uploads:
+    path: src/services/uploads
   ui-infra:
     path: src/services/ui-infra
   api:
@@ -17,6 +19,10 @@ services:
       ECSFailureTopicArn: ${alerts.ECSFailureTopicArn}
       osDomainArn: ${data.OpenSearchDomainArn}
       osDomain: ${data.OpenSearchDomainEndpoint}
+      topicName: ${data.TopicName}
+      attachmentsBucketName: ${uploads.AttachmentsBucketName}
+      attachmentsBucketRegion: ${uploads.AttachmentsBucketRegion}
+      attachmentsBucketArn: ${uploads.AttachmentsBucketArn}
   auth:
     path: src/services/auth
     params:
