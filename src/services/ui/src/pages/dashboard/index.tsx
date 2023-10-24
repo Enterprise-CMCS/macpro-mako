@@ -14,11 +14,9 @@ import {
 import { Button } from "@/components/Inputs";
 import { ROUTES } from "@/routes";
 import { useUserContext } from "@/components/Context/userContext";
-import { useNavigation } from "react-router-dom";
+import { useEffect } from "react";
 
 const loader = (queryClient: QueryClient) => {
-  const user = getUser();
-
   return async () => {
     if (!queryClient.getQueryData(["user"])) {
       await queryClient.fetchQuery({
@@ -44,11 +42,13 @@ export const Dashboard = () => {
   const navigate = useNavigate();
   const userContext = useUserContext();
   const query = useOsQuery();
-  const { isLoading, isError, data } = useGetUser();
+  const { data } = useGetUser();
 
-  if (data?.user?.["custom:cms-roles"] === "onemac-micro-statesubmitter") {
-    return navigate("/");
-  }
+  useEffect(() => {
+    if (data?.user?.["custom:cms-roles"] === "onemac-micro-statesubmitter") {
+      return navigate("/");
+    }
+  }, []);
 
   return (
     <OsProvider
