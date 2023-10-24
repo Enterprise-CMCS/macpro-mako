@@ -45,7 +45,7 @@ export const Dashboard = () => {
   const { data } = useGetUser();
 
   useEffect(() => {
-    if (data?.user?.["custom:cms-roles"] === "onemac-micro-reviewer") {
+    if (data?.user?.["custom:cms-roles"] === "onemac-micro-statesubmitter") {
       return navigate("/");
     }
   }, []);

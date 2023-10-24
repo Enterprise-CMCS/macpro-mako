@@ -172,5 +172,34 @@
         "Value": "onemac-micro-statesubmitter"
       }
     ]
+  },
+  {
+    "username": "badfootball@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "badfootball@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Submitter"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "CO"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "bad-football-role"
+      }
+    ]
   }
 ]
