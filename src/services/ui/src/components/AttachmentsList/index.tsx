@@ -44,7 +44,8 @@ const handleDownloadAll = async (data: AttachmentList) => {
         const url = await getAttachmentUrl(
           data.id,
           attachment.bucket,
-          attachment.key
+          attachment.key,
+          attachment.filename
         );
         return { ...attachment, url };
       });
@@ -84,7 +85,8 @@ export const Attachmentslist = (data: AttachmentList) => {
                           const url = await getAttachmentUrl(
                             data.id,
                             attachment.bucket,
-                            attachment.key
+                            attachment.key,
+                            attachment.filename
                           );
                           console.log(url);
                           window.open(url);
