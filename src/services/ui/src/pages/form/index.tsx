@@ -4,6 +4,7 @@ import { Button, Form } from "@/components/Inputs";
 
 import { RHFDocument } from "@/components/RHF";
 import { ABP1 } from "./proto";
+import { documentInitializer } from "@/components/RHF";
 
 export const JsonFormSchema = {
   type: "object",
@@ -28,19 +29,7 @@ export function ExampleForm() {
   const form = useForm({
     resolver: ajvResolver(JsonFormSchema as any),
     // shouldUnregister: true,
-    defaultValues: {
-      alt_benefit_plan_population_name: "",
-      eligibility_groups: [{}],
-      is_enrollment_available: "no",
-      target_criteria: [],
-      income_target: "",
-      income_definition: "",
-      income_definition_specific: "",
-      income_definition_specific_statewide: [{}],
-      is_incremental_amount: false,
-      dollar_incremental_amount: "",
-      is_geographic_area: "no",
-    },
+    defaultValues: documentInitializer(ABP1),
   });
 
   const onSubmit = form.handleSubmit((data) => {

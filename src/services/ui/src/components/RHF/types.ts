@@ -33,6 +33,13 @@ export type RHFSlotProps = {
   };
 }[keyof RHFComponentMap];
 
+export type RHFOption = {
+  label: string;
+  value: any;
+  form?: FormGroup[];
+  slots?: RHFSlotProps[];
+};
+
 export type RHFComponentMap = {
   Input: InputProps & {
     label?: ReactElement | string;
@@ -42,21 +49,11 @@ export type RHFComponentMap = {
   Switch: SwitchProps;
   Select: SelectProps;
   Radio: RadioProps & {
-    options: {
-      label: string;
-      value: any;
-      form?: FormGroup[];
-      slots?: RHFSlotProps[];
-    }[];
+    options: RHFOption[];
   };
   DatePicker: CalendarProps;
   Checkbox: {
-    options: {
-      label: string;
-      value: any;
-      form?: FormGroup[];
-      slots?: RHFSlotProps[];
-    }[];
+    options: RHFOption[];
   };
   FieldArray: any;
   FieldGroup: {
