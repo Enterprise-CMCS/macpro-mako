@@ -20,7 +20,7 @@
     "@emotion/styled": "^11.11.0",
     "@heroicons/react": "^2.0.17",
     "@hookform/error-message": "^2.0.1",
-    "@hookform/resolvers": "^3.3.1",
+    "@hookform/resolvers": "^3.3.2",
     "@mui/lab": "^5.0.0-alpha.136",
     "@mui/material": "^5.14.1",
     "@mui/styled-engine": "^5.13.2",
