@@ -13,6 +13,7 @@ export const FieldGroup = <TFields extends FieldValues>(
   const fieldArr = useFieldArray({
     control: props.control,
     name: props.name,
+    shouldUnregister: true,
   });
 
   const onAppend = () => {
