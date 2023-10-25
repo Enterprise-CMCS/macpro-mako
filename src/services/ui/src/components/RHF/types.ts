@@ -20,11 +20,11 @@ export type RHFSlotProps = {
   labelStyling?: string;
   description?: ReactElement | string;
   dependency?: DependencyRule;
+  rules?: RegisterOptions;
 } & {
   [K in keyof RHFComponentMap]: {
     rhf: K;
     props?: RHFComponentMap[K];
-    rules?: RegisterOptions;
     fields?: K extends "FieldArray"
       ? RHFSlotProps[]
       : K extends "FieldGroup"

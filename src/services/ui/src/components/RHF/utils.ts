@@ -47,8 +47,7 @@ export const slotReducer = (ACC: GL, SLOT: T.RHFSlotProps): GL => {
   if (SLOT.rhf === "Checkbox") {
     if (SLOT.props?.options) {
       SLOT.props.options.forEach(optionReducer);
-      const [first] = SLOT.props.options;
-      ACC[SLOT.name] = first.value;
+      ACC[SLOT.name] = [];
     }
   }
 

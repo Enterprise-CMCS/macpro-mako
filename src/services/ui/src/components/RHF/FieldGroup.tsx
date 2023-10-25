@@ -4,6 +4,8 @@ import { Plus } from "lucide-react";
 import { RHFSlot } from "./Slot";
 import { Button, FormField } from "../Inputs";
 import { FieldGroupProps } from "./types";
+import { slotReducer } from "./utils";
+import { useEffect } from "react";
 
 export const FieldGroup = <TFields extends FieldValues>(
   props: FieldGroupProps<TFields>
@@ -14,13 +16,13 @@ export const FieldGroup = <TFields extends FieldValues>(
   });
 
   const onAppend = () => {
-    fieldArr.append(
-      props.fields.reduce((ACC, S) => {
-        ACC[S.name] = "";
-        return ACC;
-      }, {} as any)
-    );
+    fieldArr.append(props.fields.reduce(slotReducer, {}) as any);
   };
+
+  useEffect(() => {
+    if (fieldArr.fields.length) return;
+    fieldArr.append(props.fields.reduce(slotReducer, {}) as any);
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 w-max">
@@ -30,10 +32,10 @@ export const FieldGroup = <TFields extends FieldValues>(
             {props.fields.map((SLOT) => {
               return (
                 <FormField
-                  //   shouldUnregister
                   key={`${SLOT.name}-${index}`}
                   control={props.control}
                   name={`${props.name}.${index}.${SLOT.name}` as any}
+                  {...(SLOT.rules && { rules: SLOT.rules })}
                   render={RHFSlot({
                     ...SLOT,
                     control: props.control,

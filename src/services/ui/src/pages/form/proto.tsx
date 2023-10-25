@@ -14,9 +14,14 @@ export const ABP1: Document = {
               rhf: "Input",
               name: "alt_benefit_plan_population_name",
               label: "Alternative Benefit Plan population name",
-              props: {
-                placeholder: "enter name",
+              rules: {
+                required: "*Required",
+                maxLength: {
+                  value: 20,
+                  message: "Max 20 Characters",
+                },
               },
+              props: { placeholder: "enter name" },
               dependency: {
                 // example of a value changing field, with multi-conditions
                 conditions: [
@@ -308,7 +313,7 @@ export const ABP1: Document = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "income_definition_specific_statewide_arr",
+                                                    name: "income_definition_region_statewide_group",
                                                     props: {
                                                       appendText: "Add Region",
                                                       removeText:
@@ -317,7 +322,7 @@ export const ABP1: Document = {
                                                     fields: [
                                                       {
                                                         rhf: "FieldArray",
-                                                        name: "income_definition_specific_statewide",
+                                                        name: "income_definition_region_statewide_arr",
                                                         fields: [
                                                           {
                                                             rhf: "Input",
