@@ -10,10 +10,9 @@ import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
 import { FAQ_TARGET } from "@/routes";
 import { useUserContext } from "../Context/userContext";
-import { useOsQuery } from "../Opensearch";
 
-const getLinks = (isAuthenticated: boolean, role?: string) => {
-  if (isAuthenticated && role !== "onemac-micro-statesubmitter") {
+const getLinks = (isAuthenticated: boolean, role?:  boolean) => {
+  if (isAuthenticated && role) {
     return [
       {
         name: "Home",
@@ -85,9 +84,9 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const [prevMediaQuery, setPrevMediaQuery] = useState(isDesktop);
   const [isOpen, setIsOpen] = useState(false);
   const { isLoading, isError, data } = useGetUser();
-  const query = useOsQuery();
   const userContext = useUserContext();
-  console.log(userContext, query);
+  const role = userContext?.user?.["custom:cms-roles"]?true:false;
+
 
   const handleLogin = () => {
     const authConfig = Auth.configure();
@@ -115,7 +114,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   if (isDesktop) {
     return (
       <>
-        {getLinks(!!data.user, data.user?.["custom:cms-roles"]).map((link) => (
+        {getLinks(!!data.user,role).map((link) => (
           <NavLink
             to={link.link}
             target={link.link === "/faq" ? FAQ_TARGET : undefined}
@@ -153,7 +152,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       {isOpen && (
         <div className="w-full fixed top-[100px] left-0 z-50">
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-2 gap-4 rounded-lg bg-accent">
-            {getLinks(!!data.user, data.user?.["custom:cms-roles"]).map(
+            {getLinks(!!data.user,role).map(
               (link) => (
                 <li key={link.link}>
                   <Link

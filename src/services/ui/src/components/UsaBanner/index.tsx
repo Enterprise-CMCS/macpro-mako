@@ -10,8 +10,8 @@ export const UsaBanner = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 640px)");
   const userContext = useUserContext();
-  const role =
-    userContext?.user?.["custom:cms-roles"] === "onemac-micro-statesubmitter";
+  const role = userContext?.user?.["custom:cms-roles"]?false:true;
+   
 
   return (
     <div className="bg-[#f0f0f0]">
@@ -63,12 +63,12 @@ export const UsaBanner = () => {
           </div>
         </button>
       )}
-      {role && (
+      {role && userContext?.user  &&(
         <div className="w-full  px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center justify-center bg-red-200 ">
           <p className="text-center text-base">
             You do not have access to view the entire application.{" "}
-            <span className="text-blue-600">Please visit IDM</span> to request
-            the appropriate user Role(s).
+            <a  rel="noreferrer" href="https://home.idm.cms.gov/signin/login.html"  target="_blank"   className="text-blue-600 inline  no-underline">Please visit IDM</a> to request
+            the appropriate user Role(s). 
           </p>
         </div>
       )}
