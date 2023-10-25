@@ -14,12 +14,6 @@ export const spaSubmissionId = z
     "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-xxxx"
   );
 
-export const stateCode = z.string().refine(
-  (arg) => STATES.includes(arg),
-  (arg) => ({
-    message: `${arg} is not a valid state code`,
-  })
-);
 /** Schema for Zod validation */
 export const spaSubmissionSchema = z.object({
   // Baseline attributes
@@ -29,7 +23,7 @@ export const spaSubmissionSchema = z.object({
   submitterName: z.string(),
   // SPAcific (lol) attributes
   id: spaSubmissionId,
-  state: stateCode,
+  state: z.string().refine((arg) => STATES.includes(arg), "Invalid state code"),
   additionalInformation: z.string().max(4000),
   attachments: z
     // Needs to be here as part of the data state's shape

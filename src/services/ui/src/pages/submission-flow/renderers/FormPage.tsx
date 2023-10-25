@@ -246,11 +246,24 @@ export const FormPage = ({
               path: [SUBMISSION_FORM.SPA_ID],
               message: `User does not have access to the given state: ${stateCode}`
             } as ZodIssue]);
+          }
+          if (
+            (!userStates || !userStates.includes(stateCode)) ||
+            !attachmentsReady
+          ) {
+            // Get the rest of the validator's errors
+            const result = meta.validator.safeParse({
+              ...data,
+              state: stateCode
+            });
+            // Append them to our manual validation errors
+            if (!result.success) setFieldErrors(prev => [...prev, ...result.error.errors]);
+            // Return out of onSubmit, errors will be displayed
             return;
           }
           let uploadedAttachments: MakoAttachment[] = [];
           // API flight begins here with file uploads first IF there are attachments
-          if (data.attachments && attachmentsReady) {
+          if (data.attachments.length && attachmentsReady) {
             const uploadRecipes = await attachmentsWithS3Location(data.attachments as Attachment[]);
             uploadedAttachments = await sendAttachments(uploadRecipes);
           }
@@ -324,6 +337,17 @@ export const FormPage = ({
           </section>
         ))}
         <SubmissionInstruction />
+        {fieldErrors.length ?
+          <Alert className="mb-6" variant="destructive">
+            Please check field errors above for fields:
+            <ul className="list-disc ml-8">
+              {fieldErrors.map((err, idx) =>
+                <li key={`${err.path[0]}-${idx}`}>{err.path[0]}</li>
+              )}
+            </ul>
+          </Alert>
+          : null
+        }
         <div className="flex gap-3">
           <Button disabled={api.status === "loading"} className="md:px-12" type="submit">
             Submit
