@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { LockIcon } from "../LockIcon";
 import { GovernmentBuildingIcon } from "../GovernmentBuildingIcon";
@@ -10,8 +10,17 @@ export const UsaBanner = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 640px)");
   const userContext = useUserContext();
-  const role = userContext?.user?.["custom:cms-roles"]?false:true;
-   
+  const role = useMemo(() => {
+    return userContext?.user?.["custom:cms-roles"] ? false : true;
+  }, []);
+
+  const hasRole = useMemo(() => {
+    if (role && userContext?.user) {
+      return true;
+    } else {
+      return false;
+    }
+  }, []);
 
   return (
     <div className="bg-[#f0f0f0]">
@@ -63,12 +72,19 @@ export const UsaBanner = () => {
           </div>
         </button>
       )}
-      {role && userContext?.user  &&(
+      {hasRole && (
         <div className="w-full  px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center justify-center bg-red-200 ">
           <p className="text-center text-base">
             You do not have access to view the entire application.{" "}
-            <a  rel="noreferrer" href="https://home.idm.cms.gov/signin/login.html"  target="_blank"   className="text-blue-600 inline  no-underline">Please visit IDM</a> to request
-            the appropriate user Role(s). 
+            <a
+              rel="noreferrer"
+              href="https://home.idm.cms.gov/signin/login.html"
+              target="_blank"
+              className="text-blue-600 inline  no-underline"
+            >
+              Please visit IDM
+            </a>{" "}
+            to request the appropriate user Role(s).
           </p>
         </div>
       )}

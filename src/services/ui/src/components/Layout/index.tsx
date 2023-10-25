@@ -2,7 +2,7 @@ import { Link, NavLink, NavLinkProps, Outlet } from "react-router-dom";
 import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useGetUser } from "@/api/useGetUser";
 import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
@@ -11,7 +11,7 @@ import { UsaBanner } from "../UsaBanner";
 import { FAQ_TARGET } from "@/routes";
 import { useUserContext } from "../Context/userContext";
 
-const getLinks = (isAuthenticated: boolean, role?:  boolean) => {
+const getLinks = (isAuthenticated: boolean, role?: boolean) => {
   if (isAuthenticated && role) {
     return [
       {
@@ -85,8 +85,9 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { isLoading, isError, data } = useGetUser();
   const userContext = useUserContext();
-  const role = userContext?.user?.["custom:cms-roles"]?true:false;
-
+  const role = useMemo(() => {
+    return userContext?.user?.["custom:cms-roles"] ? true : false;
+  }, []);
 
   const handleLogin = () => {
     const authConfig = Auth.configure();
@@ -114,7 +115,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   if (isDesktop) {
     return (
       <>
-        {getLinks(!!data.user,role).map((link) => (
+        {getLinks(!!data.user, role).map((link) => (
           <NavLink
             to={link.link}
             target={link.link === "/faq" ? FAQ_TARGET : undefined}
@@ -152,19 +153,17 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       {isOpen && (
         <div className="w-full fixed top-[100px] left-0 z-50">
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-2 gap-4 rounded-lg bg-accent">
-            {getLinks(!!data.user,role).map(
-              (link) => (
-                <li key={link.link}>
-                  <Link
-                    className="block py-2 pl-3 pr-4 text-white rounded"
-                    to={link.link}
-                    target={link.link === "/faq" ? FAQ_TARGET : undefined}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              )
-            )}
+            {getLinks(!!data.user, role).map((link) => (
+              <li key={link.link}>
+                <Link
+                  className="block py-2 pl-3 pr-4 text-white rounded"
+                  to={link.link}
+                  target={link.link === "/faq" ? FAQ_TARGET : undefined}
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
             <>
               {data.user ? (
                 <button

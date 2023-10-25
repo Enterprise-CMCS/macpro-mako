@@ -1,6 +1,6 @@
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { Link, Navigate, redirect } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
-import { getUser, useGetUser } from "@/api/useGetUser";
+import { getUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/Inputs";
 import { ROUTES } from "@/routes";
 import { useUserContext } from "@/components/Context/userContext";
-import { useEffect } from "react";
+import { useMemo } from "react";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -39,16 +39,16 @@ const loader = (queryClient: QueryClient) => {
 export const dashboardLoader = loader;
 
 export const Dashboard = () => {
-  const navigate = useNavigate();
   const userContext = useUserContext();
   const query = useOsQuery();
-  const { data } = useGetUser();
 
-  useEffect(() => {
-    if (data?.user?.["custom:cms-roles"] === "onemac-micro-statesubmitter") {
-      return navigate("/");
-    }
+  const role = useMemo(() => {
+    return userContext?.user?.["custom:cms-roles"] ? true : false;
   }, []);
+
+  if (!role) {
+    return <Navigate to={ROUTES.HOME} />;
+  }
 
   return (
     <OsProvider
