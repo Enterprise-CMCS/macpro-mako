@@ -6,6 +6,7 @@ import "@/api/amplifyConfig";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
 import { ROUTES } from "@/routes";
+import { MedicaidForm } from "./pages/form/medicaid-form";
 export const queryClient = new QueryClient();
 
 export const router = createBrowserRouter([
@@ -66,6 +67,7 @@ export const router = createBrowserRouter([
         element: <P.CHIPEligibilityLandingPage />,
       },
       { path: ROUTES.CREATE, element: <P.Create /> },
+      { path: "/test-route", element: <MedicaidForm /> },
       // TODO: Remove "/form" and ExampleForm if there's no usage; the Create page
       //  is our current SEATool integration test form.
       { path: "/form", element: <P.ExampleForm /> },
