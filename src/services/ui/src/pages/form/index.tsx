@@ -1,51 +1,25 @@
-import { ajvResolver } from "@hookform/resolvers/ajv";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "@/components/Inputs";
 
 import { RHFDocument } from "@/components/RHF";
 import { ABP1 } from "./proto";
-
-export const JsonFormSchema = {
-  type: "object",
-  properties: {
-    alt_benefit_plan_population_name: {
-      type: "string",
-      minLength: 1,
-      maxLength: 20,
-      errorMessage: {
-        minLength: "This field is required",
-      },
-    },
-    is_enrollment_available: {
-      type: "string",
-    },
-  },
-  required: ["alt_benefit_plan_population_name"],
-  additionalProperties: true,
-};
+import { documentInitializer } from "@/components/RHF";
 
 export function ExampleForm() {
+  const defaultValues = documentInitializer(ABP1);
+
   const form = useForm({
-    resolver: ajvResolver(JsonFormSchema as any),
-    // shouldUnregister: true,
-    defaultValues: {
-      alt_benefit_plan_population_name: "",
-      eligibility_groups: [{}],
-      is_enrollment_available: "no",
-      target_criteria: [],
-      income_target: "",
-      income_definition: "",
-      income_definition_specific: "",
-      income_definition_specific_statewide: [{}],
-      is_incremental_amount: false,
-      dollar_incremental_amount: "",
-      is_geographic_area: "no",
-    },
+    defaultValues,
   });
 
-  const onSubmit = form.handleSubmit((data) => {
-    console.log(data);
-  });
+  const onSubmit = form.handleSubmit(
+    (data) => {
+      console.log({ data });
+    },
+    (err) => {
+      console.log({ err });
+    }
+  );
 
   return (
     <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
