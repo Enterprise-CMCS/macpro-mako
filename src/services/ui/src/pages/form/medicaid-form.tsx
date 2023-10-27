@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
@@ -45,7 +45,7 @@ export const MedicaidForm = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = (data: MedicaidFormSchema) => {
+  const onSubmit: SubmitHandler<MedicaidFormSchema> = (data) => {
     console.log(data);
   };
 
