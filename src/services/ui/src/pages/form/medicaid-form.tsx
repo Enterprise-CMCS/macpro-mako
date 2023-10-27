@@ -4,18 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
 
-const attachmentList = [
-  "cmsForm179",
-  "spaPages",
-  "coverLetter",
-  "tribalEngagement",
-  "existingStatePlanPages",
-  "publicNotice",
-  "sfq",
-  "tribalConsultation",
-  "other",
-] as const;
-
 const formSchema = z.object({
   id: z.string().min(2, {
     message: "Ben was here",
@@ -36,6 +24,21 @@ const formSchema = z.object({
 });
 
 export type MedicaidFormSchema = z.infer<typeof formSchema>;
+
+// first argument in the array is the name that will show up in the form submission
+// second argument is used when mapping over for the label
+const attachmentList: Array<[keyof MedicaidFormSchema["attachments"], string]> =
+  [
+    ["cmsForm179", "CMS Form 179"],
+    ["spaPages", "SPA Pages"],
+    ["coverLetter", "Cover Letter"],
+    ["tribalEngagement", "Document Demonstrating Good-Faith Tribal Engagement"],
+    ["existingStatePlanPages", "Existing State Plan Page(s)"],
+    ["publicNotice", "Public Notice"],
+    ["sfq", "Standard Funding Questions (SFQs)"],
+    ["tribalConsultation", "Tribal Consultation"],
+    ["other", "Other"],
+  ];
 
 export const MedicaidForm = () => {
   const form = useForm<MedicaidFormSchema>({
@@ -121,12 +124,12 @@ export const MedicaidForm = () => {
 
         {attachmentList.map((attachment) => (
           <I.FormField
-            key={attachment}
+            key={attachment[0]}
             control={form.control}
-            name={`attachments.${attachment}`}
+            name={`attachments.${attachment[0]}`}
             render={({ field }) => (
               <I.FormItem>
-                <I.FormLabel>CMS Form 179</I.FormLabel>
+                <I.FormLabel>{attachment[1]}</I.FormLabel>
                 <I.Upload
                   files={field?.value ?? []}
                   setFiles={field.onChange}
