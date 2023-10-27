@@ -544,7 +544,7 @@ export const ABP1: Document = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "income_definition_specific_statewide_arr_region",
+                                                    name: "income_definition_specific_statewide_group_region",
                                                     props: {
                                                       appendText: "Add Region",
                                                       removeText:
@@ -623,7 +623,7 @@ export const ABP1: Document = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "income_definition_specific_statewide_arr_liv_arr",
+                                                    name: "income_definition_specific_statewide_group_liv_arrange",
                                                     props: {
                                                       appendText:
                                                         "Add Living Arrangement",
@@ -644,7 +644,7 @@ export const ABP1: Document = {
                                                       },
                                                       {
                                                         rhf: "FieldArray",
-                                                        name: "income_definition_specific_statewide",
+                                                        name: "income_definition_specific_statewide_arr",
                                                         fields: [
                                                           {
                                                             rhf: "Input",
@@ -704,7 +704,7 @@ export const ABP1: Document = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "income_definition_specific_statewide_arr_other",
+                                                    name: "income_definition_specific_statewide_group_other",
                                                     props: {
                                                       appendText: "Add",
                                                       removeText: "Remove",
@@ -722,7 +722,7 @@ export const ABP1: Document = {
                                                       },
                                                       {
                                                         rhf: "FieldArray",
-                                                        name: "income_definition_specific_statewide",
+                                                        name: "income_definition_specific_statewide_arr",
                                                         fields: [
                                                           {
                                                             rhf: "Input",
