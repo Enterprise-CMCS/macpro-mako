@@ -2,38 +2,58 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
-import { SimplePageContainer } from "@/components";
-import { PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
 
+const attachmentList = [
+  "cmsForm179",
+  "spaPages",
+  "coverLetter",
+  "tribalEngagement",
+  "existingStatePlanPages",
+  "publicNotice",
+  "sfq",
+  "tribalConsultation",
+  "other",
+] as const;
+
 const formSchema = z.object({
-  id: z.string(),
-  additionalInformation: z.string(),
-  //  : z.object({}),
-  // proposedEffectiveDate: z.date(),
+  id: z.string().min(2, {
+    message: "Ben was here",
+  }),
+  additionalInformation: z.string().optional(),
+  attachments: z.object({
+    cmsForm179: z.array(z.instanceof(File)).nonempty(),
+    spaPages: z.array(z.instanceof(File)).optional(),
+    coverLetter: z.array(z.instanceof(File)).optional(),
+    tribalEngagement: z.array(z.instanceof(File)).optional(),
+    existingStatePlanPages: z.array(z.instanceof(File)).optional(),
+    publicNotice: z.array(z.instanceof(File)).optional(),
+    sfq: z.array(z.instanceof(File)).optional(),
+    tribalConsultation: z.array(z.instanceof(File)).optional(),
+    other: z.array(z.instanceof(File)).optional(),
+  }),
+  proposedEffectiveDate: z.date().optional(),
 });
 
 export type MedicaidFormSchema = z.infer<typeof formSchema>;
 
 export const MedicaidForm = () => {
-  const { handleSubmit, register, formState } = useForm<MedicaidFormSchema>({
+  const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<MedicaidFormSchema> = (data) => {
-    console.log(data, formState.errors);
+  const onSubmit = (data: MedicaidFormSchema) => {
+    console.log(data);
   };
 
-  console.log(formState.errors);
-
   return (
-    <SimplePageContainer>
+    <I.Form {...form}>
       <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto mt-8 max-w-3xl flex flex-col gap-8"
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="my-6 space-y-8 max-w-3xl mx-auto"
       >
         <section>
-          <h1 className="bold text-2xl mb-2">Medicaid SPA Details</h1>
+          <h1 className="font-bold text-2xl mb-2">Medicaid SPA Details</h1>
           <p>
             Once you submit this form, a confirmation email is sent to you and
             to CMS. CMS will use this content to review your package, and you
@@ -45,33 +65,93 @@ export const MedicaidForm = () => {
           </p>
         </section>
 
+        <I.FormField
+          control={form.control}
+          name="id"
+          render={({ field }) => (
+            <I.FormItem>
+              <div className="flex justify-between">
+                <I.FormLabel>SPA ID</I.FormLabel>
+                <Link to="/faq" className="text-blue-700 hover:underline">
+                  What is my SPA ID?
+                </Link>
+              </div>
+              <p>Must follow the format SS-YY-NNNN or SS-YY-NNNN-xxxx.</p>
+              <p className="italic">
+                Reminder - CMS recommends that all SPA numbers start with the
+                year in which the package is submitted.
+              </p>
+              <I.FormControl className="max-w-sm">
+                <I.Input {...field} />
+              </I.FormControl>
+              <I.FormMessage />
+            </I.FormItem>
+          )}
+        />
+        <I.FormField
+          control={form.control}
+          name="proposedEffectiveDate"
+          render={({ field }) => (
+            <I.FormItem className="max-w-sm">
+              <I.FormLabel className="block">
+                Proposed Effective Date of Medicaid SPA
+              </I.FormLabel>
+              <I.FormDescription>For example: 4/28/1986</I.FormDescription>
+              <I.FormControl>
+                <I.DatePicker onChange={field.onChange} date={field.value} />
+              </I.FormControl>
+            </I.FormItem>
+          )}
+        />
         <section>
-          <div className="flex justify-between">
-            <I.Label htmlFor="id">SPA ID</I.Label>
-            <Link to="/faq" className="hover:underline text-blue-600">
-              What is my SPA ID?
-            </Link>
-          </div>
-          <HelpText>
-            Must follow the format SS-YY-NNNN or SS-YY-NNNN-xxxx.
-          </HelpText>
-          <HintText>
-            Reminder - CMS recommends that all SPA numbers start with the year
-            in which the package is submitted.
-          </HintText>
-          <I.Input {...register("id")} className="max-w-sm" />
+          <h3 className="text-2xl font-bold font-sans">Attachments</h3>
+          <p>
+            Maximum file size of 80 MB per attachment. You can add multiple
+            files per attachment type.Read the description for each of the
+            attachment types on the FAQ Page. We accept the following file
+            formats:{" "}
+            <strong className="bold">
+              .doc, .docx, .jpg, .odp, .ods, .odt, .png, .pdf, .ppt, .pptx,
+              .rtf, .txt, .xls, .xlsx,
+            </strong>{" "}
+            and a few others. See the full list on the FAQ Page. *At least one
+            attachment is required.
+          </p>
         </section>
 
-        <section>
-          <I.Label htmlFor="additionalInformation">
-            Additional Information
-          </I.Label>
-          <I.Textarea
-            id="additionalInformation"
-            {...register("additionalInformation")}
-            className="max-w-sm"
+        {attachmentList.map((attachment) => (
+          <I.FormField
+            key={attachment}
+            control={form.control}
+            name={`attachments.${attachment}`}
+            render={({ field }) => (
+              <I.FormItem>
+                <I.FormLabel>CMS Form 179</I.FormLabel>
+                <I.Upload
+                  files={field?.value ?? []}
+                  setFiles={field.onChange}
+                />
+              </I.FormItem>
+            )}
           />
-        </section>
+        ))}
+
+        <I.FormField
+          control={form.control}
+          name="additionalInformation"
+          render={({ field }) => (
+            <I.FormItem>
+              <h3 className="font-bold text-2xl font-sans">
+                Additional Information
+              </h3>
+              <I.FormLabel className="font-normal">
+                Add anything else you would like to share with CMS
+              </I.FormLabel>
+              <I.Textarea {...field} className="h-[200px] resize-none" />
+              <I.FormDescription>4,000 characters allowed</I.FormDescription>
+            </I.FormItem>
+          )}
+        />
 
         <div className="flex gap-2">
           <I.Button type="submit">Submit</I.Button>
@@ -80,11 +160,6 @@ export const MedicaidForm = () => {
           </I.Button>
         </div>
       </form>
-    </SimplePageContainer>
+    </I.Form>
   );
 };
-
-const HelpText = ({ children }: PropsWithChildren) => <p>{children}</p>;
-const HintText = ({ children }: PropsWithChildren) => (
-  <p className="italic">{children}</p>
-);
