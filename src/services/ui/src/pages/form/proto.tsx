@@ -58,15 +58,246 @@ export const ABP1: Document = {
                     options: [
                       {
                         label: "Parents and Other Caretaker Relatives",
-                        value: "Parents and Other Caretaker Relatives",
+                        value: "parents_caretaker_relatives",
                       },
                       {
-                        label: "Extended medicaid due to bling",
-                        value: "option2",
+                        label: "Transitional Medical Assistance",
+                        value: "transitional_medical_assist",
                       },
                       {
-                        label: "Extended medicaid due to bankrupcy",
-                        value: "option3",
+                        label: "Extended Medicaid Due to Earnings",
+                        value: "extend_medicaid_earnings",
+                      },
+                      {
+                        label:
+                          "Extended Medicaid Due to Spousal Support Collections",
+                        value: "extend_medicaid_spousal_support_collect",
+                      },
+                      {
+                        label: "Pregnant Women",
+                        value: "pregnant_women",
+                      },
+                      {
+                        label: "Deemed Newborns",
+                        value: "deemed_newborns",
+                      },
+                      {
+                        label: "Infants and Children under Age 19",
+                        value: "infants_children_under_19",
+                      },
+                      {
+                        label:
+                          "Children with Title IV-E Adoption Assistance, Foster Care or Guardianship Care",
+                        value:
+                          "children_title_IV-E_adoption_assist_foster_guardianship_care",
+                      },
+                      {
+                        label: "Former Foster Care Children",
+                        value: "former_foster_children",
+                      },
+                      {
+                        label: "Adult Group",
+                        value: "adult_group",
+                      },
+                      {
+                        label: "SSI Beneficiaries",
+                        value: "ssi_beneficiaries",
+                      },
+                      {
+                        label:
+                          "Aged, Blind and Disabled Individuals in 209(b) States",
+                        value: "aged_blind_disabled_individuals_209b_states",
+                      },
+                      {
+                        label:
+                          "Individuals Receiving Mandatory State Supplements",
+                        value:
+                          "individuals_receiving_mandatory_state_supplements",
+                      },
+                      {
+                        label: "Individuals Who Are Essential Spouses",
+                        value: "essential_spouses",
+                      },
+                      {
+                        label: "Institutionalized Individuals Eligible in 1973",
+                        value: "institutionalized_eligible_1973",
+                      },
+                      {
+                        label: "Blind or Disabled Individuals Eligible in 1937",
+                        value: "blind_disabled_eligible_1937",
+                      },
+                      {
+                        label:
+                          "Individuals Who Lost Eligibility for SSI/SSP Due to an Increase in OASDI Benefits in 1972",
+                        value:
+                          "lost_eligibility_SSI_SSP_increase_in_OASDI_benefits_1972",
+                      },
+                      {
+                        label:
+                          "Individuals Eligible for SSI/SSP but for OASDI COLA increases since April, 1977",
+                        value:
+                          "eligible_SSI_SSP_but_for_OASDI_COLA_increases_April_1977",
+                      },
+                      {
+                        label:
+                          "Disabled Widows and Widowers Ineligible for SSI due to Increase in OASDI",
+                        value:
+                          "disabled_widows_ineligible_SSI_due_to_increase_OASDI",
+                      },
+                      {
+                        label:
+                          "Disabled Widows and Widowers Ineligible for SSI due to Early Receipt of Social Security",
+                        value:
+                          "disabled_widows_ineligible_SSI_due_to_early_receipt_social_security",
+                      },
+                      {
+                        label: "Working Disabled under 1619(b)",
+                        value: "working_disabled_under_1619b",
+                      },
+                      {
+                        label: "Disabled Adult Children",
+                        value: "disabled_adult_children",
+                      },
+                      {
+                        label: "Qualified Medicare Beneficiaries",
+                        value: "qualified_medicare_beneficiaries",
+                      },
+                      {
+                        label: "Qualified Disabled and Working Individuals",
+                        value: "qualified_disabled_working_individuals",
+                      },
+                      {
+                        label: "Specified Low Income Medicare Beneficiaries",
+                        value: "spec_low_income_medicare_beneficiaries",
+                      },
+                      {
+                        label: "Qualifying Individuals",
+                        value: "qualifying_individuals",
+                      },
+                      {
+                        label:
+                          "Optional Coverage of Parents and Other Caretaker Relatives",
+                        value: "opt_coverage_parents_other_caretaker_relatives",
+                      },
+                      {
+                        label:
+                          "Reasonable Classifications of Individuals under Age 21",
+                        value: "reasonable_class_under_21",
+                      },
+                      {
+                        label: "Children with Non-IV-E Adoption Assistance",
+                        value: "children_Non-IV-E_adoption_assistance",
+                      },
+                      {
+                        label: "Independent Foster Care Adolescents",
+                        value: "independent_foster_care_adolescents",
+                      },
+                      {
+                        label: "Optional Targeted Low Income Children",
+                        value: "opt_targeted_low_income_children",
+                      },
+                      {
+                        label:
+                          "Individuals Electing COBRA Continuation Coverage",
+                        value: "individuals_electing_COBRA_cont_converage",
+                      },
+                      {
+                        label:
+                          "Certain Individuals Needing Treatment for Breast or Cervical Cancer",
+                        value:
+                          "individuals_need_treatment_for_breasts_cervical_cancer",
+                      },
+                      {
+                        label: "Individuals with Tuberculosis",
+                        value: "tuberculosis",
+                      },
+                      {
+                        label:
+                          "Aged, Blind or Disabled Individuals Eligible for but Not Receiving Cash",
+                        value:
+                          "aged_blind_disabled_eligible_but_not_receiving_cash",
+                      },
+                      {
+                        label:
+                          "Individuals Eligible for Cash except for Institutionalization",
+                        value: "eligible_cash_except_for_institutionalization",
+                      },
+                      {
+                        label:
+                          "Individuals Receiving Home and Community Based Services under Institutional Rules",
+                        value:
+                          "receiving_home_community_services_under_inst_rule",
+                      },
+                      {
+                        label:
+                          "Optional State Supplement - 1634 States and SSI Criteria States with 1616 Agreements",
+                        value:
+                          "opt_state_supp_1634_states_SSI_criteria_states_1616_agreements",
+                      },
+                      {
+                        label:
+                          "Optional State Supplement - 209(b) States and SSI Criteria States without 1616 Agreements",
+                        value:
+                          "opt_state_supp_209b_states_SSI_criteria_states_without_1616_agreements",
+                      },
+                      {
+                        label:
+                          "Institutionalized Individuals Eligible under a Special Income Level",
+                        value: "inst_eligible_under_special_income_level",
+                      },
+                      {
+                        label: "Individuals Receiving Hospice Care",
+                        value: "hospice_care",
+                      },
+                      {
+                        label: "Qualified Disabled Children under Age 19 ",
+                        value: "qualified_disabled_children_under_19",
+                      },
+                      {
+                        label: "Poverty Level Aged or Disabled",
+                        value: "poverty_level_aged_disabled",
+                      },
+                      {
+                        label: "Work Incentives Eligibility Group",
+                        value: "work_incentives_eligibility_group",
+                      },
+                      {
+                        label: "Ticket to Work Basic Group",
+                        value: "ticket_work_basic_group",
+                      },
+                      {
+                        label: "Ticket to Work Medical Improvements Group",
+                        value: "ticket_work_medical_imp_group",
+                      },
+                      {
+                        label:
+                          "Family Opportunity Act Children with Disabilities",
+                        value: "family_opportunity_act_children_disabilities",
+                      },
+                      {
+                        label: "Medically Needy Pregnant Women",
+                        value: "med_needy_pregnant_women",
+                      },
+                      {
+                        label: "Medically Needy Children under Age 18",
+                        value: "med_needy_children_under_18",
+                      },
+                      {
+                        label: "Medically Needy Children Age 18 through 20",
+                        value: "med_needy_age_18_through_20",
+                      },
+                      {
+                        label: "Medically Needy Parents and Other Caretakers",
+                        value: "med_needy_parents_caretakers",
+                      },
+                      {
+                        label: "Medically Needy Aged, Blind or Disabled",
+                        value: "med_needy_aged_blind_disabled",
+                      },
+                      {
+                        label:
+                          "Medically Needy Blind or Disabled Individuals Eligible in 1973",
+                        value: "med_needy_blind_disabled_eligible_1973",
                       },
                     ],
                   },
@@ -96,16 +327,6 @@ export const ABP1: Document = {
         {
           description:
             "Is enrollment available for all individuals in these eligibility groups?",
-          // dependency: {
-          //   //example of a conditionally revealed field
-          //   conditions: [
-          //     {
-          //       name: "alt_benefit_plan_population_name",
-          //       type: "valueExists",
-          //     },
-          //   ],
-          //   effect: { type: "show" },
-          // },
           slots: [
             {
               rhf: "Select",
@@ -295,6 +516,17 @@ export const ABP1: Document = {
                                               {
                                                 description:
                                                   "Enter incremental dollar amount",
+                                                //NOTE: Should this be a thing? It feels implied in the pdf
+                                                // dependency: {
+                                                //   conditions: [
+                                                //     {
+                                                //       type: "expectedValue",
+                                                //       name: "is_incremental_amount",
+                                                //       expectedValue: true,
+                                                //     },
+                                                //   ],
+                                                //   effect: { type: "show" },
+                                                // },
                                                 slots: [
                                                   {
                                                     rhf: "Input",
@@ -307,19 +539,28 @@ export const ABP1: Document = {
                                           {
                                             label: "Standard Varies by region",
                                             value: "region_standard", //
-
                                             form: [
                                               {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "income_definition_region_statewide_group",
+                                                    name: "income_definition_specific_statewide_arr_region",
                                                     props: {
                                                       appendText: "Add Region",
                                                       removeText:
                                                         "Remove Region",
                                                     },
                                                     fields: [
+                                                      {
+                                                        rhf: "Input",
+                                                        name: "name_of_region",
+                                                        label: "Region Name",
+                                                      },
+                                                      {
+                                                        rhf: "Textarea",
+                                                        name: "region_description",
+                                                        label: "Description",
+                                                      },
                                                       {
                                                         rhf: "FieldArray",
                                                         name: "income_definition_region_statewide_arr",
@@ -376,11 +617,160 @@ export const ABP1: Document = {
                                             label:
                                               "standard varies by living arrangement",
                                             value: "living_standard",
+
+                                            form: [
+                                              {
+                                                slots: [
+                                                  {
+                                                    rhf: "FieldGroup",
+                                                    name: "income_definition_specific_statewide_arr_liv_arr",
+                                                    props: {
+                                                      appendText:
+                                                        "Add Living Arrangement",
+                                                      removeText:
+                                                        "Remove Living Arrangement",
+                                                    },
+                                                    fields: [
+                                                      {
+                                                        rhf: "Input",
+                                                        name: "name_of_living_arrangement",
+                                                        label:
+                                                          "Living Arrangement Name",
+                                                      },
+                                                      {
+                                                        rhf: "Textarea",
+                                                        name: "living_arrangement_description",
+                                                        label: "Description",
+                                                      },
+                                                      {
+                                                        rhf: "FieldArray",
+                                                        name: "income_definition_specific_statewide",
+                                                        fields: [
+                                                          {
+                                                            rhf: "Input",
+                                                            label:
+                                                              "Household Size",
+                                                            name: "household_size",
+                                                            props: {
+                                                              placeholder:
+                                                                "enter size",
+                                                              className:
+                                                                "w-[300px]",
+                                                            },
+                                                          },
+                                                          {
+                                                            rhf: "Input",
+                                                            name: "standard",
+                                                            label:
+                                                              "Standard ($)",
+                                                            props: {
+                                                              className:
+                                                                "w-[200px]",
+                                                              placeholder:
+                                                                "enter amount",
+                                                            },
+                                                          },
+                                                        ],
+                                                      },
+                                                      {
+                                                        rhf: "Switch",
+                                                        label:
+                                                          "Is there an additional incremental amount?",
+                                                        labelStyling:
+                                                          "font-bold mb-2",
+                                                        name: "is_incremental_amount",
+                                                      },
+                                                      {
+                                                        rhf: "Input",
+                                                        label:
+                                                          "Enter incremental dollar amount:",
+                                                        labelStyling:
+                                                          "font-bold mb-2",
+                                                        name: "doller_incremental_amount",
+                                                      },
+                                                    ],
+                                                  },
+                                                ],
+                                              },
+                                            ],
                                           },
                                           {
                                             label:
                                               "standard varies by some other way",
                                             value: "other_standard",
+
+                                            form: [
+                                              {
+                                                slots: [
+                                                  {
+                                                    rhf: "FieldGroup",
+                                                    name: "income_definition_specific_statewide_arr_other",
+                                                    props: {
+                                                      appendText: "Add",
+                                                      removeText: "Remove",
+                                                    },
+                                                    fields: [
+                                                      {
+                                                        rhf: "Input",
+                                                        name: "name_of_group",
+                                                        label: "Name",
+                                                      },
+                                                      {
+                                                        rhf: "Textarea",
+                                                        name: "group_description",
+                                                        label: "Description",
+                                                      },
+                                                      {
+                                                        rhf: "FieldArray",
+                                                        name: "income_definition_specific_statewide",
+                                                        fields: [
+                                                          {
+                                                            rhf: "Input",
+                                                            label:
+                                                              "Household Size",
+                                                            name: "household_size",
+                                                            props: {
+                                                              placeholder:
+                                                                "enter size",
+                                                              className:
+                                                                "w-[300px]",
+                                                            },
+                                                          },
+                                                          {
+                                                            rhf: "Input",
+                                                            name: "standard",
+                                                            label:
+                                                              "Standard ($)",
+                                                            props: {
+                                                              className:
+                                                                "w-[200px]",
+                                                              placeholder:
+                                                                "enter amount",
+                                                            },
+                                                          },
+                                                        ],
+                                                      },
+                                                      {
+                                                        rhf: "Switch",
+                                                        label:
+                                                          "Is there an additional incremental amount?",
+                                                        labelStyling:
+                                                          "font-bold mb-2",
+                                                        name: "is_incremental_amount",
+                                                      },
+                                                      {
+                                                        rhf: "Input",
+                                                        label:
+                                                          "Enter incremental dollar amount:",
+                                                        labelStyling:
+                                                          "font-bold mb-2",
+                                                        name: "doller_incremental_amount",
+                                                      },
+                                                    ],
+                                                  },
+                                                ],
+                                              },
+                                            ],
                                           },
                                         ],
                                       },
@@ -416,15 +806,37 @@ export const ABP1: Document = {
                               value: "hiv_aids",
                             },
                             {
-                              label: "Medically frail",
-                              value: "ben",
+                              label: "Medically Frail",
+                              value: "med_frail",
                             },
                             {
                               label: "Technology dependent",
                               value: "technology_dependent",
                             },
+                            { label: "Autism", value: "autism" },
                             {
-                              label: "Other",
+                              label: "Developmental Disability",
+                              value: "dev_disability",
+                            },
+                            {
+                              label: "Intellectual Disability",
+                              value: "int_disability",
+                            },
+                            {
+                              label: "Mental Illness",
+                              value: "mental_illness",
+                            },
+                            {
+                              label: "Substance Use Disorder",
+                              value: "substance_use_dis",
+                            },
+                            { label: "Diabetes", value: "diabetes" },
+                            { label: "Heart Disease", value: "heart_dis" },
+                            { label: "Asthma", value: "asthma" },
+                            { label: "Obesity", value: "obesity" },
+                            {
+                              label:
+                                "Other disease, condition, diagnosis, or disorder",
                               value: "other",
                               slots: [
                                 {
