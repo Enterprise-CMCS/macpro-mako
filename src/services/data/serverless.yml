@@ -243,6 +243,7 @@ functions:
     timeout: 300
   cleanupKafka:
     handler: handlers/cleanupKafka.handler
+    maximumRetryAttempts: 0
     vpc:
       securityGroupIds:
         - Ref: SecurityGroup
