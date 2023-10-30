@@ -118,14 +118,16 @@ export const RHFSlot = <
                           </div>
                           {field.value === OPT.value &&
                             OPT.form &&
-                            OPT.form.map((FORM: any, index: any) => (
-                              <div
-                                className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
-                                key={`rhf-form-${index}-${FORM.description}`}
-                              >
-                                <RHFFormGroup form={FORM} control={control} />
-                              </div>
-                            ))}
+                            OPT.form.map((FORM: any, index: any) => {
+                              return (
+                                <div
+                                  className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
+                                  key={`rhf-form-${index}-${FORM.description}`}
+                                >
+                                  <RHFFormGroup form={FORM} control={control} />
+                                </div>
+                              );
+                            })}
                           {field.value === OPT.value &&
                             OPT.slots &&
                             OPT.slots.map((SLOT: any, index: any) => (
@@ -136,7 +138,8 @@ export const RHFSlot = <
                                 <FormField
                                   control={control}
                                   name={SLOT.name}
-                                  render={RHFSlot(SLOT)}
+                                  {...(SLOT.rules && { rules: SLOT.rules })}
+                                  render={RHFSlot({ ...SLOT, control })}
                                 />
                               </div>
                             ))}
@@ -178,7 +181,8 @@ export const RHFSlot = <
                               <FormField
                                 control={control}
                                 name={SLOT.name}
-                                render={RHFSlot(SLOT)}
+                                {...(SLOT.rules && { rules: SLOT.rules })}
+                                render={RHFSlot({ ...SLOT, control })}
                               />
                             </div>
                           ))}

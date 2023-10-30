@@ -20,17 +20,16 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
           </div>
         )}
         <div className={props.form.wrapperStyling}>
-          {props.form.slots.map((SLOT) => {
-            return (
-              <DependencyWrapper key={SLOT.name} {...SLOT}>
-                <FormField
-                  control={props.control}
-                  name={SLOT.name as any}
-                  render={RHFSlot({ ...SLOT, control: props.control })}
-                />
-              </DependencyWrapper>
-            );
-          })}
+          {props.form.slots.map((SLOT) => (
+            <DependencyWrapper key={SLOT.name} {...SLOT}>
+              <FormField
+                control={props.control}
+                name={SLOT.name as any}
+                {...(SLOT.rules && { rules: SLOT.rules })}
+                render={RHFSlot({ ...SLOT, control: props.control })}
+              />
+            </DependencyWrapper>
+          ))}
         </div>
       </div>
     </DependencyWrapper>
