@@ -86,7 +86,7 @@ export const RHFSlot = <
                     <SelectTrigger {...hops}>
                       <SelectValue {...hops} />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="overflow-auto max-h-60">
                       {hops.options.map((OPT: any) => (
                         <SelectItem key={`OPT-${OPT.value}`} value={OPT.value}>
                           {OPT.label}
