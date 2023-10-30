@@ -44,6 +44,7 @@
     "@tanstack/react-query-devtools": "^4.29.5",
     "@types/file-saver": "^2.0.5",
     "aws-amplify": "^5.2.5",
+    "axios": "^1.6.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",

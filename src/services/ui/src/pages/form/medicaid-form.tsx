@@ -3,12 +3,17 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
+import { API } from "aws-amplify";
+import { OneMacSink } from "shared-types";
 
 const formSchema = z.object({
-  id: z.string().min(2, {
-    message: "Ben was here",
-  }),
-  additionalInformation: z.string().optional(),
+  id: z
+    .string()
+    .regex(
+      /^[A-Z]{2}-\d{2}-\d{4}(-\d{4})?$/,
+      "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-xxxx"
+    ),
+  additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
     cmsForm179: z.array(z.instanceof(File)).nonempty(),
     spaPages: z.array(z.instanceof(File)).optional(),
@@ -24,29 +29,85 @@ const formSchema = z.object({
 });
 
 export type MedicaidFormSchema = z.infer<typeof formSchema>;
+type UploadKeys = keyof MedicaidFormSchema["attachments"];
+export type PreSignedURL = {
+  url: string;
+  key: string;
+  bucket: string;
+};
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
-const attachmentList: Array<[keyof MedicaidFormSchema["attachments"], string]> =
-  [
-    ["cmsForm179", "CMS Form 179"],
-    ["spaPages", "SPA Pages"],
-    ["coverLetter", "Cover Letter"],
-    ["tribalEngagement", "Document Demonstrating Good-Faith Tribal Engagement"],
-    ["existingStatePlanPages", "Existing State Plan Page(s)"],
-    ["publicNotice", "Public Notice"],
-    ["sfq", "Standard Funding Questions (SFQs)"],
-    ["tribalConsultation", "Tribal Consultation"],
-    ["other", "Other"],
-  ];
+const attachmentList: Array<[UploadKeys, string]> = [
+  ["cmsForm179", "CMS Form 179"],
+  ["spaPages", "SPA Pages"],
+  ["coverLetter", "Cover Letter"],
+  ["tribalEngagement", "Document Demonstrating Good-Faith Tribal Engagement"],
+  ["existingStatePlanPages", "Existing State Plan Page(s)"],
+  ["publicNotice", "Public Notice"],
+  ["sfq", "Standard Funding Questions (SFQs)"],
+  ["tribalConsultation", "Tribal Consultation"],
+  ["other", "Other"],
+];
 
 export const MedicaidForm = () => {
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<MedicaidFormSchema> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<MedicaidFormSchema> = async (data) => {
+    // check to see what controls have a file upload to send, because some will potentially be empty
+    const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
+    const validUploadKeys = uploadKeys.filter((key) => {
+      console.log(typeof key);
+      return data.attachments[key] !== undefined;
+    });
+    const validUploads = validUploadKeys.map((key) => data.attachments[key]);
+
+    // async for..of loop to handle all the promises
+    const getPreSignedURLs = () => {
+      const promises: Array<Promise<PreSignedURL>> = [];
+
+      validUploads.forEach(() =>
+        promises.push(
+          API.post("os", "/getUploadUrl", {
+            body: {},
+          })
+        )
+      );
+
+      return promises;
+    };
+
+    const fileUploadPromises: Promise<Response>[] = [];
+
+    for (const upload of validUploadKeys) {
+      for await (const presignedUrl of getPreSignedURLs()) {
+        data.attachments[upload]?.forEach((file) => {
+          fileUploadPromises.push(
+            fetch(presignedUrl.url, {
+              method: "PUT",
+              body: file,
+            })
+          );
+        });
+      }
+    }
+
+    await Promise.all(fileUploadPromises);
+
+    // transform data to match what the sink will expect?
+    console.log("hello", data);
+    const sendDataToOneMac = () => {
+      const oneMacData: { id: string } & OneMacSink = {
+        id: "",
+        additionalInformation: data.additionalInformation ?? null,
+        submitterEmail: "test@test.test",
+        submitterName: "test",
+        attachments: [],
+        raiResponses: [],
+      };
+    };
   };
 
   return (
@@ -91,6 +152,7 @@ export const MedicaidForm = () => {
             </I.FormItem>
           )}
         />
+
         <I.FormField
           control={form.control}
           name="proposedEffectiveDate"
@@ -103,9 +165,11 @@ export const MedicaidForm = () => {
               <I.FormControl>
                 <I.DatePicker onChange={field.onChange} date={field.value} />
               </I.FormControl>
+              <I.FormMessage />
             </I.FormItem>
           )}
         />
+
         <section>
           <h3 className="text-2xl font-bold font-sans">Attachments</h3>
           <p>
@@ -134,6 +198,7 @@ export const MedicaidForm = () => {
                   files={field?.value ?? []}
                   setFiles={field.onChange}
                 />
+                <I.FormMessage />
               </I.FormItem>
             )}
           />
@@ -158,9 +223,7 @@ export const MedicaidForm = () => {
 
         <div className="flex gap-2">
           <I.Button type="submit">Submit</I.Button>
-          <I.Button type="submit" variant="outline">
-            Cancel
-          </I.Button>
+          <I.Button variant="outline">Cancel</I.Button>
         </div>
       </form>
     </I.Form>
