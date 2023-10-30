@@ -5,6 +5,7 @@ import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
 import { API } from "aws-amplify";
 import { OneMacSink } from "shared-types";
+import axios from "axios";
 
 const formSchema = z.object({
   id: z
@@ -50,70 +51,64 @@ const attachmentList: Array<[UploadKeys, string]> = [
   ["other", "Other"],
 ];
 
+type FileMeta = {
+  s3Key: string;
+  filename: string;
+  title: string;
+  contentType: string;
+  url: string;
+};
+
 export const MedicaidForm = () => {
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<MedicaidFormSchema> = async (data) => {
-    // check to see what controls have a file upload to send, because some will potentially be empty
+  const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (data) => {
     const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
-    const validUploadKeys = uploadKeys.filter((key) => {
-      console.log(typeof key);
-      return data.attachments[key] !== undefined;
-    });
-    const validUploads = validUploadKeys.map((key) => data.attachments[key]);
+    const uploadedFiles: any[] = [];
+    const fileMetaData: FileMeta[] = [];
+    // const files: { file: File; index: number }[] = [];
 
-    // async for..of loop to handle all the promises
-    const getPreSignedURLs = () => {
-      const promises: Array<Promise<PreSignedURL>> = [];
-
-      validUploads.forEach(() =>
-        promises.push(
-          API.post("os", "/getUploadUrl", {
-            body: {},
-          })
-        )
+    const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
+      .filter((key) => data.attachments[key] !== undefined)
+      .map(() =>
+        API.post("os", "/getUploadUrl", {
+          body: {},
+        })
       );
+    const loadPresignedUrls = await Promise.all(presignedUrls);
 
-      return promises;
-    };
+    uploadKeys
+      .filter((key) => data.attachments[key] !== undefined)
+      .forEach((uploadKey, index) => {
+        const fileGroup = data.attachments[uploadKey] as File[];
 
-    const fileUploadPromises: Promise<Response>[] = [];
-
-    for (const upload of validUploadKeys) {
-      for await (const presignedUrl of getPreSignedURLs()) {
-        data.attachments[upload]?.forEach((file) => {
-          fileUploadPromises.push(
-            fetch(presignedUrl.url, {
-              method: "PUT",
-              body: file,
+        // upload all files in this group and track there name
+        for (const file of fileGroup) {
+          uploadedFiles.push(
+            axios.put(loadPresignedUrls[index].url, {
+              file,
             })
           );
-        });
-      }
-    }
 
-    await Promise.all(fileUploadPromises);
+          fileMetaData.push({
+            contentType: file.type,
+            filename: file.name,
+            s3Key: loadPresignedUrls[index].key,
+            title: "",
+            url: `https://${loadPresignedUrls[index].bucket}.s3.amazonaws.com/${loadPresignedUrls[index].key}`,
+          });
+        }
+      });
 
-    // transform data to match what the sink will expect?
-    console.log("hello", data);
-    const sendDataToOneMac = () => {
-      const oneMacData: { id: string } & OneMacSink = {
-        id: "",
-        additionalInformation: data.additionalInformation ?? null,
-        submitterEmail: "test@test.test",
-        submitterName: "test",
-        attachments: [],
-        raiResponses: [],
-      };
-    };
+    await Promise.all(uploadedFiles);
   };
 
   return (
     <I.Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="my-6 space-y-8 max-w-3xl mx-auto"
       >
         <section>
