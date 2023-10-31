@@ -43,9 +43,9 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
         : BLANK_VALUE,
   },
   {
-    field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
+    field: props?.isCms ? "stateStatus.keyword" : "stateStatus.keyword",
     label: "Status",
-    cell: (data) => (props?.isCms ? data.cmsStatus : data.stateStatus),
+    cell: (data) => (props?.isCms ? data.stateStatus : data.stateStatus),
   },
   {
     field: "submissionDate",

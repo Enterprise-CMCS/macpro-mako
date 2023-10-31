@@ -21,96 +21,99 @@ export const UsaBanner = () => {
       return false;
     }
   }, []);
-
   return (
-    <div className="bg-[#f0f0f0]">
-      {/* Display for Desktop */}
-      {isDesktop && (
-        <>
-          <div className="max-w-screen-xl px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center">
+    <>
+      <div className="bg-[#f0f0f0]">
+        {/* Display for Desktop */}
+        {isDesktop && (
+          <>
+            <div className="max-w-screen-xl px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center">
+              <img
+                className="w-4 h-[11px]"
+                src={UsFlag}
+                alt="A United States Flag icon"
+              />
+              <p>An official website of the United States government</p>
+              <button
+                className="flex"
+                aria-expanded={isOpen}
+                aria-controls="gov-banner-default-default"
+                onClick={() => setIsOpen((value) => !value)}
+              >
+                <span className="underline text-[#005ea2]">
+                  Here&apos;s how you know
+                </span>
+                {!isOpen && <ChevronDown className="w-4 h-4 text-[#005ea2]" />}
+                {isOpen && <ChevronUp className="w-4 h-4 text-[#005ea2]" />}
+              </button>
+            </div>
+          </>
+        )}
+        {/* Display for Mobile */}
+        {!isDesktop && (
+          <button
+            className="w-full flex items-center text-[0.8rem] px-4 py-1 leading-4 gap-2"
+            onClick={() => setIsOpen((value) => !value)}
+          >
             <img
               className="w-4 h-[11px]"
               src={UsFlag}
               alt="A United States Flag icon"
             />
-            <p>An official website of the United States government</p>
-            <button
-              className="flex"
-              aria-expanded={isOpen}
-              aria-controls="gov-banner-default-default"
-              onClick={() => setIsOpen((value) => !value)}
-            >
-              <span className="underline text-[#005ea2]">
-                Here&apos;s how you know
-              </span>
-              {!isOpen && <ChevronDown className="w-4 h-4 text-[#005ea2]" />}
-              {isOpen && <ChevronUp className="w-4 h-4 text-[#005ea2]" />}
-            </button>
+            <div>
+              <p>An official website of the United States government</p>
+              <div className="flex" aria-expanded={isOpen}>
+                <span className="underline text-[#005ea2] block">
+                  Here&apos;s how you know
+                </span>
+                {!isOpen && <ChevronDown className="w-4 h-4 text-[#005ea2]" />}
+                {isOpen && <ChevronUp className="w-4 h-4 text-[#005ea2]" />}
+              </div>
+            </div>
+          </button>
+        )}
+        {hasRole && (
+          <div className="w-full  px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center justify-center bg-red-200 ">
+            <p className="text-center text-base">
+              You do not have access to view the application
+              <a
+                rel="noreferrer"
+                href="https://home.idm.cms.gov/signin/login.html"
+                target="_blank"
+                className="text-blue-600 inline  no-underline"
+              >
+                Please visit IDM
+              </a>{" "}
+              to request the appropriate user role(s) - FAIL
+            </p>
           </div>
-        </>
-      )}
-      {/* Display for Mobile */}
-      {!isDesktop && (
-        <button
-          className="w-full flex items-center text-[0.8rem] px-4 py-1 leading-4 gap-2"
-          onClick={() => setIsOpen((value) => !value)}
-        >
-          <img
-            className="w-4 h-[11px]"
-            src={UsFlag}
-            alt="A United States Flag icon"
-          />
-          <div>
-            <p>An official website of the United States government</p>
-            <div className="flex" aria-expanded={isOpen}>
-              <span className="underline text-[#005ea2] block">
-                Here&apos;s how you know
-              </span>
-              {!isOpen && <ChevronDown className="w-4 h-4 text-[#005ea2]" />}
-              {isOpen && <ChevronUp className="w-4 h-4 text-[#005ea2]" />}
+        )}
+
+        {isOpen && (
+          <div className="flex flex-col gap-3 px-3 mt-3 sm:flex-row max-w-screen-lg mx-auto pb-4">
+            <div className="flex gap-2">
+              <GovernmentBuildingIcon className="min-w-[40px] min-h-[40px] w-10" />
+              <p className="text-sm max-w-md">
+                <strong className="block">Official websites use .gov</strong>A
+                <strong>.gov</strong> website belongs to an official government
+                organization in the United States.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <LockIcon className="min-w-[40px] min-h-[40px] w-10" />
+              <p className="text-sm max-w-md">
+                <strong className="block">
+                  Secure .gov websites use HTTPS
+                </strong>
+                A lock (<MiniLock />) or <strong>https://</strong> means
+                you&apos;ve safely connected to the .gov website. Share
+                sensitive information only on official, secure websites.
+              </p>
             </div>
           </div>
-        </button>
-      )}
-      {hasRole && (
-        <div className="w-full  px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center justify-center bg-red-200 ">
-          <p className="text-center text-base">
-            You do not have access to view the entire application.{" "}
-            <a
-              rel="noreferrer"
-              href="https://home.idm.cms.gov/signin/login.html"
-              target="_blank"
-              className="text-blue-600 inline  no-underline"
-            >
-              Please visit IDM
-            </a>{" "}
-            to request the appropriate user Role(s).
-          </p>
-        </div>
-      )}
-
-      {isOpen && (
-        <div className="flex flex-col gap-3 px-3 mt-3 sm:flex-row max-w-screen-lg mx-auto pb-4">
-          <div className="flex gap-2">
-            <GovernmentBuildingIcon className="min-w-[40px] min-h-[40px] w-10" />
-            <p className="text-sm max-w-md">
-              <strong className="block">Official websites use .gov</strong>A
-              <strong>.gov</strong> website belongs to an official government
-              organization in the United States.
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <LockIcon className="min-w-[40px] min-h-[40px] w-10" />
-            <p className="text-sm max-w-md">
-              <strong className="block">Secure .gov websites use HTTPS</strong>A
-              lock (<MiniLock />) or <strong>https://</strong> means you&apos;ve
-              safely connected to the .gov website. Share sensitive information
-              only on official, secure websites.
-            </p>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 
