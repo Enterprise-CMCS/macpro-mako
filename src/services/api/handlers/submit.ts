@@ -16,7 +16,7 @@ const config = {
 };
 
 import { Kafka, KafkaMessage } from "kafkajs";
-import { OneMacSink, transformMako } from "shared-types";
+import { OneMacSink, transformOnemac } from "shared-types";
 
 const kafka = new Kafka({
   clientId: "submit",
@@ -81,7 +81,7 @@ export const submit = async (event: APIGatewayEvent) => {
     await pool.close();
 
     const message: OneMacSink = body;
-    const makoBody = transformMako(body.id).safeParse(message);
+    const makoBody = transformOnemac(body.id).safeParse(message);
     if (makoBody.success === false) {
       // handle
       console.log(
