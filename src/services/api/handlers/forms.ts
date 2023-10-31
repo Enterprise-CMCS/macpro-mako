@@ -1,3 +1,5 @@
+import { response } from "../libs/handler";
+
 import * as fs from "fs";
 import { APIGatewayEvent } from "aws-lambda";
 
@@ -7,46 +9,37 @@ export const forms = async (event: APIGatewayEvent) => {
     const formId = body.formId;
     const formVersion = body.formVersion;
 
-    // if (!formId) {
-    //   return {
-    //     statusCode: 400,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ error: "File ID was not provided" }),
-    //   };
-    // }
+    if (!formId) {
+      return response({
+        statusCode: 400,
+        body: JSON.stringify({ error: "File ID was not provided" }),
+      });
+    }
 
     const filePath = getFilepathForIdAndVersion("testform", formVersion);
     const jsonData = await fs.promises.readFile(filePath, "utf-8");
 
     if (!jsonData) {
-      return {
+      return response({
         statusCode: 404,
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({
           error: "No file was found with provided formId and formVersion",
         }),
-      };
+      });
     }
     console.log(jsonData);
-    return {
+    return response({
       statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: jsonData,
-    };
+    });
   } catch (error) {
     console.error("Error:", error);
-    return {
+    return response({
       statusCode: 500,
       body: JSON.stringify({
         error: error.message ? error.message : "Internal server error",
       }),
-    };
+    });
   }
 };
 
