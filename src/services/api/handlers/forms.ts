@@ -9,12 +9,12 @@ export const forms = async (event: APIGatewayEvent) => {
     const formId = body.formId;
     const formVersion = body.formVersion;
 
-    // if (!formId) {
-    //   return response({
-    //     statusCode: 400,
-    //     body: JSON.stringify({ error: "File ID was not provided" }),
-    //   });
-    // }
+    if (!formId) {
+      return response({
+        statusCode: 400,
+        body: JSON.stringify({ error: "File ID was not provided" }),
+      });
+    }
 
     const filePath = getFilepathForIdAndVersion("testform", formVersion);
     const jsonData = await fs.promises.readFile(filePath, "utf-8");
