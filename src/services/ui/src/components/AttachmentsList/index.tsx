@@ -23,11 +23,8 @@ type AttachmentList = {
         uploadDate: number;
         bucket: string;
         key: string;
-        s3Key: string;
         filename: string;
         title: string;
-        contentType: string;
-        url: string;
       } | null)[]
     | null;
 };
@@ -38,21 +35,7 @@ const handleDownloadAll = async (data: AttachmentList) => {
       (attachment): attachment is NonNullable<typeof attachment> =>
         attachment !== null
     );
-
-    if (validAttachments.length > 0) {
-      const attachmentPromises = validAttachments.map(async (attachment) => {
-        const url = await getAttachmentUrl(
-          data.id,
-          attachment.bucket,
-          attachment.key,
-          attachment.filename
-        );
-        return { ...attachment, url };
-      });
-
-      const resolvedAttachments = await Promise.all(attachmentPromises);
-      downloadAll(resolvedAttachments, data.id);
-    }
+    downloadAll(validAttachments, data.id);
   }
 };
 
@@ -148,8 +131,16 @@ async function downloadAll(
     attachments
       .map(async (attachment) => {
         if (!attachment) return null;
+        let url = "";
         try {
-          const resp = await fetch(attachment.url);
+          url = await getAttachmentUrl(
+            id,
+            attachment.bucket,
+            attachment.key,
+            attachment.filename
+          );
+
+          const resp = await fetch(url);
           if (!resp.ok) throw resp;
           return {
             filename: attachment.filename,
@@ -158,7 +149,7 @@ async function downloadAll(
           };
         } catch (e) {
           console.error(
-            `Failed to download file: ${attachment.filename} ${attachment.url}`,
+            `Failed to download file: ${attachment.filename} ${url}`,
             e
           );
         }

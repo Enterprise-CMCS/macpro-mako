@@ -9,22 +9,11 @@ const onemacAttachmentSchema = z.object({
   url: z.string().url(),
 });
 
-const microAttachmentSchema = z.object({
-  bucket: z.string(),
-  key: z.string(),
-  filename: z.string(),
-  title: z.string(),
-  uploadDate: z.number(),
-});
-
 export const onemacSchema = z.object({
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),
-  attachments: z
-    .array(onemacAttachmentSchema)
-    .or(z.array(microAttachmentSchema))
-    .nullish(),
+  attachments: z.array(onemacAttachmentSchema).nullish(),
   raiResponses: z
     .array(
       z.object({
@@ -41,29 +30,34 @@ export const transformOnemac = (id: string) => {
     id,
     attachments:
       data.attachments?.map((attachment) => {
+        // this is a legacy onemac attachment
+        let bucket = "";
+        let key = "";
+        let uploadDate = 0;
+        if ("bucket" in attachment) {
+          bucket = attachment.bucket as string;
+        }
+        if ("key" in attachment) {
+          key = attachment.key as string;
+        }
         if ("uploadDate" in attachment) {
-          // this is a micro attachment
-          return {
-            bucket: attachment.bucket,
-            key: attachment.key,
-            filename: attachment.filename,
-            title: attachment.title,
-            uploadDate: attachment.uploadDate,
-          };
-        } else {
-          // this is a legacy onemac attachment
-          const uploadDate = parseInt(attachment.s3Key.split("/")[0]);
+          uploadDate = attachment.uploadDate as number;
+        }
+        if (bucket == "") {
           const parsedUrl = s3ParseUrl(attachment.url);
           if (!parsedUrl) return null;
-          const { bucket, key } = parsedUrl;
-
-          return {
-            ...attachment,
-            uploadDate,
-            bucket,
-            key,
-          };
+          bucket = parsedUrl.bucket;
+          key = parsedUrl.key;
+          uploadDate = parseInt(attachment.s3Key.split("/")[0]);
         }
+
+        return {
+          title: attachment.title,
+          filename: attachment.filename,
+          uploadDate,
+          bucket,
+          key,
+        };
       }) ?? null,
     raiResponses:
       data.raiResponses?.map((response) => {
