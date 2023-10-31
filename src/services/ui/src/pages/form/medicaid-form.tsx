@@ -2,13 +2,14 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { API } from "aws-amplify";
 import { OneMacTransform } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { BREAD_CRUMB_CONFIG_NEW_SUBMISSION } from "@/components/BreadCrumb/bread-crumb-config";
 import { SimplePageContainer } from "@/components";
+import { ROUTES } from "@/routes";
 
 const formSchema = z.object({
   id: z
@@ -67,6 +68,7 @@ export const MedicaidForm = () => {
     resolver: zodResolver(formSchema),
   });
   const user = useGetUser();
+  const navigate = useNavigate();
 
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (data) => {
     const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
@@ -130,7 +132,7 @@ export const MedicaidForm = () => {
 
     await API.post("os", "/submit", { body: dataToSubmit });
 
-    console.log("submitted?");
+    navigate(ROUTES.DASHBOARD);
   };
 
   return (
@@ -189,7 +191,11 @@ export const MedicaidForm = () => {
                 </I.FormLabel>
                 <I.FormDescription>For example: 4/28/1986</I.FormDescription>
                 <I.FormControl>
-                  <I.DatePicker onChange={field.onChange} date={field.value} />
+                  <I.DatePicker
+                    minDate={new Date()}
+                    onChange={field.onChange}
+                    date={field.value}
+                  />
                 </I.FormControl>
                 <I.FormMessage />
               </I.FormItem>
@@ -248,8 +254,16 @@ export const MedicaidForm = () => {
           />
 
           <div className="flex gap-2">
-            <I.Button type="submit">Submit</I.Button>
-            <I.Button variant="outline">Cancel</I.Button>
+            <I.Button disabled={form.formState.isSubmitting} type="submit">
+              Submit
+            </I.Button>
+            <I.Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate(ROUTES.DASHBOARD)}
+            >
+              Cancel
+            </I.Button>
           </div>
         </form>
       </I.Form>
