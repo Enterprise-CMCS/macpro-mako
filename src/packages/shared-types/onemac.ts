@@ -9,11 +9,22 @@ const onemacAttachmentSchema = z.object({
   url: z.string().url(),
 });
 
+const microAttachmentSchema = z.object({
+  bucket: z.string(),
+  key: z.string(),
+  filename: z.string(),
+  title: z.string(),
+  uploadDate: z.number(),
+});
+
 export const onemacSchema = z.object({
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),
-  attachments: z.array(onemacAttachmentSchema).nullish(),
+  attachments: z
+    .array(onemacAttachmentSchema)
+    .or(z.array(microAttachmentSchema))
+    .nullish(),
   raiResponses: z
     .array(
       z.object({
@@ -30,17 +41,29 @@ export const transformOnemac = (id: string) => {
     id,
     attachments:
       data.attachments?.map((attachment) => {
-        const uploadDate = parseInt(attachment.s3Key.split("/")[0]);
-        const parsedUrl = s3ParseUrl(attachment.url);
-        if (!parsedUrl) return null;
-        const { bucket, key } = parsedUrl;
+        if ("uploadDate" in attachment) {
+          // this is a micro attachment
+          return {
+            bucket: attachment.bucket,
+            key: attachment.key,
+            filename: attachment.filename,
+            title: attachment.title,
+            uploadDate: attachment.uploadDate,
+          };
+        } else {
+          // this is a legacy onemac attachment
+          const uploadDate = parseInt(attachment.s3Key.split("/")[0]);
+          const parsedUrl = s3ParseUrl(attachment.url);
+          if (!parsedUrl) return null;
+          const { bucket, key } = parsedUrl;
 
-        return {
-          ...attachment,
-          uploadDate,
-          bucket,
-          key,
-        };
+          return {
+            ...attachment,
+            uploadDate,
+            bucket,
+            key,
+          };
+        }
       }) ?? null,
     raiResponses:
       data.raiResponses?.map((response) => {
