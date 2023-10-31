@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
 import { API } from "aws-amplify";
-import { OneMacSink, OneMacTransform } from "shared-types";
+import { OneMacTransform } from "shared-types";
 import axios from "axios";
 import { useGetUser } from "@/api/useGetUser";
 
@@ -109,11 +109,13 @@ export const MedicaidForm = () => {
     const dataToSubmit: OneMacTransform & {
       state: string;
       proposedEffectiveDate: number;
+      authority: string;
     } = {
       id: data.id,
       additionalInformation: data?.additionalInformation ?? null,
       attachments: fileMetaData,
       origin: "micro",
+      authority: "medicaid spa",
       raiResponses: [],
       submitterEmail: user.data?.user?.email ?? "N/A",
       submitterName:
