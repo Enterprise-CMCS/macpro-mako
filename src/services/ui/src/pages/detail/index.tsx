@@ -16,7 +16,7 @@ import { useGetItem } from "@/api";
 import { DetailNav } from "./detailNav";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { BREAD_CRUMB_CONFIG_PACKAGE_DETAILS } from "@/components/BreadCrumb/bread-crumb-config";
-import { mapActionLabel } from "@/utils";
+import { mapActionLabel, mapActionLink } from "@/utils";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/routes";
 
@@ -69,7 +69,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
                     {data.actions.map((action, idx) => (
                       <Link
                         className="text-sky-500 underline"
-                        to={ROUTES.DASHBOARD}
+                        to={mapActionLink(action)}
                         key={`${idx}-${action}`}
                       >
                         <li>{mapActionLabel(action)}</li>
