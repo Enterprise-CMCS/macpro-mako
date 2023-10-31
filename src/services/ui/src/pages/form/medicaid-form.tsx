@@ -191,11 +191,7 @@ export const MedicaidForm = () => {
                 </I.FormLabel>
                 <I.FormDescription>For example: 4/28/1986</I.FormDescription>
                 <I.FormControl>
-                  <I.DatePicker
-                    minDate={new Date()}
-                    onChange={field.onChange}
-                    date={field.value}
-                  />
+                  <I.DatePicker onChange={field.onChange} date={field.value} />
                 </I.FormControl>
                 <I.FormMessage />
               </I.FormItem>
