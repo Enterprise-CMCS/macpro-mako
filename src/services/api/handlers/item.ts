@@ -30,7 +30,7 @@ const packageActionsForResult = (
   result: ItemResult
 ): Action[] => {
   const actions = [];
-  if (isCmsUser(user) && result._source.raiReceivedDate) {
+  if (isCmsUser(user)) {
     actions.push(Action.ENABLE_RAI_WITHDRAW);
   }
   return actions;
@@ -54,7 +54,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
       body.id
     )) as ItemResult;
 
-    // Get available actions based on user's rol/* */e and result source
+    // Get available actions based on user's role and result source
     result.actions = packageActionsForResult(userAttr, result);
 
     if (
