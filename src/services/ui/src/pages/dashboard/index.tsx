@@ -52,9 +52,9 @@ export const Dashboard = () => {
           <div className="flex items-center justify-between my-4">
             <h1 className="text-xl">Dashboard</h1>
             {!user?.isCms && (
-              <Button>
-                <Link to={ROUTES.NEW_SUBMISSION_OPTIONS}>New Submission</Link>
-              </Button>
+              <Link to={ROUTES.NEW_SUBMISSION_OPTIONS}>
+                <Button>New Submission</Button>
+              </Link>
             )}
           </div>
           <div className="w-[100%] items-center justify-center">
