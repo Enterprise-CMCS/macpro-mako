@@ -7,17 +7,17 @@ export const forms = async (event: APIGatewayEvent) => {
     const formId = body.formId;
     const formVersion = body.formVersion;
 
-    if (!formId) {
-      return {
-        statusCode: 400,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ error: "File ID was not provided" }),
-      };
-    }
+    // if (!formId) {
+    //   return {
+    //     statusCode: 400,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ error: "File ID was not provided" }),
+    //   };
+    // }
 
-    const filePath = getFilepathForIdAndVersion(formId, formVersion);
+    const filePath = getFilepathForIdAndVersion("testform", formVersion);
     const jsonData = await fs.promises.readFile(filePath, "utf-8");
 
     if (!jsonData) {
