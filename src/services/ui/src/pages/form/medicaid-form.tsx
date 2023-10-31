@@ -89,8 +89,9 @@ export const MedicaidForm = () => {
         // upload all files in this group and track there name
         for (const file of fileGroup) {
           uploadedFiles.push(
-            axios.put(loadPresignedUrls[index].url, {
-              file,
+            fetch(loadPresignedUrls[index].url, {
+              body: file,
+              method: "PUT",
             })
           );
 

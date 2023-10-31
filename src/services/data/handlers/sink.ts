@@ -105,11 +105,13 @@ export const onemac: Handler = async (event) => {
       if (value) {
         const id: string = decode(key);
         const record = { id, ...JSON.parse(decode(value)) };
+        console.log(record);
         if (
-          record &&
-          record.sk === "Package" &&
-          record.submitterName &&
-          record.submitterName !== "-- --" // these records did not originate from onemac, thus we ignore them
+          record && // testing if we have a record
+          (record.origin === "micro" || // testing if this is a micro record
+            (record.sk === "Package" && // testing if this is a legacy onemac package record
+              record.submitterName &&
+              record.submitterName !== "-- --"))
         ) {
           const result = transformOnemac(id).safeParse(record);
           if (result.success === false) {
