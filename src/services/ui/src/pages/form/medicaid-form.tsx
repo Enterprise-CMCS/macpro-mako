@@ -5,7 +5,6 @@ import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
 import { API } from "aws-amplify";
 import { OneMacTransform } from "shared-types";
-import axios from "axios";
 import { useGetUser } from "@/api/useGetUser";
 
 const formSchema = z.object({

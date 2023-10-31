@@ -18,6 +18,7 @@ export enum ROUTES {
   MEDICAID_ELIGIBILITY_LANDING = "/new-submission/spa/medicaid/landing/medicaid-eligibility",
   CHIP_ELIGIBILITY_LANDING = "/new-submission/spa/chip/landing/chip-eligibility",
   CREATE = "/create",
+  MEDICAID_NEW = "/new-submission/spa/medicaid/create",
 }
 
 export enum FAQ_SECTION {
