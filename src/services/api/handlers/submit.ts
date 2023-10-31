@@ -15,6 +15,23 @@ const config = {
   database: "SEA",
 };
 
+import { Kafka, KafkaMessage } from "kafkajs";
+import { OneMacSink, transformOnemac } from "shared-types";
+
+const kafka = new Kafka({
+  clientId: "submit",
+  brokers: process.env.brokerString.split(","),
+  retry: {
+    initialRetryTime: 300,
+    retries: 8,
+  },
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+const producer = kafka.producer();
+
 export const submit = async (event: APIGatewayEvent) => {
   try {
     const body = JSON.parse(event.body);
@@ -27,10 +44,20 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
-    const pool = await sql.connect(config);
+    if (body.authority !== "medicaid spa") {
+      return response({
+        statusCode: 400,
+        body: {
+          message:
+            "The Mako Submissions API only supports Medicaid SPA at this time",
+        },
+      });
+    }
 
+    const pool = await sql.connect(config);
+    console.log(body);
     const query = `
-      Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
+      Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
         values ('${body.id}'
           ,'${body.state}'
           ,(Select Region_ID from SEA.dbo.States where State_Code = '${
@@ -41,6 +68,9 @@ export const submit = async (event: APIGatewayEvent) => {
           }')
           ,dateadd(s, convert(int, left(${Date.now()}, 10)), cast('19700101' as datetime))
           ,dateadd(s, convert(int, left(${Date.now()}, 10)), cast('19700101' as datetime))
+          ,dateadd(s, convert(int, left(${
+            body.proposedEffectiveDate
+          }, 10)), cast('19700101' as datetime))
           ,(Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = 'Pending')
           ,0)
     `;
@@ -50,10 +80,29 @@ export const submit = async (event: APIGatewayEvent) => {
 
     await pool.close();
 
-    return response({
-      statusCode: 200,
-      body: { message: "success" },
-    });
+    const message: OneMacSink = body;
+    const makoBody = transformOnemac(body.id).safeParse(message);
+    if (makoBody.success === false) {
+      // handle
+      console.log(
+        "MAKO Validation Error. The following record failed to parse: ",
+        JSON.stringify(message),
+        "Because of the following Reason(s): ",
+        makoBody.error.message
+      );
+    } else {
+      console.log(message);
+      await produceMessage(
+        process.env.topicName,
+        body.id,
+        JSON.stringify(message)
+      );
+
+      return response({
+        statusCode: 200,
+        body: { message: "success" },
+      });
+    }
   } catch (error) {
     console.error({ error });
     return response({
@@ -62,5 +111,31 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 };
+
+async function produceMessage(topic, key, value) {
+  console.log("about to connect");
+  await producer.connect();
+  console.log("connected");
+
+  const message: KafkaMessage = {
+    key: key,
+    value: value,
+    partition: 0,
+    headers: { source: "mako" },
+  };
+  console.log(message);
+
+  try {
+    await producer.send({
+      topic,
+      messages: [message],
+    });
+    console.log("Message sent successfully");
+  } catch (error) {
+    console.error("Error sending message:", error);
+  } finally {
+    await producer.disconnect();
+  }
+}
 
 export const handler = submit;
