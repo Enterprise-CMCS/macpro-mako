@@ -1,5 +1,6 @@
 import { SeaToolTransform } from "./seatool";
 import { OneMacTransform } from "./onemac";
+import { Action } from "./actions";
 
 export type OsHit<T> = {
   _index: string;
@@ -34,6 +35,10 @@ export type OsResponse<T> = {
 export type OsMainSourceItem = OneMacTransform & SeaToolTransform;
 export type OsMainSearchResponse = OsResponse<OsMainSourceItem>;
 export type SearchData = OsHits<OsMainSourceItem>;
+export type ItemResult = OsHit<OsMainSourceItem> & {
+  found: boolean;
+  actions: Action[];
+};
 
 export type OsFilterType =
   | "term"

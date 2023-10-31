@@ -1,8 +1,13 @@
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { OsHit, OsMainSourceItem, ReactQueryApiError } from "shared-types";
+import {
+  ItemResult,
+  OsHit,
+  OsMainSourceItem,
+  ReactQueryApiError,
+} from "shared-types";
 
-export const getItem = async (id: string): Promise<OsHit<OsMainSourceItem>> => {
+export const getItem = async (id: string): Promise<ItemResult> => {
   const record = await API.post("os", "/item", { body: { id } });
 
   return record;
@@ -10,9 +15,9 @@ export const getItem = async (id: string): Promise<OsHit<OsMainSourceItem>> => {
 
 export const useGetItem = (
   id: string,
-  options?: UseQueryOptions<OsHit<OsMainSourceItem>, ReactQueryApiError>
+  options?: UseQueryOptions<ItemResult, ReactQueryApiError>
 ) => {
-  return useQuery<OsHit<OsMainSourceItem>, ReactQueryApiError>(
+  return useQuery<ItemResult, ReactQueryApiError>(
     ["record", id],
     () => getItem(id),
     options

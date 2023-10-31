@@ -6,22 +6,12 @@ import {
   getStateFilter,
   lookupUserAttributes,
 } from "../libs/auth/user";
-import {
-  OsHit,
-  OsMainSourceItem,
-  Action,
-  CognitoUserAttributes,
-} from "shared-types";
+import { Action, CognitoUserAttributes, ItemResult } from "shared-types";
 import { isCmsUser } from "shared-utils";
 
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
-
-type ItemResult = OsHit<OsMainSourceItem> & {
-  found: boolean;
-  actions: Action[];
-};
 
 /** Generates an array of allowed actions from a combination of user attributes
  * and OS result data */
@@ -30,7 +20,7 @@ const packageActionsForResult = (
   result: ItemResult
 ): Action[] => {
   const actions = [];
-  if (isCmsUser(user)) {
+  if (isCmsUser(user) && result._source.raiReceivedDate) {
     actions.push(Action.ENABLE_RAI_WITHDRAW);
   }
   return actions;

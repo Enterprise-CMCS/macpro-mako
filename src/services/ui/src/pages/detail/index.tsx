@@ -10,18 +10,17 @@ import {
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { OsHit, OsMainSourceItem } from "shared-types";
+import { Action, ItemResult, OsHit, OsMainSourceItem } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { DetailNav } from "./detailNav";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { BREAD_CRUMB_CONFIG_PACKAGE_DETAILS } from "@/components/BreadCrumb/bread-crumb-config";
+import { mapActionLabel } from "@/utils";
+import { Link } from "react-router-dom";
+import { ROUTES } from "@/routes";
 
-export const DetailsContent = ({
-  data,
-}: {
-  data?: OsHit<OsMainSourceItem>;
-}) => {
+export const DetailsContent = ({ data }: { data?: ItemResult }) => {
   const { data: user } = useGetUser();
   if (!data?._source) return <LoadingSpinner />;
   return (
@@ -46,20 +45,42 @@ export const DetailsContent = ({
         ))}
       </aside>
       <div className="flex-1">
-        <section id="package-overview" className="block md:flex mb-8 gap-8">
-          <CardWithTopBorder>
-            <div className="p-4">
-              <p className="text-gray-600 font-semibold mb-2">Status</p>
-              <div>
-                <h2 className="text-xl font-semibold mb-2">
-                  {user?.isCms
-                    ? data._source.cmsStatus
-                    : data._source.stateStatus}
-                </h2>
+        <div className="flex gap-8">
+          <section id="package-overview" className="block md:flex mb-8 gap-8">
+            <CardWithTopBorder>
+              <div className="p-4">
+                <p className="text-gray-600 font-semibold mb-2">Status</p>
+                <div>
+                  <h2 className="text-xl font-semibold mb-2">
+                    {user?.isCms
+                      ? data._source.cmsStatus
+                      : data._source.stateStatus}
+                  </h2>
+                </div>
               </div>
-            </div>
-          </CardWithTopBorder>
-        </section>
+            </CardWithTopBorder>
+          </section>
+          <section id="package-actions" className="block md:flex mb-8 gap-8">
+            <CardWithTopBorder>
+              <div className="p-4">
+                <p className="text-gray-600 font-semibold mb-2">Actions</p>
+                <div>
+                  <ul>
+                    {data.actions.map((action, idx) => (
+                      <Link
+                        className="text-sky-500 underline"
+                        to={ROUTES.DASHBOARD}
+                        key={`${idx}-${action}`}
+                      >
+                        <li>{mapActionLabel(action)}</li>
+                      </Link>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </CardWithTopBorder>
+          </section>
+        </div>
         <DetailsSection id="package-details" title="Package Details">
           <ChipSpaPackageDetails {...data?._source} />
         </DetailsSection>
