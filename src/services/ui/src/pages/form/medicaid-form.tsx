@@ -4,8 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
 import { API } from "aws-amplify";
-import { OneMacSink } from "shared-types";
+import { OneMacSink, OneMacTransform } from "shared-types";
 import axios from "axios";
+import { useGetUser } from "@/api/useGetUser";
 
 const formSchema = z.object({
   id: z
@@ -26,7 +27,7 @@ const formSchema = z.object({
     tribalConsultation: z.array(z.instanceof(File)).optional(),
     other: z.array(z.instanceof(File)).optional(),
   }),
-  proposedEffectiveDate: z.date().optional(),
+  proposedEffectiveDate: z.date(),
 });
 
 export type MedicaidFormSchema = z.infer<typeof formSchema>;
@@ -63,11 +64,12 @@ export const MedicaidForm = () => {
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
   });
+  const user = useGetUser();
 
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (data) => {
     const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
     const uploadedFiles: any[] = [];
-    const fileMetaData: FileMeta[] = [];
+    const fileMetaData: NonNullable<OneMacTransform["attachments"]> = [];
     // const files: { file: File; index: number }[] = [];
 
     const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
@@ -93,16 +95,37 @@ export const MedicaidForm = () => {
           );
 
           fileMetaData.push({
-            contentType: file.type,
+            key: loadPresignedUrls[index].key,
             filename: file.name,
-            s3Key: loadPresignedUrls[index].key,
-            title: "",
-            url: `https://${loadPresignedUrls[index].bucket}.s3.amazonaws.com/${loadPresignedUrls[index].key}`,
+            title: "Testing",
+            bucket: loadPresignedUrls[index].bucket,
+            uploadDate: Date.now(),
           });
         }
       });
 
     await Promise.all(uploadedFiles);
+
+    const dataToSubmit: OneMacTransform & {
+      state: string;
+      proposedEffectiveDate: number;
+    } = {
+      id: data.id,
+      additionalInformation: data?.additionalInformation ?? null,
+      attachments: fileMetaData,
+      origin: "micro",
+      raiResponses: [],
+      submitterEmail: user.data?.user?.email ?? "N/A",
+      submitterName:
+        `${user.data?.user?.given_name} ${user.data?.user?.family_name}` ??
+        "N/A",
+      proposedEffectiveDate: data.proposedEffectiveDate.getTime(),
+      state: data.id.split("-")[0],
+    };
+
+    await API.post("os", "/submit", { body: dataToSubmit });
+
+    console.log("submitted?");
   };
 
   return (
