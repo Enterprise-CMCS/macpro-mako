@@ -105,7 +105,6 @@ export const onemac: Handler = async (event) => {
       if (value) {
         const id: string = decode(key);
         const record = { id, ...JSON.parse(decode(value)) };
-        console.log(record);
         if (
           record && // testing if we have a record
           (record.origin === "micro" || // testing if this is a micro record
