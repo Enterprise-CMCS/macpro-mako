@@ -289,8 +289,8 @@ export const MedicaidForm = () => {
             <h3 className="text-2xl font-bold font-sans">Attachments</h3>
             <p>
               Maximum file size of 80 MB per attachment. You can add multiple
-              files per attachment type. Read the description for each of the
-              attachment types on the{" "}
+              files per attachment type except for the CMS Form 179. Read the
+              description for each of the attachment types on the{" "}
               {
                 <Link
                   to="/faq"
