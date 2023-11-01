@@ -5,8 +5,6 @@ import { APIGatewayEvent } from "aws-lambda";
 
 export const forms = async (event: APIGatewayEvent) => {
   try {
-    const body = event.body ? JSON.parse(event.body) : {};
-    // const formId = body.formId;
     const formId = event.queryStringParameters.formId;
     const formVersion = event.queryStringParameters.formVersion;
 
