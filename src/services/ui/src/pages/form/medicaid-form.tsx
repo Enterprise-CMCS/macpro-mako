@@ -243,7 +243,12 @@ export const MedicaidForm = () => {
                     SPA ID
                     <I.RequiredIndicator />
                   </I.FormLabel>
-                  <Link to="/faq" className="text-blue-700 hover:underline">
+                  <Link
+                    to="/faq"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-700 hover:underline"
+                  >
                     What is my SPA ID?
                   </Link>
                 </div>
