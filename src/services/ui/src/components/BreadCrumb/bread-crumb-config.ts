@@ -45,7 +45,7 @@ export const BREAD_CRUMB_CONFIG_NEW_SUBMISSION: BreadCrumbConfig[] = [
     order: 4,
   },
   {
-    displayText: "New Submission",
+    displayText: "Submit New Medicaid SPA",
     to: ROUTES.MEDICAID_NEW,
     order: 5,
   },
