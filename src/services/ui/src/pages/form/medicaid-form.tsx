@@ -220,7 +220,7 @@ export const MedicaidForm = () => {
           <section>
             <h1 className="font-bold text-2xl mb-2">Medicaid SPA Details</h1>
             <p className="my-1">
-              <I.RequiredIndicator /> indicates required field
+              <I.RequiredIndicator /> Indicates a required field
             </p>
             <p className="font-light mb-6 max-w-4xl">
               Once you submit this form, a confirmation email is sent to you and
