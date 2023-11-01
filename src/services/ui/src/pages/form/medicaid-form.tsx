@@ -290,7 +290,18 @@ export const MedicaidForm = () => {
             <p>
               Maximum file size of 80 MB per attachment. You can add multiple
               files per attachment type. Read the description for each of the
-              attachment types on the FAQ Page.
+              attachment types on the{" "}
+              {
+                <Link
+                  to="/faq"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-700 hover:underline"
+                >
+                  FAQ Page
+                </Link>
+              }
+              .
             </p>
             <br />
             <p>
@@ -299,7 +310,18 @@ export const MedicaidForm = () => {
                 .doc, .docx, .jpg, .odp, .ods, .odt, .png, .pdf, .ppt, .pptx,
                 .rtf, .txt, .xls, .xlsx,
               </strong>{" "}
-              and a few others. See the full list on the FAQ Page.
+              and a few others. See the full list on the{" "}
+              {
+                <Link
+                  to="/faq"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-700 hover:underline"
+                >
+                  FAQ Page
+                </Link>
+              }
+              .
             </p>
             <br />
             <p>
