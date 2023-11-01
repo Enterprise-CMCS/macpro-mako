@@ -12,6 +12,7 @@ import { SimplePageContainer } from "@/components";
 import { ROUTES } from "@/routes";
 import { getUserStateCodes } from "@/utils";
 import { Alert } from "@/components/Alert";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 const formSchema = z.object({
   state: z.string(),
@@ -302,6 +303,11 @@ export const MedicaidForm = () => {
             <Alert className="mb-6" variant="destructive">
               Missing or malformed information. Please see errors above.
             </Alert>
+          ) : null}
+          {form.formState.isSubmitting ? (
+            <div className="p-4">
+              <LoadingSpinner />
+            </div>
           ) : null}
           <div className="flex gap-2">
             <I.Button disabled={form.formState.isSubmitting} type="submit">
