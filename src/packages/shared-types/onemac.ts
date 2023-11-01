@@ -2,11 +2,14 @@ import { z } from "zod";
 import { s3ParseUrl } from "shared-utils/s3-url-parser";
 
 const onemacAttachmentSchema = z.object({
-  s3Key: z.string(),
+  s3Key: z.string().nullish(),
   filename: z.string(),
   title: z.string(),
-  contentType: z.string(),
-  url: z.string().url(),
+  contentType: z.string().nullish(),
+  url: z.string().url().nullish(),
+  bucket: z.string().nullish(),
+  key: z.string().nullish(),
+  uploadDate: z.number().nullish(),
 });
 
 export const onemacSchema = z.object({
@@ -44,11 +47,11 @@ export const transformOnemac = (id: string) => {
           uploadDate = attachment.uploadDate as number;
         }
         if (bucket == "") {
-          const parsedUrl = s3ParseUrl(attachment.url);
+          const parsedUrl = s3ParseUrl(attachment.url || "");
           if (!parsedUrl) return null;
           bucket = parsedUrl.bucket;
           key = parsedUrl.key;
-          uploadDate = parseInt(attachment.s3Key.split("/")[0]);
+          uploadDate = parseInt(attachment.s3Key?.split("/")[0] || "0");
         }
 
         return {
@@ -66,8 +69,10 @@ export const transformOnemac = (id: string) => {
           submissionTimestamp: response.submissionTimestamp,
           attachments:
             response.attachments?.map((attachment) => {
-              const uploadDate = parseInt(attachment.s3Key.split("/")[0]);
-              const parsedUrl = s3ParseUrl(attachment.url);
+              const uploadDate = parseInt(
+                attachment.s3Key?.split("/")[0] || "0"
+              );
+              const parsedUrl = s3ParseUrl(attachment.url || "");
               if (!parsedUrl) return null;
               const { bucket, key } = parsedUrl;
 
