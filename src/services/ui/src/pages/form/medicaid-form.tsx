@@ -140,7 +140,7 @@ export const MedicaidForm = () => {
       console.log(submissionResponse);
       setModalChildren(
         <div className="flex flex-col gap-2 items-center text-center">
-          <div className="max-w-md p-4 rounded-lg shadow-lg">
+          <div className="max-w-md p-4">
             <div className="font-bold">Submission Success!</div>
             <p>
               Your submission was accepted.
@@ -162,7 +162,7 @@ export const MedicaidForm = () => {
       console.log(err);
       setModalChildren(
         <div className="flex flex-col gap-2 items-center text-center">
-          <div className="max-w-md p-4 rounded-lg shadow-lg">
+          <div className="max-w-md p-4">
             <div className="text-red-500 font-bold">Submission Error:</div>
             <p>
               An error occurred during submission.
@@ -207,19 +207,21 @@ export const MedicaidForm = () => {
       <I.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="my-6 space-y-8 max-w-3xl mx-auto"
+          className="my-6 space-y-8 max-w-5xl mx-auto"
         >
           <section>
             <h1 className="font-bold text-2xl mb-2">Medicaid SPA Details</h1>
-            <p>
-              Once you submit this form, a confirmation email is sent to you and
-              to CMS. CMS will use this content to review your package, and you
-              will not be able to edit this form. If CMS needs any additional
-              information, they will follow up by email.{" "}
-              <strong className="bold">
-                If you leave this page, you will lose your progress on this
-                form.
-              </strong>
+            <p className="font-light mb-6 max-w-4xl">
+              <i>
+                Once you submit this form, a confirmation email is sent to you
+                and to CMS. CMS will use this content to review your package,
+                and you will not be able to edit this form. If CMS needs any
+                additional information, they will follow up by email.{" "}
+                <strong className="bold">
+                  If you leave this page, you will lose your progress on this
+                  form.
+                </strong>
+              </i>
             </p>
           </section>
 
