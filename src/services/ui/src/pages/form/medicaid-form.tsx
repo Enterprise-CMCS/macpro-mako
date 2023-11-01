@@ -140,10 +140,16 @@ export const MedicaidForm = () => {
       });
       console.log(submissionResponse);
       setModalChildren(
-        <div className="flex flex-col gap-2">
-          Submission Success! Your submission was successfully submitted. Please
-          use the following link to return to the dashboard. Your record should
-          appear on the dashboard within a few seconds; you may need to refresh.
+        <div className="flex flex-col gap-2 items-center text-center">
+          <div className="max-w-md p-4 rounded-lg shadow-lg">
+            <div className="font-bold">Submission Success!</div>
+            <p>
+              Your submission was accepted.
+              <br />
+              Please keep in mind it may take up to a minute for your submission
+              to show in the Dashboard.
+            </p>
+          </div>
           <I.Button
             type="button"
             variant="outline"
@@ -156,12 +162,32 @@ export const MedicaidForm = () => {
     } catch (err) {
       console.log(err);
       setModalChildren(
-        <div className="flex flex-col gap-2">
-          Submission Error An error occured during submission. You may close
-          this window and try again, however, this likely requires support.
-          Please request help at emailaddress@example.com or linktohelpdesk.
-          Please have your SPA ID and the time at which you attempted to submit
-          on hand.
+        <div className="flex flex-col gap-2 items-center text-center">
+          <div className="max-w-md p-4 rounded-lg shadow-lg">
+            <div className="text-red-500 font-bold">Submission Error:</div>
+            <p>
+              An error occurred during submission.
+              <br />
+              You may close this window and try again, however, this likely
+              requires support.
+              <br />
+              <br />
+              Please request help at{" "}
+              <a
+                href="mailto:emailaddress@example.com"
+                className="text-blue-500"
+              >
+                emailaddress@example.com
+              </a>{" "}
+              or visit our <a href="linktohelpdesk">help desk</a>, and include
+              the following in your support request: <br />
+              <br />
+              <ul>
+                <li>SPA ID: {data.id}</li>
+                <li>Timestamp: {Date.now()}</li>
+              </ul>
+            </p>
+          </div>
           <I.Button
             type="button"
             variant="outline"
