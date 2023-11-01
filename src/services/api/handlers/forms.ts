@@ -5,8 +5,10 @@ import { APIGatewayEvent } from "aws-lambda";
 
 export const forms = async (event: APIGatewayEvent) => {
   try {
+    console.info("*** event", event);
     const body = event.body ? JSON.parse(event.body) : {};
-    const formId = body.formId;
+    // const formId = body.formId;
+    const formId = "testForm";
     const formVersion = body.formVersion;
 
     if (!formId) {
@@ -16,7 +18,7 @@ export const forms = async (event: APIGatewayEvent) => {
       });
     }
 
-    const filePath = getFilepathForIdAndVersion("testform", formVersion);
+    const filePath = getFilepathForIdAndVersion(formId, formVersion);
     const jsonData = await fs.promises.readFile(filePath, "utf-8");
 
     if (!jsonData) {
