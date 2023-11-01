@@ -4,7 +4,7 @@ import IDMInstructionsforOneMACUsers from "../../../assets/onboarding/IDMInstruc
 import OneMACIDMGuide from "../../../assets/onboarding/OneMACIDMGuide.pdf";
 import OneMACStateUserGuide from "../../../assets/onboarding/OneMACStateUserGuide.pdf";
 import OneMACCMSUserGuide from "../../../assets/onboarding/OneMACCMSUserGuide.pdf";
-import {FAQ_SECTION} from "@/routes";
+import { FAQ_SECTION } from "@/routes";
 
 type QuestionAnswer = {
   anchorText: string;
@@ -264,8 +264,7 @@ export const oneMACFAQContent: FAQContent[] = [
               <li>YY = 2 numeric digits (Year)</li>
               <li>#### = 4 numeric digits (Serial number)</li>
               <li>
-                xxxx = OPTIONAL, 1 to 4 characters alpha/numeric modifier
-                (Suffix)
+                xxxx = OPTIONAL, 4 characters alpha/numeric modifier (Suffix)
               </li>
             </ul>
           </>
