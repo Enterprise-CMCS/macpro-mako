@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,15 +7,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { API } from "aws-amplify";
 import { OneMacTransform } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
-import { BreadCrumbs } from "@/components/BreadCrumb";
 import { BREAD_CRUMB_CONFIG_NEW_SUBMISSION } from "@/components/BreadCrumb/bread-crumb-config";
-import { SimplePageContainer } from "@/components";
+import {
+  SimplePageContainer,
+  Alert,
+  LoadingSpinner,
+  Modal,
+  BreadCrumbs,
+} from "@/components";
 import { ROUTES } from "@/routes";
-import { getUserStateCodes } from "@/utils";
-import { Alert } from "@/components/Alert";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
-import { useState } from "react";
-import { Modal } from "@/components/Modal";
 
 const formSchema = z.object({
   id: z
@@ -48,17 +49,25 @@ export type PreSignedURL = {
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
-const attachmentList: Array<[UploadKeys, string]> = [
-  ["cmsForm179", "CMS Form 179"],
-  ["spaPages", "SPA Pages"],
-  ["coverLetter", "Cover Letter"],
-  ["tribalEngagement", "Document Demonstrating Good-Faith Tribal Engagement"],
-  ["existingStatePlanPages", "Existing State Plan Page(s)"],
-  ["publicNotice", "Public Notice"],
-  ["sfq", "Standard Funding Questions (SFQs)"],
-  ["tribalConsultation", "Tribal Consultation"],
-  ["other", "Other"],
-];
+const attachmentList = [
+  { name: "cmsForm179", label: "CMS 179", required: true },
+  { name: "spaPages", label: "SPA Pages", required: true },
+  { name: "coverLetter", label: "Cover Letter", required: false },
+  {
+    name: "tribalEngagement",
+    label: "Document Demonstrating Good-Faith Tribal Engagement",
+    required: false,
+  },
+  {
+    name: "existingStatePlanPages",
+    label: "Existing State Plan Page(s)",
+    required: false,
+  },
+  { name: "publicNotice", label: "Public Notice", required: false },
+  { name: "sfq", label: "Standard Funding Questions (SFQs)", required: false },
+  { name: "tribalConsultation", label: "Tribal Consultation", required: false },
+  { name: "other", label: "Other", required: false },
+] as const;
 
 export const MedicaidForm = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -67,7 +76,6 @@ export const MedicaidForm = () => {
     resolver: zodResolver(formSchema),
   });
   const { data: user } = useGetUser();
-  const stateCodes = getUserStateCodes(user?.user);
   const navigate = useNavigate();
 
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (data) => {
@@ -88,9 +96,9 @@ export const MedicaidForm = () => {
       .filter((key) => data.attachments[key] !== undefined)
       .forEach((uploadKey, index) => {
         const attachmenListObject = attachmentList?.find(
-          (item) => item[0] === uploadKey
+          (item) => item.name === uploadKey
         );
-        const title = attachmenListObject ? attachmenListObject[1] : "Other";
+        const title = attachmenListObject ? attachmenListObject.label : "Other";
         const fileGroup = data.attachments[uploadKey] as File[];
 
         // upload all files in this group and track there name
@@ -207,37 +215,42 @@ export const MedicaidForm = () => {
       <I.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="my-6 space-y-8 max-w-5xl mx-auto"
+          className="my-6 space-y-8 mx-auto"
         >
           <section>
             <h1 className="font-bold text-2xl mb-2">Medicaid SPA Details</h1>
+            <p className="my-1">
+              <I.RequiredIndicator /> indicates required field
+            </p>
             <p className="font-light mb-6 max-w-4xl">
-              <i>
-                Once you submit this form, a confirmation email is sent to you
-                and to CMS. CMS will use this content to review your package,
-                and you will not be able to edit this form. If CMS needs any
-                additional information, they will follow up by email.{" "}
-                <strong className="bold">
-                  If you leave this page, you will lose your progress on this
-                  form.
-                </strong>
-              </i>
+              Once you submit this form, a confirmation email is sent to you and
+              to CMS. CMS will use this content to review your package, and you
+              will not be able to edit this form. If CMS needs any additional
+              information, they will follow up by email.{" "}
+              <strong className="bold">
+                If you leave this page, you will lose your progress on this
+                form.
+              </strong>
             </p>
           </section>
-
           <I.FormField
             control={form.control}
             name="id"
             render={({ field }) => (
               <I.FormItem>
                 <div className="flex justify-between">
-                  <I.FormLabel>SPA ID</I.FormLabel>
+                  <I.FormLabel className="text-lg font-bold">
+                    SPA ID
+                    <I.RequiredIndicator />
+                  </I.FormLabel>
                   <Link to="/faq" className="text-blue-700 hover:underline">
                     What is my SPA ID?
                   </Link>
                 </div>
-                <p>Must follow the format SS-YY-NNNN or SS-YY-NNNN-xxxx.</p>
-                <p className="italic">
+                <p className="text-gray-500 font-light">
+                  Must follow the format SS-YY-NNNN or SS-YY-NNNN-xxxx.
+                </p>
+                <p className="italic text-gray-500 font-light">
                   Reminder - CMS recommends that all SPA numbers start with the
                   year in which the package is submitted.
                 </p>
@@ -248,16 +261,18 @@ export const MedicaidForm = () => {
               </I.FormItem>
             )}
           />
-
           <I.FormField
             control={form.control}
             name="proposedEffectiveDate"
             render={({ field }) => (
               <I.FormItem className="max-w-sm">
-                <I.FormLabel className="block">
+                <I.FormLabel className="text-lg font-bold block">
                   Proposed Effective Date of Medicaid SPA
+                  <I.RequiredIndicator />
                 </I.FormLabel>
-                <I.FormDescription>For example: 4/28/1986</I.FormDescription>
+                <I.FormDescription className="text-gray-500 text-md ">
+                  For example: 4/28/1986
+                </I.FormDescription>
                 <I.FormControl>
                   <I.DatePicker onChange={field.onChange} date={field.value} />
                 </I.FormControl>
@@ -265,31 +280,39 @@ export const MedicaidForm = () => {
               </I.FormItem>
             )}
           />
-
           <section>
             <h3 className="text-2xl font-bold font-sans">Attachments</h3>
             <p>
               Maximum file size of 80 MB per attachment. You can add multiple
               files per attachment type.Read the description for each of the
-              attachment types on the FAQ Page. We accept the following file
-              formats:{" "}
+              attachment types on the FAQ Page.
+            </p>
+            <br />
+            <p>
+              We accept the following file formats:{" "}
               <strong className="bold">
                 .doc, .docx, .jpg, .odp, .ods, .odt, .png, .pdf, .ppt, .pptx,
                 .rtf, .txt, .xls, .xlsx,
               </strong>{" "}
-              and a few others. See the full list on the FAQ Page. *At least one
-              attachment is required.
+              and a few others. See the full list on the FAQ Page.
+            </p>
+            <br />
+            <p>
+              <I.RequiredIndicator />
+              At least one attachment is required.
             </p>
           </section>
-
           {attachmentList.map((attachment) => (
             <I.FormField
-              key={attachment[0]}
+              key={attachment.name}
               control={form.control}
-              name={`attachments.${attachment[0]}`}
+              name={`attachments.${attachment.name}`}
               render={({ field }) => (
                 <I.FormItem>
-                  <I.FormLabel>{attachment[1]}</I.FormLabel>
+                  <I.FormLabel>
+                    {attachment.label}
+                    {attachment?.required ? <I.RequiredIndicator /> : ""}
+                  </I.FormLabel>
                   <I.Upload
                     files={field?.value ?? []}
                     setFiles={field.onChange}
@@ -299,7 +322,6 @@ export const MedicaidForm = () => {
               )}
             />
           ))}
-
           <I.FormField
             control={form.control}
             name="additionalInformation"
@@ -316,7 +338,15 @@ export const MedicaidForm = () => {
               </I.FormItem>
             )}
           />
-
+          <div className="my-2">
+            <i>
+              Once you submit this form, a confirmation email is sent to you and
+              to CMS. CMS will use this content to review your package, and you
+              will not be able to edit this form. If CMS needs any additional
+              information, they will follow up by email. If you leave this page,
+              you will lose your progress on this form.
+            </i>
+          </div>
           {Object.keys(form.formState.errors).length !== 0 ? (
             <Alert className="mb-6" variant="destructive">
               Missing or malformed information. Please see errors above.
@@ -328,13 +358,18 @@ export const MedicaidForm = () => {
             </div>
           ) : null}
           <div className="flex gap-2">
-            <I.Button disabled={form.formState.isSubmitting} type="submit">
+            <I.Button
+              disabled={form.formState.isSubmitting}
+              type="submit"
+              className="px-12"
+            >
               Submit
             </I.Button>
             <I.Button
               type="button"
               variant="outline"
               onClick={() => navigate(ROUTES.DASHBOARD)}
+              className="px-12"
             >
               Cancel
             </I.Button>

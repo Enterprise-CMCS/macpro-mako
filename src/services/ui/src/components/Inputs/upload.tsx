@@ -24,7 +24,7 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
       <div
         {...getRootProps()}
         className={cn(
-          "w-full flex items-center justify-center border-2 border-dashed border-slate-600 py-6 rounded-sm",
+          "w-full flex items-center justify-center border border-dashed  py-6 rounded-sm",
           isDragActive && "border-blue-700"
         )}
       >
