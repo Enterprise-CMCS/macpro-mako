@@ -83,6 +83,10 @@ export const MedicaidForm = () => {
     uploadKeys
       .filter((key) => data.attachments[key] !== undefined)
       .forEach((uploadKey, index) => {
+        const attachmenListObject = attachmentList?.find(
+          (item) => item[0] === uploadKey
+        );
+        const title = attachmenListObject ? attachmenListObject[1] : "Other";
         const fileGroup = data.attachments[uploadKey] as File[];
 
         // upload all files in this group and track there name
@@ -97,7 +101,7 @@ export const MedicaidForm = () => {
           fileMetaData.push({
             key: loadPresignedUrls[index].key,
             filename: file.name,
-            title: "Testing",
+            title: title,
             bucket: loadPresignedUrls[index].bucket,
             uploadDate: Date.now(),
           });
