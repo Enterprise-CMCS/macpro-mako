@@ -1,18 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { OsHit, OsMainSourceItem, ReactQueryApiError } from "shared-types";
+import { ReactQueryApiError } from "shared-types";
 
-export const getForm = async (id: string): Promise<OsHit<OsMainSourceItem>> => {
-  const form = await API.post("os", "/forms", { body: { id } });
-
-  console.info("form", form);
+export const getForm = async (
+  formId: string,
+  formVersion?: string
+): Promise<any> => {
+  const form = await API.get("os", "/forms", {
+    queryStringParameters: { formId, formVersion },
+  });
 
   return form;
 };
 
-export const useGetForm = (id: string) => {
-  return useQuery<OsHit<OsMainSourceItem>, ReactQueryApiError>(
-    ["formID", id],
-    () => getForm(id)
+export const useGetForm = (formId: string, formVersion?: string) => {
+  return useQuery<any, ReactQueryApiError>(["formID"], () =>
+    getForm(formId, formVersion)
   );
 };
