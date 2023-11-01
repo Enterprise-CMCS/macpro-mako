@@ -28,7 +28,12 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
           isDragActive && "border-blue-700"
         )}
       >
-        <p>Drag file here or choose from folder</p>
+        <p>
+          Drag file here or{" "}
+          <a href="#" className="text-blue-500">
+            choose from folder
+          </a>
+        </p>
         <input {...getInputProps()} />
         {/* {isDragActive && <p>Drag is Active</p>} */}
       </div>
