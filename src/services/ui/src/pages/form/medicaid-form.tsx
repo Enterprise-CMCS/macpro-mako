@@ -146,8 +146,8 @@ export const MedicaidForm = () => {
             <p>
               Your submission was accepted.
               <br />
-              Please keep in mind it may take up to a minute for your submission
-              to show in the Dashboard.
+              Please be aware that it may take up to a minute for your
+              submission to show in the Dashboard.
             </p>
           </div>
           <I.Button
