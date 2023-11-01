@@ -13,6 +13,8 @@ import { ROUTES } from "@/routes";
 import { getUserStateCodes } from "@/utils";
 import { Alert } from "@/components/Alert";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { useState } from "react";
+import { Modal } from "@/components/Modal";
 
 const formSchema = z.object({
   state: z.string(),
@@ -60,6 +62,8 @@ const attachmentList: Array<[UploadKeys, string]> = [
 ];
 
 export const MedicaidForm = () => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalChildren, setModalChildren] = useState(<div></div>);
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -71,7 +75,6 @@ export const MedicaidForm = () => {
     const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
     const uploadedFiles: any[] = [];
     const fileMetaData: NonNullable<OneMacTransform["attachments"]> = [];
-    // const files: { file: File; index: number }[] = [];
 
     const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
       .filter((key) => data.attachments[key] !== undefined)
@@ -130,9 +133,47 @@ export const MedicaidForm = () => {
       state: data.state,
     };
 
-    await API.post("os", "/submit", { body: dataToSubmit });
-
-    navigate(ROUTES.DASHBOARD);
+    let submissionResponse;
+    try {
+      submissionResponse = await API.post("os", "/submit", {
+        body: dataToSubmit,
+      });
+      console.log(submissionResponse);
+      setModalChildren(
+        <div className="flex flex-col gap-2">
+          Submission Success! Your submission was successfully submitted. Please
+          use the following link to return to the dashboard. Your record should
+          appear on the dashboard within a few seconds; you may need to refresh.
+          <I.Button
+            type="button"
+            variant="outline"
+            onClick={() => navigate(ROUTES.DASHBOARD)}
+          >
+            Go to Dashboard
+          </I.Button>
+        </div>
+      );
+    } catch (err) {
+      console.log(err);
+      setModalChildren(
+        <div className="flex flex-col gap-2">
+          Submission Error An error occured during submission. You may close
+          this window and try again, however, this likely requires support.
+          Please request help at emailaddress@example.com or linktohelpdesk.
+          Please have your SPA ID and the time at which you attempted to submit
+          on hand.
+          <I.Button
+            type="button"
+            variant="outline"
+            onClick={() => setModalIsOpen(false)}
+          >
+            Close
+          </I.Button>
+        </div>
+      );
+    } finally {
+      setModalIsOpen(true);
+    }
   };
 
   return (
@@ -213,7 +254,7 @@ export const MedicaidForm = () => {
                       readOnly
                       value={useWatch({
                         name: "state",
-                        defaultValue: "SS", // Replace with the name of the other field you want to reference
+                        defaultValue: "",
                       })}
                       className="w-12 h-9 text-center font-normal placeholder-gray-300 border rounded-sm focus:ring focus:ring-indigo-300 focus:border-indigo-400 outline-none"
                     />
@@ -320,6 +361,11 @@ export const MedicaidForm = () => {
             >
               Cancel
             </I.Button>
+            <Modal
+              showModal={modalIsOpen}
+              // eslint-disable-next-line react/no-children-prop
+              children={modalChildren}
+            />
           </div>
         </form>
       </I.Form>
