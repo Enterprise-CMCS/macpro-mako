@@ -1,4 +1,4 @@
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { type SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
@@ -17,7 +17,7 @@ const formSchema = z.object({
   id: z
     .string()
     .regex(
-      /^[A-Z]{2}-\d{2}-\d{4}(-\d{4})?$/,
+      /^\d{2}-\d{4}(-\d{4})?$/,
       "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-xxxx"
     ),
   additionalInformation: z.string().max(4000).optional(),
@@ -111,7 +111,7 @@ export const MedicaidForm = () => {
       proposedEffectiveDate: number;
       authority: string;
     } = {
-      id: data.id,
+      id: `${data.state}-${data.id}`,
       additionalInformation: data?.additionalInformation ?? null,
       attachments: fileMetaData,
       origin: "micro",
@@ -159,6 +159,10 @@ export const MedicaidForm = () => {
                 <div className="flex justify-between">
                   <I.FormLabel>State</I.FormLabel>
                 </div>
+                <p>
+                  Select a state for submission. This will prepopulate the state
+                  code portion of the SPA ID.
+                </p>
                 <I.FormControl className="max-w-sm">
                   <I.Select
                     onValueChange={(selection) => field.onChange(selection)}
@@ -197,7 +201,24 @@ export const MedicaidForm = () => {
                   year in which the package is submitted.
                 </p>
                 <I.FormControl className="max-w-sm">
-                  <I.Input {...field} />
+                  <div style={{ display: "flex" }}>
+                    <input
+                      type="text"
+                      readOnly
+                      value={useWatch({
+                        name: "state",
+                        defaultValue: "SS", // Replace with the name of the other field you want to reference
+                      })}
+                      className="w-12 h-9 text-center font-normal placeholder-gray-300 border rounded-sm focus:ring focus:ring-indigo-300 focus:border-indigo-400 outline-none"
+                    />
+                    <input
+                      type="text"
+                      readOnly
+                      value="-"
+                      className="w-4 h-9 text-center font-normal"
+                    />
+                    <I.Input {...field} />
+                  </div>
                 </I.FormControl>
                 <I.FormMessage />
               </I.FormItem>
