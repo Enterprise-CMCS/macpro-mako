@@ -10,8 +10,10 @@ import { BreadCrumbs } from "@/components/BreadCrumb";
 import { BREAD_CRUMB_CONFIG_NEW_SUBMISSION } from "@/components/BreadCrumb/bread-crumb-config";
 import { SimplePageContainer } from "@/components";
 import { ROUTES } from "@/routes";
+import { getUserStateCodes } from "@/utils";
 
 const formSchema = z.object({
+  state: z.string(),
   id: z
     .string()
     .regex(
@@ -55,19 +57,12 @@ const attachmentList: Array<[UploadKeys, string]> = [
   ["other", "Other"],
 ];
 
-type FileMeta = {
-  s3Key: string;
-  filename: string;
-  title: string;
-  contentType: string;
-  url: string;
-};
-
 export const MedicaidForm = () => {
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
   });
-  const user = useGetUser();
+  const { data: user } = useGetUser();
+  const stateCodes = getUserStateCodes(user?.user);
   const navigate = useNavigate();
 
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (data) => {
@@ -122,12 +117,11 @@ export const MedicaidForm = () => {
       origin: "micro",
       authority: "medicaid spa",
       raiResponses: [],
-      submitterEmail: user.data?.user?.email ?? "N/A",
+      submitterEmail: user?.user?.email ?? "N/A",
       submitterName:
-        `${user.data?.user?.given_name} ${user.data?.user?.family_name}` ??
-        "N/A",
+        `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
       proposedEffectiveDate: data.proposedEffectiveDate.getTime(),
-      state: data.id.split("-")[0],
+      state: data.state,
     };
 
     await API.post("os", "/submit", { body: dataToSubmit });
@@ -156,6 +150,35 @@ export const MedicaidForm = () => {
               </strong>
             </p>
           </section>
+
+          <I.FormField
+            control={form.control}
+            name="state"
+            render={({ field }) => (
+              <I.FormItem>
+                <div className="flex justify-between">
+                  <I.FormLabel>State</I.FormLabel>
+                </div>
+                <I.FormControl className="max-w-sm">
+                  <I.Select
+                    onValueChange={(selection) => field.onChange(selection)}
+                  >
+                    <I.SelectTrigger>
+                      {field.value || "Select a State or Territory"}
+                    </I.SelectTrigger>
+                    <I.SelectContent>
+                      {stateCodes.map((option, index) => (
+                        <I.SelectItem key={index} value={option}>
+                          {option}
+                        </I.SelectItem>
+                      ))}
+                    </I.SelectContent>
+                  </I.Select>
+                </I.FormControl>
+                <I.FormMessage />
+              </I.FormItem>
+            )}
+          />
 
           <I.FormField
             control={form.control}
