@@ -50,7 +50,7 @@ export type PreSignedURL = {
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
-  { name: "cmsForm179", label: "CMS 179", required: true },
+  { name: "cmsForm179", label: "CMS Form 179", required: true },
   { name: "spaPages", label: "SPA Pages", required: true },
   { name: "coverLetter", label: "Cover Letter", required: false },
   {
