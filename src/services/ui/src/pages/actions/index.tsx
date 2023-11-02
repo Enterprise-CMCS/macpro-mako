@@ -1,15 +1,12 @@
 import { Navigate, useParams } from "react-router-dom";
 import { ROUTES } from "@/routes";
 import { EnableRaiResponseWithdraw } from "@/pages/actions/EnableRaiResponseWithdraw";
-
-export enum ActionForms {
-  ENABLE_RAI_WITHDRAW = "enable-rai-withdraw",
-}
+import { Action } from "shared-types";
 
 export const ActionFormIndex = () => {
-  const { type } = useParams<{ type: ActionForms }>();
+  const { type } = useParams<{ type: Action }>();
   switch (type) {
-    case ActionForms.ENABLE_RAI_WITHDRAW:
+    case Action.ENABLE_RAI_WITHDRAW:
       return <EnableRaiResponseWithdraw />;
     default:
       // TODO: Better error communication instead of navigate?
