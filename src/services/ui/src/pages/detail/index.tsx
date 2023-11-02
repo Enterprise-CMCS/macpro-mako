@@ -48,17 +48,23 @@ const PackageActionsCard = ({ id }: { id: string }) => {
   return (
     <DetailCardWrapper title={"Actions"}>
       <div>
-        <ul>
-          {data.actions.map((action, idx) => (
-            <Link
-              className="text-sky-500 underline"
-              to={`/action/${id}/${action}`}
-              key={`${idx}-${action}`}
-            >
-              <li>{mapActionLabel(action)}</li>
-            </Link>
-          ))}
-        </ul>
+        {!data.actions.length ? (
+          <em className="text-gray-400">
+            No actions are currently available for this submission.
+          </em>
+        ) : (
+          <ul>
+            {data.actions.map((action, idx) => (
+              <Link
+                className="text-sky-500 underline"
+                to={`/action/${id}/${action}`}
+                key={`${idx}-${action}`}
+              >
+                <li>{mapActionLabel(action)}</li>
+              </Link>
+            ))}
+          </ul>
+        )}
       </div>
     </DetailCardWrapper>
   );
