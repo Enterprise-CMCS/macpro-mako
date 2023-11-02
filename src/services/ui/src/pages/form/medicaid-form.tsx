@@ -28,7 +28,10 @@ const formSchema = z.object({
   attachments: z.object({
     cmsForm179: z
       .array(z.instanceof(File))
-      .length(1, "You may not submit more than one CMS Form 179."),
+      .length(
+        1,
+        "Required: You must submit exactly one file for CMS Form 179."
+      ),
     spaPages: z.array(z.instanceof(File)).nonempty(),
     coverLetter: z.array(z.instanceof(File)).optional(),
     tribalEngagement: z.array(z.instanceof(File)).optional(),
