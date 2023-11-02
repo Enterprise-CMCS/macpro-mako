@@ -1,52 +1,17 @@
 import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
-import * as os from "../../../libs/opensearch-lib";
-import {
-  getAuthDetails,
-  getStateFilter,
-  lookupUserAttributes,
-} from "../libs/auth/user";
-import { Action, CognitoUserAttributes, ItemResult } from "shared-types";
-import { isCmsUser } from "shared-utils";
+import { getStateFilter } from "../libs/auth/user";
+import { getPackage } from "../libs/package/getPackage";
 
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
 
-/** Generates an array of allowed actions from a combination of user attributes
- * and OS result data */
-const packageActionsForResult = (
-  user: CognitoUserAttributes,
-  result: ItemResult
-): Action[] => {
-  const actions = [];
-  // if (isCmsUser(user) && result._source.raiReceivedDate) {
-  if (isCmsUser(user)) {
-    actions.push(Action.ENABLE_RAI_WITHDRAW);
-  }
-  return actions;
-};
-
 export const getItemData = async (event: APIGatewayEvent) => {
   try {
     const body = JSON.parse(event.body);
-
-    // TODO: Can all this user stuff just happen in one swift go instead of multiple calls?
-    const authDetails = getAuthDetails(event);
-    const userAttr = await lookupUserAttributes(
-      authDetails.userId,
-      authDetails.poolId
-    );
     const stateFilter = await getStateFilter(event);
-
-    const result = (await os.getItem(
-      process.env.osDomain,
-      "main",
-      body.id
-    )) as ItemResult;
-
-    // Get available actions based on user's role and result source
-    result.actions = packageActionsForResult(userAttr, result);
+    const result = await getPackage(body.id);
 
     if (
       stateFilter &&
