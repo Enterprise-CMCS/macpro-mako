@@ -15,7 +15,7 @@ import {
   Modal,
   BreadCrumbs,
 } from "@/components";
-import { ROUTES } from "@/routes";
+import { FAQ_TARGET, ROUTES } from "@/routes";
 
 const formSchema = z.object({
   id: z
@@ -245,8 +245,8 @@ export const MedicaidForm = () => {
                     <I.RequiredIndicator />
                   </I.FormLabel>
                   <Link
-                    to="/faq"
-                    target="_blank"
+                    to="/faq/#spa-id-format"
+                    target={FAQ_TARGET}
                     rel="noopener noreferrer"
                     className="text-blue-700 hover:underline"
                   >
@@ -294,8 +294,8 @@ export const MedicaidForm = () => {
               description for each of the attachment types on the{" "}
               {
                 <Link
-                  to="/faq"
-                  target="_blank"
+                  to="/faq/#medicaid-spa-attachments"
+                  target={FAQ_TARGET}
                   rel="noopener noreferrer"
                   className="text-blue-700 hover:underline"
                 >
@@ -314,8 +314,8 @@ export const MedicaidForm = () => {
               and a few others. See the full list on the{" "}
               {
                 <Link
-                  to="/faq"
-                  target="_blank"
+                  to="/faq/#acceptable-file-formats"
+                  target={FAQ_TARGET}
                   rel="noopener noreferrer"
                   className="text-blue-700 hover:underline"
                 >
