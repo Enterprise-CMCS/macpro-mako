@@ -158,7 +158,7 @@ async function downloadAll(
   )) as { filename: string; title: string; contents: Blob }[];
   const zip = new JSZip();
   for (const { filename, title, contents } of downloadList) {
-    zip.file(filename, contents, { comment: title });
+    zip.file(filename, contents, { comment: title, date: new Date() });
   }
   saveAs(await zip.generateAsync({ type: "blob" }), `${id || "onemac"}.zip`);
 }
