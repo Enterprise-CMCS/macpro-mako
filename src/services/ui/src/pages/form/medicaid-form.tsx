@@ -358,7 +358,8 @@ export const MedicaidForm = () => {
                   Additional Information
                 </h3>
                 <I.FormLabel className="font-normal">
-                  Add anything else you would like to share with CMS
+                  Add anything else you would like to share with CMS, limited to
+                  4000 characters
                 </I.FormLabel>
                 <I.Textarea {...field} className="h-[200px] resize-none" />
                 <I.FormDescription>4,000 characters allowed</I.FormDescription>
