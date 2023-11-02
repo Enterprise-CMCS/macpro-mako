@@ -37,7 +37,6 @@ export type OsMainSearchResponse = OsResponse<OsMainSourceItem>;
 export type SearchData = OsHits<OsMainSourceItem>;
 export type ItemResult = OsHit<OsMainSourceItem> & {
   found: boolean;
-  actions: Action[];
 };
 
 export type OsFilterType =
