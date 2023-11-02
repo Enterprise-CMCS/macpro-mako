@@ -1,11 +1,6 @@
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import {
-  ItemResult,
-  OsHit,
-  OsMainSourceItem,
-  ReactQueryApiError,
-} from "shared-types";
+import { ItemResult, ReactQueryApiError } from "shared-types";
 
 export const getItem = async (id: string): Promise<ItemResult> => {
   const record = await API.post("os", "/item", { body: { id } });
