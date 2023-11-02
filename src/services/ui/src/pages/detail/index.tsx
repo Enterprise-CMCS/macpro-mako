@@ -17,6 +17,34 @@ import { BreadCrumbs } from "@/components/BreadCrumb";
 import { BREAD_CRUMB_CONFIG_PACKAGE_DETAILS } from "@/components/BreadCrumb/bread-crumb-config";
 import { mapActionLabel } from "@/utils";
 import { Link } from "react-router-dom";
+import { useGetPackageActions } from "@/api/useGetPackageActions";
+
+const PackageActionsCard = ({ id }: { id: string }) => {
+  const { data, error } = useGetPackageActions(id);
+  if (!data?.actions || error) return <LoadingSpinner />;
+  return (
+    <section id="package-actions" className="block md:flex mb-8 gap-8">
+      <CardWithTopBorder>
+        <div className="p-4">
+          <p className="text-gray-600 font-semibold mb-2">Actions</p>
+          <div>
+            <ul>
+              {data.actions.map((action, idx) => (
+                <Link
+                  className="text-sky-500 underline"
+                  to={`/action/${action}`}
+                  key={`${idx}-${action}`}
+                >
+                  <li>{mapActionLabel(action)}</li>
+                </Link>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </CardWithTopBorder>
+    </section>
+  );
+};
 
 export const DetailsContent = ({ data }: { data?: ItemResult }) => {
   const { data: user } = useGetUser();
@@ -58,26 +86,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
               </div>
             </CardWithTopBorder>
           </section>
-          <section id="package-actions" className="block md:flex mb-8 gap-8">
-            <CardWithTopBorder>
-              <div className="p-4">
-                <p className="text-gray-600 font-semibold mb-2">Actions</p>
-                <div>
-                  <ul>
-                    {data.actions.map((action, idx) => (
-                      <Link
-                        className="text-sky-500 underline"
-                        to={`/action/${action}`}
-                        key={`${idx}-${action}`}
-                      >
-                        <li>{mapActionLabel(action)}</li>
-                      </Link>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </CardWithTopBorder>
-          </section>
+          <PackageActionsCard id={data._id} />
         </div>
         <DetailsSection id="package-details" title="Package Details">
           <ChipSpaPackageDetails {...data?._source} />
