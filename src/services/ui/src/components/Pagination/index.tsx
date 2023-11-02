@@ -23,9 +23,10 @@ export const Pagination: FC<Props> = (props) => {
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div className="flex gap-6">
-          <p className="flex gap-2 text-sm text-gray-700">
+          <p className="flex gap-2 text-sm text-gray-700" id="recordsLabel">
             Records per page:
             <select
+              aria-labelledby="recordsLabel"
               className="font-bold cursor-pointer border-[1px] mt-[-1px]"
               value={props.pageSize}
               onChange={(e) => props.onSizeChange?.(Number(e.target.value))}
@@ -74,6 +75,9 @@ export const Pagination: FC<Props> = (props) => {
                   <button
                     key={`PAGE-${PAGE}`}
                     className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 cursor-pointer"
+                    id="morePagesButton"
+                    aria-haspopup="listbox"
+                    aria-controls="pagesDropdown"
                   >
                     ...
                     <select
@@ -81,6 +85,8 @@ export const Pagination: FC<Props> = (props) => {
                         props.onPageChange(Number(v.currentTarget.value) - 1)
                       }
                       className="absolute w-auto h-auto opacity-0 cursor-pointer"
+                      aria-labelledby="morePagesButton"
+                      id="pagesDropdown"
                     >
                       {PAGE.map((P) => (
                         <option key={`child-page-${P}`} value={P}>
