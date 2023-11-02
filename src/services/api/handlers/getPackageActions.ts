@@ -62,3 +62,5 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
     });
   }
 };
+
+export const handler = getPackageActions;
