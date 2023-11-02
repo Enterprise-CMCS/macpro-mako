@@ -14,7 +14,7 @@ export const getForm = async (
 };
 
 export const useGetForm = (formId: string, formVersion?: string) => {
-  return useQuery<any, ReactQueryApiError>(["formID"], () =>
+  return useQuery<any, ReactQueryApiError>([formId], () =>
     getForm(formId, formVersion)
   );
 };
