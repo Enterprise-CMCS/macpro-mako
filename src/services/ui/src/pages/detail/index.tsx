@@ -52,7 +52,7 @@ const PackageActionsCard = ({ id }: { id: string }) => {
           {data.actions.map((action, idx) => (
             <Link
               className="text-sky-500 underline"
-              to={`/action/${action}`}
+              to={`/action/${id}/${action}`}
               key={`${idx}-${action}`}
             >
               <li>{mapActionLabel(action)}</li>
