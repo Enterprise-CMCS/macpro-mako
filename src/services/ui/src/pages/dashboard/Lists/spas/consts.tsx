@@ -4,8 +4,9 @@ import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
 import { LABELS } from "@/lib";
 import { BLANK_VALUE } from "@/consts";
+import { CognitoUserAttributes, UserRoles } from "shared-types";
 
-export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
+export const TABLE_COLUMNS = (props?: { isCms?: boolean,user?:CognitoUserAttributes| null | undefined }): OsTableColumn[] => [
   {
     props: { className: "w-[150px]" },
     field: "id.keyword",
@@ -43,9 +44,9 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
         : BLANK_VALUE,
   },
   {
-    field: props?.isCms ? "stateStatus.keyword" : "stateStatus.keyword",
+    field: props?.isCms ? "cmsStatus" : "stateStatus.keyword",
     label: "Status",
-    cell: (data) => (props?.isCms ? data.stateStatus : data.stateStatus),
+    cell: (data) => ((props?.isCms && !(props.user?.["custom:cms-roles"]===UserRoles.HELPDESK) )? data.cmsStatus : data.stateStatus),
   },
   {
     field: "submissionDate",
