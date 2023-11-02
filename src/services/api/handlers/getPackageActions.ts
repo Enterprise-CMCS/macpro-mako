@@ -20,7 +20,6 @@ const packageActionsForResult = (
   result: ItemResult
 ): Action[] => {
   const actions = [];
-  // if (isCmsUser(user) && result._source.raiReceivedDate) {
   if (isCmsUser(user)) {
     actions.push(Action.ENABLE_RAI_WITHDRAW);
   }
@@ -29,6 +28,7 @@ const packageActionsForResult = (
 export const getPackageActions = async (event: APIGatewayEvent) => {
   const body = JSON.parse(event.body) as GetPackageActionsBody;
   try {
+    console.log(body);
     const result = await getPackage(body.id);
     const passedStateAuth = await isAuthorized(event, result._source.state);
     if (!passedStateAuth)

@@ -5,7 +5,7 @@ type PackageActionsResponse = {
   actions: Action[];
 };
 const getPackageActions = async (id: string): Promise<PackageActionsResponse> =>
-  await API.post("os", "/getPackageActions", { body: id });
+  await API.post("os", "/getPackageActions", { body: { id } });
 
 export const useGetPackageActions = (
   id: string,
