@@ -2,7 +2,7 @@ import { Navigate, useParams } from "react-router-dom";
 import { ROUTES } from "@/routes";
 import { EnableRaiResponseWithdraw } from "@/pages/actions/EnableRaiResponseWithdraw";
 
-enum ActionForms {
+export enum ActionForms {
   ENABLE_RAI_WITHDRAW = "enable-rai-withdraw",
 }
 
