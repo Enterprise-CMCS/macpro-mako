@@ -56,11 +56,7 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
           </div>
         ))}
       </div>
-      {errorMessage && (
-        <Alert className="mb-6" variant="destructive">
-          {errorMessage}
-        </Alert>
-      )}
+      {errorMessage && <span className="text-red-500">{errorMessage}</span>}
       <div
         {...getRootProps()}
         className={cn(
@@ -70,9 +66,9 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
       >
         <p>
           Drag file here or{" "}
-          <a href="#" className="text-blue-500">
+          <span className="text-sky-500 underline hover:cursor-pointer">
             choose from folder
-          </a>
+          </span>
         </p>
         <input {...getInputProps()} />
         {/* {isDragActive && <p>Drag is Active</p>} */}

@@ -26,7 +26,9 @@ const formSchema = z.object({
     ),
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
-    cmsForm179: z.array(z.instanceof(File)).nonempty(),
+    cmsForm179: z
+      .array(z.instanceof(File))
+      .length(1, "You may not submit more than one CMS Form 179."),
     spaPages: z.array(z.instanceof(File)).nonempty(),
     coverLetter: z.array(z.instanceof(File)).optional(),
     tribalEngagement: z.array(z.instanceof(File)).optional(),
@@ -289,9 +291,12 @@ export const MedicaidForm = () => {
           <section>
             <h3 className="text-2xl font-bold font-sans">Attachments</h3>
             <p>
-              Maximum file size of 80 MB per attachment. You can add multiple
-              files per attachment type except for the CMS Form 179. Read the
-              description for each of the attachment types on the{" "}
+              Maximum file size of 80 MB per attachment.{" "}
+              <strong>
+                You can add multiple files per attachment type, except for the
+                CMS Form 179.
+              </strong>{" "}
+              Read the description for each of the attachment types on the{" "}
               {
                 <Link
                   to="/faq/#medicaid-spa-attachments"
@@ -307,10 +312,7 @@ export const MedicaidForm = () => {
             <br />
             <p>
               We accept the following file formats:{" "}
-              <strong className="bold">
-                .doc, .docx, .jpg, .odp, .ods, .odt, .png, .pdf, .ppt, .pptx,
-                .rtf, .txt, .xls, .xlsx,
-              </strong>{" "}
+              <strong className="bold">.docx, .jpg, .png, .pdf, .xlsx,</strong>{" "}
               and a few others. See the full list on the{" "}
               {
                 <Link
