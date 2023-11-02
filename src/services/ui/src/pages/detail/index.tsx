@@ -10,18 +10,67 @@ import {
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { OsHit, OsMainSourceItem } from "shared-types";
+import { CognitoUserAttributes, ItemResult } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
-import { DetailNav } from "./detailNav";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { BREAD_CRUMB_CONFIG_PACKAGE_DETAILS } from "@/components/BreadCrumb/bread-crumb-config";
+import { mapActionLabel } from "@/utils";
+import { Link } from "react-router-dom";
+import { useGetPackageActions } from "@/api/useGetPackageActions";
+import { PropsWithChildren } from "react";
 
-export const DetailsContent = ({
-  data,
-}: {
-  data?: OsHit<OsMainSourceItem>;
-}) => {
+const DetailCardWrapper = ({
+  title,
+  children,
+}: PropsWithChildren<{
+  title: string;
+}>) => (
+  <CardWithTopBorder className="max-w-[18rem]">
+    <div className="p-4">
+      <h2>{title}</h2>
+      {children}
+    </div>
+  </CardWithTopBorder>
+);
+const StatusCard = ({ isCms, data }: { isCms: boolean; data: ItemResult }) => (
+  <DetailCardWrapper title={"Status"}>
+    <div>
+      <h2 className="text-xl font-semibold">
+        {isCms ? data._source.cmsStatus : data._source.stateStatus}
+      </h2>
+    </div>
+  </DetailCardWrapper>
+);
+const PackageActionsCard = ({ id }: { id: string }) => {
+  const { data, error } = useGetPackageActions(id);
+  if (!data?.actions || error) return <LoadingSpinner />;
+  return (
+    <DetailCardWrapper title={"Actions"}>
+      <div>
+        {!data.actions.length ? (
+          <em className="text-gray-400">
+            No actions are currently available for this submission.
+          </em>
+        ) : (
+          <ul>
+            {data.actions.map((action, idx) => (
+              <Link
+                className="text-sky-500 underline"
+                to={`/action/${id}/${action}`}
+                key={`${idx}-${action}`}
+              >
+                <li>{mapActionLabel(action)}</li>
+              </Link>
+            ))}
+          </ul>
+        )}
+      </div>
+    </DetailCardWrapper>
+  );
+};
+
+export const DetailsContent = ({ data }: { data?: ItemResult }) => {
   const { data: user } = useGetUser();
   if (!data?._source) return <LoadingSpinner />;
   return (
@@ -46,19 +95,12 @@ export const DetailsContent = ({
         ))}
       </aside>
       <div className="flex-1">
-        <section id="package-overview" className="block md:flex mb-8 gap-8">
-          <CardWithTopBorder>
-            <div className="p-4">
-              <p className="text-gray-600 font-semibold mb-2">Status</p>
-              <div>
-                <h2 className="text-xl font-semibold mb-2">
-                  {user?.isCms
-                    ? data._source.cmsStatus
-                    : data._source.stateStatus}
-                </h2>
-              </div>
-            </div>
-          </CardWithTopBorder>
+        <section
+          id="package-overview"
+          className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
+        >
+          <StatusCard isCms={user?.isCms || false} data={data} />
+          <PackageActionsCard id={data._id} />
         </section>
         <DetailsSection id="package-details" title="Package Details">
           <ChipSpaPackageDetails {...data?._source} />
