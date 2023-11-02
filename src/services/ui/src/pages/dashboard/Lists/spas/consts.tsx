@@ -6,7 +6,10 @@ import { LABELS } from "@/lib";
 import { BLANK_VALUE } from "@/consts";
 import { CognitoUserAttributes, UserRoles } from "shared-types";
 
-export const TABLE_COLUMNS = (props?: { isCms?: boolean,user?:CognitoUserAttributes| null | undefined }): OsTableColumn[] => [
+export const TABLE_COLUMNS = (props?: {
+  isCms?: boolean;
+  user?: CognitoUserAttributes | null | undefined;
+}): OsTableColumn[] => [
   {
     props: { className: "w-[150px]" },
     field: "id.keyword",
@@ -46,7 +49,10 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean,user?:CognitoUserAttribu
   {
     field: props?.isCms ? "cmsStatus" : "stateStatus.keyword",
     label: "Status",
-    cell: (data) => ((props?.isCms && !(props.user?.["custom:cms-roles"]===UserRoles.HELPDESK) )? data.cmsStatus : data.stateStatus),
+    cell: (data) =>
+      props?.isCms && !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
+        ? data.cmsStatus
+        : data.stateStatus,
   },
   {
     field: "submissionDate",

@@ -17,7 +17,7 @@ export const WaiversList = () => {
 
   if (context.error) return <ErrorAlert error={context.error} />;
 
-  const columns = TABLE_COLUMNS({ isCms: user?.isCms,user:user?.user });
+  const columns = TABLE_COLUMNS({ isCms: user?.isCms, user: user?.user });
 
   return (
     <section className="flex flex-col h-[calc(100vh-250px)]">
