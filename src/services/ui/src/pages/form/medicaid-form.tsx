@@ -72,6 +72,7 @@ const attachmentList = [
 export const MedicaidForm = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalChildren, setModalChildren] = useState(<div></div>);
+  const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -396,7 +397,7 @@ export const MedicaidForm = () => {
             <I.Button
               type="button"
               variant="outline"
-              onClick={() => navigate(ROUTES.DASHBOARD)}
+              onClick={() => setCancelModalIsOpen(true)}
               className="px-12"
             >
               Cancel
@@ -405,6 +406,41 @@ export const MedicaidForm = () => {
               showModal={modalIsOpen}
               // eslint-disable-next-line react/no-children-prop
               children={modalChildren}
+            />
+            <Modal
+              showModal={cancelModalIsOpen}
+              // eslint-disable-next-line react/no-children-prop
+              children={
+                <div className="flex flex-col gap-2 items-center text-center">
+                  <div className="max-w-md p-4">
+                    <div className="font-bold">
+                      Are you sure you want to cancel?
+                    </div>
+                    <p>
+                      If you leave this page, you will lose your progress on
+                      this form.
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <I.Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => navigate(ROUTES.DASHBOARD)}
+                    >
+                      Yes
+                    </I.Button>
+                    <div className="ml-8">
+                      <I.Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setCancelModalIsOpen(false)}
+                      >
+                        No, Return to Form
+                      </I.Button>
+                    </div>
+                  </div>
+                </div>
+              }
             />
           </div>
         </form>
