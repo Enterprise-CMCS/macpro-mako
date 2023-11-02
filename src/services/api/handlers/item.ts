@@ -20,7 +20,8 @@ const packageActionsForResult = (
   result: ItemResult
 ): Action[] => {
   const actions = [];
-  if (isCmsUser(user) && result._source.raiReceivedDate) {
+  // if (isCmsUser(user) && result._source.raiReceivedDate) {
+  if (isCmsUser(user)) {
     actions.push(Action.ENABLE_RAI_WITHDRAW);
   }
   return actions;
