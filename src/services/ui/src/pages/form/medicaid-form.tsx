@@ -21,8 +21,8 @@ const formSchema = z.object({
   id: z
     .string()
     .regex(
-      /^[A-Z]{2}-\d{2}-\d{4}(-\d{4})?$/,
-      "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-xxxx"
+      /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/,
+      "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX"
     ),
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
