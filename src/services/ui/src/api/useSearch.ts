@@ -12,7 +12,6 @@ import type {
   OsFilterable,
   OsAggQuery,
   OsMainSearchResponse,
-  OsHits,
   OsMainSourceItem,
 } from "shared-types";
 
