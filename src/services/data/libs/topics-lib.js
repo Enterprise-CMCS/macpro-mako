@@ -108,7 +108,9 @@ export async function deleteTopics(brokerString, topicList) {
   const kafka = new Kafka({
     clientId: "admin",
     brokers: brokers,
-    ssl: true,
+    ssl: {
+      rejectUnauthorized: false,
+    },
     requestTimeout: 295000, // 5s short of the lambda function's timeout
   });
   var admin = kafka.admin();
