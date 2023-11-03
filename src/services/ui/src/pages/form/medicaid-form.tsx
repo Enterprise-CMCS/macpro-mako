@@ -281,9 +281,6 @@ export const MedicaidForm = () => {
                   Proposed Effective Date of Medicaid SPA
                   <I.RequiredIndicator />
                 </I.FormLabel>
-                <I.FormDescription className="text-gray-500 text-md ">
-                  For example: 4/28/1986
-                </I.FormDescription>
                 <I.FormControl>
                   <I.DatePicker onChange={field.onChange} date={field.value} />
                 </I.FormControl>
