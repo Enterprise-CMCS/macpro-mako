@@ -259,7 +259,7 @@ export const MedicaidForm = () => {
                   </Link>
                 </div>
                 <p className="text-gray-500 font-light">
-                  Must follow the format SS-YY-NNNN or SS-YY-NNNN-xxxx.
+                  Must follow the format SS-YY-NNNN or SS-YY-NNNN-XXXX.
                 </p>
                 <p className="italic text-gray-500 font-light">
                   Reminder - CMS recommends that all SPA numbers start with the
