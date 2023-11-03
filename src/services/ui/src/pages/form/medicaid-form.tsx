@@ -157,7 +157,7 @@ export const MedicaidForm = () => {
           <div className="max-w-md p-4">
             <div className="font-bold">Submission Success!</div>
             <p>
-              Your submission was accepted.
+              {data.id} was successfully submitted.
               <br />
               Please be aware that it may take up to a minute for your
               submission to show in the Dashboard.
@@ -185,15 +185,14 @@ export const MedicaidForm = () => {
               requires support.
               <br />
               <br />
-              Please request help at{" "}
+              Please contact the{" "}
               <a
-                href="mailto:emailaddress@example.com"
+                href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
                 className="text-blue-500"
               >
-                emailaddress@example.com
+                helpdesk
               </a>{" "}
-              or visit our <a href="linktohelpdesk">help desk</a>, and include
-              the following in your support request: <br />
+              . You may include the following in your support request: <br />
               <br />
               <ul>
                 <li>SPA ID: {data.id}</li>
