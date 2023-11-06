@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { API } from "aws-amplify";
 import { OneMacTransform } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
+import { getItem } from "@/api";
 import { BREAD_CRUMB_CONFIG_NEW_SUBMISSION } from "@/components/BreadCrumb/bread-crumb-config";
 import {
   SimplePageContainer,
@@ -26,6 +27,16 @@ function startsWithValidPrefix(value: string) {
   }
   return false;
 }
+
+async function doesNotExist(value: string) {
+  try {
+    await getItem(value);
+    return false;
+  } catch (error) {
+    return true;
+  }
+}
+
 const formSchema = z.object({
   id: z
     .string()
@@ -35,6 +46,9 @@ const formSchema = z.object({
     )
     .refine((value) => startsWithValidPrefix(value), {
       message: "You do not have access to this state.",
+    })
+    .refine(async (value) => doesNotExist(value), {
+      message: "SPA ID already exists.",
     }),
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
