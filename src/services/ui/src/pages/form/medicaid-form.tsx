@@ -265,7 +265,14 @@ export const MedicaidForm = () => {
                   year in which the package is submitted.
                 </p>
                 <I.FormControl className="max-w-sm">
-                  <I.Input {...field} />
+                  <I.Input
+                    {...field}
+                    onInput={(e) => {
+                      if (e.target instanceof HTMLInputElement) {
+                        e.target.value = e.target.value.toUpperCase();
+                      }
+                    }}
+                  />
                 </I.FormControl>
                 <I.FormMessage />
               </I.FormItem>
