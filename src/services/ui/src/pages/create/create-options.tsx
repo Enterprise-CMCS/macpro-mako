@@ -15,7 +15,11 @@ import {
 } from "@/pages/create/options";
 import { SimplePageContainer } from "@/components";
 import { BreadCrumbs } from "@/components/BreadCrumb";
-import { BREAD_CRUMB_CONFIG_NEW_SUBMISSION } from "@/components/BreadCrumb/bread-crumb-config";
+import {
+  BREAD_CRUMB_CONFIG_NEW_SUBMISSION,
+  NEW_SUBMISSION_CRUMBS,
+} from "@/components/BreadCrumb/bread-crumb-config";
+import { useLocation } from "react-router-dom";
 
 /** Can be removed once page title bar with back nav is integrated */
 export const SimplePageTitle = ({ title }: { title: string }) => (
@@ -32,9 +36,10 @@ type OptionsPageProps = {
 };
 /** A page for rendering an array of {@link OptionData} */
 const OptionsPage = ({ options, title, fieldsetLegend }: OptionsPageProps) => {
+  const location = useLocation();
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={BREAD_CRUMB_CONFIG_NEW_SUBMISSION} />
+      <BreadCrumbs options={NEW_SUBMISSION_CRUMBS(location.pathname)} />
       <SimplePageTitle title={title} />
       <OptionFieldset legend={fieldsetLegend}>
         {options.map((opt, idx) => (
