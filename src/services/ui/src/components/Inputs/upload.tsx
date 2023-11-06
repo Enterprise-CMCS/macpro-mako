@@ -39,7 +39,7 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
     onDrop,
     accept,
     maxFiles,
-    maxSize: 80 * 1000000, // 80MB,
+    maxSize: 80 * 1024 * 1024, // 80MB,
   });
 
   return (
