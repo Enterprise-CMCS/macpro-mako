@@ -58,7 +58,9 @@ const formSchema = z.object({
         1,
         "Required: You must submit exactly one file for CMS Form 179."
       ),
-    spaPages: z.array(z.instanceof(File)).nonempty(),
+    spaPages: z.array(z.instanceof(File)).refine((value) => value.length > 0, {
+      message: "Required",
+    }),
     coverLetter: z.array(z.instanceof(File)).optional(),
     tribalEngagement: z.array(z.instanceof(File)).optional(),
     existingStatePlanPages: z.array(z.instanceof(File)).optional(),
