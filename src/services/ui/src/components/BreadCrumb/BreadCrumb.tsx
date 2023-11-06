@@ -20,7 +20,6 @@ export const BreadCrumbs = ({ options }: BreadCrumbsProps) => {
       {/* After this we map over the config and check to see if the breadcrumb needs to be displayed. Proper route paths are important here. It should be hierarchical */}
       {options
         .filter((option) => !option.default)
-        // .filter((option) => window.location.href.includes(option.to))
         .toSorted((option, prevOption) => option.order - prevOption.order)
         .map(({ displayText, to }, index, optionsArray) => {
           return (
