@@ -5,6 +5,7 @@ import OneMACIDMGuide from "../../../assets/onboarding/OneMACIDMGuide.pdf";
 import OneMACStateUserGuide from "../../../assets/onboarding/OneMACStateUserGuide.pdf";
 import OneMACCMSUserGuide from "../../../assets/onboarding/OneMACCMSUserGuide.pdf";
 import { FAQ_SECTION } from "@/routes";
+import { FILE_TYPES } from "shared-types/uploads";
 
 type QuestionAnswer = {
   anchorText: string;
@@ -17,36 +18,10 @@ type FAQContent = {
   qanda: QuestionAnswer[];
 };
 
-type FileTypeInfo = {
-  extension: string;
-  description: string;
-};
-
 export const helpDeskContact = {
   email: "OneMAC_Helpdesk@cms.hhs.gov",
   phone: "(833) 228-2540",
 };
-
-export const FILE_TYPES: FileTypeInfo[] = [
-  { extension: ".bmp", description: "Bitmap Image File" },
-  { extension: ".csv", description: "Comma-separated Values" },
-  { extension: ".doc", description: "MS Word Document" },
-  { extension: ".docx", description: "MS Word Document (xml)" },
-  { extension: ".gif", description: "Graphics Interchange Format" },
-  { extension: ".jpeg", description: "Joint Photographic Experts Group" },
-  { extension: ".odp", description: "OpenDocument Presentation (OpenOffice)" },
-  { extension: ".ods", description: "OpenDocument Spreadsheet (OpenOffice)" },
-  { extension: ".odt", description: "OpenDocument Text (OpenOffice)" },
-  { extension: ".png", description: "Portable Network Graphic" },
-  { extension: ".pdf", description: "Portable Document Format" },
-  { extension: ".ppt", description: "MS Powerpoint File" },
-  { extension: ".pptx", description: "MS Powerpoint File (xml)" },
-  { extension: ".rtf", description: "Rich Text Format" },
-  { extension: ".tif", description: "Tagged Image Format" },
-  { extension: ".txt", description: "Text File Format" },
-  { extension: ".xls", description: "MS Excel File" },
-  { extension: ".xlsx", description: "MS Excel File (xml)" },
-];
 
 export const oneMACFAQContent: FAQContent[] = [
   {

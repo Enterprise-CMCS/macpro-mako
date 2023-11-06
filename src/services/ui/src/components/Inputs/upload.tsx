@@ -1,9 +1,10 @@
 import { cn } from "@/lib";
 import { useCallback, forwardRef, useState } from "react";
-import { useDropzone, FileRejection } from "react-dropzone";
+import { useDropzone, FileRejection, Accept } from "react-dropzone";
 import * as I from "@/components/Inputs";
 import { Alert } from "@/components";
 import { X } from "lucide-react";
+import { FILE_TYPES } from "shared-types/uploads";
 
 type UploadProps = {
   maxFiles?: number;
@@ -17,7 +18,9 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       if (fileRejections.length > 0) {
-        setErrorMessage("The selected file is too large.");
+        setErrorMessage(
+          "Selected file(s) is too large or of a disallowed file type."
+        );
       } else {
         setErrorMessage(null);
         setFiles([...files, ...acceptedFiles]);
@@ -26,10 +29,18 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
     [files]
   );
 
+  const accept: Accept = {};
+  FILE_TYPES.map((type) =>
+    accept[type.mime]
+      ? accept[type.mime].push(type.extension)
+      : (accept[type.mime] = [type.extension])
+  );
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+    accept,
     maxFiles,
-    maxSize: 80 * 1000000, // 80MB
+    maxSize: 80 * 1000000, // 80MB,
   });
 
   return (
