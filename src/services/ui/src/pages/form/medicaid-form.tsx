@@ -16,14 +16,26 @@ import {
   BreadCrumbs,
 } from "@/components";
 import { FAQ_TARGET, ROUTES } from "@/routes";
-
+import { getUserStateCodes } from "@/utils";
+let stateCodes: string[] = [];
+function startsWithValidPrefix(value: string) {
+  for (const prefix of stateCodes) {
+    if (value.startsWith(prefix)) {
+      return true;
+    }
+  }
+  return false;
+}
 const formSchema = z.object({
   id: z
     .string()
     .regex(
       /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/,
       "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX"
-    ),
+    )
+    .refine((value) => startsWithValidPrefix(value), {
+      message: "You do not have access to this state.",
+    }),
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
     cmsForm179: z
@@ -82,6 +94,7 @@ export const MedicaidForm = () => {
     resolver: zodResolver(formSchema),
   });
   const { data: user } = useGetUser();
+  stateCodes = getUserStateCodes(user?.user);
   const navigate = useNavigate();
 
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (data) => {
