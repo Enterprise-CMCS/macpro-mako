@@ -19,7 +19,6 @@ export function ExampleForm() {
       console.log({ err });
     }
   );
-
   return (
     <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
       <Form {...form}>
