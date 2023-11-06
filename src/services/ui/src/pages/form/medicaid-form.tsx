@@ -365,16 +365,16 @@ export const MedicaidForm = () => {
               At least one attachment is required.
             </p>
           </section>
-          {attachmentList.map((attachment) => (
+          {attachmentList.map(({ name, label, required }) => (
             <I.FormField
-              key={attachment.name}
+              key={name}
               control={form.control}
-              name={`attachments.${attachment.name}`}
+              name={`attachments.${name}`}
               render={({ field }) => (
                 <I.FormItem>
                   <I.FormLabel>
-                    {attachment.label}
-                    {attachment?.required ? <I.RequiredIndicator /> : ""}
+                    {label}
+                    {required ? <I.RequiredIndicator /> : ""}
                   </I.FormLabel>
                   <I.Upload
                     files={field?.value ?? []}
