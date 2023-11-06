@@ -6,6 +6,7 @@ enum Keys {
   NEW_SUBMISSION = "new-submission",
   SPA_TYPE = "spa",
   SPA_MEDICAID_TYPE = "medicaid",
+  SPA_MEDICAID_FORM = "create",
   SPA_MEDICAID_LANDING_ELIGIBILITY = "medicaid-eligibility",
   SPA_MEDICAID_LANDING_ABP = "medicaid-abp",
   SPA_CHIP_TYPE = "chip",
@@ -20,6 +21,7 @@ const newSubmissionPageTitleMapper: { [k: string]: string } = {
   [Keys.NEW_SUBMISSION]: "Submission Type",
   [Keys.SPA_TYPE]: "SPA Type",
   [Keys.SPA_MEDICAID_TYPE]: "Medicaid SPA Type",
+  [Keys.SPA_MEDICAID_FORM]: "Submit a new Medicaid SPA",
   [Keys.SPA_MEDICAID_LANDING_ELIGIBILITY]:
     "Medicaid Eligibility, Enrollment, Administration, and Health Homes",
   [Keys.SPA_MEDICAID_LANDING_ABP]:
@@ -38,6 +40,7 @@ const newSubmissionPageRouteMapper: { [k: string]: ROUTES } = {
   [Keys.NEW_SUBMISSION]: ROUTES.NEW_SUBMISSION_OPTIONS,
   [Keys.SPA_TYPE]: ROUTES.SPA_SUBMISSION_OPTIONS,
   [Keys.SPA_MEDICAID_TYPE]: ROUTES.MEDICAID_SPA_SUB_OPTIONS,
+  [Keys.SPA_MEDICAID_FORM]: ROUTES.MEDICAID_NEW,
   [Keys.SPA_MEDICAID_LANDING_ELIGIBILITY]: ROUTES.MEDICAID_ELIGIBILITY_LANDING,
   [Keys.SPA_MEDICAID_LANDING_ABP]: ROUTES.MEDICAID_ABP_LANDING,
   [Keys.SPA_CHIP_TYPE]: ROUTES.CHIP_SPA_SUB_OPTIONS,
