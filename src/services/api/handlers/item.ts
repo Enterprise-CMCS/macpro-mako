@@ -1,8 +1,7 @@
 import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
-import * as os from "../../../libs/opensearch-lib";
 import { getStateFilter } from "../libs/auth/user";
-import { OsHit, OsMainSourceItem } from "shared-types";
+import { getPackage } from "../libs/package/getPackage";
 
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
@@ -11,14 +10,8 @@ if (!process.env.osDomain) {
 export const getItemData = async (event: APIGatewayEvent) => {
   try {
     const body = JSON.parse(event.body);
-
     const stateFilter = await getStateFilter(event);
-
-    const result = (await os.getItem(
-      process.env.osDomain,
-      "main",
-      body.id
-    )) as OsHit<OsMainSourceItem> & { found: boolean };
+    const result = await getPackage(body.id);
 
     if (
       stateFilter &&

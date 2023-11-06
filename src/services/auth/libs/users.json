@@ -87,7 +87,7 @@
     ]
   },
   {
-    "username": "onemac-micro-helpdesk@example.com",
+    "username": "helpdesk@example.com",
     "attributes": [
       {
         "Name": "email",
@@ -170,6 +170,27 @@
       {
         "Name": "custom:cms-roles",
         "Value": "onemac-micro-statesubmitter"
+      }
+    ]
+  },
+  {
+    "username": "badfootball@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "badfootball@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "bad"
+      },
+      {
+        "Name": "family_name",
+        "Value": "football"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
       }
     ]
   }

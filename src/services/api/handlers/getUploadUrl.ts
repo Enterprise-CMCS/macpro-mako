@@ -1,5 +1,4 @@
 import { response } from "../libs/handler";
-import { APIGatewayEvent } from "aws-lambda";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { v4 as uuidv4 } from "uuid";
@@ -10,9 +9,8 @@ const s3 = new S3Client({
   region: process.env.attachmentsBucketRegion,
 });
 
-export const handler = async (event: APIGatewayEvent) => {
+export const handler = async () => {
   try {
-    const body = JSON.parse(event.body);
     const bucket = process.env.attachmentsBucketName;
     const key = uuidv4();
     const url = await getSignedUrl(

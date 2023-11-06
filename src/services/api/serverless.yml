@@ -105,6 +105,25 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
+  getPackageActions:
+    handler: handlers/getPackageActions.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+      onemacLegacyS3AccessRoleArn: ${self:custom.onemacLegacyS3AccessRoleArn}
+    events:
+      - http:
+          path: /getPackageActions
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:getAttachmentUrlProvisionedConcurrency}
   getAttachmentUrl:
     handler: handlers/getAttachmentUrl.handler
     maximumRetryAttempts: 0
