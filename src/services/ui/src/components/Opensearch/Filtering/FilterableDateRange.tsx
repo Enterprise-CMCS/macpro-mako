@@ -45,12 +45,12 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   const onFromInput = (e: any) => {
     let input = e.target.value;
     if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
-    const values = input.split("/").map(function (v) {
+    const values = input.split("/").map(function (v: string) {
       return v.replace(/\D/g, "");
     });
     if (values[0]) values[0] = checkValue(values[0], 12);
     if (values[1]) values[1] = checkValue(values[1], 31);
-    const output = values.map(function (v, i) {
+    const output = values.map(function (v: string, i: number) {
       return v.length == 2 && i < 2 ? v + " / " : v;
     });
 
