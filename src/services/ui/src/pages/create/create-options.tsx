@@ -15,11 +15,8 @@ import {
 } from "@/pages/create/options";
 import { SimplePageContainer } from "@/components";
 import { BreadCrumbs } from "@/components/BreadCrumb";
-import {
-  BREAD_CRUMB_CONFIG_NEW_SUBMISSION,
-  NEW_SUBMISSION_CRUMBS,
-} from "@/components/BreadCrumb/bread-crumb-config";
 import { useLocation } from "react-router-dom";
+import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
 
 /** Can be removed once page title bar with back nav is integrated */
 export const SimplePageTitle = ({ title }: { title: string }) => (

@@ -5,10 +5,7 @@ import { SimplePageTitle } from "@/pages/create/create-options";
 import { SimplePageContainer } from "@/components";
 import { FAQ_SECTION, ROUTES } from "@/routes";
 import { BreadCrumbs } from "@/components/BreadCrumb";
-import {
-  BREAD_CRUMB_CONFIG_NEW_SUBMISSION,
-  NEW_SUBMISSION_CRUMBS,
-} from "@/components/BreadCrumb/bread-crumb-config";
+import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
 export enum EXTERNAL_APP {
   MAC_PRO = "https://www.medicaid.gov/resources-for-states/medicaid-and-chip-program-macpro-portal/index.html#MACPro",
   MMDL = "https://wms-mmdl.cms.gov/MMDL/faces/portal.jsp",
