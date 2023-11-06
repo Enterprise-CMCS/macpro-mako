@@ -10,7 +10,7 @@ import {
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { CognitoUserAttributes, ItemResult } from "shared-types";
+import { ItemResult } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";

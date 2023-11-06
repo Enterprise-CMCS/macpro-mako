@@ -14,6 +14,8 @@ export const EnableRaiResponseWithdraw = () => {
     type: Action;
   }>();
   const { data, isLoading, error } = useGetItem(id!);
+  // TODO: Hook into endpoint
+  // TODO: Logic for enable vs disable
 
   // Keeps aria stuff and classes condensed
   const SectionTemplate = ({
@@ -24,10 +26,10 @@ export const EnableRaiResponseWithdraw = () => {
     value: string;
   }) => (
     <div className="flex flex-col my-8">
-      <label className="font-semibold" id="package-id-label">
-        {label}
-      </label>
-      <span aria-labelledby="package-id-label">{value}</span>
+      <label id="package-id-label">{label}</label>
+      <span className="text-xl" aria-labelledby="package-id-label">
+        {value}
+      </span>
     </div>
   );
 
@@ -38,12 +40,18 @@ export const EnableRaiResponseWithdraw = () => {
       <BreadCrumbs
         options={BREAD_CRUMB_CONFIG_PACKAGE_DETAILS({ id: id, action: type })}
       />
-      <h1>Enable RAI Response Withdraw</h1>
-      <p>
-        Once you submit this form, the most recent Formal RAI Response for this
-        package will be able to be withdrawn by the state.{" "}
-        <b>If you leave this page, you will lose your progress on this form.</b>
-      </p>
+      <div className="max-w-2xl">
+        <h1 className="text-2xl font-semibold mt-8 mb-2">
+          Enable RAI Response Withdraw
+        </h1>
+        <p>
+          Once you submit this form, the most recent Formal RAI Response for
+          this package will be able to be withdrawn by the state.{" "}
+          <b>
+            If you leave this page, you will lose your progress on this form.
+          </b>
+        </p>
+      </div>
       <section>
         <SectionTemplate label={"Package ID"} value={id} />
         <SectionTemplate
@@ -54,8 +62,10 @@ export const EnableRaiResponseWithdraw = () => {
           }
         />
       </section>
-      <Button>Cancel</Button>
-      <Button>Submit</Button>
+      <div className="flex gap-2">
+        <Button variant="outline">Cancel</Button>
+        <Button>Enable RAI Response Withdraw</Button>
+      </div>
     </SimplePageContainer>
   );
 };
