@@ -1,4 +1,6 @@
 import { ROUTES } from "@/routes";
+import { mapActionLabel } from "@/utils";
+import { Action } from "shared-types";
 
 export type BreadCrumbConfig = {
   default?: boolean;
@@ -75,16 +77,29 @@ export const BREAD_CRUMB_CONFIG_NEW_SUBMISSION: BreadCrumbConfig[] = [
 
 export const BREAD_CRUMB_CONFIG_PACKAGE_DETAILS = (data: {
   id: string;
-}): BreadCrumbConfig[] => [
-  {
-    displayText: "Dashboard",
-    order: 1,
-    default: true,
-    to: ROUTES.DASHBOARD,
-  },
-  {
-    displayText: `${data.id}`,
-    order: 2,
-    to: ROUTES.DETAILS,
-  },
-];
+  action?: Action;
+}): BreadCrumbConfig[] => {
+  const base = [
+    {
+      displayText: "Dashboard",
+      order: 1,
+      default: true,
+      to: ROUTES.DASHBOARD,
+    },
+    {
+      displayText: data.id,
+      order: 2,
+      to: `/details?id=${data.id}`,
+    },
+  ];
+  return !data.action
+    ? base
+    : [
+        ...base,
+        {
+          displayText: mapActionLabel(data.action),
+          order: 3,
+          to: `/actions/${data.id}/${data.action}`,
+        },
+      ];
+};
