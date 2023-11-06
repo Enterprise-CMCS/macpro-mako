@@ -44,7 +44,11 @@ export const SearchForm: FC<{
             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
           />
         </svg>
+        <label htmlFor="searchInput" className="sr-only">
+          Search by Package ID, CPOC Name, or Submitter Name
+        </label>
         <input
+          id="searchInput"
           type="text"
           placeholder="Search by Package ID, CPOC Name, or Submitter Name"
           className="w-full py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
