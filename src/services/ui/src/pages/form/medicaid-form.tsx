@@ -109,7 +109,6 @@ export const MedicaidForm = () => {
   });
   const { data: user } = useGetUser();
   stateCodes = getUserStateCodes(user?.user);
-  const navigate = useNavigate();
 
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (data) => {
     const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
@@ -179,62 +178,11 @@ export const MedicaidForm = () => {
         body: dataToSubmit,
       });
       console.log(submissionResponse);
-      setModalChildren(
-        <div className="flex flex-col gap-2 items-center text-center">
-          <div className="max-w-md p-4">
-            <div className="font-bold">Submission Success!</div>
-            <p>
-              {data.id} was successfully submitted.
-              <br />
-              Please be aware that it may take up to a minute for your
-              submission to show in the Dashboard.
-            </p>
-          </div>
-          <I.Button
-            type="button"
-            variant="outline"
-            onClick={() => navigate(ROUTES.DASHBOARD)}
-          >
-            Go to Dashboard
-          </I.Button>
-        </div>
-      );
+      setModalChildren(<SuccessModalContent id={data.id} />);
     } catch (err) {
       console.log(err);
       setModalChildren(
-        <div className="flex flex-col gap-2 items-center text-center">
-          <div className="max-w-md p-4">
-            <div className="text-red-500 font-bold">Submission Error:</div>
-            <p>
-              An error occurred during submission.
-              <br />
-              You may close this window and try again, however, this likely
-              requires support.
-              <br />
-              <br />
-              Please contact the{" "}
-              <a
-                href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
-                className="text-blue-500"
-              >
-                helpdesk
-              </a>{" "}
-              . You may include the following in your support request: <br />
-              <br />
-              <ul>
-                <li>SPA ID: {data.id}</li>
-                <li>Timestamp: {Date.now()}</li>
-              </ul>
-            </p>
-          </div>
-          <I.Button
-            type="button"
-            variant="outline"
-            onClick={() => setModalIsOpen(false)}
-          >
-            Close
-          </I.Button>
-        </div>
+        <ErrorModalContent id={data.id} setModalIsOpen={setModalIsOpen} />
       );
     } finally {
       setModalIsOpen(true);
@@ -446,40 +394,107 @@ export const MedicaidForm = () => {
               showModal={cancelModalIsOpen}
               // eslint-disable-next-line react/no-children-prop
               children={
-                <div className="flex flex-col gap-2 items-center text-center">
-                  <div className="max-w-md p-4">
-                    <div className="font-bold">
-                      Are you sure you want to cancel?
-                    </div>
-                    <p>
-                      If you leave this page, you will lose your progress on
-                      this form.
-                    </p>
-                  </div>
-                  <div className="flex">
-                    <I.Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => navigate(ROUTES.DASHBOARD)}
-                    >
-                      Yes
-                    </I.Button>
-                    <div className="ml-8">
-                      <I.Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => setCancelModalIsOpen(false)}
-                      >
-                        No, Return to Form
-                      </I.Button>
-                    </div>
-                  </div>
-                </div>
+                <CancelModalContent
+                  setCancelModalIsOpen={setCancelModalIsOpen}
+                />
               }
             />
           </div>
         </form>
       </I.Form>
     </SimplePageContainer>
+  );
+};
+type SuccessModalProps = { id: string };
+const SuccessModalContent = ({ id }: SuccessModalProps) => {
+  const navigate = useNavigate();
+  return (
+    <div className="flex flex-col gap-2 items-center text-center">
+      <div className="max-w-md p-4">
+        <div className="font-bold">Submission Success!</div>
+        <p>
+          {id} was successfully submitted.
+          <br />
+          Please be aware that it may take up to a minute for your submission to
+          show in the Dashboard.
+        </p>
+      </div>
+      <I.Button
+        type="button"
+        variant="outline"
+        onClick={() => navigate(ROUTES.DASHBOARD)}
+      >
+        Go to Dashboard
+      </I.Button>
+    </div>
+  );
+};
+type ErrorModalProps = { id: string; setModalIsOpen: (open: boolean) => void };
+const ErrorModalContent = ({ id, setModalIsOpen }: ErrorModalProps) => {
+  return (
+    <div className="flex flex-col gap-2 items-center text-center">
+      <div className="max-w-md p-4">
+        <div className="text-red-500 font-bold">Submission Error:</div>
+        <p>
+          An error occurred during submission.
+          <br />
+          You may close this window and try again, however, this likely requires
+          support.
+          <br />
+          <br />
+          Please contact the{" "}
+          <a
+            href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
+            className="text-blue-500"
+          >
+            helpdesk
+          </a>{" "}
+          . You may include the following in your support request: <br />
+          <br />
+          <ul>
+            <li>SPA ID: {id}</li>
+            <li>Timestamp: {Date.now()}</li>
+          </ul>
+        </p>
+      </div>
+      <I.Button
+        type="button"
+        variant="outline"
+        onClick={() => setModalIsOpen(false)}
+      >
+        Close
+      </I.Button>
+    </div>
+  );
+};
+
+type CancelModalProps = { setCancelModalIsOpen: (open: boolean) => void };
+const CancelModalContent = ({ setCancelModalIsOpen }: CancelModalProps) => {
+  const navigate = useNavigate();
+  return (
+    <div className="flex flex-col gap-2 items-center text-center">
+      <div className="max-w-md p-4">
+        <div className="font-bold">Are you sure you want to cancel?</div>
+        <p>If you leave this page, you will lose your progress on this form.</p>
+      </div>
+      <div className="flex">
+        <I.Button
+          type="button"
+          variant="outline"
+          onClick={() => navigate(ROUTES.DASHBOARD)}
+        >
+          Yes
+        </I.Button>
+        <div className="ml-8">
+          <I.Button
+            type="button"
+            variant="outline"
+            onClick={() => setCancelModalIsOpen(false)}
+          >
+            No, Return to Form
+          </I.Button>
+        </div>
+      </div>
+    </div>
   );
 };
