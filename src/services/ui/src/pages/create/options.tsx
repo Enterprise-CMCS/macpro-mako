@@ -43,7 +43,7 @@ export const MEDICAID_SPA_OPTIONS: OptionData[] = [
   {
     title: "All Other Medicaid SPA Submissions",
     description: "Create a new Medicaid State Plan Amendment",
-    linkTo: ROUTES.CREATE,
+    linkTo: ROUTES.MEDICAID_NEW,
   },
 ];
 
@@ -56,7 +56,7 @@ export const CHIP_SPA_OPTIONS: OptionData[] = [
   {
     title: "All Other CHIP SPA Submissions",
     description: "Create a new CHIP State Plan Amendment",
-    linkTo: ROUTES.CREATE,
+    linkTo: ROUTES.HOME,
   },
 ];
 
@@ -64,7 +64,7 @@ export const WAIVER_OPTIONS: OptionData[] = [
   {
     title: "Request Temporary Extension",
     description: "Submit for 1915(b) or 1915(c)",
-    linkTo: ROUTES.CREATE,
+    linkTo: ROUTES.HOME,
   },
   {
     title: "1915(b) Waiver Actions",
@@ -74,7 +74,7 @@ export const WAIVER_OPTIONS: OptionData[] = [
   {
     title: "1915(c) Appendix K Amendment",
     description: "Create a 1915(c) Appendix K Amendment",
-    linkTo: ROUTES.CREATE,
+    linkTo: ROUTES.HOME,
   },
 ];
 
