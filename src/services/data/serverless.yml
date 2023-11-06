@@ -78,7 +78,6 @@ custom:
         then
           aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${sls:stage}-bootstrapUsers --invocation-type RequestResponse /dev/null
         fi
-
 stepFunctions:
   stateMachines:
     reindex:
@@ -244,6 +243,7 @@ functions:
     timeout: 300
   cleanupKafka:
     handler: handlers/cleanupKafka.handler
+    maximumRetryAttempts: 0
     vpc:
       securityGroupIds:
         - Ref: SecurityGroup
@@ -681,3 +681,5 @@ resources:
       Value: !Sub https://${OpenSearch.DomainEndpoint}
     OpenSearchDashboardEndpoint:
       Value: !Sub https://${OpenSearch.DomainEndpoint}/_dashboards
+    TopicName:
+      Value: ${param:topicNamespace}aws.onemac.migration.cdc

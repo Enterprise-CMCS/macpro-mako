@@ -11,12 +11,12 @@ export const handler = async function (
   const responseData: any = {};
   let responseStatus: ResponseStatus = SUCCESS;
   try {
-    const BrokerString: string = event.ResourceProperties.BrokerString;
-    const TopicPatternsToDelete: string[] =
-      event.ResourceProperties.TopicPatternsToDelete;
     if (event.RequestType === "Create" || event.RequestType == "Update") {
       console.log("This resource does nothing on Create and Update events.");
     } else if (event.RequestType === "Delete") {
+      const BrokerString: string = event.ResourceProperties.BrokerString;
+      const TopicPatternsToDelete: string[] =
+        event.ResourceProperties.TopicPatternsToDelete;
       console.log(
         `Attempting a delete for each of the following patterns:  ${TopicPatternsToDelete}`
       );

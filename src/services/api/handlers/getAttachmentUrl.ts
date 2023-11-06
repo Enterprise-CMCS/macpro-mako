@@ -69,7 +69,12 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     // Now we can generate the presigned url
-    const url = await generatePresignedS3Url(body.bucket, body.key, 60);
+    const url = await generatePresignedUrl(
+      body.bucket,
+      body.key,
+      body.filename,
+      60
+    );
 
     return response<unknown>({
       statusCode: 200,
@@ -84,41 +89,52 @@ export const handler = async (event: APIGatewayEvent) => {
   }
 };
 
-async function generatePresignedS3Url(bucket, key, expirationInSeconds) {
-  // Create an S3 client
-  const roleToAssumeArn = process.env.onemacLegacyS3AccessRoleArn;
+async function getClient(bucket) {
+  if (bucket.startsWith("uploads")) {
+    const stsClient = new STSClient({});
 
-  // Create an STS client to make the AssumeRole API call
-  const stsClient = new STSClient({});
+    // Assume the role
+    const assumedRoleResponse = await stsClient.send(
+      new AssumeRoleCommand({
+        RoleArn: process.env.onemacLegacyS3AccessRoleArn,
+        RoleSessionName: "AssumedRoleSession",
+      })
+    );
 
-  // Assume the role
-  const assumedRoleResponse = await stsClient.send(
-    new AssumeRoleCommand({
-      RoleArn: roleToAssumeArn,
-      RoleSessionName: "AssumedRoleSession",
-    })
-  );
+    // Extract the assumed role credentials
+    const assumedCredentials = assumedRoleResponse.Credentials;
 
-  // Extract the assumed role credentials
-  const assumedCredentials = assumedRoleResponse.Credentials;
+    // Create S3 client using the assumed role's credentials
+    return new S3Client({
+      credentials: {
+        accessKeyId: assumedCredentials.AccessKeyId,
+        secretAccessKey: assumedCredentials.SecretAccessKey,
+        sessionToken: assumedCredentials.SessionToken,
+      },
+    });
+  } else {
+    return new S3Client({});
+  }
+}
 
-  // Create S3 client using the assumed role's credentials
-  const assumedS3Client = new S3Client({
-    credentials: {
-      accessKeyId: assumedCredentials.AccessKeyId,
-      secretAccessKey: assumedCredentials.SecretAccessKey,
-      sessionToken: assumedCredentials.SessionToken,
-    },
-  });
+async function generatePresignedUrl(
+  bucket,
+  key,
+  filename,
+  expirationInSeconds
+) {
+  // Get an S3 client
+  const client = await getClient(bucket);
 
   // Create a command to get the object (you can adjust this according to your use case)
   const getObjectCommand = new GetObjectCommand({
     Bucket: bucket,
     Key: key,
+    ResponseContentDisposition: `filename ="${filename}"`,
   });
 
   // Generate a presigned URL
-  const presignedUrl = await getSignedUrl(assumedS3Client, getObjectCommand, {
+  const presignedUrl = await getSignedUrl(client, getObjectCommand, {
     expiresIn: expirationInSeconds,
   });
 
