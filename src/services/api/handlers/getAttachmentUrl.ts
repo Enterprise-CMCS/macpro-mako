@@ -69,7 +69,12 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     // Now we can generate the presigned url
-    const url = await generateLegacyPresignedS3Url(body.bucket, body.key, 60);
+    const url = await generatePresignedUrl(
+      body.bucket,
+      body.key,
+      body.filename,
+      60
+    );
 
     return response<unknown>({
       statusCode: 200,
@@ -112,7 +117,12 @@ async function getClient(bucket) {
   }
 }
 
-async function generateLegacyPresignedS3Url(bucket, key, expirationInSeconds) {
+async function generatePresignedUrl(
+  bucket,
+  key,
+  filename,
+  expirationInSeconds
+) {
   // Get an S3 client
   const client = await getClient(bucket);
 
@@ -120,6 +130,7 @@ async function generateLegacyPresignedS3Url(bucket, key, expirationInSeconds) {
   const getObjectCommand = new GetObjectCommand({
     Bucket: bucket,
     Key: key,
+    ResponseContentDisposition: `filename ="${filename}"`,
   });
 
   // Generate a presigned URL
