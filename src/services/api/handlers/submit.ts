@@ -121,7 +121,7 @@ async function produceMessage(topic, key, value) {
     key: key,
     value: value,
     partition: 0,
-    headers: { source: "mako" },
+    headers: { source: "micro" },
   };
   console.log(message);
 
