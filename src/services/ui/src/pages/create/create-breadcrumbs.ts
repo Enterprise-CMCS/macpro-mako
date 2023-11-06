@@ -1,6 +1,6 @@
 // Specific to the path of each Options page
 import { ROUTES } from "@/routes";
-import { BreadCrumbConfig } from "@/components/BreadCrumb/bread-crumb-config";
+import { BreadCrumbConfig } from "@/components";
 
 enum Keys {
   NEW_SUBMISSION = "new-submission",

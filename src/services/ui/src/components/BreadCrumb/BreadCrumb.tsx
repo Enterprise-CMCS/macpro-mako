@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import { type ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
-import { BreadCrumbConfig } from "./bread-crumb-config";
 
 type BreadCrumbsProps = {
   options: BreadCrumbConfig[];
+};
+
+export type BreadCrumbConfig = {
+  default?: boolean;
+  order: number;
+  to: string;
+  displayText: string;
 };
 
 export const BreadCrumbs = ({ options }: BreadCrumbsProps) => {

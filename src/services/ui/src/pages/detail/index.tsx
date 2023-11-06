@@ -10,15 +10,15 @@ import {
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { CognitoUserAttributes, ItemResult } from "shared-types";
+import { ItemResult } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
-import { BREAD_CRUMB_CONFIG_PACKAGE_DETAILS } from "@/components/BreadCrumb/bread-crumb-config";
 import { mapActionLabel } from "@/utils";
 import { Link } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren } from "react";
+import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 
 const DetailCardWrapper = ({
   title,
@@ -138,7 +138,7 @@ export const Details = () => {
     <>
       {/* <DetailNav id={id} type={data?._source.planType} /> */}
       <div className="max-w-screen-xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
-        <BreadCrumbs options={BREAD_CRUMB_CONFIG_PACKAGE_DETAILS({ id })} />
+        <BreadCrumbs options={DETAILS_AND_ACTIONS_CRUMBS({ id })} />
         <DetailsContent data={data} />
       </div>
     </>
