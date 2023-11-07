@@ -74,6 +74,35 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     setToValue(newValues);
   };
 
+  const onFromBlur = () => {
+    setFromValue((s) => {
+      const newDate = s.replaceAll(" ", "");
+      console.log("onfrom blur, from", newDate, selectedDate);
+      const date = parse(newDate, "MM/dd/yyyy", new Date());
+      if (!isValid(date)) {
+        setSelectedDate({ from: undefined, to: undefined });
+        return newDate;
+      }
+      if (selectedDate?.to && isAfter(date, selectedDate.to)) {
+        console.log("runnign from messed");
+        setSelectedDate({ from: date, to: undefined });
+        onChange({
+          gte: date.toISOString(),
+          lte: undefined,
+        });
+        setToValue("");
+      } else {
+        setSelectedDate({ from: date, to: selectedDate?.to });
+        onChange({
+          gte: date.toISOString(),
+          lte: selectedDate?.to?.toISOString() || "",
+        });
+      }
+
+      return newDate;
+    });
+  };
+
   const onToBlur = () => {
     setToValue((s) => {
       const newDate = s.replaceAll(" ", "");
@@ -84,30 +113,19 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
       }
 
       if (selectedDate?.from && isBefore(date, selectedDate.from)) {
-        setSelectedDate({ from: date, to: selectedDate.from });
+        setSelectedDate({ from: undefined, to: date });
+        onChange({
+          gte: undefined,
+          lte: date.toISOString(),
+        });
+        setFromValue("");
       } else {
         setSelectedDate({ from: selectedDate?.from, to: date });
+        onChange({
+          gte: selectedDate?.from?.toISOString() || "",
+          lte: date.toISOString(),
+        });
       }
-
-      return newDate;
-    });
-  };
-
-  const onFromBlur = () => {
-    setFromValue((s) => {
-      const newDate = s.replaceAll(" ", "");
-
-      const date = parse(newDate, "MM/dd/yyyy", new Date());
-      if (!isValid(date)) {
-        setSelectedDate({ from: undefined, to: undefined });
-        return newDate;
-      }
-      if (selectedDate?.to && isAfter(date, selectedDate.to)) {
-        setSelectedDate({ from: selectedDate.to, to: date });
-      } else {
-        setSelectedDate({ from: date, to: selectedDate?.to });
-      }
-
       return newDate;
     });
   };
@@ -149,11 +167,14 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             className="bg-white"
             onSelect={(d) => {
               setSelectedDate(d);
+              console.log(d);
               if (!!d?.from && !!d.to) {
                 onChange({
                   gte: d.from.toISOString(),
                   lte: d.to.toISOString(),
                 });
+                setFromValue(format(d.from, "MM/dd/yyyy"));
+                setToValue(format(d.to, "MM/dd/yyyy"));
               }
             }}
             {...props}
