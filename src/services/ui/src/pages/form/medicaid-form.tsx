@@ -3,12 +3,11 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { API } from "aws-amplify";
 import { OneMacTransform } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { getItem } from "@/api";
-import { BREAD_CRUMB_CONFIG_NEW_SUBMISSION } from "@/components/BreadCrumb/bread-crumb-config";
 import {
   SimplePageContainer,
   Alert,
@@ -18,6 +17,7 @@ import {
 } from "@/components";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { getUserStateCodes } from "@/utils";
+import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
 let stateCodes: string[] = [];
 function startsWithValidPrefix(value: string) {
   for (const prefix of stateCodes) {
@@ -103,6 +103,7 @@ const attachmentList = [
 ] as const;
 
 export const MedicaidForm = () => {
+  const location = useLocation();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalChildren, setModalChildren] = useState(<div></div>);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
@@ -193,7 +194,7 @@ export const MedicaidForm = () => {
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={BREAD_CRUMB_CONFIG_NEW_SUBMISSION} />
+      <BreadCrumbs options={NEW_SUBMISSION_CRUMBS(location.pathname)} />
       <I.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
