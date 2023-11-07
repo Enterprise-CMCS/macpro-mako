@@ -1,4 +1,4 @@
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Alert, LoadingSpinner, SimplePageContainer } from "@/components";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { BREAD_CRUMB_CONFIG_PACKAGE_DETAILS } from "@/components/BreadCrumb/bread-crumb-config";
@@ -28,16 +28,18 @@ const SectionTemplate = ({
 
 const Intro = ({ action }: { action: "Enable" | "Disable" }) => (
   <div className="max-w-2xl">
-    <h1 className="text-2xl font-semibold mt-8 mb-2">
+    <h1 className="text-2xl font-semibold mt-4 mb-2">
       {action} RAI Response Withdraw
     </h1>
-    {action === "Enable" && (
-      <p>
-        Once you submit this form, the most recent Formal RAI Response for this
-        package will be able to be withdrawn by the state.{" "}
-        <b>If you leave this page, you will lose your progress on this form.</b>
-      </p>
-    )}
+    <p>
+      {action === "Enable" &&
+        "Once you submit this form, the most recent Formal RAI Response for this package will be able to be withdrawn by the state. "}
+      {action === "Disable" &&
+        "Once you submit this form, you will disable the previous Formal RAI Response Withdraw - Enabled action. The State will not be able to withdraw the Formal RAI Response. "}
+      <strong>
+        If you leave this page, you will lose your progress on this form.
+      </strong>
+    </p>
   </div>
 );
 
@@ -57,6 +59,7 @@ const PackageInfo = ({ id, item }: { id: string; item: ItemResult }) => (
 );
 
 export const EnableRaiResponseWithdraw = () => {
+  const navigate = useNavigate();
   const { id, type } = useParams<{
     id: string;
     type: Action;
@@ -91,20 +94,20 @@ export const EnableRaiResponseWithdraw = () => {
         options={BREAD_CRUMB_CONFIG_PACKAGE_DETAILS({ id: id, action: type })}
       />
       {itemError && (
-        <Alert variant="destructive">
-          <b>ERROR fetching item: </b>
+        <Alert className="my-2 max-w-2xl" variant="destructive">
+          <strong>ERROR fetching item: </strong>
           {itemError.response.data.message}
         </Alert>
       )}
       {actionsError && (
-        <Alert variant="destructive">
-          <b>ERROR fetching actions: </b>
+        <Alert className="my-2 max-w-2xl" variant="destructive">
+          <strong>ERROR fetching actions: </strong>
           {actionsError.response.data.message}
         </Alert>
       )}
       {!actionsError && !actions?.actions.includes(type) && (
-        <Alert variant="destructive">
-          <b>ERROR: </b>
+        <Alert className="my-2 max-w-2xl" variant="destructive">
+          <strong>ERROR: </strong>
           You cannot perform {type} on this package.
         </Alert>
       )}
@@ -112,9 +115,19 @@ export const EnableRaiResponseWithdraw = () => {
         <>
           <Intro action={ACTION_WORD} />
           <PackageInfo id={id} item={item} />
+          {toggleError && (
+            <Alert className="mb-4 max-w-2xl" variant="destructive">
+              <strong>ERROR {ACTION_WORD}ing RAI Response Withdraw: </strong>
+              {toggleError.response.data.message}
+            </Alert>
+          )}
           <div className="flex gap-2">
-            <Button variant="outline">Cancel</Button>
-            <Button>{ACTION_WORD} RAI Response Withdraw</Button>
+            <Button onClick={() => toggleRaiWithdraw()}>
+              {ACTION_WORD} RAI Response Withdraw
+            </Button>
+            <Button onClick={() => navigate(-1)} variant="outline">
+              Cancel
+            </Button>
           </div>
         </>
       )}

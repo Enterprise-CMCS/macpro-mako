@@ -99,12 +99,12 @@ export const BREAD_CRUMB_CONFIG_PACKAGE_DETAILS = (data: {
   ];
   return !data.action
     ? base
-    : [
+    : ([
         ...base,
         {
           displayText: mapActionLabel(data.action),
           order: 3,
           to: `/actions/${data.id}/${data.action}`,
         },
-      ];
+      ] as BreadCrumbConfig[]);
 };
