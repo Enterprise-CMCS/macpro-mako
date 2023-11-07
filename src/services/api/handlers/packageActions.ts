@@ -1,7 +1,4 @@
-import { response } from "../libs/handler";
-import { APIGatewayEvent } from "aws-lambda";
 import * as sql from "mssql";
-import { isAuthorized } from "../libs/auth/user";
 
 const user = process.env.dbUser;
 const password = process.env.dbPassword;
@@ -15,22 +12,7 @@ const config = {
   database: "SEA",
 };
 
-import { Kafka, KafkaMessage } from "kafkajs";
 import { OneMacSink, transformOnemac } from "shared-types";
-
-const kafka = new Kafka({
-  clientId: "submit",
-  brokers: process.env.brokerString.split(","),
-  retry: {
-    initialRetryTime: 300,
-    retries: 8,
-  },
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
-const producer = kafka.producer();
 
 export async function issueRai(id: string, timestamp: number) {
   console.log("CMS issuing a new RAI");
@@ -61,31 +43,3 @@ export async function respondToRai(id, timestamp) {
 export async function withdrawPackage(id, timestamp) {
   console.log("State withdrawing a package.");
 }
-
-async function produceMessage(topic, key, value) {
-  console.log("about to connect");
-  await producer.connect();
-  console.log("connected");
-
-  const message: KafkaMessage = {
-    key: key,
-    value: value,
-    partition: 0,
-    headers: { source: "micro" },
-  };
-  console.log(message);
-
-  try {
-    await producer.send({
-      topic,
-      messages: [message],
-    });
-    console.log("Message sent successfully");
-  } catch (error) {
-    console.error("Error sending message:", error);
-  } finally {
-    await producer.disconnect();
-  }
-}
-
-export const handler = submit;
