@@ -44,6 +44,7 @@ export const IssueRai = () => {
 
     let submissionResponse;
     try {
+      console.log(dataToSubmit);
       console.log("lol");
       setSuccessModalIsOpen(true);
       console.log("END OF TRY");
