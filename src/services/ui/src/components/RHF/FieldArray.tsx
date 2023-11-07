@@ -4,7 +4,7 @@ import { Trash2 } from "lucide-react";
 import { RHFSlot } from "./Slot";
 import { Button, FormField } from "../Inputs";
 import { FieldArrayProps } from "./types";
-import { slotReducer } from "./utils";
+import { slotInitializer } from "./utils";
 import { useEffect } from "react";
 
 export const RHFFieldArray = <TFields extends FieldValues>(
@@ -17,12 +17,12 @@ export const RHFFieldArray = <TFields extends FieldValues>(
   });
 
   const onAppend = () => {
-    fieldArr.append(props.fields.reduce(slotReducer, {}) as any);
+    fieldArr.append(props.fields.reduce(slotInitializer, {}) as any);
   };
 
   useEffect(() => {
     if (fieldArr.fields.length) return;
-    fieldArr.append(props.fields.reduce(slotReducer, {}) as any);
+    fieldArr.append(props.fields.reduce(slotInitializer, {}) as any);
   }, []);
 
   return (

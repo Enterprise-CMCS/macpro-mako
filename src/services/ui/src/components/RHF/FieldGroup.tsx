@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { RHFSlot } from "./Slot";
 import { Button, FormField } from "../Inputs";
 import { FieldGroupProps } from "./types";
-import { slotReducer } from "./utils";
+import { slotInitializer } from "./utils";
 import { useEffect } from "react";
 
 export const FieldGroup = <TFields extends FieldValues>(
@@ -17,12 +17,12 @@ export const FieldGroup = <TFields extends FieldValues>(
   });
 
   const onAppend = () => {
-    fieldArr.append(props.fields.reduce(slotReducer, {}) as any);
+    fieldArr.append(props.fields.reduce(slotInitializer, {}) as any);
   };
 
   useEffect(() => {
     if (fieldArr.fields.length) return;
-    fieldArr.append(props.fields.reduce(slotReducer, {}) as any);
+    fieldArr.append(props.fields.reduce(slotInitializer, {}) as any);
   }, []);
 
   return (
