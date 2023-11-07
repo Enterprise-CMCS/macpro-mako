@@ -8,8 +8,8 @@ type ToggleRaiWithdrawResponse = {
     message: string;
   };
 };
-const disable: PackageActionURL = "/package-actions/disable-rai-withdraw";
-const enable: PackageActionURL = "/package-actions/enable-rai-withdraw";
+const disable: PackageActionURL = "/action/disable-rai-withdraw";
+const enable: PackageActionURL = "/action/enable-rai-withdraw";
 const validActions: Action[] = [
   Action.ENABLE_RAI_WITHDRAW,
   Action.DISABLE_RAI_WITHDRAW,

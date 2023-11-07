@@ -77,6 +77,7 @@ export const EnableRaiResponseWithdraw = () => {
   const {
     mutate: toggleRaiWithdraw,
     isLoading: isToggling,
+    isSuccess: toggleSucceeded,
     error: toggleError,
   } = useToggleRaiWithdraw(id!, type!);
   const ACTION_WORD = useMemo(
@@ -85,9 +86,20 @@ export const EnableRaiResponseWithdraw = () => {
   );
   // TODO: Hook into endpoint
 
-  if (itemIsLoading || actionsAreLoading) return <LoadingSpinner />;
+  if (itemIsLoading || actionsAreLoading || isToggling)
+    return <LoadingSpinner />;
   return !id || !type ? (
     <Navigate to={ROUTES.DASHBOARD} />
+  ) : toggleSucceeded ? (
+    <Navigate
+      to={`/details?id=${id}`}
+      state={{
+        callout: {
+          heading: `Formal RAI Response Withdraw action has been ${ACTION_WORD.toLowerCase()}d`,
+          body: `You have successfully ${ACTION_WORD.toLowerCase()}d the Formal RAI Response Withdraw action for the State.`,
+        },
+      }}
+    />
   ) : (
     <SimplePageContainer>
       <BreadCrumbs
