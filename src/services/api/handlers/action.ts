@@ -8,7 +8,7 @@ import {
 } from "../libs/auth/user";
 import { packageActionsForResult } from "./getPackageActions";
 import { Action, CognitoUserAttributes, ItemResult } from "shared-types";
-import { issueRai } from "./packageActions";
+import { issueRai, toggleRaiResponseWithdraw } from "./packageActions";
 
 export const handler = async (event: APIGatewayEvent) => {
   try {
@@ -51,6 +51,12 @@ export const handler = async (event: APIGatewayEvent) => {
     switch (actionType) {
       case "issue-rai":
         await issueRai(body.id, Date.now());
+        break;
+      case Action.ENABLE_RAI_WITHDRAW:
+        await toggleRaiResponseWithdraw(body, true);
+        break;
+      case Action.DISABLE_RAI_WITHDRAW:
+        await toggleRaiResponseWithdraw(body, false);
         break;
       default:
         throw `No ${actionType} action available`;

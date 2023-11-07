@@ -13,6 +13,10 @@ const config = {
 };
 
 import { OneMacSink, transformOnemac } from "shared-types";
+import { produceMessage } from "../libs/kafka";
+import { response } from "../libs/handler";
+
+const TOPIC_NAME = process.env.topicName;
 
 export async function issueRai(id: string, timestamp: number) {
   console.log("CMS issuing a new RAI");
@@ -42,4 +46,28 @@ export async function respondToRai(id, timestamp) {
 
 export async function withdrawPackage(id, timestamp) {
   console.log("State withdrawing a package.");
+}
+
+export async function toggleRaiResponseWithdraw(body, toggle) {
+  const { id } = body;
+  try {
+    await produceMessage(
+      TOPIC_NAME,
+      id,
+      JSON.stringify({ raiWithdrawEnabled: toggle })
+    );
+
+    return response({
+      statusCode: 200,
+      body: {
+        message: "record successfully submitted",
+      },
+    });
+  } catch (err) {
+    console.log(err);
+
+    return response({
+      statusCode: 500,
+    });
+  }
 }
