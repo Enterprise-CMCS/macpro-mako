@@ -17,7 +17,7 @@ enum Keys {
   WAIVER_1915B_CAP_TYPE = "capitated",
 }
 // Display text mapper
-const newSubmissionPageTitleMapper: { [k: string]: string } = {
+const newSubmissionPageTitleMapper: Record<Keys, string> = {
   [Keys.NEW_SUBMISSION]: "Submission Type",
   [Keys.SPA_TYPE]: "SPA Type",
   [Keys.SPA_MEDICAID_TYPE]: "Medicaid SPA Type",
