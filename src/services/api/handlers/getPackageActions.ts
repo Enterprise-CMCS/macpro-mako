@@ -15,7 +15,7 @@ type GetPackageActionsBody = {
 
 /** Generates an array of allowed actions from a combination of user attributes
  * and OS result data */
-const packageActionsForResult = (
+export const packageActionsForResult = (
   user: CognitoUserAttributes,
   result: ItemResult
 ): Action[] => {

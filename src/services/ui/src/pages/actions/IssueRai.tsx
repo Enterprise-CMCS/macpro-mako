@@ -42,11 +42,14 @@ export const IssueRai = () => {
       additionalInformation: data?.additionalInformation ?? null,
     };
 
-    let submissionResponse;
+    let actionResponse;
     try {
       console.log(dataToSubmit);
-      console.log("lol");
-      setSuccessModalIsOpen(true);
+      actionResponse = await API.post("os", "/action/issue-rai", {
+        body: dataToSubmit,
+      });
+      console.log(actionResponse);
+      // setSuccessModalIsOpen(true);
       console.log("END OF TRY");
     } catch (err) {
       console.log(err);
