@@ -36,7 +36,7 @@ const newSubmissionPageTitleMapper: { [k: string]: string } = {
     "1915(b) Comprehensive (Capitated) Waiver Authority Types",
 };
 // Route mapper
-const newSubmissionPageRouteMapper: { [k: string]: ROUTES } = {
+const newSubmissionPageRouteMapper: Record<Keys, ROUTES> = {
   [Keys.NEW_SUBMISSION]: ROUTES.NEW_SUBMISSION_OPTIONS,
   [Keys.SPA_TYPE]: ROUTES.SPA_SUBMISSION_OPTIONS,
   [Keys.SPA_MEDICAID_TYPE]: ROUTES.MEDICAID_SPA_SUB_OPTIONS,
@@ -63,8 +63,8 @@ export const NEW_SUBMISSION_CRUMBS = (path: string) =>
       .split("/")
       .map((v, idx) => {
         return {
-          displayText: newSubmissionPageTitleMapper[v],
-          to: newSubmissionPageRouteMapper[v],
+          displayText: newSubmissionPageTitleMapper[v as Keys],
+          to: newSubmissionPageRouteMapper[v as Keys],
           order: idx,
         };
       })
