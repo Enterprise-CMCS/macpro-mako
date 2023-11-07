@@ -8,6 +8,7 @@ import { Button } from "@/components/Inputs";
 import { useGetItem, useGetPackageActions } from "@/api";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { useMemo } from "react";
+import { useToggleRaiWithdraw } from "@/api/useToggleRaiWithdraw";
 
 // Keeps aria stuff and classes condensed
 const SectionTemplate = ({
@@ -70,6 +71,11 @@ export const EnableRaiResponseWithdraw = () => {
     isLoading: actionsAreLoading,
     error: actionsError,
   } = useGetPackageActions(id!);
+  const {
+    mutate: toggleRaiWithdraw,
+    isLoading: isToggling,
+    error: toggleError,
+  } = useToggleRaiWithdraw(id!, type!);
   const ACTION_WORD = useMemo(
     () => (type === Action.ENABLE_RAI_WITHDRAW ? "Enable" : "Disable"),
     [type]
@@ -84,6 +90,12 @@ export const EnableRaiResponseWithdraw = () => {
       <BreadCrumbs
         options={BREAD_CRUMB_CONFIG_PACKAGE_DETAILS({ id: id, action: type })}
       />
+      {itemError && (
+        <Alert variant="destructive">
+          <b>ERROR fetching item: </b>
+          {itemError.response.data.message}
+        </Alert>
+      )}
       {actionsError && (
         <Alert variant="destructive">
           <b>ERROR fetching actions: </b>
@@ -94,12 +106,6 @@ export const EnableRaiResponseWithdraw = () => {
         <Alert variant="destructive">
           <b>ERROR: </b>
           You cannot perform {type} on this package.
-        </Alert>
-      )}
-      {itemError && (
-        <Alert variant="destructive">
-          <b>ERROR fetching item: </b>
-          {itemError.response.data.message}
         </Alert>
       )}
       {!actionsError && !itemError && actions.actions.includes(type) && (
