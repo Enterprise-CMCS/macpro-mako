@@ -7,6 +7,7 @@ export const ActionFormIndex = () => {
   const { type } = useParams<{ type: Action }>();
   switch (type) {
     case Action.ENABLE_RAI_WITHDRAW:
+    case Action.DISABLE_RAI_WITHDRAW:
       return <EnableRaiResponseWithdraw />;
     default:
       // TODO: Better error communication instead of navigate?
