@@ -1,5 +1,6 @@
 import { OsField, OsFilterable } from "shared-types";
 import { OsFilterComponentType } from "./types";
+import { UserRoles } from "shared-types";
 
 type DrawerFilterableGroup = {
   label: string;
@@ -16,7 +17,7 @@ type DrawerFilterableGroup = {
  * - value: query value
  */
 export const FILTER_GROUPS = (
-  isCms?: boolean
+  user?: any
 ): Partial<Record<OsField, OsFilterable & DrawerFilterableGroup>> => {
   return {
     "state.keyword": {
@@ -43,9 +44,9 @@ export const FILTER_GROUPS = (
       type: "terms",
       value: [],
     },
-    [isCms ? "cmsStatus.keyword" : "stateStatus.keyword"]: {
+    [(user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)) ? "cmsStatus.keyword" : "stateStatus.keyword"]: {
       label: "Status",
-      field: isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
+      field: (user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)) ? "cmsStatus.keyword" : "stateStatus.keyword",
       component: "multiCheck",
       prefix: "must",
       type: "terms",
