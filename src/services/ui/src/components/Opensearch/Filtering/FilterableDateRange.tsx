@@ -35,16 +35,20 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     from: value?.gte ? new Date(value?.gte) : undefined,
     to: value?.lte ? new Date(value?.lte) : undefined,
   });
-  const [fromValue, setFromValue] = useState<string>("");
-  const [toValue, setToValue] = useState<string>("");
+  const [fromValue, setFromValue] = useState<string>(
+    value?.gte ? format(new Date(value?.gte), "MM/dd/yyyy") : ""
+  );
+  const [toValue, setToValue] = useState<string>(
+    value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : ""
+  );
 
   const handleClose = (updateOpen: boolean) => {
     setOpen(updateOpen);
   };
 
-  const onFromInput = (e: any) => {
+  const onFromInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value;
-    if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
+    if (/\D\/$/.test(input)) input = input.substring(0, input.length - 3);
     const values = input.split("/").map(function (v: string) {
       return v.replace(/\D/g, "");
     });
@@ -54,13 +58,14 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
       return v.length == 2 && i < 2 ? v + " / " : v;
     });
 
-    const newValues = output.join("").substr(0, 14);
+    const newValues = output.join("").substring(0, 14);
     setFromValue(newValues);
   };
 
-  const onToInput = (e: any) => {
+  const onToInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
     let input = e.target.value;
-    if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
+    if (/\D\/$/.test(input)) input = input.substring(0, input.length - 3);
     const values = input.split("/").map(function (v: any) {
       return v.replace(/\D/g, "");
     });
@@ -70,7 +75,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
       return v.length == 2 && i < 2 ? v + " / " : v;
     });
 
-    const newValues = output.join("").substr(0, 14);
+    const newValues = output.join("").substring(0, 14);
     setToValue(newValues);
   };
 
