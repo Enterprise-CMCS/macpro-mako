@@ -1,7 +1,6 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Alert, LoadingSpinner, SimplePageContainer } from "@/components";
 import { BreadCrumbs } from "@/components/BreadCrumb";
-import { BREAD_CRUMB_CONFIG_PACKAGE_DETAILS } from "@/components/BreadCrumb/bread-crumb-config";
 import { ROUTES } from "@/routes";
 import { Action, ItemResult } from "shared-types";
 import { Button } from "@/components/Inputs";
@@ -9,6 +8,7 @@ import { useGetItem, useGetPackageActions } from "@/api";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { useMemo } from "react";
 import { useToggleRaiWithdraw } from "@/api/useToggleRaiWithdraw";
+import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 
 // Keeps aria stuff and classes condensed
 const SectionTemplate = ({
@@ -91,7 +91,7 @@ export const EnableRaiResponseWithdraw = () => {
   ) : (
     <SimplePageContainer>
       <BreadCrumbs
-        options={BREAD_CRUMB_CONFIG_PACKAGE_DETAILS({ id: id, action: type })}
+        options={DETAILS_AND_ACTIONS_CRUMBS({ id: id, action: type })}
       />
       {itemError && (
         <Alert className="my-2 max-w-2xl" variant="destructive">
