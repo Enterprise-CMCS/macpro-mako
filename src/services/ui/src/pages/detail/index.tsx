@@ -97,7 +97,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
         ))}
       </aside>
       <div className="flex-1">
-        {state.callout && (
+        {state?.callout && (
           <Alert className="bg-green-100 border-green-400" variant="default">
             <h2 className="text-lg font-bold text-green-900">
               {state.callout.heading}
