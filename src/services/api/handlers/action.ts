@@ -12,7 +12,7 @@ import { issueRai } from "./packageActions";
 
 export const handler = async (event: APIGatewayEvent) => {
   try {
-    const actionType = event.path.split("/")[2] as Action;
+    const actionType = event.pathParameters.actionType as Action;
     const body = JSON.parse(event.body);
     console.log(actionType);
     console.log(body);
