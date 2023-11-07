@@ -22,6 +22,7 @@ const packageActionsForResult = (
   const actions = [];
   if (isCmsUser(user)) {
     actions.push(Action.ENABLE_RAI_WITHDRAW);
+    actions.push(Action.ISSUE_RAI);
   }
   return actions;
 };
