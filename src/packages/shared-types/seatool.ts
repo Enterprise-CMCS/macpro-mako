@@ -144,7 +144,7 @@ export const transformSeatoolData = (id: string) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate } = getRaiDate(data);
     const { stateStatus, cmsStatus } = getStatus(
-      data.SPW_STATUS?.[0].SPW_STATUS_DESC
+      data.SPW_STATUS?.[-1].SPW_STATUS_DESC
     );
     return {
       id,
