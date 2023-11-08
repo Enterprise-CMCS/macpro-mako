@@ -115,6 +115,7 @@ export const onemac: Handler = async (event) => {
               const result = withdrawRecordSchema.safeParse(record);
               if (result.success) {
                 // write to opensearch
+                // account for compaction
                 os.bulkUpdateData(osDomain, "main", [
                   {
                     id,
@@ -156,6 +157,7 @@ export const onemac: Handler = async (event) => {
         const oneMacTombstone: OneMacRecordsToDelete = {
           id,
           additionalInformation: undefined,
+          raiWithdrawEnabled: undefined,
           attachments: undefined,
           submitterEmail: undefined,
           submitterName: undefined,
