@@ -110,27 +110,12 @@ export const onemac: Handler = async (event) => {
 
         if (isActionType) {
           switch (record.actionType) {
+            case Action.ENABLE_RAI_WITHDRAW:
             case Action.DISABLE_RAI_WITHDRAW: {
               const result = withdrawRecordSchema.safeParse(record);
               if (result.success) {
                 // write to opensearch
-                os.bulkUpdateData(osDomain, "main", [
-                  {
-                    id,
-                    ...result,
-                  },
-                ]);
-              } else {
-                console.log(
-                  `ERROR: Invalid Payload for this action type (${record.actionType})`
-                );
-              }
-
-              break;
-            }
-            case Action.ENABLE_RAI_WITHDRAW: {
-              const result = withdrawRecordSchema.safeParse(record);
-              if (result.success) {
+                // account for compaction
                 os.bulkUpdateData(osDomain, "main", [
                   {
                     id,
@@ -172,6 +157,7 @@ export const onemac: Handler = async (event) => {
         const oneMacTombstone: OneMacRecordsToDelete = {
           id,
           additionalInformation: undefined,
+          raiWithdrawEnabled: undefined,
           attachments: undefined,
           submitterEmail: undefined,
           submitterName: undefined,
