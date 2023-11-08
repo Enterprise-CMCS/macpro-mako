@@ -7,7 +7,7 @@ import {
   lookupUserAttributes,
 } from "../libs/auth/user";
 import { packageActionsForResult } from "./getPackageActions";
-import { Action, CognitoUserAttributes, ItemResult } from "shared-types";
+import { Action } from "shared-types";
 import { issueRai, toggleRaiResponseWithdraw } from "./packageActions";
 
 export const handler = async (event: APIGatewayEvent) => {
@@ -49,7 +49,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
     // Call package action
     switch (actionType) {
-      case "issue-rai":
+      case Action.ISSUE_RAI:
         await issueRai(body.id, Date.now());
         break;
       case Action.ENABLE_RAI_WITHDRAW:

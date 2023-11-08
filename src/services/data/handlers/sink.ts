@@ -110,27 +110,11 @@ export const onemac: Handler = async (event) => {
 
         if (isActionType) {
           switch (record.actionType) {
+            case Action.ENABLE_RAI_WITHDRAW:
             case Action.DISABLE_RAI_WITHDRAW: {
               const result = withdrawRecordSchema.safeParse(record);
               if (result.success) {
                 // write to opensearch
-                os.bulkUpdateData(osDomain, "main", [
-                  {
-                    id,
-                    ...result,
-                  },
-                ]);
-              } else {
-                console.log(
-                  `ERROR: Invalid Payload for this action type (${record.actionType})`
-                );
-              }
-
-              break;
-            }
-            case Action.ENABLE_RAI_WITHDRAW: {
-              const result = withdrawRecordSchema.safeParse(record);
-              if (result.success) {
                 os.bulkUpdateData(osDomain, "main", [
                   {
                     id,
