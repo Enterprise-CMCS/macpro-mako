@@ -22,12 +22,12 @@ export const DETAILS_AND_ACTIONS_CRUMBS = (data: {
   ];
   return !data.action
     ? base
-    : [
+    : ([
         ...base,
         {
           displayText: mapActionLabel(data.action),
           order: 3,
           to: `/actions/${data.id}/${data.action}`,
         },
-      ];
+      ] as BreadCrumbConfig[]);
 };
