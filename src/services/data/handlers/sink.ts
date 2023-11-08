@@ -96,6 +96,7 @@ export const onemac: Handler = async (event) => {
   const oneMacRecords: (OneMacTransform | OneMacRecordsToDelete)[] = [];
   const docObject: Record<string, OneMacTransform | OneMacRecordsToDelete> = {};
 
+  const rawArr: any[] = [];
   for (const recordKey of Object.keys(event.records)) {
     for (const onemacRecord of event.records[recordKey] as {
       key: string;
@@ -150,6 +151,7 @@ export const onemac: Handler = async (event) => {
             );
           } else {
             docObject[id] = result.data;
+            rawArr.push(record);
           }
         }
       } else {
@@ -179,6 +181,7 @@ export const onemac: Handler = async (event) => {
   }
   try {
     await os.bulkUpdateData(osDomain, "main", oneMacRecords);
+    await os.bulkUpdateData(osDomain, "onemac", rawArr);
   } catch (error) {
     console.error(error);
   }
