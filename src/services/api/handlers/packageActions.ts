@@ -18,20 +18,26 @@ import { response } from "../libs/handler";
 
 const TOPIC_NAME = process.env.topicName;
 
-export async function issueRai(id: string, timestamp: number) {
+export async function issueRai({
+  id,
+  timestamp,
+}: {
+  id: string;
+  timestamp: number;
+}) {
   console.log("CMS issuing a new RAI");
   const pool = await sql.connect(config);
-  const query = `
+  const query1 = `
     Insert into SEA.dbo.RAI (ID_Number, RAI_Requested_Date)
       values ('${id}'
-        ,dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)))
+      ,dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)))
   `;
   // Prepare the request
   const request = pool.request();
   request.input("ID_Number", sql.VarChar, id);
   request.input("RAI_Requested_Date", sql.DateTime, new Date(timestamp));
 
-  const result = await sql.query(query);
+  const result = await sql.query(query1);
   console.log(result);
   await pool.close();
 }

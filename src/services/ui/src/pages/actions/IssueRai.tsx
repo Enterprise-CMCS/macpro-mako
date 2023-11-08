@@ -5,7 +5,6 @@ import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useGetUser } from "@/api/useGetUser";
 // import { BREAD_CRUMB_CONFIG_PACKAGE_DETAILS } from "@/components/BreadCrumb/bread-crumb-config";
 import {
   SimplePageContainer,
@@ -30,16 +29,15 @@ export const IssueRai = () => {
   const form = useForm<IssueRaiFormSchema>({
     resolver: zodResolver(formSchema),
   });
-  const { data: user } = useGetUser();
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
-
   const handleSubmit: SubmitHandler<IssueRaiFormSchema> = async (data) => {
-    console.log(data);
+    const timestamp = Math.floor(new Date().getTime() / 1000) * 1000; // Truncating to match seatool
     const dataToSubmit = {
       id,
       additionalInformation: data?.additionalInformation ?? null,
+      timestamp,
     };
 
     let actionResponse;
