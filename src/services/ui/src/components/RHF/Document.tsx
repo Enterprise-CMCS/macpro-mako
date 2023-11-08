@@ -12,7 +12,7 @@ export const RHFDocument = <TFieldValues extends FieldValues>(props: {
     <div>
       <div className="h-[5px] bg-gradient-to-r from-primary from-50% to-[#02bfe7] to-[66%] rounded-t"></div>
       <div className="py-4 px-8 border-2 border-t-0 mt-0">
-        <div className="my-5">
+        <div className="mb-3 mt-9">
           <FormLabel className="font-bold text-4xl px-8 font-serif">
             {props.document.header}
           </FormLabel>
