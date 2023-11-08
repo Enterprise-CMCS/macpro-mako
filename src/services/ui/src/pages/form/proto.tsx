@@ -1,7 +1,7 @@
 import { Document } from "@/components/RHF/types";
 
 export const ABP1: Document = {
-  header: "ABP 1: Alternative Benefit Plan Populations",
+  header: "ABP 1: Alternative Benefit Plan populations",
   sections: [
     {
       title: "Population identification",
@@ -43,7 +43,7 @@ export const ABP1: Document = {
         },
         {
           description:
-            "Identify eligibility groups that are included in the Alternative Benefit Plan's population, and which may contain individuals that meet any targeting criteria used to further define the population.",
+            "Identify eligibility groups that are included in the Alternative Benefit Plan's population and that may contain individuals that meet any targeting criteria used to further define the population.",
           slots: [
             {
               rhf: "FieldArray",
@@ -359,7 +359,7 @@ export const ABP1: Document = {
       },
       form: [
         {
-          description: "Targeting criteria (select all that apply):",
+          description: "Targeting criteria (select all that apply)",
           slots: [
             {
               rhf: "Checkbox",
@@ -505,7 +505,7 @@ export const ABP1: Document = {
                                               },
                                               {
                                                 description:
-                                                  "Is there an additional incremental amount",
+                                                  "Is there an additional incremental amount?",
                                                 slots: [
                                                   {
                                                     rhf: "Switch",
@@ -515,7 +515,7 @@ export const ABP1: Document = {
                                               },
                                               {
                                                 description:
-                                                  "Enter incremental dollar amount",
+                                                  "Incremental dollar amount",
                                                 //NOTE: Should this be a thing? It feels implied in the pdf
                                                 // dependency: {
                                                 //   conditions: [
@@ -615,7 +615,7 @@ export const ABP1: Document = {
                                           },
                                           {
                                             label:
-                                              "standard varies by living arrangement",
+                                              "Standard varies by living arrangement",
                                             value: "living_standard",
 
                                             form: [
@@ -683,7 +683,7 @@ export const ABP1: Document = {
                                                       {
                                                         rhf: "Input",
                                                         label:
-                                                          "Enter incremental dollar amount:",
+                                                          "Incremental dollar amount",
                                                         labelStyling:
                                                           "font-bold mb-2",
                                                         name: "doller_incremental_amount",
@@ -696,7 +696,7 @@ export const ABP1: Document = {
                                           },
                                           {
                                             label:
-                                              "standard varies by some other way",
+                                              "Standard varies by some other way",
                                             value: "other_standard",
 
                                             form: [
@@ -761,7 +761,7 @@ export const ABP1: Document = {
                                                       {
                                                         rhf: "Input",
                                                         label:
-                                                          "Enter incremental dollar amount:",
+                                                          "Incremental dollar amount",
                                                         labelStyling:
                                                           "font-bold mb-2",
                                                         name: "doller_incremental_amount",
@@ -802,11 +802,11 @@ export const ABP1: Document = {
                               value: "brain_injury",
                             },
                             {
-                              label: "HIV / AIDS",
+                              label: "HIV/AIDS",
                               value: "hiv_aids",
                             },
                             {
-                              label: "Medically Frail",
+                              label: "Medically frail",
                               value: "med_frail",
                             },
                             {
@@ -815,23 +815,23 @@ export const ABP1: Document = {
                             },
                             { label: "Autism", value: "autism" },
                             {
-                              label: "Developmental Disability",
+                              label: "Developmental disability",
                               value: "dev_disability",
                             },
                             {
-                              label: "Intellectual Disability",
+                              label: "Intellectual disability",
                               value: "int_disability",
                             },
                             {
-                              label: "Mental Illness",
+                              label: "Mental illness",
                               value: "mental_illness",
                             },
                             {
-                              label: "Substance Use Disorder",
+                              label: "Substance use disorder",
                               value: "substance_use_dis",
                             },
                             { label: "Diabetes", value: "diabetes" },
-                            { label: "Heart Disease", value: "heart_dis" },
+                            { label: "Heart disease", value: "heart_dis" },
                             { label: "Asthma", value: "asthma" },
                             { label: "Obesity", value: "obesity" },
                             {
@@ -874,7 +874,7 @@ export const ABP1: Document = {
       form: [
         {
           description:
-            "Will the Alternative Benefit Plan population include individuals from the entire state or territory?",
+            "Will the Alternative Benefit Plan population include individuals from the entire state/territory?",
           slots: [
             {
               rhf: "Select",
@@ -890,7 +890,7 @@ export const ABP1: Document = {
           ],
         },
         {
-          description: "Select a method of geographic variation",
+          description: "Method of geographic variation",
           dependency: {
             conditions: [
               {
@@ -912,7 +912,7 @@ export const ABP1: Document = {
                     value: "by_county",
                     form: [
                       {
-                        description: "Specify Counties",
+                        description: "Specify counties",
                         slots: [
                           {
                             name: "specify_counties",
@@ -927,7 +927,7 @@ export const ABP1: Document = {
                     value: "by_region",
                     form: [
                       {
-                        description: "Specify Regions",
+                        description: "Specify regions",
                         slots: [
                           {
                             name: "specify_regions",
@@ -942,7 +942,7 @@ export const ABP1: Document = {
                     value: "by_city_town",
                     form: [
                       {
-                        description: "Specify Cities and Towns",
+                        description: "Specify cities and towns",
                         slots: [
                           {
                             name: "specify_cities_towns",
@@ -957,7 +957,7 @@ export const ABP1: Document = {
                     value: "other",
                     form: [
                       {
-                        description: "Specify Other",
+                        description: "Specify other",
                         slots: [
                           {
                             name: "specify_other",
@@ -979,7 +979,7 @@ export const ABP1: Document = {
       form: [
         {
           description:
-            "Other Information Related to Selection of the Section 1937 Coverage Option and the Base Benchmark Plan (optional):",
+            "Other information related to selection of the Section 1937 coverage option and the base benchmark plan (optional)",
           slots: [
             {
               name: "additional_information",
