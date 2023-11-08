@@ -15,6 +15,7 @@ const config = {
 import { OneMacSink, transformOnemac } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
+import { SEATOOL_STATUS } from "shared-types/statusHelper";
 
 const TOPIC_NAME = process.env.topicName;
 
@@ -27,18 +28,26 @@ export async function issueRai({
 }) {
   console.log("CMS issuing a new RAI");
   const pool = await sql.connect(config);
+
+  // Create new RAI
   const query1 = `
     Insert into SEA.dbo.RAI (ID_Number, RAI_Requested_Date)
       values ('${id}'
       ,dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)))
   `;
-  // Prepare the request
-  const request = pool.request();
-  request.input("ID_Number", sql.VarChar, id);
-  request.input("RAI_Requested_Date", sql.DateTime, new Date(timestamp));
+  const result1 = await sql.query(query1);
+  console.log(result1);
 
-  const result = await sql.query(query1);
-  console.log(result);
+  // Update Status
+  const query2 = `
+    UPDATE SEA.dbo.State_Plan
+      SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}')
+      WHERE ID_Number = '${id}'
+  `;
+  const result2 = await sql.query(query2);
+  console.log(result2);
+
+  // Close pool
   await pool.close();
 }
 
