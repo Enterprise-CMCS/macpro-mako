@@ -162,7 +162,7 @@ functions:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
     maximumRetryAttempts: 0
-    timeout: 10
+    timeout: 60
     memorySize: 1024
     vpc:
       securityGroupIds:
@@ -175,7 +175,7 @@ functions:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
     maximumRetryAttempts: 0
-    timeout: 10
+    timeout: 60
     memorySize: 1024
     vpc:
       securityGroupIds:
