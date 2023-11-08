@@ -23,7 +23,7 @@ export const onemacSchema = z.object({
       z.object({
         additionalInformation: z.string().nullable().default(null),
         submissionTimestamp: z.number(),
-        attachments: z.array(onemacAttachmentSchema),
+        attachments: z.array(onemacAttachmentSchema).nullish(),
       })
     )
     .nullish(),
