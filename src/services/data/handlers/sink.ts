@@ -11,6 +11,7 @@ import {
   OneMacTransform,
   transformOnemac,
 } from "shared-types/onemac";
+import { Action, withdrawRecordSchema } from "shared-types";
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -105,7 +106,49 @@ export const onemac: Handler = async (event) => {
       if (value) {
         const id: string = decode(key);
         const record = { id, ...JSON.parse(decode(value)) };
-        if (
+        const isActionType = "actionType" in record;
+
+        if (isActionType) {
+          switch (record.actionType) {
+            case Action.DISABLE_RAI_WITHDRAW: {
+              const result = withdrawRecordSchema.safeParse(record);
+              if (result.success) {
+                // write to opensearch
+                os.bulkUpdateData(osDomain, "main", [
+                  {
+                    id,
+                    ...result,
+                  },
+                ]);
+              } else {
+                console.log(
+                  `ERROR: Invalid Payload for this action type (${record.actionType})`
+                );
+              }
+
+              break;
+            }
+            case Action.ENABLE_RAI_WITHDRAW: {
+              const result = withdrawRecordSchema.safeParse(record);
+              if (result.success) {
+                os.bulkUpdateData(osDomain, "main", [
+                  {
+                    id,
+                    ...result,
+                  },
+                ]);
+              } else {
+                console.log(
+                  `ERROR: Invalid Payload for this action type (${record.actionType})`
+                );
+              }
+
+              break;
+            }
+            case Action.ISSUE_RAI:
+              return;
+          }
+        } else if (
           record && // testing if we have a record
           (record.origin === "micro" || // testing if this is a micro record
             (record.sk === "Package" && // testing if this is a legacy onemac package record
