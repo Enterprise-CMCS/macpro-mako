@@ -29,7 +29,7 @@ const SectionTemplate = ({
 const Intro = ({ action }: { action: "Enable" | "Disable" }) => (
   <div className="max-w-2xl">
     <h1 className="text-2xl font-semibold mt-4 mb-2">
-      {action} RAI Response Withdraw
+      {action} Formal RAI Response Withdraw Details
     </h1>
     <p>
       {action === "Enable" &&
@@ -134,9 +134,7 @@ export const EnableRaiResponseWithdraw = () => {
             </Alert>
           )}
           <div className="flex gap-2">
-            <Button onClick={() => toggleRaiWithdraw()}>
-              {ACTION_WORD} RAI Response Withdraw
-            </Button>
+            <Button onClick={() => toggleRaiWithdraw()}>Submit</Button>
             <Button onClick={() => navigate(-1)} variant="outline">
               Cancel
             </Button>
