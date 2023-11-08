@@ -17,7 +17,7 @@ export const onemacSchema = z.object({
   submitterName: z.string(),
   submitterEmail: z.string(),
   attachments: z.array(onemacAttachmentSchema).nullish(),
-  raiWithdrawEnabled: z.boolean().nullish(),
+  raiWithdrawEnabled: z.boolean().default(false),
   raiResponses: z
     .array(
       z.object({
