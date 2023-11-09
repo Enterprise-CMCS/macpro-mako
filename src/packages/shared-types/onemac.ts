@@ -98,7 +98,7 @@ export type OneMacSink = z.infer<typeof onemacSchema>;
 export type OneMacTransform = z.infer<ReturnType<typeof transformOnemac>>;
 export type OneMacRecordsToDelete = Omit<
   {
-    [Property in keyof OneMacTransform]: undefined;
+    [Property in keyof OneMacTransform]: null;
   },
   "id"
 > & { id: string };

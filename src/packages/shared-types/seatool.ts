@@ -180,7 +180,7 @@ export type SeaToolTransform = z.infer<ReturnType<typeof transformSeatoolData>>;
 export type SeaToolSink = z.infer<typeof seatoolSchema>;
 export type SeaToolRecordsToDelete = Omit<
   {
-    [Property in keyof SeaToolTransform]: undefined;
+    [Property in keyof SeaToolTransform]: null;
   },
   "id"
 > & { id: string };

@@ -54,22 +54,22 @@ export const seatool: Handler = async (event) => {
         const id: string = JSON.parse(decode(key));
         const seaTombstone: SeaToolRecordsToDelete = {
           id,
-          actionType: undefined,
-          actionTypeId: undefined,
-          approvedEffectiveDate: undefined,
-          authority: undefined,
-          changedDate: undefined,
-          leadAnalystName: undefined,
-          leadAnalystOfficerId: undefined,
-          planType: undefined,
-          planTypeId: undefined,
-          proposedDate: undefined,
-          raiReceivedDate: undefined,
-          raiRequestedDate: undefined,
-          state: undefined,
-          cmsStatus: undefined,
-          stateStatus: undefined,
-          submissionDate: undefined,
+          actionType: null,
+          actionTypeId: null,
+          approvedEffectiveDate: null,
+          authority: null,
+          changedDate: null,
+          leadAnalystName: null,
+          leadAnalystOfficerId: null,
+          planType: null,
+          planTypeId: null,
+          proposedDate: null,
+          raiReceivedDate: null,
+          raiRequestedDate: null,
+          state: null,
+          cmsStatus: null,
+          stateStatus: null,
+          submissionDate: null,
         };
 
         docObject[id] = seaTombstone;
@@ -157,13 +157,13 @@ export const onemac: Handler = async (event) => {
         const id: string = decode(key);
         const oneMacTombstone: OneMacRecordsToDelete = {
           id,
-          additionalInformation: undefined,
-          raiWithdrawEnabled: undefined,
-          attachments: undefined,
-          submitterEmail: undefined,
-          submitterName: undefined,
-          origin: undefined,
-          raiResponses: undefined,
+          additionalInformation: null,
+          raiWithdrawEnabled: null,
+          attachments: null,
+          submitterEmail: null,
+          submitterName: null,
+          origin: null,
+          raiResponses: null,
         };
 
         oneMacRecords.push(oneMacTombstone);
