@@ -84,7 +84,6 @@ export const EnableRaiResponseWithdraw = () => {
     () => (type === Action.ENABLE_RAI_WITHDRAW ? "Enable" : "Disable"),
     [type]
   );
-  // TODO: Hook into endpoint
 
   if (itemIsLoading || actionsAreLoading || isToggling)
     return <LoadingSpinner />;
