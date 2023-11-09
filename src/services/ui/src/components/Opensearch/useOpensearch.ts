@@ -70,7 +70,6 @@ export const useOsAggregate = () => {
     refetchOnWindowFocus: false,
     queryKey: [state.tab],
     queryFn: (props) => {
-      console.log(user);
       return getSearchData({
         aggs: [
           {

@@ -71,7 +71,6 @@ const PackageActionsCard = ({ id }: { id: string }) => {
 export const DetailsContent = ({ data }: { data?: ItemResult }) => {
   const { data: user } = useGetUser();
   if (!data?._source) return <LoadingSpinner />;
-  console.log(data._source);
   const status =
     user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
       ? data._source.cmsStatus
