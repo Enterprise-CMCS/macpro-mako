@@ -94,7 +94,6 @@ export const seatool: Handler = async (event) => {
 
 export const onemac: Handler = async (event) => {
   const oneMacRecords: (OneMacTransform | OneMacRecordsToDelete)[] = [];
-  const docObject: Record<string, OneMacTransform | OneMacRecordsToDelete> = {};
 
   const rawArr: any[] = [];
   for (const recordKey of Object.keys(event.records)) {
@@ -150,7 +149,7 @@ export const onemac: Handler = async (event) => {
               result.error.message
             );
           } else {
-            docObject[id] = result.data;
+            oneMacRecords.push(result.data);
             rawArr.push(record);
           }
         }
@@ -167,7 +166,7 @@ export const onemac: Handler = async (event) => {
           raiResponses: undefined,
         };
 
-        docObject[id] = oneMacTombstone;
+        oneMacRecords.push(oneMacTombstone);
 
         console.log(
           `Record ${id} has been nullified with the following data: `,
@@ -175,9 +174,6 @@ export const onemac: Handler = async (event) => {
         );
       }
     }
-  }
-  for (const [, b] of Object.entries(docObject)) {
-    oneMacRecords.push(b);
   }
   try {
     await os.bulkUpdateData(osDomain, "main", oneMacRecords);
