@@ -10,7 +10,7 @@ import {
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { CognitoUserAttributes, ItemResult, UserRoles } from "shared-types";
+import { ItemResult, UserRoles } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -19,7 +19,6 @@ import { mapActionLabel } from "@/utils";
 import { Link } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren } from "react";
-import { string } from "zod";
 
 const DetailCardWrapper = ({
   title,

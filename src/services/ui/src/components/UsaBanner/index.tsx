@@ -5,7 +5,6 @@ import { GovernmentBuildingIcon } from "../GovernmentBuildingIcon";
 import UsFlag from "@/assets/us_flag_small.png";
 import { useMediaQuery } from "@/hooks";
 import { useUserContext } from "../Context/userContext";
-import { UserRoles } from "shared-types";
 
 export const UsaBanner = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,12 +13,6 @@ export const UsaBanner = () => {
   const role = useMemo(() => {
     return userContext?.user?.["custom:cms-roles"] ? false : true;
   }, []);
-
-  const hasApprovalRole =
-    userContext?.user?.["custom:cms-roles"] === UserRoles.APPROVAL;
-  if (hasApprovalRole) {
-    return UserRoles.Approval;
-  }
 
   const hasRole = useMemo(() => {
     if (role && userContext?.user) {
