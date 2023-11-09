@@ -1,7 +1,7 @@
 import { getSearchData, useOsSearch } from "@/api";
 import { useParams } from "@/hooks/useParams";
 import { useEffect, useState } from "react";
-import { OsQueryState, SearchData } from "shared-types";
+import { OsQueryState, SearchData, UserRoles } from "shared-types";
 import { createSearchFilterable } from "./utils";
 import { useQuery } from "@tanstack/react-query";
 import { useGetUser } from "@/api/useGetUser";

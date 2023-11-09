@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import { type ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
-import { BreadCrumbConfig } from "./bread-crumb-config";
 
 type BreadCrumbsProps = {
   options: BreadCrumbConfig[];
+};
+
+export type BreadCrumbConfig = {
+  default?: boolean;
+  order: number;
+  to: string;
+  displayText: string;
 };
 
 export const BreadCrumbs = ({ options }: BreadCrumbsProps) => {
@@ -20,7 +26,6 @@ export const BreadCrumbs = ({ options }: BreadCrumbsProps) => {
       {/* After this we map over the config and check to see if the breadcrumb needs to be displayed. Proper route paths are important here. It should be hierarchical */}
       {options
         .filter((option) => !option.default)
-        .filter((option) => window.location.href.includes(option.to))
         .toSorted((option, prevOption) => option.order - prevOption.order)
         .map(({ displayText, to }, index, optionsArray) => {
           return (
