@@ -86,7 +86,12 @@ export async function toggleRaiResponseWithdraw(body, toggle) {
     await produceMessage(
       TOPIC_NAME,
       id,
-      JSON.stringify({ raiWithdrawEnabled: toggle })
+      JSON.stringify({
+        actionType: toggle
+          ? Action.ENABLE_RAI_WITHDRAW
+          : Action.DISABLE_RAI_WITHDRAW,
+        raiWithdrawEnabled: toggle,
+      })
     );
 
     return response({
