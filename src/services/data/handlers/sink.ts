@@ -118,7 +118,7 @@ export const onemac: Handler = async (event) => {
             case Action.DISABLE_RAI_WITHDRAW: {
               const result = withdrawRecordSchema.safeParse(record);
               if (result.success) {
-                oneMacRecords.push(result.data);
+                oneMacRecords.push({ id, ...result.data });
               } else {
                 console.log(
                   `ERROR: Invalid Payload for this action type (${record.actionType})`
