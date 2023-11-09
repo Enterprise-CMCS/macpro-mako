@@ -80,16 +80,6 @@ export const seatoolSchema = z.object({
       })
     )
     .nullable(),
-  STATES: z
-    .array(
-      z.object({
-        STATE_CODE: z.string(),
-        STATE_NAME: z.string(),
-        REGION_ID: z.string(),
-        PRIORITY_FLAG: z.boolean(),
-      })
-    )
-    .nonempty(),
   PLAN_TYPES: z
     .array(
       z.object({
@@ -106,6 +96,7 @@ export const seatoolSchema = z.object({
     APPROVED_EFFECTIVE_DATE: z.number().nullable(),
     PROPOSED_DATE: z.number().nullable(),
     SPW_STATUS_ID: z.number().nullable(),
+    STATE_CODE: z.string().nullish(),
   }),
   SPW_STATUS: z
     .array(
@@ -166,7 +157,7 @@ export const transformSeatoolData = (id: string) => {
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
-      state: data.STATES?.[0].STATE_CODE,
+      state: data.STATE_PLAN.STATE_CODE,
       stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       submissionDate: getDateStringOrNullFromEpoc(
