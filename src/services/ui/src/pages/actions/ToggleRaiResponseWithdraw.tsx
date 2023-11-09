@@ -9,6 +9,7 @@ import { removeUnderscoresAndCapitalize } from "@/utils";
 import { useMemo } from "react";
 import { useToggleRaiWithdraw } from "@/api/useToggleRaiWithdraw";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
+import { PackageActionForm } from "@/pages/actions/PackageActionForm";
 
 // Keeps aria stuff and classes condensed
 const SectionTemplate = ({
@@ -43,10 +44,10 @@ const Intro = ({ action }: { action: "Enable" | "Disable" }) => (
   </div>
 );
 
-const PackageInfo = ({ id, item }: { id: string; item: ItemResult }) => (
+const PackageInfo = ({ item }: { item: ItemResult }) => (
   <>
     <section>
-      <SectionTemplate label={"Package ID"} value={id} />
+      <SectionTemplate label={"Package ID"} value={item._id} />
       <SectionTemplate
         label={"Type"}
         value={
@@ -58,22 +59,9 @@ const PackageInfo = ({ id, item }: { id: string; item: ItemResult }) => (
   </>
 );
 
-export const ToggleRaiResponseWithdraw = () => {
+const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
-  const { id, type } = useParams<{
-    id: string;
-    type: Action;
-  }>();
-  const {
-    data: item,
-    isLoading: itemIsLoading,
-    error: itemError,
-  } = useGetItem(id!);
-  const {
-    data: actions,
-    isLoading: actionsAreLoading,
-    error: actionsError,
-  } = useGetPackageActions(id!);
+  const { id, type } = useParams<{ id: string; type: Action }>();
   const {
     mutate: toggleRaiWithdraw,
     isLoading: isToggling,
@@ -85,11 +73,9 @@ export const ToggleRaiResponseWithdraw = () => {
     [type]
   );
 
-  if (itemIsLoading || actionsAreLoading || isToggling)
-    return <LoadingSpinner />;
-  return !id || !type ? (
-    <Navigate to={ROUTES.DASHBOARD} />
-  ) : toggleSucceeded ? (
+  if (isToggling) return <LoadingSpinner />;
+  if (!item) return <Navigate to={ROUTES.DASHBOARD} />; // Prevents optional chains below
+  return toggleSucceeded ? (
     <Navigate
       to={`/details?id=${id}`}
       state={{
@@ -100,46 +86,27 @@ export const ToggleRaiResponseWithdraw = () => {
       }}
     />
   ) : (
-    <SimplePageContainer>
-      <BreadCrumbs
-        options={DETAILS_AND_ACTIONS_CRUMBS({ id: id, action: type })}
-      />
-      {itemError && (
-        <Alert className="my-2 max-w-2xl" variant="destructive">
-          <strong>ERROR fetching item: </strong>
-          {itemError.response.data.message}
+    <>
+      <Intro action={ACTION_WORD} />
+      <PackageInfo item={item} />
+      {toggleError && (
+        <Alert className="mb-4 max-w-2xl" variant="destructive">
+          <strong>ERROR {ACTION_WORD}ing RAI Response Withdraw: </strong>
+          {toggleError.response.data.message}
         </Alert>
       )}
-      {actionsError && (
-        <Alert className="my-2 max-w-2xl" variant="destructive">
-          <strong>ERROR fetching actions: </strong>
-          {actionsError.response.data.message}
-        </Alert>
-      )}
-      {!actionsError && !actions?.actions.includes(type) && (
-        <Alert className="my-2 max-w-2xl" variant="destructive">
-          <strong>ERROR: </strong>
-          You cannot perform {type} on this package.
-        </Alert>
-      )}
-      {!actionsError && !itemError && actions.actions.includes(type) && (
-        <>
-          <Intro action={ACTION_WORD} />
-          <PackageInfo id={id} item={item} />
-          {toggleError && (
-            <Alert className="mb-4 max-w-2xl" variant="destructive">
-              <strong>ERROR {ACTION_WORD}ing RAI Response Withdraw: </strong>
-              {toggleError.response.data.message}
-            </Alert>
-          )}
-          <div className="flex gap-2">
-            <Button onClick={() => toggleRaiWithdraw()}>Submit</Button>
-            <Button onClick={() => navigate(-1)} variant="outline">
-              Cancel
-            </Button>
-          </div>
-        </>
-      )}
-    </SimplePageContainer>
+      <div className="flex gap-2">
+        <Button onClick={() => toggleRaiWithdraw()}>Submit</Button>
+        <Button onClick={() => navigate(-1)} variant="outline">
+          Cancel
+        </Button>
+      </div>
+    </>
   );
 };
+
+export const ToggleRaiResponseWithdraw = () => (
+  <PackageActionForm>
+    <ToggleRaiResponseWithdrawForm />
+  </PackageActionForm>
+);
