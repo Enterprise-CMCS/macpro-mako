@@ -58,7 +58,7 @@ const PackageInfo = ({ id, item }: { id: string; item: ItemResult }) => (
   </>
 );
 
-export const EnableRaiResponseWithdraw = () => {
+export const ToggleRaiResponseWithdraw = () => {
   const navigate = useNavigate();
   const { id, type } = useParams<{
     id: string;

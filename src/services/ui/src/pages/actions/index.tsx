@@ -1,6 +1,6 @@
 import { Navigate, useParams } from "react-router-dom";
 import { ROUTES } from "@/routes";
-import { EnableRaiResponseWithdraw } from "@/pages/actions/EnableRaiResponseWithdraw";
+import { ToggleRaiResponseWithdraw } from "@/pages/actions/ToggleRaiResponseWithdraw";
 import { Action } from "shared-types";
 
 export const ActionFormIndex = () => {
@@ -8,7 +8,7 @@ export const ActionFormIndex = () => {
   switch (type) {
     case Action.ENABLE_RAI_WITHDRAW:
     case Action.DISABLE_RAI_WITHDRAW:
-      return <EnableRaiResponseWithdraw />;
+      return <ToggleRaiResponseWithdraw />;
     default:
       // TODO: Better error communication instead of navigate?
       //  "Hey, this action doesn't exist. Click to go back to the Dashboard."
