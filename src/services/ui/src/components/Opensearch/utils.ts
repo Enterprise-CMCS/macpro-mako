@@ -60,7 +60,7 @@ export const paginationQueryBuilder = (
 ) => {
   const from = (() => {
     if (!pagination.number) return 0;
-    return pagination.number * pagination.size - 1;
+    return pagination.number * pagination.size;
   })();
 
   return {
