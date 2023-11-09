@@ -5,6 +5,7 @@ import { GovernmentBuildingIcon } from "../GovernmentBuildingIcon";
 import UsFlag from "@/assets/us_flag_small.png";
 import { useMediaQuery } from "@/hooks";
 import { useUserContext } from "../Context/userContext";
+import { UserRoles } from "shared-types";
 
 export const UsaBanner = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +14,12 @@ export const UsaBanner = () => {
   const role = useMemo(() => {
     return userContext?.user?.["custom:cms-roles"] ? false : true;
   }, []);
+
+  const hasApprovalRole =
+    userContext?.user?.["custom:cms-roles"] === UserRoles.APPROVAL;
+  if (hasApprovalRole) {
+    return UserRoles.Approval;
+  }
 
   const hasRole = useMemo(() => {
     if (role && userContext?.user) {
@@ -75,7 +82,7 @@ export const UsaBanner = () => {
         {hasRole && (
           <div className="w-full  px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center justify-center bg-red-200 ">
             <p className="text-center text-base">
-              You do not have access to view the application{" "}
+              You do not have access to view the entire application.{" "}
               <a
                 rel="noreferrer"
                 href="https://test.home.idm.cms.gov/"
@@ -84,7 +91,7 @@ export const UsaBanner = () => {
               >
                 Please visit IDM
               </a>{" "}
-              to request the appropriate user role(s)
+              to request the appropriate user role(s).
             </p>
           </div>
         )}
