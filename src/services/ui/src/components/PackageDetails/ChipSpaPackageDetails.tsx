@@ -34,7 +34,7 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
     {
       label: "Proposed Effective Date",
       value: data.proposedDate
-        ? format(new Date(data.proposedDate), "MM/dd/yyyy h:mm:ss a")
+        ? format(new Date(data.proposedDate), "MM/dd/yyyy")
         : BLANK_VALUE,
     },
     {
