@@ -15,6 +15,8 @@ import {
 } from "@/components";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
+import { RaiSchema } from "shared-types";
+import { useGetUser } from "@/api/useGetUser";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000).optional(),
@@ -32,12 +34,16 @@ export const IssueRai = () => {
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
+  const { data: user } = useGetUser();
   const handleSubmit: SubmitHandler<IssueRaiFormSchema> = async (data) => {
     const timestamp = Math.floor(new Date().getTime() / 1000) * 1000; // Truncating to match seatool
-    const dataToSubmit = {
-      id,
+    const dataToSubmit: RaiSchema = {
+      id: id!,
       additionalInformation: data?.additionalInformation ?? null,
-      timestamp,
+      requestedDate: timestamp,
+      submitterEmail: user?.user?.email ?? "N/A",
+      submitterName:
+        `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
     };
 
     let actionResponse;

@@ -11,6 +11,37 @@ const onemacAttachmentSchema = z.object({
   key: z.string().nullish(),
   uploadDate: z.number().nullish(),
 });
+export type OnemacAttachmentSchema = z.infer<typeof onemacAttachmentSchema>;
+
+export const raiSchema = z.object({
+  id: z.string(),
+  requestedDate: z.number(),
+  attachments: z.array(onemacAttachmentSchema).nullish(),
+  additionalInformation: z.string().nullable().default(null),
+  submitterName: z.string(),
+  submitterEmail: z.string(),
+});
+export type RaiSchema = z.infer<typeof raiSchema>;
+
+export const transformRai = (id: string) => {
+  return raiSchema.transform((data) => ({
+    id,
+    rais: {
+      [data.requestedDate]: {
+        state: {
+          attachments:
+            data.attachments?.map((attachment) => {
+              return handleAttachment(attachment);
+            }) ?? null,
+          additionalInformation: data.additionalInformation,
+          submitterName: data.submitterName,
+          submitterEmail: data.submitterEmail,
+        },
+      },
+    },
+  }));
+};
+export type RaiTransform = z.infer<ReturnType<typeof transformRai>>;
 
 export const onemacSchema = z.object({
   additionalInformation: z.string().nullable().default(null),
@@ -34,34 +65,7 @@ export const transformOnemac = (id: string) => {
     id,
     attachments:
       data.attachments?.map((attachment) => {
-        // this is a legacy onemac attachment
-        let bucket = "";
-        let key = "";
-        let uploadDate = 0;
-        if ("bucket" in attachment) {
-          bucket = attachment.bucket as string;
-        }
-        if ("key" in attachment) {
-          key = attachment.key as string;
-        }
-        if ("uploadDate" in attachment) {
-          uploadDate = attachment.uploadDate as number;
-        }
-        if (bucket == "") {
-          const parsedUrl = s3ParseUrl(attachment.url || "");
-          if (!parsedUrl) return null;
-          bucket = parsedUrl.bucket;
-          key = parsedUrl.key;
-          uploadDate = parseInt(attachment.s3Key?.split("/")[0] || "0");
-        }
-
-        return {
-          title: attachment.title,
-          filename: attachment.filename,
-          uploadDate,
-          bucket,
-          key,
-        };
+        return handleAttachment(attachment);
       }) ?? null,
     raiWithdrawEnabled: data.raiWithdrawEnabled,
     raiResponses:
@@ -102,3 +106,33 @@ export type OneMacRecordsToDelete = Omit<
   },
   "id"
 > & { id: string };
+
+function handleAttachment(attachment: OnemacAttachmentSchema) {
+  let bucket = "";
+  let key = "";
+  let uploadDate = 0;
+  if ("bucket" in attachment) {
+    bucket = attachment.bucket as string;
+  }
+  if ("key" in attachment) {
+    key = attachment.key as string;
+  }
+  if ("uploadDate" in attachment) {
+    uploadDate = attachment.uploadDate as number;
+  }
+  if (bucket == "") {
+    const parsedUrl = s3ParseUrl(attachment.url || "");
+    if (!parsedUrl) return null;
+    bucket = parsedUrl.bucket;
+    key = parsedUrl.key;
+    uploadDate = parseInt(attachment.s3Key?.split("/")[0] || "0");
+  }
+
+  return {
+    title: attachment.title,
+    filename: attachment.filename,
+    uploadDate,
+    bucket,
+    key,
+  };
+}

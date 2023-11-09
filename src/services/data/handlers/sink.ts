@@ -10,6 +10,8 @@ import {
   OneMacRecordsToDelete,
   OneMacTransform,
   transformOnemac,
+  RaiTransform,
+  transformRai,
 } from "shared-types/onemac";
 import { Action, withdrawRecordSchema, WithdrawRecord } from "shared-types";
 
@@ -97,6 +99,7 @@ export const onemac: Handler = async (event) => {
     | OneMacTransform
     | OneMacRecordsToDelete
     | WithdrawRecord
+    | RaiTransform
   )[] = [];
 
   const rawArr: any[] = [];
@@ -111,7 +114,6 @@ export const onemac: Handler = async (event) => {
         const id: string = decode(key);
         const record = { id, ...JSON.parse(decode(value)) };
         const isActionType = "actionType" in record;
-
         if (isActionType) {
           switch (record.actionType) {
             case Action.ENABLE_RAI_WITHDRAW:
@@ -124,13 +126,19 @@ export const onemac: Handler = async (event) => {
                   `ERROR: Invalid Payload for this action type (${record.actionType})`
                 );
               }
-
               break;
             }
-            case Action.ISSUE_RAI:
-              // const result = issueRaiSchema.safeParse(record);
-
-              return;
+            case Action.ISSUE_RAI: {
+              const result = transformRai(id).safeParse(record);
+              if (result.success) {
+                oneMacRecords.push(result.data);
+              } else {
+                console.log(
+                  `ERROR: Invalid Payload for this action type (${record.actionType})`
+                );
+              }
+              break;
+            }
           }
         } else if (
           record && // testing if we have a record

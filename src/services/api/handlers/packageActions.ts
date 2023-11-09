@@ -12,20 +12,14 @@ const config = {
   database: "SEA",
 };
 
-import { Action, OneMacSink, transformOnemac } from "shared-types";
+import { Action, raiSchema, RaiSchema } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
 
 const TOPIC_NAME = process.env.topicName;
 
-export async function issueRai({
-  id,
-  timestamp,
-}: {
-  id: string;
-  timestamp: number;
-}) {
+export async function issueRai(body: RaiSchema) {
   console.log("CMS issuing a new RAI");
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
@@ -34,8 +28,8 @@ export async function issueRai({
     // Issue RAI
     const query1 = `
       Insert into SEA.dbo.RAI (ID_Number, RAI_Requested_Date)
-        values ('${id}'
-        ,dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)))
+        values ('${body.id}'
+        ,dateadd(s, convert(int, left(${body.requestedDate}, 10)), cast('19700101' as datetime)))
     `;
     const result1 = await transaction.request().query(query1);
     console.log(result1);
@@ -44,17 +38,27 @@ export async function issueRai({
     const query2 = `
       UPDATE SEA.dbo.State_Plan
         SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}')
-        WHERE ID_Number = '${id}'
+        WHERE ID_Number = '${body.id}'
     `;
     const result2 = await transaction.request().query(query2);
     console.log(result2);
 
     // write to kafka here
-    await produceMessage(
-      TOPIC_NAME,
-      id,
-      JSON.stringify({ actionType: Action.ISSUE_RAI, rais: true })
-    );
+    const result = raiSchema.safeParse(body);
+    if (result.success === false) {
+      console.log(
+        "RAI Validation Error. The following record failed to parse: ",
+        JSON.stringify(body),
+        "Because of the following Reason(s):",
+        result.error.message
+      );
+    } else {
+      await produceMessage(
+        TOPIC_NAME,
+        body.id,
+        JSON.stringify({ ...result.data, actionType: Action.ISSUE_RAI })
+      );
+    }
 
     // Commit transaction
     await transaction.commit();
