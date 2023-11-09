@@ -1,5 +1,14 @@
-import { useState, useMemo } from "react";
-import { format, isAfter, isBefore, isValid, parse } from "date-fns";
+import { useState, useMemo, useEffect } from "react";
+import {
+  format,
+  isAfter,
+  isBefore,
+  isValid,
+  parse,
+  startOfQuarter,
+  startOfMonth,
+  sub,
+} from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
@@ -17,17 +26,17 @@ type Props = Omit<
   className?: string;
 };
 
-function checkValue(str: any, max: any) {
-  if (str.charAt(0) !== "0" || str == "00") {
-    let num = parseInt(str);
-    if (isNaN(num) || num <= 0 || num > max) num = 1;
-    str =
-      num > parseInt(max.toString().charAt(0)) && num.toString().length == 1
-        ? "0" + num
-        : num.toString();
-  }
-  return str;
-}
+// function checkValue(str: any, max: any) {
+//   if (str.charAt(0) !== "0" || str == "00") {
+//     let num = parseInt(str);
+//     if (isNaN(num) || num <= 0 || num > max) num = 1;
+//     str =
+//       num > parseInt(max.toString().charAt(0)) && num.toString().length == 1
+//         ? "0" + num
+//         : num.toString();
+//   }
+//   return str;
+// }
 
 export function FilterableDateRange({ value, onChange, ...props }: Props) {
   const [open, setOpen] = useState(false);
@@ -42,59 +51,29 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : ""
   );
 
+  useEffect(() => {
+    setToValue(value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : "");
+    setFromValue(value?.gte ? format(new Date(value?.gte), "MM/dd/yyyy") : "");
+  }, [value]);
+
   const handleClose = (updateOpen: boolean) => {
     setOpen(updateOpen);
   };
 
   const onFromInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let input = e.target.value;
-    if (/\D\/$/.test(input)) input = input.substring(0, input.length - 3);
-    const values = input.split("/").map(function (v: string) {
-      return v.replace(/\D/g, "");
-    });
-    if (values[0]) values[0] = checkValue(values[0], 12);
-    if (values[1]) values[1] = checkValue(values[1], 31);
-    const output = values.map(function (v: string, i: number) {
-      return v.length == 2 && i < 2 ? v + " / " : v;
-    });
+    const input = e.target.value;
 
-    const newValues = output.join("").substring(0, 14);
-    setFromValue(newValues);
-  };
-
-  const onToInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
-    let input = e.target.value;
-    if (/\D\/$/.test(input)) input = input.substring(0, input.length - 3);
-    const values = input.split("/").map(function (v: any) {
-      return v.replace(/\D/g, "");
-    });
-    if (values[0]) values[0] = checkValue(values[0], 12);
-    if (values[1]) values[1] = checkValue(values[1], 31);
-    const output = values.map((v: any, i: any) => {
-      return v.length == 2 && i < 2 ? v + " / " : v;
-    });
-
-    const newValues = output.join("").substring(0, 14);
-    setToValue(newValues);
-  };
-
-  const onFromBlur = () => {
-    setFromValue((s) => {
-      const newDate = s.replaceAll(" ", "");
-      console.log("onfrom blur, from", newDate, selectedDate);
-      const date = parse(newDate, "MM/dd/yyyy", new Date());
-      if (!isValid(date)) {
-        setSelectedDate({ from: undefined, to: undefined });
-        return newDate;
+    if (/^[0-9/]*$/.test(input)) {
+      setFromValue(e.target.value);
+      const date = parse(e.target.value, "MM/dd/yyyy", new Date());
+      if (
+        !isValid(date) ||
+        isBefore(date, parse("01/01/1960", "MM/dd/yyyy", new Date()))
+      ) {
+        return setSelectedDate({ from: undefined, to: selectedDate?.to });
       }
       if (selectedDate?.to && isAfter(date, selectedDate.to)) {
-        console.log("runnign from messed");
         setSelectedDate({ from: date, to: undefined });
-        onChange({
-          gte: date.toISOString(),
-          lte: undefined,
-        });
         setToValue("");
       } else {
         setSelectedDate({ from: date, to: selectedDate?.to });
@@ -103,26 +82,25 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
           lte: selectedDate?.to?.toISOString() || "",
         });
       }
-
-      return newDate;
-    });
+    }
   };
 
-  const onToBlur = () => {
-    setToValue((s) => {
-      const newDate = s.replaceAll(" ", "");
-      const date = parse(newDate, "MM/dd/yyyy", new Date());
-      if (!isValid(date)) {
-        setSelectedDate({ from: selectedDate?.from, to: undefined });
-        return newDate;
+  const onToInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+
+    if (/^[0-9/]*$/.test(input)) {
+      setToValue(e.target.value);
+      const date = parse(e.target.value, "MM/dd/yyyy", new Date());
+
+      if (
+        !isValid(date) ||
+        isBefore(date, parse("01/01/1960", "MM/dd/yyyy", new Date()))
+      ) {
+        return setSelectedDate({ from: selectedDate?.from, to: undefined });
       }
 
       if (selectedDate?.from && isBefore(date, selectedDate.from)) {
-        setSelectedDate({ from: undefined, to: date });
-        onChange({
-          gte: undefined,
-          lte: date.toISOString(),
-        });
+        setSelectedDate({ from: undefined, to: selectedDate.from });
         setFromValue("");
       } else {
         setSelectedDate({ from: selectedDate?.from, to: date });
@@ -131,9 +109,75 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
           lte: date.toISOString(),
         });
       }
-      return newDate;
-    });
+    }
   };
+
+  const getDateRange = (startDate: Date, endDate: Date): OsRangeValue => {
+    return {
+      gte: startDate.toISOString(),
+      lte: endDate.toISOString(),
+    };
+  };
+
+  const setPresetRange = (range: string) => {
+    const today = new Date();
+    let startDate = today;
+
+    if (range === "quarter") {
+      startDate = startOfQuarter(today);
+    } else if (range === "month") {
+      startDate = startOfMonth(today);
+    } else if (range === "week") {
+      startDate = sub(today, { days: 6 });
+    }
+
+    const rangeObject = getDateRange(startDate, today);
+
+    onChange(rangeObject);
+    setSelectedDate({ from: startDate, to: today });
+    setFromValue(format(startDate, "MM/dd/yyyy"));
+    setToValue(format(today, "MM/dd/yyyy"));
+  };
+
+  // const onFromBlur = () => {
+  //   const newDate = s.replaceAll(" ", "");
+  //   console.log("onfrom blur, from", newDate, selectedDate);
+  //   const date = parse(newDate, "MM/dd/yyyy", new Date());
+  //   if (
+  //     !isValid(date) ||
+  //     isBefore(date, parse("01/01/1960", "MM/dd/yyyy", new Date()))
+  //   ) {
+  //     setSelectedDate({ from: undefined, to: undefined });
+  //     return newDate;
+  //   }
+  // };
+
+  // const onToBlur = () => {
+  //   setToValue((s) => {
+  //     const newDate = s.replaceAll(" ", "");
+  //     const date = parse(newDate, "MM/dd/yyyy", new Date());
+  //     if (!isValid(date)) {
+  //       setSelectedDate({ from: selectedDate?.from, to: undefined });
+  //       return newDate;
+  //     }
+
+  //     if (selectedDate?.from && isBefore(date, selectedDate.from)) {
+  //       setSelectedDate({ from: undefined, to: date });
+  //       onChange({
+  //         gte: undefined,
+  //         lte: date.toISOString(),
+  //       });
+  //       setFromValue("");
+  //     } else {
+  //       setSelectedDate({ from: selectedDate?.from, to: date });
+  //       onChange({
+  //         gte: selectedDate?.from?.toISOString() || "",
+  //         lte: date.toISOString(),
+  //       });
+  //     }
+  //     return newDate;
+  //   });
+  // };
 
   const label = useMemo(() => {
     const from = selectedDate?.from
@@ -172,7 +216,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             className="bg-white"
             onSelect={(d) => {
               setSelectedDate(d);
-              console.log(d);
               if (!!d?.from && !!d.to) {
                 onChange({
                   gte: d.from.toISOString(),
@@ -188,7 +231,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             <Input
               onChange={onFromInput}
               value={fromValue}
-              onBlur={onFromBlur}
               placeholder="mm/dd/yyyy"
               className="text-md"
             />
@@ -196,10 +238,19 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             <Input
               onChange={onToInput}
               value={toValue}
-              onBlur={onToBlur}
               placeholder="mm/dd/yyyy"
               className="text-md"
             />
+          </div>
+          <div className="flex gap-4 p-2 ml-4">
+            <Button onClick={() => setPresetRange("today")}>Today</Button>
+            <Button onClick={() => setPresetRange("week")}>Last 7 Days</Button>
+            <Button onClick={() => setPresetRange("month")}>
+              Month To Date
+            </Button>
+            <Button onClick={() => setPresetRange("quarter")}>
+              Quarter To Date
+            </Button>
           </div>
         </PopoverContent>
       </Popover>

@@ -15,7 +15,6 @@ export const SpasList = () => {
   const context = useOsContext();
   const params = useOsParams();
   if (context.error) return <ErrorAlert error={context.error} />;
-  console.log(user, "user from spas");
 
   const columns = TABLE_COLUMNS({ isCms: user?.isCms, user: user?.user });
 
