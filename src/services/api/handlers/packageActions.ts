@@ -12,7 +12,7 @@ const config = {
   database: "SEA",
 };
 
-import { OneMacSink, transformOnemac } from "shared-types";
+import { Action, OneMacSink, transformOnemac } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
@@ -48,6 +48,13 @@ export async function issueRai({
     `;
     const result2 = await transaction.request().query(query2);
     console.log(result2);
+
+    // write to kafka here
+    await produceMessage(
+      TOPIC_NAME,
+      id,
+      JSON.stringify({ actionType: Action.ISSUE_RAI, rais: true })
+    );
 
     // Commit transaction
     await transaction.commit();

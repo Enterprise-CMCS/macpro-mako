@@ -11,7 +11,7 @@ import {
   OneMacTransform,
   transformOnemac,
 } from "shared-types/onemac";
-import { Action, withdrawRecordSchema } from "shared-types";
+import { Action, withdrawRecordSchema, WithdrawRecord } from "shared-types";
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -93,7 +93,11 @@ export const seatool: Handler = async (event) => {
 };
 
 export const onemac: Handler = async (event) => {
-  const oneMacRecords: (OneMacTransform | OneMacRecordsToDelete)[] = [];
+  const oneMacRecords: (
+    | OneMacTransform
+    | OneMacRecordsToDelete
+    | WithdrawRecord
+  )[] = [];
 
   const rawArr: any[] = [];
   for (const recordKey of Object.keys(event.records)) {
@@ -114,14 +118,7 @@ export const onemac: Handler = async (event) => {
             case Action.DISABLE_RAI_WITHDRAW: {
               const result = withdrawRecordSchema.safeParse(record);
               if (result.success) {
-                // write to opensearch
-                // account for compaction
-                os.bulkUpdateData(osDomain, "main", [
-                  {
-                    id,
-                    ...result,
-                  },
-                ]);
+                oneMacRecords.push(result.data);
               } else {
                 console.log(
                   `ERROR: Invalid Payload for this action type (${record.actionType})`
@@ -131,6 +128,8 @@ export const onemac: Handler = async (event) => {
               break;
             }
             case Action.ISSUE_RAI:
+              // const result = issueRaiSchema.safeParse(record);
+
               return;
           }
         } else if (
