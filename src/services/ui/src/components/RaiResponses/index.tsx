@@ -12,43 +12,42 @@ import {
 export const RaiResponses = (data: OsMainSourceItem) => {
   if (!data.rais) return null;
   return (
-    data.raiResponses && (
-      <DetailsSection id="rai-responses" title="Formal RAI Activity">
-        {(() => {
-          const sortedKeys = Object.keys(data.rais) // Sort the RAIs by timestamp
-            .map(Number)
-            .sort((a, b) => b - a);
-          return (
-            <div>
-              {sortedKeys.map((key, i) => (
-                <Accordion key={i} type="multiple" defaultValue={["item-0"]}>
-                  <AccordionItem value={`item-${i}`}>
-                    <AccordionTrigger>{`Requested on ${format(
-                      new Date(data.rais[key].requestedDate),
-                      "EEE, MMM d yyyy, h:mm:ss a"
-                    )}`}</AccordionTrigger>
-                    <AccordionContent>
-                      <div className="ml-8">
-                        <h3 className="text-xl font-semibold mb-2">
-                          RAI - Request Documentation
-                        </h3>
-                        <p className="mb-4 text-sm">
-                          Below is the data submitted by CMS as part of the
-                          formal RAI.
-                        </p>
-                        <p className="text-l font-semibold mb-2">Attachments</p>
-                        <Attachmentslist
-                          id={data.id}
-                          attachments={data.rais[key].request.attachments}
-                        />
-                        <h4 className="text-l font-semibold mb-2">
-                          Additional Information
-                        </h4>
-                        <p className="mb-4 text-sm">
-                          {data.rais[key].request.additionalInformation}
-                        </p>
-                      </div>
-                      {/* <div className="ml-8">
+    <DetailsSection id="rai-responses" title="Formal RAI Activity">
+      {(() => {
+        const sortedKeys = Object.keys(data.rais) // Sort the RAIs by timestamp
+          .map(Number)
+          .sort((a, b) => b - a);
+        return (
+          <div>
+            {sortedKeys.map((key, i) => (
+              <Accordion key={i} type="multiple" defaultValue={["item-0"]}>
+                <AccordionItem value={`item-${i}`}>
+                  <AccordionTrigger>{`Requested on ${format(
+                    new Date(data.rais[key].requestedDate),
+                    "EEE, MMM d yyyy, h:mm:ss a"
+                  )}`}</AccordionTrigger>
+                  <AccordionContent>
+                    <div className="ml-8">
+                      <h3 className="text-xl font-semibold mb-2">
+                        RAI - Request Documentation
+                      </h3>
+                      <p className="mb-4 text-sm">
+                        Below is the data submitted by CMS as part of the formal
+                        RAI.
+                      </p>
+                      <p className="text-l font-semibold mb-2">Attachments</p>
+                      <Attachmentslist
+                        id={data.id}
+                        attachments={data.rais[key].request.attachments}
+                      />
+                      <h4 className="text-l font-semibold mb-2">
+                        Additional Information
+                      </h4>
+                      <p className="mb-4 text-sm">
+                        {data.rais[key].request.additionalInformation}
+                      </p>
+                    </div>
+                    {/* <div className="ml-8">
                         <h3 className="text-xl font-semibold mb-2">
                           RAI - Response Documentation
                         </h3>
@@ -70,14 +69,13 @@ export const RaiResponses = (data: OsMainSourceItem) => {
                           {data.rais[key].response.additionalInformation}
                         </p>
                       </div> */}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              ))}
-            </div>
-          );
-        })()}
-      </DetailsSection>
-    )
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            ))}
+          </div>
+        );
+      })()}
+    </DetailsSection>
   );
 };
