@@ -142,9 +142,20 @@ export const transformSeatoolData = (id: string) => {
         (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
       )?.SPW_STATUS_DESC || "Unknown"
     );
-    const rais = {};
+    const rais: Record<
+      number,
+      {
+        requestedDate: number;
+        receivedDate: number | null;
+        withdrawnDate: number | null;
+      }
+    > = {};
     if (data.RAI) {
       data.RAI.forEach((rai) => {
+        // Should never be null, but if it is there's nothing we can do with it.
+        if (rai.RAI_REQUESTED_DATE === null) {
+          return;
+        }
         rais[rai.RAI_REQUESTED_DATE] = {
           requestedDate: rai.RAI_REQUESTED_DATE,
           receivedDate: rai.RAI_RECEIVED_DATE,

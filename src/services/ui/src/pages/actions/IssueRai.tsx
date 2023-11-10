@@ -63,7 +63,7 @@ export const IssueRai = () => {
     const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
     const uploadedFiles: any[] = [];
     const fileMetaData: NonNullable<
-      RaiIssueTransform["rais"][number]["cms"]["attachments"]
+      RaiIssueTransform["rais"][number]["request"]["attachments"]
     > = [];
 
     const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
