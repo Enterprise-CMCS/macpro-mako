@@ -115,19 +115,14 @@ export const IssueRai = () => {
         `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
     };
 
-    let actionResponse;
     try {
-      console.log(dataToSubmit);
-      actionResponse = await API.post("os", "/action/issue-rai", {
+      await API.post("os", "/action/issue-rai", {
         body: dataToSubmit,
       });
-      console.log(actionResponse);
       setSuccessModalIsOpen(true);
-      console.log("END OF TRY");
     } catch (err) {
       console.log(err);
       setErrorModalIsOpen(true);
-      console.log("CATCH");
     }
   };
 
