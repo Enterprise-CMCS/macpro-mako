@@ -122,7 +122,7 @@ export const IssueRai = () => {
         body: dataToSubmit,
       });
       console.log(actionResponse);
-      // setSuccessModalIsOpen(true);
+      setSuccessModalIsOpen(true);
       console.log("END OF TRY");
     } catch (err) {
       console.log(err);
