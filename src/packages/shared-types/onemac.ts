@@ -16,6 +16,8 @@ export type OnemacAttachmentSchema = z.infer<typeof onemacAttachmentSchema>;
 export const raiSchema = z.object({
   id: z.string(),
   requestedDate: z.number(),
+  responseDate: z.number().nullish(),
+  withdrawnDate: z.number().nullish(),
   attachments: z.array(onemacAttachmentSchema).nullish(),
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
@@ -25,8 +27,16 @@ export type RaiSchema = z.infer<typeof raiSchema>;
 
 interface RaiData {
   [key: number]: {
-    responseDate: string;
-    response: {
+    requestedDate?: string;
+    responseDate?: string;
+    withdrawnDate?: string;
+    response?: {
+      additionalInformation: string;
+      submitterName: string | null;
+      submitterEmail: string | null;
+      attachments: any[] | null; // You might want to specify the type of attachments
+    };
+    request?: {
       additionalInformation: string;
       submitterName: string | null;
       submitterEmail: string | null;

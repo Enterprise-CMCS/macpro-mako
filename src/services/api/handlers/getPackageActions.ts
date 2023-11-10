@@ -29,6 +29,7 @@ export const packageActionsForResult = (
       actions.push(Action.DISABLE_RAI_WITHDRAW);
     }
     actions.push(Action.ISSUE_RAI);
+    actions.push(Action.RESPOND_TO_RAI);
   }
   return actions;
 };

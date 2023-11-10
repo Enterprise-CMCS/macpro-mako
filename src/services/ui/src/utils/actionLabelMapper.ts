@@ -6,5 +6,7 @@ export const mapActionLabel = (a: Action) => {
       return "Enable RAI Response Withdraw";
     case Action.ISSUE_RAI:
       return "Issue RAI";
+    case Action.RESPOND_TO_RAI:
+      return "Respond to RAI";
   }
 };

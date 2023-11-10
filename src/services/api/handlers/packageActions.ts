@@ -76,8 +76,58 @@ export async function withdrawRai(id, timestamp) {
   console.log("CMS withdrawing an RAI");
 }
 
-export async function respondToRai(id, timestamp) {
-  console.log("State respnding to RAI");
+export async function respondToRai(body: RaiSchema) {
+  console.log("State responding to RAI");
+  // const pool = await sql.connect(config);
+  // const transaction = new sql.Transaction(pool);
+  // try {
+  //   await transaction.begin();
+  //   // Issue RAI
+  //   const query1 = `
+  //     Insert into SEA.dbo.RAI (ID_Number, RAI_Requested_Date)
+  //       values ('${body.id}'
+  //       ,dateadd(s, convert(int, left(${body.requestedDate}, 10)), cast('19700101' as datetime)))
+  //   `;
+  //   const result1 = await transaction.request().query(query1);
+  //   console.log(result1);
+
+  //   // Update Status
+  //   const query2 = `
+  //     UPDATE SEA.dbo.State_Plan
+  //       SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}')
+  //       WHERE ID_Number = '${body.id}'
+  //   `;
+  //   const result2 = await transaction.request().query(query2);
+  //   console.log(result2);
+
+  //   // write to kafka here
+  //   const result = raiSchema.safeParse(body);
+  //   if (result.success === false) {
+  //     console.log(
+  //       "RAI Validation Error. The following record failed to parse: ",
+  //       JSON.stringify(body),
+  //       "Because of the following Reason(s):",
+  //       result.error.message
+  //     );
+  //   } else {
+  //     await produceMessage(
+  //       TOPIC_NAME,
+  //       body.id,
+  //       JSON.stringify({ ...result.data, actionType: Action.ISSUE_RAI })
+  //     );
+  //   }
+
+  //   // Commit transaction
+  //   await transaction.commit();
+  // } catch (err) {
+  //   // Rollback and log
+  //   await transaction.rollback();
+  //   console.error("Error executing one or both queries:", err);
+  // } finally {
+  //   // Close pool
+  //   await pool.close();
+  // }
+  console.log("heyo");
 }
 
 export async function withdrawPackage(id, timestamp) {

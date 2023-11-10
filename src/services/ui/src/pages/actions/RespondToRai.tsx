@@ -15,7 +15,7 @@ import {
 } from "@/components";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
-import { Action, RaiIssueTransform } from "shared-types";
+import { Action, RaiResponseTransform } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 
 const formSchema = z.object({
@@ -28,8 +28,8 @@ const formSchema = z.object({
       }),
   }),
 });
-export type IssueRaiFormSchema = z.infer<typeof formSchema>;
-type UploadKeys = keyof IssueRaiFormSchema["attachments"];
+export type RespondToRaiFormSchema = z.infer<typeof formSchema>;
+type UploadKeys = keyof RespondToRaiFormSchema["attachments"];
 export type PreSignedURL = {
   url: string;
   key: string;
@@ -39,12 +39,12 @@ export type PreSignedURL = {
 const attachmentList = [
   {
     name: "raiSupportingDocs",
-    label: "RAI Supplemental Documentation",
+    label: "Response Document(s)",
     required: true,
   },
 ] as const;
 
-export const IssueRai = () => {
+export const RespondToRai = () => {
   const { id, type } = useParams<{
     id: string;
     type: string;
@@ -52,18 +52,18 @@ export const IssueRai = () => {
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
-  const form = useForm<IssueRaiFormSchema>({
+  const form = useForm<RespondToRaiFormSchema>({
     resolver: zodResolver(formSchema),
   });
   const { data: user } = useGetUser();
-  const handleSubmit: SubmitHandler<IssueRaiFormSchema> = async (data) => {
+  const handleSubmit: SubmitHandler<RespondToRaiFormSchema> = async (data) => {
     // Set the timestamp that will uniquely identify this RAI
     const timestamp = Math.floor(new Date().getTime() / 1000) * 1000; // Truncating to match seatool
 
     const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
     const uploadedFiles: any[] = [];
     const fileMetaData: NonNullable<
-      RaiIssueTransform["rais"][number]["request"]["attachments"]
+      RaiResponseTransform["rais"][number]["response"]["attachments"]
     > = [];
 
     const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
@@ -116,7 +116,7 @@ export const IssueRai = () => {
     };
 
     try {
-      await API.post("os", `/action/${Action.ISSUE_RAI}`, {
+      await API.post("os", `/action/${Action.RESPOND_TO_RAI}`, {
         body: dataToSubmit,
       });
       setSuccessModalIsOpen(true);
@@ -131,7 +131,7 @@ export const IssueRai = () => {
       <BreadCrumbs
         options={DETAILS_AND_ACTIONS_CRUMBS({
           id: id || "",
-          action: Action.ISSUE_RAI,
+          action: Action.RESPOND_TO_RAI,
         })}
       />
       <I.Form {...form}>
@@ -140,7 +140,7 @@ export const IssueRai = () => {
           className="my-6 space-y-8 mx-auto"
         >
           <section>
-            <h1 className="font-bold text-2xl mb-2">Issue RAI</h1>
+            <h1 className="font-bold text-2xl mb-2">Respond to RAI</h1>
             <p className="my-1">
               <I.RequiredIndicator /> Indicates a required field
             </p>
@@ -310,7 +310,7 @@ const SuccessModalContent = ({ id }: SuccessModalProps) => {
       <div className="max-w-md p-4">
         <div className="font-bold">Submission Success!</div>
         <p>
-          RAI for {id} was successfully issued.
+          Your response to the RAI for {id} was successfully submitted.
           <br />
           Please be aware that it may take up to a minute for this action to be
           reflected in the dashboard.
@@ -334,7 +334,7 @@ const ErrorModalContent = ({ id, setModalIsOpen }: ErrorModalProps) => {
       <div className="max-w-md p-4">
         <div className="text-red-500 font-bold">Submission Error:</div>
         <p>
-          An error occurred during issue.
+          An error occurred during submission.
           <br />
           You may close this window and try again, however, this likely requires
           support.
