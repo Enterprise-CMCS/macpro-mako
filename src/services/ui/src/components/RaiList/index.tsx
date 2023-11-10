@@ -9,7 +9,7 @@ import {
   Attachmentslist,
 } from "@/components";
 
-export const RaiResponses = (data: OsMainSourceItem) => {
+export const RaiList = (data: OsMainSourceItem) => {
   if (!data.rais) return null;
   return (
     <DetailsSection id="rai-responses" title="Formal RAI Activity">

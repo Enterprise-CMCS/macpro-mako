@@ -6,7 +6,7 @@ import {
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
-  RaiResponses,
+  RaiList,
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
@@ -116,7 +116,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
             additionalInformation={data?._source.additionalInformation}
           />
         </DetailsSection>
-        <RaiResponses {...data?._source} />
+        <RaiList {...data?._source} />
       </div>
     </div>
   );
