@@ -111,6 +111,7 @@ export const seatoolSchema = z.object({
       z.object({
         RAI_RECEIVED_DATE: z.number().nullable(),
         RAI_REQUESTED_DATE: z.number().nullable(),
+        RAI_WITHDRAWN_DATE: z.number().nullable(),
       })
     )
     .nullable(),
@@ -141,6 +142,16 @@ export const transformSeatoolData = (id: string) => {
         (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
       )?.SPW_STATUS_DESC || "Unknown"
     );
+    const rais = {};
+    if (data.RAI) {
+      data.RAI.forEach((rai) => {
+        rais[rai.RAI_REQUESTED_DATE] = {
+          requestedDate: rai.RAI_REQUESTED_DATE,
+          receivedDate: rai.RAI_RECEIVED_DATE,
+          withdrawnDate: rai.RAI_WITHDRAWN_DATE,
+        };
+      });
+    }
     return {
       id,
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
@@ -157,6 +168,7 @@ export const transformSeatoolData = (id: string) => {
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
+      rais,
       state: data.STATE_PLAN.STATE_CODE,
       stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
