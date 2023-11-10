@@ -22,10 +22,14 @@ export const RaiList = (data: OsMainSourceItem) => {
             {sortedKeys.map((key, i) => (
               <Accordion key={i} type="multiple" defaultValue={["item-0"]}>
                 <AccordionItem value={`item-${i}`}>
-                  <AccordionTrigger>{`Requested on ${format(
-                    new Date(data.rais[key].requestedDate),
-                    "EEE, MMM d yyyy, h:mm:ss a"
-                  )}`}</AccordionTrigger>
+                  <AccordionTrigger>{`Requested on ${
+                    data.rais[key].requestedDate
+                      ? format(
+                          new Date(data.rais[key].requestedDate),
+                          "EEE, MMM d yyyy, h:mm:ss a"
+                        )
+                      : "Unknown"
+                  }`}</AccordionTrigger>
                   <AccordionContent>
                     <div className="ml-8">
                       <h3 className="text-xl font-semibold mb-2">
