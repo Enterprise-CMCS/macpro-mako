@@ -10,43 +10,73 @@ import {
 } from "@/components";
 
 export const RaiResponses = (data: OsMainSourceItem) => {
-  if (!data.raiResponses || data.raiResponses.length === 0) return null;
+  if (!data.rais) return null;
   return (
     data.raiResponses && (
-      <DetailsSection id="rai-responses" title="Formal RAI Responses">
-        {data.raiResponses.map((R, i) => {
+      <DetailsSection id="rai-responses" title="Formal RAI Activity">
+        {(() => {
+          const sortedKeys = Object.keys(data.rais) // Sort the RAIs by timestamp
+            .map(Number)
+            .sort((a, b) => b - a);
           return (
-            <Accordion
-              key={R.submissionTimestamp}
-              type="multiple"
-              defaultValue={["item-0"]}
-            >
-              <AccordionItem value={`item-${i}`}>
-                <AccordionTrigger>{`Submitted on ${format(
-                  new Date(R.submissionTimestamp),
-                  "EEE, MMM d yyyy, h:mm:ss a"
-                )}`}</AccordionTrigger>
-                <AccordionContent>
-                  <div className="ml-8">
-                    <h3 className="text-l font-semibold mb-2">
-                      RAI Response Documentation
-                    </h3>
-                    <p className="mb-4 text-sm">
-                      Documents available on this page may not reflect the
-                      actual documents that were approved by CMS. Please refer
-                      to your CMS Point of Contact for the approved documents.
-                    </p>
-                    <Attachmentslist id={data.id} attachments={R.attachments} />
-                    <h4 className="text-l font-semibold mb-2">
-                      Additional Information
-                    </h4>
-                    <p className="mb-4 text-sm">{R.additionalInformation}</p>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+            <div>
+              {sortedKeys.map((key, i) => (
+                <Accordion key={i} type="multiple" defaultValue={["item-0"]}>
+                  <AccordionItem value={`item-${i}`}>
+                    <AccordionTrigger>{`Requested on ${format(
+                      new Date(data.rais[key].requestedDate),
+                      "EEE, MMM d yyyy, h:mm:ss a"
+                    )}`}</AccordionTrigger>
+                    <AccordionContent>
+                      <div className="ml-8">
+                        <h3 className="text-xl font-semibold mb-2">
+                          RAI - Request Documentation
+                        </h3>
+                        <p className="mb-4 text-sm">
+                          Below is the data submitted by CMS as part of the
+                          formal RAI.
+                        </p>
+                        <p className="text-l font-semibold mb-2">Attachments</p>
+                        <Attachmentslist
+                          id={data.id}
+                          attachments={data.rais[key].request.attachments}
+                        />
+                        <h4 className="text-l font-semibold mb-2">
+                          Additional Information
+                        </h4>
+                        <p className="mb-4 text-sm">
+                          {data.rais[key].request.additionalInformation}
+                        </p>
+                      </div>
+                      {/* <div className="ml-8">
+                        <h3 className="text-xl font-semibold mb-2">
+                          RAI - Response Documentation
+                        </h3>
+                        <p className="mb-4 text-sm">
+                          Below is the data submitted by the state as part of
+                          the formal RAI response.
+                        </p>
+                        <p className="text-l font-semibold mb-2">
+                          Submitted Attachments
+                        </p>
+                        <Attachmentslist
+                          id={data.id}
+                          attachments={data.rais[key].response.attachments}
+                        />
+                        <h4 className="text-l font-semibold mb-2">
+                          Additional Information
+                        </h4>
+                        <p className="mb-4 text-sm">
+                          {data.rais[key].response.additionalInformation}
+                        </p>
+                      </div> */}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              ))}
+            </div>
           );
-        })}
+        })()}
       </DetailsSection>
     )
   );
