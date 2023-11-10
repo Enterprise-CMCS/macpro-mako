@@ -23,6 +23,18 @@ export const raiSchema = z.object({
 });
 export type RaiSchema = z.infer<typeof raiSchema>;
 
+interface RaiData {
+  [key: number]: {
+    responseDate: string;
+    response: {
+      additionalInformation: string;
+      submitterName: string | null;
+      submitterEmail: string | null;
+      attachments: any[] | null; // You might want to specify the type of attachments
+    };
+  };
+}
+
 export const transformRaiIssue = (id: string) => {
   return raiSchema.transform((data) => ({
     id,
@@ -95,15 +107,15 @@ export const transformOnemac = (id: string) => {
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName === "-- --" ? null : data.submitterName,
       origin: "oneMAC",
-      rais: undefined,
+      rais: {} as RaiData,
     };
     if (data.raiResponses) {
       data.raiResponses.forEach((raiResponse, index) => {
         // We create an rai keyed off the index, because we don't know which rai it was in response to.  Best we can do.
         transformedData["rais"][index] = {
-          responseDate: raiResponse.submissionTimestamp,
+          responseDate: raiResponse.submissionTimestamp.toString(),
           response: {
-            additionalInformation: raiResponse.additionalInformation,
+            additionalInformation: raiResponse.additionalInformation || "",
             submitterName: null,
             submitterEmail: null,
             attachments:
@@ -113,8 +125,6 @@ export const transformOnemac = (id: string) => {
           },
         };
       });
-    } else {
-      delete transformedData.rais;
     }
     return transformedData;
   });
