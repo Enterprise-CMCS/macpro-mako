@@ -5,7 +5,7 @@ import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { BREAD_CRUMB_CONFIG_PACKAGE_DETAILS } from "@/components/BreadCrumb/bread-crumb-config";
+import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 import {
   SimplePageContainer,
   Alert,
@@ -15,7 +15,7 @@ import {
 } from "@/components";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
-import { RaiIssueTransform } from "shared-types";
+import { Action, RaiIssueTransform } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 
 const formSchema = z.object({
@@ -133,7 +133,12 @@ export const IssueRai = () => {
 
   return (
     <SimplePageContainer>
-      {/* <BreadCrumbs options={BREAD_CRUMB_CONFIG_PACKAGE_DETAILS} /> */}
+      <BreadCrumbs
+        options={DETAILS_AND_ACTIONS_CRUMBS({
+          id: id || "",
+          action: "issue-rai" as Action,
+        })}
+      />
       <I.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
