@@ -15,7 +15,7 @@ import {
 } from "@/components";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
-import { RaiTransform } from "shared-types";
+import { RaiIssueTransform } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 
 const formSchema = z.object({
@@ -63,7 +63,7 @@ export const IssueRai = () => {
     const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
     const uploadedFiles: any[] = [];
     const fileMetaData: NonNullable<
-      RaiTransform["rais"][number]["state"]["attachments"]
+      RaiIssueTransform["rais"][number]["cms"]["attachments"]
     > = [];
 
     const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
@@ -122,7 +122,7 @@ export const IssueRai = () => {
         body: dataToSubmit,
       });
       console.log(actionResponse);
-      setSuccessModalIsOpen(true);
+      // setSuccessModalIsOpen(true);
       console.log("END OF TRY");
     } catch (err) {
       console.log(err);

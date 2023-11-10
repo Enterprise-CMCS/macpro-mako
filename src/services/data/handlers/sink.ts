@@ -10,8 +10,8 @@ import {
   OneMacRecordsToDelete,
   OneMacTransform,
   transformOnemac,
-  RaiTransform,
-  transformRai,
+  RaiIssueTransform,
+  transformRaiIssue,
 } from "shared-types/onemac";
 import { Action, withdrawRecordSchema, WithdrawRecord } from "shared-types";
 
@@ -99,7 +99,7 @@ export const onemac: Handler = async (event) => {
     | OneMacTransform
     | OneMacRecordsToDelete
     | WithdrawRecord
-    | RaiTransform
+    | RaiIssueTransform
   )[] = [];
 
   const rawArr: any[] = [];
@@ -129,7 +129,7 @@ export const onemac: Handler = async (event) => {
               break;
             }
             case Action.ISSUE_RAI: {
-              const result = transformRai(id).safeParse(record);
+              const result = transformRaiIssue(id).safeParse(record);
               if (result.success) {
                 oneMacRecords.push(result.data);
               } else {

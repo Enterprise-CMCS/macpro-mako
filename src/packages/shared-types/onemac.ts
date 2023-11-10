@@ -23,12 +23,12 @@ export const raiSchema = z.object({
 });
 export type RaiSchema = z.infer<typeof raiSchema>;
 
-export const transformRai = (id: string) => {
+export const transformRaiIssue = (id: string) => {
   return raiSchema.transform((data) => ({
     id,
     rais: {
       [data.requestedDate]: {
-        state: {
+        request: {
           attachments:
             data.attachments?.map((attachment) => {
               return handleAttachment(attachment);
@@ -41,7 +41,29 @@ export const transformRai = (id: string) => {
     },
   }));
 };
-export type RaiTransform = z.infer<ReturnType<typeof transformRai>>;
+export type RaiIssueTransform = z.infer<ReturnType<typeof transformRaiIssue>>;
+
+export const transformRaiResponse = (id: string) => {
+  return raiSchema.transform((data) => ({
+    id,
+    rais: {
+      [data.requestedDate]: {
+        response: {
+          attachments:
+            data.attachments?.map((attachment) => {
+              return handleAttachment(attachment);
+            }) ?? null,
+          additionalInformation: data.additionalInformation,
+          submitterName: data.submitterName,
+          submitterEmail: data.submitterEmail,
+        },
+      },
+    },
+  }));
+};
+export type RaiResponseTransform = z.infer<
+  ReturnType<typeof transformRaiResponse>
+>;
 
 export const onemacSchema = z.object({
   additionalInformation: z.string().nullable().default(null),
