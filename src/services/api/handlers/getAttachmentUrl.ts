@@ -48,11 +48,24 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
 
+    const raiAttachmentList = [];
+    const rec = results.hits.hits[0]._source;
+    for (const key in rec.rais) {
+      const entry = rec.rais[key];
+      for (const attachment of entry.request.attachments) {
+        raiAttachmentList.push(attachment);
+      }
+      // for (const attachment of entry.response.attachments) {
+      //   flatAttachments.push(attachment);
+      // }
+    }
+
     const allAttachments = [
       ...results.hits.hits[0]._source.attachments,
       ...results.hits.hits[0]._source.raiResponses
         .map((R) => R.attachments)
         .flat(),
+      ...raiAttachmentList,
     ];
 
     if (
