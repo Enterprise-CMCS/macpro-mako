@@ -83,41 +83,41 @@ export const onemacSchema = z.object({
 });
 
 export const transformOnemac = (id: string) => {
-  return onemacSchema.transform((data) => ({
-    id,
-    attachments:
-      data.attachments?.map((attachment) => {
-        return handleAttachment(attachment);
-      }) ?? null,
-    raiWithdrawEnabled: data.raiWithdrawEnabled,
-    raiResponses:
-      data.raiResponses?.map((response) => {
-        return {
-          additionalInformation: response.additionalInformation,
-          submissionTimestamp: response.submissionTimestamp,
-          attachments:
-            response.attachments?.map((attachment) => {
-              const uploadDate = parseInt(
-                attachment.s3Key?.split("/")[0] || "0"
-              );
-              const parsedUrl = s3ParseUrl(attachment.url || "");
-              if (!parsedUrl) return null;
-              const { bucket, key } = parsedUrl;
-
-              return {
-                ...attachment,
-                uploadDate,
-                bucket,
-                key,
-              };
-            }) ?? null,
+  return onemacSchema.transform((data) => {
+    const transformedData = {
+      id,
+      attachments:
+        data.attachments?.map((attachment) => {
+          return handleAttachment(attachment);
+        }) ?? null,
+      raiWithdrawEnabled: data.raiWithdrawEnabled,
+      additionalInformation: data.additionalInformation,
+      submitterEmail: data.submitterEmail,
+      submitterName: data.submitterName === "-- --" ? null : data.submitterName,
+      origin: "oneMAC",
+      rais: undefined,
+    };
+    if (data.raiResponses) {
+      data.raiResponses.forEach((raiResponse, index) => {
+        // We create an rai keyed off the index, because we don't know which rai it was in response to.  Best we can do.
+        transformedData["rais"][index] = {
+          responseDate: raiResponse.submissionTimestamp,
+          response: {
+            additionalInformation: raiResponse.additionalInformation,
+            submitterName: null,
+            submitterEmail: null,
+            attachments:
+              raiResponse.attachments?.map((attachment) => {
+                return handleAttachment(attachment);
+              }) ?? null,
+          },
         };
-      }) ?? null,
-    additionalInformation: data.additionalInformation,
-    submitterEmail: data.submitterEmail,
-    submitterName: data.submitterName === "-- --" ? null : data.submitterName,
-    origin: "oneMAC",
-  }));
+      });
+    } else {
+      delete transformedData.rais;
+    }
+    return transformedData;
+  });
 };
 
 export type OneMacSink = z.infer<typeof onemacSchema>;
