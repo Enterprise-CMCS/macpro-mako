@@ -42,37 +42,41 @@ export const RaiList = (data: OsMainSourceItem) => {
                       <p className="text-l font-semibold mb-2">Attachments</p>
                       <Attachmentslist
                         id={data.id}
-                        attachments={data.rais[key].request.attachments}
+                        attachments={
+                          data.rais[key].request?.attachments || null
+                        }
                       />
                       <h4 className="text-l font-semibold mb-2">
                         Additional Information
                       </h4>
                       <p className="mb-4 text-sm">
-                        {data.rais[key].request.additionalInformation}
+                        {data.rais[key].request?.additionalInformation}
                       </p>
                     </div>
-                    {/* <div className="ml-8">
-                        <h3 className="text-xl font-semibold mb-2">
-                          RAI - Response Documentation
-                        </h3>
-                        <p className="mb-4 text-sm">
-                          Below is the data submitted by the state as part of
-                          the formal RAI response.
-                        </p>
-                        <p className="text-l font-semibold mb-2">
-                          Submitted Attachments
-                        </p>
-                        <Attachmentslist
-                          id={data.id}
-                          attachments={data.rais[key].response.attachments}
-                        />
-                        <h4 className="text-l font-semibold mb-2">
-                          Additional Information
-                        </h4>
-                        <p className="mb-4 text-sm">
-                          {data.rais[key].response.additionalInformation}
-                        </p>
-                      </div> */}
+                    <div className="ml-8">
+                      <h3 className="text-xl font-semibold mb-2">
+                        RAI - Response Documentation
+                      </h3>
+                      <p className="mb-4 text-sm">
+                        Below is the data submitted by the state as part of the
+                        formal RAI response.
+                      </p>
+                      <p className="text-l font-semibold mb-2">
+                        Submitted Attachments
+                      </p>
+                      <Attachmentslist
+                        id={data.id}
+                        attachments={
+                          data.rais[key].response?.attachments || null
+                        }
+                      />
+                      <h4 className="text-l font-semibold mb-2">
+                        Additional Information
+                      </h4>
+                      <p className="mb-4 text-sm">
+                        {data.rais[key].response?.additionalInformation}
+                      </p>
+                    </div>
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
