@@ -8,6 +8,7 @@ import {
   lookupUserAttributes,
 } from "../libs/auth/user";
 import { response } from "../libs/handler";
+import { SEATOOL_STATUS } from "shared-types/statusHelper";
 
 type GetPackageActionsBody = {
   id: string;
@@ -28,8 +29,22 @@ export const packageActionsForResult = (
     if (result._source.raiWithdrawEnabled) {
       actions.push(Action.DISABLE_RAI_WITHDRAW);
     }
-    actions.push(Action.ISSUE_RAI);
-    actions.push(Action.RESPOND_TO_RAI);
+    switch (result._source.seatoolStatus) {
+      case SEATOOL_STATUS.PENDING:
+      case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
+      case SEATOOL_STATUS.PENDING_APPROVAL:
+      case SEATOOL_STATUS.PENDING_CONCURRENCE:
+        // todo.. if(no outstanding rai)
+        actions.push(Action.ISSUE_RAI);
+        break;
+    }
+  } else {
+    switch (result._source.seatoolStatus) {
+      case SEATOOL_STATUS.PENDING_RAI:
+        // todo.. if(outstanding rai without response)
+        actions.push(Action.RESPOND_TO_RAI);
+        break;
+    }
   }
   return actions;
 };
