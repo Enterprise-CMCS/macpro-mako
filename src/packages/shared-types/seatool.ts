@@ -137,11 +137,11 @@ export const transformSeatoolData = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate } = getRaiDate(data);
-    const { stateStatus, cmsStatus } = getStatus(
+    const seatoolStatus =
       data.SPW_STATUS?.find(
         (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
-      )?.SPW_STATUS_DESC || "Unknown"
-    );
+      )?.SPW_STATUS_DESC || "Unknown";
+    const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
     const rais: Record<
       number,
       {
@@ -183,7 +183,7 @@ export const transformSeatoolData = (id: string) => {
       state: data.STATE_PLAN.STATE_CODE,
       stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
-      seatoolStatus: data.SPW_STATUS,
+      seatoolStatus,
       submissionDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.SUBMISSION_DATE
       ),
