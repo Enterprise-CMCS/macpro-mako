@@ -71,6 +71,7 @@ export const seatool: Handler = async (event) => {
           state: null,
           cmsStatus: null,
           stateStatus: null,
+          seatoolStatus: null,
           submissionDate: null,
         };
 

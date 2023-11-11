@@ -183,6 +183,7 @@ export const transformSeatoolData = (id: string) => {
       state: data.STATE_PLAN.STATE_CODE,
       stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
+      seatoolStatus: data.SPW_STATUS,
       submissionDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.SUBMISSION_DATE
       ),
