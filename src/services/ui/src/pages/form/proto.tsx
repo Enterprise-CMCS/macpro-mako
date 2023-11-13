@@ -22,22 +22,6 @@ export const ABP1: Document = {
                 },
               },
               props: { placeholder: "enter name" },
-              dependency: {
-                // example of a value changing field, with multi-conditions
-                conditions: [
-                  {
-                    name: "geographic_variation",
-                    type: "expectedValue",
-                    expectedValue: "by_region",
-                  },
-                  {
-                    name: "is_geographic_area",
-                    type: "expectedValue",
-                    expectedValue: "yes",
-                  },
-                ],
-                effect: { type: "setValue", newValue: "Ben" },
-              },
             },
           ],
         },
@@ -535,6 +519,15 @@ export const ABP1: Document = {
                                                             "w-[200px]",
                                                           placeholder:
                                                             "enter amount",
+                                                          icon: "$",
+                                                        },
+                                                        rules: {
+                                                          pattern: {
+                                                            value:
+                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                            message:
+                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                          },
                                                         },
                                                       },
                                                     ],
