@@ -10,7 +10,7 @@ import {
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { ItemResult } from "shared-types";
+import { ItemResult, UserRoles } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -33,12 +33,10 @@ const DetailCardWrapper = ({
     </div>
   </CardWithTopBorder>
 );
-const StatusCard = ({ isCms, data }: { isCms: boolean; data: ItemResult }) => (
+const StatusCard = ({ status }: { status: string }) => (
   <DetailCardWrapper title={"Status"}>
     <div>
-      <h2 className="text-xl font-semibold">
-        {isCms ? data._source.cmsStatus : data._source.stateStatus}
-      </h2>
+      <h2 className="text-xl font-semibold">{status}</h2>
     </div>
   </DetailCardWrapper>
 );
@@ -73,6 +71,10 @@ const PackageActionsCard = ({ id }: { id: string }) => {
 export const DetailsContent = ({ data }: { data?: ItemResult }) => {
   const { data: user } = useGetUser();
   if (!data?._source) return <LoadingSpinner />;
+  const status =
+    user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+      ? data._source.cmsStatus
+      : data._source.stateStatus;
   return (
     <div className="block md:flex">
       <aside className="flex-none font-bold hidden md:block pr-8">
@@ -99,7 +101,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           id="package-overview"
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
         >
-          <StatusCard isCms={user?.isCms || false} data={data} />
+          <StatusCard status={status} />
           <PackageActionsCard id={data._id} />
         </section>
         <DetailsSection id="package-details" title="Package Details">
