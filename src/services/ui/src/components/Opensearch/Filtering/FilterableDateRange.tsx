@@ -8,6 +8,7 @@ import {
   startOfQuarter,
   startOfMonth,
   sub,
+  getYear,
 } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
@@ -64,6 +65,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   const onFromInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const minValidYear = 1960;
     const input = e.target.value;
 
     if (/^[0-9/]*$/.test(input)) {
@@ -71,7 +73,8 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
       const date = parse(e.target.value, "MM/dd/yyyy", new Date());
       if (
         !isValid(date) ||
-        isBefore(date, parse("01/01/1960", "MM/dd/yyyy", new Date()))
+        getYear(date) < minValidYear ||
+        isAfter(date, new Date())
       ) {
         return setSelectedDate({ from: undefined, to: selectedDate?.to });
       }
@@ -89,6 +92,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   const onToInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const minValidYear = 1960;
     const input = e.target.value;
 
     if (/^[0-9/]*$/.test(input)) {
@@ -97,7 +101,8 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
 
       if (
         !isValid(date) ||
-        isBefore(date, parse("01/01/1960", "MM/dd/yyyy", new Date()))
+        getYear(date) > minValidYear ||
+        !isAfter(date, new Date())
       ) {
         return setSelectedDate({ from: selectedDate?.from, to: undefined });
       }
