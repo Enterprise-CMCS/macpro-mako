@@ -22,22 +22,6 @@ export const ABP1: Document = {
                 },
               },
               props: { placeholder: "enter name" },
-              dependency: {
-                // example of a value changing field, with multi-conditions
-                conditions: [
-                  {
-                    name: "geographic_variation",
-                    type: "expectedValue",
-                    expectedValue: "by_region",
-                  },
-                  {
-                    name: "is_geographic_area",
-                    type: "expectedValue",
-                    expectedValue: "yes",
-                  },
-                ],
-                effect: { type: "setValue", newValue: "Ben" },
-              },
             },
           ],
         },
@@ -417,6 +401,16 @@ export const ABP1: Document = {
                                             slots: [
                                               {
                                                 rhf: "Input",
+                                                props: {
+                                                  icon: "%",
+                                                },
+                                                rules: {
+                                                  pattern: {
+                                                    value: /^-?\d*\.?\d+$/,
+                                                    message:
+                                                      "Must be a percentage",
+                                                  },
+                                                },
                                                 name: "federal_poverty_level_percentage",
                                                 label:
                                                   "Enter the Federal Poverty Level percentage",
@@ -433,6 +427,16 @@ export const ABP1: Document = {
                                                 name: "ssi_federal_benefit_percentage",
                                                 label:
                                                   "Enter the SSI Federal Benefit Rate percentage",
+                                                props: {
+                                                  icon: "%",
+                                                },
+                                                rules: {
+                                                  pattern: {
+                                                    value: /^-?\d*\.?\d+$/,
+                                                    message:
+                                                      "Must be a percentage",
+                                                  },
+                                                },
                                               },
                                             ],
                                           },
@@ -445,6 +449,16 @@ export const ABP1: Document = {
                                                 name: "other_percentage",
                                                 label:
                                                   "Enter the Other percentage",
+                                                props: {
+                                                  icon: "%",
+                                                },
+                                                rules: {
+                                                  pattern: {
+                                                    value: /^-?\d*\.?\d+$/,
+                                                    message:
+                                                      "Must be a percentage",
+                                                  },
+                                                },
                                               },
                                               {
                                                 rhf: "Textarea",
@@ -487,6 +501,14 @@ export const ABP1: Document = {
                                                           className:
                                                             "w-[300px]",
                                                         },
+                                                        rules: {
+                                                          pattern: {
+                                                            value:
+                                                              /^\d*\.?\d+$/,
+                                                            message:
+                                                              "Must be a positive numerical value",
+                                                          },
+                                                        },
                                                       },
                                                       {
                                                         rhf: "Input",
@@ -497,6 +519,15 @@ export const ABP1: Document = {
                                                             "w-[200px]",
                                                           placeholder:
                                                             "enter amount",
+                                                          icon: "$",
+                                                        },
+                                                        rules: {
+                                                          pattern: {
+                                                            value:
+                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                            message:
+                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                          },
                                                         },
                                                       },
                                                     ],
@@ -531,6 +562,17 @@ export const ABP1: Document = {
                                                   {
                                                     rhf: "Input",
                                                     name: "doller_incremental_amount",
+                                                    props: {
+                                                      icon: "$",
+                                                    },
+                                                    rules: {
+                                                      pattern: {
+                                                        value:
+                                                          /^\d*(?:\.\d{1,2})?$/,
+                                                        message:
+                                                          "Must be all numbers, no commas. e.g. 1234.56",
+                                                      },
+                                                    },
                                                   },
                                                 ],
                                               },
@@ -576,6 +618,14 @@ export const ABP1: Document = {
                                                               className:
                                                                 "w-[300px]",
                                                             },
+                                                            rules: {
+                                                              pattern: {
+                                                                value:
+                                                                  /^\d*\.?\d+$/,
+                                                                message:
+                                                                  "Must be a positive numerical value",
+                                                              },
+                                                            },
                                                           },
                                                           {
                                                             rhf: "Input",
@@ -587,6 +637,15 @@ export const ABP1: Document = {
                                                                 "w-[200px]",
                                                               placeholder:
                                                                 "enter amount",
+                                                              icon: "$",
+                                                            },
+                                                            rules: {
+                                                              pattern: {
+                                                                value:
+                                                                  /^\d*(?:\.\d{1,2})?$/,
+                                                                message:
+                                                                  "Must be all numbers, no commas. e.g. 1234.56",
+                                                              },
                                                             },
                                                           },
                                                         ],
@@ -606,6 +665,17 @@ export const ABP1: Document = {
                                                         labelStyling:
                                                           "font-bold mb-2",
                                                         name: "doller_incremental_amount",
+                                                        props: {
+                                                          icon: "$",
+                                                        },
+                                                        rules: {
+                                                          pattern: {
+                                                            value:
+                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                            message:
+                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                          },
+                                                        },
                                                       },
                                                     ],
                                                   },
@@ -657,6 +727,14 @@ export const ABP1: Document = {
                                                               className:
                                                                 "w-[300px]",
                                                             },
+                                                            rules: {
+                                                              pattern: {
+                                                                value:
+                                                                  /^\d*\.?\d+$/,
+                                                                message:
+                                                                  "Must be a positive numerical value",
+                                                              },
+                                                            },
                                                           },
                                                           {
                                                             rhf: "Input",
@@ -668,6 +746,15 @@ export const ABP1: Document = {
                                                                 "w-[200px]",
                                                               placeholder:
                                                                 "enter amount",
+                                                              icon: "$",
+                                                            },
+                                                            rules: {
+                                                              pattern: {
+                                                                value:
+                                                                  /^\d*(?:\.\d{1,2})?$/,
+                                                                message:
+                                                                  "Must be all numbers, no commas. e.g. 1234.56",
+                                                              },
                                                             },
                                                           },
                                                         ],
@@ -687,6 +774,17 @@ export const ABP1: Document = {
                                                         labelStyling:
                                                           "font-bold mb-2",
                                                         name: "doller_incremental_amount",
+                                                        props: {
+                                                          icon: "$",
+                                                        },
+                                                        rules: {
+                                                          pattern: {
+                                                            value:
+                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                            message:
+                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                          },
+                                                        },
                                                       },
                                                     ],
                                                   },
@@ -735,6 +833,14 @@ export const ABP1: Document = {
                                                               className:
                                                                 "w-[300px]",
                                                             },
+                                                            rules: {
+                                                              pattern: {
+                                                                value:
+                                                                  /^\d*\.?\d+$/,
+                                                                message:
+                                                                  "Must be a positive numerical value",
+                                                              },
+                                                            },
                                                           },
                                                           {
                                                             rhf: "Input",
@@ -746,6 +852,15 @@ export const ABP1: Document = {
                                                                 "w-[200px]",
                                                               placeholder:
                                                                 "enter amount",
+                                                              icon: "$",
+                                                            },
+                                                            rules: {
+                                                              pattern: {
+                                                                value:
+                                                                  /^\d*(?:\.\d{1,2})?$/,
+                                                                message:
+                                                                  "Must be all numbers, no commas. e.g. 1234.56",
+                                                              },
                                                             },
                                                           },
                                                         ],
@@ -765,6 +880,17 @@ export const ABP1: Document = {
                                                         labelStyling:
                                                           "font-bold mb-2",
                                                         name: "doller_incremental_amount",
+                                                        props: {
+                                                          icon: "$",
+                                                        },
+                                                        rules: {
+                                                          pattern: {
+                                                            value:
+                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                            message:
+                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                          },
+                                                        },
                                                       },
                                                     ],
                                                   },
