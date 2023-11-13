@@ -26,18 +26,6 @@ type Props = Omit<
   className?: string;
 };
 
-// function checkValue(str: any, max: any) {
-//   if (str.charAt(0) !== "0" || str == "00") {
-//     let num = parseInt(str);
-//     if (isNaN(num) || num <= 0 || num > max) num = 1;
-//     str =
-//       num > parseInt(max.toString().charAt(0)) && num.toString().length == 1
-//         ? "0" + num
-//         : num.toString();
-//   }
-//   return str;
-// }
-
 export function FilterableDateRange({ value, onChange, ...props }: Props) {
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<DateRange | undefined>({
@@ -58,6 +46,21 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
 
   const handleClose = (updateOpen: boolean) => {
     setOpen(updateOpen);
+
+    if (!updateOpen) {
+      checkSingleDateSelection();
+    }
+  };
+
+  const checkSingleDateSelection = () => {
+    if (selectedDate?.from && !selectedDate.to) {
+      const rangeObject = getDateRange(selectedDate.from, selectedDate.from);
+
+      onChange(rangeObject);
+      setSelectedDate({ from: selectedDate.from, to: selectedDate.from });
+      setFromValue(format(selectedDate.from, "MM/dd/yyyy"));
+      setToValue(format(selectedDate.from, "MM/dd/yyyy"));
+    }
   };
 
   const onFromInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,46 +141,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     setFromValue(format(startDate, "MM/dd/yyyy"));
     setToValue(format(today, "MM/dd/yyyy"));
   };
-
-  // const onFromBlur = () => {
-  //   const newDate = s.replaceAll(" ", "");
-  //   console.log("onfrom blur, from", newDate, selectedDate);
-  //   const date = parse(newDate, "MM/dd/yyyy", new Date());
-  //   if (
-  //     !isValid(date) ||
-  //     isBefore(date, parse("01/01/1960", "MM/dd/yyyy", new Date()))
-  //   ) {
-  //     setSelectedDate({ from: undefined, to: undefined });
-  //     return newDate;
-  //   }
-  // };
-
-  // const onToBlur = () => {
-  //   setToValue((s) => {
-  //     const newDate = s.replaceAll(" ", "");
-  //     const date = parse(newDate, "MM/dd/yyyy", new Date());
-  //     if (!isValid(date)) {
-  //       setSelectedDate({ from: selectedDate?.from, to: undefined });
-  //       return newDate;
-  //     }
-
-  //     if (selectedDate?.from && isBefore(date, selectedDate.from)) {
-  //       setSelectedDate({ from: undefined, to: date });
-  //       onChange({
-  //         gte: undefined,
-  //         lte: date.toISOString(),
-  //       });
-  //       setFromValue("");
-  //     } else {
-  //       setSelectedDate({ from: selectedDate?.from, to: date });
-  //       onChange({
-  //         gte: selectedDate?.from?.toISOString() || "",
-  //         lte: date.toISOString(),
-  //       });
-  //     }
-  //     return newDate;
-  //   });
-  // };
 
   const label = useMemo(() => {
     const from = selectedDate?.from
