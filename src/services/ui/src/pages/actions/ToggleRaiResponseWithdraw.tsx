@@ -1,15 +1,13 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { Alert, LoadingSpinner, SimplePageContainer } from "@/components";
-import { BreadCrumbs } from "@/components/BreadCrumb";
+import { Alert, LoadingSpinner } from "@/components";
 import { ROUTES } from "@/routes";
 import { Action, ItemResult } from "shared-types";
 import { Button } from "@/components/Inputs";
-import { useGetItem, useGetPackageActions } from "@/api";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useToggleRaiWithdraw } from "@/api/useToggleRaiWithdraw";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 import { PackageActionForm } from "@/pages/actions/PackageActionForm";
+import { useQueryClient } from "@tanstack/react-query";
 
 // Keeps aria stuff and classes condensed
 const SectionTemplate = ({
@@ -61,7 +59,9 @@ const PackageInfo = ({ item }: { item: ItemResult }) => (
 
 const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
+  const qc = useQueryClient();
   const { id, type } = useParams<{ id: string; type: Action }>();
+  const [awaitingNav, setAwaitingNav] = useState(false);
   const {
     mutate: toggleRaiWithdraw,
     isLoading: isToggling,
@@ -73,19 +73,27 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
     [type]
   );
 
-  if (isToggling) return <LoadingSpinner />;
   if (!item) return <Navigate to={ROUTES.DASHBOARD} />; // Prevents optional chains below
-  return toggleSucceeded ? (
-    <Navigate
-      to={`/details?id=${id}`}
-      state={{
-        callout: {
-          heading: `Formal RAI Response Withdraw action has been ${ACTION_WORD.toLowerCase()}d`,
-          body: `You have successfully ${ACTION_WORD.toLowerCase()}d the Formal RAI Response Withdraw action for the State.`,
-        },
-      }}
-    />
-  ) : (
+  if (isToggling || awaitingNav) return <LoadingSpinner />;
+  if (toggleSucceeded) {
+    // Clear actions for package from cache
+    qc.invalidateQueries(["actions", id]).then(() => {
+      setAwaitingNav(true); // Triggers LoadingSpinner
+      // Debounce back nav to give the data pipeline time to update
+      setTimeout(() => {
+        // Go back to package details and render success alert
+        navigate(`/details?id=${id}`, {
+          state: {
+            callout: {
+              heading: `Formal RAI Response Withdraw action has been ${ACTION_WORD.toLowerCase()}d`,
+              body: `You have successfully ${ACTION_WORD.toLowerCase()}d the Formal RAI Response Withdraw action for the State.`,
+            },
+          },
+        });
+      }, 1000);
+    });
+  }
+  return (
     <>
       <Intro action={ACTION_WORD} />
       <PackageInfo item={item} />
