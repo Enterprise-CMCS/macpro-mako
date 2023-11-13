@@ -4,11 +4,14 @@ import type { Props } from "./types";
 import { pageStateResolver } from "./utils";
 import { cn } from "@/lib/utils";
 
+const maxRecordCount = 10000;
+
 export const Pagination: FC<Props> = (props) => {
+  const count = props.count > maxRecordCount ? maxRecordCount : props.count;
   const state = pageStateResolver({
     pageNumber: props.pageNumber,
     pageSize: props.pageSize,
-    count: props.count,
+    count,
   });
 
   return (
@@ -39,7 +42,7 @@ export const Pagination: FC<Props> = (props) => {
             <span className="font-bold">{state.lowerBoundValue}</span>-
             <span className="font-bold">{state.upperBoundValue}</span>
             of
-            <span className="font-bold">{props.count}</span>
+            <span className="font-bold">{count}</span>
             records
           </p>
         </div>
