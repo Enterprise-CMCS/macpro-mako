@@ -168,6 +168,7 @@ export const MedicaidForm = () => {
       origin: "micro",
       authority: "medicaid spa",
       raiResponses: [],
+      raiWithdrawEnabled: false,
       submitterEmail: user?.user?.email ?? "N/A",
       submitterName:
         `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
