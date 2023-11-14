@@ -338,6 +338,7 @@ resources:
         StartingPosition: TRIM_HORIZON
         Topics:
           - aws.ksqldb.seatool.agg.State_Plan
+      DependsOn: SetupIndex
     CloudWatchAlarmForSinkSeatoolTriggerErrors:
       Type: AWS::CloudWatch::Alarm
       Properties:
@@ -405,6 +406,7 @@ resources:
         StartingPosition: TRIM_HORIZON
         Topics:
           - ${param:topicNamespace}aws.onemac.migration.cdc
+      DependsOn: SetupIndex
     CloudWatchAlarmForSinkOnemacTriggerErrors:
       Type: AWS::CloudWatch::Alarm
       Properties:
