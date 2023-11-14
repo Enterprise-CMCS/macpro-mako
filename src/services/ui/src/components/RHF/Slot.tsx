@@ -29,6 +29,7 @@ import { format } from "date-fns";
 import { RHFFieldArray } from "./FieldArray";
 import { FieldGroup } from "./FieldGroup";
 import type { RHFSlotProps, RHFComponentMap } from "./types";
+import { useEffect } from "react";
 
 export const RHFSlot = <
   TFieldValues extends FieldValues = FieldValues,
@@ -47,6 +48,13 @@ export const RHFSlot = <
   TName
 >["render"] =>
   function Slot({ field }) {
+    // added to unregister/reset inputs when removed from dom
+    useEffect(() => {
+      return () => {
+        control.unregister(field.name);
+      };
+    }, []);
+
     return (
       <FormItem className="flex flex-col gap-1 py-2">
         {label && <FormLabel className={labelStyling}>{label}</FormLabel>}
