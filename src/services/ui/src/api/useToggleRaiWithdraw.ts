@@ -29,7 +29,7 @@ const toggleRaiWithdraw = async (
   id: string,
   action: Action
 ): Promise<ToggleRaiWithdrawResponse> =>
-  await API.post("os", url(action), { body: { id } });
+  await API.post("os", url(action)!, { body: { id } });
 
 export const useToggleRaiWithdraw = (
   id: string,
