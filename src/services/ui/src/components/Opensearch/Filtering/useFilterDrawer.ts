@@ -10,7 +10,7 @@ import { useGetUser } from "@/api/useGetUser";
 export const useFilterDrawer = () => {
   const { drawerOpen, setDrawerState } = useFilterDrawerContext();
   const { data: user } = useGetUser();
-  const [filters, setFilters] = useState(Consts.FILTER_GROUPS(user?.isCms));
+  const [filters, setFilters] = useState(Consts.FILTER_GROUPS(user));
   const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const params = useOsParams();
   const labelMap = useLabelMapping();
