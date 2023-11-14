@@ -706,11 +706,10 @@ resources:
         BrokerString: ${self:custom.brokerString}
         TopicPatternsToDelete:
           - ${param:topicNamespace}aws.onemac.migration.cdc
-    # IndexMgmt:
-    #   Type: Custom::IndexMgmt
-    #   Properties:
-    #     ServiceToken: !GetAtt IndexMgmtLambdaFunction.Arn
-    #     Foo: Bar
+    SetupIndex:
+      Type: Custom::SetupIndex
+      Properties:
+        ServiceToken: !GetAtt SetupIndexCustomResourceLambdaFunction.Arn
   Outputs:
     OpenSearchDomainArn:
       Value: !GetAtt OpenSearch.Arn

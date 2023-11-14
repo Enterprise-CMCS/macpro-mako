@@ -3,7 +3,7 @@ import { send, SUCCESS, FAILED } from "cfn-response-async";
 type ResponseStatus = typeof SUCCESS | typeof FAILED;
 import * as os from "./../../../libs/opensearch-lib";
 
-export const customResourceWrapperHandler: Handler = async (event, context) => {
+export const customResourceWrapper: Handler = async (event, context) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
   const responseData = {};
   let responseStatus: ResponseStatus = SUCCESS;
