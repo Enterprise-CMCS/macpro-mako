@@ -9,6 +9,7 @@ import {
   startOfMonth,
   sub,
   getYear,
+  endOfDay,
 } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
@@ -40,30 +41,21 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : ""
   );
 
-  // useEffect(() => {
-  //   console.log("useeffect", value);
-  //   setToValue(value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : "");
-  //   setFromValue(value?.gte ? format(new Date(value?.gte), "MM/dd/yyyy") : "");
-  // }, [value]);
+  useEffect(() => {
+    console.log("useeffect", value);
+    setToValue(value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : "");
+    setFromValue(value?.gte ? format(new Date(value?.gte), "MM/dd/yyyy") : "");
+  }, [value]);
 
   const handleClose = (updateOpen: boolean) => {
-    if (!updateOpen) {
-      checkSingleDateSelection();
-    }
-
-    setTimeout(() => {
-      setOpen(updateOpen);
-    });
+    setOpen(updateOpen);
   };
 
-  const checkSingleDateSelection = (from, to) => {
-    console.log("running");
+  const checkSingleDateSelection = (from: Date, to: Date) => {
     if (from && !to) {
-      const rangeObject = getDateRange(from, from);
+      const rangeObject = getDateRange(from, endOfDay(from));
       onChange(rangeObject);
-      // setSelectedDate({ from: selectedDate.from, to: selectedDate.from });
       setFromValue(format(from, "MM/dd/yyyy"));
-      // setToValue(format(selectedDate.from, "MM/dd/yyyy"));
     }
   };
 

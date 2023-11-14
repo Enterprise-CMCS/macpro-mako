@@ -17,7 +17,6 @@ export const useFilterDrawer = () => {
   const _aggs = useOsAggregate();
 
   const onFilterChange = (field: OsField) => {
-    // console.log(field);
     return (value: OsFilterValue) => {
       setFilters((state) => {
         const updateState = { ...state, [field]: { ...state[field], value } };
