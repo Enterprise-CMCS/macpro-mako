@@ -15,11 +15,7 @@ export const ABP1: Document = {
               name: "alt_benefit_plan_population_name",
               label: "Alternative Benefit Plan population name",
               rules: {
-                required: "*Required",
-                maxLength: {
-                  value: 20,
-                  message: "Max 20 Characters",
-                },
+                required: "* Required",
               },
               props: { placeholder: "enter name" },
             },
@@ -36,6 +32,9 @@ export const ABP1: Document = {
                 {
                   rhf: "Select",
                   name: "eligibility_group",
+                  rules: {
+                    required: "* Required",
+                  },
                   label: "Eligibility group",
                   props: {
                     className: "w-[300px]",
@@ -290,6 +289,9 @@ export const ABP1: Document = {
                   rhf: "Select",
                   name: "mandatory_voluntary",
                   label: "Mandatory or voluntary",
+                  rules: {
+                    required: "* Required",
+                  },
                   props: {
                     className: "w-[200px]",
                     options: [
@@ -316,6 +318,9 @@ export const ABP1: Document = {
               rhf: "Select",
               name: "is_enrollment_available",
               label: "Alternative Benefit Plan population name",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 className: "w-[150px]",
                 options: [
@@ -349,6 +354,9 @@ export const ABP1: Document = {
               rhf: "Checkbox",
               name: "target_criteria",
               label: "Mandatory or voluntary",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -361,6 +369,9 @@ export const ABP1: Document = {
                           {
                             rhf: "Radio",
                             name: "income_target",
+                            rules: {
+                              required: "* Required",
+                            },
                             props: {
                               options: [
                                 {
@@ -384,6 +395,9 @@ export const ABP1: Document = {
                           {
                             rhf: "Radio",
                             name: "income_definition",
+                            rules: {
+                              required: "* Required",
+                            },
                             props: {
                               options: [
                                 {
@@ -393,6 +407,9 @@ export const ABP1: Document = {
                                     {
                                       rhf: "Radio",
                                       name: "income_definition_percentage",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         options: [
                                           {
@@ -410,6 +427,7 @@ export const ABP1: Document = {
                                                     message:
                                                       "Must be a percentage",
                                                   },
+                                                  required: "* Required",
                                                 },
                                                 name: "federal_poverty_level_percentage",
                                                 label:
@@ -436,6 +454,7 @@ export const ABP1: Document = {
                                                     message:
                                                       "Must be a percentage",
                                                   },
+                                                  required: "* Required",
                                                 },
                                               },
                                             ],
@@ -458,12 +477,16 @@ export const ABP1: Document = {
                                                     message:
                                                       "Must be a percentage",
                                                   },
+                                                  required: "* Required",
                                                 },
                                               },
                                               {
                                                 rhf: "Textarea",
                                                 name: "other_describe",
                                                 label: "Describe:",
+                                                rules: {
+                                                  required: "* Required",
+                                                },
                                               },
                                             ],
                                           },
@@ -479,6 +502,9 @@ export const ABP1: Document = {
                                     {
                                       rhf: "Radio",
                                       name: "income_definition_specific",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         options: [
                                           {
@@ -508,6 +534,8 @@ export const ABP1: Document = {
                                                             message:
                                                               "Must be a positive numerical value",
                                                           },
+                                                          required:
+                                                            "* Required",
                                                         },
                                                       },
                                                       {
@@ -528,6 +556,8 @@ export const ABP1: Document = {
                                                             message:
                                                               "Must be all numbers, no commas. e.g. 1234.56",
                                                           },
+                                                          required:
+                                                            "* Required",
                                                         },
                                                       },
                                                     ],
@@ -572,6 +602,7 @@ export const ABP1: Document = {
                                                         message:
                                                           "Must be all numbers, no commas. e.g. 1234.56",
                                                       },
+                                                      required: "* Required",
                                                     },
                                                   },
                                                 ],
@@ -580,7 +611,7 @@ export const ABP1: Document = {
                                           },
                                           {
                                             label: "Standard Varies by region",
-                                            value: "region_standard", //
+                                            value: "region_standard",
                                             form: [
                                               {
                                                 slots: [
@@ -597,11 +628,19 @@ export const ABP1: Document = {
                                                         rhf: "Input",
                                                         name: "name_of_region",
                                                         label: "Region Name",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "Textarea",
                                                         name: "region_description",
                                                         label: "Description",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "FieldArray",
@@ -625,6 +664,8 @@ export const ABP1: Document = {
                                                                 message:
                                                                   "Must be a positive numerical value",
                                                               },
+                                                              required:
+                                                                "* Required",
                                                             },
                                                           },
                                                           {
@@ -646,6 +687,8 @@ export const ABP1: Document = {
                                                                 message:
                                                                   "Must be all numbers, no commas. e.g. 1234.56",
                                                               },
+                                                              required:
+                                                                "* Required",
                                                             },
                                                           },
                                                         ],
@@ -675,6 +718,8 @@ export const ABP1: Document = {
                                                             message:
                                                               "Must be all numbers, no commas. e.g. 1234.56",
                                                           },
+                                                          required:
+                                                            "* Required",
                                                         },
                                                       },
                                                     ],
@@ -706,11 +751,19 @@ export const ABP1: Document = {
                                                         name: "name_of_living_arrangement",
                                                         label:
                                                           "Living Arrangement Name",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "Textarea",
                                                         name: "living_arrangement_description",
                                                         label: "Description",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "FieldArray",
@@ -734,6 +787,8 @@ export const ABP1: Document = {
                                                                 message:
                                                                   "Must be a positive numerical value",
                                                               },
+                                                              required:
+                                                                "* Required",
                                                             },
                                                           },
                                                           {
@@ -755,6 +810,8 @@ export const ABP1: Document = {
                                                                 message:
                                                                   "Must be all numbers, no commas. e.g. 1234.56",
                                                               },
+                                                              required:
+                                                                "* Required",
                                                             },
                                                           },
                                                         ],
@@ -784,6 +841,8 @@ export const ABP1: Document = {
                                                             message:
                                                               "Must be all numbers, no commas. e.g. 1234.56",
                                                           },
+                                                          required:
+                                                            "* Required",
                                                         },
                                                       },
                                                     ],
@@ -812,11 +871,19 @@ export const ABP1: Document = {
                                                         rhf: "Input",
                                                         name: "name_of_group",
                                                         label: "Name",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "Textarea",
                                                         name: "group_description",
                                                         label: "Description",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "FieldArray",
@@ -840,6 +907,8 @@ export const ABP1: Document = {
                                                                 message:
                                                                   "Must be a positive numerical value",
                                                               },
+                                                              required:
+                                                                "* Required",
                                                             },
                                                           },
                                                           {
@@ -861,6 +930,8 @@ export const ABP1: Document = {
                                                                 message:
                                                                   "Must be all numbers, no commas. e.g. 1234.56",
                                                               },
+                                                              required:
+                                                                "* Required",
                                                             },
                                                           },
                                                         ],
@@ -890,6 +961,8 @@ export const ABP1: Document = {
                                                             message:
                                                               "Must be all numbers, no commas. e.g. 1234.56",
                                                           },
+                                                          required:
+                                                            "* Required",
                                                         },
                                                       },
                                                     ],
@@ -917,6 +990,9 @@ export const ABP1: Document = {
                       {
                         rhf: "Checkbox",
                         name: "health_conditions",
+                        rules: {
+                          required: "* Required",
+                        },
                         props: {
                           options: [
                             {
@@ -969,6 +1045,9 @@ export const ABP1: Document = {
                                   rhf: "Input",
                                   name: "other_description",
                                   label: "Describe",
+                                  rules: {
+                                    required: "* Required",
+                                  },
                                 },
                               ],
                             },
@@ -985,6 +1064,9 @@ export const ABP1: Document = {
                         rhf: "Input",
                         name: "other_targeting_criteria_description",
                         label: "Describe",
+                        rules: {
+                          required: "* Required",
+                        },
                       },
                     ],
                   },
@@ -1012,6 +1094,9 @@ export const ABP1: Document = {
                   { label: "No", value: "no" },
                 ],
               },
+              rules: {
+                required: "* Required",
+              },
             },
           ],
         },
@@ -1031,6 +1116,9 @@ export const ABP1: Document = {
             {
               rhf: "Radio",
               name: "geographic_variation",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -1043,6 +1131,9 @@ export const ABP1: Document = {
                           {
                             name: "specify_counties",
                             rhf: "Textarea",
+                            rules: {
+                              required: "* Required",
+                            },
                           },
                         ],
                       },
@@ -1058,6 +1149,9 @@ export const ABP1: Document = {
                           {
                             name: "specify_regions",
                             rhf: "Textarea",
+                            rules: {
+                              required: "* Required",
+                            },
                           },
                         ],
                       },
@@ -1073,6 +1167,9 @@ export const ABP1: Document = {
                           {
                             name: "specify_cities_towns",
                             rhf: "Textarea",
+                            rules: {
+                              required: "* Required",
+                            },
                           },
                         ],
                       },
@@ -1088,6 +1185,9 @@ export const ABP1: Document = {
                           {
                             name: "specify_other",
                             rhf: "Textarea",
+                            rules: {
+                              required: "* Required",
+                            },
                           },
                         ],
                       },
