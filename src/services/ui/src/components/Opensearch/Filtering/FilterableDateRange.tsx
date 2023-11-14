@@ -40,27 +40,30 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : ""
   );
 
-  useEffect(() => {
-    setToValue(value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : "");
-    setFromValue(value?.gte ? format(new Date(value?.gte), "MM/dd/yyyy") : "");
-  }, [value]);
+  // useEffect(() => {
+  //   console.log("useeffect", value);
+  //   setToValue(value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : "");
+  //   setFromValue(value?.gte ? format(new Date(value?.gte), "MM/dd/yyyy") : "");
+  // }, [value]);
 
   const handleClose = (updateOpen: boolean) => {
-    setOpen(updateOpen);
-
     if (!updateOpen) {
       checkSingleDateSelection();
     }
+
+    setTimeout(() => {
+      setOpen(updateOpen);
+    });
   };
 
-  const checkSingleDateSelection = () => {
-    if (selectedDate?.from && !selectedDate.to) {
-      const rangeObject = getDateRange(selectedDate.from, selectedDate.from);
-
+  const checkSingleDateSelection = (from, to) => {
+    console.log("running");
+    if (from && !to) {
+      const rangeObject = getDateRange(from, from);
       onChange(rangeObject);
-      setSelectedDate({ from: selectedDate.from, to: selectedDate.from });
-      setFromValue(format(selectedDate.from, "MM/dd/yyyy"));
-      setToValue(format(selectedDate.from, "MM/dd/yyyy"));
+      // setSelectedDate({ from: selectedDate.from, to: selectedDate.from });
+      setFromValue(format(from, "MM/dd/yyyy"));
+      // setToValue(format(selectedDate.from, "MM/dd/yyyy"));
     }
   };
 
@@ -183,6 +186,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             numberOfMonths={2}
             className="bg-white"
             onSelect={(d) => {
+              console.log("onSelect");
               setSelectedDate(d);
               if (!!d?.from && !!d.to) {
                 onChange({
@@ -191,6 +195,15 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
                 });
                 setFromValue(format(d.from, "MM/dd/yyyy"));
                 setToValue(format(d.to, "MM/dd/yyyy"));
+              } else if (!d?.from && !d?.to) {
+                onChange({
+                  gte: "",
+                  lte: "",
+                });
+                setFromValue("");
+                setToValue("");
+              } else {
+                checkSingleDateSelection(d.from, d.to);
               }
             }}
             {...props}
