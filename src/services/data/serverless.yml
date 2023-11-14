@@ -710,6 +710,7 @@ resources:
       Type: Custom::SetupIndex
       Properties:
         ServiceToken: !GetAtt SetupIndexCustomResourceLambdaFunction.Arn
+      DependsOn: MapRole # This lambda needs the roles mapped before setting up the index
   Outputs:
     OpenSearchDomainArn:
       Value: !GetAtt OpenSearch.Arn
