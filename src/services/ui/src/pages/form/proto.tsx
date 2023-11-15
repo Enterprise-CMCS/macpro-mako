@@ -37,7 +37,7 @@ export const ABP1: Document = {
                   },
                   label: "Eligibility group",
                   props: {
-                    className: "w-[300px]",
+                    className: "min-w-[300px]",
                     options: [
                       {
                         label: "Parents and Other Caretaker Relatives",
