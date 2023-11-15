@@ -1,6 +1,6 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { Action, CognitoUserAttributes, ItemResult } from "shared-types";
-import { isCmsUser } from "shared-utils";
+import { isCmsUser, getActiveRai } from "shared-utils";
 import { getPackage } from "../libs/package/getPackage";
 import {
   getAuthDetails,
@@ -34,14 +34,19 @@ export const packageActionsForResult = (
       case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
       case SEATOOL_STATUS.PENDING_APPROVAL:
       case SEATOOL_STATUS.PENDING_CONCURRENCE:
-        // todo.. if(no outstanding rai)
-        actions.push(Action.ISSUE_RAI);
+        // If there is no active RAI
+        if (!getActiveRai(!result._source.rais)) {
+          actions.push(Action.ISSUE_RAI);
+        }
         break;
     }
   } else {
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING_RAI:
-        // todo.. if(outstanding rai without response)
+        // If there is an active RAI
+        if (!getActiveRai(!result._source.rais)) {
+          actions.push(Action.ISSUE_RAI);
+        }
         actions.push(Action.RESPOND_TO_RAI);
         break;
     }
