@@ -29,6 +29,11 @@ export const packageActionsForResult = (
     }
     actions.push(Action.ISSUE_RAI);
   }
+
+  if (!isCmsUser(user)) {
+    actions.push(Action.WITHDRAW_PACKAGE);
+  }
+
   return actions;
 };
 export const getPackageActions = async (event: APIGatewayEvent) => {

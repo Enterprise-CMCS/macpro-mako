@@ -8,7 +8,7 @@ import { Action } from "shared-types";
 export const ActionFormIndex = () => {
   const { type } = useParams<{ type: Action }>();
   switch (type) {
-    case Action.WITHDRAW_PACKGAGES:
+    case Action.WITHDRAW_PACKAGE:
       return <WithdrawPackage />;
     case Action.ENABLE_RAI_WITHDRAW:
     case Action.DISABLE_RAI_WITHDRAW:
