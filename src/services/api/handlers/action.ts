@@ -57,7 +57,7 @@ export const handler = async (event: APIGatewayEvent) => {
         await issueRai(body);
         break;
       case Action.RESPOND_TO_RAI:
-        await respondToRai(body);
+        await respondToRai(body, result._source.rais);
         break;
       case Action.ENABLE_RAI_WITHDRAW:
         await toggleRaiResponseWithdraw(body, true);

@@ -9,6 +9,7 @@ import {
   Attachmentslist,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { getActiveRai } from "shared-utils";
 
 export const RaiList = (data: OsMainSourceItem) => {
   if (!data.rais) return null;
