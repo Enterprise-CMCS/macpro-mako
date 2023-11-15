@@ -51,7 +51,10 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     setOpen(updateOpen);
   };
 
-  const checkSingleDateSelection = (from: Date, to: Date) => {
+  const checkSingleDateSelection = (
+    from: Date | undefined,
+    to: Date | undefined
+  ) => {
     if (from && !to) {
       const rangeObject = getDateRange(from, endOfDay(from));
       onChange(rangeObject);
