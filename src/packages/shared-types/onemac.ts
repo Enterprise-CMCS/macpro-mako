@@ -17,12 +17,13 @@ export const onemacSchema = z.object({
   submitterName: z.string(),
   submitterEmail: z.string(),
   attachments: z.array(onemacAttachmentSchema).nullish(),
+  raiWithdrawEnabled: z.boolean().optional(),
   raiResponses: z
     .array(
       z.object({
         additionalInformation: z.string().nullable().default(null),
         submissionTimestamp: z.number(),
-        attachments: z.array(onemacAttachmentSchema),
+        attachments: z.array(onemacAttachmentSchema).nullish(),
       })
     )
     .nullish(),
@@ -62,6 +63,7 @@ export const transformOnemac = (id: string) => {
           key,
         };
       }) ?? null,
+    raiWithdrawEnabled: data.raiWithdrawEnabled,
     raiResponses:
       data.raiResponses?.map((response) => {
         return {

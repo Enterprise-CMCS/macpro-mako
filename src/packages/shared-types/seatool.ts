@@ -109,7 +109,7 @@ export const seatoolSchema = z.object({
   SPW_STATUS: z
     .array(
       z.object({
-        SPW_STATUS_DESC: z.string().nullable(),
+        SPW_STATUS_DESC: z.string().nullish(),
       })
     )
     .nullable(),
@@ -144,7 +144,7 @@ export const transformSeatoolData = (id: string) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate } = getRaiDate(data);
     const { stateStatus, cmsStatus } = getStatus(
-      data.SPW_STATUS?.[0].SPW_STATUS_DESC
+      data.SPW_STATUS?.at(-1)?.SPW_STATUS_DESC
     );
     return {
       id,
