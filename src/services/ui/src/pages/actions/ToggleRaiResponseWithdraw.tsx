@@ -90,7 +90,7 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
             },
           },
         });
-      }, 1000);
+      }, 2000);
     });
   }
   return (

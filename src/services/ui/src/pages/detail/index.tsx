@@ -40,6 +40,9 @@ const StatusCard = ({ isCms, data }: { isCms: boolean; data: ItemResult }) => (
       <h2 className="text-xl font-semibold">
         {isCms ? data._source.cmsStatus : data._source.stateStatus}
       </h2>
+      {data._source.raiWithdrawEnabled && (
+        <em className="text-xs">{"Withdraw Formal RAI Response - Enabled"}</em>
+      )}
     </div>
   </DetailCardWrapper>
 );
