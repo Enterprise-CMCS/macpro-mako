@@ -53,7 +53,7 @@ describe("OptionCard Component System", () => {
       renderOptionCard(false);
       const header = screen.getByRole("heading", { level: 2 });
       expect(header).toHaveTextContent("Test Card Title");
-      expect(header).toHaveClass("text-lg text-sky-600 font-bold my-2");
+      expect(header).toHaveClass("text-lg text-sky-700 font-bold my-2");
     });
     test("description is rendered", () => {
       renderOptionCard(false);

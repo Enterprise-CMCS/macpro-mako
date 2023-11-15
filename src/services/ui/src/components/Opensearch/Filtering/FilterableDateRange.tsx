@@ -90,16 +90,16 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
 
   const onToInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const minValidYear = 1960;
-    const input = e.target.value;
+    const inputValue = e.target.value;
 
-    if (/^[0-9/]*$/.test(input)) {
+    if (/^[0-9/]*$/.test(inputValue)) {
       setToValue(e.target.value);
-      const date = parse(e.target.value, "MM/dd/yyyy", new Date());
+      const date = parse(inputValue, "MM/dd/yyyy", new Date());
 
       if (
         !isValid(date) ||
-        getYear(date) > minValidYear ||
-        !isAfter(date, new Date())
+        getYear(date) < minValidYear ||
+        isAfter(date, new Date())
       ) {
         return setSelectedDate({ from: selectedDate?.from, to: undefined });
       }
@@ -111,7 +111,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
         setSelectedDate({ from: selectedDate?.from, to: date });
         onChange({
           gte: selectedDate?.from?.toISOString() || "",
-          lte: date.toISOString(),
+          lte: endOfDay(date).toISOString(),
         });
       }
     }
@@ -126,7 +126,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
 
   const setPresetRange = (range: string) => {
     const today = new Date();
-    let startDate = today;
+    let startDate = new Date(today.setHours(0, 0, 0, 0));
 
     if (range === "quarter") {
       startDate = startOfQuarter(today);
@@ -135,9 +135,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     } else if (range === "week") {
       startDate = sub(today, { days: 6 });
     }
-
-    const rangeObject = getDateRange(startDate, today);
-
+    const rangeObject = getDateRange(startDate, endOfDay(today));
     onChange(rangeObject);
     setSelectedDate({ from: startDate, to: today });
     setFromValue(format(startDate, "MM/dd/yyyy"));
@@ -184,7 +182,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
               if (!!d?.from && !!d.to) {
                 onChange({
                   gte: d.from.toISOString(),
-                  lte: d.to.toISOString(),
+                  lte: endOfDay(d.to).toISOString(),
                 });
                 setFromValue(format(d.from, "MM/dd/yyyy"));
                 setToValue(format(d.to, "MM/dd/yyyy"));
