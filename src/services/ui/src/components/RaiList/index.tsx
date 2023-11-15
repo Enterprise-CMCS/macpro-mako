@@ -59,7 +59,7 @@ export const RaiList = (data: OsMainSourceItem) => {
                               />
                             </div>
                           ) : (
-                            <p className="ml-4">${BLANK_VALUE}</p>
+                            <p className="ml-8">{BLANK_VALUE}</p>
                           )}
                           <h4 className="text-l font-semibold mb-2 ml-4">
                             Additional Information
@@ -73,18 +73,18 @@ export const RaiList = (data: OsMainSourceItem) => {
                         <p className="ml-4">No Request Recorded</p>
                       )}
                     </div>
-                    {/* <div className="ml-8">
+                    <div className="ml-8">
                       <h3 className="text-xl font-semibold mb-2">
                         State Response Info
                       </h3>
-                      {data.rais[key].responseDate ? ( // if has data
+                      {data.rais[key].receivedDate ? ( // if has data
                         <>
                           <h4 className="text-l font-semibold mb-2 ml-4">
                             Submitted Time:
                           </h4>
                           <p className="mb-4 text-sm ml-8">
                             {format(
-                              new Date(data.rais[key].responseDate),
+                              new Date(data.rais[key].receivedDate || ""), // idky its complaining, because
                               "EEE, MMM d yyyy, h:mm:ss a"
                             )}
                           </p>
@@ -96,12 +96,12 @@ export const RaiList = (data: OsMainSourceItem) => {
                               <Attachmentslist
                                 id={data.id}
                                 attachments={
-                                  data.rais[key].response.attachments
+                                  data.rais[key].response?.attachments || [] // idky it's making me do this?  do i need to check that attachmetns exists and its not null?
                                 }
                               />
                             </div>
                           ) : (
-                            <p className="ml-4">${BLANK_VALUE}</p>
+                            <p className="ml-4">{BLANK_VALUE}</p>
                           )}
                           <h4 className="text-l font-semibold mb-2 ml-4">
                             Additional Information
@@ -114,7 +114,7 @@ export const RaiList = (data: OsMainSourceItem) => {
                       ) : (
                         <p className="ml-4">No Response Recorded</p>
                       )}
-                    </div> */}
+                    </div>
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>

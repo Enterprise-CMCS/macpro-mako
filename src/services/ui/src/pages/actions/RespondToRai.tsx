@@ -57,7 +57,6 @@ export const RespondToRai = () => {
   });
   const { data: user } = useGetUser();
   const handleSubmit: SubmitHandler<RespondToRaiFormSchema> = async (data) => {
-    // Set the timestamp that will uniquely identify this RAI
     const timestamp = Math.floor(new Date().getTime() / 1000) * 1000; // Truncating to match seatool
 
     const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
@@ -109,7 +108,7 @@ export const RespondToRai = () => {
       id: id!,
       additionalInformation: data?.additionalInformation ?? null,
       attachments: fileMetaData,
-      requestedDate: timestamp,
+      responseDate: timestamp,
       submitterEmail: user?.user?.email ?? "N/A",
       submitterName:
         `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",

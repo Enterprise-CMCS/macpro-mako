@@ -12,6 +12,8 @@ import {
   transformOnemac,
   RaiIssueTransform,
   transformRaiIssue,
+  RaiResponseTransform,
+  transformRaiResponse,
 } from "shared-types/onemac";
 import { Action, withdrawRecordSchema, WithdrawRecord } from "shared-types";
 
@@ -101,6 +103,7 @@ export const onemac: Handler = async (event) => {
     | OneMacRecordsToDelete
     | WithdrawRecord
     | RaiIssueTransform
+    | RaiResponseTransform
   )[] = [];
 
   const rawArr: any[] = [];
@@ -132,6 +135,19 @@ export const onemac: Handler = async (event) => {
             case Action.ISSUE_RAI: {
               const result = transformRaiIssue(id).safeParse(record);
               if (result.success) {
+                oneMacRecords.push(result.data);
+              } else {
+                console.log(
+                  `ERROR: Invalid Payload for this action type (${record.actionType})`
+                );
+              }
+              break;
+            }
+            case Action.RESPOND_TO_RAI: {
+              console.log("RESPONDING");
+              const result = transformRaiResponse(id).safeParse(record);
+              if (result.success) {
+                console.log(result.data);
                 oneMacRecords.push(result.data);
               } else {
                 console.log(
