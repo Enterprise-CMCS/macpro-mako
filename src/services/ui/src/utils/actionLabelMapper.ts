@@ -4,5 +4,7 @@ export const mapActionLabel = (a: Action) => {
   switch (a) {
     case Action.ENABLE_RAI_WITHDRAW:
       return "Enable RAI Response Withdraw";
+    case Action.WITHDRAW_PACKGAGES:
+      return "Withdraw Package";
   }
 };
