@@ -42,7 +42,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   );
 
   useEffect(() => {
-    console.log("useeffect", value);
     setToValue(value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : "");
     setFromValue(value?.gte ? format(new Date(value?.gte), "MM/dd/yyyy") : "");
   }, [value]);
@@ -181,7 +180,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             numberOfMonths={2}
             className="bg-white"
             onSelect={(d) => {
-              console.log("onSelect");
               setSelectedDate(d);
               if (!!d?.from && !!d.to) {
                 onChange({
