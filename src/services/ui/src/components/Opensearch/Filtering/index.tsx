@@ -69,7 +69,7 @@ export const OsFiltering: FC<{
           {
             name: "Status",
             transform(data) {
-              if (user.data?.isCms) {
+              if (user?.data?.isCms && !user?.data?.user) {
                 if (data.cmsStatus) {
                   return data.cmsStatus;
                 }

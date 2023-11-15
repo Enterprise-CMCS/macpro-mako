@@ -101,7 +101,7 @@ export const onemac: Handler = async (event) => {
   const oneMacRecords: (
     | OneMacTransform
     | OneMacRecordsToDelete
-    | WithdrawRecord
+    | (WithdrawRecord & { id: string })
     | RaiIssueTransform
     | RaiResponseTransform
   )[] = [];
@@ -124,7 +124,12 @@ export const onemac: Handler = async (event) => {
             case Action.DISABLE_RAI_WITHDRAW: {
               const result = withdrawRecordSchema.safeParse(record);
               if (result.success) {
-                oneMacRecords.push({ id, ...result.data });
+                // write to opensearch
+                // account for compaction
+                oneMacRecords.push({
+                  id,
+                  ...result.data,
+                });
               } else {
                 console.log(
                   `ERROR: Invalid Payload for this action type (${record.actionType})`

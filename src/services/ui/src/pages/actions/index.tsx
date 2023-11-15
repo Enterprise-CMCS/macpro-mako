@@ -1,6 +1,6 @@
 import { Navigate, useParams } from "react-router-dom";
 import { ROUTES } from "@/routes";
-import { EnableRaiResponseWithdraw } from "@/pages/actions/EnableRaiResponseWithdraw";
+import { ToggleRaiResponseWithdraw } from "@/pages/actions/ToggleRaiResponseWithdraw";
 import { IssueRai } from "@/pages/actions/IssueRai";
 import { RespondToRai } from "@/pages/actions/RespondToRai";
 import { Action } from "shared-types";
@@ -9,7 +9,7 @@ export const ActionFormIndex = () => {
   const { type } = useParams<{ type: Action }>();
   switch (type) {
     case Action.ENABLE_RAI_WITHDRAW:
-      return <EnableRaiResponseWithdraw />;
+      return <ToggleRaiResponseWithdraw />;
     case Action.ISSUE_RAI:
       return <IssueRai />;
     case Action.RESPOND_TO_RAI:

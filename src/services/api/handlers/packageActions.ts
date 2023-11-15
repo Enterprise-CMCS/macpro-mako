@@ -142,17 +142,20 @@ export async function withdrawPackage(id, timestamp) {
   console.log("State withdrawing a package.");
 }
 
-export async function toggleRaiResponseWithdraw(body, toggle) {
+export async function toggleRaiResponseWithdraw(
+  body: { id: string },
+  toggle: boolean
+) {
   const { id } = body;
   try {
     await produceMessage(
       TOPIC_NAME,
       id,
       JSON.stringify({
+        raiWithdrawEnabled: toggle,
         actionType: toggle
           ? Action.ENABLE_RAI_WITHDRAW
           : Action.DISABLE_RAI_WITHDRAW,
-        raiWithdrawEnabled: toggle,
       })
     );
 
