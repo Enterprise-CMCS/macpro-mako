@@ -1,6 +1,6 @@
 import * as T from "@/components/RHF/types";
 
-type GL = Record<string, any>;
+type GL = Record<string, unknown>;
 
 export const formGroupInitializer = (ACC: GL, FORM: T.FormGroup) => {
   FORM.slots.reduce(slotInitializer, ACC);
@@ -53,5 +53,5 @@ export const documentInitializer = (document: T.Document) => {
   return document.sections.reduce((ACC, SEC) => {
     SEC.form.reduce(formGroupInitializer, ACC);
     return ACC;
-  }, {} as any);
+  }, {});
 };

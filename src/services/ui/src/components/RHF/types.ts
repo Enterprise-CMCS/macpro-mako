@@ -36,7 +36,7 @@ export type RHFSlotProps = {
 
 export type RHFOption = {
   label: string;
-  value: any;
+  value: string;
   form?: FormGroup[];
   slots?: RHFSlotProps[];
 };
@@ -56,7 +56,7 @@ export type RHFComponentMap = {
   Checkbox: {
     options: RHFOption[];
   };
-  FieldArray: any;
+  FieldArray: unknown;
   FieldGroup: {
     appendText?: string;
     removeText?: string;
@@ -85,20 +85,22 @@ export type FieldArrayProps<
   T extends FieldValues,
   TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
 > = {
-  control: Control<T, any>;
+  control: Control<T, unknown>;
   name: TFieldArrayName;
   fields: RHFSlotProps[];
+  groupNamePrefix?: string;
 };
 
 export type FieldGroupProps<
   T extends FieldValues,
   TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
 > = {
-  control: Control<T, any>;
+  control: Control<T, unknown>;
   name: TFieldArrayName;
   fields: RHFSlotProps[];
   appendText?: string;
   removeText?: string;
+  groupNamePrefix?: string;
 };
 
 type ConditionRules =
