@@ -34,8 +34,8 @@ export const packageActionsForResult = (
       case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
       case SEATOOL_STATUS.PENDING_APPROVAL:
       case SEATOOL_STATUS.PENDING_CONCURRENCE:
-        // If there is no active RAI
         if (!getActiveRai(!result._source.rais)) {
+          // If there is not an active RAI
           actions.push(Action.ISSUE_RAI);
         }
         break;
@@ -43,11 +43,11 @@ export const packageActionsForResult = (
   } else {
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING_RAI:
-        // If there is an active RAI
-        if (!getActiveRai(!result._source.rais)) {
-          actions.push(Action.ISSUE_RAI);
+        console.log("we are here in pending rai");
+        if (getActiveRai(result._source.rais)) {
+          // If there is an active RAI
+          actions.push(Action.RESPOND_TO_RAI);
         }
-        actions.push(Action.RESPOND_TO_RAI);
         break;
     }
   }
