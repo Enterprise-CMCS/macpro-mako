@@ -41,6 +41,7 @@ export const FieldGroup = <TFields extends FieldValues>(
                     ...SLOT,
                     control: props.control,
                     name: `${props.name}.${index}.${SLOT.name}`,
+                    groupNamePrefix: `${props.name}.${index}.`,
                   })}
                 />
               );

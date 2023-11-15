@@ -18,6 +18,7 @@ export type RHFSlotProps = {
   name: string;
   label?: ReactElement | string;
   labelStyling?: string;
+  groupNamePrefix?: string;
   description?: ReactElement | string;
   dependency?: DependencyRule;
   rules?: RegisterOptions;

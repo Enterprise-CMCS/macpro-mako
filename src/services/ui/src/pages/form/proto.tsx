@@ -568,7 +568,7 @@ export const ABP1: Document = {
                                                 slots: [
                                                   {
                                                     rhf: "Checkbox",
-                                                    name: "is_incremental_amount",
+                                                    name: "is_incremental_amount_statewide_std",
                                                     props: {
                                                       options: [
                                                         {
@@ -582,7 +582,7 @@ export const ABP1: Document = {
                                                               slots: [
                                                                 {
                                                                   rhf: "Input",
-                                                                  name: "doller_incremental_amount",
+                                                                  name: "dollar_incremental_amount_statewide_std",
                                                                   props: {
                                                                     icon: "$",
                                                                   },
@@ -708,7 +708,7 @@ export const ABP1: Document = {
                                                                   slots: [
                                                                     {
                                                                       rhf: "Input",
-                                                                      name: "doller_incremental_amount",
+                                                                      name: "dollar_incremental_amount",
                                                                       props: {
                                                                         icon: "$",
                                                                       },
@@ -841,7 +841,7 @@ export const ABP1: Document = {
                                                                   slots: [
                                                                     {
                                                                       rhf: "Input",
-                                                                      name: "doller_incremental_amount",
+                                                                      name: "dollar_incremental_amount",
                                                                       props: {
                                                                         icon: "$",
                                                                       },
@@ -971,7 +971,7 @@ export const ABP1: Document = {
                                                                   slots: [
                                                                     {
                                                                       rhf: "Input",
-                                                                      name: "doller_incremental_amount",
+                                                                      name: "dollar_incremental_amount",
                                                                       props: {
                                                                         icon: "$",
                                                                       },

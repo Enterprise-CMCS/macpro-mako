@@ -15,13 +15,7 @@ export const slotInitializer = (ACC: GL, SLOT: T.RHFSlotProps): GL => {
   };
 
   const fieldInitializer = (ACC1: GL, SLOT: T.RHFSlotProps): GL => {
-    if (SLOT.rhf === "FieldArray") {
-      return {
-        ...ACC1,
-        [SLOT.name]: [SLOT.fields?.reduce(fieldInitializer, {})],
-      };
-    }
-    if (SLOT.rhf === "FieldGroup") {
+    if (SLOT.rhf === "FieldArray" || SLOT.rhf === "FieldGroup") {
       return {
         ...ACC1,
         [SLOT.name]: [SLOT.fields?.reduce(fieldInitializer, {})],

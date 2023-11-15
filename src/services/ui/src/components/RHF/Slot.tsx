@@ -42,6 +42,7 @@ export const RHFSlot = <
   name,
   props,
   labelStyling,
+  groupNamePrefix,
   ...rest
 }: RHFSlotProps & { control: any }): ControllerProps<
   TFieldValues,
@@ -132,7 +133,11 @@ export const RHFSlot = <
                                   className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
                                   key={`rhf-form-${index}-${FORM.description}`}
                                 >
-                                  <RHFFormGroup form={FORM} control={control} />
+                                  <RHFFormGroup
+                                    form={FORM}
+                                    control={control}
+                                    groupNamePrefix={groupNamePrefix}
+                                  />
                                 </div>
                               );
                             })}
@@ -145,7 +150,7 @@ export const RHFSlot = <
                               >
                                 <FormField
                                   control={control}
-                                  name={SLOT.name}
+                                  name={(groupNamePrefix ?? "") + SLOT.name}
                                   {...(SLOT.rules && { rules: SLOT.rules })}
                                   render={RHFSlot({ ...SLOT, control })}
                                 />
@@ -188,7 +193,7 @@ export const RHFSlot = <
                             >
                               <FormField
                                 control={control}
-                                name={SLOT.name}
+                                name={(groupNamePrefix ?? "") + SLOT.name}
                                 {...(SLOT.rules && { rules: SLOT.rules })}
                                 render={RHFSlot({ ...SLOT, control })}
                               />
@@ -202,7 +207,11 @@ export const RHFSlot = <
                               key={`CHECK-${OPT.value}-form-${FORM.description}`}
                               className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
                             >
-                              <RHFFormGroup control={control} form={FORM} />
+                              <RHFFormGroup
+                                control={control}
+                                form={FORM}
+                                groupNamePrefix={groupNamePrefix}
+                              />
                             </div>
                           ))}
                       </div>
