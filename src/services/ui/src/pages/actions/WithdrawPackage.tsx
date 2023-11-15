@@ -1,10 +1,13 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
 import { Button, Input } from "@/components/Inputs";
 import { Modal } from "@/components/Modal";
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-export const WithdrawPackage: React.FC = () => {
+import { ItemResult } from "shared-types";
+import { ROUTES } from "@/routes";
+import { PackageActionForm } from "./PackageActionForm";
+const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
   const [withdrawModal, setModalWithdraw] = useState<boolean>(false);
   const [withdrawData, setwithdrawData] = useState<{
@@ -35,6 +38,8 @@ export const WithdrawPackage: React.FC = () => {
     event.preventDefault();
     const formData = new FormData();
   };
+
+  if (!item) return <Navigate to={ROUTES.DASHBOARD} />; // Prevents optional chains below
 
   return (
     <>
@@ -158,3 +163,9 @@ export const WithdrawPackage: React.FC = () => {
     </>
   );
 };
+
+export const WithdrawPackage = () => (
+  <PackageActionForm>
+    <WithdrawPackageForm />
+  </PackageActionForm>
+);
