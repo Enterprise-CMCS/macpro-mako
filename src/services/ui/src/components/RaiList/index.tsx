@@ -22,7 +22,7 @@ export const RaiList = (data: OsMainSourceItem) => {
         return (
           <div>
             {sortedKeys.map((key, i) => (
-              <Accordion key={i} type="multiple" defaultValue={["item-0"]}>
+              <Accordion key={i} type="multiple" defaultValue={[]}>
                 <AccordionItem value={`item-${i}`}>
                   <AccordionTrigger>{`RAI Requested on ${
                     data.rais[key].requestedDate
