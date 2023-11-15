@@ -565,16 +565,15 @@ export const ABP1: Document = {
                                                 ],
                                               },
                                               {
-                                                description:
-                                                  "Is there an additional incremental amount?",
                                                 slots: [
                                                   {
-                                                    rhf: "Radio",
+                                                    rhf: "Checkbox",
                                                     name: "is_incremental_amount",
                                                     props: {
                                                       options: [
                                                         {
-                                                          label: "Yes",
+                                                          label:
+                                                            "There is an additional incremental amount.",
                                                           value: "yes",
                                                           form: [
                                                             {
@@ -601,10 +600,6 @@ export const ABP1: Document = {
                                                               ],
                                                             },
                                                           ],
-                                                        },
-                                                        {
-                                                          label: "No",
-                                                          value: "no",
                                                         },
                                                       ],
                                                     },
@@ -698,14 +693,13 @@ export const ABP1: Document = {
                                                         ],
                                                       },
                                                       {
-                                                        rhf: "Radio",
+                                                        rhf: "Checkbox",
                                                         name: "is_incremental_amount",
-                                                        label:
-                                                          "Is there an additional incremental amount?",
                                                         props: {
                                                           options: [
                                                             {
-                                                              label: "Yes",
+                                                              label:
+                                                                "There is an additional incremental amount.",
                                                               value: "yes",
                                                               form: [
                                                                 {
@@ -733,10 +727,6 @@ export const ABP1: Document = {
                                                                   ],
                                                                 },
                                                               ],
-                                                            },
-                                                            {
-                                                              label: "No",
-                                                              value: "no",
                                                             },
                                                           ],
                                                         },
@@ -836,14 +826,13 @@ export const ABP1: Document = {
                                                         ],
                                                       },
                                                       {
-                                                        rhf: "Radio",
+                                                        rhf: "Checkbox",
                                                         name: "is_incremental_amount",
-                                                        label:
-                                                          "Is there an additional incremental amount?",
                                                         props: {
                                                           options: [
                                                             {
-                                                              label: "Yes",
+                                                              label:
+                                                                "There is an additional incremental amount.",
                                                               value: "yes",
                                                               form: [
                                                                 {
@@ -871,10 +860,6 @@ export const ABP1: Document = {
                                                                   ],
                                                                 },
                                                               ],
-                                                            },
-                                                            {
-                                                              label: "No",
-                                                              value: "no",
                                                             },
                                                           ],
                                                         },
@@ -971,14 +956,13 @@ export const ABP1: Document = {
                                                         ],
                                                       },
                                                       {
-                                                        rhf: "Radio",
+                                                        rhf: "Checkbox",
                                                         name: "is_incremental_amount",
-                                                        label:
-                                                          "Is there an additional incremental amount?",
                                                         props: {
                                                           options: [
                                                             {
-                                                              label: "Yes",
+                                                              label:
+                                                                "There is an additional incremental amount.",
                                                               value: "yes",
                                                               form: [
                                                                 {
@@ -1006,10 +990,6 @@ export const ABP1: Document = {
                                                                   ],
                                                                 },
                                                               ],
-                                                            },
-                                                            {
-                                                              label: "No",
-                                                              value: "no",
                                                             },
                                                           ],
                                                         },
