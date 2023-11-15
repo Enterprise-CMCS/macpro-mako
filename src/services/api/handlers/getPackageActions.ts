@@ -11,16 +11,23 @@ import { response } from "../libs/handler";
 type GetPackageActionsBody = {
   id: string;
 };
-const packageActionsForResult = (
+
+/** Generates an array of allowed actions from a combination of user attributes
+ * and OS result data */
+export const packageActionsForResult = (
   user: CognitoUserAttributes,
   result: ItemResult
 ): Action[] => {
   const actions = [];
   if (isCmsUser(user)) {
-    actions.push(Action.ENABLE_RAI_WITHDRAW);
-  }
-  if (!isCmsUser(user)) {
-    actions.push(Action.WITHDRAW_PACKGAGES);
+    if (!result._source.raiWithdrawEnabled) {
+      // result._source.raiReceivedDate &&
+      actions.push(Action.ENABLE_RAI_WITHDRAW);
+    }
+    if (result._source.raiWithdrawEnabled) {
+      actions.push(Action.DISABLE_RAI_WITHDRAW);
+    }
+    actions.push(Action.ISSUE_RAI);
   }
   return actions;
 };

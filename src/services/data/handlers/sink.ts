@@ -11,6 +11,7 @@ import {
   OneMacTransform,
   transformOnemac,
 } from "shared-types/onemac";
+import { Action, WithdrawRecord, withdrawRecordSchema } from "shared-types";
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -92,8 +93,11 @@ export const seatool: Handler = async (event) => {
 };
 
 export const onemac: Handler = async (event) => {
-  const oneMacRecords: (OneMacTransform | OneMacRecordsToDelete)[] = [];
-  const docObject: Record<string, OneMacTransform | OneMacRecordsToDelete> = {};
+  const oneMacRecords: (
+    | OneMacTransform
+    | OneMacRecordsToDelete
+    | (WithdrawRecord & { id: string })
+  )[] = [];
 
   for (const recordKey of Object.keys(event.records)) {
     for (const onemacRecord of event.records[recordKey] as {
@@ -105,7 +109,32 @@ export const onemac: Handler = async (event) => {
       if (value) {
         const id: string = decode(key);
         const record = { id, ...JSON.parse(decode(value)) };
-        if (
+        const isActionType = "actionType" in record;
+
+        if (isActionType) {
+          switch (record.actionType as Action) {
+            case Action.ENABLE_RAI_WITHDRAW:
+            case Action.DISABLE_RAI_WITHDRAW: {
+              const result = withdrawRecordSchema.safeParse(record);
+              if (result.success) {
+                // write to opensearch
+                // account for compaction
+                oneMacRecords.push({
+                  id,
+                  ...result.data,
+                });
+              } else {
+                console.log(
+                  `ERROR: Invalid Payload for this action type (${record.actionType})`
+                );
+              }
+
+              break;
+            }
+            case Action.ISSUE_RAI:
+              return;
+          }
+        } else if (
           record && // testing if we have a record
           (record.origin === "micro" || // testing if this is a micro record
             (record.sk === "Package" && // testing if this is a legacy onemac package record
@@ -121,7 +150,7 @@ export const onemac: Handler = async (event) => {
               result.error.message
             );
           } else {
-            docObject[id] = result.data;
+            oneMacRecords.push(result.data);
           }
         }
       } else {
@@ -129,6 +158,7 @@ export const onemac: Handler = async (event) => {
         const oneMacTombstone: OneMacRecordsToDelete = {
           id,
           additionalInformation: undefined,
+          raiWithdrawEnabled: undefined,
           attachments: undefined,
           submitterEmail: undefined,
           submitterName: undefined,
@@ -136,7 +166,7 @@ export const onemac: Handler = async (event) => {
           raiResponses: undefined,
         };
 
-        docObject[id] = oneMacTombstone;
+        oneMacRecords.push(oneMacTombstone);
 
         console.log(
           `Record ${id} has been nullified with the following data: `,
@@ -144,9 +174,6 @@ export const onemac: Handler = async (event) => {
         );
       }
     }
-  }
-  for (const [, b] of Object.entries(docObject)) {
-    oneMacRecords.push(b);
   }
   try {
     await os.bulkUpdateData(osDomain, "main", oneMacRecords);
