@@ -34,11 +34,17 @@ const DetailCardWrapper = ({
     </div>
   </CardWithTopBorder>
 );
-const StatusCard = ({ status }: { status: string }) => (
+const StatusCard = ({
+  status,
+  raiWithdrawEnabled,
+}: {
+  status: string;
+  raiWithdrawEnabled: boolean;
+}) => (
   <DetailCardWrapper title={"Status"}>
     <div>
       <h2 className="text-xl font-semibold">{status}</h2>
-      {data._source.raiWithdrawEnabled && (
+      {raiWithdrawEnabled && (
         <em className="text-xs">{"Withdraw Formal RAI Response - Enabled"}</em>
       )}
     </div>
@@ -114,7 +120,10 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           id="package-overview"
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
         >
-          <StatusCard status={status} />
+          <StatusCard
+            status={status}
+            raiWithdrawEnabled={data._source?.raiWithdrawEnabled || false}
+          />
           <PackageActionsCard id={data._id} />
         </section>
         <DetailsSection id="package-details" title="Package Details">
