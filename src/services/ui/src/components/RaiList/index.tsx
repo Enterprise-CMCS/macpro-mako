@@ -8,6 +8,7 @@ import {
   AccordionTrigger,
   Attachmentslist,
 } from "@/components";
+import { BLANK_VALUE } from "@/consts";
 
 export const RaiList = (data: OsMainSourceItem) => {
   if (!data.rais) return null;
@@ -22,7 +23,7 @@ export const RaiList = (data: OsMainSourceItem) => {
             {sortedKeys.map((key, i) => (
               <Accordion key={i} type="multiple" defaultValue={["item-0"]}>
                 <AccordionItem value={`item-${i}`}>
-                  <AccordionTrigger>{`Requested on ${
+                  <AccordionTrigger>{`RAI Requested on ${
                     data.rais[key].requestedDate
                       ? format(
                           new Date(data.rais[key].requestedDate),
@@ -33,50 +34,86 @@ export const RaiList = (data: OsMainSourceItem) => {
                   <AccordionContent>
                     <div className="ml-8">
                       <h3 className="text-xl font-semibold mb-2">
-                        RAI - Request Documentation
+                        CMS Request Info
                       </h3>
-                      <p className="mb-4 text-sm">
-                        Below is the data submitted by CMS as part of the formal
-                        RAI.
-                      </p>
-                      <p className="text-l font-semibold mb-2">Attachments</p>
-                      <Attachmentslist
-                        id={data.id}
-                        attachments={
-                          data.rais[key].request?.attachments || null
-                        }
-                      />
-                      <h4 className="text-l font-semibold mb-2">
-                        Additional Information
-                      </h4>
-                      <p className="mb-4 text-sm">
-                        {data.rais[key].request?.additionalInformation}
-                      </p>
+                      {data.rais[key].requestedDate ? ( // if has data
+                        <>
+                          <h4 className="text-l font-semibold mb-2 ml-4">
+                            Submitted Time:
+                          </h4>
+                          <p className="mb-4 text-sm ml-8">
+                            {format(
+                              new Date(data.rais[key].requestedDate),
+                              "EEE, MMM d yyyy, h:mm:ss a"
+                            )}
+                          </p>
+                          <p className="text-l font-semibold mb-2 ml-4 ">
+                            Attachments
+                          </p>
+                          {data.rais[key].request?.attachments ? (
+                            <div className="ml-4">
+                              <Attachmentslist
+                                id={data.id}
+                                attachments={data.rais[key].request.attachments}
+                              />
+                            </div>
+                          ) : (
+                            <p className="ml-4">${BLANK_VALUE}</p>
+                          )}
+                          <h4 className="text-l font-semibold mb-2 ml-4">
+                            Additional Information
+                          </h4>
+                          <p className="mb-4 text-sm ml-8">
+                            {data.rais[key].request?.additionalInformation ??
+                              BLANK_VALUE}
+                          </p>
+                        </>
+                      ) : (
+                        <p className="ml-4">No Request Recorded</p>
+                      )}
                     </div>
-                    <div className="ml-8">
+                    {/* <div className="ml-8">
                       <h3 className="text-xl font-semibold mb-2">
-                        RAI - Response Documentation
+                        State Response Info
                       </h3>
-                      <p className="mb-4 text-sm">
-                        Below is the data submitted by the state as part of the
-                        formal RAI response.
-                      </p>
-                      <p className="text-l font-semibold mb-2">
-                        Submitted Attachments
-                      </p>
-                      <Attachmentslist
-                        id={data.id}
-                        attachments={
-                          data.rais[key].response?.attachments || null
-                        }
-                      />
-                      <h4 className="text-l font-semibold mb-2">
-                        Additional Information
-                      </h4>
-                      <p className="mb-4 text-sm">
-                        {data.rais[key].response?.additionalInformation}
-                      </p>
-                    </div>
+                      {data.rais[key].responseDate ? ( // if has data
+                        <>
+                          <h4 className="text-l font-semibold mb-2 ml-4">
+                            Submitted Time:
+                          </h4>
+                          <p className="mb-4 text-sm ml-8">
+                            {format(
+                              new Date(data.rais[key].responseDate),
+                              "EEE, MMM d yyyy, h:mm:ss a"
+                            )}
+                          </p>
+                          <p className="text-l font-semibold mb-2 ml-4 ">
+                            Attachments
+                          </p>
+                          {data.rais[key].response?.attachments ? (
+                            <div className="ml-4">
+                              <Attachmentslist
+                                id={data.id}
+                                attachments={
+                                  data.rais[key].response.attachments
+                                }
+                              />
+                            </div>
+                          ) : (
+                            <p className="ml-4">${BLANK_VALUE}</p>
+                          )}
+                          <h4 className="text-l font-semibold mb-2 ml-4">
+                            Additional Information
+                          </h4>
+                          <p className="mb-4 text-sm ml-8">
+                            {data.rais[key].response?.additionalInformation ??
+                              BLANK_VALUE}
+                          </p>
+                        </>
+                      ) : (
+                        <p className="ml-4">No Response Recorded</p>
+                      )}
+                    </div> */}
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>

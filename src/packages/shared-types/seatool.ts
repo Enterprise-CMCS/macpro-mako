@@ -197,5 +197,5 @@ export type SeaToolRecordsToDelete = Omit<
   {
     [Property in keyof SeaToolTransform]: null;
   },
-  "id"
+  "id" | "rais"
 > & { id: string };

@@ -146,7 +146,7 @@ export type OneMacRecordsToDelete = Omit<
   {
     [Property in keyof OneMacTransform]: null;
   },
-  "id"
+  "id" | "rais"
 > & { id: string };
 
 function handleAttachment(attachment: OnemacAttachmentSchema) {

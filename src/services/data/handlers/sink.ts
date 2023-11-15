@@ -171,7 +171,6 @@ export const onemac: Handler = async (event) => {
           submitterEmail: null,
           submitterName: null,
           origin: null,
-          raiResponses: null,
         };
 
         oneMacRecords.push(oneMacTombstone);
