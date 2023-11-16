@@ -43,6 +43,13 @@ export const RaiList = (data: OsMainSourceItem) => {
                                 "EEE, MMM d yyyy, h:mm:ss a"
                               )}
                             </p>
+                            <h4 className="text-l font-semibold mb-2 ml-4">
+                              Submitted By:
+                            </h4>
+                            <p className="mb-4 text-sm ml-8">
+                              {data.rais[key].request?.submitterName ||
+                                BLANK_VALUE}
+                            </p>
                             <p className="text-l font-semibold mb-2 ml-4 ">
                               Attachments
                             </p>
@@ -84,6 +91,13 @@ export const RaiList = (data: OsMainSourceItem) => {
                                 new Date(data.rais[key].receivedDate || ""), // idky its complaining, because
                                 "EEE, MMM d yyyy, h:mm:ss a"
                               )}
+                            </p>
+                            <h4 className="text-l font-semibold mb-2 ml-4">
+                              Submitted By:
+                            </h4>
+                            <p className="mb-4 text-sm ml-8">
+                              {data.rais[key].response?.submitterName ||
+                                BLANK_VALUE}
                             </p>
                             <p className="text-l font-semibold mb-2 ml-4 ">
                               Attachments
