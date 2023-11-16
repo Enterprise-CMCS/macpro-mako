@@ -47,7 +47,7 @@ export function getFilepathForIdAndVersion(
   formVersion: string | undefined
 ): string | undefined {
   if (formId && formVersion) {
-    return `/opt/${formId}/v${formVersion}.json`;
+    return `/opt/${formId}/v${formVersion}.ts`;
   }
 
   const files = fs.readdirSync(`/opt/${formId}`);
@@ -63,7 +63,7 @@ export function getFilepathForIdAndVersion(
 
   if (!maxVersion) return undefined;
 
-  return `/opt/${formId}/v${maxVersion}.json`;
+  return `/opt/${formId}/v${maxVersion}.ts`;
 }
 
 export const handler = forms;

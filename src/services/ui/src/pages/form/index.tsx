@@ -12,7 +12,7 @@ export function ExampleForm() {
   });
 
   const onSubmit = form.handleSubmit(
-    (data) => {
+    () => {
       const validate = documentValidator(ABP1);
       const isValid = validate({
         alt_benefit_plan_population_name:

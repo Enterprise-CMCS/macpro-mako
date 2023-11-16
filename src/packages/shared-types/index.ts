@@ -6,3 +6,4 @@ export * from "./onemac";
 export * from "./opensearch";
 export * from "./uploads";
 export * from "./actions";
+export * from "./forms";
