@@ -7,7 +7,7 @@ import { useGetForm } from "@/api";
 // import { FormSchema } from "shared-types";
 
 export function ExampleForm() {
-  const { data as F, isLoading, error } = useGetForm("ABP1", "1");
+  const { data, isLoading, error } = useGetForm("ABP1", "1");
   console.log(data, isLoading, error);
 
   const defaultValues = documentInitializer(data);
