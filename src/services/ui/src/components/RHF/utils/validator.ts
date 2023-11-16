@@ -250,7 +250,7 @@ export const slotValidator =
 
 export const documentValidator =
   (document: FormSchema | undefined) => (data: any) => {
-    return document.sections.reduce((ACC, SEC) => {
+    return document?.sections.reduce((ACC, SEC) => {
       SEC.form.reduce(formGroupValidator(data), ACC);
       return ACC;
     }, {} as ERROR);
