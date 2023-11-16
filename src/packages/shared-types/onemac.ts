@@ -25,7 +25,7 @@ export const raiSchema = z.object({
 });
 export type RaiSchema = z.infer<typeof raiSchema>;
 
-interface RaiData {
+export interface RaiData {
   [key: number]: {
     requestedDate?: string;
     responseDate?: string;

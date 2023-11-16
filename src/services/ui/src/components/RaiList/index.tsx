@@ -9,7 +9,6 @@ import {
   Attachmentslist,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { getActiveRai } from "shared-utils";
 
 export const RaiList = (data: OsMainSourceItem) => {
   if (!data.rais) return null;
@@ -24,14 +23,9 @@ export const RaiList = (data: OsMainSourceItem) => {
             {sortedKeys.map((key, i) => (
               <Accordion key={i} type="multiple" defaultValue={[]}>
                 <AccordionItem value={`item-${i}`}>
-                  <AccordionTrigger>{`RAI Requested on ${
-                    data.rais[key].requestedDate
-                      ? format(
-                          new Date(data.rais[key].requestedDate),
-                          "EEE, MMM d yyyy, h:mm:ss a"
-                        )
-                      : "Unknown"
-                  }`}</AccordionTrigger>
+                  <AccordionTrigger>{`RAI #${
+                    Object.keys(data.rais).length - i
+                  } - ${getLatestStatus(data.rais[key])}`}</AccordionTrigger>
                   <AccordionContent>
                     <div className="ml-8">
                       <h3 className="text-xl font-semibold mb-2">
@@ -125,3 +119,25 @@ export const RaiList = (data: OsMainSourceItem) => {
     </DetailsSection>
   );
 };
+
+function getLatestStatus(rai: any) {
+  const { receivedDate, requestedDate, withdrawnDate } = rai;
+  const filteredNumbers: number[] = [
+    requestedDate,
+    receivedDate,
+    withdrawnDate,
+  ].filter((num) => num !== null && num !== undefined) as number[];
+  const latestDate = Math.max(...filteredNumbers);
+  let retString = "";
+  if (latestDate === receivedDate) {
+    retString += "Responded:";
+  } else if (latestDate === requestedDate) {
+    retString += "Requested:";
+  } else if (latestDate === withdrawnDate) {
+    retString += "Withdrawn:";
+  }
+  return `${retString} ${format(
+    new Date(latestDate),
+    "EEE, MMM d yyyy, h:mm a"
+  )}`;
+}
