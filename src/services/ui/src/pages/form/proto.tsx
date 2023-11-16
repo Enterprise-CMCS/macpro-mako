@@ -1028,7 +1028,8 @@ export const ABP1: Document = {
                   },
                   {
                     value: "health",
-                    label: "Disease, condition, diagnosis, or disorder",
+                    label:
+                      "Disease, condition, diagnosis, or disorder (check all that apply)",
                     slots: [
                       {
                         rhf: "Checkbox",
@@ -1085,9 +1086,13 @@ export const ABP1: Document = {
                               value: "other",
                               slots: [
                                 {
-                                  rhf: "Input",
+                                  rhf: "Textarea",
                                   name: "other_description",
                                   label: "Describe",
+                                  props: {
+                                    maxLength: 4000,
+                                    charcount: "limited",
+                                  },
                                   rules: {
                                     required: "* Required",
                                   },
@@ -1104,9 +1109,13 @@ export const ABP1: Document = {
                     value: "other_targeting_criteria",
                     slots: [
                       {
-                        rhf: "Input",
+                        rhf: "Textarea",
                         name: "other_targeting_criteria_description",
                         label: "Describe",
+                        props: {
+                          maxLength: 4000,
+                          charcount: "limited",
+                        },
                         rules: {
                           required: "* Required",
                         },
@@ -1205,7 +1214,7 @@ export const ABP1: Document = {
                     value: "by_city_town",
                     form: [
                       {
-                        description: "Specify cities and towns",
+                        description: "Specify cities or towns",
                         slots: [
                           {
                             name: "specify_cities_towns",
@@ -1223,7 +1232,7 @@ export const ABP1: Document = {
                     value: "other",
                     form: [
                       {
-                        description: "Specify other",
+                        description: "Specify other geographic area",
                         slots: [
                           {
                             name: "specify_other",
