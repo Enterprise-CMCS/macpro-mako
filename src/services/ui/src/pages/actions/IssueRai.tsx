@@ -19,7 +19,7 @@ import { Action, RaiIssueTransform } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 
 const formSchema = z.object({
-  additionalInformation: z.string().max(4000).optional(),
+  additionalInformation: z.string().max(4000),
   attachments: z.object({
     raiSupportingDocs: z
       .array(z.instanceof(File))
@@ -38,9 +38,14 @@ export type PreSignedURL = {
 
 const attachmentList = [
   {
-    name: "raiSupportingDocs",
-    label: "RAI Supplemental Documentation",
+    name: "formalRaiLetter",
+    label: "Formal RAI Letter",
     required: true,
+  },
+  {
+    name: "other",
+    label: "Other",
+    required: false,
   },
 ] as const;
 
@@ -140,13 +145,17 @@ export const IssueRai = () => {
           className="my-6 space-y-8 mx-auto"
         >
           <section>
-            <h1 className="font-bold text-2xl mb-2">Issue RAI</h1>
+            <h1 className="font-bold text-2xl mb-2">Formal RAI Details</h1>
             <p className="my-1">
               <I.RequiredIndicator /> Indicates a required field
             </p>
             <p className="font-light mb-6 max-w-4xl">
-              Once you submit this form, a confirmation email is sent to you and
-              to the original submitter.{" "}
+              Issuance of a Formal RAI in OneMAC will create a Formal RAI email
+              sent to the State. This will also create a section in the package
+              details summary for you and the State to have record. Please
+              attach the Formal RAI Letter along with any additional information
+              or comments in the provided text box. Once you submit this form, a
+              confirmation email is sent to you and to the State.{" "}
               <strong className="bold">
                 If you leave this page, you will lose your progress on this
                 form.
@@ -225,7 +234,7 @@ export const IssueRai = () => {
             render={({ field }) => (
               <I.FormItem>
                 <h3 className="font-bold text-2xl font-sans">
-                  Additional Information
+                  Additional Information<span className="text-red-500">*</span>
                 </h3>
                 <I.FormLabel className="font-normal">
                   Add anything else you would like to share with the state
