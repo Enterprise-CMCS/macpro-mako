@@ -23,17 +23,17 @@ export const packageActionsForResult = (
   const actions = [];
   const activeRai = getActiveRai(result._source.rais);
   if (isCmsWriteUser(user)) {
-    // switch (result._source.seatoolStatus) {
-    //   case SEATOOL_STATUS.PENDING:
-    //   case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
-    //   case SEATOOL_STATUS.PENDING_APPROVAL:
-    //   case SEATOOL_STATUS.PENDING_CONCURRENCE:
-    //     if (!activeRai) {
-    //       // If there is not an active RAI
-    //       actions.push(Action.ISSUE_RAI);
-    //     }
-    //     break;
-    // }
+    switch (result._source.seatoolStatus) {
+      case SEATOOL_STATUS.PENDING:
+      case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
+      case SEATOOL_STATUS.PENDING_APPROVAL:
+      case SEATOOL_STATUS.PENDING_CONCURRENCE:
+        if (!activeRai) {
+          // If there is not an active RAI
+          actions.push(Action.ISSUE_RAI);
+        }
+        break;
+    }
     if (
       result._source.rais !== null &&
       Object.keys(result._source.rais).length > 0 &&
