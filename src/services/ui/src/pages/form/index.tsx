@@ -4,9 +4,10 @@ import { RHFDocument } from "@/components/RHF";
 // import { data } from "./proto";
 import { documentInitializer, documentValidator } from "@/components/RHF/utils";
 import { useGetForm } from "@/api";
+// import { FormSchema } from "shared-types";
 
 export function ExampleForm() {
-  const { data, isLoading, error } = useGetForm("ABP1", "1");
+  const { data as F, isLoading, error } = useGetForm("ABP1", "1");
   console.log(data, isLoading, error);
 
   const defaultValues = documentInitializer(data);
