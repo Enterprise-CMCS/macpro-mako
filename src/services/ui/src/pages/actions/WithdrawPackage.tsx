@@ -1,10 +1,9 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { ChevronLeftIcon } from "@radix-ui/react-icons";
-import { Button, Input } from "@/components/Inputs";
+import { Button } from "@/components/Inputs";
 import { Modal } from "@/components/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Action, ItemResult } from "shared-types";
+import { ItemResult } from "shared-types";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { PackageActionForm } from "./PackageActionForm";
 import { ActionFormIntro, PackageInfo } from "./common";
@@ -14,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
 import { useWithdrawPackage } from "@/api/useWithdrawPackage";
+import { Alert, LoadingSpinner } from "@/components";
 
 const schema = z.object({
   id: z.string(),
@@ -61,9 +61,9 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
     withdraw_comment: "",
   });
 
-  const navigateBack = (): void => {
-    navigate(-1);
-  };
+  useEffect(() => {
+    if (isSuccess) setModalWithdraw(true);
+  }, [isSuccess]);
 
   const onHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = event.target;
@@ -83,6 +83,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
 
   return (
     <>
+      {isLoading && <LoadingSpinner />}
       <div>
         <div className="px-14  py-5 ">
           <ActionFormIntro title="WithDraw Medicaid SPA Package">
@@ -180,6 +181,12 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
                   </I.FormItem>
                 )}
               />
+              {error && (
+                <Alert className="mb-4 max-w-2xl" variant="destructive">
+                  <strong>ERROR Withdrawing Package: </strong>
+                  {error.response.data.message}
+                </Alert>
+              )}
               <div className="flex gap-2 my-8">
                 <Button onClickCapture={() => mutate()} type="submit">
                   Submit
