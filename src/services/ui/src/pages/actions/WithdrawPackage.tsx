@@ -1,8 +1,7 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/Inputs";
-import { Modal } from "@/components/Modal";
+import { Modal } from "@/components/Modal/Modal";
 import { useEffect, useState } from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ItemResult } from "shared-types";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { PackageActionForm } from "./PackageActionForm";
@@ -52,35 +51,14 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   });
   const { mutate, isLoading, isSuccess, error } = useWithdrawPackage(id!);
 
-  const [withdrawModal, setModalWithdraw] = useState<boolean>(false);
-  const [withdrawData, setwithdrawData] = useState<{
-    withdraw_document?: any;
-    withdraw_comment?: string;
-  }>({
-    withdraw_document: null,
-    withdraw_comment: "",
-  });
+  const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
+  const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isSuccess) setModalWithdraw(true);
+    if (isSuccess) setSuccessModalOpen(true);
   }, [isSuccess]);
 
-  const onHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, files } = event.target;
-    if (event.target.files && event.target.files[0]) {
-      setwithdrawData({ ...withdrawData, withdraw_document: files });
-    } else if (name === "withdraw_comment") {
-      setwithdrawData({ ...withdrawData, withdraw_comment: value });
-    }
-  };
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    const formData = new FormData();
-  };
-
   if (!item) return <Navigate to={ROUTES.DASHBOARD} />; // Prevents optional chains below
-
   return (
     <>
       {isLoading && <LoadingSpinner />}
@@ -191,14 +169,52 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
                 <Button onClickCapture={() => mutate()} type="submit">
                   Submit
                 </Button>
-                <Button onClick={() => navigate(-1)} variant="outline">
+                <Button
+                  onClick={() => setCancelModalOpen(true)}
+                  variant="outline"
+                >
                   Cancel
                 </Button>
               </div>
             </form>
           </I.Form>
         </div>
-        <div></div>
+        {/* Success Modal */}
+        <Modal
+          open={successModalOpen}
+          onAccept={() => {
+            setSuccessModalOpen(false);
+            navigate(`/details?id=${id}`);
+          }}
+          onCancel={() => setSuccessModalOpen(false)} // Should be made optional
+          title="Withdraw Successful"
+          body={
+            <p>
+              Please be aware that it may take up to a minute for your status to
+              change on the Dashboard and Details pages.
+            </p>
+          }
+          cancelButtonVisible={false}
+          acceptButtonText="Go to Package Details"
+        />
+
+        {/* Cancel Modal */}
+        <Modal
+          open={cancelModalOpen}
+          onAccept={() => {
+            setCancelModalOpen(false);
+            navigate(`/details?id=${id}`);
+          }}
+          onCancel={() => setCancelModalOpen(false)}
+          cancelButtonText="Return to Form"
+          acceptButtonText="Leave Page"
+          title="Are you sure you want to cancel?"
+          body={
+            <p>
+              If you leave this page you will lose your progress on this form
+            </p>
+          }
+        />
       </div>
     </>
   );
