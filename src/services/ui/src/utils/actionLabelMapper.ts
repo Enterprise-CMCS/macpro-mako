@@ -9,6 +9,6 @@ export const mapActionLabel = (a: Action) => {
     case Action.ISSUE_RAI:
       return "Issue Formal RAI";
     case Action.RESPOND_TO_RAI:
-      return "Formal Request for Additional Information Response";
+      return "Respond to Formal RAI";
   }
 };
