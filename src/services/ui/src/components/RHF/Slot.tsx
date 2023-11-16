@@ -264,6 +264,7 @@ export const RHFSlot = <
                 name={name}
                 fields={rest.fields ?? []}
                 groupNamePrefix={groupNamePrefix}
+                {...(props as RHFComponentMap["FieldArray"])}
               />
             )}
 

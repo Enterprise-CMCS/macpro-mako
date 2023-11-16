@@ -28,6 +28,9 @@ export const ABP1: Document = {
             {
               rhf: "FieldArray",
               name: "eligibility_groups",
+              props: {
+                appendText: "Add group",
+              },
               fields: [
                 {
                   rhf: "Select",
@@ -288,7 +291,7 @@ export const ABP1: Document = {
                 {
                   rhf: "Select",
                   name: "mandatory_voluntary",
-                  label: "Mandatory or voluntary",
+                  label: "Mandatory or Voluntary",
                   rules: {
                     required: "* Required",
                   },
@@ -317,7 +320,6 @@ export const ABP1: Document = {
             {
               rhf: "Select",
               name: "is_enrollment_available",
-              label: "Alternative Benefit Plan population name",
               rules: {
                 required: "* Required",
               },
@@ -348,12 +350,11 @@ export const ABP1: Document = {
       },
       form: [
         {
-          description: "Targeting criteria (select all that apply)",
+          description: "Targeting criteria (check all that apply)",
           slots: [
             {
               rhf: "Checkbox",
               name: "target_criteria",
-              label: "Mandatory or voluntary",
               rules: {
                 required: "* Required",
               },
@@ -413,7 +414,7 @@ export const ABP1: Document = {
                                       props: {
                                         options: [
                                           {
-                                            label: "Federal Poverty Level",
+                                            label: "Federal poverty level",
                                             value: "federal_poverty_level",
                                             slots: [
                                               {
@@ -431,13 +432,12 @@ export const ABP1: Document = {
                                                 },
                                                 name: "federal_poverty_level_percentage",
                                                 label:
-                                                  "Enter the Federal Poverty Level percentage",
+                                                  "Enter the federal poverty level percentage",
                                               },
                                             ],
                                           },
                                           {
-                                            label:
-                                              "SSI Federal Benefit Amount.",
+                                            label: "SSI federal benefit amount",
                                             value: "ssi_federal_benefit_amount",
                                             slots: [
                                               {
@@ -460,14 +460,14 @@ export const ABP1: Document = {
                                             ],
                                           },
                                           {
-                                            label: "Other.",
+                                            label: "Other",
                                             value: "other",
                                             slots: [
                                               {
                                                 rhf: "Input",
                                                 name: "other_percentage",
                                                 label:
-                                                  "Enter the Other percentage",
+                                                  "Enter the other percentage",
                                                 props: {
                                                   icon: "%",
                                                 },
@@ -554,7 +554,7 @@ export const ABP1: Document = {
                                                             value:
                                                               /^\d*(?:\.\d{1,2})?$/,
                                                             message:
-                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                              "Must be a positive number, maximum of two decimals, no commas. e.g. 1234.56",
                                                           },
                                                           required:
                                                             "* Required",
@@ -609,7 +609,7 @@ export const ABP1: Document = {
                                             ],
                                           },
                                           {
-                                            label: "Standard Varies by region",
+                                            label: "Standard varies by region",
                                             value: "region_standard",
                                             form: [
                                               {
@@ -644,6 +644,10 @@ export const ABP1: Document = {
                                                       {
                                                         rhf: "FieldArray",
                                                         name: "income_definition_region_statewide_arr",
+                                                        props: {
+                                                          appendText:
+                                                            "Add household size",
+                                                        },
                                                         fields: [
                                                           {
                                                             rhf: "Input",
@@ -752,14 +756,14 @@ export const ABP1: Document = {
                                                       appendText:
                                                         "Add Living Arrangement",
                                                       removeText:
-                                                        "Remove Living Arrangement",
+                                                        "Remove living arrangement",
                                                     },
                                                     fields: [
                                                       {
                                                         rhf: "Input",
                                                         name: "name_of_living_arrangement",
                                                         label:
-                                                          "Living Arrangement Name",
+                                                          "Name of living arrangement",
                                                         rules: {
                                                           required:
                                                             "* Required",
@@ -777,6 +781,10 @@ export const ABP1: Document = {
                                                       {
                                                         rhf: "FieldArray",
                                                         name: "income_definition_specific_statewide_arr",
+                                                        props: {
+                                                          appendText:
+                                                            "Add household size",
+                                                        },
                                                         fields: [
                                                           {
                                                             rhf: "Input",
