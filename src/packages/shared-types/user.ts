@@ -23,4 +23,14 @@ export const CMS_ROLES = [
   UserRoles.HELPDESK,
 ];
 
+export const CMS_WRITE_ROLES = [
+  UserRoles.CMS_READ_ONLY,
+  UserRoles.CMS_REVIEWER,
+];
+
+export const CMS_READ_ONLY_ROLES = [
+  UserRoles.CMS_READ_ONLY,
+  UserRoles.CMS_REVIEWER,
+];
+
 export const STATE_ROLES = [UserRoles.STATE_SUBMITTER];
