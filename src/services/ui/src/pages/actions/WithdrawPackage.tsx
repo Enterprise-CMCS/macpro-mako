@@ -13,18 +13,11 @@ import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
 import { useWithdrawPackage } from "@/api/useWithdrawPackage";
 import { Alert, LoadingSpinner } from "@/components";
+import {
+  WithdrawPackageSchema,
+  withdrawPackageEventSchema,
+} from "shared-types";
 
-const schema = z.object({
-  id: z.string(),
-  additionalInformation: z
-    .string()
-    .max(4000, "This field may only be up to 4000 characters.")
-    .optional(),
-  attachments: z.object({
-    supportingDocumentation: z.array(z.instanceof(File)).optional(),
-  }),
-});
-type WithdrawPackageSchema = z.infer<typeof schema>;
 type UploadKey = keyof WithdrawPackageSchema["attachments"];
 type AttachmentRecipe = {
   readonly name: UploadKey;
@@ -47,7 +40,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const form = useForm<WithdrawPackageSchema>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(withdrawPackageEventSchema),
   });
   const { mutate, isLoading, isSuccess, error } = useWithdrawPackage(id!);
 
