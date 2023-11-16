@@ -140,7 +140,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
             additionalInformation={data?._source.additionalInformation}
           />
         </DetailsSection>
-        <RaiList {...data?._source} />
+        {/* <RaiList {...data?._source} /> */}
       </div>
     </div>
   );
