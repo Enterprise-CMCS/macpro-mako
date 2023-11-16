@@ -12,9 +12,9 @@ import {
   SimplePageContainer,
   Alert,
   LoadingSpinner,
-  Modal,
   BreadCrumbs,
 } from "@/components";
+import { Modal } from "@/components/Modal/Modal";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { getUserStateCodes } from "@/utils";
 import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
@@ -104,9 +104,10 @@ const attachmentList = [
 
 export const MedicaidForm = () => {
   const location = useLocation();
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [modalChildren, setModalChildren] = useState(<div></div>);
+  const navigate = useNavigate();
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
+  const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
+
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -176,20 +177,13 @@ export const MedicaidForm = () => {
       rais: {}, // We do not collect rai data as part of new submission.
     };
 
-    let submissionResponse;
     try {
-      submissionResponse = await API.post("os", "/submit", {
+      await API.post("os", "/submit", {
         body: dataToSubmit,
       });
-      console.log(submissionResponse);
-      setModalChildren(<SuccessModalContent id={data.id} />);
+      setSuccessModalIsOpen(true);
     } catch (err) {
       console.log(err);
-      setModalChildren(
-        <ErrorModalContent id={data.id} setModalIsOpen={setModalIsOpen} />
-      );
-    } finally {
-      setModalIsOpen(true);
     }
   };
 
@@ -389,116 +383,47 @@ export const MedicaidForm = () => {
             >
               Cancel
             </I.Button>
+
+            {/* Success Modal */}
             <Modal
-              showModal={modalIsOpen}
-              // eslint-disable-next-line react/no-children-prop
-              children={modalChildren}
+              open={successModalIsOpen}
+              onAccept={() => {
+                setSuccessModalIsOpen(false);
+                navigate(ROUTES.DASHBOARD);
+              }}
+              onCancel={() => setSuccessModalIsOpen(false)}
+              title="Submission Successful"
+              body={
+                <p>
+                  Please be aware that it may take up to a minute for your
+                  submission to show in the Dashboard.
+                </p>
+              }
+              cancelButtonVisible={false}
+              acceptButtonText="Go to Dashboard"
             />
+
+            {/* Cancel Modal */}
             <Modal
-              showModal={cancelModalIsOpen}
-              // eslint-disable-next-line react/no-children-prop
-              children={
-                <CancelModalContent
-                  setCancelModalIsOpen={setCancelModalIsOpen}
-                />
+              open={cancelModalIsOpen}
+              onAccept={() => {
+                setCancelModalIsOpen(false);
+                navigate(ROUTES.DASHBOARD);
+              }}
+              onCancel={() => setCancelModalIsOpen(false)}
+              cancelButtonText="Return to Form"
+              acceptButtonText="Yes"
+              title="Are you sure you want to cancel?"
+              body={
+                <p>
+                  If you leave this page you will lose your progress on this
+                  form
+                </p>
               }
             />
           </div>
         </form>
       </I.Form>
     </SimplePageContainer>
-  );
-};
-type SuccessModalProps = { id: string };
-const SuccessModalContent = ({ id }: SuccessModalProps) => {
-  const navigate = useNavigate();
-  return (
-    <div className="flex flex-col gap-2 items-center text-center">
-      <div className="max-w-md p-4">
-        <div className="font-bold">Submission Success!</div>
-        <p>
-          {id} was successfully submitted.
-          <br />
-          Please be aware that it may take up to a minute for your submission to
-          show in the Dashboard.
-        </p>
-      </div>
-      <I.Button
-        type="button"
-        variant="outline"
-        onClick={() => navigate(ROUTES.DASHBOARD)}
-      >
-        Go to Dashboard
-      </I.Button>
-    </div>
-  );
-};
-type ErrorModalProps = { id: string; setModalIsOpen: (open: boolean) => void };
-const ErrorModalContent = ({ id, setModalIsOpen }: ErrorModalProps) => {
-  return (
-    <div className="flex flex-col gap-2 items-center text-center">
-      <div className="max-w-md p-4">
-        <div className="text-red-500 font-bold">Submission Error:</div>
-        <p>
-          An error occurred during submission.
-          <br />
-          You may close this window and try again, however, this likely requires
-          support.
-          <br />
-          <br />
-          Please contact the{" "}
-          <a
-            href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
-            className="text-blue-500"
-          >
-            helpdesk
-          </a>{" "}
-          . You may include the following in your support request: <br />
-          <br />
-          <ul>
-            <li>SPA ID: {id}</li>
-            <li>Timestamp: {Date.now()}</li>
-          </ul>
-        </p>
-      </div>
-      <I.Button
-        type="button"
-        variant="outline"
-        onClick={() => setModalIsOpen(false)}
-      >
-        Close
-      </I.Button>
-    </div>
-  );
-};
-
-type CancelModalProps = { setCancelModalIsOpen: (open: boolean) => void };
-const CancelModalContent = ({ setCancelModalIsOpen }: CancelModalProps) => {
-  const navigate = useNavigate();
-  return (
-    <div className="flex flex-col gap-2 items-center text-center">
-      <div className="max-w-md p-4">
-        <div className="font-bold">Are you sure you want to cancel?</div>
-        <p>If you leave this page, you will lose your progress on this form.</p>
-      </div>
-      <div className="flex">
-        <I.Button
-          type="button"
-          variant="outline"
-          onClick={() => navigate(ROUTES.DASHBOARD)}
-        >
-          Yes
-        </I.Button>
-        <div className="ml-8">
-          <I.Button
-            type="button"
-            variant="outline"
-            onClick={() => setCancelModalIsOpen(false)}
-          >
-            No, Return to Form
-          </I.Button>
-        </div>
-      </div>
-    </div>
   );
 };
