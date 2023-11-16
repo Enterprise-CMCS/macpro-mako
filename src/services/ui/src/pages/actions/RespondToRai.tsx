@@ -38,9 +38,14 @@ export type PreSignedURL = {
 
 const attachmentList = [
   {
-    name: "raiSupportingDocs",
-    label: "Response Document(s)",
+    name: "raiResponseLetter",
+    label: "RAI Response Letter",
     required: true,
+  },
+  {
+    name: "other",
+    label: "Other",
+    required: false,
   },
 ] as const;
 
@@ -139,13 +144,17 @@ export const RespondToRai = () => {
           className="my-6 space-y-8 mx-auto"
         >
           <section>
-            <h1 className="font-bold text-2xl mb-2">Respond to RAI</h1>
+            <h1 className="font-bold text-2xl mb-2">
+              Medicaid SPA Formal RAI Details
+            </h1>
             <p className="my-1">
               <I.RequiredIndicator /> Indicates a required field
             </p>
             <p className="font-light mb-6 max-w-4xl">
               Once you submit this form, a confirmation email is sent to you and
-              to the original submitter.{" "}
+              to CMS. CMS will use this content to review your package, and you
+              will not be able to edit this form. If CMS needs any additional
+              information, they will follow up by email.{" "}
               <strong className="bold">
                 If you leave this page, you will lose your progress on this
                 form.
@@ -156,12 +165,8 @@ export const RespondToRai = () => {
           <section>
             <h3 className="text-2xl font-bold font-sans">Attachments</h3>
             <p>
-              Maximum file size of 80 MB per attachment.{" "}
-              <strong>
-                You can add multiple files per attachment type, except for the
-                CMS Form 179.
-              </strong>{" "}
-              Read the description for each of the attachment types on the{" "}
+              Maximum file size of 80 MB per attachment. Read the description
+              for each of the attachment types on the{" "}
               {
                 <Link
                   to="/faq/#medicaid-spa-attachments"
@@ -227,8 +232,7 @@ export const RespondToRai = () => {
                   Additional Information
                 </h3>
                 <I.FormLabel className="font-normal">
-                  Add anything else you would like to share with the state
-                  regarding this RAI.
+                  Add anything else that you would like to share with CMS.
                 </I.FormLabel>
                 <I.Textarea {...field} className="h-[200px] resize-none" />
                 <I.FormDescription>4,000 characters allowed</I.FormDescription>
