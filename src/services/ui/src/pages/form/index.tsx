@@ -89,7 +89,7 @@ export function ExampleForm() {
         });
         console.log({ isValid });
       },
-      (err) => {
+      (err: any) => {
         console.log({ err });
       }
     );
