@@ -29,7 +29,7 @@ export const FILTER_GROUPS = (
       value: [],
     },
     "planType.keyword": {
-      label: "Plan Type",
+      label: "Type",
       field: "planType.keyword",
       component: "multiCheck",
       prefix: "must",
@@ -61,7 +61,7 @@ export const FILTER_GROUPS = (
       value: { gte: undefined, lte: undefined },
     },
     raiReceivedDate: {
-      label: "RAI Response Date",
+      label: "Formal RAI Response",
       field: "raiReceivedDate",
       component: "dateRange",
       prefix: "must",

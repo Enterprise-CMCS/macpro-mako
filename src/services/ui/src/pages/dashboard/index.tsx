@@ -80,10 +80,10 @@ export const Dashboard = () => {
             >
               <TabsList>
                 <TabsTrigger value="spas" className="px-6 py-2">
-                  <h4 className="font-bold text-[1.3em]">SPAs</h4>
+                  <h2 className="font-bold text-[1.3em]">SPAs</h2>
                 </TabsTrigger>
                 <TabsTrigger value="waivers" className="px-6 py-2">
-                  <h4 className="font-bold text-[1.3em]">Waivers</h4>
+                  <h2 className="font-bold text-[1.3em]">Waivers</h2>
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="spas">
