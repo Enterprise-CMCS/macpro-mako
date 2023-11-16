@@ -4,7 +4,7 @@ import { Button, Input } from "@/components/Inputs";
 import { Modal } from "@/components/Modal";
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { ItemResult } from "shared-types";
+import { Action, ItemResult } from "shared-types";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { PackageActionForm } from "./PackageActionForm";
 import { ActionFormIntro, PackageInfo } from "./common";
@@ -13,6 +13,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
+import { useWithdrawPackage } from "@/api/useWithdrawPackage";
 
 const schema = z.object({
   id: z.string(),
@@ -45,9 +46,12 @@ const handler: SubmitHandler<WithdrawPackageSchema> = (data) =>
 
 const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
   const form = useForm<WithdrawPackageSchema>({
     resolver: zodResolver(schema),
   });
+  const { mutate, isLoading, isSuccess, error } = useWithdrawPackage(id!);
+
   const [withdrawModal, setModalWithdraw] = useState<boolean>(false);
   const [withdrawData, setwithdrawData] = useState<{
     withdraw_document?: any;
@@ -56,13 +60,10 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
     withdraw_document: null,
     withdraw_comment: "",
   });
+
   const navigateBack = (): void => {
     navigate(-1);
   };
-  const { id } = useParams<{
-    id: string;
-    type: string;
-  }>();
 
   const onHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = event.target;
@@ -180,7 +181,9 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
                 )}
               />
               <div className="flex gap-2 my-8">
-                <Button type="submit">Submit</Button>
+                <Button onClickCapture={() => mutate()} type="submit">
+                  Submit
+                </Button>
                 <Button onClick={() => navigate(-1)} variant="outline">
                   Cancel
                 </Button>
