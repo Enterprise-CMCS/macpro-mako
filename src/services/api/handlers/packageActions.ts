@@ -46,6 +46,10 @@ export async function respondToRai(id, timestamp) {
 
 export async function withdrawPackage(id, timestamp) {
   console.log("State withdrawing a package.");
+  // Open SQL connection
+  // Query for the package
+  // Change status to Withdrawn (?)
+  // await result then close
 }
 
 export async function toggleRaiResponseWithdraw(

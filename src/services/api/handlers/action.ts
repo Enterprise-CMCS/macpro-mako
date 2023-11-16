@@ -8,7 +8,7 @@ import {
 } from "../libs/auth/user";
 import { packageActionsForResult } from "./getPackageActions";
 import { Action } from "shared-types";
-import { issueRai, toggleRaiResponseWithdraw } from "./packageActions";
+import { issueRai, toggleRaiResponseWithdraw, withdrawPackage } from "./packageActions";
 
 export const handler = async (event: APIGatewayEvent) => {
   try {
@@ -49,6 +49,9 @@ export const handler = async (event: APIGatewayEvent) => {
 
     // Call package action
     switch (actionType) {
+      case Action.WITHDRAW_PACKAGE:
+        await withdrawPackage(body.id, Date.now());
+        break;
       case Action.ISSUE_RAI:
         await issueRai(body.id, Date.now());
         break;

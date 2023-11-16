@@ -5,10 +5,49 @@ import { Modal } from "@/components/Modal";
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ItemResult } from "shared-types";
-import { ROUTES } from "@/routes";
+import { FAQ_TARGET, ROUTES } from "@/routes";
 import { PackageActionForm } from "./PackageActionForm";
+import { ActionFormIntro, PackageInfo } from "./common";
+import { z } from "zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as I from "@/components/Inputs";
+import { Link } from "react-router-dom";
+
+const schema = z.object({
+  id: z.string(),
+  additionalInformation: z
+    .string()
+    .max(4000, "This field may only be up to 4000 characters.")
+    .optional(),
+  attachments: z.object({
+    supportingDocumentation: z.array(z.instanceof(File)).optional(),
+  }),
+});
+type WithdrawPackageSchema = z.infer<typeof schema>;
+type UploadKey = keyof WithdrawPackageSchema["attachments"];
+type AttachmentRecipe = {
+  readonly name: UploadKey;
+  readonly label: string;
+  readonly required: boolean;
+};
+
+const attachments: AttachmentRecipe[] = [
+  {
+    name: "supportingDocumentation",
+    label: "Supporting Documentation",
+    required: false,
+  },
+];
+
+const handler: SubmitHandler<WithdrawPackageSchema> = (data) =>
+  console.log(data);
+
 const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
+  const form = useForm<WithdrawPackageSchema>({
+    resolver: zodResolver(schema),
+  });
   const [withdrawModal, setModalWithdraw] = useState<boolean>(false);
   const [withdrawData, setwithdrawData] = useState<{
     withdraw_document?: any;
@@ -44,119 +83,110 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   return (
     <>
       <div>
-        <div className="bg-[#E0F2FE] px-14 py-5 flex  items-center">
-          <ChevronLeftIcon
-            className="h-[25px] w-[30px] fill-primary font-semibold  text-primary cursor-pointer"
-            onClick={navigateBack}
-          />
-          <h1 className="font-semibold mx-3">{id}</h1>
-        </div>
-
         <div className="px-14  py-5 ">
-          <div className="my-4">
-            <h1 className="text-xl font-bold ">
-              WithDraw Medicaid SPA Package
-            </h1>
-          </div>
-          <div className="py-5 max-w-lg">
+          <ActionFormIntro title="WithDraw Medicaid SPA Package">
             <p>
               Complete this form to withdrawn a package. Once complete you will
               not be able to resubmit tis package.CMS will be notified and will
               use this content to review your request. if CMS needs any
               additional information.they will follow up by email
             </p>
-          </div>
-          <div className="my-10">
-            <p className="font-semibold">SPA-ID</p>
-            <p className="text-sm">{id}</p>
-          </div>
-          <div className="my-10">
-            <p className="font-semibold">Type</p>
-            <p className="text-sm">Medicaid SPA</p>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="py-5 max-w-xl">
-              <p className="font-semibold">
-                Expylain your need for withdrawal or Upload supporting
-                documentation.
-              </p>
-              <div className="my-3">
-                <input
-                  placeholder="submitting withdrawal"
-                  className="flex h-40 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                  height={30}
-                  onChange={onHandleChange}
-                  name="withdraw_comment"
-                />
-              </div>
-              <p className="text-sm">
-                Once you submit this form,a confirmation email is sent to you
-                and to CMS.CMS will use this content to review your package.if
-                CMS needs any additional information,they will follow up by
-                email
-              </p>
-
-              <div className="mt-8">
-                <Input
-                  type="file"
-                  accept=".pdf,.docx,.jpg,.png"
-                  name="withdraw_document"
-                  onChange={onHandleChange}
-                />
-                <p className="text-sm">
-                  Maximum file size of 80MB.you can add multiple files. we
-                  accept the following file types
-                </p>
-                <p className="font-semibold"> .pdf, .docx, .jpg, .png</p>
-              </div>
-            </div>
-            <div className="my-3  flex flex-row ">
-              <div className="mx-3">
-                <Button onClick={navigateBack} variant="outline" title="Submit">
-                  Cancel
-                </Button>{" "}
-                <Button
-                  disabled={
-                    !withdrawData.withdraw_comment &&
-                    !withdrawData.withdraw_document
+          </ActionFormIntro>
+          <PackageInfo item={item} />
+          <I.Form {...form}>
+            <form onSubmit={form.handleSubmit(handler)}>
+              <section>
+                <h3 className="text-2xl font-bold font-sans">Attachments</h3>
+                <p>
+                  Maximum file size of 80 MB per attachment.{" "}
+                  <strong>
+                    You can add multiple files per attachment type.
+                  </strong>{" "}
+                  Read the description for each of the attachment types on the{" "}
+                  {
+                    <Link
+                      to="/faq/#medicaid-spa-attachments"
+                      target={FAQ_TARGET}
+                      rel="noopener noreferrer"
+                      className="text-blue-700 hover:underline"
+                    >
+                      FAQ Page
+                    </Link>
                   }
-                  onClick={() => {
-                    setModalWithdraw(true);
-                  }}
-                >
-                  Submit
+                  .
+                </p>
+                <br />
+                <p>
+                  We accept the following file formats:{" "}
+                  <strong className="bold">
+                    .docx, .jpg, .png, .pdf, .xlsx,
+                  </strong>{" "}
+                  and a few others. See the full list on the{" "}
+                  {
+                    <Link
+                      to="/faq/#acceptable-file-formats"
+                      target={FAQ_TARGET}
+                      rel="noopener noreferrer"
+                      className="text-blue-700 hover:underline"
+                    >
+                      FAQ Page
+                    </Link>
+                  }
+                  .
+                </p>
+                <br />
+                <p>
+                  <I.RequiredIndicator />
+                  At least one attachment is required.
+                </p>
+              </section>
+              {attachments.map(({ name, label, required }) => (
+                <I.FormField
+                  key={name}
+                  control={form.control}
+                  name={`attachments.${name}`}
+                  render={({ field }) => (
+                    <I.FormItem className="mt-8">
+                      <I.FormLabel>
+                        {label}
+                        {required ? <I.RequiredIndicator /> : ""}
+                      </I.FormLabel>
+                      <I.Upload
+                        files={field?.value ?? []}
+                        setFiles={field.onChange}
+                      />
+                      <I.FormMessage />
+                    </I.FormItem>
+                  )}
+                />
+              ))}
+              <I.FormField
+                control={form.control}
+                name="additionalInformation"
+                render={({ field }) => (
+                  <I.FormItem className="mt-8">
+                    <h3 className="font-bold text-2xl font-sans">
+                      Additional Information
+                    </h3>
+                    <I.FormLabel className="font-normal">
+                      Add anything else you would like to share with CMS,
+                      limited to 4000 characters
+                    </I.FormLabel>
+                    <I.Textarea {...field} className="h-[200px] resize-none" />
+                    <I.FormDescription>
+                      4,000 characters allowed
+                    </I.FormDescription>
+                  </I.FormItem>
+                )}
+              />
+              <div className="flex gap-2 my-8">
+                <Button type="submit">Submit</Button>
+                <Button onClick={() => navigate(-1)} variant="outline">
+                  Cancel
                 </Button>
               </div>
-              <div>
-                <Modal showModal={withdrawModal}>
-                  <div className="flex  flex-col  w-auto  items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                    <div className="flex justify-between w-full">
-                      <h2 className="text-xl font-bold mb-3">
-                        Withdraw Package ?
-                      </h2>
-                      <div className="w-8 cursor-pointer">
-                        <XMarkIcon onClick={() => setModalWithdraw(false)} />
-                      </div>
-                    </div>
-
-                    <p className="w-10/12">{`You are about to withdraw ${id}. Once complete you will not be able to resubmit this package. CMS will be notified`}</p>
-                    <div className="my-8">
-                      <Button className="mx-3">Yes ,withdraw package</Button>
-                      <Button
-                        onClick={() => {
-                          setModalWithdraw(false);
-                        }}
-                        className="mx-3"
-                        variant={"ghost"}
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  </div>
-                </Modal>
-              </div>
-            </div>
-          </form>
+            </form>
+          </I.Form>
         </div>
         <div></div>
       </div>
