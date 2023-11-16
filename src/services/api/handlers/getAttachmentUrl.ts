@@ -50,9 +50,10 @@ export const handler = async (event: APIGatewayEvent) => {
 
     const allAttachments = [
       ...(results.hits.hits[0]._source.attachments || []),
-      ...Object.values(results.hits.hits[0]._source.rais).flatMap(
-        (entry) => entry.request.attachments
-      ),
+      ...Object.values(results.hits.hits[0]._source.rais).flatMap((entry) => [
+        ...(entry.request.attachments || []),
+        ...(entry.response.attachments || []),
+      ]),
     ];
 
     if (
