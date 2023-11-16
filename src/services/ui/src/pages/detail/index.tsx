@@ -10,15 +10,15 @@ import {
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { CognitoUserAttributes, ItemResult } from "shared-types";
+import { ItemResult, UserRoles } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
-import { BREAD_CRUMB_CONFIG_PACKAGE_DETAILS } from "@/components/BreadCrumb/bread-crumb-config";
 import { mapActionLabel } from "@/utils";
 import { Link } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren } from "react";
+import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 
 const DetailCardWrapper = ({
   title,
@@ -33,12 +33,10 @@ const DetailCardWrapper = ({
     </div>
   </CardWithTopBorder>
 );
-const StatusCard = ({ isCms, data }: { isCms: boolean; data: ItemResult }) => (
+const StatusCard = ({ status }: { status: string }) => (
   <DetailCardWrapper title={"Status"}>
     <div>
-      <h2 className="text-xl font-semibold">
-        {isCms ? data._source.cmsStatus : data._source.stateStatus}
-      </h2>
+      <h2 className="text-xl font-semibold">{status}</h2>
     </div>
   </DetailCardWrapper>
 );
@@ -73,6 +71,10 @@ const PackageActionsCard = ({ id }: { id: string }) => {
 export const DetailsContent = ({ data }: { data?: ItemResult }) => {
   const { data: user } = useGetUser();
   if (!data?._source) return <LoadingSpinner />;
+  const status =
+    user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+      ? data._source.cmsStatus
+      : data._source.stateStatus;
   return (
     <div className="block md:flex">
       <aside className="flex-none font-bold hidden md:block pr-8">
@@ -99,7 +101,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           id="package-overview"
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
         >
-          <StatusCard isCms={user?.isCms || false} data={data} />
+          <StatusCard status={status} />
           <PackageActionsCard id={data._id} />
         </section>
         <DetailsSection id="package-details" title="Package Details">
@@ -138,7 +140,7 @@ export const Details = () => {
     <>
       {/* <DetailNav id={id} type={data?._source.planType} /> */}
       <div className="max-w-screen-xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
-        <BreadCrumbs options={BREAD_CRUMB_CONFIG_PACKAGE_DETAILS({ id })} />
+        <BreadCrumbs options={DETAILS_AND_ACTIONS_CRUMBS({ id })} />
         <DetailsContent data={data} />
       </div>
     </>

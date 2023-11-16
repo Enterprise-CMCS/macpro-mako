@@ -1,13 +1,11 @@
 import { getSearchData, useOsSearch } from "@/api";
 import { useParams } from "@/hooks/useParams";
 import { useEffect, useState } from "react";
-import { OsQueryState, SearchData } from "shared-types";
+import { OsQueryState, SearchData, UserRoles } from "shared-types";
 import { createSearchFilterable } from "./utils";
 import { useQuery } from "@tanstack/react-query";
 import { useGetUser } from "@/api/useGetUser";
-
 export type OsTab = "waivers" | "spas";
-
 export const DEFAULT_FILTERS: Record<OsTab, Partial<OsParamsState>> = {
   spas: {
     filters: [
@@ -30,20 +28,18 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsParamsState>> = {
     ],
   },
 };
-
 /**
  *
- * @summary
- * use with main
- * Comments
- * - TODO: add index scope
- * - FIX: Initial render fires useEffect twice - 2 os requests
+@summary
+use with main
+Comments
+- TODO: add index scope
+- FIX: Initial render fires useEffect twice - 2 os requests
  */
 export const useOsQuery = () => {
   const params = useOsParams();
   const [data, setData] = useState<SearchData>();
   const { mutateAsync, isLoading, error } = useOsSearch();
-
   const onRequest = async (query: OsQueryState, options?: any) => {
     try {
       await mutateAsync(
@@ -62,14 +58,11 @@ export const useOsQuery = () => {
       console.error("Error occurred during search:", error);
     }
   };
-
   useEffect(() => {
     onRequest(params.state);
   }, [params.queryString]);
-
   return { data, isLoading, error, ...params };
 };
-
 export const useOsAggregate = () => {
   const { data: user } = useGetUser();
   const { state } = useOsParams();
@@ -98,8 +91,8 @@ export const useOsAggregate = () => {
             size: 10,
           },
           {
-            field: user?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
-            name: user?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
+            field: (user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)) ? "cmsStatus.keyword" : "stateStatus.keyword",
+            name: (user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)) ? "cmsStatus.keyword" : "stateStatus.keyword",
             type: "terms",
             size: 10,
           },
@@ -115,12 +108,9 @@ export const useOsAggregate = () => {
       });
     },
   });
-
   return aggs.data?.aggregations;
 };
-
 export type OsParamsState = OsQueryState & { tab: OsTab };
-
 export const useOsParams = () => {
   return useParams<OsParamsState>({
     key: "os",

@@ -6,6 +6,7 @@ import "@/api/amplifyConfig";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
 import { ROUTES } from "@/routes";
+import { MedicaidForm } from "./pages/form/medicaid-form";
 export const queryClient = new QueryClient();
 
 export const router = createBrowserRouter([
@@ -67,6 +68,7 @@ export const router = createBrowserRouter([
       },
       { path: ROUTES.MEDICAID_NEW, element: <P.MedicaidForm /> },
       { path: ROUTES.ACTION, element: <P.ActionFormIndex /> },
+      { path: "/form", element: <P.ExampleForm /> },
     ],
     loader: rootLoader(queryClient),
   },

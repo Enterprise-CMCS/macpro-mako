@@ -1,7 +1,7 @@
 import { Document } from "@/components/RHF/types";
 
 export const ABP1: Document = {
-  header: "ABP 1: Alternative Benefit Plan Populations",
+  header: "ABP 1: Alternative Benefit Plan populations",
   sections: [
     {
       title: "Population identification",
@@ -15,35 +15,15 @@ export const ABP1: Document = {
               name: "alt_benefit_plan_population_name",
               label: "Alternative Benefit Plan population name",
               rules: {
-                required: "*Required",
-                maxLength: {
-                  value: 20,
-                  message: "Max 20 Characters",
-                },
+                required: "* Required",
               },
               props: { placeholder: "enter name" },
-              dependency: {
-                // example of a value changing field, with multi-conditions
-                conditions: [
-                  {
-                    name: "geographic_variation",
-                    type: "expectedValue",
-                    expectedValue: "by_region",
-                  },
-                  {
-                    name: "is_geographic_area",
-                    type: "expectedValue",
-                    expectedValue: "yes",
-                  },
-                ],
-                effect: { type: "setValue", newValue: "Ben" },
-              },
             },
           ],
         },
         {
           description:
-            "Identify eligibility groups that are included in the Alternative Benefit Plan's population, and which may contain individuals that meet any targeting criteria used to further define the population.",
+            "Identify eligibility groups that are included in the Alternative Benefit Plan's population and that may contain individuals that meet any targeting criteria used to further define the population.",
           slots: [
             {
               rhf: "FieldArray",
@@ -52,9 +32,12 @@ export const ABP1: Document = {
                 {
                   rhf: "Select",
                   name: "eligibility_group",
+                  rules: {
+                    required: "* Required",
+                  },
                   label: "Eligibility group",
                   props: {
-                    className: "w-[300px]",
+                    className: "min-w-[300px]",
                     options: [
                       {
                         label: "Parents and Other Caretaker Relatives",
@@ -306,6 +289,9 @@ export const ABP1: Document = {
                   rhf: "Select",
                   name: "mandatory_voluntary",
                   label: "Mandatory or voluntary",
+                  rules: {
+                    required: "* Required",
+                  },
                   props: {
                     className: "w-[200px]",
                     options: [
@@ -332,6 +318,9 @@ export const ABP1: Document = {
               rhf: "Select",
               name: "is_enrollment_available",
               label: "Alternative Benefit Plan population name",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 className: "w-[150px]",
                 options: [
@@ -359,12 +348,15 @@ export const ABP1: Document = {
       },
       form: [
         {
-          description: "Targeting criteria (select all that apply):",
+          description: "Targeting criteria (select all that apply)",
           slots: [
             {
               rhf: "Checkbox",
               name: "target_criteria",
               label: "Mandatory or voluntary",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -377,6 +369,9 @@ export const ABP1: Document = {
                           {
                             rhf: "Radio",
                             name: "income_target",
+                            rules: {
+                              required: "* Required",
+                            },
                             props: {
                               options: [
                                 {
@@ -400,6 +395,9 @@ export const ABP1: Document = {
                           {
                             rhf: "Radio",
                             name: "income_definition",
+                            rules: {
+                              required: "* Required",
+                            },
                             props: {
                               options: [
                                 {
@@ -409,6 +407,9 @@ export const ABP1: Document = {
                                     {
                                       rhf: "Radio",
                                       name: "income_definition_percentage",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         options: [
                                           {
@@ -417,6 +418,17 @@ export const ABP1: Document = {
                                             slots: [
                                               {
                                                 rhf: "Input",
+                                                props: {
+                                                  icon: "%",
+                                                },
+                                                rules: {
+                                                  pattern: {
+                                                    value: /^-?\d*\.?\d+$/,
+                                                    message:
+                                                      "Must be a percentage",
+                                                  },
+                                                  required: "* Required",
+                                                },
                                                 name: "federal_poverty_level_percentage",
                                                 label:
                                                   "Enter the Federal Poverty Level percentage",
@@ -433,6 +445,17 @@ export const ABP1: Document = {
                                                 name: "ssi_federal_benefit_percentage",
                                                 label:
                                                   "Enter the SSI Federal Benefit Rate percentage",
+                                                props: {
+                                                  icon: "%",
+                                                },
+                                                rules: {
+                                                  pattern: {
+                                                    value: /^-?\d*\.?\d+$/,
+                                                    message:
+                                                      "Must be a percentage",
+                                                  },
+                                                  required: "* Required",
+                                                },
                                               },
                                             ],
                                           },
@@ -445,11 +468,25 @@ export const ABP1: Document = {
                                                 name: "other_percentage",
                                                 label:
                                                   "Enter the Other percentage",
+                                                props: {
+                                                  icon: "%",
+                                                },
+                                                rules: {
+                                                  pattern: {
+                                                    value: /^-?\d*\.?\d+$/,
+                                                    message:
+                                                      "Must be a percentage",
+                                                  },
+                                                  required: "* Required",
+                                                },
                                               },
                                               {
                                                 rhf: "Textarea",
                                                 name: "other_describe",
                                                 label: "Describe:",
+                                                rules: {
+                                                  required: "* Required",
+                                                },
                                               },
                                             ],
                                           },
@@ -465,6 +502,9 @@ export const ABP1: Document = {
                                     {
                                       rhf: "Radio",
                                       name: "income_definition_specific",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         options: [
                                           {
@@ -487,6 +527,16 @@ export const ABP1: Document = {
                                                           className:
                                                             "w-[300px]",
                                                         },
+                                                        rules: {
+                                                          pattern: {
+                                                            value:
+                                                              /^\d*\.?\d+$/,
+                                                            message:
+                                                              "Must be a positive numerical value",
+                                                          },
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "Input",
@@ -497,6 +547,17 @@ export const ABP1: Document = {
                                                             "w-[200px]",
                                                           placeholder:
                                                             "enter amount",
+                                                          icon: "$",
+                                                        },
+                                                        rules: {
+                                                          pattern: {
+                                                            value:
+                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                            message:
+                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                          },
+                                                          required:
+                                                            "* Required",
                                                         },
                                                       },
                                                     ],
@@ -504,33 +565,44 @@ export const ABP1: Document = {
                                                 ],
                                               },
                                               {
-                                                description:
-                                                  "Is there an additional incremental amount",
                                                 slots: [
                                                   {
-                                                    rhf: "Switch",
-                                                    name: "is_incremental_amount",
-                                                  },
-                                                ],
-                                              },
-                                              {
-                                                description:
-                                                  "Enter incremental dollar amount",
-                                                //NOTE: Should this be a thing? It feels implied in the pdf
-                                                // dependency: {
-                                                //   conditions: [
-                                                //     {
-                                                //       type: "expectedValue",
-                                                //       name: "is_incremental_amount",
-                                                //       expectedValue: true,
-                                                //     },
-                                                //   ],
-                                                //   effect: { type: "show" },
-                                                // },
-                                                slots: [
-                                                  {
-                                                    rhf: "Input",
-                                                    name: "doller_incremental_amount",
+                                                    rhf: "Checkbox",
+                                                    name: "is_incremental_amount_statewide_std",
+                                                    props: {
+                                                      options: [
+                                                        {
+                                                          label:
+                                                            "There is an additional incremental amount.",
+                                                          value: "yes",
+                                                          form: [
+                                                            {
+                                                              description:
+                                                                "Incremental dollar amount",
+                                                              slots: [
+                                                                {
+                                                                  rhf: "Input",
+                                                                  name: "dollar_incremental_amount_statewide_std",
+                                                                  props: {
+                                                                    icon: "$",
+                                                                  },
+                                                                  rules: {
+                                                                    pattern: {
+                                                                      value:
+                                                                        /^\d*(?:\.\d{1,2})?$/,
+                                                                      message:
+                                                                        "Must be all numbers, no commas. e.g. 1234.56",
+                                                                    },
+                                                                    required:
+                                                                      "* Required",
+                                                                  },
+                                                                },
+                                                              ],
+                                                            },
+                                                          ],
+                                                        },
+                                                      ],
+                                                    },
                                                   },
                                                 ],
                                               },
@@ -538,7 +610,7 @@ export const ABP1: Document = {
                                           },
                                           {
                                             label: "Standard Varies by region",
-                                            value: "region_standard", //
+                                            value: "region_standard",
                                             form: [
                                               {
                                                 slots: [
@@ -555,11 +627,19 @@ export const ABP1: Document = {
                                                         rhf: "Input",
                                                         name: "name_of_region",
                                                         label: "Region Name",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "Textarea",
                                                         name: "region_description",
                                                         label: "Description",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "FieldArray",
@@ -576,6 +656,16 @@ export const ABP1: Document = {
                                                               className:
                                                                 "w-[300px]",
                                                             },
+                                                            rules: {
+                                                              pattern: {
+                                                                value:
+                                                                  /^\d*\.?\d+$/,
+                                                                message:
+                                                                  "Must be a positive numerical value",
+                                                              },
+                                                              required:
+                                                                "* Required",
+                                                            },
                                                           },
                                                           {
                                                             rhf: "Input",
@@ -587,25 +677,59 @@ export const ABP1: Document = {
                                                                 "w-[200px]",
                                                               placeholder:
                                                                 "enter amount",
+                                                              icon: "$",
+                                                            },
+                                                            rules: {
+                                                              pattern: {
+                                                                value:
+                                                                  /^\d*(?:\.\d{1,2})?$/,
+                                                                message:
+                                                                  "Must be all numbers, no commas. e.g. 1234.56",
+                                                              },
+                                                              required:
+                                                                "* Required",
                                                             },
                                                           },
                                                         ],
                                                       },
                                                       {
-                                                        rhf: "Switch",
-                                                        label:
-                                                          "Is there an additional incremental amount?",
-                                                        labelStyling:
-                                                          "font-bold mb-2",
+                                                        rhf: "Checkbox",
                                                         name: "is_incremental_amount",
-                                                      },
-                                                      {
-                                                        rhf: "Input",
-                                                        label:
-                                                          "Enter incremental dollar amount:",
-                                                        labelStyling:
-                                                          "font-bold mb-2",
-                                                        name: "doller_incremental_amount",
+                                                        props: {
+                                                          options: [
+                                                            {
+                                                              label:
+                                                                "There is an additional incremental amount.",
+                                                              value: "yes",
+                                                              form: [
+                                                                {
+                                                                  description:
+                                                                    "Incremental dollar amount",
+                                                                  slots: [
+                                                                    {
+                                                                      rhf: "Input",
+                                                                      name: "dollar_incremental_amount",
+                                                                      props: {
+                                                                        icon: "$",
+                                                                      },
+                                                                      rules: {
+                                                                        pattern:
+                                                                          {
+                                                                            value:
+                                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                                            message:
+                                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                                          },
+                                                                        required:
+                                                                          "* Required",
+                                                                      },
+                                                                    },
+                                                                  ],
+                                                                },
+                                                              ],
+                                                            },
+                                                          ],
+                                                        },
                                                       },
                                                     ],
                                                   },
@@ -615,7 +739,7 @@ export const ABP1: Document = {
                                           },
                                           {
                                             label:
-                                              "standard varies by living arrangement",
+                                              "Standard varies by living arrangement",
                                             value: "living_standard",
 
                                             form: [
@@ -636,11 +760,19 @@ export const ABP1: Document = {
                                                         name: "name_of_living_arrangement",
                                                         label:
                                                           "Living Arrangement Name",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "Textarea",
                                                         name: "living_arrangement_description",
                                                         label: "Description",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "FieldArray",
@@ -657,6 +789,16 @@ export const ABP1: Document = {
                                                               className:
                                                                 "w-[300px]",
                                                             },
+                                                            rules: {
+                                                              pattern: {
+                                                                value:
+                                                                  /^\d*\.?\d+$/,
+                                                                message:
+                                                                  "Must be a positive numerical value",
+                                                              },
+                                                              required:
+                                                                "* Required",
+                                                            },
                                                           },
                                                           {
                                                             rhf: "Input",
@@ -668,25 +810,59 @@ export const ABP1: Document = {
                                                                 "w-[200px]",
                                                               placeholder:
                                                                 "enter amount",
+                                                              icon: "$",
+                                                            },
+                                                            rules: {
+                                                              pattern: {
+                                                                value:
+                                                                  /^\d*(?:\.\d{1,2})?$/,
+                                                                message:
+                                                                  "Must be all numbers, no commas. e.g. 1234.56",
+                                                              },
+                                                              required:
+                                                                "* Required",
                                                             },
                                                           },
                                                         ],
                                                       },
                                                       {
-                                                        rhf: "Switch",
-                                                        label:
-                                                          "Is there an additional incremental amount?",
-                                                        labelStyling:
-                                                          "font-bold mb-2",
+                                                        rhf: "Checkbox",
                                                         name: "is_incremental_amount",
-                                                      },
-                                                      {
-                                                        rhf: "Input",
-                                                        label:
-                                                          "Enter incremental dollar amount:",
-                                                        labelStyling:
-                                                          "font-bold mb-2",
-                                                        name: "doller_incremental_amount",
+                                                        props: {
+                                                          options: [
+                                                            {
+                                                              label:
+                                                                "There is an additional incremental amount.",
+                                                              value: "yes",
+                                                              form: [
+                                                                {
+                                                                  description:
+                                                                    "Incremental dollar amount",
+                                                                  slots: [
+                                                                    {
+                                                                      rhf: "Input",
+                                                                      name: "dollar_incremental_amount",
+                                                                      props: {
+                                                                        icon: "$",
+                                                                      },
+                                                                      rules: {
+                                                                        pattern:
+                                                                          {
+                                                                            value:
+                                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                                            message:
+                                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                                          },
+                                                                        required:
+                                                                          "* Required",
+                                                                      },
+                                                                    },
+                                                                  ],
+                                                                },
+                                                              ],
+                                                            },
+                                                          ],
+                                                        },
                                                       },
                                                     ],
                                                   },
@@ -696,7 +872,7 @@ export const ABP1: Document = {
                                           },
                                           {
                                             label:
-                                              "standard varies by some other way",
+                                              "Standard varies by some other way",
                                             value: "other_standard",
 
                                             form: [
@@ -714,11 +890,19 @@ export const ABP1: Document = {
                                                         rhf: "Input",
                                                         name: "name_of_group",
                                                         label: "Name",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "Textarea",
                                                         name: "group_description",
                                                         label: "Description",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
                                                       },
                                                       {
                                                         rhf: "FieldArray",
@@ -735,6 +919,16 @@ export const ABP1: Document = {
                                                               className:
                                                                 "w-[300px]",
                                                             },
+                                                            rules: {
+                                                              pattern: {
+                                                                value:
+                                                                  /^\d*\.?\d+$/,
+                                                                message:
+                                                                  "Must be a positive numerical value",
+                                                              },
+                                                              required:
+                                                                "* Required",
+                                                            },
                                                           },
                                                           {
                                                             rhf: "Input",
@@ -746,25 +940,59 @@ export const ABP1: Document = {
                                                                 "w-[200px]",
                                                               placeholder:
                                                                 "enter amount",
+                                                              icon: "$",
+                                                            },
+                                                            rules: {
+                                                              pattern: {
+                                                                value:
+                                                                  /^\d*(?:\.\d{1,2})?$/,
+                                                                message:
+                                                                  "Must be all numbers, no commas. e.g. 1234.56",
+                                                              },
+                                                              required:
+                                                                "* Required",
                                                             },
                                                           },
                                                         ],
                                                       },
                                                       {
-                                                        rhf: "Switch",
-                                                        label:
-                                                          "Is there an additional incremental amount?",
-                                                        labelStyling:
-                                                          "font-bold mb-2",
+                                                        rhf: "Checkbox",
                                                         name: "is_incremental_amount",
-                                                      },
-                                                      {
-                                                        rhf: "Input",
-                                                        label:
-                                                          "Enter incremental dollar amount:",
-                                                        labelStyling:
-                                                          "font-bold mb-2",
-                                                        name: "doller_incremental_amount",
+                                                        props: {
+                                                          options: [
+                                                            {
+                                                              label:
+                                                                "There is an additional incremental amount.",
+                                                              value: "yes",
+                                                              form: [
+                                                                {
+                                                                  description:
+                                                                    "Incremental dollar amount",
+                                                                  slots: [
+                                                                    {
+                                                                      rhf: "Input",
+                                                                      name: "dollar_incremental_amount",
+                                                                      props: {
+                                                                        icon: "$",
+                                                                      },
+                                                                      rules: {
+                                                                        pattern:
+                                                                          {
+                                                                            value:
+                                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                                            message:
+                                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                                          },
+                                                                        required:
+                                                                          "* Required",
+                                                                      },
+                                                                    },
+                                                                  ],
+                                                                },
+                                                              ],
+                                                            },
+                                                          ],
+                                                        },
                                                       },
                                                     ],
                                                   },
@@ -791,6 +1019,9 @@ export const ABP1: Document = {
                       {
                         rhf: "Checkbox",
                         name: "health_conditions",
+                        rules: {
+                          required: "* Required",
+                        },
                         props: {
                           options: [
                             {
@@ -802,11 +1033,11 @@ export const ABP1: Document = {
                               value: "brain_injury",
                             },
                             {
-                              label: "HIV / AIDS",
+                              label: "HIV/AIDS",
                               value: "hiv_aids",
                             },
                             {
-                              label: "Medically Frail",
+                              label: "Medically frail",
                               value: "med_frail",
                             },
                             {
@@ -815,23 +1046,23 @@ export const ABP1: Document = {
                             },
                             { label: "Autism", value: "autism" },
                             {
-                              label: "Developmental Disability",
+                              label: "Developmental disability",
                               value: "dev_disability",
                             },
                             {
-                              label: "Intellectual Disability",
+                              label: "Intellectual disability",
                               value: "int_disability",
                             },
                             {
-                              label: "Mental Illness",
+                              label: "Mental illness",
                               value: "mental_illness",
                             },
                             {
-                              label: "Substance Use Disorder",
+                              label: "Substance use disorder",
                               value: "substance_use_dis",
                             },
                             { label: "Diabetes", value: "diabetes" },
-                            { label: "Heart Disease", value: "heart_dis" },
+                            { label: "Heart disease", value: "heart_dis" },
                             { label: "Asthma", value: "asthma" },
                             { label: "Obesity", value: "obesity" },
                             {
@@ -843,6 +1074,9 @@ export const ABP1: Document = {
                                   rhf: "Input",
                                   name: "other_description",
                                   label: "Describe",
+                                  rules: {
+                                    required: "* Required",
+                                  },
                                 },
                               ],
                             },
@@ -859,6 +1093,9 @@ export const ABP1: Document = {
                         rhf: "Input",
                         name: "other_targeting_criteria_description",
                         label: "Describe",
+                        rules: {
+                          required: "* Required",
+                        },
                       },
                     ],
                   },
@@ -874,7 +1111,7 @@ export const ABP1: Document = {
       form: [
         {
           description:
-            "Will the Alternative Benefit Plan population include individuals from the entire state or territory?",
+            "Will the Alternative Benefit Plan population include individuals from the entire state/territory?",
           slots: [
             {
               rhf: "Select",
@@ -886,11 +1123,14 @@ export const ABP1: Document = {
                   { label: "No", value: "no" },
                 ],
               },
+              rules: {
+                required: "* Required",
+              },
             },
           ],
         },
         {
-          description: "Select a method of geographic variation",
+          description: "Method of geographic variation",
           dependency: {
             conditions: [
               {
@@ -905,6 +1145,9 @@ export const ABP1: Document = {
             {
               rhf: "Radio",
               name: "geographic_variation",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -912,11 +1155,14 @@ export const ABP1: Document = {
                     value: "by_county",
                     form: [
                       {
-                        description: "Specify Counties",
+                        description: "Specify counties",
                         slots: [
                           {
                             name: "specify_counties",
                             rhf: "Textarea",
+                            rules: {
+                              required: "* Required",
+                            },
                           },
                         ],
                       },
@@ -927,11 +1173,14 @@ export const ABP1: Document = {
                     value: "by_region",
                     form: [
                       {
-                        description: "Specify Regions",
+                        description: "Specify regions",
                         slots: [
                           {
                             name: "specify_regions",
                             rhf: "Textarea",
+                            rules: {
+                              required: "* Required",
+                            },
                           },
                         ],
                       },
@@ -942,11 +1191,14 @@ export const ABP1: Document = {
                     value: "by_city_town",
                     form: [
                       {
-                        description: "Specify Cities and Towns",
+                        description: "Specify cities and towns",
                         slots: [
                           {
                             name: "specify_cities_towns",
                             rhf: "Textarea",
+                            rules: {
+                              required: "* Required",
+                            },
                           },
                         ],
                       },
@@ -957,11 +1209,14 @@ export const ABP1: Document = {
                     value: "other",
                     form: [
                       {
-                        description: "Specify Other",
+                        description: "Specify other",
                         slots: [
                           {
                             name: "specify_other",
                             rhf: "Textarea",
+                            rules: {
+                              required: "* Required",
+                            },
                           },
                         ],
                       },
@@ -979,7 +1234,7 @@ export const ABP1: Document = {
       form: [
         {
           description:
-            "Other Information Related to Selection of the Section 1937 Coverage Option and the Base Benchmark Plan (optional):",
+            "Other information related to selection of the Section 1937 coverage option and the base benchmark plan (optional)",
           slots: [
             {
               name: "additional_information",

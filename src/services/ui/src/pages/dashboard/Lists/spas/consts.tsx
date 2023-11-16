@@ -47,7 +47,7 @@ export const TABLE_COLUMNS = (props?: {
         : BLANK_VALUE,
   },
   {
-    field: props?.isCms ? "cmsStatus" : "stateStatus.keyword",
+    field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
     label: "Status",
     cell: (data) =>
       props?.isCms && !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
