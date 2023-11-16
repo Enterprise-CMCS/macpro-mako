@@ -21,17 +21,8 @@ export const packageActionsForResult = (
   result: ItemResult
 ): Action[] => {
   const actions = [];
-  const activeRai = getActiveRai(!result._source.rais);
+  const activeRai = getActiveRai(result._source.rais);
   if (isCmsWriteUser(user)) {
-    if (result._source.rais && !activeRai) {
-      // There's an RAI and its been responded to
-      if (!result._source.raiWithdrawEnabled) {
-        actions.push(Action.ENABLE_RAI_WITHDRAW);
-      }
-      if (result._source.raiWithdrawEnabled) {
-        actions.push(Action.DISABLE_RAI_WITHDRAW);
-      }
-    }
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING:
       case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
@@ -43,10 +34,18 @@ export const packageActionsForResult = (
         }
         break;
     }
+    if (result._source.rais && !activeRai) {
+      // There's an RAI and its been responded to
+      if (!result._source.raiWithdrawEnabled) {
+        actions.push(Action.ENABLE_RAI_WITHDRAW);
+      }
+      if (result._source.raiWithdrawEnabled) {
+        actions.push(Action.DISABLE_RAI_WITHDRAW);
+      }
+    }
   } else {
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING_RAI:
-        console.log("we are here in pending rai");
         if (activeRai) {
           // If there is an active RAI
           actions.push(Action.RESPOND_TO_RAI);

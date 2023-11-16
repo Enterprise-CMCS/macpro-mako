@@ -14,8 +14,8 @@ export const getLatestRai = (rais: any) => {
 
 export const getActiveRai = (rais:any) => {
     const latest = getLatestRai(rais);
-    // if there is an rai, it has a requested date, and it has neither response nor withdrawn dates 
-    if(latest && latest.value.requestedDate && (!latest.value.responseDate && !latest.value.withdrawnDate)){
+    // If the latest RAI does not have a received or withdrawn date
+    if(latest && !latest.value.receivedDate && !latest.value.withdrawnDate){
         return latest
     } else {
         return null
