@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import {
   format,
   isAfter,
@@ -10,6 +10,7 @@ import {
   sub,
   getYear,
   endOfDay,
+  startOfDay,
 } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
@@ -40,11 +41,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   const [toValue, setToValue] = useState<string>(
     value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : ""
   );
-
-  useEffect(() => {
-    setToValue(value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : "");
-    setFromValue(value?.gte ? format(new Date(value?.gte), "MM/dd/yyyy") : "");
-  }, [value]);
 
   const handleClose = (updateOpen: boolean) => {
     setOpen(updateOpen);
@@ -125,9 +121,8 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   const setPresetRange = (range: string) => {
-    const today = new Date();
-    let startDate = new Date(today.setHours(0, 0, 0, 0));
-
+    const today = startOfDay(new Date());
+    let startDate = today;
     if (range === "quarter") {
       startDate = startOfQuarter(today);
     } else if (range === "month") {
@@ -135,6 +130,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     } else if (range === "week") {
       startDate = sub(today, { days: 6 });
     }
+
     const rangeObject = getDateRange(startDate, endOfDay(today));
     onChange(rangeObject);
     setSelectedDate({ from: startDate, to: today });
@@ -231,6 +227,8 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
         onClick={() => {
           setSelectedDate({ from: undefined, to: undefined });
           onChange({ gte: undefined, lte: undefined });
+          setToValue("");
+          setFromValue("");
         }}
       >
         Clear
