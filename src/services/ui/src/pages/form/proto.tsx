@@ -577,11 +577,11 @@ export const ABP1: Document = {
                                                           value: "yes",
                                                           form: [
                                                             {
-                                                              description:
-                                                                "Incremental dollar amount",
                                                               slots: [
                                                                 {
                                                                   rhf: "Input",
+                                                                  label:
+                                                                    "Incremental dollar amount",
                                                                   name: "dollar_incremental_amount_statewide_std",
                                                                   props: {
                                                                     icon: "$",
@@ -707,11 +707,11 @@ export const ABP1: Document = {
                                                               value: "yes",
                                                               form: [
                                                                 {
-                                                                  description:
-                                                                    "Incremental dollar amount",
                                                                   slots: [
                                                                     {
                                                                       rhf: "Input",
+                                                                      label:
+                                                                        "Incremental dollar amount",
                                                                       name: "dollar_incremental_amount",
                                                                       props: {
                                                                         icon: "$",
@@ -844,11 +844,11 @@ export const ABP1: Document = {
                                                               value: "yes",
                                                               form: [
                                                                 {
-                                                                  description:
-                                                                    "Incremental dollar amount",
                                                                   slots: [
                                                                     {
                                                                       rhf: "Input",
+                                                                      label:
+                                                                        "Incremental dollar amount",
                                                                       name: "dollar_incremental_amount",
                                                                       props: {
                                                                         icon: "$",
@@ -880,7 +880,7 @@ export const ABP1: Document = {
                                           },
                                           {
                                             label:
-                                              "Standard varies by some other way",
+                                              "Standard varies in some other way",
                                             value: "other_standard",
 
                                             form: [
@@ -890,8 +890,10 @@ export const ABP1: Document = {
                                                     rhf: "FieldGroup",
                                                     name: "income_definition_specific_statewide_group_other",
                                                     props: {
-                                                      appendText: "Add",
-                                                      removeText: "Remove",
+                                                      appendText:
+                                                        "Add some other way",
+                                                      removeText:
+                                                        "Remove some other way",
                                                     },
                                                     fields: [
                                                       {
@@ -915,6 +917,10 @@ export const ABP1: Document = {
                                                       {
                                                         rhf: "FieldArray",
                                                         name: "income_definition_specific_statewide_arr",
+                                                        props: {
+                                                          appendText:
+                                                            "Add household size",
+                                                        },
                                                         fields: [
                                                           {
                                                             rhf: "Input",
@@ -974,11 +980,11 @@ export const ABP1: Document = {
                                                               value: "yes",
                                                               form: [
                                                                 {
-                                                                  description:
-                                                                    "Incremental dollar amount",
                                                                   slots: [
                                                                     {
                                                                       rhf: "Input",
+                                                                      label:
+                                                                        "Incremental dollar amount",
                                                                       name: "dollar_incremental_amount",
                                                                       props: {
                                                                         icon: "$",
