@@ -34,7 +34,11 @@ export const packageActionsForResult = (
     //     }
     //     break;
     // }
-    if (result._source.rais && !activeRai) {
+    if (
+      result._source.rais !== null &&
+      Object.keys(result._source.rais).length > 0 &&
+      !activeRai
+    ) {
       // There's an RAI and its been responded to
       if (!result._source.raiWithdrawEnabled) {
         actions.push(Action.ENABLE_RAI_WITHDRAW);
