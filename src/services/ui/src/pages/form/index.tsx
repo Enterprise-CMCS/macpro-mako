@@ -1,11 +1,15 @@
 import { useForm } from "react-hook-form";
 import { Button, Form } from "@/components/Inputs";
 import { RHFDocument } from "@/components/RHF";
-import { ABP1 } from "./proto";
+// import { data } from "./proto";
 import { documentInitializer, documentValidator } from "@/components/RHF/utils";
+import { useGetForm } from "@/api";
 
 export function ExampleForm() {
-  const defaultValues = documentInitializer(ABP1);
+  const { data, isLoading, error } = useGetForm("ABP1", "1");
+  console.log(data, isLoading, error);
+
+  const defaultValues = documentInitializer(data);
 
   const form = useForm({
     defaultValues,
@@ -13,7 +17,7 @@ export function ExampleForm() {
 
   const onSubmit = form.handleSubmit(
     () => {
-      const validate = documentValidator(ABP1);
+      const validate = documentValidator(data);
       const isValid = validate({
         alt_benefit_plan_population_name:
           "agadgasdfg2f2fdsfascvcvaeqfwf22fasdfasdfsd",
@@ -86,7 +90,7 @@ export function ExampleForm() {
     <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-6">
-          <RHFDocument document={ABP1} {...form} />
+          <RHFDocument document={data} {...form} />
           <Button type="submit">Submit</Button>
         </form>
       </Form>
