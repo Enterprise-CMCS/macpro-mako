@@ -31,9 +31,9 @@ export const RHFFieldArray = <TFields extends FieldValues>(
         return (
           <div className="flex flex-row gap-3" key={FLD.id}>
             {props.fields.map((SLOT) => {
-              const adjustedPrefix =
-                (props.groupNamePrefix ?? "") + `${props.name}.${index}.`;
-              const adjustedSlotName = adjustedPrefix + SLOT.name;
+              const prefix = `${props.name}.${index}.`;
+              const adjustedPrefix = (props.groupNamePrefix ?? "") + prefix;
+              const adjustedSlotName = prefix + SLOT.name;
               return (
                 <FormField
                   key={adjustedSlotName}
