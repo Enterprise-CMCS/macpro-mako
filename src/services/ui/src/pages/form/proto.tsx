@@ -581,7 +581,7 @@ export const ABP1: Document = {
                                                                 {
                                                                   rhf: "Input",
                                                                   label:
-                                                                    "Incremental dollar amount",
+                                                                    "Incremental amount ($)",
                                                                   name: "dollar_incremental_amount_statewide_std",
                                                                   props: {
                                                                     icon: "$",
@@ -711,7 +711,7 @@ export const ABP1: Document = {
                                                                     {
                                                                       rhf: "Input",
                                                                       label:
-                                                                        "Incremental dollar amount",
+                                                                        "Incremental amount ($)",
                                                                       name: "dollar_incremental_amount",
                                                                       props: {
                                                                         icon: "$",
@@ -848,7 +848,7 @@ export const ABP1: Document = {
                                                                     {
                                                                       rhf: "Input",
                                                                       label:
-                                                                        "Incremental dollar amount",
+                                                                        "Incremental amount ($)",
                                                                       name: "dollar_incremental_amount",
                                                                       props: {
                                                                         icon: "$",
@@ -984,7 +984,7 @@ export const ABP1: Document = {
                                                                     {
                                                                       rhf: "Input",
                                                                       label:
-                                                                        "Incremental dollar amount",
+                                                                        "Incremental amount ($)",
                                                                       name: "dollar_incremental_amount",
                                                                       props: {
                                                                         icon: "$",
@@ -1257,11 +1257,16 @@ export const ABP1: Document = {
       form: [
         {
           description:
-            "Other information related to selection of the Section 1937 coverage option and the base benchmark plan (optional)",
+            "Any other information the state/territory wishes to provide about the population (optional)",
+          // "Other information related to selection of the Section 1937 coverage option and the base benchmark plan (optional)",
           slots: [
             {
               name: "additional_information",
               rhf: "Textarea",
+              props: {
+                charcount: "limited",
+                maxLength: 4000,
+              },
             },
           ],
         },
