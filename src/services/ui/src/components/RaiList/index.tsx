@@ -142,13 +142,21 @@ export const RaiList = (data: OsMainSourceItem) => {
 
 function getLatestStatus(rai: any) {
   const { receivedDate, requestedDate, withdrawnDate } = rai;
+
+  // Filter out null and undefined values and handle the case when all dates are null or undefined
   const filteredNumbers: number[] = [
     requestedDate,
     receivedDate,
     withdrawnDate,
   ].filter((num) => num !== null && num !== undefined) as number[];
+
+  if (filteredNumbers.length === 0) {
+    return "No date recorded";
+  }
+
   const latestDate = Math.max(...filteredNumbers);
   let retString = "";
+
   if (latestDate === receivedDate) {
     retString += "Responded:";
   } else if (latestDate === requestedDate) {
@@ -156,8 +164,14 @@ function getLatestStatus(rai: any) {
   } else if (latestDate === withdrawnDate) {
     retString += "Withdrawn:";
   }
-  return `${retString} ${format(
-    new Date(latestDate),
-    "EEE, MMM d yyyy, h:mm a"
-  )}`;
+
+  // Check if latestDate is a valid number before formatting
+  if (!isNaN(latestDate) && isFinite(latestDate)) {
+    return `${retString} ${format(
+      new Date(latestDate),
+      "EEE, MMM d yyyy, h:mm a"
+    )}`;
+  } else {
+    return "Invalid date";
+  }
 }
