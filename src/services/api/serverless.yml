@@ -39,6 +39,14 @@ provider:
             - sts:AssumeRole
           Resource:
             - ${self:custom.onemacLegacyS3AccessRoleArn}
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:PutObjectTagging
+            - s3:GetObject
+            - s3:GetObjectTagging
+          Resource:
+            - ${param:attachmentsBucketArn}/*
 
 custom:
   project: ${env:PROJECT}
@@ -51,6 +59,8 @@ custom:
       - production
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
+  dbInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/seatool/dbInfo, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/seatool/dbInfo}
+  brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
   scriptable:
     hooks:
       package:compileEvents: ./handlers/repack.js
@@ -59,18 +69,22 @@ params:
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
+    submitProvisionedConcurrency: 2
   val:
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
+    submitProvisionedConcurrency: 2
   production:
     searchProvisionedConcurrency: 10
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
+    submitProvisionedConcurrency: 5
   default:
-    searchProvisionedConcurrency: 1
-    itemProvisionedConcurrency: 1
+    searchProvisionedConcurrency: 0
+    itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
+    submitProvisionedConcurrency: 0
 
 functions:
   search:
@@ -91,6 +105,25 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
+  getPackageActions:
+    handler: handlers/getPackageActions.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+      onemacLegacyS3AccessRoleArn: ${self:custom.onemacLegacyS3AccessRoleArn}
+    events:
+      - http:
+          path: /getPackageActions
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:getAttachmentUrlProvisionedConcurrency}
   getAttachmentUrl:
     handler: handlers/getAttachmentUrl.handler
     maximumRetryAttempts: 0
@@ -110,6 +143,17 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:getAttachmentUrlProvisionedConcurrency}
+  getUploadUrl:
+    handler: handlers/getUploadUrl.handler
+    environment:
+      attachmentsBucketName: ${param:attachmentsBucketName}
+      attachmentsBucketRegion: ${param:attachmentsBucketRegion}
+    events:
+      - http:
+          path: /getUploadUrl
+          method: post
+          cors: true
+          authorizer: aws_iam
   item:
     handler: handlers/item.handler
     maximumRetryAttempts: 0
@@ -128,6 +172,53 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:itemProvisionedConcurrency}
+  submit:
+    handler: handlers/submit.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      dbIp: ${self:custom.dbInfo.ip}
+      dbPort: ${self:custom.dbInfo.port}
+      dbUser: ${self:custom.dbInfo.user}
+      dbPassword: ${self:custom.dbInfo.password}
+      topicName: ${param:topicName}
+      brokerString: ${self:custom.brokerString}
+    events:
+      - http:
+          path: /submit
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:submitProvisionedConcurrency}
+  action:
+    handler: handlers/action.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+      dbIp: ${self:custom.dbInfo.ip}
+      dbPort: ${self:custom.dbInfo.port}
+      dbUser: ${self:custom.dbInfo.user}
+      dbPassword: ${self:custom.dbInfo.password}
+      topicName: ${param:topicName}
+      brokerString: ${self:custom.brokerString}
+    events:
+      - http:
+          path: /action/{actionType}
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:submitProvisionedConcurrency} # reuse submit's concurrency
 resources:
   Resources:
     ApiGateway400ErrorCount:
@@ -135,7 +226,7 @@ resources:
       Properties:
         LogGroupName: !Ref ApiGatewayLogGroup
         FilterName: ApiGateway400ErrorCount
-        FilterPattern: '[ip, user, timestamp, request, status = 4*]'
+        FilterPattern: "[ip, user, timestamp, request, status = 4*]"
         MetricTransformations:
           - MetricValue: "1"
             DefaultValue: "0"
@@ -162,7 +253,7 @@ resources:
       Properties:
         LogGroupName: !Ref ApiGatewayLogGroup
         FilterName: ApiGateway500ErrorCount
-        FilterPattern: '[ip, user, timestamp, request, status = 5*]'
+        FilterPattern: "[ip, user, timestamp, request, status = 5*]"
         MetricTransformations:
           - MetricValue: "1"
             DefaultValue: "0"

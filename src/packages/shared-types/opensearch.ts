@@ -1,5 +1,6 @@
 import { SeaToolTransform } from "./seatool";
 import { OneMacTransform } from "./onemac";
+import { Action } from "./actions";
 
 export type OsHit<T> = {
   _index: string;
@@ -34,6 +35,9 @@ export type OsResponse<T> = {
 export type OsMainSourceItem = OneMacTransform & SeaToolTransform;
 export type OsMainSearchResponse = OsResponse<OsMainSourceItem>;
 export type SearchData = OsHits<OsMainSourceItem>;
+export type ItemResult = OsHit<OsMainSourceItem> & {
+  found: boolean;
+};
 
 export type OsFilterType =
   | "term"
@@ -52,12 +56,14 @@ export type OsField =
 
 export type OsFilterable = {
   type: OsFilterType;
+  label?: string;
+  component?: string;
   field: OsField;
   value: OsFilterValue;
   prefix: "must" | "must_not" | "should" | "filter";
 };
 
-export type OsQueryState<T = any> = {
+export type OsQueryState = {
   sort: { field: OsField; order: "asc" | "desc" };
   pagination: { number: number; size: number };
   filters: OsFilterable[];

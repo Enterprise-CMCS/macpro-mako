@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getStatus } from "./statusHelper";
+import { SEATOOL_STATUS, getStatus } from "./statusHelper";
 
 type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
@@ -109,7 +109,7 @@ export const seatoolSchema = z.object({
   SPW_STATUS: z
     .array(
       z.object({
-        SPW_STATUS_DESC: z.string().nullable(),
+        SPW_STATUS_DESC: z.string().nullish(),
       })
     )
     .nullable(),
@@ -144,7 +144,7 @@ export const transformSeatoolData = (id: string) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate } = getRaiDate(data);
     const { stateStatus, cmsStatus } = getStatus(
-      data.SPW_STATUS?.[0].SPW_STATUS_DESC
+      data.SPW_STATUS?.at(-1)?.SPW_STATUS_DESC
     );
     return {
       id,
@@ -163,8 +163,8 @@ export const transformSeatoolData = (id: string) => {
       raiReceivedDate,
       raiRequestedDate,
       state: data.STATES?.[0].STATE_CODE,
-      stateStatus,
-      cmsStatus,
+      stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
+      cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       submissionDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.SUBMISSION_DATE
       ),

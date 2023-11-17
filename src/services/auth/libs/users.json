@@ -24,7 +24,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "state-submitter"
+        "Value": "onemac-micro-statesubmitter"
       }
     ]
   },
@@ -53,7 +53,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "cms-read-only"
+        "Value": "onemac-micro-readonly"
       }
     ]
   },
@@ -82,7 +82,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "cms-reviewer"
+        "Value": "onemac-micro-reviewer"
       }
     ]
   },
@@ -111,65 +111,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "helpdesk"
-      }
-    ]
-  },
-  {
-    "username": "cmsadmin@example.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "cmsadmin@example.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "CMS"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Admin"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:state",
-        "Value": ""
-      },
-      {
-        "Name": "custom:cms-roles",
-        "Value": "cms-system-admin"
-      }
-    ]
-  },
-  {
-    "username": "approver@example.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "approver@example.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "CMS"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Approver"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:state",
-        "Value": ""
-      },
-      {
-        "Name": "custom:cms-roles",
-        "Value": "cms-role-approver"
+        "Value": "onemac-micro-helpdesk"
       }
     ]
   },
@@ -198,36 +140,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "state-submitter"
-      }
-    ]
-  },
-  {
-    "username": "stateadmin@example.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "stateadmin@example.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "State"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Admin"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:state",
-        "Value": "VA"
-      },
-      {
-        "Name": "custom:cms-roles",
-        "Value": "state-system-admin"
+        "Value": "onemac-micro-statesubmitter"
       }
     ]
   },
@@ -256,7 +169,28 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "state-system-admin,state-submitter"
+        "Value": "onemac-micro-statesubmitter"
+      }
+    ]
+  },
+  {
+    "username": "badfootball@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "badfootball@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "bad"
+      },
+      {
+        "Name": "family_name",
+        "Value": "football"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
       }
     ]
   }

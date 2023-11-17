@@ -18,12 +18,18 @@ import { FilterableSelect } from "./FilterableSelect";
 import { FilterableDateRange } from "./FilterableDateRange";
 import { FilterableCheckbox } from "./FilterableCheckbox";
 import { useFilterDrawer } from "./useFilterDrawer";
+import { Button } from "@/components/Inputs";
+import { checkMultiFilter, resetFilters } from "../utils";
+import { useOsParams } from "../useOpensearch";
 
 export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
+  const params = useOsParams();
 
+  const filtersApplied = checkMultiFilter(params.state.filters, 1);
+  const handleFilterReset = () => resetFilters(params.onSet);
   return (
-    <Sheet open={hook.open} onOpenChange={hook.onDrawerChange}>
+    <Sheet open={hook.drawerOpen} onOpenChange={hook.setDrawerState}>
       <SheetTrigger>
         <div className="flex flex-row gap-2 items-center border-slate-100 px-4">
           <FilterIcon className="w-4 h-4" />
@@ -34,6 +40,14 @@ export const OsFilterDrawer = () => {
         <SheetHeader>
           <h4 className="prose-2xl">Filters</h4>
         </SheetHeader>
+        <Button
+          className="w-full my-2"
+          variant="outline"
+          disabled={!filtersApplied}
+          onClick={handleFilterReset}
+        >
+          Reset
+        </Button>
         <Accordion
           value={hook.accordionValues}
           onValueChange={hook.onAccordionChange}

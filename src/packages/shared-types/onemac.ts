@@ -2,11 +2,14 @@ import { z } from "zod";
 import { s3ParseUrl } from "shared-utils/s3-url-parser";
 
 const onemacAttachmentSchema = z.object({
-  s3Key: z.string(),
+  s3Key: z.string().nullish(),
   filename: z.string(),
   title: z.string(),
-  contentType: z.string(),
-  url: z.string().url(),
+  contentType: z.string().nullish(),
+  url: z.string().url().nullish(),
+  bucket: z.string().nullish(),
+  key: z.string().nullish(),
+  uploadDate: z.number().nullish(),
 });
 
 export const onemacSchema = z.object({
@@ -14,12 +17,13 @@ export const onemacSchema = z.object({
   submitterName: z.string(),
   submitterEmail: z.string(),
   attachments: z.array(onemacAttachmentSchema).nullish(),
+  raiWithdrawEnabled: z.boolean().optional(),
   raiResponses: z
     .array(
       z.object({
         additionalInformation: z.string().nullable().default(null),
         submissionTimestamp: z.number(),
-        attachments: z.array(onemacAttachmentSchema),
+        attachments: z.array(onemacAttachmentSchema).nullish(),
       })
     )
     .nullish(),
@@ -30,18 +34,36 @@ export const transformOnemac = (id: string) => {
     id,
     attachments:
       data.attachments?.map((attachment) => {
-        const uploadDate = parseInt(attachment.s3Key.split("/")[0]);
-        const parsedUrl = s3ParseUrl(attachment.url);
-        if (!parsedUrl) return null;
-        const { bucket, key } = parsedUrl;
+        // this is a legacy onemac attachment
+        let bucket = "";
+        let key = "";
+        let uploadDate = 0;
+        if ("bucket" in attachment) {
+          bucket = attachment.bucket as string;
+        }
+        if ("key" in attachment) {
+          key = attachment.key as string;
+        }
+        if ("uploadDate" in attachment) {
+          uploadDate = attachment.uploadDate as number;
+        }
+        if (bucket == "") {
+          const parsedUrl = s3ParseUrl(attachment.url || "");
+          if (!parsedUrl) return null;
+          bucket = parsedUrl.bucket;
+          key = parsedUrl.key;
+          uploadDate = parseInt(attachment.s3Key?.split("/")[0] || "0");
+        }
 
         return {
-          ...attachment,
+          title: attachment.title,
+          filename: attachment.filename,
           uploadDate,
           bucket,
           key,
         };
       }) ?? null,
+    raiWithdrawEnabled: data.raiWithdrawEnabled,
     raiResponses:
       data.raiResponses?.map((response) => {
         return {
@@ -49,8 +71,10 @@ export const transformOnemac = (id: string) => {
           submissionTimestamp: response.submissionTimestamp,
           attachments:
             response.attachments?.map((attachment) => {
-              const uploadDate = parseInt(attachment.s3Key.split("/")[0]);
-              const parsedUrl = s3ParseUrl(attachment.url);
+              const uploadDate = parseInt(
+                attachment.s3Key?.split("/")[0] || "0"
+              );
+              const parsedUrl = s3ParseUrl(attachment.url || "");
               if (!parsedUrl) return null;
               const { bucket, key } = parsedUrl;
 
@@ -65,7 +89,7 @@ export const transformOnemac = (id: string) => {
       }) ?? null,
     additionalInformation: data.additionalInformation,
     submitterEmail: data.submitterEmail,
-    submitterName: data.submitterName,
+    submitterName: data.submitterName === "-- --" ? null : data.submitterName,
     origin: "oneMAC",
   }));
 };
