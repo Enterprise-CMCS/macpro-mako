@@ -138,7 +138,6 @@ export const Details = () => {
 
   return (
     <>
-      {/* <DetailNav id={id} type={data?._source.planType} /> */}
       <div className="max-w-screen-xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
         <BreadCrumbs options={DETAILS_AND_ACTIONS_CRUMBS({ id })} />
         <DetailsContent data={data} />
