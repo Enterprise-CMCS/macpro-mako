@@ -187,8 +187,9 @@ export const RespondToRai = () => {
           <section>
             <h3 className="text-2xl font-bold font-sans">Attachments</h3>
             <p>
-              Maximum file size of 80 MB per attachment. Read the description
-              for each of the attachment types on the{" "}
+              Maximum file size of 80 MB per attachment.{" "}
+              <strong>You can add multiple files per attachment type.</strong>{" "}
+              Read the description for each of the attachment types on the{" "}
               {
                 <Link
                   to="/faq/#medicaid-spa-attachments"
