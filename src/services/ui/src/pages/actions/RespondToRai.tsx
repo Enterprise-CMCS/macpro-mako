@@ -171,7 +171,7 @@ export const RespondToRai = () => {
               Package Details
             </h3>
             <div className="flex flex-col my-8">
-              <label>Package ID</label>
+              <label>SPA ID</label>
               <span className="text-xl" aria-labelledby="package-id-label">
                 {id}
               </span>
