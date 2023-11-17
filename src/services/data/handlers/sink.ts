@@ -106,7 +106,6 @@ export const onemac: Handler = async (event) => {
     | RaiResponseTransform
   )[] = [];
 
-  const rawArr: any[] = [];
   for (const recordKey of Object.keys(event.records)) {
     for (const onemacRecord of event.records[recordKey] as {
       key: string;
@@ -179,7 +178,6 @@ export const onemac: Handler = async (event) => {
             );
           } else {
             oneMacRecords.push(result.data);
-            rawArr.push(record);
           }
         }
       } else {
@@ -205,7 +203,6 @@ export const onemac: Handler = async (event) => {
   }
   try {
     await os.bulkUpdateData(osDomain, "main", oneMacRecords);
-    await os.bulkUpdateData(osDomain, "onemac", rawArr);
   } catch (error) {
     console.error(error);
   }
