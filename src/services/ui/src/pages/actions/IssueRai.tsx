@@ -178,7 +178,7 @@ export const IssueRai = () => {
               </span>
             </div>
             <div className="flex flex-col my-8">
-              <label>Plan Type</label>
+              <label>Type</label>
               <span className="text-xl" aria-labelledby="package-id-label">
                 {item?._source.planType}
               </span>
