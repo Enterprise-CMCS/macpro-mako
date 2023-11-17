@@ -1,6 +1,11 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { Action, CognitoUserAttributes, ItemResult } from "shared-types";
-import { isCmsUser, getActiveRai, isCmsWriteUser } from "shared-utils";
+import {
+  isCmsUser,
+  getActiveRai,
+  isCmsWriteUser,
+  isStateUser,
+} from "shared-utils";
 import { getPackage } from "../libs/package/getPackage";
 import {
   getAuthDetails,
@@ -47,7 +52,7 @@ export const packageActionsForResult = (
         actions.push(Action.DISABLE_RAI_WITHDRAW);
       }
     }
-  } else {
+  } else if (isStateUser(user)) {
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING_RAI:
         if (activeRai) {
