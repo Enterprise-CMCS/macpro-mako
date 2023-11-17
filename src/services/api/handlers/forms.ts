@@ -17,7 +17,7 @@ export const forms = async (event: APIGatewayEvent) => {
 
     const filePath = getFilepathForIdAndVersion(formId, formVersion);
     const jsonData = await fs.promises.readFile(filePath, "utf-8");
-
+    console.log(jsonData);
     if (!jsonData) {
       return response({
         statusCode: 404,
@@ -31,6 +31,8 @@ export const forms = async (event: APIGatewayEvent) => {
     try {
       if (!formVersion) formVersion = getMaxVersion(formId);
       const module = await import(`/opt/${formId}/${formVersion}`);
+      console.log(module);
+      console.log(module.ABP1);
       ABP1 = module.ABP1;
     } catch (importError) {
       console.error("Error importing module:", importError);
