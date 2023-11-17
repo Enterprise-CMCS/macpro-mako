@@ -280,11 +280,11 @@ export const RespondToRai = () => {
               Missing or malformed information. Please see errors above.
             </Alert>
           ) : null}
-          {form.formState.isSubmitting ? (
+          {form.formState.isSubmitting && (
             <div className="p-4">
               <LoadingSpinner />
             </div>
-          ) : null}
+          )}
           <div className="flex gap-2">
             <I.Button
               disabled={form.formState.isSubmitting}
