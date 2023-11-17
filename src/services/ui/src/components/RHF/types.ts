@@ -48,7 +48,7 @@ export type RHFComponentMap = {
   };
   Textarea: TextareaProps;
   Switch: SwitchProps;
-  Select: SelectProps;
+  Select: SelectProps & { sort?: "ascending" | "descending" };
   Radio: RadioProps & {
     options: RHFOption[];
   };
@@ -56,7 +56,9 @@ export type RHFComponentMap = {
   Checkbox: {
     options: RHFOption[];
   };
-  FieldArray: unknown;
+  FieldArray: {
+    appendText?: string;
+  };
   FieldGroup: {
     appendText?: string;
     removeText?: string;
@@ -89,6 +91,7 @@ export type FieldArrayProps<
   name: TFieldArrayName;
   fields: RHFSlotProps[];
   groupNamePrefix?: string;
+  appendText?: string;
 };
 
 export type FieldGroupProps<
