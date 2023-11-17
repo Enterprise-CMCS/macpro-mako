@@ -6,7 +6,7 @@ import { APIGatewayEvent } from "aws-lambda";
 export const forms = async (event: APIGatewayEvent) => {
   try {
     const formId = event.queryStringParameters.formId;
-    const formVersion = event.queryStringParameters.formVersion;
+    let formVersion = event.queryStringParameters.formVersion;
 
     if (!formId) {
       return response({
@@ -26,10 +26,19 @@ export const forms = async (event: APIGatewayEvent) => {
         }),
       });
     }
-    console.log(jsonData);
+
+    let ABP1;
+    try {
+      if (!formVersion) formVersion = getMaxVersion(formId);
+      const module = await import(`/opt/${formId}/${formVersion}`);
+      ABP1 = module.ABP1;
+    } catch (importError) {
+      console.error("Error importing module:", importError);
+    }
+
     return response({
       statusCode: 200,
-      body: jsonData,
+      body: ABP1,
     });
   } catch (error) {
     console.error("Error:", error);
@@ -42,14 +51,7 @@ export const forms = async (event: APIGatewayEvent) => {
   }
 };
 
-export function getFilepathForIdAndVersion(
-  formId: string,
-  formVersion: string | undefined
-): string | undefined {
-  if (formId && formVersion) {
-    return `/opt/${formId}/v${formVersion}.ts`;
-  }
-
+export function getMaxVersion(formId: string) {
   const files = fs.readdirSync(`/opt/${formId}`);
   if (!files) return undefined;
   const versionNumbers = files?.map((fileName: string) => {
@@ -59,10 +61,20 @@ export function getFilepathForIdAndVersion(
     }
     return 1;
   });
-  const maxVersion = Math.max(...versionNumbers);
+  return Math.max(...versionNumbers).toString();
+}
+
+export function getFilepathForIdAndVersion(
+  formId: string,
+  formVersion: string | undefined
+): string | undefined {
+  if (formId && formVersion) {
+    return `/opt/${formId}/v${formVersion}.ts`;
+  }
+
+  const maxVersion = getMaxVersion(formId);
 
   if (!maxVersion) return undefined;
-
   return `/opt/${formId}/v${maxVersion}.ts`;
 }
 
