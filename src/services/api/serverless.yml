@@ -68,8 +68,8 @@ custom:
       package:compileEvents: ./handlers/repack.js
   scripts:
     hooks:
-      package:initialize:
-        - yarn build
+      package:initialize: |
+          yarn build
 params:
   master:
     formsProvisionedConcurrency: 2
