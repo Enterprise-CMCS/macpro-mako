@@ -192,7 +192,7 @@ export const RespondToRai = () => {
               Read the description for each of the attachment types on the{" "}
               {
                 <Link
-                  to="/faq/#medicaid-spa-attachments"
+                  to="/faq/#medicaid-spa-rai-attachments"
                   target={FAQ_TARGET}
                   rel="noopener noreferrer"
                   className="text-blue-700 hover:underline"
