@@ -3,6 +3,7 @@ import { ROUTES } from "@/routes";
 import { ToggleRaiResponseWithdraw } from "@/pages/actions/ToggleRaiResponseWithdraw";
 import { IssueRai } from "@/pages/actions/IssueRai";
 import { Action } from "shared-types";
+import { WithdrawRai } from "./WithdrawRai";
 
 export const ActionFormIndex = () => {
   const { type } = useParams<{ type: Action }>();
@@ -12,6 +13,8 @@ export const ActionFormIndex = () => {
       return <ToggleRaiResponseWithdraw />;
     case Action.ISSUE_RAI:
       return <IssueRai />;
+    case Action.WITHDRAW_RAI:
+      return <WithdrawRai />;
     default:
       // TODO: Better error communication instead of navigate?
       //  "Hey, this action doesn't exist. Click to go back to the Dashboard."
