@@ -10,9 +10,9 @@ import {
   SimplePageContainer,
   Alert,
   LoadingSpinner,
-  Modal,
   BreadCrumbs,
 } from "@/components";
+import { Modal } from "@/components/Modal/Modal";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
 import { Action, RaiIssueTransform } from "shared-types";
@@ -21,11 +21,12 @@ import { useGetUser } from "@/api/useGetUser";
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
   attachments: z.object({
-    raiSupportingDocs: z
+    formalRaiLetter: z
       .array(z.instanceof(File))
       .refine((value) => value.length > 0, {
         message: "Required",
       }),
+    other: z.array(z.instanceof(File)).optional(),
   }),
 });
 export type IssueRaiFormSchema = z.infer<typeof formSchema>;
@@ -57,6 +58,7 @@ export const IssueRai = () => {
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
+  const navigate = useNavigate();
   const form = useForm<IssueRaiFormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -121,6 +123,7 @@ export const IssueRai = () => {
     };
 
     try {
+      throw "Asdf";
       await API.post("os", `/action/${Action.ISSUE_RAI}`, {
         body: dataToSubmit,
       });
@@ -275,129 +278,78 @@ export const IssueRai = () => {
               Cancel
             </I.Button>
             <Modal
-              showModal={successModalIsOpen}
-              // eslint-disable-next-line react/no-children-prop
-              children={<SuccessModalContent id={id || ""} />}
-            />
-            <Modal
-              showModal={errorModalIsOpen}
-              // eslint-disable-next-line react/no-children-prop
-              children={
-                <ErrorModalContent
-                  id={id || ""}
-                  setModalIsOpen={setErrorModalIsOpen}
-                />
+              open={successModalIsOpen}
+              onAccept={() => {
+                setSuccessModalIsOpen(false);
+                navigate(ROUTES.DASHBOARD);
+              }}
+              onCancel={() => setSuccessModalIsOpen(false)}
+              title="Submission Successful"
+              body={
+                <p>
+                  Please be aware that it may take up to a minute for your
+                  submission to show in the Dashboard.
+                </p>
               }
+              cancelButtonVisible={false}
+              acceptButtonText="Go to Dashboard"
             />
             <Modal
-              showModal={cancelModalIsOpen}
-              // eslint-disable-next-line react/no-children-prop
-              children={
-                <CancelModalContent
-                  setCancelModalIsOpen={setCancelModalIsOpen}
-                />
+              open={errorModalIsOpen}
+              onAccept={() => {
+                setErrorModalIsOpen(false);
+                navigate(`/details?id=${id}`);
+              }}
+              onCancel={() => setErrorModalIsOpen(false)}
+              title="Submission Error"
+              body={
+                <p>
+                  An error occurred during issue.
+                  <br />
+                  You may close this window and try again, however, this likely
+                  requires support.
+                  <br />
+                  <br />
+                  Please contact the{" "}
+                  <a
+                    href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
+                    className="text-blue-500"
+                  >
+                    helpdesk
+                  </a>{" "}
+                  . You may include the following in your support request:{" "}
+                  <br />
+                  <br />
+                  <ul>
+                    <li>SPA ID: {id}</li>
+                    <li>Timestamp: {Date.now()}</li>
+                  </ul>
+                </p>
+              }
+              cancelButtonVisible={true}
+              cancelButtonText="Return to Form"
+              acceptButtonText="Exit to Package Details"
+            />
+            <Modal
+              open={cancelModalIsOpen}
+              onAccept={() => {
+                setCancelModalIsOpen(false);
+                navigate(`/details?id=${id}`);
+              }}
+              onCancel={() => setCancelModalIsOpen(false)}
+              cancelButtonText="Return to Form"
+              acceptButtonText="Yes"
+              title="Are you sure you want to cancel?"
+              body={
+                <p>
+                  If you leave this page you will lose your progress on this
+                  form
+                </p>
               }
             />
           </div>
         </form>
       </I.Form>
     </SimplePageContainer>
-  );
-};
-
-type SuccessModalProps = {
-  id: string;
-};
-const SuccessModalContent = ({ id }: SuccessModalProps) => {
-  const navigate = useNavigate();
-  return (
-    <div className="flex flex-col gap-2 items-center text-center">
-      <div className="max-w-md p-4">
-        <div className="font-bold">Submission Success!</div>
-        <p>
-          RAI for {id} was successfully issued.
-          <br />
-          Please be aware that it may take up to a minute for this action to be
-          reflected in the dashboard.
-        </p>
-      </div>
-      <I.Button
-        type="button"
-        variant="outline"
-        onClick={() => navigate(ROUTES.DASHBOARD)}
-      >
-        Go to Dashboard
-      </I.Button>
-    </div>
-  );
-};
-
-type ErrorModalProps = { id: string; setModalIsOpen: (open: boolean) => void };
-const ErrorModalContent = ({ id, setModalIsOpen }: ErrorModalProps) => {
-  return (
-    <div className="flex flex-col gap-2 items-center text-center">
-      <div className="max-w-md p-4">
-        <div className="text-red-500 font-bold">Submission Error:</div>
-        <p>
-          An error occurred during issue.
-          <br />
-          You may close this window and try again, however, this likely requires
-          support.
-          <br />
-          <br />
-          Please contact the{" "}
-          <a
-            href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
-            className="text-blue-500"
-          >
-            helpdesk
-          </a>{" "}
-          . You may include the following in your support request: <br />
-          <br />
-          <ul>
-            <li>SPA ID: {id}</li>
-            <li>Timestamp: {Date.now()}</li>
-          </ul>
-        </p>
-      </div>
-      <I.Button
-        type="button"
-        variant="outline"
-        onClick={() => setModalIsOpen(false)}
-      >
-        Close
-      </I.Button>
-    </div>
-  );
-};
-
-type CancelModalProps = { setCancelModalIsOpen: (open: boolean) => void };
-const CancelModalContent = ({ setCancelModalIsOpen }: CancelModalProps) => {
-  const navigate = useNavigate();
-  return (
-    <div className="flex flex-col gap-2 items-center text-center">
-      <div className="max-w-md p-4">
-        <div className="font-bold">Are you sure you want to cancel?</div>
-        <p>If you leave this page, you will lose your progress on this form.</p>
-      </div>
-      <div className="flex">
-        <I.Button
-          type="button"
-          variant="outline"
-          onClick={() => navigate(ROUTES.DASHBOARD)}
-        >
-          Yes
-        </I.Button>
-        <div className="ml-8">
-          <I.Button
-            type="button"
-            variant="outline"
-            onClick={() => setCancelModalIsOpen(false)}
-          >
-            No, Return to Form
-          </I.Button>
-        </div>
-      </div>
-    </div>
   );
 };
