@@ -303,11 +303,11 @@ export const IssueRai = () => {
                 navigate(ROUTES.DASHBOARD);
               }}
               onCancel={() => setSuccessModalIsOpen(false)}
-              title="Submission Successful"
+              title="The Formal RAI has been issued."
               body={
                 <p>
-                  Please be aware that it may take up to a minute for your
-                  submission to show in the Dashboard.
+                  The Formal RAI has been issued successfully. You and the State
+                  will receive an email confirmation.
                 </p>
               }
               cancelButtonVisible={false}
