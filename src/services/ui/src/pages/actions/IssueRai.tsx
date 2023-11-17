@@ -256,8 +256,7 @@ export const IssueRai = () => {
                   Additional Information<span className="text-red-500">*</span>
                 </h3>
                 <I.FormLabel className="font-normal">
-                  Add anything else you would like to share with the state
-                  regarding this RAI.
+                  Add anything else you would like to share with the state.
                 </I.FormLabel>
                 <I.Textarea {...field} className="h-[200px] resize-none" />
                 <I.FormDescription>4,000 characters allowed</I.FormDescription>
