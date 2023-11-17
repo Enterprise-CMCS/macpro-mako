@@ -102,6 +102,11 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     await Auth.signOut();
   };
 
+  const handleRegister = () => {
+    const url = "https://test.home.idm.cms.gov/signin/login.html";
+    window.location.assign(url);
+  };
+
   if (isLoading || isError) return <></>;
 
   const setClassBasedOnNav: NavLinkProps["className"] = ({ isActive }) =>
@@ -135,12 +140,20 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
               Sign Out
             </button>
           ) : (
-            <button
-              className="text-white hover:text-white/70"
-              onClick={handleLogin}
-            >
-              Sign In
-            </button>
+            <>
+              <button
+                className="text-white hover:text-white/70"
+                onClick={handleLogin}
+              >
+                Sign In
+              </button>
+              <button
+                className="text-white hover:text-white/70"
+                onClick={handleRegister}
+              >
+                Register
+              </button>
+            </>
           )}
         </>
       </>
