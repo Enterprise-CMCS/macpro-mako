@@ -15,7 +15,7 @@ const config = {
   database: "SEA",
 };
 
-import { Kafka, KafkaMessage } from "kafkajs";
+import { Kafka, Message } from "kafkajs";
 import { OneMacSink, transformOnemac } from "shared-types";
 
 const kafka = new Kafka({
@@ -117,7 +117,7 @@ async function produceMessage(topic, key, value) {
   await producer.connect();
   console.log("connected");
 
-  const message: KafkaMessage = {
+  const message: Message = {
     key: key,
     value: value,
     partition: 0,

@@ -16,3 +16,4 @@ export * from "./RaiResponses";
 export * from "./SearchForm";
 export * from "./SubmissionInfo";
 export * from "./Modal";
+export * from "./Dialog";
