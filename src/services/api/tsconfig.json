@@ -4,5 +4,5 @@
     "moduleResolution": "node",
     "module": "ESNext",
   },
-  "include": ["src/**/*.ts"],
+  "include": ["layers/**/*.ts"],
 }
