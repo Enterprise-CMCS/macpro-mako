@@ -1,5 +1,6 @@
 {
   "name": "api",
+  "type": "module",
   "private": true,
   "devDependencies": {
     "@types/aws-lambda": "^8.10.111",
