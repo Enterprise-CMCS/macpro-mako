@@ -48,7 +48,7 @@ export type RHFComponentMap = {
   };
   Textarea: TextareaProps;
   Switch: SwitchProps;
-  Select: SelectProps;
+  Select: SelectProps & { sort?: "ascending" | "descending" };
   Radio: RadioProps & {
     options: RHFOption[];
   };

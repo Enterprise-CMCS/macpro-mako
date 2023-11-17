@@ -40,6 +40,7 @@ export const ABP1: Document = {
                   },
                   label: "Eligibility group",
                   props: {
+                    sort: "ascending",
                     className: "min-w-[300px]",
                     options: [
                       {

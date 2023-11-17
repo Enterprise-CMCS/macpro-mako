@@ -29,7 +29,7 @@ import { format } from "date-fns";
 import { RHFFieldArray } from "./FieldArray";
 import { FieldGroup } from "./FieldGroup";
 import type { RHFSlotProps, RHFComponentMap, FormGroup } from "./types";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 export const RHFSlot = <
   TFieldValues extends FieldValues = FieldValues,
@@ -86,6 +86,17 @@ export const RHFSlot = <
             {rhf === "Select" &&
               (() => {
                 const hops = props as RHFComponentMap["Select"];
+                const opts = useMemo(() => {
+                  if (hops.sort) {
+                    const sorted = hops.options.sort((a, b) =>
+                      a.label.localeCompare(b.label)
+                    );
+                    hops.sort === "descending" && sorted.reverse();
+                    return sorted;
+                  }
+                  return hops.options;
+                }, [hops.options, hops.sort]);
+
                 return (
                   <Select
                     {...hops}
@@ -96,7 +107,7 @@ export const RHFSlot = <
                       <SelectValue {...hops} />
                     </SelectTrigger>
                     <SelectContent className="overflow-auto max-h-60">
-                      {hops.options.map((OPT) => (
+                      {opts.map((OPT) => (
                         <SelectItem key={`OPT-${OPT.value}`} value={OPT.value}>
                           {OPT.label}
                         </SelectItem>
