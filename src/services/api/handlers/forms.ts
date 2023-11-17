@@ -30,7 +30,7 @@ export const forms = async (event: APIGatewayEvent) => {
     let ABP1;
     try {
       if (!formVersion) formVersion = getMaxVersion(formId);
-      const module = await import(`/opt/${formId}/${formVersion}`);
+      const module = await import(`/opt/${formId}/v${formVersion}.ts`);
       console.log(module);
       console.log(module.ABP1);
       ABP1 = module.ABP1;
