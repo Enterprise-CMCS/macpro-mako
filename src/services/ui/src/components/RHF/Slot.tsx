@@ -28,7 +28,8 @@ import { cn } from "@/lib";
 import { format } from "date-fns";
 import { RHFFieldArray } from "./FieldArray";
 import { FieldGroup } from "./FieldGroup";
-import type { RHFSlotProps, RHFComponentMap } from "./types";
+import type { RHFSlotProps, RHFComponentMap, FormGroup } from "./types";
+import { useEffect } from "react";
 
 export const RHFSlot = <
   TFieldValues extends FieldValues = FieldValues,
@@ -41,12 +42,20 @@ export const RHFSlot = <
   name,
   props,
   labelStyling,
+  groupNamePrefix,
   ...rest
 }: RHFSlotProps & { control: any }): ControllerProps<
   TFieldValues,
   TName
 >["render"] =>
   function Slot({ field }) {
+    // added to unregister/reset inputs when removed from dom
+    useEffect(() => {
+      return () => {
+        control.unregister(field.name);
+      };
+    }, []);
+
     return (
       <FormItem className="flex flex-col gap-1 py-2">
         {label && <FormLabel className={labelStyling}>{label}</FormLabel>}
@@ -87,7 +96,7 @@ export const RHFSlot = <
                       <SelectValue {...hops} />
                     </SelectTrigger>
                     <SelectContent className="overflow-auto max-h-60">
-                      {hops.options.map((OPT: any) => (
+                      {hops.options.map((OPT) => (
                         <SelectItem key={`OPT-${OPT.value}`} value={OPT.value}>
                           {OPT.label}
                         </SelectItem>
@@ -107,7 +116,7 @@ export const RHFSlot = <
                     defaultValue={field.value}
                     className="flex flex-col space-y-1"
                   >
-                    {hops.options.map((OPT: any) => {
+                    {hops.options.map((OPT) => {
                       return (
                         <div key={`OPT-${OPT.value}`} className="flex flex-col">
                           <div className="flex gap-2 items-center">
@@ -118,26 +127,30 @@ export const RHFSlot = <
                           </div>
                           {field.value === OPT.value &&
                             OPT.form &&
-                            OPT.form.map((FORM: any, index: any) => {
+                            OPT.form.map((FORM, index) => {
                               return (
                                 <div
                                   className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
                                   key={`rhf-form-${index}-${FORM.description}`}
                                 >
-                                  <RHFFormGroup form={FORM} control={control} />
+                                  <RHFFormGroup
+                                    form={FORM}
+                                    control={control}
+                                    groupNamePrefix={groupNamePrefix}
+                                  />
                                 </div>
                               );
                             })}
                           {field.value === OPT.value &&
                             OPT.slots &&
-                            OPT.slots.map((SLOT: any, index: any) => (
+                            OPT.slots.map((SLOT, index) => (
                               <div
                                 className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
                                 key={SLOT.name + index}
                               >
                                 <FormField
                                   control={control}
-                                  name={SLOT.name}
+                                  name={(groupNamePrefix ?? "") + SLOT.name}
                                   {...(SLOT.rules && { rules: SLOT.rules })}
                                   render={RHFSlot({ ...SLOT, control })}
                                 />
@@ -156,7 +169,7 @@ export const RHFSlot = <
                 const hops = props as RHFComponentMap["Checkbox"];
                 return (
                   <div className="flex flex-col gap-2">
-                    {hops.options.map((OPT: any) => (
+                    {hops.options.map((OPT) => (
                       <div key={`CHECK-${OPT.value}`}>
                         <Checkbox
                           label={OPT.label}
@@ -164,7 +177,7 @@ export const RHFSlot = <
                           onCheckedChange={(c) => {
                             const filtered =
                               field.value?.filter(
-                                (f: any) => f !== OPT.value
+                                (f: unknown) => f !== OPT.value
                               ) || [];
                             if (!c) return field.onChange(filtered);
                             field.onChange([...filtered, OPT.value]);
@@ -173,14 +186,14 @@ export const RHFSlot = <
                         {field.value?.includes(OPT.value) &&
                           !!OPT.slots &&
                           OPT.slots &&
-                          OPT.slots.map((SLOT: any, index: any) => (
+                          OPT.slots.map((SLOT, index) => (
                             <div
                               className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
                               key={`rhf-form-${index}-${SLOT.name}`}
                             >
                               <FormField
                                 control={control}
-                                name={SLOT.name}
+                                name={(groupNamePrefix ?? "") + SLOT.name}
                                 {...(SLOT.rules && { rules: SLOT.rules })}
                                 render={RHFSlot({ ...SLOT, control })}
                               />
@@ -189,12 +202,16 @@ export const RHFSlot = <
 
                         {field.value?.includes(OPT.value) &&
                           !!OPT.form &&
-                          OPT.form.map((FORM: any) => (
+                          OPT.form.map((FORM: FormGroup) => (
                             <div
                               key={`CHECK-${OPT.value}-form-${FORM.description}`}
                               className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
                             >
-                              <RHFFormGroup control={control} form={FORM} />
+                              <RHFFormGroup
+                                control={control}
+                                form={FORM}
+                                groupNamePrefix={groupNamePrefix}
+                              />
                             </div>
                           ))}
                       </div>
@@ -246,6 +263,7 @@ export const RHFSlot = <
                 control={control}
                 name={name}
                 fields={rest.fields ?? []}
+                groupNamePrefix={groupNamePrefix}
               />
             )}
 
@@ -255,6 +273,7 @@ export const RHFSlot = <
                 control={control}
                 name={name}
                 fields={rest.fields ?? []}
+                groupNamePrefix={groupNamePrefix}
                 {...(props as RHFComponentMap["FieldGroup"])}
               />
             )}

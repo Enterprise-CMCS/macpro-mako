@@ -17,12 +17,12 @@ export const FieldGroup = <TFields extends FieldValues>(
   });
 
   const onAppend = () => {
-    fieldArr.append(props.fields.reduce(slotInitializer, {}) as any);
+    fieldArr.append(props.fields.reduce(slotInitializer, {}) as never);
   };
 
   useEffect(() => {
     if (fieldArr.fields.length) return;
-    fieldArr.append(props.fields.reduce(slotInitializer, {}) as any);
+    fieldArr.append(props.fields.reduce(slotInitializer, {}) as never);
   }, []);
 
   return (
@@ -31,16 +31,20 @@ export const FieldGroup = <TFields extends FieldValues>(
         return (
           <div className="flex flex-col gap-3" key={FLD.id}>
             {props.fields.map((SLOT) => {
+              const prefix = `${props.name}.${index}.`;
+              const adjustedPrefix = (props.groupNamePrefix ?? "") + prefix;
+              const adjustedSlotName = prefix + SLOT.name;
               return (
                 <FormField
-                  key={`${SLOT.name}-${index}`}
+                  key={adjustedSlotName}
                   control={props.control}
-                  name={`${props.name}.${index}.${SLOT.name}` as any}
+                  name={adjustedSlotName as never}
                   {...(SLOT.rules && { rules: SLOT.rules })}
                   render={RHFSlot({
                     ...SLOT,
                     control: props.control,
-                    name: `${props.name}.${index}.${SLOT.name}`,
+                    name: adjustedSlotName,
+                    groupNamePrefix: adjustedPrefix,
                   })}
                 />
               );

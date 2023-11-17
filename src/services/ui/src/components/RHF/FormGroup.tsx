@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Control, FieldValues } from "react-hook-form";
 import { FormLabel, FormField } from "../Inputs";
 import { DependencyWrapper } from "./dependencyWrapper";
@@ -8,6 +7,7 @@ import * as TRhf from "./types";
 export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
   form: TRhf.FormGroup;
   control: Control<TFieldValues>;
+  groupNamePrefix?: string;
 }) => {
   return (
     <DependencyWrapper {...props.form}>
@@ -24,9 +24,13 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
             <DependencyWrapper key={SLOT.name} {...SLOT}>
               <FormField
                 control={props.control}
-                name={SLOT.name as any}
+                name={((props.groupNamePrefix ?? "") + SLOT.name) as never}
                 {...(SLOT.rules && { rules: SLOT.rules })}
-                render={RHFSlot({ ...SLOT, control: props.control })}
+                render={RHFSlot({
+                  ...SLOT,
+                  control: props.control as Control,
+                  groupNamePrefix: props.groupNamePrefix,
+                })}
               />
             </DependencyWrapper>
           ))}

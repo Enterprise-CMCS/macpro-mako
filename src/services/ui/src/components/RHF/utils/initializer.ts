@@ -1,6 +1,6 @@
 import * as T from "@/components/RHF/types";
 
-type GL = Record<string, any>;
+type GL = Record<string, unknown>;
 
 export const formGroupInitializer = (ACC: GL, FORM: T.FormGroup) => {
   FORM.slots.reduce(slotInitializer, ACC);
@@ -15,13 +15,7 @@ export const slotInitializer = (ACC: GL, SLOT: T.RHFSlotProps): GL => {
   };
 
   const fieldInitializer = (ACC1: GL, SLOT: T.RHFSlotProps): GL => {
-    if (SLOT.rhf === "FieldArray") {
-      return {
-        ...ACC1,
-        [SLOT.name]: [SLOT.fields?.reduce(fieldInitializer, {})],
-      };
-    }
-    if (SLOT.rhf === "FieldGroup") {
+    if (SLOT.rhf === "FieldArray" || SLOT.rhf === "FieldGroup") {
       return {
         ...ACC1,
         [SLOT.name]: [SLOT.fields?.reduce(fieldInitializer, {})],
@@ -31,36 +25,26 @@ export const slotInitializer = (ACC: GL, SLOT: T.RHFSlotProps): GL => {
     return { ...ACC1, ...slotInitializer(ACC1, SLOT) };
   };
 
-  if (SLOT.rhf === "Input") ACC[SLOT.name] = "";
-  if (SLOT.rhf === "Textarea") ACC[SLOT.name] = "";
-  if (SLOT.rhf === "Switch") ACC[SLOT.name] = false;
-  if (SLOT.rhf === "Radio") {
-    if (SLOT.props?.options) {
-      SLOT.props.options.forEach(optionReducer);
-      const [first] = SLOT.props.options;
-      ACC[SLOT.name] = first.value;
-    }
-  }
-
-  if (SLOT.rhf === "Select") {
-    if (SLOT.props?.options) {
-      SLOT.props.options.forEach(optionReducer);
-      const [first] = SLOT.props.options;
-      ACC[SLOT.name] = first.value;
-    }
-  }
-
-  if (SLOT.rhf === "Checkbox") {
-    if (SLOT.props?.options) {
-      SLOT.props.options.forEach(optionReducer);
+  switch (SLOT.rhf) {
+    case "Switch":
+      ACC[SLOT.name] = false;
+      break;
+    case "Radio":
+    case "Checkbox":
+      SLOT.props?.options.forEach(optionReducer);
       ACC[SLOT.name] = [];
-    }
+      break;
+    case "FieldArray":
+    case "FieldGroup":
+      ACC[SLOT.name] = [SLOT.fields?.reduce(fieldInitializer, {})];
+      break;
+    case "Input":
+    case "Select":
+    case "Textarea":
+    default:
+      ACC[SLOT.name] = "";
+      break;
   }
-
-  if (SLOT.rhf === "FieldArray")
-    ACC[SLOT.name] = [SLOT.fields?.reduce(fieldInitializer, {})];
-  if (SLOT.rhf === "FieldGroup")
-    ACC[SLOT.name] = [SLOT.fields?.reduce(fieldInitializer, {})];
 
   return ACC;
 };
@@ -69,5 +53,5 @@ export const documentInitializer = (document: T.Document) => {
   return document.sections.reduce((ACC, SEC) => {
     SEC.form.reduce(formGroupInitializer, ACC);
     return ACC;
-  }, {} as any);
+  }, {});
 };
