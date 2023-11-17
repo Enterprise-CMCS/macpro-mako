@@ -67,6 +67,7 @@ export async function issueRai(body: RaiSchema) {
     // Rollback and log
     await transaction.rollback();
     console.error("Error executing one or both queries:", err);
+    throw err;
   } finally {
     // Close pool
     await pool.close();
@@ -131,6 +132,7 @@ export async function respondToRai(body: RaiSchema, rais: any) {
     // Rollback and log
     await transaction.rollback();
     console.error("Error executing one or both queries:", err);
+    throw err;
   } finally {
     // Close pool
     await pool.close();

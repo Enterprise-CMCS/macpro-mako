@@ -300,7 +300,7 @@ export const IssueRai = () => {
               open={successModalIsOpen}
               onAccept={() => {
                 setSuccessModalIsOpen(false);
-                navigate(ROUTES.DASHBOARD);
+                navigate(`/details?id=${id}`);
               }}
               onCancel={() => setSuccessModalIsOpen(false)}
               title="The Formal RAI has been issued."
@@ -311,7 +311,7 @@ export const IssueRai = () => {
                 </p>
               }
               cancelButtonVisible={false}
-              acceptButtonText="Go to Dashboard"
+              acceptButtonText="Exit to Package Details"
             />
             <Modal
               open={errorModalIsOpen}
