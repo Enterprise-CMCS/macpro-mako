@@ -65,7 +65,7 @@ custom:
     hooks:
       package:compileEvents: ./handlers/repack.js
       before:deploy:compile:
-        - npm run build
+        - yarn build
 params:
   master:
     formsProvisionedConcurrency: 2

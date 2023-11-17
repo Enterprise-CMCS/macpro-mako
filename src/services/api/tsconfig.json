@@ -5,4 +5,5 @@
     "module": "ESNext",
   },
   "include": ["layers/**/*.ts"],
+  "exclude": ["node_modules"]
 }
