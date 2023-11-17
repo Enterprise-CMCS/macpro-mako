@@ -4,10 +4,10 @@ import { ROUTES } from "@/routes";
 import { Action, ItemResult } from "shared-types";
 import { Button } from "@/components/Inputs";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useToggleRaiWithdraw } from "@/api/useToggleRaiWithdraw";
 import { PackageActionForm } from "@/pages/actions/PackageActionForm";
-import { useQueryClient } from "@tanstack/react-query";
+import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 
 // Keeps aria stuff and classes condensed
 const SectionTemplate = ({
@@ -59,9 +59,11 @@ const PackageInfo = ({ item }: { item: ItemResult }) => (
 
 const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
-  const qc = useQueryClient();
   const { id, type } = useParams<{ id: string; type: Action }>();
-  const [awaitingNav, setAwaitingNav] = useState(false);
+
+  const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
+  const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
+
   const {
     mutate: toggleRaiWithdraw,
     isLoading: isToggling,
@@ -73,28 +75,14 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
     [type]
   );
 
+  useEffect(() => {
+    if (toggleSucceeded) setSuccessModalOpen(true);
+  }, [toggleSucceeded]);
+
   if (!item) return <Navigate to={ROUTES.DASHBOARD} />; // Prevents optional chains below
-  if (isToggling || awaitingNav) return <LoadingSpinner />;
-  if (toggleSucceeded) {
-    // Clear actions for package from cache
-    qc.invalidateQueries(["actions", id]).then(() => {
-      setAwaitingNav(true); // Triggers LoadingSpinner
-      // Debounce back nav to give the data pipeline time to update
-      setTimeout(() => {
-        // Go back to package details and render success alert
-        navigate(`/details?id=${id}`, {
-          state: {
-            callout: {
-              heading: `Formal RAI Response Withdraw action has been ${ACTION_WORD.toLowerCase()}d`,
-              body: `You have successfully ${ACTION_WORD.toLowerCase()}d the Formal RAI Response Withdraw action for the State.`,
-            },
-          },
-        });
-      }, 2000);
-    });
-  }
   return (
     <>
+      {isToggling && <LoadingSpinner />}
       <Intro action={ACTION_WORD} />
       <PackageInfo item={item} />
       {toggleError && (
@@ -105,10 +93,44 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
       )}
       <div className="flex gap-2">
         <Button onClick={() => toggleRaiWithdraw()}>Submit</Button>
-        <Button onClick={() => navigate(-1)} variant="outline">
+        <Button onClick={() => setCancelModalOpen(true)} variant="outline">
           Cancel
         </Button>
       </div>
+      {/* Success Modal */}
+      <ConfirmationModal
+        open={successModalOpen}
+        onAccept={() => {
+          setSuccessModalOpen(false);
+          navigate(`/details?id=${id}`);
+        }}
+        onCancel={() => setSuccessModalOpen(false)} // Should be made optional
+        title={`Formal RAI Response Withdraw Successfully ${ACTION_WORD}d`}
+        body={
+          <p>
+            Please be aware that it may take up to a minute for changes to show
+            up on the Dashboard and Details pages.
+          </p>
+        }
+        cancelButtonVisible={false}
+        acceptButtonText="Go to Package Details"
+      />
+
+      {/* Cancel Modal */}
+      <ConfirmationModal
+        open={cancelModalOpen}
+        onAccept={() => {
+          setCancelModalOpen(false);
+          navigate(`/details?id=${id}`);
+        }}
+        onCancel={() => setCancelModalOpen(false)}
+        cancelButtonText="Return to Form"
+        acceptButtonText="Leave Page"
+        title="Are you sure you want to cancel?"
+        body={
+          <p>If you leave this page you will lose your progress on this form</p>
+        }
+      />
     </>
   );
 };

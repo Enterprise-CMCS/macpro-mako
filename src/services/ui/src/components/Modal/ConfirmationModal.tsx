@@ -21,7 +21,8 @@ type Props = {
   acceptButtonVisible?: boolean;
 };
 
-export function Modal({
+/** A modal with optional Cancel and Accept buttons */
+export function ConfirmationModal({
   open,
   description,
   title,
