@@ -123,7 +123,6 @@ export const IssueRai = () => {
     };
 
     try {
-      throw "Asdf";
       await API.post("os", `/action/${Action.ISSUE_RAI}`, {
         body: dataToSubmit,
       });
