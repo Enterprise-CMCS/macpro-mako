@@ -6,6 +6,8 @@ plugins:
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
   - serverless-scriptable-plugin
+  - serverless-plugin-scripts
+
 provider:
   name: aws
   runtime: nodejs18.x
@@ -64,7 +66,9 @@ custom:
   scriptable:
     hooks:
       package:compileEvents: ./handlers/repack.js
-      before:deploy:compile:
+  scripts:
+    hooks:
+      package:initialize:
         - yarn build
 params:
   master:
