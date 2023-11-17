@@ -3,6 +3,7 @@
     "target": "ES2016",
     "moduleResolution": "node",
     "module": "ESNext",
+    "allowSyntheticDefaultImports": true
   },
   "include": ["layers/**/*.ts"],
   "exclude": ["node_modules"]
