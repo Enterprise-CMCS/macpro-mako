@@ -27,20 +27,21 @@ export const forms = async (event: APIGatewayEvent) => {
       });
     }
 
-    let ABP1;
+    let form;
     try {
       if (!formVersion) formVersion = getMaxVersion(formId);
-      const module = await import(`/opt/${formId}/v${formVersion}.ts`);
+
+      const module = await import(`/opt/${formId}/v${formVersion}.js`);
       console.log(module);
-      console.log(module.ABP1);
-      ABP1 = module.ABP1;
+      console.log(module[formId]);
+      form = module[formId];
     } catch (importError) {
       console.error("Error importing module:", importError);
     }
 
     return response({
       statusCode: 200,
-      body: ABP1,
+      body: form,
     });
   } catch (error) {
     console.error("Error:", error);
@@ -71,13 +72,13 @@ export function getFilepathForIdAndVersion(
   formVersion: string | undefined
 ): string | undefined {
   if (formId && formVersion) {
-    return `/opt/${formId}/v${formVersion}.ts`;
+    return `/opt/${formId}/v${formVersion}.js`;
   }
 
   const maxVersion = getMaxVersion(formId);
 
   if (!maxVersion) return undefined;
-  return `/opt/${formId}/v${maxVersion}.ts`;
+  return `/opt/${formId}/v${maxVersion}.js`;
 }
 
 export const handler = forms;

@@ -3,5 +3,6 @@
     "target": "ES2016",
     "moduleResolution": "node",
     "module": "ESNext",
-  }
+  },
+  "include": ["src/**/*.ts"],
 }
