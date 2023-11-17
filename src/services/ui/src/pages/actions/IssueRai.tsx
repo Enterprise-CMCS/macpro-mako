@@ -17,6 +17,7 @@ import { FAQ_TARGET, ROUTES } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
 import { Action, RaiIssueTransform } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
+import { useGetItem } from "@/api";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
@@ -55,6 +56,7 @@ export const IssueRai = () => {
     id: string;
     type: string;
   }>();
+  const { data: item } = useGetItem(id!);
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
@@ -163,6 +165,24 @@ export const IssueRai = () => {
                 form.
               </strong>
             </p>
+          </section>
+          {/*-------------------------------------------------------- */}
+          <section className="grid grid-cols-2">
+            <h3 className="text-2xl font-bold font-sans col-span-2">
+              Package Details
+            </h3>
+            <div className="flex flex-col my-8">
+              <label>Package ID</label>
+              <span className="text-xl" aria-labelledby="package-id-label">
+                {id}
+              </span>
+            </div>
+            <div className="flex flex-col my-8">
+              <label>Plan Type</label>
+              <span className="text-xl" aria-labelledby="package-id-label">
+                {item?._source.planType}
+              </span>
+            </div>
           </section>
           {/*-------------------------------------------------------- */}
           <section>
