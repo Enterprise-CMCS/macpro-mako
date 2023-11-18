@@ -10,6 +10,8 @@ export const ActionFormIndex = () => {
   switch (type) {
     case Action.ENABLE_RAI_WITHDRAW:
       return <ToggleRaiResponseWithdraw />;
+    case Action.DISABLE_RAI_WITHDRAW:
+      return <ToggleRaiResponseWithdraw />;
     case Action.ISSUE_RAI:
       return <IssueRai />;
     case Action.RESPOND_TO_RAI:
