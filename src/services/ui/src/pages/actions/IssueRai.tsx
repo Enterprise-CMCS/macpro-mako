@@ -51,10 +51,25 @@ const attachmentList = [
   },
 ] as const;
 
+const FormDescriptionText = () => {
+  return (
+    <p className="font-light mb-6 max-w-4xl">
+      Issuance of a Formal RAI in OneMAC will create a Formal RAI email sent to
+      the State. This will also create a section in the package details summary
+      for you and the State to have record. Please attach the Formal RAI Letter
+      along with any additional information or comments in the provided text
+      box. Once you submit this form, a confirmation email is sent to you and to
+      the State.{" "}
+      <strong className="bold">
+        If you leave this page, you will lose your progress on this form.
+      </strong>
+    </p>
+  );
+};
+
 export const IssueRai = () => {
-  const { id, type } = useParams<{
+  const { id } = useParams<{
     id: string;
-    type: string;
   }>();
   const { data: item } = useGetItem(id!);
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
@@ -153,18 +168,7 @@ export const IssueRai = () => {
             <p className="my-1">
               <I.RequiredIndicator /> Indicates a required field
             </p>
-            <p className="font-light mb-6 max-w-4xl">
-              Issuance of a Formal RAI in OneMAC will create a Formal RAI email
-              sent to the State. This will also create a section in the package
-              details summary for you and the State to have record. Please
-              attach the Formal RAI Letter along with any additional information
-              or comments in the provided text box. Once you submit this form, a
-              confirmation email is sent to you and to the State.{" "}
-              <strong className="bold">
-                If you leave this page, you will lose your progress on this
-                form.
-              </strong>
-            </p>
+            <FormDescriptionText />
           </section>
           {/*-------------------------------------------------------- */}
           <section className="grid grid-cols-2">
@@ -264,20 +268,7 @@ export const IssueRai = () => {
             )}
           />
           {/*-------------------------------------------------------- */}
-          <div className="my-2">
-            <p className="font-light mb-6 max-w-4xl">
-              Issuance of a Formal RAI in OneMAC will create a Formal RAI email
-              sent to the State. This will also create a section in the package
-              details summary for you and the State to have record. Please
-              attach the Formal RAI Letter along with any additional information
-              or comments in the provided text box. Once you submit this form, a
-              confirmation email is sent to you and to the State.{" "}
-              <strong className="bold">
-                If you leave this page, you will lose your progress on this
-                form.
-              </strong>
-            </p>
-          </div>
+          <FormDescriptionText />
           {Object.keys(form.formState.errors).length !== 0 ? (
             <Alert className="mb-6" variant="destructive">
               Missing or malformed information. Please see errors above.

@@ -51,10 +51,23 @@ const attachmentList = [
   },
 ] as const;
 
+const FormDescriptionText = () => {
+  return (
+    <p className="font-light mb-6 max-w-4xl">
+      Once you submit this form, a confirmation email is sent to you and to CMS.
+      CMS will use this content to review your package, and you will not be able
+      to edit this form. If CMS needs any additional information, they will
+      follow up by email.{" "}
+      <strong className="bold">
+        If you leave this page, you will lose your progress on this form.
+      </strong>
+    </p>
+  );
+};
+
 export const RespondToRai = () => {
-  const { id, type } = useParams<{
+  const { id } = useParams<{
     id: string;
-    type: string;
   }>();
   const { data: item } = useGetItem(id!);
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
@@ -154,16 +167,7 @@ export const RespondToRai = () => {
             <p className="my-1">
               <I.RequiredIndicator /> Indicates a required field
             </p>
-            <p className="font-light mb-6 max-w-4xl">
-              Once you submit this form, a confirmation email is sent to you and
-              to CMS. CMS will use this content to review your package, and you
-              will not be able to edit this form. If CMS needs any additional
-              information, they will follow up by email.{" "}
-              <strong className="bold">
-                If you leave this page, you will lose your progress on this
-                form.
-              </strong>
-            </p>
+            <FormDescriptionText />
           </section>
           {/*-------------------------------------------------------- */}
           <section className="grid grid-cols-2">
@@ -263,18 +267,7 @@ export const RespondToRai = () => {
             )}
           />
           {/*-------------------------------------------------------- */}
-          <div className="my-2">
-            <p className="font-light mb-6 max-w-4xl">
-              Once you submit this form, a confirmation email is sent to you and
-              to CMS. CMS will use this content to review your package, and you
-              will not be able to edit this form. If CMS needs any additional
-              information, they will follow up by email.{" "}
-              <strong className="bold">
-                If you leave this page, you will lose your progress on this
-                form.
-              </strong>
-            </p>
-          </div>
+          <FormDescriptionText />
           {Object.keys(form.formState.errors).length !== 0 ? (
             <Alert className="mb-6" variant="destructive">
               Missing or malformed information. Please see errors above.
