@@ -68,9 +68,9 @@ custom:
       package:compileEvents: ./handlers/repack.js
   esbuild:
     packager: yarn
-    includePaths:
-      - "layers/**/*.ts" 
     minify: false  
+      watch:
+        pattern: [layers/**/*.ts"]
 params:
   master:
     formsProvisionedConcurrency: 2
