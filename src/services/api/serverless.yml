@@ -66,10 +66,12 @@ custom:
   scriptable:
     hooks:
       package:compileEvents: ./handlers/repack.js
-  scripts:
-    hooks:
-      package:initialize: |
-          yarn build
+  esbuild:
+    packager: yarn
+    binaryPath: ./node_modules/.bin/esbuild
+    includePaths:
+      - "layers/**/*.ts" 
+    minify: false  
 params:
   master:
     formsProvisionedConcurrency: 2

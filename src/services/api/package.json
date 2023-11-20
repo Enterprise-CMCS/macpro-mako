@@ -30,7 +30,6 @@
   },
   "version": "0.0.0",
   "scripts": {
-    "build": "serverless-esbuild",
     "lint": "eslint '**/*.{ts,js}'"
   }
 }
