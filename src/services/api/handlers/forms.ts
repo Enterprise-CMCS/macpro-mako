@@ -5,8 +5,8 @@ import { APIGatewayEvent } from "aws-lambda";
 
 export const forms = async (event: APIGatewayEvent) => {
   try {
-    const formId = event.queryStringParameters.formId;
-    let formVersion = event.queryStringParameters.formVersion;
+    const formId = event.queryStringParameters?.formId;
+    let formVersion = event.queryStringParameters?.formVersion;
 
     if (!formId) {
       return response({
@@ -16,9 +16,19 @@ export const forms = async (event: APIGatewayEvent) => {
     }
 
     const filePath = getFilepathForIdAndVersion(formId, formVersion);
-    const jsonData = await fs.promises.readFile(filePath, "utf-8");
-    console.log(jsonData);
-    if (!jsonData) {
+
+    if (filePath) {
+      const jsonData = await fs.promises.readFile(filePath, "utf-8");
+      console.log(jsonData);
+      if (!jsonData) {
+        return response({
+          statusCode: 404,
+          body: JSON.stringify({
+            error: "No file was found with provided formId and formVersion",
+          }),
+        });
+      }
+    } else {
       return response({
         statusCode: 404,
         body: JSON.stringify({
@@ -31,10 +41,8 @@ export const forms = async (event: APIGatewayEvent) => {
     try {
       if (!formVersion) formVersion = getMaxVersion(formId);
 
-      const module = await import(`/opt/${formId}/v${formVersion}.js`);
+      form = await import(`/opt/${formId}/v${formVersion}.js`);
       console.log(module);
-      console.log(module[formId]);
-      form = module[formId];
     } catch (importError) {
       console.error("Error importing module:", importError);
     }
