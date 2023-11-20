@@ -80,16 +80,6 @@ export const seatoolSchema = z.object({
       })
     )
     .nullable(),
-  STATES: z
-    .array(
-      z.object({
-        STATE_CODE: z.string(),
-        STATE_NAME: z.string(),
-        REGION_ID: z.string(),
-        PRIORITY_FLAG: z.boolean(),
-      })
-    )
-    .nonempty(),
   PLAN_TYPES: z
     .array(
       z.object({
@@ -105,11 +95,14 @@ export const seatoolSchema = z.object({
     CHANGED_DATE: z.number().nullable(),
     APPROVED_EFFECTIVE_DATE: z.number().nullable(),
     PROPOSED_DATE: z.number().nullable(),
+    SPW_STATUS_ID: z.number().nullable(),
+    STATE_CODE: z.string().nullish(),
   }),
   SPW_STATUS: z
     .array(
       z.object({
-        SPW_STATUS_DESC: z.string().nullish(),
+        SPW_STATUS_DESC: z.string().nullable(),
+        SPW_STATUS_ID: z.number().nullable(),
       })
     )
     .nullable(),
@@ -118,6 +111,7 @@ export const seatoolSchema = z.object({
       z.object({
         RAI_RECEIVED_DATE: z.number().nullable(),
         RAI_REQUESTED_DATE: z.number().nullable(),
+        RAI_WITHDRAWN_DATE: z.number().nullable(),
       })
     )
     .nullable(),
@@ -143,9 +137,32 @@ export const transformSeatoolData = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate } = getRaiDate(data);
-    const { stateStatus, cmsStatus } = getStatus(
-      data.SPW_STATUS?.at(-1)?.SPW_STATUS_DESC
-    );
+    const seatoolStatus =
+      data.SPW_STATUS?.find(
+        (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
+      )?.SPW_STATUS_DESC || "Unknown";
+    const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
+    const rais: Record<
+      number,
+      {
+        requestedDate: number;
+        receivedDate: number | null;
+        withdrawnDate: number | null;
+      }
+    > = {};
+    if (data.RAI) {
+      data.RAI.forEach((rai) => {
+        // Should never be null, but if it is there's nothing we can do with it.
+        if (rai.RAI_REQUESTED_DATE === null) {
+          return;
+        }
+        rais[rai.RAI_REQUESTED_DATE] = {
+          requestedDate: rai.RAI_REQUESTED_DATE,
+          receivedDate: rai.RAI_RECEIVED_DATE,
+          withdrawnDate: rai.RAI_WITHDRAWN_DATE,
+        };
+      });
+    }
     return {
       id,
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
@@ -162,9 +179,11 @@ export const transformSeatoolData = (id: string) => {
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
-      state: data.STATES?.[0].STATE_CODE,
+      rais,
+      state: data.STATE_PLAN.STATE_CODE,
       stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
+      seatoolStatus,
       submissionDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.SUBMISSION_DATE
       ),
@@ -176,7 +195,7 @@ export type SeaToolTransform = z.infer<ReturnType<typeof transformSeatoolData>>;
 export type SeaToolSink = z.infer<typeof seatoolSchema>;
 export type SeaToolRecordsToDelete = Omit<
   {
-    [Property in keyof SeaToolTransform]: undefined;
+    [Property in keyof SeaToolTransform]: null;
   },
-  "id"
+  "id" | "rais"
 > & { id: string };

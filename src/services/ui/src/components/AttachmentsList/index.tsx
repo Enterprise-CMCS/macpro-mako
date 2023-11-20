@@ -71,7 +71,6 @@ export const Attachmentslist = (data: AttachmentList) => {
                             attachment.key,
                             attachment.filename
                           );
-                          console.log(url);
                           window.open(url);
                         }}
                       >

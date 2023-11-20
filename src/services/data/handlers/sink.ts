@@ -10,8 +10,12 @@ import {
   OneMacRecordsToDelete,
   OneMacTransform,
   transformOnemac,
+  RaiIssueTransform,
+  transformRaiIssue,
+  RaiResponseTransform,
+  transformRaiResponse,
 } from "shared-types/onemac";
-import { Action, WithdrawRecord, withdrawRecordSchema } from "shared-types";
+import { Action, withdrawRecordSchema, WithdrawRecord } from "shared-types";
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -54,22 +58,23 @@ export const seatool: Handler = async (event) => {
         const id: string = JSON.parse(decode(key));
         const seaTombstone: SeaToolRecordsToDelete = {
           id,
-          actionType: undefined,
-          actionTypeId: undefined,
-          approvedEffectiveDate: undefined,
-          authority: undefined,
-          changedDate: undefined,
-          leadAnalystName: undefined,
-          leadAnalystOfficerId: undefined,
-          planType: undefined,
-          planTypeId: undefined,
-          proposedDate: undefined,
-          raiReceivedDate: undefined,
-          raiRequestedDate: undefined,
-          state: undefined,
-          cmsStatus: undefined,
-          stateStatus: undefined,
-          submissionDate: undefined,
+          actionType: null,
+          actionTypeId: null,
+          approvedEffectiveDate: null,
+          authority: null,
+          changedDate: null,
+          leadAnalystName: null,
+          leadAnalystOfficerId: null,
+          planType: null,
+          planTypeId: null,
+          proposedDate: null,
+          raiReceivedDate: null,
+          raiRequestedDate: null,
+          state: null,
+          cmsStatus: null,
+          stateStatus: null,
+          seatoolStatus: null,
+          submissionDate: null,
         };
 
         docObject[id] = seaTombstone;
@@ -97,6 +102,8 @@ export const onemac: Handler = async (event) => {
     | OneMacTransform
     | OneMacRecordsToDelete
     | (WithdrawRecord & { id: string })
+    | RaiIssueTransform
+    | RaiResponseTransform
   )[] = [];
 
   for (const recordKey of Object.keys(event.records)) {
@@ -110,9 +117,8 @@ export const onemac: Handler = async (event) => {
         const id: string = decode(key);
         const record = { id, ...JSON.parse(decode(value)) };
         const isActionType = "actionType" in record;
-
         if (isActionType) {
-          switch (record.actionType as Action) {
+          switch (record.actionType) {
             case Action.ENABLE_RAI_WITHDRAW:
             case Action.DISABLE_RAI_WITHDRAW: {
               const result = withdrawRecordSchema.safeParse(record);
@@ -128,11 +134,32 @@ export const onemac: Handler = async (event) => {
                   `ERROR: Invalid Payload for this action type (${record.actionType})`
                 );
               }
-
               break;
             }
-            case Action.ISSUE_RAI:
-              return;
+            case Action.ISSUE_RAI: {
+              const result = transformRaiIssue(id).safeParse(record);
+              if (result.success) {
+                oneMacRecords.push(result.data);
+              } else {
+                console.log(
+                  `ERROR: Invalid Payload for this action type (${record.actionType})`
+                );
+              }
+              break;
+            }
+            case Action.RESPOND_TO_RAI: {
+              console.log("RESPONDING");
+              const result = transformRaiResponse(id).safeParse(record);
+              if (result.success) {
+                console.log(result.data);
+                oneMacRecords.push(result.data);
+              } else {
+                console.log(
+                  `ERROR: Invalid Payload for this action type (${record.actionType})`
+                );
+              }
+              break;
+            }
           }
         } else if (
           record && // testing if we have a record
@@ -157,13 +184,12 @@ export const onemac: Handler = async (event) => {
         const id: string = decode(key);
         const oneMacTombstone: OneMacRecordsToDelete = {
           id,
-          additionalInformation: undefined,
-          raiWithdrawEnabled: undefined,
-          attachments: undefined,
-          submitterEmail: undefined,
-          submitterName: undefined,
-          origin: undefined,
-          raiResponses: undefined,
+          additionalInformation: null,
+          raiWithdrawEnabled: null,
+          attachments: null,
+          submitterEmail: null,
+          submitterName: null,
+          origin: null,
         };
 
         oneMacRecords.push(oneMacTombstone);
