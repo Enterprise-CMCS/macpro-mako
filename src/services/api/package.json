@@ -30,7 +30,7 @@
   },
   "version": "0.0.0",
   "scripts": {
-    "build": "tsc",
+    "build": "serverless-esbuild",
     "lint": "eslint '**/*.{ts,js}'"
   }
 }
