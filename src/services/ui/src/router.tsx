@@ -69,6 +69,7 @@ export const router = createBrowserRouter([
       { path: ROUTES.MEDICAID_NEW, element: <P.MedicaidForm /> },
       { path: ROUTES.ACTION, element: <P.ActionFormIndex /> },
       { path: "/form", element: <P.ExampleForm /> },
+      { path: "/profile", element: <P.Profile /> },
     ],
     loader: rootLoader(queryClient),
   },

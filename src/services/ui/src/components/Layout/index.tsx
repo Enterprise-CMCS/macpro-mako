@@ -1,4 +1,10 @@
-import { Link, NavLink, NavLinkProps, Outlet } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  NavLinkProps,
+  Outlet,
+  useNavigate,
+} from "react-router-dom";
 import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -88,6 +94,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const role = useMemo(() => {
     return userContext?.user?.["custom:cms-roles"] ? true : false;
   }, []);
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     const authConfig = Auth.configure();
@@ -105,6 +112,10 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const handleRegister = () => {
     const url = "https://test.home.idm.cms.gov/signin/login.html";
     window.location.assign(url);
+  };
+
+  const handleViewProfile = () => {
+    navigate("/profile");
   };
 
   if (isLoading || isError) return <></>;
@@ -133,12 +144,21 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
         <div className="flex-1"></div>
         <>
           {data.user ? (
-            <button
-              className="text-white hover:text-white/70"
-              onClick={handleLogout}
-            >
-              Sign Out
-            </button>
+            <>
+              <button
+                className="text-white hover:text-white/70"
+                onClick={handleViewProfile}
+              >
+                View/Manage Profile
+              </button>
+
+              <button
+                className="text-white hover:text-white/70"
+                onClick={handleLogout}
+              >
+                Sign Out
+              </button>
+            </>
           ) : (
             <>
               <button
@@ -186,12 +206,20 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                   Sign Out
                 </button>
               ) : (
-                <button
-                  className="text-left block py-2 pl-3 pr-4 text-white rounded"
-                  onClick={handleLogin}
-                >
-                  Sign In
-                </button>
+                <>
+                  <button
+                    className="text-left block py-2 pl-3 pr-4 text-white rounded"
+                    onClick={handleLogin}
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    className="text-white hover:text-white/70"
+                    onClick={handleRegister}
+                  >
+                    Register
+                  </button>
+                </>
               )}
             </>
           </ul>
