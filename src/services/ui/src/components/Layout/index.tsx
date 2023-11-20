@@ -18,33 +18,29 @@ import { FAQ_TARGET } from "@/routes";
 import { useUserContext } from "../Context/userContext";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
-  if (isAuthenticated && role) {
-    return [
-      {
-        name: "Home",
-        link: "/",
-      },
-      {
-        name: "Dashboard",
-        link: "/dashboard",
-      },
-      {
-        name: "FAQ",
-        link: "/faq",
-      },
-    ];
-  } else {
-    return [
-      {
-        name: "Home",
-        link: "/",
-      },
-      {
-        name: "FAQ",
-        link: "/faq",
-      },
-    ];
-  }
+  const isDev = window && !window.location.hostname.includes("cms.dev"); // i dont love this. :shrug:
+  return [
+    {
+      name: "Home",
+      link: "/",
+      condition: true,
+    },
+    {
+      name: "Dashboard",
+      link: "/dashboard",
+      condition: isAuthenticated && role,
+    },
+    {
+      name: "FAQ",
+      link: "/faq",
+      condition: true,
+    },
+    {
+      name: "Webforms",
+      link: "/webforms",
+      condition: isDev,
+    },
+  ].filter((l) => l.condition);
 };
 
 export const Layout = () => {
@@ -236,3 +232,13 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     </>
   );
 };
+
+export const SubNavHeader = ({ children }: { children: React.ReactNode }) => (
+  <div className="bg-sky-100">
+    <div className="max-w-screen-xl m-auto px-4 lg:px-8">
+      <div className="flex items-center">
+        <div className="flex align-middle py-4">{children}</div>
+      </div>
+    </div>
+  </div>
+);

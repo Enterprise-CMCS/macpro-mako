@@ -15,13 +15,20 @@ type GetPackageActionsBody = {
 
 /** Generates an array of allowed actions from a combination of user attributes
  * and OS result data */
-const packageActionsForResult = (
+export const packageActionsForResult = (
   user: CognitoUserAttributes,
   result: ItemResult
 ): Action[] => {
   const actions = [];
   if (isCmsUser(user)) {
-    actions.push(Action.ENABLE_RAI_WITHDRAW);
+    if (!result._source.raiWithdrawEnabled) {
+      // result._source.raiReceivedDate &&
+      actions.push(Action.ENABLE_RAI_WITHDRAW);
+    }
+    if (result._source.raiWithdrawEnabled) {
+      actions.push(Action.DISABLE_RAI_WITHDRAW);
+    }
+    actions.push(Action.ISSUE_RAI);
   }
   return actions;
 };
