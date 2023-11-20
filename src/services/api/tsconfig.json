@@ -6,5 +6,6 @@
     "allowSyntheticDefaultImports": true
   },
   "include": ["layers/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "esModuleInterop": true 
 }
