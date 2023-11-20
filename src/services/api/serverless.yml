@@ -69,8 +69,8 @@ custom:
   esbuild:
     packager: yarn
     minify: false  
-      watch:
-        pattern: [layers/**/*.ts"]
+    watch:
+      pattern: [layers/**/*.ts"]
 params:
   master:
     formsProvisionedConcurrency: 2
