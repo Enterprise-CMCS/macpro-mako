@@ -37,7 +37,7 @@ export const useToggleRaiWithdraw = (
   options?: UseMutationOptions<ToggleRaiWithdrawResponse, ReactQueryApiError>
 ) => {
   return useMutation<ToggleRaiWithdrawResponse, ReactQueryApiError>(
-    ["toggleRaiResponseWithdraw", id],
+    ["actions", id],
     () => toggleRaiWithdraw(id, action),
     options
   );

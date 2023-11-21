@@ -7,4 +7,3 @@ export * from "./opensearch";
 export * from "./uploads";
 export * from "./actions";
 export * from "./action-types/withdraw-record";
-export * from "./action-types/withdrawPackage";
