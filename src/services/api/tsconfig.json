@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES2016",
     "moduleResolution": "node",
-    // "module": "commonjs",
+    "module": "commonjs",
     "allowSyntheticDefaultImports": true
   },
   "include": ["./layers/**/*.ts"],
