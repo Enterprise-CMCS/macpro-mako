@@ -229,7 +229,9 @@ layers:
   forms:
     path: layers
     description: Lambda Layer for forms function
-
+    compatibleRuntimes:
+      - nodejs14.x
+      - nodejs16.x
 resources:
   Resources:
     ApiGateway400ErrorCount:
