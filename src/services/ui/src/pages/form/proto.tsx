@@ -1090,10 +1090,6 @@ export const ABP1: Document = {
                                   rhf: "Textarea",
                                   name: "other_description",
                                   label: "Describe",
-                                  props: {
-                                    maxLength: 4000,
-                                    charcount: "limited",
-                                  },
                                   rules: {
                                     required: "* Required",
                                   },
@@ -1113,10 +1109,6 @@ export const ABP1: Document = {
                         rhf: "Textarea",
                         name: "other_targeting_criteria_description",
                         label: "Describe",
-                        props: {
-                          maxLength: 4000,
-                          charcount: "limited",
-                        },
                         rules: {
                           required: "* Required",
                         },
@@ -1264,10 +1256,6 @@ export const ABP1: Document = {
             {
               name: "additional_information",
               rhf: "Textarea",
-              props: {
-                charcount: "limited",
-                maxLength: 4000,
-              },
             },
           ],
         },
