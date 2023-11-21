@@ -41,7 +41,7 @@ export const forms = async (event: APIGatewayEvent) => {
     try {
       if (!formVersion) formVersion = getMaxVersion(formId);
 
-      form = import(`/opt/${formId}/v${formVersion}.js`);
+      form = import(`/opt/${formId}/v${formVersion}.ts`);
       console.log(form);
       console.log(form.form);
     } catch (importError) {
@@ -81,13 +81,13 @@ export function getFilepathForIdAndVersion(
   formVersion: string | undefined
 ): string | undefined {
   if (formId && formVersion) {
-    return `/opt/${formId}/v${formVersion}.js`;
+    return `/opt/${formId}/v${formVersion}.ts`;
   }
 
   const maxVersion = getMaxVersion(formId);
 
   if (!maxVersion) return undefined;
-  return `/opt/${formId}/v${maxVersion}.js`;
+  return `/opt/${formId}/v${maxVersion}.ts`;
 }
 
 export const handler = forms;

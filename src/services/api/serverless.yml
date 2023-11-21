@@ -6,7 +6,6 @@ plugins:
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
   - serverless-scriptable-plugin
-  - serverless-plugin-scripts
 
 provider:
   name: aws
@@ -210,9 +209,9 @@ functions:
     handler: handlers/forms.handler
     layers:
       - !Ref FormsLambdaLayer
-    package:
-      patterns:
-        - './layers/**/*.ts'
+    # package:
+    #   patterns:
+    #     - './layers/**/*.ts'
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
