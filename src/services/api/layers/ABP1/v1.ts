@@ -1303,4 +1303,4 @@ const ABP1: FormSchema = {
   ],
 };
 
-module.exports = { ABP1 };
+export const form = ABP1;
