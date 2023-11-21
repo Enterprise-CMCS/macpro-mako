@@ -1,6 +1,6 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/Inputs";
-import { Modal } from "@/components/Modal/Modal";
+import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { useEffect, useState } from "react";
 import { ItemResult } from "shared-types";
 import { FAQ_TARGET, ROUTES } from "@/routes";
@@ -173,7 +173,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
           </I.Form>
         </div>
         {/* Success Modal */}
-        <Modal
+        <ConfirmationModal
           open={successModalOpen}
           onAccept={() => {
             setSuccessModalOpen(false);
@@ -192,7 +192,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
         />
 
         {/* Cancel Modal */}
-        <Modal
+        <ConfirmationModal
           open={cancelModalOpen}
           onAccept={() => {
             setCancelModalOpen(false);
