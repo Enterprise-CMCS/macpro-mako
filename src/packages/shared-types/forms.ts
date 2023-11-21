@@ -49,7 +49,10 @@ export type RHFComponentMap = {
     description?: ReactElement | string;
     icon?: string;
   };
-  Textarea: React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+  Textarea: React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    charcount?: "simple" | "limited";
+    charcountstyling?: string;
+  };
   Switch: React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> & {
     className?: string;
   };
@@ -70,7 +73,9 @@ export type RHFComponentMap = {
   Checkbox: {
     options: RHFOption[];
   };
-  FieldArray: unknown;
+  FieldArray: {
+    appendText?: string;
+  };
   FieldGroup: {
     appendText?: string;
     removeText?: string;
@@ -90,6 +95,11 @@ export interface Section {
   dependency?: DependencyRule;
 }
 
+export interface Document {
+  header: string;
+  sections: Section[];
+}
+
 export type FieldArrayProps<
   T extends FieldValues,
   TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
@@ -98,6 +108,7 @@ export type FieldArrayProps<
   name: TFieldArrayName;
   fields: RHFSlotProps[];
   groupNamePrefix?: string;
+  appendText?: string;
 };
 
 export type FieldGroupProps<

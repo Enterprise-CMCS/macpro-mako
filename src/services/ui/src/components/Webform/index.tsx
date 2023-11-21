@@ -3,10 +3,8 @@ import { Button, Form } from "@/components/Inputs";
 import { RHFDocument } from "@/components/RHF";
 import { Link, useParams } from "react-router-dom";
 import { SubNavHeader } from "@/components";
-// import { data } from "./proto";
 import { documentInitializer, documentValidator } from "@/components/RHF/utils";
 import { useGetForm } from "@/api";
-// import { FormSchema } from "shared-types";
 
 export const Webforms = () => {
   return (
@@ -127,4 +125,4 @@ export function Webform() {
   );
 }
 
-export * from "./medicaid-form";
+export * from "../../pages/form/medicaid-form";
