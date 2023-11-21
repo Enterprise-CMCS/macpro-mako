@@ -65,11 +65,6 @@ custom:
   scriptable:
     hooks:
       package:compileEvents: ./handlers/repack.js
-  esbuild:
-    packager: yarn
-    minify: false  
-    watch:
-      pattern: [./layers/**/*.ts"]
 params:
   master:
     formsProvisionedConcurrency: 2
