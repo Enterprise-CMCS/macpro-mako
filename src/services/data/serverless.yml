@@ -129,6 +129,12 @@ stepFunctions:
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteIndex"
             Parameters:
               Context.$: $$
+            Next: SetupIndex
+          SetupIndex:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-setupIndex"
+            Parameters:
+              Context.$: $$
             Next: EnableTriggers
           EnableTriggers:
             Type: Task
@@ -162,7 +168,7 @@ functions:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
     maximumRetryAttempts: 0
-    timeout: 10
+    timeout: 60
     memorySize: 1024
     vpc:
       securityGroupIds:
@@ -175,7 +181,7 @@ functions:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
     maximumRetryAttempts: 0
-    timeout: 10
+    timeout: 60
     memorySize: 1024
     vpc:
       securityGroupIds:
@@ -269,6 +275,32 @@ functions:
       userPoolId: !Ref CognitoUserPool
       bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
       region: ${self:provider.region}
+  setupIndexCustomResource:
+    handler: handlers/index.customResourceWrapper
+    environment:
+      region: ${self:provider.region}
+      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+    maximumRetryAttempts: 0
+    timeout: 60
+    memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  setupIndex:
+    handler: handlers/index.handler
+    environment:
+      region: ${self:provider.region}
+      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+    maximumRetryAttempts: 0
+    timeout: 60
+    memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
 
 resources:
   Conditions:
@@ -306,6 +338,7 @@ resources:
         StartingPosition: TRIM_HORIZON
         Topics:
           - aws.ksqldb.seatool.agg.State_Plan
+      DependsOn: SetupIndex
     CloudWatchAlarmForSinkSeatoolTriggerErrors:
       Type: AWS::CloudWatch::Alarm
       Properties:
@@ -373,6 +406,7 @@ resources:
         StartingPosition: TRIM_HORIZON
         Topics:
           - ${param:topicNamespace}aws.onemac.migration.cdc
+      DependsOn: SetupIndex
     CloudWatchAlarmForSinkOnemacTriggerErrors:
       Type: AWS::CloudWatch::Alarm
       Properties:
@@ -674,6 +708,11 @@ resources:
         BrokerString: ${self:custom.brokerString}
         TopicPatternsToDelete:
           - ${param:topicNamespace}aws.onemac.migration.cdc
+    SetupIndex:
+      Type: Custom::SetupIndex
+      Properties:
+        ServiceToken: !GetAtt SetupIndexCustomResourceLambdaFunction.Arn
+      DependsOn: MapRole # This lambda needs the roles mapped before setting up the index
   Outputs:
     OpenSearchDomainArn:
       Value: !GetAtt OpenSearch.Arn

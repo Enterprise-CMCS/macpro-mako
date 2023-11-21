@@ -14,7 +14,7 @@ import {
   LoadingSpinner,
   BreadCrumbs,
 } from "@/components";
-import { Modal } from "@/components/Modal/Modal";
+import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { getUserStateCodes } from "@/utils";
 import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
@@ -168,13 +168,13 @@ export const MedicaidForm = () => {
       attachments: fileMetaData,
       origin: "micro",
       authority: "medicaid spa",
-      raiResponses: [],
       raiWithdrawEnabled: false,
       submitterEmail: user?.user?.email ?? "N/A",
       submitterName:
         `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
       proposedEffectiveDate: data.proposedEffectiveDate.getTime(),
       state: data.id.split("-")[0],
+      rais: {}, // We do not collect rai data as part of new submission.
     };
 
     try {
@@ -385,7 +385,7 @@ export const MedicaidForm = () => {
             </I.Button>
 
             {/* Success Modal */}
-            <Modal
+            <ConfirmationModal
               open={successModalIsOpen}
               onAccept={() => {
                 setSuccessModalIsOpen(false);
@@ -404,7 +404,7 @@ export const MedicaidForm = () => {
             />
 
             {/* Cancel Modal */}
-            <Modal
+            <ConfirmationModal
               open={cancelModalIsOpen}
               onAccept={() => {
                 setCancelModalIsOpen(false);
