@@ -12,7 +12,7 @@ import {
   LoadingSpinner,
   BreadCrumbs,
 } from "@/components";
-import { Modal } from "@/components/Modal/Modal";
+import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
 import { Action, RaiIssueTransform } from "shared-types";
@@ -295,7 +295,7 @@ export const IssueRai = () => {
             >
               Cancel
             </I.Button>
-            <Modal
+            <ConfirmationModal
               open={successModalIsOpen}
               onAccept={() => {
                 setSuccessModalIsOpen(false);
@@ -312,7 +312,7 @@ export const IssueRai = () => {
               cancelButtonVisible={false}
               acceptButtonText="Exit to Package Details"
             />
-            <Modal
+            <ConfirmationModal
               open={errorModalIsOpen}
               onAccept={() => {
                 setErrorModalIsOpen(false);
@@ -348,7 +348,7 @@ export const IssueRai = () => {
               cancelButtonText="Return to Form"
               acceptButtonText="Exit to Package Details"
             />
-            <Modal
+            <ConfirmationModal
               open={cancelModalIsOpen}
               onAccept={() => {
                 setCancelModalIsOpen(false);

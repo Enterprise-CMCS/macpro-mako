@@ -8,7 +8,7 @@ import {
 } from "../Dialog";
 import { Button } from "../Inputs";
 
-type Props = {
+export type ConfirmationModalProps = {
   open: boolean;
   description?: React.ReactNode;
   body?: React.ReactNode;
@@ -33,7 +33,7 @@ export function ConfirmationModal({
   cancelButtonText = "Cancel",
   acceptButtonVisible = true,
   cancelButtonVisible = true,
-}: Props) {
+}: ConfirmationModalProps) {
   return (
     <Dialog open={open} onOpenChange={onCancel}>
       <DialogContent className="sm:max-w-[425px]">
