@@ -1,5 +1,4 @@
 import { response } from "../libs/handler";
-
 import * as fs from "fs";
 import { APIGatewayEvent } from "aws-lambda";
 
@@ -17,18 +16,7 @@ export const forms = async (event: APIGatewayEvent) => {
 
     const filePath = getFilepathForIdAndVersion(formId, formVersion);
 
-    if (filePath) {
-      const jsonData = await fs.promises.readFile(filePath, "utf-8");
-      console.log(jsonData);
-      if (!jsonData) {
-        return response({
-          statusCode: 404,
-          body: JSON.stringify({
-            error: "No file was found with provided formId and formVersion",
-          }),
-        });
-      }
-    } else {
+    if (!filePath) {
       return response({
         statusCode: 404,
         body: JSON.stringify({
@@ -37,25 +25,43 @@ export const forms = async (event: APIGatewayEvent) => {
       });
     }
 
-    let form;
-    try {
-      if (!formVersion) formVersion = getMaxVersion(formId);
+    const jsonData = await fs.promises.readFile(filePath, "utf-8");
 
-      const formObj = await import(`/opt/${formId}/v${formVersion}.js`);
-      console.log(formObj);
-      form = formObj.form
-    } catch (importError) {
-      console.error("Error importing module:", importError);
+    if (!jsonData) {
+      return response({
+        statusCode: 404,
+        body: JSON.stringify({
+          error: `File found for ${formId}, but it's empty`,
+        }),
+      });
     }
 
-    return response({
-      statusCode: 200,
-      body: form,
-    });
+    if (!formVersion) formVersion = getMaxVersion(formId);
+
+    try {
+      const formObj = await import(`/opt/${formId}/v${formVersion}.js`);
+
+      if (formObj?.form) {
+        return response({
+          statusCode: 200,
+          body: formObj.form,
+        });
+      }
+    } catch (importError) {
+      console.error("Error importing module:", importError);
+      return response({
+        statusCode: 500,
+        body: JSON.stringify({
+          error: importError.message
+            ? importError.message
+            : "Internal server error",
+        }),
+      });
+    }
   } catch (error) {
     console.error("Error:", error);
     return response({
-      statusCode: 500,
+      statusCode: 502,
       body: JSON.stringify({
         error: error.message ? error.message : "Internal server error",
       }),

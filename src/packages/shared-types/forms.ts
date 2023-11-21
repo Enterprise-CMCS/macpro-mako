@@ -56,6 +56,7 @@ export type RHFComponentMap = {
   Select: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root> & {
     options: { label: string; value: any }[];
     className?: string;
+    sort?: "ascending" | "descending";
   };
   Radio: React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> & {
     className?: string;
