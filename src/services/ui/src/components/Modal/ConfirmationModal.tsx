@@ -8,7 +8,7 @@ import {
 } from "../Dialog";
 import { Button } from "../Inputs";
 
-type Props = {
+export type ConfirmationModalProps = {
   open: boolean;
   description?: React.ReactNode;
   body?: React.ReactNode;
@@ -21,7 +21,8 @@ type Props = {
   acceptButtonVisible?: boolean;
 };
 
-export function Modal({
+/** A modal with optional Cancel and Accept buttons */
+export function ConfirmationModal({
   open,
   description,
   title,
@@ -32,7 +33,7 @@ export function Modal({
   cancelButtonText = "Cancel",
   acceptButtonVisible = true,
   cancelButtonVisible = true,
-}: Props) {
+}: ConfirmationModalProps) {
   return (
     <Dialog open={open} onOpenChange={onCancel}>
       <DialogContent className="sm:max-w-[425px]">

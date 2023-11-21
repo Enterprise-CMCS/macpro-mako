@@ -3,6 +3,7 @@ import { ROUTES } from "@/routes";
 import { ToggleRaiResponseWithdraw } from "@/pages/actions/ToggleRaiResponseWithdraw";
 import { IssueRai } from "@/pages/actions/IssueRai";
 import { WithdrawPackage } from "@/pages/actions/WithdrawPackage";
+import { RespondToRai } from "@/pages/actions/RespondToRai";
 import { Action } from "shared-types";
 
 export const ActionFormIndex = () => {
@@ -15,6 +16,8 @@ export const ActionFormIndex = () => {
       return <ToggleRaiResponseWithdraw />;
     case Action.ISSUE_RAI:
       return <IssueRai />;
+    case Action.RESPOND_TO_RAI:
+      return <RespondToRai />;
     default:
       return <Navigate to={ROUTES.HOME} />;
   }

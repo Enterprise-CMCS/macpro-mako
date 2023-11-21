@@ -66,6 +66,7 @@ export const TABLE_COLUMNS = (props?: {
   {
     field: "origin",
     label: "Submission Source",
+    visible: false,
     cell: (data) => {
       if (data.origin?.toLowerCase() === "onemac") {
         return "OneMAC";
