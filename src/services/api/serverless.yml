@@ -8,6 +8,10 @@ plugins:
   - serverless-scriptable-plugin
   - serverless-plugin-scripts
 
+package:
+  patterns:
+    - './layers/**/*.ts'
+
 provider:
   name: aws
   runtime: nodejs18.x
