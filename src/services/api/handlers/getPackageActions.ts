@@ -1,6 +1,11 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { Action, CognitoUserAttributes, ItemResult } from "shared-types";
-import { isCmsUser } from "shared-utils";
+import {
+  isCmsUser,
+  getActiveRai,
+  isCmsWriteUser,
+  isStateUser,
+} from "shared-utils";
 import { getPackage } from "../libs/package/getPackage";
 import {
   getAuthDetails,
@@ -8,6 +13,7 @@ import {
   lookupUserAttributes,
 } from "../libs/auth/user";
 import { response } from "../libs/handler";
+import { SEATOOL_STATUS } from "shared-types/statusHelper";
 
 type GetPackageActionsBody = {
   id: string;
@@ -15,13 +21,46 @@ type GetPackageActionsBody = {
 
 /** Generates an array of allowed actions from a combination of user attributes
  * and OS result data */
-const packageActionsForResult = (
+export const packageActionsForResult = (
   user: CognitoUserAttributes,
   result: ItemResult
 ): Action[] => {
   const actions = [];
-  if (isCmsUser(user)) {
-    actions.push(Action.ENABLE_RAI_WITHDRAW);
+  const activeRai = getActiveRai(result._source.rais);
+  if (isCmsWriteUser(user)) {
+    switch (result._source.seatoolStatus) {
+      case SEATOOL_STATUS.PENDING:
+      case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
+      case SEATOOL_STATUS.PENDING_APPROVAL:
+      case SEATOOL_STATUS.PENDING_CONCURRENCE:
+        if (!activeRai) {
+          // If there is not an active RAI
+          actions.push(Action.ISSUE_RAI);
+        }
+        break;
+    }
+    if (
+      result._source.rais !== null &&
+      Object.keys(result._source.rais).length > 0 &&
+      !activeRai
+    ) {
+      // There's an RAI and its been responded to
+      if (!result._source.raiWithdrawEnabled) {
+        actions.push(Action.ENABLE_RAI_WITHDRAW);
+      }
+      if (result._source.raiWithdrawEnabled) {
+        actions.push(Action.DISABLE_RAI_WITHDRAW);
+      }
+    }
+  } else if (isStateUser(user)) {
+    switch (result._source.seatoolStatus) {
+      case SEATOOL_STATUS.PENDING_RAI:
+        if (activeRai) {
+          // If there is an active RAI
+          actions.push(Action.RESPOND_TO_RAI);
+        }
+        break;
+    }
   }
   return actions;
 };

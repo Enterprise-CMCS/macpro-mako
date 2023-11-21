@@ -1,12 +1,13 @@
 import {
   AdditionalInfo,
+  Alert,
   Attachmentslist,
   CardWithTopBorder,
   ChipSpaPackageDetails,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
-  RaiResponses,
+  RaiList,
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
@@ -15,7 +16,7 @@ import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
@@ -33,10 +34,19 @@ const DetailCardWrapper = ({
     </div>
   </CardWithTopBorder>
 );
-const StatusCard = ({ status }: { status: string }) => (
+const StatusCard = ({
+  status,
+  raiWithdrawEnabled,
+}: {
+  status: string;
+  raiWithdrawEnabled: boolean;
+}) => (
   <DetailCardWrapper title={"Status"}>
     <div>
       <h2 className="text-xl font-semibold">{status}</h2>
+      {raiWithdrawEnabled && (
+        <em className="text-xs">{"Withdraw Formal RAI Response - Enabled"}</em>
+      )}
     </div>
   </DetailCardWrapper>
 );
@@ -70,6 +80,7 @@ const PackageActionsCard = ({ id }: { id: string }) => {
 
 export const DetailsContent = ({ data }: { data?: ItemResult }) => {
   const { data: user } = useGetUser();
+  const { state } = useLocation();
   if (!data?._source) return <LoadingSpinner />;
   const status =
     user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
@@ -97,11 +108,22 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
         ))}
       </aside>
       <div className="flex-1">
+        {state?.callout && (
+          <Alert className="bg-green-100 border-green-400" variant="default">
+            <h2 className="text-lg font-bold text-green-900">
+              {state.callout.heading}
+            </h2>
+            <p className="text-green-900">{state.callout.body}</p>
+          </Alert>
+        )}
         <section
           id="package-overview"
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
         >
-          <StatusCard status={status} />
+          <StatusCard
+            status={status}
+            raiWithdrawEnabled={data._source?.raiWithdrawEnabled || false}
+          />
           <PackageActionsCard id={data._id} />
         </section>
         <DetailsSection id="package-details" title="Package Details">
@@ -118,7 +140,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
             additionalInformation={data?._source.additionalInformation}
           />
         </DetailsSection>
-        <RaiResponses {...data?._source} />
+        <RaiList {...data?._source} />
       </div>
     </div>
   );
@@ -138,7 +160,6 @@ export const Details = () => {
 
   return (
     <>
-      {/* <DetailNav id={id} type={data?._source.planType} /> */}
       <div className="max-w-screen-xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
         <BreadCrumbs options={DETAILS_AND_ACTIONS_CRUMBS({ id })} />
         <DetailsContent data={data} />

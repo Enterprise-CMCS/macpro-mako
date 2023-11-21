@@ -20,6 +20,8 @@ export enum ROUTES {
   ACTION = "/action/:id/:type",
   CREATE = "/create",
   MEDICAID_NEW = "/new-submission/spa/medicaid/create",
+  WEBFORMS = "/webforms",
+  WEBFORM = "/webform/:id/:version",
 }
 
 export enum FAQ_SECTION {
