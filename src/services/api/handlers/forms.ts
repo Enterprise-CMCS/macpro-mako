@@ -41,9 +41,10 @@ export const forms = async (event: APIGatewayEvent) => {
     try {
       if (!formVersion) formVersion = getMaxVersion(formId);
 
-      form = await import(`/opt/${formId}/v${formVersion}.js`);
+      const formObj = await import(`/opt/${formId}/v${formVersion}.js`);
       console.log(form);
       console.log(form.form);
+      form = formObj.form
     } catch (importError) {
       console.error("Error importing module:", importError);
     }
