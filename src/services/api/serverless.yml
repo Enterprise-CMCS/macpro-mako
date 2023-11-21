@@ -8,10 +8,6 @@ plugins:
   - serverless-scriptable-plugin
   - serverless-plugin-scripts
 
-package:
-  patterns:
-    - './layers/**/*.ts'
-
 provider:
   name: aws
   runtime: nodejs18.x
@@ -214,6 +210,9 @@ functions:
     handler: handlers/forms.handler
     layers:
       - !Ref FormsLambdaLayer
+    package:
+      patterns:
+        - './layers/**/*.ts'
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
