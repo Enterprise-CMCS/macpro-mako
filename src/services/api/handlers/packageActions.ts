@@ -12,7 +12,7 @@ const config = {
   database: "SEA",
 };
 
-import { Action, raiSchema, RaiSchema } from "shared-types";
+import { Action, raiSchema, RaiSchema, OneMacSink, WithdrawPackageSchema, transformOnemac, withdrawPackageEventSchema } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
@@ -140,8 +140,54 @@ export async function respondToRai(body: RaiSchema, rais: any) {
   console.log("heyo");
 }
 
-export async function withdrawPackage(id, timestamp) {
+export async function withdrawPackage(body: WithdrawPackageSchema) {
   console.log("State withdrawing a package.");
+  // Check incoming data
+  const result = withdrawPackageEventSchema.safeParse(body);
+  if (result.success === false) {
+    console.error(
+      "Withdraw Package event validation error. The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message
+    );
+    return response({
+      statusCode: 400,
+      body: { message: "Withdraw Package event validation error" },
+    });
+  }
+  // Begin query (data is confirmed)
+  const pool = await sql.connect(config);
+  const transaction = new sql.Transaction(pool);
+  const query = `
+    UPDATE SEA.dbo.State_Plan
+      SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}')
+      WHERE ID_Number = '${body.id}'
+  `;
+
+  try {
+    const txnResult = await transaction.request().query(query);
+    console.log(txnResult);
+    await produceMessage(
+      TOPIC_NAME,
+      body.id,
+      JSON.stringify({ ...result.data, actionType: Action.WITHDRAW_PACKAGE })
+    );
+    // Commit transaction
+    await transaction.commit();
+  } catch (err) {
+    // Rollback and log
+    await transaction.rollback();
+    console.error("Error executing query:", err);
+    return response({
+      statusCode: 500,
+      body: { message: err.message },
+    });
+  } finally {
+    // Close pool
+    await pool.close();
+  }
+
 }
 
 export async function toggleRaiResponseWithdraw(

@@ -60,12 +60,16 @@ export const packageActionsForResult = (
     }
     actions.push(Action.ISSUE_RAI);
   }
+
+  if (!isCmsUser(user)) {
+    actions.push(Action.WITHDRAW_PACKAGE);
+  }
+
   return actions;
 };
 export const getPackageActions = async (event: APIGatewayEvent) => {
   const body = JSON.parse(event.body) as GetPackageActionsBody;
   try {
-    console.log(body);
     const result = await getPackage(body.id);
     const passedStateAuth = await isAuthorized(event, result._source.state);
     if (!passedStateAuth)
@@ -78,13 +82,11 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
         statusCode: 404,
         body: { message: "No record found for the given id" },
       });
-
     const authDetails = getAuthDetails(event);
     const userAttr = await lookupUserAttributes(
       authDetails.userId,
       authDetails.poolId
     );
-
     return response({
       statusCode: 200,
       body: {
@@ -99,5 +101,4 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
     });
   }
 };
-
 export const handler = getPackageActions;
