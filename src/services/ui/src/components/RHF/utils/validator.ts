@@ -1,4 +1,4 @@
-import * as T from "@/components/RHF/types";
+import * as T from "shared-types";
 import { RegisterOptions } from "react-hook-form";
 import { FormSchema } from "shared-types";
 

@@ -1,4 +1,4 @@
-import * as T from "@/components/RHF/types";
+import * as T from "shared-types";
 import { FormSchema } from "shared-types";
 
 type GL = Record<string, unknown>;

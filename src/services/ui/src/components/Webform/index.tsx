@@ -27,7 +27,7 @@ export function Webform() {
     version: string;
   }>();
   console.log({ id, version });
-  const { data, isLoading, error } = useGetForm("ABP1", "1");
+  const { data, isLoading, error } = useGetForm(id as string, version);
   const defaultValues = documentInitializer(data);
 
   const form = useForm({

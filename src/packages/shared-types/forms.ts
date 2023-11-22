@@ -4,12 +4,14 @@ import {
   FieldValues,
   RegisterOptions,
 } from "react-hook-form";
-import * as SelectPrimitive from "@radix-ui/react-select";
-import type { ReactElement } from "react";
-import * as SwitchPrimitives from "@radix-ui/react-switch";
-import * as React from "react";
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
-import { DayPicker } from "react-day-picker";
+import {
+  CalendarProps,
+  InputProps,
+  RadioProps,
+  SelectProps,
+  SwitchProps,
+  TextareaProps,
+} from "shared-types";
 
 export interface FormSchema {
   header: string;
@@ -18,10 +20,10 @@ export interface FormSchema {
 
 export type RHFSlotProps = {
   name: string;
-  label?: ReactElement | string;
+  label?: string;
   labelStyling?: string;
   groupNamePrefix?: string;
-  description?: ReactElement | string;
+  description?: string;
   dependency?: DependencyRule;
   rules?: RegisterOptions;
 } & {
@@ -44,32 +46,17 @@ export type RHFOption = {
 };
 
 export type RHFComponentMap = {
-  Input: React.InputHTMLAttributes<HTMLInputElement> & {
-    label?: ReactElement | string;
-    description?: ReactElement | string;
-    icon?: string;
+  Input: InputProps & {
+    label?: string;
+    description?: string;
   };
-  Textarea: React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
-    charcount?: "simple" | "limited";
-    charcountstyling?: string;
-  };
-  Switch: React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> & {
-    className?: string;
-  };
-  Select: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root> & {
-    options: { label: string; value: any }[];
-    className?: string;
-    sort?: "ascending" | "descending";
-  };
-  Radio: React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> & {
-    className?: string;
+  Textarea: TextareaProps;
+  Switch: SwitchProps;
+  Select: SelectProps & { sort?: "ascending" | "descending" };
+  Radio: RadioProps & {
     options: RHFOption[];
   };
-  DatePicker: React.ComponentProps<typeof DayPicker> & {
-    className?: string;
-    classNames?: any;
-    showOutsideDays?: boolean;
-  };
+  DatePicker: CalendarProps;
   Checkbox: {
     options: RHFOption[];
   };

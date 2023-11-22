@@ -3,16 +3,11 @@
 import * as React from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-
+import { DatePickerProps } from "shared-types";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/Inputs/button";
 import { Calendar } from "@/components/Inputs/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
-
-type DatePickerProps = {
-  date: Date | undefined;
-  onChange: (date: Date | undefined) => void;
-};
 
 export const DatePicker = ({ date, onChange }: DatePickerProps) => {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState<boolean>(false);
