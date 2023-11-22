@@ -2,7 +2,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/Inputs";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { useEffect, useState } from "react";
-import { ItemResult } from "shared-types";
+import { ItemResult, withdrawPackageSchema } from "shared-types";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { PackageActionForm } from "./PackageActionForm";
 import { ActionFormIntro, PackageInfo } from "./common";
@@ -13,12 +13,12 @@ import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
 import { useWithdrawPackage } from "@/api/useWithdrawPackage";
 import { Alert, LoadingSpinner } from "@/components";
-import {
-  WithdrawPackageSchema,
-  withdrawPackageEventSchema,
-} from "shared-types";
 
-type UploadKey = keyof WithdrawPackageSchema["attachments"];
+const withdrawPackageFormSchema = withdrawPackageSchema(
+  z.array(z.instanceof(File))
+);
+type WithdrawPackageFormSchema = z.infer<typeof withdrawPackageFormSchema>;
+type UploadKey = keyof WithdrawPackageFormSchema["attachments"];
 type AttachmentRecipe = {
   readonly name: UploadKey;
   readonly label: string;
@@ -30,17 +30,17 @@ const attachments: AttachmentRecipe[] = [
     name: "supportingDocumentation",
     label: "Supporting Documentation",
     required: false,
-  },
+  } as const,
 ];
 
-const handler: SubmitHandler<WithdrawPackageSchema> = (data) =>
+const handler: SubmitHandler<WithdrawPackageFormSchema> = (data) =>
   console.log(data);
 
 const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const form = useForm<WithdrawPackageSchema>({
-    resolver: zodResolver(withdrawPackageEventSchema),
+  const form = useForm<WithdrawPackageFormSchema>({
+    resolver: zodResolver(withdrawPackageFormSchema),
   });
   const { mutate, isLoading, isSuccess, error } = useWithdrawPackage(id!);
 

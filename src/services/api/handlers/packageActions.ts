@@ -12,7 +12,15 @@ const config = {
   database: "SEA",
 };
 
-import { Action, raiSchema, RaiSchema, OneMacSink, WithdrawPackageSchema, transformOnemac, withdrawPackageEventSchema } from "shared-types";
+import {
+  Action,
+  raiSchema,
+  RaiSchema,
+  OneMacSink,
+  WithdrawPackageEventSchema,
+  transformOnemac,
+  withdrawPackageEventSchema,
+} from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
@@ -140,7 +148,7 @@ export async function respondToRai(body: RaiSchema, rais: any) {
   console.log("heyo");
 }
 
-export async function withdrawPackage(body: WithdrawPackageSchema) {
+export async function withdrawPackage(body: WithdrawPackageEventSchema) {
   console.log("State withdrawing a package.");
   // Check incoming data
   const result = withdrawPackageEventSchema.safeParse(body);
@@ -187,7 +195,6 @@ export async function withdrawPackage(body: WithdrawPackageSchema) {
     // Close pool
     await pool.close();
   }
-
 }
 
 export async function toggleRaiResponseWithdraw(
