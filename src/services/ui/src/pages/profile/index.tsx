@@ -65,21 +65,6 @@ export const Profile = () => {
             </p>
           </div>
         </div>
-
-        <div className="basis-1/2">
-          <CardWithTopBorder>
-            <div className="p-4">
-              <h1 className="text-2xl font-bold">
-                {data?.user?.["custom:state"]}
-              </h1>
-              <p className="pb-6">
-                <em>Access Granted</em>
-              </p>
-              <p>State System Admins:</p>
-            </div>
-          </CardWithTopBorder>
-        </div>
-      </div>
     </>
   );
 };
