@@ -1,0 +1,32 @@
+{
+    "formId": "sampleForm",
+    "formVersion": "2.0",
+    "formTitle": "Sample Form",
+    "formFields": [
+      {
+        "name": "fullName",
+        "label": "Full Name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "email",
+        "label": "Email",
+        "type": "email",
+        "required": true
+      },
+      {
+        "name": "phoneNumber",
+        "label": "Phone Number",
+        "type": "tel",
+        "required": false
+      },
+      {
+        "name": "message",
+        "label": "Message",
+        "type": "textarea",
+        "required": true
+      }
+    ]
+  }
+  

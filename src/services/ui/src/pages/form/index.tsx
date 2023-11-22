@@ -1,358 +1,120 @@
-export { MedicaidForm } from "./medicaid-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-import {
-  Button,
-  Calendar,
-  Checkbox,
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Input,
-  RadioGroup,
-  RadioGroupItem,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Switch,
-  Textarea,
-} from "@/components/Inputs";
-import { Link } from "react-router-dom";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
-import { cn } from "@/lib";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-const items = [
-  {
-    id: "recents",
-    label: "Recents",
-  },
-  {
-    id: "home",
-    label: "Home",
-  },
-  {
-    id: "applications",
-    label: "Applications",
-  },
-  {
-    id: "desktop",
-    label: "Desktop",
-  },
-  {
-    id: "downloads",
-    label: "Downloads",
-  },
-  {
-    id: "documents",
-    label: "Documents",
-  },
-] as const;
+import { Button, Form } from "@/components/Inputs";
+import { RHFDocument } from "@/components/RHF";
+import { ABP1 } from "./proto";
+import { documentInitializer, documentValidator } from "@/components/RHF/utils";
+import { Link, useParams } from "react-router-dom";
+import { SubNavHeader } from "@/components";
 
-const FormSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
-    })
-    .email(),
-  bio: z
-    .string()
-    .min(10, {
-      message: "Bio must be at least 10 characters.",
-    })
-    .max(160, {
-      message: "Bio must not be longer than 30 characters.",
-    }),
-  marketing_emails: z.boolean().default(false).optional(),
-  security_emails: z.boolean(),
-  type: z.enum(["all", "mentions", "none"], {
-    required_error: "You need to select a notification type.",
-  }),
-  dob: z.date({
-    required_error: "A date of birth is required.",
-  }),
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "You have to select at least one item.",
-  }),
-});
+export const Webforms = () => {
+  return (
+    <>
+      <SubNavHeader>
+        <h1 className="text-xl font-medium">Webforms</h1>
+      </SubNavHeader>
+      <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
+        <div className="flex-1">
+          <Link to="/webform/abp1/1.0">ABP1 1.0</Link>
+        </div>
+      </section>
+    </>
+  );
+};
 
-export function ExampleForm() {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      items: ["recents", "home"],
-    },
+export function Webform() {
+  const { id, version } = useParams<{
+    id: string;
+    version: string;
+  }>();
+  console.log({ id, version });
+
+  const defaultValues = documentInitializer(ABP1);
+
+  const form = useForm({
+    defaultValues,
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log({ data });
-  }
-
+  const onSubmit = form.handleSubmit(
+    (data) => {
+      const validate = documentValidator(ABP1);
+      const isValid = validate({
+        alt_benefit_plan_population_name:
+          "agadgasdfg2f2fdsfascvcvaeqfwf22fasdfasdfsd",
+        is_enrollment_available: "no",
+        income_target: "income_target_below",
+        federal_poverty_level_percentage: "",
+        ssi_federal_benefit_percentage: "",
+        other_percentage: "",
+        other_describe: "",
+        income_definition_percentage: "other",
+        is_incremental_amount: false,
+        doller_incremental_amount: "",
+        income_definition_region_statewide_group: [
+          {
+            income_definition_region_statewide_arr: [
+              {
+                household_size: "",
+                standard: "",
+              },
+            ],
+            is_incremental_amount: false,
+            doller_incremental_amount: "",
+          },
+        ],
+        income_definition_specific: "other_standard",
+        income_definition: "income_definition_specific",
+        other_description: "asdfasdf",
+        health_conditions: ["physical_disability", "brain_injury", "hiv_aids"],
+        other_targeting_criteria_description: "",
+        target_criteria: [
+          "income_standard",
+          "health",
+          "other_targeting_criteria",
+        ],
+        is_geographic_area: "no",
+        specify_counties: "",
+        specify_regions: "",
+        specify_cities_towns: "",
+        specify_other: "",
+        geographic_variation: "other",
+        additional_information: "",
+        eligibility_groups: [
+          {
+            eligibility_group: "parents_caretaker_relatives",
+            mandatory_voluntary: "voluntary",
+          },
+        ],
+        income_definition_specific_statewide_group_other: [
+          {
+            name_of_group: "",
+            group_description: "",
+            is_incremental_amount: false,
+            doller_incremental_amount: "",
+            income_definition_specific_statewide_arr: [
+              {
+                household_size: "",
+                standard: "",
+              },
+            ],
+          },
+        ],
+      });
+      console.log({ isValid });
+    },
+    (err) => {
+      console.log({ err });
+    }
+  );
   return (
-    <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
+    <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-2/3 space-y-6"
-        >
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="jimmy somethin" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="bio"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Bio</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Tell us a little bit about yourself"
-                    className="resize-none"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>
-                  You can <span>@mention</span> other users and organizations.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div>
-            <h3 className="mb-4 text-lg font-medium">Email Notifications</h3>
-            <div className="space-y-4">
-              <FormField
-                control={form.control}
-                name="marketing_emails"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                    <div className="space-y-0.5">
-                      <FormLabel>Marketing emails</FormLabel>
-                      <FormDescription>
-                        Receive emails about new products, features, and more.
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="security_emails"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                    <div className="space-y-0.5">
-                      <FormLabel>Security emails</FormLabel>
-                      <FormDescription>
-                        Receive emails about your account security.
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        // disabled
-                        aria-readonly
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a verified email to display" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="m@example.com">m@example.com</SelectItem>
-                    <SelectItem value="m@google.com">m@google.com</SelectItem>
-                    <SelectItem value="m@support.com">m@support.com</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>
-                  You can manage email addresses in your{" "}
-                  <Link to="/examples/forms">email settings</Link>.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel>Notify me about...</FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="flex flex-col space-y-1"
-                  >
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="all" />
-                      </FormControl>
-                      <FormLabel className="font-normal">
-                        All new messages
-                      </FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="mentions" />
-                      </FormControl>
-                      <FormLabel className="font-normal">
-                        Direct messages and mentions
-                      </FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="none" />
-                      </FormControl>
-                      <FormLabel className="font-normal">Nothing</FormLabel>
-                    </FormItem>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="dob"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Date of birth</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormDescription>
-                  Your date of birth is used to calculate your age.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="items"
-            render={() => (
-              <FormItem>
-                <div className="mb-4">
-                  <FormLabel className="text-base">Sidebar</FormLabel>
-                  <FormDescription>
-                    Select the items you want to display in the sidebar.
-                  </FormDescription>
-                </div>
-                {items.map((item) => (
-                  <FormField
-                    key={item.id}
-                    control={form.control}
-                    name="items"
-                    render={({ field }) => {
-                      return (
-                        <FormItem
-                          key={item.id}
-                          className="flex flex-row items-start space-x-3 space-y-0"
-                        >
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value?.includes(item.id)}
-                              onCheckedChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...field.value, item.id])
-                                  : field.onChange(
-                                      field.value?.filter(
-                                        (value) => value !== item.id
-                                      )
-                                    );
-                              }}
-                              label=""
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">
-                            {item.label}
-                          </FormLabel>
-                        </FormItem>
-                      );
-                    }}
-                  />
-                ))}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <form onSubmit={onSubmit} className="space-y-6">
+          <RHFDocument document={ABP1} {...form} />
           <Button type="submit">Submit</Button>
         </form>
       </Form>
     </div>
   );
 }
+
+export * from "./medicaid-form";
