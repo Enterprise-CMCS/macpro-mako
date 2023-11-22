@@ -11,8 +11,7 @@
     "bestzip": "^2.2.1",
     "eslint": "^8.38.0",
     "eslint-config-custom-server": "*",
-    "extract-zip": "^2.0.1",
-    "typescript": "^5.2.0"
+    "extract-zip": "^2.0.1"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.276.0",

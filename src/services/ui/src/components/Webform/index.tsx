@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { SubNavHeader } from "@/components";
 import { documentInitializer, documentValidator } from "@/components/RHF/utils";
 import { useGetForm } from "@/api";
-
+import { LoadingSpinner } from "@/components";
 export const Webforms = () => {
   return (
     <>
@@ -106,12 +106,13 @@ export function Webform() {
     }
   );
   return isLoading ? (
-    <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
-      Currently Loading ABP1...
-    </div>
+    // <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
+    //   {`Currently Loading ${id}...`}
+    // </div>
+    <LoadingSpinner />
   ) : error ? (
     <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
-      There was an error loading ABP1
+      {`There was an error loading ${id}`}
     </div>
   ) : (
     <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
