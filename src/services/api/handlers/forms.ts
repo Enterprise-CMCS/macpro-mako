@@ -4,7 +4,7 @@ import { APIGatewayEvent } from "aws-lambda";
 
 export const forms = async (event: APIGatewayEvent) => {
   try {
-    const formId = event.queryStringParameters?.formId;
+    const formId = event.queryStringParameters?.formId?.toLocaleUpperCase();
     let formVersion = event.queryStringParameters?.formVersion;
 
     if (!formId) {

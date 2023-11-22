@@ -14,7 +14,7 @@ export const Webforms = () => {
       </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1">
-          <Link to="/webform/abp1/1.0">ABP1 1.0</Link>
+          <Link to="/webform/ABP1/1">ABP1 v1</Link>
         </div>
       </section>
     </>
