@@ -20,8 +20,6 @@ export const ActionFormIndex = () => {
     case Action.RESPOND_TO_RAI:
       return <RespondToRai />;
     default:
-      // TODO: Better error communication instead of navigate?
-      //  "Hey, this action doesn't exist. Click to go back to the Dashboard."
       return <Navigate to={ROUTES.HOME} />;
   }
 };
