@@ -13,7 +13,7 @@ export const withdrawPackageSchema = (attachmentArrayType: ZodArray<any>) =>
     }),
   });
 
-const withdrawPackageEventSchema = withdrawPackageSchema(
+export const withdrawPackageEventSchema = withdrawPackageSchema(
   z.array(onemacAttachmentSchema)
 );
 export type WithdrawPackageEventSchema = z.infer<
