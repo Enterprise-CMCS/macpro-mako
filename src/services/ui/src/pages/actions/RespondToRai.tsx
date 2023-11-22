@@ -15,14 +15,14 @@ import {
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
-import { Action, RaiIssueTransform } from "shared-types";
+import { Action, RaiResponseTransform } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { useGetItem } from "@/api";
 
 const formSchema = z.object({
-  additionalInformation: z.string().max(4000),
+  additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
-    formalRaiLetter: z
+    raiResponseLetter: z
       .array(z.instanceof(File))
       .refine((value) => value.length > 0, {
         message: "Required",
@@ -30,8 +30,8 @@ const formSchema = z.object({
     other: z.array(z.instanceof(File)).optional(),
   }),
 });
-export type IssueRaiFormSchema = z.infer<typeof formSchema>;
-type UploadKeys = keyof IssueRaiFormSchema["attachments"];
+export type RespondToRaiFormSchema = z.infer<typeof formSchema>;
+type UploadKeys = keyof RespondToRaiFormSchema["attachments"];
 export type PreSignedURL = {
   url: string;
   key: string;
@@ -40,8 +40,8 @@ export type PreSignedURL = {
 
 const attachmentList = [
   {
-    name: "formalRaiLetter",
-    label: "Formal RAI Letter",
+    name: "raiResponseLetter",
+    label: "RAI Response Letter",
     required: true,
   },
   {
@@ -54,12 +54,10 @@ const attachmentList = [
 const FormDescriptionText = () => {
   return (
     <p className="font-light mb-6 max-w-4xl">
-      Issuance of a Formal RAI in OneMAC will create a Formal RAI email sent to
-      the State. This will also create a section in the package details summary
-      for you and the State to have record. Please attach the Formal RAI Letter
-      along with any additional information or comments in the provided text
-      box. Once you submit this form, a confirmation email is sent to you and to
-      the State.{" "}
+      Once you submit this form, a confirmation email is sent to you and to CMS.
+      CMS will use this content to review your package, and you will not be able
+      to edit this form. If CMS needs any additional information, they will
+      follow up by email.{" "}
       <strong className="bold">
         If you leave this page, you will lose your progress on this form.
       </strong>
@@ -67,7 +65,7 @@ const FormDescriptionText = () => {
   );
 };
 
-export const IssueRai = () => {
+export const RespondToRai = () => {
   const { id } = useParams<{
     id: string;
   }>();
@@ -76,18 +74,17 @@ export const IssueRai = () => {
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
   const navigate = useNavigate();
-  const form = useForm<IssueRaiFormSchema>({
+  const form = useForm<RespondToRaiFormSchema>({
     resolver: zodResolver(formSchema),
   });
   const { data: user } = useGetUser();
-  const handleSubmit: SubmitHandler<IssueRaiFormSchema> = async (data) => {
-    // Set the timestamp that will uniquely identify this RAI
+  const handleSubmit: SubmitHandler<RespondToRaiFormSchema> = async (data) => {
     const timestamp = Math.floor(new Date().getTime() / 1000) * 1000; // Truncating to match seatool
 
     const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
     const uploadedFiles: any[] = [];
     const fileMetaData: NonNullable<
-      RaiIssueTransform["rais"][number]["request"]["attachments"]
+      RaiResponseTransform["rais"][number]["response"]["attachments"]
     > = [];
 
     const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
@@ -133,14 +130,14 @@ export const IssueRai = () => {
       id: id!,
       additionalInformation: data?.additionalInformation ?? null,
       attachments: fileMetaData,
-      requestedDate: timestamp,
+      responseDate: timestamp,
       submitterEmail: user?.user?.email ?? "N/A",
       submitterName:
         `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
     };
 
     try {
-      await API.post("os", `/action/${Action.ISSUE_RAI}`, {
+      await API.post("os", `/action/${Action.RESPOND_TO_RAI}`, {
         body: dataToSubmit,
       });
       setSuccessModalIsOpen(true);
@@ -155,7 +152,7 @@ export const IssueRai = () => {
       <BreadCrumbs
         options={DETAILS_AND_ACTIONS_CRUMBS({
           id: id || "",
-          action: Action.ISSUE_RAI,
+          action: Action.RESPOND_TO_RAI,
         })}
       />
       <I.Form {...form}>
@@ -164,7 +161,9 @@ export const IssueRai = () => {
           className="my-6 space-y-8 mx-auto"
         >
           <section>
-            <h1 className="font-bold text-2xl mb-2">Formal RAI Details</h1>
+            <h1 className="font-bold text-2xl mb-2">
+              Medicaid SPA Formal RAI Details
+            </h1>
             <p className="my-1">
               <I.RequiredIndicator /> Indicates a required field
             </p>
@@ -257,10 +256,10 @@ export const IssueRai = () => {
             render={({ field }) => (
               <I.FormItem>
                 <h3 className="font-bold text-2xl font-sans">
-                  Additional Information<span className="text-red-500">*</span>
+                  Additional Information
                 </h3>
                 <I.FormLabel className="font-normal">
-                  Add anything else you would like to share with the state.
+                  Add anything else that you would like to share with CMS.
                 </I.FormLabel>
                 <I.Textarea {...field} className="h-[200px] resize-none" />
                 <I.FormDescription>4,000 characters allowed</I.FormDescription>
@@ -302,11 +301,11 @@ export const IssueRai = () => {
                 navigate(`/details?id=${id}`);
               }}
               onCancel={() => setSuccessModalIsOpen(false)}
-              title="The Formal RAI has been issued."
+              title="Submission Successful"
               body={
                 <p>
-                  The Formal RAI has been issued successfully. You and the State
-                  will receive an email confirmation.
+                  Please be aware that it may take up to a minute for your
+                  submission to show in the Dashboard.
                 </p>
               }
               cancelButtonVisible={false}

@@ -18,7 +18,7 @@ import { FAQ_TARGET } from "@/routes";
 import { useUserContext } from "../Context/userContext";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
-  const isDev = window && !window.location.hostname.includes("cms.dev"); // i dont love this. :shrug:
+  const isProd = window && window.location.hostname.includes("mako.cms.gov");
   return [
     {
       name: "Home",
@@ -38,7 +38,7 @@ const getLinks = (isAuthenticated: boolean, role?: boolean) => {
     {
       name: "Webforms",
       link: "/webforms",
-      condition: isDev,
+      condition: !isProd,
     },
   ].filter((l) => l.condition);
 };

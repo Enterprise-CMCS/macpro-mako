@@ -118,3 +118,39 @@ export async function getItem(host:string, index:string, id:string){
     console.log({e})
   }
 }
+
+export async function createIndexIfNotExists(host:string, index:string) {
+  client = client || (await getClient(host));
+  try {
+      const indexExists = await client.indices.exists({ index, });
+      if (!indexExists.body) {
+          const createResponse = await client.indices.create({
+              index,
+          });
+
+          console.log('Index created:', createResponse);
+      } else {
+          console.log('Index already exists.');
+      }
+  } catch (error) {
+      console.error('Error creating index:', error);
+      throw error;
+  }
+}
+
+export async function updateFieldMapping(host:string, index:string, properties: object) {
+  client = client || (await getClient(host));
+  try {
+      const response = await client.indices.putMapping({
+          index: index,
+          body: {
+              properties,
+          },
+      });
+
+      console.log('Field mapping updated:', response);
+  } catch (error) {
+      console.error('Error updating field mapping:', error);
+      throw error;
+  }
+}
