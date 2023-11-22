@@ -1,30 +1,85 @@
 import { useGetUser } from "@/api/useGetUser";
+import { CardWithTopBorder } from "@/components";
+import { UserRoles, UserRolesString } from "shared-types";
+
+// Returns comma-separated string of user role descriptions:
+function rolesDescriptions(roles: UserRolesString | undefined) {
+  const rolesArray: string[] | undefined = roles?.split(",");
+  console.log(rolesArray);
+
+  const descriptiveRolesArray = rolesArray?.map((role) => {
+    switch (role) {
+      case UserRoles.CMS_READ_ONLY: {
+        return "Read Only";
+      }
+      case UserRoles.CMS_REVIEWER: {
+        return "Reviewer";
+      }
+      case UserRoles.HELPDESK: {
+        return "Helpdesk";
+      }
+      case UserRoles.STATE_SUBMITTER: {
+        return "State Submitter";
+      }
+    }
+  });
+
+  if (descriptiveRolesArray) {
+    return descriptiveRolesArray.join(", ");
+  }
+}
 
 export const Profile = () => {
   const { isLoading, isError, data } = useGetUser();
 
-  console.info(data?.user?.["custom:state"]);
+  console.info(data?.user);
 
   return (
     <>
-      <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
-        <h1 className="text-2xl font-bold">My Information</h1>
+      <div className="flex flex-row justify-center gap-8 max-w-screen-xl mx-auto p-4 py-8">
+        <div className="basis-1/2 flex flex-col gap-6">
+          <h1 className="text-2xl font-bold">My Information</h1>
 
-        <h2 className="font-bold">Full Name</h2>
-        <p>
-          {data?.user?.given_name} {data?.user?.family_name}
-        </p>
+          <div className="leading-9">
+            <h2 className="font-bold">Full Name</h2>
+            <p>
+              {data?.user?.given_name} {data?.user?.family_name}
+            </p>
+          </div>
 
-        <h2 className="font-bold">Role</h2>
-        <p>{data?.user?.["custom:cms-roles"]}</p>
+          <div className="leading-9">
+            <h2 className="font-bold">Role</h2>
+            <p>{rolesDescriptions(data?.user?.["custom:cms-roles"])}</p>
+          </div>
 
-        <h2 className="font-bold">Email</h2>
-        <p>{data?.user?.email}</p>
+          <div className="leading-9">
+            <h2 className="font-bold">Email</h2>
+            <p>{data?.user?.email}</p>
+          </div>
 
-        <h2 className="font-bold">Phone number</h2>
+          <div className="leading-9">
+            <h2 className="font-bold">Phone number</h2>
+            <p>555-555-5555</p>
+            <p className="text-primary">
+              <a href="" className="underline"></a>
+            </p>
+          </div>
+        </div>
+
+        <div className="basis-1/2">
+          <CardWithTopBorder>
+            <div className="p-4">
+              <h1 className="text-2xl font-bold">
+                {data?.user?.["custom:state"]}
+              </h1>
+              <p className="pb-6">
+                <em>Access Granted</em>
+              </p>
+              <p>State System Admins:</p>
+            </div>
+          </CardWithTopBorder>
+        </div>
       </div>
-
-      {data?.user?.["custom:state"]}
     </>
   );
 };
