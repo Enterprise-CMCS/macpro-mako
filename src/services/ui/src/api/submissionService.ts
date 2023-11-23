@@ -1,12 +1,25 @@
 import { API } from "aws-amplify";
-import { OnemacAttachmentSchema, Authority } from "shared-types";
+import {OnemacAttachmentSchema, Authority, ReactQueryApiError} from "shared-types";
 import {SubmissionServiceEndpoint} from "@/lib";
 import {OneMacUser} from "@/api/useGetUser";
+import {useMutation, UseMutationOptions} from "@tanstack/react-query";
 
 export enum SubmissionVariant {
   INITIAL = "initial",
   ACTION = "action"
 }
+type SubmissionServiceParameters<T> = {
+  data: T,
+  endpoint: SubmissionServiceEndpoint
+  variant: SubmissionVariant,
+  user: OneMacUser | undefined,
+  authority?: Authority
+}
+type SubmissionServiceResponse = {
+  body: {
+    message: string;
+  };
+};
 type PreSignedURL = {
   url: string;
   key: string;
@@ -16,18 +29,6 @@ type UploadRecipe = PreSignedURL & {
   data: File[],
   title: string
 }
-type UploadServiceParameters<T> = {
-  data: T,
-  endpoint: SubmissionServiceEndpoint
-  variant: SubmissionVariant,
-  user: OneMacUser | undefined,
-  authority?: Authority
-}
-type UploadServiceResponse = {
-  body: {
-    message: string;
-  };
-};
 type AttachmentsSchema = Record<string, File[] | undefined>
 
 /** Grabs one pre-signed URL for file upload */
@@ -109,13 +110,14 @@ const submitForm = async <T>(endpoint: SubmissionServiceEndpoint, data: T) =>
     body: data,
   });
 
+/** A useful interface for submitting form data to our submission service */
 export const submit = async <T extends Record<string, unknown>>({
   data,
   endpoint,
   variant,
   user,
   authority
-}: UploadServiceParameters<T>): Promise<UploadServiceResponse> => {
+}: SubmissionServiceParameters<T>): Promise<SubmissionServiceResponse> => {
   if (data?.attachments) {
     const attachments = data.attachments as AttachmentsSchema;
     const validFilesetKeys = Object.keys(attachments).filter(key => attachments[key] !== undefined);
@@ -131,3 +133,15 @@ export const submit = async <T extends Record<string, unknown>>({
     return await submitForm<T>(endpoint, buildSubmissionPayload(data, variant, user, authority));
   }
 };
+
+/** A useful interface for using react-query with our submission service. If you
+ * are using react-hook-form's `form.handleSubmit()` pattern, bypass this and just
+ * use {@link submit} */
+export const useSubmissionService = <T extends Record<string, unknown>>(
+  config: SubmissionServiceParameters<T>,
+  options?: UseMutationOptions<SubmissionServiceResponse, ReactQueryApiError>
+) => useMutation<SubmissionServiceResponse, ReactQueryApiError>(
+  ["submit"],
+  () => submit(config),
+  options
+);

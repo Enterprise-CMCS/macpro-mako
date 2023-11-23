@@ -100,10 +100,10 @@ export const MedicaidForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { data: user } = useGetUser();
-  const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (data) => {
+  const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
     try {
       await submit<MedicaidFormSchema>({
-        data,
+        data: formData,
         endpoint: "/submit",
         variant: SubmissionVariant.INITIAL,
         user,
