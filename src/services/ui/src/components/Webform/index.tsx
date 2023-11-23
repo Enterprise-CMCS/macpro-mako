@@ -106,9 +106,6 @@ export function Webform() {
     }
   );
   return isLoading ? (
-    // <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
-    //   {`Currently Loading ${id}...`}
-    // </div>
     <LoadingSpinner />
   ) : error ? (
     <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
