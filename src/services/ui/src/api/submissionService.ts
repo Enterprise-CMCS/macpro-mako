@@ -131,13 +131,3 @@ export const submit = async <T extends Record<string, unknown>>({
     return await submitForm<T>(endpoint, buildSubmissionPayload(data, variant, user, authority));
   }
 };
-
-// export const useSubmissionService = <T extends Record<string, unknown>>(
-//   options?: UseMutationOptions<UploadServiceResponse, ReactQueryApiError, UploadServiceParameters<T>>
-// ) => {
-//   return useMutation<UploadServiceResponse, ReactQueryApiError, UploadServiceParameters<T>>(
-//     ["submit"],
-//     ({ data, endpoint, authority }) => submit(data, endpoint, variant, user, authority),
-//     options
-//   );
-// };
