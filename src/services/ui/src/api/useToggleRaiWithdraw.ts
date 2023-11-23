@@ -1,4 +1,4 @@
-import { PackageActionURL } from "@/lib";
+import { PackageActionEndpoint } from "@/lib";
 import { API } from "aws-amplify";
 import { Action, ReactQueryApiError } from "shared-types";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
@@ -8,8 +8,8 @@ type ToggleRaiWithdrawResponse = {
     message: string;
   };
 };
-const disable: PackageActionURL = "/action/disable-rai-withdraw";
-const enable: PackageActionURL = "/action/enable-rai-withdraw";
+const disable: PackageActionEndpoint = "/action/disable-rai-withdraw";
+const enable: PackageActionEndpoint = "/action/enable-rai-withdraw";
 const validActions: Action[] = [
   Action.ENABLE_RAI_WITHDRAW,
   Action.DISABLE_RAI_WITHDRAW,
