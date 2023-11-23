@@ -1,8 +1,12 @@
 import { API } from "aws-amplify";
-import { OnemacAttachmentSchema, ReactQueryApiError } from "shared-types";
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import {FormSubmissionEndpoint, PackageActionEndpoint} from "@/lib";
+import { OnemacAttachmentSchema, Authority } from "shared-types";
+import {SubmissionServiceEndpoint} from "@/lib";
+import {OneMacUser} from "@/api/useGetUser";
 
+export enum SubmissionVariant {
+  INITIAL = "initial",
+  ACTION = "action"
+}
 type PreSignedURL = {
   url: string;
   key: string;
@@ -11,6 +15,13 @@ type PreSignedURL = {
 type UploadRecipe = PreSignedURL & {
   data: File[],
   title: string
+}
+type UploadServiceParameters<T> = {
+  data: T,
+  endpoint: SubmissionServiceEndpoint
+  variant: SubmissionVariant,
+  user: OneMacUser | undefined,
+  authority?: Authority
 }
 type UploadServiceResponse = {
   body: {
@@ -65,14 +76,46 @@ const buildAttachmentObject = (
   }) satisfies OnemacAttachmentSchema)).flat();
 };
 
-const submitForm = async <T>(endpoint: FormSubmissionEndpoint | PackageActionEndpoint, data: T) =>
+const buildSubmissionPayload = <T extends Record<string, unknown>>(
+  data: T,
+  variant: SubmissionVariant,
+  user: OneMacUser | undefined,
+  authority?: string,
+  attachments?: UploadRecipe[],
+) => {
+  switch (variant) {
+    case SubmissionVariant.ACTION:
+      return {
+        ...data,
+        attachments: attachments ? buildAttachmentObject(attachments) : null
+      };
+    case SubmissionVariant.INITIAL:
+      return {
+        ...data,
+        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        // TODO: How much of this is common use in the foreseeable future
+        origin: "micro",
+        authority: authority,
+        state: (data.id as string).split("-")[0],
+        submitterEmail: user?.user?.email ?? "N/A",
+        submitterName:
+          `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A"
+      };
+  }
+};
+
+const submitForm = async <T>(endpoint: SubmissionServiceEndpoint, data: T) =>
   await API.post("os", endpoint, {
     body: data,
   });
 
-const submit = async <T extends Record<string, unknown>>(
-  data: T,
-): Promise<UploadServiceResponse> => {
+export const submit = async <T extends Record<string, unknown>>({
+  data,
+  endpoint,
+  variant,
+  user,
+  authority
+}: UploadServiceParameters<T>): Promise<UploadServiceResponse> => {
   if (data?.attachments) {
     const attachments = data.attachments as AttachmentsSchema;
     const validFilesetKeys = Object.keys(attachments).filter(key => attachments[key] !== undefined);
@@ -83,22 +126,18 @@ const submit = async <T extends Record<string, unknown>>(
       preSignedURLs
     );
     await Promise.all(uploadRecipes.map(r => r.data.map(f => uploadAttachment(f, r))));
-    return await submitForm<T>("/submit", {
-      ...data,
-      attachments: buildAttachmentObject(uploadRecipes)
-    });
+    return await submitForm<T>(endpoint, buildSubmissionPayload(data, variant, user, authority, uploadRecipes));
   } else {
-    return await submitForm<T>("/submit", data);
+    return await submitForm<T>(endpoint, buildSubmissionPayload(data, variant, user, authority));
   }
 };
 
-export const useSubmissionService = <T extends Record<string, unknown>>(
-  endpoint: PackageActionEndpoint | FormSubmissionEndpoint,
-  options?: UseMutationOptions<UploadServiceResponse, ReactQueryApiError, T>
-) => {
-  return useMutation<UploadServiceResponse, ReactQueryApiError, T>(
-    ["submit"],
-    (data: T) => submit(data),
-    options
-  );
-};
+// export const useSubmissionService = <T extends Record<string, unknown>>(
+//   options?: UseMutationOptions<UploadServiceResponse, ReactQueryApiError, UploadServiceParameters<T>>
+// ) => {
+//   return useMutation<UploadServiceResponse, ReactQueryApiError, UploadServiceParameters<T>>(
+//     ["submit"],
+//     ({ data, endpoint, authority }) => submit(data, endpoint, variant, user, authority),
+//     options
+//   );
+// };
