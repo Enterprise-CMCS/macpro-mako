@@ -5,6 +5,7 @@ import { ABP1 } from "./proto";
 import { documentInitializer, documentValidator } from "@/components/RHF/utils";
 import { Link, useParams } from "react-router-dom";
 import { SubNavHeader } from "@/components";
+import { PraDisclosure } from "./praDisclosure";
 
 export const Webforms = () => {
   return (
@@ -110,9 +111,16 @@ export function Webform() {
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-6">
           <RHFDocument document={ABP1} {...form} />
-          <Button type="submit">Submit</Button>
+          <div className="flex justify-between">
+            <Button variant="link">Save Draft</Button>
+            <div className="flex flex-row gap-4">
+              <Button variant="outline">Back</Button>
+              <Button type="submit">Submit</Button>
+            </div>
+          </div>
         </form>
       </Form>
+      <PraDisclosure />
     </div>
   );
 }
