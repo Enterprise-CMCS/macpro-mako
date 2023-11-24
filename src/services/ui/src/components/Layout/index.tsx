@@ -32,7 +32,7 @@ const getLinks = (isAuthenticated: boolean, role?: boolean) => {
     {
       name: "Webforms",
       link: "/webforms",
-      condition: !isProd,
+      condition: isAuthenticated && !isProd,
     },
   ].filter((l) => l.condition);
 };
