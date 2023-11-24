@@ -77,6 +77,25 @@ export const useFilterDrawer = () => {
     setAccordionValues(updateAccordions);
   }, [params.state.filters, drawerOpen]);
 
+  // remove action type from SPAs filter options
+  useEffect(() => {
+    if (params.state.tab === "spas") {
+      setFilters((s) => {
+        const newState = { ...s };
+        delete newState["actionType.keyword"];
+        return newState;
+      });
+    } else {
+      setFilters((s) => {
+        return {
+          ...s,
+          "actionType.keyword":
+            Consts.FILTER_GROUPS(user)["actionType.keyword"],
+        };
+      });
+    }
+  }, [params.state.tab]);
+
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce((STATE, [KEY, AGG]) => {
       return {
