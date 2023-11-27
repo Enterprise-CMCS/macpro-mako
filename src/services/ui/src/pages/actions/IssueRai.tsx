@@ -18,6 +18,7 @@ import { Action } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { useGetItem } from "@/api";
 import { submit } from "@/api/submissionService";
+import { buildActionUrl } from "@/lib";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
@@ -68,8 +69,9 @@ const FormDescriptionText = () => {
 };
 
 export const IssueRai = () => {
-  const { id } = useParams<{
+  const { id, type } = useParams<{
     id: string;
+    type: Action;
   }>();
   const { data: item } = useGetItem(id!);
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
@@ -87,7 +89,7 @@ export const IssueRai = () => {
           id: id!, // Declared here because it's not part of the form data
           ...data,
         },
-        endpoint: `/action/${Action.ISSUE_RAI}`,
+        endpoint: buildActionUrl(type!),
         user,
       });
       setSuccessModalIsOpen(true);

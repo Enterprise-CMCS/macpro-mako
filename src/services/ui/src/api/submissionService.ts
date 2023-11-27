@@ -54,6 +54,8 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
     submitterName:
       `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A"
   };
+  const seaToolFriendlyTimestamp = Math.floor(new Date().getTime() / 1000) * 1000; // Truncating to match seatool
+
   switch (endpoint) {
     case "/submit":
       return {
@@ -69,7 +71,14 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
       return {
         ...data,
         ...userDetails,
-        requestedDate: Math.floor(new Date().getTime() / 1000) * 1000, // Truncating to match seatool
+        requestedDate: seaToolFriendlyTimestamp,
+        attachments: attachments ? buildAttachmentObject(attachments) : null
+      };
+    case `/action/${Action.RESPOND_TO_RAI}`:
+      return {
+        ...data,
+        ...userDetails,
+        responseDate: seaToolFriendlyTimestamp,
         attachments: attachments ? buildAttachmentObject(attachments) : null
       };
     default:
