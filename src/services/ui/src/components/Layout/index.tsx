@@ -145,7 +145,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 className="text-white hover:text-white/70"
                 onClick={handleViewProfile}
               >
-                View/Manage Profile
+                View Profile
               </button>
 
               <button
