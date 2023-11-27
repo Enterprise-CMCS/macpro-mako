@@ -45,6 +45,16 @@ const getLinks = (isAuthenticated: boolean, role?: boolean) => {
 };
 
 const UserDropdownMenu = () => {
+  const navigate = useNavigate();
+
+  const handleViewProfile = () => {
+    navigate("/profile");
+  };
+
+  const handleLogout = async () => {
+    await Auth.signOut();
+  };
+
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
@@ -54,8 +64,22 @@ const UserDropdownMenu = () => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content>
-          <DropdownMenu.Item>View Profile</DropdownMenu.Item>
-          <DropdownMenu.Item>Sign Out</DropdownMenu.Item>
+          <DropdownMenu.Item>
+            <button
+              className="text-white hover:text-white/70"
+              onClick={handleViewProfile}
+            >
+              View Profile
+            </button>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item>
+            <button
+              className="text-white hover:text-white/70"
+              onClick={handleLogout}
+            >
+              Sign Out
+            </button>
+          </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
@@ -110,7 +134,6 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const role = useMemo(() => {
     return userContext?.user?.["custom:cms-roles"] ? true : false;
   }, []);
-  const navigate = useNavigate();
 
   const handleLogin = () => {
     const authConfig = Auth.configure();
@@ -121,17 +144,9 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     window.location.assign(url);
   };
 
-  const handleLogout = async () => {
-    await Auth.signOut();
-  };
-
   const handleRegister = () => {
     const url = "https://test.home.idm.cms.gov/signin/login.html";
     window.location.assign(url);
-  };
-
-  const handleViewProfile = () => {
-    navigate("/profile");
   };
 
   if (isLoading || isError) return <></>;
@@ -162,19 +177,6 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           {data.user ? (
             // When the user is signed in
             <>
-              <button
-                className="text-white hover:text-white/70"
-                onClick={handleViewProfile}
-              >
-                View Profile
-              </button>
-
-              <button
-                className="text-white hover:text-white/70"
-                onClick={handleLogout}
-              >
-                Sign Out
-              </button>
               <UserDropdownMenu></UserDropdownMenu>
             </>
           ) : (
