@@ -5,7 +5,6 @@ import { Action, ItemResult } from "shared-types";
 import { Button } from "@/components/Inputs";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { useEffect, useMemo, useState } from "react";
-import { useToggleRaiWithdraw } from "@/api/useToggleRaiWithdraw";
 import { PackageActionForm } from "@/pages/actions/PackageActionForm";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { useSubmissionService } from "@/api/submissionService";
@@ -68,12 +67,6 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
   const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
   const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
 
-  // const {
-  //   mutate: toggleRaiWithdraw,
-  //   isLoading: isToggling,
-  //   isSuccess: toggleSucceeded,
-  //   error: toggleError,
-  // } = useToggleRaiWithdraw(id!, type!);
   const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
     id: string;
   }>({
