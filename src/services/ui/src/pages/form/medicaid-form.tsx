@@ -105,10 +105,10 @@ export const MedicaidForm = () => {
       await submit<MedicaidFormSchema>({
         data: formData,
         endpoint: "/submit",
-        variant: SubmissionVariant.INITIAL,
         user,
         authority: Authority.MED_SPA,
       });
+      setSuccessModalIsOpen(true);
     } catch (e) {
       console.error(e);
     }

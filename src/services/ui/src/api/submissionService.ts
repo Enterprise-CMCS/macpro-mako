@@ -11,7 +11,6 @@ export enum SubmissionVariant {
 type SubmissionServiceParameters<T> = {
   data: T,
   endpoint: SubmissionServiceEndpoint
-  variant: SubmissionVariant,
   user: OneMacUser | undefined,
   authority?: Authority
 }
@@ -31,38 +30,6 @@ type UploadRecipe = PreSignedURL & {
 }
 type AttachmentsSchema = Record<string, File[] | undefined>
 
-/** Grabs one pre-signed URL for file upload */
-const getPreSignedUrl = async (): Promise<PreSignedURL> => {
-  // TODO: Can this be a GET instead of POST w/ empty body
-  return await API.post("os", "/getUploadUrl", {
-    body: {},
-  });
-};
-
-/** Given an {@link AttachmentSchema} and array of pre signed URLs, this
- * will return an array of objects that bundle a URL, s3 key, and s3 bucket
- * with the file(s) to upload */
-const buildUploadRecipes = (
-  attachments: AttachmentsSchema,
-  validAttachmentKeys: string[],
-  preSignedUrls: PreSignedURL[]
-): UploadRecipe[] => {
-  return preSignedUrls.map((obj, idx) => ({
-    ...obj,
-    // Using validAttachmentKeys ensures we don't have any undefined value
-    data: attachments[validAttachmentKeys[idx]] as File[],
-    title: validAttachmentKeys[idx]
-  }));
-};
-
-/** Uploads one file if given a file and its meta from {@link getPreSignedUrl} */
-const uploadAttachment = async (file: File, preSignedURL: PreSignedURL) => {
-  return await fetch(preSignedURL.url, {
-    body: file,
-    method: "PUT",
-  });
-};
-
 /** Pass in an array of UploadRecipes and get a back-end compatible object
  * to store attachment data */
 const buildAttachmentObject = (
@@ -77,66 +44,77 @@ const buildAttachmentObject = (
   }) satisfies OnemacAttachmentSchema)).flat();
 };
 
+/** Builds the payload for submission based on which variant a developer has
+ * configured the {@link submit} function with */
 const buildSubmissionPayload = <T extends Record<string, unknown>>(
   data: T,
-  variant: SubmissionVariant,
   user: OneMacUser | undefined,
   authority?: string,
   attachments?: UploadRecipe[],
 ) => {
-  switch (variant) {
-    case SubmissionVariant.ACTION:
+  switch (authority) {
+    case Authority.MED_SPA:
       return {
         ...data,
-        attachments: attachments ? buildAttachmentObject(attachments) : null
-      };
-    case SubmissionVariant.INITIAL:
-      return {
-        ...data,
+        proposedEffectiveDate: (data.proposedEffectiveDate as Date).getTime(),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
+        state: (data.id as string).split("-")[0],
+        authority: authority,
         // TODO: How much of this is common use in the foreseeable future
         origin: "micro",
-        authority: authority,
-        state: (data.id as string).split("-")[0],
         submitterEmail: user?.user?.email ?? "N/A",
         submitterName:
           `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A"
       };
+    default:
+      return {
+        ...data,
+        attachments: attachments ? buildAttachmentObject(attachments) : null
+      };
   }
 };
-
-const submitForm = async <T>(endpoint: SubmissionServiceEndpoint, data: T) =>
-  await API.post("os", endpoint, {
-    body: data,
-  });
 
 /** A useful interface for submitting form data to our submission service */
 export const submit = async <T extends Record<string, unknown>>({
   data,
   endpoint,
-  variant,
   user,
   authority
 }: SubmissionServiceParameters<T>): Promise<SubmissionServiceResponse> => {
   if (data?.attachments) {
     const attachments = data.attachments as AttachmentsSchema;
     const validFilesetKeys = Object.keys(attachments).filter(key => attachments[key] !== undefined);
-    const preSignedURLs = await Promise.all(validFilesetKeys.map(() => getPreSignedUrl()));
-    const uploadRecipes = buildUploadRecipes(
-      data.attachments as AttachmentsSchema,
-      validFilesetKeys,
-      preSignedURLs
-    );
-    await Promise.all(uploadRecipes.map(r => r.data.map(f => uploadAttachment(f, r))));
-    return await submitForm<T>(endpoint, buildSubmissionPayload(data, variant, user, authority, uploadRecipes));
+    // TODO: Can this be a GET instead of POST w/ empty body
+    const preSignedURLs: PreSignedURL[] = await Promise.all(validFilesetKeys.map(() =>
+      API.post("os", "/getUploadUrl", {
+        body: {},
+      })
+    ));
+    const uploadRecipes: UploadRecipe[] = preSignedURLs.map((obj, idx) => ({
+      ...obj,
+      data: attachments[validFilesetKeys[idx]] as File[],
+      title: validFilesetKeys[idx]
+    }));
+    // Upload attachments
+    await Promise.all(uploadRecipes.map(({url, data}) => data.map((file) => fetch(url, {
+      body: file,
+      method: "PUT",
+    }))));
+    // Submit form data
+    return await API.post("os", endpoint, {
+      body: buildSubmissionPayload(data, user, authority, uploadRecipes),
+    });
   } else {
-    return await submitForm<T>(endpoint, buildSubmissionPayload(data, variant, user, authority));
+    // Submit form data
+    return await API.post("os", endpoint, {
+      body: buildSubmissionPayload(data, user, authority),
+    });
   }
 };
 
 /** A useful interface for using react-query with our submission service. If you
  * are using react-hook-form's `form.handleSubmit()` pattern, bypass this and just
- * use {@link submit} */
+ * use {@link submit} (see {@link MedicaidForm} for an example). */
 export const useSubmissionService = <T extends Record<string, unknown>>(
   config: SubmissionServiceParameters<T>,
   options?: UseMutationOptions<SubmissionServiceResponse, ReactQueryApiError>
