@@ -53,6 +53,7 @@ export const packageActionsForResult = (
       }
     }
   } else if (isStateUser(user)) {
+    actions.push(Action.WITHDRAW_PACKAGE);
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING_RAI:
         if (activeRai) {
@@ -62,11 +63,6 @@ export const packageActionsForResult = (
         break;
     }
   }
-
-  if (!isCmsUser(user)) {
-    actions.push(Action.WITHDRAW_PACKAGE);
-  }
-
   return actions;
 };
 export const getPackageActions = async (event: APIGatewayEvent) => {
