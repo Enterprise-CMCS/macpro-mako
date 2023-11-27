@@ -9,16 +9,17 @@ import {
   LoadingSpinner,
   RaiList,
   SubmissionInfo,
+  ConfirmationModal,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { ItemResult, UserRoles } from "shared-types";
+import { Action, ItemResult, UserRoles } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
 import { Link, useLocation } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 
 const DetailCardWrapper = ({
@@ -51,6 +52,7 @@ const StatusCard = ({
   </DetailCardWrapper>
 );
 const PackageActionsCard = ({ id }: { id: string }) => {
+  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
   const { data, error } = useGetPackageActions(id);
   if (!data?.actions || error) return <LoadingSpinner />;
   return (
@@ -62,18 +64,44 @@ const PackageActionsCard = ({ id }: { id: string }) => {
           </em>
         ) : (
           <ul>
-            {data.actions.map((action, idx) => (
-              <Link
-                className="text-sky-500 underline"
-                to={`/action/${id}/${action}`}
-                key={`${idx}-${action}`}
-              >
-                <li>{mapActionLabel(action)}</li>
-              </Link>
-            ))}
+            {data.actions.map((action, idx) => {
+              if (action === Action.WITHDRAW_RAI) {
+                return (
+                  <li key={`${idx}-${action}`}>
+                    <button
+                      className="text-sky-500 underline"
+                      onClick={() => {
+                        setIsWithdrawModalOpen(true);
+                      }}
+                    >
+                      {mapActionLabel(action)}
+                    </button>
+                  </li>
+                );
+              }
+
+              return (
+                <Link
+                  className="text-sky-500 underline"
+                  to={`/action/${id}/${action}`}
+                  key={`${idx}-${action}`}
+                >
+                  <li>{mapActionLabel(action)}</li>
+                </Link>
+              );
+            })}
           </ul>
         )}
       </div>
+
+      {/* Withdraw Modal */}
+      <ConfirmationModal
+        open={isWithdrawModalOpen}
+        onAccept={() => setIsWithdrawModalOpen(false)}
+        onCancel={() => setIsWithdrawModalOpen(false)}
+        title="Withdraw RAI"
+        body="Are you sure you would like to withdraw this RAI?"
+      />
     </DetailCardWrapper>
   );
 };
