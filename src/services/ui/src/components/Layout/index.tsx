@@ -57,13 +57,33 @@ const UserDropdownMenu = () => {
 
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <button className="hover:text-white/70 p-4 data-[state=open]:bg-white data-[state=open]:text-primary">
-          My Account
-        </button>
+      <DropdownMenu.Trigger
+        asChild
+        className="hover:text-white/70 p-4 data-[state=open]:bg-white data-[state=open]:text-primary"
+      >
+        <div className="flex flex-row gap-4 items-center cursor-pointer">
+          <p className="flex">My Account</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2.0}
+            stroke="currentColor"
+            className="w-4 h-4 flex"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+            />
+          </svg>
+        </div>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content className="bg-white flex flex-col gap-4 p-4 drop-shadow-sm">
+        <DropdownMenu.Content
+          align="start"
+          className="bg-white flex flex-col gap-4 px-8 py-4 drop-shadow"
+        >
           <DropdownMenu.Item className="flex">
             <button
               className="text-primary hover:text-primary/70"
