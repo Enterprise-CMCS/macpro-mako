@@ -1,6 +1,6 @@
 import { API } from "aws-amplify";
 import {OnemacAttachmentSchema, Authority, ReactQueryApiError, Action} from "shared-types";
-import {SubmissionServiceEndpoint} from "@/lib";
+import {buildActionUrl, SubmissionServiceEndpoint} from "@/lib";
 import {OneMacUser} from "@/api/useGetUser";
 import {useMutation, UseMutationOptions} from "@tanstack/react-query";
 
@@ -67,20 +67,21 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         authority: authority,
         origin: "micro",
       };
-    case `/action/${Action.ISSUE_RAI}`:
+    case buildActionUrl(Action.ISSUE_RAI):
       return {
         ...data,
         ...userDetails,
         requestedDate: seaToolFriendlyTimestamp,
         attachments: attachments ? buildAttachmentObject(attachments) : null
       };
-    case `/action/${Action.RESPOND_TO_RAI}`:
+    case buildActionUrl(Action.RESPOND_TO_RAI):
       return {
         ...data,
         ...userDetails,
         responseDate: seaToolFriendlyTimestamp,
         attachments: attachments ? buildAttachmentObject(attachments) : null
       };
+
     default:
       return {
         ...data,
