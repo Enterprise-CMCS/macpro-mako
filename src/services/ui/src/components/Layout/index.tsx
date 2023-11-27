@@ -58,23 +58,23 @@ const UserDropdownMenu = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <button className="text-white hover:text-white/70 border-b-4">
+        <button className="hover:text-white/70 p-4 data-[state=open]:bg-white data-[state=open]:text-primary">
           My Account
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content>
-          <DropdownMenu.Item>
+        <DropdownMenu.Content className="bg-white flex flex-col gap-4 p-4 drop-shadow-sm">
+          <DropdownMenu.Item className="flex">
             <button
-              className="text-white hover:text-white/70"
+              className="text-primary hover:text-primary/70"
               onClick={handleViewProfile}
             >
               View Profile
             </button>
           </DropdownMenu.Item>
-          <DropdownMenu.Item>
+          <DropdownMenu.Item className="flex">
             <button
-              className="text-white hover:text-white/70"
+              className="text-primary hover:text-primary/70"
               onClick={handleLogout}
             >
               Sign Out
@@ -159,6 +159,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     setPrevMediaQuery(isDesktop);
     setIsOpen(false);
   }
+
   if (isDesktop) {
     return (
       <>
@@ -176,9 +177,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
         <>
           {data.user ? (
             // When the user is signed in
-            <>
-              <UserDropdownMenu></UserDropdownMenu>
-            </>
+            <UserDropdownMenu></UserDropdownMenu>
           ) : (
             // When the user is not signed in
             <>
@@ -221,12 +220,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             <>
               {data.user ? (
                 // When the user is signed in
-                <button
-                  className="text-left block py-2 pl-3 pr-4 text-white rounded"
-                  onClick={handleLogout}
-                >
-                  Sign Out
-                </button>
+                <UserDropdownMenu></UserDropdownMenu>
               ) : (
                 // When the user is not signed in
                 <>
