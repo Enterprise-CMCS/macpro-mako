@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import * as I from "@/components/Inputs";
-import { API } from "aws-amplify";
 import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -13,11 +12,12 @@ import {
   BreadCrumbs,
 } from "@/components";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
-import { FAQ_TARGET, ROUTES } from "@/routes";
+import { FAQ_TARGET } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
-import { Action, RaiIssueTransform } from "shared-types";
+import { Action } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { useGetItem } from "@/api";
+import { submit } from "@/api/submissionService";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
@@ -81,67 +81,14 @@ export const IssueRai = () => {
   });
   const { data: user } = useGetUser();
   const handleSubmit: SubmitHandler<IssueRaiFormSchema> = async (data) => {
-    // Set the timestamp that will uniquely identify this RAI
-    const timestamp = Math.floor(new Date().getTime() / 1000) * 1000; // Truncating to match seatool
-
-    const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
-    const uploadedFiles: any[] = [];
-    const fileMetaData: NonNullable<
-      RaiIssueTransform["rais"][number]["request"]["attachments"]
-    > = [];
-
-    const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
-      .filter((key) => data.attachments[key] !== undefined)
-      .map(() =>
-        API.post("os", "/getUploadUrl", {
-          body: {},
-        })
-      );
-    const loadPresignedUrls = await Promise.all(presignedUrls);
-
-    uploadKeys
-      .filter((key) => data.attachments[key] !== undefined)
-      .forEach((uploadKey, index) => {
-        const attachmenListObject = attachmentList?.find(
-          (item) => item.name === uploadKey
-        );
-        const title = attachmenListObject ? attachmenListObject.label : "Other";
-        const fileGroup = data.attachments[uploadKey] as File[];
-
-        // upload all files in this group and track there name
-        for (const file of fileGroup) {
-          uploadedFiles.push(
-            fetch(loadPresignedUrls[index].url, {
-              body: file,
-              method: "PUT",
-            })
-          );
-
-          fileMetaData.push({
-            key: loadPresignedUrls[index].key,
-            filename: file.name,
-            title: title,
-            bucket: loadPresignedUrls[index].bucket,
-            uploadDate: Date.now(),
-          });
-        }
-      });
-
-    await Promise.all(uploadedFiles);
-
-    const dataToSubmit = {
-      id: id!,
-      additionalInformation: data?.additionalInformation ?? null,
-      attachments: fileMetaData,
-      requestedDate: timestamp,
-      submitterEmail: user?.user?.email ?? "N/A",
-      submitterName:
-        `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
-    };
-
     try {
-      await API.post("os", `/action/${Action.ISSUE_RAI}`, {
-        body: dataToSubmit,
+      await submit<IssueRaiFormSchema & { id: string }>({
+        data: {
+          id: id!, // Declared here because it's not part of the form data
+          ...data,
+        },
+        endpoint: `/action/${Action.ISSUE_RAI}`,
+        user,
       });
       setSuccessModalIsOpen(true);
     } catch (err) {

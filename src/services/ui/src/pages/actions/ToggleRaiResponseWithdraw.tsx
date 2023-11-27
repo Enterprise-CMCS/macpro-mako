@@ -8,10 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useToggleRaiWithdraw } from "@/api/useToggleRaiWithdraw";
 import { PackageActionForm } from "@/pages/actions/PackageActionForm";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
-import {
-  SubmissionVariant,
-  useSubmissionService,
-} from "@/api/submissionService";
+import { useSubmissionService } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
 

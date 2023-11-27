@@ -1,13 +1,9 @@
 import { API } from "aws-amplify";
-import {OnemacAttachmentSchema, Authority, ReactQueryApiError} from "shared-types";
+import {OnemacAttachmentSchema, Authority, ReactQueryApiError, Action} from "shared-types";
 import {SubmissionServiceEndpoint} from "@/lib";
 import {OneMacUser} from "@/api/useGetUser";
 import {useMutation, UseMutationOptions} from "@tanstack/react-query";
 
-export enum SubmissionVariant {
-  INITIAL = "initial",
-  ACTION = "action"
-}
 type SubmissionServiceParameters<T> = {
   data: T,
   endpoint: SubmissionServiceEndpoint
@@ -49,26 +45,37 @@ const buildAttachmentObject = (
 const buildSubmissionPayload = <T extends Record<string, unknown>>(
   data: T,
   user: OneMacUser | undefined,
+  endpoint: SubmissionServiceEndpoint,
   authority?: string,
   attachments?: UploadRecipe[],
 ) => {
-  switch (authority) {
-    case Authority.MED_SPA:
+  const userDetails = {
+    submitterEmail: user?.user?.email ?? "N/A",
+    submitterName:
+      `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A"
+  };
+  switch (endpoint) {
+    case "/submit":
       return {
         ...data,
+        ...userDetails,
         proposedEffectiveDate: (data.proposedEffectiveDate as Date).getTime(),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
         state: (data.id as string).split("-")[0],
         authority: authority,
-        // TODO: How much of this is common use in the foreseeable future
         origin: "micro",
-        submitterEmail: user?.user?.email ?? "N/A",
-        submitterName:
-          `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A"
+      };
+    case `/action/${Action.ISSUE_RAI}`:
+      return {
+        ...data,
+        ...userDetails,
+        requestedDate: Math.floor(new Date().getTime() / 1000) * 1000, // Truncating to match seatool
+        attachments: attachments ? buildAttachmentObject(attachments) : null
       };
     default:
       return {
         ...data,
+        ...userDetails,
         attachments: attachments ? buildAttachmentObject(attachments) : null
       };
   }
@@ -102,12 +109,12 @@ export const submit = async <T extends Record<string, unknown>>({
     }))));
     // Submit form data
     return await API.post("os", endpoint, {
-      body: buildSubmissionPayload(data, user, authority, uploadRecipes),
+      body: buildSubmissionPayload(data, user, endpoint, authority, uploadRecipes),
     });
   } else {
     // Submit form data
     return await API.post("os", endpoint, {
-      body: buildSubmissionPayload(data, user, authority),
+      body: buildSubmissionPayload(data, user, endpoint, authority),
     });
   }
 };

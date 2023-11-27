@@ -16,7 +16,7 @@ import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { getUserStateCodes } from "@/utils";
 import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
-import { SubmissionVariant, submit } from "@/api/submissionService";
+import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
 
 let stateCodes: string[] = [];
