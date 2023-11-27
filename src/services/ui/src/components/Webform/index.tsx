@@ -52,13 +52,16 @@ export function Webform() {
     }
   );
 
-  return isLoading ? (
-    <LoadingSpinner />
-  ) : error ? (
-    <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
-      {`There was an error loading ${id}`}
-    </div>
-  ) : (
+  if (isLoading) return <LoadingSpinner />;
+  if (error || !data) {
+    return (
+      <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
+        {`There was an error loading ${id}`}
+      </div>
+    );
+  }
+
+  return (
     <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-6">

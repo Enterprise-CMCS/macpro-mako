@@ -5,7 +5,7 @@ import { RHFSection } from "./Section";
 import { FormSchema } from "shared-types";
 
 export const RHFDocument = <TFieldValues extends FieldValues>(props: {
-  document: FormSchema | undefined;
+  document: FormSchema;
   control: Control<TFieldValues>;
 }) => {
   return (
