@@ -81,7 +81,8 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         responseDate: seaToolFriendlyTimestamp,
         attachments: attachments ? buildAttachmentObject(attachments) : null
       };
-
+    case buildActionUrl(Action.ENABLE_RAI_WITHDRAW):
+    case buildActionUrl(Action.DISABLE_RAI_WITHDRAW):
     default:
       return {
         ...data,
