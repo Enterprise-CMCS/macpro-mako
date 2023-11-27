@@ -16,6 +16,7 @@ import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
 import { FAQ_TARGET } from "@/routes";
 import { useUserContext } from "../Context/userContext";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
   const isProd = window && window.location.hostname.includes("mako.cms.gov");
@@ -41,6 +42,24 @@ const getLinks = (isAuthenticated: boolean, role?: boolean) => {
       condition: isAuthenticated && !isProd,
     },
   ].filter((l) => l.condition);
+};
+
+const UserDropdownMenu = () => {
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild>
+        <button className="text-white hover:text-white/70 border-b-4">
+          My Account
+        </button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item>View Profile</DropdownMenu.Item>
+          <DropdownMenu.Item>Sign Out</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
+  );
 };
 
 export const Layout = () => {
@@ -82,6 +101,7 @@ export const Layout = () => {
 type ResponsiveNavProps = {
   isDesktop: boolean;
 };
+
 const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const [prevMediaQuery, setPrevMediaQuery] = useState(isDesktop);
   const [isOpen, setIsOpen] = useState(false);
@@ -140,6 +160,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
         <div className="flex-1"></div>
         <>
           {data.user ? (
+            // When the user is signed in
             <>
               <button
                 className="text-white hover:text-white/70"
@@ -154,8 +175,10 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
               >
                 Sign Out
               </button>
+              <UserDropdownMenu></UserDropdownMenu>
             </>
           ) : (
+            // When the user is not signed in
             <>
               <button
                 className="text-white hover:text-white/70"
@@ -195,6 +218,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             ))}
             <>
               {data.user ? (
+                // When the user is signed in
                 <button
                   className="text-left block py-2 pl-3 pr-4 text-white rounded"
                   onClick={handleLogout}
@@ -202,6 +226,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                   Sign Out
                 </button>
               ) : (
+                // When the user is not signed in
                 <>
                   <button
                     className="text-left block py-2 pl-3 pr-4 text-white rounded"
