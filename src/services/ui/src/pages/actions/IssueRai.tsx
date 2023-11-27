@@ -32,12 +32,6 @@ const formSchema = z.object({
   }),
 });
 export type IssueRaiFormSchema = z.infer<typeof formSchema>;
-type UploadKeys = keyof IssueRaiFormSchema["attachments"];
-export type PreSignedURL = {
-  url: string;
-  key: string;
-  bucket: string;
-};
 
 const attachmentList = [
   {
