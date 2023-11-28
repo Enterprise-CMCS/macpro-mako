@@ -3,12 +3,22 @@ import OneMacLogo from "@/assets/onemac_logo.svg";
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
-import { Link } from "react-router-dom";
+import { Link, redirect, useLoaderData } from "react-router-dom";
 import { Button } from "@/components/Inputs";
 import { ROUTES, FAQ_TARGET } from "@/routes";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
+    const queryString = window.location.search;
+    // Parse the query string to get URL parameters
+    const queryParams = new URLSearchParams(queryString);
+    // Access specific parameters
+    const errorDescription = queryParams.get("error_description");
+    const error = queryParams.get("error");
+    if (errorDescription || error) {
+      console.error("Authentication Error:", { errorDescription, error });
+      return { error };
+    }
     if (!queryClient.getQueryData(["user"])) {
       return await queryClient.fetchQuery({
         queryKey: ["user"],
