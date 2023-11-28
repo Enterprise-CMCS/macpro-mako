@@ -50,9 +50,9 @@ export const slotInitializer = (ACC: GL, SLOT: T.RHFSlotProps): GL => {
   return ACC;
 };
 
-export const documentInitializer = (document: FormSchema | undefined) => {
-  return document?.sections?.reduce((ACC, SEC) => {
-    SEC.form?.reduce(formGroupInitializer, ACC);
+export const documentInitializer = (document: FormSchema) => {
+  return document.sections.reduce((ACC, SEC) => {
+    SEC.form.reduce(formGroupInitializer, ACC);
     return ACC;
   }, {});
 };
