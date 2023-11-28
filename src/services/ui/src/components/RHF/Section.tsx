@@ -2,7 +2,7 @@
 import { Control, FieldValues } from "react-hook-form";
 import { FormLabel } from "../Inputs";
 import { DependencyWrapper } from "./dependencyWrapper";
-import { Section } from "./types";
+import { Section } from "shared-types";
 import { RHFFormGroup } from "./FormGroup";
 
 export const RHFSection = <TFieldValues extends FieldValues>(props: {
