@@ -1,6 +1,11 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { Action, CognitoUserAttributes, ItemResult } from "shared-types";
-import { isCmsUser, getActiveRai, isCmsWriteUser } from "shared-utils";
+import {
+  isCmsUser,
+  getActiveRai,
+  isCmsWriteUser,
+  getLatestRai,
+} from "shared-utils";
 import { isStateUser } from "shared-utils/is-state-user";
 import { getPackage } from "../libs/package/getPackage";
 import {
@@ -23,6 +28,7 @@ export const packageActionsForResult = (
 ): Action[] => {
   const actions = [];
   const activeRai = getActiveRai(result._source.rais);
+  const latestRai = getLatestRai(result._source.rais);
   if (isCmsWriteUser(user)) {
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING:
@@ -49,7 +55,6 @@ export const packageActionsForResult = (
       }
     }
   } else if (isStateUser(user)) {
-    actions.push(Action.WITHDRAW_RAI);
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING_RAI:
         if (activeRai) {
@@ -57,8 +62,16 @@ export const packageActionsForResult = (
           actions.push(Action.RESPOND_TO_RAI);
         }
         break;
+      case SEATOOL_STATUS.PENDING:
+      case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
+      case SEATOOL_STATUS.PENDING_APPROVAL:
+      case SEATOOL_STATUS.PENDING_CONCURRENCE:
+        if (latestRai && !activeRai && result._source.raiWithdrawEnabled) {
+          // There is an rai but it's inactive (responded)
+          actions.push(Action.WITHDRAW_RAI);
+        }
+        break;
     }
-    actions.push(Action.ISSUE_RAI);
   }
   return actions;
 };

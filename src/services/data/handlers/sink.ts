@@ -160,6 +160,11 @@ export const onemac: Handler = async (event) => {
               }
               break;
             }
+            case Action.WITHDRAW_RAI: {
+              console.log("WITHDRAWING RAI");
+              oneMacRecords.push(record);
+              break;
+            }
           }
         } else if (
           record && // testing if we have a record

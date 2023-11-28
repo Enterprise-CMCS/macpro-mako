@@ -21,6 +21,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
+import { API } from "aws-amplify";
 
 const DetailCardWrapper = ({
   title,
@@ -97,7 +98,20 @@ const PackageActionsCard = ({ id }: { id: string }) => {
       {/* Withdraw Modal */}
       <ConfirmationModal
         open={isWithdrawModalOpen}
-        onAccept={() => setIsWithdrawModalOpen(false)}
+        onAccept={async () => {
+          setIsWithdrawModalOpen(false);
+          const dataToSubmit = {
+            id,
+          };
+          try {
+            await API.post("os", `/action/${Action.WITHDRAW_RAI}`, {
+              body: dataToSubmit,
+            });
+            setIsWithdrawModalOpen(false); // probably want a success modal?
+          } catch (err) {
+            console.log(err); // probably want an error modal?
+          }
+        }}
         onCancel={() => setIsWithdrawModalOpen(false)}
         title="Withdraw RAI"
         body="Are you sure you would like to withdraw this RAI?"
