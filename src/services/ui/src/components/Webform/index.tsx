@@ -6,6 +6,7 @@ import { SubNavHeader } from "@/components";
 import { documentInitializer } from "@/components/RHF/utils";
 import { useGetForm } from "@/api";
 import { LoadingSpinner } from "@/components";
+import { Footer } from "./footer";
 export const Webforms = () => {
   return (
     <>
@@ -74,6 +75,7 @@ export function Webform() {
           </div>
         </form>
       </Form>
+      <Footer />
     </div>
   );
 }
