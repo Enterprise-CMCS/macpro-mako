@@ -5,6 +5,7 @@ import { GovernmentBuildingIcon } from "../GovernmentBuildingIcon";
 import UsFlag from "@/assets/us_flag_small.png";
 import { useMediaQuery } from "@/hooks";
 import { useUserContext } from "../Context/userContext";
+import config from "@/config";
 
 export const UsaBanner = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,7 +79,7 @@ export const UsaBanner = () => {
               You do not have access to view the entire application.{" "}
               <a
                 rel="noreferrer"
-                href={process.env.IDM_HOME_URL}
+                href={config.idm.home_url}
                 target="_blank"
                 className="text-blue-600 inline  no-underline"
               >
