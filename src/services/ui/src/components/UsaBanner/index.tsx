@@ -6,6 +6,7 @@ import UsFlag from "@/assets/us_flag_small.png";
 import { useMediaQuery } from "@/hooks";
 import { useUserContext } from "../Context/userContext";
 import { useLoaderData } from "react-router-dom";
+import config from "@/config";
 
 export const UsaBanner = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -135,7 +136,7 @@ const NoRole = () => {
         You do not have access to view the entire application.{" "}
         <a
           rel="noreferrer"
-          href="https://test.home.idm.cms.gov/"
+          href={config.idm.home_url}
           target="_blank"
           className="text-blue-600 inline  no-underline"
         >
