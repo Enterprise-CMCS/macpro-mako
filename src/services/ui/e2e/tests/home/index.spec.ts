@@ -17,12 +17,15 @@ test("has title", async ({ page }) => {
   await expect(page).toHaveTitle(/CMS MAKO/);
 });
 
-test("see frequently asked questions header when in faq page", async ({ page }) => {
+test("see frequently asked questions header when in faq page", async ({
+  page,
+}) => {
   await page.goto("/");
   const popup = page.waitForEvent("popup");
   await page.getByRole("link", { name: "FAQ", exact: true }).click();
   const foundFaqHeading = await popup;
-  await foundFaqHeading.getByRole("heading", { name: "Frequently Asked Questions" })
+  await foundFaqHeading
+    .getByRole("heading", { name: "Frequently Asked Questions" })
     .isVisible();
   expect(foundFaqHeading).toBeTruthy();
 });
@@ -32,8 +35,8 @@ test("see dashboard link when log in", async ({ page }) => {
   await page.getByRole("button", { name: "Sign In" }).click();
   await page
     .getByRole("textbox", { name: "name@host.com" })
-    .type(testUsers.state);
-  await page.getByRole("textbox", { name: "Password" }).type(password);
+    .fill(testUsers.state);
+  await page.getByRole("textbox", { name: "Password" }).fill(password);
   await page.getByRole("button", { name: "submit" }).click();
   await page.getByRole("link", { name: "Dashboard" }).click();
 
@@ -46,8 +49,8 @@ test("see dashboard link when log in", async ({ page }) => {
 test("failed incorrect login username", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Sign In" }).click();
-  await page.getByRole("textbox", { name: "name@host.com" }).type(".");
-  await page.getByRole("textbox", { name: "Password" }).type(password);
+  await page.getByRole("textbox", { name: "name@host.com" }).fill(".");
+  await page.getByRole("textbox", { name: "Password" }).fill(password);
   await page.getByRole("button", { name: "submit" }).click();
   await page.locator("#loginErrorMessage").first().isVisible();
 });

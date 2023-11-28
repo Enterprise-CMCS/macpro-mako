@@ -28,7 +28,7 @@ import { cn } from "@/lib";
 import { format } from "date-fns";
 import { RHFFieldArray } from "./FieldArray";
 import { FieldGroup } from "./FieldGroup";
-import type { RHFSlotProps, RHFComponentMap, FormGroup } from "./types";
+import type { RHFSlotProps, RHFComponentMap, FormGroup } from "shared-types";
 import { useEffect, useMemo } from "react";
 
 export const RHFSlot = <

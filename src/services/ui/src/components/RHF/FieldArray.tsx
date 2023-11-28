@@ -3,7 +3,7 @@ import { Plus, Trash2 } from "lucide-react";
 
 import { RHFSlot } from "./Slot";
 import { Button, FormField } from "../Inputs";
-import { FieldArrayProps } from "./types";
+import { FieldArrayProps } from "shared-types";
 import { slotInitializer } from "./utils";
 import { useEffect } from "react";
 
