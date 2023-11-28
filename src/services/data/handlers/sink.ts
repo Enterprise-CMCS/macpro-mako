@@ -15,7 +15,12 @@ import {
   RaiResponseTransform,
   transformRaiResponse,
 } from "shared-types/onemac";
-import { Action, withdrawRecordSchema, WithdrawRecord } from "shared-types";
+import {
+  Action,
+  withdrawRecordSchema,
+  WithdrawRecord,
+  withdrawRaiSchema,
+} from "shared-types";
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -162,7 +167,15 @@ export const onemac: Handler = async (event) => {
             }
             case Action.WITHDRAW_RAI: {
               console.log("WITHDRAWING RAI");
-              oneMacRecords.push(record);
+              const result = withdrawRaiSchema.safeParse({ id, ...record });
+
+              if (result.success === true) {
+                oneMacRecords.push(record);
+              } else {
+                console.log(
+                  `ERROR: Invalid Payload for this action type (${record.actionType})`
+                );
+              }
               break;
             }
           }

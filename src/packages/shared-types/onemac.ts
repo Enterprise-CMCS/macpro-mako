@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { s3ParseUrl } from "shared-utils/s3-url-parser";
 
-const onemacAttachmentSchema = z.object({
+export const onemacAttachmentSchema = z.object({
   s3Key: z.string().nullish(),
   filename: z.string(),
   title: z.string(),
@@ -81,6 +81,7 @@ export const transformRaiResponse = (id: string) => {
         },
       },
     },
+    withdraw: undefined,
   }));
 };
 export type RaiResponseTransform = z.infer<

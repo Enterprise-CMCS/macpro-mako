@@ -9,6 +9,7 @@ import { Action } from "shared-types";
 import { FormDescriptionText } from "@/components/FormDescriptionText";
 import { useGetItem } from "@/api/useGetItem";
 import { ROUTES } from "@/routes";
+import { getActiveRai, getLatestRai } from "shared-utils";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
@@ -33,7 +34,13 @@ export const WithdrawRai = () => {
   const { data: item } = useGetItem(id!);
 
   const handleSubmit = () => {
-    console.log("hello world");
+    if (item && item._source.rais) {
+      const latestRai = getActiveRai(item._source.rais)?.key;
+
+      if (latestRai) {
+        //do stuff
+      }
+    }
   };
 
   return (
@@ -116,7 +123,6 @@ export const WithdrawRai = () => {
               disabled={form.formState.isSubmitting}
               type="submit"
               className="px-12"
-              onClick={() => navigate(ROUTES.DASHBOARD)}
             >
               Submit
             </I.Button>
