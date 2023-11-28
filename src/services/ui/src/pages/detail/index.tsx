@@ -17,11 +17,12 @@ import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
+import { useQueryClient } from "@tanstack/react-query";
 
 const DetailCardWrapper = ({
   title,
@@ -54,8 +55,11 @@ const StatusCard = ({
 );
 const PackageActionsCard = ({ id }: { id: string }) => {
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { data, error } = useGetPackageActions(id);
-  if (!data?.actions || error) return <LoadingSpinner />;
+  if (!data?.actions || error || isLoading) return <LoadingSpinner />;
   return (
     <DetailCardWrapper title={"Actions"}>
       <div>
@@ -104,17 +108,48 @@ const PackageActionsCard = ({ id }: { id: string }) => {
             id,
           };
           try {
+            setIsLoading(true);
             await API.post("os", `/action/${Action.WITHDRAW_RAI}`, {
               body: dataToSubmit,
             });
+            setIsLoading(false);
             setIsWithdrawModalOpen(false); // probably want a success modal?
+            setIsSuccessModalOpen(true);
           } catch (err) {
+            setIsLoading(false);
+            setIsErrorModalOpen(true);
             console.log(err); // probably want an error modal?
           }
         }}
         onCancel={() => setIsWithdrawModalOpen(false)}
         title="Withdraw RAI"
-        body="Are you sure you would like to withdraw this RAI?"
+        body={
+          <p>
+            Are you sure you would like to withdraw the RAI response for{" "}
+            <em>{id}</em>?
+          </p>
+        }
+      />
+
+      {/* Withdraw Success Modal */}
+      <ConfirmationModal
+        open={isSuccessModalOpen}
+        onAccept={async () => {
+          setIsSuccessModalOpen(false);
+        }}
+        onCancel={() => setIsSuccessModalOpen(false)}
+        title="Withdraw RAI Successful"
+      />
+
+      {/* Withdraw Error Modal */}
+      <ConfirmationModal
+        open={isErrorModalOpen}
+        onAccept={async () => {
+          setIsErrorModalOpen(false);
+        }}
+        onCancel={() => setIsErrorModalOpen(false)}
+        title="Failed to Withdraw"
+        body="RAI withdraw failed"
       />
     </DetailCardWrapper>
   );
