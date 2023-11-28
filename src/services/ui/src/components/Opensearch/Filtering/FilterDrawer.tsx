@@ -30,11 +30,14 @@ export const OsFilterDrawer = () => {
   const handleFilterReset = () => resetFilters(params.onSet);
   return (
     <Sheet open={hook.drawerOpen} onOpenChange={hook.setDrawerState}>
-      <SheetTrigger>
-        <div className="flex flex-row gap-2 items-center border-slate-100 px-4">
+      <SheetTrigger asChild>
+        <Button
+          variant="outline"
+          className="hover:bg-transparent self-center h-10 flex gap-2"
+        >
           <FilterIcon className="w-4 h-4" />
-          <p className="prose-sm">Filters</p>
-        </div>
+          <span className="prose-sm">Filters</span>
+        </Button>
       </SheetTrigger>
       <SheetContent className="bg-white overflow-scroll">
         <SheetHeader>
