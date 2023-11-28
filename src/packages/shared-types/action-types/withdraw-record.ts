@@ -5,7 +5,7 @@ export const withdrawRaiSchema = z.object({
   id: z.string(),
   submitterName: z.string(),
   submitterEmail: z.string(),
-  activeRaiKey: z.number(),
+  latestRaiKey: z.number(),
   withdraw: z.object({
     withdrawDate: z.string(),
     withdrawAttachments: z.array(onemacAttachmentSchema).nullish(),

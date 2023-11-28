@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "./actions-breadcrumbs";
 import { useNavigate, useParams } from "react-router-dom";
-import { Action } from "shared-types";
+import { Action, WithdrawRaiRecord } from "shared-types";
 import { FormDescriptionText } from "@/components/FormDescriptionText";
 import { useGetItem } from "@/api/useGetItem";
 import { ROUTES } from "@/routes";
@@ -35,10 +35,25 @@ export const WithdrawRai = () => {
 
   const handleSubmit = () => {
     if (item && item._source.rais) {
-      const latestRai = getActiveRai(item._source.rais)?.key;
+      const latestRai = getLatestRai(item._source.rais)?.key;
 
       if (latestRai) {
-        //do stuff
+        // do submission stuff to match the WithdrawRaiRecord Event
+        // below is an example of the event payload that will need to be submitted to the action endpoint
+        // const test: WithdrawRaiRecord = {
+        //   latestRaiKey: latestRai,
+        //   id: id!,
+        //   submitterEmail: "",
+        //   submitterName: "",
+        //   withdraw: {
+        //     withdrawDate: new Date().toString(),
+        //     additionalInformation: "",
+        //     withdrawAttachments: [],
+        //   },
+        // };
+      } else {
+        // there is an error because there needs to be an rai to withdraw
+        // alert the user to this
       }
     }
   };
