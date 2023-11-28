@@ -4,22 +4,26 @@ import {
   FieldValues,
   RegisterOptions,
 } from "react-hook-form";
-import type { ReactElement } from "react";
 import {
+  CalendarProps,
   InputProps,
+  RadioProps,
+  SelectProps,
   SwitchProps,
   TextareaProps,
-  SelectProps,
-  RadioProps,
-  CalendarProps,
-} from "../Inputs";
+} from "shared-types";
+
+export interface FormSchema {
+  header: string;
+  sections: Section[];
+}
 
 export type RHFSlotProps = {
   name: string;
-  label?: ReactElement | string;
+  label?: string;
   labelStyling?: string;
   groupNamePrefix?: string;
-  description?: ReactElement | string;
+  description?: string;
   dependency?: DependencyRule;
   rules?: RegisterOptions;
 } & {
@@ -43,8 +47,8 @@ export type RHFOption = {
 
 export type RHFComponentMap = {
   Input: InputProps & {
-    label?: ReactElement | string;
-    description?: ReactElement | string;
+    label?: string;
+    description?: string;
   };
   Textarea: TextareaProps;
   Switch: SwitchProps;

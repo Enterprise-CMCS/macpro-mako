@@ -1,6 +1,6 @@
-import { Document } from "@/components/RHF/types";
+import { FormSchema } from "shared-types";
 
-export const ABP1: Document = {
+const ABP1: FormSchema = {
   header: "ABP 1: Alternative Benefit Plan populations",
   sections: [
     {
@@ -1319,3 +1319,5 @@ export const ABP1: Document = {
     // },
   ],
 };
+
+export const form = ABP1;

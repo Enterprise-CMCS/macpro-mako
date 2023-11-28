@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError } from "shared-types";
+import { FormSchema } from "shared-types";
 
-// TODO: Use the Document type here once it is in a shared location.
 export const getForm = async (
   formId: string,
   formVersion?: string
-): Promise<any> => {
+): Promise<FormSchema> => {
   const form = await API.get("os", "/forms", {
     queryStringParameters: { formId, formVersion },
   });
@@ -15,7 +15,7 @@ export const getForm = async (
 };
 
 export const useGetForm = (formId: string, formVersion?: string) => {
-  return useQuery<any, ReactQueryApiError>([formId], () =>
+  return useQuery<FormSchema, ReactQueryApiError>([formId, formVersion], () =>
     getForm(formId, formVersion)
   );
 };

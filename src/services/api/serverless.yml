@@ -6,6 +6,8 @@ plugins:
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
   - serverless-scriptable-plugin
+  - serverless-plugin-scripts
+
 provider:
   name: aws
   runtime: nodejs18.x
@@ -64,6 +66,10 @@ custom:
   scriptable:
     hooks:
       package:compileEvents: ./handlers/repack.js
+  scripts:
+    hooks:
+      package:initialize: |
+          yarn build
 params:
   master:
     formsProvisionedConcurrency: 2
@@ -247,7 +253,6 @@ layers:
   forms:
     path: layers
     description: Lambda Layer for forms function
-
 resources:
   Resources:
     ApiGateway400ErrorCount:
