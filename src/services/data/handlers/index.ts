@@ -26,23 +26,24 @@ export const handler: Handler = async (event) => {
 
 async function manageIndex() {
   try {
-    const createIndexReponse = await os.createIndexIfNotExists(
-      process.env.osDomain,
-      "main"
-    );
-    console.log(createIndexReponse);
-
-    const updateFieldMappingResponse = await os.updateFieldMapping(
-      process.env.osDomain,
-      "main",
-      {
-        rais: {
-          type: "object",
-          enabled: false,
-        },
-      }
-    );
-    console.log(updateFieldMappingResponse);
+    if (!(await os.indexExists(process.env.osDomain, "main"))) {
+      const createIndexReponse = await os.createIndex(
+        process.env.osDomain,
+        "main"
+      );
+      console.log(createIndexReponse);
+      const updateFieldMappingResponse = await os.updateFieldMapping(
+        process.env.osDomain,
+        "main",
+        {
+          rais: {
+            type: "object",
+            enabled: false,
+          },
+        }
+      );
+      console.log(updateFieldMappingResponse);
+    }
   } catch (error) {
     console.log(error);
     throw "ERROR:  Error occured during index management.";
