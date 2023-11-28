@@ -82,7 +82,7 @@ const UserDropdownMenu = () => {
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           align="start"
-          className="bg-white flex flex-col gap-4 px-8 py-4 drop-shadow"
+          className="bg-white flex flex-col gap-4 px-10 py-4 drop-shadow"
         >
           <DropdownMenu.Item className="flex">
             <button
