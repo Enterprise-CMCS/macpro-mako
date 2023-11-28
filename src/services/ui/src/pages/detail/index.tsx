@@ -17,12 +17,11 @@ import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
-import { useQueryClient } from "@tanstack/react-query";
 
 const DetailCardWrapper = ({
   title,
@@ -70,21 +69,6 @@ const PackageActionsCard = ({ id }: { id: string }) => {
         ) : (
           <ul>
             {data.actions.map((action, idx) => {
-              if (action === Action.WITHDRAW_RAI) {
-                return (
-                  <li key={`${idx}-${action}`}>
-                    <button
-                      className="text-sky-500 underline"
-                      onClick={() => {
-                        setIsWithdrawModalOpen(true);
-                      }}
-                    >
-                      {mapActionLabel(action)}
-                    </button>
-                  </li>
-                );
-              }
-
               return (
                 <Link
                   className="text-sky-500 underline"
