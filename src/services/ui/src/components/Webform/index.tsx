@@ -28,7 +28,7 @@ export function Webform() {
   }>();
   const { data, isLoading, error } = useGetForm(id as string, version);
 
-  const defaultValues = documentInitializer(data);
+  const defaultValues = data ? documentInitializer(data) : {};
   const savedData = localStorage.getItem(`${id}v${version}`);
   const form = useForm({
     defaultValues: savedData ? JSON.parse(savedData) : defaultValues,
