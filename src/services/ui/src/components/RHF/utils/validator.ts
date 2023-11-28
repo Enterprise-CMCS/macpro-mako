@@ -248,10 +248,9 @@ export const slotValidator =
     return ACC;
   };
 
-export const documentValidator =
-  (document: FormSchema | undefined) => (data: any) => {
-    return document?.sections.reduce((ACC, SEC) => {
-      SEC.form.reduce(formGroupValidator(data), ACC);
-      return ACC;
-    }, {} as ERROR);
-  };
+export const documentValidator = (document: FormSchema) => (data: any) => {
+  return document.sections.reduce((ACC, SEC) => {
+    SEC.form.reduce(formGroupValidator(data), ACC);
+    return ACC;
+  }, {} as ERROR);
+};

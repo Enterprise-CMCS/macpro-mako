@@ -14,7 +14,7 @@ export const RHFDocument = <TFieldValues extends FieldValues>(props: {
       <div className="py-4 px-8 border-2 border-t-0 mt-0">
         <div className="mb-3 mt-9">
           <FormLabel className="font-bold text-4xl px-8 font-serif">
-            {props.document?.header}
+            {props.document.header}
           </FormLabel>
         </div>
         {props.document.sections.map((SEC, index) => (
