@@ -89,20 +89,24 @@ export const WithdrawRai = () => {
           <I.FormField
             control={form.control}
             name="additionalInformation"
-            render={({ field }) => (
-              <I.FormItem>
-                <h3 className="font-bold text-2xl font-sans">
-                  Additional Information
-                </h3>
-                <I.FormLabel className="font-normal">
-                  Add anything else that you would like to share with CMS.
-                </I.FormLabel>
-                <I.Textarea {...field} className="h-[200px] resize-none" />
-                <I.FormDescription>
-                  {4000 - field?.value?.length ?? 4000} characters remaining
-                </I.FormDescription>
-              </I.FormItem>
-            )}
+            render={({ field }) => {
+              return (
+                <I.FormItem>
+                  <h3 className="font-bold text-2xl font-sans">
+                    Additional Information
+                  </h3>
+                  <I.FormLabel className="font-normal">
+                    Add anything else that you would like to share with CMS.
+                  </I.FormLabel>
+                  <I.Textarea {...field} className="h-[200px] resize-none" />
+                  <I.FormDescription>
+                    {field.value && field.value.length >= 0
+                      ? `${4000 - field.value.length} characters remaining`
+                      : "4000 characters allowed"}
+                  </I.FormDescription>
+                </I.FormItem>
+              );
+            }}
           />
           <div className="flex gap-2">
             <I.Button
