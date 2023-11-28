@@ -4,10 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "./actions-breadcrumbs";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Action } from "shared-types";
 import { FormDescriptionText } from "@/components/FormDescriptionText";
 import { useGetItem } from "@/api/useGetItem";
+import { ROUTES } from "@/routes";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
@@ -27,6 +28,8 @@ export const WithdrawRai = () => {
     id: string;
   }>();
 
+  const navigate = useNavigate();
+
   const { data: item } = useGetItem(id!);
 
   const handleSubmit = () => {
@@ -38,7 +41,7 @@ export const WithdrawRai = () => {
       <BreadCrumbs
         options={DETAILS_AND_ACTIONS_CRUMBS({
           id: id || "",
-          action: Action.RESPOND_TO_RAI,
+          action: Action.WITHDRAW_RAI,
         })}
       />
       <I.Form {...form}>
@@ -78,7 +81,7 @@ export const WithdrawRai = () => {
             control={form.control}
             render={({ field }) => (
               <I.FormItem>
-                <I.FormLabel>Other</I.FormLabel>
+                <I.FormLabel>Supporting Documentation</I.FormLabel>
                 <I.Upload
                   files={field?.value ?? []}
                   setFiles={field.onChange}
@@ -93,7 +96,7 @@ export const WithdrawRai = () => {
               return (
                 <I.FormItem>
                   <h3 className="font-bold text-2xl font-sans">
-                    Additional Information
+                    Additional Information <I.RequiredIndicator />
                   </h3>
                   <I.FormLabel className="font-normal">
                     Add anything else that you would like to share with CMS.
@@ -113,6 +116,7 @@ export const WithdrawRai = () => {
               disabled={form.formState.isSubmitting}
               type="submit"
               className="px-12"
+              onClick={() => navigate(ROUTES.DASHBOARD)}
             >
               Submit
             </I.Button>

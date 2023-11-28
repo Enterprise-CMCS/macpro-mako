@@ -9,7 +9,7 @@ export const mapActionLabel = (a: Action) => {
     case Action.ISSUE_RAI:
       return "Issue Formal RAI";
     case Action.WITHDRAW_RAI:
-      return "Withdraw RAI";
+      return "Withdraw Formal RAI Response";
     case Action.RESPOND_TO_RAI:
       return "Respond to Formal RAI";
   }
