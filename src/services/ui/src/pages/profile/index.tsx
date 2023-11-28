@@ -6,7 +6,6 @@ import { UserRoles, UserRolesString } from "shared-types";
 // Returns comma-separated string of user role descriptions:
 function rolesDescriptions(roles: UserRolesString | undefined) {
   const rolesArray: string[] | undefined = roles?.split(",");
-  console.log(rolesArray);
 
   const descriptiveRolesArray = rolesArray?.map((role) => {
     switch (role) {
@@ -32,8 +31,6 @@ function rolesDescriptions(roles: UserRolesString | undefined) {
 
 export const Profile = () => {
   const { isLoading, isError, data } = useGetUser();
-
-  console.info(data?.user);
 
   return (
     <>
@@ -84,14 +81,6 @@ export const Profile = () => {
           <div className="leading-9">
             <h2 className="font-bold">Email</h2>
             <p>{data?.user?.email}</p>
-          </div>
-
-          <div className="leading-9">
-            <h2 className="font-bold">Phone number</h2>
-            <p>555-555-5555</p>
-            <p className="text-primary">
-              <a href="" className="underline"></a>
-            </p>
           </div>
         </div>
       </section>
