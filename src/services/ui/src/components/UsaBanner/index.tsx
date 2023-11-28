@@ -78,7 +78,7 @@ export const UsaBanner = () => {
               You do not have access to view the entire application.{" "}
               <a
                 rel="noreferrer"
-                href="https://test.home.idm.cms.gov/"
+                href={process.env.IDM_HOME_URL}
                 target="_blank"
                 className="text-blue-600 inline  no-underline"
               >

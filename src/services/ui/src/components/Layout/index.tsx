@@ -165,7 +165,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   };
 
   const handleRegister = () => {
-    const url = "https://test.home.idm.cms.gov/signin/login.html";
+    const url = `${process.env.IDM_HOME_URL}/signin/login.html`;
     window.location.assign(url);
   };
 
