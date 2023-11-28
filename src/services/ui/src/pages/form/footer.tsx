@@ -1,4 +1,4 @@
-export const PraDisclosure = () => {
+export const Footer = () => {
   return (
     <div className="flex flex-col gap-2 my-6 text-sm text-slate-500">
       <b>{"PRA Disclosure Statement"}</b>

@@ -5,7 +5,7 @@ import { ABP1 } from "./proto";
 import { documentInitializer, documentValidator } from "@/components/RHF/utils";
 import { Link, useParams } from "react-router-dom";
 import { SubNavHeader } from "@/components";
-import { PraDisclosure } from "./praDisclosure";
+import { Footer } from "./footer";
 
 export const Webforms = () => {
   return (
@@ -114,13 +114,13 @@ export function Webform() {
           <div className="flex justify-between">
             <Button variant="link">Save Draft</Button>
             <div className="flex flex-row gap-4">
-              <Button variant="outline">Back</Button>
+              {/* <Button variant="outline">Back</Button> */}
               <Button type="submit">Submit</Button>
             </div>
           </div>
         </form>
       </Form>
-      <PraDisclosure />
+      <Footer />
     </div>
   );
 }
