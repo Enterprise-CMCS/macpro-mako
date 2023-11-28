@@ -17,6 +17,7 @@ import { UsaBanner } from "../UsaBanner";
 import { FAQ_TARGET } from "@/routes";
 import { useUserContext } from "../Context/userContext";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import config from "@/config";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
   const isProd = window && window.location.hostname.includes("mako.cms.gov");
@@ -165,7 +166,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   };
 
   const handleRegister = () => {
-    const url = `${process.env.IDM_HOME_URL}/signin/login.html`;
+    const url = `${config.idm.home_url}/signin/login.html`;
     window.location.assign(url);
   };
 
