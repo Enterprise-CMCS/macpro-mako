@@ -2,6 +2,7 @@ import { useGetUser } from "@/api/useGetUser";
 import { Alert, SubNavHeader } from "@/components";
 import { Button } from "@/components/Inputs";
 import { UserRoles, UserRolesString } from "shared-types";
+import config from "@/config";
 
 // Returns comma-separated string of user role descriptions:
 function rolesDescriptions(roles: UserRolesString | undefined) {
@@ -58,7 +59,7 @@ export const Profile = () => {
           <div className="py-2 flex-1">
             All changes to your access or profile must be made in IDM.
           </div>
-          <a href="https://idm.cms.gov/" target="_blank" rel="noreferrer">
+          <a href={config.idm.home_url} target="_blank" rel="noreferrer">
             <Button variant="outline">Go to IDM</Button>
           </a>
         </Alert>
