@@ -1,5 +1,5 @@
 import { API } from "aws-amplify";
-import {OnemacAttachmentSchema, Authority, ReactQueryApiError, Action} from "shared-types";
+import {OnemacAttachmentSchema, Authority, ReactQueryApiError, Action, attachmentTitleMap} from "shared-types";
 import {buildActionUrl, SubmissionServiceEndpoint} from "@/lib";
 import {OneMacUser} from "@/api/useGetUser";
 import {useMutation, UseMutationOptions} from "@tanstack/react-query";
@@ -111,7 +111,9 @@ export const submit = async <T extends Record<string, unknown>>({
     const uploadRecipes: UploadRecipe[] = preSignedURLs.map((obj, idx) => ({
       ...obj,
       data: attachments[validFilesetKeys[idx]] as File[],
-      title: validFilesetKeys[idx]
+      // Add your attachments object key and file label value to the attachmentTitleMap
+      // for this transform to work. Else the title will just be the object key.
+      title: attachmentTitleMap?.[validFilesetKeys[idx]] || validFilesetKeys[idx]
     }));
     // Upload attachments
     await Promise.all(uploadRecipes.map(({url, data}) => data.map((file) => fetch(url, {
