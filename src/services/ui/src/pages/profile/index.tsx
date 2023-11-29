@@ -30,7 +30,7 @@ function rolesDescriptions(roles: UserRolesString | undefined) {
 }
 
 export const Profile = () => {
-  const { isLoading, isError, data } = useGetUser();
+  const { data } = useGetUser();
 
   return (
     <>
