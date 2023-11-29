@@ -23,7 +23,7 @@ export const Profile = () => {
   return (
     <>
       <SubNavHeader>
-        <h2 className="text-xl font-medium">My Profile</h2>
+        <h1 className="text-xl font-medium">My Profile</h1>
       </SubNavHeader>
 
       <section className="block max-w-screen-xl m-auto px-4 lg:px-8 py-8 gap-10">
