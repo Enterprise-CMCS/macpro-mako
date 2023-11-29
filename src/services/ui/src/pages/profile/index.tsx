@@ -23,7 +23,7 @@ export const Profile = () => {
   return (
     <>
       <SubNavHeader>
-        <h1 className="text-xl font-medium">My Profile</h1>
+        <h2 className="text-xl font-medium">My Profile</h2>
       </SubNavHeader>
 
       <section className="block max-w-screen-xl m-auto px-4 lg:px-8 py-8 gap-10">
@@ -52,22 +52,22 @@ export const Profile = () => {
         </Alert>
 
         <div className="basis-1/2 flex flex-col gap-6">
-          <h1 className="text-2xl font-bold">My Information</h1>
+          <h2 className="text-2xl font-bold">My Information</h2>
 
           <div className="leading-9">
-            <h2 className="font-bold">Full Name</h2>
+            <h3 className="font-bold">Full Name</h3>
             <p>
               {data?.user?.given_name} {data?.user?.family_name}
             </p>
           </div>
 
           <div className="leading-9">
-            <h2 className="font-bold">Role</h2>
+            <h3 className="font-bold">Role</h3>
             <p>{rolesDescriptions(data?.user?.["custom:cms-roles"])}</p>
           </div>
 
           <div className="leading-9">
-            <h2 className="font-bold">Email</h2>
+            <h3 className="font-bold">Email</h3>
             <p>{data?.user?.email}</p>
           </div>
         </div>
