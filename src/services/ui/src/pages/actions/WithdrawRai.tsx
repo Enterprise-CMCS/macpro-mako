@@ -36,7 +36,18 @@ export const WithdrawRai = () => {
 
   const user = useGetUser();
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    const dataToSend = {
+      submitterEmail: user.data?.user?.email ?? "",
+      submitterName: `${user.data?.user?.given_name ?? "N/A"} ${user.data?.user?.family_name ?? "N/A"}`,
+      id: id!,
+      withdraw: {
+        withdrawDate: new Date().getTime(),
+        additionalInformation: "",
+        withdrawAttachments: []
+      }
+    } satisfies WithdrawRaiRecord;
+  };
 
   return (
     <SimplePageContainer>
