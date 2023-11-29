@@ -11,6 +11,7 @@ import { useGetItem } from "@/api/useGetItem";
 import { useGetUser } from "@/api/useGetUser";
 import { PreSignedURL } from "./IssueRai";
 import { API } from "aws-amplify";
+import { PackageActionForm } from "./PackageActionForm";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
@@ -30,7 +31,7 @@ const attachmentList = [
   },
 ] as const;
 
-export const WithdrawRai = () => {
+export const WithdrawRaiForm = () => {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -104,9 +105,15 @@ export const WithdrawRai = () => {
       },
     };
 
-    console.log("Record that will be sent to action api endpoint", {
-      dataToSend,
-    });
+    try {
+      await API.post("os", `/action/${Action.WITHDRAW_RAI}`, {
+        body: dataToSend,
+      });
+    } catch (err: unknown) {
+      if (err) {
+        console.log("There was an error", err);
+      }
+    }
   };
 
   return (
@@ -206,3 +213,9 @@ export const WithdrawRai = () => {
     </SimplePageContainer>
   );
 };
+
+export const WithdrawRai = () => (
+  <PackageActionForm>
+    <WithdrawRaiForm />
+  </PackageActionForm>
+);
