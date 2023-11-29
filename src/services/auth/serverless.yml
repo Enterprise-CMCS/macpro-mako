@@ -83,6 +83,11 @@ resources:
         - Fn::Equals:
             - ""
             - ${self:custom.idmInfo.oidc_issuer, ""}
+    BackWithCognito:
+      Fn::Not:
+        - Fn::Equals:
+            - ${sls:stage}
+            - production
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
@@ -157,7 +162,10 @@ resources:
           - ${param:ApplicationEndpointUrl}
           - http://localhost:5000/
         SupportedIdentityProviders:
-          - COGNITO
+          - Fn::If:
+              - BackWithCognito
+              - COGNITO
+              - !Ref AWS::NoValue
           - Fn::If:
               - BackWithIDM
               - !Ref UserPoolIdentityProviderIDM
