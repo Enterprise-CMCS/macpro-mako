@@ -43,6 +43,13 @@ provider:
             - lambda:InvokeFunction
           Resource:
             - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-avDownloadDefinitions
+        - Effect: "Allow"
+          Action:
+            - "s3:GetBucketPolicy"
+            - "s3:PutBucketPolicy"
+          Resource:
+            - !Sub "arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}"
+            - !Sub "arn:aws:s3:::${self:service}-${sls:stage}-avscan-${AWS::AccountId}"
 
 custom:
   project: ${env:PROJECT}
@@ -93,6 +100,10 @@ functions:
     handler: src/triggerInitialDownload.handler
     timeout: 300 # 300 seconds = 5 minutes
     memorySize: 1024
+  applyPolicy:
+    handler: src/applyPolicy.handler
+    timeout: 300
+    memorySize: 1024
 resources:
   Resources:
     AttachmentsBucket:
@@ -120,12 +131,13 @@ resources:
             - Event: s3:ObjectCreated:*
               Function: !GetAtt AvScanLambdaFunction.Arn
       DependsOn: LambdaInvokePermission
-    S3CMSReadBucketPolicy:
-      Type: AWS::S3::BucketPolicy
+    AttachmentsBucketPolicy:
+      Type: Custom::AttachmentsBucketPolicy
       Properties:
-        Bucket:
-          Ref: AttachmentsBucket
-        PolicyDocument:
+        ServiceToken: !GetAtt ApplyPolicyLambdaFunction.Arn
+        Bucket: !Ref AttachmentsBucket
+        Policy:
+          Version: "2012-10-17"
           Statement:
             - Effect: Deny
               Principal: "*"
@@ -165,11 +177,13 @@ resources:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
     ClamDefsBucketPolicy:
-      Type: AWS::S3::BucketPolicy
+      Type: Custom::ClamDefsBucketPolicy
       Properties:
-        Bucket:
-          Ref: ClamDefsBucket
-        PolicyDocument:
+        ServiceToken: !GetAtt ApplyPolicyLambdaFunction.Arn
+        Bucket: !Ref ClamDefsBucket
+        a: a
+        Policy:
+          Version: "2012-10-17"
           Statement:
             - Effect: Deny
               Principal: "*"
