@@ -63,26 +63,24 @@ export const ExportButton = <TData extends Record<string, any>>({
   };
 
   return (
-    <>
-      <Button
-        variant="ghost"
-        onClick={async () => {
-          handleExport(await generateExport());
-        }}
-        disabled={loading}
-        className="hover:bg-transparent h-full flex gap-2"
-      >
-        {loading && (
-          <motion.div
-            animate={{ rotate: "360deg" }}
-            transition={{ repeat: Infinity, duration: 0.5 }}
-          >
-            <Loader className="w-4 h-4" />
-          </motion.div>
-        )}
-        {!loading && <Download className="w-4 h-4" />}
-        <span className="prose-sm">Export</span>
-      </Button>
-    </>
+    <Button
+      variant="outline"
+      onClick={async () => {
+        handleExport(await generateExport());
+      }}
+      disabled={loading}
+      className="hover:bg-transparent self-center h-10 flex gap-2"
+    >
+      {loading && (
+        <motion.div
+          animate={{ rotate: "360deg" }}
+          transition={{ repeat: Infinity, duration: 0.5 }}
+        >
+          <Loader className="w-4 h-4" />
+        </motion.div>
+      )}
+      {!loading && <Download className="w-4 h-4" />}
+      <span className="prose-sm">Export</span>
+    </Button>
   );
 };
