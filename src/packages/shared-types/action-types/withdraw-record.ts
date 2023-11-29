@@ -30,7 +30,7 @@ export const raiTransform = (activeKey: number) =>
     submitterEmail: data.submitterEmail,
     withdraw: {
       ...data.withdraw,
-      attachments: [...data.attachments],
+      attachments: data.attachments,
     },
     rais: {
       [activeKey]: {
