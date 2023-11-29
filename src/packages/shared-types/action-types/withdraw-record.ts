@@ -12,9 +12,26 @@ export const withdrawRaiSchema = z.object({
   }),
 });
 
+export const raiActionSchema = z.object({
+  id: z.string(),
+  submitterName: z.string(),
+  submitterEmail: z.string(),
+  withdraw: z.object({
+    withdrawDate: z.number(),
+    additionalInformation: z.string().nullish(),
+    attachments: z.array(onemacAttachmentSchema.nullable()).nullish(),
+  }),
+});
+
 export const raiTransform = (activeKey: number) =>
   withdrawRaiSchema.transform((data) => ({
-    ...data,
+    id: data.id,
+    submitterName: data.submitterName,
+    submitterEmail: data.submitterEmail,
+    withdraw: {
+      ...data.withdraw,
+      attachments: [...data.attachments],
+    },
     rais: {
       [activeKey]: {
         response: null,
@@ -22,7 +39,7 @@ export const raiTransform = (activeKey: number) =>
     },
   }));
 
-export const withdrawRaiSinkSchema = withdrawRaiSchema.and(
+export const withdrawRaiSinkSchema = raiActionSchema.and(
   z.object({ rais: z.record(z.number(), z.object({ response: z.null() })) })
 );
 
@@ -33,19 +50,3 @@ export const withdrawRecordSchema = z.object({
 export type WithdrawRaiRecord = z.infer<typeof withdrawRaiSchema>;
 export type WithdrawRecord = z.infer<typeof withdrawRecordSchema>;
 export type WithdrawSinkRecord = z.infer<typeof withdrawRaiSinkSchema>;
-
-// const test: WithdrawSinkRecord = {
-//   id: "",
-//   submitterEmail: "",
-//   submitterName: "",
-//   withdraw: {
-//     withdrawDate: 123,
-//     additionalInformation: "",
-//     withdrawAttachments: [],
-//   },
-//   rais: {
-//     123: {
-//       response: null,
-//     },
-//   },
-// };
