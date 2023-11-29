@@ -1,11 +1,24 @@
 import { useGetUser } from "@/api/useGetUser";
 import { Alert, SubNavHeader } from "@/components";
 import { Button } from "@/components/Inputs";
-import { rolesDescriptions } from "shared-types";
+import { RoleDescriptionStrings } from "shared-types";
 import config from "@/config";
 
 export const Profile = () => {
   const { data } = useGetUser();
+
+  // Returns comma-separated string of user role descriptions:
+  function rolesDescriptions(roles: string | undefined) {
+    const rolesArray: string[] | undefined = roles?.split(",");
+
+    const descriptiveRolesArray = rolesArray?.map((role) => {
+      return RoleDescriptionStrings[role];
+    });
+
+    if (descriptiveRolesArray) {
+      return descriptiveRolesArray.join(", ");
+    }
+  }
 
   return (
     <>
