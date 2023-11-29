@@ -132,7 +132,7 @@ resources:
             - Event: s3:ObjectCreated:*
               Function: !GetAtt AvScanLambdaFunction.Arn
       DependsOn: LambdaInvokePermission
-    AttachmentsBucketPolicy:
+    AttachmentsBucketPolicyCustomResource:
       Type: Custom::AttachmentsBucketPolicy
       Properties:
         ServiceToken: !GetAtt ApplyPolicyLambdaFunction.Arn
@@ -178,7 +178,7 @@ resources:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
-    ClamDefsBucketPolicy:
+    ClamDefsBucketPolicyCustomResource:
       Type: Custom::ClamDefsBucketPolicy
       Properties:
         ServiceToken: !GetAtt ApplyPolicyLambdaFunction.Arn
