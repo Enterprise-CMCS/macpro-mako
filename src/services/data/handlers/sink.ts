@@ -20,6 +20,9 @@ import {
   withdrawRecordSchema,
   WithdrawRecord,
   withdrawRaiSchema,
+  WithdrawSinkRecord,
+  raiTransform,
+  withdrawRaiSinkSchema,
 } from "shared-types";
 
 if (!process.env.osDomain) {
@@ -109,6 +112,7 @@ export const onemac: Handler = async (event) => {
     | (WithdrawRecord & { id: string })
     | RaiIssueTransform
     | RaiResponseTransform
+    | WithdrawSinkRecord
   )[] = [];
 
   for (const recordKey of Object.keys(event.records)) {
@@ -167,10 +171,10 @@ export const onemac: Handler = async (event) => {
             }
             case Action.WITHDRAW_RAI: {
               console.log("WITHDRAWING RAI");
-              const result = withdrawRaiSchema.safeParse({ id, ...record });
+              const result = withdrawRaiSinkSchema.safeParse(record);
 
               if (result.success === true) {
-                oneMacRecords.push(record);
+                oneMacRecords.push(result.data);
               } else {
                 console.log(
                   `ERROR: Invalid Payload for this action type (${record.actionType})`

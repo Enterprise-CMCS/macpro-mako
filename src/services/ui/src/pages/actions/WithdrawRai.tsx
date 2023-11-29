@@ -10,6 +10,7 @@ import { FormDescriptionText } from "@/components/FormDescriptionText";
 import { useGetItem } from "@/api/useGetItem";
 import { ROUTES } from "@/routes";
 import { getActiveRai, getLatestRai } from "shared-utils";
+import { useGetUser } from "@/api/useGetUser";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
@@ -33,30 +34,9 @@ export const WithdrawRai = () => {
 
   const { data: item } = useGetItem(id!);
 
-  const handleSubmit = () => {
-    if (item && item._source.rais) {
-      const latestRai = getLatestRai(item._source.rais)?.key;
+  const user = useGetUser();
 
-      if (latestRai) {
-        // do submission stuff to match the WithdrawRaiRecord Event
-        // below is an example of the event payload that will need to be submitted to the action endpoint
-        // const test: WithdrawRaiRecord = {
-        //   latestRaiKey: latestRai,
-        //   id: id!,
-        //   submitterEmail: "",
-        //   submitterName: "",
-        //   withdraw: {
-        //     withdrawDate: new Date().toString(),
-        //     additionalInformation: "",
-        //     withdrawAttachments: [],
-        //   },
-        // };
-      } else {
-        // there is an error because there needs to be an rai to withdraw
-        // alert the user to this
-      }
-    }
-  };
+  const handleSubmit = () => {};
 
   return (
     <SimplePageContainer>

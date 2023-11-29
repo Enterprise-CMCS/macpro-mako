@@ -16,6 +16,7 @@ import {
   Action,
   raiSchema,
   RaiSchema,
+  raiTransform,
   WithdrawRaiRecord,
   withdrawRaiSchema,
 } from "shared-types";
@@ -82,7 +83,7 @@ export async function issueRai(body: RaiSchema) {
 
 export async function withdrawRai(body: unknown, rais: any) {
   const activeKey = getLatestRai(rais).key;
-  const result = withdrawRaiSchema.safeParse({ body, activeRaiKey: activeKey });
+  const result = withdrawRaiSchema.safeParse(body);
 
   if (result.success) {
     console.log("CMS withdrawing an RAI");
@@ -111,19 +112,23 @@ export async function withdrawRai(body: unknown, rais: any) {
       const result2 = await transaction.request().query(query2);
       console.log(result2);
 
+      // const raiTransform = withdrawRaiSchema.transform((data) => ({
+      //   ...data,
+      //   rais: {
+      //     [activeKey]: {
+      //       response: null,
+      //     },
+      //   },
+      // }));
+
+      const transformedResult = raiTransform(activeKey).parse(result.data);
+
       // write to kafka here
       await produceMessage(
         TOPIC_NAME,
         result.data.id,
         JSON.stringify({
-          ...result.data,
-          // ...{
-          //   rais: {
-          //     [activeKey]: {
-          //       response: null,
-          //     },
-          //   },
-          // },
+          ...transformedResult,
           actionType: Action.WITHDRAW_RAI,
         })
       );
