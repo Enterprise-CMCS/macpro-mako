@@ -7,7 +7,7 @@ export const withdrawRaiSchema = z.object({
   submitterEmail: z.string(),
   withdraw: z.object({
     withdrawDate: z.number(),
-    withdrawAttachments: z.array(onemacAttachmentSchema).nullish(),
+    withdrawAttachments: z.array(onemacAttachmentSchema.nullable()).nullish(),
     additionalInformation: z.string().nullish(),
   }),
 });
@@ -34,18 +34,18 @@ export type WithdrawRaiRecord = z.infer<typeof withdrawRaiSchema>;
 export type WithdrawRecord = z.infer<typeof withdrawRecordSchema>;
 export type WithdrawSinkRecord = z.infer<typeof withdrawRaiSinkSchema>;
 
-const test: WithdrawSinkRecord = {
-  id: "",
-  submitterEmail: "",
-  submitterName: "",
-  withdraw: {
-    withdrawDate: 123,
-    additionalInformation: "",
-    withdrawAttachments: [],
-  },
-  rais: {
-    123: {
-      response: null,
-    },
-  },
-};
+// const test: WithdrawSinkRecord = {
+//   id: "",
+//   submitterEmail: "",
+//   submitterName: "",
+//   withdraw: {
+//     withdrawDate: 123,
+//     additionalInformation: "",
+//     withdrawAttachments: [],
+//   },
+//   rais: {
+//     123: {
+//       response: null,
+//     },
+//   },
+// };

@@ -1,25 +1,34 @@
 import { BreadCrumbs, SimplePageContainer } from "@/components";
 import * as I from "@/components/Inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "./actions-breadcrumbs";
 import { useNavigate, useParams } from "react-router-dom";
-import { Action, WithdrawRaiRecord } from "shared-types";
+import { Action, OneMacTransform, WithdrawRaiRecord } from "shared-types";
 import { FormDescriptionText } from "@/components/FormDescriptionText";
 import { useGetItem } from "@/api/useGetItem";
-import { ROUTES } from "@/routes";
-import { getActiveRai, getLatestRai } from "shared-utils";
 import { useGetUser } from "@/api/useGetUser";
+import { PreSignedURL } from "./IssueRai";
+import { API } from "aws-amplify";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
   attachments: z.object({
-    additional: z.array(z.instanceof(File)),
+    supportingDocumentation: z.array(z.instanceof(File)),
   }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
+type UploadKeys = keyof FormSchema["attachments"];
+
+const attachmentList = [
+  {
+    name: "supportingDocumentation",
+    label: "Supporting Documentation",
+    required: false,
+  },
+] as const;
 
 export const WithdrawRai = () => {
   const form = useForm<FormSchema>({
@@ -36,17 +45,68 @@ export const WithdrawRai = () => {
 
   const user = useGetUser();
 
-  const handleSubmit = () => {
-    const dataToSend = {
+  const handleSubmit: SubmitHandler<FormSchema> = async (data) => {
+    // Attachment Stuff (this will change soon)
+    const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
+    const uploadedFiles: any[] = [];
+    const fileMetaData: NonNullable<OneMacTransform["attachments"]> = [];
+
+    const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
+      .filter((key) => data.attachments[key] !== undefined)
+      .map(() =>
+        API.post("os", "/getUploadUrl", {
+          body: {},
+        })
+      );
+    const loadPresignedUrls = await Promise.all(presignedUrls);
+
+    uploadKeys
+      .filter((key) => data.attachments[key] !== undefined)
+      .forEach((uploadKey, index) => {
+        const attachmenListObject = attachmentList?.find(
+          (item) => item.name === uploadKey
+        );
+        const title = attachmenListObject ? attachmenListObject.label : "Other";
+        const fileGroup = data.attachments[uploadKey] as File[];
+
+        // upload all files in this group and track there name
+        for (const file of fileGroup) {
+          uploadedFiles.push(
+            fetch(loadPresignedUrls[index].url, {
+              body: file,
+              method: "PUT",
+            })
+          );
+
+          fileMetaData.push({
+            key: loadPresignedUrls[index].key,
+            filename: file.name,
+            title: title,
+            bucket: loadPresignedUrls[index].bucket,
+            uploadDate: Date.now(),
+          });
+        }
+      });
+
+    await Promise.all(uploadedFiles);
+
+    // creating record to send to action api
+    const dataToSend: WithdrawRaiRecord = {
       submitterEmail: user.data?.user?.email ?? "",
-      submitterName: `${user.data?.user?.given_name ?? "N/A"} ${user.data?.user?.family_name ?? "N/A"}`,
+      submitterName: `${user.data?.user?.given_name ?? "N/A"} ${
+        user.data?.user?.family_name ?? "N/A"
+      }`,
       id: id!,
       withdraw: {
         withdrawDate: new Date().getTime(),
-        additionalInformation: "",
-        withdrawAttachments: []
-      }
-    } satisfies WithdrawRaiRecord;
+        additionalInformation: data.additionalInformation,
+        withdrawAttachments: fileMetaData,
+      },
+    };
+
+    console.log("Record that will be sent to action api endpoint", {
+      dataToSend,
+    });
   };
 
   return (
@@ -90,7 +150,7 @@ export const WithdrawRai = () => {
           </section>
           <h3 className="font-bold text-2xl font-sans">Attachments</h3>
           <I.FormField
-            name="attachments.additional"
+            name="attachments.supportingDocumentation"
             control={form.control}
             render={({ field }) => (
               <I.FormItem>
