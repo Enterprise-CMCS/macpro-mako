@@ -5,13 +5,18 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "./actions-breadcrumbs";
 import { useNavigate, useParams } from "react-router-dom";
-import { Action, OneMacTransform, WithdrawRaiRecord } from "shared-types";
+import {
+  Action,
+  Authority,
+  OneMacTransform,
+  WithdrawRaiRecord,
+} from "shared-types";
 import { FormDescriptionText } from "@/components/FormDescriptionText";
 import { useGetItem } from "@/api/useGetItem";
 import { useGetUser } from "@/api/useGetUser";
-import { PreSignedURL } from "./IssueRai";
 import { API } from "aws-amplify";
 import { PackageActionForm } from "./PackageActionForm";
+import { submit } from "@/api/submissionService";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
@@ -47,50 +52,6 @@ export const WithdrawRaiForm = () => {
   const user = useGetUser();
 
   const handleSubmit: SubmitHandler<FormSchema> = async (data) => {
-    // Attachment Stuff (this will change soon)
-    const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
-    const uploadedFiles: any[] = [];
-    const fileMetaData: NonNullable<OneMacTransform["attachments"]> = [];
-
-    const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
-      .filter((key) => data.attachments[key] !== undefined)
-      .map(() =>
-        API.post("os", "/getUploadUrl", {
-          body: {},
-        })
-      );
-    const loadPresignedUrls = await Promise.all(presignedUrls);
-
-    uploadKeys
-      .filter((key) => data.attachments[key] !== undefined)
-      .forEach((uploadKey, index) => {
-        const attachmenListObject = attachmentList?.find(
-          (item) => item.name === uploadKey
-        );
-        const title = attachmenListObject ? attachmenListObject.label : "Other";
-        const fileGroup = data.attachments[uploadKey] as File[];
-
-        // upload all files in this group and track there name
-        for (const file of fileGroup) {
-          uploadedFiles.push(
-            fetch(loadPresignedUrls[index].url, {
-              body: file,
-              method: "PUT",
-            })
-          );
-
-          fileMetaData.push({
-            key: loadPresignedUrls[index].key,
-            filename: file.name,
-            title: title,
-            bucket: loadPresignedUrls[index].bucket,
-            uploadDate: Date.now(),
-          });
-        }
-      });
-
-    await Promise.all(uploadedFiles);
-
     // creating record to send to action api
     const dataToSend: WithdrawRaiRecord = {
       submitterEmail: user.data?.user?.email ?? "",
@@ -101,13 +62,15 @@ export const WithdrawRaiForm = () => {
       withdraw: {
         withdrawDate: new Date().getTime(),
         additionalInformation: data.additionalInformation,
-        withdrawAttachments: fileMetaData,
       },
     };
 
     try {
-      await API.post("os", `/action/${Action.WITHDRAW_RAI}`, {
-        body: dataToSend,
+      await submit({
+        data: dataToSend,
+        endpoint: "/action/withdraw-rai",
+        user: user.data,
+        authority: Authority.MED_SPA,
       });
     } catch (err: unknown) {
       if (err) {
