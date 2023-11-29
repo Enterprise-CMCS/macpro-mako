@@ -1,4 +1,10 @@
-import { Link, NavLink, NavLinkProps, Outlet } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  NavLinkProps,
+  Outlet,
+  useNavigate,
+} from "react-router-dom";
 import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -10,6 +16,8 @@ import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
 import { FAQ_TARGET } from "@/routes";
 import { useUserContext } from "../Context/userContext";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import config from "@/config";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
   const isProd = window && window.location.hostname.includes("mako.cms.gov");
@@ -35,6 +43,68 @@ const getLinks = (isAuthenticated: boolean, role?: boolean) => {
       condition: isAuthenticated && !isProd,
     },
   ].filter((l) => l.condition);
+};
+
+const UserDropdownMenu = () => {
+  const navigate = useNavigate();
+
+  const handleViewProfile = () => {
+    navigate("/profile");
+  };
+
+  const handleLogout = async () => {
+    await Auth.signOut();
+  };
+
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger
+        asChild
+        className="hover:text-white/70 p-4 data-[state=open]:bg-white data-[state=open]:text-primary"
+      >
+        <div className="flex flex-row gap-4 items-center cursor-pointer">
+          <p className="flex">My Account</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2.0}
+            stroke="currentColor"
+            className="w-4 h-4 flex"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+            />
+          </svg>
+        </div>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content
+          align="start"
+          className="bg-white flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm"
+        >
+          <DropdownMenu.Item className="flex">
+            <button
+              className="text-primary hover:text-primary/70"
+              onClick={handleViewProfile}
+            >
+              View Profile
+            </button>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item className="flex">
+            <button
+              className="text-primary hover:text-primary/70"
+              onClick={handleLogout}
+            >
+              Sign Out
+            </button>
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
+  );
 };
 
 export const Layout = () => {
@@ -76,6 +146,7 @@ export const Layout = () => {
 type ResponsiveNavProps = {
   isDesktop: boolean;
 };
+
 const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const [prevMediaQuery, setPrevMediaQuery] = useState(isDesktop);
   const [isOpen, setIsOpen] = useState(false);
@@ -94,8 +165,9 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     window.location.assign(url);
   };
 
-  const handleLogout = async () => {
-    await Auth.signOut();
+  const handleRegister = () => {
+    const url = `${config.idm.home_url}/signin/login.html`;
+    window.location.assign(url);
   };
 
   if (isLoading || isError) return <></>;
@@ -108,6 +180,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     setPrevMediaQuery(isDesktop);
     setIsOpen(false);
   }
+
   if (isDesktop) {
     return (
       <>
@@ -124,19 +197,24 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
         <div className="flex-1"></div>
         <>
           {data.user ? (
-            <button
-              className="text-white hover:text-white/70"
-              onClick={handleLogout}
-            >
-              Sign Out
-            </button>
+            // When the user is signed in
+            <UserDropdownMenu />
           ) : (
-            <button
-              className="text-white hover:text-white/70"
-              onClick={handleLogin}
-            >
-              Sign In
-            </button>
+            // When the user is not signed in
+            <>
+              <button
+                className="text-white hover:text-white/70"
+                onClick={handleLogin}
+              >
+                Sign In
+              </button>
+              <button
+                className="text-white hover:text-white/70"
+                onClick={handleRegister}
+              >
+                Register
+              </button>
+            </>
           )}
         </>
       </>
@@ -162,19 +240,24 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             ))}
             <>
               {data.user ? (
-                <button
-                  className="text-left block py-2 pl-3 pr-4 text-white rounded"
-                  onClick={handleLogout}
-                >
-                  Sign Out
-                </button>
+                // When the user is signed in
+                <UserDropdownMenu/>
               ) : (
-                <button
-                  className="text-left block py-2 pl-3 pr-4 text-white rounded"
-                  onClick={handleLogin}
-                >
-                  Sign In
-                </button>
+                // When the user is not signed in
+                <>
+                  <button
+                    className="text-left block py-2 pl-3 pr-4 text-white rounded"
+                    onClick={handleLogin}
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    className="text-white hover:text-white/70"
+                    onClick={handleRegister}
+                  >
+                    Register
+                  </button>
+                </>
               )}
             </>
           </ul>
