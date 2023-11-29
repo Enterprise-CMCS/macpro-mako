@@ -5,6 +5,8 @@ import { GovernmentBuildingIcon } from "../GovernmentBuildingIcon";
 import UsFlag from "@/assets/us_flag_small.png";
 import { useMediaQuery } from "@/hooks";
 import { useUserContext } from "../Context/userContext";
+import { useLoaderData } from "react-router-dom";
+import config from "@/config";
 
 export const UsaBanner = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +23,7 @@ export const UsaBanner = () => {
       return false;
     }
   }, []);
+  const { error } = useLoaderData() as { error: string };
   return (
     <>
       <div className="bg-[#f0f0f0]">
@@ -72,22 +75,8 @@ export const UsaBanner = () => {
             </div>
           </button>
         )}
-        {hasRole && (
-          <div className="w-full  px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center justify-center bg-red-200 ">
-            <p className="text-center text-base">
-              You do not have access to view the entire application.{" "}
-              <a
-                rel="noreferrer"
-                href="https://test.home.idm.cms.gov/"
-                target="_blank"
-                className="text-blue-600 inline  no-underline"
-              >
-                Please visit IDM
-              </a>{" "}
-              to request the appropriate user role(s).
-            </p>
-          </div>
-        )}
+        {hasRole && <NoRole />}
+        {error?.length > 0 && <NoRole />}
 
         {isOpen && (
           <div className="flex flex-col gap-3 px-3 mt-3 sm:flex-row max-w-screen-lg mx-auto pb-4">
@@ -137,5 +126,24 @@ export const MiniLock = () => {
         d="M26 0c10.493 0 19 8.507 19 19v9h3a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V32a4 4 0 0 1 4-4h3v-9C7 8.507 15.507 0 26 0zm0 8c-5.979 0-10.843 4.77-10.996 10.712L15 19v9h22v-9c0-6.075-4.925-11-11-11z"
       ></path>
     </svg>
+  );
+};
+
+const NoRole = () => {
+  return (
+    <div className="w-full  px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center justify-center bg-red-200 ">
+      <p className="text-center text-base">
+        You do not have access to view the entire application.{" "}
+        <a
+          rel="noreferrer"
+          href={config.idm.home_url}
+          target="_blank"
+          className="text-blue-600 inline  no-underline"
+        >
+          Please visit IDM
+        </a>{" "}
+        to request the appropriate user role(s).
+      </p>
+    </div>
   );
 };
