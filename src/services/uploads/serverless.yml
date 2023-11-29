@@ -55,6 +55,7 @@ custom:
   project: ${env:PROJECT}
   accountId: !Sub "${AWS::AccountId}"
   stage: ${opt:stage, self:provider.stage}
+  forceApplyBucketPolicies: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/forceApplyBucketPolicies, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/forceApplyBucketPolicies, "blank"}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
@@ -135,6 +136,7 @@ resources:
       Type: Custom::AttachmentsBucketPolicy
       Properties:
         ServiceToken: !GetAtt ApplyPolicyLambdaFunction.Arn
+        ForceApply: ${self:custom.forceApplyBucketPolicies}
         Bucket: !Ref AttachmentsBucket
         Policy:
           Version: "2012-10-17"
@@ -180,8 +182,8 @@ resources:
       Type: Custom::ClamDefsBucketPolicy
       Properties:
         ServiceToken: !GetAtt ApplyPolicyLambdaFunction.Arn
+        ForceApply: ${self:custom.forceApplyBucketPolicies}
         Bucket: !Ref ClamDefsBucket
-        a: a
         Policy:
           Version: "2012-10-17"
           Statement:
