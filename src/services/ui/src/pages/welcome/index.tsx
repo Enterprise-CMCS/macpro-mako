@@ -3,10 +3,22 @@ import OneMacLogo from "@/assets/onemac_logo.svg";
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
-import { Button } from "@/components/Button";
+import { Link, redirect, useLoaderData } from "react-router-dom";
+import { Button } from "@/components/Inputs";
+import { ROUTES, FAQ_TARGET } from "@/routes";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
+    const queryString = window.location.search;
+    // Parse the query string to get URL parameters
+    const queryParams = new URLSearchParams(queryString);
+    // Access specific parameters
+    const errorDescription = queryParams.get("error_description");
+    const error = queryParams.get("error");
+    if (errorDescription || error) {
+      console.error("Authentication Error:", { errorDescription, error });
+      return { error };
+    }
     if (!queryClient.getQueryData(["user"])) {
       return await queryClient.fetchQuery({
         queryKey: ["user"],
@@ -20,10 +32,13 @@ export const loader = (queryClient: QueryClient) => {
 export const Welcome = () => {
   return (
     <>
-      {/*  Hero Section */}
-      <div className="w-full bg-accent p-2 md:p-4">
+      <div className="w-full bg-primary p-2 md:p-4">
         <div className="max-w-screen-xl flex flex-col sm:flex-row sm:items-center gap-4 mx-auto p-4 lg:px-8">
-          <img src={OneMacLogo} alt="One Mac Logo" className="p-4" />
+          <img
+            src={OneMacLogo}
+            alt="One Mac Logo"
+            className="p-4 min-w-[400px]"
+          />
           <p className="text-center text-white/90 font-light text-xl font-sans">
             Welcome to the official submission system for paper-based state plan
             amendments (SPAs) and section 1915 waivers.
@@ -170,16 +185,19 @@ export const Welcome = () => {
               </div>
             </div>
           </div>
-          <div className="my-6 flex flex-row justify-center items-center gap-x-24">
-            <p className="text-xl">Do you have questions or need support?</p>
-            <Button>
-              <a href="/faq" className="text">
-                View FAQ
-              </a>
-            </Button>
-          </div>
         </div>
       </main>
+      <section>
+        <div className="flex justify-around items-center text-xl px-10 py-4 max-w-screen-xl mx-auto">
+          <h4>Do you have questions or need support?</h4>
+          <Button asChild>
+            <Link to={ROUTES.FAQ} target={FAQ_TARGET}>
+              View FAQ
+            </Link>
+          </Button>
+        </div>
+      </section>
+      ;
     </>
   );
 };

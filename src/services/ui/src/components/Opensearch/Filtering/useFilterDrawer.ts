@@ -4,20 +4,17 @@ import * as Consts from "./consts";
 import { useOsAggregate, useOsParams } from "../useOpensearch";
 import { OsFilterValue, OsRangeValue } from "shared-types";
 import { useLabelMapping } from "@/hooks";
+import { useFilterDrawerContext } from "./FilterProvider";
 import { useGetUser } from "@/api/useGetUser";
 
 export const useFilterDrawer = () => {
+  const { drawerOpen, setDrawerState } = useFilterDrawerContext();
   const { data: user } = useGetUser();
-  const [filters, setFilters] = useState(Consts.FILTER_GROUPS(user?.isCms));
-  const [open, setOpen] = useState(false);
+  const [filters, setFilters] = useState(Consts.FILTER_GROUPS(user));
   const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const params = useOsParams();
   const labelMap = useLabelMapping();
   const _aggs = useOsAggregate();
-
-  const onDrawerChange = (updateOpen: boolean) => {
-    setOpen(updateOpen);
-  };
 
   const onFilterChange = (field: OsField) => {
     return (value: OsFilterValue) => {
@@ -54,38 +51,38 @@ export const useFilterDrawer = () => {
 
   // update initial filter state + accordion default open items
   useEffect(() => {
-    if (!open) return;
+    if (!drawerOpen) return;
     const updateAccordions = [] as any[];
 
-    setFilters((state: any) => {
-      params.state.filters.forEach((FIL) => {
-        if (FIL.type === "terms") {
-          const value = FIL.value as string[];
-          if (value.length) updateAccordions.push(FIL.field);
-        }
+    setFilters((s) => {
+      return Object.entries(s).reduce((STATE, [KEY, VAL]) => {
+        const updateFilter = params.state.filters.find(
+          (FIL) => FIL.field === KEY
+        );
 
-        if (FIL.type === "range") {
-          const value = FIL.value as OsRangeValue;
-          if (!!value?.gte && !!value?.lte) updateAccordions.push(FIL.field);
-        }
+        const value = (() => {
+          if (updateFilter) {
+            updateAccordions.push(KEY);
+            return updateFilter.value;
+          }
+          if (VAL.type === "terms") return [] as string[];
+          return { gte: undefined, lte: undefined } as OsRangeValue;
+        })();
 
-        state[FIL.field] = {
-          ...(state[FIL.field] && state[FIL.field]),
-          value: FIL.value,
-        };
-      });
+        STATE[KEY] = { ...VAL, value };
 
-      return state;
+        return STATE;
+      }, {} as any);
     });
     setAccordionValues(updateAccordions);
-  }, [open]);
+  }, [params.state.filters, drawerOpen]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce((STATE, [KEY, AGG]) => {
       return {
         ...STATE,
         [KEY]: AGG.buckets.map((BUCK) => ({
-          label: `${labelMap[BUCK.key] || BUCK.key} (${BUCK.doc_count})`,
+          label: `${labelMap[BUCK.key] || BUCK.key}`,
           value: BUCK.key,
         })),
       };
@@ -94,11 +91,11 @@ export const useFilterDrawer = () => {
 
   return {
     aggs,
-    open,
+    drawerOpen,
     accordionValues,
     filters,
     onFilterChange,
-    onDrawerChange,
+    setDrawerState,
     onAccordionChange,
   };
 };

@@ -27,11 +27,24 @@ jobs:
           if [[ ! $STAGE_NAME =~ ^[a-z][a-z0-9-]*$ ]]; then
               echo "ERROR:  Your branch name, $STAGE_NAME, is not a valid Serverless Framework stage name." && exit 1
           fi
+  cache:
+    runs-on: ubuntu-20.04
+    needs:
+      - init
+    environment:
+      name: ${{ github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: ./.github/actions/setup
+
+      - run: run install
 
   deploy:
     runs-on: ubuntu-20.04
     needs:
-      - init
+      - cache
     environment:
       name: ${{ github.ref_name }}
       url: ${{ steps.deployment-data.outputs.APPURL }}
@@ -89,7 +102,7 @@ jobs:
   test:
     runs-on: ubuntu-20.04
     needs:
-      - deploy
+      - cache
     environment:
       name: ${{ github.ref_name }}
     steps:
@@ -108,33 +121,33 @@ jobs:
       - name: Test
         run: yarn test-ci
 
-  # e2e:
-  #   timeout-minutes: 5
-  #   runs-on: ubuntu-20.04
-  #   needs:
-  #     - deploy
-  #   env:
-  #     baseurl: ${{ needs.deploy.outputs.app-url }}
-  #   if: ${{ github.ref != 'refs/heads/production' }}
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #     - name: Setup
-  #       uses: ./.github/actions/setup
-  #     - name: Configure AWS credentials
-  #       uses: aws-actions/configure-aws-credentials@v2
-  #       with:
-  #         role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-  #         aws-region: us-east-1
-  #         role-duration-seconds: 10800
-  #     - name: Run e2e tests
-  #       run: run e2e
-  #     - uses: actions/upload-artifact@v3
-  #       if: always()
-  #       with:
-  #         name: playwright-report
-  #         path: src/services/ui/playwright-report/
-  #         retention-days: 30
+  e2e:
+    timeout-minutes: 5
+    runs-on: ubuntu-20.04
+    needs:
+      - deploy
+    env:
+      baseurl: ${{ needs.deploy.outputs.app-url }}
+    if: ${{ github.ref != 'refs/heads/production' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+          role-duration-seconds: 10800
+      - name: Run e2e tests
+        run: run e2e
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: src/services/ui/playwright-report/
+          retention-days: 30
 
   cfn-nag:
     runs-on: ubuntu-20.04
@@ -210,6 +223,7 @@ jobs:
     needs:
       - test
       - cfn-nag
+      - e2e
     steps:
       - name: Checkout
         uses: actions/checkout@v3

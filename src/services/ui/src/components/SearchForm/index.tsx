@@ -46,15 +46,15 @@ export const SearchForm: FC<{
         </svg>
         <input
           type="text"
-          placeholder="Search by Package ID, CPOC Name, or Submitter Name"
-          className="w-full py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
+          className="w-[30rem] py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
+          maxLength={28}
           value={searchText}
           onChange={handleInputChange}
           disabled={disabled}
         />
         {isSearching && (
           <motion.div
-            className="absolute inset-y-0 w-6 h-6 my-auto right-9 origin-center flex items-center justify-center"
+            className="absolute inset-y-0 w-6 h-6 my-auto right-[9rem] origin-center flex items-center justify-center"
             animate={{ rotate: "360deg" }}
             transition={{ repeat: Infinity, duration: 0.5 }}
           >
@@ -63,7 +63,7 @@ export const SearchForm: FC<{
         )}
         {!!searchText && (
           <XIcon
-            className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto right-3"
+            className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto right-[7.5rem]"
             onClick={() => {
               setSearchText("");
               handleSearch("");

@@ -1,4 +1,5 @@
 import { OsAggQuery, OsFilterable, OsQueryState } from "shared-types";
+import { OsParamsState } from "./useOpensearch";
 
 const filterMapQueryReducer = (
   state: Record<OsFilterable["prefix"], any[]>,
@@ -59,7 +60,7 @@ export const paginationQueryBuilder = (
 ) => {
   const from = (() => {
     if (!pagination.number) return 0;
-    return pagination.number * pagination.size - 1;
+    return pagination.number * pagination.size;
   })();
 
   return {
@@ -78,6 +79,7 @@ export const aggQueryBuilder = (aggs: OsAggQuery[]) => {
       STATE[AGG.name] = {
         [AGG.type]: {
           field: AGG.field,
+          order: { _term: "asc" },
           ...(AGG.size && { size: AGG.size }),
         },
       };
@@ -96,4 +98,26 @@ export const createSearchFilterable = (value?: string) => {
       prefix: "must",
     } as unknown as OsFilterable,
   ];
+};
+
+export const resetFilters = (
+  onSet: (
+    arg: (arg: OsParamsState) => OsParamsState,
+    shouldIsolate?: boolean | undefined
+  ) => void
+) => {
+  onSet((s) => ({
+    ...s,
+    filters: [],
+    pagination: { ...s.pagination, number: 0 },
+  }));
+};
+
+export const checkMultiFilter = (filters: OsFilterable[], val: number) => {
+  return (
+    filters.length >= val ||
+    filters.some(
+      (filter) => Array.isArray(filter.value) && filter.value.length >= val
+    )
+  );
 };

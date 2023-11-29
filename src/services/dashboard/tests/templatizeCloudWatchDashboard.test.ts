@@ -1,4 +1,4 @@
-import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
+import { it, describe, expect, afterEach, vi } from "vitest";
 import { CloudWatch } from "@aws-sdk/client-cloudwatch";
 import { handler } from "../handlers/templatizeCloudWatchDashboard";
 import type {

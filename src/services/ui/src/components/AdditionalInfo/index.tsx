@@ -7,7 +7,10 @@ export const AdditionalInfo = ({
 }) => {
   return (
     <div className="flex flex-col gap-4">
-      <p>{additionalInformation || "None"}</p>
+      <p>
+        {additionalInformation ||
+          "No additional information has been submitted"}
+      </p>
     </div>
   );
 };

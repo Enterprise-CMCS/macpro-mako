@@ -12,6 +12,9 @@ const config = {
     REDIRECT_SIGNIN: import.meta.env.VITE_COGNITO_REDIRECT_SIGNIN,
     REDIRECT_SIGNOUT: import.meta.env.VITE_COGNITO_REDIRECT_SIGNOUT,
   },
+  idm: {
+    home_url: import.meta.env.VITE_IDM_HOME_URL,
+  },
 };
 
 export default config;

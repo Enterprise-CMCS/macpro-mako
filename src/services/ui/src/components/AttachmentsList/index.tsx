@@ -1,11 +1,12 @@
 import { getAttachmentUrl } from "@/api";
 import { format } from "date-fns";
+import { BLANK_VALUE } from "@/consts";
 import { DownloadIcon } from "lucide-react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { OsMainSourceItem } from "shared-types";
 import { useState } from "react";
-import { Button } from "../Button";
+import { Button } from "../Inputs/button";
 import {
   Table,
   TableBody,
@@ -22,11 +23,8 @@ type AttachmentList = {
         uploadDate: number;
         bucket: string;
         key: string;
-        s3Key: string;
         filename: string;
         title: string;
-        contentType: string;
-        url: string;
       } | null)[]
     | null;
 };
@@ -37,20 +35,7 @@ const handleDownloadAll = async (data: AttachmentList) => {
       (attachment): attachment is NonNullable<typeof attachment> =>
         attachment !== null
     );
-
-    if (validAttachments.length > 0) {
-      const attachmentPromises = validAttachments.map(async (attachment) => {
-        const url = await getAttachmentUrl(
-          data.id,
-          attachment.bucket,
-          attachment.key
-        );
-        return { ...attachment, url };
-      });
-
-      const resolvedAttachments = await Promise.all(attachmentPromises);
-      downloadAll(resolvedAttachments, data.id);
-    }
+    downloadAll(validAttachments, data.id);
   }
 };
 
@@ -83,9 +68,9 @@ export const Attachmentslist = (data: AttachmentList) => {
                           const url = await getAttachmentUrl(
                             data.id,
                             attachment.bucket,
-                            attachment.key
+                            attachment.key,
+                            attachment.filename
                           );
-                          console.log(url);
                           window.open(url);
                         }}
                       >
@@ -101,7 +86,7 @@ export const Attachmentslist = (data: AttachmentList) => {
                           <p>{format(attachment.uploadDate, "h:mm a")}</p>
                         </>
                       ) : (
-                        <p>Unknown</p>
+                        <p>{BLANK_VALUE}</p>
                       )}
                     </div>
                   </TableCell>
@@ -109,7 +94,9 @@ export const Attachmentslist = (data: AttachmentList) => {
               );
             })
           ) : (
-            <p className="text-sm font-bold p-4">No Attachments To Show</p>
+            <p className="text-sm font-bold p-4">
+              No attachments have been submitted.
+            </p>
           )}
         </TableBody>
       </Table>
@@ -143,8 +130,16 @@ async function downloadAll(
     attachments
       .map(async (attachment) => {
         if (!attachment) return null;
+        let url = "";
         try {
-          const resp = await fetch(attachment.url);
+          url = await getAttachmentUrl(
+            id,
+            attachment.bucket,
+            attachment.key,
+            attachment.filename
+          );
+
+          const resp = await fetch(url);
           if (!resp.ok) throw resp;
           return {
             filename: attachment.filename,
@@ -153,7 +148,7 @@ async function downloadAll(
           };
         } catch (e) {
           console.error(
-            `Failed to download file: ${attachment.filename} ${attachment.url}`,
+            `Failed to download file: ${attachment.filename} ${url}`,
             e
           );
         }
@@ -162,7 +157,7 @@ async function downloadAll(
   )) as { filename: string; title: string; contents: Blob }[];
   const zip = new JSZip();
   for (const { filename, title, contents } of downloadList) {
-    zip.file(filename, contents, { comment: title });
+    zip.file(filename, contents, { comment: title, date: new Date() });
   }
   saveAs(await zip.generateAsync({ type: "blob" }), `${id || "onemac"}.zip`);
 }

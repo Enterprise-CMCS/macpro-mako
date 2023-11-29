@@ -4,12 +4,18 @@ import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
 import { LABELS } from "@/lib";
+import { BLANK_VALUE } from "@/consts";
+import { CognitoUserAttributes, UserRoles } from "shared-types";
 
-export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
+export const TABLE_COLUMNS = (props?: {
+  isCms?: boolean;
+  user?: CognitoUserAttributes | null | undefined;
+}): OsTableColumn[] => [
   {
     props: { className: "w-[150px]" },
     field: "id.keyword",
     label: "Waiver Number",
+    locked: true,
     cell: (data) => {
       if (!data.authority) return <></>;
       return (
@@ -25,6 +31,7 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
   {
     field: "state.keyword",
     label: "State",
+    visible: true,
     cell: (data) => data.state,
   },
   {
@@ -38,12 +45,15 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
     cell: (data) =>
       data.actionType
         ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
-        : "",
+        : BLANK_VALUE,
   },
   {
     field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
     label: "Status",
-    cell: (data) => (props?.isCms ? data.cmsStatus : data.stateStatus),
+    cell: (data) =>
+      props?.isCms && !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
+        ? data.cmsStatus
+        : data.stateStatus,
   },
   {
     field: "submissionDate",
@@ -54,8 +64,20 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
     },
   },
   {
+    field: "origin",
+    label: "Submission Source",
+    visible: false,
+    cell: (data) => {
+      if (data.origin?.toLowerCase() === "onemac") {
+        return "OneMAC";
+      }
+      return data.origin;
+    },
+  },
+  {
     field: "raiRequestedDate",
     label: "Formal RAI Requested",
+    visible: false,
     cell: (data) => {
       if (!data.raiRequestedDate) return null;
       return format(new Date(data.raiRequestedDate), "MM/dd/yyyy");
@@ -70,13 +92,14 @@ export const TABLE_COLUMNS = (props?: { isCms?: boolean }): OsTableColumn[] => [
     },
   },
   {
+    field: "leadAnalystName.keyword",
+    label: "CPOC Name",
+    visible: false,
+    cell: (data) => data.leadAnalystName,
+  },
+  {
     field: "submitterName.keyword",
     label: "Submitted By",
     cell: (data) => data.submitterName,
-  },
-  {
-    field: "leadAnalystName.keyword",
-    label: "CPOC",
-    cell: (data) => data.leadAnalystName,
   },
 ];

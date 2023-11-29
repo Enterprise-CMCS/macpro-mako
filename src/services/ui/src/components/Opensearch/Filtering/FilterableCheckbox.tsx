@@ -1,5 +1,4 @@
-import { Button } from "@/components/Button";
-import { CheckboxGroup } from "@/components/Checkbox";
+import { Button, CheckboxGroup } from "@/components/Inputs";
 
 type Props = {
   value: string[];
@@ -22,12 +21,7 @@ export const FilterableCheckbox = (props: Props) => {
         <Button size="sm" onClick={onSelectAll}>
           Select All
         </Button>
-        <Button
-          size="sm"
-          variant="outline"
-          className="hover:text-white"
-          onClick={onClear}
-        >
+        <Button size="sm" variant="outline" onClick={onClear}>
           Clear
         </Button>
       </div>
