@@ -4,21 +4,22 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { API } from "aws-amplify";
-import { OneMacTransform } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { getItem } from "@/api";
 import {
-  SimplePageContainer,
   Alert,
-  LoadingSpinner,
   BreadCrumbs,
+  LoadingSpinner,
+  SimplePageContainer,
   SectionCard,
 } from "@/components";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { getUserStateCodes } from "@/utils";
 import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
+import { submit } from "@/api/submissionService";
+import { Authority } from "shared-types";
+
 let stateCodes: string[] = [];
 function startsWithValidPrefix(value: string) {
   for (const prefix of stateCodes) {
@@ -72,14 +73,7 @@ const formSchema = z.object({
   }),
   proposedEffectiveDate: z.date(),
 });
-
-export type MedicaidFormSchema = z.infer<typeof formSchema>;
-type UploadKeys = keyof MedicaidFormSchema["attachments"];
-export type PreSignedURL = {
-  url: string;
-  key: string;
-  bucket: string;
-};
+type MedicaidFormSchema = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
@@ -106,87 +100,27 @@ const attachmentList = [
 export const MedicaidForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { data: user } = useGetUser();
+  const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
+    try {
+      await submit<MedicaidFormSchema>({
+        data: formData,
+        endpoint: "/submit",
+        user,
+        authority: Authority.MED_SPA,
+      });
+      setSuccessModalIsOpen(true);
+    } catch (e) {
+      console.error(e);
+    }
+  };
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
 
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
   });
-  const { data: user } = useGetUser();
   stateCodes = getUserStateCodes(user?.user);
-
-  const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (data) => {
-    const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
-    const uploadedFiles: any[] = [];
-    const fileMetaData: NonNullable<OneMacTransform["attachments"]> = [];
-
-    const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
-      .filter((key) => data.attachments[key] !== undefined)
-      .map(() =>
-        API.post("os", "/getUploadUrl", {
-          body: {},
-        })
-      );
-    const loadPresignedUrls = await Promise.all(presignedUrls);
-
-    uploadKeys
-      .filter((key) => data.attachments[key] !== undefined)
-      .forEach((uploadKey, index) => {
-        const attachmenListObject = attachmentList?.find(
-          (item) => item.name === uploadKey
-        );
-        const title = attachmenListObject ? attachmenListObject.label : "Other";
-        const fileGroup = data.attachments[uploadKey] as File[];
-
-        // upload all files in this group and track there name
-        for (const file of fileGroup) {
-          uploadedFiles.push(
-            fetch(loadPresignedUrls[index].url, {
-              body: file,
-              method: "PUT",
-            })
-          );
-
-          fileMetaData.push({
-            key: loadPresignedUrls[index].key,
-            filename: file.name,
-            title: title,
-            bucket: loadPresignedUrls[index].bucket,
-            uploadDate: Date.now(),
-          });
-        }
-      });
-
-    await Promise.all(uploadedFiles);
-
-    const dataToSubmit: OneMacTransform & {
-      state: string;
-      proposedEffectiveDate: number;
-      authority: string;
-    } = {
-      id: data.id,
-      additionalInformation: data?.additionalInformation ?? null,
-      attachments: fileMetaData,
-      origin: "micro",
-      authority: "medicaid spa",
-      raiWithdrawEnabled: false,
-      submitterEmail: user?.user?.email ?? "N/A",
-      submitterName:
-        `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
-      proposedEffectiveDate: data.proposedEffectiveDate.getTime(),
-      state: data.id.split("-")[0],
-      rais: {}, // We do not collect rai data as part of new submission.
-    };
-
-    try {
-      await API.post("os", "/submit", {
-        body: dataToSubmit,
-      });
-      setSuccessModalIsOpen(true);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   return (
     <SimplePageContainer>
