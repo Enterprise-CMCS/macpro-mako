@@ -15,8 +15,8 @@ const config = {
   database: "SEA",
 };
 
-import { Kafka, KafkaMessage } from "kafkajs";
-import { OneMacSink, transformOnemac } from "shared-types";
+import { Kafka, Message } from "kafkajs";
+import { Authority, OneMacSink, transformOnemac } from "shared-types";
 
 const kafka = new Kafka({
   clientId: "submit",
@@ -44,7 +44,7 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
-    if (body.authority !== "medicaid spa") {
+    if (body.authority !== Authority.MED_SPA) {
       return response({
         statusCode: 400,
         body: {
@@ -117,7 +117,7 @@ async function produceMessage(topic, key, value) {
   await producer.connect();
   console.log("connected");
 
-  const message: KafkaMessage = {
+  const message: Message = {
     key: key,
     value: value,
     partition: 0,

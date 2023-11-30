@@ -6,3 +6,6 @@ export * from "./onemac";
 export * from "./opensearch";
 export * from "./uploads";
 export * from "./actions";
+export * from "./attachments";
+export * from "./authority";
+export * from "./action-types/withdraw-record";

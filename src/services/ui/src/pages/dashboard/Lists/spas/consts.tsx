@@ -41,6 +41,7 @@ export const TABLE_COLUMNS = (props?: {
   {
     field: "actionType.keyword",
     label: "Action Type",
+    visible: false,
     cell: (data) =>
       data.actionType
         ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
@@ -65,6 +66,7 @@ export const TABLE_COLUMNS = (props?: {
   {
     field: "origin",
     label: "Submission Source",
+    visible: false,
     cell: (data) => {
       if (data.origin?.toLowerCase() === "onemac") {
         return "OneMAC";

@@ -199,18 +199,22 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
-  forms:
-    handler: handlers/forms.handler
-    layers:
-      - !Ref FormsLambdaLayer
+  action:
+    handler: handlers/action.handler
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
       osDomain: ${param:osDomain}
+      dbIp: ${self:custom.dbInfo.ip}
+      dbPort: ${self:custom.dbInfo.port}
+      dbUser: ${self:custom.dbInfo.user}
+      dbPassword: ${self:custom.dbInfo.password}
+      topicName: ${param:topicName}
+      brokerString: ${self:custom.brokerString}
     events:
       - http:
-          path: /forms
-          method: get
+          path: /action/{actionType}
+          method: post
           cors: true
           authorizer: aws_iam
     vpc:
@@ -218,12 +222,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:searchProvisionedConcurrency}
-layers:
-  forms:
-    path: layers
-    description: Lambda Layer for forms function
-
+    provisionedConcurrency: ${param:submitProvisionedConcurrency} # reuse submit's concurrency
 resources:
   Resources:
     ApiGateway400ErrorCount:

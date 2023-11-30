@@ -3348,16 +3348,16 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.3.1.tgz#d0fce5d07b0620caa282b5131c297bb60f9d87e6"
   integrity sha512-EsBwpc7hBUJWAsNPBmJy4hxWx12v6bshQsldrVmjxJoc3isbxhOrF2IcCpaXxfvq03NwkI7sbsOLXbYuqF/8Ww==
 
-"@enterprise-cmcs/macpro-security-hub-sync@^1.5.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@enterprise-cmcs/macpro-security-hub-sync/-/macpro-security-hub-sync-1.6.0.tgz#bb0d5dc8a331a2ae778e1ff1a88481837716cab1"
-  integrity sha512-rt2ellE0eZeAYXf2pv3PKltAQgEBuTZbwZzWwmrm/2n3upO+7S9jTiNe1gufDjxINolLL91qmN55h4j1u8GHaQ==
+"@enterprise-cmcs/macpro-security-hub-sync@^1.6.2":
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/@enterprise-cmcs/macpro-security-hub-sync/-/macpro-security-hub-sync-1.6.2.tgz#d7ef11a70a043b40ef9678471927da2c7491fdc3"
+  integrity sha512-IXcuToPOC/MnRAuQ1kBTYBNTkvJegTL7ChdpDcjbtt/RTBnWN5MZNVEbeG9rXPuaTRgbNgps44/H9VtWc+TIMA==
   dependencies:
     "@aws-sdk/client-iam" "^3.316.0"
     "@aws-sdk/client-securityhub" "^3.317.0"
     "@aws-sdk/client-sts" "^3.316.0"
     "@types/jira-client" "^7.1.6"
-    axios "^1.3.6"
+    axios "^1.6.2"
     dotenv "^16.0.3"
     jira-client "^8.2.2"
 
@@ -4431,7 +4431,7 @@
   dependencies:
     "@babel/runtime" "^7.13.10"
 
-"@radix-ui/react-dialog@^1.0.4":
+"@radix-ui/react-dialog@^1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-dialog/-/react-dialog-1.0.5.tgz#71657b1b116de6c7a0b03242d7d43e01062c7300"
   integrity sha512-GjWJX/AUpB703eEBanuBnIWdIXg6NvJFCXcNlSZk4xdszCdhrJgBoUd1cGk67vFO+WdA2pfI/plOpqz/5GUP6Q==
@@ -4928,15 +4928,15 @@
     type "^2.6.1"
     uuid "^8.3.2"
 
-"@serverless/dashboard-plugin@^7.0.2":
-  version "7.0.5"
-  resolved "https://registry.yarnpkg.com/@serverless/dashboard-plugin/-/dashboard-plugin-7.0.5.tgz#5ca8fdbc5171668d5f8dd1c136c4bc0d23fe41f9"
-  integrity sha512-OpZJpldLCJmQ/JCvuSCbWaNd6CprQ8yDi9lqrpP3WeR61jOGG8JFxmMs6hjpDd9bKyUMnQ9qAJ+C+QbAxdUosw==
+"@serverless/dashboard-plugin@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@serverless/dashboard-plugin/-/dashboard-plugin-7.2.0.tgz#9e903e9099c830b34a5a9356d01e940e63252262"
+  integrity sha512-Gqzgef+KmrX1OxJW9aubrIN6AvPrtDARMv+NegMNEe+pfkZA/IMuZiSyYUaHgARokdw2/IALOysTLgdFJIrXvA==
   dependencies:
     "@aws-sdk/client-cloudformation" "^3.410.0"
     "@aws-sdk/client-sts" "^3.410.0"
     "@serverless/event-mocks" "^1.1.1"
-    "@serverless/platform-client" "^4.4.0"
+    "@serverless/platform-client" "^4.5.1"
     "@serverless/utils" "^6.14.0"
     child-process-ext "^3.0.1"
     chokidar "^3.5.3"
@@ -4965,14 +4965,14 @@
     "@types/lodash" "^4.14.123"
     lodash "^4.17.11"
 
-"@serverless/platform-client@^4.4.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@serverless/platform-client/-/platform-client-4.4.0.tgz#8a1c76ceface3eef6792a35c3e5b295f68beb967"
-  integrity sha512-urL7SNefRqC2EOFDcpvm8fyn/06B5yXWneKpyGw7ylGt0Qr9JHZCB9TiUeTkIpPUNz0jTvKUaJ2+M/JNEiaVIA==
+"@serverless/platform-client@^4.5.1":
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/@serverless/platform-client/-/platform-client-4.5.1.tgz#db5915bb53339761e704cc3f7d352c7754a79af2"
+  integrity sha512-XltmO/029X76zi0LUFmhsnanhE2wnqH1xf+WBt5K8gumQA9LnrfwLgPxj+VA+mm6wQhy+PCp7H5SS0ZPu7F2Cw==
   dependencies:
     adm-zip "^0.5.5"
     archiver "^5.3.0"
-    axios "^0.21.1"
+    axios "^1.6.2"
     fast-glob "^3.2.7"
     https-proxy-agent "^5.0.0"
     ignore "^5.1.8"
@@ -6931,17 +6931,10 @@ axios@0.26.0:
   dependencies:
     follow-redirects "^1.14.8"
 
-axios@^0.21.1:
-  version "0.21.4"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
-  integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
-  dependencies:
-    follow-redirects "^1.14.0"
-
-axios@^1.3.6:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.5.1.tgz#11fbaa11fc35f431193a9564109c88c1f27b585f"
-  integrity sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==
+axios@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.2.tgz#de67d42c755b571d3e698df1b6504cde9b0ee9f2"
+  integrity sha512-7i24Ri4pmDRfJTR7LDBhsOTtcm+9kjX5WiY1X3wIisx6G9So3pfMkEiU7emUBe46oceVImccTEM3k6C5dbVW8A==
   dependencies:
     follow-redirects "^1.15.0"
     form-data "^4.0.0"
@@ -9113,7 +9106,7 @@ flatted@^3.2.7, flatted@^3.2.9:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.9.tgz#7eb4c67ca1ba34232ca9d2d93e9886e611ad7daf"
   integrity sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==
 
-follow-redirects@^1.14.0, follow-redirects@^1.14.8, follow-redirects@^1.15.0:
+follow-redirects@^1.14.8, follow-redirects@^1.15.0:
   version "1.15.3"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.3.tgz#fe2f3ef2690afce7e82ed0b44db08165b207123a"
   integrity sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q==
@@ -13481,13 +13474,13 @@ serverless-step-functions@^3.13.1:
     joi "^17.7.0"
     lodash "^4.17.11"
 
-serverless@^3.17.0:
-  version "3.35.2"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.35.2.tgz#8f0e24ba0814ffb9a3a5937fbd3dbea9802f44be"
-  integrity sha512-1RZ4eHl2OaGG2Rzw0l0ZD3byCk2JMCL9/+btzGQGQruuQWu9HwRZGJI7l4A2ghW3Mu6DVwLYLfceNpmEWBZoag==
+serverless@^3.38.0:
+  version "3.38.0"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.38.0.tgz#9275763cab3ec1cd29635520cf24b9b5e7202583"
+  integrity sha512-NJE1vOn8XmQEqfU9UxmVhkUFaCRmx6FhYw/jITN863WlOt4Y3PQbj3hwQyIb5QS1ZrXFq5ojklwewUXH7xGpdA==
   dependencies:
-    "@serverless/dashboard-plugin" "^7.0.2"
-    "@serverless/platform-client" "^4.4.0"
+    "@serverless/dashboard-plugin" "^7.2.0"
+    "@serverless/platform-client" "^4.5.1"
     "@serverless/utils" "^6.13.1"
     abort-controller "^3.0.0"
     ajv "^8.12.0"
