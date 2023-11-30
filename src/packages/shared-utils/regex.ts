@@ -18,12 +18,12 @@ export const convertRegexToString = (obj: any) => {
     return obj;
 }
 
-export const replaceNestedValue = (obj: any) => {
+export const reInsertRegex = (obj: any) => {
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         if (typeof obj[key] === 'object' && obj[key] !== null) {
           // If the current property is an object, recursively call the function
-          obj[key] = replaceNestedValue(obj[key]);
+          obj[key] = reInsertRegex(obj[key]);
   
           // Check if the current object has a property "pattern" with a "value" key
           if (obj[key].hasOwnProperty('pattern') && typeof obj[key].pattern === 'object' && obj[key].pattern.hasOwnProperty('value')) {

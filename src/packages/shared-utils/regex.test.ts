@@ -1,5 +1,5 @@
 import { it, describe, expect } from "vitest";
-import { convertRegexToString, replaceNestedValue } from "./regex";
+import { convertRegexToString, reInsertRegex } from "./regex";
 
 const testRegex = /^-?\d*\.?\d+$/g
 
@@ -37,7 +37,7 @@ describe("form regex", () => {
 
     const restoredRegex = new RegExp(parsedVal[1], parsedVal[2]);
     expect(restoredRegex).toEqual(testRegex)
-    expect(replaceNestedValue(result)).toEqual(testForm)
+    expect(reInsertRegex(result)).toEqual(testForm)
 
   });
 })
