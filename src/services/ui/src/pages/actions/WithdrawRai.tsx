@@ -52,22 +52,9 @@ export const WithdrawRaiForm = () => {
   const user = useGetUser();
 
   const handleSubmit: SubmitHandler<FormSchema> = async (data) => {
-    // creating record to send to action api
-    const dataToSend: WithdrawRaiRecord = {
-      submitterEmail: user.data?.user?.email ?? "",
-      submitterName: `${user.data?.user?.given_name ?? "N/A"} ${
-        user.data?.user?.family_name ?? "N/A"
-      }`,
-      id: id!,
-      withdraw: {
-        withdrawDate: new Date().getTime(),
-        additionalInformation: data.additionalInformation,
-      },
-    };
-
     try {
       await submit({
-        data: dataToSend,
+        data,
         endpoint: "/action/withdraw-rai",
         user: user.data,
         authority: Authority.MED_SPA,

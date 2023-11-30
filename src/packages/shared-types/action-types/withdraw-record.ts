@@ -6,10 +6,8 @@ export const withdrawRaiSchema = z.object({
   submitterName: z.string(),
   submitterEmail: z.string(),
   attachments: z.array(onemacAttachmentSchema.nullable()).nullish(),
-  withdraw: z.object({
-    withdrawDate: z.number(),
-    additionalInformation: z.string().nullish(),
-  }),
+  withdrawDate: z.number(),
+  additionalInformation: z.string(),
 });
 
 export const raiActionSchema = z.object({
@@ -29,7 +27,8 @@ export const raiTransform = (activeKey: number) =>
     submitterName: data.submitterName,
     submitterEmail: data.submitterEmail,
     withdraw: {
-      ...data.withdraw,
+      withdrawDate: data.withdrawDate,
+      additionalInformation: data.additionalInformation,
       attachments: data.attachments,
     },
     rais: {
