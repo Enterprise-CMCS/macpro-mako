@@ -3348,16 +3348,16 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.3.1.tgz#d0fce5d07b0620caa282b5131c297bb60f9d87e6"
   integrity sha512-EsBwpc7hBUJWAsNPBmJy4hxWx12v6bshQsldrVmjxJoc3isbxhOrF2IcCpaXxfvq03NwkI7sbsOLXbYuqF/8Ww==
 
-"@enterprise-cmcs/macpro-security-hub-sync@^1.5.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@enterprise-cmcs/macpro-security-hub-sync/-/macpro-security-hub-sync-1.6.0.tgz#bb0d5dc8a331a2ae778e1ff1a88481837716cab1"
-  integrity sha512-rt2ellE0eZeAYXf2pv3PKltAQgEBuTZbwZzWwmrm/2n3upO+7S9jTiNe1gufDjxINolLL91qmN55h4j1u8GHaQ==
+"@enterprise-cmcs/macpro-security-hub-sync@^1.6.2":
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/@enterprise-cmcs/macpro-security-hub-sync/-/macpro-security-hub-sync-1.6.2.tgz#d7ef11a70a043b40ef9678471927da2c7491fdc3"
+  integrity sha512-IXcuToPOC/MnRAuQ1kBTYBNTkvJegTL7ChdpDcjbtt/RTBnWN5MZNVEbeG9rXPuaTRgbNgps44/H9VtWc+TIMA==
   dependencies:
     "@aws-sdk/client-iam" "^3.316.0"
     "@aws-sdk/client-securityhub" "^3.317.0"
     "@aws-sdk/client-sts" "^3.316.0"
     "@types/jira-client" "^7.1.6"
-    axios "^1.3.6"
+    axios "^1.6.2"
     dotenv "^16.0.3"
     jira-client "^8.2.2"
 
@@ -6925,15 +6925,6 @@ axios@0.26.0:
   integrity sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==
   dependencies:
     follow-redirects "^1.14.8"
-
-axios@^1.3.6:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.5.1.tgz#11fbaa11fc35f431193a9564109c88c1f27b585f"
-  integrity sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==
-  dependencies:
-    follow-redirects "^1.15.0"
-    form-data "^4.0.0"
-    proxy-from-env "^1.1.0"
 
 axios@^1.6.2:
   version "1.6.2"
