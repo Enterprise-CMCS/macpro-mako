@@ -54,7 +54,7 @@ export const WithdrawRaiForm = () => {
   const handleSubmit: SubmitHandler<FormSchema> = async (data) => {
     try {
       await submit({
-        data,
+        data: { ...data, id },
         endpoint: "/action/withdraw-rai",
         user: user.data,
         authority: Authority.MED_SPA,
