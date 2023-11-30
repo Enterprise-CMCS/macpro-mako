@@ -85,9 +85,13 @@ resources:
             - ${self:custom.idmInfo.oidc_issuer, ""}
     BackWithCognito:
       Fn::Not:
-        - Fn::Equals:
-            - ${sls:stage}
-            - production
+        - Fn::Or:
+            - Fn::Equals:
+                - ${sls:stage}
+                - production
+            - Fn::Equals:
+                - ${sls:stage}
+                - val
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool

@@ -128,7 +128,7 @@ jobs:
       - deploy
     env:
       baseurl: ${{ needs.deploy.outputs.app-url }}
-    if: ${{ github.ref != 'refs/heads/production' }}
+    if: ${{ github.ref != 'refs/heads/production' && github.ref != 'refs/heads/val' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
