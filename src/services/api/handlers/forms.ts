@@ -1,6 +1,7 @@
 import { response } from "../libs/handler";
 import * as fs from "fs";
 import { APIGatewayEvent } from "aws-lambda";
+import { convertRegexToString } from "shared-utils";
 
 export const forms = async (event: APIGatewayEvent) => {
   try {
@@ -40,11 +41,12 @@ export const forms = async (event: APIGatewayEvent) => {
 
     try {
       const formObj = await import(`/opt/${formId}/v${formVersion}.js`);
+      const cleanedForm = convertRegexToString(formObj.form);
 
       if (formObj?.form) {
         return response({
           statusCode: 200,
-          body: formObj.form,
+          body: cleanedForm,
         });
       }
     } catch (importError) {

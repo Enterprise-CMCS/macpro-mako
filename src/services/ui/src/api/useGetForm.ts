@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError } from "shared-types";
 import { FormSchema } from "shared-types";
+import { replaceNestedValue } from "shared-utils";
 
 export const getForm = async (
   formId: string,
@@ -11,7 +12,7 @@ export const getForm = async (
     queryStringParameters: { formId, formVersion },
   });
 
-  return form;
+  return replaceNestedValue(form);
 };
 
 export const useGetForm = (formId: string, formVersion?: string) => {
