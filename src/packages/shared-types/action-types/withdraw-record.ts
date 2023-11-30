@@ -40,7 +40,7 @@ export const raiTransform = (activeKey: number) =>
   }));
 
 export const withdrawRaiSinkSchema = raiActionSchema.and(
-  z.object({ rais: z.record(z.number(), z.object({ response: z.null() })) })
+  z.object({ rais: z.record(z.string(), z.object({ response: z.null() })) })
 );
 
 export const withdrawRecordSchema = z.object({
