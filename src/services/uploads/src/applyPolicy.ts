@@ -14,6 +14,11 @@ export const handler: Handler = async (event, context) => {
   const retryDelay = 5000;
   try {
     if (event.RequestType == "Create" || event.RequestType == "Update") {
+
+      // First we will sleep a bit to give activer remediation a fair amount of time to take effect
+      await new Promise(r => setTimeout(r, 125000));
+
+      // Now we will apply our own policy
       let retries = 0;
       let success = false;
       while (!success && retries < maxRetries) {
