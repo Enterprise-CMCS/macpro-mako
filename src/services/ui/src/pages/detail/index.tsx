@@ -3,7 +3,7 @@ import {
   Alert,
   Attachmentslist,
   CardWithTopBorder,
-  ChipSpaPackageDetails,
+  SpaPackageDetails,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
@@ -127,7 +127,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           <PackageActionsCard id={data._id} />
         </section>
         <DetailsSection id="package-details" title="Package Details">
-          <ChipSpaPackageDetails {...data?._source} />
+          <SpaPackageDetails {...data?._source} />
         </DetailsSection>
         <SubmissionInfo {...data?._source} />
         {/* Below is used for spacing. Keep it simple */}

@@ -1,1 +1,1 @@
-export * from "./ChipSpaPackageDetails";
+export * from "./SpaPackageDetails";
