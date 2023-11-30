@@ -41,9 +41,9 @@ export const forms = async (event: APIGatewayEvent) => {
 
     try {
       const formObj = await import(`/opt/${formId}/v${formVersion}.js`);
-      const cleanedForm = convertRegexToString(formObj.form);
 
       if (formObj?.form) {
+        const cleanedForm = convertRegexToString(formObj.form);
         return response({
           statusCode: 200,
           body: cleanedForm,
