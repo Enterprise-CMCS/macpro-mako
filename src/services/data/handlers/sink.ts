@@ -180,6 +180,10 @@ export const onemac: Handler = async (event) => {
                 console.log(
                   `ERROR: Invalid Payload for this action type (${record.actionType})`
                 );
+                console.log(
+                  "The error is the following: ",
+                  result.error.message
+                );
               }
               break;
             }
