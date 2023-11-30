@@ -171,6 +171,7 @@ export const onemac: Handler = async (event) => {
             }
             case Action.WITHDRAW_RAI: {
               console.log("WITHDRAWING RAI");
+              console.log("Withdraw Record", record);
               const result = withdrawRaiSinkSchema.safeParse(record);
 
               if (result.success === true) {
