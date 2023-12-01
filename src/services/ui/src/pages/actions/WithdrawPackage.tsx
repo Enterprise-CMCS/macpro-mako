@@ -11,10 +11,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
-import { useWithdrawPackage } from "@/api/useWithdrawPackage";
 import { Alert, LoadingSpinner } from "@/components";
 import { buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
+import { useSubmissionService } from "@/api/submissionService";
 
 const withdrawPackageFormSchema = withdrawPackageSchema(
   z.array(z.instanceof(File))
@@ -45,9 +45,9 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   const form = useForm<WithdrawPackageFormSchema>({
     resolver: zodResolver(withdrawPackageFormSchema),
   });
-  //const { mutate, isLoading, isSuccess, error } = useWithdrawPackage(id!);
-  const { mutate, isLoading, isSuccess, error } = useWithdrawPackage(id!);
-  ({
+  const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
+    id: string;
+  }>({
     data: { id: id! },
     endpoint: buildActionUrl(type!),
     user,
