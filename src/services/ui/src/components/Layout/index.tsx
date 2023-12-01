@@ -241,7 +241,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             <>
               {data.user ? (
                 // When the user is signed in
-                <UserDropdownMenu/>
+                <UserDropdownMenu />
               ) : (
                 // When the user is not signed in
                 <>

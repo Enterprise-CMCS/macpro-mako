@@ -44,9 +44,16 @@ export const FILTER_GROUPS = (
       type: "terms",
       value: [],
     },
-    [(user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)) ? "cmsStatus.keyword" : "stateStatus.keyword"]: {
+    [user?.isCms &&
+    !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+      ? "cmsStatus.keyword"
+      : "stateStatus.keyword"]: {
       label: "Status",
-      field: (user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)) ? "cmsStatus.keyword" : "stateStatus.keyword",
+      field:
+        user?.isCms &&
+        !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+          ? "cmsStatus.keyword"
+          : "stateStatus.keyword",
       component: "multiCheck",
       prefix: "must",
       type: "terms",
@@ -69,7 +76,7 @@ export const FILTER_GROUPS = (
       value: { gte: undefined, lte: undefined },
     },
     "leadAnalystName.keyword": {
-      label: "CPOC",
+      label: "CPOC Name",
       field: "leadAnalystName.keyword",
       component: "multiSelect",
       prefix: "must",

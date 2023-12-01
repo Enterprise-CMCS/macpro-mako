@@ -81,7 +81,7 @@ export const OsTable: FC<{
           <UI.TableRow className="h-10">
             <UI.TableCell className="flex">
               <p className="font-medium whitespace-nowrap h-[20px]"> </p>
-              <p className="absolute right-[50%] top-[50%] translate-x-[50%] translate-y-[50%] font-medium text-lg text-gray-500">
+              <p className="absolute right-[50%]  translate-x-[50%] translate-y-[50%] font-medium text-lg text-gray-500">
                 No Results Found
               </p>
             </UI.TableCell>
