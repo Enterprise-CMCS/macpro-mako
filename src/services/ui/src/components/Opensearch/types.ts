@@ -8,4 +8,6 @@ export type OsFilterGroup = {
   type: OsFilterComponentType;
 };
 
+export type OsTab = "waivers" | "spas";
+
 export { OsField };

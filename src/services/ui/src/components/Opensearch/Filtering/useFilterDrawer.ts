@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import type { OsField } from "./types";
+import type { OsField } from "../types";
 import * as Consts from "./consts";
 import { useOsAggregate, useOsParams } from "../useOpensearch";
 import { OsFilterValue, OsRangeValue } from "shared-types";
