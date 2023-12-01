@@ -19,10 +19,8 @@ import {
   Action,
   withdrawRecordSchema,
   WithdrawRecord,
-  withdrawRaiSchema,
   WithdrawSinkRecord,
-  raiTransform,
-  withdrawRaiSinkSchema,
+  raiActionSchema,
 } from "shared-types";
 
 if (!process.env.osDomain) {
@@ -172,8 +170,7 @@ export const onemac: Handler = async (event) => {
             case Action.WITHDRAW_RAI: {
               console.log("WITHDRAWING RAI");
               console.log("Withdraw Record", record);
-              const result = withdrawRaiSinkSchema.safeParse(record);
-
+              const result = raiActionSchema.safeParse(record);
               if (result.success === true) {
                 oneMacRecords.push(result.data);
               } else {
