@@ -2,7 +2,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/Inputs";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { useEffect, useState } from "react";
-import { ItemResult, withdrawPackageSchema } from "shared-types";
+import { Action, ItemResult, withdrawPackageSchema } from "shared-types";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { PackageActionForm } from "./PackageActionForm";
 import { ActionFormIntro, PackageInfo } from "./common";
@@ -13,6 +13,8 @@ import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
 import { useWithdrawPackage } from "@/api/useWithdrawPackage";
 import { Alert, LoadingSpinner } from "@/components";
+import { buildActionUrl } from "@/lib";
+import { useGetUser } from "@/api/useGetUser";
 
 const withdrawPackageFormSchema = withdrawPackageSchema(
   z.array(z.instanceof(File))
@@ -38,11 +40,18 @@ const handler: SubmitHandler<WithdrawPackageFormSchema> = (data) =>
 
 const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
+  const { id, type } = useParams<{ id: string; type: Action }>();
+  const { data: user } = useGetUser();
   const form = useForm<WithdrawPackageFormSchema>({
     resolver: zodResolver(withdrawPackageFormSchema),
   });
+  //const { mutate, isLoading, isSuccess, error } = useWithdrawPackage(id!);
   const { mutate, isLoading, isSuccess, error } = useWithdrawPackage(id!);
+  ({
+    data: { id: id! },
+    endpoint: buildActionUrl(type!),
+    user,
+  });
 
   const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
   const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
