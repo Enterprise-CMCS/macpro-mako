@@ -100,7 +100,7 @@ export const useOsAggregate = () => {
             field: "leadAnalystName.keyword",
             name: "leadAnalystName.keyword",
             type: "terms",
-            size: 200,
+            size: 1000,
           },
         ],
         filters: DEFAULT_FILTERS[props.queryKey[0]].filters || [],

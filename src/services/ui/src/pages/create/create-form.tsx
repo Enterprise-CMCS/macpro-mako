@@ -7,6 +7,7 @@ import { useState } from "react";
 import { getUserStateCodes } from "@/utils";
 import { useGetUser } from "@/api/useGetUser";
 import { useParams } from "react-router-dom";
+import { SubNavHeader } from "@/components";
 
 type FormData = {
   id: string;
@@ -55,15 +56,9 @@ export const Create = () => {
 
   return (
     <>
-      <div className="bg-sky-100">
-        <div className="max-w-screen-xl m-auto px-4 lg:px-8">
-          <div className="flex items-center">
-            <div className="flex align-middle py-4">
-              <h1 className="text-xl font-medium">Initial Submission</h1>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SubNavHeader>
+        <h1 className="text-xl font-medium">Initial Submission</h1>
+      </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col space-y-2">

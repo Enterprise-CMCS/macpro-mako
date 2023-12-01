@@ -51,7 +51,7 @@ export const useFilterDrawer = () => {
 
   // update initial filter state + accordion default open items
   useEffect(() => {
-    if (!drawerOpen) return;
+    if (drawerOpen) return;
     const updateAccordions = [] as any[];
 
     setFilters((s) => {

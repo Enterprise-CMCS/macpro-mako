@@ -19,7 +19,7 @@ export const SpasList = () => {
   const columns = TABLE_COLUMNS({ isCms: user?.isCms, user: user?.user });
 
   return (
-    <section className="flex flex-col h-[calc(100vh-250px)]">
+    <section className="flex flex-col h-[calc(100vh-230px)]">
       <OsFiltering />
       <OsTable columns={columns} />
       <Pagination
