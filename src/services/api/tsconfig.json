@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES2016",
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["./layers/**/*.ts"],
+  "exclude": ["node_modules"]
 }

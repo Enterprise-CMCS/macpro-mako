@@ -28,6 +28,7 @@
   },
   "version": "0.0.0",
   "scripts": {
+    "build": "tsc",
     "lint": "eslint '**/*.{ts,js}'"
   }
 }
