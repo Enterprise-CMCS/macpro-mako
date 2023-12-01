@@ -45,10 +45,10 @@ export const OptionCard = ({
           } hover:bg-sky-100`}
         >
           <div>
-            <h3 className="text-lg text-sky-600 font-bold my-2">{title}</h3>
+            <h2 className="text-lg text-sky-700 font-bold my-2">{title}</h2>
             <p className="my-2 text-slate-600">{description}</p>
           </div>
-          <ChevronRight className="text-sky-600 w-8 h-8" />
+          <ChevronRight className="text-sky-700 w-8 h-8" />
         </div>
       </Link>
     </label>

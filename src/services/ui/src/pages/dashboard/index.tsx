@@ -63,9 +63,9 @@ export const Dashboard = () => {
           <div className="flex items-center justify-between my-4">
             <h1 className="text-xl">Dashboard</h1>
             {!userContext?.isCms && (
-              <Link to={ROUTES.NEW_SUBMISSION_OPTIONS}>
-                <Button>New Submission</Button>
-              </Link>
+              <Button>
+                <Link to={ROUTES.NEW_SUBMISSION_OPTIONS}>New Submission</Link>
+              </Button>
             )}
           </div>
           <div className="w-[100%] items-center justify-center">
@@ -80,10 +80,10 @@ export const Dashboard = () => {
             >
               <TabsList>
                 <TabsTrigger value="spas" className="px-6 py-2">
-                  <h4 className="font-bold text-[1.3em]">SPAs</h4>
+                  <h2 className="font-bold text-[1.3em]">SPAs</h2>
                 </TabsTrigger>
                 <TabsTrigger value="waivers" className="px-6 py-2">
-                  <h4 className="font-bold text-[1.3em]">Waivers</h4>
+                  <h2 className="font-bold text-[1.3em]">Waivers</h2>
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="spas">

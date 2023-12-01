@@ -61,7 +61,7 @@ export const BreadCrumb = ({
       {showSeperator && <span>{seperator}</span>}
 
       {active && (
-        <Link to={to} className="underline text-sky-600 hover:text-sky-800">
+        <Link to={to} className="underline text-sky-700 hover:text-sky-800">
           {children}
         </Link>
       )}
