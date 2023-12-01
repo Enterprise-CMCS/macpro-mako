@@ -16,7 +16,7 @@ const config = {
 };
 
 import { Kafka, Message } from "kafkajs";
-import { OneMacSink, transformOnemac } from "shared-types";
+import { Authority, OneMacSink, transformOnemac } from "shared-types";
 
 const kafka = new Kafka({
   clientId: "submit",
@@ -44,7 +44,7 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
-    if (body.authority !== "medicaid spa") {
+    if (body.authority !== Authority.MED_SPA) {
       return response({
         statusCode: 400,
         body: {
