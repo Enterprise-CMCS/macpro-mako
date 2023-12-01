@@ -14,19 +14,11 @@ type DrawerFilterableGroup = {
   label: string;
   component: OsFilterComponentType;
 };
+type FilterGroup = Partial<
+  Record<OsField, OsFilterable & DrawerFilterableGroup>
+>;
 
-/**
- * @desc
- * - label: ui label
- * - field: opensearch field property (should match key)
- * - component: filterable component type
- * - prefix: query prefix
- * - type: query type
- * - value: query value
- */
-export const FILTER_GROUPS = (
-  user?: any
-): Partial<Record<OsField, OsFilterable & DrawerFilterableGroup>> => {
+const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
   return {
     "state.keyword": {
       label: "State",
@@ -44,24 +36,9 @@ export const FILTER_GROUPS = (
       type: "terms",
       value: [],
     },
-    "actionType.keyword": {
-      label: "Action Type",
-      field: "actionType.keyword",
-      component: "multiCheck",
-      prefix: "must",
-      type: "terms",
-      value: [],
-    },
-    [user?.isCms &&
-    !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
-      ? "cmsStatus.keyword"
-      : "stateStatus.keyword"]: {
+    [isCms ? "cmsStatus.keyword" : "stateStatus.keyword"]: {
       label: "Status",
-      field:
-        user?.isCms &&
-        !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
-          ? "cmsStatus.keyword"
-          : "stateStatus.keyword",
+      field: isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
       component: "multiCheck",
       prefix: "must",
       type: "terms",
@@ -94,20 +71,119 @@ export const FILTER_GROUPS = (
   };
 };
 
+const WAIVER_FILTER_GROUP = (isCms: boolean): FilterGroup => {
+  return {
+    "state.keyword": {
+      label: "State",
+      field: "state.keyword",
+      component: "multiSelect",
+      prefix: "must",
+      type: "terms",
+      value: [],
+    },
+    "planType.keyword": {
+      label: "Plan Type",
+      field: "planType.keyword",
+      component: "multiCheck",
+      prefix: "must",
+      type: "terms",
+      value: [],
+    },
+    "actionType.keyword": {
+      label: "Action Type",
+      field: "actionType.keyword",
+      component: "multiCheck",
+      prefix: "must",
+      type: "terms",
+      value: [],
+    },
+    [isCms ? "cmsStatus.keyword" : "stateStatus.keyword"]: {
+      label: "Status",
+      field: isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
+      component: "multiCheck",
+      prefix: "must",
+      type: "terms",
+      value: [],
+    },
+    submissionDate: {
+      label: "Initial Submission",
+      field: "submissionDate",
+      component: "dateRange",
+      prefix: "must",
+      type: "range",
+      value: { gte: undefined, lte: undefined },
+    },
+    raiReceivedDate: {
+      label: "RAI Response Date",
+      field: "raiReceivedDate",
+      component: "dateRange",
+      prefix: "must",
+      type: "range",
+      value: { gte: undefined, lte: undefined },
+    },
+    "leadAnalystName.keyword": {
+      label: "CPOC",
+      field: "leadAnalystName.keyword",
+      component: "multiSelect",
+      prefix: "must",
+      type: "terms",
+      value: [],
+    },
+  };
+};
+
+/**
+ * @desc
+ * - label: ui label
+ * - field: opensearch field property (should match key)
+ * - component: filterable component type
+ * - prefix: query prefix
+ * - type: query type
+ * - value: query value
+ */
+export const FILTER_GROUPS = (user?: any, tab?: OsTab): FilterGroup => {
+  const isCms =
+    !!user?.isCms &&
+    !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK);
+
+  switch (tab) {
+    case "spas":
+      return SPA_FILTER_GROUP(isCms);
+    case "waivers":
+    default:
+      return WAIVER_FILTER_GROUP(isCms);
+  }
+};
+
+// Export headers dependent on tab
 export const EXPORT_GROUPS = (
   tab: OsTab,
   user?: any
 ): OsExportHeaderOptions<OsMainSourceItem>[] => {
+  const idFieldName =
+    tab === "spas" ? "SPA ID" : tab === "waivers" ? "Waiver Number" : "";
+  const actionField: OsExportHeaderOptions<OsMainSourceItem>[] =
+    tab === "waivers"
+      ? [
+          {
+            name: "Action Type",
+            transform: (data) => {
+              if (data.actionType === undefined) {
+                return BLANK_VALUE;
+              }
+
+              return (
+                LABELS[data.actionType as keyof typeof LABELS] ||
+                data.actionType
+              );
+            },
+          },
+        ]
+      : [];
+
   return [
     {
-      name: (() => {
-        if (tab === "spas") {
-          return "SPA ID";
-        } else if (tab === "waivers") {
-          return "Waiver Number";
-        }
-        return "";
-      })(),
+      name: idFieldName,
       transform: (data) => data.id,
     },
     {
@@ -118,18 +194,7 @@ export const EXPORT_GROUPS = (
       name: "Type",
       transform: (data) => data.planType ?? BLANK_VALUE,
     },
-    {
-      name: "Action Type",
-      transform: (data) => {
-        if (data.actionType === undefined) {
-          return BLANK_VALUE;
-        }
-
-        return (
-          LABELS[data.actionType as keyof typeof LABELS] || data.actionType
-        );
-      },
-    },
+    ...actionField,
     {
       name: "Status",
       transform(data) {

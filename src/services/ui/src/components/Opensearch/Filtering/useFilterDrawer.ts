@@ -10,9 +10,11 @@ import { useGetUser } from "@/api/useGetUser";
 export const useFilterDrawer = () => {
   const { drawerOpen, setDrawerState } = useFilterDrawerContext();
   const { data: user } = useGetUser();
-  const [filters, setFilters] = useState(Consts.FILTER_GROUPS(user));
-  const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const params = useOsParams();
+  const [filters, setFilters] = useState(
+    Consts.FILTER_GROUPS(user, params.state.tab)
+  );
+  const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const labelMap = useLabelMapping();
   const _aggs = useOsAggregate();
 
@@ -77,23 +79,9 @@ export const useFilterDrawer = () => {
     setAccordionValues(updateAccordions);
   }, [params.state.filters, drawerOpen]);
 
-  // remove action type from SPAs filter options
+  // change base filters per tab
   useEffect(() => {
-    if (params.state.tab === "spas") {
-      setFilters((s) => {
-        const newState = { ...s };
-        delete newState["actionType.keyword"];
-        return newState;
-      });
-    } else {
-      setFilters((s) => {
-        return {
-          ...s,
-          "actionType.keyword":
-            Consts.FILTER_GROUPS(user)["actionType.keyword"],
-        };
-      });
-    }
+    setFilters(Consts.FILTER_GROUPS(user, params.state.tab));
   }, [params.state.tab]);
 
   const aggs = useMemo(() => {
