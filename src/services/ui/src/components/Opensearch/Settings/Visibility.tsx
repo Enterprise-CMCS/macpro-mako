@@ -14,6 +14,7 @@ export const VisibilityPopover = <T extends Item>(props: Props<T>) => {
     <UI.Popover>
       <UI.PopoverTrigger>
         <EyeIcon className="w-6 h-6" />
+        <p className="sr-only">Visibility Popover Icon</p>
       </UI.PopoverTrigger>
       <UI.PopoverContent className="bg-white">
         <div className="flex flex-col gap-2">
