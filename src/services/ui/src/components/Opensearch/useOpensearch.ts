@@ -95,6 +95,7 @@ export const useOsAggregate = () => {
               user?.isCms &&
               !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
                 ? "cmsStatus.keyword"
+                : "stateStatus.keyword",
             name:
               user?.isCms &&
               !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
