@@ -1,4 +1,8 @@
-import { BreadCrumbs, SimplePageContainer } from "@/components";
+import {
+  BreadCrumbs,
+  ConfirmationModal,
+  SimplePageContainer,
+} from "@/components";
 import * as I from "@/components/Inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -17,6 +21,7 @@ import { useGetUser } from "@/api/useGetUser";
 import { API } from "aws-amplify";
 import { PackageActionForm } from "./PackageActionForm";
 import { submit } from "@/api/submissionService";
+import { useState } from "react";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
@@ -40,6 +45,9 @@ export const WithdrawRaiForm = () => {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
+  const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
+  const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
+  const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
 
   const { id } = useParams<{
     id: string;
@@ -59,9 +67,12 @@ export const WithdrawRaiForm = () => {
         user: user.data,
         authority: Authority.MED_SPA,
       });
+
+      setSuccessModalIsOpen(true);
     } catch (err: unknown) {
       if (err) {
         console.log("There was an error", err);
+        setErrorModalIsOpen(true);
       }
     }
   };
@@ -152,7 +163,7 @@ export const WithdrawRaiForm = () => {
             <I.Button
               type="button"
               variant="outline"
-              // onClick={() => setCancelModalIsOpen(true)}
+              onClick={() => setCancelModalIsOpen(true)}
               className="px-12"
             >
               Cancel
@@ -160,6 +171,72 @@ export const WithdrawRaiForm = () => {
           </div>
         </form>
       </I.Form>
+      <ConfirmationModal
+        open={successModalIsOpen}
+        onAccept={() => {
+          setSuccessModalIsOpen(false);
+          navigate(`/details?id=${id}`);
+        }}
+        onCancel={() => setSuccessModalIsOpen(false)}
+        title="Submission Successful"
+        body={
+          <p>
+            Please be aware that it may take up to a minute for your submission
+            to show in the Dashboard.
+          </p>
+        }
+        cancelButtonVisible={false}
+        acceptButtonText="Exit to Package Details"
+      />
+      <ConfirmationModal
+        open={errorModalIsOpen}
+        onAccept={() => {
+          setErrorModalIsOpen(false);
+          navigate(`/details?id=${id}`);
+        }}
+        onCancel={() => setErrorModalIsOpen(false)}
+        title="Submission Error"
+        body={
+          <p>
+            An error occurred during issue.
+            <br />
+            You may close this window and try again, however, this likely
+            requires support.
+            <br />
+            <br />
+            Please contact the{" "}
+            <a
+              href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
+              className="text-blue-500"
+            >
+              helpdesk
+            </a>{" "}
+            . You may include the following in your support request: <br />
+            <br />
+            <ul>
+              <li>SPA ID: {id}</li>
+              <li>Timestamp: {Date.now()}</li>
+            </ul>
+          </p>
+        }
+        cancelButtonVisible={true}
+        cancelButtonText="Return to Form"
+        acceptButtonText="Exit to Package Details"
+      />
+      <ConfirmationModal
+        open={cancelModalIsOpen}
+        onAccept={() => {
+          setCancelModalIsOpen(false);
+          navigate(`/details?id=${id}`);
+        }}
+        onCancel={() => setCancelModalIsOpen(false)}
+        cancelButtonText="Return to Form"
+        acceptButtonText="Yes"
+        title="Are you sure you want to cancel?"
+        body={
+          <p>If you leave this page you will lose your progress on this form</p>
+        }
+      />
     </SimplePageContainer>
   );
 };

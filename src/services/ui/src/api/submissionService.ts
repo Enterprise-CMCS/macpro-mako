@@ -67,6 +67,7 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
     submitterName:
       `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
   };
+
   const seaToolFriendlyTimestamp =
     Math.floor(new Date().getTime() / 1000) * 1000; // Truncating to match seatool
 
@@ -84,6 +85,7 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
     case buildActionUrl(Action.WITHDRAW_RAI):
       return {
         ...data,
+        ...userDetails,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
         withdrawDate: seaToolFriendlyTimestamp,
       };

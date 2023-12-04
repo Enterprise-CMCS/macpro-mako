@@ -113,15 +113,6 @@ export async function withdrawRai(body: unknown, rais: any) {
       const result2 = await transaction.request().query(query2);
       console.log(result2);
 
-      // const raiTransform = withdrawRaiSchema.transform((data) => ({
-      //   ...data,
-      //   rais: {
-      //     [activeKey]: {
-      //       response: null,
-      //     },
-      //   },
-      // }));
-
       const transformedResult = raiTransform(activeKey).parse(result.data);
 
       // write to kafka here
