@@ -46,7 +46,7 @@
     "esbuild": "^0.19.3",
     "prettier": "2.7.1",
     "semantic-release": "^19.0.5",
-    "serverless": "^3.17.0",
+    "serverless": "^3.38.0",
     "serverless-disable-functions": "^1.0.0",
     "serverless-esbuild": "^1.47.0",
     "serverless-plugin-scripts": "^1.0.2",
