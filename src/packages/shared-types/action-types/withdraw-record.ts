@@ -15,6 +15,10 @@ export const raiActionSchema = z.object({
   submitterName: z.string(),
   submitterEmail: z.string(),
   rais: z.record(z.string(), z.object({ response: z.null() })),
+  withdrawRaiMetaData: z.object({
+    additionalInformation: z.string().nullish(),
+    attachments: z.array(onemacAttachmentSchema.nullable()).nullish(),
+  }),
 });
 
 export const raiTransform = (activeKey: number) =>
@@ -26,6 +30,10 @@ export const raiTransform = (activeKey: number) =>
       [activeKey]: {
         response: null,
       },
+    },
+    withdrawRaiMetaData: {
+      additionalInformation: data.additionalInformation,
+      attachments: data.attachments,
     },
   }));
 
