@@ -34,6 +34,7 @@ export const WithdrawRaiForm = () => {
     resolver: zodResolver(formSchema),
   });
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
+  const [areYouSureModalIsOpen, setAreYouSureModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
 
@@ -182,7 +183,8 @@ export const WithdrawRaiForm = () => {
           <div className="flex gap-2">
             <I.Button
               disabled={form.formState.isSubmitting}
-              type="submit"
+              type="button"
+              onClick={() => setAreYouSureModalIsOpen(true)}
               className="px-12"
             >
               Submit
@@ -198,6 +200,22 @@ export const WithdrawRaiForm = () => {
           </div>
         </form>
       </I.Form>
+      {/* Are you sure modal */}
+      <ConfirmationModal
+        open={areYouSureModalIsOpen}
+        onAccept={() => {
+          setAreYouSureModalIsOpen(false);
+          form.handleSubmit(handleSubmit)();
+        }}
+        onCancel={() => {
+          setAreYouSureModalIsOpen(false);
+        }}
+        title="Withdraw Formal RAI Response?"
+        body={`You are about to withdraw the Formal RAI Response for ${id}. CMS will be notified.`}
+        acceptButtonText="Yes, withdraw response"
+        cancelButtonText="Cancel"
+      />
+
       <ConfirmationModal
         open={successModalIsOpen}
         onAccept={() => {
