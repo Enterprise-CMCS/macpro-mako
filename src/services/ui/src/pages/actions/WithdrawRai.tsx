@@ -23,12 +23,39 @@ import { PackageActionForm } from "./PackageActionForm";
 import { submit } from "@/api/submissionService";
 import { useState } from "react";
 
-const formSchema = z.object({
-  additionalInformation: z.string().max(4000),
-  attachments: z.object({
-    supportingDocumentation: z.array(z.instanceof(File)),
-  }),
-});
+const formSchema = z
+  .object({
+    additionalInformation: z.string().max(4000).nullish(),
+    attachments: z.object({
+      supportingDocumentation: z.array(z.instanceof(File)).nullish(),
+    }),
+  })
+  .refine(
+    (data) => {
+      return (
+        !!data.additionalInformation ||
+        !!data.attachments?.supportingDocumentation
+      );
+    },
+    {
+      path: ["additionalInformation"],
+      message:
+        "Either additional information or supporting documentation is required",
+    }
+  )
+  .refine(
+    (data) => {
+      return (
+        !!data.additionalInformation ||
+        !!data.attachments?.supportingDocumentation
+      );
+    },
+    {
+      path: ["attachments", "supportingDocumentation"],
+      message:
+        "Either additional information or supporting documentation is required",
+    }
+  );
 
 type FormSchema = z.infer<typeof formSchema>;
 type UploadKeys = keyof FormSchema["attachments"];
@@ -57,10 +84,13 @@ export const WithdrawRaiForm = () => {
 
   const { data: item } = useGetItem(id!);
 
+  console.log(form.formState.errors);
+
   const user = useGetUser();
 
   const handleSubmit: SubmitHandler<FormSchema> = async (data) => {
     try {
+      console.log(data);
       await submit({
         data: { ...data, id },
         endpoint: "/action/withdraw-rai",
@@ -123,6 +153,7 @@ export const WithdrawRaiForm = () => {
             render={({ field }) => (
               <I.FormItem>
                 <I.FormLabel>Supporting Documentation</I.FormLabel>
+                <I.FormMessage />
                 <I.Upload
                   files={field?.value ?? []}
                   setFiles={field.onChange}
@@ -142,7 +173,12 @@ export const WithdrawRaiForm = () => {
                   <I.FormLabel className="font-normal">
                     Add anything else that you would like to share with CMS.
                   </I.FormLabel>
-                  <I.Textarea {...field} className="h-[200px] resize-none" />
+                  <I.FormMessage />
+                  <I.Textarea
+                    {...field}
+                    value={field.value || ""}
+                    className="h-[200px] resize-none"
+                  />
                   <I.FormDescription>
                     {field.value && field.value.length >= 0
                       ? `${4000 - field.value.length} characters remaining`
