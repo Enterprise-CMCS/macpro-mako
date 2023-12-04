@@ -127,16 +127,15 @@ export const oneMACFAQContent: FAQContent[] = [
                   </ul>
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  State System Administrator
+                  CMS System Admin
                 </td>
               </tr>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">
-                  State System Administrator
+                  CMS Reviewer
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  Reviews and acts on State Submitter user role requests and
-                  system access, has all State Submitter permissions (above)
+                  Reviews and acts on State Submitter user role requests
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   CMS Role Approver
@@ -144,14 +143,14 @@ export const oneMACFAQContent: FAQContent[] = [
               </tr>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">
-                  CMS Role Approver
+                  CMS Read Only
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   Reviews and acts on State System Administrator user role
                   requests
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  CMS System Administrator
+                  State System Admin
                 </td>
               </tr>
             </tbody>
