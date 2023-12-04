@@ -228,17 +228,17 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <>
             Enter the State Plan Amendment transmittal number. Assign
-            consecutive numbers on a calendar year basis (e.g., 20-0001-xxxx,
-            20-0002-xxxx, etc.).
+            consecutive numbers on a calendar year basis (e.g., 20-0001-XXXX,
+            20-0002-XXXX, etc.).
             <br />
             The Official Submission package SPA ID must follow the format
-            SS-YY-#### OR SS-YY-####-xxxx to include:
+            SS-YY-#### OR SS-YY-####-XXXX to include:
             <ul>
               <li>SS = 2 alpha character (State Abbreviation)</li>
               <li>YY = 2 numeric digits (Year)</li>
               <li>#### = 4 numeric digits (Serial number)</li>
               <li>
-                xxxx = OPTIONAL, 4 characters alpha/numeric modifier (Suffix)
+                XXXX = OPTIONAL, 4 characters alpha/numeric modifier (Suffix)
               </li>
             </ul>
           </>
