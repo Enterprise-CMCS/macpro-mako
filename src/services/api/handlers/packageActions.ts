@@ -86,7 +86,7 @@ export async function withdrawRai(body: unknown, rais: any) {
   const result = withdrawRaiSchema.safeParse(body);
   console.log("Withdraw body is", body);
 
-  if (result.success) {
+  if (result.success === true) {
     console.log("CMS withdrawing an RAI");
     console.log(rais);
     console.log("LATEST RAI KEY: " + activeKey);
@@ -147,6 +147,8 @@ export async function withdrawRai(body: unknown, rais: any) {
     }
 
     console.log(body);
+  } else {
+    console.log("An error occured with withdraw payload: ", result.error);
   }
 }
 
