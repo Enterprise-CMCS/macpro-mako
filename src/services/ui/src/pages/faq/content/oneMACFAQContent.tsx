@@ -118,13 +118,8 @@ export const oneMACFAQContent: FAQContent[] = [
                   State Submitter
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  Creates new paper-based submissions and submits packages to
-                  CMS for review:
-                  <ul>
-                    <li>Medicaid State Plan Amendments (SPAs)</li>
-                    <li>1915(b) waivers</li>
-                    <li>1915(c) waivers</li>
-                  </ul>
+                  State submitter role within OneMAC can submit, edit, and view
+                  packages for the state in which they are assigned
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   CMS System Admin
@@ -135,7 +130,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   CMS Reviewer
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  Reviews and acts on State Submitter user role requests
+                  Can take action on packages within OneMAC Micro
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   CMS Role Approver
@@ -146,8 +141,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   CMS Read Only
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  Reviews and acts on State System Administrator user role
-                  requests
+                  Read only roles within OneMAC Micro
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   State System Admin
