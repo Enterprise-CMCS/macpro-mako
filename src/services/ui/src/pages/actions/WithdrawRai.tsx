@@ -113,7 +113,7 @@ export const WithdrawRaiForm = () => {
         >
           <section>
             <h1 className="font-bold text-2xl mb-2">
-              Withdraw Formal RAI Details
+              Withdraw Formal RAI Response Details
             </h1>
             <p className="my-1">
               <I.RequiredIndicator /> Indicates a required field
