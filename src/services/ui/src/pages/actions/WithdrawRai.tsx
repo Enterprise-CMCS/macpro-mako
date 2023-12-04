@@ -118,7 +118,10 @@ export const WithdrawRaiForm = () => {
             <p className="my-1">
               <I.RequiredIndicator /> Indicates a required field
             </p>
-            <FormDescriptionText />
+            <p className="font-light mb-6 max-w-4xl">
+              Complete this form to withdraw the Formal RAI response. Once
+              complete, you and CMS will receive an email confirmation.
+            </p>
           </section>
           <section className="grid grid-cols-2">
             <h3 className="text-2xl font-bold font-sans col-span-2">
