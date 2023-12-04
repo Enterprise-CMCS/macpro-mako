@@ -20,7 +20,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
-  const isProd = window && window.location.hostname.includes("mako.cms.gov");
+  const isProd = window && window.location.hostname === "mako.cms.gov";
   return [
     {
       name: "Home",
