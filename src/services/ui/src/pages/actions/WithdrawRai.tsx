@@ -58,7 +58,6 @@ const formSchema = z
   );
 
 type FormSchema = z.infer<typeof formSchema>;
-type UploadKeys = keyof FormSchema["attachments"];
 
 const attachmentList = [
   {
@@ -84,8 +83,6 @@ export const WithdrawRaiForm = () => {
 
   const { data: item } = useGetItem(id!);
 
-  console.log(form.formState.errors);
-
   const user = useGetUser();
 
   const handleSubmit: SubmitHandler<FormSchema> = async (data) => {
@@ -109,12 +106,6 @@ export const WithdrawRaiForm = () => {
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs
-        options={DETAILS_AND_ACTIONS_CRUMBS({
-          id: id || "",
-          action: Action.WITHDRAW_RAI,
-        })}
-      />
       <I.Form {...form}>
         <form
           className="my-6 space-y-8 mx-auto"
@@ -122,7 +113,7 @@ export const WithdrawRaiForm = () => {
         >
           <section>
             <h1 className="font-bold text-2xl mb-2">
-              Medicaid Withdraw Formal RAI Details
+              Withdraw Formal RAI Details
             </h1>
             <p className="my-1">
               <I.RequiredIndicator /> Indicates a required field
