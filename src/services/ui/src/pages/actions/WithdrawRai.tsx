@@ -1,62 +1,23 @@
-import {
-  BreadCrumbs,
-  ConfirmationModal,
-  SimplePageContainer,
-} from "@/components";
+import { ConfirmationModal, SimplePageContainer } from "@/components";
 import * as I from "@/components/Inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "./actions-breadcrumbs";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import {
-  Action,
-  Authority,
-  OneMacTransform,
-  WithdrawRaiRecord,
-} from "shared-types";
-import { FormDescriptionText } from "@/components/FormDescriptionText";
+import { Authority } from "shared-types";
 import { useGetItem } from "@/api/useGetItem";
 import { useGetUser } from "@/api/useGetUser";
-import { API } from "aws-amplify";
 import { PackageActionForm } from "./PackageActionForm";
 import { submit } from "@/api/submissionService";
 import { useState } from "react";
 import { FAQ_TARGET } from "@/routes";
 
-const formSchema = z
-  .object({
-    additionalInformation: z.string().max(4000).nullish(),
-    attachments: z.object({
-      supportingDocumentation: z.array(z.instanceof(File)).nullish(),
-    }),
-  })
-  .refine(
-    (data) => {
-      return (
-        !!data.additionalInformation ||
-        !!data.attachments?.supportingDocumentation
-      );
-    },
-    {
-      path: ["additionalInformation"],
-      message:
-        "Either additional information or supporting documentation is required",
-    }
-  )
-  .refine(
-    (data) => {
-      return (
-        !!data.additionalInformation ||
-        !!data.attachments?.supportingDocumentation
-      );
-    },
-    {
-      path: ["attachments", "supportingDocumentation"],
-      message:
-        "Either additional information or supporting documentation is required",
-    }
-  );
+const formSchema = z.object({
+  additionalInformation: z.string().max(4000),
+  attachments: z.object({
+    supportingDocumentation: z.array(z.instanceof(File)).nullish(),
+  }),
+});
 
 type FormSchema = z.infer<typeof formSchema>;
 
@@ -204,7 +165,6 @@ export const WithdrawRaiForm = () => {
                   <I.FormLabel className="font-normal">
                     Add anything else that you would like to share with CMS.
                   </I.FormLabel>
-                  <I.FormMessage />
                   <I.Textarea
                     {...field}
                     value={field.value || ""}
