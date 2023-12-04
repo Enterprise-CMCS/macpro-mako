@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import type { OsField } from "./types";
+import type { OsField } from "../types";
 import * as Consts from "./consts";
 import { useOsAggregate, useOsParams } from "../useOpensearch";
 import { OsFilterValue, OsRangeValue } from "shared-types";
@@ -10,9 +10,11 @@ import { useGetUser } from "@/api/useGetUser";
 export const useFilterDrawer = () => {
   const { drawerOpen, setDrawerState } = useFilterDrawerContext();
   const { data: user } = useGetUser();
-  const [filters, setFilters] = useState(Consts.FILTER_GROUPS(user));
-  const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const params = useOsParams();
+  const [filters, setFilters] = useState(
+    Consts.FILTER_GROUPS(user, params.state.tab)
+  );
+  const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const labelMap = useLabelMapping();
   const _aggs = useOsAggregate();
 
@@ -76,6 +78,11 @@ export const useFilterDrawer = () => {
     });
     setAccordionValues(updateAccordions);
   }, [params.state.filters, drawerOpen]);
+
+  // change base filters per tab
+  useEffect(() => {
+    setFilters(Consts.FILTER_GROUPS(user, params.state.tab));
+  }, [params.state.tab]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce((STATE, [KEY, AGG]) => {

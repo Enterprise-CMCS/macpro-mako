@@ -6,6 +6,19 @@ import { BLANK_VALUE } from "@/consts";
 
 export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
   if (!data) return null;
+  const actionType =
+    data.planType === "Medicaid SPA"
+      ? []
+      : [
+          {
+            label: "Action Type",
+            value: data.actionType
+              ? LABELS[data.actionType as keyof typeof LABELS] ||
+                data.actionType
+              : BLANK_VALUE,
+          },
+        ];
+
   const detailFields = [
     {
       label: "Submission ID",
@@ -19,12 +32,7 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
       label: "Type",
       value: removeUnderscoresAndCapitalize(data.planType),
     },
-    {
-      label: "Action Type",
-      value: data.actionType
-        ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
-        : BLANK_VALUE,
-    },
+    ...actionType,
     {
       label: "Initial Submission Date",
       value: data.submissionDate
