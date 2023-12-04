@@ -3,7 +3,6 @@ import { onemacAttachmentSchema } from "../onemac";
 
 export const withdrawPackageSchema = (attachmentArrayType: ZodArray<any>) =>
   z.object({
-    id: z.string(),
     additionalInformation: z
       .string()
       .max(4000, "This field may only be up to 4000 characters.")
