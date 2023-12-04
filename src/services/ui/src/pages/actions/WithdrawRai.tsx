@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "./actions-breadcrumbs";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Action,
   Authority,
@@ -22,6 +22,7 @@ import { API } from "aws-amplify";
 import { PackageActionForm } from "./PackageActionForm";
 import { submit } from "@/api/submissionService";
 import { useState } from "react";
+import { FAQ_TARGET } from "@/routes";
 
 const formSchema = z
   .object({
@@ -141,6 +142,42 @@ export const WithdrawRaiForm = () => {
             </div>
           </section>
           <h3 className="font-bold text-2xl font-sans">Attachments</h3>
+          <p>
+            Maximum file size of 80 MB per attachment.{" "}
+            <strong>You can add multiple files per attachment type.</strong>{" "}
+            Read the description for each of the attachment types on the{" "}
+            {
+              <Link
+                to="/faq/#medicaid-spa-rai-attachments"
+                target={FAQ_TARGET}
+                rel="noopener noreferrer"
+                className="text-blue-700 hover:underline"
+              >
+                FAQ Page
+              </Link>
+            }
+            .
+          </p>
+          <p>
+            We accept the following file formats:{" "}
+            <strong className="bold">.docx, .jpg, .png, .pdf, .xlsx,</strong>{" "}
+            and a few others. See the full list on the{" "}
+            {
+              <Link
+                to="/faq/#acceptable-file-formats"
+                target={FAQ_TARGET}
+                rel="noopener noreferrer"
+                className="text-blue-700 hover:underline"
+              >
+                FAQ Page
+              </Link>
+            }
+            .
+          </p>
+          <p>
+            <I.RequiredIndicator />
+            At least one attachment is required.
+          </p>
           <I.FormField
             name="attachments.supportingDocumentation"
             control={form.control}
