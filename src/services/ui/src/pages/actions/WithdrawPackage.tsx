@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import { Alert, LoadingSpinner } from "@/components";
 import { buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
-import { useSubmissionService } from "@/api/submissionService";
+import { submit, useSubmissionService } from "@/api/submissionService";
 
 const withdrawPackageFormSchema = withdrawPackageSchema(
   z.array(z.instanceof(File))
@@ -45,20 +45,40 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   const form = useForm<WithdrawPackageFormSchema>({
     resolver: zodResolver(withdrawPackageFormSchema),
   });
-  const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
-    id: string;
-  }>({
-    data: { id: id! },
-    endpoint: buildActionUrl(type!),
-    user,
-  });
+  // });
+  // const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
+  //   id: string;
+  // }>({
+  //   data: { id: id! },
+  //   endpoint: buildActionUrl(type!),
+  //   user,
+  // });
 
-  const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
-  const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
+  // const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
+  // const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (isSuccess) setSuccessModalOpen(true);
-  }, [isSuccess]);
+  // useEffect(() => {
+  //   if (isSuccess) setSuccessModalOpen(true);
+  // }, [isSuccess]);
+
+  const handleSubmit: SubmitHandler<WithdrawPackageFormSchema> = async (
+    data
+  ) => {
+    try {
+      await submit<WithdrawPackageFormSchema & { id: string }>({
+        data: {
+          id: id!, // Declared here because it's not part of the form data
+          ...data,
+        },
+        endpoint: buildActionUrl(type!),
+        user,
+      });
+      setSuccessModalIsOpen(true);
+    } catch (err) {
+      console.log(err);
+      setErrorModalIsOpen(true);
+    }
+  };
 
   if (!item) return <Navigate to={ROUTES.DASHBOARD} />; // Prevents optional chains below
   return (
@@ -227,3 +247,10 @@ export const WithdrawPackage = () => (
     <WithdrawPackageForm />
   </PackageActionForm>
 );
+function setSuccessModalIsOpen(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
+
+function setErrorModalIsOpen(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
