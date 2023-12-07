@@ -238,13 +238,8 @@ export const WithdrawRaiForm = () => {
           navigate(`/details?id=${id}`);
         }}
         onCancel={() => setSuccessModalIsOpen(false)}
-        title="Submission Successful"
-        body={
-          <p>
-            Please be aware that it may take up to a minute for your submission
-            to show in the Dashboard.
-          </p>
-        }
+        title="Withdraw Formal RAI Response request has been submitted."
+        body={<p>Withdraw Formal RAI Response request has been submitted.</p>}
         cancelButtonVisible={false}
         acceptButtonText="Exit to Package Details"
       />
