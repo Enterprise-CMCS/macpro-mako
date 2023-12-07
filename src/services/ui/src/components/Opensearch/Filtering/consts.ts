@@ -61,7 +61,7 @@ const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       value: { gte: undefined, lte: undefined },
     },
     "leadAnalystName.keyword": {
-      label: "CPOC",
+      label: "CPOC Name",
       field: "leadAnalystName.keyword",
       component: "multiSelect",
       prefix: "must",
