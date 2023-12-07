@@ -15,7 +15,11 @@ import {
   RaiResponseTransform,
   transformRaiResponse,
 } from "shared-types/onemac";
-import { Action, withdrawRecordSchema, WithdrawRecord } from "shared-types";
+import {
+  Action,
+  toggleWithdrawRaiEnabledSchema,
+  WithdrawRecord,
+} from "shared-types";
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -121,7 +125,7 @@ export const onemac: Handler = async (event) => {
           switch (record.actionType) {
             case Action.ENABLE_RAI_WITHDRAW:
             case Action.DISABLE_RAI_WITHDRAW: {
-              const result = withdrawRecordSchema.safeParse(record);
+              const result = toggleWithdrawRaiEnabledSchema.safeParse(record);
               if (result.success) {
                 // write to opensearch
                 // account for compaction

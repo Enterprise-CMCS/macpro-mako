@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const withdrawRecordSchema = z.object({
+export const toggleWithdrawRaiEnabledSchema = z.object({
   raiWithdrawEnabled: z.boolean(),
 });
-export type WithdrawRecord = z.infer<typeof withdrawRecordSchema>;
+export type WithdrawRecord = z.infer<typeof toggleWithdrawRaiEnabledSchema>;
