@@ -144,20 +144,26 @@ export const WithdrawRaiForm = () => {
             <I.RequiredIndicator />
             At least one attachment is required.
           </p>
-          <I.FormField
-            name="attachments.supportingDocumentation"
-            control={form.control}
-            render={({ field }) => (
-              <I.FormItem>
-                <I.FormLabel>Supporting Documentation</I.FormLabel>
-                <I.FormMessage />
-                <I.Upload
-                  files={field?.value ?? []}
-                  setFiles={field.onChange}
-                />
-              </I.FormItem>
-            )}
-          />
+          {attachmentList.map(({ name, label, required }) => (
+            <I.FormField
+              key={name}
+              control={form.control}
+              name={`attachments.${name}`}
+              render={({ field }) => (
+                <I.FormItem>
+                  <I.FormLabel>
+                    {label}
+                    {required ? <I.RequiredIndicator /> : ""}
+                  </I.FormLabel>
+                  <I.Upload
+                    files={field?.value ?? []}
+                    setFiles={field.onChange}
+                  />
+                  <I.FormMessage />
+                </I.FormItem>
+              )}
+            />
+          ))}
           <I.FormField
             control={form.control}
             name="additionalInformation"
