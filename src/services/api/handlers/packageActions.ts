@@ -12,7 +12,12 @@ const config = {
   database: "SEA",
 };
 
-import { Action, raiSchema, RaiSchema } from "shared-types";
+import { Action } from "shared-types";
+import { issueRaiSchema, IssueRai } from "shared-types/action-types/issue-rai";
+import {
+  raiResponseSchema,
+  RaiResponse,
+} from "shared-types/action-types/respond-to-rai";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
@@ -20,7 +25,7 @@ import { getActiveRai, getLatestRai } from "shared-utils";
 
 const TOPIC_NAME = process.env.topicName;
 
-export async function issueRai(body: RaiSchema) {
+export async function issueRai(body: IssueRai) {
   console.log("CMS issuing a new RAI");
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
@@ -45,7 +50,7 @@ export async function issueRai(body: RaiSchema) {
     console.log(result2);
 
     // write to kafka here
-    const result = raiSchema.safeParse(body);
+    const result = issueRaiSchema.safeParse(body);
     if (result.success === false) {
       console.log(
         "RAI Validation Error. The following record failed to parse: ",
@@ -78,7 +83,7 @@ export async function withdrawRai(id, timestamp) {
   console.log("CMS withdrawing an RAI");
 }
 
-export async function respondToRai(body: RaiSchema, rais: any) {
+export async function respondToRai(body: RaiResponse, rais: any) {
   console.log("State responding to RAI");
   const activeKey = getActiveRai(rais).key;
   console.log("LATEST RAI KEY: " + activeKey);
@@ -106,7 +111,10 @@ export async function respondToRai(body: RaiSchema, rais: any) {
     console.log(result2);
 
     //   // write to kafka here
-    const result = raiSchema.safeParse({ ...body, requestedDate: activeKey });
+    const result = raiResponseSchema.safeParse({
+      ...body,
+      requestedDate: activeKey,
+    });
     if (result.success === false) {
       console.log(
         "RAI Validation Error. The following record failed to parse: ",
