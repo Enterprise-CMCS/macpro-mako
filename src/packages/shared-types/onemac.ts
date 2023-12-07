@@ -65,6 +65,28 @@ export const transformRaiIssue = (id: string) => {
 };
 export type RaiIssueTransform = z.infer<ReturnType<typeof transformRaiIssue>>;
 
+export const transformRaiWithdraw = (id: string) => {
+  return raiSchema.transform((data) => ({
+    id,
+    rais: {
+      [data.requestedDate]: {
+        withdraw: {
+          attachments:
+            data.attachments?.map((attachment) => {
+              return handleAttachment(attachment);
+            }) ?? null,
+          additionalInformation: data.additionalInformation,
+          submitterName: data.submitterName,
+          submitterEmail: data.submitterEmail,
+        },
+      },
+    },
+  }));
+};
+export type RaiWithdrawTransform = z.infer<
+  ReturnType<typeof transformRaiWithdraw>
+>;
+
 export const transformRaiResponse = (id: string) => {
   return raiSchema.transform((data) => ({
     id,

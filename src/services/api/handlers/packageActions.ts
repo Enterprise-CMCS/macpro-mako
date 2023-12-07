@@ -81,9 +81,9 @@ export async function issueRai(body: RaiSchema) {
   }
 }
 
-export async function withdrawRai(body: unknown, rais: any) {
+export async function withdrawRai(body: RaiSchema, rais: any) {
   const activeKey = getLatestRai(rais).key;
-  const result = withdrawRaiSchema.safeParse(body);
+  const result = raiSchema.safeParse({ ...body, requestedDate: activeKey });
   console.log("Withdraw body is", body);
 
   if (result.success === true) {
@@ -98,7 +98,7 @@ export async function withdrawRai(body: unknown, rais: any) {
       // Issue RAI
       const query1 = `
         UPDATE SEA.dbo.RAI
-          SET RAI_RECEIVED_DATE = NULL
+        SET RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${result.data.withdrawnDate}', 10)), CAST('19700101' AS DATETIME))
           WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${activeKey}', 10)), CAST('19700101' AS DATETIME))
       `;
       const result1 = await transaction.request().query(query1);
@@ -113,16 +113,13 @@ export async function withdrawRai(body: unknown, rais: any) {
       const result2 = await transaction.request().query(query2);
       console.log(result2);
 
-      const transformedResult = raiTransform(activeKey).parse(result.data);
+      // const transformedResult = raiTransform(activeKey).parse(result.data);
 
       // write to kafka here
       await produceMessage(
         TOPIC_NAME,
         result.data.id,
-        JSON.stringify({
-          ...transformedResult,
-          actionType: Action.WITHDRAW_RAI,
-        })
+        JSON.stringify({ ...result.data, actionType: Action.WITHDRAW_RAI })
       );
 
       // Commit transaction
@@ -140,6 +137,7 @@ export async function withdrawRai(body: unknown, rais: any) {
     console.log(body);
   } else {
     console.log("An error occured with withdraw payload: ", result.error);
+    throw "An error occured with withdraw payload.";
   }
 }
 

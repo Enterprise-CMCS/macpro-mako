@@ -126,6 +126,56 @@ export const RaiList = (data: OsMainSourceItem) => {
                           <p className="ml-4">No Response Recorded</p>
                         )}
                       </div>
+
+                      <div className="ml-8">
+                        <h3 className="text-xl font-semibold mb-2">
+                          State Withdrawal Info
+                        </h3>
+                        {data.rais[key].withdrawnDate ? ( // if has data
+                          <>
+                            <h4 className="text-l font-semibold mb-2 ml-4">
+                              Submitted Time:
+                            </h4>
+                            <p className="mb-4 text-sm ml-8">
+                              {format(
+                                new Date(data.rais[key].withdrawnDate || ""), // idky its complaining, because
+                                "EEE, MMM d yyyy, h:mm:ss a"
+                              )}
+                            </p>
+                            <h4 className="text-l font-semibold mb-2 ml-4">
+                              Submitted By:
+                            </h4>
+                            <p className="mb-4 text-sm ml-8">
+                              {data.rais[key].withdraw?.submitterName ||
+                                BLANK_VALUE}
+                            </p>
+                            <p className="text-l font-semibold mb-2 ml-4 ">
+                              Attachments
+                            </p>
+                            {data.rais[key].withdraw?.attachments ? (
+                              <div className="ml-4">
+                                <Attachmentslist
+                                  id={data.id}
+                                  attachments={
+                                    data.rais[key].withdraw?.attachments || [] // idky it's making me do this?  do i need to check that attachmetns exists and its not null?
+                                  }
+                                />
+                              </div>
+                            ) : (
+                              <p className="ml-4">{BLANK_VALUE}</p>
+                            )}
+                            <h4 className="text-l font-semibold mb-2 ml-4">
+                              Additional Information
+                            </h4>
+                            <p className="mb-4 text-sm ml-8">
+                              {data.rais[key].withdraw?.additionalInformation ??
+                                BLANK_VALUE}
+                            </p>
+                          </>
+                        ) : (
+                          <p className="ml-4">No Withdraw Recorded</p>
+                        )}
+                      </div>
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>

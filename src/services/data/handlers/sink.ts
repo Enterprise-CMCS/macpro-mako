@@ -14,6 +14,7 @@ import {
   transformRaiIssue,
   RaiResponseTransform,
   transformRaiResponse,
+  transformRaiWithdraw,
 } from "shared-types/onemac";
 import {
   Action,
@@ -170,11 +171,12 @@ export const onemac: Handler = async (event) => {
             case Action.WITHDRAW_RAI: {
               console.log("WITHDRAWING RAI");
               console.log("Withdraw Record", record);
-              const result = raiActionSchema.safeParse(record);
+
+              const result = transformRaiWithdraw(id).safeParse(record);
               if (result.success === true) {
                 oneMacRecords.push({
                   ...result.data,
-                  raiWithdrawEnabled: false,
+                  raiWithdrawEnabled: null,
                 });
               } else {
                 console.log(

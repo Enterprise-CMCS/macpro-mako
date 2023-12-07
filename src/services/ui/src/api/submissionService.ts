@@ -87,7 +87,7 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...data,
         ...userDetails,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
-        withdrawDate: seaToolFriendlyTimestamp,
+        withdrawnDate: seaToolFriendlyTimestamp,
       };
     case buildActionUrl(Action.ISSUE_RAI):
       return {
