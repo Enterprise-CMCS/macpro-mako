@@ -107,7 +107,7 @@ export async function withdrawRai(body: unknown, rais: any) {
       // Update Status
       const query2 = `
       UPDATE SEA.dbo.State_Plan
-        SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}')
+        SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}')
         WHERE ID_Number = '${result.data.id}'
     `;
       const result2 = await transaction.request().query(query2);
