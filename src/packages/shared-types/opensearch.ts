@@ -1,6 +1,6 @@
 import { SeaToolTransform } from "./seatool";
-import { OneMacTransform, RaiIssueTransform } from "./onemac";
-import { Action } from "./actions";
+import { OneMacTransform } from "./onemac";
+import { RaiIssueTransform } from "./action-types/issue-rai";
 
 export type OsHit<T> = {
   _index: string;

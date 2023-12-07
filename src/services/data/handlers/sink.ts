@@ -10,11 +10,15 @@ import {
   OneMacRecordsToDelete,
   OneMacTransform,
   transformOnemac,
+} from "shared-types/onemac";
+import {
   RaiIssueTransform,
   transformRaiIssue,
+} from "shared-types/action-types/issue-rai";
+import {
   RaiResponseTransform,
   transformRaiResponse,
-} from "shared-types/onemac";
+} from "shared-types/action-types/respond-to-rai";
 import {
   Action,
   toggleWithdrawRaiEnabledSchema,

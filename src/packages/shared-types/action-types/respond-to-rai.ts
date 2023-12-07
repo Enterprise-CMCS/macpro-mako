@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { onemacAttachmentSchema, handleAttachment } from "../attachments";
 
-export const respondToRaiSchema = z.object({
+export const raiResponseSchema = z.object({
   id: z.string(),
   requestedDate: z.number(),
   responseDate: z.number(),
@@ -10,10 +10,10 @@ export const respondToRaiSchema = z.object({
   submitterName: z.string(),
   submitterEmail: z.string(),
 });
-export type RespondToRai = z.infer<typeof respondToRaiSchema>;
+export type RaiResponse = z.infer<typeof raiResponseSchema>;
 
 export const transformRaiResponse = (id: string) => {
-  return respondToRaiSchema.transform((data) => ({
+  return raiResponseSchema.transform((data) => ({
     id,
     rais: {
       [data.requestedDate]: {
