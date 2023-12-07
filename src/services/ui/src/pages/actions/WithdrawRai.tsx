@@ -1,4 +1,8 @@
-import { ConfirmationModal, SimplePageContainer } from "@/components";
+import {
+  ConfirmationModal,
+  LoadingSpinner,
+  SimplePageContainer,
+} from "@/components";
 import * as I from "@/components/Inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -180,6 +184,11 @@ export const WithdrawRaiForm = () => {
               );
             }}
           />
+          {form.formState.isSubmitting && (
+            <div className="p-4">
+              <LoadingSpinner />
+            </div>
+          )}
           <div className="flex gap-2">
             <I.Button
               disabled={form.formState.isSubmitting}
