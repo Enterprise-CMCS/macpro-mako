@@ -2,7 +2,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/Inputs";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { useState } from "react";
-import { Action, ItemResult, withdrawPackageSchema } from "shared-types";
+import { Action, ItemResult } from "shared-types";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { PackageActionForm } from "./PackageActionForm";
 import { ActionFormIntro, PackageInfo } from "./common";
@@ -16,9 +16,17 @@ import { AttachmentRecipe, buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
 
-const withdrawPackageFormSchema = withdrawPackageSchema(
-  z.array(z.instanceof(File))
-);
+// Temporary, will be refactored to an extendable schema with Brian/Mike's back-end
+// work.
+const withdrawPackageFormSchema = z.object({
+  additionalInformation: z
+    .string()
+    .max(4000, "This field may only be up to 4000 characters.")
+    .optional(),
+  attachments: z.object({
+    supportingDocumentation: z.array(z.instanceof(File)).optional(),
+  }),
+});
 type WithdrawPackageFormSchema = z.infer<typeof withdrawPackageFormSchema>;
 const attachments: AttachmentRecipe<WithdrawPackageFormSchema>[] = [
   {

@@ -1,21 +1,17 @@
-import { z, ZodArray } from "zod";
+import { z } from "zod";
 import { onemacAttachmentSchema } from "../onemac";
 
-export const withdrawPackageSchema = (attachmentArrayType: ZodArray<any>) =>
-  z.object({
-    // id: z.string(),
-    additionalInformation: z
-      .string()
-      .max(4000, "This field may only be up to 4000 characters.")
-      .optional(),
-    attachments: z.object({
-      supportingDocumentation: attachmentArrayType.optional(),
-    }),
-  });
+// Temporary, will be refactored to an extendable schema with Brian/Mike's back-end
+// work.
+export const withdrawPackageEventSchema = z.object({
+  id: z.string(),
+  additionalInformation: z
+    .string()
+    .max(4000, "This field may only be up to 4000 characters.")
+    .optional(),
+  attachments: z.array(onemacAttachmentSchema),
+});
 
-export const withdrawPackageEventSchema = withdrawPackageSchema(
-  z.array(onemacAttachmentSchema)
-);
 export type WithdrawPackageEventSchema = z.infer<
   typeof withdrawPackageEventSchema
 >;
