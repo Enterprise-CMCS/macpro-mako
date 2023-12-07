@@ -239,7 +239,12 @@ export const WithdrawRaiForm = () => {
         }}
         onCancel={() => setSuccessModalIsOpen(false)}
         title="Withdraw Formal RAI Response request has been submitted."
-        body={<p>Withdraw Formal RAI Response request has been submitted.</p>}
+        body={
+          <p>
+            Your Formal RAI Response has been withdrawn successfully. If CMS
+            needs any additional information, they will follow up by email.
+          </p>
+        }
         cancelButtonVisible={false}
         acceptButtonText="Exit to Package Details"
       />
