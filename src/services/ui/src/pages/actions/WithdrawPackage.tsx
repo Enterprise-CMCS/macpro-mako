@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
 import { Link } from "react-router-dom";
 import { LoadingSpinner } from "@/components";
-import { buildActionUrl } from "@/lib";
+import { AttachmentRecipe, buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
 
@@ -20,14 +20,7 @@ const withdrawPackageFormSchema = withdrawPackageSchema(
   z.array(z.instanceof(File))
 );
 type WithdrawPackageFormSchema = z.infer<typeof withdrawPackageFormSchema>;
-type UploadKey = keyof WithdrawPackageFormSchema["attachments"];
-type AttachmentRecipe = {
-  readonly name: UploadKey;
-  readonly label: string;
-  readonly required: boolean;
-};
-
-const attachments: AttachmentRecipe[] = [
+const attachments: AttachmentRecipe<WithdrawPackageFormSchema>[] = [
   {
     name: "supportingDocumentation",
     label: "Supporting Documentation",
