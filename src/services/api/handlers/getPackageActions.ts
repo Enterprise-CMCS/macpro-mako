@@ -53,9 +53,7 @@ export const packageActionsForResult = (
       }
     }
   } else if (isStateUser(user)) {
-    if (result._source.seatoolStatus != SEATOOL_STATUS.WITHDRAWN) {
-      actions.push(Action.WITHDRAW_PACKAGE);
-    }
+    actions.push(Action.WITHDRAW_PACKAGE);
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING_RAI:
         if (activeRai) {
