@@ -89,3 +89,8 @@ export type OsAggResult = Record<
     buckets: OsAggBucket[];
   }
 >;
+
+export type OsExportHeaderOptions<TData> = {
+  transform: (data: TData) => string;
+  name: string;
+};

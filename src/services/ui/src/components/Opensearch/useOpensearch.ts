@@ -5,7 +5,8 @@ import { OsQueryState, SearchData, UserRoles } from "shared-types";
 import { createSearchFilterable } from "./utils";
 import { useQuery } from "@tanstack/react-query";
 import { useGetUser } from "@/api/useGetUser";
-export type OsTab = "waivers" | "spas";
+import { OsTab } from "./types";
+
 export const DEFAULT_FILTERS: Record<OsTab, Partial<OsParamsState>> = {
   spas: {
     filters: [
