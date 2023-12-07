@@ -8,6 +8,6 @@ export * from "./uploads";
 export * from "./actions";
 export * from "./attachments";
 export * from "./authority";
-export * from "./action-types/withdraw-record";
+export * from "./action-types/toggle-withdraw-rai-enabled";
 export * from "./forms";
 export * from "./inputs";
