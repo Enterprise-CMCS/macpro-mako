@@ -12,14 +12,7 @@ const config = {
   database: "SEA",
 };
 
-import {
-  Action,
-  raiSchema,
-  RaiSchema,
-  raiTransform,
-  WithdrawRaiRecord,
-  withdrawRaiSchema,
-} from "shared-types";
+import { Action, raiSchema, RaiSchema } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
@@ -112,8 +105,6 @@ export async function withdrawRai(body: RaiSchema, rais: any) {
     `;
       const result2 = await transaction.request().query(query2);
       console.log(result2);
-
-      // const transformedResult = raiTransform(activeKey).parse(result.data);
 
       // write to kafka here
       await produceMessage(
