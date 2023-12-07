@@ -174,6 +174,7 @@ export async function withdrawPackage(body: WithdrawPackageEventSchema) {
   `;
 
   try {
+    await transaction.begin();
     const txnResult = await transaction.request().query(query);
     console.log(txnResult);
     await produceMessage(
