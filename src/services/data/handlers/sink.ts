@@ -5,24 +5,16 @@ import {
   SeaToolRecordsToDelete,
   SeaToolTransform,
   transformSeatoolData,
-} from "shared-types/seatool";
-import {
   OneMacRecordsToDelete,
   OneMacTransform,
   transformOnemac,
-} from "shared-types/onemac";
-import {
   RaiIssueTransform,
   transformRaiIssue,
-} from "shared-types/action-types/issue-rai";
-import {
   RaiResponseTransform,
   transformRaiResponse,
-} from "shared-types/action-types/respond-to-rai";
-import {
-  Action,
   toggleWithdrawRaiEnabledSchema,
-  WithdrawRecord,
+  ToggleRaiWithdrawEnabled,
+  Action,
 } from "shared-types";
 
 if (!process.env.osDomain) {
@@ -109,7 +101,7 @@ export const onemac: Handler = async (event) => {
   const oneMacRecords: (
     | OneMacTransform
     | OneMacRecordsToDelete
-    | (WithdrawRecord & { id: string })
+    | (ToggleRaiWithdrawEnabled & { id: string })
     | RaiIssueTransform
     | RaiResponseTransform
   )[] = [];
