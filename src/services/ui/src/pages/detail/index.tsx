@@ -11,7 +11,7 @@ import {
   SubmissionInfo,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { ItemResult, UserRoles } from "shared-types";
+import { ItemResult, UserRoles, SEATOOL_STATUS, getStatus } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -40,16 +40,22 @@ const StatusCard = ({
 }: {
   status: string;
   raiWithdrawEnabled: boolean;
-}) => (
-  <DetailCardWrapper title={"Status"}>
-    <div>
-      <h2 className="text-xl font-semibold">{status}</h2>
-      {raiWithdrawEnabled && (
-        <em className="text-xs">{"Withdraw Formal RAI Response - Enabled"}</em>
-      )}
-    </div>
-  </DetailCardWrapper>
-);
+}) => {
+  const transformedStatuses = getStatus(SEATOOL_STATUS.WITHDRAWN);
+  return (
+    <DetailCardWrapper title={"Status"}>
+      <div>
+        <h2 className="text-xl font-semibold">{status}</h2>
+        {raiWithdrawEnabled &&
+        !Object.values(transformedStatuses).includes(status) ? (
+          <em className="text-xs">
+            {"Withdraw Formal RAI Response - Enabled"}
+          </em>
+        ) : null}
+      </div>
+    </DetailCardWrapper>
+  );
+};
 const PackageActionsCard = ({ id }: { id: string }) => {
   const { data, error } = useGetPackageActions(id);
   if (!data?.actions || error) return <LoadingSpinner />;
