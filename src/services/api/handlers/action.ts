@@ -12,6 +12,7 @@ import {
   issueRai,
   respondToRai,
   toggleRaiResponseWithdraw,
+  withdrawRai,
 } from "./packageActions";
 
 export const handler = async (event: APIGatewayEvent) => {
@@ -64,6 +65,9 @@ export const handler = async (event: APIGatewayEvent) => {
         break;
       case Action.DISABLE_RAI_WITHDRAW:
         await toggleRaiResponseWithdraw(body, false);
+        break;
+      case Action.WITHDRAW_RAI:
+        await withdrawRai(body, result._source.rais);
         break;
       default:
         throw `No ${actionType} action available`;

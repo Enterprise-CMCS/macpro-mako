@@ -53,6 +53,7 @@ export const handler = async (event: APIGatewayEvent) => {
       ...Object.values(results.hits.hits[0]._source.rais).flatMap((entry) => [
         ...(entry.request?.attachments || []),
         ...(entry.response?.attachments || []),
+        ...(entry.withdraw?.attachments || []),
       ]),
     ];
 

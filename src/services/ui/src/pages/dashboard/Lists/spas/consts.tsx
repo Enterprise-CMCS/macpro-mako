@@ -78,7 +78,7 @@ export const TABLE_COLUMNS = (props?: {
     field: "raiReceivedDate",
     label: "Formal RAI Response",
     cell: (data) => {
-      if (!data.raiReceivedDate) return null;
+      if (!data.raiReceivedDate || data.raiWithdrawnDate) return null;
       return format(new Date(data.raiReceivedDate), "MM/dd/yyyy");
     },
   },

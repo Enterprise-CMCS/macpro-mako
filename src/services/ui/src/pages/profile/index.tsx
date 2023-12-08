@@ -64,6 +64,7 @@ export const Profile = () => {
           <div className="leading-9">
             <h3 className="font-bold">Role</h3>
             <p>{rolesDescriptions(data?.user?.["custom:cms-roles"])}</p>
+            <p>{data?.user?.["custom:cms-roles"]}</p>
           </div>
 
           <div className="leading-9">

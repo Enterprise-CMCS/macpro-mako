@@ -52,7 +52,7 @@ export const Attachmentslist = (data: AttachmentList) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.attachments ? (
+          {data.attachments && data.attachments.length > 0 ? (
             data.attachments.map((attachment) => {
               if (!attachment) return null;
               return (
@@ -101,7 +101,7 @@ export const Attachmentslist = (data: AttachmentList) => {
         </TableBody>
       </Table>
       <div className="flex justify-end">
-        {data.attachments && (
+        {data.attachments && data.attachments.length > 0 && (
           <Button
             variant={"secondary"}
             disabled={loading}

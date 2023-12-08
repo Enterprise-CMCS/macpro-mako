@@ -79,6 +79,13 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         authority: authority,
         origin: "micro",
       };
+    case buildActionUrl(Action.WITHDRAW_RAI):
+      return {
+        ...data,
+        ...userDetails,
+        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        withdrawnDate: seaToolFriendlyTimestamp,
+      };
     case buildActionUrl(Action.ISSUE_RAI):
       return {
         ...data,
