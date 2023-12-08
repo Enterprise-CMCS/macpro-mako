@@ -171,10 +171,11 @@ export const WithdrawRaiForm = () => {
               return (
                 <I.FormItem>
                   <h3 className="font-bold text-2xl font-sans">
-                    Explain your need for withdrawal. <I.RequiredIndicator />
+                    Additional Information
+                    <I.RequiredIndicator />
                   </h3>
                   <I.FormLabel className="font-normal">
-                    Add anything else that you would like to share with CMS.
+                    Explain your need for withdrawal.
                   </I.FormLabel>
                   <I.Textarea
                     {...field}
