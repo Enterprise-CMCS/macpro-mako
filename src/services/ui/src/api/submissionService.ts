@@ -27,10 +27,10 @@ type PreSignedURL = {
   bucket: string;
 };
 type UploadRecipe = PreSignedURL & {
-  data: File[];
+  data: File;
   title: string;
+  name: string;
 };
-type AttachmentsSchema = Record<string, File[] | undefined>;
 
 /** Pass in an array of UploadRecipes and get a back-end compatible object
  * to store attachment data */
@@ -38,17 +38,15 @@ const buildAttachmentObject = (
   recipes: UploadRecipe[]
 ): OnemacAttachmentSchema[] => {
   return recipes
-    .map((r) =>
-      r.data.map(
-        (f) =>
-          ({
-            key: r.key,
-            filename: f.name,
-            title: r.title,
-            bucket: r.bucket,
-            uploadDate: Date.now(),
-          } as OnemacAttachmentSchema)
-      )
+    .map(
+      (r) =>
+        ({
+          key: r.key,
+          filename: r.name,
+          title: r.title,
+          bucket: r.bucket,
+          uploadDate: Date.now(),
+        } as OnemacAttachmentSchema)
     )
     .flat();
 };
@@ -122,37 +120,47 @@ export const submit = async <T extends Record<string, unknown>>({
   authority,
 }: SubmissionServiceParameters<T>): Promise<SubmissionServiceResponse> => {
   if (data?.attachments) {
-    const attachments = data.attachments as AttachmentsSchema;
-    const validFilesetKeys = Object.keys(attachments).filter(
-      (key) => attachments[key] !== undefined
+    const validAttachmentSets = Object.fromEntries(
+      Object.entries(data.attachments).filter(([, value]) => value !== null)
     );
-    // TODO: Can this be a GET instead of POST w/ empty body
     const preSignedURLs: PreSignedURL[] = await Promise.all(
-      validFilesetKeys.map(() =>
-        API.post("os", "/getUploadUrl", {
-          body: {},
-        })
-      )
-    );
-    const uploadRecipes: UploadRecipe[] = preSignedURLs.map((obj, idx) => ({
-      ...obj,
-      data: attachments[validFilesetKeys[idx]] as File[],
-      // Add your attachments object key and file label value to the attachmentTitleMap
-      // for this transform to work. Else the title will just be the object key.
-      title:
-        attachmentTitleMap?.[validFilesetKeys[idx]] || validFilesetKeys[idx],
-    }));
-    // Upload attachments
-    await Promise.all(
-      uploadRecipes.map(({ url, data }) =>
-        data.map((file) =>
-          fetch(url, {
-            body: file,
-            method: "PUT",
+      Object.values(validAttachmentSets)
+        .flat()
+        .map(() =>
+          API.post("os", "/getUploadUrl", {
+            body: {},
           })
         )
-      )
     );
+
+    const uploadRecipes: UploadRecipe[] = [];
+    let idx = 0;
+    for (const key in validAttachmentSets) {
+      if (Array.isArray(validAttachmentSets[key])) {
+        // Iterate over each object in the array
+        validAttachmentSets[key].forEach((obj: File) => {
+          // Add a new key "title" with the value of the key
+          uploadRecipes.push({
+            data: obj,
+            title: attachmentTitleMap[key] || key,
+            ...preSignedURLs[idx],
+            name: obj.name,
+          });
+          idx++;
+        });
+      }
+    }
+
+    // Upload attachments
+    await Promise.all(
+      uploadRecipes.map(({ url, data }) => {
+        fetch(url, {
+          body: data,
+          method: "PUT",
+        });
+      })
+    );
+
     // Submit form data
     return await API.post("os", endpoint, {
       body: buildSubmissionPayload(
