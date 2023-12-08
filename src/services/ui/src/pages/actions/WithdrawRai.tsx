@@ -200,7 +200,13 @@ export const WithdrawRaiForm = () => {
             <I.Button
               disabled={form.formState.isSubmitting}
               type="button"
-              onClick={() => setAreYouSureModalIsOpen(true)}
+              onClick={async () => {
+                await form.trigger();
+
+                if (form.formState.isValid) {
+                  setAreYouSureModalIsOpen(true);
+                }
+              }}
               className="px-12"
             >
               Submit
