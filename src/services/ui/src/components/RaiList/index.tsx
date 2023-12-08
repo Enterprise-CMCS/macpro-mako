@@ -212,7 +212,7 @@ function getLatestStatus(rai: any) {
   } else if (latestDate === requestedDate) {
     retString += "Requested:";
   } else if (latestDate === withdrawnDate) {
-    retString += "Withdrawn:";
+    retString += "Response Withdrawn:";
   }
 
   // Check if latestDate is a valid number before formatting
