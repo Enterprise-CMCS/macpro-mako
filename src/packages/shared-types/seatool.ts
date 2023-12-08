@@ -43,6 +43,7 @@ function getLeadAnalyst(eventData: SeaToolSink) {
 const getRaiDate = (data: SeaToolSink) => {
   let raiReceivedDate: null | string = null;
   let raiRequestedDate: null | string = null;
+  let raiWithdrawnDate: null | string = null;
 
   const raiDate =
     data.RAI?.sort((a, b) => {
@@ -64,9 +65,13 @@ const getRaiDate = (data: SeaToolSink) => {
   if (raiDate && raiDate.RAI_REQUESTED_DATE) {
     raiRequestedDate = new Date(raiDate.RAI_REQUESTED_DATE).toISOString();
   }
+  if (raiDate && raiDate.RAI_WITHDRAWN_DATE) {
+    raiWithdrawnDate = new Date(raiDate.RAI_WITHDRAWN_DATE).toISOString();
+  }
   return {
     raiReceivedDate,
     raiRequestedDate,
+    raiWithdrawnDate,
   };
 };
 
@@ -136,7 +141,8 @@ const getDateStringOrNullFromEpoc = (epocDate: number | null) => {
 export const transformSeatoolData = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
-    const { raiReceivedDate, raiRequestedDate } = getRaiDate(data);
+    const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
+      getRaiDate(data);
     const seatoolStatus =
       data.SPW_STATUS?.find(
         (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
@@ -179,6 +185,7 @@ export const transformSeatoolData = (id: string) => {
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
+      raiWithdrawnDate,
       rais,
       state: data.STATE_PLAN.STATE_CODE,
       stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
