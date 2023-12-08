@@ -61,7 +61,7 @@ const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       value: { gte: undefined, lte: undefined },
     },
     "leadAnalystName.keyword": {
-      label: "CPOC",
+      label: "CPOC Name",
       field: "leadAnalystName.keyword",
       component: "multiSelect",
       prefix: "must",
@@ -82,7 +82,7 @@ const WAIVER_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       value: [],
     },
     "planType.keyword": {
-      label: "Plan Type",
+      label: "Type",
       field: "planType.keyword",
       component: "multiCheck",
       prefix: "must",
@@ -114,7 +114,7 @@ const WAIVER_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       value: { gte: undefined, lte: undefined },
     },
     raiReceivedDate: {
-      label: "RAI Response Date",
+      label: "Formal RAI Response",
       field: "raiReceivedDate",
       component: "dateRange",
       prefix: "must",
@@ -122,7 +122,7 @@ const WAIVER_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       value: { gte: undefined, lte: undefined },
     },
     "leadAnalystName.keyword": {
-      label: "CPOC",
+      label: "CPOC Name",
       field: "leadAnalystName.keyword",
       component: "multiSelect",
       prefix: "must",
