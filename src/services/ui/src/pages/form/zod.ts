@@ -1,15 +1,6 @@
 import { z } from "zod";
 import { isAuthorizedState } from "@/utils";
-import { getItem } from "@/api";
-
-async function doesNotExist(value: string) {
-  try {
-    await getItem(value);
-    return false;
-  } catch (error) {
-    return true;
-  }
-}
+import { idIsUnique } from "@/api";
 
 export const zSpaIdSchema = z
   .string()
@@ -20,7 +11,7 @@ export const zSpaIdSchema = z
   .refine((value) => isAuthorizedState(value), {
     message: "You do not have access to this state.",
   })
-  .refine(async (value) => doesNotExist(value), {
+  .refine(async (value) => idIsUnique(value), {
     message: "SPA ID already exists.",
   });
 

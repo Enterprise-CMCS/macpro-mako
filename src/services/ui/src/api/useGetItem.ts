@@ -2,10 +2,16 @@ import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ItemResult, ReactQueryApiError } from "shared-types";
 
-export const getItem = async (id: string): Promise<ItemResult> => {
-  const record = await API.post("os", "/item", { body: { id } });
+export const getItem = async (id: string): Promise<ItemResult> =>
+  await API.post("os", "/item", { body: { id } });
 
-  return record;
+export const idIsUnique = async (id: string) => {
+  try {
+    await getItem(id);
+    return false;
+  } catch (e) {
+    return true;
+  }
 };
 
 export const useGetItem = (
