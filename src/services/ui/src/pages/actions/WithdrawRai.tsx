@@ -140,10 +140,6 @@ export const WithdrawRaiForm = () => {
             }
             .
           </p>
-          <p>
-            <I.RequiredIndicator />
-            At least one attachment is required.
-          </p>
           {attachmentList.map(({ name, label, required }) => (
             <I.FormField
               key={name}
