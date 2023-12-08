@@ -3,8 +3,8 @@
     "target": "ES2016",
     "moduleResolution": "node",
     "module": "commonjs",
-    "allowSyntheticDefaultImports": true
+    "skipLibCheck": true
   },
-  "include": ["./layers/**/*.ts"],
+  "include": ["./**/*.ts"],
   "exclude": ["node_modules"]
 }
