@@ -149,6 +149,7 @@ export const submit = async <T extends Record<string, unknown>>({
         attachmentTitleMap?.[validAttachmentSets[idx].attachmentKey] ||
         validAttachmentSets[idx].attachmentKey,
       name: validAttachmentSets[idx].attachmentKey,
+    }));
 
     // Upload attachments
     await Promise.all(
