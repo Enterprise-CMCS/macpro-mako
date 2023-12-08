@@ -259,7 +259,7 @@ export const WithdrawRaiForm = () => {
         title="Submission Error"
         body={
           <p>
-            An error occurred during issue.
+            An error occurred during Formal RAI Response Withdraw.
             <br />
             You may close this window and try again, however, this likely
             requires support.
