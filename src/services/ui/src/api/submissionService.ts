@@ -120,7 +120,7 @@ export const submit = async <T extends Record<string, unknown>>({
 }: SubmissionServiceParameters<T>): Promise<SubmissionServiceResponse> => {
   if (data?.attachments) {
     // Drop nulls and non arrays
-    const validAttachmentSets = Object.entries(data.attachments)
+    const attachments = Object.entries(data.attachments)
       .filter(([, val]) => val !== undefined && (val as File[]).length)
       .map(([key, value]) => {
         return (value as File[]).map((file) => ({
@@ -129,28 +129,25 @@ export const submit = async <T extends Record<string, unknown>>({
         }));
       })
       .flat();
-
     // Generate a presigned url for each attachment
     const preSignedURLs: PreSignedURL[] = await Promise.all(
-      validAttachmentSets.map(() =>
+      attachments.map(() =>
         API.post("os", "/getUploadUrl", {
           body: {},
         })
       )
     );
-
     // For each attachment, add name, title, and a presigned url... and push to uploadRecipes
     const uploadRecipes: UploadRecipe[] = preSignedURLs.map((obj, idx) => ({
       ...obj, // Spreading the presigned url
-      data: validAttachmentSets[idx].file, // The attachment file object
+      data: attachments[idx].file, // The attachment file object
       // Add your attachments object key and file label value to the attachmentTitleMap
       // for this transform to work. Else the title will just be the object key.
       title:
-        attachmentTitleMap?.[validAttachmentSets[idx].attachmentKey] ||
-        validAttachmentSets[idx].attachmentKey,
-      name: validAttachmentSets[idx].attachmentKey,
+        attachmentTitleMap?.[attachments[idx].attachmentKey] ||
+        attachments[idx].attachmentKey,
+      name: attachments[idx].file.name,
     }));
-
     // Upload attachments
     await Promise.all(
       uploadRecipes.map(({ url, data }) => {
@@ -160,7 +157,6 @@ export const submit = async <T extends Record<string, unknown>>({
         });
       })
     );
-
     // Submit form data
     return await API.post("os", endpoint, {
       body: buildSubmissionPayload(
