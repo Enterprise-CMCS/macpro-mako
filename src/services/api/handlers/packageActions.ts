@@ -16,7 +16,7 @@ import { Action, raiSchema, RaiSchema } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
-import { getActiveRai, getLatestRai } from "shared-utils";
+import { getLatestRai } from "shared-utils";
 
 const TOPIC_NAME = process.env.topicName;
 
@@ -134,7 +134,11 @@ export async function withdrawRai(body: RaiSchema, rais: any) {
 
 export async function respondToRai(body: RaiSchema, rais: any) {
   console.log("State responding to RAI");
-  const activeKey = getActiveRai(rais).key;
+  const latestRai = getLatestRai(rais);
+  if (latestRai?.status != "requested") {
+    throw "Latest RAI is not a candidate for response";
+  }
+  const activeKey = latestRai.key;
   console.log("LATEST RAI KEY: " + activeKey);
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);

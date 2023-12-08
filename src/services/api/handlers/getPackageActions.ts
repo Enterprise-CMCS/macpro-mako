@@ -1,11 +1,6 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { Action, CognitoUserAttributes, ItemResult } from "shared-types";
-import {
-  isCmsUser,
-  getActiveRai,
-  isCmsWriteUser,
-  getLatestRai,
-} from "shared-utils";
+import { isCmsUser, isCmsWriteUser, getLatestRai } from "shared-utils";
 import { isStateUser } from "shared-utils/is-state-user";
 import { getPackage } from "../libs/package/getPackage";
 import {
