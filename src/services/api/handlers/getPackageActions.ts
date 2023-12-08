@@ -27,7 +27,6 @@ export const packageActionsForResult = (
   result: ItemResult
 ): Action[] => {
   const actions = [];
-  const activeRai = getActiveRai(result._source.rais);
   const latestRai = getLatestRai(result._source.rais);
   if (isCmsWriteUser(user)) {
     switch (result._source.seatoolStatus) {
@@ -35,17 +34,13 @@ export const packageActionsForResult = (
       case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
       case SEATOOL_STATUS.PENDING_APPROVAL:
       case SEATOOL_STATUS.PENDING_CONCURRENCE:
-        if (!activeRai) {
-          // If there is not an active RAI
+        if (!latestRai || latestRai.status != "requested") {
+          // If there is no RAIs, or the latest RAI is in a state other than requested
           actions.push(Action.ISSUE_RAI);
         }
         break;
     }
-    if (
-      result._source.rais !== null &&
-      Object.keys(result._source.rais).length > 0 &&
-      !activeRai
-    ) {
+    if (latestRai?.status == "received") {
       // There's an RAI and its been responded to
       if (!result._source.raiWithdrawEnabled) {
         actions.push(Action.ENABLE_RAI_WITHDRAW);
@@ -57,7 +52,7 @@ export const packageActionsForResult = (
   } else if (isStateUser(user)) {
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING_RAI:
-        if (activeRai) {
+        if (latestRai?.status == "requested") {
           // If there is an active RAI
           actions.push(Action.RESPOND_TO_RAI);
         }
@@ -66,8 +61,11 @@ export const packageActionsForResult = (
       case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
       case SEATOOL_STATUS.PENDING_APPROVAL:
       case SEATOOL_STATUS.PENDING_CONCURRENCE:
-        if (latestRai && !activeRai && result._source.raiWithdrawEnabled) {
-          // There is an rai but it's inactive (responded)
+        if (
+          latestRai?.status == "received" &&
+          result._source.raiWithdrawEnabled
+        ) {
+          // There is an rai that's been responded to, but not withdrawn
           actions.push(Action.WITHDRAW_RAI);
         }
         break;
