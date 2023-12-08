@@ -18,11 +18,6 @@ const RadioGroup = React.forwardRef<
   );
 });
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
-export type RadioProps = React.ComponentPropsWithoutRef<
-  typeof RadioGroupPrimitive.Root
-> & {
-  className?: string;
-};
 
 const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item> & { className?: string },
