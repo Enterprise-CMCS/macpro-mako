@@ -160,19 +160,19 @@ export const validateOption = (optionValue: string, options: any[]) => {
   return options.find((OPT: any) => OPT.value === optionValue);
 };
 
-// true: run validation - false: skip validation
+// return true: run validation - false: skip validation
 export const dependencyCheck = (dep: T.DependencyRule, data: any) => {
-  const conditionCheck = (DC: T.Condition) => {
+  const conditionMatched = dep.conditions.every((DC) => {
     if (DC.type === "valueNotExist") return !data[DC.name];
     if (DC.type === "expectedValue") {
       return data[DC.name] === DC.expectedValue;
     }
 
     return !!data[DC.name];
-  };
+  });
 
-  if (dep.effect.type === "show") return dep.conditions.every(conditionCheck);
-  if (dep.effect.type === "hide") return !dep.conditions.every(conditionCheck);
+  if (dep.effect.type === "show") return conditionMatched;
+  if (dep.effect.type === "hide") return !conditionMatched;
 };
 
 export const formGroupValidator =
