@@ -5,15 +5,7 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import { cn } from "@/lib/utils";
 
 const Select = SelectPrimitive.Root;
-export type SelectProps = React.ComponentPropsWithoutRef<
-  typeof SelectPrimitive.Root
-> & {
-  options: { label: string; value: any }[];
-  className?: string;
-};
-
 const SelectGroup = SelectPrimitive.Group;
-
 const SelectValue = SelectPrimitive.Value;
 
 const SelectTrigger = React.forwardRef<

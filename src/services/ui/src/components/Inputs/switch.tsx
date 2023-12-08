@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import * as React from "react";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
-
 import { cn } from "@/lib/utils";
+import { SwitchProps } from "shared-types";
 
 export type SwitchProps = React.ComponentPropsWithoutRef<
   typeof SwitchPrimitives.Root
@@ -19,6 +20,10 @@ const Switch = React.forwardRef<
       className
     )}
     {...props}
+    onCheckedChange={(value) => {
+      (props.onChange as any)?.(value);
+      props.onCheckedChange?.(value);
+    }}
     ref={ref}
   >
     <SwitchPrimitives.Thumb

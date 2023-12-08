@@ -2,10 +2,10 @@ import { Control, FieldValues } from "react-hook-form";
 
 import { FormLabel } from "../Inputs";
 import { RHFSection } from "./Section";
-import type { Document } from "./types";
+import { FormSchema } from "shared-types";
 
 export const RHFDocument = <TFieldValues extends FieldValues>(props: {
-  document: Document;
+  document: FormSchema;
   control: Control<TFieldValues>;
 }) => {
   return (

@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { DependencyRule, DependencyWrapperProps } from "./types";
+import { DependencyRule, DependencyWrapperProps } from "shared-types";
 
 const checkTriggeringValue = (
   dependentValue: unknown[],

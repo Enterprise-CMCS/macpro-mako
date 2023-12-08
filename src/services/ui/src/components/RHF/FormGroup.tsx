@@ -2,7 +2,7 @@ import { Control, FieldValues } from "react-hook-form";
 import { FormLabel, FormField } from "../Inputs";
 import { DependencyWrapper } from "./dependencyWrapper";
 import { RHFSlot } from "./Slot";
-import * as TRhf from "./types";
+import * as TRhf from "shared-types";
 
 export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
   form: TRhf.FormGroup;

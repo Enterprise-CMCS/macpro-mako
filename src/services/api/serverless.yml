@@ -6,6 +6,8 @@ plugins:
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
   - serverless-scriptable-plugin
+  - serverless-plugin-scripts
+
 provider:
   name: aws
   runtime: nodejs18.x
@@ -64,6 +66,10 @@ custom:
   scriptable:
     hooks:
       package:compileEvents: ./handlers/repack.js
+  scripts:
+    hooks:
+      package:initialize: |
+          yarn build
 params:
   master:
     formsProvisionedConcurrency: 2
@@ -222,7 +228,31 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:submitProvisionedConcurrency} # reuse submit's concurrency
+    provisionedConcurrency: ${param:submitProvisionedConcurrency}
+  forms:
+    handler: handlers/forms.handler
+    layers:
+      - !Ref FormsLambdaLayer
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /forms
+          method: get
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:searchProvisionedConcurrency}
+layers:
+  forms:
+    path: layers
+    description: Lambda Layer for forms function
 resources:
   Resources:
     ApiGateway400ErrorCount:

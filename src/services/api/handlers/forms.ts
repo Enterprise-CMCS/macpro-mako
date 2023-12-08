@@ -1,12 +1,12 @@
 import { response } from "../libs/handler";
-
 import * as fs from "fs";
 import { APIGatewayEvent } from "aws-lambda";
+import { convertRegexToString } from "shared-utils";
 
 export const forms = async (event: APIGatewayEvent) => {
   try {
-    const formId = event.queryStringParameters.formId;
-    const formVersion = event.queryStringParameters.formVersion;
+    const formId = event.queryStringParameters?.formId?.toLocaleUpperCase();
+    let formVersion = event.queryStringParameters?.formVersion;
 
     if (!formId) {
       return response({
@@ -16,9 +16,8 @@ export const forms = async (event: APIGatewayEvent) => {
     }
 
     const filePath = getFilepathForIdAndVersion(formId, formVersion);
-    const jsonData = await fs.promises.readFile(filePath, "utf-8");
 
-    if (!jsonData) {
+    if (!filePath) {
       return response({
         statusCode: 404,
         body: JSON.stringify({
@@ -26,15 +25,45 @@ export const forms = async (event: APIGatewayEvent) => {
         }),
       });
     }
-    console.log(jsonData);
-    return response({
-      statusCode: 200,
-      body: jsonData,
-    });
+
+    const jsonData = await fs.promises.readFile(filePath, "utf-8");
+
+    if (!jsonData) {
+      return response({
+        statusCode: 404,
+        body: JSON.stringify({
+          error: `File found for ${formId}, but it's empty`,
+        }),
+      });
+    }
+
+    if (!formVersion) formVersion = getMaxVersion(formId);
+
+    try {
+      const formObj = await import(`/opt/${formId}/v${formVersion}.js`);
+
+      if (formObj?.form) {
+        const cleanedForm = convertRegexToString(formObj.form);
+        return response({
+          statusCode: 200,
+          body: cleanedForm,
+        });
+      }
+    } catch (importError) {
+      console.error("Error importing module:", importError);
+      return response({
+        statusCode: 500,
+        body: JSON.stringify({
+          error: importError.message
+            ? importError.message
+            : "Internal server error",
+        }),
+      });
+    }
   } catch (error) {
     console.error("Error:", error);
     return response({
-      statusCode: 500,
+      statusCode: 502,
       body: JSON.stringify({
         error: error.message ? error.message : "Internal server error",
       }),
@@ -42,14 +71,7 @@ export const forms = async (event: APIGatewayEvent) => {
   }
 };
 
-export function getFilepathForIdAndVersion(
-  formId: string,
-  formVersion: string | undefined
-): string | undefined {
-  if (formId && formVersion) {
-    return `/opt/${formId}/v${formVersion}.json`;
-  }
-
+export function getMaxVersion(formId: string) {
   const files = fs.readdirSync(`/opt/${formId}`);
   if (!files) return undefined;
   const versionNumbers = files?.map((fileName: string) => {
@@ -59,11 +81,21 @@ export function getFilepathForIdAndVersion(
     }
     return 1;
   });
-  const maxVersion = Math.max(...versionNumbers);
+  return Math.max(...versionNumbers).toString();
+}
+
+export function getFilepathForIdAndVersion(
+  formId: string,
+  formVersion: string | undefined
+): string | undefined {
+  if (formId && formVersion) {
+    return `/opt/${formId}/v${formVersion}.js`;
+  }
+
+  const maxVersion = getMaxVersion(formId);
 
   if (!maxVersion) return undefined;
-
-  return `/opt/${formId}/v${maxVersion}.json`;
+  return `/opt/${formId}/v${maxVersion}.js`;
 }
 
 export const handler = forms;

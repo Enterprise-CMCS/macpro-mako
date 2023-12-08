@@ -10,8 +10,8 @@ describe("Forms Lambda Tests", () => {
     } as APIGatewayProxyEvent;
     const result = await forms(event);
 
-    expect(result.statusCode).toBe(400);
-    expect(JSON.parse(result.body)).toEqual({
+    expect(result?.statusCode).toBe(400);
+    expect(JSON.parse(result?.body as string)).toEqual({
       error: "File ID was not provided",
     });
   });
@@ -22,9 +22,9 @@ describe("Forms Lambda Tests", () => {
     } as APIGatewayProxyEvent;
     const result = await forms(event);
 
-    expect(result.statusCode).toBe(500);
-    expect(JSON.parse(result.body)).toEqual({
-      error: "ENOENT: no such file or directory, open '/opt/test/v1.json'",
+    expect(result?.statusCode).toBe(500);
+    expect(JSON.parse(result?.body as string)).toEqual({
+      error: "ENOENT: no such file or directory, open '/opt/test/v1.js'",
     });
   });
 
@@ -38,8 +38,8 @@ describe("Forms Lambda Tests", () => {
     } as APIGatewayProxyEvent;
     const result = await forms(event);
 
-    expect(result.statusCode).toBe(200);
-    expect(result.headers["Content-Type"]).toBe("application/json");
+    expect(result?.statusCode).toBe(200);
+    expect(result?.headers["Content-Type"]).toBe("application/json");
   });
 
   it("should return 500 with a custom error message for other internal errors", async () => {
@@ -53,8 +53,8 @@ describe("Forms Lambda Tests", () => {
 
     const result = await forms(event);
 
-    expect(result.statusCode).toBe(500);
-    expect(JSON.parse(result.body)).toEqual({
+    expect(result?.statusCode).toBe(500);
+    expect(JSON.parse(result?.body as string)).toEqual({
       error: "Internal Server Error Message",
     });
   });
@@ -62,10 +62,10 @@ describe("Forms Lambda Tests", () => {
   it("should return the correct JSON data for different file versions", async () => {
     vi.spyOn(fs.promises, "readFile").mockImplementation(async (filePath) => {
       const filePathString = filePath.toString();
-      if (filePathString.includes("/opt/testform/v1.json")) {
-        return JSON.stringify({ version: "1", data: "v1 data" });
-      } else if (filePathString.includes("/opt/testform/v2.json")) {
-        return JSON.stringify({ version: "2", data: "v2 data" });
+      if (filePathString.includes("/opt/testform/v1.js")) {
+        return Buffer.from(JSON.stringify({ version: "1", data: "v1 data" }));
+      } else {
+        return Buffer.from(JSON.stringify({ version: "2", data: "v2 data" }));
       }
     });
 
@@ -79,14 +79,14 @@ describe("Forms Lambda Tests", () => {
     const resultV1 = await forms(eventV1);
     const resultV2 = await forms(eventV2);
 
-    expect(resultV1.statusCode).toBe(200);
-    expect(resultV2.statusCode).toBe(200);
+    expect(resultV1?.statusCode).toBe(200);
+    expect(resultV2?.statusCode).toBe(200);
 
-    expect(JSON.parse(resultV1.body)).toEqual({
+    expect(JSON.parse(resultV1?.body as string)).toEqual({
       version: "1",
       data: "v1 data",
     });
-    expect(JSON.parse(resultV2.body)).toEqual({
+    expect(JSON.parse(resultV2?.body as string)).toEqual({
       version: "2",
       data: "v2 data",
     });

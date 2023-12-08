@@ -1,5 +1,6 @@
-import * as T from "@/components/RHF/types";
+import * as T from "shared-types";
 import { RegisterOptions } from "react-hook-form";
+import { FormSchema } from "shared-types";
 
 import {
   isNullOrUndefined,
@@ -247,7 +248,7 @@ export const slotValidator =
     return ACC;
   };
 
-export const documentValidator = (document: T.Document) => (data: any) => {
+export const documentValidator = (document: FormSchema) => (data: any) => {
   return document.sections.reduce((ACC, SEC) => {
     SEC.form.reduce(formGroupValidator(data), ACC);
     return ACC;
