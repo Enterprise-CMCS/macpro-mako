@@ -112,9 +112,12 @@ export const submit = async <T extends Record<string, unknown>>({
   authority,
 }: SubmissionServiceParameters<T>): Promise<SubmissionServiceResponse> => {
   if (data?.attachments) {
+    // Drop nulls and non arrays
     const validAttachmentSets = Object.fromEntries(
       Object.entries(data.attachments).filter(([, value]) => value !== null)
     );
+
+    // Generate a presigned url for each attachment
     const preSignedURLs: PreSignedURL[] = await Promise.all(
       Object.values(validAttachmentSets)
         .flat()
@@ -125,18 +128,17 @@ export const submit = async <T extends Record<string, unknown>>({
         )
     );
 
+    // For each attachment, add name, title, and a presigned url... and push to uploadRecipes
     const uploadRecipes: UploadRecipe[] = [];
     let idx = 0;
     for (const key in validAttachmentSets) {
       if (Array.isArray(validAttachmentSets[key])) {
-        // Iterate over each object in the array
         validAttachmentSets[key].forEach((obj: File) => {
-          // Add a new key "title" with the value of the key
           uploadRecipes.push({
             data: obj,
+            name: obj.name,
             title: attachmentTitleMap[key] || key,
             ...preSignedURLs[idx],
-            name: obj.name,
           });
           idx++;
         });
