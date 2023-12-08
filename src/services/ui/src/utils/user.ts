@@ -1,80 +1,18 @@
-import { CognitoUserAttributes } from "shared-types";
-import { isCmsUser } from "shared-utils";
+import { CognitoUserAttributes, STATE_CODES, StateCode } from "shared-types";
+import { isCmsUser, isStateUser } from "shared-utils";
+import { getUser } from "@/api/useGetUser";
 
 export const getUserStateCodes = (
   user: CognitoUserAttributes | null | undefined
-) => {
-  if (!user) return [];
-
-  if (isCmsUser(user)) {
-    return allStateAbbr;
-  }
-
-  if (!user["custom:state"]) {
+): StateCode[] => {
+  // We always need a user, and state users always need a custom:state value
+  if (!user || (isStateUser(user) && user["custom:state"] === undefined))
     return [];
-  }
-
-  return user["custom:state"]?.split(",");
+  return isCmsUser(user)
+    ? [...STATE_CODES]
+    : (user["custom:state"]!.split(",") as StateCode[]);
 };
-
-const allStateAbbr = [
-  "AL",
-  "AK",
-  "AS",
-  "AZ",
-  "AR",
-  "CA",
-  "CO",
-  "CT",
-  "DE",
-  "DC",
-  "FM",
-  "FL",
-  "GA",
-  "GU",
-  "HI",
-  "ID",
-  "IL",
-  "IN",
-  "IA",
-  "KS",
-  "KY",
-  "LA",
-  "ME",
-  "MH",
-  "MD",
-  "MA",
-  "MI",
-  "MN",
-  "MS",
-  "MO",
-  "MT",
-  "NE",
-  "NV",
-  "NH",
-  "NJ",
-  "NM",
-  "NY",
-  "NC",
-  "ND",
-  "MP",
-  "OH",
-  "OK",
-  "OR",
-  "PW",
-  "PA",
-  "PR",
-  "RI",
-  "SC",
-  "SD",
-  "TN",
-  "TX",
-  "UT",
-  "VT",
-  "VI",
-  "VA",
-  "WA",
-  "WV",
-  "WI",
-  "WY",
-];
+export const isAuthorizedState = async (id: string) => {
+  const user = await getUser();
+  return getUserStateCodes(user?.user).includes(id as StateCode);
+};
