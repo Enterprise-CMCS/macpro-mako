@@ -66,6 +66,7 @@ export const router = createBrowserRouter([
         element: <P.CHIPEligibilityLandingPage />,
       },
       { path: ROUTES.MEDICAID_NEW, element: <P.MedicaidForm /> },
+      { path: ROUTES.CHIP_NEW, element: <P.ChipForm /> },
       { path: ROUTES.ACTION, element: <P.ActionFormIndex /> },
       { path: ROUTES.WEBFORMS, element: <C.Webforms /> },
       { path: ROUTES.WEBFORM, element: <C.Webform /> },
