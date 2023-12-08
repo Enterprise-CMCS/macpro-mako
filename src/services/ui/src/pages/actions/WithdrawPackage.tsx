@@ -72,12 +72,12 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
       {form.formState.isSubmitting && <LoadingSpinner />}
       <div>
         <div className="px-14  py-5 ">
-          <ActionFormIntro title="WithDraw Medicaid SPA Package">
+          <ActionFormIntro title="Withdraw Medicaid SPA Package">
             <p>
-              Complete this form to withdrawn a package. Once complete you will
-              not be able to resubmit tis package.CMS will be notified and will
-              use this content to review your request. if CMS needs any
-              additional information.they will follow up by email
+              Complete this form to withdraw a package. Once complete, you will
+              not be able to resubmit this package. CMS will be notified and
+              will use this content to review your request. If CMS needs any
+              additional information, they will follow up by email.
             </p>
           </ActionFormIntro>
           <PackageInfo item={item} />
@@ -86,22 +86,9 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
               <section>
                 <h3 className="text-2xl font-bold font-sans">Attachments</h3>
                 <p>
-                  Maximum file size of 80 MB per attachment.{" "}
-                  <strong>
-                    You can add multiple files per attachment type.
-                  </strong>{" "}
-                  Read the description for each of the attachment types on the{" "}
-                  {
-                    <Link
-                      to="/faq/#medicaid-spa-attachments"
-                      target={FAQ_TARGET}
-                      rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
-                    >
-                      FAQ Page
-                    </Link>
-                  }
-                  .
+                  Upload your supporting documentation for withdrawal or explain
+                  your need for withdrawal in the{" "}
+                  <em className="italic">Additional Information section.</em>
                 </p>
                 <br />
                 <p>
@@ -157,8 +144,18 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
                       Additional Information
                     </h3>
                     <I.FormLabel className="font-normal">
-                      Add anything else you would like to share with CMS,
-                      limited to 4000 characters
+                      Explain your need for withdrawal or upload supporting
+                      documentation.
+                      <br />
+                      <p>
+                        <em className="italic">
+                          Once you submit this form, a confirmation email is
+                          sent to you and to CMS. CMS will use this content to
+                          review your package. If CMS needs any additional
+                          information, they will follow up by email.
+                        </em>{" "}
+                      </p>
+                      <br />
                     </I.FormLabel>
                     <I.Textarea {...field} className="h-[200px] resize-none" />
                     <I.FormDescription>
