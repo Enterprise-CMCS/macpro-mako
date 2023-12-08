@@ -12,7 +12,7 @@ import {
   SelectProps,
   RadioProps,
   CalendarProps,
-} from "../Inputs";
+} from "shared-types";
 
 export type RHFSlotProps = {
   name: string;
