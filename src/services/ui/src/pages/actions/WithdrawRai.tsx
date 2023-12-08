@@ -179,9 +179,7 @@ export const WithdrawRaiForm = () => {
                     className="h-[200px] resize-none"
                   />
                   <I.FormDescription>
-                    {field.value && field.value.length >= 0
-                      ? `${4000 - field.value.length} characters remaining`
-                      : "4000 characters allowed"}
+                    4,000 characters allowed
                   </I.FormDescription>
                 </I.FormItem>
               );
