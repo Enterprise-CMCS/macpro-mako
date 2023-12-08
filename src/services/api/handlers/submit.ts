@@ -16,7 +16,12 @@ const config = {
 };
 
 import { Kafka, Message } from "kafkajs";
-import { Authority, OneMacSink, transformOnemac } from "shared-types";
+import {
+  Authority,
+  OneMacSink,
+  OneMacTransform,
+  transformOnemac,
+} from "shared-types";
 
 const kafka = new Kafka({
   clientId: "submit",
@@ -44,15 +49,15 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
-    if (body.authority !== Authority.MED_SPA) {
-      return response({
-        statusCode: 400,
-        body: {
-          message:
-            "The Mako Submissions API only supports Medicaid SPA at this time",
-        },
-      });
-    }
+    // if (body.authority !== Authority.MED_SPA) {
+    //   return response({
+    //     statusCode: 400,
+    //     body: {
+    //       message:
+    //         "The Mako Submissions API only supports Medicaid SPA at this time",
+    //     },
+    //   });
+    // }
 
     const pool = await sql.connect(config);
     console.log(body);
