@@ -31,7 +31,7 @@ const formSchema = z.object({
     other: z.array(z.instanceof(File)).optional(),
   }),
 });
-export type IssueRaiFormSchema = z.infer<typeof formSchema>;
+export type RaiIssueFormSchema = z.infer<typeof formSchema>;
 
 const attachmentList = [
   {
@@ -62,7 +62,7 @@ const FormDescriptionText = () => {
   );
 };
 
-export const IssueRai = () => {
+export const RaiIssue = () => {
   const { id, type } = useParams<{
     id: string;
     type: Action;
@@ -72,13 +72,13 @@ export const IssueRai = () => {
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
   const navigate = useNavigate();
-  const form = useForm<IssueRaiFormSchema>({
+  const form = useForm<RaiIssueFormSchema>({
     resolver: zodResolver(formSchema),
   });
   const { data: user } = useGetUser();
-  const handleSubmit: SubmitHandler<IssueRaiFormSchema> = async (data) => {
+  const handleSubmit: SubmitHandler<RaiIssueFormSchema> = async (data) => {
     try {
-      await submit<IssueRaiFormSchema & { id: string }>({
+      await submit<RaiIssueFormSchema & { id: string }>({
         data: {
           id: id!, // Declared here because it's not part of the form data
           ...data,

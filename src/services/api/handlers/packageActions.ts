@@ -14,8 +14,8 @@ const config = {
 
 import {
   Action,
-  issueRaiSchema,
-  IssueRai,
+  raiIssueSchema,
+  RaiIssue,
   raiResponseSchema,
   RaiResponse,
   raiWithdrawSchema,
@@ -28,7 +28,7 @@ import { getLatestRai } from "shared-utils";
 
 const TOPIC_NAME = process.env.topicName;
 
-export async function issueRai(body: IssueRai) {
+export async function issueRai(body: RaiIssue) {
   console.log("CMS issuing a new RAI");
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
@@ -53,7 +53,7 @@ export async function issueRai(body: IssueRai) {
     console.log(result2);
 
     // write to kafka here
-    const result = issueRaiSchema.safeParse(body);
+    const result = raiIssueSchema.safeParse(body);
     if (result.success === false) {
       console.log(
         "RAI Validation Error. The following record failed to parse: ",
