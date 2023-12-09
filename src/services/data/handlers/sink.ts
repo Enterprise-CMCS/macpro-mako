@@ -12,8 +12,10 @@ import {
   transformRaiIssue,
   RaiResponseTransform,
   transformRaiResponse,
+  RaiWithdrawTransform,
+  transformRaiWithdraw,
+  ToggleWithdrawRaiEnabled,
   toggleWithdrawRaiEnabledSchema,
-  ToggleRaiWithdrawEnabled,
   Action,
 } from "shared-types";
 
@@ -70,6 +72,7 @@ export const seatool: Handler = async (event) => {
           proposedDate: null,
           raiReceivedDate: null,
           raiRequestedDate: null,
+          raiWithdrawnDate: null,
           state: null,
           cmsStatus: null,
           stateStatus: null,
@@ -101,9 +104,10 @@ export const onemac: Handler = async (event) => {
   const oneMacRecords: (
     | OneMacTransform
     | OneMacRecordsToDelete
-    | (ToggleRaiWithdrawEnabled & { id: string })
+    | (ToggleWithdrawRaiEnabled & { id: string })
     | RaiIssueTransform
     | RaiResponseTransform
+    | RaiWithdrawTransform
   )[] = [];
 
   for (const recordKey of Object.keys(event.records)) {
@@ -156,6 +160,27 @@ export const onemac: Handler = async (event) => {
               } else {
                 console.log(
                   `ERROR: Invalid Payload for this action type (${record.actionType})`
+                );
+              }
+              break;
+            }
+            case Action.WITHDRAW_RAI: {
+              console.log("WITHDRAWING RAI");
+              console.log("Withdraw Record", record);
+
+              const result = transformRaiWithdraw(id).safeParse(record);
+              if (result.success === true) {
+                oneMacRecords.push({
+                  ...result.data,
+                  raiWithdrawEnabled: null,
+                });
+              } else {
+                console.log(
+                  `ERROR: Invalid Payload for this action type (${record.actionType})`
+                );
+                console.log(
+                  "The error is the following: ",
+                  result.error.message
                 );
               }
               break;

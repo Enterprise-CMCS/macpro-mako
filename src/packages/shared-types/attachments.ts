@@ -17,6 +17,8 @@ export const attachmentTitleMap: Record<string, string> = {
   raiResponseLetter: "RAI Response Letter",
   // MISC
   other: "Other",
+  // RAI WITHDRAW
+  supportingDocumentation: "Supporting Documentation",
 };
 export type AttachmentKey = keyof typeof attachmentTitleMap;
 export type AttachmentTitle = typeof attachmentTitleMap[AttachmentKey];

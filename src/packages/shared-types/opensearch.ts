@@ -1,6 +1,10 @@
-import { SeaToolTransform } from "./seatool";
-import { OneMacTransform } from "./onemac";
-import { RaiIssueTransform } from "./action-types/issue-rai";
+import {
+  SeaToolTransform,
+  OneMacTransform,
+  RaiIssueTransform,
+  RaiResponseTransform,
+  RaiWithdrawTransform,
+} from "./";
 
 export type OsHit<T> = {
   _index: string;
@@ -34,7 +38,9 @@ export type OsResponse<T> = {
 
 export type OsMainSourceItem = OneMacTransform &
   SeaToolTransform &
-  RaiIssueTransform;
+  RaiIssueTransform &
+  RaiResponseTransform &
+  RaiWithdrawTransform;
 export type OsMainSearchResponse = OsResponse<OsMainSourceItem>;
 export type SearchData = OsHits<OsMainSourceItem>;
 export type ItemResult = OsHit<OsMainSourceItem> & {

@@ -12,16 +12,19 @@ const config = {
   database: "SEA",
 };
 
-import { Action } from "shared-types";
-import { issueRaiSchema, IssueRai } from "shared-types/action-types/issue-rai";
 import {
+  Action,
+  issueRaiSchema,
+  IssueRai,
   raiResponseSchema,
   RaiResponse,
-} from "shared-types/action-types/respond-to-rai";
+  raiWithdrawSchema,
+  RaiWithdraw,
+} from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
-import { getActiveRai, getLatestRai } from "shared-utils";
+import { getLatestRai } from "shared-utils";
 
 const TOPIC_NAME = process.env.topicName;
 
@@ -79,13 +82,74 @@ export async function issueRai(body: IssueRai) {
   }
 }
 
-export async function withdrawRai(id, timestamp) {
-  console.log("CMS withdrawing an RAI");
+export async function withdrawRai(body: RaiWithdraw, rais: any) {
+  const activeKey = getLatestRai(rais).key;
+  const result = raiWithdrawSchema.safeParse({
+    ...body,
+    requestedDate: activeKey,
+  });
+  console.log("Withdraw body is", body);
+
+  if (result.success === true) {
+    console.log("CMS withdrawing an RAI");
+    console.log(rais);
+    console.log("LATEST RAI KEY: " + activeKey);
+    const pool = await sql.connect(config);
+    const transaction = new sql.Transaction(pool);
+
+    try {
+      await transaction.begin();
+      // Issue RAI
+      const query1 = `
+        UPDATE SEA.dbo.RAI
+        SET RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${result.data.withdrawnDate}', 10)), CAST('19700101' AS DATETIME))
+          WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${activeKey}', 10)), CAST('19700101' AS DATETIME))
+      `;
+      const result1 = await transaction.request().query(query1);
+      console.log(result1);
+
+      // Update Status
+      const query2 = `
+      UPDATE SEA.dbo.State_Plan
+        SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}')
+        WHERE ID_Number = '${result.data.id}'
+    `;
+      const result2 = await transaction.request().query(query2);
+      console.log(result2);
+
+      // write to kafka here
+      await produceMessage(
+        TOPIC_NAME,
+        result.data.id,
+        JSON.stringify({ ...result.data, actionType: Action.WITHDRAW_RAI })
+      );
+
+      // Commit transaction
+      await transaction.commit();
+    } catch (err) {
+      // Rollback and log
+      await transaction.rollback();
+      console.error("Error executing one or both queries:", err);
+      throw err;
+    } finally {
+      // Close pool
+      await pool.close();
+    }
+
+    console.log(body);
+  } else {
+    console.log("An error occured with withdraw payload: ", result.error);
+    throw "An error occured with withdraw payload.";
+  }
 }
 
 export async function respondToRai(body: RaiResponse, rais: any) {
   console.log("State responding to RAI");
-  const activeKey = getActiveRai(rais).key;
+  const latestRai = getLatestRai(rais);
+  if (latestRai?.status != "requested") {
+    throw "Latest RAI is not a candidate for response";
+  }
+  const activeKey = latestRai.key;
   console.log("LATEST RAI KEY: " + activeKey);
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);

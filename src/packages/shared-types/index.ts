@@ -11,5 +11,6 @@ export * from "./authority";
 export * from "./action-types/toggle-withdraw-rai-enabled";
 export * from "./action-types/issue-rai";
 export * from "./action-types/respond-to-rai";
+export * from "./action-types/withdraw-rai";
 export * from "./forms";
 export * from "./inputs";
