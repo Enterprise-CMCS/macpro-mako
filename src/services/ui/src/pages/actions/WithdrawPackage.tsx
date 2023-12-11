@@ -47,19 +47,31 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
     resolver: zodResolver(withdrawPackageFormSchema),
   });
 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const handleSubmit: SubmitHandler<WithdrawPackageFormSchema> = async (
     data
   ) => {
     try {
-      await submit<WithdrawPackageFormSchema & { id: string }>({
-        data: {
-          ...data,
-          id: id!, // Declared here because it's not part of the form data
-        },
-        endpoint: buildActionUrl(type!),
-        user,
-      });
-      setSuccessModalIsOpen(true);
+      if (!cancelModalIsOpen) {
+        if (
+          !data.attachments.supportingDocumentation &&
+          !data.additionalInformation
+        ) {
+          setErrorMessage(
+            "An Attachment or Additional Information is required."
+          );
+        } else {
+          await submit<WithdrawPackageFormSchema & { id: string }>({
+            data: {
+              ...data,
+              id: id!, // Declared here because it's not part of the form data
+            },
+            endpoint: buildActionUrl(type!),
+            user,
+          });
+          setSuccessModalIsOpen(true);
+        }
+      }
     } catch (err) {
       console.log(err);
       setErrorModalIsOpen(true);
@@ -164,6 +176,9 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
                   </I.FormItem>
                 )}
               />
+              {errorMessage && (
+                <div className="text-red-500 mt-4">{errorMessage}</div>
+              )}
               <div className="flex gap-2 my-8">
                 <Button type="submit">Submit</Button>
                 <Button
