@@ -6,7 +6,7 @@ import {
   isAuthorized,
   lookupUserAttributes,
 } from "../libs/auth/user";
-import { packageActionsForResult } from "./getPackageActions";
+import { packageActionsForResult } from "shared-utils";
 import { Action } from "shared-types";
 import {
   issueRai,
@@ -42,7 +42,7 @@ export const handler = async (event: APIGatewayEvent) => {
     );
 
     // Check that the package action is available
-    const actions: Action[] = packageActionsForResult(userAttr, result);
+    const actions: Action[] = packageActionsForResult(userAttr, result._source);
     if (!actions.includes(actionType)) {
       return response({
         statusCode: 401,
