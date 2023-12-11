@@ -16,13 +16,7 @@ import {
   transformRaiResponse,
   transformRaiWithdraw,
 } from "shared-types/onemac";
-import {
-  Action,
-  withdrawRecordSchema,
-  WithdrawRecord,
-  WithdrawSinkRecord,
-  raiActionSchema,
-} from "shared-types";
+import { Action, withdrawRecordSchema, WithdrawRecord } from "shared-types";
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -55,7 +49,10 @@ export const seatool: Handler = async (event) => {
             result.error.message
           );
         } else {
-          if (validPlanTypeIds.includes(result.data.planTypeId)) {
+          if (
+            result.data.planTypeId &&
+            validPlanTypeIds.includes(result.data.planTypeId)
+          ) {
             docObject[id] = result.data;
           }
           rawArr.push(record);
@@ -112,7 +109,6 @@ export const onemac: Handler = async (event) => {
     | (WithdrawRecord & { id: string })
     | RaiIssueTransform
     | RaiResponseTransform
-    | WithdrawSinkRecord
   )[] = [];
 
   for (const recordKey of Object.keys(event.records)) {
