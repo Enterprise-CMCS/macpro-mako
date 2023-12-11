@@ -13,6 +13,12 @@ export const getUserStateCodes = (
     : (user["custom:state"]!.split(",") as StateCode[]);
 };
 export const isAuthorizedState = async (id: string) => {
-  const user = await getUser();
-  return getUserStateCodes(user?.user).includes(id as StateCode);
+  try {
+    const user = await getUser();
+    if (!user.user) throw Error("No cognito attributes found.");
+    return getUserStateCodes(user?.user).includes(id as StateCode);
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
 };

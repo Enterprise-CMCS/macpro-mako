@@ -17,7 +17,13 @@ export const zSpaIdSchema = z
 
 export const zAttachmentOptional = z.array(z.instanceof(File)).optional();
 
-export const zAttachmentRequired = ({ min }: { min: number }) =>
+export const zAttachmentRequired = ({
+  min,
+  message = "Required",
+}: {
+  min: number;
+  message?: string;
+}) =>
   z.array(z.instanceof(File)).refine((value) => value.length > min, {
-    message: "Required",
+    message: message,
   });

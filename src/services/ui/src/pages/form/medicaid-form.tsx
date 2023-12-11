@@ -19,57 +19,28 @@ import { getUserStateCodes } from "@/utils";
 import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
-
-let stateCodes: string[] = [];
-function startsWithValidPrefix(value: string) {
-  for (const prefix of stateCodes) {
-    if (value.startsWith(prefix)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-async function doesNotExist(value: string) {
-  try {
-    await getItem(value);
-    return false;
-  } catch (error) {
-    return true;
-  }
-}
+import {
+  zAttachmentOptional,
+  zAttachmentRequired,
+  zSpaIdSchema,
+} from "@/pages/form/zod";
 
 const formSchema = z.object({
-  id: z
-    .string()
-    .regex(
-      /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/,
-      "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX"
-    )
-    .refine((value) => startsWithValidPrefix(value), {
-      message: "You do not have access to this state.",
-    })
-    .refine(async (value) => doesNotExist(value), {
-      message: "SPA ID already exists.",
-    }),
+  id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
-    cmsForm179: z
-      .array(z.instanceof(File))
-      .length(
-        1,
-        "Required: You must submit exactly one file for CMS Form 179."
-      ),
-    spaPages: z.array(z.instanceof(File)).refine((value) => value.length > 0, {
-      message: "Required",
+    cmsForm179: zAttachmentRequired({
+      min: 1,
+      message: "Required: You must submit exactly one file for CMS Form 179.",
     }),
-    coverLetter: z.array(z.instanceof(File)).optional(),
-    tribalEngagement: z.array(z.instanceof(File)).optional(),
-    existingStatePlanPages: z.array(z.instanceof(File)).optional(),
-    publicNotice: z.array(z.instanceof(File)).optional(),
-    sfq: z.array(z.instanceof(File)).optional(),
-    tribalConsultation: z.array(z.instanceof(File)).optional(),
-    other: z.array(z.instanceof(File)).optional(),
+    spaPages: zAttachmentRequired({ min: 0 }),
+    coverLetter: zAttachmentOptional,
+    tribalEngagement: zAttachmentOptional,
+    existingStatePlanPages: zAttachmentOptional,
+    publicNotice: zAttachmentOptional,
+    sfq: zAttachmentOptional,
+    tribalConsultation: zAttachmentOptional,
+    other: zAttachmentOptional,
   }),
   proposedEffectiveDate: z.date(),
 });
@@ -120,7 +91,6 @@ export const MedicaidForm = () => {
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
   });
-  stateCodes = getUserStateCodes(user?.user);
 
   return (
     <SimplePageContainer>
