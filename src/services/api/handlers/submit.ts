@@ -93,7 +93,7 @@ export const submit = async (event: APIGatewayEvent) => {
       await produceMessage(
         process.env.topicName,
         body.id,
-        JSON.stringify(eventBody)
+        JSON.stringify(eventBody.data)
       );
 
       return response({
