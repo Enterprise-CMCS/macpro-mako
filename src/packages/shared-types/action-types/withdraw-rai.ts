@@ -3,6 +3,8 @@ import { onemacAttachmentSchema, handleAttachment } from "../attachments";
 
 export const raiWithdrawSchema = z.object({
   id: z.string(),
+  authority: z.string(),
+  origin: z.string(),
   requestedDate: z.number(),
   withdrawnDate: z.number(),
   attachments: z.array(onemacAttachmentSchema).nullish(),

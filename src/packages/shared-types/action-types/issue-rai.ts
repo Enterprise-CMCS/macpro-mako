@@ -3,6 +3,8 @@ import { onemacAttachmentSchema, handleAttachment } from "../attachments";
 
 export const raiIssueSchema = z.object({
   id: z.string(),
+  authority: z.string(),
+  origin: z.string(),
   requestedDate: z.number(),
   attachments: z.array(onemacAttachmentSchema).nullish(),
   additionalInformation: z.string().nullable().default(null),
