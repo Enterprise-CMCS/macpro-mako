@@ -1,6 +1,7 @@
 export const attachmentTitleMap: Record<string, string> = {
   // SPA
   cmsForm179: "CMS Form 179",
+  currentStatePlan: "Current State Plan",
   spaPages: "SPA Pages",
   coverLetter: "Cover Letter",
   tribalEngagement: "Tribal Engagement",
@@ -8,6 +9,8 @@ export const attachmentTitleMap: Record<string, string> = {
   publicNotice: "Public Notice",
   sfq: "SFQ",
   tribalConsultation: "Tribal Consultation",
+  amendedLanguage: "Amended Language",
+  budgetDocuments: "Budget Documents",
   // ISSUE RAI
   formalRaiLetter: "Formal RAI Letter",
   // RAI RESPONSE

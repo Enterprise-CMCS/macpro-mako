@@ -19,11 +19,15 @@ export const zAttachmentOptional = z.array(z.instanceof(File)).optional();
 
 export const zAttachmentRequired = ({
   min,
+  max = 9999,
   message = "Required",
 }: {
   min: number;
+  max?: number;
   message?: string;
 }) =>
-  z.array(z.instanceof(File)).refine((value) => value.length > min, {
-    message: message,
-  });
+  z
+    .array(z.instanceof(File))
+    .refine((value) => value.length > min && value.length < max, {
+      message: message,
+    });

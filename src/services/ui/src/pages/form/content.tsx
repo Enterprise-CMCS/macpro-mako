@@ -26,8 +26,10 @@ export const SpaIdFormattingDesc = () => (
 );
 
 export const AttachmentsSizeTypesDesc = ({
+  faqLink,
   includeCMS179 = false,
 }: {
+  faqLink: string;
   includeCMS179?: boolean;
 }) => (
   <>
@@ -40,7 +42,7 @@ export const AttachmentsSizeTypesDesc = ({
       Read the description for each of the attachment types on the{" "}
       {
         <Link
-          to="/faq/#chip-spa-attachments"
+          to={faqLink}
           target={FAQ_TARGET}
           rel="noopener noreferrer"
           className="text-blue-700 hover:underline"

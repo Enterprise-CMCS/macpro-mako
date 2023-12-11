@@ -11,7 +11,7 @@ import {
   SectionCard,
   SimplePageContainer,
 } from "@/components";
-import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
+import { optionCrumbsFromPath } from "@/pages/create/create-breadcrumbs";
 import * as Inputs from "@/components/Inputs";
 import { FAQ_TARGET } from "@/routes";
 import { Authority } from "shared-types";
@@ -22,14 +22,15 @@ import {
 } from "@/pages/form/zod";
 import * as Content from "@/pages/form/content";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
+import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
-    currentStatePlan: zAttachmentRequired({ min: 0 }),
-    amendedLanguage: zAttachmentRequired({ min: 0 }),
-    coverLetter: zAttachmentRequired({ min: 0 }),
+    currentStatePlan: zAttachmentRequired({ min: 1 }),
+    amendedLanguage: zAttachmentRequired({ min: 1 }),
+    coverLetter: zAttachmentRequired({ min: 1 }),
     budgetDocuments: zAttachmentOptional,
     publicNotice: zAttachmentOptional,
     tribalConsultation: zAttachmentOptional,
@@ -87,7 +88,7 @@ export const ChipForm = () => {
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={NEW_SUBMISSION_CRUMBS(location.pathname)} />
+      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Inputs.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -148,7 +149,7 @@ export const ChipForm = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc includeCMS179 />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#chip-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
