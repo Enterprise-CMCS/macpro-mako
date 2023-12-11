@@ -164,7 +164,12 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             {label}
           </div>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent
+          className="w-auto p-0"
+          align="start"
+          side="left"
+          sideOffset={1}
+        >
           <Calendar
             disabled={[{ after: new Date() }]}
             initialFocus

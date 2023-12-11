@@ -14,8 +14,15 @@ import {
   transformRaiIssue,
   RaiResponseTransform,
   transformRaiResponse,
+  transformRaiWithdraw,
 } from "shared-types/onemac";
-import { Action, withdrawRecordSchema, WithdrawRecord } from "shared-types";
+import {
+  Action,
+  withdrawRecordSchema,
+  WithdrawRecord,
+  WithdrawSinkRecord,
+  raiActionSchema,
+} from "shared-types";
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
@@ -70,6 +77,7 @@ export const seatool: Handler = async (event) => {
           proposedDate: null,
           raiReceivedDate: null,
           raiRequestedDate: null,
+          raiWithdrawnDate: null,
           state: null,
           cmsStatus: null,
           stateStatus: null,
@@ -104,6 +112,7 @@ export const onemac: Handler = async (event) => {
     | (WithdrawRecord & { id: string })
     | RaiIssueTransform
     | RaiResponseTransform
+    | WithdrawSinkRecord
   )[] = [];
 
   for (const recordKey of Object.keys(event.records)) {
@@ -156,6 +165,27 @@ export const onemac: Handler = async (event) => {
               } else {
                 console.log(
                   `ERROR: Invalid Payload for this action type (${record.actionType})`
+                );
+              }
+              break;
+            }
+            case Action.WITHDRAW_RAI: {
+              console.log("WITHDRAWING RAI");
+              console.log("Withdraw Record", record);
+
+              const result = transformRaiWithdraw(id).safeParse(record);
+              if (result.success === true) {
+                oneMacRecords.push({
+                  ...result.data,
+                  raiWithdrawEnabled: null,
+                });
+              } else {
+                console.log(
+                  `ERROR: Invalid Payload for this action type (${record.actionType})`
+                );
+                console.log(
+                  "The error is the following: ",
+                  result.error.message
                 );
               }
               break;
