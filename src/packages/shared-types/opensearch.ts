@@ -1,6 +1,7 @@
 import {
   SeaToolTransform,
-  OneMacTransform,
+  OnemacTransform,
+  OnemacLegacyTransform,
   RaiIssueTransform,
   RaiResponseTransform,
   RaiWithdrawTransform,
@@ -36,7 +37,8 @@ export type OsResponse<T> = {
   aggregations?: OsAggResult;
 };
 
-export type OsMainSourceItem = OneMacTransform &
+export type OsMainSourceItem = OnemacTransform &
+  OnemacLegacyTransform &
   SeaToolTransform &
   RaiIssueTransform &
   RaiResponseTransform &

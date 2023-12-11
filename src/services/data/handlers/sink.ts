@@ -5,9 +5,12 @@ import {
   SeaToolRecordsToDelete,
   SeaToolTransform,
   transformSeatoolData,
-  OneMacRecordsToDelete,
-  OneMacTransform,
+  OnemacRecordsToDelete,
+  OnemacLegacyRecordsToDelete,
+  OnemacTransform,
   transformOnemac,
+  OnemacLegacyTransform,
+  transformOnemacLegacy,
   RaiIssueTransform,
   transformRaiIssue,
   RaiResponseTransform,
@@ -102,8 +105,10 @@ export const seatool: Handler = async (event) => {
 
 export const onemac: Handler = async (event) => {
   const oneMacRecords: (
-    | OneMacTransform
-    | OneMacRecordsToDelete
+    | OnemacTransform
+    | OnemacRecordsToDelete
+    | OnemacLegacyTransform
+    | OnemacLegacyRecordsToDelete
     | (ToggleWithdrawRaiEnabled & { id: string })
     | RaiIssueTransform
     | RaiResponseTransform
@@ -116,7 +121,6 @@ export const onemac: Handler = async (event) => {
       value: string;
     }[]) {
       const { key, value } = onemacRecord;
-
       if (value) {
         const id: string = decode(key);
         const record = { id, ...JSON.parse(decode(value)) };
@@ -186,14 +190,26 @@ export const onemac: Handler = async (event) => {
               break;
             }
           }
-        } else if (
-          record && // testing if we have a record
-          (record.origin === "micro" || // testing if this is a micro record
-            (record.sk === "Package" && // testing if this is a legacy onemac package record
-              record.submitterName &&
-              record.submitterName !== "-- --"))
-        ) {
+        } else if (record?.origin == "micro") {
+          // This is a micro submission
           const result = transformOnemac(id).safeParse(record);
+          if (result.success === false) {
+            console.log(
+              "ONEMAC Validation Error. The following record failed to parse: ",
+              JSON.stringify(record),
+              "Because of the following Reason(s):",
+              result.error.message
+            );
+          } else {
+            oneMacRecords.push(result.data);
+          }
+        } else if (
+          record?.sk === "Package" && // testing if this is a legacy onemac package record
+          record.submitterName &&
+          record.submitterName !== "-- --"
+        ) {
+          // This is a legacy onemac package record
+          const result = transformOnemacLegacy(id).safeParse(record);
           if (result.success === false) {
             console.log(
               "ONEMAC Validation Error. The following record failed to parse: ",
@@ -207,14 +223,13 @@ export const onemac: Handler = async (event) => {
         }
       } else {
         const id: string = decode(key);
-        const oneMacTombstone: OneMacRecordsToDelete = {
+        const oneMacTombstone: OnemacRecordsToDelete = {
           id,
           additionalInformation: null,
           raiWithdrawEnabled: null,
           attachments: null,
           submitterEmail: null,
           submitterName: null,
-          origin: null,
         };
 
         oneMacRecords.push(oneMacTombstone);
