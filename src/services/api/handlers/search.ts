@@ -29,6 +29,13 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     console.log("Sending query, built as follow:");
     console.log(JSON.stringify(query, null, 2));
 
+    if (!process.env.osDomain) {
+      return response({
+        statusCode: 500,
+        body: { message: "Handler is missing process.env.osDomain env var" },
+      });
+    }
+
     const results = await os.search(process.env.osDomain, "main", query);
 
     return response<unknown>({

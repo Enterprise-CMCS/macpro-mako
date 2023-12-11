@@ -3,14 +3,14 @@ import * as sql from "mssql";
 const user = process.env.dbUser;
 const password = process.env.dbPassword;
 const server = process.env.dbIp;
-const port = parseInt(process.env.dbPort);
+const port = parseInt(process.env.dbPort as string);
 const config = {
   user: user,
   password: password,
   server: server,
   port: port,
   database: "SEA",
-};
+} as sql.config;
 
 import { Action, raiSchema, RaiSchema } from "shared-types";
 import { produceMessage } from "../libs/kafka";
@@ -18,7 +18,7 @@ import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
 import { getLatestRai } from "shared-utils";
 
-const TOPIC_NAME = process.env.topicName;
+const TOPIC_NAME = process.env.topicName as string;
 
 export async function issueRai(body: RaiSchema) {
   console.log("CMS issuing a new RAI");
@@ -75,7 +75,7 @@ export async function issueRai(body: RaiSchema) {
 }
 
 export async function withdrawRai(body: RaiSchema, rais: any) {
-  const activeKey = getLatestRai(rais).key;
+  const activeKey = getLatestRai(rais)?.key;
   const result = raiSchema.safeParse({ ...body, requestedDate: activeKey });
   console.log("Withdraw body is", body);
 
@@ -198,7 +198,7 @@ export async function respondToRai(body: RaiSchema, rais: any) {
   console.log("heyo");
 }
 
-export async function withdrawPackage(id, timestamp) {
+export async function withdrawPackage() {
   console.log("State withdrawing a package.");
 }
 
