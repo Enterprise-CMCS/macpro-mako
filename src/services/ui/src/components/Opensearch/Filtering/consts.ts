@@ -61,7 +61,7 @@ const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       value: { gte: undefined, lte: undefined },
     },
     "leadAnalystName.keyword": {
-      label: "CPOC",
+      label: "CPOC Name",
       field: "leadAnalystName.keyword",
       component: "multiSelect",
       prefix: "must",
@@ -122,7 +122,7 @@ const WAIVER_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       value: { gte: undefined, lte: undefined },
     },
     "leadAnalystName.keyword": {
-      label: "CPOC",
+      label: "CPOC Name",
       field: "leadAnalystName.keyword",
       component: "multiSelect",
       prefix: "must",
@@ -221,7 +221,7 @@ export const EXPORT_GROUPS = (
     {
       name: "Formal RAI Response",
       transform: (data) => {
-        return data.raiReceivedDate
+        return data.raiReceivedDate && !data.raiWithdrawnDate
           ? format(new Date(data.raiReceivedDate), "MM/dd/yyyy")
           : BLANK_VALUE;
       },
