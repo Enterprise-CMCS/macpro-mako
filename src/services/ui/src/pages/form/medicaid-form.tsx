@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
-import { getItem } from "@/api";
 import {
   Alert,
   BreadCrumbs,
@@ -15,7 +14,6 @@ import {
 } from "@/components";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET, ROUTES } from "@/routes";
-import { getUserStateCodes } from "@/utils";
 import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
