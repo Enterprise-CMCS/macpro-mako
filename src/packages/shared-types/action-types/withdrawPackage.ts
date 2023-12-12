@@ -12,6 +12,8 @@ export const withdrawPackageEventSchema = z.object({
     .max(4000, "This field may only be up to 4000 characters.")
     .optional(),
   attachments: z.array(onemacAttachmentSchema),
+  submitterName: z.string(),
+  submitterEmail: z.string(),
 });
 
 export type WithdrawPackageEventSchema = z.infer<
