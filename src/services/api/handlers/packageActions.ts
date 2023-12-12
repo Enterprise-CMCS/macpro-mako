@@ -20,8 +20,8 @@ import {
   RaiResponse,
   raiWithdrawSchema,
   RaiWithdraw,
-  withdrawPackageEventSchema,
-  WithdrawPackageEventSchema,
+  withdrawPackageSchema,
+  WithdrawPackage,
 } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
@@ -214,10 +214,10 @@ export async function respondToRai(body: RaiResponse, rais: any) {
   console.log("heyo");
 }
 
-export async function withdrawPackage(body: WithdrawPackageEventSchema) {
+export async function withdrawPackage(body: WithdrawPackage) {
   console.log("State withdrawing a package.");
   // Check incoming data
-  const result = withdrawPackageEventSchema.safeParse(body);
+  const result = withdrawPackageSchema.safeParse(body);
   if (result.success === false) {
     console.error(
       "Withdraw Package event validation error. The following record failed to parse: ",

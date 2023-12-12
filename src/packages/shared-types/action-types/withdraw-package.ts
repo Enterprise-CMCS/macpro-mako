@@ -3,7 +3,7 @@ import { onemacAttachmentSchema } from "../attachments";
 
 // Temporary, will be refactored to an extendable schema with Brian/Mike's back-end
 // work.
-export const withdrawPackageEventSchema = z.object({
+export const withdrawPackageSchema = z.object({
   id: z.string(),
   authority: z.string(),
   origin: z.string(),
@@ -16,6 +16,4 @@ export const withdrawPackageEventSchema = z.object({
   submitterEmail: z.string(),
 });
 
-export type WithdrawPackageEventSchema = z.infer<
-  typeof withdrawPackageEventSchema
->;
+export type WithdrawPackage = z.infer<typeof withdrawPackageSchema>;
