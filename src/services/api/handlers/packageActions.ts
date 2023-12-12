@@ -216,7 +216,7 @@ export async function withdrawPackage() {
   console.log("State withdrawing a package.");
 }
 
-export async function toggleRaiResponseWithdraw(body, toggle: boolean) {
+export async function toggleRaiResponseWithdraw(body: any, toggle: boolean) {
   const { id, authority, origin } = body;
   try {
     await produceMessage(
