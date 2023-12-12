@@ -190,6 +190,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           <StatusCard
             status={status}
             raiWithdrawEnabled={data._source?.raiWithdrawEnabled || false}
+            responseDate={""}
           />
           <PackageActionsCard id={data._id} />
         </section>
