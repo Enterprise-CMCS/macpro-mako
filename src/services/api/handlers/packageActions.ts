@@ -12,7 +12,15 @@ const config = {
   database: "SEA",
 };
 
-import { Action, raiSchema, RaiSchema } from "shared-types";
+import {
+  Action,
+  raiIssueSchema,
+  RaiIssue,
+  raiResponseSchema,
+  RaiResponse,
+  raiWithdrawSchema,
+  RaiWithdraw,
+} from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
@@ -20,7 +28,7 @@ import { getLatestRai } from "shared-utils";
 
 const TOPIC_NAME = process.env.topicName;
 
-export async function issueRai(body: RaiSchema) {
+export async function issueRai(body: RaiIssue) {
   console.log("CMS issuing a new RAI");
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
@@ -45,7 +53,7 @@ export async function issueRai(body: RaiSchema) {
     console.log(result2);
 
     // write to kafka here
-    const result = raiSchema.safeParse(body);
+    const result = raiIssueSchema.safeParse(body);
     if (result.success === false) {
       console.log(
         "RAI Validation Error. The following record failed to parse: ",
@@ -74,9 +82,12 @@ export async function issueRai(body: RaiSchema) {
   }
 }
 
-export async function withdrawRai(body: RaiSchema, rais: any) {
+export async function withdrawRai(body: RaiWithdraw, rais: any) {
   const activeKey = getLatestRai(rais).key;
-  const result = raiSchema.safeParse({ ...body, requestedDate: activeKey });
+  const result = raiWithdrawSchema.safeParse({
+    ...body,
+    requestedDate: activeKey,
+  });
   console.log("Withdraw body is", body);
 
   if (result.success === true) {
@@ -132,7 +143,7 @@ export async function withdrawRai(body: RaiSchema, rais: any) {
   }
 }
 
-export async function respondToRai(body: RaiSchema, rais: any) {
+export async function respondToRai(body: RaiResponse, rais: any) {
   console.log("State responding to RAI");
   const latestRai = getLatestRai(rais);
   if (latestRai?.status != "requested") {
@@ -164,7 +175,10 @@ export async function respondToRai(body: RaiSchema, rais: any) {
     console.log(result2);
 
     //   // write to kafka here
-    const result = raiSchema.safeParse({ ...body, requestedDate: activeKey });
+    const result = raiResponseSchema.safeParse({
+      ...body,
+      requestedDate: activeKey,
+    });
     if (result.success === false) {
       console.log(
         "RAI Validation Error. The following record failed to parse: ",
@@ -202,11 +216,8 @@ export async function withdrawPackage(id, timestamp) {
   console.log("State withdrawing a package.");
 }
 
-export async function toggleRaiResponseWithdraw(
-  body: { id: string },
-  toggle: boolean
-) {
-  const { id } = body;
+export async function toggleRaiResponseWithdraw(body, toggle: boolean) {
+  const { id, authority, origin } = body;
   try {
     await produceMessage(
       TOPIC_NAME,
@@ -216,6 +227,8 @@ export async function toggleRaiResponseWithdraw(
         actionType: toggle
           ? Action.ENABLE_RAI_WITHDRAW
           : Action.DISABLE_RAI_WITHDRAW,
+        authority,
+        origin,
       })
     );
 
