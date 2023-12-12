@@ -1,7 +1,7 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Alert, LoadingSpinner } from "@/components";
 import { ROUTES } from "@/routes";
-import { Action, ItemResult } from "shared-types";
+import { Action, Authority, ItemResult } from "shared-types";
 import { Button } from "@/components/Inputs";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { useEffect, useMemo, useState } from "react";
@@ -63,7 +63,7 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
   const { id, type } = useParams<{ id: string; type: Action }>();
   const { data: user } = useGetUser();
-
+  const authority = item?._source.authority as Authority;
   const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
   const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
 
@@ -73,6 +73,7 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
     data: { id: id! },
     endpoint: buildActionUrl(type!),
     user,
+    authority,
   });
   const ACTION_WORD = useMemo(
     () => (type === Action.ENABLE_RAI_WITHDRAW ? "Enable" : "Disable"),

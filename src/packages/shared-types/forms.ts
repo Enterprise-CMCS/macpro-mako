@@ -119,7 +119,7 @@ type ConditionRules =
       expectedValue: unknown;
     };
 
-type Condition = { name: string } & ConditionRules;
+export type Condition = { name: string } & ConditionRules;
 
 type Effects =
   | {
