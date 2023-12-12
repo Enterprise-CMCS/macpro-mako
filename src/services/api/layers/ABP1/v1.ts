@@ -425,9 +425,9 @@ const ABP1: FormSchema = {
                                                 },
                                                 rules: {
                                                   pattern: {
-                                                    value: /^-?\d*\.?\d+$/,
+                                                    value: /^\d*\.?\d+$/,
                                                     message:
-                                                      "Must be a percentage",
+                                                      "Must be a positive percentage",
                                                   },
                                                   required: "* Required",
                                                 },
@@ -451,9 +451,9 @@ const ABP1: FormSchema = {
                                                 },
                                                 rules: {
                                                   pattern: {
-                                                    value: /^-?\d*\.?\d+$/,
+                                                    value: /^\d*\.?\d+$/,
                                                     message:
-                                                      "Must be a percentage",
+                                                      "Must be a positive percentage",
                                                   },
                                                   required: "* Required",
                                                 },
@@ -474,9 +474,9 @@ const ABP1: FormSchema = {
                                                 },
                                                 rules: {
                                                   pattern: {
-                                                    value: /^-?\d*\.?\d+$/,
+                                                    value: /^\d*\.?\d+$/,
                                                     message:
-                                                      "Must be a percentage",
+                                                      "Must be a positive percentage",
                                                   },
                                                   required: "* Required",
                                                 },
@@ -530,10 +530,9 @@ const ABP1: FormSchema = {
                                                         },
                                                         rules: {
                                                           pattern: {
-                                                            value:
-                                                              /^\d*\.?\d+$/,
+                                                            value: /^[1-9]\d*$/,
                                                             message:
-                                                              "Must be a positive numerical value",
+                                                              "Must be a positive integer value",
                                                           },
                                                           required:
                                                             "* Required",
@@ -664,9 +663,9 @@ const ABP1: FormSchema = {
                                                             rules: {
                                                               pattern: {
                                                                 value:
-                                                                  /^\d*\.?\d+$/,
+                                                                  /^[1-9]\d*$/,
                                                                 message:
-                                                                  "Must be a positive numerical value",
+                                                                  "Must be a positive integer value",
                                                               },
                                                               required:
                                                                 "* Required",
@@ -801,9 +800,9 @@ const ABP1: FormSchema = {
                                                             rules: {
                                                               pattern: {
                                                                 value:
-                                                                  /^\d*\.?\d+$/,
+                                                                  /^[1-9]\d*$/,
                                                                 message:
-                                                                  "Must be a positive numerical value",
+                                                                  "Must be a positive integer value",
                                                               },
                                                               required:
                                                                 "* Required",
@@ -937,9 +936,9 @@ const ABP1: FormSchema = {
                                                             rules: {
                                                               pattern: {
                                                                 value:
-                                                                  /^\d*\.?\d+$/,
+                                                                  /^[1-9]\d*$/,
                                                                 message:
-                                                                  "Must be a positive numerical value",
+                                                                  "Must be a positive integer value",
                                                               },
                                                               required:
                                                                 "* Required",

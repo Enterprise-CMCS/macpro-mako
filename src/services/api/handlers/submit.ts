@@ -16,7 +16,7 @@ const config = {
 };
 
 import { Kafka, Message } from "kafkajs";
-import { Authority, OneMacSink, transformOnemac } from "shared-types";
+import { Authority, onemacSchema, transformOnemac } from "shared-types";
 
 const kafka = new Kafka({
   clientId: "submit",
@@ -80,22 +80,20 @@ export const submit = async (event: APIGatewayEvent) => {
 
     await pool.close();
 
-    const message: OneMacSink = body;
-    const makoBody = transformOnemac(body.id).safeParse(message);
-    if (makoBody.success === false) {
-      // handle
+    const eventBody = onemacSchema.safeParse(body);
+    if (eventBody.success === false) {
       console.log(
         "MAKO Validation Error. The following record failed to parse: ",
-        JSON.stringify(message),
+        JSON.stringify(eventBody),
         "Because of the following Reason(s): ",
-        makoBody.error.message
+        eventBody.error.message
       );
     } else {
-      console.log(message);
+      console.log(eventBody);
       await produceMessage(
         process.env.topicName,
         body.id,
-        JSON.stringify(message)
+        JSON.stringify(eventBody.data)
       );
 
       return response({

@@ -39,15 +39,6 @@ export const TABLE_COLUMNS = (props?: {
     cell: (data) => removeUnderscoresAndCapitalize(data.planType),
   },
   {
-    field: "actionType.keyword",
-    label: "Action Type",
-    visible: false,
-    cell: (data) =>
-      data.actionType
-        ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
-        : BLANK_VALUE,
-  },
-  {
     field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
     label: "Status",
     cell: (data) =>
@@ -87,7 +78,7 @@ export const TABLE_COLUMNS = (props?: {
     field: "raiReceivedDate",
     label: "Formal RAI Response",
     cell: (data) => {
-      if (!data.raiReceivedDate) return null;
+      if (!data.raiReceivedDate || data.raiWithdrawnDate) return null;
       return format(new Date(data.raiReceivedDate), "MM/dd/yyyy");
     },
   },

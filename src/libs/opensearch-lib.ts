@@ -1,4 +1,7 @@
-import { Client, Connection } from "@opensearch-project/opensearch";
+import {
+  Client,
+  Connection,
+} from "@opensearch-project/opensearch";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import * as aws4 from "aws4";
 import axios from "axios";

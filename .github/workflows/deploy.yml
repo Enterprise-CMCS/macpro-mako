@@ -7,10 +7,10 @@ on:
       - "!skipci*"
 
 concurrency:
-  group: ${{ github.ref_name }}-group
+  group: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}-group
 
 env:
-  STAGE_NAME: ${{ github.ref_name }}
+  STAGE_NAME: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
 
 permissions:
   id-token: write
@@ -32,7 +32,7 @@ jobs:
     needs:
       - init
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
     needs:
       - cache
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
       url: ${{ steps.deployment-data.outputs.APPURL }}
     outputs:
       app-url: ${{ steps.deployment-data.outputs.APPURL }}
@@ -70,7 +70,7 @@ jobs:
       - name: Set Site URL
         id: deployment-data
         run: |
-          echo ${{ github.ref_name }}
+          echo ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
           echo "APPURL=$(
             aws cloudformation \
             --region us-east-1 describe-stacks \
@@ -92,7 +92,7 @@ jobs:
     needs:
       - deploy
     environment:
-      name: ${{ github.ref_name }}-kibana
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}-kibana
       url: ${{ needs.deploy.outputs.kibana-url }}
     steps:
       - name: Display Kibana URL
@@ -104,7 +104,7 @@ jobs:
     needs:
       - cache
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -154,7 +154,7 @@ jobs:
     needs:
       - deploy
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -186,7 +186,7 @@ jobs:
     needs:
       - deploy
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -215,7 +215,7 @@ jobs:
       - name: Archive stage resources
         uses: actions/upload-artifact@v3
         with:
-          name: aws-resources-${{ github.ref_name }}
+          name: aws-resources-${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
           path: resources/aws-resources.json
 
   release:

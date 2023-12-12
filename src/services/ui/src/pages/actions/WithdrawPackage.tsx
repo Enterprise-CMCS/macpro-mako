@@ -2,7 +2,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/Inputs";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { useState } from "react";
-import { Action, ItemResult } from "shared-types";
+import { Action, Authority, ItemResult } from "shared-types";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { PackageActionForm } from "./PackageActionForm";
 import { ActionFormIntro, PackageInfo } from "./common";
@@ -43,6 +43,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
   const { id, type } = useParams<{ id: string; type: Action }>();
   const { data: user } = useGetUser();
+  const authority = item?._source.authority as Authority;
   const form = useForm<WithdrawPackageFormSchema>({
     resolver: zodResolver(withdrawPackageFormSchema),
   });
@@ -68,6 +69,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
             },
             endpoint: buildActionUrl(type!),
             user,
+            authority,
           });
           setSuccessModalIsOpen(true);
         }
