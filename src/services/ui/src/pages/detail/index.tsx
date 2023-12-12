@@ -39,15 +39,21 @@ const DetailCardWrapper = ({
 const StatusCard = ({
   status,
   raiWithdrawEnabled,
+  responseDate,
 }: {
   status: string;
   raiWithdrawEnabled: boolean;
+  responseDate: string;
 }) => (
   <DetailCardWrapper title={"Status"}>
     <div>
       <h2 className="text-xl font-semibold">{status}</h2>
       {raiWithdrawEnabled && (
         <em className="text-xs">{"Withdraw Formal RAI Response - Enabled"}</em>
+      )}
+      {/* Display 2nd Clock if status is pending and latestRaiResponseTimestamp is present */}
+      {status.toLowerCase() === "pending" && responseDate && (
+        <span id="secondclock">2nd Clock</span>
       )}
     </div>
   </DetailCardWrapper>
