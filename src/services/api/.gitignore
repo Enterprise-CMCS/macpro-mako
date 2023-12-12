@@ -1,2 +1,3 @@
 # git ignore js files built by schema versions
 **/*.js
+!/handlers/repack.js
