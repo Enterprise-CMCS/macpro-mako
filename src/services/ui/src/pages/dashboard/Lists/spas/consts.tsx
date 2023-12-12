@@ -1,14 +1,13 @@
-import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
 import { UserRoles } from "shared-types";
-import { mapActionLabel } from "@/utils";
 import { useGetUser } from "@/api/useGetUser";
-import { packageActionsForResult } from "shared-utils";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import * as POP from "@/components/Popover";
-import { cn } from "@/lib";
+import {
+  renderCellActions,
+  renderCellDate,
+  renderCellIdLink,
+} from "../renderCells";
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -21,17 +20,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       field: "id.keyword",
       label: "SPA ID",
       locked: true,
-      cell: (data) => {
-        if (!data.authority) return <></>;
-        return (
-          <Link
-            className="cursor-pointer text-blue-600"
-            to={`/details?id=${encodeURIComponent(data.id)}`}
-          >
-            {data.id}
-          </Link>
-        );
-      },
+      cell: renderCellIdLink((id) => `/details?id=${encodeURIComponent(id)}`),
     },
     {
       field: "state.keyword",
@@ -56,10 +45,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: "submissionDate",
       label: "Initial Submission",
-      cell: (data) => {
-        if (!data.submissionDate) return null;
-        return format(new Date(data.submissionDate), "MM/dd/yyyy");
-      },
+      cell: renderCellDate("submissionDate"),
     },
     {
       field: "origin",
@@ -76,10 +62,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       field: "raiRequestedDate",
       label: "Formal RAI Requested",
       visible: false,
-      cell: (data) => {
-        if (!data.raiRequestedDate) return null;
-        return format(new Date(data.raiRequestedDate), "MM/dd/yyyy");
-      },
+      cell: renderCellDate("raiRequestedDate"),
     },
     {
       field: "raiReceivedDate",
@@ -100,46 +83,18 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       label: "Submitted By",
       cell: (data) => data.submitterName,
     },
-    {
-      locked: true,
-      isSystem: true,
-      label: "Actions",
-      cell: (data) => {
-        if (!props.user) return <></>;
-        const actions = packageActionsForResult(props?.user, data);
-        return (
-          <>
-            <POP.Popover>
-              <POP.PopoverTrigger disabled={!actions.length}>
-                <EllipsisVerticalIcon
-                  className={cn(
-                    "w-8",
-                    actions.length ? "text-blue-700" : "text-gray-400"
-                  )}
-                />
-              </POP.PopoverTrigger>
-              <POP.PopoverContent>
-                <div className="flex flex-col">
-                  {actions.map((action, idx) => {
-                    return (
-                      <Link
-                        className={cn(
-                          "text-blue-500",
-                          "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
-                        )}
-                        to={`/action/${data.id}/${action}`}
-                        key={`${idx}-${action}`}
-                      >
-                        {mapActionLabel(action)}
-                      </Link>
-                    );
-                  })}
-                </div>
-              </POP.PopoverContent>
-            </POP.Popover>
-          </>
-        );
-      },
-    },
+    // hide actions column for: readonly,help desk
+    ...(![UserRoles.HELPDESK, UserRoles.CMS_READ_ONLY].some((UR) =>
+      props.user?.["custom:cms-roles"].includes(UR)
+    )
+      ? [
+          {
+            locked: true,
+            isSystem: true,
+            label: "Actions",
+            cell: renderCellActions(props.user),
+          },
+        ]
+      : []),
   ];
 };
