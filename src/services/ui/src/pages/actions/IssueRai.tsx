@@ -14,7 +14,7 @@ import {
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
-import { Action } from "shared-types";
+import { Action, Authority } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { useGetItem } from "@/api";
 import { submit } from "@/api/submissionService";
@@ -31,7 +31,7 @@ const formSchema = z.object({
     other: z.array(z.instanceof(File)).optional(),
   }),
 });
-export type IssueRaiFormSchema = z.infer<typeof formSchema>;
+export type RaiIssueFormSchema = z.infer<typeof formSchema>;
 
 const attachmentList = [
   {
@@ -62,29 +62,31 @@ const FormDescriptionText = () => {
   );
 };
 
-export const IssueRai = () => {
+export const RaiIssue = () => {
   const { id, type } = useParams<{
     id: string;
     type: Action;
   }>();
   const { data: item } = useGetItem(id!);
+  const authority = item?._source.authority as Authority;
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
   const navigate = useNavigate();
-  const form = useForm<IssueRaiFormSchema>({
+  const form = useForm<RaiIssueFormSchema>({
     resolver: zodResolver(formSchema),
   });
   const { data: user } = useGetUser();
-  const handleSubmit: SubmitHandler<IssueRaiFormSchema> = async (data) => {
+  const handleSubmit: SubmitHandler<RaiIssueFormSchema> = async (data) => {
     try {
-      await submit<IssueRaiFormSchema & { id: string }>({
+      await submit<RaiIssueFormSchema & { id: string }>({
         data: {
           id: id!, // Declared here because it's not part of the form data
           ...data,
         },
         endpoint: buildActionUrl(type!),
         user,
+        authority,
       });
       setSuccessModalIsOpen(true);
     } catch (err) {

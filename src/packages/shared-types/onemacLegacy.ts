@@ -1,10 +1,9 @@
 import { z } from "zod";
 import { onemacAttachmentSchema, handleAttachment } from "./attachments";
 
-// This is the event schema for ne submissions from our system
-export const onemacSchema = z.object({
-  authority: z.string(),
-  origin: z.string(),
+// This is the event schema we can expect streaming from legacy onemac.
+// It should be used by the sink to safe parse and then transform before publishing to opensearch.
+export const onemacLegacySchema = z.object({
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),
@@ -20,11 +19,10 @@ export const onemacSchema = z.object({
     )
     .nullish(),
 });
+export type OnemacLegacy = z.infer<typeof onemacLegacySchema>;
 
-export type OneMac = z.infer<typeof onemacSchema>;
-
-export const transformOnemac = (id: string) => {
-  return onemacSchema.transform((data) => {
+export const transformOnemacLegacy = (id: string) => {
+  return onemacLegacySchema.transform((data) => {
     const transformedData = {
       id,
       attachments:
@@ -35,6 +33,7 @@ export const transformOnemac = (id: string) => {
       additionalInformation: data.additionalInformation,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName === "-- --" ? null : data.submitterName,
+      origin: "oneMAC",
       rais: {} as {
         [key: number]: {
           requestedDate?: string;
@@ -75,11 +74,13 @@ export const transformOnemac = (id: string) => {
     return transformedData;
   });
 };
-export type OnemacTransform = z.infer<ReturnType<typeof transformOnemac>>;
+export type OnemacLegacyTransform = z.infer<
+  ReturnType<typeof transformOnemacLegacy>
+>;
 
-export type OnemacRecordsToDelete = Omit<
+export type OnemacLegacyRecordsToDelete = Omit<
   {
-    [Property in keyof OnemacTransform]: null;
+    [Property in keyof OnemacLegacyTransform]: null;
   },
   "id" | "rais"
 > & { id: string };

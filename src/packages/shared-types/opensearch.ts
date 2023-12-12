@@ -1,11 +1,11 @@
-import { SeaToolTransform } from "./seatool";
 import {
-  OneMacTransform,
+  SeaToolTransform,
+  OnemacTransform,
+  OnemacLegacyTransform,
   RaiIssueTransform,
   RaiResponseTransform,
   RaiWithdrawTransform,
-} from "./onemac";
-import { Action } from "./actions";
+} from "./";
 
 export type OsHit<T> = {
   _index: string;
@@ -37,7 +37,8 @@ export type OsResponse<T> = {
   aggregations?: OsAggResult;
 };
 
-export type OsMainSourceItem = OneMacTransform &
+export type OsMainSourceItem = OnemacTransform &
+  OnemacLegacyTransform &
   SeaToolTransform &
   RaiIssueTransform &
   RaiResponseTransform &
