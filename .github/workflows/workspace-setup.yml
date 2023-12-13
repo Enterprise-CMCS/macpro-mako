@@ -6,7 +6,7 @@ on:
     - cron: "0 10 * * SUN"
 
 concurrency:
-  group: ${{ github.ref_name }}-test-ws-setup
+  group: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}-test-ws-setup
 
 jobs:
   test:

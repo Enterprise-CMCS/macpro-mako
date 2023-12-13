@@ -69,7 +69,7 @@ custom:
   scripts:
     hooks:
       package:initialize: |
-          yarn build
+        yarn buildLayers
 params:
   master:
     formsProvisionedConcurrency: 2
