@@ -39,25 +39,31 @@ const DetailCardWrapper = ({
 const StatusCard = ({
   status,
   raiWithdrawEnabled,
-  responseDate,
+  raiRecievedDate,
 }: {
   status: string;
   raiWithdrawEnabled: boolean;
-  responseDate: string;
-}) => (
-  <DetailCardWrapper title={"Status"}>
-    <div>
-      <h2 className="text-xl font-semibold">{status}</h2>
-      {raiWithdrawEnabled && (
-        <em className="text-xs">{"Withdraw Formal RAI Response - Enabled"}</em>
-      )}
-      {/* Display 2nd Clock if status is pending and latestRaiResponseTimestamp is present */}
-      {status.toLowerCase() === "pending" && responseDate && (
-        <span id="secondclock">2nd Clock</span>
-      )}
-    </div>
-  </DetailCardWrapper>
-);
+  raiRecievedDate: string;
+}) => {
+  // console.log(raiResponse.length);
+  // console.log(status.toLowerCase() === "pending" && raiResponse.length > 0);
+  return (
+    <DetailCardWrapper title={"Status"}>
+      <div>
+        <h2 className="text-xl font-semibold">{status}</h2>
+        {raiWithdrawEnabled && (
+          <em className="text-xs">
+            {"Withdraw Formal RAI Response - Enabled"}
+          </em>
+        )}
+        {/* Display 2nd Clock if status is pending and latestRaiResponseTimestamp is present */}
+        {status.toLowerCase() === "pending" && raiRecievedDate && (
+          <span id="secondclock">2nd Clock</span>
+        )}
+      </div>
+    </DetailCardWrapper>
+  );
+};
 const PackageActionsCard = ({ id }: { id: string }) => {
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -190,7 +196,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           <StatusCard
             status={status}
             raiWithdrawEnabled={data._source?.raiWithdrawEnabled || false}
-            responseDate={""}
+            raiRecievedDate={data._source?.raiReceivedDate || ""}
           />
           <PackageActionsCard id={data._id} />
         </section>
