@@ -1,11 +1,7 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { Action, CognitoUserAttributes, ItemResult } from "shared-types";
-import {
-  isCmsUser,
-  getActiveRai,
-  isCmsWriteUser,
-  isStateUser,
-} from "shared-utils";
+import { isCmsWriteUser, getLatestRai } from "shared-utils";
+import { isStateUser } from "shared-utils/is-state-user";
 import { getPackage } from "../libs/package/getPackage";
 import {
   getAuthDetails,
@@ -26,24 +22,20 @@ export const packageActionsForResult = (
   result: ItemResult
 ): Action[] => {
   const actions = [];
-  const activeRai = getActiveRai(result._source.rais);
+  const latestRai = getLatestRai(result._source.rais);
   if (isCmsWriteUser(user)) {
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING:
       case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
       case SEATOOL_STATUS.PENDING_APPROVAL:
       case SEATOOL_STATUS.PENDING_CONCURRENCE:
-        if (!activeRai) {
-          // If there is not an active RAI
+        if (!latestRai || latestRai.status != "requested") {
+          // If there is no RAIs, or the latest RAI is in a state other than requested
           actions.push(Action.ISSUE_RAI);
         }
         break;
     }
-    if (
-      result._source.rais !== null &&
-      Object.keys(result._source.rais).length > 0 &&
-      !activeRai
-    ) {
+    if (latestRai?.status == "received") {
       // There's an RAI and its been responded to
       if (!result._source.raiWithdrawEnabled) {
         actions.push(Action.ENABLE_RAI_WITHDRAW);
@@ -55,9 +47,21 @@ export const packageActionsForResult = (
   } else if (isStateUser(user)) {
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING_RAI:
-        if (activeRai) {
+        if (latestRai?.status == "requested") {
           // If there is an active RAI
           actions.push(Action.RESPOND_TO_RAI);
+        }
+        break;
+      case SEATOOL_STATUS.PENDING:
+      case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
+      case SEATOOL_STATUS.PENDING_APPROVAL:
+      case SEATOOL_STATUS.PENDING_CONCURRENCE:
+        if (
+          latestRai?.status == "received" &&
+          result._source.raiWithdrawEnabled
+        ) {
+          // There is an rai that's been responded to, but not withdrawn
+          actions.push(Action.WITHDRAW_RAI);
         }
         break;
     }
@@ -65,6 +69,12 @@ export const packageActionsForResult = (
   return actions;
 };
 export const getPackageActions = async (event: APIGatewayEvent) => {
+  if (!event.body) {
+    return response({
+      statusCode: 400,
+      body: { message: "Event body required" },
+    });
+  }
   const body = JSON.parse(event.body) as GetPackageActionsBody;
   try {
     console.log(body);

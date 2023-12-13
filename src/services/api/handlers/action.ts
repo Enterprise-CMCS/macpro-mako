@@ -12,9 +12,23 @@ import {
   issueRai,
   respondToRai,
   toggleRaiResponseWithdraw,
+  withdrawRai,
 } from "./packageActions";
 
 export const handler = async (event: APIGatewayEvent) => {
+  if (!event.pathParameters || !event.pathParameters.actionType) {
+    return response({
+      statusCode: 400,
+      body: { message: "Action type path parameter required" },
+    });
+  }
+  if (!event.body) {
+    return response({
+      statusCode: 400,
+      body: { message: "Event body required" },
+    });
+  }
+
   try {
     const actionType = event.pathParameters.actionType as Action;
     const body = JSON.parse(event.body);
@@ -64,6 +78,9 @@ export const handler = async (event: APIGatewayEvent) => {
         break;
       case Action.DISABLE_RAI_WITHDRAW:
         await toggleRaiResponseWithdraw(body, false);
+        break;
+      case Action.WITHDRAW_RAI:
+        await withdrawRai(body, result._source.rais);
         break;
       default:
         throw `No ${actionType} action available`;

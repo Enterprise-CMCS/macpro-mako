@@ -14,7 +14,7 @@ import {
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
-import { Action } from "shared-types";
+import { Action, Authority } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
 import { useGetItem } from "@/api";
@@ -66,6 +66,7 @@ export const RespondToRai = () => {
     type: Action;
   }>();
   const { data: item } = useGetItem(id!);
+  const authority = item?._source.authority as Authority;
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
@@ -83,6 +84,7 @@ export const RespondToRai = () => {
         },
         endpoint: buildActionUrl(type!),
         user,
+        authority,
       });
       setSuccessModalIsOpen(true);
     } catch (err) {

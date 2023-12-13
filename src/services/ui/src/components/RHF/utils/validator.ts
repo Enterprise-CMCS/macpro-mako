@@ -1,3 +1,9 @@
+/**
+ * The validator is intended to be a replica of RHF validation.
+ * To be used in backend api handlers to validate incoming/outgoing form data against document when...
+ * - creating/saving form data
+ * - retrieving form data
+ */
 import * as T from "shared-types";
 import { RegisterOptions } from "react-hook-form";
 import { FormSchema } from "shared-types";
@@ -154,8 +160,27 @@ export const validateOption = (optionValue: string, options: any[]) => {
   return options.find((OPT: any) => OPT.value === optionValue);
 };
 
+// return true: run validation - false: skip validation
+export const dependencyCheck = (dep: T.DependencyRule, data: any) => {
+  const conditionMatched = dep.conditions.every((DC) => {
+    if (DC.type === "valueNotExist") return !data[DC.name];
+    if (DC.type === "expectedValue") {
+      return data[DC.name] === DC.expectedValue;
+    }
+
+    return !!data[DC.name];
+  });
+
+  if (dep.effect.type === "show") return conditionMatched;
+  if (dep.effect.type === "hide") return !conditionMatched;
+};
+
 export const formGroupValidator =
   (data: any) => (ACC: ERROR, FORM: T.FormGroup) => {
+    if (FORM.dependency) {
+      const depMatch = dependencyCheck(FORM.dependency, data);
+      if (!depMatch) return ACC;
+    }
     FORM.slots.reduce(slotValidator(data), ACC);
     return ACC;
   };
@@ -184,6 +209,11 @@ export const slotValidator =
         slotValidator(FLD)(ACC, SLOT1);
       }
     };
+
+    if (SLOT.dependency) {
+      const depMatch = dependencyCheck(SLOT.dependency, data);
+      if (!depMatch) return ACC;
+    }
 
     if (SLOT.rhf === "Input") {
       ACC[SLOT.name] = validateInput(data[SLOT.name], SLOT.rules);
@@ -250,6 +280,10 @@ export const slotValidator =
 
 export const documentValidator = (document: FormSchema) => (data: any) => {
   return document.sections.reduce((ACC, SEC) => {
+    if (SEC.dependency) {
+      const depMatch = dependencyCheck(SEC.dependency, data);
+      if (!depMatch) return ACC;
+    }
     SEC.form.reduce(formGroupValidator(data), ACC);
     return ACC;
   }, {} as ERROR);
