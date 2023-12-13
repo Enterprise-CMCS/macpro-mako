@@ -3,14 +3,14 @@ import * as sql from "mssql";
 const user = process.env.dbUser;
 const password = process.env.dbPassword;
 const server = process.env.dbIp;
-const port = parseInt(process.env.dbPort);
+const port = parseInt(process.env.dbPort as string);
 const config = {
   user: user,
   password: password,
   server: server,
   port: port,
   database: "SEA",
-};
+} as sql.config;
 
 import {
   Action,
@@ -28,7 +28,7 @@ import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
 import { getLatestRai } from "shared-utils";
 
-const TOPIC_NAME = process.env.topicName;
+const TOPIC_NAME = process.env.topicName as string;
 
 export async function issueRai(body: RaiIssue) {
   console.log("CMS issuing a new RAI");
@@ -85,7 +85,7 @@ export async function issueRai(body: RaiIssue) {
 }
 
 export async function withdrawRai(body: RaiWithdraw, rais: any) {
-  const activeKey = getLatestRai(rais).key;
+  const activeKey = getLatestRai(rais)?.key;
   const result = raiWithdrawSchema.safeParse({
     ...body,
     requestedDate: activeKey,
@@ -264,7 +264,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
   }
 }
 
-export async function toggleRaiResponseWithdraw(body, toggle: boolean) {
+export async function toggleRaiResponseWithdraw(body: any, toggle: boolean) {
   const { id, authority, origin } = body;
   try {
     await produceMessage(
