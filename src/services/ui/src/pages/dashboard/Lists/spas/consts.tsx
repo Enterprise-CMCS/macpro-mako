@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
-import { UserRoles } from "shared-types";
+import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import {
   renderCellActions,
@@ -84,7 +84,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       cell: (data) => data.submitterName,
     },
     // hide actions column for: readonly,help desk
-    ...(![UserRoles.HELPDESK, UserRoles.CMS_READ_ONLY].some((UR) =>
+    ...(!CMS_READ_ONLY_ROLES.some((UR) =>
       props.user?.["custom:cms-roles"].includes(UR)
     )
       ? [

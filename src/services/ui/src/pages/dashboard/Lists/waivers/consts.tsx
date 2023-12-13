@@ -2,7 +2,7 @@ import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
 import { LABELS } from "@/lib";
 import { BLANK_VALUE } from "@/consts";
-import { UserRoles } from "shared-types";
+import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import {
   renderCellActions,
@@ -90,7 +90,7 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       cell: (data) => data.submitterName,
     },
     // hide actions column for: readonly,help desk
-    ...(![UserRoles.HELPDESK, UserRoles.CMS_READ_ONLY].some((UR) =>
+    ...(!CMS_READ_ONLY_ROLES.some((UR) =>
       props.user?.["custom:cms-roles"].includes(UR)
     )
       ? [
