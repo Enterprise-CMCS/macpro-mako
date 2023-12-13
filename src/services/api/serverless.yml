@@ -65,7 +65,9 @@ custom:
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
   scriptable:
     hooks:
-      package:compileEvents: yarn compileRepack && ./repack/repack.js
+      package:compileEvents: |
+        yarn compileRepack
+        ./repack/repack.js
   scripts:
     hooks:
       package:initialize: |
