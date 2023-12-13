@@ -17,3 +17,13 @@ export const withdrawPackageSchema = z.object({
 });
 
 export type WithdrawPackage = z.infer<typeof withdrawPackageSchema>;
+
+export const transformWithdrawPackage = (id: string) => {
+  // This does nothing.  Just putting the mechanics in place.
+  return withdrawPackageSchema.transform((data) => ({
+    id,
+  }));
+};
+export type WithdrawPackageTransform = z.infer<
+  ReturnType<typeof transformWithdrawPackage>
+>;
