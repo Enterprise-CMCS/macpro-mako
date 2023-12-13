@@ -196,7 +196,7 @@ export const transformSeatoolData = (id: string) => {
       ),
       authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
       changedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.CHANGED_DATE),
-      cpoc: getLeadAnalyst(data).leadAnalystName,
+      description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(data),
       leadAnalystOfficerId,
       leadAnalystName,
@@ -217,7 +217,6 @@ export const transformSeatoolData = (id: string) => {
         data.STATE_PLAN.SUBMISSION_DATE
       ),
       subject: data.STATE_PLAN.TITLE_NAME,
-      summary: data.STATE_PLAN.SUMMARY_MEMO,
     };
   });
 };
