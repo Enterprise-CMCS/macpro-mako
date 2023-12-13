@@ -37,7 +37,7 @@ export const handler = async () => {
   }
 };
 
-function checkEnvVariables(requiredEnvVariables) {
+function checkEnvVariables(requiredEnvVariables: string[]) {
   const missingVariables = requiredEnvVariables.filter(
     (envVar) => !process.env[envVar]
   );

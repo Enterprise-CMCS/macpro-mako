@@ -1,6 +1,6 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { Action, CognitoUserAttributes, ItemResult } from "shared-types";
-import { isCmsUser, isCmsWriteUser, getLatestRai } from "shared-utils";
+import { isCmsWriteUser, getLatestRai } from "shared-utils";
 import { isStateUser } from "shared-utils/is-state-user";
 import { getPackage } from "../libs/package/getPackage";
 import {
@@ -69,6 +69,12 @@ export const packageActionsForResult = (
   return actions;
 };
 export const getPackageActions = async (event: APIGatewayEvent) => {
+  if (!event.body) {
+    return response({
+      statusCode: 400,
+      body: { message: "Event body required" },
+    });
+  }
   const body = JSON.parse(event.body) as GetPackageActionsBody;
   try {
     console.log(body);

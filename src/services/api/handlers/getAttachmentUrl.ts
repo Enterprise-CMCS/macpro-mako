@@ -13,6 +13,19 @@ if (!process.env.osDomain) {
 
 // Handler function to get Seatool data
 export const handler = async (event: APIGatewayEvent) => {
+  if (!event.body) {
+    return response({
+      statusCode: 400,
+      body: { message: "Event body required" },
+    });
+  }
+  if (!process.env.osDomain) {
+    return response({
+      statusCode: 500,
+      body: { message: "Handler is missing process.env.osDomain env var" },
+    });
+  }
+
   try {
     const body = JSON.parse(event.body);
 
@@ -91,7 +104,7 @@ export const handler = async (event: APIGatewayEvent) => {
   }
 };
 
-async function getClient(bucket) {
+async function getClient(bucket: string) {
   if (bucket.startsWith("uploads")) {
     const stsClient = new STSClient({});
 
@@ -106,11 +119,15 @@ async function getClient(bucket) {
     // Extract the assumed role credentials
     const assumedCredentials = assumedRoleResponse.Credentials;
 
+    if (!assumedCredentials) {
+      throw new Error("No assumed redentials");
+    }
+
     // Create S3 client using the assumed role's credentials
     return new S3Client({
       credentials: {
-        accessKeyId: assumedCredentials.AccessKeyId,
-        secretAccessKey: assumedCredentials.SecretAccessKey,
+        accessKeyId: assumedCredentials.AccessKeyId as string,
+        secretAccessKey: assumedCredentials.SecretAccessKey as string,
         sessionToken: assumedCredentials.SessionToken,
       },
     });
@@ -120,10 +137,10 @@ async function getClient(bucket) {
 }
 
 async function generatePresignedUrl(
-  bucket,
-  key,
-  filename,
-  expirationInSeconds
+  bucket: string,
+  key: string,
+  filename: string,
+  expirationInSeconds: number
 ) {
   // Get an S3 client
   const client = await getClient(bucket);

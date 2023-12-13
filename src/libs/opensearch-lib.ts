@@ -23,7 +23,7 @@ function createAwsConnector(credentials: any) {
     buildRequestObject(params: any) {
       const request = super.buildRequestObject(params);
       request.headers = request.headers || {};
-      request.headers["host"] = request.hostname;
+      request.headers["host"] = request.hostname ?? undefined;
 
       return aws4.sign(<any>request, credentials);
     }

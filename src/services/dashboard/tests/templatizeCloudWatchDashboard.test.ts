@@ -1,11 +1,6 @@
 import { it, describe, expect, afterEach, vi } from "vitest";
 import { CloudWatch } from "@aws-sdk/client-cloudwatch";
 import { handler } from "../handlers/templatizeCloudWatchDashboard";
-import type {
-  APIGatewayEvent,
-  APIGatewayProxyCallback,
-  Context,
-} from "aws-lambda";
 
 vi.mock("@aws-sdk/client-cloudwatch", () => ({
   CloudWatch: vi.fn(() => ({
@@ -33,11 +28,7 @@ describe("templatize cloudwatch dashboard", () => {
       .replaceAll("us-east-1", "${env:REGION_A}")
       .replaceAll("test-service", "${self:service}");
 
-    const result = await handler(
-      {} as APIGatewayEvent,
-      {} as Context,
-      {} as APIGatewayProxyCallback
-    );
+    const result = await handler();
 
     expect(CloudWatch).toHaveBeenCalledWith({});
 
