@@ -106,6 +106,14 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         responseDate: seaToolFriendlyTimestamp,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
+    case buildActionUrl(Action.WITHDRAW_PACKAGE):
+      return {
+        authority: authority,
+        origin: "micro",
+        ...data,
+        ...userDetails,
+        attachments: attachments ? buildAttachmentObject(attachments) : null,
+      };
     case buildActionUrl(Action.ENABLE_RAI_WITHDRAW):
     case buildActionUrl(Action.DISABLE_RAI_WITHDRAW):
     default:
