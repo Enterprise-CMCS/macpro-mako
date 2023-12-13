@@ -45,9 +45,6 @@ export const packageActionsForResult = (
       }
     }
   } else if (isStateUser(user)) {
-    if (result._source.seatoolStatus != SEATOOL_STATUS.WITHDRAWN) {
-      actions.push(Action.WITHDRAW_PACKAGE);
-    }
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING_RAI:
         if (latestRai?.status == "requested") {
@@ -59,6 +56,7 @@ export const packageActionsForResult = (
       case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
       case SEATOOL_STATUS.PENDING_APPROVAL:
       case SEATOOL_STATUS.PENDING_CONCURRENCE:
+        actions.push(Action.WITHDRAW_PACKAGE);
         if (
           latestRai?.status == "received" &&
           result._source.raiWithdrawEnabled
