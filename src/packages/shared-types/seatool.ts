@@ -80,20 +80,6 @@ const zActionOfficer = z.object({
   FIRST_NAME: z.string(),
   LAST_NAME: z.string(),
 });
-const zStatePlan = z.object({
-  SUBMISSION_DATE: z.number().nullable(),
-  PLAN_TYPE: z.number().nullable(),
-  LEAD_ANALYST_ID: z.number().nullable(),
-  CHANGED_DATE: z.number().nullable(),
-  APPROVED_EFFECTIVE_DATE: z.number().nullable(),
-  PROPOSED_DATE: z.number().nullable(),
-  SPW_STATUS_ID: z.number().nullable(),
-  STATE_CODE: z.string().nullish(),
-  STATUS_DATE: z.number().nullish(),
-  SUMMARY_MEMO: z.string().nullish(),
-  TITLE_NAME: z.string().nullish(),
-});
-type StatePlan = z.infer<typeof zStatePlan>;
 type ActionOfficer = z.infer<typeof zActionOfficer>;
 
 export const seatoolSchema = z.object({
@@ -148,14 +134,14 @@ export const seatoolSchema = z.object({
     .nullable(),
 });
 
-const getDateStringOrNullFromEpoc = (epocDate: number | null) => {
-  if (epocDate !== null) {
-    return new Date(epocDate).toISOString();
-  }
-  return null;
-};
+const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
+  epocDate !== null && epocDate !== undefined
+    ? new Date(epocDate).toISOString()
+    : null;
 
-const compileSrtList = (officers: ActionOfficer[]): string[] =>
+const compileSrtList = (
+  officers: ActionOfficer[] | null | undefined
+): string[] =>
   officers?.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
 
 const getFinalDispositionDate = (record: SeaToolSink) => {
@@ -164,9 +150,8 @@ const getFinalDispositionDate = (record: SeaToolSink) => {
     SEATOOL_STATUS.DISAPPROVED,
     SEATOOL_STATUS.WITHDRAWN,
   ];
-  return finalDispositionStatuses.includes(
-    record?.SPW_STATUS?.[0].SPW_STATUS_DESC
-  )
+  const status = record?.SPW_STATUS?.[0].SPW_STATUS_DESC;
+  return status && finalDispositionStatuses.includes(status)
     ? getDateStringOrNullFromEpoc(record.STATE_PLAN.STATUS_DATE)
     : null;
 };
@@ -225,7 +210,7 @@ export const transformSeatoolData = (id: string) => {
       reviewTeam: compileSrtList(data.ACTION_OFFICERS),
       state: data.STATE_PLAN.STATE_CODE,
       stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
-      statusDate: data.STATE_PLAN.STATUS_DATE,
+      statusDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.STATUS_DATE),
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       seatoolStatus,
       submissionDate: getDateStringOrNullFromEpoc(
