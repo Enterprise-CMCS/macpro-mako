@@ -75,16 +75,30 @@ const getRaiDate = (data: SeaToolSink) => {
   };
 };
 
+const zActionOfficer = z.object({
+  OFFICER_ID: z.number(),
+  FIRST_NAME: z.string(),
+  LAST_NAME: z.string(),
+});
+const zStatePlan = z.object({
+  SUBMISSION_DATE: z.number().nullable(),
+  PLAN_TYPE: z.number().nullable(),
+  LEAD_ANALYST_ID: z.number().nullable(),
+  CHANGED_DATE: z.number().nullable(),
+  APPROVED_EFFECTIVE_DATE: z.number().nullable(),
+  PROPOSED_DATE: z.number().nullable(),
+  SPW_STATUS_ID: z.number().nullable(),
+  STATE_CODE: z.string().nullish(),
+  STATUS_DATE: z.number().nullish(),
+  SUMMARY_MEMO: z.string().nullish(),
+  TITLE_NAME: z.string().nullish(),
+});
+type StatePlan = z.infer<typeof zStatePlan>;
+type ActionOfficer = z.infer<typeof zActionOfficer>;
+
 export const seatoolSchema = z.object({
-  LEAD_ANALYST: z
-    .array(
-      z.object({
-        OFFICER_ID: z.number(),
-        FIRST_NAME: z.string(),
-        LAST_NAME: z.string(),
-      })
-    )
-    .nullable(),
+  ACTION_OFFICERS: z.array(zActionOfficer).nullish(),
+  LEAD_ANALYST: z.array(zActionOfficer).nullable(),
   PLAN_TYPES: z
     .array(
       z.object({
@@ -102,6 +116,9 @@ export const seatoolSchema = z.object({
     PROPOSED_DATE: z.number().nullable(),
     SPW_STATUS_ID: z.number().nullable(),
     STATE_CODE: z.string().nullish(),
+    STATUS_DATE: z.number().nullish(),
+    SUMMARY_MEMO: z.string().nullish(),
+    TITLE_NAME: z.string().nullish(),
   }),
   SPW_STATUS: z
     .array(
@@ -136,6 +153,22 @@ const getDateStringOrNullFromEpoc = (epocDate: number | null) => {
     return new Date(epocDate).toISOString();
   }
   return null;
+};
+
+const compileSrtList = (officers: ActionOfficer[]): string[] =>
+  officers.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
+
+const getFinalDispositionDate = (record: SeaToolSink) => {
+  const finalDispositionStatuses = [
+    SEATOOL_STATUS.APPROVED,
+    SEATOOL_STATUS.DISAPPROVED,
+    SEATOOL_STATUS.WITHDRAWN,
+  ];
+  return finalDispositionStatuses.includes(
+    record?.SPW_STATUS?.[0].SPW_STATUS_DESC
+  )
+    ? getDateStringOrNullFromEpoc(record.STATE_PLAN.STATUS_DATE)
+    : null;
 };
 
 export const transformSeatoolData = (id: string) => {
@@ -178,6 +211,8 @@ export const transformSeatoolData = (id: string) => {
       ),
       authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
       changedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.CHANGED_DATE),
+      cpoc: getLeadAnalyst(data).leadAnalystName,
+      finalDispositionDate: getFinalDispositionDate(data),
       leadAnalystOfficerId,
       leadAnalystName,
       planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME,
@@ -187,13 +222,17 @@ export const transformSeatoolData = (id: string) => {
       raiRequestedDate,
       raiWithdrawnDate,
       rais,
+      reviewTeam: compileSrtList(data.ACTION_OFFICERS),
       state: data.STATE_PLAN.STATE_CODE,
       stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
+      statusDate: data.STATE_PLAN.STATUS_DATE,
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       seatoolStatus,
       submissionDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.SUBMISSION_DATE
       ),
+      subject: data.STATE_PLAN.TITLE_NAME,
+      summary: data.STATE_PLAN.SUMMARY_MEMO,
     };
   });
 };

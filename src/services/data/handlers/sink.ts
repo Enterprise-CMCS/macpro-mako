@@ -68,6 +68,8 @@ export const seatool: Handler = async (event) => {
           approvedEffectiveDate: null,
           authority: null,
           changedDate: null,
+          cpoc: null,
+          finalDispositionDate: null,
           leadAnalystName: null,
           leadAnalystOfficerId: null,
           planType: null,
@@ -76,11 +78,15 @@ export const seatool: Handler = async (event) => {
           raiReceivedDate: null,
           raiRequestedDate: null,
           raiWithdrawnDate: null,
+          reviewTeam: null,
           state: null,
           cmsStatus: null,
           stateStatus: null,
           seatoolStatus: null,
+          statusDate: null,
           submissionDate: null,
+          subject: null,
+          summary: null,
         };
 
         docObject[id] = seaTombstone;
