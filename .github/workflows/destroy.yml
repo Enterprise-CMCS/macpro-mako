@@ -22,9 +22,9 @@ jobs:
       )
     runs-on: ubuntu-20.04
     environment:
-      name: ${{ inputs.environment || github.event.ref }}
+      name: ${{ inputs.environment || (startsWith(github.event.ref, 'snyk-') && 'snyk' || github.event.ref) }}
     env:
-      STAGE_NAME: ${{ inputs.environment || github.event.ref }}
+      STAGE_NAME: ${{ inputs.environment || (startsWith(github.event.ref, 'snyk-') && 'snyk' || github.event.ref) }}
     permissions:
       id-token: write
       contents: read
@@ -61,5 +61,5 @@ jobs:
       - uses: strumwolf/delete-deployment-environment@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          environment: ${{ inputs.environment || github.event.ref }}
+          environment: ${{ inputs.environment || (startsWith(github.event.ref, 'snyk-') && 'snyk' || github.event.ref) }}
           onlyRemoveDeployments: true
