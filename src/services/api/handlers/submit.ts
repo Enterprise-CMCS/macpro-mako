@@ -44,12 +44,12 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
-    if (body.authority !== Authority.MED_SPA) {
+    const activeSubmissionTypes = [Authority.CHIP_SPA, Authority.MED_SPA];
+    if (!activeSubmissionTypes.includes(body.authority)) {
       return response({
         statusCode: 400,
         body: {
-          message:
-            "The Mako Submissions API only supports Medicaid SPA at this time",
+          message: `OneMAC (micro) Submissions API does not support the following authority: ${body.authority}`,
         },
       });
     }
