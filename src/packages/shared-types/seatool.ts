@@ -156,7 +156,7 @@ const getDateStringOrNullFromEpoc = (epocDate: number | null) => {
 };
 
 const compileSrtList = (officers: ActionOfficer[]): string[] =>
-  officers.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
+  officers?.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
 
 const getFinalDispositionDate = (record: SeaToolSink) => {
   const finalDispositionStatuses = [
