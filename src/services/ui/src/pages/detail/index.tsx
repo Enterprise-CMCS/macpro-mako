@@ -45,8 +45,6 @@ const StatusCard = ({
   raiWithdrawEnabled: boolean;
   raiRecievedDate: string;
 }) => {
-  // console.log(raiResponse.length);
-  // console.log(status.toLowerCase() === "pending" && raiResponse.length > 0);
   return (
     <DetailCardWrapper title={"Status"}>
       <div>
