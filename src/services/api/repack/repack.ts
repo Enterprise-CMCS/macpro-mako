@@ -9,9 +9,10 @@ interface ZipArgs {
   cwd: string;
   destination: string;
 }
+const context = this as any;
 
-async function repackFunctions(this: any, archives: string[]): Promise<void> {
-  const serverlessDir = this.serverless.serviceDir;
+async function repackFunctions(archives: string[]): Promise<void> {
+  const serverlessDir = context.serverless.serviceDir;
   const dotServerlessDir = path.join(serverlessDir, ".serverless");
   const repackDir = path.join(serverlessDir, ".repack");
 
