@@ -9,10 +9,12 @@ export const zSpaIdSchema = z
     "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX"
   )
   .refine((value) => isAuthorizedState(value), {
-    message: "You do not have access to this state.",
+    message:
+      "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
   .refine(async (value) => idIsUnique(value), {
-    message: "SPA ID already exists.",
+    message:
+      "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
   });
 
 export const zAttachmentOptional = z.array(z.instanceof(File)).optional();
