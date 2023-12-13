@@ -51,8 +51,8 @@ async function repackFunctions(archives: string[]): Promise<void> {
       follow: true,
     });
 
-    files.forEach((file) => {
-      fs.utimes(file, time, time);
+    files.forEach(async (file) => {
+      await fs.utimes(file, time, time);
     });
 
     // Repack the zip file.
@@ -73,7 +73,7 @@ async function repackFunctions(archives: string[]): Promise<void> {
 
     // Copy the repacked zip file to the .serverless directory.
     await fs.copyFile(path.join(repackDir, `${funcName}.zip.new`), archive);
-    fs.utimes(archive, time, time);
+    await fs.utimes(archive, time, time);
   }
 
   // Remove the .repack directory
