@@ -61,7 +61,7 @@ export const packageActionsForResult = (
           latestRai?.status == "received" &&
           result._source.raiWithdrawEnabled
         ) {
-          // There is an rai that's been responded to, but not withdrawn
+          // There is an rai that's been responded to, but not withdrawn.
           actions.push(Action.WITHDRAW_RAI);
         }
         break;
