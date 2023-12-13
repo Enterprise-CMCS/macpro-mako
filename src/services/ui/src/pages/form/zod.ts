@@ -28,6 +28,6 @@ export const zAttachmentRequired = ({
 }) =>
   z
     .array(z.instanceof(File))
-    .refine((value) => value.length > min && value.length < max, {
+    .refine((value) => value.length >= min && value.length <= max, {
       message: message,
     });
