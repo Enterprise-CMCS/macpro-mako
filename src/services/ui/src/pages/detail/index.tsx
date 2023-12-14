@@ -22,7 +22,6 @@ import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
-import { SEATOOL_STATUS, getStatus } from "shared-types/statusHelper";
 
 const DetailCardWrapper = ({
   title,
@@ -46,16 +45,14 @@ const StatusCard = ({
   raiWithdrawEnabled: boolean;
   raiRecievedDate: string;
 }) => {
-  const transformedStatuses = getStatus(SEATOOL_STATUS.WITHDRAWN);
   return (
     <DetailCardWrapper title={"Status"}>
       <div>
-        {raiWithdrawEnabled &&
-        !Object.values(transformedStatuses).includes(status) ? (
+        {raiWithdrawEnabled && (
           <em className="text-xs">
             {"Withdraw Formal RAI Response - Enabled"}
           </em>
-        ) : null}
+        )}
         <h2 className="text-xl font-semibold">{status}</h2>
         {/* Display 2nd Clock if status is pending and latestRaiResponseTimestamp is present */}
         {status.toLowerCase() === "pending" && raiRecievedDate && (
