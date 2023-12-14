@@ -20,9 +20,9 @@ export const mapActionLabel = (a: Action) => {
 export const mapSubmissionCrumb = (path: ROUTES) => {
   switch (path) {
     case ROUTES.MEDICAID_NEW:
-      return "Submit a new Medicaid SPA";
+      return "Submit new Medicaid SPA";
     case ROUTES.CHIP_NEW:
-      return "Submit a new CHIP SPA";
+      return "Submit new CHIP SPA";
     default:
       return BLANK_VALUE;
   }

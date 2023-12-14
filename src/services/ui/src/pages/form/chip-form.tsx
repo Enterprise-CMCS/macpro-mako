@@ -94,7 +94,7 @@ export const ChipForm = () => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col"
         >
-          <SectionCard title="Chip SPA Details">
+          <SectionCard title="CHIP SPA Details">
             <Content.FormIntroText />
             <Inputs.FormField
               control={form.control}
@@ -135,7 +135,7 @@ export const ChipForm = () => {
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-sm">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of Chip SPA
+                    Proposed Effective Date of CHIP SPA
                   </Inputs.FormLabel>
                   <Inputs.FormControl>
                     <Inputs.DatePicker
