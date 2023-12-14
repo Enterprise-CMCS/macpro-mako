@@ -1,23 +1,21 @@
 import { format } from "date-fns";
-import { OsMainSourceItem } from "shared-types";
+import { isSpa, OsMainSourceItem } from "shared-types";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { LABELS } from "@/lib";
 import { BLANK_VALUE } from "@/consts";
 
 export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
   if (!data) return null;
-  const actionType =
-    data.planType === "Medicaid SPA"
-      ? []
-      : [
-          {
-            label: "Action Type",
-            value: data.actionType
-              ? LABELS[data.actionType as keyof typeof LABELS] ||
-                data.actionType
-              : BLANK_VALUE,
-          },
-        ];
+  const actionType = isSpa(data.planType)
+    ? []
+    : [
+        {
+          label: "Action Type",
+          value: data.actionType
+            ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
+            : BLANK_VALUE,
+        },
+      ];
 
   const detailFields = [
     {
