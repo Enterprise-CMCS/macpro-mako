@@ -5,23 +5,48 @@ const ABP3_1: FormSchema = {
     "ABP 3.1: Selection of benchmark benefit package or benchmark-equivalent benefit package",
   sections: [
     {
-      title: "Population identification",
+      title: "Benefit package details",
       form: [
         {
-          description:
-            "Identify and define the population that will participate in the Alternative Benefit Plan.",
+          description: "Select one of the following",
           slots: [
             {
-              rhf: "Input",
-              name: "alt_benefit_plan_population_name",
-              label: "Alternative Benefit Plan population name",
+              rhf: "Radio",
+              name: "alternative_benefit_plan_population_name",
               rules: {
                 required: "* Required",
               },
-              props: { placeholder: "enter name" },
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state/territory is amending one existing benefit package for the population defined in Section 1.",
+                    value: "amending_existing_package",
+                  },
+                  {
+                    label:
+                      "The state/territory is amending one existing benefit package for the population defined in Section 1.",
+                    value: "creating_new_package",
+                  },
+                ],
+              },
             },
           ],
         },
+        {
+          description: "Benefit package name",
+          slots: [
+            {
+              rhf: "Input",
+              name: "benefit_package_name",
+              label: "Benefit package name",
+              rules: {
+                required: "* Required",
+              },
+            },
+          ],
+        },
+
         {
           description:
             "Identify eligibility groups that are included in the Alternative Benefit Plan's population and that may contain individuals that meet any targeting criteria used to further define the population.",
@@ -1261,62 +1286,6 @@ const ABP3_1: FormSchema = {
         },
       ],
     },
-    // {
-    //   title: "Testing Alt Layouts",
-    //   form: [
-    //     {
-    //       description: "A test of horizontal layouts with no slot styles",
-    //       wrapperStyling: "flex flex-wrap gap-6",
-    //       slots: [
-    //         {
-    //           name: "example1_1",
-    //           label: "Example 1.1",
-    //           rhf: "Input",
-    //         },
-    //         {
-    //           name: "example1_2",
-    //           label: "Example 1.2",
-    //           rhf: "Input",
-    //         },
-    //         {
-    //           name: "example1_3",
-    //           label: "Example 1.3",
-    //           rhf: "Input",
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       description: "A test of horizontal layouts with slot styles",
-    //       wrapperStyling: "flex flex-wrap gap-6",
-    //       slots: [
-    //         {
-    //           name: "example2_1",
-    //           label: "Example 2.1",
-    //           rhf: "Input",
-    //           props: {
-    //             className: "w-80",
-    //           },
-    //         },
-    //         {
-    //           name: "example2_2",
-    //           label: "Example 2.2",
-    //           rhf: "Input",
-    //           props: {
-    //             className: "w-30",
-    //           },
-    //         },
-    //         {
-    //           name: "example2_3",
-    //           label: "Example 2.3",
-    //           rhf: "Input",
-    //           props: {
-    //             className: "w-120",
-    //           },
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
   ],
 };
 
