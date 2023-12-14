@@ -59,7 +59,9 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
     },
     {
       label: "Final Disposition Date",
-      value: data?.finalDispositionDate || BLANK_VALUE,
+      value: data.finalDispositionDate
+        ? format(new Date(data.finalDispositionDate), "MM/dd/yyyy h:mm:ss a")
+        : BLANK_VALUE,
     },
   ];
   return (
