@@ -20,6 +20,8 @@ import {
   RaiResponse,
   raiWithdrawSchema,
   RaiWithdraw,
+  withdrawPackageSchema,
+  WithdrawPackage,
 } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
@@ -212,8 +214,54 @@ export async function respondToRai(body: RaiResponse, rais: any) {
   console.log("heyo");
 }
 
-export async function withdrawPackage() {
+export async function withdrawPackage(body: WithdrawPackage) {
   console.log("State withdrawing a package.");
+  // Check incoming data
+  const result = withdrawPackageSchema.safeParse(body);
+  if (result.success === false) {
+    console.error(
+      "Withdraw Package event validation error. The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message
+    );
+    return response({
+      statusCode: 400,
+      body: { message: "Withdraw Package event validation error" },
+    });
+  }
+  // Begin query (data is confirmed)
+  const pool = await sql.connect(config);
+  const transaction = new sql.Transaction(pool);
+  const query = `
+    UPDATE SEA.dbo.State_Plan
+      SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}')
+      WHERE ID_Number = '${body.id}'
+  `;
+
+  try {
+    await transaction.begin();
+    const txnResult = await transaction.request().query(query);
+    console.log(txnResult);
+    await produceMessage(
+      TOPIC_NAME,
+      body.id,
+      JSON.stringify({ ...result.data, actionType: Action.WITHDRAW_PACKAGE })
+    );
+    // Commit transaction
+    await transaction.commit();
+  } catch (err) {
+    // Rollback and log
+    await transaction.rollback();
+    console.error("Error executing query:", err);
+    return response({
+      statusCode: 500,
+      body: { message: err.message },
+    });
+  } finally {
+    // Close pool
+    await pool.close();
+  }
 }
 
 export async function toggleRaiResponseWithdraw(body: any, toggle: boolean) {

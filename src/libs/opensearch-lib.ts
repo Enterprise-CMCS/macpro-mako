@@ -1,11 +1,9 @@
 import {
   Client,
   Connection,
-  ApiResponse,
 } from "@opensearch-project/opensearch";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import * as aws4 from "aws4";
-import { OutgoingHttpHeader } from "http";
 import axios from "axios";
 import { aws4Interceptor } from "aws4-axios";
 import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";

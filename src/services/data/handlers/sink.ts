@@ -15,10 +15,12 @@ import {
   transformRaiIssue,
   RaiResponseTransform,
   transformRaiResponse,
+  RaiWithdrawTransform,
   transformRaiWithdraw,
   ToggleWithdrawRaiEnabled,
   toggleWithdrawRaiEnabledSchema,
-  RaiWithdrawTransform,
+  transformWithdrawPackage,
+  WithdrawPackageTransform,
   Action,
 } from "shared-types";
 
@@ -116,6 +118,7 @@ export const onemac: Handler = async (event) => {
     | RaiIssueTransform
     | RaiResponseTransform
     | RaiWithdrawTransform
+    | WithdrawPackageTransform
   )[] = [];
 
   for (const recordKey of Object.keys(event.records)) {
@@ -185,6 +188,26 @@ export const onemac: Handler = async (event) => {
                   oneMacRecords.push({
                     ...result.data,
                     raiWithdrawEnabled: null,
+                  });
+                } else {
+                  console.log(
+                    `ERROR: Invalid Payload for this action type (${record.actionType})`
+                  );
+                  console.log(
+                    "The error is the following: ",
+                    result.error.message
+                  );
+                }
+                break;
+              }
+              case Action.WITHDRAW_PACKAGE: {
+                console.log("WITHDRAWING PACKAGE");
+                console.log("Withdraw Package Record", record);
+
+                const result = transformWithdrawPackage(id).safeParse(record);
+                if (result.success === true) {
+                  oneMacRecords.push({
+                    ...result.data,
                   });
                 } else {
                   console.log(
