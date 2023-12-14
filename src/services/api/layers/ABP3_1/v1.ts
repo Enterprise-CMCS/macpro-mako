@@ -12,7 +12,7 @@ const ABP3_1: FormSchema = {
           slots: [
             {
               rhf: "Radio",
-              name: "alternative_benefit_plan_population_name",
+              name: "amending_benefit",
               rules: {
                 required: "* Required",
               },
@@ -21,12 +21,12 @@ const ABP3_1: FormSchema = {
                   {
                     label:
                       "The state/territory is amending one existing benefit package for the population defined in Section 1.",
-                    value: "amending_existing_package",
+                    value: "existing_package",
                   },
                   {
                     label:
                       "The state/territory is amending one existing benefit package for the population defined in Section 1.",
-                    value: "creating_new_package",
+                    value: "new_package",
                   },
                 ],
               },
@@ -42,6 +42,36 @@ const ABP3_1: FormSchema = {
               label: "Benefit package name",
               rules: {
                 required: "* Required",
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Selection of Section 1937 coverage option",
+      form: [
+        {
+          description:
+            "The state/territory selects as its Section 1937 coverage option the following type of benchmark bsenefit package or benchmark-equivalent benefit package under this Alternative Benefit Plan:",
+          slots: [
+            {
+              name: "benchmark",
+              rhf: "Radio",
+              rules: {
+                required: "* Required",
+              },
+              props: {
+                options: [
+                  {
+                    label: "Benchmark benefit package",
+                    value: "benefit_package",
+                  },
+                  {
+                    label: "Benchmark-equivalent benefit package",
+                    value: "equivalent",
+                  },
+                ],
               },
             },
           ],
