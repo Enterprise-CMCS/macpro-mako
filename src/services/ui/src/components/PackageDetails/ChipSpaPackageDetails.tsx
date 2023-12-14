@@ -52,9 +52,9 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
         : BLANK_VALUE,
     },
     {
-      label: "Change Date",
-      value: data.changedDate
-        ? format(new Date(data.changedDate), "MM/dd/yyyy h:mm:ss a")
+      label: "Status Date",
+      value: data.statusDate
+        ? format(new Date(data.statusDate), "MM/dd/yyyy h:mm:ss a")
         : BLANK_VALUE,
     },
     {
