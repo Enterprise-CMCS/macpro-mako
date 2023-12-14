@@ -3,24 +3,34 @@ import * as sql from "mssql";
 const user = process.env.dbUser;
 const password = process.env.dbPassword;
 const server = process.env.dbIp;
-const port = parseInt(process.env.dbPort);
+const port = parseInt(process.env.dbPort as string);
 const config = {
   user: user,
   password: password,
   server: server,
   port: port,
   database: "SEA",
-};
+} as sql.config;
 
-import { Action, raiSchema, RaiSchema } from "shared-types";
+import {
+  Action,
+  raiIssueSchema,
+  RaiIssue,
+  raiResponseSchema,
+  RaiResponse,
+  raiWithdrawSchema,
+  RaiWithdraw,
+  withdrawPackageSchema,
+  WithdrawPackage,
+} from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
 import { getLatestRai } from "shared-utils";
 
-const TOPIC_NAME = process.env.topicName;
+const TOPIC_NAME = process.env.topicName as string;
 
-export async function issueRai(body: RaiSchema) {
+export async function issueRai(body: RaiIssue) {
   console.log("CMS issuing a new RAI");
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
@@ -45,7 +55,7 @@ export async function issueRai(body: RaiSchema) {
     console.log(result2);
 
     // write to kafka here
-    const result = raiSchema.safeParse(body);
+    const result = raiIssueSchema.safeParse(body);
     if (result.success === false) {
       console.log(
         "RAI Validation Error. The following record failed to parse: ",
@@ -74,9 +84,12 @@ export async function issueRai(body: RaiSchema) {
   }
 }
 
-export async function withdrawRai(body: RaiSchema, rais: any) {
-  const activeKey = getLatestRai(rais).key;
-  const result = raiSchema.safeParse({ ...body, requestedDate: activeKey });
+export async function withdrawRai(body: RaiWithdraw, rais: any) {
+  const activeKey = getLatestRai(rais)?.key;
+  const result = raiWithdrawSchema.safeParse({
+    ...body,
+    requestedDate: activeKey,
+  });
   console.log("Withdraw body is", body);
 
   if (result.success === true) {
@@ -132,7 +145,7 @@ export async function withdrawRai(body: RaiSchema, rais: any) {
   }
 }
 
-export async function respondToRai(body: RaiSchema, rais: any) {
+export async function respondToRai(body: RaiResponse, rais: any) {
   console.log("State responding to RAI");
   const latestRai = getLatestRai(rais);
   if (latestRai?.status != "requested") {
@@ -164,7 +177,10 @@ export async function respondToRai(body: RaiSchema, rais: any) {
     console.log(result2);
 
     //   // write to kafka here
-    const result = raiSchema.safeParse({ ...body, requestedDate: activeKey });
+    const result = raiResponseSchema.safeParse({
+      ...body,
+      requestedDate: activeKey,
+    });
     if (result.success === false) {
       console.log(
         "RAI Validation Error. The following record failed to parse: ",
@@ -198,15 +214,58 @@ export async function respondToRai(body: RaiSchema, rais: any) {
   console.log("heyo");
 }
 
-export async function withdrawPackage(id, timestamp) {
+export async function withdrawPackage(body: WithdrawPackage) {
   console.log("State withdrawing a package.");
+  // Check incoming data
+  const result = withdrawPackageSchema.safeParse(body);
+  if (result.success === false) {
+    console.error(
+      "Withdraw Package event validation error. The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message
+    );
+    return response({
+      statusCode: 400,
+      body: { message: "Withdraw Package event validation error" },
+    });
+  }
+  // Begin query (data is confirmed)
+  const pool = await sql.connect(config);
+  const transaction = new sql.Transaction(pool);
+  const query = `
+    UPDATE SEA.dbo.State_Plan
+      SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}')
+      WHERE ID_Number = '${body.id}'
+  `;
+
+  try {
+    await transaction.begin();
+    const txnResult = await transaction.request().query(query);
+    console.log(txnResult);
+    await produceMessage(
+      TOPIC_NAME,
+      body.id,
+      JSON.stringify({ ...result.data, actionType: Action.WITHDRAW_PACKAGE })
+    );
+    // Commit transaction
+    await transaction.commit();
+  } catch (err) {
+    // Rollback and log
+    await transaction.rollback();
+    console.error("Error executing query:", err);
+    return response({
+      statusCode: 500,
+      body: { message: err.message },
+    });
+  } finally {
+    // Close pool
+    await pool.close();
+  }
 }
 
-export async function toggleRaiResponseWithdraw(
-  body: { id: string },
-  toggle: boolean
-) {
-  const { id } = body;
+export async function toggleRaiResponseWithdraw(body: any, toggle: boolean) {
+  const { id, authority, origin } = body;
   try {
     await produceMessage(
       TOPIC_NAME,
@@ -216,6 +275,8 @@ export async function toggleRaiResponseWithdraw(
         actionType: toggle
           ? Action.ENABLE_RAI_WITHDRAW
           : Action.DISABLE_RAI_WITHDRAW,
+        authority,
+        origin,
       })
     );
 

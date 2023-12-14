@@ -71,16 +71,18 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
   switch (endpoint) {
     case "/submit":
       return {
+        authority: authority,
+        origin: "micro",
         ...data,
         ...userDetails,
         proposedEffectiveDate: (data.proposedEffectiveDate as Date).getTime(),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
         state: (data.id as string).split("-")[0],
-        authority: authority,
-        origin: "micro",
       };
     case buildActionUrl(Action.WITHDRAW_RAI):
       return {
+        authority: authority,
+        origin: "micro",
         ...data,
         ...userDetails,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
@@ -88,6 +90,8 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
       };
     case buildActionUrl(Action.ISSUE_RAI):
       return {
+        authority: authority,
+        origin: "micro",
         ...data,
         ...userDetails,
         requestedDate: seaToolFriendlyTimestamp,
@@ -95,15 +99,27 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
       };
     case buildActionUrl(Action.RESPOND_TO_RAI):
       return {
+        authority: authority,
+        origin: "micro",
         ...data,
         ...userDetails,
         responseDate: seaToolFriendlyTimestamp,
+        attachments: attachments ? buildAttachmentObject(attachments) : null,
+      };
+    case buildActionUrl(Action.WITHDRAW_PACKAGE):
+      return {
+        authority: authority,
+        origin: "micro",
+        ...data,
+        ...userDetails,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
     case buildActionUrl(Action.ENABLE_RAI_WITHDRAW):
     case buildActionUrl(Action.DISABLE_RAI_WITHDRAW):
     default:
       return {
+        authority: authority,
+        origin: "micro",
         ...data,
         ...userDetails,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
