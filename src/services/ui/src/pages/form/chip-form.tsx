@@ -11,7 +11,6 @@ import {
   SectionCard,
   SimplePageContainer,
 } from "@/components";
-import { optionCrumbsFromPath } from "@/pages/create/create-breadcrumbs";
 import * as Inputs from "@/components/Inputs";
 import { FAQ_TARGET } from "@/routes";
 import { Authority } from "shared-types";

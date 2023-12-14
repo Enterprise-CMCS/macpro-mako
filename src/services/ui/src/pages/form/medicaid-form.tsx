@@ -13,7 +13,6 @@ import {
   SectionCard,
 } from "@/components";
 import { FAQ_TARGET } from "@/routes";
-import { optionCrumbsFromPath } from "@/pages/create/create-breadcrumbs";
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
 import {
