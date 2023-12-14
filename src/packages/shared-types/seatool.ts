@@ -144,13 +144,12 @@ const compileSrtList = (
 ): string[] =>
   officers?.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
 
-const getFinalDispositionDate = (record: SeaToolSink) => {
+const getFinalDispositionDate = (status: string, record: SeaToolSink) => {
   const finalDispositionStatuses = [
     SEATOOL_STATUS.APPROVED,
     SEATOOL_STATUS.DISAPPROVED,
     SEATOOL_STATUS.WITHDRAWN,
   ];
-  const status = record?.SPW_STATUS?.[0].SPW_STATUS_DESC;
   return status && finalDispositionStatuses.includes(status)
     ? getDateStringOrNullFromEpoc(record.STATE_PLAN.STATUS_DATE)
     : null;
@@ -197,7 +196,7 @@ export const transformSeatoolData = (id: string) => {
       authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
       changedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.CHANGED_DATE),
       description: data.STATE_PLAN.SUMMARY_MEMO,
-      finalDispositionDate: getFinalDispositionDate(data),
+      finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
       leadAnalystName,
       planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME,

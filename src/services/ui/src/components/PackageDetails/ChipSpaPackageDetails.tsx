@@ -57,6 +57,10 @@ export const ChipSpaPackageDetails = (data: OsMainSourceItem) => {
         ? format(new Date(data.changedDate), "MM/dd/yyyy h:mm:ss a")
         : BLANK_VALUE,
     },
+    {
+      label: "Final Disposition Date",
+      value: data?.finalDispositionDate || BLANK_VALUE,
+    },
   ];
   return (
     <div className="grid grid-cols-2 gap-4">

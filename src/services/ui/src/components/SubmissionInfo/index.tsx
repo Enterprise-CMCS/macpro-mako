@@ -9,7 +9,9 @@ export const ReviewTeamList = ({ team }: { team: string[] | undefined }) => {
     [expanded, team]
   );
 
-  return !displayTeam || !displayTeam.length ? null : (
+  return !displayTeam || !displayTeam.length ? (
+    BLANK_VALUE
+  ) : (
     <ul>
       {displayTeam.map((reviewer, idx) => (
         <li key={`reviewteam-ul-${reviewer}-${idx}`}>{reviewer}</li>
@@ -25,11 +27,6 @@ export const ReviewTeamList = ({ team }: { team: string[] | undefined }) => {
   );
 };
 export const SubmissionInfo = (data: OsMainSourceItem) => {
-  let cpocName = "";
-  if (data.leadAnalystName) {
-    cpocName = data.leadAnalystName;
-  }
-
   const submissionSource = () => {
     if (data?.origin?.toLowerCase() === "onemac") {
       return "OneMAC";
@@ -40,19 +37,27 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
   const submissionDetails = [
     {
       label: "Submitted By",
-      value: <p className="text-lg">{data.submitterName || BLANK_VALUE}</p>,
+      value: <p className="text-lg">{data?.submitterName || BLANK_VALUE}</p>,
     },
     {
       label: "CPOC Name",
-      value: <p className="text-lg">{cpocName || BLANK_VALUE}</p>,
+      value: <p className="text-lg">{data?.leadAnalystName || BLANK_VALUE}</p>,
     },
     {
       label: "Submission Source",
       value: <p className="text-lg">{submissionSource()}</p>,
     },
     {
-      label: "Review Team",
+      label: "Review Team (SRT)",
       value: <ReviewTeamList team={data.reviewTeam} />,
+    },
+    {
+      label: "Subject",
+      value: <p>{data?.subject || BLANK_VALUE}</p>,
+    },
+    {
+      label: "Description",
+      value: <p>{data?.description || BLANK_VALUE}</p>,
     },
   ];
   return (
