@@ -40,16 +40,8 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
       value: <p className="text-lg">{data?.submitterName || BLANK_VALUE}</p>,
     },
     {
-      label: "CPOC Name",
-      value: <p className="text-lg">{data?.leadAnalystName || BLANK_VALUE}</p>,
-    },
-    {
       label: "Submission Source",
       value: <p className="text-lg">{submissionSource()}</p>,
-    },
-    {
-      label: "Review Team (SRT)",
-      value: <ReviewTeamList team={data.reviewTeam} />,
     },
     {
       label: "Subject",
@@ -58,6 +50,14 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
     {
       label: "Description",
       value: <p>{data?.description || BLANK_VALUE}</p>,
+    },
+    {
+      label: "CPOC Name",
+      value: <p className="text-lg">{data?.leadAnalystName || BLANK_VALUE}</p>,
+    },
+    {
+      label: "Review Team (SRT)",
+      value: <ReviewTeamList team={data.reviewTeam} />,
     },
   ];
   return (
