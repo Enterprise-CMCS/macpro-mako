@@ -45,17 +45,22 @@ const StatusCard = ({
   raiWithdrawEnabled: boolean;
   raiRecievedDate: string;
 }) => {
-  const transformedStatuses = getStatus(SEATOOL_STATUS.WITHDRAWN);
+  const transformedStatuses = getStatus(status);
+  const { data: user } = useGetUser();
   return (
     <DetailCardWrapper title={"Status"}>
       <div>
-        <h2 className="text-xl font-semibold">{status}</h2>
-        {raiWithdrawEnabled &&
-        !Object.values(transformedStatuses).includes(status) ? (
+        <h2 className="text-xl font-semibold">
+          {user?.isCms &&
+          !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+            ? transformedStatuses.cmsStatus
+            : transformedStatuses.stateStatus}
+        </h2>
+        {raiWithdrawEnabled && (
           <em className="text-xs">
             {"Withdraw Formal RAI Response - Enabled"}
           </em>
-        ) : null}
+        )}
         {/* Display 2nd Clock if status is pending and latestRaiResponseTimestamp is present */}
         {[
           SEATOOL_STATUS.PENDING,
@@ -158,10 +163,6 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
   const { data: user } = useGetUser();
   const { state } = useLocation();
   if (!data?._source) return <LoadingSpinner />;
-  const status =
-    user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
-      ? data._source.cmsStatus
-      : data._source.stateStatus;
   return (
     <div className="block md:flex">
       <aside className="flex-none font-bold hidden md:block pr-8">
@@ -197,7 +198,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
         >
           <StatusCard
-            status={status}
+            status={data._source.seatoolStatus}
             raiWithdrawEnabled={data._source?.raiWithdrawEnabled || false}
             raiRecievedDate={data._source?.raiReceivedDate || ""}
           />
