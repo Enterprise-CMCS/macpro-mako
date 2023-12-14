@@ -49,11 +49,11 @@ const StatusCard = ({
     <DetailCardWrapper title={"Status"}>
       <div>
         <h2 className="text-xl font-semibold">{status}</h2>
-        {raiWithdrawEnabled && (
+        {/* {raiWithdrawEnabled && (
           <em className="text-xs">
             {"Withdraw Formal RAI Response - Enabled"}
           </em>
-        )}
+        )} */}
         {/* Display 2nd Clock if status is pending and latestRaiResponseTimestamp is present */}
         {status.toLowerCase() === "pending" && raiRecievedDate && (
           <span id="secondclock">2nd Clock</span>
