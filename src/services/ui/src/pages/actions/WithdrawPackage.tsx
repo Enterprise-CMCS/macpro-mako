@@ -105,16 +105,29 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
                   <em className="italic">Additional Information section.</em>
                 </p>
                 <p>
+                  Maximum file size of 80 MB per attachment.{" "}
+                  <strong className="bold">
+                    You can add multiple files per attachment type.
+                  </strong>{" "}
+                  Read the description for each of the attachment types on the{" "}
+                  {
+                    <Link
+                      to="/faq/#acceptable-file-formats"
+                      target={FAQ_TARGET}
+                      rel="noopener noreferrer"
+                      className="text-blue-700 hover:underline"
+                    >
+                      FAQ Page
+                    </Link>
+                  }
+                  .
+                </p>
+                <p>
                   We accept the following file formats:{" "}
                   <strong className="bold">
                     .docx, .jpg, .png, .pdf, .xlsx,
                   </strong>{" "}
-                  and a few others. A Maximum file size of 80 MB per attachment.{" "}
-                  <strong className="bold">
-                    You can add multiple files per attachment type.
-                  </strong>{" "}
-                  See the full list, and read the description for each of the
-                  attachment types on the{" "}
+                  and a few others. See the full list on the{" "}
                   {
                     <Link
                       to="/faq/#acceptable-file-formats"
