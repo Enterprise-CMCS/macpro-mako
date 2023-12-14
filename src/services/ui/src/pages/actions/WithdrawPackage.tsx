@@ -65,7 +65,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
           await submit<WithdrawPackageFormSchema & { id: string }>({
             data: {
               ...data,
-              id: id!, // Declared here because it's not part of the form data
+              id: id!, // Declared here because it's not part of the form data.
             },
             endpoint: buildActionUrl(type!),
             user,
