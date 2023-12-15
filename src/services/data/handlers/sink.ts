@@ -315,9 +315,11 @@ export const onemac_changelog = async (event: Event) => {
       if (!REC.value) return;
 
       // NO transform??
+      const packageId = decode(REC.key);
+      const timestamp = new Date().toISOString();
       ACC.push({
-        id: decode(REC.key),
-        timestamp: new Date().toISOString(),
+        id: `${packageId}-${timestamp}`,
+        packageId,
         ...JSON.parse(decode(REC.value)),
       });
     });
