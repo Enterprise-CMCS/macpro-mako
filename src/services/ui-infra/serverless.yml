@@ -33,9 +33,28 @@ custom:
   stage: ${sls:stage} # This is junk.. required by the serverless-waf-plugin.  Due for refactor
   cloudfrontCertificateArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/cloudfront/certificateArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/cloudfront/certificateArn, ""}
   cloudfrontDomainName: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/cloudfront/domainName, ""}
+  vpnIpSetArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpnIpSetArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpnIpSetArn}
   webAclName: ${sls:stage}-${self:service}-webacl
   wafExcludeRules:
     wafScope: CLOUDFRONT
+  wafPlugin:
+    rules:
+      - enable: ${param:retrictToVpn}
+        rule:
+          Name: vpn-only
+          Priority: 0
+          Action:
+            Block: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: ${sls:stage}-${self:service}-webacl-vpn-only
+          Statement:
+            NotStatement:
+              Statement:
+                IPSetReferenceStatement:
+                  ARN: ${self:custom.vpnIpSetArn}
+
   firehoseStreamName: aws-waf-logs-${self:service}-${sls:stage}-firehose
   s3SecurityHelper:
     skipPolicyCreation:
@@ -50,6 +69,16 @@ custom:
         aws wafv2 put-logging-configuration \
           --logging-configuration ResourceArn=$wafAclArn,LogDestinationConfigs=$firehoseStreamArn \
           --region ${self:provider.region}
+
+params:
+  production:
+    retrictToVpn: false
+  val:
+    retrictToVpn: false
+  master:
+    retrictToVpn: false
+  default:
+    retrictToVpn: true
 
 resources:
   Conditions:
