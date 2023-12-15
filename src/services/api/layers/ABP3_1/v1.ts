@@ -276,6 +276,111 @@ const ABP3_1: FormSchema = {
         },
       ],
     },
+
+    {
+      title: "Selection of EHB-benchmark plan",
+      form: [
+        {
+          description:
+            "The state or territory must select an EHB-benchmark plan as the basis for providing essential health benefits in its benchmark or benchmark-equivalent package.",
+          slots: [
+            {
+              name: "EHB_benchmark_name",
+              rhf: "Input",
+              label: "EHB-benchmark plan name",
+            },
+            {
+              name: "additional_information",
+              rhf: "Select",
+              label:
+                "Is the EHB-benchmark plan the same as the Section 1937 coverage option?",
+              rules: {
+                required: "* Required",
+              },
+              props: {
+                className: "w-[150px]",
+                options: [
+                  { label: "Yes", value: "yes" },
+                  { label: "No", value: "no" },
+                ],
+              },
+            },
+            {
+              label:
+                "Indicate the EHB-benchmark option as described at 45 CFR 156.111(b)(2)(B) the state or territory will use as its EHB-benchmark plan.",
+              name: "EHB_benchmark_option",
+              rhf: "Radio",
+              rules: {
+                required: "* Required",
+              },
+              props: {
+                options: [
+                  {
+                    label:
+                      "State/territory is selecting the EHB-benchmark plan used by the state/territory for the 2017 plan year.",
+                    value: "EHB_benchmark_2017_plan_year",
+                  },
+                  {
+                    label:
+                      "State/territory is selecting one of the EHB-benchmark plans used for the 2017 plan year by another state/territory.",
+                    value: "another_state_EHB_benchmark_plan_year",
+                  },
+                  {
+                    label:
+                      "State/territory selects the following EHB-benchmark plan used for the 2017 plan year but will replace coverage of one or more of the categories of EHB with coverage of the same category from the 2017 EHB-benchmark plan of one or more other states.",
+                    value: "EHB_benchmark_2017_plan_year_but_replace_coverage",
+                  },
+                  {
+                    label:
+                      "Select a set of benefits consistent with the 10 EHB categories to become the new EHB-benchmark plan. (Complete and submit the ABP 5: Benefits Description form to describe the set of benefits.)",
+                    value: "10_EHB_categories_new_EHB_benchmark",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      title: "Assurances",
+      form: [
+        {
+          slots: [
+            {
+              name: "assurances",
+              rhf: "Checkbox",
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state/territory assures the EHB plan meets the scope of benefits standards at 45 CFR 156.111(b), does not exceed generosity of most generous among a set of comparison plans, provides appropriate balance of coverage among 10 EHB categories, and the scope of benefits is equal to or greater than the scope of benefits provided under a typical employer plan as defined at 45 CFR 156.111(b)(2).",
+                    value: "meets_scope",
+                  },
+                  {
+                    label:
+                      "The state/territory assures that actuarial certification and an associated actuarial report from an actuary, who is a member of the American Academy of Actuaries, in accordance with generally accepted actuarial principles and methodologies, has been completed and is available upon request.",
+                    value: "assures_from_acturial_certification",
+                  },
+                  {
+                    label:
+                      "The state/territory assures that all services in the EHB-benchmark plan have been accounted for throughout the benefit chart found in ABP 5.",
+                    value: "assures_EHB_benchmark_throughout_abp5_benefit",
+                  },
+                  {
+                    label:
+                      "The state/territory assures the accuracy of all information in ABP 5 depicting amount, duration, and scope parameters of services authorized in the currently approved Medicaid state plan.",
+                    value: "assures_abp5_amount_duration_scope",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+
     {
       title: "Additional information",
       form: [
