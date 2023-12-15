@@ -1,6 +1,7 @@
 import { type APIGatewayEvent } from "aws-lambda";
 import { AnyZodObject, z } from "zod";
-import knex, { type Knex } from "knex";
+import knex, { KnexTimeoutError, type Knex } from "knex";
+import { response } from "@/libs/handler";
 
 const connectionConfig: Knex.Config = {};
 
@@ -11,7 +12,7 @@ type LambdaConfig<T extends AnyZodObject, TReturn> = {
   lambda: (data: z.infer<T>, connection: Knex) => Promise<TReturn>;
 };
 
-const handleEvent = async <T extends AnyZodObject, TReturn>({
+export const handleEvent = async <T extends AnyZodObject, TReturn>({
   event,
   schema,
   lambda,
@@ -27,11 +28,16 @@ const handleEvent = async <T extends AnyZodObject, TReturn>({
     return await lambda(result.data, k);
   } else {
     // return a bad response
-    return {};
+    return response({
+      statusCode: 500,
+      body: {
+        error: result.error.message,
+      },
+    });
   }
 };
 
-const testLamdaHandler = async (event: APIGatewayEvent) => {
+const handler = async (event: APIGatewayEvent) => {
   return await handleEvent({
     event,
     allowedRoles: ["Admin"],
@@ -39,8 +45,24 @@ const testLamdaHandler = async (event: APIGatewayEvent) => {
       testString: z.string(),
     }),
     async lambda(data, db) {
-      const test = await db.first("*").from<typeof data>("something");
-      return 1;
+      try {
+        // query if needed
+        await db.select("*").from("something");
+
+        return response({
+          statusCode: 200,
+          body: {
+            message: "successful write to sea",
+          },
+        });
+      } catch (err: unknown) {
+        console.error(err);
+
+        return response({
+          statusCode: 500,
+          body: { message: "failed sea sync" },
+        });
+      }
     },
   });
 };
