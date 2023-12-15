@@ -56,7 +56,7 @@ export const handler = async (event: APIGatewayEvent) => {
     // Call package action
     switch (actionType) {
       case Action.WITHDRAW_PACKAGE:
-        await withdrawPackage(body);
+        await withdrawPackage(body, Date.now());
         break;
       case Action.ISSUE_RAI:
         await issueRai(body);
