@@ -52,7 +52,7 @@ export const SubmissionInfo = (data: OsMainSourceItem) => {
       value: <p>{data?.description || BLANK_VALUE}</p>,
     },
     {
-      label: "CPOC Name",
+      label: "CPOC",
       value: <p className="text-lg">{data?.leadAnalystName || BLANK_VALUE}</p>,
     },
     {
