@@ -118,7 +118,15 @@ export const seatool: Handler<Event> = async (event) => {
   }
 };
 
-export const onemac: Handler<Event> = async (event) => {
+/**
+ * {
+ *  authority: sd,
+ *  actionType: One | seatol | onemac.new
+ *  data: OncmacTransform | One
+ * }
+ */
+
+export const onemac_base = async (event: Event) => {
   const oneMacRecords: (
     | OnemacTransform
     | OnemacRecordsToDelete
@@ -300,7 +308,7 @@ export const onemac: Handler<Event> = async (event) => {
  * }
  */
 
-export const changelog: Handler<Event> = async (event) => {
+export const onemac_changelog = async (event: Event) => {
   const data = Object.values(event.records).reduce((ACC, RECORDS) => {
     RECORDS.forEach((REC) => {
       //TODO: handle delete
@@ -318,8 +326,13 @@ export const changelog: Handler<Event> = async (event) => {
   }, [] as any[]);
 
   try {
-    await os.bulkUpdateData(osDomain, "main", data);
+    await os.bulkUpdateData(osDomain, "changelog", data);
   } catch (error) {
     console.error(error);
   }
+};
+
+export const onemac: Handler<Event> = async (event) => {
+  await onemac_base(event);
+  await onemac_changelog(event);
 };

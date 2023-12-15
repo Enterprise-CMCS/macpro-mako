@@ -188,19 +188,6 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-  sinkChangelog:
-    handler: handlers/changelog.onemac
-    environment:
-      region: ${self:provider.region}
-      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
-    maximumRetryAttempts: 0
-    timeout: 60
-    memorySize: 1024
-    vpc:
-      securityGroupIds:
-        - Ref: SecurityGroup
-      subnetIds: >-
-        ${self:custom.vpc.privateSubnets}
   disableTriggers:
     handler: handlers/reindex.toggleTriggers
     timeout: 60
