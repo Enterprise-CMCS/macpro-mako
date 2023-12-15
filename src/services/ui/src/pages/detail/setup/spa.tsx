@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { OsMainSourceItem } from "shared-types";
 import { ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
-import { ReviewTeamList } from "@/pages/detail/components/ReviewTeamList";
+import { ReviewTeamList } from "@/components/PackageDetails/ReviewTeamList";
 
 export type DetailSectionItem = {
   label: string;

@@ -20,7 +20,7 @@ import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
-import { DetailItemsGrid } from "@/pages/detail/components/DetailItemsGrid";
+import { DetailItemsGrid } from "@/components/PackageDetails/DetailItemsGrid";
 import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 
 const DetailCardWrapper = ({
