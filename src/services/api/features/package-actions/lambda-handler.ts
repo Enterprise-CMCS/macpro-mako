@@ -3,7 +3,21 @@ import { AnyZodObject, z } from "zod";
 import knex, { KnexTimeoutError, type Knex } from "knex";
 import { response } from "@/libs/handler";
 
-const connectionConfig: Knex.Config = {};
+const user = process.env.dbUser;
+const password = process.env.dbPassword;
+const server = process.env.dbIp;
+const port = parseInt(process.env.dbPort as string);
+
+const connectionConfig: Knex.Config = {
+  client: "mssql",
+  connection: {
+    user,
+    password,
+    server,
+    port,
+    database: "SEA",
+  },
+};
 
 type LambdaConfig<T extends AnyZodObject, TReturn> = {
   schema: T;
@@ -46,8 +60,7 @@ const handler = async (event: APIGatewayEvent) => {
     }),
     async lambda(data, db) {
       try {
-        // query if needed
-        await db.select("*").from("something");
+        const dbQuery = await db.select("*").from("something");
 
         return response({
           statusCode: 200,
