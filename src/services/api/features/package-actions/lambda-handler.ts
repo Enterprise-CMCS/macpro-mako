@@ -4,35 +4,40 @@ import knex, { type Knex } from "knex";
 
 const connectionConfig: Knex.Config = {};
 
+type LambdaConfig<T extends AnyZodObject, TReturn> = {
+  schema: T;
+  allowedRoles: ("Test" | "Admin")[];
+  lambda: (data: z.infer<T>, connection: Knex) => Promise<TReturn>;
+};
+
 const handleEvent =
   (event: APIGatewayEvent) =>
-  async <T extends AnyZodObject>({
+  async <T extends AnyZodObject, TReturn>({
     schema,
     lambda,
     allowedRoles,
-  }: {
-    schema: T;
-    allowedRoles: ("Test" | "Admin")[];
-    lambda: (data: z.infer<T>, connection: Knex) => Promise<void>;
-  }) => {
+  }: LambdaConfig<T, TReturn>) => {
     const body = JSON.parse(event.body ?? "{}");
     const result = schema.safeParse(body);
-    const k = knex({});
+    const k = knex(connectionConfig);
 
     if (result.success === true) {
-      await lambda(result.data, k);
+      return await lambda(result.data, k);
     } else {
       return {};
     }
   };
 
-const testLamdaHandler = (event: APIGatewayEvent) =>
-  handleEvent(event)({
+const testLamdaHandler = async (event: APIGatewayEvent) => {
+  const test = await handleEvent(event)({
     allowedRoles: ["Admin"],
     schema: z.object({
       testString: z.string(),
     }),
     async lambda(data, db) {
+      db.select("*").from<typeof data>("something");
       const test = await db.select("*").from("user");
+      return 1;
     },
   });
+};
