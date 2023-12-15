@@ -7,36 +7,39 @@ const connectionConfig: Knex.Config = {};
 type LambdaConfig<T extends AnyZodObject, TReturn> = {
   schema: T;
   allowedRoles: ("Test" | "Admin")[];
+  event: APIGatewayEvent;
   lambda: (data: z.infer<T>, connection: Knex) => Promise<TReturn>;
 };
 
-const handleEvent =
-  (event: APIGatewayEvent) =>
-  async <T extends AnyZodObject, TReturn>({
-    schema,
-    lambda,
-    allowedRoles,
-  }: LambdaConfig<T, TReturn>) => {
-    const body = JSON.parse(event.body ?? "{}");
-    const result = schema.safeParse(body);
-    const k = knex(connectionConfig);
+const handleEvent = async <T extends AnyZodObject, TReturn>({
+  event,
+  schema,
+  lambda,
+  allowedRoles,
+}: LambdaConfig<T, TReturn>) => {
+  const body = JSON.parse(event.body ?? "{}");
+  const result = schema.safeParse(body);
+  const k = knex(connectionConfig);
 
-    if (result.success === true) {
-      return await lambda(result.data, k);
-    } else {
-      return {};
-    }
-  };
+  if (result.success === true) {
+    // give lambda access to response
+    // give lambda access to kafka
+    return await lambda(result.data, k);
+  } else {
+    // return a bad response
+    return {};
+  }
+};
 
 const testLamdaHandler = async (event: APIGatewayEvent) => {
-  const test = await handleEvent(event)({
+  return await handleEvent({
+    event,
     allowedRoles: ["Admin"],
     schema: z.object({
       testString: z.string(),
     }),
     async lambda(data, db) {
-      db.select("*").from<typeof data>("something");
-      const test = await db.select("*").from("user");
+      const test = await db.first("*").from<typeof data>("something");
       return 1;
     },
   });
