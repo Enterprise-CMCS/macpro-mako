@@ -115,14 +115,13 @@ export const oneMACFAQContent: FAQContent[] = [
             <tbody>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">
-                  State Submitter
+                  CMS Read Only
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  State submitter role within OneMAC can submit, edit, and view
-                  packages for the state in which they are assigned
+                  Read only roles within OneMAC Micro
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  CMS System Admin
+                  CMS System Admin or CMS Role Approver
                 </td>
               </tr>
               <tr>
@@ -133,18 +132,55 @@ export const oneMACFAQContent: FAQContent[] = [
                   Can take action on packages within OneMAC Micro
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  CMS Role Approver
+                  CMS System Admin or CMS Role Approver
                 </td>
               </tr>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">
-                  CMS Read Only
+                  CMS System Admin
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  Read only roles within OneMAC Micro
+                  <span className="underline">Approves All</span> roles within
+                  IDM
                 </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  IDM Tier 2 Helpdesk
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">
+                  CMS Role Approver
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  <span className="underline">Approves All</span> roles within
+                  IDM
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  CMS System Admin or CMS Role Approver{" "}
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">
+                  State Submitter
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  State submitter role within OneMAC can submit, edit, and view
+                  packages for the state in which they are assigned
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  State System Admin or CMS System Admin or CMS Role Approver
+                </td>
+              </tr>
+              <tr>
                 <td className="border border-gray-300 px-4 py-2">
                   State System Admin
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  State System Admin role can approve State Submitter roles for
+                  the state in which they are assigned
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  CMS System Admin or CMS Role Approver
                 </td>
               </tr>
             </tbody>
