@@ -329,6 +329,198 @@ const ABP3_1: FormSchema = {
                     label:
                       "State/territory selects the following EHB-benchmark plan used for the 2017 plan year but will replace coverage of one or more of the categories of EHB with coverage of the same category from the 2017 EHB-benchmark plan of one or more other states.",
                     value: "EHB_benchmark_2017_plan_year_but_replace_coverage",
+                    form: [
+                      {
+                        description: "Indicate the type of EHB-benchmark plan.",
+                        slots: [
+                          {
+                            rhf: "Radio",
+                            name: "EHB-benchmark_plan",
+                            rules: {
+                              required: "* Required",
+                            },
+                            props: {
+                              options: [
+                                { label: "", value: "" },
+                                { label: "", value: "" },
+                                { label: "", value: "" },
+                                { label: "", value: "" },
+                              ],
+                            },
+                          },
+                          {
+                            rhf: "Checkbox",
+                            name: "one_or_more_EHBs_other_states",
+                            description:
+                              "Select one or more EHBs from other states.",
+                            props: {
+                              options: [
+                                {
+                                  label: "",
+                                  value: "",
+                                  slots: [
+                                    {
+                                      rhf: "Select",
+                                      name: "state_territory",
+                                      props: {
+                                        options: [
+                                          { label: "Yes", value: "yes" },
+                                          { label: "No", value: "no" },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  label: "",
+                                  value: "",
+                                  slots: [
+                                    {
+                                      rhf: "Select",
+                                      name: "state_territory",
+                                      props: {
+                                        options: [
+                                          { label: "Yes", value: "yes" },
+                                          { label: "No", value: "no" },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  label: "",
+                                  value: "",
+                                  slots: [
+                                    {
+                                      rhf: "Select",
+                                      name: "state_territory",
+                                      props: {
+                                        options: [
+                                          { label: "Yes", value: "yes" },
+                                          { label: "No", value: "no" },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  label: "",
+                                  value: "",
+                                  slots: [
+                                    {
+                                      rhf: "Select",
+                                      name: "state_territory",
+                                      props: {
+                                        options: [
+                                          { label: "Yes", value: "yes" },
+                                          { label: "No", value: "no" },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  label: "",
+                                  value: "",
+                                  slots: [
+                                    {
+                                      rhf: "Select",
+                                      name: "state_territory",
+                                      props: {
+                                        options: [
+                                          { label: "Yes", value: "yes" },
+                                          { label: "No", value: "no" },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  label: "",
+                                  value: "",
+                                  slots: [
+                                    {
+                                      rhf: "Select",
+                                      name: "state_territory",
+                                      props: {
+                                        options: [
+                                          { label: "Yes", value: "yes" },
+                                          { label: "No", value: "no" },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  label: "",
+                                  value: "",
+                                  slots: [
+                                    {
+                                      rhf: "Select",
+                                      name: "state_territory",
+                                      props: {
+                                        options: [
+                                          { label: "Yes", value: "yes" },
+                                          { label: "No", value: "no" },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  label: "",
+                                  value: "",
+                                  slots: [
+                                    {
+                                      rhf: "Select",
+                                      name: "state_territory",
+                                      props: {
+                                        options: [
+                                          { label: "Yes", value: "yes" },
+                                          { label: "No", value: "no" },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  label: "",
+                                  value: "",
+                                  slots: [
+                                    {
+                                      rhf: "Select",
+                                      name: "state_territory",
+                                      props: {
+                                        options: [
+                                          { label: "Yes", value: "yes" },
+                                          { label: "No", value: "no" },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  label: "",
+                                  value: "",
+                                  slots: [
+                                    {
+                                      rhf: "Select",
+                                      name: "state_territory",
+                                      props: {
+                                        options: [
+                                          { label: "Yes", value: "yes" },
+                                          { label: "No", value: "no" },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    ],
                   },
                   {
                     label:
