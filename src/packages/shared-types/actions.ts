@@ -4,4 +4,6 @@ export enum Action {
   ISSUE_RAI = "issue-rai",
   WITHDRAW_RAI = "withdraw-rai",
   RESPOND_TO_RAI = "respond-to-rai",
+  WITHDRAW_PACKAGE = "WITHDRAW_PACKAGE",
+
 }
