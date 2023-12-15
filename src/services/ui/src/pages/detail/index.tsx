@@ -58,7 +58,7 @@ const StatusCard = ({
         </h2>
         {raiWithdrawEnabled && (
           <em className="text-xs">
-            {"Withdraw Formal RAI Response - Enabled"}
+            {"Withdraw Formal RAI Response - Enabled"}{" "}
           </em>
         )}
         {/* Display 2nd Clock if status is pending and latestRaiResponseTimestamp is present */}
