@@ -23,6 +23,7 @@ import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
 import { SEATOOL_STATUS, getStatus } from "shared-types/statusHelper";
+import { isCmsUser } from "shared-utils";
 
 const DetailCardWrapper = ({
   title,
@@ -48,9 +49,7 @@ const StatusCard = ({
 }) => {
   const transformedStatuses = getStatus(status);
   const { data: user } = useGetUser();
-  const isStateUser =
-    user?.isCms &&
-    user.user?.["custom:cms-roles"].includes(UserRoles.STATE_SUBMITTER);
+
   return (
     <DetailCardWrapper title={"Status"}>
       <div>
@@ -66,13 +65,13 @@ const StatusCard = ({
           </em>
         )}
         {/* Display 2nd Clock if status is pending and latestRaiResponseTimestamp is present.*/}
-        {!isStateUser ||
-          ([
+        {user?.isCms &&
+          [
             SEATOOL_STATUS.PENDING,
             SEATOOL_STATUS.PENDING_APPROVAL,
             SEATOOL_STATUS.PENDING_CONCURRENCE,
           ].includes(status) &&
-            raiRecievedDate && <span id="secondclock">2nd Clock</span>)}
+          raiRecievedDate && <span id="secondclock">2nd Clock</span>}
       </div>
     </DetailCardWrapper>
   );
