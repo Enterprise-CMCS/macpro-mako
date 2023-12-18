@@ -80,7 +80,7 @@ export const Profile = () => {
             <div className="basis-1/2">
               <CardWithTopBorder>
                 <div className="px-8 py-2">
-                  <h2 className="text-2xl font-bold">{fullStateNames}</h2>
+                  <h3 className="text-xl font-bold">{fullStateNames}</h3>
                   <p className="italic">Access Granted</p>
                 </div>
               </CardWithTopBorder>
