@@ -66,13 +66,13 @@ const StatusCard = ({
           </em>
         )}
         {/* Display 2nd Clock if status is pending and latestRaiResponseTimestamp is present.*/}
-        {!isStateUser &&
-          [
+        {!isStateUser ||
+          ([
             SEATOOL_STATUS.PENDING,
             SEATOOL_STATUS.PENDING_APPROVAL,
             SEATOOL_STATUS.PENDING_CONCURRENCE,
           ].includes(status) &&
-          raiRecievedDate && <span id="secondclock">2nd Clock</span>}
+            raiRecievedDate && <span id="secondclock">2nd Clock</span>)}
       </div>
     </DetailCardWrapper>
   );
