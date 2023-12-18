@@ -1,6 +1,7 @@
 import { type APIGatewayEvent } from "aws-lambda";
 import { AnyZodObject, z } from "zod";
 import knex, { type Knex } from "knex";
+import MSSQLDialect from "knex/lib/dialects/mssql";
 import { response } from "@/libs/handler";
 
 const user = process.env.dbUser;
@@ -9,7 +10,7 @@ const server = process.env.dbIp;
 const port = parseInt(process.env.dbPort as string);
 
 const connectionConfig: Knex.Config = {
-  client: "mssql",
+  client: MSSQLDialect,
   connection: {
     user,
     password,
