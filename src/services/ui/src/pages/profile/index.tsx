@@ -46,7 +46,7 @@ export const Profile = () => {
             </svg>
           </div>
 
-          <div className="py-2 flex-1">
+          <div className="py-2 flex-1 mr-4">
             All changes to your access or profile must be made in IDM.
           </div>
           <a href={config.idm.home_url} target="_blank" rel="noreferrer">
@@ -54,8 +54,8 @@ export const Profile = () => {
           </a>
         </Alert>
 
-        <div className="flex flex-row">
-          <div className="basis-1/2 flex flex-col gap-6">
+        <div className="flex flex-col md:flex-row">
+          <div className="flex flex-col gap-6 md:basis-1/2">
             <h2 className="text-2xl font-bold">My Information</h2>
 
             <div className="leading-9">
@@ -77,7 +77,7 @@ export const Profile = () => {
           </div>
 
           {fullStateNames && (
-            <div className="basis-1/2">
+            <div className="my-4 md:my-0 md:basis-1/2">
               <CardWithTopBorder>
                 <div className="px-8 py-2">
                   <h3 className="text-xl font-bold">{fullStateNames}</h3>
