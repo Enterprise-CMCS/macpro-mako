@@ -16,10 +16,24 @@ import {
 } from "shared-types";
 
 type Event = {
+  /**
+   * @example "SelfManagedKafka"
+   */
+  eventSource: string;
+  /**
+   * @example: "b-1.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094,b-2.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094,b-3.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094"
+   */
+  bootstrapServers: string; // comma separated string
   records: Record<
     string,
     {
+      topic: string;
+      partition: number;
+      offset: number;
+      timestamp: number;
+      timestampType: string;
       key: string;
+      headhers: string[];
       value: string;
     }[]
   >;
@@ -143,6 +157,7 @@ export const onemacDataTransform = (props: { key: string; value?: string }) => {
   }
 
   // --------- Package-Actions ---------//
+  // TODO: remove transform package-action below
 
   //ENABLE_RAI_WITHDRAW
   if (record.actionType === Action.ENABLE_RAI_WITHDRAW) {
@@ -199,15 +214,18 @@ export const onemac_main = async (event: Event) => {
 export const onemac_changelog = async (event: Event) => {
   const data = Object.values(event.records).reduce((ACC, RECORDS) => {
     RECORDS.forEach((REC) => {
-      //TODO: handle delete
+      // omit delete
       if (!REC.value) return;
 
-      // NO transform??
+      // omit legacy
+      const record = JSON.parse(decode(REC.value));
+      if (record?.origin !== "micro") return;
+
+      // include package actions
       const packageId = decode(REC.key);
-      const timestamp = new Date().toISOString();
       ACC.push({
-        ...JSON.parse(decode(REC.value)),
-        id: `${packageId}-${timestamp}`,
+        ...record,
+        id: `${packageId}-${REC.offset}`,
         packageId,
       });
     });
