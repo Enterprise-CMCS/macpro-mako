@@ -67,7 +67,10 @@ export const ChipForm = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const handleSubmit: SubmitHandler<ChipFormSchema> = async (formData) => {
+  const form = useForm<ChipFormSchema>({
+    resolver: zodResolver(formSchema),
+  });
+  const handleSubmit = form.handleSubmit(async (formData) => {
     try {
       await submit<ChipFormSchema>({
         data: formData,
@@ -79,10 +82,6 @@ export const ChipForm = () => {
     } catch (e) {
       console.error(e);
     }
-  };
-
-  const form = useForm<ChipFormSchema>({
-    resolver: zodResolver(formSchema),
   });
 
   return (
@@ -90,7 +89,7 @@ export const ChipForm = () => {
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Inputs.Form {...form}>
         <form
-          onSubmit={form.handleSubmit(handleSubmit)}
+          onSubmit={handleSubmit}
           className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col"
         >
           <SectionCard title="CHIP SPA Details">
