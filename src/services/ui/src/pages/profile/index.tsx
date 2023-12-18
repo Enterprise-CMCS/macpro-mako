@@ -6,7 +6,6 @@ import config from "@/config";
 
 export const Profile = () => {
   const { data } = useGetUser();
-  console.info("user data", data);
 
   // Returns comma-separated string of user role descriptions:
   function rolesDescriptions(roles: string | undefined) {
