@@ -11,6 +11,9 @@ import { isCmsUser } from "shared-utils";
 export function getAuthDetails(event: APIGatewayEvent) {
   const authProvider =
     event.requestContext.identity.cognitoAuthenticationProvider;
+  if (!authProvider) {
+    throw new Error("No auth provider!");
+  }
   const parts = authProvider.split(":");
   const userPoolIdParts = parts[parts.length - 3].split("/");
   const userPoolId = userPoolIdParts[userPoolIdParts.length - 1];
@@ -21,7 +24,7 @@ export function getAuthDetails(event: APIGatewayEvent) {
 
 // Convert Cognito user attributes to a dictionary format
 function userAttrDict(cognitoUser: CognitoUserType): CognitoUserAttributes {
-  const attributes = {};
+  const attributes: Record<string, any> = {};
 
   if (cognitoUser.Attributes) {
     cognitoUser.Attributes.forEach((attribute) => {
@@ -86,7 +89,7 @@ async function fetchUserFromCognito(
 
 export const isAuthorized = async (
   event: APIGatewayEvent,
-  stateCode: string
+  stateCode?: string | null
 ) => {
   // Retrieve authentication details of the user
   const authDetails = getAuthDetails(event);
@@ -98,7 +101,7 @@ export const isAuthorized = async (
   );
   return (
     isCmsUser(userAttributes) ||
-    userAttributes["custom:state"].includes(stateCode)
+    (stateCode && userAttributes?.["custom:state"]?.includes(stateCode))
   );
 };
 

@@ -1,6 +1,4 @@
-import { useGetUser } from "@/api/useGetUser";
 import { ErrorAlert } from "@/components";
-
 import { Pagination } from "@/components/Pagination";
 import {
   OsTable,
@@ -8,16 +6,14 @@ import {
   useOsContext,
   useOsParams,
 } from "@/components/Opensearch";
-import { TABLE_COLUMNS } from "./consts";
+import { useWaiverTableColumns } from "./consts";
 
 export const WaiversList = () => {
-  const { data: user } = useGetUser();
   const context = useOsContext();
   const params = useOsParams();
+  const columns = useWaiverTableColumns();
 
   if (context.error) return <ErrorAlert error={context.error} />;
-
-  const columns = TABLE_COLUMNS({ isCms: user?.isCms, user: user?.user });
 
   return (
     <section className="flex flex-col h-[calc(100vh-230px)]">
