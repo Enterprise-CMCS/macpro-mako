@@ -12,7 +12,7 @@ import {
   ConfirmationModal,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { Action, ItemResult, UserRoles } from "shared-types";
+import { ItemResult, UserRoles, Action } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -23,6 +23,7 @@ import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
 import { SEATOOL_STATUS, getStatus } from "shared-types/statusHelper";
+
 const DetailCardWrapper = ({
   title,
   children,
@@ -47,6 +48,9 @@ const StatusCard = ({
 }) => {
   const transformedStatuses = getStatus(status);
   const { data: user } = useGetUser();
+  const isStateUser =
+    user?.isCms &&
+    user.user?.["custom:cms-roles"].includes(UserRoles.STATE_SUBMITTER);
   return (
     <DetailCardWrapper title={"Status"}>
       <div>
@@ -61,12 +65,13 @@ const StatusCard = ({
             {"Withdraw Formal RAI Response - Enabled"}{" "}
           </em>
         )}
-        {/* Display 2nd Clock if status is pending and latestRaiResponseTimestamp is present */}
-        {[
-          SEATOOL_STATUS.PENDING,
-          SEATOOL_STATUS.PENDING_APPROVAL,
-          SEATOOL_STATUS.PENDING_CONCURRENCE,
-        ].includes(status) &&
+        {/* Display 2nd Clock if status is pending and latestRaiResponseTimestamp is present.*/}
+        {!isStateUser &&
+          [
+            SEATOOL_STATUS.PENDING,
+            SEATOOL_STATUS.PENDING_APPROVAL,
+            SEATOOL_STATUS.PENDING_CONCURRENCE,
+          ].includes(status) &&
           raiRecievedDate && <span id="secondclock">2nd Clock</span>}
       </div>
     </DetailCardWrapper>

@@ -196,11 +196,13 @@ export async function respondToRai(body: RaiSchema, rais: any) {
     await pool.close();
   }
   console.log("heyo");
+
 }
 
-export async function withdrawPackage(id, timestamp) {
+export async function withdrawPackage(id, timstamp) {
   console.log("State withdrawing a package.");
 }
+
 
 export async function toggleRaiResponseWithdraw(
   body: { id: string },
