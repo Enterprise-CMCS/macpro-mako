@@ -206,9 +206,9 @@ export const onemac_changelog = async (event: Event) => {
       const packageId = decode(REC.key);
       const timestamp = new Date().toISOString();
       ACC.push({
+        ...JSON.parse(decode(REC.value)),
         id: `${packageId}-${timestamp}`,
         packageId,
-        ...JSON.parse(decode(REC.value)),
       });
     });
 
