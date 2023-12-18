@@ -1,6 +1,6 @@
 import { response } from "@/shared/lambda-response";
 import { type APIGatewayEvent } from "aws-lambda";
-import { Action, ActionTypes } from "shared-types";
+import { ActionTypes } from "shared-types";
 import { withdrawRaiLambda } from "./withdraw-rai-lambda";
 
 type Routes = Record<
@@ -22,7 +22,7 @@ export const router = async (event: APIGatewayEvent) => {
     });
   }
 
-  const actionType = event.pathParameters.actionType as Action;
+  const actionType = event.pathParameters.actionType as ActionTypes;
 
   const routes: Routes = {
     "withdraw-rai": withdrawRaiLambda(event),
