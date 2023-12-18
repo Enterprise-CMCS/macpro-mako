@@ -1,6 +1,6 @@
 import { type APIGatewayEvent } from "aws-lambda";
 import { AnyZodObject, z } from "zod";
-import knex, { KnexTimeoutError, type Knex } from "knex";
+import knex, { type Knex } from "knex";
 import { response } from "@/libs/handler";
 
 const user = process.env.dbUser;
@@ -32,22 +32,26 @@ export const handleEvent = async <T extends AnyZodObject, TReturn>({
   lambda,
   allowedRoles,
 }: LambdaConfig<T, TReturn>) => {
-  const body = JSON.parse(event.body ?? "{}");
-  const result = schema.safeParse(body);
-  const k = knex(connectionConfig);
+  try {
+    const body = JSON.parse(event.body ?? "{}");
+    const result = schema.safeParse(body);
+    const k = knex(connectionConfig);
 
-  if (result.success === true) {
-    // give lambda access to response
-    // give lambda access to kafka
-    return await lambda(result.data, k);
-  } else {
-    // return a bad response
-    return response({
-      statusCode: 500,
-      body: {
-        error: result.error.message,
-      },
-    });
+    if (result.success === true) {
+      // give lambda access to response
+      // give lambda access to kafka
+      return await lambda(result.data, k);
+    } else {
+      // return a bad response
+      return response({
+        statusCode: 500,
+        body: {
+          error: result.error.message,
+        },
+      });
+    }
+  } catch (err: unknown) {
+    console.error(err);
   }
 };
 
