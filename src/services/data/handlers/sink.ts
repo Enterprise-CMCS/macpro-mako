@@ -109,7 +109,7 @@ export const seatool: Handler<Event> = async (event) => {
   }
 };
 
-export const om_event_reducer = (props: { key: string; value?: string }) => {
+export const onemacDataTransform = (props: { key: string; value?: string }) => {
   const id: string = decode(props.key);
 
   // is delete
@@ -178,12 +178,12 @@ export const om_event_reducer = (props: { key: string; value?: string }) => {
   return null;
 };
 
-export const onemac_base = async (event: Event) => {
+export const onemac_main = async (event: Event) => {
   const records = Object.values(event.records).reduce((ACC, RECORDS) => {
     RECORDS.forEach((REC) => {
-      const outcome = om_event_reducer(REC);
-      if (!outcome) return;
-      ACC.push(outcome);
+      const dataTransform = onemacDataTransform(REC);
+      if (!dataTransform) return;
+      ACC.push(dataTransform);
     });
 
     return ACC;
@@ -223,6 +223,6 @@ export const onemac_changelog = async (event: Event) => {
 };
 
 export const onemac: Handler<Event> = async (event) => {
-  await onemac_base(event);
+  await onemac_main(event);
   await onemac_changelog(event);
 };
