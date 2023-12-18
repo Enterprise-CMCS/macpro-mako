@@ -6,3 +6,11 @@ export enum Action {
   WITHDRAW_RAI = "withdraw-rai",
   RESPOND_TO_RAI = "respond-to-rai",
 }
+
+export type ActionTypes =
+  | "enable-rai-withdraw"
+  | "withdraw-package"
+  | "disable-rai-withdraw"
+  | "issue-rai"
+  | "withdraw-rai"
+  | "respond-to-rai";

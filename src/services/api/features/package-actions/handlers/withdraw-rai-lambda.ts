@@ -5,7 +5,7 @@ import { z } from "zod";
 import { PackageActionWriteService } from "@/features/package-actions/services/seatool-write-service";
 import { seatoolConnection } from "@/features/package-actions/consts/sql-connection";
 
-export const handler = async (event: APIGatewayEvent) => {
+export const withdrawRaiLambda = async (event: APIGatewayEvent) => {
   return await handleEvent({
     event,
     allowedRoles: [],
