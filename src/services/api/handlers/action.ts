@@ -16,7 +16,7 @@ import {
   withdrawRai,
 } from "./packageActions";
 
-import { handler as testHandler } from "@/features/package-actions/medicaid/withdraw-rai-lambda";
+import { withdrawRaiLambda } from "@/features/package-actions/handlers/withdraw-rai-lambda";
 
 export const handler = async (event: APIGatewayEvent) => {
   if (!event.pathParameters || !event.pathParameters.actionType) {
@@ -86,7 +86,7 @@ export const handler = async (event: APIGatewayEvent) => {
         await toggleRaiResponseWithdraw(body, false);
         break;
       case Action.WITHDRAW_RAI:
-        await testHandler(event);
+        await withdrawRaiLambda(event);
         break;
       default:
         throw `No ${actionType} action available`;
