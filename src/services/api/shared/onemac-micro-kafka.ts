@@ -1,47 +1,35 @@
-import { Kafka, Message } from "kafkajs";
+import { Kafka, Message, KafkaConfig, Producer } from "kafkajs";
 
-if (!process.env.brokerString) {
-  console.error("process.env.brokerString must be defined");
-}
+export class KafkaService {
+  private readonly producer: Producer;
 
-const kafka = new Kafka({
-  clientId: "submit",
-  brokers: process.env.brokerString ? process.env.brokerString.split(",") : [],
-  retry: {
-    initialRetryTime: 300,
-    retries: 8,
-  },
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+  constructor(config: KafkaConfig) {
+    const kafka = new Kafka(config);
 
-export const producer = kafka.producer();
+    this.producer = kafka.producer();
+  }
 
-export async function produceMessage(
-  topic: string,
-  key: string,
-  value: string
-) {
-  await producer.connect();
+  async produceMessage(topic: string, key: string, value: string) {
+    await this.producer.connect();
 
-  const message: Message = {
-    key: key,
-    value: value,
-    partition: 0,
-    headers: { source: "micro" },
-  };
-  console.log(message);
+    const message: Message = {
+      key: key,
+      value: value,
+      partition: 0,
+      headers: { source: "micro" },
+    };
+    console.log(message);
 
-  try {
-    await producer.send({
-      topic,
-      messages: [message],
-    });
-    console.log("Message sent successfully");
-  } catch (error) {
-    console.error("Error sending message:", error);
-  } finally {
-    await producer.disconnect();
+    try {
+      await this.producer.send({
+        topic,
+        messages: [message],
+      });
+      console.log("Message sent successfully");
+    } catch (error) {
+      console.error("Error sending message:", error);
+    } finally {
+      await this.producer.disconnect();
+    }
   }
 }
