@@ -2,21 +2,36 @@ import { response } from "@/shared/lambda-response";
 import { type APIGatewayEvent } from "aws-lambda";
 import { handleEvent } from "@/features/package-actions/lambda-handler";
 import { z } from "zod";
+import { PackageActionWriteService } from "@/features/package-actions/services/seatool-write-service";
+import { seatoolConnection } from "@/features/package-actions/consts/sql-connection";
 
 export const handler = async (event: APIGatewayEvent) => {
   return await handleEvent({
     event,
     allowedRoles: [],
-    schema: z.object({ id: z.string(), raiDate: z.number() }),
+    schema: z.object({
+      id: z.string(),
+      raiDate: z.number(),
+      raiWithdrawnDate: z.number(),
+    }),
     async lambda(data) {
-      const raiDate = +Math.floor(data.raiDate / 1000)
-        .toString()
-        .substring(0, 10);
-
       try {
         // withdraw rai
+        const packageActionService = await PackageActionWriteService.create(
+          seatoolConnection
+        );
+
+        await packageActionService.withdrawRai({
+          id: data.id,
+          activeRaiDate: data.raiDate,
+          withdrawnDate: data.raiWithdrawnDate,
+        });
 
         // we need to update the status eventually here
+        await packageActionService.changePackageStatus({
+          id: data.id,
+          status: "PENDING",
+        });
 
         return response({
           body: {
