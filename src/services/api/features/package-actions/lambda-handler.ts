@@ -1,30 +1,12 @@
 import { type APIGatewayEvent } from "aws-lambda";
 import { AnyZodObject, z } from "zod";
-import knex, { type Knex } from "knex";
-import MSSQLDialect from "knex/lib/dialects/mssql";
 import { response } from "@/libs/handler";
-
-const user = process.env.dbUser;
-const password = process.env.dbPassword;
-const server = process.env.dbIp;
-const port = parseInt(process.env.dbPort as string);
-
-const connectionConfig: Knex.Config = {
-  client: MSSQLDialect,
-  connection: {
-    user,
-    password,
-    server,
-    port,
-    database: "SEA",
-  },
-};
 
 type LambdaConfig<T extends AnyZodObject, TReturn> = {
   schema: T;
   allowedRoles: ("Test" | "Admin")[];
   event: APIGatewayEvent;
-  lambda: (data: z.infer<T>, connection: Knex) => Promise<TReturn>;
+  lambda: (data: z.infer<T>) => Promise<TReturn>;
 };
 
 export const handleEvent = async <T extends AnyZodObject, TReturn>({
@@ -36,12 +18,11 @@ export const handleEvent = async <T extends AnyZodObject, TReturn>({
   try {
     const body = JSON.parse(event.body ?? "{}");
     const result = schema.safeParse(body);
-    const k = knex(connectionConfig);
 
     if (result.success === true) {
       // give lambda access to response
       // give lambda access to kafka
-      return await lambda(result.data, k);
+      return await lambda(result.data);
     } else {
       // return a bad response
       return response({
@@ -63,10 +44,8 @@ const handler = async (event: APIGatewayEvent) => {
     schema: z.object({
       testString: z.string(),
     }),
-    async lambda(data, db) {
+    async lambda(data) {
       try {
-        const dbQuery = await db.select("*").from("something");
-
         return response({
           statusCode: 200,
           body: {
