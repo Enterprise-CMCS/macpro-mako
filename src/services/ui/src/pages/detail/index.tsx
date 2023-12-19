@@ -204,7 +204,11 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           <StatusCard
             status={data._source.seatoolStatus}
             raiWithdrawEnabled={data._source?.raiWithdrawEnabled || false}
-            raiRecievedDate={data._source?.raiReceivedDate || ""}
+            raiRecievedDate={
+              !data._source.raiWithdrawnDate
+                ? data._source?.raiReceivedDate || ""
+                : ""
+            }
           />
           <PackageActionsCard id={data._id} />
         </section>
