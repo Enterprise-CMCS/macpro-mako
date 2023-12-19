@@ -1,19 +1,9 @@
 import { ConfirmationModal } from "@/components";
 import { ROUTES } from "@/routes";
-import {
-  createContext,
-  Dispatch,
-  PropsWithChildren,
-  SetStateAction,
-  useContext,
-  useState,
-} from "react";
+import { Dispatch, PropsWithChildren, SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createContextProvider } from "@/utils";
 
-type FormModalController = {
-  setSuccessModalOpen: Dispatch<SetStateAction<boolean>>;
-  setCancelModalOpen: Dispatch<SetStateAction<boolean>>;
-};
 type ModalProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -62,25 +52,37 @@ const Cancel = ({ open, setOpen }: ModalProps) => {
   );
 };
 
-const ModalContext = createContext<FormModalController>({
-  // Empty setters, react requires default values in context creation
-  setSuccessModalOpen: (v: boolean) => ({}),
-  setCancelModalOpen: (v: boolean) => ({}),
-} as FormModalController);
-export const useModalContext = () => useContext(ModalContext);
-export const ModalProvider = ({ children }: PropsWithChildren) => {
+const useFormModalControllers = () => {
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  return {
+    cancelModalOpen,
+    setCancelModalOpen,
+    successModalOpen,
+    setSuccessModalOpen,
+  };
+};
+
+export const [ModalContextProvider, useModalContext] = createContextProvider<
+  ReturnType<typeof useFormModalControllers>
+>({
+  name: "Submission Form Modal Context",
+  errorMessage:
+    "This component requires the `ModalProvider` wrapper to make use of modal UIs.",
+});
+export const ModalProvider = ({ children }: PropsWithChildren) => {
+  const context = useFormModalControllers();
   return (
-    <ModalContext.Provider
-      value={{
-        setSuccessModalOpen,
-        setCancelModalOpen,
-      }}
-    >
+    <ModalContextProvider value={context}>
       {children}
-      <Success open={successModalOpen} setOpen={setSuccessModalOpen} />
-      <Cancel open={cancelModalOpen} setOpen={setCancelModalOpen} />
-    </ModalContext.Provider>
+      <Success
+        open={context.successModalOpen}
+        setOpen={context.setSuccessModalOpen}
+      />
+      <Cancel
+        open={context.cancelModalOpen}
+        setOpen={context.setCancelModalOpen}
+      />
+    </ModalContextProvider>
   );
 };
