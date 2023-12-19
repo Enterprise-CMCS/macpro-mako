@@ -21,6 +21,7 @@ export enum ROUTES {
   ACTION = "/action/:id/:type",
   CREATE = "/create",
   MEDICAID_NEW = "/new-submission/spa/medicaid/create",
+  CHIP_NEW = "/new-submission/spa/chip/create",
   WEBFORMS = "/webforms",
   WEBFORM = "/webform/:id/:version",
 }
