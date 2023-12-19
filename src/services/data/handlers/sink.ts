@@ -220,13 +220,12 @@ export const onemac_changelog = async (event: Event) => {
       const record = JSON.parse(decode(REC.value));
       // omit legacy
       if (record?.origin !== "micro") return;
-      // omit new submission
-      if (!record?.actionType) return;
 
       // include package actions
       const packageId = decode(REC.key);
       ACC.push({
         ...record,
+        ...(!record?.actionType && { actionType: "new-submission" }), // new-submission custom actionType
         id: `${packageId}-${REC.offset}`,
         packageId,
       });
