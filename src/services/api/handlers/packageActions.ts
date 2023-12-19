@@ -251,7 +251,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
     );
     // Commit transaction
     await transaction.commit();
-  } catch (err) {
+  } catch (err: any) {
     // Rollback and log
     await transaction.rollback();
     console.error("Error executing query:", err);
