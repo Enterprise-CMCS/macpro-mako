@@ -1,18 +1,18 @@
 import * as sql from "mssql";
 import * as query from "@/features/package-actions/queries";
-import { type KafkaConfig, type Producer } from "kafkajs";
+import { type KafkaConfig } from "kafkajs";
 import { KafkaService } from "@/shared/onemac-micro-kafka";
 import { Action } from "shared-types";
 
 export class PackageActionWriteService {
-  private readonly seatool: sql.Transaction;
+  private readonly seatoolTxn: sql.Transaction;
   private readonly bigmac: KafkaService;
 
   private constructor(
     seatoolConnection: sql.ConnectionPool,
     bigmacConnection: KafkaConfig
   ) {
-    this.seatool = new sql.Transaction(seatoolConnection);
+    this.seatoolTxn = new sql.Transaction(seatoolConnection);
     this.bigmac = new KafkaService(bigmacConnection);
   }
 
@@ -33,16 +33,16 @@ export class PackageActionWriteService {
     withdrawnDate,
   }: query.WithdrawRaiQueryParams) {
     try {
-      await this.seatool.begin();
+      await this.seatoolTxn.begin();
 
-      await this.seatool
+      await this.seatoolTxn
         .request()
         .query(query.withdrawRaiQuery({ id, activeRaiDate, withdrawnDate }));
 
-      await this.seatool.commit();
+      await this.seatoolTxn.commit();
     } catch (err: unknown) {
       console.error(err);
-      await this.seatool.rollback();
+      await this.seatoolTxn.rollback();
     }
   }
 
@@ -51,16 +51,16 @@ export class PackageActionWriteService {
     status,
   }: query.ChangePackageStatusQueryParams) {
     try {
-      await this.seatool.begin();
+      await this.seatoolTxn.begin();
 
-      await this.seatool
+      await this.seatoolTxn
         .request()
         .query(query.changePackageStatusQuery({ id, status }));
 
-      await this.seatool.commit();
+      await this.seatoolTxn.commit();
     } catch (err: unknown) {
       console.error(err);
-      await this.seatool.rollback();
+      await this.seatoolTxn.rollback();
     }
   }
 
