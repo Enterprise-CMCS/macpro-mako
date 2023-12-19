@@ -30,6 +30,6 @@ export class SeatoolService {
       })
     );
 
-    return data.Items.map((item) => unmarshall(item));
+    return data.Items?.map((item) => unmarshall(item));
   }
 }

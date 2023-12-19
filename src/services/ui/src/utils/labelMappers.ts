@@ -10,6 +10,8 @@ export const mapActionLabel = (a: Action) => {
       return "Disable Formal RAI Response Withdraw";
     case Action.ISSUE_RAI:
       return "Issue Formal RAI";
+    case Action.WITHDRAW_PACKAGE:
+      return "Withdraw Package";
     case Action.WITHDRAW_RAI:
       return "Withdraw Formal RAI Response";
     case Action.RESPOND_TO_RAI:

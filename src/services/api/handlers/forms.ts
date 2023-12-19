@@ -49,7 +49,7 @@ export const forms = async (event: APIGatewayEvent) => {
           body: cleanedForm,
         });
       }
-    } catch (importError) {
+    } catch (importError: any) {
       console.error("Error importing module:", importError);
       return response({
         statusCode: 500,
@@ -60,7 +60,7 @@ export const forms = async (event: APIGatewayEvent) => {
         }),
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error:", error);
     return response({
       statusCode: 502,
