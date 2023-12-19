@@ -217,9 +217,11 @@ export const onemac_changelog = async (event: Event) => {
       // omit delete
       if (!REC.value) return;
 
-      // omit legacy
       const record = JSON.parse(decode(REC.value));
+      // omit legacy
       if (record?.origin !== "micro") return;
+      // omit new submission
+      if (!record?.actionType) return;
 
       // include package actions
       const packageId = decode(REC.key);
