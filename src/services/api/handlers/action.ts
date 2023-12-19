@@ -70,7 +70,6 @@ export const handler = async (event: APIGatewayEvent) => {
     switch (actionType) {
       case Action.WITHDRAW_PACKAGE:
         await withdrawPackage(body);
-        await toggleRaiResponseWithdraw(body, false);
         break;
       case Action.ISSUE_RAI:
         await issueRai(body);
