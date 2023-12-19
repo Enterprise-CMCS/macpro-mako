@@ -1,1 +1,2 @@
-export * from "./ChipSpaPackageDetails";
+export * from "./DetailItemsGrid";
+export * from "./ReviewTeamList";
