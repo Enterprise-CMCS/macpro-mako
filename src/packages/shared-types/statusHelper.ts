@@ -12,6 +12,19 @@ export const SEATOOL_STATUS = {
   PENDING_OFF_THE_CLOCK: "Pending-Off the Clock",
 };
 
+export type SeaStatus =
+  | "Pending"
+  | "Pending-RAI"
+  | "Approved"
+  | "Disapproved"
+  | "Withdrawn"
+  | "Terminated"
+  | "Pending-Concurrence"
+  | "Unsubmitted"
+  | "Pending-Approval"
+  | "Unknown"
+  | "Pending-Off the Clock";
+
 const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.PENDING]: "Under Review",
   [SEATOOL_STATUS.PENDING_RAI]: "RAI Issued",

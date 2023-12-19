@@ -208,7 +208,7 @@ functions:
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
   action:
-    handler: handlers/action.handler
+    handler: features/package-actions/handlers/router.router
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}

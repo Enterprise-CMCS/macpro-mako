@@ -32,7 +32,7 @@ export const withdrawRaiLambda = async (event: APIGatewayEvent) => {
         // we need to update the status eventually here
         await packageActionService.changePackageStatus({
           id: data.id,
-          status: "PENDING",
+          status: "Pending",
         });
 
         return response({

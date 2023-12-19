@@ -1,12 +1,10 @@
 import { type APIGatewayEvent } from "aws-lambda";
 import { handleEvent } from "../lambda-handler";
-import { z } from "zod";
 import { response } from "@/libs/handler";
 import { PackageActionWriteService } from "../services/package-action-write-service";
 import { seatoolConnection } from "../consts/sql-connection";
 import { kafkaConfig } from "../consts/kafka-connection";
-import { TOPIC_NAME } from "@/features/package-actions/consts/kafka-topic-name";
-import { Action, raiIssueSchema } from "shared-types";
+import { raiIssueSchema } from "shared-types";
 
 export const issueRaiLambda = async (event: APIGatewayEvent) => {
   return await handleEvent({
@@ -24,7 +22,7 @@ export const issueRaiLambda = async (event: APIGatewayEvent) => {
 
         await packageActionService.changePackageStatus({
           id: data.id,
-          status: "PENDING_RAI",
+          status: "Pending-RAI",
         });
 
         return response({

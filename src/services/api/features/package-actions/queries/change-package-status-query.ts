@@ -1,8 +1,8 @@
-import { SEATOOL_STATUS } from "shared-types/statusHelper";
+import { SeaStatus } from "shared-types/statusHelper";
 
 export type ChangePackageStatusQueryParams = {
   id: string;
-  status: keyof typeof SEATOOL_STATUS;
+  status: SeaStatus;
 };
 
 export const changePackageStatusQuery = ({

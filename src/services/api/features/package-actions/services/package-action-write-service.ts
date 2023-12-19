@@ -72,6 +72,22 @@ export class PackageActionWriteService {
     }
   }
 
+  async respondToRai({
+    id,
+    latestRai,
+    responseDate,
+  }: query.RespondToRaiQueryParams) {
+    try {
+      await this.seatoolTxn.begin();
+
+      await this.seatoolTxn
+        .request()
+        .query(query.respondToRaiQuery({ id, latestRai, responseDate }));
+    } catch (err: unknown) {
+      console.error(err);
+    }
+  }
+
   async changePackageStatus({
     id,
     status,
