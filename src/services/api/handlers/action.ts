@@ -6,7 +6,7 @@ import {
   isAuthorized,
   lookupUserAttributes,
 } from "../libs/auth/user";
-import { packageActionsForResult } from "./getPackageActions";
+import { packageActionsForResult } from "shared-utils";
 import { Action } from "shared-types";
 import {
   issueRai,
@@ -17,6 +17,19 @@ import {
 } from "./packageActions";
 
 export const handler = async (event: APIGatewayEvent) => {
+  if (!event.pathParameters || !event.pathParameters.actionType) {
+    return response({
+      statusCode: 400,
+      body: { message: "Action type path parameter required" },
+    });
+  }
+  if (!event.body) {
+    return response({
+      statusCode: 400,
+      body: { message: "Event body required" },
+    });
+  }
+
   try {
     const actionType = event.pathParameters.actionType as Action;
     const body = JSON.parse(event.body);
@@ -43,7 +56,7 @@ export const handler = async (event: APIGatewayEvent) => {
     );
 
     // Check that the package action is available
-    const actions: Action[] = packageActionsForResult(userAttr, result);
+    const actions: Action[] = packageActionsForResult(userAttr, result._source);
     if (!actions.includes(actionType)) {
       return response({
         statusCode: 401,
@@ -55,10 +68,6 @@ export const handler = async (event: APIGatewayEvent) => {
 
     // Call package action
     switch (actionType) {
-      case Action.WITHDRAW_PACKAGE:
-        await withdrawPackage(body, Date.now());
-        await toggleRaiResponseWithdraw(body, false);
-        break;
       case Action.ISSUE_RAI:
         await issueRai(body);
         break;

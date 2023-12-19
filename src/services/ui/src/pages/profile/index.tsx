@@ -6,6 +6,7 @@ import config from "@/config";
 
 export const Profile = () => {
   const { data } = useGetUser();
+  console.info("user data", data);
 
   // Returns comma-separated string of user role descriptions:
   function rolesDescriptions(roles: string | undefined) {
@@ -64,7 +65,6 @@ export const Profile = () => {
           <div className="leading-9">
             <h3 className="font-bold">Role</h3>
             <p>{rolesDescriptions(data?.user?.["custom:cms-roles"])}</p>
-            <p>{data?.user?.["custom:cms-roles"]}</p>
           </div>
 
           <div className="leading-9">

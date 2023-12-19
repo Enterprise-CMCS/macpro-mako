@@ -530,7 +530,7 @@ const ABP1: FormSchema = {
                                                         },
                                                         rules: {
                                                           pattern: {
-                                                            value: /^\d*$/,
+                                                            value: /^[1-9]\d*$/,
                                                             message:
                                                               "Must be a positive integer value",
                                                           },
@@ -662,7 +662,8 @@ const ABP1: FormSchema = {
                                                             },
                                                             rules: {
                                                               pattern: {
-                                                                value: /^\d*$/,
+                                                                value:
+                                                                  /^[1-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
@@ -798,7 +799,8 @@ const ABP1: FormSchema = {
                                                             },
                                                             rules: {
                                                               pattern: {
-                                                                value: /^\d*$/,
+                                                                value:
+                                                                  /^[1-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
@@ -933,7 +935,8 @@ const ABP1: FormSchema = {
                                                             },
                                                             rules: {
                                                               pattern: {
-                                                                value: /^\d*$/,
+                                                                value:
+                                                                  /^[1-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },

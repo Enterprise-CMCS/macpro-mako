@@ -20,12 +20,15 @@ export const customResourceWrapper: Handler = async (event, context) => {
   }
 };
 
-export const handler: Handler = async (event) => {
+export const handler: Handler = async () => {
   await manageIndex();
 };
 
 async function manageIndex() {
   try {
+    if (!process.env.osDomain)
+      throw new Error("process.env.osDomain must be defined");
+
     if (!(await os.indexExists(process.env.osDomain, "main"))) {
       const createIndexReponse = await os.createIndex(
         process.env.osDomain,

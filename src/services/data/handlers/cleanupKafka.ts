@@ -30,7 +30,9 @@ export const handler = async function (
           await topics.deleteTopics(BrokerString, TopicPatternsToDelete);
           success = true;
         } catch (error) {
-          console.error(`Error in deleteTopics operation: ${error.message}`);
+          console.error(
+            `Error in deleteTopics operation: ${JSON.stringify(error)}`
+          );
           retries++;
           console.log(
             `Retrying in ${

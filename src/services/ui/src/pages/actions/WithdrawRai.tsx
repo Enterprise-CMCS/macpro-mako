@@ -49,7 +49,7 @@ export const WithdrawRaiForm = () => {
   const navigate = useNavigate();
 
   const { data: item } = useGetItem(id!);
-
+  const authority = item?._source.authority as Authority;
   const user = useGetUser();
 
   const handleSubmit: SubmitHandler<FormSchema> = async (data) => {
@@ -59,7 +59,7 @@ export const WithdrawRaiForm = () => {
         data: { ...data, id },
         endpoint: "/action/withdraw-rai",
         user: user.data,
-        authority: Authority.MED_SPA,
+        authority: authority,
       });
 
       setSuccessModalIsOpen(true);

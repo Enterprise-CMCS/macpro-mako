@@ -3,7 +3,7 @@ import { Button, Form } from "@/components/Inputs";
 import { RHFDocument } from "@/components/RHF";
 import { Link, useParams } from "react-router-dom";
 import { SubNavHeader } from "@/components";
-import { documentInitializer } from "@/components/RHF/utils";
+import { documentInitializer, documentValidator } from "@/components/RHF/utils";
 import { useGetForm } from "@/api";
 import { LoadingSpinner } from "@/components";
 import { Footer } from "./footer";
@@ -42,11 +42,17 @@ export function Webform() {
   };
 
   const onSubmit = form.handleSubmit(
-    (data) => {
-      console.log({ data });
-      // const validate = documentValidator(ABP1);
-      // const isValid = validate(data);
-      // console.log({ isValid });
+    (draft) => {
+      console.log({ draft });
+      /**
+       * The validator is intended to be a replica of RHF validation.
+       * To be used in backend api handlers to validate incoming/outgoing form data against document when...
+       * - creating/saving form data
+       * - retrieving form data
+       */
+      const validate = documentValidator(data as any);
+      const isValid = validate(draft);
+      console.log({ isValid });
     },
     (err) => {
       console.log({ err });
