@@ -2,7 +2,9 @@ import * as sql from "mssql";
 import * as query from "@/features/package-actions/queries";
 import { type KafkaConfig } from "kafkajs";
 import { KafkaService } from "@/shared/onemac-micro-kafka";
-import { Action } from "shared-types";
+import { Action, raiIssueSchema } from "shared-types";
+import { z } from "zod";
+import { TOPIC_NAME } from "../consts/kafka-topic-name";
 
 export class PackageActionWriteService {
   private readonly seatoolTxn: sql.Transaction;
@@ -38,6 +40,30 @@ export class PackageActionWriteService {
       await this.seatoolTxn
         .request()
         .query(query.withdrawRaiQuery({ id, activeRaiDate, withdrawnDate }));
+
+      await this.seatoolTxn.commit();
+    } catch (err: unknown) {
+      console.error(err);
+      await this.seatoolTxn.rollback();
+    }
+  }
+
+  async issueRai(raiData: z.infer<typeof raiIssueSchema>) {
+    try {
+      await this.seatoolTxn.begin();
+
+      await this.seatoolTxn.request().query(
+        query.issueRaiQuery({
+          id: raiData.id,
+          requestedDate: raiData.requestedDate,
+        })
+      );
+
+      await this.bigmac.produceMessage(
+        TOPIC_NAME,
+        raiData.id,
+        JSON.stringify({ ...raiData, actionType: Action.ISSUE_RAI })
+      );
 
       await this.seatoolTxn.commit();
     } catch (err: unknown) {

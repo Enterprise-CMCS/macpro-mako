@@ -24,7 +24,7 @@ export const enableRaiWithdrawLambda = async (event: APIGatewayEvent) => {
         withdrawEnabled: data.enableRaiWithDraw,
         authority: "medicaid",
         id: data.id,
-        topicName: process.env.topicName!,
+        topicName: process.env.topicName as string,
       });
 
       return response({
