@@ -23,6 +23,10 @@ export const packageActionsForResult = (
 ): Action[] => {
   const actions = [];
   const latestRai = getLatestRai(result._source.rais);
+  if (result._source.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
+    return [];
+  }
+
   if (isCmsWriteUser(user)) {
     switch (result._source.seatoolStatus) {
       case SEATOOL_STATUS.PENDING:
