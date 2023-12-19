@@ -104,3 +104,5 @@ export type OsExportHeaderOptions<TData> = {
   transform: (data: TData) => string;
   name: string;
 };
+
+export type OsIndex = "main" | "seatool" | "changelog";
