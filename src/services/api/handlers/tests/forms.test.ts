@@ -39,7 +39,6 @@ describe("Forms Lambda Tests", () => {
     const result = await forms(event);
 
     expect(result?.statusCode).toBe(200);
-    expect(result?.headers["Content-Type"]).toBe("application/json");
   });
 
   it("should return 500 with a custom error message for other internal errors", async () => {

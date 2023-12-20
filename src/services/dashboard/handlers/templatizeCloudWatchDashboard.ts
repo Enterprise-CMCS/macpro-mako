@@ -41,14 +41,16 @@ export const handler = async () => {
     });
 
     const replacables = {
-      [accountId]: "${aws:accountId}",
-      [stage]: "${sls:stage}",
-      [region]: "${env:REGION_A}",
-      [service]: "${self:service}",
+      [accountId as string]: "${aws:accountId}",
+      [stage as string]: "${sls:stage}",
+      [region as string]: "${env:REGION_A}",
+      [service as string]: "${self:service}",
     };
     const templateJson = dashboard.DashboardBody;
-    const results = replaceStringValues(templateJson, replacables);
-    return results;
+    if (templateJson) {
+      const results = replaceStringValues(templateJson, replacables);
+      return results;
+    }
   } catch (error) {
     console.error(error);
     throw error;

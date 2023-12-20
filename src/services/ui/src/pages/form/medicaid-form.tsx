@@ -1,11 +1,10 @@
-import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as I from "@/components/Inputs";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import * as Inputs from "@/components/Inputs";
+import * as Content from "./content";
+import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
-import { getItem } from "@/api";
 import {
   Alert,
   BreadCrumbs,
@@ -13,64 +12,34 @@ import {
   SimplePageContainer,
   SectionCard,
 } from "@/components";
-import { Info } from "lucide-react";
-import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
-import { FAQ_TARGET, ROUTES } from "@/routes";
-import { getUserStateCodes } from "@/utils";
-import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
+import { FAQ_TARGET } from "@/routes";
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
-
-let stateCodes: string[] = [];
-function startsWithValidPrefix(value: string) {
-  for (const prefix of stateCodes) {
-    if (value.startsWith(prefix)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-async function doesNotExist(value: string) {
-  try {
-    await getItem(value);
-    return false;
-  } catch (error) {
-    return true;
-  }
-}
+import {
+  zAttachmentOptional,
+  zAttachmentRequired,
+  zSpaIdSchema,
+} from "@/pages/form/zod";
+import { ModalProvider, useModalContext } from "@/pages/form/modals";
+import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 
 const formSchema = z.object({
-  id: z
-    .string()
-    .regex(
-      /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/,
-      "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX"
-    )
-    .refine((value) => startsWithValidPrefix(value), {
-      message: "You do not have access to this state.",
-    })
-    .refine(async (value) => doesNotExist(value), {
-      message: "SPA ID already exists.",
-    }),
+  id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
-    cmsForm179: z
-      .array(z.instanceof(File))
-      .length(
-        1,
-        "Required: You must submit exactly one file for CMS Form 179."
-      ),
-    spaPages: z.array(z.instanceof(File)).refine((value) => value.length > 0, {
-      message: "Required",
+    cmsForm179: zAttachmentRequired({
+      min: 1,
+      max: 1,
+      message: "Required: You must submit exactly one file for CMS Form 179.",
     }),
-    coverLetter: z.array(z.instanceof(File)).optional(),
-    tribalEngagement: z.array(z.instanceof(File)).optional(),
-    existingStatePlanPages: z.array(z.instanceof(File)).optional(),
-    publicNotice: z.array(z.instanceof(File)).optional(),
-    sfq: z.array(z.instanceof(File)).optional(),
-    tribalConsultation: z.array(z.instanceof(File)).optional(),
-    other: z.array(z.instanceof(File)).optional(),
+    spaPages: zAttachmentRequired({ min: 1 }),
+    coverLetter: zAttachmentOptional,
+    tribalEngagement: zAttachmentOptional,
+    existingStatePlanPages: zAttachmentOptional,
+    publicNotice: zAttachmentOptional,
+    sfq: zAttachmentOptional,
+    tribalConsultation: zAttachmentOptional,
+    other: zAttachmentOptional,
   }),
   proposedEffectiveDate: z.date(),
 });
@@ -100,8 +69,8 @@ const attachmentList = [
 
 export const MedicaidForm = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const { data: user } = useGetUser();
+  const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
     try {
       await submit<MedicaidFormSchema>({
@@ -110,47 +79,35 @@ export const MedicaidForm = () => {
         user,
         authority: Authority.MED_SPA,
       });
-      setSuccessModalIsOpen(true);
+      setSuccessModalOpen(true);
     } catch (e) {
       console.error(e);
     }
   };
-  const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
-  const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
 
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
   });
-  stateCodes = getUserStateCodes(user?.user);
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={NEW_SUBMISSION_CRUMBS(location.pathname)} />
-      <I.Form {...form}>
+      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
+      <Inputs.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col"
         >
           <SectionCard title="Medicaid SPA Details">
-            <p className="font-light  max-w-4xl">
-              Once you submit this form, a confirmation email is sent to you and
-              to CMS. CMS will use this content to review your package, and you
-              will not be able to edit this form. If CMS needs any additional
-              information, they will follow up by email.{" "}
-              <strong className="bold">
-                If you leave this page, you will lose your progress on this
-                form.
-              </strong>
-            </p>
-            <I.FormField
+            <Content.FormIntroText />
+            <Inputs.FormField
               control={form.control}
               name="id"
               render={({ field }) => (
-                <I.FormItem>
+                <Inputs.FormItem>
                   <div className="flex gap-4">
-                    <I.FormLabel className="text-lg font-bold">
+                    <Inputs.FormLabel className="text-lg font-bold">
                       SPA ID
-                    </I.FormLabel>
+                    </Inputs.FormLabel>
                     <Link
                       to="/faq/#spa-id-format"
                       target={FAQ_TARGET}
@@ -160,15 +117,9 @@ export const MedicaidForm = () => {
                       What is my SPA ID?
                     </Link>
                   </div>
-                  <p className="text-gray-500 font-light">
-                    Must follow the format SS-YY-NNNN or SS-YY-NNNN-XXXX.
-                  </p>
-                  <p className="italic text-gray-500 font-light">
-                    Reminder - CMS recommends that all SPA numbers start with
-                    the year in which the package is submitted.
-                  </p>
-                  <I.FormControl className="max-w-sm">
-                    <I.Input
+                  <Content.SpaIdFormattingDesc />
+                  <Inputs.FormControl className="max-w-sm">
+                    <Inputs.Input
                       {...field}
                       onInput={(e) => {
                         if (e.target instanceof HTMLInputElement) {
@@ -176,123 +127,85 @@ export const MedicaidForm = () => {
                         }
                       }}
                     />
-                  </I.FormControl>
-                  <I.FormMessage />
-                </I.FormItem>
+                  </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
               )}
             />
-            <I.FormField
+            <Inputs.FormField
               control={form.control}
               name="proposedEffectiveDate"
               render={({ field }) => (
-                <I.FormItem className="max-w-sm">
-                  <I.FormLabel className="text-lg font-bold block">
+                <Inputs.FormItem className="max-w-sm">
+                  <Inputs.FormLabel className="text-lg font-bold block">
                     Proposed Effective Date of Medicaid SPA
-                  </I.FormLabel>
-                  <I.FormControl>
-                    <I.DatePicker
+                  </Inputs.FormLabel>
+                  <Inputs.FormControl>
+                    <Inputs.DatePicker
                       onChange={field.onChange}
                       date={field.value}
                     />
-                  </I.FormControl>
-                  <I.FormMessage />
-                </I.FormItem>
+                  </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
               )}
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <p>
-              Maximum file size of 80 MB per attachment.{" "}
-              <strong>
-                You can add multiple files per attachment type, except for the
-                CMS Form 179.
-              </strong>{" "}
-              Read the description for each of the attachment types on the{" "}
-              {
-                <Link
-                  to="/faq/#medicaid-spa-attachments"
-                  target={FAQ_TARGET}
-                  rel="noopener noreferrer"
-                  className="text-blue-700 hover:underline"
-                >
-                  FAQ Page
-                </Link>
-              }
-              .
-            </p>
-            <p>
-              We accept the following file formats:{" "}
-              <strong className="bold">.docx, .jpg, .png, .pdf, .xlsx,</strong>{" "}
-              and a few others. See the full list on the{" "}
-              {
-                <Link
-                  to="/faq/#acceptable-file-formats"
-                  target={FAQ_TARGET}
-                  rel="noopener noreferrer"
-                  className="text-blue-700 hover:underline"
-                >
-                  FAQ Page
-                </Link>
-              }
-              .
-            </p>
-            {attachmentList.map(({ name, label }) => (
-              <I.FormField
+            <Content.AttachmentsSizeTypesDesc
+              faqLink="/faq/#medicaid-spa-attachments"
+              includeCMS179
+            />
+            {attachmentList.map(({ name, label, required }) => (
+              <Inputs.FormField
                 key={name}
                 control={form.control}
                 name={`attachments.${name}`}
                 render={({ field }) => (
-                  <I.FormItem>
-                    <I.FormLabel>{label}</I.FormLabel>
+                  <Inputs.FormItem>
+                    <Inputs.FormLabel>{label}</Inputs.FormLabel>
                     {
-                      <I.FormDescription>
+                      <Inputs.FormDescription>
                         {name === "cmsForm179"
                           ? "One attachment is required"
                           : ""}
                         {name === "spaPages"
                           ? "At least one attachment is required"
                           : ""}
-                      </I.FormDescription>
+                      </Inputs.FormDescription>
                     }
-                    <I.Upload
+                    <Inputs.Upload
                       files={field?.value ?? []}
                       setFiles={field.onChange}
                     />
-                    <I.FormMessage />
-                  </I.FormItem>
+                    <Inputs.FormMessage />
+                  </Inputs.FormItem>
                 )}
               />
             ))}
           </SectionCard>
           <SectionCard title="Additional Information">
-            <I.FormField
+            <Inputs.FormField
               control={form.control}
               name="additionalInformation"
               render={({ field }) => (
-                <I.FormItem>
-                  <I.FormLabel className="font-normal">
+                <Inputs.FormItem>
+                  <Inputs.FormLabel className="font-normal">
                     Add anything else you would like to share with CMS, limited
                     to 4000 characters
-                  </I.FormLabel>
-                  <I.Textarea {...field} className="h-[200px] resize-none" />
-                  <I.FormDescription>
+                  </Inputs.FormLabel>
+                  <Inputs.Textarea
+                    {...field}
+                    className="h-[200px] resize-none"
+                  />
+                  <Inputs.FormDescription>
                     4,000 characters allowed
-                  </I.FormDescription>
-                </I.FormItem>
+                  </Inputs.FormDescription>
+                </Inputs.FormItem>
               )}
             />
           </SectionCard>
-          <Alert variant={"infoBlock"} className="my-2 w-5/6 flex-row text-sm">
-            <Info className="" />
-            <p className="ml-2">
-              {
-                "Once you submit this form, a confirmation email is sent to you and to CMS. CMS will use this content to review your package, and you will not be able to edit this form. If CMS needs any additional information, they will follow up by email. "
-              }
-              {
-                "If you leave this page, you will lose your progress on this form."
-              }
-            </p>
-          </Alert>
+          <Content.PreSubmissionMessage />
           {Object.keys(form.formState.errors).length !== 0 ? (
             <Alert className="mb-6 w-5/6" variant="destructive">
               Missing or malformed information. Please see errors above.
@@ -304,62 +217,30 @@ export const MedicaidForm = () => {
             </div>
           ) : null}
           <div className="flex gap-2 justify-end w-5/6">
-            <I.Button
+            <Inputs.Button
               disabled={form.formState.isSubmitting}
               type="submit"
               className="px-12"
             >
               Submit
-            </I.Button>
-            <I.Button
+            </Inputs.Button>
+            <Inputs.Button
               type="button"
               variant="outline"
-              onClick={() => setCancelModalIsOpen(true)}
+              onClick={() => setCancelModalOpen(true)}
               className="px-12"
             >
               Cancel
-            </I.Button>
-
-            {/* Success Modal */}
-            <ConfirmationModal
-              open={successModalIsOpen}
-              onAccept={() => {
-                setSuccessModalIsOpen(false);
-                navigate(ROUTES.DASHBOARD);
-              }}
-              onCancel={() => setSuccessModalIsOpen(false)}
-              title="Submission Successful"
-              body={
-                <p>
-                  Please be aware that it may take up to a minute for your
-                  submission to show in the Dashboard.
-                </p>
-              }
-              cancelButtonVisible={false}
-              acceptButtonText="Go to Dashboard"
-            />
-
-            {/* Cancel Modal */}
-            <ConfirmationModal
-              open={cancelModalIsOpen}
-              onAccept={() => {
-                setCancelModalIsOpen(false);
-                navigate(ROUTES.DASHBOARD);
-              }}
-              onCancel={() => setCancelModalIsOpen(false)}
-              cancelButtonText="Return to Form"
-              acceptButtonText="Yes"
-              title="Are you sure you want to cancel?"
-              body={
-                <p>
-                  If you leave this page you will lose your progress on this
-                  form
-                </p>
-              }
-            />
+            </Inputs.Button>
           </div>
         </form>
-      </I.Form>
+      </Inputs.Form>
     </SimplePageContainer>
   );
 };
+
+export const MedicaidSpaFormPage = () => (
+  <ModalProvider>
+    <MedicaidForm />
+  </ModalProvider>
+);

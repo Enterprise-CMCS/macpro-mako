@@ -3,16 +3,20 @@ import {
   Alert,
   Attachmentslist,
   CardWithTopBorder,
-  ChipSpaPackageDetails,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
   RaiList,
-  SubmissionInfo,
   ConfirmationModal,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { Action, ItemResult, UserRoles } from "shared-types";
+import {
+  ItemResult,
+  UserRoles,
+  SEATOOL_STATUS,
+  getStatus,
+  Action,
+} from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -22,6 +26,8 @@ import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
+import { DetailItemsGrid } from "@/components";
+import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 
 const DetailCardWrapper = ({
   title,
@@ -42,16 +48,22 @@ const StatusCard = ({
 }: {
   status: string;
   raiWithdrawEnabled: boolean;
-}) => (
-  <DetailCardWrapper title={"Status"}>
-    <div>
-      <h2 className="text-xl font-semibold">{status}</h2>
-      {raiWithdrawEnabled && (
-        <em className="text-xs">{"Withdraw Formal RAI Response - Enabled"}</em>
-      )}
-    </div>
-  </DetailCardWrapper>
-);
+}) => {
+  const transformedStatuses = getStatus(SEATOOL_STATUS.WITHDRAWN);
+  return (
+    <DetailCardWrapper title={"Status"}>
+      <div>
+        <h2 className="text-xl font-semibold">{status}</h2>
+        {raiWithdrawEnabled &&
+        !Object.values(transformedStatuses).includes(status) ? (
+          <em className="text-xs">
+            {"Withdraw Formal RAI Response - Enabled"}
+          </em>
+        ) : null}
+      </div>
+    </DetailCardWrapper>
+  );
+};
 const PackageActionsCard = ({ id }: { id: string }) => {
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -187,10 +199,9 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           />
           <PackageActionsCard id={data._id} />
         </section>
-        <DetailsSection id="package-details" title="Package Details">
-          <ChipSpaPackageDetails {...data?._source} />
-        </DetailsSection>
-        <SubmissionInfo {...data?._source} />
+        <h2 className="text-xl font-semibold mb-2">{"Package Details"}</h2>
+        <DetailItemsGrid displayItems={spaDetails(data._source)} />
+        <DetailItemsGrid displayItems={submissionDetails(data._source)} />
         {/* Below is used for spacing. Keep it simple */}
         <div className="mb-4" />
         <DetailsSection id="attachments" title="Attachments">

@@ -8,6 +8,12 @@ if (!process.env.osDomain) {
 }
 
 export const getItemData = async (event: APIGatewayEvent) => {
+  if (!event.body) {
+    return response({
+      statusCode: 400,
+      body: { message: "Event body required" },
+    });
+  }
   try {
     const body = JSON.parse(event.body);
     const stateFilter = await getStateFilter(event);
@@ -15,9 +21,10 @@ export const getItemData = async (event: APIGatewayEvent) => {
 
     if (
       stateFilter &&
-      !stateFilter.terms.state.includes(
-        result._source.state.toLocaleLowerCase()
-      )
+      (!result._source.state ||
+        !stateFilter.terms.state.includes(
+          result._source.state.toLocaleLowerCase()
+        ))
     ) {
       return response({
         statusCode: 401,

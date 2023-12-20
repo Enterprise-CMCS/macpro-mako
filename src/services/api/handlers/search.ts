@@ -13,7 +13,6 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     if (event.body) {
       query = JSON.parse(event.body);
     }
-
     query.query = query?.query || {};
     query.query.bool = query.query?.bool || {};
     query.query.bool.must = query.query.bool?.must || [];
@@ -29,8 +28,14 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     console.log("Sending query, built as follow:");
     console.log(JSON.stringify(query, null, 2));
 
-    const results = await os.search(process.env.osDomain, "main", query);
+    if (!process.env.osDomain) {
+      return response({
+        statusCode: 500,
+        body: { message: "Handler is missing process.env.osDomain env var" },
+      });
+    }
 
+    const results = await os.search(process.env.osDomain, "main", query);
     return response<unknown>({
       statusCode: 200,
       body: results,

@@ -5,6 +5,7 @@ import {
   RaiIssueTransform,
   RaiResponseTransform,
   RaiWithdrawTransform,
+  WithdrawPackageTransform,
 } from "./";
 
 export type OsHit<T> = {
@@ -42,7 +43,8 @@ export type OsMainSourceItem = OnemacTransform &
   SeaToolTransform &
   RaiIssueTransform &
   RaiResponseTransform &
-  RaiWithdrawTransform;
+  RaiWithdrawTransform &
+  WithdrawPackageTransform;
 export type OsMainSearchResponse = OsResponse<OsMainSourceItem>;
 export type SearchData = OsHits<OsMainSourceItem>;
 export type ItemResult = OsHit<OsMainSourceItem> & {
@@ -102,3 +104,5 @@ export type OsExportHeaderOptions<TData> = {
   transform: (data: TData) => string;
   name: string;
 };
+
+export type OsIndex = "main" | "seatool" | "changelog";
