@@ -256,7 +256,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
     console.error("Error executing query:", err);
     return response({
       statusCode: 500,
-      body: { message: err.message },
+      body: err instanceof Error ? { message: err.message } : err,
     });
   } finally {
     // Close pool
