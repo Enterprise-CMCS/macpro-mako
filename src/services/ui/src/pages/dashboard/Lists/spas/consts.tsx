@@ -68,7 +68,6 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       field: "raiReceivedDate",
       label: "Formal RAI Response",
       cell: (data) => {
-        console.log(data.raiReceivedDate, data.raiWithdrawnDate, data.id);
         if (!data.raiReceivedDate || data.raiWithdrawnDate) return null;
         return format(new Date(data.raiReceivedDate), "MM/dd/yyyy");
       },

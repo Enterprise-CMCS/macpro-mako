@@ -204,6 +204,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           <StatusCard
             status={data._source.seatoolStatus}
             raiWithdrawEnabled={data._source?.raiWithdrawEnabled || false}
+            //NOTE: 2nd clock will not display after Formal RAI Response Date is cleared
             raiRecievedDate={
               !data._source.raiWithdrawnDate
                 ? data._source?.raiReceivedDate || ""
