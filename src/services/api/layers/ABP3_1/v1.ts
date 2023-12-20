@@ -73,6 +73,9 @@ const ABP3_1: FormSchema = {
                           {
                             name: "state_territory_benchmark",
                             rhf: "Radio",
+                            rules: {
+                              required: "* Required",
+                            },
                             props: {
                               options: [
                                 {
@@ -87,7 +90,7 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Input",
-                                      name: "plan_name",
+                                      name: "benchmark_plan_name",
                                       label: "Plan name",
                                       rules: {
                                         required: "* Required",
@@ -102,7 +105,7 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Input",
-                                      name: "plan_name",
+                                      name: "benchmark_HMO_plan_name",
                                       label: "Plan name",
                                       rules: {
                                         required: "* Required",
@@ -234,7 +237,7 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Input",
-                                      name: "plan_name",
+                                      name: "benchmark_equivalent_state_coverage_plan_name",
                                       label: "Plan name",
                                       rules: {
                                         required: "* Required",
@@ -249,7 +252,7 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Input",
-                                      name: "plan_name",
+                                      name: "benchmark_equivalent_HMO_plan_name",
                                       label: "Plan name",
                                       rules: {
                                         required: "* Required",
@@ -289,6 +292,9 @@ const ABP3_1: FormSchema = {
               rhf: "Input",
               label: "EHB-benchmark plan name",
               labelStyling: "font-bold",
+              rules: {
+                required: "* Required",
+              },
             },
             {
               name: "is_EHB_benchmark_plan_same_section_1937",
@@ -332,6 +338,8 @@ const ABP3_1: FormSchema = {
                         rhf: "Select",
                         name: "is_geographic_area",
                         label: "Identify the state/territory",
+                        labelStyling: "p-3",
+                        formItemStyling: "flex-row",
                         props: {
                           className: "w-[150px]",
                           options: [
@@ -523,8 +531,10 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "state_territory",
+                                      name: "ambulatory_patient_services_state_territory",
                                       label: "Identify the state/territory",
+                                      labelStyling: "p-3",
+                                      formItemStyling: "flex-row",
                                       props: {
                                         className: "w-[150px]",
                                         options: [
@@ -634,8 +644,13 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "state_territory",
+                                      name: "emergency_services_state_territory",
                                       label: "Identify the state/territory",
+                                      labelStyling: "p-3",
+                                      formItemStyling: "flex-row",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         className: "w-[150px]",
                                         options: [
@@ -745,8 +760,13 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "state_territory",
+                                      name: "hospitalization_state_territory",
                                       label: "Identify the state/territory",
+                                      labelStyling: "p-3",
+                                      formItemStyling: "flex-row",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         className: "w-[150px]",
                                         options: [
@@ -856,8 +876,13 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "state_territory",
+                                      name: "maternity_and_newborn_care_state_territory",
                                       label: "Identify the state/territory",
+                                      labelStyling: "p-3",
+                                      formItemStyling: "flex-row",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         className: "w-[150px]",
                                         options: [
@@ -969,8 +994,13 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "state_territory",
+                                      name: "mental_health_and_substance_use_disorders_state_territory",
                                       label: "Identify the state/territory",
+                                      labelStyling: "p-3",
+                                      formItemStyling: "flex-row",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         className: "w-[150px]",
                                         options: [
@@ -1080,8 +1110,13 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "state_territory",
+                                      name: "prescription_drugs_state_territory",
                                       label: "Identify the state/territory",
+                                      labelStyling: "p-3",
+                                      formItemStyling: "flex-row",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         className: "w-[150px]",
                                         options: [
@@ -1193,8 +1228,13 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "state_territory",
+                                      name: "rehabilitative_and_habilitative_services_and_devices_state_territory",
                                       label: "Identify the state/territory",
+                                      labelStyling: "p-3",
+                                      formItemStyling: "flex-row",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         className: "w-[150px]",
                                         options: [
@@ -1304,8 +1344,13 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "state_territory",
+                                      name: "laboratory_services_state_territory",
                                       label: "Identify the state/territory",
+                                      labelStyling: "p-3",
+                                      formItemStyling: "flex-row",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         className: "w-[150px]",
                                         options: [
@@ -1417,8 +1462,13 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "state_territory",
+                                      name: "preventive_and_wellness_services_and_chronic_disease_management_state_territory",
                                       label: "Identify the state/territory",
+                                      labelStyling: "p-3",
+                                      formItemStyling: "flex-row",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         className: "w-[150px]",
                                         options: [
@@ -1530,8 +1580,13 @@ const ABP3_1: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "state_territory",
+                                      name: "ediatric_services_including_oral_and_vision_care_state_territory",
                                       label: "Identify the state/territory",
+                                      labelStyling: "p-3",
+                                      formItemStyling: "flex-row",
+                                      rules: {
+                                        required: "* Required",
+                                      },
                                       props: {
                                         className: "w-[150px]",
                                         options: [
