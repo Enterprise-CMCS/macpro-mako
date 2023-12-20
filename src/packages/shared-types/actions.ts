@@ -1,5 +1,6 @@
 import { OsMainSourceItem } from "./opensearch";
 import { CognitoUserAttributes } from "./user";
+import { LatestRai } from "shared-utils";
 
 export enum Action {
   ISSUE_RAI = "issue-rai",
@@ -15,7 +16,7 @@ export type ActionRule = {
   check: (
     data: OsMainSourceItem,
     user: CognitoUserAttributes,
-    latestRai: any, // TODO: Type for latestRai
+    latestRai: LatestRai | null,
     /** Keep excess parameters to a minimum **/
     ...any: any[]
   ) => boolean;
