@@ -3,6 +3,9 @@ export default {
   darkMode: ["class"],
   content: ["./src/**/*.{ts,tsx}", "./index.html"],
   theme: {
+    fontFamily: {
+      serif: ["Merriweather", "serif"],
+    },
     container: {
       center: true,
       padding: "2rem",

@@ -1,6 +1,12 @@
-import { SeaToolTransform } from "./seatool";
-import { OneMacTransform, RaiIssueTransform } from "./onemac";
-import { Action } from "./actions";
+import {
+  SeaToolTransform,
+  OnemacTransform,
+  OnemacLegacyTransform,
+  RaiIssueTransform,
+  RaiResponseTransform,
+  RaiWithdrawTransform,
+  WithdrawPackageTransform,
+} from "./";
 
 export type OsHit<T> = {
   _index: string;
@@ -32,9 +38,13 @@ export type OsResponse<T> = {
   aggregations?: OsAggResult;
 };
 
-export type OsMainSourceItem = OneMacTransform &
+export type OsMainSourceItem = OnemacTransform &
+  OnemacLegacyTransform &
   SeaToolTransform &
-  RaiIssueTransform;
+  RaiIssueTransform &
+  RaiResponseTransform &
+  RaiWithdrawTransform &
+  WithdrawPackageTransform;
 export type OsMainSearchResponse = OsResponse<OsMainSourceItem>;
 export type SearchData = OsHits<OsMainSourceItem>;
 export type ItemResult = OsHit<OsMainSourceItem> & {
@@ -89,3 +99,10 @@ export type OsAggResult = Record<
     buckets: OsAggBucket[];
   }
 >;
+
+export type OsExportHeaderOptions<TData> = {
+  transform: (data: TData) => string;
+  name: string;
+};
+
+export type OsIndex = "main" | "seatool" | "changelog";

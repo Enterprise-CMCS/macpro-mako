@@ -6,21 +6,21 @@ import { isAuthorized } from "../libs/auth/user";
 const user = process.env.dbUser;
 const password = process.env.dbPassword;
 const server = process.env.dbIp;
-const port = parseInt(process.env.dbPort);
+const port = parseInt(process.env.dbPort as string);
 const config = {
   user: user,
   password: password,
   server: server,
   port: port,
   database: "SEA",
-};
+} as sql.config;
 
 import { Kafka, Message } from "kafkajs";
-import { OneMacSink, transformOnemac } from "shared-types";
+import { Authority, onemacSchema, transformOnemac } from "shared-types";
 
 const kafka = new Kafka({
   clientId: "submit",
-  brokers: process.env.brokerString.split(","),
+  brokers: process.env.brokerString?.split(",") as string[],
   retry: {
     initialRetryTime: 300,
     retries: 8,
@@ -34,6 +34,12 @@ const producer = kafka.producer();
 
 export const submit = async (event: APIGatewayEvent) => {
   try {
+    if (!event.body) {
+      return response({
+        statusCode: 400,
+        body: "Event body required",
+      });
+    }
     const body = JSON.parse(event.body);
     console.log(body);
 
@@ -44,12 +50,12 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
-    if (body.authority !== "medicaid spa") {
+    const activeSubmissionTypes = [Authority.CHIP_SPA, Authority.MED_SPA];
+    if (!activeSubmissionTypes.includes(body.authority)) {
       return response({
         statusCode: 400,
         body: {
-          message:
-            "The Mako Submissions API only supports Medicaid SPA at this time",
+          message: `OneMAC (micro) Submissions API does not support the following authority: ${body.authority}`,
         },
       });
     }
@@ -80,22 +86,20 @@ export const submit = async (event: APIGatewayEvent) => {
 
     await pool.close();
 
-    const message: OneMacSink = body;
-    const makoBody = transformOnemac(body.id).safeParse(message);
-    if (makoBody.success === false) {
-      // handle
+    const eventBody = onemacSchema.safeParse(body);
+    if (eventBody.success === false) {
       console.log(
         "MAKO Validation Error. The following record failed to parse: ",
-        JSON.stringify(message),
+        JSON.stringify(eventBody),
         "Because of the following Reason(s): ",
-        makoBody.error.message
+        eventBody.error.message
       );
     } else {
-      console.log(message);
+      console.log(eventBody);
       await produceMessage(
-        process.env.topicName,
+        process.env.topicName as string,
         body.id,
-        JSON.stringify(message)
+        JSON.stringify(eventBody.data)
       );
 
       return response({
@@ -112,7 +116,7 @@ export const submit = async (event: APIGatewayEvent) => {
   }
 };
 
-async function produceMessage(topic, key, value) {
+async function produceMessage(topic: string, key: string, value: string) {
   console.log("about to connect");
   await producer.connect();
   console.log("connected");

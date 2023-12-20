@@ -3,23 +3,31 @@ import {
   Alert,
   Attachmentslist,
   CardWithTopBorder,
-  ChipSpaPackageDetails,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
   RaiList,
-  SubmissionInfo,
+  ConfirmationModal,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { ItemResult, UserRoles } from "shared-types";
+import {
+  ItemResult,
+  UserRoles,
+  SEATOOL_STATUS,
+  getStatus,
+  Action,
+} from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
 import { Link, useLocation } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
+import { API } from "aws-amplify";
+import { DetailItemsGrid } from "@/components";
+import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 
 const DetailCardWrapper = ({
   title,
@@ -40,19 +48,29 @@ const StatusCard = ({
 }: {
   status: string;
   raiWithdrawEnabled: boolean;
-}) => (
-  <DetailCardWrapper title={"Status"}>
-    <div>
-      <h2 className="text-xl font-semibold">{status}</h2>
-      {raiWithdrawEnabled && (
-        <em className="text-xs">{"Withdraw Formal RAI Response - Enabled"}</em>
-      )}
-    </div>
-  </DetailCardWrapper>
-);
+}) => {
+  const transformedStatuses = getStatus(SEATOOL_STATUS.WITHDRAWN);
+  return (
+    <DetailCardWrapper title={"Status"}>
+      <div>
+        <h2 className="text-xl font-semibold">{status}</h2>
+        {raiWithdrawEnabled &&
+        !Object.values(transformedStatuses).includes(status) ? (
+          <em className="text-xs">
+            {"Withdraw Formal RAI Response - Enabled"}
+          </em>
+        ) : null}
+      </div>
+    </DetailCardWrapper>
+  );
+};
 const PackageActionsCard = ({ id }: { id: string }) => {
+  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { data, error } = useGetPackageActions(id);
-  if (!data?.actions || error) return <LoadingSpinner />;
+  if (!data?.actions || error || isLoading) return <LoadingSpinner />;
   return (
     <DetailCardWrapper title={"Actions"}>
       <div>
@@ -62,18 +80,73 @@ const PackageActionsCard = ({ id }: { id: string }) => {
           </em>
         ) : (
           <ul>
-            {data.actions.map((action, idx) => (
-              <Link
-                className="text-sky-500 underline"
-                to={`/action/${id}/${action}`}
-                key={`${idx}-${action}`}
-              >
-                <li>{mapActionLabel(action)}</li>
-              </Link>
-            ))}
+            {data.actions.map((action, idx) => {
+              return (
+                <Link
+                  className="text-sky-500 underline"
+                  to={`/action/${id}/${action}`}
+                  key={`${idx}-${action}`}
+                >
+                  <li>{mapActionLabel(action)}</li>
+                </Link>
+              );
+            })}
           </ul>
         )}
       </div>
+
+      {/* Withdraw Modal */}
+      <ConfirmationModal
+        open={isWithdrawModalOpen}
+        onAccept={async () => {
+          setIsWithdrawModalOpen(false);
+          const dataToSubmit = {
+            id,
+          };
+          try {
+            setIsLoading(true);
+            await API.post("os", `/action/${Action.WITHDRAW_RAI}`, {
+              body: dataToSubmit,
+            });
+            setIsLoading(false);
+            setIsWithdrawModalOpen(false); // probably want a success modal?
+            setIsSuccessModalOpen(true);
+          } catch (err) {
+            setIsLoading(false);
+            setIsErrorModalOpen(true);
+            console.log(err); // probably want an error modal?
+          }
+        }}
+        onCancel={() => setIsWithdrawModalOpen(false)}
+        title="Withdraw RAI"
+        body={
+          <p>
+            Are you sure you would like to withdraw the RAI response for{" "}
+            <em>{id}</em>?
+          </p>
+        }
+      />
+
+      {/* Withdraw Success Modal */}
+      <ConfirmationModal
+        open={isSuccessModalOpen}
+        onAccept={async () => {
+          setIsSuccessModalOpen(false);
+        }}
+        onCancel={() => setIsSuccessModalOpen(false)}
+        title="Withdraw RAI Successful"
+      />
+
+      {/* Withdraw Error Modal */}
+      <ConfirmationModal
+        open={isErrorModalOpen}
+        onAccept={async () => {
+          setIsErrorModalOpen(false);
+        }}
+        onCancel={() => setIsErrorModalOpen(false)}
+        title="Failed to Withdraw"
+        body="RAI withdraw failed"
+      />
     </DetailCardWrapper>
   );
 };
@@ -126,10 +199,9 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           />
           <PackageActionsCard id={data._id} />
         </section>
-        <DetailsSection id="package-details" title="Package Details">
-          <ChipSpaPackageDetails {...data?._source} />
-        </DetailsSection>
-        <SubmissionInfo {...data?._source} />
+        <h2 className="text-xl font-semibold mb-2">{"Package Details"}</h2>
+        <DetailItemsGrid displayItems={spaDetails(data._source)} />
+        <DetailItemsGrid displayItems={submissionDetails(data._source)} />
         {/* Below is used for spacing. Keep it simple */}
         <div className="mb-4" />
         <DetailsSection id="attachments" title="Attachments">
@@ -160,7 +232,6 @@ export const Details = () => {
 
   return (
     <>
-      {/* <DetailNav id={id} type={data?._source.planType} /> */}
       <div className="max-w-screen-xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
         <BreadCrumbs options={DETAILS_AND_ACTIONS_CRUMBS({ id })} />
         <DetailsContent data={data} />

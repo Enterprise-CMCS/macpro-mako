@@ -1,4 +1,3 @@
-import { useGetUser } from "@/api/useGetUser";
 import { ErrorAlert, LoadingSpinner } from "@/components";
 import { Pagination } from "@/components/Pagination";
 
@@ -8,18 +7,17 @@ import {
   useOsContext,
   useOsParams,
 } from "@/components/Opensearch";
-import { TABLE_COLUMNS } from "./consts";
+import { useSpaTableColumns } from "./consts";
 
 export const SpasList = () => {
-  const { data: user } = useGetUser();
   const context = useOsContext();
   const params = useOsParams();
+  const columns = useSpaTableColumns();
+
   if (context.error) return <ErrorAlert error={context.error} />;
 
-  const columns = TABLE_COLUMNS({ isCms: user?.isCms, user: user?.user });
-
   return (
-    <section className="flex flex-col h-[calc(100vh-250px)]">
+    <section className="flex flex-col h-[calc(100vh-230px)]">
       <OsFiltering />
       <OsTable columns={columns} />
       <Pagination

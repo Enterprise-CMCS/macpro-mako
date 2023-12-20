@@ -1,13 +1,15 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Alert, LoadingSpinner } from "@/components";
 import { ROUTES } from "@/routes";
-import { Action, ItemResult } from "shared-types";
+import { Action, Authority, ItemResult } from "shared-types";
 import { Button } from "@/components/Inputs";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { useEffect, useMemo, useState } from "react";
-import { useToggleRaiWithdraw } from "@/api/useToggleRaiWithdraw";
 import { PackageActionForm } from "@/pages/actions/PackageActionForm";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
+import { useSubmissionService } from "@/api/submissionService";
+import { buildActionUrl } from "@/lib";
+import { useGetUser } from "@/api/useGetUser";
 
 // Keeps aria stuff and classes condensed
 const SectionTemplate = ({
@@ -60,39 +62,42 @@ const PackageInfo = ({ item }: { item: ItemResult }) => (
 const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
   const { id, type } = useParams<{ id: string; type: Action }>();
-
+  const { data: user } = useGetUser();
+  const authority = item?._source.authority as Authority;
   const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
   const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
 
-  const {
-    mutate: toggleRaiWithdraw,
-    isLoading: isToggling,
-    isSuccess: toggleSucceeded,
-    error: toggleError,
-  } = useToggleRaiWithdraw(id!, type!);
+  const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
+    id: string;
+  }>({
+    data: { id: id! },
+    endpoint: buildActionUrl(type!),
+    user,
+    authority,
+  });
   const ACTION_WORD = useMemo(
     () => (type === Action.ENABLE_RAI_WITHDRAW ? "Enable" : "Disable"),
     [type]
   );
 
   useEffect(() => {
-    if (toggleSucceeded) setSuccessModalOpen(true);
-  }, [toggleSucceeded]);
+    if (isSuccess) setSuccessModalOpen(true);
+  }, [isSuccess]);
 
   if (!item) return <Navigate to={ROUTES.DASHBOARD} />; // Prevents optional chains below
   return (
     <>
-      {isToggling && <LoadingSpinner />}
+      {isLoading && <LoadingSpinner />}
       <Intro action={ACTION_WORD} />
       <PackageInfo item={item} />
-      {toggleError && (
+      {error && (
         <Alert className="mb-4 max-w-2xl" variant="destructive">
           <strong>ERROR {ACTION_WORD}ing RAI Response Withdraw: </strong>
-          {toggleError.response.data.message}
+          {error.response.data.message}
         </Alert>
       )}
       <div className="flex gap-2">
-        <Button onClick={() => toggleRaiWithdraw()}>Submit</Button>
+        <Button onClick={() => mutate()}>Submit</Button>
         <Button onClick={() => setCancelModalOpen(true)} variant="outline">
           Cancel
         </Button>
@@ -105,6 +110,7 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
           navigate(`/details?id=${id}`);
         }}
         onCancel={() => setSuccessModalOpen(false)} // Should be made optional
+        cancelButtonVisible={false} // Should be made optional
         title={`Formal RAI Response Withdraw Successfully ${ACTION_WORD}d`}
         body={
           <p>
@@ -112,7 +118,6 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
             up on the Dashboard and Details pages.
           </p>
         }
-        cancelButtonVisible={false}
         acceptButtonText="Go to Package Details"
       />
 

@@ -115,43 +115,72 @@ export const oneMACFAQContent: FAQContent[] = [
             <tbody>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">
+                  CMS Read Only
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Read only roles within OneMAC Micro
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  CMS System Admin or CMS Role Approver
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">
+                  CMS Reviewer
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  Can take action on packages within OneMAC Micro
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  CMS System Admin or CMS Role Approver
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">
+                  CMS System Admin
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  <span className="underline">Approves All</span> roles within
+                  IDM
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  IDM Tier 2 Helpdesk
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">
+                  CMS Role Approver
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  <span className="underline">Approves All</span> roles within
+                  IDM
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  CMS System Admin or CMS Role Approver{" "}
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 px-4 py-2">
                   State Submitter
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  Creates new paper-based submissions and submits packages to
-                  CMS for review:
-                  <ul>
-                    <li>Medicaid State Plan Amendments (SPAs)</li>
-                    <li>1915(b) waivers</li>
-                    <li>1915(c) waivers</li>
-                  </ul>
+                  State submitter role within OneMAC can submit, edit, and view
+                  packages for the state in which they are assigned
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  State System Administrator
+                  State System Admin or CMS System Admin or CMS Role Approver
                 </td>
               </tr>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">
-                  State System Administrator
+                  State System Admin
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  Reviews and acts on State Submitter user role requests and
-                  system access, has all State Submitter permissions (above)
+                  State System Admin role can approve State Submitter roles for
+                  the state in which they are assigned
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  CMS Role Approver
-                </td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">
-                  CMS Role Approver
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  Reviews and acts on State System Administrator user role
-                  requests
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  CMS System Administrator
+                  CMS System Admin or CMS Role Approver
                 </td>
               </tr>
             </tbody>
@@ -229,17 +258,17 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <>
             Enter the State Plan Amendment transmittal number. Assign
-            consecutive numbers on a calendar year basis (e.g., 20-0001-xxxx,
-            20-0002-xxxx, etc.).
+            consecutive numbers on a calendar year basis (e.g., 20-0001-XXXX,
+            20-0002-XXXX, etc.).
             <br />
             The Official Submission package SPA ID must follow the format
-            SS-YY-#### OR SS-YY-####-xxxx to include:
+            SS-YY-#### OR SS-YY-####-XXXX to include:
             <ul>
               <li>SS = 2 alpha character (State Abbreviation)</li>
               <li>YY = 2 numeric digits (Year)</li>
               <li>#### = 4 numeric digits (Serial number)</li>
               <li>
-                xxxx = OPTIONAL, 4 characters alpha/numeric modifier (Suffix)
+                XXXX = OPTIONAL, 4 characters alpha/numeric modifier (Suffix)
               </li>
             </ul>
           </>

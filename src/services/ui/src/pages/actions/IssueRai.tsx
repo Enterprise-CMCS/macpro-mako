@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import * as I from "@/components/Inputs";
-import { API } from "aws-amplify";
 import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -13,11 +12,13 @@ import {
   BreadCrumbs,
 } from "@/components";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
-import { FAQ_TARGET, ROUTES } from "@/routes";
+import { FAQ_TARGET } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
-import { Action, RaiIssueTransform } from "shared-types";
+import { Action, Authority } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { useGetItem } from "@/api";
+import { submit } from "@/api/submissionService";
+import { buildActionUrl } from "@/lib";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
@@ -30,13 +31,7 @@ const formSchema = z.object({
     other: z.array(z.instanceof(File)).optional(),
   }),
 });
-export type IssueRaiFormSchema = z.infer<typeof formSchema>;
-type UploadKeys = keyof IssueRaiFormSchema["attachments"];
-export type PreSignedURL = {
-  url: string;
-  key: string;
-  bucket: string;
-};
+export type RaiIssueFormSchema = z.infer<typeof formSchema>;
 
 const attachmentList = [
   {
@@ -67,81 +62,31 @@ const FormDescriptionText = () => {
   );
 };
 
-export const IssueRai = () => {
-  const { id } = useParams<{
+export const RaiIssue = () => {
+  const { id, type } = useParams<{
     id: string;
+    type: Action;
   }>();
   const { data: item } = useGetItem(id!);
+  const authority = item?._source.authority as Authority;
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
   const navigate = useNavigate();
-  const form = useForm<IssueRaiFormSchema>({
+  const form = useForm<RaiIssueFormSchema>({
     resolver: zodResolver(formSchema),
   });
   const { data: user } = useGetUser();
-  const handleSubmit: SubmitHandler<IssueRaiFormSchema> = async (data) => {
-    // Set the timestamp that will uniquely identify this RAI
-    const timestamp = Math.floor(new Date().getTime() / 1000) * 1000; // Truncating to match seatool
-
-    const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
-    const uploadedFiles: any[] = [];
-    const fileMetaData: NonNullable<
-      RaiIssueTransform["rais"][number]["request"]["attachments"]
-    > = [];
-
-    const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
-      .filter((key) => data.attachments[key] !== undefined)
-      .map(() =>
-        API.post("os", "/getUploadUrl", {
-          body: {},
-        })
-      );
-    const loadPresignedUrls = await Promise.all(presignedUrls);
-
-    uploadKeys
-      .filter((key) => data.attachments[key] !== undefined)
-      .forEach((uploadKey, index) => {
-        const attachmenListObject = attachmentList?.find(
-          (item) => item.name === uploadKey
-        );
-        const title = attachmenListObject ? attachmenListObject.label : "Other";
-        const fileGroup = data.attachments[uploadKey] as File[];
-
-        // upload all files in this group and track there name
-        for (const file of fileGroup) {
-          uploadedFiles.push(
-            fetch(loadPresignedUrls[index].url, {
-              body: file,
-              method: "PUT",
-            })
-          );
-
-          fileMetaData.push({
-            key: loadPresignedUrls[index].key,
-            filename: file.name,
-            title: title,
-            bucket: loadPresignedUrls[index].bucket,
-            uploadDate: Date.now(),
-          });
-        }
-      });
-
-    await Promise.all(uploadedFiles);
-
-    const dataToSubmit = {
-      id: id!,
-      additionalInformation: data?.additionalInformation ?? null,
-      attachments: fileMetaData,
-      requestedDate: timestamp,
-      submitterEmail: user?.user?.email ?? "N/A",
-      submitterName:
-        `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
-    };
-
+  const handleSubmit: SubmitHandler<RaiIssueFormSchema> = async (data) => {
     try {
-      await API.post("os", `/action/${Action.ISSUE_RAI}`, {
-        body: dataToSubmit,
+      await submit<RaiIssueFormSchema & { id: string }>({
+        data: {
+          id: id!, // Declared here because it's not part of the form data
+          ...data,
+        },
+        endpoint: buildActionUrl(type!),
+        user,
+        authority,
       });
       setSuccessModalIsOpen(true);
     } catch (err) {

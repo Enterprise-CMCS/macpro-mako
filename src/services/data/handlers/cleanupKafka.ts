@@ -11,7 +11,7 @@ export const handler = async function (
   const responseData: any = {};
   let responseStatus: ResponseStatus = SUCCESS;
   try {
-    if (event.RequestType === "Create" || event.RequestType == "Update") {
+    if (event.RequestType === "Create" || event.RequestType === "Update") {
       console.log("This resource does nothing on Create and Update events.");
     } else if (event.RequestType === "Delete") {
       const BrokerString: string = event.ResourceProperties.BrokerString;
@@ -20,7 +20,32 @@ export const handler = async function (
       console.log(
         `Attempting a delete for each of the following patterns:  ${TopicPatternsToDelete}`
       );
-      await topics.deleteTopics(BrokerString, TopicPatternsToDelete);
+
+      const maxRetries = 10;
+      const retryDelay = 10000; //10s
+      let retries = 0;
+      let success = false;
+      while (!success && retries < maxRetries) {
+        try {
+          await topics.deleteTopics(BrokerString, TopicPatternsToDelete);
+          success = true;
+        } catch (error) {
+          console.error(
+            `Error in deleteTopics operation: ${JSON.stringify(error)}`
+          );
+          retries++;
+          console.log(
+            `Retrying in ${
+              retryDelay / 1000
+            } seconds (Retry ${retries}/${maxRetries})`
+          );
+          await new Promise((resolve) => setTimeout(resolve, retryDelay));
+        }
+      }
+      if (!success) {
+        console.error(`Failed to delete topics after ${maxRetries} retries.`);
+        responseStatus = FAILED;
+      }
     }
   } catch (error) {
     console.error(error);

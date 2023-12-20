@@ -15,7 +15,7 @@ export default defineConfig({
       provider: "istanbul",
       reporter: "json",
     },
-    exclude: ["**/e2e/**"],
+    exclude: ["**/e2e/**", "**/node_modules/**"],
   },
   resolve: {
     alias: {

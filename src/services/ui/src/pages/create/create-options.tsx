@@ -16,7 +16,7 @@ import {
 import { SimplePageContainer } from "@/components";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { useLocation } from "react-router-dom";
-import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
+import { optionCrumbsFromPath } from "@/pages/create/create-breadcrumbs";
 
 /** Can be removed once page title bar with back nav is integrated */
 export const SimplePageTitle = ({ title }: { title: string }) => (
@@ -36,7 +36,7 @@ const OptionsPage = ({ options, title, fieldsetLegend }: OptionsPageProps) => {
   const location = useLocation();
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={NEW_SUBMISSION_CRUMBS(location.pathname)} />
+      <BreadCrumbs options={optionCrumbsFromPath(location.pathname)} />
       <SimplePageTitle title={title} />
       <OptionFieldset legend={fieldsetLegend}>
         {options.map((opt, idx) => (

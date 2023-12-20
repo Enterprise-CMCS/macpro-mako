@@ -6,6 +6,7 @@ import { useOsContext } from "../Provider";
 import { useOsParams } from "../useOpensearch";
 import { VisibilityPopover } from "../Settings";
 import { BLANK_VALUE } from "@/consts";
+import { OsField } from "shared-types";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];
@@ -32,14 +33,14 @@ export const OsTable: FC<{
   };
 
   return (
-    <UI.Table className="flex-1 border-[1px]">
+    <UI.Table className="flex-1 min-h-[calc(100vh-350px)]">
       <UI.TableHeader className="sticky top-0 bg-white">
         <UI.TableRow>
           <UI.TableHead
             className="w-[10px]"
             icon={
               <VisibilityPopover
-                list={osColumns.filter((COL) => !COL.locked)}
+                list={osColumns.filter((COL) => !COL.locked || COL.field)}
                 onItemClick={onToggle}
               />
             }
@@ -52,15 +53,17 @@ export const OsTable: FC<{
                 key={`TH-${TH.field}`}
                 isActive={params.state.sort.field === TH.field}
                 desc={params.state.sort.order === "desc"}
-                onClick={() =>
+                {...(TH.isSystem && { className: "pointer-events-none" })}
+                onClick={() => {
+                  if (!TH.field) return;
                   params.onSet((s) => ({
                     ...s,
                     sort: {
-                      field: TH.field,
+                      field: TH.field as OsField,
                       order: s.sort.order === "desc" ? "asc" : "desc",
                     },
-                  }))
-                }
+                  }));
+                }}
               >
                 {TH.label}
               </UI.TableHead>
@@ -77,7 +80,16 @@ export const OsTable: FC<{
             <LoadingSpinner />
           </div>
         )}
-
+        {context.data && !context.data.hits.length && (
+          <UI.TableRow className="h-10">
+            <UI.TableCell className="flex">
+              <p className="font-medium whitespace-nowrap h-[20px]"> </p>
+              <p className="absolute right-[50%] translate-x-[50%] translate-y-[50%] font-medium text-lg text-gray-500">
+                No Results Found
+              </p>
+            </UI.TableCell>
+          </UI.TableRow>
+        )}
         {context.data?.hits.map((DAT) => (
           <UI.TableRow key={DAT._source.id}>
             <UI.TableCell className="fixed" />
