@@ -3,12 +3,12 @@ export type LatestRai = {
   status: RaiStatus;
   value: any;
 };
-export const getLatestRai = (rais: any): LatestRai | null => {
-  const keys = Object.keys(rais);
-  if (keys.length === 0) {
+export const getLatestRai = (rais: any | undefined): LatestRai | null => {
+  if (!rais || Object.keys(rais).length === 0) {
+    // No keys = no rai entries
     return null;
   } else {
-    const maxKey = keys.reduce(
+    const maxKey = Object.keys(rais).reduce(
       (max, key) => Math.max(max, Number(key)),
       -Infinity
     );

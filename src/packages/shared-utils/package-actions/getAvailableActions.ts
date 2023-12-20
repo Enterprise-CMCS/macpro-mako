@@ -5,9 +5,7 @@ import rules from "./rules";
 export const getAvailableActions = (
   user: CognitoUserAttributes,
   result: OsMainSourceItem
-) => {
-  const latestRai = getLatestRai(result?.rais || {});
-  return rules
-    .filter((r) => r.check(result, user, latestRai))
+) =>
+  rules
+    .filter((r) => r.check(result, user, getLatestRai(result?.rais)))
     .map((a) => a.action);
-};
