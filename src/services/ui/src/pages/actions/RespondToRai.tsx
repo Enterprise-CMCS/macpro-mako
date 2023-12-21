@@ -14,7 +14,7 @@ import {
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
-import { Action, Authority } from "shared-types";
+import { Action, PlanType } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
 import { useGetItem } from "@/api";
@@ -67,7 +67,7 @@ export const RespondToRaiForm = () => {
     type: Action;
   }>();
   const { data: item } = useGetItem(id!);
-  const authority = item?._source.authority as Authority;
+  const authority = item?._source.authority as PlanType;
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);

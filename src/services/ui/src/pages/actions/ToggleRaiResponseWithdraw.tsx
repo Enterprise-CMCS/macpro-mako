@@ -1,7 +1,7 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Alert, LoadingSpinner } from "@/components";
 import { ROUTES } from "@/routes";
-import { Action, Authority, ItemResult } from "shared-types";
+import { Action, PlanType, ItemResult } from "shared-types";
 import { Button } from "@/components/Inputs";
 import { useEffect, useMemo, useState } from "react";
 import { PackageActionForm } from "@/pages/actions/PackageActionForm";
@@ -15,7 +15,7 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
   const { id, type } = useParams<{ id: string; type: Action }>();
   const { data: user } = useGetUser();
-  const authority = item?._source.authority as Authority;
+  const authority = item?._source.authority as PlanType;
   const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
   const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
 

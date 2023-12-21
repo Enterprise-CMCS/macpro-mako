@@ -1,7 +1,7 @@
 import { API } from "aws-amplify";
 import {
   OnemacAttachmentSchema,
-  Authority,
+  PlanType,
   ReactQueryApiError,
   Action,
   attachmentTitleMap,
@@ -14,7 +14,7 @@ type SubmissionServiceParameters<T> = {
   data: T;
   endpoint: SubmissionServiceEndpoint;
   user: OneMacUser | undefined;
-  authority?: Authority;
+  authority?: PlanType;
 };
 type SubmissionServiceResponse = {
   body: {
