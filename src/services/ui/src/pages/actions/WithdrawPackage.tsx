@@ -15,6 +15,7 @@ import { LoadingSpinner } from "@/components";
 import { AttachmentRecipe, buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
+import { AttachmentsSizeTypesDesc } from "@/pages/form/content";
 
 // Temporary, will be refactored to an extendable schema with Brian/Mike's back-end
 // work.
@@ -65,7 +66,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
           await submit<WithdrawPackageFormSchema & { id: string }>({
             data: {
               ...data,
-              id: id!, // Declared here because it's not part of the form data
+              id: id!, // Declared here because it's not part of the form data.
             },
             endpoint: buildActionUrl(type!),
             user,
@@ -97,42 +98,8 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
           <PackageInfo item={item} />
           <I.Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
-              <section>
-                <h3 className="text-2xl font-bold font-sans">Attachments</h3>
-                <p>
-                  Upload your supporting documentation for withdrawal or explain
-                  your need for withdrawal in the{" "}
-                  <em className="italic">Additional Information section.</em>
-                </p>
-                <p>
-                  We accept the following file formats:{" "}
-                  <strong className="bold">
-                    .docx, .jpg, .png, .pdf, .xlsx,
-                  </strong>{" "}
-                  and a few others. A Maximum file size of 80 MB per attachment.{" "}
-                  <strong className="bold">
-                    You can add multiple files per attachment type.
-                  </strong>{" "}
-                  See the full list, and read the description for each of the
-                  attachment types on the{" "}
-                  {
-                    <Link
-                      to="/faq/#acceptable-file-formats"
-                      target={FAQ_TARGET}
-                      rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
-                    >
-                      FAQ Page
-                    </Link>
-                  }
-                  .
-                </p>
-                <br />
-                {/* <p>
-                  <I.RequiredIndicator />
-                  At least one attachment is required.
-                </p> */}
-              </section>
+              {/* Change faqLink once we know the anchor */}
+              <AttachmentsSizeTypesDesc faqLink={ROUTES.FAQ} />
               {attachments.map(({ name, label, required }) => (
                 <I.FormField
                   key={name}
