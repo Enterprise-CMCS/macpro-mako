@@ -11,7 +11,6 @@ export const SEATOOL_STATUS = {
   UNKNOWN: "Unknown",
   PENDING_OFF_THE_CLOCK: "Pending-Off the Clock",
 };
-export type SeatoolStatus = keyof SeatoolStatus;
 
 const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.PENDING]: "Under Review",

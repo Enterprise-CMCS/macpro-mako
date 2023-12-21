@@ -1,7 +1,7 @@
 import { OsMainSourceItem } from "./opensearch";
 import { CognitoUserAttributes } from "./user";
 import { LatestRai } from "shared-utils";
-import { SEATOOL_STATUS, SeatoolStatus } from "./statusHelper";
+import { SEATOOL_STATUS } from "./statusHelper";
 
 export enum Action {
   ISSUE_RAI = "issue-rai",
@@ -18,14 +18,11 @@ const raiStatuses = [
   SEATOOL_STATUS.PENDING_CONCURRENCE,
 ];
 export const ActionAvailabilityCheck = {
-  isInRaiStatus: (seatoolStatus: SeatoolStatus) =>
-    raiStatuses.includes(seatoolStatus),
-  isNotWithdrawn: (seatoolStatus: SeatoolStatus) =>
+  isInRaiStatus: (seatoolStatus: string) => raiStatuses.includes(seatoolStatus),
+  isNotWithdrawn: (seatoolStatus: string) =>
     seatoolStatus !== SEATOOL_STATUS.WITHDRAWN,
-  isInStatus: (
-    seatoolStatus: SeatoolStatus,
-    authorizedStatuses: SeatoolStatus[]
-  ) => authorizedStatuses.includes(seatoolStatus),
+  isInStatus: (seatoolStatus: string, authorizedStatuses: string[]) =>
+    authorizedStatuses.includes(seatoolStatus),
 };
 
 export type ActionRule = {
