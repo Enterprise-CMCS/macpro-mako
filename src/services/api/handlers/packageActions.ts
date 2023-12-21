@@ -270,7 +270,10 @@ export async function toggleRaiResponseWithdraw(
   body: ToggleWithdrawRaiEnabled,
   toggle: boolean
 ) {
-  const result = toggleWithdrawRaiEnabledSchema.safeParse(body);
+  const result = toggleWithdrawRaiEnabledSchema.safeParse({
+    ...body,
+    raiWithdrawEnabled: toggle,
+  });
   if (result.success === false) {
     console.error(
       "Toggle Rai Response Withdraw Enable event validation error. The following record failed to parse: ",
