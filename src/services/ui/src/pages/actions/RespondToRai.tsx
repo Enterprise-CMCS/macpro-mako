@@ -4,13 +4,7 @@ import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
-import {
-  SimplePageContainer,
-  Alert,
-  LoadingSpinner,
-  BreadCrumbs,
-} from "@/components";
+import { SimplePageContainer, Alert, LoadingSpinner } from "@/components";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
@@ -96,12 +90,6 @@ export const RespondToRaiForm = () => {
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs
-        options={DETAILS_AND_ACTIONS_CRUMBS({
-          id: id || "",
-          action: Action.RESPOND_TO_RAI,
-        })}
-      />
       <I.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
