@@ -26,7 +26,9 @@ export const spaDetails = (data: OsMainSourceItem): DetailSectionItem[] => [
   },
   {
     label: "Type",
-    value: removeUnderscoresAndCapitalize(data.planType),
+    value: data?.planType
+      ? removeUnderscoresAndCapitalize(data.planType)
+      : BLANK_VALUE,
     canView: () => true,
   },
   {

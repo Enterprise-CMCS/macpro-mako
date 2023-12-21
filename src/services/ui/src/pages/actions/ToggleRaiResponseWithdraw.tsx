@@ -3,61 +3,13 @@ import { Alert, LoadingSpinner } from "@/components";
 import { ROUTES } from "@/routes";
 import { Action, Authority, ItemResult } from "shared-types";
 import { Button } from "@/components/Inputs";
-import { removeUnderscoresAndCapitalize } from "@/utils";
 import { useEffect, useMemo, useState } from "react";
 import { PackageActionForm } from "@/pages/actions/PackageActionForm";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { useSubmissionService } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
-
-// Keeps aria stuff and classes condensed
-const SectionTemplate = ({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) => (
-  <div className="flex flex-col my-8">
-    <label id="package-id-label">{label}</label>
-    <span className="text-xl" aria-labelledby="package-id-label">
-      {value}
-    </span>
-  </div>
-);
-
-const Intro = ({ action }: { action: "Enable" | "Disable" }) => (
-  <div className="max-w-2xl">
-    <h1 className="text-2xl font-semibold mt-4 mb-2">
-      {action} Formal RAI Response Withdraw Details
-    </h1>
-    <p>
-      {action === "Enable" &&
-        "Once you submit this form, the most recent Formal RAI Response for this package will be able to be withdrawn by the state. "}
-      {action === "Disable" &&
-        "Once you submit this form, you will disable the previous Formal RAI Response Withdraw - Enabled action. The State will not be able to withdraw the Formal RAI Response. "}
-      <strong>
-        If you leave this page, you will lose your progress on this form.
-      </strong>
-    </p>
-  </div>
-);
-
-const PackageInfo = ({ item }: { item: ItemResult }) => (
-  <>
-    <section>
-      <SectionTemplate label={"Package ID"} value={item._id} />
-      <SectionTemplate
-        label={"Type"}
-        value={
-          removeUnderscoresAndCapitalize(item._source.planType) ||
-          "No package type found"
-        }
-      />
-    </section>
-  </>
-);
+import { ActionFormIntro, PackageInfo } from "@/pages/actions/common";
 
 const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
@@ -88,7 +40,19 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
   return (
     <>
       {isLoading && <LoadingSpinner />}
-      <Intro action={ACTION_WORD} />
+      <ActionFormIntro
+        title={`${ACTION_WORD} Formal RAI Response Withdraw Details`}
+      >
+        <p>
+          {ACTION_WORD === "Enable" &&
+            "Once you submit this form, the most recent Formal RAI Response for this package will be able to be withdrawn by the state. "}
+          {ACTION_WORD === "Disable" &&
+            "Once you submit this form, you will disable the previous Formal RAI Response Withdraw - Enabled action. The State will not be able to withdraw the Formal RAI Response. "}
+          <strong>
+            If you leave this page, you will lose your progress on this form.
+          </strong>
+        </p>
+      </ActionFormIntro>
       <PackageInfo item={item} />
       {error && (
         <Alert className="mb-4 max-w-2xl" variant="destructive">
