@@ -8,7 +8,7 @@ const checkPlan = (planType: PlanType | null, validPlanTypes: PlanType[]) =>
     ? false
     : validPlanTypes.includes(planType.toLowerCase() as PlanType);
 
-export const PlanCheck = (planType: PlanType | null) => ({
+export const PlanTypeCheck = (planType: PlanType | null) => ({
   isSpa: checkPlan(planType, [PlanType.MED_SPA, PlanType.CHIP_SPA]),
   isWaiver: checkPlan(planType, []),
   /** Keep excess methods to a minimum with `is` **/
