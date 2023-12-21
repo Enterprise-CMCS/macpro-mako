@@ -46,6 +46,7 @@ export const packageActionsForResult = (
       case SEATOOL_STATUS.PENDING_OFF_THE_CLOCK:
       case SEATOOL_STATUS.PENDING_APPROVAL:
       case SEATOOL_STATUS.PENDING_CONCURRENCE:
+        actions.push(Action.WITHDRAW_PACKAGE);
         if (
           latestRai?.status == "received" &&
           result.raiWithdrawEnabled
