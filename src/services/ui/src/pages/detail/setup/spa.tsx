@@ -32,14 +32,6 @@ export const spaDetails = (data: OsMainSourceItem): DetailSectionItem[] => [
     canView: () => true,
   },
   {
-    // TODO: Redo logic to hide for SPAs
-    label: "Action Type",
-    value: data.actionType
-      ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
-      : BLANK_VALUE,
-    canView: () => true,
-  },
-  {
     label: "Initial Submission Date",
     value: data.submissionDate
       ? format(new Date(data.submissionDate), "MM/dd/yyyy h:mm:ss a")
