@@ -9,6 +9,9 @@ export const packageActionsForResult = (
 ): Action[] => {
   const actions = [] as any[];
   const latestRai = getLatestRai(result?.rais || {});
+  if (result.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
+    return [];
+  }
 
   if (isCmsWriteUser(user)) {
     switch (result.seatoolStatus) {
