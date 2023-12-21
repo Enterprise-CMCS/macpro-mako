@@ -9,7 +9,7 @@ import { isCmsUser, isStateUser } from "../user-helper";
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
   check: (checker, user) =>
-    checker.isInRaiStatus &&
+    checker.isInActivePendingStatus &&
     (!checker.hasLatestRai || checker.hasRequestedRai) &&
     isCmsUser(user),
 };
@@ -43,7 +43,7 @@ const arDisableWithdrawRaiResponse: ActionRule = {
 const arWithdrawRaiResponse: ActionRule = {
   action: Action.WITHDRAW_RAI,
   check: (checker, user) =>
-    checker.isInRaiStatus &&
+    checker.isInActivePendingStatus &&
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
     isStateUser(user),
@@ -51,7 +51,8 @@ const arWithdrawRaiResponse: ActionRule = {
 
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
-  check: (checker, user) => checker.isNotWithdrawn && isStateUser(user),
+  check: (checker, user) =>
+    checker.isInActivePendingStatus && isStateUser(user),
 };
 
 export default [

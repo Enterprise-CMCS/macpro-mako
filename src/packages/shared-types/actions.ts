@@ -11,12 +11,6 @@ export enum Action {
   WITHDRAW_RAI = "withdraw-rai",
   WITHDRAW_PACKAGE = "withdraw-package",
 }
-const raiStatuses = [
-  SEATOOL_STATUS.PENDING,
-  SEATOOL_STATUS.PENDING_OFF_THE_CLOCK,
-  SEATOOL_STATUS.PENDING_APPROVAL,
-  SEATOOL_STATUS.PENDING_CONCURRENCE,
-];
 
 const checkStatus = (seatoolStatus: string, authorized: string | string[]) =>
   typeof authorized === "string"
@@ -30,15 +24,26 @@ export const ActionAvailabilityCheck = ({
 }: OsMainSourceItem) => {
   const latestRai = getLatestRai(rais);
   return {
-    isInRaiStatus: checkStatus(seatoolStatus, raiStatuses),
+    /** Is in any of our pending statuses, sans Pending-RAI **/
+    isInActivePendingStatus: checkStatus(seatoolStatus, [
+      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.PENDING_OFF_THE_CLOCK,
+      SEATOOL_STATUS.PENDING_APPROVAL,
+      SEATOOL_STATUS.PENDING_CONCURRENCE,
+    ]),
+    /** Latest RAI is requested and status is Pending-RAI **/
     hasRequestedRai:
       latestRai?.status === "requested" &&
       checkStatus(seatoolStatus, SEATOOL_STATUS.PENDING_RAI),
+    /** Latest RAI is not null **/
     hasLatestRai: latestRai !== null,
+    /** Latest RAI has been responded to **/
     hasRaiResponse: latestRai?.status === "received",
+    /** RAI Withdraw has been enabled **/
     hasEnabledRaiWithdraw: raiWithdrawEnabled,
+    /** Is in any status except Package Withdrawn **/
     isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),
-    /** Adding for elasticity, but common checks should always bubble up as
+    /** Added for elasticity, but common checks should always bubble up as
      * object attributes! **/
     hasStatus: (authorizedStatuses: string | string[]) =>
       checkStatus(seatoolStatus, authorizedStatuses),
