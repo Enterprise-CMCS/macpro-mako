@@ -3,19 +3,22 @@ import {
   Alert,
   Attachmentslist,
   CardWithTopBorder,
+  ConfirmationModal,
+  DetailItemsGrid,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
   RaiList,
-  ConfirmationModal,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import {
-  ItemResult,
-  UserRoles,
   Action,
-  OsMainSourceItem,
   ActionAvailabilityCheck,
+  ItemResult,
+  OsMainSourceItem,
+  PlanType,
+  PlanTypeCheck,
+  UserRoles,
 } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
@@ -26,9 +29,7 @@ import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
-import { SEATOOL_STATUS, getStatus } from "shared-types/statusHelper";
-import { isCmsUser } from "shared-utils";
-import { DetailItemsGrid } from "@/components";
+import { getStatus } from "shared-types/statusHelper";
 import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 
 const DetailCardWrapper = ({

@@ -2,6 +2,7 @@ import { OsMainSourceItem } from "./opensearch";
 import { CognitoUserAttributes } from "./user";
 import { getLatestRai } from "shared-utils";
 import { SEATOOL_STATUS } from "./statusHelper";
+import { PlanType, PlanTypeCheck } from "./planType";
 
 export enum Action {
   ISSUE_RAI = "issue-rai",
@@ -27,6 +28,7 @@ export const ActionAvailabilityCheck = ({
   seatoolStatus,
   rais,
   raiWithdrawEnabled,
+  planType,
 }: OsMainSourceItem) => {
   const latestRai = getLatestRai(rais);
   return {
@@ -37,6 +39,7 @@ export const ActionAvailabilityCheck = ({
     ]),
     /** Is in a second clock status and RAI has been received **/
     isInSecondClock:
+      !PlanTypeCheck(planType).is([PlanType.CHIP_SPA]) &&
       checkStatus(seatoolStatus, secondClockStatuses) &&
       latestRai?.status === "received",
     /** Latest RAI is requested and status is Pending-RAI **/
