@@ -38,7 +38,7 @@ const arDisableWithdrawRaiResponse: ActionRule = {
     ![SEATOOL_STATUS.WITHDRAWN].includes(data.seatoolStatus) &&
     isCmsUser(user) &&
     latestRai?.status == "received" &&
-    !data?.raiWithdrawEnabled,
+    data?.raiWithdrawEnabled,
 };
 
 const arWithdrawRaiResponse: ActionRule = {
