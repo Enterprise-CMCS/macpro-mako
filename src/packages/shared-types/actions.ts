@@ -1,6 +1,6 @@
 import { OsMainSourceItem } from "./opensearch";
 import { CognitoUserAttributes } from "./user";
-import { LatestRai } from "shared-utils";
+import { getLatestRai } from "shared-utils";
 import { SEATOOL_STATUS } from "./statusHelper";
 
 export enum Action {
@@ -17,20 +17,39 @@ const raiStatuses = [
   SEATOOL_STATUS.PENDING_APPROVAL,
   SEATOOL_STATUS.PENDING_CONCURRENCE,
 ];
-export const ActionAvailabilityCheck = {
-  isInRaiStatus: (seatoolStatus: string) => raiStatuses.includes(seatoolStatus),
-  isNotWithdrawn: (seatoolStatus: string) =>
-    seatoolStatus !== SEATOOL_STATUS.WITHDRAWN,
-  isInStatus: (seatoolStatus: string, authorizedStatuses: string[]) =>
-    authorizedStatuses.includes(seatoolStatus),
+
+const checkStatus = (seatoolStatus: string, authorized: string | string[]) =>
+  typeof authorized === "string"
+    ? seatoolStatus === authorized
+    : authorized.includes(seatoolStatus);
+
+export const ActionAvailabilityCheck = ({
+  seatoolStatus,
+  rais,
+  raiWithdrawEnabled,
+}: OsMainSourceItem) => {
+  const latestRai = getLatestRai(rais);
+  return {
+    isInRaiStatus: checkStatus(seatoolStatus, raiStatuses),
+    hasRequestedRai:
+      latestRai?.status === "requested" &&
+      checkStatus(seatoolStatus, SEATOOL_STATUS.PENDING_RAI),
+    hasLatestRai: latestRai !== null,
+    hasRaiResponse: latestRai?.status === "received",
+    hasEnabledRaiWithdraw: raiWithdrawEnabled,
+    isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),
+    /** Adding for elasticity, but common checks should always bubble up as
+     * object attributes! **/
+    hasStatus: (authorizedStatuses: string | string[]) =>
+      checkStatus(seatoolStatus, authorizedStatuses),
+  };
 };
 
 export type ActionRule = {
   action: Action;
   check: (
-    data: OsMainSourceItem,
+    checker: ReturnType<typeof ActionAvailabilityCheck>,
     user: CognitoUserAttributes,
-    latestRai: LatestRai | null,
     /** Keep excess parameters to a minimum **/
     ...any: any[]
   ) => boolean;

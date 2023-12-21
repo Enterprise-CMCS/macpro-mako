@@ -8,55 +8,50 @@ import { isCmsUser, isStateUser } from "../user-helper";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
-  // TODO: Do we wanna hide it?
-  check: (data, user, latestRai) =>
-    ActionAvailabilityCheck.isInRaiStatus(data.seatoolStatus) &&
-    isCmsUser(user) &&
-    (!latestRai || latestRai.status != "requested"),
+  check: (checker, user) =>
+    checker.isInRaiStatus &&
+    (!checker.hasLatestRai || checker.hasRequestedRai) &&
+    isCmsUser(user),
 };
 
 const arRespondToRai: ActionRule = {
   action: Action.RESPOND_TO_RAI,
-  check: (data, user, latestRai) =>
-    ActionAvailabilityCheck.isInStatus(data.seatoolStatus, [
-      SEATOOL_STATUS.PENDING_RAI,
-    ]) &&
-    isStateUser(user) &&
-    latestRai?.status == "requested",
+  check: (checker, user) =>
+    checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
+    checker.hasRequestedRai &&
+    isStateUser(user),
 };
 
 const arEnableWithdrawRaiResponse: ActionRule = {
   action: Action.ENABLE_RAI_WITHDRAW,
-  check: (data, user, latestRai) =>
-    ActionAvailabilityCheck.isNotWithdrawn(data.seatoolStatus) &&
-    isCmsUser(user) &&
-    latestRai?.status == "received" &&
-    !data?.raiWithdrawEnabled,
+  check: (checker, user) =>
+    checker.isNotWithdrawn &&
+    checker.hasRaiResponse &&
+    !checker.hasEnabledRaiWithdraw &&
+    isCmsUser(user),
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
   action: Action.DISABLE_RAI_WITHDRAW,
-  check: (data, user, latestRai) =>
-    ActionAvailabilityCheck.isNotWithdrawn(data.seatoolStatus) &&
-    isCmsUser(user) &&
-    latestRai?.status == "received" &&
-    data?.raiWithdrawEnabled,
+  check: (checker, user) =>
+    checker.isNotWithdrawn &&
+    checker.hasRaiResponse &&
+    checker.hasEnabledRaiWithdraw &&
+    isCmsUser(user),
 };
 
 const arWithdrawRaiResponse: ActionRule = {
   action: Action.WITHDRAW_RAI,
-  check: (data, user, latestRai) =>
-    ActionAvailabilityCheck.isInRaiStatus(data.seatoolStatus) &&
-    isStateUser(user) &&
-    latestRai?.status == "received" &&
-    data?.raiWithdrawEnabled,
+  check: (checker, user) =>
+    checker.isInRaiStatus &&
+    checker.hasRaiResponse &&
+    checker.hasEnabledRaiWithdraw &&
+    isStateUser(user),
 };
 
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
-  check: (data, user) =>
-    ActionAvailabilityCheck.isNotWithdrawn(data.seatoolStatus) &&
-    isStateUser(user),
+  check: (checker, user) => checker.isNotWithdrawn && isStateUser(user),
 };
 
 export default [
