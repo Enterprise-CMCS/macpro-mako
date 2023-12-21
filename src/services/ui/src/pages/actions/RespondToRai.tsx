@@ -19,6 +19,7 @@ import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
 import { useGetItem } from "@/api";
 import { buildActionUrl } from "@/lib";
+import { PackageActionForm } from "@/pages/actions/PackageActionForm";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000).optional(),
@@ -60,7 +61,7 @@ const FormDescriptionText = () => {
   );
 };
 
-export const RespondToRai = () => {
+export const RespondToRaiForm = () => {
   const { id, type } = useParams<{
     id: string;
     type: Action;
@@ -316,3 +317,9 @@ export const RespondToRai = () => {
     </SimplePageContainer>
   );
 };
+
+export const RespondToRai = () => (
+  <PackageActionForm>
+    <RespondToRaiForm />
+  </PackageActionForm>
+);
