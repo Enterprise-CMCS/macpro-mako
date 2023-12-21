@@ -10,7 +10,13 @@ import {
   ConfirmationModal,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { ItemResult, UserRoles, Action } from "shared-types";
+import {
+  ItemResult,
+  UserRoles,
+  Action,
+  OsMainSourceItem,
+  ActionAvailabilityCheck,
+} from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -38,16 +44,9 @@ const DetailCardWrapper = ({
     </div>
   </CardWithTopBorder>
 );
-const StatusCard = ({
-  status,
-  raiWithdrawEnabled,
-  raiRecievedDate,
-}: {
-  status: string;
-  raiWithdrawEnabled: boolean;
-  raiRecievedDate: string;
-}) => {
-  const transformedStatuses = getStatus(status);
+const StatusCard = (data: OsMainSourceItem) => {
+  const transformedStatuses = getStatus(data.seatoolStatus);
+  const checker = ActionAvailabilityCheck(data);
   const { data: user } = useGetUser();
 
   return (
@@ -59,19 +58,14 @@ const StatusCard = ({
             ? transformedStatuses.cmsStatus
             : transformedStatuses.stateStatus}
         </h2>
-        {raiWithdrawEnabled && (
-          <em className="text-xs">
-            {"Withdraw Formal RAI Response - Enabled"}{" "}
+        {checker.hasEnabledRaiWithdraw && (
+          <em className="text-xs my-4">
+            {"Withdraw Formal RAI Response - Enabled"}
           </em>
         )}
-        {/* Display 2nd Clock if status is pending and latestRaiResponseTimestamp is present.*/}
-        {user?.isCms &&
-          [
-            SEATOOL_STATUS.PENDING,
-            SEATOOL_STATUS.PENDING_APPROVAL,
-            SEATOOL_STATUS.PENDING_CONCURRENCE,
-          ].includes(status) &&
-          raiRecievedDate && <span id="secondclock">2nd Clock</span>}
+        {user?.isCms && checker.isInSecondClock && (
+          <span id="secondclock">2nd Clock</span>
+        )}
       </div>
     </DetailCardWrapper>
   );
@@ -164,7 +158,6 @@ const PackageActionsCard = ({ id }: { id: string }) => {
 };
 
 export const DetailsContent = ({ data }: { data?: ItemResult }) => {
-  const { data: user } = useGetUser();
   const { state } = useLocation();
   if (!data?._source) return <LoadingSpinner />;
   return (
@@ -201,16 +194,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           id="package-overview"
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
         >
-          <StatusCard
-            status={data._source.seatoolStatus}
-            raiWithdrawEnabled={data._source?.raiWithdrawEnabled || false}
-            //NOTE: 2nd clock will not display after Formal RAI Response Date is cleared
-            raiRecievedDate={
-              !data._source.raiWithdrawnDate
-                ? data._source?.raiReceivedDate || ""
-                : ""
-            }
-          />
+          <StatusCard {...data._source} />
           <PackageActionsCard id={data._id} />
         </section>
         <h2 className="text-xl font-semibold mb-2">{"Package Details"}</h2>
