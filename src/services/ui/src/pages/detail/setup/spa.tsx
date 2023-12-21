@@ -26,14 +26,8 @@ export const spaDetails = (data: OsMainSourceItem): DetailSectionItem[] => [
   },
   {
     label: "Type",
-    value: removeUnderscoresAndCapitalize(data.planType),
-    canView: () => true,
-  },
-  {
-    // TODO: Redo logic to hide for SPAs
-    label: "Action Type",
-    value: data.actionType
-      ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
+    value: data?.planType
+      ? removeUnderscoresAndCapitalize(data.planType)
       : BLANK_VALUE,
     canView: () => true,
   },
