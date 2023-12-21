@@ -22,6 +22,7 @@ export const transformWithdrawPackage = (id: string) => {
   // This does nothing.  Just putting the mechanics in place.
   return withdrawPackageSchema.transform((data) => ({
     id,
+    raiWithdrawEnabled: null,
   }));
 };
 export type WithdrawPackageTransform = z.infer<
