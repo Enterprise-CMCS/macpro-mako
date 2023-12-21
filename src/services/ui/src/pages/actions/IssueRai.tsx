@@ -4,13 +4,7 @@ import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
-import {
-  SimplePageContainer,
-  Alert,
-  LoadingSpinner,
-  BreadCrumbs,
-} from "@/components";
+import { SimplePageContainer, Alert, LoadingSpinner } from "@/components";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET } from "@/routes";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,6 +13,7 @@ import { useGetUser } from "@/api/useGetUser";
 import { useGetItem } from "@/api";
 import { submit } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
+import { PackageActionForm } from "@/pages/actions/PackageActionForm";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
@@ -62,7 +57,7 @@ const FormDescriptionText = () => {
   );
 };
 
-export const RaiIssue = () => {
+export const RaiIssueForm = () => {
   const { id, type } = useParams<{
     id: string;
     type: Action;
@@ -97,12 +92,6 @@ export const RaiIssue = () => {
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs
-        options={DETAILS_AND_ACTIONS_CRUMBS({
-          id: id || "",
-          action: Action.ISSUE_RAI,
-        })}
-      />
       <I.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -316,3 +305,9 @@ export const RaiIssue = () => {
     </SimplePageContainer>
   );
 };
+
+export const RaiIssue = () => (
+  <PackageActionForm>
+    <RaiIssueForm />
+  </PackageActionForm>
+);
