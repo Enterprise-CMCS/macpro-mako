@@ -32,7 +32,10 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
     {
       field: "planType.keyword",
       label: "Type",
-      cell: (data) => removeUnderscoresAndCapitalize(data.planType),
+      cell: (data) =>
+        data?.planType
+          ? removeUnderscoresAndCapitalize(data.planType)
+          : BLANK_VALUE,
     },
     {
       field: "actionType.keyword",
