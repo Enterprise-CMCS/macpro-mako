@@ -1,5 +1,5 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { packageActionsForResult } from "shared-utils";
+import { getAvailableActions } from "shared-utils";
 import { getPackage } from "../libs/package/getPackage";
 import {
   getAuthDetails,
@@ -41,7 +41,7 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
     return response({
       statusCode: 200,
       body: {
-        actions: packageActionsForResult(userAttr, result._source),
+        actions: getAvailableActions(userAttr, result._source),
       },
     });
   } catch (err) {

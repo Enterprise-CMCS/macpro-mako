@@ -3,12 +3,10 @@ import {
   Alert,
   Attachmentslist,
   CardWithTopBorder,
-  ChipSpaPackageDetails,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
   RaiList,
-  SubmissionInfo,
   ConfirmationModal,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
@@ -24,6 +22,8 @@ import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs"
 import { API } from "aws-amplify";
 import { SEATOOL_STATUS, getStatus } from "shared-types/statusHelper";
 import { isCmsUser } from "shared-utils";
+import { DetailItemsGrid } from "@/components";
+import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 
 const DetailCardWrapper = ({
   title,
@@ -213,10 +213,9 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           />
           <PackageActionsCard id={data._id} />
         </section>
-        <DetailsSection id="package-details" title="Package Details">
-          <ChipSpaPackageDetails {...data?._source} />
-        </DetailsSection>
-        <SubmissionInfo {...data?._source} />
+        <h2 className="text-xl font-semibold mb-2">{"Package Details"}</h2>
+        <DetailItemsGrid displayItems={spaDetails(data._source)} />
+        <DetailItemsGrid displayItems={submissionDetails(data._source)} />
         {/* Below is used for spacing. Keep it simple */}
         <div className="mb-4" />
         <DetailsSection id="attachments" title="Attachments">

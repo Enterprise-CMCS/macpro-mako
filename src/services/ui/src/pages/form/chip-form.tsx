@@ -1,25 +1,25 @@
-import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as Inputs from "@/components/Inputs";
-import * as Content from "./content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { submit } from "@/api/submissionService";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Alert,
   BreadCrumbs,
   LoadingSpinner,
-  SimplePageContainer,
   SectionCard,
+  SimplePageContainer,
 } from "@/components";
+import * as Inputs from "@/components/Inputs";
 import { FAQ_TARGET } from "@/routes";
-import { submit } from "@/api/submissionService";
 import { PlanType } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
   zSpaIdSchema,
 } from "@/pages/form/zod";
+import * as Content from "@/pages/form/content";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 
@@ -27,66 +27,61 @@ const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
-    cmsForm179: zAttachmentRequired({
-      min: 1,
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
-    }),
-    spaPages: zAttachmentRequired({ min: 1 }),
-    coverLetter: zAttachmentOptional,
-    tribalEngagement: zAttachmentOptional,
-    existingStatePlanPages: zAttachmentOptional,
+    currentStatePlan: zAttachmentRequired({ min: 1 }),
+    amendedLanguage: zAttachmentRequired({ min: 1 }),
+    coverLetter: zAttachmentRequired({ min: 1 }),
+    budgetDocuments: zAttachmentOptional,
     publicNotice: zAttachmentOptional,
-    sfq: zAttachmentOptional,
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
   proposedEffectiveDate: z.date(),
 });
-type MedicaidFormSchema = z.infer<typeof formSchema>;
+type ChipFormSchema = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
-  { name: "cmsForm179", label: "CMS Form 179", required: true },
-  { name: "spaPages", label: "SPA Pages", required: true },
-  { name: "coverLetter", label: "Cover Letter", required: false },
+  { name: "currentStatePlan", label: "Current State Plan", required: true },
   {
-    name: "tribalEngagement",
-    label: "Document Demonstrating Good-Faith Tribal Engagement",
-    required: false,
+    name: "amendedLanguage",
+    label: "Amended State Plan Language",
+    required: true,
   },
   {
-    name: "existingStatePlanPages",
-    label: "Existing State Plan Page(s)",
+    name: "coverLetter",
+    label: "Cover Letter",
+    required: true,
+  },
+  {
+    name: "budgetDocuments",
+    label: "Budget Documents",
     required: false,
   },
   { name: "publicNotice", label: "Public Notice", required: false },
-  { name: "sfq", label: "Standard Funding Questions (SFQs)", required: false },
   { name: "tribalConsultation", label: "Tribal Consultation", required: false },
   { name: "other", label: "Other", required: false },
 ] as const;
 
-export const MedicaidForm = () => {
+export const ChipForm = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
+  const form = useForm<ChipFormSchema>({
+    resolver: zodResolver(formSchema),
+  });
+  const handleSubmit = form.handleSubmit(async (formData) => {
     try {
-      await submit<MedicaidFormSchema>({
+      await submit<ChipFormSchema>({
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType.MED_SPA,
+        authority: PlanType.CHIP_SPA,
       });
       setSuccessModalOpen(true);
     } catch (e) {
       console.error(e);
     }
-  };
-
-  const form = useForm<MedicaidFormSchema>({
-    resolver: zodResolver(formSchema),
   });
 
   return (
@@ -94,10 +89,10 @@ export const MedicaidForm = () => {
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Inputs.Form {...form}>
         <form
-          onSubmit={form.handleSubmit(handleSubmit)}
+          onSubmit={handleSubmit}
           className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col"
         >
-          <SectionCard title="Medicaid SPA Details">
+          <SectionCard title="CHIP SPA Details">
             <Content.FormIntroText />
             <Inputs.FormField
               control={form.control}
@@ -138,7 +133,7 @@ export const MedicaidForm = () => {
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-sm">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of Medicaid SPA
+                    Proposed Effective Date of CHIP SPA
                   </Inputs.FormLabel>
                   <Inputs.FormControl>
                     <Inputs.DatePicker
@@ -152,10 +147,7 @@ export const MedicaidForm = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc
-              faqLink="/faq/#medicaid-spa-attachments"
-              includeCMS179
-            />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#chip-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
@@ -164,16 +156,11 @@ export const MedicaidForm = () => {
                 render={({ field }) => (
                   <Inputs.FormItem>
                     <Inputs.FormLabel>{label}</Inputs.FormLabel>
-                    {
+                    {required && (
                       <Inputs.FormDescription>
-                        {name === "cmsForm179"
-                          ? "One attachment is required"
-                          : ""}
-                        {name === "spaPages"
-                          ? "At least one attachment is required"
-                          : ""}
+                        At least one attachment is required
                       </Inputs.FormDescription>
-                    }
+                    )}
                     <Inputs.Upload
                       files={field?.value ?? []}
                       setFiles={field.onChange}
@@ -239,8 +226,8 @@ export const MedicaidForm = () => {
   );
 };
 
-export const MedicaidSpaFormPage = () => (
+export const ChipSpaFormPage = () => (
   <ModalProvider>
-    <MedicaidForm />
+    <ChipForm />
   </ModalProvider>
 );

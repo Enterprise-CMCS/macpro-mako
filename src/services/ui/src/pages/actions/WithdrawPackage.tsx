@@ -2,7 +2,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/Inputs";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { useState } from "react";
-import { Action, Authority, ItemResult } from "shared-types";
+import { Action, PlanType, ItemResult } from "shared-types";
 import { FAQ_TARGET, ROUTES } from "@/routes";
 import { PackageActionForm } from "./PackageActionForm";
 import { ActionFormIntro, PackageInfo } from "./common";
@@ -15,6 +15,7 @@ import { LoadingSpinner } from "@/components";
 import { AttachmentRecipe, buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
+import { AttachmentsSizeTypesDesc } from "@/pages/form/content";
 
 // Temporary, will be refactored to an extendable schema with Brian/Mike's back-end
 // work.
@@ -43,7 +44,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
   const { id, type } = useParams<{ id: string; type: Action }>();
   const { data: user } = useGetUser();
-  const authority = item?._source.authority as Authority;
+  const authority = item?._source.authority as PlanType;
   const form = useForm<WithdrawPackageFormSchema>({
     resolver: zodResolver(withdrawPackageFormSchema),
   });
@@ -65,7 +66,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
           await submit<WithdrawPackageFormSchema & { id: string }>({
             data: {
               ...data,
-              id: id!, // Declared here because it's not part of the form data
+              id: id!, // Declared here because it's not part of the form data.
             },
             endpoint: buildActionUrl(type!),
             user,
@@ -97,42 +98,8 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
           <PackageInfo item={item} />
           <I.Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
-              <section>
-                <h3 className="text-2xl font-bold font-sans">Attachments</h3>
-                <p>
-                  Upload your supporting documentation for withdrawal or explain
-                  your need for withdrawal in the{" "}
-                  <em className="italic">Additional Information section.</em>
-                </p>
-                <p>
-                  We accept the following file formats:{" "}
-                  <strong className="bold">
-                    .docx, .jpg, .png, .pdf, .xlsx,
-                  </strong>{" "}
-                  and a few others. A Maximum file size of 80 MB per attachment.{" "}
-                  <strong className="bold">
-                    You can add multiple files per attachment type.
-                  </strong>{" "}
-                  See the full list, and read the description for each of the
-                  attachment types on the{" "}
-                  {
-                    <Link
-                      to="/faq/#acceptable-file-formats"
-                      target={FAQ_TARGET}
-                      rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
-                    >
-                      FAQ Page
-                    </Link>
-                  }
-                  .
-                </p>
-                <br />
-                {/* <p>
-                  <I.RequiredIndicator />
-                  At least one attachment is required.
-                </p> */}
-              </section>
+              {/* Change faqLink once we know the anchor */}
+              <AttachmentsSizeTypesDesc faqLink={ROUTES.FAQ} />
               {attachments.map(({ name, label, required }) => (
                 <I.FormField
                   key={name}

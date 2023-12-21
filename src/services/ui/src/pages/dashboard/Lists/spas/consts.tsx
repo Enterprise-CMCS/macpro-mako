@@ -8,6 +8,7 @@ import {
   renderCellDate,
   renderCellIdLink,
 } from "../renderCells";
+import { BLANK_VALUE } from "@/consts";
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -31,7 +32,10 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: "planType.keyword",
       label: "Type",
-      cell: (data) => removeUnderscoresAndCapitalize(data.planType),
+      cell: (data) =>
+        data?.planType
+          ? removeUnderscoresAndCapitalize(data.planType)
+          : BLANK_VALUE,
     },
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
