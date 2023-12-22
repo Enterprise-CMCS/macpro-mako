@@ -78,11 +78,7 @@ export const submissionDetails = (
   },
   {
     label: "Submission Source",
-    value: (
-      <p className="text-lg">
-        {data?.origin?.toLowerCase() === "onemac" ? "OneMAC" : BLANK_VALUE}
-      </p>
-    ),
+    value: <p className="text-lg">{data?.origin || BLANK_VALUE}</p>,
     canView: () => true,
   },
   {

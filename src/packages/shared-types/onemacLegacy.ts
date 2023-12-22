@@ -33,7 +33,7 @@ export const transformOnemacLegacy = (id: string) => {
       additionalInformation: data.additionalInformation,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName === "-- --" ? null : data.submitterName,
-      origin: "oneMAC",
+      origin: "OneMAC",
       rais: {} as {
         [key: number]: {
           requestedDate?: string;
