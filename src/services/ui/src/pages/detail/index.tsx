@@ -3,19 +3,22 @@ import {
   Alert,
   Attachmentslist,
   CardWithTopBorder,
+  ConfirmationModal,
+  DetailItemsGrid,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
   RaiList,
-  ConfirmationModal,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import {
-  ItemResult,
-  UserRoles,
-  SEATOOL_STATUS,
-  getStatus,
   Action,
+  ActionAvailabilityCheck,
+  ItemResult,
+  OsMainSourceItem,
+  PlanType,
+  PlanTypeCheck,
+  UserRoles,
 } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
@@ -26,7 +29,7 @@ import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
-import { DetailItemsGrid } from "@/components";
+import { getStatus } from "shared-types/statusHelper";
 import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 
 const DetailCardWrapper = ({
@@ -42,24 +45,28 @@ const DetailCardWrapper = ({
     </div>
   </CardWithTopBorder>
 );
-const StatusCard = ({
-  status,
-  raiWithdrawEnabled,
-}: {
-  status: string;
-  raiWithdrawEnabled: boolean;
-}) => {
-  const transformedStatuses = getStatus(SEATOOL_STATUS.WITHDRAWN);
+const StatusCard = (data: OsMainSourceItem) => {
+  const transformedStatuses = getStatus(data.seatoolStatus);
+  const checker = ActionAvailabilityCheck(data);
+  const { data: user } = useGetUser();
+
   return (
     <DetailCardWrapper title={"Status"}>
       <div>
-        <h2 className="text-xl font-semibold">{status}</h2>
-        {raiWithdrawEnabled &&
-        !Object.values(transformedStatuses).includes(status) ? (
-          <em className="text-xs">
+        <h2 className="text-xl font-semibold">
+          {user?.isCms &&
+          !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+            ? transformedStatuses.cmsStatus
+            : transformedStatuses.stateStatus}
+        </h2>
+        {checker.hasEnabledRaiWithdraw && (
+          <em className="text-xs my-4">
             {"Withdraw Formal RAI Response - Enabled"}
           </em>
-        ) : null}
+        )}
+        {user?.isCms && checker.isInSecondClock && (
+          <span id="secondclock">2nd Clock</span>
+        )}
       </div>
     </DetailCardWrapper>
   );
@@ -152,13 +159,8 @@ const PackageActionsCard = ({ id }: { id: string }) => {
 };
 
 export const DetailsContent = ({ data }: { data?: ItemResult }) => {
-  const { data: user } = useGetUser();
   const { state } = useLocation();
   if (!data?._source) return <LoadingSpinner />;
-  const status =
-    user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
-      ? data._source.cmsStatus
-      : data._source.stateStatus;
   return (
     <div className="block md:flex">
       <aside className="flex-none font-bold hidden md:block pr-8">
@@ -193,10 +195,7 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           id="package-overview"
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
         >
-          <StatusCard
-            status={status}
-            raiWithdrawEnabled={data._source?.raiWithdrawEnabled || false}
-          />
+          <StatusCard {...data._source} />
           <PackageActionsCard id={data._id} />
         </section>
         <h2 className="text-xl font-semibold mb-2">{"Package Details"}</h2>

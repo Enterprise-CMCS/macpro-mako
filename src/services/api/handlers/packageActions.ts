@@ -213,7 +213,7 @@ export async function respondToRai(body: RaiResponse, rais: any) {
     // Close pool
     await pool.close();
   }
-  console.log("heyo");
+
 }
 
 export async function withdrawPackage(body: WithdrawPackage) {
