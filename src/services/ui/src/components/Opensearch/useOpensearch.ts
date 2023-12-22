@@ -111,6 +111,12 @@ export const useOsAggregate = () => {
             type: "terms",
             size: 1000,
           },
+          {
+            field: "origin.keyword",
+            name: "origin.keyword",
+            type: "terms",
+            size: 10,
+          },
         ],
         filters: DEFAULT_FILTERS[props.queryKey[0]].filters || [],
         pagination: { number: 0, size: 1 },
