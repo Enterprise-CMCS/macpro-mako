@@ -25,6 +25,8 @@ export type RHFSlotProps = {
   formItemStyling?: string;
   groupNamePrefix?: string;
   description?: string;
+  descriptionAbove?: boolean;
+  descriptionStyling?: string;
   dependency?: DependencyRule;
   rules?: RegisterOptions;
 } & {

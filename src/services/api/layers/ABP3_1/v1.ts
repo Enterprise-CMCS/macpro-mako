@@ -2,13 +2,13 @@ import { FormSchema } from "shared-types";
 
 const ABP3_1: FormSchema = {
   header:
-    "ABP 3.1: Selection of benchmark benefit package or benchmark-equivalent benefit package",
+    "ABP 3.1 Selection of benchmark benefit package or benchmark-equivalent benefit package",
   sections: [
     {
       title: "Benefit package details",
       form: [
         {
-          description: "Select the following",
+          description: "Select the following:",
           slots: [
             {
               rhf: "Radio",
@@ -20,7 +20,7 @@ const ABP3_1: FormSchema = {
                 options: [
                   {
                     label:
-                      "The state/territory is amending one existing benefit package for the population defined in Section 1.",
+                      "The state or territory is amending one existing benefit package for the population defined in Section 1.",
                     value: "existing_package",
                   },
                   {
@@ -52,7 +52,7 @@ const ABP3_1: FormSchema = {
       form: [
         {
           description:
-            "The state/territory selects as its Section 1937 coverage option the following type of benchmark bsenefit package or benchmark-equivalent benefit package under this Alternative Benefit Plan:",
+            "The state/territory selects as its Section 1937 coverage option the following type of benchmark benefit package or benchmark-equivalent benefit package under this Alternative Benefit Plan:",
           slots: [
             {
               name: "benchmark",
@@ -296,6 +296,7 @@ const ABP3_1: FormSchema = {
                 required: "* Required",
               },
             },
+
             {
               name: "is_EHB_benchmark_plan_same_section_1937",
               rhf: "Select",
@@ -313,12 +314,17 @@ const ABP3_1: FormSchema = {
                 ],
               },
             },
+
             {
               label:
                 "Indicate the EHB-benchmark option as described at 45 CFR 156.111(b)(2)(B) the state or territory will use as its EHB-benchmark plan.",
               labelStyling: "font-bold",
               name: "EHB_benchmark_option",
               rhf: "Radio",
+              description:
+                "State or territory is selecting one of the below options to design an EHB package that complies with the requirements for the individual insurance market under 45 CFR 156.100 through 156.125.",
+              descriptionAbove: true,
+              descriptionStyling: "text-base text-black",
               rules: {
                 required: "* Required",
               },
@@ -523,6 +529,7 @@ const ABP3_1: FormSchema = {
                             name: "one_or_more_EHBs_other_states",
                             label: "Select one or more EHBs from other states.",
                             labelStyling: "font-bold",
+                            rules: { required: "* Required" },
                             props: {
                               options: [
                                 {
