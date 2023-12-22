@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { onemacAttachmentSchema, handleAttachment } from "../attachments";
+import { onemacAttachmentSchema } from "../attachments";
 
 export const raiWithdrawSchema = z.object({
   id: z.string(),
@@ -17,19 +17,6 @@ export type RaiWithdraw = z.infer<typeof raiWithdrawSchema>;
 export const transformRaiWithdraw = (id: string) => {
   return raiWithdrawSchema.transform((data) => ({
     id,
-    rais: {
-      [data.requestedDate]: {
-        withdraw: {
-          attachments:
-            data.attachments?.map((attachment) => {
-              return handleAttachment(attachment);
-            }) ?? null,
-          additionalInformation: data.additionalInformation,
-          submitterName: data.submitterName,
-          submitterEmail: data.submitterEmail,
-        },
-      },
-    },
   }));
 };
 export type RaiWithdrawTransform = z.infer<

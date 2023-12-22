@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { onemacAttachmentSchema, handleAttachment } from "../attachments";
+import { onemacAttachmentSchema } from "../attachments";
 
 export const raiIssueSchema = z.object({
   id: z.string(),
@@ -16,19 +16,6 @@ export type RaiIssue = z.infer<typeof raiIssueSchema>;
 export const transformRaiIssue = (id: string) => {
   return raiIssueSchema.transform((data) => ({
     id,
-    rais: {
-      [data.requestedDate]: {
-        request: {
-          attachments:
-            data.attachments?.map((attachment) => {
-              return handleAttachment(attachment);
-            }) ?? null,
-          additionalInformation: data.additionalInformation,
-          submitterName: data.submitterName,
-          submitterEmail: data.submitterEmail,
-        },
-      },
-    },
   }));
 };
 export type RaiIssueTransform = z.infer<ReturnType<typeof transformRaiIssue>>;

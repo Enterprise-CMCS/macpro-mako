@@ -8,7 +8,6 @@ import {
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
-  RaiList,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import {
@@ -211,7 +210,6 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
             additionalInformation={data?._source.additionalInformation}
           />
         </DetailsSection>
-        <RaiList {...data?._source} />
       </div>
     </div>
   );

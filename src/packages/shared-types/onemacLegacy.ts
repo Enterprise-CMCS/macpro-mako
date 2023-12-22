@@ -20,67 +20,24 @@ export const onemacLegacySchema = z.object({
     .nullish(),
 });
 export type OnemacLegacy = z.infer<typeof onemacLegacySchema>;
-
+// There's an issue here.
+// So this is currently appropiriately transforming the event for the main index
+// But we'll need a way to also process this legacy rai data and get it into the changelog index, or aggregate it somehow else.
+// I'd like to avoid modifying the producer in onemac legacy.
 export const transformOnemacLegacy = (id: string) => {
-  return onemacLegacySchema.transform((data) => {
-    const transformedData = {
-      id,
-      attachments:
-        data.attachments?.map((attachment) => {
-          return handleAttachment(attachment);
-        }) ?? null,
-      raiWithdrawEnabled: data.raiWithdrawEnabled,
-      additionalInformation: data.additionalInformation,
-      submitterEmail: data.submitterEmail,
-      submitterName: data.submitterName === "-- --" ? null : data.submitterName,
-      origin: "oneMAC",
-      rais: {} as {
-        [key: number]: {
-          requestedDate?: string;
-          responseDate?: string;
-          withdrawnDate?: string;
-          response?: {
-            additionalInformation: string;
-            submitterName: string | null;
-            submitterEmail: string | null;
-            attachments: any[] | null; // You might want to specify the type of attachments
-          };
-          request?: {
-            additionalInformation: string;
-            submitterName: string | null;
-            submitterEmail: string | null;
-            attachments: any[] | null; // You might want to specify the type of attachments
-          };
-        };
-      },
-    };
-    if (data.raiResponses) {
-      data.raiResponses.forEach((raiResponse, index) => {
-        // We create an rai keyed off the index, because we don't know which rai it was in response to.  Best we can do.
-        transformedData["rais"][index] = {
-          responseDate: raiResponse.submissionTimestamp.toString(),
-          response: {
-            additionalInformation: raiResponse.additionalInformation || "",
-            submitterName: null,
-            submitterEmail: null,
-            attachments:
-              raiResponse.attachments?.map((attachment) => {
-                return handleAttachment(attachment);
-              }) ?? null,
-          },
-        };
-      });
-    }
-    return transformedData;
-  });
+  return onemacLegacySchema.transform((data) => ({
+    id,
+    attachments:
+      data.attachments?.map((attachment) => {
+        return handleAttachment(attachment);
+      }) ?? null,
+    raiWithdrawEnabled: data.raiWithdrawEnabled,
+    additionalInformation: data.additionalInformation,
+    submitterEmail: data.submitterEmail,
+    submitterName: data.submitterName === "-- --" ? null : data.submitterName,
+    origin: "oneMAC",
+  }));
 };
 export type OnemacLegacyTransform = z.infer<
   ReturnType<typeof transformOnemacLegacy>
 >;
-
-export type OnemacLegacyRecordsToDelete = Omit<
-  {
-    [Property in keyof OnemacLegacyTransform]: null;
-  },
-  "id" | "rais"
-> & { id: string };
