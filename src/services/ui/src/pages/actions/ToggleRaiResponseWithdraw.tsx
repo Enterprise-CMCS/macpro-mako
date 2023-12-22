@@ -1,4 +1,4 @@
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "@/components/Routing";
 import { Alert, LoadingSpinner } from "@/components";
 import { ROUTES } from "@/routes";
 import { Action, Authority, ItemResult } from "shared-types";
@@ -61,7 +61,7 @@ const PackageInfo = ({ item }: { item: ItemResult }) => (
 
 const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
   const navigate = useNavigate();
-  const { id, type } = useParams<{ id: string; type: Action }>();
+  const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const authority = item?._source.authority as Authority;
   const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
@@ -84,7 +84,7 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
     if (isSuccess) setSuccessModalOpen(true);
   }, [isSuccess]);
 
-  if (!item) return <Navigate to={ROUTES.DASHBOARD} />; // Prevents optional chains below
+  if (!item) return <Navigate path={"/dashboard"} />; // Prevents optional chains below
   return (
     <>
       {isLoading && <LoadingSpinner />}
@@ -107,7 +107,7 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
         open={successModalOpen}
         onAccept={() => {
           setSuccessModalOpen(false);
-          navigate(`/details?id=${id}`);
+          navigate({ path: "/details", query: { id } });
         }}
         onCancel={() => setSuccessModalOpen(false)} // Should be made optional
         cancelButtonVisible={false} // Should be made optional
@@ -126,7 +126,7 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
         open={cancelModalOpen}
         onAccept={() => {
           setCancelModalOpen(false);
-          navigate(`/details?id=${id}`);
+          navigate({ path: "/details", query: { id } });
         }}
         onCancel={() => setCancelModalOpen(false)}
         cancelButtonText="Return to Form"

@@ -7,7 +7,7 @@ import * as I from "@/components/Inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "@/components/Routing";
 import { Authority } from "shared-types";
 import { useGetItem } from "@/api/useGetItem";
 import { useGetUser } from "@/api/useGetUser";
@@ -42,9 +42,7 @@ export const WithdrawRaiForm = () => {
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
 
-  const { id } = useParams<{
-    id: string;
-  }>();
+  const { id } = useParams("/action/:id/:type");
 
   const navigate = useNavigate();
 
@@ -114,7 +112,8 @@ export const WithdrawRaiForm = () => {
             Read the description for each of the attachment types on the{" "}
             {
               <Link
-                to="/faq/#medicaid-spa-rai-attachments"
+                path="/faq"
+                hash="medicaid-spa-rai-attachments"
                 target={FAQ_TARGET}
                 rel="noopener noreferrer"
                 className="text-blue-700 hover:underline"
@@ -130,7 +129,8 @@ export const WithdrawRaiForm = () => {
             and a few others. See the full list on the{" "}
             {
               <Link
-                to="/faq/#acceptable-file-formats"
+                path="/faq"
+                hash="acceptable-file-formats"
                 target={FAQ_TARGET}
                 rel="noopener noreferrer"
                 className="text-blue-700 hover:underline"
@@ -236,7 +236,8 @@ export const WithdrawRaiForm = () => {
         open={successModalIsOpen}
         onAccept={() => {
           setSuccessModalIsOpen(false);
-          navigate(`/details?id=${id}`);
+          // navigate(`/details?id=${id}`);
+          navigate({ path: "/details", query: { id } });
         }}
         onCancel={() => setSuccessModalIsOpen(false)}
         title="Withdraw Formal RAI Response request has been submitted."
@@ -253,7 +254,7 @@ export const WithdrawRaiForm = () => {
         open={errorModalIsOpen}
         onAccept={() => {
           setErrorModalIsOpen(false);
-          navigate(`/details?id=${id}`);
+          navigate({ path: "/details", query: { id } });
         }}
         onCancel={() => setErrorModalIsOpen(false)}
         title="Submission Error"
@@ -288,7 +289,7 @@ export const WithdrawRaiForm = () => {
         open={cancelModalIsOpen}
         onAccept={() => {
           setCancelModalIsOpen(false);
-          navigate(`/details?id=${id}`);
+          navigate({ path: "/details", query: { id } });
         }}
         onCancel={() => setCancelModalIsOpen(false)}
         cancelButtonText="Return to Form"

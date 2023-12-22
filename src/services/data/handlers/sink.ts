@@ -33,7 +33,7 @@ type Event = {
       timestamp: number;
       timestampType: string;
       key: string;
-      headhers: string[];
+      headers: string[];
       value: string;
     }[]
   >;

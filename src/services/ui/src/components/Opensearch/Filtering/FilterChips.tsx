@@ -1,7 +1,7 @@
 import { type FC, useCallback, Fragment } from "react";
 
 import { Chip } from "@/components/Chip";
-import { useOsParams } from "@/components/Opensearch/useOpensearch";
+import { useOsUrl } from "@/components/Opensearch";
 import { OsFilterable, OsRangeValue } from "shared-types";
 import { useFilterDrawerContext } from "./FilterProvider";
 import { checkMultiFilter, resetFilters } from "../utils";
@@ -71,13 +71,13 @@ const ChipList: FC<RenderProp> = ({
 };
 
 export const FilterChips: FC = () => {
-  const params = useOsParams();
+  const url = useOsUrl();
   const { setDrawerState } = useFilterDrawerContext();
 
   const openDrawer = useCallback(() => setDrawerState(true), [setDrawerState]);
-  const twoOrMoreFiltersApplied = checkMultiFilter(params.state.filters, 2);
+  const twoOrMoreFiltersApplied = checkMultiFilter(url.state.filters, 2);
   const clearFilter = (filter: OsFilterable, valIndex?: number) => {
-    params.onSet((s) => {
+    url.onSet((s) => {
       let filters = s.filters;
       const filterIndex = filters.findIndex((f) => f.field === filter.field);
 
@@ -98,11 +98,11 @@ export const FilterChips: FC = () => {
     });
   };
 
-  const handleChipClick = () => resetFilters(params.onSet);
+  const handleChipClick = () => resetFilters(url.onSet);
 
   return (
     <div className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2">
-      {params.state.filters.map((filter, index) => {
+      {url.state.filters.map((filter, index) => {
         const props: RenderProp = { clearFilter, openDrawer, filter, index };
         if (filter.type === "range") return <DateChip {...props} />;
         if (filter.type === "terms") return <ChipList {...props} />;

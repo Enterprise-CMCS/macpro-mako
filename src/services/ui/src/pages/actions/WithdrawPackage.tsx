@@ -1,4 +1,4 @@
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "@/components/Routing";
 import { Button } from "@/components/Inputs";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { useState } from "react";
@@ -10,11 +10,11 @@ import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
-import { Link } from "react-router-dom";
 import { LoadingSpinner } from "@/components";
 import { AttachmentRecipe, buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
+import { Link } from "@/components/Routing";
 
 // Temporary, will be refactored to an extendable schema with Brian/Mike's back-end
 // work.
@@ -41,7 +41,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
   const navigate = useNavigate();
-  const { id, type } = useParams<{ id: string; type: Action }>();
+  const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const authority = item?._source.authority as Authority;
   const form = useForm<WithdrawPackageFormSchema>({
@@ -80,7 +80,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
     }
   };
 
-  if (!item) return <Navigate to={ROUTES.DASHBOARD} />; // Prevents optional chains below
+  if (!item) return <Navigate path={"/"} />; // Prevents optional chains below
   return (
     <>
       {form.formState.isSubmitting && <LoadingSpinner />}
@@ -117,7 +117,8 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
                   attachment types on the{" "}
                   {
                     <Link
-                      to="/faq/#acceptable-file-formats"
+                      path="/faq"
+                      hash="acceptable-file-formats"
                       target={FAQ_TARGET}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"
