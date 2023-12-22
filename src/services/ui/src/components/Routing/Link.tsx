@@ -22,9 +22,9 @@ export const Link = <T extends Route>(props: _LinkProps<T>) => {
   const to = (() => {
     let url: string = path;
     //@ts-ignore
-    if (params) url = urlEmbedParams(path, params);
-    if (query) url = urlEmbedQuery(path, query);
-    if (hash) url = urlEmbedHash(path, hash);
+    if (params) url = urlEmbedParams(url, params);
+    if (query) url = urlEmbedQuery(url, query);
+    if (hash) url = urlEmbedHash(url, hash);
     return url;
   })();
 

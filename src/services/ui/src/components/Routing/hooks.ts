@@ -10,7 +10,7 @@ import {
   TupleByCharKeyToInterface,
   StringToTuple,
 } from "./types";
-import { urlEmbedParams, urlEmbedQuery } from "./utils";
+import { urlEmbedHash, urlEmbedParams, urlEmbedQuery } from "./utils";
 
 export const useNavigate = () => {
   const nav = useNav();
@@ -19,6 +19,7 @@ export const useNavigate = () => {
     props: {
       path: T;
       query?: Record<string, string>;
+      hash?: string;
     } & Params<T>,
     options?: NavigateOptions
   ) => {
@@ -27,6 +28,8 @@ export const useNavigate = () => {
       //@ts-ignore
       if (props.params) url = urlEmbedParams(url, props.params);
       if (props.query) url = urlEmbedQuery(url, props.query);
+      if (props.hash) url = urlEmbedHash(url, props.hash);
+
       return url;
     })();
 
