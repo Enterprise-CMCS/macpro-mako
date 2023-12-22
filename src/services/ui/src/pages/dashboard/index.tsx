@@ -1,4 +1,4 @@
-import { Link, Navigate, redirect } from "react-router-dom";
+import { Link, Navigate, redirect, useNavigate } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
@@ -41,6 +41,7 @@ export const dashboardLoader = loader;
 export const Dashboard = () => {
   const userContext = useUserContext();
   const query = useOsQuery();
+  const navigate = useNavigate();
 
   const role = useMemo(() => {
     return userContext?.user?.["custom:cms-roles"] ? true : false;
@@ -63,8 +64,8 @@ export const Dashboard = () => {
           <div className="flex items-center justify-between my-4">
             <h1 className="text-xl">Dashboard</h1>
             {!userContext?.isCms && (
-              <Button>
-                <Link to={ROUTES.NEW_SUBMISSION_OPTIONS}>New Submission</Link>
+              <Button onClick={() => navigate(ROUTES.NEW_SUBMISSION_OPTIONS)}>
+                New Submission
               </Button>
             )}
           </div>
