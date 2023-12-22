@@ -1,7 +1,7 @@
 import * as POP from "@/components/Popover";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { CognitoUserAttributes, OsMainSourceItem } from "shared-types";
-import { packageActionsForResult } from "shared-utils";
+import { getAvailableActions } from "shared-utils";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib";
 import { mapActionLabel } from "@/utils";
@@ -27,7 +27,7 @@ export const renderCellIdLink = (pathResolver: (id: string) => string) =>
 export const renderCellActions = (user: CognitoUserAttributes | null) =>
   function Cell(data: OsMainSourceItem) {
     if (!user) return <></>;
-    const actions = packageActionsForResult(user, data);
+    const actions = getAvailableActions(user, data);
     return (
       <>
         <POP.Popover>

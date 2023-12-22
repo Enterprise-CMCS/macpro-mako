@@ -24,8 +24,9 @@ export const PackageInfo = ({ item }: { item: ItemResult }) => (
     <SectionTemplate
       label={"Type"}
       value={
-        removeUnderscoresAndCapitalize(item._source.planType) ||
-        "No package type found"
+        item?._source?.planType
+          ? removeUnderscoresAndCapitalize(item._source.planType)
+          : "No package type found"
       }
     />
   </section>
