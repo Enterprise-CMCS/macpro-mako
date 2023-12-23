@@ -6,7 +6,7 @@ import {
   isAuthorized,
   lookupUserAttributes,
 } from "../libs/auth/user";
-import { getAvailableActions } from "shared-utils";
+import { packageActionsForResult } from "shared-utils";
 import { Action } from "shared-types";
 import {
   issueRai,
@@ -56,7 +56,7 @@ export const handler = async (event: APIGatewayEvent) => {
     );
 
     // Check that the package action is available
-    const actions: Action[] = getAvailableActions(userAttr, result._source);
+    const actions: Action[] = packageActionsForResult(userAttr, result._source);
     if (!actions.includes(actionType)) {
       return response({
         statusCode: 401,
@@ -69,26 +69,42 @@ export const handler = async (event: APIGatewayEvent) => {
     // Call package action
     switch (actionType) {
       case Action.WITHDRAW_PACKAGE:
-        await withdrawPackage(body);
-        break;
+        return await withdrawPackage(body);
       case Action.ISSUE_RAI:
-        await issueRai(body);
-        break;
+        return await issueRai(body);
       case Action.RESPOND_TO_RAI:
-        await respondToRai(body, result._source.rais);
-        break;
+        return await respondToRai(body, result._source.rais);
       case Action.ENABLE_RAI_WITHDRAW:
-        await toggleRaiResponseWithdraw(body, true);
-        break;
+        return await toggleRaiResponseWithdraw(body, true);
       case Action.DISABLE_RAI_WITHDRAW:
-        await toggleRaiResponseWithdraw(body, false);
-        break;
+        return await toggleRaiResponseWithdraw(body, false);
       case Action.WITHDRAW_RAI:
-        await withdrawRai(body, result._source.rais);
-        break;
+        return await withdrawRai(body, result._source.rais);
       default:
-        throw `No ${actionType} action available`;
+        throw new Error(`No ${actionType} action available`);
     }
+    // switch (actionType) {
+    //   case Action.WITHDRAW_PACKAGE:
+    //     await withdrawPackage(body);
+    //     break;
+    //   case Action.ISSUE_RAI:
+    //     await issueRai(body);
+    //     break;
+    //   case Action.RESPOND_TO_RAI:
+    //     await respondToRai(body, result._source.rais);
+    //     break;
+    //   case Action.ENABLE_RAI_WITHDRAW:
+    //     await toggleRaiResponseWithdraw(body, true);
+    //     break;
+    //   case Action.DISABLE_RAI_WITHDRAW:
+    //     await toggleRaiResponseWithdraw(body, false);
+    //     break;
+    //   case Action.WITHDRAW_RAI:
+    //     await withdrawRai(body, result._source.rais);
+    //     break;
+    //   default:
+    //     throw `No ${actionType} action available`;
+    // }
     return response({
       statusCode: 200,
       body: { message: "success" },

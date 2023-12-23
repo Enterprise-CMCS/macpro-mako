@@ -1,4 +1,4 @@
-import { Link, Navigate, redirect, useNavigate } from "react-router-dom";
+import { Link, Navigate, redirect } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
@@ -11,10 +11,10 @@ import {
   FilterChips,
   FilterDrawerProvider,
 } from "@/components/Opensearch";
-import { Button } from "@/components/Inputs";
 import { ROUTES } from "@/routes";
 import { useUserContext } from "@/components/Context/userContext";
 import { useMemo } from "react";
+import { Button } from "@/components/Inputs";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -41,7 +41,6 @@ export const dashboardLoader = loader;
 export const Dashboard = () => {
   const userContext = useUserContext();
   const query = useOsQuery();
-  const navigate = useNavigate();
 
   const role = useMemo(() => {
     return userContext?.user?.["custom:cms-roles"] ? true : false;
@@ -64,8 +63,19 @@ export const Dashboard = () => {
           <div className="flex items-center justify-between my-4">
             <h1 className="text-xl">Dashboard</h1>
             {!userContext?.isCms && (
-              <Button onClick={() => navigate(ROUTES.NEW_SUBMISSION_OPTIONS)}>
-                New Submission
+              <Button>
+                <Link
+                  to={ROUTES.NEW_SUBMISSION_OPTIONS}
+                  className="button-style"
+                  style={{
+                    border: "none",
+                    padding: "10px 20px",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  New Submission
+                </Link>
               </Button>
             )}
           </div>

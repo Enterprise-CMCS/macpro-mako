@@ -2,6 +2,8 @@ import { Action } from "shared-types";
 import { ROUTES } from "@/routes";
 import { BLANK_VALUE } from "@/consts";
 
+
+// Issue Formal RAI
 export const mapActionLabel = (a: Action) => {
   switch (a) {
     case Action.ENABLE_RAI_WITHDRAW:

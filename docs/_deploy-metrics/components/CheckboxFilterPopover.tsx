@@ -3,6 +3,7 @@ import { CheckboxFilter } from "./CheckboxFilter";
 import { FilterPopoverButton, FilterPopoverContent } from "./FilterPopover";
 import * as UI from "@chakra-ui/react";
 
+
 export interface FilterOption {
   label: string;
   value: string;
