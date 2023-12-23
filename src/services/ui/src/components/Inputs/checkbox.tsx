@@ -32,7 +32,7 @@ const Checkbox = React.forwardRef<
       {!!props.label && (
         <label
           htmlFor={props.label}
-          className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          className="text-md font-medium leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           {props.label}
         </label>
