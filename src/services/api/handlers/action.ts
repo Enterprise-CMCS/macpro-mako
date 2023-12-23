@@ -83,28 +83,7 @@ export const handler = async (event: APIGatewayEvent) => {
       default:
         throw new Error(`No ${actionType} action available`);
     }
-    // switch (actionType) {
-    //   case Action.WITHDRAW_PACKAGE:
-    //     await withdrawPackage(body);
-    //     break;
-    //   case Action.ISSUE_RAI:
-    //     await issueRai(body);
-    //     break;
-    //   case Action.RESPOND_TO_RAI:
-    //     await respondToRai(body, result._source.rais);
-    //     break;
-    //   case Action.ENABLE_RAI_WITHDRAW:
-    //     await toggleRaiResponseWithdraw(body, true);
-    //     break;
-    //   case Action.DISABLE_RAI_WITHDRAW:
-    //     await toggleRaiResponseWithdraw(body, false);
-    //     break;
-    //   case Action.WITHDRAW_RAI:
-    //     await withdrawRai(body, result._source.rais);
-    //     break;
-    //   default:
-    //     throw `No ${actionType} action available`;
-    // }
+
     return response({
       statusCode: 200,
       body: { message: "success" },

@@ -63,20 +63,23 @@ export const Dashboard = () => {
           <div className="flex items-center justify-between my-4">
             <h1 className="text-xl">Dashboard</h1>
             {!userContext?.isCms && (
-              <Button>
-                <Link
-                  to={ROUTES.NEW_SUBMISSION_OPTIONS}
-                  className="button-style"
-                  style={{
-                    border: "none",
-                    padding: "10px 20px",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                  }}
-                >
-                  New Submission
-                </Link>
-              </Button>
+              // <Button>
+              <Link
+                to={ROUTES.NEW_SUBMISSION_OPTIONS}
+                className="button-style"
+                style={{
+                  color: "#fff",
+                  backgroundColor: "#0071bd",
+                  display: "inline-block",
+                  border: "none",
+                  padding: "10px 20px",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                New Submission
+              </Link>
+              // </Button>
             )}
           </div>
           <div className="w-[100%] items-center justify-center">
