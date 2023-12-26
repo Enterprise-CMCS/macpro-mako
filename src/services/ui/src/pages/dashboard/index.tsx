@@ -11,7 +11,6 @@ import {
   FilterChips,
   FilterDrawerProvider,
 } from "@/components/Opensearch";
-import { Button } from "@/components/Inputs";
 import { ROUTES } from "@/routes";
 import { useUserContext } from "@/components/Context/userContext";
 import { useMemo } from "react";
@@ -63,7 +62,6 @@ export const Dashboard = () => {
           <div className="flex items-center justify-between my-4">
             <h1 className="text-xl">Dashboard</h1>
             {!userContext?.isCms && (
-              // <Button>
               <Link
                 to={ROUTES.NEW_SUBMISSION_OPTIONS}
                 className="button-style"
@@ -79,7 +77,6 @@ export const Dashboard = () => {
               >
                 New Submission
               </Link>
-              // </Button>
             )}
           </div>
           <div className="w-[100%] items-center justify-center">
