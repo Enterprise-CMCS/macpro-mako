@@ -16,7 +16,7 @@ const config = {
 } as sql.config;
 
 import { Kafka, Message } from "kafkajs";
-import { Authority, onemacSchema, transformOnemac } from "shared-types";
+import { PlanType, onemacSchema, transformOnemac } from "shared-types";
 
 const kafka = new Kafka({
   clientId: "submit",
@@ -50,7 +50,7 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
-    const activeSubmissionTypes = [Authority.CHIP_SPA, Authority.MED_SPA];
+    const activeSubmissionTypes = [PlanType.CHIP_SPA, PlanType.MED_SPA];
     if (!activeSubmissionTypes.includes(body.authority)) {
       return response({
         statusCode: 400,

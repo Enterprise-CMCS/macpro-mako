@@ -10,8 +10,8 @@ import {
   transformRaiIssue,
   transformRaiResponse,
   transformRaiWithdraw,
-  toggleWithdrawRaiEnabledSchema,
   transformWithdrawPackage,
+  transformToggleWithdrawRaiEnabled,
   Action,
 } from "shared-types";
 
@@ -166,12 +166,12 @@ export const onemacDataTransform = (props: { key: string; value?: string }) => {
 
   //ENABLE_RAI_WITHDRAW
   if (record.actionType === Action.ENABLE_RAI_WITHDRAW) {
-    const result = toggleWithdrawRaiEnabledSchema.safeParse(record);
+    const result = transformToggleWithdrawRaiEnabled(id).safeParse(record);
     return result.success ? result.data : null;
   }
   //DISABLE_RAI_WITHDRAW
   if (record.actionType === Action.DISABLE_RAI_WITHDRAW) {
-    const result = toggleWithdrawRaiEnabledSchema.safeParse(record);
+    const result = transformToggleWithdrawRaiEnabled(id).safeParse(record);
     return result.success ? result.data : null;
   }
   //ISSUE_RAI

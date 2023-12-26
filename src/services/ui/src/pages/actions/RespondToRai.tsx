@@ -3,21 +3,16 @@ import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
-import {
-  SimplePageContainer,
-  Alert,
-  LoadingSpinner,
-  BreadCrumbs,
-} from "@/components";
+import { SimplePageContainer, Alert, LoadingSpinner } from "@/components";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET } from "@/routes";
-import { Action, Authority } from "shared-types";
+import { Link, useNavigate, useParams } from "@/components/Routing";
+import { Action, PlanType } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
 import { useGetItem } from "@/api";
 import { buildActionUrl } from "@/lib";
-import { Link, useNavigate, useParams } from "@/components/Routing";
+import { PackageActionForm } from "@/pages/actions/PackageActionForm";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000).optional(),
@@ -59,10 +54,10 @@ const FormDescriptionText = () => {
   );
 };
 
-export const RespondToRai = () => {
+export const RespondToRaiForm = () => {
   const { id, type } = useParams("/action/:id/:type");
   const { data: item } = useGetItem(id!);
-  const authority = item?._source.authority as Authority;
+  const authority = item?._source.authority as PlanType;
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
@@ -91,12 +86,6 @@ export const RespondToRai = () => {
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs
-        options={DETAILS_AND_ACTIONS_CRUMBS({
-          id: id || "",
-          action: Action.RESPOND_TO_RAI,
-        })}
-      />
       <I.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -316,3 +305,9 @@ export const RespondToRai = () => {
     </SimplePageContainer>
   );
 };
+
+export const RespondToRai = () => (
+  <PackageActionForm>
+    <RespondToRaiForm />
+  </PackageActionForm>
+);

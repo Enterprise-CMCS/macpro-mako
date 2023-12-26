@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Link, useNavigate, useParams } from "@/components/Routing";
-import { Authority } from "shared-types";
+import { PlanType } from "shared-types";
 import { useGetItem } from "@/api/useGetItem";
 import { useGetUser } from "@/api/useGetUser";
 import { PackageActionForm } from "./PackageActionForm";
@@ -47,7 +47,7 @@ export const WithdrawRaiForm = () => {
   const navigate = useNavigate();
 
   const { data: item } = useGetItem(id!);
-  const authority = item?._source.authority as Authority;
+  const authority = item?._source.authority as PlanType;
   const user = useGetUser();
 
   const handleSubmit: SubmitHandler<FormSchema> = async (data) => {
