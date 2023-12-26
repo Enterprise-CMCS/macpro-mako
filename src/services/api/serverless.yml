@@ -243,8 +243,7 @@ functions:
       - http:
           path: /forms
           method: get
-          cors: true
-          authorizer: aws_iam
+          cors: false
     vpc:
       securityGroupIds:
         - Ref: SecurityGroup
