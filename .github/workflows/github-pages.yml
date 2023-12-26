@@ -4,10 +4,7 @@ name: GitHub Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches:
-      - master
-      - webforms-docs
-      # ["master,val,production,webforms-docs"]
+    branches: ["webforms-docs"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -50,7 +47,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-          REPO_NAME: macpro-mako
+          REPO_NAME: macpro-om-template
           BRANCHES_TO_GENERATE: master,val,production
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
