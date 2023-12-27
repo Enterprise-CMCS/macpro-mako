@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { FAQ_TARGET } from "@/routes";
 import { RequiredIndicator } from "@/components/Inputs";
-import { Route } from "@/components/Routing/types";
 
 export const FormIntroText = () => (
   <div>
@@ -35,7 +34,7 @@ export const AttachmentsSizeTypesDesc = ({
   faqLink,
   includeCMS179 = false,
 }: {
-  faqLink: Route;
+  faqLink: string;
   includeCMS179?: boolean;
 }) => (
   <>
