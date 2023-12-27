@@ -3,7 +3,6 @@ import { Button } from "@/components/Inputs";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { useState } from "react";
 import { PlanType, ItemResult } from "shared-types";
-import { ROUTES } from "@/routes";
 import { PackageActionForm } from "./PackageActionForm";
 import { ActionFormIntro, PackageInfo } from "./common";
 import { z } from "zod";
@@ -98,7 +97,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
           <I.Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
               {/* Change faqLink once we know the anchor */}
-              <AttachmentsSizeTypesDesc faqLink={ROUTES.FAQ} />
+              <AttachmentsSizeTypesDesc faqLink={"/faq"} />
               {attachments.map(({ name, label, required }) => (
                 <I.FormField
                   key={name}

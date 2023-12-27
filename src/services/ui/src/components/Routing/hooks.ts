@@ -3,6 +3,7 @@ import {
   NavigateOptions,
   useNavigate as useNav,
   useParams as usePara,
+  redirect as redir,
 } from "react-router-dom";
 import {
   Route,
@@ -42,4 +43,24 @@ export const useNavigate = () => {
 export const useParams = <T extends Route>(_: T) => {
   //@ts-ignore
   return usePara<TupleByCharKeyToInterface<StringToTuple<T, "/">, ":">>();
+};
+
+export const redirect = <T extends Route>(
+  props: {
+    path: T;
+    query?: Record<string, string>;
+    hash?: string;
+  } & Params<T>
+) => {
+  const to = (() => {
+    let url: string = props.path;
+    //@ts-ignore
+    if (props.params) url = urlEmbedParams(url, props.params);
+    if (props.query) url = urlEmbedQuery(url, props.query);
+    if (props.hash) url = urlEmbedHash(url, props.hash);
+
+    return url;
+  })();
+
+  return redir(to);
 };
