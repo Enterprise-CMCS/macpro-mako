@@ -1,4 +1,3 @@
-import { Links } from "react-router-dom";
 import { SubNavHeader } from "@/components";
 
 export const ImplmentationGuide = () => {
@@ -16,7 +15,6 @@ export const ImplmentationGuide = () => {
             <a
               className="underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_AbpIntroduction.doc"
-              target="_blank"
               rel="noreferrer"
             >
               Introduction
@@ -27,7 +25,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP1_AlternativeBenefitPlanPopulations.doc"
-              target="_blank"
               rel="noreferrer"
             >
               Alternative Benefit Plan Populations
@@ -38,7 +35,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP2a_VoluntaryBenefitPackageAssurances.doc"
-              target="_blank"
               rel="noreferrer"
             >
               Voluntary Benefit Package Selection Assurances - Eligibility Group
@@ -50,7 +46,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP2b_VoluntaryEnrollmentAssurances.doc"
-              target="_blank"
               rel="noreferrer"
             >
               Voluntary Enrollment Assurances for Eligibility Groups other than
@@ -62,7 +57,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP2c_EnrollmentAssurancesMandatoryParticipants.doc"
-              target="_blank"
               rel="noreferrer"
             >
               Enrollment Assurances - Mandatory Participants
@@ -73,7 +67,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP3_SelectionOfBenchmark20190819-Final.docx"
-              target="_blank"
               rel="noreferrer"
             >
               Selection of Benchmark Benefit Package or Benchmark-Equivalent
@@ -85,7 +78,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP3.1_SelectionOfBenchmark20190819-Final.docx"
-              target="_blank"
               rel="noreferrer"
             >
               Selection of Benchmark Benefit Package or Benchmark-Equivalent
@@ -97,7 +89,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP4_AbpCostSharing.doc"
-              target="_blank"
               rel="noreferrer"
             >
               Alternative Benefit Plan Cost-Sharing
@@ -108,7 +99,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP5_BenefitsDescription-Final.docx"
-              target="_blank"
               rel="noreferrer"
             >
               Benefits Description
@@ -119,7 +109,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP6_BenchmarkEquivalentBenefit.doc"
-              target="_blank"
               rel="noreferrer"
             >
               Benchmark-Equivalent Benefit Package
@@ -130,7 +119,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP7_BenefitAssurances.doce"
-              target="_blank"
               rel="noreferrer"
             >
               Benefit Assurance
@@ -141,7 +129,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP8_ServiceDeliverySystems.doc"
-              target="_blank"
               rel="noreferrer"
             >
               Service Delivery Systems
@@ -152,7 +139,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP9_EmployerSponsoredInsurance.doc"
-              target="_blank"
               rel="noreferrer"
             >
               Employer Sponsored Insurance and Payment of Premiums
@@ -163,7 +149,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP10_GeneralAssurances.doc"
-              target="_blank"
               rel="noreferrer"
             >
               General Assurances
@@ -174,7 +159,6 @@ export const ImplmentationGuide = () => {
             <a
               className="ml-2 underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/IG_ABP11_PaymentMethodology.doc"
-              target="_blank"
               rel="noreferrer"
             >
               Payment Methodology
@@ -185,27 +169,27 @@ export const ImplmentationGuide = () => {
         <ul className="p-3">
           <li className="mb-2">
             <a
-              className="ml-2 underline"
+              className="underline"
               href="https://www.medicaid.gov/media/162926"
-              target="_blank"
               rel="noreferrer"
+              target="_blank"
             >
               Alternative Benefit Plan State Training Webinar (2013-08-13 .wmv)
             </a>
           </li>
           <li className="mb-2">
             <a
-              className="ml-2 underline"
+              className="underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/ABPStateTraining.pdf"
-              target="_blank"
               rel="noreferrer"
+              target="_blank"
             >
               Alternative Benefit Plan State Training (2020-04-24 .pdf)
             </a>
           </li>
           <li className="mb-2">
             <a
-              className="ml-2 underline"
+              className="underline"
               href="https://wms-mmdl-dev.cms.gov/MMDLDOC/abp/ABPSPAProcess.pdf"
               target="_blank"
               rel="noreferrer"
