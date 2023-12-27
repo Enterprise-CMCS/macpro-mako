@@ -88,15 +88,15 @@ const PackageActionsCard = ({ id }: { id: string }) => {
           </em>
         ) : (
           <ul>
-            {data.actions.map((action, idx) => {
+            {data.actions.map((type, idx) => {
               return (
                 <Link
-                  key={`${idx}-${action}`}
+                  key={`${idx}-${type}`}
                   path="/action/:id/:type"
-                  params={{ id, action }}
+                  params={{ id, type }}
                   className="text-sky-500 underline"
                 >
-                  <li>{mapActionLabel(action)}</li>
+                  <li>{mapActionLabel(type)}</li>
                 </Link>
               );
             })}
