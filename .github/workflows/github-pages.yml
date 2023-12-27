@@ -38,6 +38,23 @@ jobs:
         uses: actions/configure-pages@v2
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.5.1
+      # - uses: ./.github/actions/setup
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+          role-duration-seconds: 10800
+      - name: Set env
+        run: |
+          echo "API_REST_URL=$(
+            aws cloudformation \
+            --region us-east-1 describe-stacks \
+            --stack-name $PROJECT-api-$STAGE_NAME | jq -r '.Stacks[0].Outputs[] | select(.OutputKey == "ApiGatewayRestApiUrl") | .OutputValue'
+          )" >> $GITHUB_ENV
+      - name: Test
+        run: echo $API_REST_URL
       - name: Install Packages
         run: |
           cd docs/_deploy-metrics
