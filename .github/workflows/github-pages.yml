@@ -27,6 +27,9 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+env:
+  STAGE_NAME: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
+
 jobs:
   # Build job
   build:
