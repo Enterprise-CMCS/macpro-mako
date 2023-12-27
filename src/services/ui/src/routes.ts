@@ -24,6 +24,7 @@ export enum ROUTES {
   CHIP_NEW = "/new-submission/spa/chip/create",
   WEBFORMS = "/webforms",
   WEBFORM = "/webform/:id/:version",
+  GUIDES = "/guides",
 }
 
 export enum FAQ_SECTION {
