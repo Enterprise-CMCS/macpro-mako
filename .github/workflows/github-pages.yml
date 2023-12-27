@@ -51,7 +51,7 @@ jobs:
           echo "API_REST_URL=$(
             aws cloudformation \
             --region us-east-1 describe-stacks \
-            --stack-name om-api-master | jq -r '.Stacks[0].Outputs[] | select(.OutputKey == "ApiGatewayRestApiUrl") | .OutputValue'
+            --stack-name $PROJECT-api-$STAGE_NAME | jq -r '.Stacks[0].Outputs[] | select(.OutputKey == "ApiGatewayRestApiUrl") | .OutputValue'
           )" >> $GITHUB_ENV
       - name: Test
         run: echo $API_REST_URL
