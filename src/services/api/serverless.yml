@@ -75,24 +75,28 @@ custom:
 params:
   master:
     formsProvisionedConcurrency: 2
+    getAllFormsProvisionedConcurrency: 1
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
     submitProvisionedConcurrency: 2
   val:
     formsProvisionedConcurrency: 2
+    getAllFormsProvisionedConcurrency: 1
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
     submitProvisionedConcurrency: 2
   production:
     formsProvisionedConcurrency: 5
+    getAllFormsProvisionedConcurrency: 1
     searchProvisionedConcurrency: 10
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
     submitProvisionedConcurrency: 5
   default:
     formsProvisionedConcurrency: 0
+    getAllFormsProvisionedConcurrency: 1
     searchProvisionedConcurrency: 0
     itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
@@ -242,6 +246,25 @@ functions:
     events:
       - http:
           path: /forms
+          method: get
+          cors: true
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:searchProvisionedConcurrency}
+  getAllForms:
+    handler: handlers/getAllForms.handler
+    layers:
+      - !Ref FormsLambdaLayer
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /allForms
           method: get
           cors: true
     vpc:

@@ -6,19 +6,19 @@ import {
 } from "@chakra-ui/react";
 
 export const getStaticProps = async () => {
-    const webformsAvailable = [{id: 1234, name: 'abp', version: 1}]
 
-    console.log(process.env.API_REST_URL)
-
+    const response = await fetch(`${process.env.API_REST_URL}/getAllForms)`);
+    const allFormsWithVersion = await response.json();
+    console.log(allFormsWithVersion);
   return {
     props: {
-      webformsAvailable,
+        allFormsWithVersion,
     },
   };
 };
 
 const WebformsDocs = ({
-    webformsAvailable,
+    allFormsWithVersion,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
     console.log(process.env.API_REST_URL)
@@ -26,7 +26,7 @@ const WebformsDocs = ({
     <Container centerContent>
       <Heading as="h1">Available Webforms</Heading>
       <Divider my={5} />
-      {JSON.stringify(webformsAvailable)}
+      {JSON.stringify(allFormsWithVersion)}
       <Divider my={4} />
     </Container>
   );
