@@ -9,7 +9,9 @@ export const getStaticProps = async () => {
 
     const response = await fetch(`${process.env.API_REST_URL}/allForms)`);
     const allFormsWithVersion = await response.json();
+
     console.log(allFormsWithVersion);
+    // {"ABP1":["v1.js","v1.ts"]}
   return {
     props: {
         allFormsWithVersion,
