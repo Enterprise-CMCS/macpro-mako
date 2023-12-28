@@ -21,7 +21,7 @@ function getAllFormsAndVersions(directoryPath: string) {
 
 export const getAllForms = async () => {
   try {
-    const filePath = getAllFormsAndVersions("../layers");
+    const filePath = getAllFormsAndVersions("/opt/");
 
     if (filePath) {
       return response({

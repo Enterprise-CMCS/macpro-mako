@@ -7,7 +7,7 @@ import {
 
 export const getStaticProps = async () => {
 
-    const response = await fetch(`${process.env.API_REST_URL}/getAllForms)`);
+    const response = await fetch(`${process.env.API_REST_URL}/allForms)`);
     const allFormsWithVersion = await response.json();
     console.log(allFormsWithVersion);
   return {
