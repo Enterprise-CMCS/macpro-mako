@@ -60,7 +60,11 @@ export const RHFSlot = <
     }, []);
 
     return (
-      <FormItem className={`flex flex-col gap-1 py-2 ${formItemStyling}`}>
+      <FormItem
+        className={`flex flex-col gap-1 py-2${
+          formItemStyling ? ` ${formItemStyling}` : ""
+        }`}
+      >
         {label && <FormLabel className={labelStyling}>{label}</FormLabel>}
         {descriptionAbove && (
           <FormDescription className={descriptionStyling}>
