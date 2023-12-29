@@ -44,6 +44,7 @@ export type RHFSlotProps = {
 export type RHFOption = {
   label: string;
   value: string;
+  dependency?: DependencyRule;
   form?: FormGroup[];
   slots?: RHFSlotProps[];
 };

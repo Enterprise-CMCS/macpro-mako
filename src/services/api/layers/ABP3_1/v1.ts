@@ -1725,6 +1725,9 @@ const ABP3_1: FormSchema = {
             {
               name: "assurances_meets_scope",
               rhf: "Checkbox",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -1732,53 +1735,26 @@ const ABP3_1: FormSchema = {
                       "The state/territory assures the EHB plan meets the scope of benefits standards at 45 CFR 156.111(b), does not exceed generosity of most generous among a set of comparison plans, provides appropriate balance of coverage among 10 EHB categories, and the scope of benefits is equal to or greater than the scope of benefits provided under a typical employer plan as defined at 45 CFR 156.111(b)(2).",
                     value: "meets_scope",
                   },
-                ],
-              },
-            },
-
-            {
-              name: "assurances_acturial",
-              rhf: "Checkbox",
-              dependency: {
-                conditions: [
-                  {
-                    name: "EHB_benchmark_option",
-                    type: "expectedValue",
-                    expectedValue: "EHB_benchmark_2017_plan_year",
-                  },
-                ],
-                effect: { type: "hide" },
-              },
-              props: {
-                options: [
                   {
                     label:
                       "The state/territory assures that actuarial certification and an associated actuarial report from an actuary, who is a member of the American Academy of Actuaries, in accordance with generally accepted actuarial principles and methodologies, has been completed and is available upon request.",
                     value: "assures_from_acturial_certification",
+                    dependency: {
+                      conditions: [
+                        {
+                          name: "EHB_benchmark_option",
+                          type: "expectedValue",
+                          expectedValue: "EHB_benchmark_2017_plan_year",
+                        },
+                      ],
+                      effect: { type: "hide" },
+                    },
                   },
-                ],
-              },
-            },
-
-            {
-              name: "assurances_EHB",
-              rhf: "Checkbox",
-              props: {
-                options: [
                   {
                     label:
                       "The state/territory assures that all services in the EHB-benchmark plan have been accounted for throughout the benefit chart found in ABP 5.",
                     value: "assures_EHB_benchmark_throughout_abp5_benefit",
                   },
-                ],
-              },
-            },
-
-            {
-              name: "assurances_abp5",
-              rhf: "Checkbox",
-              props: {
-                options: [
                   {
                     label:
                       "The state/territory assures the accuracy of all information in ABP 5 depicting amount, duration, and scope parameters of services authorized in the currently approved Medicaid state plan.",

@@ -206,6 +206,7 @@ export const RHFSlot = <
                             if (!c) return field.onChange(filtered);
                             field.onChange([...filtered, OPT.value]);
                           }}
+                          dependency={OPT.dependency}
                         />
                         {field.value?.includes(OPT.value) &&
                           !!OPT.slots &&
