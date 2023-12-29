@@ -71,7 +71,7 @@ export const router = createBrowserRouter([
       { path: ROUTES.WEBFORMS, element: <C.Webforms /> },
       { path: ROUTES.WEBFORM, element: <C.Webform /> },
       { path: ROUTES.PROFILE, element: <P.Profile /> },
-      { path: ROUTES.GUIDES, element: <P.ImplmentationGuide /> },
+      { path: ROUTES.IMPLEMENTATION_GUIDE, element: <P.ImplmentationGuide /> },
     ],
     loader: rootLoader(queryClient),
   },

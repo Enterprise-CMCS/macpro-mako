@@ -16,7 +16,7 @@ export const Webforms = () => {
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1 space-x-5">
           <Link to="/webform/abp1/1">ABP1</Link>
-          <Link to="/guides">Implementation Guide</Link>
+          <Link to="/guides/implementation">Implementation Guide</Link>
         </div>
       </section>
     </>

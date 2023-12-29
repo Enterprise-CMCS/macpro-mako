@@ -25,6 +25,7 @@ export enum ROUTES {
   WEBFORMS = "/webforms",
   WEBFORM = "/webform/:id/:version",
   GUIDES = "/guides",
+  IMPLEMENTATION_GUIDE = "/guides/implementation",
 }
 
 export enum FAQ_SECTION {
