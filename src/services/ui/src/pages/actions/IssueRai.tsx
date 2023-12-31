@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link, useNavigate } from "@/components/Routing";
 import * as I from "@/components/Inputs";
 import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -7,8 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SimplePageContainer, Alert, LoadingSpinner } from "@/components";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET } from "@/routes";
-import { Link, useNavigate } from "react-router-dom";
-import { Action, PlanType } from "shared-types";
+import { PlanType } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { useGetItem } from "@/api";
 import { submit } from "@/api/submissionService";
@@ -27,7 +26,7 @@ const formSchema = z.object({
   }),
 });
 export type RaiIssueFormSchema = z.infer<typeof formSchema>;
-
+//@
 const attachmentList = [
   {
     name: "formalRaiLetter",
@@ -58,10 +57,7 @@ const FormDescriptionText = () => {
 };
 
 export const RaiIssueForm = () => {
-  const { id, type } = useParams<{
-    id: string;
-    type: Action;
-  }>();
+  const { id, type } = useParams("/action/:id/:type");
   const { data: item } = useGetItem(id!);
   const authority = item?._source.authority as PlanType;
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
@@ -131,7 +127,8 @@ export const RaiIssueForm = () => {
               Read the description for each of the attachment types on the{" "}
               {
                 <Link
-                  to="/faq/#medicaid-spa-rai-attachments"
+                  path="/faq"
+                  hash="medicaid-spa-rai-attachments"
                   target={FAQ_TARGET}
                   rel="noopener noreferrer"
                   className="text-blue-700 hover:underline"
@@ -148,7 +145,8 @@ export const RaiIssueForm = () => {
               and a few others. See the full list on the{" "}
               {
                 <Link
-                  to="/faq/#acceptable-file-formats"
+                  path="/faq"
+                  hash="acceptable-file-formats"
                   target={FAQ_TARGET}
                   rel="noopener noreferrer"
                   className="text-blue-700 hover:underline"
@@ -233,7 +231,8 @@ export const RaiIssueForm = () => {
               open={successModalIsOpen}
               onAccept={() => {
                 setSuccessModalIsOpen(false);
-                navigate(`/details?id=${id}`);
+                // navigate(`/details?id=${id}`);
+                navigate({ path: "/details", query: { id } });
               }}
               onCancel={() => setSuccessModalIsOpen(false)}
               title="The Formal RAI has been issued."
@@ -250,7 +249,8 @@ export const RaiIssueForm = () => {
               open={errorModalIsOpen}
               onAccept={() => {
                 setErrorModalIsOpen(false);
-                navigate(`/details?id=${id}`);
+                // navigate(`/details?id=${id}`);
+                navigate({ path: "/details", query: { id } });
               }}
               onCancel={() => setErrorModalIsOpen(false)}
               title="Submission Error"
@@ -286,7 +286,8 @@ export const RaiIssueForm = () => {
               open={cancelModalIsOpen}
               onAccept={() => {
                 setCancelModalIsOpen(false);
-                navigate(`/details?id=${id}`);
+                // navigate(`/details?id=${id}`);
+                navigate({ path: "/details", query: { id } });
               }}
               onCancel={() => setCancelModalIsOpen(false)}
               cancelButtonText="Return to Form"

@@ -1,5 +1,4 @@
-import { Navigate, useParams } from "react-router-dom";
-import { ROUTES } from "@/routes";
+import { Navigate, useParams } from "@/components/Routing";
 import { ToggleRaiResponseWithdraw } from "@/pages/actions/ToggleRaiResponseWithdraw";
 import { RaiIssue } from "@/pages/actions/IssueRai";
 import { WithdrawPackage } from "@/pages/actions/WithdrawPackage";
@@ -8,7 +7,7 @@ import { Action } from "shared-types";
 import { WithdrawRai } from "./WithdrawRai";
 
 export const ActionFormIndex = () => {
-  const { type } = useParams<{ type: Action }>();
+  const { type } = useParams("/action/:id/:type");
   switch (type) {
     case Action.WITHDRAW_PACKAGE:
       return <WithdrawPackage />;
@@ -22,6 +21,6 @@ export const ActionFormIndex = () => {
     case Action.RESPOND_TO_RAI:
       return <RespondToRai />;
     default:
-      return <Navigate to={ROUTES.HOME} />;
+      return <Navigate path="/" />;
   }
 };

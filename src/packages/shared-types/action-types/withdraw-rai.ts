@@ -17,6 +17,7 @@ export type RaiWithdraw = z.infer<typeof raiWithdrawSchema>;
 export const transformRaiWithdraw = (id: string) => {
   return raiWithdrawSchema.transform((data) => ({
     id,
+    raiWithdrawEnabled: false,
     rais: {
       [data.requestedDate]: {
         withdraw: {
