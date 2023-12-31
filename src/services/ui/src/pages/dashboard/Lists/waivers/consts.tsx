@@ -64,9 +64,6 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       label: "Submission Source",
       visible: false,
       cell: (data) => {
-        if (data.origin?.toLowerCase() === "onemac") {
-          return "OneMAC";
-        }
         return data.origin;
       },
     },
