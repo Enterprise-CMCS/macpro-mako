@@ -3,9 +3,9 @@ import OneMacLogo from "@/assets/onemac_logo.svg";
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
-import { Link, redirect, useLoaderData } from "react-router-dom";
+import { Link } from "@/components/Routing";
 import { Button } from "@/components/Inputs";
-import { ROUTES, FAQ_TARGET } from "@/routes";
+import { FAQ_TARGET } from "@/routes";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -191,7 +191,7 @@ export const Welcome = () => {
         <div className="flex justify-around items-center text-xl px-10 py-4 max-w-screen-xl mx-auto">
           <h4>Do you have questions or need support?</h4>
           <Button asChild>
-            <Link to={ROUTES.FAQ} target={FAQ_TARGET}>
+            <Link path={"/faq"} target={FAQ_TARGET}>
               View FAQ
             </Link>
           </Button>

@@ -1,4 +1,4 @@
-import { Link, Navigate, redirect } from "react-router-dom";
+import { Link, Navigate, redirect } from "@/components/Routing";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
 import { WaiversList } from "./Lists/waivers";
@@ -7,12 +7,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/Tabs";
 import {
   OsProvider,
   type OsTab,
-  useOsQuery,
+  useOsData,
   FilterChips,
   FilterDrawerProvider,
 } from "@/components/Opensearch";
 import { Button } from "@/components/Inputs";
-import { ROUTES } from "@/routes";
 import { useUserContext } from "@/components/Context/userContext";
 import { useMemo } from "react";
 
@@ -29,7 +28,7 @@ const loader = (queryClient: QueryClient) => {
       ReturnType<typeof getUser>
     >;
     if (!isUser.user) {
-      return redirect("/");
+      return redirect({ path: "/" });
     }
 
     return isUser;
@@ -40,22 +39,22 @@ export const dashboardLoader = loader;
 
 export const Dashboard = () => {
   const userContext = useUserContext();
-  const query = useOsQuery();
+  const osData = useOsData();
 
   const role = useMemo(() => {
     return userContext?.user?.["custom:cms-roles"] ? true : false;
   }, []);
 
   if (!role) {
-    return <Navigate to={ROUTES.HOME} />;
+    return <Navigate path={"/"} />;
   }
 
   return (
     <OsProvider
       value={{
-        data: query.data,
-        error: query.error,
-        isLoading: query.isLoading,
+        data: osData.data,
+        error: osData.error,
+        isLoading: osData.isLoading,
       }}
     >
       <FilterDrawerProvider>
@@ -64,15 +63,15 @@ export const Dashboard = () => {
             <h1 className="text-xl">Dashboard</h1>
             {!userContext?.isCms && (
               <Button>
-                <Link to={ROUTES.NEW_SUBMISSION_OPTIONS}>New Submission</Link>
+                <Link path="/new-submission">New Submission</Link>
               </Button>
             )}
           </div>
           <div className="w-[100%] items-center justify-center">
             <Tabs
-              value={query.state.tab}
+              value={osData.state.tab}
               onValueChange={(tab) =>
-                query.onSet(
+                osData.onSet(
                   (s) => ({ ...s, filters: [], tab: tab as OsTab, search: "" }),
                   true
                 )

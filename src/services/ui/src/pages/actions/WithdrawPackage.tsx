@@ -1,16 +1,14 @@
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "@/components/Routing";
 import { Button } from "@/components/Inputs";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { useState } from "react";
-import { Action, PlanType, ItemResult } from "shared-types";
-import { FAQ_TARGET, ROUTES } from "@/routes";
+import { PlanType, ItemResult } from "shared-types";
 import { PackageActionForm } from "./PackageActionForm";
 import { ActionFormIntro, PackageInfo } from "./common";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
-import { Link } from "react-router-dom";
 import { LoadingSpinner } from "@/components";
 import { AttachmentRecipe, buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
@@ -42,7 +40,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
   const navigate = useNavigate();
-  const { id, type } = useParams<{ id: string; type: Action }>();
+  const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const authority = item?._source.authority as PlanType;
   const form = useForm<WithdrawPackageFormSchema>({
@@ -81,7 +79,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
     }
   };
 
-  if (!item) return <Navigate to={ROUTES.DASHBOARD} />; // Prevents optional chains below
+  if (!item) return <Navigate path={"/"} />; // Prevents optional chains below
   return (
     <>
       {form.formState.isSubmitting && <LoadingSpinner />}
@@ -99,7 +97,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
           <I.Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
               {/* Change faqLink once we know the anchor */}
-              <AttachmentsSizeTypesDesc faqLink={ROUTES.FAQ} />
+              <AttachmentsSizeTypesDesc faqLink={"/faq"} />
               {attachments.map(({ name, label, required }) => (
                 <I.FormField
                   key={name}
@@ -169,7 +167,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
           open={successModalIsOpen}
           onAccept={() => {
             setSuccessModalIsOpen(false);
-            navigate(`/details?id=${id}`);
+            navigate({ path: "/details", query: { id } });
           }}
           onCancel={() => setSuccessModalIsOpen(false)} // Should be made optional
           title="Withdraw Successful"
@@ -187,7 +185,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
           open={errorModalIsOpen}
           onAccept={() => {
             setErrorModalIsOpen(false);
-            navigate(`/details?id=${id}`);
+            navigate({ path: "/details", query: { id } });
           }}
           onCancel={() => setErrorModalIsOpen(false)}
           title="Submission Error"
@@ -223,7 +221,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
           open={cancelModalIsOpen}
           onAccept={() => {
             setCancelModalIsOpen(false);
-            navigate(`/details?id=${id}`);
+            navigate({ path: "/details", query: { id } });
           }}
           onCancel={() => setCancelModalIsOpen(false)}
           cancelButtonText="Return to Form"

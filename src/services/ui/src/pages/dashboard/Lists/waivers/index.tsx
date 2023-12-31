@@ -4,13 +4,13 @@ import {
   OsTable,
   OsFiltering,
   useOsContext,
-  useOsParams,
+  useOsUrl,
 } from "@/components/Opensearch";
 import { useWaiverTableColumns } from "./consts";
 
 export const WaiversList = () => {
   const context = useOsContext();
-  const params = useOsParams();
+  const url = useOsUrl();
   const columns = useWaiverTableColumns();
 
   if (context.error) return <ErrorAlert error={context.error} />;
@@ -20,17 +20,17 @@ export const WaiversList = () => {
       <OsFiltering />
       <OsTable columns={columns} />
       <Pagination
-        pageNumber={params.state.pagination.number}
+        pageNumber={url.state.pagination.number}
         count={context.data?.total?.value || 0}
-        pageSize={params.state.pagination.size}
+        pageSize={url.state.pagination.size}
         onPageChange={(number) =>
-          params.onSet((s) => ({
+          url.onSet((s) => ({
             ...s,
             pagination: { ...s.pagination, number },
           }))
         }
         onSizeChange={(size) =>
-          params.onSet((s) => ({
+          url.onSet((s) => ({
             ...s,
             pagination: { number: 0, size },
           }))
