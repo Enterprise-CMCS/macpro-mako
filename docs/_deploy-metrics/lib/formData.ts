@@ -5,7 +5,7 @@ export type FormResult = {
     data: any; // replace 'any' with the actual type of the data returned from the API
   } | null
   
-  interface ResultObject {
+  export type ResultObject = {
     [formId: string]: FormResult[];
   }
   
@@ -52,3 +52,51 @@ export type FormResult = {
   
     return resultObject;
   }
+
+  type FieldType = "Input" | "FieldArray" | "Select";
+
+interface Rule {
+  required: string;
+}
+
+interface FieldProps {
+  placeholder?: string;
+  appendText?: string;
+  sort?: string;
+  className?: string;
+  options?: { label: string; value: string }[];
+}
+
+interface Field {
+  rhf: FieldType;
+  name: string;
+  label: string;
+  rules?: Rule;
+  props?: FieldProps;
+  fields?: Field[];
+}
+
+interface FormSection {
+  title: string;
+  slots: Field[];
+}
+
+interface FormSchema {
+  header: string,
+  sections: FormSection[];
+}
+
+interface WebformsDocsResult {
+  title: string
+  sectionsDescriptions: string[]
+}
+
+export function generateFormDocumentation(formSchema: FormSchema): WebformsDocsResult {
+  const documentation = {
+    title: formSchema.header,
+    sectionsDescriptions: formSchema.sections.map((sec) => sec.title)
+  }
+
+  return documentation;
+}
+

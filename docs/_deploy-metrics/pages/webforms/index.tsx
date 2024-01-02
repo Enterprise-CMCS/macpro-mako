@@ -4,15 +4,11 @@ import {
   Container,
   HStack,
   Heading,
-  Icon,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Select,
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { getAllFormData } from "../../lib/formData";
+import { generateFormDocumentation, getAllFormData, ResultObject } from "../../lib/formData";
 import React from "react";
 
 export const getStaticProps = async () => {
@@ -43,8 +39,6 @@ const WebformsDocs = ({
 
   if (!allFormsWithData) return
 
-  const selectedFormData = allFormsWithData[form].find((f) => f?.version === version)
-
   return (
     <Box as="section" bg="bg.surface" pt={{ base: '4', md: '8' }} pb={{ base: '12', md: '24' }}>
     <Container>
@@ -61,11 +55,23 @@ const WebformsDocs = ({
         {form && allFormsWithData[form].map((val) => <option key={val?.version} value={val?.version}>{val?.version}</option>)}
         </Select>
         </HStack>
-        {selectedFormData && <p>{JSON.stringify(selectedFormData.data)}</p>}
+        {allFormsWithData[form] && version && <VersionDocs allFormsWithData={allFormsWithData} form={form} version={version}/>}
       </Stack>
     </Container>
   </Box>
   );
 };
 
+const VersionDocs: React.FC<{allFormsWithData: ResultObject, form: string, version: string}> = ({allFormsWithData, form, version}) => {
+  const selectedFormData = allFormsWithData[form].find((f) => f?.version === version)
+  console.log({selectedFormData})
+  const documentation = generateFormDocumentation(selectedFormData?.data);
+  console.log(documentation);
+  return (
+    <p>
+      {JSON.stringify(documentation)}
+    </p>
+  )
+
+}
 export default WebformsDocs;
