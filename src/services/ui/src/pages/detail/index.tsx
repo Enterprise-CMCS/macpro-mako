@@ -11,15 +11,8 @@ import {
   RaiList,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import {
-  Action,
-  ActionAvailabilityCheck,
-  ItemResult,
-  OsMainSourceItem,
-  PlanType,
-  PlanTypeCheck,
-  UserRoles,
-} from "shared-types";
+import { Action, ItemResult, OsMainSourceItem, UserRoles } from "shared-types";
+import { PackageCheck } from "shared-utils";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -48,7 +41,7 @@ const DetailCardWrapper = ({
 );
 const StatusCard = (data: OsMainSourceItem) => {
   const transformedStatuses = getStatus(data.seatoolStatus);
-  const checker = ActionAvailabilityCheck(data);
+  const checker = PackageCheck(data);
   const { data: user } = useGetUser();
 
   return (
