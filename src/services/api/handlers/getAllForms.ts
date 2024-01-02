@@ -2,8 +2,30 @@ import { response } from "../libs/handler";
 import * as fs from "fs";
 import * as path from "path";
 
+interface ObjectWithArrays {
+  [key: string]: string[];
+}
+
+export function removeTsAndJsExtentions(
+  obj: ObjectWithArrays
+): ObjectWithArrays {
+  const result: ObjectWithArrays = {};
+
+  for (const key in obj) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (obj.hasOwnProperty(key)) {
+      const filteredFiles = obj[key].filter((file) => !file.endsWith(".ts"));
+      result[key] = filteredFiles.map((f) =>
+        f.replace(".js", "").replace("v", "")
+      );
+    }
+  }
+
+  return result;
+}
+
 function getAllFormsAndVersions(directoryPath: string) {
-  const result: Record<string, unknown> = {};
+  const result: ObjectWithArrays = {};
 
   const subDirectories = fs.readdirSync(directoryPath);
 
@@ -16,7 +38,7 @@ function getAllFormsAndVersions(directoryPath: string) {
     }
   });
 
-  return result;
+  return removeTsAndJsExtentions(result);
 }
 
 export const getAllForms = async () => {

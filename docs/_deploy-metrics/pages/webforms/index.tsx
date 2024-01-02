@@ -9,21 +9,29 @@ export const getStaticProps = async () => {
 
     const response = await fetch(`${process.env.API_REST_URL}/allForms)`);
     const allFormsWithVersion = await response.json();
+    let data
+      try {
+        data = await getAllFormData(allFormsWithVersion)
+      }catch (e) {
+        console.log(e)
+      }
 
-    console.log(allFormsWithVersion);
-    // {"ABP1":["v1.js","v1.ts"]}
   return {
     props: {
         allFormsWithVersion,
+        data
     },
   };
 };
 
 const WebformsDocs = ({
     allFormsWithVersion,
+    data
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
     console.log(process.env.API_REST_URL)
+    console.log(data)
+
   return (
     <Container centerContent>
       <Heading as="h1">Available Webforms</Heading>
