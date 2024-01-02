@@ -15,6 +15,16 @@ import { ROUTES } from "@/routes";
 import { useUserContext } from "@/components/Context/userContext";
 import { useMemo } from "react";
 
+const buttonStyles = {
+  color: "#fff",
+  backgroundColor: "#0071bd",
+  display: "inline-block",
+  border: "none",
+  padding: "10px 20px",
+  borderRadius: "5px",
+  cursor: "pointer",
+};
+
 const loader = (queryClient: QueryClient) => {
   return async () => {
     if (!queryClient.getQueryData(["user"])) {
@@ -65,15 +75,7 @@ export const Dashboard = () => {
               <Link
                 to={ROUTES.NEW_SUBMISSION_OPTIONS}
                 className="button-style"
-                style={{
-                  color: "#fff",
-                  backgroundColor: "#0071bd",
-                  display: "inline-block",
-                  border: "none",
-                  padding: "10px 20px",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
+                style={buttonStyles}
               >
                 New Submission
               </Link>
