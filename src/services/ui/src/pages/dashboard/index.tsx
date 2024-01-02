@@ -16,15 +16,8 @@ import { Button } from "@/components/Inputs";
 import { useUserContext } from "@/components/Context/userContext";
 import { useMemo } from "react";
 
-const buttonStyles = {
-  color: "#fff",
-  backgroundColor: "#0071bd",
-  display: "inline-block",
-  border: "none",
-  padding: "10px 20px",
-  borderRadius: "5px",
-  cursor: "pointer",
-};
+const buttonStyles =
+  "text-white bg-primary inline-block border-none px-10 py-2 rounded cursor-pointer";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -73,11 +66,7 @@ export const Dashboard = () => {
           <div className="flex items-center justify-between my-4">
             <h1 className="text-xl">Dashboard</h1>
             {!userContext?.isCms && (
-              <Link
-                to={ROUTES.NEW_SUBMISSION_OPTIONS}
-                className="button-style"
-                style={buttonStyles}
-              >
+              <Link to={ROUTES.NEW_SUBMISSION_OPTIONS} className={buttonStyles}>
                 New Submission
               </Link>
             )}
