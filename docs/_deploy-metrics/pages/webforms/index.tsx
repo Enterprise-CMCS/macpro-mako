@@ -13,16 +13,11 @@ export const getStaticProps = async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_REST_URL}/allForms`);
       allFormsAndVersions = await response.json();
-      console.log({allFormsAndVersions})
       allFormsWithData = await getAllFormData(allFormsAndVersions)
     }catch (e) {
       console.error(e)
     }
     
-console.log({
-  allFormsAndVersions,
-  allFormsWithData
-})
   return {
     props: {
         allFormsAndVersions,
@@ -35,7 +30,6 @@ const WebformsDocs = ({
     allFormsAndVersions,
     allFormsWithData
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-
 
   return (
     <Container centerContent>
