@@ -1,7 +1,6 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { OptionCard, OptionFieldset } from "@/components/Cards/OptionCard";
-import { ROUTES } from "@/routes";
 import { BrowserRouter } from "react-router-dom";
 
 describe("OptionCard Component System", () => {
@@ -29,7 +28,7 @@ describe("OptionCard Component System", () => {
       render(
         <BrowserRouter>
           <OptionCard
-            linkTo={ROUTES.HOME}
+            linkTo={"/"}
             title={"Test Card Title"}
             description={"Test Card Description"}
             altBg={altBg}
