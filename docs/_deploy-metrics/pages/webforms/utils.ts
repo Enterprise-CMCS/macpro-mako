@@ -9,7 +9,7 @@ type FormResult = {
     [formId: string]: FormResult[];
   }
   
-  async function getAllFormData(formData: any): Promise<ResultObject> {
+  export async function getAllFormData(formData: any): Promise<ResultObject> {
     const resultObject: ResultObject = {};
   
     // Loop through each key-value pair in formData

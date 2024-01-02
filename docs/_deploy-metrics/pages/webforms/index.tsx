@@ -4,6 +4,7 @@ import {
   Container,
   Heading,
 } from "@chakra-ui/react";
+import { getAllFormData } from "./utils";
 
 export const getStaticProps = async () => {
 
