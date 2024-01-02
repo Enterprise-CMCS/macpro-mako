@@ -1,6 +1,6 @@
 
 
-type FormResult = {
+export type FormResult = {
     version: string;
     data: any; // replace 'any' with the actual type of the data returned from the API
   } | null
