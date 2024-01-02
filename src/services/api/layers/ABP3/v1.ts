@@ -29,6 +29,240 @@ const ABP3: FormSchema = {
                 ],
               },
             },
+            {
+              rhf: "Input",
+              name: "benefit_package_name",
+              label: "Benefit package name",
+              rules: { required: "* Required" },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Selection of Section 1937 coverage option",
+      form: [
+        {
+          description:
+            "The state/territory selects as its Section 1937 coverage option the following type of benchmark benefit package or benchmark-equivalent benefit package under this Alternative Benefit Plan:",
+          slots: [
+            {
+              rhf: "Radio",
+              name: "section_1937_coverage_option",
+              rules: { required: "* Required" },
+              props: {
+                options: [
+                  {
+                    label: "Benchmark benefit package",
+                    value: "benchmark_benefit_package",
+                    form: [
+                      {
+                        description:
+                          "The state/territory will provide the following benchmark benefit package:",
+                        slots: [
+                          {
+                            rhf: "Radio",
+                            name: "Benchmark_benefit_packag_options",
+                            rules: { required: "* Required" },
+                            props: {
+                              options: [
+                                {
+                                  label:
+                                    "The standard Blue Cross Blue Shield preferred provider option offered through the Federal Employee Health Benefit Program (FEHBP)",
+                                  value: "blue_cross_blue_shield",
+                                },
+                                {
+                                  label:
+                                    "State employee coverage that is offered and generally available to state employees (state employee coverage)",
+                                  value: "state_employee_coverage",
+                                  form: [
+                                    {
+                                      slots: [
+                                        {
+                                          rhf: "Input",
+                                          label: "Plan name",
+                                          name: "state_employee_coverage_plan_name",
+                                          rules: { required: "* Required" },
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                                {
+                                  label:
+                                    "A commercial HMO with the largest insured commercial, non-Medicaid enrollment in the state/territory (commercial HMO)",
+                                  value: "commercial_hmo",
+                                  form: [
+                                    {
+                                      slots: [
+                                        {
+                                          rhf: "Input",
+                                          label: "Plan name",
+                                          name: "commercial_hmo_plan_name",
+                                          rules: { required: "* Required" },
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                                {
+                                  label: "Secretary-approved coverage",
+                                  value: "secretary_approved_coverage",
+                                  form: [
+                                    {
+                                      slots: [
+                                        {
+                                          rhf: "Radio",
+                                          name: "secretary_approved_coverage_options",
+                                          rules: { required: "* Required" },
+                                          props: {
+                                            options: [
+                                              {
+                                                label:
+                                                  "The state/territory offers the benefits provided in the approved state plan.",
+                                                value: "approved_state_plan",
+                                                form: [
+                                                  {
+                                                    slots: [
+                                                      {
+                                                        rhf: "Radio",
+                                                        name: "approved_state_plan_options",
+                                                        rules: {
+                                                          required:
+                                                            "* Required",
+                                                        },
+                                                        props: {
+                                                          options: [
+                                                            {
+                                                              label:
+                                                                "The state/territory offers the benefits provided in the approved state plan.",
+                                                              value:
+                                                                "approved_state_plan",
+                                                            },
+                                                            {
+                                                              label:
+                                                                "Benefits include all those provided in the approved state plan plus additional benefits.",
+                                                              value:
+                                                                "additional_benefits",
+                                                            },
+                                                            {
+                                                              label:
+                                                                "Benefits are the same as provided in the approved state plan but in a different amount, duration, and/or scope.",
+                                                              value:
+                                                                "different_amount_duration_scope",
+                                                            },
+                                                            {
+                                                              label:
+                                                                "The state/territory offers only a partial list of benefits provided in the approved state plan.",
+                                                              value:
+                                                                "partial_list_of_benefits",
+                                                            },
+                                                            {
+                                                              label:
+                                                                "The state/territory offers a partial list of benefits provided in the approved state plan plus additional benefits.",
+                                                              value:
+                                                                "partial_list_of_benefits_plus_additional_benefits",
+                                                            },
+                                                          ],
+                                                        },
+                                                      },
+                                                    ],
+                                                  },
+                                                ],
+                                              },
+                                              {
+                                                label:
+                                                  "The state/territory offers an array of benefits from the Section 1937 coverage option and/or base benchmark plan benefit packages, the approved state plan, or a combination of these benefit packages.",
+                                                value: "array_of_benefits",
+                                              },
+                                            ],
+                                          },
+                                        },
+                                        {
+                                          rhf: "Textarea",
+                                          name: "benefits_and_limitations",
+                                          rules: { required: "* Required" },
+                                          label:
+                                            "Briefly identify the benefits, the source of benefits, and any limitations.",
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    label: "Benchmark-equivalent benefit package",
+                    value: "benchmark_equivalent_benefit_package",
+                    form: [
+                      {
+                        description:
+                          "The state/territory will provide the following benchmark-equivalent benefit package:",
+                        slots: [
+                          {
+                            rhf: "Radio",
+                            name: "benchmark_equivalent",
+                            rules: { required: "* Required" },
+                            props: {
+                              options: [
+                                {
+                                  label:
+                                    "The standard Blue Cross Blue Shield preferred provider option offered through the Federal Employee Health Benefit Program (FEHBP)",
+                                  value: "blue_cross_blue_shield",
+                                },
+                                {
+                                  label:
+                                    "State employee coverage that is offered and generally available to state employees (state employee coverage)",
+                                  value: "state_employee_coverage",
+                                  form: [
+                                    {
+                                      slots: [
+                                        {
+                                          rhf: "Input",
+                                          name: "state_employee_coverage_plan_name",
+                                          label: "Plan name",
+                                          rules: { required: "* Required" },
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                                {
+                                  label:
+                                    "A commercial HMO with the largest insured commercial, non-Medicaid enrollment in the state/territory (commercial HMO)",
+                                  value: "commercial_hmo",
+                                  form: [
+                                    {
+                                      slots: [
+                                        {
+                                          rhf: "Input",
+                                          name: "commercial_hmo_plan_name",
+                                          label: "Plan name",
+                                          rules: { required: "* Required" },
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                                {
+                                  label: "Secretary-approved coverage",
+                                  value: "secretary_approved_coverage",
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
           ],
         },
       ],
