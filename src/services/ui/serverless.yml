@@ -46,6 +46,7 @@ custom:
         VITE_COGNITO_REDIRECT_SIGNIN=${param:ApplicationEndpointUrl}
         VITE_COGNITO_REDIRECT_SIGNOUT=${param:ApplicationEndpointUrl}
         VITE_IDM_HOME_URL=${self:custom.idmInfo.home_url, "https://test.home.idm.cms.gov"}
+        REACT_APP_GOOGLE_TAG="hooktag"
         """ > .env.local
         yarn build
       deploy:finalize: |
