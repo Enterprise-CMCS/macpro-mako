@@ -7,7 +7,7 @@ import {
   RaiWithdrawTransform,
   WithdrawPackageTransform,
   ToggleWithdrawRaiEnabledTransform,
-} from "./";
+} from "..";
 
 export type OsHit<T> = {
   _index: string;
@@ -39,6 +39,17 @@ export type OsResponse<T> = {
   aggregations?: OsAggResult;
 };
 
+export type OsFilterType =
+  | "term"
+  | "terms"
+  | "match"
+  | "range"
+  | "search"
+  | "global_search"
+  | "exists";
+
+export type OsRangeValue = { gte?: string; lte?: string };
+export type OsFilterValue = string | string[] | number | boolean | OsRangeValue;
 export type OsMainSourceItem = OnemacTransform &
   OnemacLegacyTransform &
   SeaToolTransform &
@@ -51,18 +62,6 @@ export type OsMainSearchResponse = OsResponse<OsMainSourceItem>;
 export type ItemResult = OsHit<OsMainSourceItem> & {
   found: boolean;
 };
-
-export type OsFilterType =
-  | "term"
-  | "terms"
-  | "match"
-  | "range"
-  | "search"
-  | "global_search"
-  | "exists";
-
-export type OsRangeValue = { gte?: string; lte?: string };
-export type OsFilterValue = string | string[] | number | boolean | OsRangeValue;
 export type OsField =
   | keyof OsMainSourceItem
   | `${keyof OsMainSourceItem}.keyword`;

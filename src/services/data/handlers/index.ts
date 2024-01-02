@@ -53,12 +53,12 @@ async function manageIndex() {
   try {
     await manageIndexResource({
       index: "main",
+      // TODO: remove after rai transform
       update: { rais: { type: "object", enabled: false } },
     });
 
-    await manageIndexResource({
-      index: "changelog",
-    });
+    await manageIndexResource({ index: "changelog" });
+    await manageIndexResource({ index: "seatool" });
   } catch (error) {
     console.log(error);
     throw "ERROR:  Error occured during index management.";

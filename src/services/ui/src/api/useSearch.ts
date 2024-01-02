@@ -25,7 +25,7 @@ type QueryProps = {
 export const getSearchData = async (
   props: QueryProps
 ): Promise<OsMainSearchResponse> => {
-  const searchData = await API.post("os", "/search", {
+  const searchData = await API.post("os", "/search/main", {
     body: {
       ...filterQueryBuilder(props.filters),
       ...paginationQueryBuilder(props.pagination),
@@ -48,7 +48,7 @@ export const getAllSearchData = async (filters?: OsFilterable[]) => {
       return [];
     }
 
-    const searchData = await API.post("os", "/search", {
+    const searchData = await API.post("os", "/search/main", {
       body: {
         ...filterQueryBuilder(filters),
         ...paginationQueryBuilder({ number: startPage, size: 1000 }),

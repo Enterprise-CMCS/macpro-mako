@@ -146,17 +146,22 @@ export const onemacDataTransform = (props: { key: string; value?: string }) => {
   const record = { id, ...JSON.parse(decode(props.value)) };
 
   // is Legacy
-  if (record?.origin !== "micro") {
-    if (record?.sk !== "Package") return null;
-    if (!record.submitterName) return null;
-    if (record.submitterName === "-- --") return null;
+  const isLegacy = record?.origin !== "micro";
+  if (isLegacy) {
+    const notPackageView = record?.sk !== "Package";
+    if (notPackageView) return null;
+
+    const notOriginatingFromOnemacLegacy =
+      !record.submitterName || record.submitterName === "-- --";
+    if (notOriginatingFromOnemacLegacy) return null;
 
     const result = transformOnemacLegacy(id).safeParse(record);
     return result.success ? result.data : null;
   }
 
-  // is new create
-  if (!record?.actionType) {
+  // NOTE: Make official decision on initial type by MVP - timebomb
+  const isNewRecord = !record?.actionType;
+  if (isNewRecord) {
     const result = transformOnemac(id).safeParse(record);
     return result.success ? result.data : null;
   }
@@ -164,32 +169,31 @@ export const onemacDataTransform = (props: { key: string; value?: string }) => {
   // --------- Package-Actions ---------//
   // TODO: remove transform package-action below
 
-  //ENABLE_RAI_WITHDRAW
   if (record.actionType === Action.ENABLE_RAI_WITHDRAW) {
     const result = transformToggleWithdrawRaiEnabled(id).safeParse(record);
     return result.success ? result.data : null;
   }
-  //DISABLE_RAI_WITHDRAW
+
   if (record.actionType === Action.DISABLE_RAI_WITHDRAW) {
     const result = transformToggleWithdrawRaiEnabled(id).safeParse(record);
     return result.success ? result.data : null;
   }
-  //ISSUE_RAI
+
   if (record.actionType === Action.ISSUE_RAI) {
     const result = transformRaiIssue(id).safeParse(record);
     return result.success ? result.data : null;
   }
-  //RESPOND_TO_RAI
+
   if (record.actionType === Action.RESPOND_TO_RAI) {
     const result = transformRaiResponse(id).safeParse(record);
     return result.success ? result.data : null;
   }
-  //WITHDRAW_RAI
+
   if (record.actionType === Action.WITHDRAW_RAI) {
     const result = transformRaiWithdraw(id).safeParse(record);
     return result.success ? result.data : null;
   }
-  //WITHDRAW_PACKAGE
+
   if (record.actionType === Action.WITHDRAW_PACKAGE) {
     const result = transformWithdrawPackage(id).safeParse(record);
     return result.success ? result.data : null;
@@ -219,11 +223,11 @@ export const onemac_main = async (event: Event) => {
 export const onemac_changelog = async (event: Event) => {
   const data = Object.values(event.records).reduce((ACC, RECORDS) => {
     RECORDS.forEach((REC) => {
-      // omit delete
+      // omit delete event
       if (!REC.value) return;
 
       const record = JSON.parse(decode(REC.value));
-      // omit legacy
+      // omit legacy record
       if (record?.origin !== "micro") return;
 
       // include package actions

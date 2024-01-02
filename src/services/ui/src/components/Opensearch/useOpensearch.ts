@@ -1,7 +1,7 @@
 import { getSearchData, useOsSearch } from "@/api";
 import { useLzUrl } from "@/hooks/useParams";
 import { useEffect, useState } from "react";
-import { OsQueryState, SearchData, UserRoles } from "shared-types";
+import { OsQueryState, OsMainSearchResponse, UserRoles } from "shared-types";
 import { createSearchFilterable } from "./utils";
 import { useQuery } from "@tanstack/react-query";
 import { useGetUser } from "@/api/useGetUser";
@@ -39,7 +39,7 @@ Comments
  */
 export const useOsData = () => {
   const params = useOsUrl();
-  const [data, setData] = useState<SearchData>();
+  const [data, setData] = useState<OsMainSearchResponse["hits"]>();
   const { mutateAsync, isLoading, error } = useOsSearch();
   const onRequest = async (query: OsQueryState, options?: any) => {
     try {

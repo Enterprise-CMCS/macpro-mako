@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 import { createContextProvider } from "@/utils";
-import { ReactQueryApiError, SearchData } from "shared-types";
+import { ReactQueryApiError, OsMainSearchResponse } from "shared-types";
 
 type ContextState = {
-  data: SearchData | undefined;
+  data: OsMainSearchResponse["hits"] | undefined;
   isLoading: boolean;
   error: ReactQueryApiError | null;
 };
