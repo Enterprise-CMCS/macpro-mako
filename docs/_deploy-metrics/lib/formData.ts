@@ -23,7 +23,7 @@ type FormResult = {
             try {
               // Make API request using fetch
               const response = await fetch(
-                `${process.env.API_REST_URL}/forms?formId=${formId.toLowerCase()}&formVersion=${formVersion}`
+                `${process.env.NEXT_PUBLIC_API_REST_URL}/forms?formId=${formId.toLowerCase()}&formVersion=${formVersion}`
               );
   
               // Ensure the request was successful

@@ -3,41 +3,47 @@ import {
   Divider,
   Container,
   Heading,
+  Button,
 } from "@chakra-ui/react";
 import { getAllFormData } from "../../lib/formData";
 
 export const getStaticProps = async () => {
 
-    const response = await fetch(`${process.env.API_REST_URL}/allForms)`);
-    const allFormsWithVersion = await response.json();
-    let data
-      try {
-        data = await getAllFormData(allFormsWithVersion)
-      }catch (e) {
-        console.log(e)
-      }
-
+    let allFormsWithData, allFormsAndVersions
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_REST_URL}/allForms`);
+      allFormsAndVersions = await response.json();
+      console.log({allFormsAndVersions})
+      allFormsWithData = await getAllFormData(allFormsAndVersions)
+    }catch (e) {
+      console.error(e)
+    }
+    
+console.log({
+  allFormsAndVersions,
+  allFormsWithData
+})
   return {
     props: {
-        allFormsWithVersion,
-        data
+        allFormsAndVersions,
+        allFormsWithData
     },
   };
 };
 
 const WebformsDocs = ({
-    allFormsWithVersion,
-    data
+    allFormsAndVersions,
+    allFormsWithData
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
-    console.log(process.env.API_REST_URL)
-    console.log(data)
 
   return (
     <Container centerContent>
       <Heading as="h1">Available Webforms</Heading>
       <Divider my={5} />
-      {JSON.stringify(allFormsWithVersion)}
+      {JSON.stringify(allFormsAndVersions)}
+      <Divider my={5} />
+      {JSON.stringify(allFormsWithData)}
       <Divider my={4} />
     </Container>
   );

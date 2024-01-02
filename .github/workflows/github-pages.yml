@@ -51,13 +51,13 @@ jobs:
           role-duration-seconds: 10800
       - name: Set env
         run: |
-          echo "API_REST_URL=$(
+          echo "NEXT_PUBLIC_API_REST_URL=$(
             aws cloudformation \
             --region us-east-1 describe-stacks \
             --stack-name $PROJECT-api-$STAGE_NAME | jq -r '.Stacks[0].Outputs[] | select(.OutputKey == "ApiGatewayRestApiUrl") | .OutputValue'
           )" >> $GITHUB_ENV
       - name: Test
-        run: echo $API_REST_URL
+        run: echo $NEXT_PUBLIC_API_REST_URL
       - name: Install Packages
         run: |
           cd docs/_deploy-metrics
