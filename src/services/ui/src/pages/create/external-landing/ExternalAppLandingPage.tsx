@@ -1,9 +1,10 @@
 import { Button } from "@/components/Inputs";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Link } from "@/components/Routing";
 import { PropsWithChildren, ReactElement } from "react";
 import { SimplePageTitle } from "@/pages/create/create-options";
 import { SimplePageContainer } from "@/components";
-import { FAQ_SECTION, ROUTES } from "@/routes";
+import { FAQ_SECTION } from "@/routes";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { optionCrumbsFromPath } from "@/pages/create/create-breadcrumbs";
 export enum EXTERNAL_APP {
@@ -32,7 +33,8 @@ const FAQHelperText = () => (
       <Link
         className="text-sky-600 hover:text-sky-800 underline"
         target={"_faq"}
-        to={`${ROUTES.FAQ}/#${FAQ_SECTION.SYSTEM}`}
+        path="/faq"
+        hash={FAQ_SECTION.SYSTEM}
       >
         Crosswalk from Paper-based State Plan to MACPro and MMDL
       </Link>{" "}

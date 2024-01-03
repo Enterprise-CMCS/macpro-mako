@@ -1,6 +1,7 @@
 import { Action } from "shared-types";
-import { ROUTES } from "@/routes";
+
 import { BLANK_VALUE } from "@/consts";
+import { Route } from "@/components/Routing/types";
 
 export const mapActionLabel = (a: Action) => {
   switch (a) {
@@ -19,11 +20,11 @@ export const mapActionLabel = (a: Action) => {
   }
 };
 
-export const mapSubmissionCrumb = (path: ROUTES) => {
+export const mapSubmissionCrumb = (path: Route) => {
   switch (path) {
-    case ROUTES.MEDICAID_NEW:
+    case "/new-submission/spa/medicaid/create":
       return "Submit new Medicaid SPA";
-    case ROUTES.CHIP_NEW:
+    case "/new-submission/spa/chip/create":
       return "Submit new CHIP SPA";
     default:
       return BLANK_VALUE;
