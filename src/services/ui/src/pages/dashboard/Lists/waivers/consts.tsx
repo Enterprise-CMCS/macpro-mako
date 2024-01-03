@@ -32,7 +32,10 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
     {
       field: "planType.keyword",
       label: "Type",
-      cell: (data) => removeUnderscoresAndCapitalize(data.planType),
+      cell: (data) =>
+        data?.planType
+          ? removeUnderscoresAndCapitalize(data.planType)
+          : BLANK_VALUE,
     },
     {
       field: "actionType.keyword",
@@ -61,9 +64,6 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       label: "Submission Source",
       visible: false,
       cell: (data) => {
-        if (data.origin?.toLowerCase() === "onemac") {
-          return "OneMAC";
-        }
         return data.origin;
       },
     },

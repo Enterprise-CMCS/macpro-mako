@@ -14,7 +14,7 @@ import {
 } from "@/components";
 import { FAQ_TARGET } from "@/routes";
 import { submit } from "@/api/submissionService";
-import { Authority } from "shared-types";
+import { PlanType } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
@@ -77,7 +77,7 @@ export const MedicaidForm = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: Authority.MED_SPA,
+        authority: PlanType.MED_SPA,
       });
       setSuccessModalOpen(true);
     } catch (e) {

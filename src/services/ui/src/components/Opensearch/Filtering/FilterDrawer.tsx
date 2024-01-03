@@ -20,14 +20,14 @@ import { FilterableCheckbox } from "./FilterableCheckbox";
 import { useFilterDrawer } from "./useFilterDrawer";
 import { Button } from "@/components/Inputs";
 import { checkMultiFilter, resetFilters } from "../utils";
-import { useOsParams } from "../useOpensearch";
+import { useOsUrl } from "../useOpensearch";
 
 export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
-  const params = useOsParams();
+  const url = useOsUrl();
 
-  const filtersApplied = checkMultiFilter(params.state.filters, 1);
-  const handleFilterReset = () => resetFilters(params.onSet);
+  const filtersApplied = checkMultiFilter(url.state.filters, 1);
+  const handleFilterReset = () => resetFilters(url.onSet);
   return (
     <Sheet open={hook.drawerOpen} onOpenChange={hook.setDrawerState}>
       <SheetTrigger asChild>
