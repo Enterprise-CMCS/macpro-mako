@@ -4,7 +4,7 @@ import { Download, Loader } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
-import { useOsUrl } from "../Opensearch";
+import { useOsUrl } from "@/components/Opensearch/main";
 import { OsExportHeaderOptions } from "shared-types";
 
 type Props<TData extends Record<string, any>> = {

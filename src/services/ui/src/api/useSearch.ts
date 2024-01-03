@@ -7,25 +7,29 @@ import {
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import type {
-  OsQueryState,
   ReactQueryApiError,
-  OsFilterable,
   OsAggQuery,
-  OsMainSearchResponse,
-  OsMainSourceItem,
+  MainFilterable,
+  MainDocument,
+  OsIndex,
+  ChangelogResponse,
+  OsQueryState,
+  ChangelogField,
+  OsResponse,
 } from "shared-types";
 
-type QueryProps = {
-  filters: OsQueryState["filters"];
-  sort?: OsQueryState["sort"];
-  pagination: OsQueryState["pagination"];
-  aggs?: OsAggQuery[];
+type QueryProps<T> = {
+  index: OsIndex;
+  filters: OsQueryState<T>["filters"];
+  sort?: OsQueryState<T>["sort"];
+  pagination: OsQueryState<T>["pagination"];
+  aggs?: OsAggQuery<T>[];
 };
 
-export const getSearchData = async (
-  props: QueryProps
-): Promise<OsMainSearchResponse> => {
-  const searchData = await API.post("os", "/search/main", {
+export const getOsData = async <TProps, TResponse extends OsResponse<any>>(
+  props: QueryProps<TProps>
+): Promise<TResponse> => {
+  const searchData = await API.post("os", `/search/${props.index}`, {
     body: {
       ...filterQueryBuilder(props.filters),
       ...paginationQueryBuilder(props.pagination),
@@ -38,12 +42,12 @@ export const getSearchData = async (
   return searchData;
 };
 
-export const getAllSearchData = async (filters?: OsFilterable[]) => {
+export const getMainExportData = async (filters?: MainFilterable[]) => {
   if (!filters) return [];
 
   const recursiveSearch = async (
     startPage: number
-  ): Promise<OsMainSourceItem[]> => {
+  ): Promise<MainDocument[]> => {
     if (startPage * 1000 >= 10000) {
       return [];
     }
@@ -69,15 +73,29 @@ export const getAllSearchData = async (filters?: OsFilterable[]) => {
   return await recursiveSearch(0);
 };
 
-export const useOsSearch = (
+export const useOsSearch = <TProps, TResponse>(
   options?: UseMutationOptions<
-    OsMainSearchResponse,
+    TResponse,
     ReactQueryApiError,
-    QueryProps
+    QueryProps<TProps>
   >
 ) => {
-  return useMutation<OsMainSearchResponse, ReactQueryApiError, QueryProps>(
-    (props) => getSearchData(props),
+  return useMutation<TResponse, ReactQueryApiError, QueryProps<TProps>>(
+    (props) => getOsData(props),
     options
   );
+};
+
+export const useChangelogSearch = (
+  options?: UseMutationOptions<
+    ChangelogResponse,
+    ReactQueryApiError,
+    QueryProps<ChangelogField>
+  >
+) => {
+  return useMutation<
+    ChangelogResponse,
+    ReactQueryApiError,
+    QueryProps<ChangelogField>
+  >((props) => getOsData(props), options);
 };

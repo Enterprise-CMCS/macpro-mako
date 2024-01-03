@@ -9,9 +9,9 @@ import {
   ToggleWithdrawRaiEnabledTransform,
 } from "..";
 
-import { OsResponse, OsHit } from "./base";
+import { OsResponse, OsHit, OsFilterable, OsQueryState, OsAggQuery } from "./_";
 
-export type IndexDocumentMain = OnemacTransform &
+export type MainDocument = OnemacTransform &
   OnemacLegacyTransform &
   SeaToolTransform &
   RaiIssueTransform &
@@ -19,10 +19,13 @@ export type IndexDocumentMain = OnemacTransform &
   RaiWithdrawTransform &
   WithdrawPackageTransform &
   ToggleWithdrawRaiEnabledTransform;
-export type OsMainSearchResponse = OsResponse<IndexDocumentMain>;
-export type ItemResult = OsHit<IndexDocumentMain> & {
+
+export type MainResponse = OsResponse<MainDocument>;
+export type MainItemResult = OsHit<MainDocument> & {
   found: boolean;
 };
-export type OsField =
-  | keyof IndexDocumentMain
-  | `${keyof IndexDocumentMain}.keyword`;
+
+export type MainField = keyof MainDocument | `${keyof MainDocument}.keyword`;
+export type MainFilterable = OsFilterable<MainField>;
+export type MainState = OsQueryState<MainField>;
+export type MainAggs = OsAggQuery<MainField>;

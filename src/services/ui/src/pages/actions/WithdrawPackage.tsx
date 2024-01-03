@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import { Navigate, useNavigate, useParams } from "@/components/Routing";
 import { Button } from "@/components/Inputs";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { useState } from "react";
-import { PlanType, ItemResult } from "shared-types";
+import { PlanType, MainItemResult } from "shared-types";
 import { PackageActionForm } from "./PackageActionForm";
 import { ActionFormIntro, PackageInfo } from "./common";
 import { z } from "zod";
@@ -35,7 +36,7 @@ const attachments: AttachmentRecipe<WithdrawPackageFormSchema>[] = [
   } as const,
 ];
 
-const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
+const WithdrawPackageForm: React.FC<{ item?: MainItemResult }> = ({ item }) => {
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);

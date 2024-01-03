@@ -19,15 +19,20 @@ import { FilterableDateRange } from "./FilterableDateRange";
 import { FilterableCheckbox } from "./FilterableCheckbox";
 import { useFilterDrawer } from "./useFilterDrawer";
 import { Button } from "@/components/Inputs";
-import { checkMultiFilter, resetFilters } from "../utils";
-import { useOsUrl } from "../useOpensearch";
+import { checkMultiFilter } from "@/components/Opensearch";
+import { useOsUrl } from "@/components/Opensearch/main";
 
 export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
   const url = useOsUrl();
 
   const filtersApplied = checkMultiFilter(url.state.filters, 1);
-  const handleFilterReset = () => resetFilters(url.onSet);
+  const handleFilterReset = () =>
+    url.onSet((s) => ({
+      ...s,
+      filters: [],
+      pagination: { ...s.pagination, number: 0 },
+    }));
   return (
     <Sheet open={hook.drawerOpen} onOpenChange={hook.setDrawerState}>
       <SheetTrigger asChild>

@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
-import type { OsField } from "../types";
+
 import * as Consts from "./consts";
 import { useOsAggregate, useOsUrl } from "../useOpensearch";
-import { OsFilterValue, OsRangeValue } from "shared-types";
+import { MainField, OsFilterValue, OsRangeValue } from "shared-types";
 import { useLabelMapping } from "@/hooks";
 import { useFilterDrawerContext } from "./FilterProvider";
 import { useGetUser } from "@/api/useGetUser";
@@ -18,7 +18,7 @@ export const useFilterDrawer = () => {
   const labelMap = useLabelMapping();
   const _aggs = useOsAggregate();
 
-  const onFilterChange = (field: OsField) => {
+  const onFilterChange = (field: MainField) => {
     return (value: OsFilterValue) => {
       setFilters((state) => {
         const updateState = { ...state, [field]: { ...state[field], value } };
@@ -91,7 +91,7 @@ export const useFilterDrawer = () => {
           value: BUCK.key,
         })),
       };
-    }, {} as Record<OsField, { label: string; value: string }[]>);
+    }, {} as Record<MainField, { label: string; value: string }[]>);
   }, [_aggs]);
 
   return {

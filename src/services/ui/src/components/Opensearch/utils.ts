@@ -1,9 +1,8 @@
 import { OsAggQuery, OsFilterable, OsQueryState } from "shared-types";
-import { OsUrlState } from "./useOpensearch";
 
 const filterMapQueryReducer = (
-  state: Record<OsFilterable["prefix"], any[]>,
-  filter: OsFilterable
+  state: Record<OsFilterable<any>["prefix"], any[]>,
+  filter: OsFilterable<any>
 ) => {
   if (!filter.value) return state;
 
@@ -40,7 +39,7 @@ const filterMapQueryReducer = (
   return state;
 };
 
-export const filterQueryBuilder = (filters: OsFilterable[]) => {
+export const filterQueryBuilder = (filters: OsFilterable<any>[]) => {
   if (!filters?.length) return {};
 
   return {
@@ -56,7 +55,7 @@ export const filterQueryBuilder = (filters: OsFilterable[]) => {
 };
 
 export const paginationQueryBuilder = (
-  pagination: OsQueryState["pagination"]
+  pagination: OsQueryState<any>["pagination"]
 ) => {
   const from = (() => {
     if (!pagination.number) return 0;
@@ -69,11 +68,11 @@ export const paginationQueryBuilder = (
   };
 };
 
-export const sortQueryBuilder = (sort: OsQueryState["sort"]) => {
+export const sortQueryBuilder = (sort: OsQueryState<any>["sort"]) => {
   return { sort: [{ [sort.field]: sort.order }] };
 };
 
-export const aggQueryBuilder = (aggs: OsAggQuery[]) => {
+export const aggQueryBuilder = (aggs: OsAggQuery<any>[]) => {
   return {
     aggs: aggs.reduce((STATE, AGG) => {
       STATE[AGG.name] = {
@@ -96,24 +95,11 @@ export const createSearchFilterable = (value?: string) => {
       field: "",
       value,
       prefix: "must",
-    } as unknown as OsFilterable,
+    } as unknown as OsFilterable<any>,
   ];
 };
 
-export const resetFilters = (
-  onSet: (
-    arg: (arg: OsUrlState) => OsUrlState,
-    shouldIsolate?: boolean | undefined
-  ) => void
-) => {
-  onSet((s) => ({
-    ...s,
-    filters: [],
-    pagination: { ...s.pagination, number: 0 },
-  }));
-};
-
-export const checkMultiFilter = (filters: OsFilterable[], val: number) => {
+export const checkMultiFilter = (filters: OsFilterable<any>[], val: number) => {
   return (
     filters.length >= val ||
     filters.some(

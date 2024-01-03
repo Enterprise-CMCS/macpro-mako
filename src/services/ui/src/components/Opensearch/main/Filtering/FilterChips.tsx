@@ -1,17 +1,17 @@
 import { type FC, useCallback, Fragment } from "react";
 
 import { Chip } from "@/components/Chip";
-import { useOsUrl } from "@/components/Opensearch";
-import { OsFilterable, OsRangeValue } from "shared-types";
+import { useOsUrl } from "@/components/Opensearch/main";
+import { MainFilterable, OsRangeValue } from "shared-types";
 import { useFilterDrawerContext } from "./FilterProvider";
-import { checkMultiFilter, resetFilters } from "../utils";
+import { checkMultiFilter } from "@/components/Opensearch";
 import { useLabelMapping } from "@/hooks";
 
 interface RenderProp {
-  filter: OsFilterable;
+  filter: MainFilterable;
   index: number;
   openDrawer: () => void;
-  clearFilter: (filter: OsFilterable, valIndex?: number) => void;
+  clearFilter: (filter: MainFilterable, valIndex?: number) => void;
 }
 
 // simple date range chips
@@ -76,7 +76,7 @@ export const FilterChips: FC = () => {
 
   const openDrawer = useCallback(() => setDrawerState(true), [setDrawerState]);
   const twoOrMoreFiltersApplied = checkMultiFilter(url.state.filters, 2);
-  const clearFilter = (filter: OsFilterable, valIndex?: number) => {
+  const clearFilter = (filter: MainFilterable, valIndex?: number) => {
     url.onSet((s) => {
       let filters = s.filters;
       const filterIndex = filters.findIndex((f) => f.field === filter.field);
@@ -98,7 +98,12 @@ export const FilterChips: FC = () => {
     });
   };
 
-  const handleChipClick = () => resetFilters(url.onSet);
+  const handleChipClick = () =>
+    url.onSet((s) => ({
+      ...s,
+      filters: [],
+      pagination: { ...s.pagination, number: 0 },
+    }));
 
   return (
     <div className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2">

@@ -3,10 +3,10 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { FC, useState } from "react";
 import { OsTableColumn } from "./types";
 import { useOsContext } from "../Provider";
-import { useOsUrl } from "../useOpensearch";
+import { useOsUrl } from "@/components/Opensearch/main";
 import { VisibilityPopover } from "../Settings";
 import { BLANK_VALUE } from "@/consts";
-import { OsField } from "shared-types";
+import { MainField } from "shared-types";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];
@@ -59,7 +59,7 @@ export const OsTable: FC<{
                   url.onSet((s) => ({
                     ...s,
                     sort: {
-                      field: TH.field as OsField,
+                      field: TH.field as MainField,
                       order: s.sort.order === "desc" ? "asc" : "desc",
                     },
                   }));

@@ -1,14 +1,3 @@
-import {
-  SeaToolTransform,
-  OnemacTransform,
-  OnemacLegacyTransform,
-  RaiIssueTransform,
-  RaiResponseTransform,
-  RaiWithdrawTransform,
-  WithdrawPackageTransform,
-  ToggleWithdrawRaiEnabledTransform,
-} from "./";
-
 export type OsHit<T> = {
   _index: string;
   _id: string;
@@ -39,19 +28,6 @@ export type OsResponse<T> = {
   aggregations?: OsAggResult;
 };
 
-export type OsMainSourceItem = OnemacTransform &
-  OnemacLegacyTransform &
-  SeaToolTransform &
-  RaiIssueTransform &
-  RaiResponseTransform &
-  RaiWithdrawTransform &
-  WithdrawPackageTransform &
-  ToggleWithdrawRaiEnabledTransform;
-export type OsMainSearchResponse = OsResponse<OsMainSourceItem>;
-export type ItemResult = OsHit<OsMainSourceItem> & {
-  found: boolean;
-};
-
 export type OsFilterType =
   | "term"
   | "terms"
@@ -63,30 +39,27 @@ export type OsFilterType =
 
 export type OsRangeValue = { gte?: string; lte?: string };
 export type OsFilterValue = string | string[] | number | boolean | OsRangeValue;
-export type OsField =
-  | keyof OsMainSourceItem
-  | `${keyof OsMainSourceItem}.keyword`;
 
-export type OsFilterable = {
+export type OsFilterable<_FIELD> = {
   type: OsFilterType;
   label?: string;
   component?: string;
-  field: OsField;
+  field: _FIELD;
   value: OsFilterValue;
   prefix: "must" | "must_not" | "should" | "filter";
 };
 
-export type OsQueryState = {
-  sort: { field: OsField; order: "asc" | "desc" };
+export type OsQueryState<_FIELD> = {
+  sort: { field: _FIELD; order: "asc" | "desc" };
   pagination: { number: number; size: number };
-  filters: OsFilterable[];
+  filters: OsFilterable<_FIELD>[];
   search?: string;
 };
 
-export type OsAggQuery = {
+export type OsAggQuery<_FIELD> = {
   name: string;
   type: OsFilterType;
-  field: OsField;
+  field: _FIELD;
   size: number;
 };
 

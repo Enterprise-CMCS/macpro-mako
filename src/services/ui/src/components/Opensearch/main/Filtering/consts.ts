@@ -1,8 +1,8 @@
 import {
+  MainFilterable,
   OsExportHeaderOptions,
-  OsField,
-  OsFilterable,
-  OsMainSourceItem,
+  MainField,
+  MainDocument,
 } from "shared-types";
 import { OsFilterComponentType, OsTab } from "../types";
 import { UserRoles } from "shared-types";
@@ -15,7 +15,7 @@ type DrawerFilterableGroup = {
   component: OsFilterComponentType;
 };
 type FilterGroup = Partial<
-  Record<OsField, OsFilterable & DrawerFilterableGroup>
+  Record<MainField, MainFilterable & DrawerFilterableGroup>
 >;
 
 const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
@@ -159,10 +159,10 @@ export const FILTER_GROUPS = (user?: any, tab?: OsTab): FilterGroup => {
 export const EXPORT_GROUPS = (
   tab: OsTab,
   user?: any
-): OsExportHeaderOptions<OsMainSourceItem>[] => {
+): OsExportHeaderOptions<MainDocument>[] => {
   const idFieldName =
     tab === "spas" ? "SPA ID" : tab === "waivers" ? "Waiver Number" : "";
-  const actionField: OsExportHeaderOptions<OsMainSourceItem>[] =
+  const actionField: OsExportHeaderOptions<MainDocument>[] =
     tab === "waivers"
       ? [
           {

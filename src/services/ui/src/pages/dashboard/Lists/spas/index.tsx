@@ -1,4 +1,4 @@
-import { ErrorAlert, LoadingSpinner } from "@/components";
+import { ErrorAlert } from "@/components";
 import { Pagination } from "@/components/Pagination";
 
 import {
@@ -6,7 +6,7 @@ import {
   OsFiltering,
   useOsContext,
   useOsUrl,
-} from "@/components/Opensearch";
+} from "@/components/Opensearch/main";
 import { useSpaTableColumns } from "./consts";
 
 export const SpasList = () => {

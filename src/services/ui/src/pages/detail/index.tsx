@@ -14,8 +14,8 @@ import { useGetUser } from "@/api/useGetUser";
 import {
   Action,
   ActionAvailabilityCheck,
-  ItemResult,
-  OsMainSourceItem,
+  MainItemResult,
+  MainDocument,
   PlanType,
   PlanTypeCheck,
   UserRoles,
@@ -46,7 +46,7 @@ const DetailCardWrapper = ({
     </div>
   </CardWithTopBorder>
 );
-const StatusCard = (data: OsMainSourceItem) => {
+const StatusCard = (data: MainDocument) => {
   const transformedStatuses = getStatus(data.seatoolStatus);
   const checker = ActionAvailabilityCheck(data);
   const { data: user } = useGetUser();
@@ -160,7 +160,7 @@ const PackageActionsCard = ({ id }: { id: string }) => {
   );
 };
 
-export const DetailsContent = ({ data }: { data?: ItemResult }) => {
+export const DetailsContent = ({ data }: { data?: MainItemResult }) => {
   const { state } = useLocation();
   if (!data?._source) return <LoadingSpinner />;
   return (

@@ -1,6 +1,6 @@
 import { Navigate, useNavigate, useParams } from "@/components/Routing";
 import { Alert, LoadingSpinner } from "@/components";
-import { Action, PlanType, ItemResult } from "shared-types";
+import { Action, PlanType, MainItemResult } from "shared-types";
 import { Button } from "@/components/Inputs";
 import { useEffect, useMemo, useState } from "react";
 import { PackageActionForm } from "@/pages/actions/PackageActionForm";
@@ -10,7 +10,7 @@ import { buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
 import { ActionFormIntro, PackageInfo } from "@/pages/actions/common";
 
-const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
+const ToggleRaiResponseWithdrawForm = ({ item }: { item?: MainItemResult }) => {
   const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();

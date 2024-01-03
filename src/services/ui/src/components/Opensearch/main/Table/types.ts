@@ -1,12 +1,12 @@
-import type { OsField, OsHit, OsMainSourceItem } from "shared-types";
+import type { MainField, MainDocument } from "shared-types";
 import type { ReactNode } from "react";
 
 export type OsTableColumn = {
-  field?: OsField;
+  field?: MainField;
   label: string;
   visible?: boolean;
   locked?: boolean;
   isSystem?: boolean;
   props?: any;
-  cell: (data: OsHit<OsMainSourceItem>["_source"]) => ReactNode;
+  cell: (data: MainDocument) => ReactNode;
 };
