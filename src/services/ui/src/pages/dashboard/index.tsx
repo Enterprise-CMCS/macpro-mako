@@ -11,7 +11,6 @@ import {
   FilterChips,
   FilterDrawerProvider,
 } from "@/components/Opensearch";
-import { ROUTES } from "@/routes";
 import { Button } from "@/components/Inputs";
 import { useUserContext } from "@/components/Context/userContext";
 import { useMemo } from "react";
