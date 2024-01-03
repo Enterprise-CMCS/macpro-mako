@@ -66,7 +66,10 @@ export const Dashboard = () => {
           <div className="flex items-center justify-between my-4">
             <h1 className="text-xl">Dashboard</h1>
             {!userContext?.isCms && (
-              <Link to={ROUTES.NEW_SUBMISSION_OPTIONS} className={buttonStyles}>
+              <Link
+                to={ROUTES.NEW_SUBMISSION_OPTIONS}
+                className="text-white bg-primary inline-block border-none px-10 py-2 rounded cursor-pointer"
+              >
                 New Submission
               </Link>
             )}
