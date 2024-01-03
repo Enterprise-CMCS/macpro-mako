@@ -34,6 +34,16 @@ const ABP3: FormSchema = {
               name: "benefit_package_name",
               label: "Benefit package name",
               rules: { required: "* Required" },
+              dependency: {
+                conditions: [
+                  {
+                    name: "benefit_package_details",
+                    type: "expectedValue",
+                    expectedValue: "benchmark_creating",
+                  },
+                ],
+                effect: { type: "show" },
+              },
             },
           ],
         },
