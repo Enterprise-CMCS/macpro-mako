@@ -267,6 +267,83 @@ const ABP3: FormSchema = {
         },
       ],
     },
+    {
+      title: "Selection of base benchmark plan",
+      form: [
+        {
+          description:
+            "The state/territory must select a base benchmark plan as the basis for providing essential health benefits in its benchmark or benchmark-equivalent package.",
+          slots: [
+            {
+              rhf: "Select",
+              label:
+                "Is the base benchmark plan the same as the Section 1937 coverage option?",
+              name: "base_benchmark_plan_same_as_section_1937",
+              rules: { required: "* Required" },
+              props: {
+                className: "w-[150px]",
+                options: [
+                  { label: "Yes", value: "yes" },
+                  { label: "No", value: "no" },
+                ],
+              },
+            },
+            {
+              rhf: "Radio",
+              label:
+                "Indicate which benchmark plan described at 45 CFR 156.100(a) the state/territory will use as its base benchmark plan.",
+              name: "base_benchmark_plan",
+              rules: { required: "* Required" },
+              props: {
+                options: [
+                  {
+                    label:
+                      "The largest plan by enrollment of the three largest small group insurance products in the state's small group market",
+                    value: "largest_plan_by_enrollment",
+                  },
+                  {
+                    label:
+                      "Any of the largest three state employee health benefit plans by enrollment",
+                    value: "any_of_largest_three_state",
+                  },
+                  {
+                    label:
+                      "Any of the largest three national FEHBP plan options open to federal employees in all geographies by enrollment",
+                    value: "any_of_largest_three_national_fehbp_plan_options",
+                  },
+                  {
+                    label: "The largest insured commercial non-Medicaid HMO",
+                    value: "largest_insured_commercial_hmo",
+                  },
+                ],
+              },
+            },
+            {
+              rhf: "Input",
+              label: "Plan name",
+              name: "base_benchmark_plan_name",
+              rules: { required: "* Required" },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Additional information",
+      form: [
+        {
+          description:
+            "Other information related to selection of the Section 1937 coverage option and the base benchmark plan (optional)",
+          slots: [
+            {
+              rhf: "Textarea",
+              label: "Additional information",
+              name: "additional_information",
+            },
+          ],
+        },
+      ],
+    },
   ],
 };
 
