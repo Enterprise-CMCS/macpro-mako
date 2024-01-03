@@ -25,3 +25,4 @@ export const MEDICAID_NEW = "/new-submission/spa/medicaid/create";
 export const CHIP_NEW = "/new-submission/spa/chip/create";
 export const WEBFORMS = "/webforms";
 export const WEBFORM = "/webform/:id/:version";
+export const IMPLEMENTATION_GUIDE = "/guides/implementation";
