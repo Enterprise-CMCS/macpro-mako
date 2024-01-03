@@ -64,7 +64,7 @@ export const Dashboard = () => {
             <h1 className="text-xl">Dashboard</h1>
             {!userContext?.isCms && (
               <Link
-                to={ROUTES.NEW_SUBMISSION_OPTIONS}
+                path="/new-submission"
                 className="text-white bg-primary inline-block border-none px-10 py-2 rounded cursor-pointer"
               >
                 New Submission
