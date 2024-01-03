@@ -1,12 +1,13 @@
 import { useForm } from "react-hook-form";
 import { Button, Form } from "@/components/Inputs";
 import { RHFDocument } from "@/components/RHF";
-import { Link, useParams } from "react-router-dom";
 import { SubNavHeader } from "@/components";
 import { documentInitializer, documentValidator } from "@/components/RHF/utils";
 import { useGetForm } from "@/api";
 import { LoadingSpinner } from "@/components";
 import { Footer } from "./footer";
+import { Link, useParams } from "../Routing";
+
 export const Webforms = () => {
   return (
     <>
@@ -15,8 +16,13 @@ export const Webforms = () => {
       </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1 space-x-5">
-          <Link to="/webform/abp1/1">ABP1</Link>
-          <Link to="/guides/implementation">Implementation Guide</Link>
+          <Link
+            path="/webform/:id/:version"
+            params={{ id: "abp1", version: 1 }}
+          >
+            ABP1
+          </Link>
+          <Link path="/guides/implementation">Implementation Guide</Link>
         </div>
       </section>
     </>
@@ -24,10 +30,8 @@ export const Webforms = () => {
 };
 
 export function Webform() {
-  const { id, version } = useParams<{
-    id: string;
-    version: string;
-  }>();
+  const { id, version } = useParams("/webform/:id/:version");
+
   const { data, isLoading, error } = useGetForm(id as string, version);
 
   const defaultValues = data ? documentInitializer(data) : {};

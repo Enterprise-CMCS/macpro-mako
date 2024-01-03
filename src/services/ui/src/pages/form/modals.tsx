@@ -1,8 +1,8 @@
 import { ConfirmationModal } from "@/components";
-import { ROUTES } from "@/routes";
+
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { createContextProvider } from "@/utils";
+import { useNavigate } from "@/components/Routing";
 
 type ModalProps = {
   open: boolean;
@@ -16,7 +16,7 @@ const Success = ({ open, setOpen }: ModalProps) => {
       open={open}
       onAccept={() => {
         setOpen(false);
-        navigate(ROUTES.DASHBOARD);
+        navigate({ path: "/dashboard" });
       }}
       onCancel={() => setOpen(false)}
       title="Submission Successful"
@@ -39,7 +39,7 @@ const Cancel = ({ open, setOpen }: ModalProps) => {
       open={open}
       onAccept={() => {
         setOpen(false);
-        navigate(ROUTES.DASHBOARD);
+        navigate({ path: "/dashboard" });
       }}
       onCancel={() => setOpen(false)}
       cancelButtonText="Return to Form"

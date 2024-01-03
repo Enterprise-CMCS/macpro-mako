@@ -22,6 +22,8 @@ import {
   RaiWithdraw,
   withdrawPackageSchema,
   WithdrawPackage,
+  toggleWithdrawRaiEnabledSchema,
+  ToggleWithdrawRaiEnabled,
 } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
@@ -211,7 +213,7 @@ export async function respondToRai(body: RaiResponse, rais: any) {
     // Close pool
     await pool.close();
   }
-  console.log("heyo");
+
 }
 
 export async function withdrawPackage(body: WithdrawPackage) {
@@ -256,7 +258,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
     console.error("Error executing query:", err);
     return response({
       statusCode: 500,
-      body: { message: err.message },
+      body: err instanceof Error ? { message: err.message } : err,
     });
   } finally {
     // Close pool
@@ -264,19 +266,37 @@ export async function withdrawPackage(body: WithdrawPackage) {
   }
 }
 
-export async function toggleRaiResponseWithdraw(body: any, toggle: boolean) {
-  const { id, authority, origin } = body;
+export async function toggleRaiResponseWithdraw(
+  body: ToggleWithdrawRaiEnabled,
+  toggle: boolean
+) {
+  const result = toggleWithdrawRaiEnabledSchema.safeParse({
+    ...body,
+    raiWithdrawEnabled: toggle,
+  });
+  if (result.success === false) {
+    console.error(
+      "Toggle Rai Response Withdraw Enable event validation error. The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message
+    );
+    return response({
+      statusCode: 400,
+      body: {
+        message: "Toggle Rai Response Withdraw Enable event validation error",
+      },
+    });
+  }
   try {
     await produceMessage(
       TOPIC_NAME,
-      id,
+      body.id,
       JSON.stringify({
-        raiWithdrawEnabled: toggle,
         actionType: toggle
           ? Action.ENABLE_RAI_WITHDRAW
           : Action.DISABLE_RAI_WITHDRAW,
-        authority,
-        origin,
+        ...result.data,
       })
     );
 

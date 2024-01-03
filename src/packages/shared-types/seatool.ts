@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { SEATOOL_STATUS, getStatus } from "./statusHelper";
+import { PlanType } from "./planType";
 
 type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
@@ -199,7 +200,7 @@ export const transformSeatoolData = (id: string) => {
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
       leadAnalystName,
-      planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME,
+      planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME as PlanType | null,
       planTypeId: data.STATE_PLAN.PLAN_TYPE,
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,

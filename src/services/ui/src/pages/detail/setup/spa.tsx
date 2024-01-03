@@ -26,14 +26,8 @@ export const spaDetails = (data: OsMainSourceItem): DetailSectionItem[] => [
   },
   {
     label: "Type",
-    value: removeUnderscoresAndCapitalize(data.planType),
-    canView: () => true,
-  },
-  {
-    // TODO: Redo logic to hide for SPAs
-    label: "Action Type",
-    value: data.actionType
-      ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
+    value: data?.planType
+      ? removeUnderscoresAndCapitalize(data.planType)
       : BLANK_VALUE,
     canView: () => true,
   },
@@ -84,11 +78,7 @@ export const submissionDetails = (
   },
   {
     label: "Submission Source",
-    value: (
-      <p className="text-lg">
-        {data?.origin?.toLowerCase() === "onemac" ? "OneMAC" : BLANK_VALUE}
-      </p>
-    ),
+    value: <p className="text-lg">{data?.origin || BLANK_VALUE}</p>,
     canView: () => true,
   },
   {

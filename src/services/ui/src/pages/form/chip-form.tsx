@@ -13,7 +13,7 @@ import {
 } from "@/components";
 import * as Inputs from "@/components/Inputs";
 import { FAQ_TARGET } from "@/routes";
-import { Authority } from "shared-types";
+import { PlanType } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
@@ -76,7 +76,7 @@ export const ChipForm = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: Authority.CHIP_SPA,
+        authority: PlanType.CHIP_SPA,
       });
       setSuccessModalOpen(true);
     } catch (e) {
