@@ -16,9 +16,6 @@ import { Button } from "@/components/Inputs";
 import { useUserContext } from "@/components/Context/userContext";
 import { useMemo } from "react";
 
-const buttonStyles =
-  "text-white bg-primary inline-block border-none px-10 py-2 rounded cursor-pointer";
-
 const loader = (queryClient: QueryClient) => {
   return async () => {
     if (!queryClient.getQueryData(["user"])) {
