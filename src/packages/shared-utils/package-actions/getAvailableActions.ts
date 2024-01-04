@@ -3,6 +3,7 @@ import {
   OsMainSourceItem,
   PlanType,
 } from "../../shared-types";
+import { Action } from '../../shared-types/actions'
 import rules from "./rules";
 import { PackageCheck } from "../packageCheck";
 
@@ -11,7 +12,13 @@ export const getAvailableActions = (
   result: OsMainSourceItem
 ) => {
   const checks = PackageCheck(result);
-  return checks.planTypeIs([PlanType.MED_SPA])
+  const finalChecks = checks.planTypeIs([PlanType.MED_SPA])
     ? rules.filter((r) => r.check(checks, user)).map((r) => r.action)
     : [];
+
+  // checking if the package is 
+  if (finalChecks?.includes(Action.RESPOND_TO_RAI)) {
+    finalChecks.push(Action.WITHDRAW_PACKAGE)
+  }
+  return finalChecks
 };
