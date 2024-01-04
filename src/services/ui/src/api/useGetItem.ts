@@ -1,8 +1,10 @@
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { MainItemResult, ReactQueryApiError } from "shared-types";
+import { opensearch, ReactQueryApiError } from "shared-types";
 
-export const getItem = async (id: string): Promise<MainItemResult> =>
+export const getItem = async (
+  id: string
+): Promise<opensearch.main.ItemResult> =>
   await API.post("os", "/item", { body: { id } });
 
 export const idIsUnique = async (id: string) => {
@@ -16,9 +18,9 @@ export const idIsUnique = async (id: string) => {
 
 export const useGetItem = (
   id: string,
-  options?: UseQueryOptions<MainItemResult, ReactQueryApiError>
+  options?: UseQueryOptions<opensearch.main.ItemResult, ReactQueryApiError>
 ) => {
-  return useQuery<MainItemResult, ReactQueryApiError>(
+  return useQuery<opensearch.main.ItemResult, ReactQueryApiError>(
     ["record", id],
     () => getItem(id),
     options

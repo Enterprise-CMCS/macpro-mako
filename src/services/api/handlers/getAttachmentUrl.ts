@@ -6,7 +6,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import * as os from "./../../../libs/opensearch-lib";
 import { getStateFilter } from "../libs/auth/user";
-import { MainDocument, OsResponse } from "shared-types";
+import { opensearch } from "shared-types";
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
@@ -52,7 +52,7 @@ export const handler = async (event: APIGatewayEvent) => {
       process.env.osDomain,
       "main",
       query
-    )) as OsResponse<MainDocument>;
+    )) as opensearch.Response<opensearch.main.Document>;
 
     if (!results) {
       return response({

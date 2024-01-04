@@ -6,7 +6,7 @@ import { useOsContext } from "../Provider";
 import { useOsUrl } from "@/components/Opensearch/main";
 import { VisibilityPopover } from "../Settings";
 import { BLANK_VALUE } from "@/consts";
-import { MainField } from "shared-types";
+import { opensearch } from "shared-types";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];
@@ -59,7 +59,7 @@ export const OsTable: FC<{
                   url.onSet((s) => ({
                     ...s,
                     sort: {
-                      field: TH.field as MainField,
+                      field: TH.field as opensearch.main.Field,
                       order: s.sort.order === "desc" ? "asc" : "desc",
                     },
                   }));

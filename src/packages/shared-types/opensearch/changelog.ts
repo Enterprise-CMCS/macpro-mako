@@ -1,6 +1,12 @@
-import { OsResponse, OsHit, OsFilterable, OsQueryState, OsAggQuery } from "./_";
+import {
+  Response as Res,
+  Hit,
+  Filterable as FIL,
+  QueryState,
+  AggQuery,
+} from "./_";
 
-export type ChangelogDocument = {
+export type Document = {
   actionType: string;
   additionalInformation: string;
   attachments?: {
@@ -25,13 +31,12 @@ export type ChangelogDocument = {
   withdrawnDate: number;
 };
 
-export type ChangelogResponse = OsResponse<ChangelogDocument>;
-export type ChangelogItemResult = OsHit<ChangelogDocument> & {
+export type Response = Res<Document>;
+export type ItemResult = Hit<Document> & {
   found: boolean;
 };
-export type ChangelogField =
-  | keyof ChangelogDocument
-  | `${keyof ChangelogDocument}.keyword`;
-export type ChangelogFilterable = OsFilterable<ChangelogField>;
-export type ChangelogState = OsQueryState<ChangelogField>;
-export type ChangelogAggs = OsAggQuery<ChangelogField>;
+
+export type Field = keyof Document | `${keyof Document}.keyword`;
+export type Filterable = FIL<Field>;
+export type State = QueryState<Field>;
+export type Aggs = AggQuery<Field>;

@@ -1,4 +1,4 @@
-import { OsMainSourceItem } from "./opensearch";
+import { main } from "./opensearch";
 import { CognitoUserAttributes } from "./user";
 import { getLatestRai } from "shared-utils";
 import { SEATOOL_STATUS } from "./statusHelper";
@@ -29,7 +29,7 @@ export const ActionAvailabilityCheck = ({
   rais,
   raiWithdrawEnabled,
   planType,
-}: OsMainSourceItem) => {
+}: main.Document) => {
   const latestRai = getLatestRai(rais);
   return {
     /** Is in any of our pending statuses, sans Pending-RAI **/

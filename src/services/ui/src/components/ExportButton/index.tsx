@@ -5,11 +5,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { useOsUrl } from "@/components/Opensearch/main";
-import { OsExportHeaderOptions } from "shared-types";
+import { opensearch } from "shared-types";
 
 type Props<TData extends Record<string, any>> = {
   data: TData[] | (() => Promise<TData[]>);
-  headers: OsExportHeaderOptions<TData>[];
+  headers: opensearch.ExportHeaderOptions<TData>[];
   // | Record<string, HeaderOptions<TData>>
 };
 

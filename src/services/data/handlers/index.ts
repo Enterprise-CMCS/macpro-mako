@@ -2,7 +2,7 @@ import { Handler } from "aws-lambda";
 import { send, SUCCESS, FAILED } from "cfn-response-async";
 type ResponseStatus = typeof SUCCESS | typeof FAILED;
 import * as os from "./../../../libs/opensearch-lib";
-import { OsIndex } from "shared-types";
+import { opensearch } from "shared-types";
 
 export const customResourceWrapper: Handler = async (event, context) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
@@ -26,7 +26,7 @@ export const handler: Handler = async () => {
 };
 
 const manageIndexResource = async (resource: {
-  index: OsIndex;
+  index: opensearch.Index;
   update?: object;
 }) => {
   if (!process.env.osDomain) {

@@ -1,8 +1,8 @@
-import { OsAggQuery, OsFilterable, OsQueryState } from "shared-types";
+import { opensearch } from "shared-types";
 
 const filterMapQueryReducer = (
-  state: Record<OsFilterable<any>["prefix"], any[]>,
-  filter: OsFilterable<any>
+  state: Record<opensearch.Filterable<any>["prefix"], any[]>,
+  filter: opensearch.Filterable<any>
 ) => {
   if (!filter.value) return state;
 
@@ -39,7 +39,7 @@ const filterMapQueryReducer = (
   return state;
 };
 
-export const filterQueryBuilder = (filters: OsFilterable<any>[]) => {
+export const filterQueryBuilder = (filters: opensearch.Filterable<any>[]) => {
   if (!filters?.length) return {};
 
   return {
@@ -55,7 +55,7 @@ export const filterQueryBuilder = (filters: OsFilterable<any>[]) => {
 };
 
 export const paginationQueryBuilder = (
-  pagination: OsQueryState<any>["pagination"]
+  pagination: opensearch.QueryState<any>["pagination"]
 ) => {
   const from = (() => {
     if (!pagination.number) return 0;
@@ -68,11 +68,11 @@ export const paginationQueryBuilder = (
   };
 };
 
-export const sortQueryBuilder = (sort: OsQueryState<any>["sort"]) => {
+export const sortQueryBuilder = (sort: opensearch.QueryState<any>["sort"]) => {
   return { sort: [{ [sort.field]: sort.order }] };
 };
 
-export const aggQueryBuilder = (aggs: OsAggQuery<any>[]) => {
+export const aggQueryBuilder = (aggs: opensearch.AggQuery<any>[]) => {
   return {
     aggs: aggs.reduce((STATE, AGG) => {
       STATE[AGG.name] = {
@@ -95,11 +95,14 @@ export const createSearchFilterable = (value?: string) => {
       field: "",
       value,
       prefix: "must",
-    } as unknown as OsFilterable<any>,
+    } as unknown as opensearch.Filterable<any>,
   ];
 };
 
-export const checkMultiFilter = (filters: OsFilterable<any>[], val: number) => {
+export const checkMultiFilter = (
+  filters: opensearch.Filterable<any>[],
+  val: number
+) => {
   return (
     filters.length >= val ||
     filters.some(

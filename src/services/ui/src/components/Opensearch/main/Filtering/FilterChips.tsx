@@ -2,16 +2,16 @@ import { type FC, useCallback, Fragment } from "react";
 
 import { Chip } from "@/components/Chip";
 import { useOsUrl } from "@/components/Opensearch/main";
-import { MainFilterable, OsRangeValue } from "shared-types";
+import { opensearch } from "shared-types";
 import { useFilterDrawerContext } from "./FilterProvider";
 import { checkMultiFilter } from "@/components/Opensearch";
 import { useLabelMapping } from "@/hooks";
 
 interface RenderProp {
-  filter: MainFilterable;
+  filter: opensearch.main.Filterable;
   index: number;
   openDrawer: () => void;
-  clearFilter: (filter: MainFilterable, valIndex?: number) => void;
+  clearFilter: (filter: opensearch.main.Filterable, valIndex?: number) => void;
 }
 
 // simple date range chips
@@ -21,7 +21,7 @@ const DateChip: FC<RenderProp> = ({
   openDrawer,
   clearFilter,
 }) => {
-  const value = filter.value as OsRangeValue;
+  const value = filter.value as opensearch.RangeValue;
   return (
     <Chip
       key={`${index}-${filter.field}`}
@@ -76,7 +76,10 @@ export const FilterChips: FC = () => {
 
   const openDrawer = useCallback(() => setDrawerState(true), [setDrawerState]);
   const twoOrMoreFiltersApplied = checkMultiFilter(url.state.filters, 2);
-  const clearFilter = (filter: MainFilterable, valIndex?: number) => {
+  const clearFilter = (
+    filter: opensearch.main.Filterable,
+    valIndex?: number
+  ) => {
     url.onSet((s) => {
       let filters = s.filters;
       const filterIndex = filters.findIndex((f) => f.field === filter.field);

@@ -1,34 +1,34 @@
-export type OsHit<T> = {
+export type Hit<T> = {
   _index: string;
   _id: string;
   _score: number;
   _source: T;
   sort: Array<number>;
 };
-export type OsHits<T> = {
-  hits: OsHit<T>[];
+export type Hits<T> = {
+  hits: Hit<T>[];
   max_score: number;
   total: { value: number; relation: "eq" };
 };
 
-export type OsResponse<T> = {
+export type Response<T> = {
   _shards: {
     total: number;
     failed: number;
     successful: number;
     skipped: number;
   };
-  hits: OsHits<T>;
+  hits: Hits<T>;
   total: {
     value: number;
   };
   max_score: number | null;
   took: number;
   timed_out: boolean;
-  aggregations?: OsAggResult;
+  aggregations?: AggResult;
 };
 
-export type OsFilterType =
+export type FilterType =
   | "term"
   | "terms"
   | "match"
@@ -37,46 +37,46 @@ export type OsFilterType =
   | "global_search"
   | "exists";
 
-export type OsRangeValue = { gte?: string; lte?: string };
-export type OsFilterValue = string | string[] | number | boolean | OsRangeValue;
+export type RangeValue = { gte?: string; lte?: string };
+export type FilterValue = string | string[] | number | boolean | RangeValue;
 
-export type OsFilterable<_FIELD> = {
-  type: OsFilterType;
+export type Filterable<_FIELD> = {
+  type: FilterType;
   label?: string;
   component?: string;
   field: _FIELD;
-  value: OsFilterValue;
+  value: FilterValue;
   prefix: "must" | "must_not" | "should" | "filter";
 };
 
-export type OsQueryState<_FIELD> = {
+export type QueryState<_FIELD> = {
   sort: { field: _FIELD; order: "asc" | "desc" };
   pagination: { number: number; size: number };
-  filters: OsFilterable<_FIELD>[];
+  filters: Filterable<_FIELD>[];
   search?: string;
 };
 
-export type OsAggQuery<_FIELD> = {
+export type AggQuery<_FIELD> = {
   name: string;
-  type: OsFilterType;
+  type: FilterType;
   field: _FIELD;
   size: number;
 };
 
-export type OsAggBucket = { key: string; doc_count: number };
+export type AggBucket = { key: string; doc_count: number };
 
-export type OsAggResult = Record<
+export type AggResult = Record<
   string,
   {
     doc_count_error_upper_bound: number;
     sum_other_doc_count: number;
-    buckets: OsAggBucket[];
+    buckets: AggBucket[];
   }
 >;
 
-export type OsExportHeaderOptions<TData> = {
+export type ExportHeaderOptions<TData> = {
   transform: (data: TData) => string;
   name: string;
 };
 
-export type OsIndex = "main" | "seatool" | "changelog";
+export type Index = "main" | "seatool" | "changelog";

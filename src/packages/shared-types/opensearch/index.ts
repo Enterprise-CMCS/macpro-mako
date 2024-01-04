@@ -1,3 +1,3 @@
-export * from "./changelog";
-export * from "./main";
+export * as changelog from "./changelog";
+export * as main from "./main";
 export * from "./_";

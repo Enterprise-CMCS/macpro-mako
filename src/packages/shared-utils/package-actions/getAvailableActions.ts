@@ -1,15 +1,15 @@
 import {
   ActionAvailabilityCheck,
   CognitoUserAttributes,
-  OsMainSourceItem,
   PlanTypeCheck,
   PlanType,
+  opensearch
 } from "../../shared-types";
 import rules from "./rules";
 
 export const getAvailableActions = (
   user: CognitoUserAttributes,
-  result: OsMainSourceItem
+  result: opensearch.main.Document
 ) => {
   const actionChecker = ActionAvailabilityCheck(result);
   return PlanTypeCheck(result.planType).is([PlanType.MED_SPA])

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   aggQueryBuilder,
   filterQueryBuilder,
@@ -6,27 +7,20 @@ import {
 } from "@/components/Opensearch/utils";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import type {
-  ReactQueryApiError,
-  OsAggQuery,
-  MainFilterable,
-  MainDocument,
-  OsIndex,
-  ChangelogResponse,
-  OsQueryState,
-  ChangelogField,
-  OsResponse,
-} from "shared-types";
+import type { ReactQueryApiError, opensearch } from "shared-types";
 
 type QueryProps<T> = {
-  index: OsIndex;
-  filters: OsQueryState<T>["filters"];
-  sort?: OsQueryState<T>["sort"];
-  pagination: OsQueryState<T>["pagination"];
-  aggs?: OsAggQuery<T>[];
+  index: opensearch.Index;
+  filters: opensearch.QueryState<T>["filters"];
+  sort?: opensearch.QueryState<T>["sort"];
+  pagination: opensearch.QueryState<T>["pagination"];
+  aggs?: opensearch.AggQuery<T>[];
 };
 
-export const getOsData = async <TProps, TResponse extends OsResponse<any>>(
+export const getOsData = async <
+  TProps,
+  TResponse extends opensearch.Response<any>
+>(
   props: QueryProps<TProps>
 ): Promise<TResponse> => {
   const searchData = await API.post("os", `/search/${props.index}`, {
@@ -42,12 +36,14 @@ export const getOsData = async <TProps, TResponse extends OsResponse<any>>(
   return searchData;
 };
 
-export const getMainExportData = async (filters?: MainFilterable[]) => {
+export const getMainExportData = async (
+  filters?: opensearch.main.Filterable[]
+) => {
   if (!filters) return [];
 
   const recursiveSearch = async (
     startPage: number
-  ): Promise<MainDocument[]> => {
+  ): Promise<opensearch.main.Document[]> => {
     if (startPage * 1000 >= 10000) {
       return [];
     }
@@ -80,6 +76,7 @@ export const useOsSearch = <TProps, TResponse>(
     QueryProps<TProps>
   >
 ) => {
+  //@ts-ignore
   return useMutation<TResponse, ReactQueryApiError, QueryProps<TProps>>(
     (props) => getOsData(props),
     options
@@ -88,14 +85,14 @@ export const useOsSearch = <TProps, TResponse>(
 
 export const useChangelogSearch = (
   options?: UseMutationOptions<
-    ChangelogResponse,
+    opensearch.changelog.Response,
     ReactQueryApiError,
-    QueryProps<ChangelogField>
+    QueryProps<opensearch.changelog.Field>
   >
 ) => {
   return useMutation<
-    ChangelogResponse,
+    opensearch.changelog.Response,
     ReactQueryApiError,
-    QueryProps<ChangelogField>
+    QueryProps<opensearch.changelog.Field>
   >((props) => getOsData(props), options);
 };

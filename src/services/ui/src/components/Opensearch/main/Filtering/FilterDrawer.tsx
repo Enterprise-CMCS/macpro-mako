@@ -1,5 +1,5 @@
 import { FilterIcon } from "lucide-react";
-import { OsRangeValue } from "shared-types";
+import { opensearch } from "shared-types";
 
 import {
   Sheet,
@@ -83,7 +83,9 @@ export const OsFilterDrawer = () => {
                 )}
                 {PK.component === "dateRange" && (
                   <FilterableDateRange
-                    value={hook.filters[PK.field]?.value as OsRangeValue}
+                    value={
+                      hook.filters[PK.field]?.value as opensearch.RangeValue
+                    }
                     onChange={hook.onFilterChange(PK.field)}
                   />
                 )}

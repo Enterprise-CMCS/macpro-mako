@@ -1,9 +1,4 @@
-import {
-  MainFilterable,
-  OsExportHeaderOptions,
-  MainField,
-  MainDocument,
-} from "shared-types";
+import { opensearch } from "shared-types";
 import { OsFilterComponentType, OsTab } from "../types";
 import { UserRoles } from "shared-types";
 import { BLANK_VALUE } from "@/consts";
@@ -15,7 +10,10 @@ type DrawerFilterableGroup = {
   component: OsFilterComponentType;
 };
 type FilterGroup = Partial<
-  Record<MainField, MainFilterable & DrawerFilterableGroup>
+  Record<
+    opensearch.main.Field,
+    opensearch.main.Filterable & DrawerFilterableGroup
+  >
 >;
 
 const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
@@ -159,10 +157,10 @@ export const FILTER_GROUPS = (user?: any, tab?: OsTab): FilterGroup => {
 export const EXPORT_GROUPS = (
   tab: OsTab,
   user?: any
-): OsExportHeaderOptions<MainDocument>[] => {
+): opensearch.ExportHeaderOptions<opensearch.main.Document>[] => {
   const idFieldName =
     tab === "spas" ? "SPA ID" : tab === "waivers" ? "Waiver Number" : "";
-  const actionField: OsExportHeaderOptions<MainDocument>[] =
+  const actionField: opensearch.ExportHeaderOptions<opensearch.main.Document>[] =
     tab === "waivers"
       ? [
           {

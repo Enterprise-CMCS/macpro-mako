@@ -9,23 +9,30 @@ import {
   ToggleWithdrawRaiEnabledTransform,
 } from "..";
 
-import { OsResponse, OsHit, OsFilterable, OsQueryState, OsAggQuery } from "./_";
+import {
+  Response as Res,
+  Hit,
+  Filterable as FIL,
+  QueryState,
+  AggQuery,
+} from "./_";
+import { ItemResult as Changelog } from "./changelog";
 
-export type MainDocument = OnemacTransform &
+export type Document = OnemacTransform &
   OnemacLegacyTransform &
   SeaToolTransform &
   RaiIssueTransform &
   RaiResponseTransform &
   RaiWithdrawTransform &
   WithdrawPackageTransform &
-  ToggleWithdrawRaiEnabledTransform;
+  ToggleWithdrawRaiEnabledTransform & { changelog?: Changelog[] };
 
-export type MainResponse = OsResponse<MainDocument>;
-export type MainItemResult = OsHit<MainDocument> & {
+export type Response = Res<Document>;
+export type ItemResult = Hit<Document> & {
   found: boolean;
 };
 
-export type MainField = keyof MainDocument | `${keyof MainDocument}.keyword`;
-export type MainFilterable = OsFilterable<MainField>;
-export type MainState = OsQueryState<MainField>;
-export type MainAggs = OsAggQuery<MainField>;
+export type Field = keyof Document | `${keyof Document}.keyword`;
+export type Filterable = FIL<Field>;
+export type State = QueryState<Field>;
+export type Aggs = AggQuery<Field>;

@@ -1,27 +1,22 @@
 import {
   AdditionalInfo,
   Alert,
-  Attachmentslist,
   CardWithTopBorder,
   ConfirmationModal,
   DetailItemsGrid,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
-  RaiList,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import {
   Action,
   ActionAvailabilityCheck,
-  MainItemResult,
-  MainDocument,
-  PlanType,
-  PlanTypeCheck,
+  opensearch,
   UserRoles,
 } from "shared-types";
 import { useQuery } from "@/hooks";
-import { useGetItem } from "@/api";
+import { getAttachmentUrl, useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
 import { useLocation } from "react-router-dom";
@@ -32,6 +27,8 @@ import { API } from "aws-amplify";
 import { getStatus } from "shared-types/statusHelper";
 import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 import { Link } from "@/components/Routing";
+import { PackageActivities } from "./package-activity";
+import { AdminChanges } from "./admin-changes";
 
 const DetailCardWrapper = ({
   title,
@@ -46,7 +43,7 @@ const DetailCardWrapper = ({
     </div>
   </CardWithTopBorder>
 );
-const StatusCard = (data: MainDocument) => {
+const StatusCard = (data: opensearch.main.Document) => {
   const transformedStatuses = getStatus(data.seatoolStatus);
   const checker = ActionAvailabilityCheck(data);
   const { data: user } = useGetUser();
@@ -160,7 +157,11 @@ const PackageActionsCard = ({ id }: { id: string }) => {
   );
 };
 
-export const DetailsContent = ({ data }: { data?: MainItemResult }) => {
+export const DetailsContent = ({
+  data,
+}: {
+  data?: opensearch.main.ItemResult;
+}) => {
   const { state } = useLocation();
   if (!data?._source) return <LoadingSpinner />;
   return (
@@ -200,20 +201,14 @@ export const DetailsContent = ({ data }: { data?: MainItemResult }) => {
           <StatusCard {...data._source} />
           <PackageActionsCard id={data._id} />
         </section>
-        <h2 className="text-xl font-semibold mb-2">{"Package Details"}</h2>
-        <DetailItemsGrid displayItems={spaDetails(data._source)} />
-        <DetailItemsGrid displayItems={submissionDetails(data._source)} />
-        {/* Below is used for spacing. Keep it simple */}
-        <div className="mb-4" />
-        <DetailsSection id="attachments" title="Attachments">
-          <Attachmentslist {...data?._source} />
-        </DetailsSection>
-        <DetailsSection id="additional-info" title="Additional Information">
-          <AdditionalInfo
-            additionalInformation={data?._source.additionalInformation}
-          />
-        </DetailsSection>
-        <RaiList {...data?._source} />
+        <div className="flex flex-col gap-3">
+          <DetailsSection id="package-details" title="Medicaid Package Details">
+            <DetailItemsGrid displayItems={spaDetails(data._source)} />
+            <DetailItemsGrid displayItems={submissionDetails(data._source)} />
+          </DetailsSection>
+          <PackageActivities {...data._source} />
+          <AdminChanges {...data._source} />
+        </div>
       </div>
     </div>
   );
