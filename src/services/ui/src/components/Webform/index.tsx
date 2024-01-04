@@ -22,7 +22,7 @@ export const Webforms = () => {
           >
             ABP1
           </Link>
-          <Link path="/guides/implementation">Implementation Guide</Link>
+          <Link path="/guides/abp">Implementation Guide</Link>
         </div>
       </section>
     </>

@@ -1,6 +1,6 @@
 import { SubNavHeader } from "@/components";
 
-export const ImplmentationGuide = () => {
+export const ABPGuide = () => {
   return (
     <>
       <SubNavHeader>
