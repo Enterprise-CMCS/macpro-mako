@@ -12,10 +12,5 @@ export enum Action {
 
 export type ActionRule = {
   action: Action;
-  check: (
-    checker: IPackageCheck,
-    user: CognitoUserAttributes,
-    /** Keep excess parameters to a minimum **/
-    ...any: any[]
-  ) => boolean;
+  check: (checker: IPackageCheck, user: CognitoUserAttributes) => boolean;
 };
