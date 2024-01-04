@@ -66,6 +66,14 @@ const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       type: "terms",
       value: [],
     },
+    "origin.keyword": {
+      label: "Submission Source",
+      field: "origin.keyword",
+      component: "multiSelect",
+      prefix: "must",
+      type: "terms",
+      value: [],
+    },
   };
 };
 
@@ -122,6 +130,14 @@ const WAIVER_FILTER_GROUP = (isCms: boolean): FilterGroup => {
     "leadAnalystName.keyword": {
       label: "CPOC Name",
       field: "leadAnalystName.keyword",
+      component: "multiSelect",
+      prefix: "must",
+      type: "terms",
+      value: [],
+    },
+    "origin.keyword": {
+      label: "Submission Source",
+      field: "origin.keyword",
       component: "multiSelect",
       prefix: "must",
       type: "terms",

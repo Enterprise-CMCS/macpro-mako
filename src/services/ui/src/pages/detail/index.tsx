@@ -9,12 +9,8 @@ import {
   LoadingSpinner,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import {
-  Action,
-  ActionAvailabilityCheck,
-  opensearch,
-  UserRoles,
-} from "shared-types";
+import { Action, opensearch, UserRoles } from "shared-types";
+import { PackageCheck } from "shared-utils";
 import { useQuery } from "@/hooks";
 import { getAttachmentUrl, useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -45,7 +41,7 @@ const DetailCardWrapper = ({
 );
 const StatusCard = (data: opensearch.main.Document) => {
   const transformedStatuses = getStatus(data.seatoolStatus);
-  const checker = ActionAvailabilityCheck(data);
+  const checker = PackageCheck(data);
   const { data: user } = useGetUser();
 
   return (

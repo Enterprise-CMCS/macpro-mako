@@ -62,9 +62,12 @@ export const Dashboard = () => {
           <div className="flex items-center justify-between my-4">
             <h1 className="text-xl">Dashboard</h1>
             {!userContext?.isCms && (
-              <Button>
-                <Link path="/new-submission">New Submission</Link>
-              </Button>
+              <Link
+                path="/new-submission"
+                className="text-white bg-primary inline-block border-none px-10 py-2 rounded cursor-pointer"
+              >
+                New Submission
+              </Link>
             )}
           </div>
           <div className="w-[100%] items-center justify-center">

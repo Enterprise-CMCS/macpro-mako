@@ -4,3 +4,4 @@ export { isStateUser } from "./is-state-user";
 export * from "./rai-helper";
 export * from "./regex";
 export * from "./package-actions/getAvailableActions";
+export * from "./packageCheck";
