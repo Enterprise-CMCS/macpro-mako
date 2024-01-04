@@ -8,7 +8,7 @@ import {
   LoadingSpinner,
   SimplePageContainer,
 } from "@/components";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
+import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
 import React, {
   JSXElementConstructor,
   PropsWithChildren,
@@ -23,30 +23,17 @@ import { useModalContext } from "@/pages/form/modals";
 import { AttachmentRecipe, buildActionUrl } from "@/lib";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ZodObject } from "zod";
 import { submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
-import {zAdditionalInfo} from "@/pages/form/zod";
+import { FormConfig } from "@/pages/actions/configs";
 
 type CloneableChild = ReactElement<any, string | JSXElementConstructor<any>>;
-
-const actionFormBaseSchema = z.object({
-  zAdditionalInfo,
-  attachments: z.object({
-    supportingDocumentation: z.array(z.instanceof(File)).optional(),
-  }),
-});
-
-type ZodFormSchema = z.infer<typeof z.ZodObject({})>;
-export const NewPackageActionForm = <T extends ZodFormSchema>({
+export const NewPackageActionForm = <T extends Record<string, any>>({
   item,
   attachments,
   schema,
-}: {
-  item: ItemResult;
-  attachments: AttachmentRecipe<T>[]; // TODO: Fix typing for typesafe `name`
-  schema: T;
-}) => {
+  submitRules,
+}: FormConfig<T> & { item: ItemResult }) => {
   const planType = item?._source.authority as PlanType;
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen, setErrorModalOpen } =
@@ -57,6 +44,10 @@ export const NewPackageActionForm = <T extends ZodFormSchema>({
   });
   const handleSubmit: SubmitHandler<T> = async (data) => {
     try {
+      if (submitRules?.length) {
+        // Run additional checks for complex conditions not met by schema
+        submitRules.forEach((fn) => fn(data));
+      }
       await submit<T & { id: string }>({
         data: {
           ...data,
@@ -178,7 +169,7 @@ export const PackageActionForm = ({ children }: PropsWithChildren) => {
   return (
     <SimplePageContainer>
       <BreadCrumbs
-        options={DETAILS_AND_ACTIONS_CRUMBS({ id: id, action: type })}
+        options={detailsAndActionsCrumbs({ id: id, action: type })}
       />
       {itemError && (
         <Alert className="my-2 max-w-2xl" variant="destructive">

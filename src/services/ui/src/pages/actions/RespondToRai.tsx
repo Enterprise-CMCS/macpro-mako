@@ -7,7 +7,7 @@ import { SimplePageContainer, Alert, LoadingSpinner } from "@/components";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET } from "@/routes";
 import { Link, useNavigate, useParams } from "@/components/Routing";
-import { Action, PlanType } from "shared-types";
+import { PlanType } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
 import { useGetItem } from "@/api";
