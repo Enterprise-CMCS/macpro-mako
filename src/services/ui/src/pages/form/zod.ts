@@ -33,3 +33,8 @@ export const zAttachmentRequired = ({
     .refine((value) => value.length >= min && value.length <= max, {
       message: message,
     });
+
+export const zAdditionalInfo = z
+  .string()
+  .max(4000, "This field may only be up to 4000 characters.")
+  .optional();
