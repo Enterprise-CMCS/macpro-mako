@@ -6,19 +6,22 @@ import {
   zWithdrawPackageFormSchema,
   zWithdrawRaiFormSchema,
 } from "@/pages/actions/schemas";
+import { ZodObject } from "zod";
 
-export type FormConfig<S extends Record<string, any>> = {
-  readonly schema: S;
-  readonly attachments: AttachmentRecipe<S>[];
+export type FormConfig = {
+  readonly title: string;
+  readonly schema: ZodObject<any>;
+  readonly attachments: AttachmentRecipe[];
   /* Use if your action has additional/complex rules. (ex: WithdrawPackage
    * requires _either_ an attachment _or_ additionalInfo, and Zod doesn't support
    * this case.)
    *
    * Submit Rules should throw an error if a condition is not met. */
-  readonly submitRules?: ((data: S) => void)[];
+  readonly submitRules?: ((data: object) => void)[];
 };
 
-const fcIssueRai: FormConfig<typeof zIssueRaiFormSchema> = {
+export const fcIssueRai: FormConfig = {
+  title: "Formal RAI Details",
   schema: zIssueRaiFormSchema,
   attachments: [
     {
@@ -34,7 +37,8 @@ const fcIssueRai: FormConfig<typeof zIssueRaiFormSchema> = {
   ],
 };
 
-const fcRespondToChipRai: FormConfig<typeof zRespondToChipRaiFormSchema> = {
+export const fcRespondToChipRai: FormConfig = {
+  title: "CHIP SPA Formal RAI Details",
   schema: zRespondToChipRaiFormSchema,
   attachments: [
     {
@@ -70,9 +74,8 @@ const fcRespondToChipRai: FormConfig<typeof zRespondToChipRaiFormSchema> = {
   ],
 };
 
-const fcRespondToMedicaidRai: FormConfig<
-  typeof zRespondToMedicaidRaiFormSchema
-> = {
+export const fcRespondToMedicaidRai: FormConfig = {
+  title: "Medicaid SPA Formal RAI Details",
   schema: zRespondToMedicaidRaiFormSchema,
   attachments: [
     {
@@ -88,7 +91,8 @@ const fcRespondToMedicaidRai: FormConfig<
   ],
 };
 
-const fcWithdrawRai: FormConfig<typeof zWithdrawRaiFormSchema> = {
+export const fcWithdrawRai: FormConfig = {
+  title: "Withdraw Formal RAI Response Details",
   schema: zWithdrawRaiFormSchema,
   attachments: [
     {
@@ -99,7 +103,8 @@ const fcWithdrawRai: FormConfig<typeof zWithdrawRaiFormSchema> = {
   ],
 };
 
-const fcWithdrawPackage: FormConfig<typeof zWithdrawPackageFormSchema> = {
+export const fcWithdrawPackage: FormConfig = {
+  title: "Withdraw Medicaid SPA Package",
   schema: zWithdrawPackageFormSchema,
   attachments: [
     {

@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from "@/components/Routing";
 import * as I from "@/components/Inputs";
-import { useState } from "react";
+import { Key, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +11,7 @@ import { PlanType } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { useGetItem } from "@/api";
 import { submit } from "@/api/submissionService";
-import { buildActionUrl } from "@/lib";
+import { AttachmentRecipe, buildActionUrl } from "@/lib";
 import { PackageActionForm } from "@/pages/actions/PackageActionForm";
 
 const formSchema = z.object({
@@ -27,7 +27,7 @@ const formSchema = z.object({
 });
 export type RaiIssueFormSchema = z.infer<typeof formSchema>;
 //@
-const attachmentList = [
+const attachmentList: AttachmentRecipe[] = [
   {
     name: "formalRaiLetter",
     label: "Formal RAI Letter",
@@ -38,7 +38,7 @@ const attachmentList = [
     label: "Other",
     required: false,
   },
-] as const;
+];
 
 const FormDescriptionText = () => {
   return (
@@ -162,26 +162,28 @@ export const RaiIssueForm = () => {
               At least one attachment is required.
             </p>
           </section>
-          {attachmentList.map(({ name, label, required }) => (
-            <I.FormField
-              key={name}
-              control={form.control}
-              name={`attachments.${name}`}
-              render={({ field }) => (
-                <I.FormItem>
-                  <I.FormLabel>
-                    {label}
-                    {required ? <I.RequiredIndicator /> : ""}
-                  </I.FormLabel>
-                  <I.Upload
-                    files={field?.value ?? []}
-                    setFiles={field.onChange}
-                  />
-                  <I.FormMessage />
-                </I.FormItem>
-              )}
-            />
-          ))}
+          {
+            // attachmentList.map(({ name, label, required }) => (
+            //   <I.FormField
+            //     key={name as Key}
+            //     control={form.control}
+            //     name={`attachments.${String(name)}`}
+            //     render={({ field }) => (
+            //       <I.FormItem>
+            //         <I.FormLabel>
+            //           {label}
+            //           {required ? <I.RequiredIndicator /> : ""}
+            //         </I.FormLabel>
+            //         <I.Upload
+            //           files={field?.value ?? []}
+            //           setFiles={field.onChange}
+            //         />
+            //         <I.FormMessage />
+            //       </I.FormItem>
+            //     )}
+            //   />
+            // ))
+          }
           {/*-------------------------------------------------------- */}
           <I.FormField
             control={form.control}

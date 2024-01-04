@@ -1,7 +1,7 @@
 import { Navigate, useNavigate, useParams } from "@/components/Routing";
 import { Button } from "@/components/Inputs";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
-import { useState } from "react";
+import { Key, useState } from "react";
 import { PlanType, ItemResult } from "shared-types";
 import { PackageActionForm } from "./PackageActionForm";
 import { ActionFormIntro, PackageInfo } from "./common";
@@ -27,7 +27,7 @@ const withdrawPackageFormSchema = z.object({
   }),
 });
 type WithdrawPackageFormSchema = z.infer<typeof withdrawPackageFormSchema>;
-const attachments: AttachmentRecipe<WithdrawPackageFormSchema>[] = [
+const attachments: AttachmentRecipe[] = [
   {
     name: "supportingDocumentation",
     label: "Supporting Documentation",
@@ -94,74 +94,74 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
             </p>
           </ActionFormIntro>
           <PackageInfo item={item} />
-          <I.Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)}>
-              {/* Change faqLink once we know the anchor */}
-              <h3 className="font-bold text-2xl font-sans">Attachments</h3>
-              <AttachmentsSizeTypesDesc faqLink={"/faq"} />
-              {attachments.map(({ name, label, required }) => (
-                <I.FormField
-                  key={name}
-                  control={form.control}
-                  name={`attachments.${name}`}
-                  render={({ field }) => (
-                    <I.FormItem className="mt-8">
-                      <I.FormLabel>
-                        {label}
-                        {required ? <I.RequiredIndicator /> : ""}
-                      </I.FormLabel>
-                      <I.Upload
-                        files={field?.value ?? []}
-                        setFiles={field.onChange}
-                      />
-                      <I.FormMessage />
-                    </I.FormItem>
-                  )}
-                />
-              ))}
-              <I.FormField
-                control={form.control}
-                name="additionalInformation"
-                render={({ field }) => (
-                  <I.FormItem className="mt-8">
-                    <h3 className="font-bold text-2xl font-sans">
-                      Additional Information
-                    </h3>
-                    <I.FormLabel className="font-normal">
-                      Explain your need for withdrawal or upload supporting
-                      documentation.
-                      <br />
-                      <p>
-                        <em className="italic">
-                          Once you submit this form, a confirmation email is
-                          sent to you and to CMS. CMS will use this content to
-                          review your package. If CMS needs any additional
-                          information, they will follow up by email.
-                        </em>{" "}
-                      </p>
-                      <br />
-                    </I.FormLabel>
-                    <I.Textarea {...field} className="h-[200px] resize-none" />
-                    <I.FormDescription>
-                      4,000 characters allowed
-                    </I.FormDescription>
-                  </I.FormItem>
-                )}
-              />
-              {errorMessage && (
-                <div className="text-red-500 mt-4">{errorMessage}</div>
-              )}
-              <div className="flex gap-2 my-8">
-                <Button type="submit">Submit</Button>
-                <Button
-                  onClick={() => setCancelModalIsOpen(true)}
-                  variant="outline"
-                >
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </I.Form>
+          {/*<I.Form {...form}>*/}
+          {/*  <form onSubmit={form.handleSubmit(handleSubmit)}>*/}
+          {/*    /!* Change faqLink once we know the anchor *!/*/}
+          {/*    <h3 className="font-bold text-2xl font-sans">Attachments</h3>*/}
+          {/*    <AttachmentsSizeTypesDesc faqLink={"/faq"} />*/}
+          {/*    {attachments.map(({ name, label, required }) => (*/}
+          {/*      <I.FormField*/}
+          {/*        key={name as Key}*/}
+          {/*        control={form.control}*/}
+          {/*        name={`attachments.${String(name)}`}*/}
+          {/*        render={({ field }) => (*/}
+          {/*          <I.FormItem className="mt-8">*/}
+          {/*            <I.FormLabel>*/}
+          {/*              {label}*/}
+          {/*              {required ? <I.RequiredIndicator /> : ""}*/}
+          {/*            </I.FormLabel>*/}
+          {/*            <I.Upload*/}
+          {/*              files={field?.value ?? []}*/}
+          {/*              setFiles={field.onChange}*/}
+          {/*            />*/}
+          {/*            <I.FormMessage />*/}
+          {/*          </I.FormItem>*/}
+          {/*        )}*/}
+          {/*      />*/}
+          {/*    ))}*/}
+          {/*    <I.FormField*/}
+          {/*      control={form.control}*/}
+          {/*      name="additionalInformation"*/}
+          {/*      render={({ field }) => (*/}
+          {/*        <I.FormItem className="mt-8">*/}
+          {/*          <h3 className="font-bold text-2xl font-sans">*/}
+          {/*            Additional Information*/}
+          {/*          </h3>*/}
+          {/*          <I.FormLabel className="font-normal">*/}
+          {/*            Explain your need for withdrawal or upload supporting*/}
+          {/*            documentation.*/}
+          {/*            <br />*/}
+          {/*            <p>*/}
+          {/*              <em className="italic">*/}
+          {/*                Once you submit this form, a confirmation email is*/}
+          {/*                sent to you and to CMS. CMS will use this content to*/}
+          {/*                review your package. If CMS needs any additional*/}
+          {/*                information, they will follow up by email.*/}
+          {/*              </em>{" "}*/}
+          {/*            </p>*/}
+          {/*            <br />*/}
+          {/*          </I.FormLabel>*/}
+          {/*          <I.Textarea {...field} className="h-[200px] resize-none" />*/}
+          {/*          <I.FormDescription>*/}
+          {/*            4,000 characters allowed*/}
+          {/*          </I.FormDescription>*/}
+          {/*        </I.FormItem>*/}
+          {/*      )}*/}
+          {/*    />*/}
+          {/*    {errorMessage && (*/}
+          {/*      <div className="text-red-500 mt-4">{errorMessage}</div>*/}
+          {/*    )}*/}
+          {/*    <div className="flex gap-2 my-8">*/}
+          {/*      <Button type="submit">Submit</Button>*/}
+          {/*      <Button*/}
+          {/*        onClick={() => setCancelModalIsOpen(true)}*/}
+          {/*        variant="outline"*/}
+          {/*      >*/}
+          {/*        Cancel*/}
+          {/*      </Button>*/}
+          {/*    </div>*/}
+          {/*  </form>*/}
+          {/*</I.Form>*/}
         </div>
         {/* Success Modal */}
         <ConfirmationModal

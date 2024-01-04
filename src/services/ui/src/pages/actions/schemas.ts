@@ -6,7 +6,7 @@ import {
 } from "@/pages/form/zod";
 
 const baselineFormSchema = z.object({
-  zAdditionalInfo,
+  additionalInfo: zAdditionalInfo,
 });
 export const zIssueRaiFormSchema = baselineFormSchema.merge(
   z.object({

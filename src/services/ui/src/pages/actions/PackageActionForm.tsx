@@ -1,16 +1,17 @@
-import { Navigate, useNavigate, useParams } from "@/components/Routing";
+// @typescript-eslint/ban-ts-comment
+import { Navigate, useParams } from "@/components/Routing";
 import { useGetItem, useGetPackageActions } from "@/api";
-import { z } from "zod";
+
 import {
   Alert,
   BreadCrumbs,
-  ConfirmationModal,
   LoadingSpinner,
   SimplePageContainer,
 } from "@/components";
 import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
 import React, {
   JSXElementConstructor,
+  Key,
   PropsWithChildren,
   ReactElement,
 } from "react";
@@ -20,35 +21,37 @@ import * as I from "@/components/Inputs";
 import { AttachmentsSizeTypesDesc } from "@/pages/form/content";
 import { Button } from "@/components/Inputs";
 import { useModalContext } from "@/pages/form/modals";
-import { AttachmentRecipe, buildActionUrl } from "@/lib";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { buildActionUrl } from "@/lib";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
 import { FormConfig } from "@/pages/actions/configs";
+import { z } from "zod";
 
 type CloneableChild = ReactElement<any, string | JSXElementConstructor<any>>;
-export const NewPackageActionForm = <T extends Record<string, any>>({
+export const NewPackageActionForm = ({
   item,
+  title,
   attachments,
   schema,
   submitRules,
-}: FormConfig<T> & { item: ItemResult }) => {
+}: FormConfig & { item: ItemResult }) => {
   const planType = item?._source.authority as PlanType;
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen, setErrorModalOpen } =
     useModalContext();
   const { id, type } = useParams("/action/:id/:type");
-  const form = useForm<T>({
+  const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const handleSubmit: SubmitHandler<T> = async (data) => {
+  const handleSubmit = form.handleSubmit(async (data) => {
     try {
       if (submitRules?.length) {
         // Run additional checks for complex conditions not met by schema
         submitRules.forEach((fn) => fn(data));
       }
-      await submit<T & { id: string }>({
+      await submit<z.infer<typeof schema> & { id: string }>({
         data: {
           ...data,
           id: id!, // Declared here because it's not part of SPA action form data.
@@ -62,13 +65,13 @@ export const NewPackageActionForm = <T extends Record<string, any>>({
       console.log(err);
       setErrorModalOpen(true);
     }
-  };
+  });
   return (
     <>
       {form.formState.isSubmitting && <LoadingSpinner />}
       <div>
         <div className="px-14  py-5 ">
-          <ActionFormIntro title="Withdraw Medicaid SPA Package">
+          <ActionFormIntro title={title}>
             <p>
               Complete this form to withdraw a package. Once complete, you will
               not be able to resubmit this package. CMS will be notified and
@@ -78,15 +81,15 @@ export const NewPackageActionForm = <T extends Record<string, any>>({
           </ActionFormIntro>
           <PackageInfo item={item} />
           <I.Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)}>
+            <form onSubmit={handleSubmit}>
               {/* Change faqLink once we know the anchor */}
               <h3 className="font-bold text-2xl font-sans">Attachments</h3>
               <AttachmentsSizeTypesDesc faqLink={"/faq"} />
               {attachments.map(({ name, label, required }) => (
                 <I.FormField
-                  key={name}
+                  key={name as Key}
                   control={form.control}
-                  name={`attachments.${name}`}
+                  name={`attachments.${String(name)}`}
                   render={({ field }) => (
                     <I.FormItem className="mt-8">
                       <I.FormLabel>
@@ -131,9 +134,9 @@ export const NewPackageActionForm = <T extends Record<string, any>>({
                   </I.FormItem>
                 )}
               />
-              {errorMessage && (
-                <div className="text-red-500 mt-4">{errorMessage}</div>
-              )}
+              {/*{errorMessage && (*/}
+              {/*  <div className="text-red-500 mt-4">{errorMessage}</div>*/}
+              {/*)}*/}
               <div className="flex gap-2 my-8">
                 <Button type="submit">Submit</Button>
                 <Button
