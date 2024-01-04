@@ -1,10 +1,30 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react-swc";
 import { fileURLToPath } from "url";
+import { VitePluginRadar } from "vite-plugin-radar";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePluginRadar({
+      /**
+       * enable or disable scripts injection in development
+       * default: false
+       */
+      enableDev: true,
+      analytics: [
+        {
+          id: "G-ZJ1PHFW684",
+          //       disable: process.env.VITE_NODE_ENV !== "production",
+        },
+        // {
+        //   id: 'G-XXXXX',
+        //   disable: process.env.VITE_NODE_ENV !== "production",
+        // }
+      ],
+    }),
+  ],
   server: {
     port: 5000,
   },
