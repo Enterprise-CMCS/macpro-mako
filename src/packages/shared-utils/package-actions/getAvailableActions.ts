@@ -1,8 +1,4 @@
-import {
-  CognitoUserAttributes,
-  OsMainSourceItem,
-  PlanType,
-} from "../../shared-types";
+import { CognitoUserAttributes, OsMainSourceItem } from "../../shared-types";
 import rules from "./rules";
 import { PackageCheck } from "../packageCheck";
 
