@@ -15,8 +15,8 @@ import * as Inputs from "@/components/Inputs";
 import { FAQ_TARGET } from "@/routes";
 import { PlanType } from "shared-types";
 import {
-  zAttachmentOptional,
-  zAttachmentRequired,
+  zFileAttachmentOptional,
+  zFileAttachmentRequired,
   zSpaIdSchema,
 } from "@/pages/form/zod";
 import * as Content from "@/pages/form/content";
@@ -27,13 +27,13 @@ const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
-    currentStatePlan: zAttachmentRequired({ min: 1 }),
-    amendedLanguage: zAttachmentRequired({ min: 1 }),
-    coverLetter: zAttachmentRequired({ min: 1 }),
-    budgetDocuments: zAttachmentOptional,
-    publicNotice: zAttachmentOptional,
-    tribalConsultation: zAttachmentOptional,
-    other: zAttachmentOptional,
+    currentStatePlan: zFileAttachmentRequired({ min: 1 }),
+    amendedLanguage: zFileAttachmentRequired({ min: 1 }),
+    coverLetter: zFileAttachmentRequired({ min: 1 }),
+    budgetDocuments: zFileAttachmentOptional,
+    publicNotice: zFileAttachmentOptional,
+    tribalConsultation: zFileAttachmentOptional,
+    other: zFileAttachmentOptional,
   }),
   proposedEffectiveDate: z.date(),
 });
@@ -76,7 +76,7 @@ export const ChipForm = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType.CHIP_SPA,
+        planType: PlanType.CHIP_SPA,
       });
       setSuccessModalOpen(true);
     } catch (e) {

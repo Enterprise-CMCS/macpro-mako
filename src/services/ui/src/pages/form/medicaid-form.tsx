@@ -16,8 +16,8 @@ import { FAQ_TARGET } from "@/routes";
 import { submit } from "@/api/submissionService";
 import { PlanType } from "shared-types";
 import {
-  zAttachmentOptional,
-  zAttachmentRequired,
+  zFileAttachmentOptional,
+  zFileAttachmentRequired,
   zSpaIdSchema,
 } from "@/pages/form/zod";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
@@ -27,19 +27,19 @@ const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
-    cmsForm179: zAttachmentRequired({
+    cmsForm179: zFileAttachmentRequired({
       min: 1,
       max: 1,
       message: "Required: You must submit exactly one file for CMS Form 179.",
     }),
-    spaPages: zAttachmentRequired({ min: 1 }),
-    coverLetter: zAttachmentOptional,
-    tribalEngagement: zAttachmentOptional,
-    existingStatePlanPages: zAttachmentOptional,
-    publicNotice: zAttachmentOptional,
-    sfq: zAttachmentOptional,
-    tribalConsultation: zAttachmentOptional,
-    other: zAttachmentOptional,
+    spaPages: zFileAttachmentRequired({ min: 1 }),
+    coverLetter: zFileAttachmentOptional,
+    tribalEngagement: zFileAttachmentOptional,
+    existingStatePlanPages: zFileAttachmentOptional,
+    publicNotice: zFileAttachmentOptional,
+    sfq: zFileAttachmentOptional,
+    tribalConsultation: zFileAttachmentOptional,
+    other: zFileAttachmentOptional,
   }),
   proposedEffectiveDate: z.date(),
 });
@@ -77,7 +77,7 @@ export const MedicaidForm = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType.MED_SPA,
+        planType: PlanType.MED_SPA,
       });
       setSuccessModalOpen(true);
     } catch (e) {

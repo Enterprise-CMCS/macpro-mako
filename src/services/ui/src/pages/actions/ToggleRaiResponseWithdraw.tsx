@@ -24,7 +24,7 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
     data: { id: id! },
     endpoint: buildActionUrl(type!),
     user,
-    authority,
+    planType: authority,
   });
   const ACTION_WORD = useMemo(
     () => (type === Action.ENABLE_RAI_WITHDRAW ? "Enable" : "Disable"),

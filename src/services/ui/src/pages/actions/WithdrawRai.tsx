@@ -57,7 +57,7 @@ export const WithdrawRaiForm = () => {
         data: { ...data, id },
         endpoint: "/action/withdraw-rai",
         user: user.data,
-        authority: authority,
+        planType: authority,
       });
 
       setSuccessModalIsOpen(true);

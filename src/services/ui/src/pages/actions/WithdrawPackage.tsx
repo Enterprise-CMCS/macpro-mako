@@ -68,7 +68,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
             },
             endpoint: buildActionUrl(type!),
             user,
-            authority,
+            planType: authority,
           });
           setSuccessModalIsOpen(true);
         }
