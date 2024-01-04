@@ -17,10 +17,10 @@ export const zSpaIdSchema = z
       "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
   });
 
-export const zAttachmentOptional = z.array(z.instanceof(File)).optional();
+export const zFileAttachmentOptional = z.array(z.instanceof(File)).optional();
 
-export const zAttachmentRequired = ({
-  min,
+export const zFileAttachmentRequired = ({
+  min = 1,
   max = 9999,
   message = "Required",
 }: {

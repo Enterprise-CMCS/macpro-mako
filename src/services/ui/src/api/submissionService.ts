@@ -14,7 +14,7 @@ type SubmissionServiceParameters<T> = {
   data: T;
   endpoint: SubmissionServiceEndpoint;
   user: OneMacUser | undefined;
-  authority?: PlanType;
+  planType?: PlanType;
 };
 type SubmissionServiceResponse = {
   body: {
@@ -132,7 +132,7 @@ export const submit = async <T extends Record<string, unknown>>({
   data,
   endpoint,
   user,
-  authority,
+  planType,
 }: SubmissionServiceParameters<T>): Promise<SubmissionServiceResponse> => {
   if (data?.attachments) {
     // Drop nulls and non arrays
@@ -179,14 +179,14 @@ export const submit = async <T extends Record<string, unknown>>({
         data,
         user,
         endpoint,
-        authority,
+        planType,
         uploadRecipes
       ),
     });
   } else {
     // Submit form data
     return await API.post("os", endpoint, {
-      body: buildSubmissionPayload(data, user, endpoint, authority),
+      body: buildSubmissionPayload(data, user, endpoint, planType),
     });
   }
 };

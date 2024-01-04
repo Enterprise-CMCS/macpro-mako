@@ -77,7 +77,7 @@ export const RaiIssueForm = () => {
         },
         endpoint: buildActionUrl(type!),
         user,
-        authority,
+        planType: authority,
       });
       setSuccessModalIsOpen(true);
     } catch (err) {

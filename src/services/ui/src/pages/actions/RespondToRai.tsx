@@ -75,7 +75,7 @@ export const RespondToRaiForm = () => {
         },
         endpoint: buildActionUrl(type!),
         user,
-        authority,
+        planType: authority,
       });
       setSuccessModalIsOpen(true);
     } catch (err) {

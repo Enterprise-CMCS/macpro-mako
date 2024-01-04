@@ -6,7 +6,7 @@ import {
   LoadingSpinner,
   SimplePageContainer,
 } from "@/components";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
+import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
 import React, {
   JSXElementConstructor,
   PropsWithChildren,
@@ -33,7 +33,7 @@ export const PackageActionForm = ({ children }: PropsWithChildren) => {
   return (
     <SimplePageContainer>
       <BreadCrumbs
-        options={DETAILS_AND_ACTIONS_CRUMBS({ id: id, action: type })}
+        options={detailsAndActionsCrumbs({ id: id, action: type })}
       />
       {itemError && (
         <Alert className="my-2 max-w-2xl" variant="destructive">
