@@ -97,6 +97,7 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
           <I.Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
               {/* Change faqLink once we know the anchor */}
+              <h3 className="font-bold text-2xl font-sans">Attachments</h3>
               <AttachmentsSizeTypesDesc faqLink={"/faq"} />
               {attachments.map(({ name, label, required }) => (
                 <I.FormField
