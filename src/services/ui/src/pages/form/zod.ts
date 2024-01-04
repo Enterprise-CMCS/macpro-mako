@@ -36,5 +36,4 @@ export const zFileAttachmentRequired = ({
 
 export const zAdditionalInfo = z
   .string()
-  .max(4000, "This field may only be up to 4000 characters.")
-  .optional();
+  .max(4000, "This field may only be up to 4000 characters.");

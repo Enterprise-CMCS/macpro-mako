@@ -1,10 +1,6 @@
 import { Navigate, useParams } from "@/components/Routing";
-import { ToggleRaiResponseWithdraw } from "@/pages/actions/ToggleRaiResponseWithdraw";
-import { RaiIssue } from "@/pages/actions/IssueRai";
-import { WithdrawPackage } from "@/pages/actions/WithdrawPackage";
-import { RespondToRai } from "@/pages/actions/RespondToRai";
+import { ToggleRaiResponseWithdrawForm } from "@/pages/actions/ToggleRaiResponseWithdraw";
 import { Action } from "shared-types";
-import { WithdrawRai } from "./WithdrawRai";
 import { useGetItem, useGetPackageActions } from "@/api";
 import {
   Alert,
@@ -68,7 +64,7 @@ const ActionFormSwitch = () => {
       return <NewPackageActionForm {...fcWithdrawPackage} item={item} />;
     case Action.ENABLE_RAI_WITHDRAW:
     case Action.DISABLE_RAI_WITHDRAW:
-      return <ToggleRaiResponseWithdraw />;
+      return <ToggleRaiResponseWithdrawForm item={item} />;
     case Action.ISSUE_RAI:
       return <NewPackageActionForm {...fcIssueRai} item={item} />;
     case Action.WITHDRAW_RAI:

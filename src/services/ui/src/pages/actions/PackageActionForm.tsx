@@ -28,11 +28,13 @@ import { submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
 import { FormConfig } from "@/pages/actions/configs";
 import { z } from "zod";
+import { renderAdditionalInfo, renderFileUpload } from "@/pages/actions/fields";
 
 type CloneableChild = ReactElement<any, string | JSXElementConstructor<any>>;
 export const NewPackageActionForm = ({
   item,
   title,
+  description,
   attachments,
   schema,
   submitRules,
@@ -70,85 +72,46 @@ export const NewPackageActionForm = ({
     <>
       {form.formState.isSubmitting && <LoadingSpinner />}
       <div>
-        <div className="px-14  py-5 ">
-          <ActionFormIntro title={title}>
-            <p>
-              Complete this form to withdraw a package. Once complete, you will
-              not be able to resubmit this package. CMS will be notified and
-              will use this content to review your request. If CMS needs any
-              additional information, they will follow up by email.
-            </p>
-          </ActionFormIntro>
-          <PackageInfo item={item} />
-          <I.Form {...form}>
-            <form onSubmit={handleSubmit}>
-              {/* Change faqLink once we know the anchor */}
-              <h3 className="font-bold text-2xl font-sans">Attachments</h3>
-              <AttachmentsSizeTypesDesc faqLink={"/faq"} />
-              {attachments.map(({ name, label, required }) => (
-                <I.FormField
-                  key={name as Key}
-                  control={form.control}
-                  name={`attachments.${String(name)}`}
-                  render={({ field }) => (
-                    <I.FormItem className="mt-8">
-                      <I.FormLabel>
-                        {label}
-                        {required ? <I.RequiredIndicator /> : ""}
-                      </I.FormLabel>
-                      <I.Upload
-                        files={field?.value ?? []}
-                        setFiles={field.onChange}
-                      />
-                      <I.FormMessage />
-                    </I.FormItem>
-                  )}
-                />
-              ))}
+        <ActionFormIntro title={title}>{description}</ActionFormIntro>
+        <PackageInfo item={item} />
+        <I.Form {...form}>
+          <form onSubmit={handleSubmit}>
+            <h3 className="font-bold text-2xl font-sans">Attachments</h3>
+            {/* Change faqLink once we know the anchor */}
+            <AttachmentsSizeTypesDesc faqLink={"/faq"} />
+            {attachments.map(({ name, label, required }) => (
               <I.FormField
+                key={name as Key}
                 control={form.control}
-                name="additionalInformation"
-                render={({ field }) => (
-                  <I.FormItem className="mt-8">
-                    <h3 className="font-bold text-2xl font-sans">
-                      Additional Information
-                    </h3>
-                    <I.FormLabel className="font-normal">
-                      Explain your need for withdrawal or upload supporting
-                      documentation.
-                      <br />
-                      <p>
-                        <em className="italic">
-                          Once you submit this form, a confirmation email is
-                          sent to you and to CMS. CMS will use this content to
-                          review your package. If CMS needs any additional
-                          information, they will follow up by email.
-                        </em>{" "}
-                      </p>
-                      <br />
-                    </I.FormLabel>
-                    <I.Textarea {...field} className="h-[200px] resize-none" />
-                    <I.FormDescription>
-                      4,000 characters allowed
-                    </I.FormDescription>
-                  </I.FormItem>
-                )}
+                name={`attachments.${String(name)}`}
+                render={({ field }) => renderFileUpload(field, required, label)}
               />
-              {/*{errorMessage && (*/}
-              {/*  <div className="text-red-500 mt-4">{errorMessage}</div>*/}
-              {/*)}*/}
-              <div className="flex gap-2 my-8">
-                <Button type="submit">Submit</Button>
-                <Button
-                  onClick={() => setCancelModalOpen(true)}
-                  variant="outline"
-                >
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </I.Form>
-        </div>
+            ))}
+            <I.FormField
+              control={form.control}
+              name="additionalInformation"
+              render={({ field }) =>
+                renderAdditionalInfo(
+                  field,
+                  false,
+                  "Explain your need for withdrawal."
+                )
+              }
+            />
+            {/*{errorMessage && (*/}
+            {/*  <div className="text-red-500 mt-4">{errorMessage}</div>*/}
+            {/*)}*/}
+            <div className="flex gap-2 my-8">
+              <Button type="submit">Submit</Button>
+              <Button
+                onClick={() => setCancelModalOpen(true)}
+                variant="outline"
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </I.Form>
       </div>
     </>
   );
