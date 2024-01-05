@@ -55,11 +55,13 @@ const StatusCard = (data: OsMainSourceItem) => {
         </h2>
         {checker.hasEnabledRaiWithdraw && (
           <em className="text-xs my-4">
-            {"Withdraw Formal RAI Response - Enabled"}{" "}
+            {"Withdraw Formal RAI Response - Enabled"}
           </em>
         )}
         {user?.isCms && checker.isInSecondClock && (
-          <span id="secondclock">2nd Clock</span>
+          <span id="secondclock" className="ml-2">
+            2nd Clock
+          </span>
         )}
       </div>
     </DetailCardWrapper>
