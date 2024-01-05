@@ -54,7 +54,10 @@ const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
     !isCmsReadonlyUser(user) &&
-    (checker.isInActivePendingStatus || checker.hasRaiResponse) && isStateUser(user),
+    ((checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
+      checker.hasRequestedRai)
+      || checker.isInActivePendingStatus)
+    && isStateUser(user),
 };
 
 export default [
