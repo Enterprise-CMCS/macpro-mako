@@ -250,8 +250,6 @@ export const slotValidator =
 
     if (SLOT.rhf === "Checkbox") {
       if (data[SLOT.name]?.length) {
-        // const depMatch = dependencyCheck(SEC.dependency, data);
-        // if (!depMatch) return ACC;
         const validList = data[SLOT.name].every((VAL: any) => {
           return SLOT.props?.options.some((OPT) => OPT.value === VAL);
         });
