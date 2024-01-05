@@ -2,6 +2,7 @@ import type { InferGetStaticPropsType } from "next";
 import {
   Box,
   Container,
+  Divider,
   HStack,
   Heading,
   Select,
@@ -41,24 +42,27 @@ const WebformsDocs = ({
 
   return (
     <Box as="section" bg="bg.surface" pt={{ base: '4', md: '8' }} pb={{ base: '12', md: '24' }}>
-    <Container>
-      <Stack spacing="4">
-        <Heading size={{ base: 'xs', md: 'sm' }} fontWeight="medium">
-          Webforms Documentation
-        </Heading>
-        <Text color="fg.muted">Details about webforms available via the onemac forms api</Text>
-        <HStack spacing={4}>
-        <Select placeholder='Select a form' value={form} onChange={(e) => setForm(e.target.value)}>
-          {Object.keys(allFormsAndVersions).map((form) => <option key={form} value={form}>{form}</option>)}
-        </Select>
-        <Select placeholder='version' disabled={!form} value={version} onChange={(e) => setVersion(e.target.value)}>
-        {form && allFormsWithData[form].map((val) => <option key={val?.version} value={val?.version}>{val?.version}</option>)}
-        </Select>
-        </HStack>
-        {allFormsWithData[form] && version && <VersionDocs allFormsWithData={allFormsWithData} form={form} version={version}/>}
-      </Stack>
-    </Container>
-  </Box>
+      <Container>
+        <Stack spacing="4">
+          <Heading size={{ base: 'xs', md: 'sm' }} fontWeight="medium">
+            Webforms Documentation
+          </Heading>
+          <Text color="fg.muted">Details about webforms available via the onemac forms api</Text>
+          <HStack spacing={4}>
+          <Select placeholder='Select a form' value={form} onChange={(e) => setForm(e.target.value)}>
+            {Object.keys(allFormsAndVersions).map((form) => <option key={form} value={form}>{form}</option>)}
+          </Select>
+          <Select placeholder='version' disabled={!form} value={version} onChange={(e) => setVersion(e.target.value)}>
+          {form && allFormsWithData[form].map((val) => <option key={val?.version} value={val?.version}>{val?.version}</option>)}
+          </Select>
+          </HStack>
+          <Divider/>
+          <Text>The purpose of this page is provide developers and anyone who might need to use the data collected in these forms infomation about how the data collected from the user connects to the form schema itself.</Text>
+          
+          {allFormsWithData[form] && version && <VersionDocs allFormsWithData={allFormsWithData} form={form} version={version}/>}
+        </Stack>
+      </Container>
+    </Box>
   );
 };
 
