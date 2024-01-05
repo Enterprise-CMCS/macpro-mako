@@ -16,7 +16,7 @@ type ISeatoolWriteService = {
 export class SeatoolWriteService implements ISeatoolWriteService {
   private readonly seatoolTransaction: sql.Transaction;
 
-  private constructor(seatoolConnection: sql.ConnectionPool) {
+  constructor(seatoolConnection: sql.ConnectionPool) {
     this.seatoolTransaction = new sql.Transaction(seatoolConnection);
   }
 

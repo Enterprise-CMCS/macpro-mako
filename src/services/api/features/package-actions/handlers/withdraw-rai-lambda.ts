@@ -5,6 +5,11 @@ import { handleEvent } from "@/features/package-actions/lambda-handler";
 import { PackageActionWriteService } from "@/features/package-actions/services/package-action-write-service";
 import { seatoolConnection } from "@/features/package-actions/consts/sql-connection";
 import { kafkaConfig } from "@/features/package-actions/consts/kafka-connection";
+import { TOPIC_NAME } from "../consts/kafka-topic-name";
+
+// three types of schema (form schema, action kafka event schema, api schema)
+// can we share the same schema (form and api) some how
+// how can we build on top of the established form schema
 
 export const withdrawRaiLambda = async (event: APIGatewayEvent) => {
   return await handleEvent({
@@ -18,10 +23,12 @@ export const withdrawRaiLambda = async (event: APIGatewayEvent) => {
     async lambda(data) {
       try {
         // withdraw rai
-        const packageActionService = await PackageActionWriteService.create(
-          seatoolConnection,
-          kafkaConfig
-        );
+        const packageActionService =
+          await PackageActionWriteService.createPackageActionWriteService(
+            kafkaConfig,
+            seatoolConnection,
+            TOPIC_NAME
+          );
 
         await packageActionService.withdrawRai({
           id: data.id,

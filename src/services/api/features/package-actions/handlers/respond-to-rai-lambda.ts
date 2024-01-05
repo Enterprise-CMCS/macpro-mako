@@ -5,6 +5,7 @@ import { PackageActionWriteService } from "../services/package-action-write-serv
 import { seatoolConnection } from "../consts/sql-connection";
 import { kafkaConfig } from "../consts/kafka-connection";
 import { response } from "@/libs/handler";
+import { TOPIC_NAME } from "../consts/kafka-topic-name";
 
 export const respondToRaiLambda = async (event: APIGatewayEvent) => {
   return await handleEvent({
@@ -16,10 +17,12 @@ export const respondToRaiLambda = async (event: APIGatewayEvent) => {
     }),
     allowedRoles: [],
     async lambda(data) {
-      const packageActionService = await PackageActionWriteService.create(
-        seatoolConnection,
-        kafkaConfig
-      );
+      const packageActionService =
+        await PackageActionWriteService.createPackageActionWriteService(
+          kafkaConfig,
+          seatoolConnection,
+          TOPIC_NAME
+        );
 
       await packageActionService.respondToRai({
         id: data.id,

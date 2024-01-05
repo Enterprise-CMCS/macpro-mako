@@ -1,133 +1,64 @@
-import * as sql from "mssql";
-import * as query from "@/features/package-actions/queries";
-import { type KafkaConfig } from "kafkajs";
-import { KafkaService } from "@/shared/onemac-micro-kafka";
-import { Action, raiIssueSchema } from "shared-types";
 import { z } from "zod";
-import { TOPIC_NAME } from "../consts/kafka-topic-name";
+import {
+  BigmacWriteService,
+  WithdrawEnabledParams,
+} from "./bigmac-write-service";
+import { SeatoolWriteService } from "./seatool-write-service";
+import { raiIssueSchema } from "shared-types";
+import { KafkaService } from "@/shared/onemac-micro-kafka";
+import * as sql from "mssql";
+import { KafkaConfig } from "kafkajs";
+import { seatoolConnection } from "../consts/sql-connection";
+import * as query from "@/features/package-actions/queries";
 
-export class PackageActionWriteService {
-  private readonly seatoolTxn: sql.Transaction;
-  private readonly bigmac: KafkaService;
+type IPackageActionWriteService = {
+  issueRai: (rai: z.infer<typeof raiIssueSchema>) => Promise<void>;
+  enableRaiWithdraw: (params: WithdrawEnabledParams) => Promise<void>;
+  respondToRai: (params: query.RespondToRaiQueryParams) => Promise<void>;
+  withdrawRai: (params: query.WithdrawRaiQueryParams) => Promise<void>;
+};
 
-  private constructor(
-    seatoolConnection: sql.ConnectionPool,
-    bigmacConnection: KafkaConfig
+export class PackageActionWriteService implements IPackageActionWriteService {
+  private readonly bigmacWriteService: BigmacWriteService;
+  private readonly seatoolWriteService: SeatoolWriteService;
+
+  constructor(bigmac: BigmacWriteService, seatool: SeatoolWriteService) {
+    this.bigmacWriteService = bigmac;
+    this.seatoolWriteService = seatool;
+  }
+
+  static async createPackageActionWriteService(
+    kafkaConfig: KafkaConfig,
+    mssqlConfig: sql.config,
+    topicName: string
   ) {
-    this.seatoolTxn = new sql.Transaction(seatoolConnection);
-    this.bigmac = new KafkaService(bigmacConnection);
+    const kafkaInstance = new KafkaService(kafkaConfig);
+    const seatoolInstance = await sql.connect(mssqlConfig);
+
+    const bigmacService = new BigmacWriteService(kafkaInstance, topicName);
+    const seatoolService = new SeatoolWriteService(seatoolInstance);
+
+    return new PackageActionWriteService(bigmacService, seatoolService);
   }
 
-  static async create(
-    seatoolConnection: sql.config,
-    bigmacConnection: KafkaConfig
-  ) {
-    const seatoolConnectionPool = await sql.connect(seatoolConnection);
-    return new PackageActionWriteService(
-      seatoolConnectionPool,
-      bigmacConnection
-    );
+  async issueRai(rai: z.infer<typeof raiIssueSchema>) {
+    await this.bigmacWriteService.issueRai(rai);
+    await this.seatoolWriteService.issueRai(rai);
   }
 
-  async withdrawRai({
-    id,
-    activeRaiDate,
-    withdrawnDate,
-  }: query.WithdrawRaiQueryParams) {
-    try {
-      await this.seatoolTxn.begin();
-
-      await this.seatoolTxn
-        .request()
-        .query(query.withdrawRaiQuery({ id, activeRaiDate, withdrawnDate }));
-
-      await this.seatoolTxn.commit();
-    } catch (err: unknown) {
-      console.error(err);
-      await this.seatoolTxn.rollback();
-    }
+  async enableRaiWithdraw(params: WithdrawEnabledParams) {
+    await this.bigmacWriteService.setWithdrawEnabled(params);
   }
 
-  async issueRai(raiData: z.infer<typeof raiIssueSchema>) {
-    try {
-      await this.seatoolTxn.begin();
-
-      await this.seatoolTxn.request().query(
-        query.issueRaiQuery({
-          id: raiData.id,
-          requestedDate: raiData.requestedDate,
-        })
-      );
-
-      await this.bigmac.produceMessage(
-        TOPIC_NAME,
-        raiData.id,
-        JSON.stringify({ ...raiData, actionType: Action.ISSUE_RAI })
-      );
-
-      await this.seatoolTxn.commit();
-    } catch (err: unknown) {
-      console.error(err);
-      await this.seatoolTxn.rollback();
-    }
+  async changePackageStatus(params: query.ChangePackageStatusQueryParams) {
+    await this.seatoolWriteService.changePackageStatus(params);
   }
 
-  async respondToRai({
-    id,
-    latestRai,
-    responseDate,
-  }: query.RespondToRaiQueryParams) {
-    try {
-      await this.seatoolTxn.begin();
-
-      await this.seatoolTxn
-        .request()
-        .query(query.respondToRaiQuery({ id, latestRai, responseDate }));
-    } catch (err: unknown) {
-      console.error(err);
-    }
+  async respondToRai(params: query.RespondToRaiQueryParams) {
+    await this.seatoolWriteService.respondToRai(params);
   }
 
-  async changePackageStatus({
-    id,
-    status,
-  }: query.ChangePackageStatusQueryParams) {
-    try {
-      await this.seatoolTxn.begin();
-
-      await this.seatoolTxn
-        .request()
-        .query(query.changePackageStatusQuery({ id, status }));
-
-      await this.seatoolTxn.commit();
-    } catch (err: unknown) {
-      console.error(err);
-      await this.seatoolTxn.rollback();
-    }
-  }
-
-  async setWithdrawEnabled({
-    id,
-    withdrawEnabled,
-    topicName,
-    authority,
-  }: {
-    id: string;
-    withdrawEnabled: boolean;
-    topicName: string;
-    authority: string;
-  }) {
-    await this.bigmac.produceMessage(
-      id,
-      topicName,
-      JSON.stringify({
-        raiWithdrawEnabled: withdrawEnabled,
-        actionType: withdrawEnabled
-          ? Action.ENABLE_RAI_WITHDRAW
-          : Action.DISABLE_RAI_WITHDRAW,
-        authority,
-        origin,
-      })
-    );
+  async withdrawRai(params: query.WithdrawRaiQueryParams) {
+    await this.seatoolWriteService.withdrawRai(params);
   }
 }

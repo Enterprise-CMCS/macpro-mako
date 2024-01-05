@@ -5,17 +5,20 @@ import { PackageActionWriteService } from "../services/package-action-write-serv
 import { seatoolConnection } from "../consts/sql-connection";
 import { kafkaConfig } from "../consts/kafka-connection";
 import { raiIssueSchema } from "shared-types";
+import { TOPIC_NAME } from "../consts/kafka-topic-name";
 
 export const issueRaiLambda = async (event: APIGatewayEvent) => {
   return await handleEvent({
     event,
-    schema: raiIssueSchema,
+    schema: raiIssueSchema, // don't use this
     allowedRoles: [],
     async lambda(data) {
-      const packageActionService = await PackageActionWriteService.create(
-        seatoolConnection,
-        kafkaConfig
-      );
+      const packageActionService =
+        await PackageActionWriteService.createPackageActionWriteService(
+          kafkaConfig,
+          seatoolConnection,
+          TOPIC_NAME
+        );
 
       try {
         await packageActionService.issueRai(data);

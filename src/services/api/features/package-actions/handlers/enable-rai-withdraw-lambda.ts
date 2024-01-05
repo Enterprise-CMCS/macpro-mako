@@ -2,9 +2,10 @@ import { APIGatewayEvent } from "aws-lambda";
 import { handleEvent } from "../lambda-handler";
 import { z } from "zod";
 import { response } from "@/libs/handler";
-import { PackageActionWriteService } from "../services/package-action-write-service";
+import { kafkaConfig } from "@/features/package-actions/consts/kafka-connection";
+import { TOPIC_NAME } from "@/features/package-actions/consts/kafka-topic-name";
 import { seatoolConnection } from "../consts/sql-connection";
-import { kafkaConfig } from "../consts/kafka-connection";
+import { PackageActionWriteService } from "../services/package-action-write-service";
 
 export const enableRaiWithdrawLambda = async (event: APIGatewayEvent) => {
   return await handleEvent({
@@ -15,16 +16,17 @@ export const enableRaiWithdrawLambda = async (event: APIGatewayEvent) => {
     }),
     allowedRoles: [],
     async lambda(data) {
-      const packageActionService = await PackageActionWriteService.create(
-        seatoolConnection,
-        kafkaConfig
-      );
+      const packageActionWriteService =
+        await PackageActionWriteService.createPackageActionWriteService(
+          kafkaConfig,
+          seatoolConnection,
+          TOPIC_NAME
+        );
 
-      await packageActionService.setWithdrawEnabled({
+      await packageActionWriteService.enableRaiWithdraw({
         withdrawEnabled: data.enableRaiWithDraw,
         authority: "medicaid",
         id: data.id,
-        topicName: process.env.topicName as string,
       });
 
       return response({

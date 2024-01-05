@@ -1,6 +1,7 @@
 import { type APIGatewayEvent } from "aws-lambda";
 import { AnyZodObject, z } from "zod";
 import { response } from "@/libs/handler";
+import { APIError } from "./services/error-handle-service";
 
 type LambdaConfig<T extends AnyZodObject, TReturn> = {
   schema: T;
@@ -45,21 +46,12 @@ const handler = async (event: APIGatewayEvent) => {
       testString: z.string(),
     }),
     async lambda(data) {
-      try {
-        return response({
-          statusCode: 200,
-          body: {
-            message: "successful write to sea",
-          },
-        });
-      } catch (err: unknown) {
-        console.error(err);
-
-        return response({
-          statusCode: 500,
-          body: { message: "failed sea sync" },
-        });
-      }
+      return response({
+        statusCode: 200,
+        body: {
+          message: "successful write to sea",
+        },
+      });
     },
   });
 };
