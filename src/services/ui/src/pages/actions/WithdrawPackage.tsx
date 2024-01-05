@@ -9,7 +9,7 @@ import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as I from "@/components/Inputs";
-import { LoadingSpinner } from "@/components";
+import { LoadingSpinner, SectionCard } from "@/components";
 import { AttachmentRecipe, buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
@@ -94,6 +94,8 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
             </p>
           </ActionFormIntro>
           <PackageInfo item={item} />
+          <br />
+          <h3 className="font-bold text-2xl font-sans">Attachments</h3>
           <br />
           <p className="font-normal">
             Upload your supporting documentation for withdrawal or explain your
