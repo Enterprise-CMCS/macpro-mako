@@ -201,6 +201,7 @@ export const RHFSlot = <
                       <div key={`CHECK-${OPT.value}`}>
                         <Checkbox
                           label={OPT.label}
+                          value={OPT.value}
                           checked={field.value?.includes(OPT.value)}
                           onCheckedChange={(c) => {
                             const filtered =
@@ -211,6 +212,8 @@ export const RHFSlot = <
                             field.onChange([...filtered, OPT.value]);
                           }}
                           dependency={OPT.dependency}
+                          parentValue={field.value}
+                          changeMethod={field.onChange}
                         />
                         {field.value?.includes(OPT.value) &&
                           !!OPT.slots &&

@@ -142,4 +142,6 @@ export interface DependencyRule {
 export interface DependencyWrapperProps {
   name?: string;
   dependency?: DependencyRule;
+  changeMethod?: (...event: any[]) => void;
+  parentValue?: string[];
 }

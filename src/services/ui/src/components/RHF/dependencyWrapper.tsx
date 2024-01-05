@@ -30,6 +30,8 @@ export const DependencyWrapper = ({
   name,
   dependency,
   children,
+  parentValue,
+  changeMethod,
 }: PropsWithChildren<DependencyWrapperProps>) => {
   const { watch, setValue } = useFormContext();
   const [wasSetLast, setWasSetLast] = useState(false);
@@ -51,7 +53,20 @@ export const DependencyWrapper = ({
     } else if (!isTriggered && wasSetLast) {
       setWasSetLast(false);
     }
-  }, [dependentValues]);
+
+    if (
+      isTriggered &&
+      dependency?.effect.type === "hide" &&
+      name &&
+      parentValue?.includes(name) &&
+      changeMethod
+    ) {
+      const filteredArray = parentValue.filter((value) => {
+        return value !== name;
+      });
+      changeMethod(filteredArray);
+    }
+  }, [dependentValues, parentValue, changeMethod, dependency]);
 
   switch (dependency?.effect.type) {
     case "hide":
