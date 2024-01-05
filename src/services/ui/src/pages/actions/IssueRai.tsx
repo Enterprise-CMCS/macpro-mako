@@ -1,18 +1,14 @@
-import { useParams, Link, useNavigate } from "@/components/Routing";
+import { useParams, Link } from "@/components/Routing";
 import * as I from "@/components/Inputs";
-import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SimplePageContainer, Alert, LoadingSpinner } from "@/components";
-import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
+import { Alert, LoadingSpinner } from "@/components";
 import { FAQ_TARGET } from "@/routes";
 import { ItemResult, PlanType } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
-import { useGetItem } from "@/api";
 import { submit } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
-import { PackageActionForm } from "@/pages/actions/PackageActionForm";
 import { useModalContext } from "@/pages/form/modals";
 
 const formSchema = z.object({
