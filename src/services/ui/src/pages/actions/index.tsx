@@ -13,7 +13,7 @@ import {
   SimplePageContainer,
 } from "@/components";
 import { ModalProvider } from "@/pages/form/modals";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
+import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
 
 const ActionFormSwitch = () => {
   const { id, type } = useParams("/action/:id/:type");
@@ -78,7 +78,7 @@ export const ActionFormIndex = () => {
     <SimplePageContainer>
       <ModalProvider>
         <BreadCrumbs
-          options={DETAILS_AND_ACTIONS_CRUMBS({ id: id, action: type })}
+          options={detailsAndActionsCrumbs({ id: id, action: type })}
         />
         <ActionFormSwitch />
       </ModalProvider>
