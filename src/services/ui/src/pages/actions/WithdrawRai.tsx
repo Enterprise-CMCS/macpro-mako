@@ -34,7 +34,7 @@ const attachmentList = [
   },
 ] as const;
 
-export const WithdrawRaiForm = ({ item }: { item: ItemResult }) => {
+export const WithdrawRai = ({ item }: { item: ItemResult }) => {
   const { id } = useParams("/action/:id/:type");
   const { setCancelModalOpen, setSuccessModalOpen, setErrorModalOpen } =
     useModalContext();
