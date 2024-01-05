@@ -35,6 +35,7 @@ export const transformOnemac = (id: string) => {
       additionalInformation: data.additionalInformation,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName === "-- --" ? null : data.submitterName,
+      origin: "OneMAC",
       rais: {} as {
         [key: number]: {
           requestedDate?: string;

@@ -11,26 +11,20 @@ import {
   RaiList,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import {
-  Action,
-  ActionAvailabilityCheck,
-  ItemResult,
-  OsMainSourceItem,
-  PlanType,
-  PlanTypeCheck,
-  UserRoles,
-} from "shared-types";
+import { Action, ItemResult, OsMainSourceItem, UserRoles } from "shared-types";
+import { PackageCheck } from "shared-utils";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
 import { getStatus } from "shared-types/statusHelper";
 import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
+import { Link } from "@/components/Routing";
 
 const DetailCardWrapper = ({
   title,
@@ -47,7 +41,7 @@ const DetailCardWrapper = ({
 );
 const StatusCard = (data: OsMainSourceItem) => {
   const transformedStatuses = getStatus(data.seatoolStatus);
-  const checker = ActionAvailabilityCheck(data);
+  const checker = PackageCheck(data);
   const { data: user } = useGetUser();
 
   return (
@@ -87,14 +81,15 @@ const PackageActionsCard = ({ id }: { id: string }) => {
           </em>
         ) : (
           <ul>
-            {data.actions.map((action, idx) => {
+            {data.actions.map((type, idx) => {
               return (
                 <Link
+                  key={`${idx}-${type}`}
+                  path="/action/:id/:type"
+                  params={{ id, type }}
                   className="text-sky-500 underline"
-                  to={`/action/${id}/${action}`}
-                  key={`${idx}-${action}`}
                 >
-                  <li>{mapActionLabel(action)}</li>
+                  <li>{mapActionLabel(type)}</li>
                 </Link>
               );
             })}

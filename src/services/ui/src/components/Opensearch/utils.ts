@@ -1,5 +1,5 @@
 import { OsAggQuery, OsFilterable, OsQueryState } from "shared-types";
-import { OsParamsState } from "./useOpensearch";
+import { OsUrlState } from "./useOpensearch";
 
 const filterMapQueryReducer = (
   state: Record<OsFilterable["prefix"], any[]>,
@@ -102,7 +102,7 @@ export const createSearchFilterable = (value?: string) => {
 
 export const resetFilters = (
   onSet: (
-    arg: (arg: OsParamsState) => OsParamsState,
+    arg: (arg: OsUrlState) => OsUrlState,
     shouldIsolate?: boolean | undefined
   ) => void
 ) => {

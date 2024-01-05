@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router-dom";
  * LZ is a library which can compresses JSON into a uri string
  * and can decompresses JSON strings into state objects
  */
-export const useParams = <T>(props: { key: string; initValue?: T }) => {
+export const useLzUrl = <T>(props: { key: string; initValue?: T }) => {
   const [params, setParams] = useSearchParams();
 
   const queryString = params.get(props.key) || "";
