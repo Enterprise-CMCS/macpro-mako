@@ -7,7 +7,6 @@ import {
   lookupUserAttributes,
 } from "../libs/auth/user";
 import { response } from "../libs/handler";
-import { isCmsReadonlyUser } from "../../../packages/shared-utils/user-helper";
 
 type GetPackageActionsBody = {
   id: string;
@@ -39,15 +38,6 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
       authDetails.userId,
       authDetails.poolId
     );
-
-    if (isCmsReadonlyUser(userAttr)) {
-      return response({
-        statusCode: 200,
-        body: {
-          actions: []
-        },
-      });
-    }
 
     return response({
       statusCode: 200,

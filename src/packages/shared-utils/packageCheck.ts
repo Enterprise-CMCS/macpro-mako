@@ -59,7 +59,7 @@ export const PackageCheck = ({
     /** Latest RAI has been responded to **/
     hasRaiResponse: latestRai?.status === "received",
     /** RAI Withdraw has been enabled **/
-    hasEnabledRaiWithdraw: latestRai?.status === "requested" || raiWithdrawEnabled,
+    hasEnabledRaiWithdraw: raiWithdrawEnabled,
   };
   return {
     ...planChecks,
