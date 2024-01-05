@@ -3,6 +3,8 @@ import { type APIGatewayEvent } from "aws-lambda";
 import { ActionTypes } from "shared-types";
 import { withdrawRaiLambda } from "./withdraw-rai-lambda";
 import { enableRaiWithdrawLambda } from "./enable-rai-withdraw-lambda";
+import { issueRaiLambda } from "./issue-rai-lambda";
+import { respondToRaiLambda } from "./respond-to-rai-lambda";
 
 type Routes = Record<
   ActionTypes,
@@ -29,8 +31,8 @@ export const router = async (event: APIGatewayEvent) => {
     "withdraw-rai": withdrawRaiLambda(event),
     "disable-rai-withdraw": enableRaiWithdrawLambda(event),
     "enable-rai-withdraw": enableRaiWithdrawLambda(event),
-    "issue-rai": withdrawRaiLambda(event),
-    "respond-to-rai": withdrawRaiLambda(event),
+    "issue-rai": issueRaiLambda(event),
+    "respond-to-rai": respondToRaiLambda(event),
     "withdraw-package": withdrawRaiLambda(event),
   };
 
