@@ -1,11 +1,12 @@
 import { Button } from "@/components/Inputs";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Link } from "@/components/Routing";
 import { PropsWithChildren, ReactElement } from "react";
 import { SimplePageTitle } from "@/pages/create/create-options";
 import { SimplePageContainer } from "@/components";
-import { FAQ_SECTION, ROUTES } from "@/routes";
+import { FAQ_SECTION } from "@/routes";
 import { BreadCrumbs } from "@/components/BreadCrumb";
-import { NEW_SUBMISSION_CRUMBS } from "@/pages/create/create-breadcrumbs";
+import { optionCrumbsFromPath } from "@/pages/create/create-breadcrumbs";
 export enum EXTERNAL_APP {
   MAC_PRO = "https://www.medicaid.gov/resources-for-states/medicaid-and-chip-program-macpro-portal/index.html#MACPro",
   MMDL = "https://wms-mmdl.cms.gov/MMDL/faces/portal.jsp",
@@ -32,7 +33,8 @@ const FAQHelperText = () => (
       <Link
         className="text-sky-600 hover:text-sky-800 underline"
         target={"_faq"}
-        to={`${ROUTES.FAQ}/#${FAQ_SECTION.SYSTEM}`}
+        path="/faq"
+        hash={FAQ_SECTION.SYSTEM}
       >
         Crosswalk from Paper-based State Plan to MACPro and MMDL
       </Link>{" "}
@@ -56,7 +58,7 @@ const ExternalAppLandingPage = ({
   const location = useLocation();
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={NEW_SUBMISSION_CRUMBS(location.pathname)} />
+      <BreadCrumbs options={optionCrumbsFromPath(location.pathname)} />
       {/* TODO: Replace simple page title bar with breadcrumbs */}
       <SimplePageTitle title={pageTitle} />
       <div className="flex flex-col items-center justify-center m-4 pt-4 pb-12">

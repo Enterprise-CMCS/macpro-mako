@@ -2,6 +2,7 @@ import { Handler } from "aws-lambda";
 import { send, SUCCESS, FAILED } from "cfn-response-async";
 type ResponseStatus = typeof SUCCESS | typeof FAILED;
 import * as os from "./../../../libs/opensearch-lib";
+import { OsIndex } from "shared-types";
 
 export const customResourceWrapper: Handler = async (event, context) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
@@ -24,29 +25,40 @@ export const handler: Handler = async () => {
   await manageIndex();
 };
 
+const manageIndexResource = async (resource: {
+  index: OsIndex;
+  update?: object;
+}) => {
+  if (!process.env.osDomain) {
+    throw new Error("process.env.osDomain must be defined");
+  }
+
+  const createIndex = await os.createIndex(
+    process.env.osDomain,
+    resource.index
+  );
+  console.log({ createIndex });
+
+  if (!resource.update) return;
+
+  const updateFieldMapping = await os.updateFieldMapping(
+    process.env.osDomain,
+    resource.index,
+    resource.update
+  );
+  console.log(updateFieldMapping);
+};
+
 async function manageIndex() {
   try {
-    if (!process.env.osDomain)
-      throw new Error("process.env.osDomain must be defined");
+    await manageIndexResource({
+      index: "main",
+      update: { rais: { type: "object", enabled: false } },
+    });
 
-    if (!(await os.indexExists(process.env.osDomain, "main"))) {
-      const createIndexReponse = await os.createIndex(
-        process.env.osDomain,
-        "main"
-      );
-      console.log(createIndexReponse);
-      const updateFieldMappingResponse = await os.updateFieldMapping(
-        process.env.osDomain,
-        "main",
-        {
-          rais: {
-            type: "object",
-            enabled: false,
-          },
-        }
-      );
-      console.log(updateFieldMappingResponse);
-    }
+    await manageIndexResource({
+      index: "changelog",
+    });
   } catch (error) {
     console.log(error);
     throw "ERROR:  Error occured during index management.";

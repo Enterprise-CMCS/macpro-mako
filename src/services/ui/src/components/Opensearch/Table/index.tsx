@@ -3,16 +3,17 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { FC, useState } from "react";
 import { OsTableColumn } from "./types";
 import { useOsContext } from "../Provider";
-import { useOsParams } from "../useOpensearch";
+import { useOsUrl } from "../useOpensearch";
 import { VisibilityPopover } from "../Settings";
 import { BLANK_VALUE } from "@/consts";
+import { OsField } from "shared-types";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];
 }> = (props) => {
   const context = useOsContext();
 
-  const params = useOsParams();
+  const url = useOsUrl();
 
   const [osColumns, setOsColumns] = useState(
     props.columns.map((COL) => ({
@@ -39,7 +40,7 @@ export const OsTable: FC<{
             className="w-[10px]"
             icon={
               <VisibilityPopover
-                list={osColumns.filter((COL) => !COL.locked)}
+                list={osColumns.filter((COL) => !COL.locked || COL.field)}
                 onItemClick={onToggle}
               />
             }
@@ -50,17 +51,19 @@ export const OsTable: FC<{
               <UI.TableHead
                 {...(!!TH.props && TH.props)}
                 key={`TH-${TH.field}`}
-                isActive={params.state.sort.field === TH.field}
-                desc={params.state.sort.order === "desc"}
-                onClick={() =>
-                  params.onSet((s) => ({
+                isActive={url.state.sort.field === TH.field}
+                desc={url.state.sort.order === "desc"}
+                {...(TH.isSystem && { className: "pointer-events-none" })}
+                onClick={() => {
+                  if (!TH.field) return;
+                  url.onSet((s) => ({
                     ...s,
                     sort: {
-                      field: TH.field,
+                      field: TH.field as OsField,
                       order: s.sort.order === "desc" ? "asc" : "desc",
                     },
-                  }))
-                }
+                  }));
+                }}
               >
                 {TH.label}
               </UI.TableHead>

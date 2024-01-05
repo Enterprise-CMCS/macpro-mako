@@ -1,6 +1,5 @@
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "@/components/Routing";
 import { useGetItem, useGetPackageActions } from "@/api";
-import { ROUTES } from "@/routes";
 import {
   Alert,
   BreadCrumbs,
@@ -8,7 +7,6 @@ import {
   SimplePageContainer,
 } from "@/components";
 import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
-import { Action } from "shared-types";
 import React, {
   JSXElementConstructor,
   PropsWithChildren,
@@ -18,10 +16,7 @@ import React, {
 type CloneableChild = ReactElement<any, string | JSXElementConstructor<any>>;
 
 export const PackageActionForm = ({ children }: PropsWithChildren) => {
-  const { id, type } = useParams<{
-    id: string;
-    type: Action;
-  }>();
+  const { id, type } = useParams("/action/:id/:type");
   const {
     data: item,
     isLoading: itemIsLoading,
@@ -33,7 +28,7 @@ export const PackageActionForm = ({ children }: PropsWithChildren) => {
     error: actionsError,
   } = useGetPackageActions(id!);
 
-  if (!id || !type) return <Navigate to={ROUTES.DASHBOARD} />;
+  if (!id || !type) return <Navigate path="/" />;
   if (itemIsLoading || actionsAreLoading) return <LoadingSpinner />;
   return (
     <SimplePageContainer>

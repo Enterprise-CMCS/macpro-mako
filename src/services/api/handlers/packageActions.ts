@@ -20,6 +20,10 @@ import {
   RaiResponse,
   raiWithdrawSchema,
   RaiWithdraw,
+  withdrawPackageSchema,
+  WithdrawPackage,
+  toggleWithdrawRaiEnabledSchema,
+  ToggleWithdrawRaiEnabled,
 } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
@@ -209,26 +213,90 @@ export async function respondToRai(body: RaiResponse, rais: any) {
     // Close pool
     await pool.close();
   }
-  console.log("heyo");
+
 }
 
-export async function withdrawPackage() {
+export async function withdrawPackage(body: WithdrawPackage) {
   console.log("State withdrawing a package.");
+  // Check incoming data
+  const result = withdrawPackageSchema.safeParse(body);
+  if (result.success === false) {
+    console.error(
+      "Withdraw Package event validation error. The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message
+    );
+    return response({
+      statusCode: 400,
+      body: { message: "Withdraw Package event validation error" },
+    });
+  }
+  // Begin query (data is confirmed)
+  const pool = await sql.connect(config);
+  const transaction = new sql.Transaction(pool);
+  const query = `
+    UPDATE SEA.dbo.State_Plan
+      SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}')
+      WHERE ID_Number = '${body.id}'
+  `;
+
+  try {
+    await transaction.begin();
+    const txnResult = await transaction.request().query(query);
+    console.log(txnResult);
+    await produceMessage(
+      TOPIC_NAME,
+      body.id,
+      JSON.stringify({ ...result.data, actionType: Action.WITHDRAW_PACKAGE })
+    );
+    // Commit transaction
+    await transaction.commit();
+  } catch (err) {
+    // Rollback and log
+    await transaction.rollback();
+    console.error("Error executing query:", err);
+    return response({
+      statusCode: 500,
+      body: err instanceof Error ? { message: err.message } : err,
+    });
+  } finally {
+    // Close pool
+    await pool.close();
+  }
 }
 
-export async function toggleRaiResponseWithdraw(body: any, toggle: boolean) {
-  const { id, authority, origin } = body;
+export async function toggleRaiResponseWithdraw(
+  body: ToggleWithdrawRaiEnabled,
+  toggle: boolean
+) {
+  const result = toggleWithdrawRaiEnabledSchema.safeParse({
+    ...body,
+    raiWithdrawEnabled: toggle,
+  });
+  if (result.success === false) {
+    console.error(
+      "Toggle Rai Response Withdraw Enable event validation error. The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message
+    );
+    return response({
+      statusCode: 400,
+      body: {
+        message: "Toggle Rai Response Withdraw Enable event validation error",
+      },
+    });
+  }
   try {
     await produceMessage(
       TOPIC_NAME,
-      id,
+      body.id,
       JSON.stringify({
-        raiWithdrawEnabled: toggle,
         actionType: toggle
           ? Action.ENABLE_RAI_WITHDRAW
           : Action.DISABLE_RAI_WITHDRAW,
-        authority,
-        origin,
+        ...result.data,
       })
     );
 

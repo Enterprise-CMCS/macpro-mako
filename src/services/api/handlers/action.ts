@@ -6,12 +6,13 @@ import {
   isAuthorized,
   lookupUserAttributes,
 } from "../libs/auth/user";
-import { packageActionsForResult } from "./getPackageActions";
+import { getAvailableActions } from "shared-utils";
 import { Action } from "shared-types";
 import {
   issueRai,
   respondToRai,
   toggleRaiResponseWithdraw,
+  withdrawPackage,
   withdrawRai,
 } from "./packageActions";
 
@@ -55,7 +56,7 @@ export const handler = async (event: APIGatewayEvent) => {
     );
 
     // Check that the package action is available
-    const actions: Action[] = packageActionsForResult(userAttr, result);
+    const actions: Action[] = getAvailableActions(userAttr, result._source);
     if (!actions.includes(actionType)) {
       return response({
         statusCode: 401,
@@ -67,6 +68,9 @@ export const handler = async (event: APIGatewayEvent) => {
 
     // Call package action
     switch (actionType) {
+      case Action.WITHDRAW_PACKAGE:
+        await withdrawPackage(body);
+        break;
       case Action.ISSUE_RAI:
         await issueRai(body);
         break;

@@ -1,12 +1,14 @@
 import { useGetUser } from "@/api/useGetUser";
-import { Alert, SubNavHeader } from "@/components";
+import { Alert, CardWithTopBorder, SubNavHeader } from "@/components";
 import { Button } from "@/components/Inputs";
 import { RoleDescriptionStrings } from "shared-types";
+import { convertStateAbbreviations } from "@/utils";
 import config from "@/config";
 
 export const Profile = () => {
   const { data } = useGetUser();
-  console.info("user data", data);
+  const stateAbbreviations = data?.user?.["custom:state"];
+  const fullStateNames = convertStateAbbreviations(stateAbbreviations);
 
   // Returns comma-separated string of user role descriptions:
   function rolesDescriptions(roles: string | undefined) {
@@ -44,7 +46,7 @@ export const Profile = () => {
             </svg>
           </div>
 
-          <div className="py-2 flex-1">
+          <div className="py-2 flex-1 mr-4">
             All changes to your access or profile must be made in IDM.
           </div>
           <a href={config.idm.home_url} target="_blank" rel="noreferrer">
@@ -52,25 +54,38 @@ export const Profile = () => {
           </a>
         </Alert>
 
-        <div className="basis-1/2 flex flex-col gap-6">
-          <h2 className="text-2xl font-bold">My Information</h2>
+        <div className="flex flex-col md:flex-row">
+          <div className="flex flex-col gap-6 md:basis-1/2">
+            <h2 className="text-2xl font-bold">My Information</h2>
 
-          <div className="leading-9">
-            <h3 className="font-bold">Full Name</h3>
-            <p>
-              {data?.user?.given_name} {data?.user?.family_name}
-            </p>
+            <div className="leading-9">
+              <h3 className="font-bold">Full Name</h3>
+              <p>
+                {data?.user?.given_name} {data?.user?.family_name}
+              </p>
+            </div>
+
+            <div className="leading-9">
+              <h3 className="font-bold">Role</h3>
+              <p>{rolesDescriptions(data?.user?.["custom:cms-roles"])}</p>
+            </div>
+
+            <div className="leading-9">
+              <h3 className="font-bold">Email</h3>
+              <p>{data?.user?.email}</p>
+            </div>
           </div>
 
-          <div className="leading-9">
-            <h3 className="font-bold">Role</h3>
-            <p>{rolesDescriptions(data?.user?.["custom:cms-roles"])}</p>
-          </div>
-
-          <div className="leading-9">
-            <h3 className="font-bold">Email</h3>
-            <p>{data?.user?.email}</p>
-          </div>
+          {fullStateNames && (
+            <div className="my-4 md:my-0 md:basis-1/2">
+              <CardWithTopBorder>
+                <div className="px-8 py-2">
+                  <h3 className="text-xl font-bold">{fullStateNames}</h3>
+                  <p className="italic">Access Granted</p>
+                </div>
+              </CardWithTopBorder>
+            </div>
+          )}
         </div>
       </section>
     </>
