@@ -35,14 +35,12 @@ export const spaDetails = (data: OsMainSourceItem): DetailSectionItem[] => [
   {
     label: "Initial Submission Date",
     value: data.submissionDate
-      ? // This date is an exact timestamp
-        format(new Date(data.submissionDate), "MM/dd/yyyy h:mm:ss a")
+      ? moment(data.submissionDate).tz("UTC").format("MM/DD/yyyy")
       : BLANK_VALUE,
     canView: () => true,
   },
   {
     label: "Proposed Effective Date",
-    // This date is a discrete day in seatool, relative to UTC.
     value: data.proposedDate
       ? moment(data.proposedDate).tz("UTC").format("MM/DD/yyyy")
       : BLANK_VALUE,
@@ -50,7 +48,6 @@ export const spaDetails = (data: OsMainSourceItem): DetailSectionItem[] => [
   },
   {
     label: "Approved Effective Date",
-    // This date is a discrete day in seatool, relative to UTC.
     value: data.approvedEffectiveDate
       ? moment(data.approvedEffectiveDate).tz("UTC").format("MM/DD/yyyy")
       : BLANK_VALUE,
