@@ -140,5 +140,3 @@ const abp_forms = [
     href: "/forms/abp/ABPSPAProcess.pdf",
   },
 ];
-
-// Now you can use the 'data' array as needed in your application.
