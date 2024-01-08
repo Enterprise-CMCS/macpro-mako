@@ -46,7 +46,7 @@ describe("Test BigMacWriteService Class", async () => {
     );
   });
 
-  it("Sends correct message to kafka for enable/disable rai workflow", async () => {
+  it("Sends correct message to kafka for issue rai workflow", async () => {
     const kafkaSpy = vi.spyOn(mockKafkaService, "produceMessage");
     const mockRai = generateMock(raiIssueSchema, {
       seed: 123,
