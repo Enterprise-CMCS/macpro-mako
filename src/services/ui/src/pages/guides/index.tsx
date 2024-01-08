@@ -141,7 +141,7 @@ const abp_forms = [
     targetBlank: true,
   },
   {
-    title: "Alternative Benefit Plan State Trainin",
+    title: "Alternative Benefit Plan State Training",
     linkTitle: "Alternative Benefit Plan State Training (2020-04-24 .pdf)",
     href: "/forms/abp/ABPStateTraining.pdf",
     targetBlank: true,
