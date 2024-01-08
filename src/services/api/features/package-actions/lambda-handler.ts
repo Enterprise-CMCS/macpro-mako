@@ -14,7 +14,6 @@ export const handleEvent = async <T extends AnyZodObject, TReturn>({
   event,
   schema,
   lambda,
-  allowedRoles,
 }: LambdaConfig<T, TReturn>) => {
   try {
     const body = JSON.parse(event.body ?? "{}");
@@ -36,22 +35,4 @@ export const handleEvent = async <T extends AnyZodObject, TReturn>({
   } catch (err: unknown) {
     console.error(err);
   }
-};
-
-const handler = async (event: APIGatewayEvent) => {
-  return await handleEvent({
-    event,
-    allowedRoles: ["Admin"],
-    schema: z.object({
-      testString: z.string(),
-    }),
-    async lambda(data) {
-      return response({
-        statusCode: 200,
-        body: {
-          message: "successful write to sea",
-        },
-      });
-    },
-  });
 };
