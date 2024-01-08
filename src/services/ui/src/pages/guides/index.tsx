@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 export const ABPGuide = () => {
   return (
     <>
-      <section className="max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
+      <section className="max-w-screen-xl m-auto px-4 lg:px-8 py-8 gap-10">
         <div className="h-[5px] bg-gradient-to-r from-primary from-50% to-[#02bfe7] to-[66%] rounded-t"></div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -29,7 +29,12 @@ export const ABPGuide = () => {
                     {row.title}
                   </TableCell>
                   <TableCell>
-                    <a className="underline" href={row.href} rel="noreferrer">
+                    <a
+                      className="underline"
+                      href={row.href}
+                      target={row.targetBlank ? "_blank" : undefined}
+                      rel="noreferrer"
+                    >
                       {row.linkTitle}
                     </a>
                   </TableCell>
@@ -128,15 +133,18 @@ const abp_forms = [
     linkTitle:
       "Alternative Benefit Plan State Training Webinar (2013-08-13 .wmv)",
     href: "https://www.medicaid.gov/media/162926",
+    targetBlank: true,
   },
   {
     title: "Alternative Benefit Plan State Trainin",
     linkTitle: "Alternative Benefit Plan State Training (2020-04-24 .pdf)",
     href: "/forms/abp/ABPStateTraining.pdf",
+    targetBlank: true,
   },
   {
     title: "Alternative Benefit Plan SPA Process",
     linkTitle: "Alternative Benefit Plan SPA Process (2016-08-01 .pdf)",
     href: "/forms/abp/ABPSPAProcess.pdf",
+    targetBlank: true,
   },
 ];
