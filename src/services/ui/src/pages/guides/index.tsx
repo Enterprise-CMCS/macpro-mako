@@ -1,4 +1,4 @@
-import * as React from "react";
+import { SubNavHeader } from "@/components";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,6 +9,11 @@ import Paper from "@mui/material/Paper";
 export const ABPGuide = () => {
   return (
     <>
+      <SubNavHeader>
+        <h1 className="text-xl font-medium">
+          Medicaid Alternative Benefit Plan Implementation Guides
+        </h1>
+      </SubNavHeader>
       <section className="max-w-screen-xl m-auto px-4 lg:px-8 py-8 gap-10">
         <div className="h-[5px] bg-gradient-to-r from-primary from-50% to-[#02bfe7] to-[66%] rounded-t"></div>
         <TableContainer component={Paper}>
