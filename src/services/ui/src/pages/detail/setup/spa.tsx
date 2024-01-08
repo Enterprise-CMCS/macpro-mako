@@ -7,6 +7,7 @@ import { OsMainSourceItem } from "shared-types";
 import { ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
 import { ReviewTeamList } from "@/components/PackageDetails/ReviewTeamList";
+import moment from "moment-timezone";
 
 export type DetailSectionItem = {
   label: string;
@@ -34,35 +35,38 @@ export const spaDetails = (data: OsMainSourceItem): DetailSectionItem[] => [
   {
     label: "Initial Submission Date",
     value: data.submissionDate
-      ? format(new Date(data.submissionDate), "MM/dd/yyyy h:mm:ss a")
+      ? // This date is an exact timestamp
+        format(new Date(data.submissionDate), "MM/dd/yyyy h:mm:ss a")
       : BLANK_VALUE,
     canView: () => true,
   },
   {
     label: "Proposed Effective Date",
+    // This date is a discrete day in seatool, relative to UTC.
     value: data.proposedDate
-      ? format(new Date(data.proposedDate), "MM/dd/yyyy")
+      ? moment(data.proposedDate).tz("UTC").format("MM/DD/yyyy")
       : BLANK_VALUE,
     canView: () => true,
   },
   {
     label: "Approved Effective Date",
+    // This date is a discrete day in seatool, relative to UTC.
     value: data.approvedEffectiveDate
-      ? format(new Date(data.approvedEffectiveDate), "MM/dd/yyyy h:mm:ss a")
+      ? moment(data.approvedEffectiveDate).tz("UTC").format("MM/DD/yyyy")
       : BLANK_VALUE,
     canView: () => true,
   },
   {
     label: "Status Date",
     value: data.statusDate
-      ? format(new Date(data.statusDate), "MM/dd/yyyy h:mm:ss a")
+      ? moment(data.statusDate).tz("UTC").format("MM/DD/yyyy")
       : BLANK_VALUE,
     canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
   },
   {
     label: "Final Disposition Date",
     value: data.finalDispositionDate
-      ? format(new Date(data.finalDispositionDate), "MM/dd/yyyy h:mm:ss a")
+      ? moment(data.finalDispositionDate).tz("UTC").format("MM/DD/yyyy")
       : BLANK_VALUE,
     canView: () => true,
   },
