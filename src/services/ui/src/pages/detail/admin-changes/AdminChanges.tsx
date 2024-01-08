@@ -54,7 +54,7 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
           <strong>{label as string}</strong>
           {" - "}
           {/* WHAT Date */}
-          {new Date(props.responseDate).toDateString()}
+          {new Date(props.timestamp).toDateString()}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">
