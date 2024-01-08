@@ -2,7 +2,7 @@ import { FormSchema } from "shared-types";
 
 const ABP3: FormSchema = {
   header:
-    "APB 3: Selection of benchmark benefit package or benchmark-equivalent benefit package",
+    "ABP 3: Selection of benchmark benefit package or benchmark-equivalent benefit package",
   sections: [
     {
       title: "Benefit package details",
@@ -129,7 +129,7 @@ const ABP3: FormSchema = {
                                             options: [
                                               {
                                                 label:
-                                                  "The state/territory offers the benefits provided in the approved state plan.",
+                                                  "The state/territory offers benefits based on the approved state plan.",
                                                 value: "approved_state_plan",
                                                 form: [
                                                   {
