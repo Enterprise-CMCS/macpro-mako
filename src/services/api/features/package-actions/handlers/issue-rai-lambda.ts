@@ -20,25 +20,19 @@ export const issueRaiLambda = async (event: APIGatewayEvent) => {
           TOPIC_NAME
         );
 
-      try {
-        await packageActionService.issueRai(data);
+      await packageActionService.issueRai(data);
 
-        await packageActionService.changePackageStatus({
-          id: data.id,
-          status: "Pending-RAI",
-        });
+      await packageActionService.changePackageStatus({
+        id: data.id,
+        status: "Pending-RAI",
+      });
 
-        return response({
-          statusCode: 200,
-          body: {
-            message: "rai issued successfully",
-          },
-        });
-      } catch (err: unknown) {
-        console.error("failed to issue rai successfully", err);
-
-        return response({ statusCode: 500 });
-      }
+      return response({
+        statusCode: 200,
+        body: {
+          message: "rai issued successfully",
+        },
+      });
     },
   });
 };
