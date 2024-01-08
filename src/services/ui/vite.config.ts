@@ -12,17 +12,10 @@ export default defineConfig({
        * enable or disable scripts injection in development
        * default: false
        */
-      enableDev: true,
-      analytics: [
-        {
-          id: "G-ZJ1PHFW684",
-          //       disable: process.env.VITE_NODE_ENV !== "production",
-        },
-        // {
-        //   id: 'G-XXXXX',
-        //   disable: process.env.VITE_NODE_ENV !== "production",
-        // }
-      ],
+      enableDev: false,
+      analytics: {
+        id: "G-ZJ1PHFW684",
+      },
     }),
   ],
   server: {
