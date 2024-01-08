@@ -1,7 +1,6 @@
 import { type APIGatewayEvent } from "aws-lambda";
 import { AnyZodObject, z } from "zod";
 import { response } from "@/libs/handler";
-import { APIError } from "./services/error-handle-service";
 
 type LambdaConfig<T extends AnyZodObject, TReturn> = {
   schema: T;

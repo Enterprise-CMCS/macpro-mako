@@ -1,9 +1,9 @@
-import { KafkaService } from "@/shared/onemac-micro-kafka";
+import { IKafkaService, KafkaService } from "@/shared/onemac-micro-kafka";
 import { Action, raiIssueSchema } from "shared-types";
 import { z } from "zod";
 import { APIError } from "./error-handle-service";
 
-type KafkaMessage = {
+export type KafkaMessage = {
   key: string;
   value: string;
 };
@@ -14,16 +14,16 @@ export type WithdrawEnabledParams = {
   authority: string;
 };
 
-type IBigmacWriteService = {
+export type IBigmacWriteService = {
   issueRai: (raiData: z.infer<typeof raiIssueSchema>) => Promise<void>;
   setWithdrawEnabled: (params: WithdrawEnabledParams) => Promise<void>;
 };
 
 export class BigmacWriteService implements IBigmacWriteService {
-  private readonly bigmac: KafkaService;
+  private readonly bigmac: IKafkaService;
   private readonly topic: string;
 
-  constructor(bigmac: KafkaService, topic: string) {
+  constructor(bigmac: IKafkaService, topic: string) {
     this.bigmac = bigmac;
     this.topic = topic;
   }
@@ -58,7 +58,6 @@ export class BigmacWriteService implements IBigmacWriteService {
           ? Action.ENABLE_RAI_WITHDRAW
           : Action.DISABLE_RAI_WITHDRAW,
         authority,
-        origin,
       }),
     });
   }

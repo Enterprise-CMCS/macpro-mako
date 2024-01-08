@@ -1,6 +1,10 @@
 import { Kafka, Message, KafkaConfig, Producer } from "kafkajs";
 
-export class KafkaService {
+export type IKafkaService = {
+  produceMessage: (topic: string, key: string, value: string) => Promise<void>;
+};
+
+export class KafkaService implements IKafkaService {
   private readonly producer: Producer;
 
   constructor(config: KafkaConfig) {

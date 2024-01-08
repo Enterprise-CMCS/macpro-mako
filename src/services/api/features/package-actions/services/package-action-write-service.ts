@@ -8,7 +8,6 @@ import { raiIssueSchema } from "shared-types";
 import { KafkaService } from "@/shared/onemac-micro-kafka";
 import * as sql from "mssql";
 import { KafkaConfig } from "kafkajs";
-import { seatoolConnection } from "../consts/sql-connection";
 import * as query from "@/features/package-actions/queries";
 
 type IPackageActionWriteService = {

@@ -2,6 +2,8 @@
   "name": "api",
   "private": true,
   "devDependencies": {
+    "@anatine/zod-mock": "^3.13.3",
+    "@faker-js/faker": "^8.3.1",
     "@types/aws-lambda": "^8.10.111",
     "@types/mssql": "^8.1.2",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
@@ -10,7 +12,8 @@
     "bestzip": "^2.2.1",
     "eslint": "^8.38.0",
     "eslint-config-custom-server": "*",
-    "extract-zip": "^2.0.1"
+    "extract-zip": "^2.0.1",
+    "vitest": "^1.1.3"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.276.0",
@@ -34,6 +37,7 @@
     "build": "tsc",
     "buildLayers": "tsc -p layers",
     "lint": "eslint '**/*.{ts,js}'",
-    "compileRepack": "tsc -p repack"
+    "compileRepack": "tsc -p repack",
+    "test": "vitest run"
   }
 }
