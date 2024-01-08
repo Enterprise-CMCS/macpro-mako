@@ -21,42 +21,31 @@ export const withdrawRaiLambda = async (event: APIGatewayEvent) => {
       raiWithdrawnDate: z.number(),
     }),
     async lambda(data) {
-      try {
-        // withdraw rai
-        const packageActionService =
-          await PackageActionWriteService.createPackageActionWriteService(
-            kafkaConfig,
-            seatoolConnection,
-            TOPIC_NAME
-          );
+      // withdraw rai
+      const packageActionService =
+        await PackageActionWriteService.createPackageActionWriteService(
+          kafkaConfig,
+          seatoolConnection,
+          TOPIC_NAME
+        );
 
-        await packageActionService.withdrawRai({
-          id: data.id,
-          activeRaiDate: data.raiDate,
-          withdrawnDate: data.raiWithdrawnDate,
-        });
+      await packageActionService.withdrawRai({
+        id: data.id,
+        activeRaiDate: data.raiDate,
+        withdrawnDate: data.raiWithdrawnDate,
+      });
 
-        // we need to update the status eventually here
-        await packageActionService.changePackageStatus({
-          id: data.id,
-          status: "Pending",
-        });
+      // we need to update the status eventually here
+      await packageActionService.changePackageStatus({
+        id: data.id,
+        status: "Pending",
+      });
 
-        return response({
-          body: {
-            message: "successfuly written to seatool",
-          },
-        });
-      } catch (err: unknown) {
-        console.error(err);
-
-        return response({
-          body: {
-            error: "failed to write to seatool",
-          },
-          statusCode: 500,
-        });
-      }
+      return response({
+        body: {
+          message: "successfuly written to seatool",
+        },
+      });
     },
   });
 };
