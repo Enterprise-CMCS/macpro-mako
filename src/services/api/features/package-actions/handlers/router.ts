@@ -6,6 +6,7 @@ import { enableRaiWithdrawLambda } from "./enable-rai-withdraw-lambda";
 import { issueRaiLambda } from "./issue-rai-lambda";
 import { respondToRaiLambda } from "./respond-to-rai-lambda";
 import { APIError } from "../services/error-handle-service";
+import { withdrawPackageLambda } from "./withdraw-package-lambda";
 
 type Routes = Record<
   ActionTypes,
@@ -34,7 +35,7 @@ export const router = async (event: APIGatewayEvent) => {
     "enable-rai-withdraw": enableRaiWithdrawLambda(event),
     "issue-rai": issueRaiLambda(event),
     "respond-to-rai": respondToRaiLambda(event),
-    "withdraw-package": withdrawRaiLambda(event),
+    "withdraw-package": withdrawPackageLambda(event),
   };
 
   try {

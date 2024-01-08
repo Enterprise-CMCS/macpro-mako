@@ -6,6 +6,7 @@ import { APIError } from "./error-handle-service";
 
 type ISeatoolWriteService = {
   withdrawRai: (queryParams: query.WithdrawRaiQueryParams) => Promise<void>;
+  withdrawPackage: (queryParams: query.WithdrawPackageParams) => Promise<void>;
   issueRai: (raiData: z.infer<typeof raiIssueSchema>) => Promise<void>;
   respondToRai: (queryParams: query.RespondToRaiQueryParams) => Promise<void>;
   changePackageStatus: (
@@ -47,6 +48,20 @@ export class SeatoolWriteService implements ISeatoolWriteService {
       await this.seatoolTransaction
         .request()
         .query(query.withdrawRaiQuery({ id, activeRaiDate, withdrawnDate }));
+    });
+  }
+
+  async withdrawPackage({
+    activeRaiDate,
+    withdrawnDate,
+    id,
+  }: query.WithdrawPackageParams) {
+    await this.handleTransaction(async () => {
+      await this.seatoolTransaction
+        .request()
+        .query(
+          query.withdrawPackageQuery({ activeRaiDate, withdrawnDate, id })
+        );
     });
   }
 
