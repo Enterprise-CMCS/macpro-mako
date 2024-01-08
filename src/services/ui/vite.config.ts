@@ -11,7 +11,7 @@ export default defineConfig({
       enableDev: true,
       analytics: {
         id: "G-ZJ1PHFW684",
-        disable: process.env.VITE_NODE_ENV !== "production",
+        // disable: process.env.VITE_NODE_ENV !== "production",
       },
     }),
   ],
