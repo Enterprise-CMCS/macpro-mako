@@ -24,7 +24,6 @@ export const getStateStatusWithSubStatus = (data: OsMainSourceItem) => {
     );
   }
 
-  // add more else if conditions here in future
   return data.stateStatus;
 };
 
