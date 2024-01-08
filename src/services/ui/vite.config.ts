@@ -8,9 +8,10 @@ export default defineConfig({
   plugins: [
     react(),
     VitePluginRadar({
+      enableDev: true,
       analytics: {
         id: "G-ZJ1PHFW684",
-        disable: true,
+        disable: process.env.VITE_NODE_ENV !== "production",
       },
     }),
   ],
