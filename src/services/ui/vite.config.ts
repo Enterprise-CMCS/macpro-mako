@@ -8,13 +8,9 @@ export default defineConfig({
   plugins: [
     react(),
     VitePluginRadar({
-      /**
-       * enable or disable scripts injection in development
-       * default: false
-       */
-      enableDev: false,
       analytics: {
         id: "G-ZJ1PHFW684",
+        disable: process.env.VITE_NODE_ENV !== "production",
       },
     }),
   ],
