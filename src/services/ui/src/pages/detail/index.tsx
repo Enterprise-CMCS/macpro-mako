@@ -54,7 +54,7 @@ const StatusCard = (data: OsMainSourceItem) => {
             : transformedStatuses.stateStatus}
         </h2>
         {checker.hasEnabledRaiWithdraw && (
-          <em className="text-xs my-4">
+          <em className="text-xs my-4 mr-2">
             {"Withdraw Formal RAI Response - Enabled"}
           </em>
         )}

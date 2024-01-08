@@ -1,14 +1,32 @@
 import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
-import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
+import { CMS_READ_ONLY_ROLES, UserRoles, OsMainSourceItem } from "shared-types";
+
 import { useGetUser } from "@/api/useGetUser";
+import { PackageCheck } from "shared-utils";
 import {
   renderCellActions,
   renderCellDate,
   renderCellIdLink,
 } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
+
+export const getStateStatusWithSubStatus = (data: OsMainSourceItem) => {
+  const checker = PackageCheck(data);
+
+  if (checker.hasEnabledRaiWithdraw) {
+    return (
+      <>
+        {data.stateStatus} <br />
+        {"Withdraw Formal RAI Response - Enabled"}
+      </>
+    );
+  }
+
+  // add more else if conditions here in future
+  return data.stateStatus;
+};
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -44,7 +62,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
         props?.isCms &&
         !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
           ? data.cmsStatus
-          : data.stateStatus,
+          : getStateStatusWithSubStatus(data),
     },
     {
       field: "submissionDate",
