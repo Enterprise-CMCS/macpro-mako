@@ -16,6 +16,7 @@ export type Document = {
     title: string;
     uploadDate: number;
   }[];
+  timestamp: string;
   authority: string;
   id: string;
   origin: string;

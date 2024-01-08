@@ -235,6 +235,7 @@ export const onemac_changelog = async (event: Event) => {
       ACC.push({
         ...record,
         ...(!record?.actionType && { actionType: "new-submission" }), // new-submission custom actionType
+        timestamp: REC.timestamp,
         id: `${packageId}-${REC.offset}`,
         packageId,
       });
