@@ -5,6 +5,7 @@ import { withdrawRaiLambda } from "./withdraw-rai-lambda";
 import { enableRaiWithdrawLambda } from "./enable-rai-withdraw-lambda";
 import { issueRaiLambda } from "./issue-rai-lambda";
 import { respondToRaiLambda } from "./respond-to-rai-lambda";
+import { APIError } from "../services/error-handle-service";
 
 type Routes = Record<
   ActionTypes,
@@ -36,5 +37,16 @@ export const router = async (event: APIGatewayEvent) => {
     "withdraw-package": withdrawRaiLambda(event),
   };
 
-  return await routes[actionType];
+  try {
+    return await routes[actionType];
+  } catch (error: unknown) {
+    if (error instanceof APIError) {
+      return response({
+        statusCode: 500,
+        body: {
+          error: error.message,
+        },
+      });
+    }
+  }
 };

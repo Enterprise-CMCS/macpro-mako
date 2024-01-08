@@ -15,24 +15,20 @@ export const handleEvent = async <T extends AnyZodObject, TReturn>({
   schema,
   lambda,
 }: LambdaConfig<T, TReturn>) => {
-  try {
-    const body = JSON.parse(event.body ?? "{}");
-    const result = schema.safeParse(body);
+  const body = JSON.parse(event.body ?? "{}");
+  const result = schema.safeParse(body);
 
-    if (result.success === true) {
-      // give lambda access to response
-      // give lambda access to kafka
-      return await lambda(result.data);
-    } else {
-      // return a bad response
-      return response({
-        statusCode: 500,
-        body: {
-          error: result.error.message,
-        },
-      });
-    }
-  } catch (err: unknown) {
-    console.error(err);
+  if (result.success === true) {
+    // give lambda access to response
+    // give lambda access to kafka
+    return await lambda(result.data);
+  } else {
+    // return a bad response
+    return response({
+      statusCode: 500,
+      body: {
+        error: result.error.message,
+      },
+    });
   }
 };
