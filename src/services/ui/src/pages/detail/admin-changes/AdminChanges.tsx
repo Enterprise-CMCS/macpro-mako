@@ -7,17 +7,13 @@ import { opensearch } from "shared-types";
 import { FC, useMemo } from "react";
 import { BLANK_VALUE } from "@/consts";
 
-export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
-  props
-) => {
+export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = () => {
   return (
     <p>OneMac admin has enabled package action to submit formal RAI response</p>
   );
 };
 
-export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
-  props
-) => {
+export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = () => {
   return (
     <p>
       OneMac admin has disabled package action to submit formal RAI response

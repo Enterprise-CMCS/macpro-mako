@@ -1,9 +1,7 @@
 import {
-  Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  DetailsSection,
 } from "@/components";
 import { opensearch } from "shared-types";
 import { getAttachmentUrl } from "@/api";
@@ -146,18 +144,6 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
   );
 };
 
-export const PA_WithdrawEnabled: FC<opensearch.changelog.Document> = (
-  props
-) => {
-  return <>TBD</>;
-};
-
-export const PA_WithdrawDisabled: FC<opensearch.changelog.Document> = (
-  props
-) => {
-  return <>TBD</>;
-};
-
 const usePackageActivity = (doc: opensearch.changelog.Document) => {
   return useMemo(() => {
     switch (doc.actionType) {
@@ -173,10 +159,6 @@ const usePackageActivity = (doc: opensearch.changelog.Document) => {
         return ["RAI response submitted", PA_ResponseSubmitted];
       default:
         return [BLANK_VALUE, PA_ResponseSubmitted];
-      // case "disable-rai-withdraw":
-      //   return ["RAI withdraw disabled", PA_WithdrawDisabled];
-      // case "enable-rai-withdraw":
-      //   return ["RAI withdraw enabled", PA_WithdrawEnabled];
     }
   }, [doc.actionType]);
 };

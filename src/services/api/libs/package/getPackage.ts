@@ -14,7 +14,7 @@ export const getPackage = async (id: string) => {
     from: 0,
     size: 200,
     // NOTE: get the required timestamp sort field
-    sort: [{}],
+    sort: [{ timestamp: "desc" }],
     query: { bool: { must: [{ term: { "packageId.keyword": id } }] } },
   })) as opensearch.changelog.Response;
 

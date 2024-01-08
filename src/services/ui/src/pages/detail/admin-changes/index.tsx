@@ -10,7 +10,11 @@ export const AdminChanges: FC<opensearch.main.Document> = (props) => {
     ACTIONS_ADMIN.includes(CL._source.actionType)
   );
   return (
-    <DetailsSection id="admin-updates" title="Admin Updates">
+    <DetailsSection
+      id="admin-updates"
+      title={`Admin Updates (${data?.length})`}
+    >
+      {!data?.length && <p className="text-gray-500">-- no logs --</p>}
       <Accordion type="multiple" className="flex flex-col gap-2">
         {data?.map((CL) => (
           <AdminChange {...CL._source} key={CL._source.id} />

@@ -17,7 +17,11 @@ export const PackageActivities: FC<opensearch.main.Document> = (props) => {
   );
 
   return (
-    <DetailsSection id="attachments" title="Package Activity">
+    <DetailsSection
+      id="attachments"
+      title={`Package Activity (${data?.length})`}
+    >
+      {!data?.length && <p className="text-gray-500">-- no logs --</p>}
       <Accordion type="multiple" className="flex flex-col gap-2">
         {data?.map((CL) => (
           <PackageActivity {...CL._source} key={CL._source.id} />
