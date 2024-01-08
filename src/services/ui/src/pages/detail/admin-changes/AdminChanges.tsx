@@ -6,6 +6,7 @@ import {
 import { opensearch } from "shared-types";
 import { FC, useMemo } from "react";
 import { BLANK_VALUE } from "@/consts";
+import { format } from "date-fns";
 
 export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = () => {
   return (
@@ -46,11 +47,10 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
   return (
     <AccordionItem key={props.id} value={props.id}>
       <AccordionTrigger className="bg-gray-100 px-3">
-        <p className="flex flex-row gap-2">
+        <p className="flex flex-row gap-2 text-gray-600">
           <strong>{label as string}</strong>
           {" - "}
-          {/* WHAT Date */}
-          {new Date(props.timestamp).toDateString()}
+          {format(new Date(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a OOO")}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">

@@ -9,44 +9,63 @@ import { FC, useMemo } from "react";
 import { Button } from "@/components/Inputs";
 import * as Table from "@/components/Table";
 import { BLANK_VALUE } from "@/consts";
+import { format } from "date-fns";
 
 export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
   props
 ) => {
   return (
-    <Table.Table>
-      <Table.TableHeader>
-        <Table.TableRow>
-          <Table.TableHead className="w-[300px]">Document Type</Table.TableHead>
-          <Table.TableHead>Attached File</Table.TableHead>
-        </Table.TableRow>
-      </Table.TableHeader>
-      <Table.TableBody>
-        {props.attachments?.map((ATC) => {
-          return (
-            <Table.TableRow key={`${props.id}-${ATC.key}`}>
-              <Table.TableCell>{ATC.title}</Table.TableCell>
-              <Table.TableCell>
-                <Button
-                  className="ml-[-15px]"
-                  variant="link"
-                  onClick={() => {
-                    getAttachmentUrl(
-                      props.packageId,
-                      ATC.bucket,
-                      ATC.key,
-                      ATC.filename
-                    ).then(window.open);
-                  }}
-                >
-                  {ATC.filename}
-                </Button>
-              </Table.TableCell>
+    <div className="flex flex-col gap-6">
+      <>
+        <Table.Table>
+          <Table.TableHeader>
+            <Table.TableRow>
+              <Table.TableHead className="w-[300px]">
+                Document Type
+              </Table.TableHead>
+              <Table.TableHead>Attached File</Table.TableHead>
             </Table.TableRow>
-          );
-        })}
-      </Table.TableBody>
-    </Table.Table>
+          </Table.TableHeader>
+          <Table.TableBody>
+            {props.attachments?.map((ATC) => {
+              return (
+                <Table.TableRow key={`${props.id}-${ATC.key}`}>
+                  <Table.TableCell>{ATC.title}</Table.TableCell>
+                  <Table.TableCell>
+                    <Button
+                      className="ml-[-15px]"
+                      variant="link"
+                      onClick={() => {
+                        getAttachmentUrl(
+                          props.packageId,
+                          ATC.bucket,
+                          ATC.key,
+                          ATC.filename
+                        ).then(window.open);
+                      }}
+                    >
+                      {ATC.filename}
+                    </Button>
+                  </Table.TableCell>
+                </Table.TableRow>
+              );
+            })}
+          </Table.TableBody>
+        </Table.Table>
+        <Button
+          variant="outline"
+          className="w-max"
+          // TODO: OY2-26538
+          onClick={() => null}
+        >
+          Download documents
+        </Button>
+      </>
+      <div>
+        <h2 className="font-bold text-lg mb-2">Additional Information</h2>
+        <p>{props.additionalInformation || "-- --"}</p>
+      </div>
+    </div>
   );
 };
 
@@ -169,11 +188,10 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
   return (
     <AccordionItem key={props.id} value={props.id}>
       <AccordionTrigger className="bg-gray-100 px-3">
-        <p className="flex flex-row gap-2">
+        <p className="flex flex-row gap-2 text-gray-600">
           <strong>{label as string}</strong>
           {" - "}
-          {/* WHAT Date */}
-          {new Date(props.timestamp).toDateString()}
+          {format(new Date(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a OOO")}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">
