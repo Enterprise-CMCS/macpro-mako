@@ -4,7 +4,6 @@ import { response } from "@/libs/handler";
 
 type LambdaConfig<T extends AnyZodObject, TReturn> = {
   schema: T;
-  allowedRoles: ("Test" | "Admin")[];
   event: APIGatewayEvent;
   lambda: (data: z.infer<T>) => Promise<TReturn>;
 };

@@ -11,7 +11,6 @@ export const issueRaiLambda = async (event: APIGatewayEvent) => {
   return await handleEvent({
     event,
     schema: raiIssueSchema, // don't use this
-    allowedRoles: [],
     async lambda(data) {
       const packageActionService =
         await PackageActionWriteService.createPackageActionWriteService(

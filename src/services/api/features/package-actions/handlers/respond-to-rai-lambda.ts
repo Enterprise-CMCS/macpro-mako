@@ -15,7 +15,6 @@ export const respondToRaiLambda = async (event: APIGatewayEvent) => {
       latestRai: z.number(),
       responseDate: z.number(),
     }),
-    allowedRoles: [],
     async lambda(data) {
       const packageActionService =
         await PackageActionWriteService.createPackageActionWriteService(

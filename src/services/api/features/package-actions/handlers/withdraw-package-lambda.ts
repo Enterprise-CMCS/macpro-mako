@@ -6,7 +6,6 @@ import { response } from "@/shared/lambda-response";
 export const withdrawPackageLambda = async (event: APIGatewayEvent) => {
   return await handleEvent({
     event,
-    allowedRoles: [],
     schema: z.object({}),
     async lambda(data) {
       return response({

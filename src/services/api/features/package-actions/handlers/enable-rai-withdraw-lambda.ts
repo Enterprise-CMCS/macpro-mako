@@ -14,7 +14,6 @@ export const enableRaiWithdrawLambda = async (event: APIGatewayEvent) => {
       enableRaiWithDraw: z.boolean(),
       id: z.string(),
     }),
-    allowedRoles: [],
     async lambda(data) {
       const packageActionWriteService =
         await PackageActionWriteService.createPackageActionWriteService(

@@ -14,7 +14,6 @@ import { TOPIC_NAME } from "../consts/kafka-topic-name";
 export const withdrawRaiLambda = async (event: APIGatewayEvent) => {
   return await handleEvent({
     event,
-    allowedRoles: [],
     schema: z.object({
       id: z.string(),
       raiDate: z.number(),
