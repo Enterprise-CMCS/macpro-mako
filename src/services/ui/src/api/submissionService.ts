@@ -9,7 +9,7 @@ import {
 import { buildActionUrl, SubmissionServiceEndpoint } from "@/lib";
 import { OneMacUser } from "@/api/useGetUser";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { offsetForUtc, seaToolFriendlyTimestamp } from "shared-utils";
+import { offsetForUtc } from "shared-utils";
 
 type SubmissionServiceParameters<T> = {
   data: T;
@@ -88,7 +88,6 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...data,
         ...userDetails,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
-        withdrawnDate: seaToolFriendlyTimestamp(),
       };
     case buildActionUrl(Action.ISSUE_RAI):
       return {
@@ -96,7 +95,6 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        requestedDate: seaToolFriendlyTimestamp(),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
     case buildActionUrl(Action.RESPOND_TO_RAI):
@@ -105,7 +103,6 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        responseDate: seaToolFriendlyTimestamp(),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
     case buildActionUrl(Action.WITHDRAW_PACKAGE):
