@@ -6,10 +6,13 @@ export const offsetForUtc = (date: Date): Date => {
 }
 
 // This creates a Date for midnight today, then accounts for timezone offset.
-export const seaToolFriendlyTimestamp = (): number => {
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  return offsetForUtc(today).getTime();
+export const seaToolFriendlyTimestamp = (date?: Date): number => {
+  // If you don't pass a date, we assume you want today the timestamp for today, midnight, utc.
+  if(!date) {
+    date = new Date();
+    date.setHours(0,0,0,0);
+  }
+  return offsetForUtc(date).getTime();
 };
 
 // This takes an epoch string and converts it to a standard format for display

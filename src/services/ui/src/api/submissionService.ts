@@ -9,7 +9,7 @@ import {
 import { buildActionUrl, SubmissionServiceEndpoint } from "@/lib";
 import { OneMacUser } from "@/api/useGetUser";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { offsetForUtc } from "shared-utils";
+import { seaToolFriendlyTimestamp } from "shared-utils";
 
 type SubmissionServiceParameters<T> = {
   data: T;
@@ -74,9 +74,9 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        proposedEffectiveDate: offsetForUtc(
+        proposedEffectiveDate: seaToolFriendlyTimestamp(
           data.proposedEffectiveDate as Date
-        ).getTime(),
+        ),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
         state: (data.id as string).split("-")[0],
       };
