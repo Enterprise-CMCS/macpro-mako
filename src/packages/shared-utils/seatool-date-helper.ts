@@ -4,7 +4,7 @@ export const offsetForUtc = (date: Date): Date => {
 }
 
 // This creates a Date for midnight today, then accounts for timezone offset.
-export const seaToolFriendlyTimestamp = (): Number => {
+export const seaToolFriendlyTimestamp = (): number => {
   const today = new Date();
   today.setHours(0,0,0,0);
   return offsetForUtc(today).getTime();
