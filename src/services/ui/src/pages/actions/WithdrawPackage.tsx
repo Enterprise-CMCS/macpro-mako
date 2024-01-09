@@ -94,14 +94,11 @@ const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
             </p>
           </ActionFormIntro>
           <PackageInfo item={item} />
-          <br />
-          <h3 className="font-bold text-2xl font-sans">Attachments</h3>
-          <br />
-          <p className="font-normal">
+          <ActionFormIntro title="Attachments"></ActionFormIntro>
+          <p className="font-normal mb-4">
             Upload your supporting documentation for withdrawal or explain your
             need for withdrawal in the <em>Additional Information section.</em>
           </p>
-          <br />
           <I.Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
               {/* Change faqLink once we know the anchor */}
