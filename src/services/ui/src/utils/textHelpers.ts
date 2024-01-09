@@ -1,6 +1,6 @@
-export function removeUnderscoresAndCapitalize(str?: string): string | null {
-  if (!str) return null;
+import { PlanType } from "shared-types";
 
+export function removeUnderscoresAndCapitalize(str: PlanType | string): string {
   // Replace underscores with spaces
   const withoutUnderscores = str.replace(/_/g, " ");
 

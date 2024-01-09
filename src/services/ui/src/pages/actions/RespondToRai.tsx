@@ -1,24 +1,18 @@
-import { useParams } from "react-router-dom";
 import * as I from "@/components/Inputs";
 import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
-import {
-  SimplePageContainer,
-  Alert,
-  LoadingSpinner,
-  BreadCrumbs,
-} from "@/components";
+import { SimplePageContainer, Alert, LoadingSpinner } from "@/components";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
 import { FAQ_TARGET } from "@/routes";
-import { Link, useNavigate } from "react-router-dom";
-import { Action, Authority } from "shared-types";
+import { Link, useNavigate, useParams } from "@/components/Routing";
+import { Action, PlanType } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
 import { useGetItem } from "@/api";
 import { buildActionUrl } from "@/lib";
+import { PackageActionForm } from "@/pages/actions/PackageActionForm";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000).optional(),
@@ -60,13 +54,10 @@ const FormDescriptionText = () => {
   );
 };
 
-export const RespondToRai = () => {
-  const { id, type } = useParams<{
-    id: string;
-    type: Action;
-  }>();
+export const RespondToRaiForm = () => {
+  const { id, type } = useParams("/action/:id/:type");
   const { data: item } = useGetItem(id!);
-  const authority = item?._source.authority as Authority;
+  const authority = item?._source.authority as PlanType;
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
@@ -95,12 +86,6 @@ export const RespondToRai = () => {
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs
-        options={DETAILS_AND_ACTIONS_CRUMBS({
-          id: id || "",
-          action: Action.RESPOND_TO_RAI,
-        })}
-      />
       <I.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -142,7 +127,8 @@ export const RespondToRai = () => {
               Read the description for each of the attachment types on the{" "}
               {
                 <Link
-                  to="/faq/#medicaid-spa-rai-attachments"
+                  path="/faq"
+                  hash="medicaid-spa-rai-attachments"
                   target={FAQ_TARGET}
                   rel="noopener noreferrer"
                   className="text-blue-700 hover:underline"
@@ -159,7 +145,8 @@ export const RespondToRai = () => {
               and a few others. See the full list on the{" "}
               {
                 <Link
-                  to="/faq/#acceptable-file-formats"
+                  path="/faq"
+                  hash="acceptable-file-formats"
                   target={FAQ_TARGET}
                   rel="noopener noreferrer"
                   className="text-blue-700 hover:underline"
@@ -244,7 +231,8 @@ export const RespondToRai = () => {
               open={successModalIsOpen}
               onAccept={() => {
                 setSuccessModalIsOpen(false);
-                navigate(`/details?id=${id}`);
+                // navigate(`/details?id=${id}`);
+                navigate({ path: "/details", query: { id } });
               }}
               onCancel={() => setSuccessModalIsOpen(false)}
               title="Submission Successful"
@@ -261,7 +249,7 @@ export const RespondToRai = () => {
               open={errorModalIsOpen}
               onAccept={() => {
                 setErrorModalIsOpen(false);
-                navigate(`/details?id=${id}`);
+                navigate({ path: "/details", query: { id } });
               }}
               onCancel={() => setErrorModalIsOpen(false)}
               title="Submission Error"
@@ -297,7 +285,8 @@ export const RespondToRai = () => {
               open={cancelModalIsOpen}
               onAccept={() => {
                 setCancelModalIsOpen(false);
-                navigate(`/details?id=${id}`);
+                // navigate(`/details?id=${id}`);
+                navigate({ path: "/details", query: { id } });
               }}
               onCancel={() => setCancelModalIsOpen(false)}
               cancelButtonText="Return to Form"
@@ -316,3 +305,9 @@ export const RespondToRai = () => {
     </SimplePageContainer>
   );
 };
+
+export const RespondToRai = () => (
+  <PackageActionForm>
+    <RespondToRaiForm />
+  </PackageActionForm>
+);

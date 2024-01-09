@@ -37,8 +37,8 @@ export const getMeanTimeToRecover = async (branch: string) => {
     return result;
   };
   const getMeanFromTimes = (times: { failedTime: Date; upTime: Date }[]) => {
-    if(times.length === 0) return 0;
-    
+    if (times.length === 0) return 0;
+
     return (
       times.reduce((prev, current) => {
         const diff = differenceInHours(current.upTime, current.failedTime);
