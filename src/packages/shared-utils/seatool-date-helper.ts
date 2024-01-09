@@ -1,4 +1,4 @@
-import * as moment from "moment-timezone";
+import moment from "moment-timezone";
 
 // This manually accounts for the offset between the client's timezone and UTC.
 export const offsetForUtc = (date: Date): Date => {
