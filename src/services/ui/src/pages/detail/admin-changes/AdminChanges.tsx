@@ -34,7 +34,9 @@ export const AC_Update: FC<opensearch.changelog.Document> = () => {
   return <p>Coming Soon</p>;
 };
 
-const useAdminChange = (doc: opensearch.changelog.Document) => {
+const useAdminChange = (
+  doc: opensearch.changelog.Document
+): [string, FC<opensearch.changelog.Document>] => {
   return useMemo(() => {
     switch (doc.actionType) {
       case "disable-rai-withdraw":
