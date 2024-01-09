@@ -2,12 +2,11 @@ import { removeUnderscoresAndCapitalize } from "@/utils";
 import { isCmsUser } from "shared-utils";
 import { LABELS } from "@/lib";
 import { BLANK_VALUE } from "@/consts";
-import { format } from "date-fns";
 import { OsMainSourceItem } from "shared-types";
 import { ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
 import { ReviewTeamList } from "@/components/PackageDetails/ReviewTeamList";
-import moment from "moment-timezone";
+import { formatSeatoolDate } from "shared-utils";
 
 export type DetailSectionItem = {
   label: string;
@@ -35,35 +34,33 @@ export const spaDetails = (data: OsMainSourceItem): DetailSectionItem[] => [
   {
     label: "Initial Submission Date",
     value: data.submissionDate
-      ? moment(data.submissionDate).tz("UTC").format("MM/DD/yyyy")
+      ? formatSeatoolDate(data.submissionDate)
       : BLANK_VALUE,
     canView: () => true,
   },
   {
     label: "Proposed Effective Date",
     value: data.proposedDate
-      ? moment(data.proposedDate).tz("UTC").format("MM/DD/yyyy")
+      ? formatSeatoolDate(data.proposedDate)
       : BLANK_VALUE,
     canView: () => true,
   },
   {
     label: "Approved Effective Date",
     value: data.approvedEffectiveDate
-      ? moment(data.approvedEffectiveDate).tz("UTC").format("MM/DD/yyyy")
+      ? formatSeatoolDate(data.approvedEffectiveDate)
       : BLANK_VALUE,
     canView: () => true,
   },
   {
     label: "Status Date",
-    value: data.statusDate
-      ? moment(data.statusDate).tz("UTC").format("MM/DD/yyyy")
-      : BLANK_VALUE,
+    value: data.statusDate ? formatSeatoolDate(data.statusDate) : BLANK_VALUE,
     canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
   },
   {
     label: "Final Disposition Date",
     value: data.finalDispositionDate
-      ? moment(data.finalDispositionDate).tz("UTC").format("MM/DD/yyyy")
+      ? formatSeatoolDate(data.finalDispositionDate)
       : BLANK_VALUE,
     canView: () => true,
   },

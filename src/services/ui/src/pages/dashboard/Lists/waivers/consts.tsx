@@ -9,6 +9,7 @@ import {
   renderCellDate,
   renderCellIdLink,
 } from "../renderCells";
+import { formatSeatoolDate } from "shared-utils";
 
 export const useWaiverTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
