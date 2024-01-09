@@ -47,7 +47,7 @@ const arWithdrawRaiResponse: ActionRule = {
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
-    //checker.hasStatus([SEATOOL_STATUS.APPROVED, SEATOOL_STATUS.DISAPPROVED, SEATOOL_STATUS.WITHDRAWN]) &&
+    !checker.hasStatus([SEATOOL_STATUS.APPROVED, SEATOOL_STATUS.DISAPPROVED, SEATOOL_STATUS.WITHDRAWN]) &&
     checker.isInActivePendingStatus
     && isStateUser(user),
 };
