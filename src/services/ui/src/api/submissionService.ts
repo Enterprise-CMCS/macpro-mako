@@ -9,7 +9,7 @@ import {
 import { buildActionUrl, SubmissionServiceEndpoint } from "@/lib";
 import { OneMacUser } from "@/api/useGetUser";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { offsetForUtc, seatoolTimestampForToday } from "shared-utils";
+import { offsetForUtc, seaToolFriendlyTimestamp } from "shared-utils";
 
 type SubmissionServiceParameters<T> = {
   data: T;
@@ -74,7 +74,7 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        submissionDate: seatoolTimestampForToday().getTime(),
+        submissionDate: seaToolFriendlyTimestamp(),
         proposedEffectiveDate: offsetForUtc(
           data.proposedEffectiveDate as Date
         ).getTime(),
@@ -88,7 +88,7 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...data,
         ...userDetails,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
-        withdrawnDate: seatoolTimestampForToday().getTime(),
+        withdrawnDate: seaToolFriendlyTimestamp(),
       };
     case buildActionUrl(Action.ISSUE_RAI):
       return {
@@ -96,7 +96,7 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        requestedDate: seatoolTimestampForToday().getTime(),
+        requestedDate: seaToolFriendlyTimestamp(),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
     case buildActionUrl(Action.RESPOND_TO_RAI):
@@ -105,7 +105,7 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        responseDate: seatoolTimestampForToday().getTime(),
+        responseDate: seaToolFriendlyTimestamp(),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
     case buildActionUrl(Action.WITHDRAW_PACKAGE):
