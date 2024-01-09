@@ -63,7 +63,7 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
       </>
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-        <p>{props.additionalInformation || "-- --"}</p>
+        <p>{props.additionalInformation || "No information submitted"}</p>
       </div>
     </div>
   );
@@ -76,6 +76,7 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attached File</h2>
+        {!props.attachments?.length && <p>No information submitted</p>}
         {props.attachments?.map((ATC) => (
           <button
             key={`${props.id}-${ATC.key}`}
@@ -95,7 +96,7 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
       </div>
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-        <p>{props.additionalInformation || "-- --"}</p>
+        <p>{props.additionalInformation || "No information submitted"}</p>
       </div>
     </div>
   );
@@ -108,6 +109,7 @@ export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attached File</h2>
+        {!props.attachments?.length && <p>No information submitted</p>}
         {props.attachments?.map((ATC) => (
           <button
             key={`${props.id}-${ATC.key}`}
@@ -127,7 +129,7 @@ export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
       </div>
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-        <p>{props.additionalInformation || "-- --"}</p>
+        <p>{props.additionalInformation || "No information submitted"}</p>
       </div>
     </div>
   );
@@ -138,6 +140,7 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attached File</h2>
+        {!props.attachments?.length && <p>No information submitted</p>}
         {props.attachments?.map((ATC) => (
           <button
             key={`${props.id}-${ATC.key}`}
@@ -157,7 +160,7 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
       </div>
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-        <p>{props.additionalInformation || "-- --"}</p>
+        <p>{props.additionalInformation || "No information submitted"}</p>
       </div>
     </div>
   );

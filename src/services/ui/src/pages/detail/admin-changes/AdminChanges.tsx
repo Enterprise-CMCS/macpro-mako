@@ -8,16 +8,24 @@ import { FC, useMemo } from "react";
 import { BLANK_VALUE } from "@/consts";
 import { format } from "date-fns";
 
-export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = () => {
+export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
+  props
+) => {
   return (
-    <p>OneMac admin has enabled package action to submit formal RAI response</p>
+    <p>
+      {props.submitterName} has enabled package action to submit formal RAI
+      response
+    </p>
   );
 };
 
-export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = () => {
+export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
+  props
+) => {
   return (
     <p>
-      OneMac admin has disabled package action to submit formal RAI response
+      {props.submitterName} has disabled package action to submit formal RAI
+      response
     </p>
   );
 };
