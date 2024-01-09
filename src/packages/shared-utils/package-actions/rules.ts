@@ -1,20 +1,18 @@
 import { Action, ActionRule, SEATOOL_STATUS } from "../../shared-types";
-import { isCmsUser, isStateUser, isCmsReadonlyUser } from "../user-helper";
+import { isCmsUser, isStateUser, isCmsReadonlyUser, isCmsWriteUser } from "../user-helper";
 import { PackageCheck } from "../packageCheck";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
   check: (checker, user) =>
-    !isCmsReadonlyUser(user) &&
     checker.isInActivePendingStatus &&
     (!checker.hasLatestRai || checker.hasRequestedRai) &&
-    isCmsUser(user),
+    isCmsWriteUser(user),
 };
 
 const arRespondToRai: ActionRule = {
   action: Action.RESPOND_TO_RAI,
   check: (checker, user) =>
-    !isCmsReadonlyUser(user) &&
     checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
     checker.hasRequestedRai &&
     isStateUser(user),
@@ -23,27 +21,24 @@ const arRespondToRai: ActionRule = {
 const arEnableWithdrawRaiResponse: ActionRule = {
   action: Action.ENABLE_RAI_WITHDRAW,
   check: (checker, user) =>
-    !isCmsReadonlyUser(user) &&
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     !checker.hasEnabledRaiWithdraw &&
-    isCmsUser(user),
+    isCmsWriteUser(user)
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
   action: Action.DISABLE_RAI_WITHDRAW,
   check: (checker, user) =>
-    !isCmsReadonlyUser(user) &&
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
-    isCmsUser(user),
+    isCmsWriteUser(user)
 };
 
 const arWithdrawRaiResponse: ActionRule = {
   action: Action.WITHDRAW_RAI,
   check: (checker, user) =>
-    !isCmsReadonlyUser(user) &&
     checker.isInActivePendingStatus &&
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
@@ -53,7 +48,6 @@ const arWithdrawRaiResponse: ActionRule = {
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
-    !isCmsReadonlyUser(user) &&
     ((checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
       checker.hasRequestedRai)
       || checker.isInActivePendingStatus)

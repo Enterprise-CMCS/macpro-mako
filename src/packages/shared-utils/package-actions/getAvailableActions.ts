@@ -3,7 +3,6 @@ import {
   OsMainSourceItem,
   PlanType,
 } from "../../shared-types";
-import { Action } from '../../shared-types/actions'
 import rules from "./rules";
 import { PackageCheck } from "../packageCheck";
 
@@ -15,5 +14,4 @@ export const getAvailableActions = (
   return checks.planTypeIs([PlanType.MED_SPA])
     ? rules.filter((r) => r.check(checks, user)).map((r) => r.action)
     : [];
-
 };
