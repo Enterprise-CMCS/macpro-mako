@@ -66,17 +66,11 @@ export const submit = async (event: APIGatewayEvent) => {
       Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
         values ('${body.id}'
           ,'${body.state}'
-          ,(Select Region_ID from SEA.dbo.States where State_Code = '${
-            body.state
-          }')
-          ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${
-            body.authority
-          }')
-          ,dateadd(s, convert(int, left(${Date.now()}, 10)), cast('19700101' as datetime))
-          ,dateadd(s, convert(int, left(${Date.now()}, 10)), cast('19700101' as datetime))
-          ,dateadd(s, convert(int, left(${
-            body.proposedEffectiveDate
-          }, 10)), cast('19700101' as datetime))
+          ,(Select Region_ID from SEA.dbo.States where State_Code = '${body.state}')
+          ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${body.authority}')
+          ,dateadd(s, convert(int, left(${body.submissionDate}, 10)), cast('19700101' as datetime))
+          ,dateadd(s, convert(int, left(${body.submissionDate}, 10)), cast('19700101' as datetime))
+          ,dateadd(s, convert(int, left(${body.proposedEffectiveDate}, 10)), cast('19700101' as datetime))
           ,(Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = 'Pending')
           ,0)
     `;
