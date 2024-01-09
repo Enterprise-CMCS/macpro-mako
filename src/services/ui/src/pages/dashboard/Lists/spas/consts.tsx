@@ -1,7 +1,12 @@
 import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
-import { CMS_READ_ONLY_ROLES, UserRoles, OsMainSourceItem } from "shared-types";
+import {
+  CMS_READ_ONLY_ROLES,
+  UserRoles,
+  OsMainSourceItem,
+  stateUserSubStatus,
+} from "shared-types";
 
 import { useGetUser } from "@/api/useGetUser";
 import { PackageCheck } from "shared-utils";
@@ -19,7 +24,7 @@ export const getStateStatusWithSubStatus = (data: OsMainSourceItem) => {
     return (
       <>
         {data.stateStatus} <br />
-        {"Withdraw Formal RAI Response - Enabled"}
+        {stateUserSubStatus.WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED}
       </>
     );
   }

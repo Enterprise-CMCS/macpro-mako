@@ -5,7 +5,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { useOsUrl } from "../Opensearch";
-import { OsExportHeaderOptions } from "shared-types";
+import { OsExportHeaderOptions, OsMainSourceItem } from "shared-types";
+import { PackageCheck } from "shared-utils";
+import { stateUserSubStatus } from "shared-types";
 
 type Props<TData extends Record<string, any>> = {
   data: TData[] | (() => Promise<TData[]>);
@@ -24,7 +26,7 @@ export const ExportButton = <TData extends Record<string, any>>({
     setLoading(true);
 
     const exportData: Record<any, any>[] = [];
-    let resolvedData: TData[];
+    let resolvedData: TData[] | any;
 
     if (data instanceof Function) {
       resolvedData = await data();
@@ -33,6 +35,13 @@ export const ExportButton = <TData extends Record<string, any>>({
     }
 
     for (const item of resolvedData) {
+      const checker = PackageCheck(item as unknown as OsMainSourceItem);
+      if (checker.hasEnabledRaiWithdraw) {
+        item.stateStatus =
+          item.stateStatus +
+          ` ${stateUserSubStatus.WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED}`;
+      }
+
       const column: Record<any, any> = {};
 
       for (const header of headers) {

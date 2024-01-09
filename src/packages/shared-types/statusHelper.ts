@@ -38,6 +38,10 @@ const statusToDisplayToCmsUser = {
   [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
 };
 
+export const stateUserSubStatus = {
+  WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED: "Withdraw Formal RAI Response - Enabled"
+};
+
 export const getStatus = (seatoolStatus?: string | null) => {
   const stateStatus = statusToDisplayToStateUser[seatoolStatus ?? "Unknown"];
   const cmsStatus = statusToDisplayToCmsUser[seatoolStatus ?? "Unknown"];
