@@ -41,11 +41,7 @@ export const withdrawRaiLambda = async (event: APIGatewayEvent) => {
         status: "Pending",
       });
 
-      return response({
-        body: {
-          message: "successfuly written to seatool",
-        },
-      });
+      return "Withdrew RAI";
     },
   });
 };

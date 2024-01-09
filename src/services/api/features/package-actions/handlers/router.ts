@@ -7,10 +7,12 @@ import { issueRaiLambda } from "./issue-rai-lambda";
 import { respondToRaiLambda } from "./respond-to-rai-lambda";
 import { APIError } from "../services/error-handle-service";
 import { withdrawPackageLambda } from "./withdraw-package-lambda";
+import { isAuthorized } from "@/libs/auth/user";
+import { getPackage } from "@/libs/package/getPackage";
 
 type Routes = Record<
   ActionTypes,
-  Promise<ReturnType<typeof response> | undefined>
+  Promise<ReturnType<typeof response> | string | undefined>
 >;
 
 export const router = async (event: APIGatewayEvent) => {
@@ -26,6 +28,21 @@ export const router = async (event: APIGatewayEvent) => {
       body: { message: "Event body required" },
     });
   }
+
+  const body = JSON.parse(event.body);
+
+  const result = await getPackage(body.id);
+  const passedStateAuth = await isAuthorized(event, result._source.state);
+  if (!passedStateAuth)
+    return response({
+      statusCode: 401,
+      body: { message: "Not authorized to view resources from this state" },
+    });
+  if (!result.found)
+    return response({
+      statusCode: 404,
+      body: { message: "No record found for the given id" },
+    });
 
   const actionType = event.pathParameters.actionType as ActionTypes;
 
@@ -45,7 +62,7 @@ export const router = async (event: APIGatewayEvent) => {
       return response({
         statusCode: 500,
         body: {
-          error: error.message,
+          message: error.message,
         },
       });
     }
