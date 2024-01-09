@@ -1,4 +1,4 @@
-import { Action, ActionRule, SEATOOL_STATUS } from "../../shared-types";
+import { Action, ActionRule, SEATOOL_STATUS, finalDispositionStatuses } from "../../shared-types";
 import { isCmsUser, isStateUser, isCmsReadonlyUser, isCmsWriteUser } from "../user-helper";
 import { PackageCheck } from "../packageCheck";
 
@@ -47,8 +47,8 @@ const arWithdrawRaiResponse: ActionRule = {
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
-    !checker.hasStatus([SEATOOL_STATUS.APPROVED, SEATOOL_STATUS.DISAPPROVED, SEATOOL_STATUS.WITHDRAWN]) &&
-    checker.isInActivePendingStatus
+    (!checker.hasStatus(finalDispositionStatuses)
+      || checker.isInActivePendingStatus)
     && isStateUser(user),
 };
 
