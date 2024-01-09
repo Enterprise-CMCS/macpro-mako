@@ -74,7 +74,6 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        submissionDate: seaToolFriendlyTimestamp(),
         proposedEffectiveDate: offsetForUtc(
           data.proposedEffectiveDate as Date
         ).getTime(),
