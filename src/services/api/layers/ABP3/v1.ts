@@ -347,7 +347,6 @@ const ABP3: FormSchema = {
           slots: [
             {
               rhf: "Textarea",
-              label: "Additional information",
               name: "additional_information",
             },
           ],
