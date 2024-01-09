@@ -9,6 +9,7 @@ import {
   Attachmentslist,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { formatSeatoolDate } from "shared-utils";
 
 export const RaiList = (data: OsMainSourceItem) => {
   if (!data.rais) return null;
@@ -217,10 +218,7 @@ function getLatestStatus(rai: any) {
 
   // Check if latestDate is a valid number before formatting
   if (!isNaN(latestDate) && isFinite(latestDate)) {
-    return `${retString} ${format(
-      new Date(latestDate),
-      "EEE, MMM d yyyy, h:mm a"
-    )}`;
+    return `${retString} ${formatSeatoolDate(new Date(latestDate).toString())}`;
   } else {
     return "Invalid date";
   }
