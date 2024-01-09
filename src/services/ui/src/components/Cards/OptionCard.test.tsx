@@ -1,7 +1,6 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { OptionCard, OptionFieldset } from "@/components/Cards/OptionCard";
-import { ROUTES } from "@/routes";
 import { BrowserRouter } from "react-router-dom";
 
 describe("OptionCard Component System", () => {
@@ -29,7 +28,7 @@ describe("OptionCard Component System", () => {
       render(
         <BrowserRouter>
           <OptionCard
-            linkTo={ROUTES.HOME}
+            linkTo={"/"}
             title={"Test Card Title"}
             description={"Test Card Description"}
             altBg={altBg}
@@ -49,11 +48,11 @@ describe("OptionCard Component System", () => {
       expect(innerWrapper.className.includes("bg-slate-100")).toBeTruthy();
       expect(innerWrapper.className.includes("bg-white")).toBeFalsy();
     });
-    test("title is rendered as an h3 and styled", () => {
+    test("title is rendered as an h2 and styled", () => {
       renderOptionCard(false);
-      const header = screen.getByRole("heading", { level: 3 });
+      const header = screen.getByRole("heading", { level: 2 });
       expect(header).toHaveTextContent("Test Card Title");
-      expect(header).toHaveClass("text-lg text-sky-600 font-bold my-2");
+      expect(header).toHaveClass("text-lg text-sky-700 font-bold my-2");
     });
     test("description is rendered", () => {
       renderOptionCard(false);

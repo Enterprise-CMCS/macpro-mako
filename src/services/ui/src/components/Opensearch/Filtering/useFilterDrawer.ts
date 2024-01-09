@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
-import type { OsField } from "./types";
+import type { OsField } from "../types";
 import * as Consts from "./consts";
-import { useOsAggregate, useOsParams } from "../useOpensearch";
+import { useOsAggregate, useOsUrl } from "../useOpensearch";
 import { OsFilterValue, OsRangeValue } from "shared-types";
 import { useLabelMapping } from "@/hooks";
 import { useFilterDrawerContext } from "./FilterProvider";
@@ -10,9 +10,11 @@ import { useGetUser } from "@/api/useGetUser";
 export const useFilterDrawer = () => {
   const { drawerOpen, setDrawerState } = useFilterDrawerContext();
   const { data: user } = useGetUser();
-  const [filters, setFilters] = useState(Consts.FILTER_GROUPS(user));
+  const url = useOsUrl();
+  const [filters, setFilters] = useState(
+    Consts.FILTER_GROUPS(user, url.state.tab)
+  );
   const [accordionValues, setAccordionValues] = useState<string[]>([]);
-  const params = useOsParams();
   const labelMap = useLabelMapping();
   const _aggs = useOsAggregate();
 
@@ -34,7 +36,7 @@ export const useFilterDrawer = () => {
           return true;
         });
 
-        params.onSet((state) => ({
+        url.onSet((state) => ({
           ...state,
           filters: updateFilters,
           pagination: { ...state.pagination, number: 0 },
@@ -51,14 +53,12 @@ export const useFilterDrawer = () => {
 
   // update initial filter state + accordion default open items
   useEffect(() => {
-    if (!drawerOpen) return;
+    if (drawerOpen) return;
     const updateAccordions = [] as any[];
 
     setFilters((s) => {
       return Object.entries(s).reduce((STATE, [KEY, VAL]) => {
-        const updateFilter = params.state.filters.find(
-          (FIL) => FIL.field === KEY
-        );
+        const updateFilter = url.state.filters.find((FIL) => FIL.field === KEY);
 
         const value = (() => {
           if (updateFilter) {
@@ -75,7 +75,12 @@ export const useFilterDrawer = () => {
       }, {} as any);
     });
     setAccordionValues(updateAccordions);
-  }, [params.state.filters, drawerOpen]);
+  }, [url.state.filters, drawerOpen]);
+
+  // change base filters per tab
+  useEffect(() => {
+    setFilters(Consts.FILTER_GROUPS(user, url.state.tab));
+  }, [url.state.tab]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce((STATE, [KEY, AGG]) => {

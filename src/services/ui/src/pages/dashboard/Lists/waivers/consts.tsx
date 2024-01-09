@@ -1,105 +1,106 @@
-import { Link } from "react-router-dom";
-import { format } from "date-fns";
-
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
 import { LABELS } from "@/lib";
 import { BLANK_VALUE } from "@/consts";
-import { CognitoUserAttributes, UserRoles } from "shared-types";
+import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
+import { useGetUser } from "@/api/useGetUser";
+import {
+  renderCellActions,
+  renderCellDate,
+  renderCellIdLink,
+} from "../renderCells";
 
-export const TABLE_COLUMNS = (props?: {
-  isCms?: boolean;
-  user?: CognitoUserAttributes | null | undefined;
-}): OsTableColumn[] => [
-  {
-    props: { className: "w-[150px]" },
-    field: "id.keyword",
-    label: "Waiver Number",
-    locked: true,
-    cell: (data) => {
-      if (!data.authority) return <></>;
-      return (
-        <Link
-          className="cursor-pointer text-blue-600"
-          to={`/details?id=${encodeURIComponent(data.id)}`}
-        >
-          {data.id}
-        </Link>
-      );
+export const useWaiverTableColumns = (): OsTableColumn[] => {
+  const { data: props } = useGetUser();
+
+  if (!props?.user) return [];
+
+  return [
+    {
+      props: { className: "w-[150px]" },
+      field: "id.keyword",
+      label: "Waiver Number",
+      locked: true,
+      cell: renderCellIdLink((id) => `/details?id=${encodeURIComponent(id)}`),
     },
-  },
-  {
-    field: "state.keyword",
-    label: "State",
-    visible: true,
-    cell: (data) => data.state,
-  },
-  {
-    field: "planType.keyword",
-    label: "Type",
-    cell: (data) => removeUnderscoresAndCapitalize(data.planType),
-  },
-  {
-    field: "actionType.keyword",
-    label: "Action Type",
-    cell: (data) =>
-      data.actionType
-        ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
-        : BLANK_VALUE,
-  },
-  {
-    field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
-    label: "Status",
-    cell: (data) =>
-      props?.isCms && !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
-        ? data.cmsStatus
-        : data.stateStatus,
-  },
-  {
-    field: "submissionDate",
-    label: "Initial Submission",
-    cell: (data) => {
-      if (!data.submissionDate) return null;
-      return format(new Date(data.submissionDate), "MM/dd/yyyy");
+    {
+      field: "state.keyword",
+      label: "State",
+      visible: true,
+      cell: (data) => data.state,
     },
-  },
-  {
-    field: "origin",
-    label: "Submission Source",
-    visible: false,
-    cell: (data) => {
-      if (data.origin?.toLowerCase() === "onemac") {
-        return "OneMAC";
-      }
-      return data.origin;
+    {
+      field: "planType.keyword",
+      label: "Type",
+      cell: (data) =>
+        data?.planType
+          ? removeUnderscoresAndCapitalize(data.planType)
+          : BLANK_VALUE,
     },
-  },
-  {
-    field: "raiRequestedDate",
-    label: "Formal RAI Requested",
-    visible: false,
-    cell: (data) => {
-      if (!data.raiRequestedDate) return null;
-      return format(new Date(data.raiRequestedDate), "MM/dd/yyyy");
+    {
+      field: "actionType.keyword",
+      label: "Action Type",
+      cell: (data) =>
+        data.actionType
+          ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
+          : BLANK_VALUE,
     },
-  },
-  {
-    field: "raiReceivedDate",
-    label: "Formal RAI Response",
-    cell: (data) => {
-      if (!data.raiReceivedDate) return null;
-      return format(new Date(data.raiReceivedDate), "MM/dd/yyyy");
+    {
+      field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
+      label: "Status",
+      cell: (data) =>
+        props?.isCms &&
+        !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
+          ? data.cmsStatus
+          : data.stateStatus,
     },
-  },
-  {
-    field: "leadAnalystName.keyword",
-    label: "CPOC Name",
-    visible: false,
-    cell: (data) => data.leadAnalystName,
-  },
-  {
-    field: "submitterName.keyword",
-    label: "Submitted By",
-    cell: (data) => data.submitterName,
-  },
-];
+    {
+      field: "submissionDate",
+      label: "Initial Submission",
+      cell: renderCellDate("submissionDate"),
+    },
+    {
+      field: "origin",
+      label: "Submission Source",
+      visible: false,
+      cell: (data) => {
+        return data.origin;
+      },
+    },
+    {
+      field: "raiRequestedDate",
+      label: "Formal RAI Requested",
+      visible: false,
+      cell: renderCellDate("raiRequestedDate"),
+    },
+    {
+      field: "raiReceivedDate",
+      label: "Formal RAI Response",
+      cell: renderCellDate("raiReceivedDate"),
+    },
+    {
+      field: "leadAnalystName.keyword",
+      label: "CPOC Name",
+      visible: false,
+      cell: (data) => data.leadAnalystName,
+    },
+    {
+      field: "submitterName.keyword",
+      label: "Submitted By",
+      cell: (data) => data.submitterName,
+    },
+    // hide actions column for: readonly,help desk
+    ...(!CMS_READ_ONLY_ROLES.some((UR) =>
+      props.user?.["custom:cms-roles"].includes(UR)
+    )
+      ? [
+          {
+            locked: true,
+            isSystem: true,
+            label: "Actions",
+            cell: renderCellActions(props.user),
+          },
+        ]
+      : []),
+  ];
+};

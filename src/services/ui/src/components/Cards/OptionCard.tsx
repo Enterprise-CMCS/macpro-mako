@@ -1,8 +1,8 @@
-import React, { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { ROUTES } from "@/routes";
 import { ChevronRight } from "lucide-react";
 import { CardWithTopBorder } from "@/components";
+import { Route } from "../Routing/types";
 
 export type OptionCardFieldsetProps = PropsWithChildren<{
   legend: string;
@@ -10,7 +10,7 @@ export type OptionCardFieldsetProps = PropsWithChildren<{
 export type MACFieldsetOption = {
   title: string;
   description: ReactNode;
-  linkTo: ROUTES | string;
+  linkTo: Route;
   altBg?: boolean;
 };
 /** A fieldset for nesting {@link OptionCard} with MACCard styling */
@@ -45,10 +45,10 @@ export const OptionCard = ({
           } hover:bg-sky-100`}
         >
           <div>
-            <h3 className="text-lg text-sky-600 font-bold my-2">{title}</h3>
+            <h2 className="text-lg text-sky-700 font-bold my-2">{title}</h2>
             <p className="my-2 text-slate-600">{description}</p>
           </div>
-          <ChevronRight className="text-sky-600 w-8 h-8" />
+          <ChevronRight className="text-sky-700 w-8 h-8" />
         </div>
       </Link>
     </label>

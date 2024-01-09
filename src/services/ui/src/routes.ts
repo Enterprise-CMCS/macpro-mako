@@ -4,6 +4,7 @@ export enum ROUTES {
   DASHBOARD = "/dashboard",
   DETAILS = "/details",
   FAQ = "/faq",
+  PROFILE = "/profile",
   // New Submission Routes
   // Can stand to be reduced with dynamic segments (KH)
   NEW_SUBMISSION_OPTIONS = "/new-submission",
@@ -20,6 +21,9 @@ export enum ROUTES {
   ACTION = "/action/:id/:type",
   CREATE = "/create",
   MEDICAID_NEW = "/new-submission/spa/medicaid/create",
+  CHIP_NEW = "/new-submission/spa/chip/create",
+  WEBFORMS = "/webforms",
+  WEBFORM = "/webform/:id/:version",
 }
 
 export enum FAQ_SECTION {

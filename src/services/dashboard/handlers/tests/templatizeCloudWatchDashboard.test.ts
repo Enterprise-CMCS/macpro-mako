@@ -3,11 +3,7 @@ import {
   CloudWatchClient,
   GetDashboardCommand,
 } from "@aws-sdk/client-cloudwatch";
-import type {
-  APIGatewayEvent,
-  APIGatewayProxyCallback,
-  Context,
-} from "aws-lambda";
+
 import { handler, replaceStringValues } from "../templatizeCloudWatchDashboard";
 import { mockClient } from "aws-sdk-client-mock";
 
@@ -29,10 +25,6 @@ describe("replaceStringValues", () => {
 });
 
 describe("handler", () => {
-  const mockEvent: APIGatewayEvent = {} as APIGatewayEvent;
-  const mockContext: Context = {} as Context;
-  const mockCallback: APIGatewayProxyCallback = {} as APIGatewayProxyCallback;
-
   beforeEach(() => {
     process.env.service = "test-service";
     process.env.accountId = "test-account-id";
@@ -51,14 +43,14 @@ describe("handler", () => {
     cloudWatchClientMock
       .on(GetDashboardCommand)
       .resolves({ DashboardBody: "test-stage-test-region-body" });
-    const result = await handler(mockEvent, mockContext, mockCallback);
+    const result = await handler();
     expect(result).toBe("${sls:stage}-${env:REGION_A}-body");
   });
 
   it("should handle errors", async () => {
     cloudWatchClientMock.rejects();
     try {
-      await handler(mockEvent, mockContext, mockCallback);
+      await handler();
     } catch (e) {
       expect(e).toBeInstanceOf(Error);
     }

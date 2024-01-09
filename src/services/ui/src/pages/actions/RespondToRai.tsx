@@ -1,23 +1,18 @@
-import { useParams } from "react-router-dom";
 import * as I from "@/components/Inputs";
-import { API } from "aws-amplify";
 import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
-import {
-  SimplePageContainer,
-  Alert,
-  LoadingSpinner,
-  BreadCrumbs,
-} from "@/components";
+import { SimplePageContainer, Alert, LoadingSpinner } from "@/components";
 import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
-import { FAQ_TARGET, ROUTES } from "@/routes";
-import { Link, useNavigate } from "react-router-dom";
-import { Action, RaiResponseTransform } from "shared-types";
+import { FAQ_TARGET } from "@/routes";
+import { Link, useNavigate, useParams } from "@/components/Routing";
+import { Action, PlanType } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
+import { submit } from "@/api/submissionService";
 import { useGetItem } from "@/api";
+import { buildActionUrl } from "@/lib";
+import { PackageActionForm } from "@/pages/actions/PackageActionForm";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000).optional(),
@@ -31,12 +26,6 @@ const formSchema = z.object({
   }),
 });
 export type RespondToRaiFormSchema = z.infer<typeof formSchema>;
-type UploadKeys = keyof RespondToRaiFormSchema["attachments"];
-export type PreSignedURL = {
-  url: string;
-  key: string;
-  bucket: string;
-};
 
 const attachmentList = [
   {
@@ -65,11 +54,10 @@ const FormDescriptionText = () => {
   );
 };
 
-export const RespondToRai = () => {
-  const { id } = useParams<{
-    id: string;
-  }>();
+export const RespondToRaiForm = () => {
+  const { id, type } = useParams("/action/:id/:type");
   const { data: item } = useGetItem(id!);
+  const authority = item?._source.authority as PlanType;
   const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
   const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
   const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
@@ -79,66 +67,15 @@ export const RespondToRai = () => {
   });
   const { data: user } = useGetUser();
   const handleSubmit: SubmitHandler<RespondToRaiFormSchema> = async (data) => {
-    const timestamp = Math.floor(new Date().getTime() / 1000) * 1000; // Truncating to match seatool
-
-    const uploadKeys = Object.keys(data.attachments) as UploadKeys[];
-    const uploadedFiles: any[] = [];
-    const fileMetaData: NonNullable<
-      RaiResponseTransform["rais"][number]["response"]["attachments"]
-    > = [];
-
-    const presignedUrls: Promise<PreSignedURL>[] = uploadKeys
-      .filter((key) => data.attachments[key] !== undefined)
-      .map(() =>
-        API.post("os", "/getUploadUrl", {
-          body: {},
-        })
-      );
-    const loadPresignedUrls = await Promise.all(presignedUrls);
-
-    uploadKeys
-      .filter((key) => data.attachments[key] !== undefined)
-      .forEach((uploadKey, index) => {
-        const attachmenListObject = attachmentList?.find(
-          (item) => item.name === uploadKey
-        );
-        const title = attachmenListObject ? attachmenListObject.label : "Other";
-        const fileGroup = data.attachments[uploadKey] as File[];
-
-        // upload all files in this group and track there name
-        for (const file of fileGroup) {
-          uploadedFiles.push(
-            fetch(loadPresignedUrls[index].url, {
-              body: file,
-              method: "PUT",
-            })
-          );
-
-          fileMetaData.push({
-            key: loadPresignedUrls[index].key,
-            filename: file.name,
-            title: title,
-            bucket: loadPresignedUrls[index].bucket,
-            uploadDate: Date.now(),
-          });
-        }
-      });
-
-    await Promise.all(uploadedFiles);
-
-    const dataToSubmit = {
-      id: id!,
-      additionalInformation: data?.additionalInformation ?? null,
-      attachments: fileMetaData,
-      responseDate: timestamp,
-      submitterEmail: user?.user?.email ?? "N/A",
-      submitterName:
-        `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
-    };
-
     try {
-      await API.post("os", `/action/${Action.RESPOND_TO_RAI}`, {
-        body: dataToSubmit,
+      await submit<RespondToRaiFormSchema & { id: string }>({
+        data: {
+          id: id!,
+          ...data,
+        },
+        endpoint: buildActionUrl(type!),
+        user,
+        authority,
       });
       setSuccessModalIsOpen(true);
     } catch (err) {
@@ -149,12 +86,6 @@ export const RespondToRai = () => {
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs
-        options={DETAILS_AND_ACTIONS_CRUMBS({
-          id: id || "",
-          action: Action.RESPOND_TO_RAI,
-        })}
-      />
       <I.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -196,7 +127,8 @@ export const RespondToRai = () => {
               Read the description for each of the attachment types on the{" "}
               {
                 <Link
-                  to="/faq/#medicaid-spa-rai-attachments"
+                  path="/faq"
+                  hash="medicaid-spa-rai-attachments"
                   target={FAQ_TARGET}
                   rel="noopener noreferrer"
                   className="text-blue-700 hover:underline"
@@ -213,7 +145,8 @@ export const RespondToRai = () => {
               and a few others. See the full list on the{" "}
               {
                 <Link
-                  to="/faq/#acceptable-file-formats"
+                  path="/faq"
+                  hash="acceptable-file-formats"
                   target={FAQ_TARGET}
                   rel="noopener noreferrer"
                   className="text-blue-700 hover:underline"
@@ -298,7 +231,8 @@ export const RespondToRai = () => {
               open={successModalIsOpen}
               onAccept={() => {
                 setSuccessModalIsOpen(false);
-                navigate(`/details?id=${id}`);
+                // navigate(`/details?id=${id}`);
+                navigate({ path: "/details", query: { id } });
               }}
               onCancel={() => setSuccessModalIsOpen(false)}
               title="Submission Successful"
@@ -315,7 +249,7 @@ export const RespondToRai = () => {
               open={errorModalIsOpen}
               onAccept={() => {
                 setErrorModalIsOpen(false);
-                navigate(`/details?id=${id}`);
+                navigate({ path: "/details", query: { id } });
               }}
               onCancel={() => setErrorModalIsOpen(false)}
               title="Submission Error"
@@ -351,7 +285,8 @@ export const RespondToRai = () => {
               open={cancelModalIsOpen}
               onAccept={() => {
                 setCancelModalIsOpen(false);
-                navigate(`/details?id=${id}`);
+                // navigate(`/details?id=${id}`);
+                navigate({ path: "/details", query: { id } });
               }}
               onCancel={() => setCancelModalIsOpen(false)}
               cancelButtonText="Return to Form"
@@ -370,3 +305,9 @@ export const RespondToRai = () => {
     </SimplePageContainer>
   );
 };
+
+export const RespondToRai = () => (
+  <PackageActionForm>
+    <RespondToRaiForm />
+  </PackageActionForm>
+);

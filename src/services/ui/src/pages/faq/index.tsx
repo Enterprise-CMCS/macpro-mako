@@ -5,22 +5,15 @@ import {
   AccordionItem,
   AccordionContent,
   AccordionTrigger,
+  SubNavHeader,
 } from "@/components";
 
 export const Faq = () => {
   return (
     <>
-      <div className="bg-sky-100">
-        <div className="max-w-screen-xl m-auto px-4 lg:px-8">
-          <div className="flex items-center">
-            <div className="flex align-middle py-4">
-              <h1 className="text-xl font-medium">
-                Frequently Asked Questions
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SubNavHeader>
+        <h1 className="text-xl font-medium">Frequently Asked Questions</h1>
+      </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1">
           {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
@@ -46,13 +39,19 @@ export const Faq = () => {
               <div>
                 <b>Phone Number</b>
                 <p className="mb-4 text-primary">
-                  <a className="underline" href={`tel:${helpDeskContact.phone}`}>
+                  <a
+                    className="underline"
+                    href={`tel:${helpDeskContact.phone}`}
+                  >
                     {helpDeskContact.phone}
                   </a>
                 </p>
                 <b>Email</b>
                 <p className="text-primary">
-                  <a className="underline" href={`mailto:${helpDeskContact.email}`}>
+                  <a
+                    className="underline"
+                    href={`mailto:${helpDeskContact.email}`}
+                  >
                     {helpDeskContact.email}
                   </a>
                 </p>

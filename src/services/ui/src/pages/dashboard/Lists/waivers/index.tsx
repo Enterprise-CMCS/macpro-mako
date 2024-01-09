@@ -1,40 +1,36 @@
-import { useGetUser } from "@/api/useGetUser";
 import { ErrorAlert } from "@/components";
-
 import { Pagination } from "@/components/Pagination";
 import {
   OsTable,
   OsFiltering,
   useOsContext,
-  useOsParams,
+  useOsUrl,
 } from "@/components/Opensearch";
-import { TABLE_COLUMNS } from "./consts";
+import { useWaiverTableColumns } from "./consts";
 
 export const WaiversList = () => {
-  const { data: user } = useGetUser();
   const context = useOsContext();
-  const params = useOsParams();
+  const url = useOsUrl();
+  const columns = useWaiverTableColumns();
 
   if (context.error) return <ErrorAlert error={context.error} />;
 
-  const columns = TABLE_COLUMNS({ isCms: user?.isCms, user: user?.user });
-
   return (
-    <section className="flex flex-col h-[calc(100vh-250px)]">
+    <section className="flex flex-col h-[calc(100vh-230px)]">
       <OsFiltering />
       <OsTable columns={columns} />
       <Pagination
-        pageNumber={params.state.pagination.number}
+        pageNumber={url.state.pagination.number}
         count={context.data?.total?.value || 0}
-        pageSize={params.state.pagination.size}
+        pageSize={url.state.pagination.size}
         onPageChange={(number) =>
-          params.onSet((s) => ({
+          url.onSet((s) => ({
             ...s,
             pagination: { ...s.pagination, number },
           }))
         }
         onSizeChange={(size) =>
-          params.onSet((s) => ({
+          url.onSet((s) => ({
             ...s,
             pagination: { number: 0, size },
           }))

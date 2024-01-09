@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { SEATOOL_STATUS, getStatus } from "./statusHelper";
+import { PlanType } from "./planType";
 
 type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
@@ -43,6 +44,7 @@ function getLeadAnalyst(eventData: SeaToolSink) {
 const getRaiDate = (data: SeaToolSink) => {
   let raiReceivedDate: null | string = null;
   let raiRequestedDate: null | string = null;
+  let raiWithdrawnDate: null | string = null;
 
   const raiDate =
     data.RAI?.sort((a, b) => {
@@ -64,22 +66,26 @@ const getRaiDate = (data: SeaToolSink) => {
   if (raiDate && raiDate.RAI_REQUESTED_DATE) {
     raiRequestedDate = new Date(raiDate.RAI_REQUESTED_DATE).toISOString();
   }
+  if (raiDate && raiDate.RAI_WITHDRAWN_DATE) {
+    raiWithdrawnDate = new Date(raiDate.RAI_WITHDRAWN_DATE).toISOString();
+  }
   return {
     raiReceivedDate,
     raiRequestedDate,
+    raiWithdrawnDate,
   };
 };
 
+const zActionOfficer = z.object({
+  OFFICER_ID: z.number(),
+  FIRST_NAME: z.string(),
+  LAST_NAME: z.string(),
+});
+type ActionOfficer = z.infer<typeof zActionOfficer>;
+
 export const seatoolSchema = z.object({
-  LEAD_ANALYST: z
-    .array(
-      z.object({
-        OFFICER_ID: z.number(),
-        FIRST_NAME: z.string(),
-        LAST_NAME: z.string(),
-      })
-    )
-    .nullable(),
+  ACTION_OFFICERS: z.array(zActionOfficer).nullish(),
+  LEAD_ANALYST: z.array(zActionOfficer).nullable(),
   PLAN_TYPES: z
     .array(
       z.object({
@@ -97,6 +103,9 @@ export const seatoolSchema = z.object({
     PROPOSED_DATE: z.number().nullable(),
     SPW_STATUS_ID: z.number().nullable(),
     STATE_CODE: z.string().nullish(),
+    STATUS_DATE: z.number().nullish(),
+    SUMMARY_MEMO: z.string().nullish(),
+    TITLE_NAME: z.string().nullish(),
   }),
   SPW_STATUS: z
     .array(
@@ -126,17 +135,32 @@ export const seatoolSchema = z.object({
     .nullable(),
 });
 
-const getDateStringOrNullFromEpoc = (epocDate: number | null) => {
-  if (epocDate !== null) {
-    return new Date(epocDate).toISOString();
-  }
-  return null;
+const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
+  epocDate !== null && epocDate !== undefined
+    ? new Date(epocDate).toISOString()
+    : null;
+
+const compileSrtList = (
+  officers: ActionOfficer[] | null | undefined
+): string[] =>
+  officers?.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
+
+const getFinalDispositionDate = (status: string, record: SeaToolSink) => {
+  const finalDispositionStatuses = [
+    SEATOOL_STATUS.APPROVED,
+    SEATOOL_STATUS.DISAPPROVED,
+    SEATOOL_STATUS.WITHDRAWN,
+  ];
+  return status && finalDispositionStatuses.includes(status)
+    ? getDateStringOrNullFromEpoc(record.STATE_PLAN.STATUS_DATE)
+    : null;
 };
 
 export const transformSeatoolData = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
-    const { raiReceivedDate, raiRequestedDate } = getRaiDate(data);
+    const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
+      getRaiDate(data);
     const seatoolStatus =
       data.SPW_STATUS?.find(
         (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
@@ -172,21 +196,27 @@ export const transformSeatoolData = (id: string) => {
       ),
       authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
       changedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.CHANGED_DATE),
+      description: data.STATE_PLAN.SUMMARY_MEMO,
+      finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
       leadAnalystName,
-      planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME,
+      planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME as PlanType | null,
       planTypeId: data.STATE_PLAN.PLAN_TYPE,
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
+      raiWithdrawnDate,
       rais,
+      reviewTeam: compileSrtList(data.ACTION_OFFICERS),
       state: data.STATE_PLAN.STATE_CODE,
       stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
+      statusDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.STATUS_DATE),
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       seatoolStatus,
       submissionDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.SUBMISSION_DATE
       ),
+      subject: data.STATE_PLAN.TITLE_NAME,
     };
   });
 };

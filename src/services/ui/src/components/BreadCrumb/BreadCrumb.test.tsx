@@ -16,9 +16,9 @@ describe("Bread Crumb Tests", () => {
       render(
         <>
           <Routes>
-            <Route path="/" />
-            <Route path="/test" />
-            <Route path="/test/:id" />
+            <Route path="/" element={<p>Fail</p>} />
+            <Route path="/test" element={<p>Success</p>} />
+            <Route path="/test/:id" element={<p>Fail</p>} />
           </Routes>
           <BreadCrumbBar>
             <BreadCrumb to="/test">Click Me</BreadCrumb>
