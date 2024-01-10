@@ -2,7 +2,7 @@ import { CognitoUserAttributes, STATE_CODES, StateCode } from "shared-types";
 import { isCmsUser, isStateUser } from "shared-utils";
 import { getUser } from "@/api/useGetUser";
 import {
-  OsMainSourceItem,
+  opensearch,
   stateUserSubStatus,
   cmsUserSubStatus,
 } from "shared-types";
@@ -33,7 +33,7 @@ export const isAuthorizedState = async (id: string) => {
 };
 
 
-export const getStateStatusWithSubStatus = (data: OsMainSourceItem): { status: string, subStatus: string | undefined } => {
+export const getStateStatusWithSubStatus = (data: opensearch.main.Document): { status: string, subStatus: string | undefined } => {
   const checker = PackageCheck(data);
 
   if (checker.hasEnabledRaiWithdraw) {
@@ -42,15 +42,6 @@ export const getStateStatusWithSubStatus = (data: OsMainSourceItem): { status: s
       subStatus: stateUserSubStatus.WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED
     };
   }
-  // add multiple conditions here in future like 
-  /*
-  else if(condition){
-    return {
-      status: data.stateStatus,
-      subStatus: stateUserSubStatus.WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED
-    };
-  }
-  */
 
   return {
     status: data.stateStatus,
@@ -58,7 +49,7 @@ export const getStateStatusWithSubStatus = (data: OsMainSourceItem): { status: s
   };
 };
 
-export const getCmsStatusWithSubStatus = (data: OsMainSourceItem): { status: string, subStatus: string | undefined } => {
+export const getCmsStatusWithSubStatus = (data: opensearch.main.Document): { status: string, subStatus: string | undefined } => {
   const checker = PackageCheck(data);
 
   if (checker.isInSecondClock) {
