@@ -81,7 +81,7 @@ export const WithdrawPackage = ({ item }: { item?: ItemResult }) => {
                     </>
                   ),
                   message: <I.FormMessage />,
-                  className: "mb-8",
+                  className: "my-4",
                 })}
               />
             ))}
@@ -89,10 +89,10 @@ export const WithdrawPackage = ({ item }: { item?: ItemResult }) => {
               control={form.control}
               name="additionalInformation"
               render={SlotAdditionalInfo({
-                required: true,
                 label:
                   "Add anything else you would like to share with the state.",
                 description: "4,000 characters allowed",
+                className: "pt-6",
               })}
             />
             <div className="flex gap-2 my-8">

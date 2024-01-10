@@ -61,10 +61,10 @@ export const SlotAdditionalInfo = <
   }) {
     return (
       <FormItem {...props}>
-        <h3 className="font-bold text-2xl font-sans">Additional Information</h3>
-        <FormLabel className="font-normal">
-          {label} {required && <RequiredIndicator />}
-        </FormLabel>
+        <h3 className="font-bold text-2xl font-sans">
+          Additional Information {required && <RequiredIndicator />}
+        </h3>
+        <FormLabel className="font-normal">{label}</FormLabel>
         <Textarea {...field} className="h-[200px] resize-none" />
         <FormDescription>{description}</FormDescription>
       </FormItem>
