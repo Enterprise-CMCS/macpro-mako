@@ -1,6 +1,6 @@
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { PropsWithChildren } from "react";
-import { ItemResult } from "shared-types";
+import { opensearch } from "shared-types";
 
 // Keeps aria stuff and classes condensed
 const SectionTemplate = ({
@@ -18,7 +18,7 @@ const SectionTemplate = ({
   </div>
 );
 
-export const PackageInfo = ({ item }: { item: ItemResult }) => (
+export const PackageInfo = ({ item }: { item: opensearch.main.ItemResult }) => (
   <section>
     <SectionTemplate label={"Package ID"} value={item._id} />
     <SectionTemplate

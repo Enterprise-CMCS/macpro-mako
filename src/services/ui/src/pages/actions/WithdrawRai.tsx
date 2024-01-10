@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Link, useParams } from "@/components/Routing";
-import { ItemResult, PlanType } from "shared-types";
+import { opensearch, PlanType } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
 import { useState } from "react";
@@ -28,7 +28,7 @@ const attachmentList = [
   },
 ] as const;
 
-export const WithdrawRai = ({ item }: { item: ItemResult }) => {
+export const WithdrawRai = ({ item }: { item: opensearch.main.ItemResult }) => {
   const { id } = useParams("/action/:id/:type");
   const { setCancelModalOpen, setSuccessModalOpen, setErrorModalOpen } =
     useModalContext();

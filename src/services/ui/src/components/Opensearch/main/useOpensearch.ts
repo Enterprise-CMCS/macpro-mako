@@ -1,8 +1,8 @@
-import { getSearchData, useOsSearch } from "@/api";
+import { getOsData, useOsSearch } from "@/api";
 import { useLzUrl } from "@/hooks/useParams";
 import { useEffect, useState } from "react";
-import { OsQueryState, SearchData, UserRoles } from "shared-types";
-import { createSearchFilterable } from "./utils";
+import { UserRoles, opensearch } from "shared-types";
+import { createSearchFilterable } from "../utils";
 import { useQuery } from "@tanstack/react-query";
 import { useGetUser } from "@/api/useGetUser";
 import { OsTab } from "./types";
@@ -39,12 +39,16 @@ Comments
  */
 export const useOsData = () => {
   const params = useOsUrl();
-  const [data, setData] = useState<SearchData>();
-  const { mutateAsync, isLoading, error } = useOsSearch();
-  const onRequest = async (query: OsQueryState, options?: any) => {
+  const [data, setData] = useState<opensearch.main.Response["hits"]>();
+  const { mutateAsync, isLoading, error } = useOsSearch<
+    opensearch.main.Field,
+    opensearch.main.Response
+  >();
+  const onRequest = async (query: opensearch.main.State, options?: any) => {
     try {
       await mutateAsync(
         {
+          index: "main",
           pagination: query.pagination,
           ...(!query.search && { sort: query.sort }),
           filters: [
@@ -71,7 +75,8 @@ export const useOsAggregate = () => {
     refetchOnWindowFocus: false,
     queryKey: [state.tab],
     queryFn: (props) => {
-      return getSearchData({
+      return getOsData({
+        index: "main",
         aggs: [
           {
             field: "state.keyword",
@@ -125,7 +130,7 @@ export const useOsAggregate = () => {
   });
   return aggs.data?.aggregations;
 };
-export type OsUrlState = OsQueryState & { tab: OsTab };
+export type OsUrlState = opensearch.main.State & { tab: OsTab };
 export const useOsUrl = () => {
   return useLzUrl<OsUrlState>({
     key: "os",

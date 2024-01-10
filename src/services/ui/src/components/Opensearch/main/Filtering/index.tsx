@@ -4,7 +4,7 @@ import { DEFAULT_FILTERS, useOsUrl } from "../useOpensearch";
 import { ExportButton } from "@/components/ExportButton";
 import { useOsContext } from "../Provider";
 import { OsFilterDrawer } from "./FilterDrawer";
-import { getAllSearchData } from "@/api";
+import { getMainExportData } from "@/api";
 import { useGetUser } from "@/api/useGetUser";
 import { EXPORT_GROUPS } from "./consts";
 
@@ -35,7 +35,7 @@ export const OsFiltering: FC<{
         />
         <div className="flex flex-row gap-2">
           <ExportButton
-            data={() => getAllSearchData([...url.state.filters, ...filters])}
+            data={() => getMainExportData([...url.state.filters, ...filters])}
             headers={EXPORT_GROUPS(url.state.tab, user)}
           />
           <OsFilterDrawer />
