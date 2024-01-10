@@ -7,19 +7,19 @@ export const Footer = () => {
           "All State Medicaid agencies administering or supervising the \
         administration of 1915(c) home and community-based services (HCBS) \
         waivers are required to submit an annual Form CMS-372(S) Report for each \
-        approved waiver. Section 1915(c)(2)(E) of the SocialSecurity Act \
+        approved waiver. Section 1915(c)(2)(E) of the Social Security Act \
         requires states to annually provide CMS with information on the waiver's \
         impact on the type, amount and cost of services provided under the state \
-        plan in addition to the health and welgare of recipients. Under the \
+        plan in addition to the health and welfare of recipients. Under the \
         Privacy Act of 1974 any personally identifying information obatined will \
         be kept private to the extent of the law."
         }
       </p>
       <p>
         {
-          "Accordint to the Paperwork Reduction Act of 1995, no persons are required to respond \
+          "According to the Paperwork Reduction Act of 1995, no persons are required to respond \
         to a collection of information unless it displays a valid OMB control number. The valid OMB \
-        control number for this information colleciton is 0938-0272. The time required to complete \
+        control number for this information collection is 0938-0272. The time required to complete \
         this information collection is estimated to average 44 hours per response, including the time to \
         review instructions, search existing data resources, gather the data needed, and complete and \
         review the information collection. If you have comments concerning the accuracy of the time \

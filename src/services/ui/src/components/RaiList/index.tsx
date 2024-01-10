@@ -1,4 +1,4 @@
-import { OsMainSourceItem } from "shared-types";
+import { opensearch } from "shared-types";
 import { DetailsSection } from "../DetailsSection";
 import { format } from "date-fns";
 import {
@@ -11,7 +11,7 @@ import {
 import { BLANK_VALUE } from "@/consts";
 import { formatSeatoolDate } from "shared-utils";
 
-export const RaiList = (data: OsMainSourceItem) => {
+export const RaiList = (data: opensearch.main.Document) => {
   if (!data.rais) return null;
   return (
     <DetailsSection id="rai-responses" title="Formal RAI Activity">
