@@ -91,12 +91,63 @@ interface WebformsDocsResult {
   sectionsDescriptions: string[]
 }
 
-export function generateFormDocumentation(formSchema: FormSchema): WebformsDocsResult {
-  const documentation = {
-    title: formSchema.header,
-    sectionsDescriptions: formSchema.sections.map((sec) => sec.title)
+// export function generateFormDocumentation(formSchema: FormSchema): WebformsDocsResult {
+//   const documentation = {
+//     title: formSchema.header,
+//     sectionsDescriptions: formSchema.sections.map((sec) => sec.title)
+//   }
+
+//   return documentation;
+// }
+
+// import { FormSchema, any, any } from "shared-types";
+
+export function generateFormDocumentation(schema: any): string {
+  let documentation = `# ${schema.header}\n\n`;
+
+  function processField(field: any, indentation: string = ""): void {
+    documentation += `${indentation}- **${field.description}**\n`;
+
+    if (field.slots) {
+      field.slots.forEach((slot: any) => {
+        documentation += `${indentation}  - *${slot.name}:* ${slot.rhf}\n`;
+
+        if (slot.props && slot.props.options) {
+          slot.props.options.forEach((option: any) => {
+            if (option.form) {
+              option.form.forEach((subField: any) => {
+                processField(subField, `${indentation}    `);
+              });
+            }
+
+            if (option.slots) {
+              option.slots.forEach((subSlot: any) => {
+                documentation += `${indentation}      - *${subSlot.name}:* ${subSlot.rhf}\n`;
+
+                if (subSlot.props && subSlot.props.options) {
+                  subSlot.props.options.forEach((subOption: any) => {
+                    if (subOption.form) {
+                      subOption.form.forEach((subField: any) => {
+                        processField(subField, `${indentation}        `);
+                      });
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+    }
   }
+
+  schema.sections.forEach((section: any) => {
+    documentation += `\n## ${section.title}\n\n`;
+
+    section.form.forEach((field: any) => {
+      processField(field, "  ");
+    });
+  });
 
   return documentation;
 }
-
