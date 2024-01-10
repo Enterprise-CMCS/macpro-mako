@@ -40,9 +40,25 @@ export const WithdrawPackage = ({ item }: { item?: ItemResult }) => {
   const form = useForm<z.infer<typeof withdrawPackageFormSchema>>({
     resolver: zodResolver(withdrawPackageFormSchema),
   });
-  const handleSubmit = useActionSubmitHandler({
+  const handleSubmit = useActionSubmitHandler<
+    z.infer<typeof withdrawPackageFormSchema>
+  >({
     formHookReturn: form,
     authority: item?._source.authority as PlanType,
+    addDataConditions: [
+      (data) => {
+        if (
+          !data.attachments.supportingDocumentation &&
+          !data.additionalInformation
+        ) {
+          return {
+            message: "An Attachment or Additional Information is required.",
+          };
+        } else {
+          return null;
+        }
+      },
+    ],
   });
 
   if (!item) return <Navigate path={"/"} />; // Prevents optional chains below
@@ -65,7 +81,7 @@ export const WithdrawPackage = ({ item }: { item?: ItemResult }) => {
           need for withdrawal in the <em>Additional Information section.</em>
         </p>
         <I.Form {...form}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={form.handleSubmit(handleSubmit)}>
             {/* Change faqLink once we know the anchor */}
             <AttachmentsSizeTypesDesc faqLink={"/faq"} />
             {attachments.map(({ name, label, required }) => (

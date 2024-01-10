@@ -1,5 +1,4 @@
-import { useCallback } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { FieldValues, SubmitHandler, UseFormReturn } from "react-hook-form";
 import { useParams } from "@/components/Routing";
 import { useGetUser } from "@/api/useGetUser";
 import { useModalContext } from "@/pages/form/modals";
@@ -7,8 +6,11 @@ import { submit } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { PlanType } from "shared-types";
 
-export const useActionSubmitHandler = ({
-  formHookReturn,
+type DataConditionError = {
+  message: string;
+};
+
+export const useActionSubmitHandler = <D extends FieldValues>({
   authority,
   addDataConditions,
 }: {
@@ -17,30 +19,32 @@ export const useActionSubmitHandler = ({
   authority: PlanType;
   /** Reserved for things zod cannot check. Throw from
    * check fn to catch in the submit handler. */
-  addDataConditions?: ((data: any) => void)[];
-}) => {
+  addDataConditions?: ((data: D) => DataConditionError | null)[];
+}): SubmitHandler<D> => {
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const { setSuccessModalOpen, setErrorModalOpen } = useModalContext();
-  return useCallback(
-    async () =>
-      formHookReturn.handleSubmit(async (formData) => {
-        try {
-          if (addDataConditions?.length)
-            addDataConditions.forEach((fn) => fn(formData));
-          // TODO: Type update for submit generic
-          await submit({
-            data: { ...formData, id: id! },
-            endpoint: buildActionUrl(type!),
-            user,
-            authority: authority,
-          });
-          setSuccessModalOpen(true);
-        } catch (e) {
-          console.error(e);
-          setErrorModalOpen(true);
-        }
-      }),
-    [formHookReturn, authority]
-  );
+  return async (data) => {
+    try {
+      if (addDataConditions?.length) {
+        const errors = addDataConditions
+          .map((fn) => fn(data))
+          .filter((err) => err) // Filter out nulls
+          .map((err) => err?.message);
+        if (errors.length)
+          throw Error(`Additional conditions were not met: ${errors}`);
+      }
+      // TODO: Type update for submit generic
+      await submit<D & { id: string }>({
+        data: { ...data, id: id! },
+        endpoint: buildActionUrl(type!),
+        user,
+        authority: authority,
+      });
+      setSuccessModalOpen(true);
+    } catch (e) {
+      console.error(e);
+      setErrorModalOpen(true);
+    }
+  };
 };
