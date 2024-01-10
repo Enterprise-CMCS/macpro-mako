@@ -9,9 +9,11 @@ import { useGetUser } from "@/api/useGetUser";
 import { ActionFormIntro, PackageInfo } from "@/pages/actions/common";
 import { useModalContext } from "@/pages/form/modals";
 
-export const ToggleRaiResponseWithdraw: FC<{
+export const ToggleRaiResponseWithdraw = ({
+  item,
+}: {
   item?: opensearch.main.ItemResult;
-}> = ({ item }) => {
+}) => {
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const authority = item?._source.authority as PlanType;

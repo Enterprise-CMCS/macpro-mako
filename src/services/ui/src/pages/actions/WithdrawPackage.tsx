@@ -34,8 +34,10 @@ const attachments: AttachmentRecipe<WithdrawPackageFormSchema>[] = [
   } as const,
 ];
 
-export const WithdrawPackage: FC<{ item: opensearch.main.ItemResult }> = ({
+export const WithdrawPackage = ({
   item,
+}: {
+  item: opensearch.main.ItemResult;
 }) => {
   const { id, type } = useParams("/action/:id/:type");
   const {
