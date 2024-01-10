@@ -45,6 +45,11 @@ export const stateUserSubStatus = {
 export const cmsUserSubStatus = {
   SECOND_CLOCK: "2nd Clock"
 };
+export const finalDispositionStatuses = [
+  SEATOOL_STATUS.APPROVED,
+  SEATOOL_STATUS.DISAPPROVED,
+  SEATOOL_STATUS.WITHDRAWN,
+];
 
 export const getStatus = (seatoolStatus?: string | null) => {
   const stateStatus = statusToDisplayToStateUser[seatoolStatus ?? "Unknown"];

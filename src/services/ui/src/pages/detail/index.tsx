@@ -1,36 +1,35 @@
 import {
   AdditionalInfo,
   Alert,
-  Attachmentslist,
   CardWithTopBorder,
   ConfirmationModal,
   DetailItemsGrid,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
-  RaiList,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import {
   Action,
-  ItemResult,
-  OsMainSourceItem,
+  opensearch,
   UserRoles,
   stateUserSubStatus,
 } from "shared-types";
 import { PackageCheck } from "shared-utils";
 import { useQuery } from "@/hooks";
-import { useGetItem } from "@/api";
+import { getAttachmentUrl, useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
 import { useLocation } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
+import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
 import { getStatus } from "shared-types/statusHelper";
 import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 import { Link } from "@/components/Routing";
+import { PackageActivities } from "./package-activity";
+import { AdminChanges } from "./admin-changes";
 
 const DetailCardWrapper = ({
   title,
@@ -45,7 +44,7 @@ const DetailCardWrapper = ({
     </div>
   </CardWithTopBorder>
 );
-const StatusCard = (data: OsMainSourceItem) => {
+const StatusCard = (data: opensearch.main.Document) => {
   const transformedStatuses = getStatus(data.seatoolStatus);
   const checker = PackageCheck(data);
   const { data: user } = useGetUser();
@@ -65,7 +64,9 @@ const StatusCard = (data: OsMainSourceItem) => {
           </em>
         )}
         {user?.isCms && checker.isInSecondClock && (
-          <span id="secondclock">2nd Clock</span>
+          <span id="secondclock" className="ml-2">
+            2nd Clock
+          </span>
         )}
       </div>
     </DetailCardWrapper>
@@ -76,12 +77,12 @@ const PackageActionsCard = ({ id }: { id: string }) => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { data, error } = useGetPackageActions(id);
-  if (!data?.actions || error || isLoading) return <LoadingSpinner />;
+  const { data } = useGetPackageActions(id, { retry: false });
+  if (isLoading) return <LoadingSpinner />;
   return (
     <DetailCardWrapper title={"Actions"}>
       <div>
-        {!data.actions.length ? (
+        {!data || !data.actions.length ? (
           <em className="text-gray-400">
             No actions are currently available for this submission.
           </em>
@@ -159,7 +160,11 @@ const PackageActionsCard = ({ id }: { id: string }) => {
   );
 };
 
-export const DetailsContent = ({ data }: { data?: ItemResult }) => {
+export const DetailsContent = ({
+  data,
+}: {
+  data?: opensearch.main.ItemResult;
+}) => {
   const { state } = useLocation();
   if (!data?._source) return <LoadingSpinner />;
   return (
@@ -199,20 +204,14 @@ export const DetailsContent = ({ data }: { data?: ItemResult }) => {
           <StatusCard {...data._source} />
           <PackageActionsCard id={data._id} />
         </section>
-        <h2 className="text-xl font-semibold mb-2">{"Package Details"}</h2>
-        <DetailItemsGrid displayItems={spaDetails(data._source)} />
-        <DetailItemsGrid displayItems={submissionDetails(data._source)} />
-        {/* Below is used for spacing. Keep it simple */}
-        <div className="mb-4" />
-        <DetailsSection id="attachments" title="Attachments">
-          <Attachmentslist {...data?._source} />
-        </DetailsSection>
-        <DetailsSection id="additional-info" title="Additional Information">
-          <AdditionalInfo
-            additionalInformation={data?._source.additionalInformation}
-          />
-        </DetailsSection>
-        <RaiList {...data?._source} />
+        <div className="flex flex-col gap-3">
+          <DetailsSection id="package-details" title="Medicaid Package Details">
+            <DetailItemsGrid displayItems={spaDetails(data._source)} />
+            <DetailItemsGrid displayItems={submissionDetails(data._source)} />
+          </DetailsSection>
+          <PackageActivities {...data._source} />
+          <AdminChanges {...data._source} />
+        </div>
       </div>
     </div>
   );
@@ -233,7 +232,7 @@ export const Details = () => {
   return (
     <>
       <div className="max-w-screen-xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
-        <BreadCrumbs options={DETAILS_AND_ACTIONS_CRUMBS({ id })} />
+        <BreadCrumbs options={detailsAndActionsCrumbs({ id })} />
         <DetailsContent data={data} />
       </div>
     </>

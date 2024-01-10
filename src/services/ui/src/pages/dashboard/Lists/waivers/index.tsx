@@ -5,7 +5,7 @@ import {
   OsFiltering,
   useOsContext,
   useOsUrl,
-} from "@/components/Opensearch";
+} from "@/components/Opensearch/main";
 import { useWaiverTableColumns } from "./consts";
 
 export const WaiversList = () => {

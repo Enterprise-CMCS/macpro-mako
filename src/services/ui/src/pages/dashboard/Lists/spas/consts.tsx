@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { OsTableColumn } from "@/components/Opensearch/Table/types";
-import { CMS_READ_ONLY_ROLES, UserRoles, OsMainSourceItem } from "shared-types";
+import { OsTableColumn } from "@/components/Opensearch/main";
+import { CMS_READ_ONLY_ROLES, UserRoles, opensearch } from "shared-types";
 
 import { OneMacUser, useGetUser } from "@/api/useGetUser";
 import {
@@ -15,7 +15,10 @@ import {
   getCmsStatusWithSubStatus,
 } from "@/utils";
 
-const useStatusWithSubStatus = (props: OneMacUser, data: OsMainSourceItem) => {
+const useStatusWithSubStatus = (
+  props: OneMacUser,
+  data: opensearch.main.Document
+) => {
   const params =
     props?.isCms && !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
       ? getCmsStatusWithSubStatus(data)

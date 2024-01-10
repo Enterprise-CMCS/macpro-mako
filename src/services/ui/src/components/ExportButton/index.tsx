@@ -4,18 +4,17 @@ import { Download, Loader } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
-import { useOsUrl } from "../Opensearch";
-import { OsExportHeaderOptions, OsMainSourceItem } from "shared-types";
 import { PackageCheck } from "shared-utils";
 import { stateUserSubStatus } from "shared-types";
+import { opensearch } from "shared-types";
 
 type Props<TData extends Record<string, any>> = {
   data: TData[] | (() => Promise<TData[]>);
-  headers: OsExportHeaderOptions<TData>[];
+  headers: opensearch.ExportHeaderOptions<TData>[];
   // | Record<string, HeaderOptions<TData>>
 };
 
-export const ExportButton = <TData extends OsMainSourceItem>({
+export const ExportButton = <TData extends opensearch.main.Document>({
   data,
   headers,
 }: Props<TData>) => {

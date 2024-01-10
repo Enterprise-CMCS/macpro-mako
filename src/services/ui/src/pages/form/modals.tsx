@@ -52,14 +52,49 @@ const Cancel = ({ open, setOpen }: ModalProps) => {
   );
 };
 
+const Error = ({ open, setOpen }: ModalProps) => {
+  return (
+    <ConfirmationModal
+      open={open}
+      onAccept={() => {
+        setOpen(false);
+      }}
+      onCancel={() => setOpen(false)}
+      title="Submission Error"
+      body={
+        <p>
+          An error occurred during issue.
+          <br />
+          You may close this window and try again, however, this likely requires
+          support.
+          <br />
+          <br />
+          Please contact the{" "}
+          <a
+            href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
+            className="text-blue-500"
+          >
+            helpdesk
+          </a>
+        </p>
+      }
+      cancelButtonVisible={false}
+      acceptButtonText="Exit to Package Details"
+    />
+  );
+};
+
 const useFormModalControllers = () => {
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
   return {
     cancelModalOpen,
     setCancelModalOpen,
     successModalOpen,
     setSuccessModalOpen,
+    errorModalOpen,
+    setErrorModalOpen,
   };
 };
 
@@ -82,6 +117,10 @@ export const ModalProvider = ({ children }: PropsWithChildren) => {
       <Cancel
         open={context.cancelModalOpen}
         setOpen={context.setCancelModalOpen}
+      />
+      <Error
+        open={context.errorModalOpen}
+        setOpen={context.setErrorModalOpen}
       />
     </ModalContextProvider>
   );

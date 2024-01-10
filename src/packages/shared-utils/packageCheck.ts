@@ -1,4 +1,4 @@
-import { OsMainSourceItem, PlanType, SEATOOL_STATUS } from "../shared-types";
+import { opensearch, PlanType, SEATOOL_STATUS } from "../shared-types";
 import { getLatestRai } from "./rai-helper";
 
 const secondClockStatuses = [
@@ -24,7 +24,7 @@ export const PackageCheck = ({
   rais,
   raiWithdrawEnabled,
   planType,
-}: OsMainSourceItem) => {
+}: opensearch.main.Document) => {
   const latestRai = getLatestRai(rais);
   const planChecks = {
     isSpa: checkPlan(planType, [PlanType.MED_SPA, PlanType.CHIP_SPA]),
