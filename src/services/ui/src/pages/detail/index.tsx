@@ -20,7 +20,7 @@ import { mapActionLabel } from "@/utils";
 import { useLocation } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
+import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
 import { getStatus } from "shared-types/statusHelper";
 import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
@@ -229,7 +229,7 @@ export const Details = () => {
   return (
     <>
       <div className="max-w-screen-xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
-        <BreadCrumbs options={DETAILS_AND_ACTIONS_CRUMBS({ id })} />
+        <BreadCrumbs options={detailsAndActionsCrumbs({ id })} />
         <DetailsContent data={data} />
       </div>
     </>
