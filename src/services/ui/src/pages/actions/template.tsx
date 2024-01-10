@@ -13,7 +13,7 @@ import {
   RequiredIndicator,
 } from "@/components/Inputs";
 import { ReactElement } from "react";
-import { ItemResult } from "shared-types";
+import { opensearch } from "shared-types";
 import {
   FieldValues,
   Path,
@@ -32,7 +32,7 @@ export const ActionFormTemplate = <D extends FieldValues>({
   attachmentFaqLink,
   attachmentInstructions,
 }: {
-  item: ItemResult;
+  item: opensearch.main.ItemResult;
   formController: UseFormReturn<D>;
   submitHandler: SubmitHandler<D>;
   intro: ReactElement;
