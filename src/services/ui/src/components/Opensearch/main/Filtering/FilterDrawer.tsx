@@ -1,5 +1,5 @@
 import { FilterIcon } from "lucide-react";
-import { OsRangeValue } from "shared-types";
+import { opensearch } from "shared-types";
 
 import {
   Sheet,
@@ -19,15 +19,20 @@ import { FilterableDateRange } from "./FilterableDateRange";
 import { FilterableCheckbox } from "./FilterableCheckbox";
 import { useFilterDrawer } from "./useFilterDrawer";
 import { Button } from "@/components/Inputs";
-import { checkMultiFilter, resetFilters } from "../utils";
-import { useOsUrl } from "../useOpensearch";
+import { checkMultiFilter } from "@/components/Opensearch";
+import { useOsUrl } from "@/components/Opensearch/main";
 
 export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
   const url = useOsUrl();
 
   const filtersApplied = checkMultiFilter(url.state.filters, 1);
-  const handleFilterReset = () => resetFilters(url.onSet);
+  const handleFilterReset = () =>
+    url.onSet((s) => ({
+      ...s,
+      filters: [],
+      pagination: { ...s.pagination, number: 0 },
+    }));
   return (
     <Sheet open={hook.drawerOpen} onOpenChange={hook.setDrawerState}>
       <SheetTrigger asChild>
@@ -78,7 +83,9 @@ export const OsFilterDrawer = () => {
                 )}
                 {PK.component === "dateRange" && (
                   <FilterableDateRange
-                    value={hook.filters[PK.field]?.value as OsRangeValue}
+                    value={
+                      hook.filters[PK.field]?.value as opensearch.RangeValue
+                    }
                     onChange={hook.onFilterChange(PK.field)}
                   />
                 )}

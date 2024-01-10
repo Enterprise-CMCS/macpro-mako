@@ -1,7 +1,7 @@
 import { Navigate, useParams } from "@/components/Routing";
 import { Button } from "@/components/Inputs";
-import { useState } from "react";
-import { PlanType, ItemResult } from "shared-types";
+import { FC, useState } from "react";
+import { PlanType, opensearch } from "shared-types";
 import { ActionFormIntro, PackageInfo } from "./common";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -34,7 +34,11 @@ const attachments: AttachmentRecipe<WithdrawPackageFormSchema>[] = [
   } as const,
 ];
 
-export const WithdrawPackage = ({ item }: { item?: ItemResult }) => {
+export const WithdrawPackage = ({
+  item,
+}: {
+  item: opensearch.main.ItemResult;
+}) => {
   const { id, type } = useParams("/action/:id/:type");
   const {
     cancelModalOpen,

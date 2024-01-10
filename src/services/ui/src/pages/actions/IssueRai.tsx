@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Alert, LoadingSpinner } from "@/components";
 import { FAQ_TARGET } from "@/routes";
-import { ItemResult, PlanType } from "shared-types";
+import { opensearch, PlanType } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
@@ -53,7 +53,7 @@ const FormDescriptionText = () => {
   );
 };
 
-export const RaiIssue = ({ item }: { item: ItemResult }) => {
+export const RaiIssue = ({ item }: { item: opensearch.main.ItemResult }) => {
   const { id, type } = useParams("/action/:id/:type");
   const authority = item?._source.authority as PlanType;
   const { setCancelModalOpen, setSuccessModalOpen, setErrorModalOpen } =
