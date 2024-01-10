@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components/Opensearch/main";
 import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
@@ -9,6 +8,7 @@ import {
   renderCellIdLink,
 } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
+import { formatSeatoolDate } from "shared-utils";
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -70,7 +70,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       label: "Formal RAI Response",
       cell: (data) => {
         if (!data.raiReceivedDate || data.raiWithdrawnDate) return null;
-        return format(new Date(data.raiReceivedDate), "MM/dd/yyyy");
+        return formatSeatoolDate(data.raiReceivedDate);
       },
     },
     {

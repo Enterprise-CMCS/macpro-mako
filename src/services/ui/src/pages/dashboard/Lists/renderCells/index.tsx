@@ -5,12 +5,12 @@ import { getAvailableActions } from "shared-utils";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib";
 import { mapActionLabel } from "@/utils";
-import { format } from "date-fns";
+import { formatSeatoolDate } from "shared-utils";
 
 export const renderCellDate = (key: keyof opensearch.main.Document) =>
   function Cell(data: opensearch.main.Document) {
     if (!data[key]) return null;
-    return format(new Date(data[key] as string), "MM/dd/yyyy");
+    return formatSeatoolDate(data[key] as string);
   };
 
 export const renderCellIdLink = (pathResolver: (id: string) => string) =>
