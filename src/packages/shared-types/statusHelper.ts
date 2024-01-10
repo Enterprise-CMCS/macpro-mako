@@ -38,6 +38,12 @@ const statusToDisplayToCmsUser = {
   [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
 };
 
+export const finalDispositionStatuses = [
+  SEATOOL_STATUS.APPROVED,
+  SEATOOL_STATUS.DISAPPROVED,
+  SEATOOL_STATUS.WITHDRAWN,
+];
+
 export const getStatus = (seatoolStatus?: string | null) => {
   const stateStatus = statusToDisplayToStateUser[seatoolStatus ?? "Unknown"];
   const cmsStatus = statusToDisplayToCmsUser[seatoolStatus ?? "Unknown"];
