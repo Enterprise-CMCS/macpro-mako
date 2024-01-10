@@ -1,9 +1,4 @@
-import {
-  OsExportHeaderOptions,
-  OsField,
-  OsFilterable,
-  OsMainSourceItem,
-} from "shared-types";
+import { opensearch } from "shared-types";
 import { OsFilterComponentType, OsTab } from "../types";
 import { UserRoles } from "shared-types";
 import { BLANK_VALUE } from "@/consts";
@@ -15,7 +10,10 @@ type DrawerFilterableGroup = {
   component: OsFilterComponentType;
 };
 type FilterGroup = Partial<
-  Record<OsField, OsFilterable & DrawerFilterableGroup>
+  Record<
+    opensearch.main.Field,
+    opensearch.main.Filterable & DrawerFilterableGroup
+  >
 >;
 
 const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
@@ -63,6 +61,14 @@ const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
     "leadAnalystName.keyword": {
       label: "CPOC Name",
       field: "leadAnalystName.keyword",
+      component: "multiSelect",
+      prefix: "must",
+      type: "terms",
+      value: [],
+    },
+    "origin.keyword": {
+      label: "Submission Source",
+      field: "origin.keyword",
       component: "multiSelect",
       prefix: "must",
       type: "terms",
@@ -129,6 +135,14 @@ const WAIVER_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       type: "terms",
       value: [],
     },
+    "origin.keyword": {
+      label: "Submission Source",
+      field: "origin.keyword",
+      component: "multiSelect",
+      prefix: "must",
+      type: "terms",
+      value: [],
+    },
   };
 };
 
@@ -159,10 +173,10 @@ export const FILTER_GROUPS = (user?: any, tab?: OsTab): FilterGroup => {
 export const EXPORT_GROUPS = (
   tab: OsTab,
   user?: any
-): OsExportHeaderOptions<OsMainSourceItem>[] => {
+): opensearch.ExportHeaderOptions<opensearch.main.Document>[] => {
   const idFieldName =
     tab === "spas" ? "SPA ID" : tab === "waivers" ? "Waiver Number" : "";
-  const actionField: OsExportHeaderOptions<OsMainSourceItem>[] =
+  const actionField: opensearch.ExportHeaderOptions<opensearch.main.Document>[] =
     tab === "waivers"
       ? [
           {

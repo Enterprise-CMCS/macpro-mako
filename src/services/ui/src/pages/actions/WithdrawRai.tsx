@@ -1,20 +1,15 @@
-import {
-  ConfirmationModal,
-  LoadingSpinner,
-  SimplePageContainer,
-} from "@/components";
+import { ConfirmationModal, LoadingSpinner } from "@/components";
 import * as I from "@/components/Inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { PlanType } from "shared-types";
-import { useGetItem } from "@/api/useGetItem";
+import { Link, useParams } from "@/components/Routing";
+import { opensearch, PlanType } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
-import { PackageActionForm } from "./PackageActionForm";
 import { submit } from "@/api/submissionService";
 import { useState } from "react";
 import { FAQ_TARGET } from "@/routes";
+import { useModalContext } from "@/pages/form/modals";
 
 const formSchema = z.object({
   additionalInformation: z.string().max(4000),
@@ -33,24 +28,16 @@ const attachmentList = [
   },
 ] as const;
 
-export const WithdrawRaiForm = () => {
+export const WithdrawRai = ({ item }: { item: opensearch.main.ItemResult }) => {
+  const { id } = useParams("/action/:id/:type");
+  const { setCancelModalOpen, setSuccessModalOpen, setErrorModalOpen } =
+    useModalContext();
+  const [areYouSureModalIsOpen, setAreYouSureModalIsOpen] = useState(false);
+  const authority = item?._source.authority as PlanType;
+  const user = useGetUser();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
-  const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
-  const [areYouSureModalIsOpen, setAreYouSureModalIsOpen] = useState(false);
-  const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
-  const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
-
-  const { id } = useParams<{
-    id: string;
-  }>();
-
-  const navigate = useNavigate();
-
-  const { data: item } = useGetItem(id!);
-  const authority = item?._source.authority as PlanType;
-  const user = useGetUser();
 
   const handleSubmit: SubmitHandler<FormSchema> = async (data) => {
     try {
@@ -61,18 +48,17 @@ export const WithdrawRaiForm = () => {
         user: user.data,
         authority: authority,
       });
-
-      setSuccessModalIsOpen(true);
+      setSuccessModalOpen(true);
     } catch (err: unknown) {
       if (err) {
         console.log("There was an error", err);
-        setErrorModalIsOpen(true);
+        setErrorModalOpen(true);
       }
     }
   };
 
   return (
-    <SimplePageContainer>
+    <>
       <I.Form {...form}>
         <form
           className="my-6 space-y-8 mx-auto"
@@ -114,7 +100,8 @@ export const WithdrawRaiForm = () => {
             Read the description for each of the attachment types on the{" "}
             {
               <Link
-                to="/faq/#medicaid-spa-rai-attachments"
+                path="/faq"
+                hash="medicaid-spa-rai-attachments"
                 target={FAQ_TARGET}
                 rel="noopener noreferrer"
                 className="text-blue-700 hover:underline"
@@ -130,7 +117,8 @@ export const WithdrawRaiForm = () => {
             and a few others. See the full list on the{" "}
             {
               <Link
-                to="/faq/#acceptable-file-formats"
+                path="/faq"
+                hash="acceptable-file-formats"
                 target={FAQ_TARGET}
                 rel="noopener noreferrer"
                 className="text-blue-700 hover:underline"
@@ -208,7 +196,7 @@ export const WithdrawRaiForm = () => {
             <I.Button
               type="button"
               variant="outline"
-              onClick={() => setCancelModalIsOpen(true)}
+              onClick={() => setCancelModalOpen(true)}
               className="px-12"
             >
               Cancel
@@ -231,79 +219,6 @@ export const WithdrawRaiForm = () => {
         acceptButtonText="Yes, withdraw response"
         cancelButtonText="Cancel"
       />
-
-      <ConfirmationModal
-        open={successModalIsOpen}
-        onAccept={() => {
-          setSuccessModalIsOpen(false);
-          navigate(`/details?id=${id}`);
-        }}
-        onCancel={() => setSuccessModalIsOpen(false)}
-        title="Withdraw Formal RAI Response request has been submitted."
-        body={
-          <p>
-            Your Formal RAI Response has been withdrawn successfully. If CMS
-            needs any additional information, they will follow up by email.
-          </p>
-        }
-        cancelButtonVisible={false}
-        acceptButtonText="Exit to Package Details"
-      />
-      <ConfirmationModal
-        open={errorModalIsOpen}
-        onAccept={() => {
-          setErrorModalIsOpen(false);
-          navigate(`/details?id=${id}`);
-        }}
-        onCancel={() => setErrorModalIsOpen(false)}
-        title="Submission Error"
-        body={
-          <p>
-            An error occurred during Formal RAI Response Withdraw.
-            <br />
-            You may close this window and try again, however, this likely
-            requires support.
-            <br />
-            <br />
-            Please contact the{" "}
-            <a
-              href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
-              className="text-blue-500"
-            >
-              helpdesk
-            </a>{" "}
-            . You may include the following in your support request: <br />
-            <br />
-            <ul>
-              <li>SPA ID: {id}</li>
-              <li>Timestamp: {Date.now()}</li>
-            </ul>
-          </p>
-        }
-        cancelButtonVisible={true}
-        cancelButtonText="Return to Form"
-        acceptButtonText="Exit to Package Details"
-      />
-      <ConfirmationModal
-        open={cancelModalIsOpen}
-        onAccept={() => {
-          setCancelModalIsOpen(false);
-          navigate(`/details?id=${id}`);
-        }}
-        onCancel={() => setCancelModalIsOpen(false)}
-        cancelButtonText="Return to Form"
-        acceptButtonText="Yes"
-        title="Are you sure you want to cancel?"
-        body={
-          <p>If you leave this page you will lose your progress on this form</p>
-        }
-      />
-    </SimplePageContainer>
+    </>
   );
 };
-
-export const WithdrawRai = () => (
-  <PackageActionForm>
-    <WithdrawRaiForm />
-  </PackageActionForm>
-);

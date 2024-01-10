@@ -1,20 +1,20 @@
 import { SearchForm } from "@/components";
 import { FC } from "react";
-import { DEFAULT_FILTERS, useOsParams } from "../useOpensearch";
+import { DEFAULT_FILTERS, useOsUrl } from "../useOpensearch";
 import { ExportButton } from "@/components/ExportButton";
 import { useOsContext } from "../Provider";
 import { OsFilterDrawer } from "./FilterDrawer";
-import { getAllSearchData } from "@/api";
+import { getMainExportData } from "@/api";
 import { useGetUser } from "@/api/useGetUser";
 import { EXPORT_GROUPS } from "./consts";
 
 export const OsFiltering: FC<{
   disabled?: boolean;
 }> = (props) => {
-  const params = useOsParams();
+  const url = useOsUrl();
   const context = useOsContext();
   const user = useGetUser();
-  const filters = DEFAULT_FILTERS[params.state.tab]?.filters ?? [];
+  const filters = DEFAULT_FILTERS[url.state.tab]?.filters ?? [];
 
   return (
     <div>
@@ -25,7 +25,7 @@ export const OsFiltering: FC<{
         <SearchForm
           isSearching={context.isLoading}
           handleSearch={(search) =>
-            params.onSet((s) => ({
+            url.onSet((s) => ({
               ...s,
               pagination: { ...s.pagination, number: 0 },
               search,
@@ -35,8 +35,8 @@ export const OsFiltering: FC<{
         />
         <div className="flex flex-row gap-2">
           <ExportButton
-            data={() => getAllSearchData([...params.state.filters, ...filters])}
-            headers={EXPORT_GROUPS(params.state.tab, user)}
+            data={() => getMainExportData([...url.state.filters, ...filters])}
+            headers={EXPORT_GROUPS(url.state.tab, user)}
           />
           <OsFilterDrawer />
         </div>

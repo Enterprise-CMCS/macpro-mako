@@ -1,52 +1,50 @@
 // Specific to the path of each Options page
-import { ROUTES } from "@/routes";
 import { BreadCrumbConfig } from "@/components";
 import { dashboardCrumb } from "@/utils/crumbs";
+import { Route } from "@/components/Routing/types";
 
-enum Keys {
-  NEW_SUBMISSION = "new-submission",
-  SPA_TYPE = "spa",
-  SPA_MEDICAID_TYPE = "medicaid",
-  SPA_MEDICAID_LANDING_ELIGIBILITY = "medicaid-eligibility",
-  SPA_MEDICAID_LANDING_ABP = "medicaid-abp",
-  SPA_CHIP_TYPE = "chip",
-  SPA_CHIP_LANDING_ELIGIBILITY = "chip-eligibility",
-  WAIVER_TYPE = "waiver",
-  WAIVER_1915B_TYPE = "b",
-  WAIVER_1915B_B4_TYPE = "b4",
-  WAIVER_1915B_CAP_TYPE = "capitated",
-}
+type Keys =
+  | "new-submission"
+  | "spa"
+  | "medicaid"
+  | "medicaid-eligibility"
+  | "medicaid-abp"
+  | "chip"
+  | "chip-eligibility"
+  | "waiver"
+  | "b"
+  | "b4"
+  | "capitated";
 // Display text mapper
 const newSubmissionPageTitleMapper: Record<Keys, string> = {
-  [Keys.NEW_SUBMISSION]: "Submission Type",
-  [Keys.SPA_TYPE]: "SPA Type",
-  [Keys.SPA_MEDICAID_TYPE]: "Medicaid SPA Type",
-  [Keys.SPA_MEDICAID_LANDING_ELIGIBILITY]:
+  "new-submission": "Submission Type",
+  spa: "SPA Type",
+  medicaid: "Medicaid SPA Type",
+  "medicaid-eligibility":
     "Medicaid Eligibility, Enrollment, Administration, and Health Homes",
-  [Keys.SPA_MEDICAID_LANDING_ABP]:
+  "medicaid-abp":
     "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing",
-  [Keys.SPA_CHIP_TYPE]: "CHIP SPA Type",
-  [Keys.SPA_CHIP_LANDING_ELIGIBILITY]: "CHIP Eligibility SPAs",
-  [Keys.WAIVER_TYPE]: "Waiver Type",
-  [Keys.WAIVER_1915B_TYPE]: "1915(b) Waiver Type",
-  [Keys.WAIVER_1915B_B4_TYPE]:
-    "1915(b)(4) FFS Selective Contracting Waiver Types",
-  [Keys.WAIVER_1915B_CAP_TYPE]:
-    "1915(b) Comprehensive (Capitated) Waiver Authority Types",
+  chip: "CHIP SPA Type",
+  "chip-eligibility": "CHIP Eligibility SPAs",
+  waiver: "Waiver Type",
+  b: "1915(b) Waiver Type",
+  b4: "1915(b)(4) FFS Selective Contracting Waiver Types",
+  capitated: "1915(b) Comprehensive (Capitated) Waiver Authority Types",
 };
 // Route mapper
-const newSubmissionPageRouteMapper: Record<Keys, ROUTES> = {
-  [Keys.NEW_SUBMISSION]: ROUTES.NEW_SUBMISSION_OPTIONS,
-  [Keys.SPA_TYPE]: ROUTES.SPA_SUBMISSION_OPTIONS,
-  [Keys.SPA_MEDICAID_TYPE]: ROUTES.MEDICAID_SPA_SUB_OPTIONS,
-  [Keys.SPA_MEDICAID_LANDING_ELIGIBILITY]: ROUTES.MEDICAID_ELIGIBILITY_LANDING,
-  [Keys.SPA_MEDICAID_LANDING_ABP]: ROUTES.MEDICAID_ABP_LANDING,
-  [Keys.SPA_CHIP_TYPE]: ROUTES.CHIP_SPA_SUB_OPTIONS,
-  [Keys.SPA_CHIP_LANDING_ELIGIBILITY]: ROUTES.CHIP_ELIGIBILITY_LANDING,
-  [Keys.WAIVER_TYPE]: ROUTES.WAIVER_SUBMISSION_OPTIONS,
-  [Keys.WAIVER_1915B_TYPE]: ROUTES.B_WAIVER_SUBMISSION_OPTIONS,
-  [Keys.WAIVER_1915B_B4_TYPE]: ROUTES.B4_WAIVER_OPTIONS,
-  [Keys.WAIVER_1915B_CAP_TYPE]: ROUTES.BCAP_WAIVER_OPTIONS,
+const newSubmissionPageRouteMapper: Record<Keys, Route> = {
+  "new-submission": "/new-submission",
+  spa: "/new-submission/spa",
+  medicaid: "/new-submission/spa/medicaid",
+  "medicaid-eligibility":
+    "/new-submission/spa/medicaid/landing/medicaid-eligibility",
+  "medicaid-abp": "/new-submission/spa/medicaid/landing/medicaid-abp",
+  chip: "/new-submission/spa/chip",
+  "chip-eligibility": "/new-submission/spa/chip/landing/chip-eligibility",
+  waiver: "/new-submission/waiver",
+  b: "/new-submission/waiver/b",
+  b4: "/new-submission/waiver/b/b4",
+  capitated: "/new-submission/waiver/b/capitated",
 };
 
 export const optionCrumbsFromPath = (path: string): BreadCrumbConfig[] => [

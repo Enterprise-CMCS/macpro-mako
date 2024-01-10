@@ -1,18 +1,17 @@
 import {
-  ActionAvailabilityCheck,
   CognitoUserAttributes,
-  OsMainSourceItem,
-  PlanTypeCheck,
   PlanType,
+  opensearch
 } from "../../shared-types";
 import rules from "./rules";
+import { PackageCheck } from "../packageCheck";
 
 export const getAvailableActions = (
   user: CognitoUserAttributes,
-  result: OsMainSourceItem
+  result: opensearch.main.Document
 ) => {
-  const actionChecker = ActionAvailabilityCheck(result);
-  return PlanTypeCheck(result.planType).is([PlanType.MED_SPA])
-    ? rules.filter((r) => r.check(actionChecker, user)).map((r) => r.action)
+  const checks = PackageCheck(result);
+  return checks.planTypeIs([PlanType.MED_SPA])
+    ? rules.filter((r) => r.check(checks, user)).map((r) => r.action)
     : [];
 };

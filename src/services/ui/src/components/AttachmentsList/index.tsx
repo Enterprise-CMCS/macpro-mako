@@ -4,7 +4,7 @@ import { BLANK_VALUE } from "@/consts";
 import { DownloadIcon } from "lucide-react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
-import { OsMainSourceItem } from "shared-types";
+import { opensearch } from "shared-types";
 import { useState } from "react";
 import { Button } from "../Inputs/button";
 import {
@@ -122,7 +122,7 @@ export const Attachmentslist = (data: AttachmentList) => {
 };
 
 async function downloadAll(
-  attachments: OsMainSourceItem["attachments"],
+  attachments: opensearch.main.Document["attachments"],
   id: string
 ) {
   if (!attachments) return null;

@@ -1,5 +1,5 @@
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { OsTableColumn } from "@/components/Opensearch/Table/types";
+import { OsTableColumn } from "@/components/Opensearch/main";
 import { LABELS } from "@/lib";
 import { BLANK_VALUE } from "@/consts";
 import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
@@ -64,9 +64,6 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       label: "Submission Source",
       visible: false,
       cell: (data) => {
-        if (data.origin?.toLowerCase() === "onemac") {
-          return "OneMAC";
-        }
         return data.origin;
       },
     },

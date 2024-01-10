@@ -17,7 +17,6 @@ export const FilterableSelect: FC<{
   return (
     <Select<any, any>
       isMulti
-      className="z-50"
       value={props.value.map((S) => ({ value: S, label: S }))}
       onChange={(val) => props.onChange(val.map((s: any) => s.value))}
       options={props.options}

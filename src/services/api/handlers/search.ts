@@ -8,6 +8,12 @@ if (!process.env.osDomain) {
 
 // Handler function to search index
 export const getSearchData = async (event: APIGatewayEvent) => {
+  if (!event.pathParameters || !event.pathParameters.index) {
+    return response({
+      statusCode: 400,
+      body: { message: "Index path parameter required" },
+    });
+  }
   try {
     let query: any = {};
     if (event.body) {
@@ -35,7 +41,11 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       });
     }
 
-    const results = await os.search(process.env.osDomain, "main", query);
+    const results = await os.search(
+      process.env.osDomain,
+      event.pathParameters.index as any,
+      query
+    );
     return response<unknown>({
       statusCode: 200,
       body: results,

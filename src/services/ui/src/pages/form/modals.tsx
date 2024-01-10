@@ -1,8 +1,8 @@
 import { ConfirmationModal } from "@/components";
-import { ROUTES } from "@/routes";
+
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { createContextProvider } from "@/utils";
+import { useNavigate } from "@/components/Routing";
 
 type ModalProps = {
   open: boolean;
@@ -16,7 +16,7 @@ const Success = ({ open, setOpen }: ModalProps) => {
       open={open}
       onAccept={() => {
         setOpen(false);
-        navigate(ROUTES.DASHBOARD);
+        navigate({ path: "/dashboard" });
       }}
       onCancel={() => setOpen(false)}
       title="Submission Successful"
@@ -39,7 +39,7 @@ const Cancel = ({ open, setOpen }: ModalProps) => {
       open={open}
       onAccept={() => {
         setOpen(false);
-        navigate(ROUTES.DASHBOARD);
+        navigate({ path: "/dashboard" });
       }}
       onCancel={() => setOpen(false)}
       cancelButtonText="Return to Form"
@@ -52,14 +52,49 @@ const Cancel = ({ open, setOpen }: ModalProps) => {
   );
 };
 
+const Error = ({ open, setOpen }: ModalProps) => {
+  return (
+    <ConfirmationModal
+      open={open}
+      onAccept={() => {
+        setOpen(false);
+      }}
+      onCancel={() => setOpen(false)}
+      title="Submission Error"
+      body={
+        <p>
+          An error occurred during issue.
+          <br />
+          You may close this window and try again, however, this likely requires
+          support.
+          <br />
+          <br />
+          Please contact the{" "}
+          <a
+            href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
+            className="text-blue-500"
+          >
+            helpdesk
+          </a>
+        </p>
+      }
+      cancelButtonVisible={false}
+      acceptButtonText="Exit to Package Details"
+    />
+  );
+};
+
 const useFormModalControllers = () => {
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
   return {
     cancelModalOpen,
     setCancelModalOpen,
     successModalOpen,
     setSuccessModalOpen,
+    errorModalOpen,
+    setErrorModalOpen,
   };
 };
 
@@ -82,6 +117,10 @@ export const ModalProvider = ({ children }: PropsWithChildren) => {
       <Cancel
         open={context.cancelModalOpen}
         setOpen={context.setCancelModalOpen}
+      />
+      <Error
+        open={context.errorModalOpen}
+        setOpen={context.setErrorModalOpen}
       />
     </ModalContextProvider>
   );

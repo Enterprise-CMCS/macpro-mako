@@ -1,20 +1,20 @@
 import * as POP from "@/components/Popover";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { CognitoUserAttributes, OsMainSourceItem } from "shared-types";
+import { CognitoUserAttributes, opensearch } from "shared-types";
 import { getAvailableActions } from "shared-utils";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib";
 import { mapActionLabel } from "@/utils";
 import { format } from "date-fns";
 
-export const renderCellDate = (key: keyof OsMainSourceItem) =>
-  function Cell(data: OsMainSourceItem) {
+export const renderCellDate = (key: keyof opensearch.main.Document) =>
+  function Cell(data: opensearch.main.Document) {
     if (!data[key]) return null;
     return format(new Date(data[key] as string), "MM/dd/yyyy");
   };
 
 export const renderCellIdLink = (pathResolver: (id: string) => string) =>
-  function Cell(data: OsMainSourceItem) {
+  function Cell(data: opensearch.main.Document) {
     if (!data.authority) return <></>;
     const path = pathResolver(encodeURIComponent(data.id));
     return (
@@ -25,7 +25,7 @@ export const renderCellIdLink = (pathResolver: (id: string) => string) =>
   };
 
 export const renderCellActions = (user: CognitoUserAttributes | null) =>
-  function Cell(data: OsMainSourceItem) {
+  function Cell(data: opensearch.main.Document) {
     if (!user) return <></>;
     const actions = getAvailableActions(user, data);
     return (

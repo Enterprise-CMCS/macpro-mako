@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
-import type { OsField } from "../types";
+
 import * as Consts from "./consts";
-import { useOsAggregate, useOsParams } from "../useOpensearch";
-import { OsFilterValue, OsRangeValue } from "shared-types";
+import { useOsAggregate, useOsUrl } from "../useOpensearch";
+import { opensearch } from "shared-types";
 import { useLabelMapping } from "@/hooks";
 import { useFilterDrawerContext } from "./FilterProvider";
 import { useGetUser } from "@/api/useGetUser";
@@ -10,16 +10,16 @@ import { useGetUser } from "@/api/useGetUser";
 export const useFilterDrawer = () => {
   const { drawerOpen, setDrawerState } = useFilterDrawerContext();
   const { data: user } = useGetUser();
-  const params = useOsParams();
+  const url = useOsUrl();
   const [filters, setFilters] = useState(
-    Consts.FILTER_GROUPS(user, params.state.tab)
+    Consts.FILTER_GROUPS(user, url.state.tab)
   );
   const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const labelMap = useLabelMapping();
   const _aggs = useOsAggregate();
 
-  const onFilterChange = (field: OsField) => {
-    return (value: OsFilterValue) => {
+  const onFilterChange = (field: opensearch.main.Field) => {
+    return (value: opensearch.FilterValue) => {
       setFilters((state) => {
         const updateState = { ...state, [field]: { ...state[field], value } };
         const updateFilters = Object.values(updateState).filter((FIL) => {
@@ -29,14 +29,14 @@ export const useFilterDrawer = () => {
           }
 
           if (FIL.type === "range") {
-            const value = FIL.value as OsRangeValue;
+            const value = FIL.value as opensearch.RangeValue;
             return !!value?.gte && !!value?.lte;
           }
 
           return true;
         });
 
-        params.onSet((state) => ({
+        url.onSet((state) => ({
           ...state,
           filters: updateFilters,
           pagination: { ...state.pagination, number: 0 },
@@ -58,9 +58,7 @@ export const useFilterDrawer = () => {
 
     setFilters((s) => {
       return Object.entries(s).reduce((STATE, [KEY, VAL]) => {
-        const updateFilter = params.state.filters.find(
-          (FIL) => FIL.field === KEY
-        );
+        const updateFilter = url.state.filters.find((FIL) => FIL.field === KEY);
 
         const value = (() => {
           if (updateFilter) {
@@ -68,7 +66,7 @@ export const useFilterDrawer = () => {
             return updateFilter.value;
           }
           if (VAL.type === "terms") return [] as string[];
-          return { gte: undefined, lte: undefined } as OsRangeValue;
+          return { gte: undefined, lte: undefined } as opensearch.RangeValue;
         })();
 
         STATE[KEY] = { ...VAL, value };
@@ -77,12 +75,12 @@ export const useFilterDrawer = () => {
       }, {} as any);
     });
     setAccordionValues(updateAccordions);
-  }, [params.state.filters, drawerOpen]);
+  }, [url.state.filters, drawerOpen]);
 
   // change base filters per tab
   useEffect(() => {
-    setFilters(Consts.FILTER_GROUPS(user, params.state.tab));
-  }, [params.state.tab]);
+    setFilters(Consts.FILTER_GROUPS(user, url.state.tab));
+  }, [url.state.tab]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce((STATE, [KEY, AGG]) => {
@@ -93,7 +91,7 @@ export const useFilterDrawer = () => {
           value: BUCK.key,
         })),
       };
-    }, {} as Record<OsField, { label: string; value: string }[]>);
+    }, {} as Record<opensearch.main.Field, { label: string; value: string }[]>);
   }, [_aggs]);
 
   return {

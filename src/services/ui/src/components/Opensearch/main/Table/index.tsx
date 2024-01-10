@@ -3,17 +3,17 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { FC, useState } from "react";
 import { OsTableColumn } from "./types";
 import { useOsContext } from "../Provider";
-import { useOsParams } from "../useOpensearch";
+import { useOsUrl } from "@/components/Opensearch/main";
 import { VisibilityPopover } from "../Settings";
 import { BLANK_VALUE } from "@/consts";
-import { OsField } from "shared-types";
+import { opensearch } from "shared-types";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];
 }> = (props) => {
   const context = useOsContext();
 
-  const params = useOsParams();
+  const url = useOsUrl();
 
   const [osColumns, setOsColumns] = useState(
     props.columns.map((COL) => ({
@@ -51,15 +51,15 @@ export const OsTable: FC<{
               <UI.TableHead
                 {...(!!TH.props && TH.props)}
                 key={`TH-${TH.field}`}
-                isActive={params.state.sort.field === TH.field}
-                desc={params.state.sort.order === "desc"}
+                isActive={url.state.sort.field === TH.field}
+                desc={url.state.sort.order === "desc"}
                 {...(TH.isSystem && { className: "pointer-events-none" })}
                 onClick={() => {
                   if (!TH.field) return;
-                  params.onSet((s) => ({
+                  url.onSet((s) => ({
                     ...s,
                     sort: {
-                      field: TH.field as OsField,
+                      field: TH.field as opensearch.main.Field,
                       order: s.sort.order === "desc" ? "asc" : "desc",
                     },
                   }));

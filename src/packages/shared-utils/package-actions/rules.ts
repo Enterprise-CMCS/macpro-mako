@@ -1,17 +1,13 @@
-import {
-  Action,
-  ActionAvailabilityCheck,
-  ActionRule,
-  SEATOOL_STATUS,
-} from "../../shared-types";
-import { isCmsUser, isStateUser } from "../user-helper";
+import { Action, ActionRule, SEATOOL_STATUS, finalDispositionStatuses } from "../../shared-types";
+import { isCmsUser, isStateUser, isCmsReadonlyUser, isCmsWriteUser } from "../user-helper";
+import { PackageCheck } from "../packageCheck";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
   check: (checker, user) =>
     checker.isInActivePendingStatus &&
     (!checker.hasLatestRai || checker.hasRequestedRai) &&
-    isCmsUser(user),
+    isCmsWriteUser(user),
 };
 
 const arRespondToRai: ActionRule = {
@@ -28,7 +24,7 @@ const arEnableWithdrawRaiResponse: ActionRule = {
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     !checker.hasEnabledRaiWithdraw &&
-    isCmsUser(user),
+    isCmsWriteUser(user)
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
@@ -37,7 +33,7 @@ const arDisableWithdrawRaiResponse: ActionRule = {
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
-    isCmsUser(user),
+    isCmsWriteUser(user)
 };
 
 const arWithdrawRaiResponse: ActionRule = {
@@ -48,11 +44,11 @@ const arWithdrawRaiResponse: ActionRule = {
     checker.hasEnabledRaiWithdraw &&
     isStateUser(user),
 };
-
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
-    checker.isInActivePendingStatus && isStateUser(user),
+    !checker.hasStatus(finalDispositionStatuses)
+    && isStateUser(user),
 };
 
 export default [

@@ -1,17 +1,17 @@
 import { type FC, useCallback, Fragment } from "react";
 
 import { Chip } from "@/components/Chip";
-import { useOsParams } from "@/components/Opensearch/useOpensearch";
-import { OsFilterable, OsRangeValue } from "shared-types";
+import { useOsUrl } from "@/components/Opensearch/main";
+import { opensearch } from "shared-types";
 import { useFilterDrawerContext } from "./FilterProvider";
-import { checkMultiFilter, resetFilters } from "../utils";
+import { checkMultiFilter } from "@/components/Opensearch";
 import { useLabelMapping } from "@/hooks";
 
 interface RenderProp {
-  filter: OsFilterable;
+  filter: opensearch.main.Filterable;
   index: number;
   openDrawer: () => void;
-  clearFilter: (filter: OsFilterable, valIndex?: number) => void;
+  clearFilter: (filter: opensearch.main.Filterable, valIndex?: number) => void;
 }
 
 // simple date range chips
@@ -21,7 +21,7 @@ const DateChip: FC<RenderProp> = ({
   openDrawer,
   clearFilter,
 }) => {
-  const value = filter.value as OsRangeValue;
+  const value = filter.value as opensearch.RangeValue;
   return (
     <Chip
       key={`${index}-${filter.field}`}
@@ -71,13 +71,16 @@ const ChipList: FC<RenderProp> = ({
 };
 
 export const FilterChips: FC = () => {
-  const params = useOsParams();
+  const url = useOsUrl();
   const { setDrawerState } = useFilterDrawerContext();
 
   const openDrawer = useCallback(() => setDrawerState(true), [setDrawerState]);
-  const twoOrMoreFiltersApplied = checkMultiFilter(params.state.filters, 2);
-  const clearFilter = (filter: OsFilterable, valIndex?: number) => {
-    params.onSet((s) => {
+  const twoOrMoreFiltersApplied = checkMultiFilter(url.state.filters, 2);
+  const clearFilter = (
+    filter: opensearch.main.Filterable,
+    valIndex?: number
+  ) => {
+    url.onSet((s) => {
       let filters = s.filters;
       const filterIndex = filters.findIndex((f) => f.field === filter.field);
 
@@ -98,11 +101,16 @@ export const FilterChips: FC = () => {
     });
   };
 
-  const handleChipClick = () => resetFilters(params.onSet);
+  const handleChipClick = () =>
+    url.onSet((s) => ({
+      ...s,
+      filters: [],
+      pagination: { ...s.pagination, number: 0 },
+    }));
 
   return (
     <div className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2">
-      {params.state.filters.map((filter, index) => {
+      {url.state.filters.map((filter, index) => {
         const props: RenderProp = { clearFilter, openDrawer, filter, index };
         if (filter.type === "range") return <DateChip {...props} />;
         if (filter.type === "terms") return <ChipList {...props} />;
