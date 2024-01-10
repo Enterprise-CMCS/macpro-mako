@@ -18,7 +18,7 @@ import { mapActionLabel } from "@/utils";
 import { useLocation } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
-import { DETAILS_AND_ACTIONS_CRUMBS } from "@/pages/actions/actions-breadcrumbs";
+import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
 import { getStatus } from "shared-types/statusHelper";
 import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
@@ -54,12 +54,14 @@ const StatusCard = (data: opensearch.main.Document) => {
             : transformedStatuses.stateStatus}
         </h2>
         {checker.hasEnabledRaiWithdraw && (
-          <em className="text-xs my-4">
+          <em className="text-xs my-4 mr-2">
             {"Withdraw Formal RAI Response - Enabled"}
           </em>
         )}
         {user?.isCms && checker.isInSecondClock && (
-          <span id="secondclock">2nd Clock</span>
+          <span id="secondclock" className="ml-2">
+            2nd Clock
+          </span>
         )}
       </div>
     </DetailCardWrapper>
@@ -70,12 +72,12 @@ const PackageActionsCard = ({ id }: { id: string }) => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { data, error } = useGetPackageActions(id);
-  if (!data?.actions || error || isLoading) return <LoadingSpinner />;
+  const { data } = useGetPackageActions(id, { retry: false });
+  if (isLoading) return <LoadingSpinner />;
   return (
     <DetailCardWrapper title={"Actions"}>
       <div>
-        {!data.actions.length ? (
+        {!data || !data.actions.length ? (
           <em className="text-gray-400">
             No actions are currently available for this submission.
           </em>
@@ -225,7 +227,7 @@ export const Details = () => {
   return (
     <>
       <div className="max-w-screen-xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
-        <BreadCrumbs options={DETAILS_AND_ACTIONS_CRUMBS({ id })} />
+        <BreadCrumbs options={detailsAndActionsCrumbs({ id })} />
         <DetailsContent data={data} />
       </div>
     </>
