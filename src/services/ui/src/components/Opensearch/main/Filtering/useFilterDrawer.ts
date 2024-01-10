@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
-import type { OsField } from "../types";
+
 import * as Consts from "./consts";
 import { useOsAggregate, useOsUrl } from "../useOpensearch";
-import { OsFilterValue, OsRangeValue } from "shared-types";
+import { opensearch } from "shared-types";
 import { useLabelMapping } from "@/hooks";
 import { useFilterDrawerContext } from "./FilterProvider";
 import { useGetUser } from "@/api/useGetUser";
@@ -18,8 +18,8 @@ export const useFilterDrawer = () => {
   const labelMap = useLabelMapping();
   const _aggs = useOsAggregate();
 
-  const onFilterChange = (field: OsField) => {
-    return (value: OsFilterValue) => {
+  const onFilterChange = (field: opensearch.main.Field) => {
+    return (value: opensearch.FilterValue) => {
       setFilters((state) => {
         const updateState = { ...state, [field]: { ...state[field], value } };
         const updateFilters = Object.values(updateState).filter((FIL) => {
@@ -29,7 +29,7 @@ export const useFilterDrawer = () => {
           }
 
           if (FIL.type === "range") {
-            const value = FIL.value as OsRangeValue;
+            const value = FIL.value as opensearch.RangeValue;
             return !!value?.gte && !!value?.lte;
           }
 
@@ -66,7 +66,7 @@ export const useFilterDrawer = () => {
             return updateFilter.value;
           }
           if (VAL.type === "terms") return [] as string[];
-          return { gte: undefined, lte: undefined } as OsRangeValue;
+          return { gte: undefined, lte: undefined } as opensearch.RangeValue;
         })();
 
         STATE[KEY] = { ...VAL, value };
@@ -91,7 +91,7 @@ export const useFilterDrawer = () => {
           value: BUCK.key,
         })),
       };
-    }, {} as Record<OsField, { label: string; value: string }[]>);
+    }, {} as Record<opensearch.main.Field, { label: string; value: string }[]>);
   }, [_aggs]);
 
   return {

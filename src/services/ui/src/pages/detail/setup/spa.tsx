@@ -3,7 +3,7 @@ import { isCmsUser } from "shared-utils";
 import { LABELS } from "@/lib";
 import { BLANK_VALUE } from "@/consts";
 import { format } from "date-fns";
-import { OsMainSourceItem } from "shared-types";
+import { opensearch } from "shared-types";
 import { ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
 import { ReviewTeamList } from "@/components/PackageDetails/ReviewTeamList";
@@ -13,7 +13,9 @@ export type DetailSectionItem = {
   value: ReactNode;
   canView: (u: OneMacUser | undefined) => boolean;
 };
-export const spaDetails = (data: OsMainSourceItem): DetailSectionItem[] => [
+export const spaDetails = (
+  data: opensearch.main.Document
+): DetailSectionItem[] => [
   {
     label: "Submission ID",
     value: data.id,
@@ -69,7 +71,7 @@ export const spaDetails = (data: OsMainSourceItem): DetailSectionItem[] => [
 ];
 
 export const submissionDetails = (
-  data: OsMainSourceItem
+  data: opensearch.main.Document
 ): DetailSectionItem[] => [
   {
     label: "Submitted By",
