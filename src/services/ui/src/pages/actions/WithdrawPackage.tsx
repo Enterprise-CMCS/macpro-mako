@@ -61,7 +61,7 @@ export const WithdrawPackage = ({ item }: { item?: ItemResult }) => {
           name: "supportingDocumentation",
           label: "Supporting Documentation",
           required: false,
-        } as const,
+        },
       ]}
       attachmentFaqLink={"/faq"}
       attachmentInstructions={
