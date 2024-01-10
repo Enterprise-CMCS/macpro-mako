@@ -16,8 +16,6 @@ import {
   SlotAttachments,
 } from "@/pages/actions/renderSlots";
 
-// Temporary, will be refactored to an extendable schema with Brian/Mike's back-end
-// work.
 const withdrawPackageFormSchema = z.object({
   additionalInformation: z
     .string()
@@ -27,8 +25,9 @@ const withdrawPackageFormSchema = z.object({
     supportingDocumentation: z.array(z.instanceof(File)).optional(),
   }),
 });
-type WithdrawPackageFormSchema = z.infer<typeof withdrawPackageFormSchema>;
-const attachments: AttachmentRecipe<WithdrawPackageFormSchema>[] = [
+const attachments: AttachmentRecipe<
+  z.infer<typeof withdrawPackageFormSchema>
+>[] = [
   {
     name: "supportingDocumentation",
     label: "Supporting Documentation",
@@ -38,7 +37,7 @@ const attachments: AttachmentRecipe<WithdrawPackageFormSchema>[] = [
 
 export const WithdrawPackage = ({ item }: { item?: ItemResult }) => {
   const { setCancelModalOpen } = useModalContext();
-  const form = useForm<WithdrawPackageFormSchema>({
+  const form = useForm<z.infer<typeof withdrawPackageFormSchema>>({
     resolver: zodResolver(withdrawPackageFormSchema),
   });
   const handleSubmit = useActionSubmitHandler({
@@ -82,6 +81,7 @@ export const WithdrawPackage = ({ item }: { item?: ItemResult }) => {
                     </>
                   ),
                   message: <I.FormMessage />,
+                  className: "mb-8",
                 })}
               />
             ))}

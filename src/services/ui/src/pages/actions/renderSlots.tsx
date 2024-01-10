@@ -1,4 +1,3 @@
-// slot abstractions
 import {
   FormDescription,
   FormItem,
@@ -15,7 +14,6 @@ import {
 } from "react-hook-form";
 import { ReactNode } from "react";
 
-// slot abstractions
 export const SlotAttachments = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
