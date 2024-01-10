@@ -75,7 +75,7 @@ export const RespondToRai = ({
         user,
         authority,
       });
-      setCancelModalOpen(true);
+      setSuccessModalOpen(true);
     } catch (err) {
       console.log(err);
       setErrorModalOpen(true);
