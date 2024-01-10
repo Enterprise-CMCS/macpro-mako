@@ -1,6 +1,12 @@
 import { CognitoUserAttributes, STATE_CODES, StateCode } from "shared-types";
 import { isCmsUser, isStateUser } from "shared-utils";
 import { getUser } from "@/api/useGetUser";
+import {
+  OsMainSourceItem,
+  stateUserSubStatus,
+  cmsUserSubStatus,
+} from "shared-types";
+import { PackageCheck } from "shared-utils";
 
 export const getUserStateCodes = (
   user: CognitoUserAttributes | null | undefined
@@ -24,4 +30,47 @@ export const isAuthorizedState = async (id: string) => {
     console.error(e);
     return false;
   }
+};
+
+
+export const getStateStatusWithSubStatus = (data: OsMainSourceItem): { status: string, subStatus: string | undefined } => {
+  const checker = PackageCheck(data);
+
+  if (checker.hasEnabledRaiWithdraw) {
+    return {
+      status: data.stateStatus,
+      subStatus: stateUserSubStatus.WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED
+    };
+  }
+  // add multiple conditions here in future like 
+  /*
+  else if(condition){
+    return {
+      status: data.stateStatus,
+      subStatus: stateUserSubStatus.WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED
+    };
+  }
+  */
+
+  return {
+    status: data.stateStatus,
+    subStatus: undefined
+  };
+};
+
+export const getCmsStatusWithSubStatus = (data: OsMainSourceItem): { status: string, subStatus: string | undefined } => {
+  const checker = PackageCheck(data);
+
+  if (checker.isInSecondClock) {
+    return {
+      status: data.cmsStatus,
+      subStatus: cmsUserSubStatus.SECOND_CLOCK
+    };
+  }
+  // add multiple conditions here in future
+
+  return {
+    status: data.cmsStatus,
+    subStatus: cmsUserSubStatus.SECOND_CLOCK
+  };
 };

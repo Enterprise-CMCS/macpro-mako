@@ -1,35 +1,35 @@
 import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components/Opensearch/Table/types";
-import {
-  CMS_READ_ONLY_ROLES,
-  UserRoles,
-  OsMainSourceItem,
-  stateUserSubStatus,
-} from "shared-types";
+import { CMS_READ_ONLY_ROLES, UserRoles, OsMainSourceItem } from "shared-types";
 
-import { useGetUser } from "@/api/useGetUser";
-import { PackageCheck } from "shared-utils";
+import { OneMacUser, useGetUser } from "@/api/useGetUser";
 import {
   renderCellActions,
   renderCellDate,
   renderCellIdLink,
 } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
+import {
+  getStateStatusWithSubStatus,
+  getCmsStatusWithSubStatus,
+} from "@/utils";
 
-export const getStateStatusWithSubStatus = (data: OsMainSourceItem) => {
-  const checker = PackageCheck(data);
+const useStatusWithSubStatus = (props: OneMacUser, data: OsMainSourceItem) => {
+  const params =
+    props?.isCms && !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
+      ? getCmsStatusWithSubStatus(data)
+      : getStateStatusWithSubStatus(data);
 
-  if (checker.hasEnabledRaiWithdraw) {
+  if (params?.subStatus) {
     return (
       <>
-        {data.stateStatus} <br />
-        {stateUserSubStatus.WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED}
+        <div className="whitespace-pre-line">{params.status}</div>
+        {params?.subStatus}
       </>
     );
   }
-
-  return data.stateStatus;
+  return <div>{params.status}</div>;
 };
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
@@ -62,11 +62,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
       label: "Status",
-      cell: (data) =>
-        props?.isCms &&
-        !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
-          ? data.cmsStatus
-          : getStateStatusWithSubStatus(data),
+      cell: (data) => useStatusWithSubStatus(props, data),
     },
     {
       field: "submissionDate",

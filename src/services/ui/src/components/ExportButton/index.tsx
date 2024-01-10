@@ -15,7 +15,7 @@ type Props<TData extends Record<string, any>> = {
   // | Record<string, HeaderOptions<TData>>
 };
 
-export const ExportButton = <TData extends Record<string, any>>({
+export const ExportButton = <TData extends OsMainSourceItem>({
   data,
   headers,
 }: Props<TData>) => {
@@ -26,7 +26,7 @@ export const ExportButton = <TData extends Record<string, any>>({
     setLoading(true);
 
     const exportData: Record<any, any>[] = [];
-    let resolvedData: TData[] | any;
+    let resolvedData: TData[];
 
     if (data instanceof Function) {
       resolvedData = await data();
@@ -35,7 +35,7 @@ export const ExportButton = <TData extends Record<string, any>>({
     }
 
     for (const item of resolvedData) {
-      const checker = PackageCheck(item as unknown as OsMainSourceItem);
+      const checker = PackageCheck(item);
       if (checker.hasEnabledRaiWithdraw) {
         item.stateStatus =
           item.stateStatus +
