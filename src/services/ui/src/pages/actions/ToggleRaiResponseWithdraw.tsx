@@ -1,15 +1,19 @@
 import { Navigate, useParams } from "@/components/Routing";
 import { Alert, LoadingSpinner } from "@/components";
-import { Action, PlanType, ItemResult } from "shared-types";
+import { Action, PlanType, opensearch } from "shared-types";
 import { Button } from "@/components/Inputs";
-import { useEffect, useMemo } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { useSubmissionService } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
 import { ActionFormIntro, PackageInfo } from "@/pages/actions/common";
 import { useModalContext } from "@/pages/form/modals";
 
-export const ToggleRaiResponseWithdraw = ({ item }: { item?: ItemResult }) => {
+export const ToggleRaiResponseWithdraw = ({
+  item,
+}: {
+  item?: opensearch.main.ItemResult;
+}) => {
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const authority = item?._source.authority as PlanType;

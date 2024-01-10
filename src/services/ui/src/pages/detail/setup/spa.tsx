@@ -2,18 +2,20 @@ import { removeUnderscoresAndCapitalize } from "@/utils";
 import { isCmsUser } from "shared-utils";
 import { LABELS } from "@/lib";
 import { BLANK_VALUE } from "@/consts";
-import { format } from "date-fns";
-import { OsMainSourceItem } from "shared-types";
+import { opensearch } from "shared-types";
 import { ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
 import { ReviewTeamList } from "@/components/PackageDetails/ReviewTeamList";
+import { formatSeatoolDate } from "shared-utils";
 
 export type DetailSectionItem = {
   label: string;
   value: ReactNode;
   canView: (u: OneMacUser | undefined) => boolean;
 };
-export const spaDetails = (data: OsMainSourceItem): DetailSectionItem[] => [
+export const spaDetails = (
+  data: opensearch.main.Document
+): DetailSectionItem[] => [
   {
     label: "Submission ID",
     value: data.id,
@@ -34,42 +36,40 @@ export const spaDetails = (data: OsMainSourceItem): DetailSectionItem[] => [
   {
     label: "Initial Submission Date",
     value: data.submissionDate
-      ? format(new Date(data.submissionDate), "MM/dd/yyyy h:mm:ss a")
+      ? formatSeatoolDate(data.submissionDate)
       : BLANK_VALUE,
     canView: () => true,
   },
   {
     label: "Proposed Effective Date",
     value: data.proposedDate
-      ? format(new Date(data.proposedDate), "MM/dd/yyyy")
+      ? formatSeatoolDate(data.proposedDate)
       : BLANK_VALUE,
     canView: () => true,
   },
   {
     label: "Approved Effective Date",
     value: data.approvedEffectiveDate
-      ? format(new Date(data.approvedEffectiveDate), "MM/dd/yyyy h:mm:ss a")
+      ? formatSeatoolDate(data.approvedEffectiveDate)
       : BLANK_VALUE,
     canView: () => true,
   },
   {
     label: "Status Date",
-    value: data.statusDate
-      ? format(new Date(data.statusDate), "MM/dd/yyyy h:mm:ss a")
-      : BLANK_VALUE,
+    value: data.statusDate ? formatSeatoolDate(data.statusDate) : BLANK_VALUE,
     canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
   },
   {
     label: "Final Disposition Date",
     value: data.finalDispositionDate
-      ? format(new Date(data.finalDispositionDate), "MM/dd/yyyy h:mm:ss a")
+      ? formatSeatoolDate(data.finalDispositionDate)
       : BLANK_VALUE,
     canView: () => true,
   },
 ];
 
 export const submissionDetails = (
-  data: OsMainSourceItem
+  data: opensearch.main.Document
 ): DetailSectionItem[] => [
   {
     label: "Submitted By",

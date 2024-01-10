@@ -2,7 +2,7 @@ import * as I from "@/components/Inputs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ItemResult, PlanType } from "shared-types";
+import { opensearch, PlanType } from "shared-types";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { ActionFormIntro } from "@/pages/actions/common";
 import { ActionFormTemplate } from "@/pages/actions/template";
@@ -19,7 +19,11 @@ const formSchema = z.object({
   }),
 });
 
-export const RespondToRai = ({ item }: { item: ItemResult }) => {
+export const RespondToRai = ({
+  item,
+}: {
+  item: opensearch.main.ItemResult;
+}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });

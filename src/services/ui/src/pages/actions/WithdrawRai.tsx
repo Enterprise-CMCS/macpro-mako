@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useParams } from "@/components/Routing";
-import { ItemResult, PlanType } from "shared-types";
+import { opensearch, PlanType } from "shared-types";
 import { useState } from "react";
 import { ActionFormTemplate } from "@/pages/actions/template";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
@@ -17,7 +17,7 @@ const formSchema = z.object({
   }),
 });
 
-export const WithdrawRai = ({ item }: { item: ItemResult }) => {
+export const WithdrawRai = ({ item }: { item: opensearch.main.ItemResult }) => {
   const { id } = useParams("/action/:id/:type");
   const [areYouSureModalOpen, setAreYouSureModalOpen] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({

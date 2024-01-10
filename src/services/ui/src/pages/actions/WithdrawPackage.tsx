@@ -1,5 +1,5 @@
 import { Navigate } from "@/components/Routing";
-import { PlanType, ItemResult } from "shared-types";
+import { PlanType, opensearch } from "shared-types";
 import { ActionFormIntro } from "./common";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -17,7 +17,11 @@ const formSchema = z.object({
   }),
 });
 
-export const WithdrawPackage = ({ item }: { item?: ItemResult }) => {
+export const WithdrawPackage = ({
+  item,
+}: {
+  item?: opensearch.main.ItemResult;
+}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });

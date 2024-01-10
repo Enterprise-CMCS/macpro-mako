@@ -18,14 +18,14 @@ import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { Button, Calendar, Input } from "@/components/Inputs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
-import { OsRangeValue } from "shared-types";
+import { opensearch } from "shared-types";
 
 type Props = Omit<
   React.HTMLAttributes<HTMLDivElement>,
   "onChange" | "value" | "onSelect"
 > & {
-  value: OsRangeValue;
-  onChange: (val: OsRangeValue) => void;
+  value: opensearch.RangeValue;
+  onChange: (val: opensearch.RangeValue) => void;
   className?: string;
 };
 
@@ -113,7 +113,10 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     }
   };
 
-  const getDateRange = (startDate: Date, endDate: Date): OsRangeValue => {
+  const getDateRange = (
+    startDate: Date,
+    endDate: Date
+  ): opensearch.RangeValue => {
     return {
       gte: startDate.toISOString(),
       lte: endDate.toISOString(),
