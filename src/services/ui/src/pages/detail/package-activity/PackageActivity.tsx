@@ -4,16 +4,19 @@ import {
   AccordionTrigger,
 } from "@/components";
 import { opensearch } from "shared-types";
-import { getAttachmentUrl } from "@/api";
 import { FC, useMemo } from "react";
 import { Button } from "@/components/Inputs";
 import * as Table from "@/components/Table";
 import { BLANK_VALUE } from "@/consts";
 import { format } from "date-fns";
+import { useAttachmentService } from "./hook";
+import { Loader2 } from "lucide-react";
 
 export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
   props
 ) => {
+  const hook = useAttachmentService(props);
+
   return (
     <div className="flex flex-col gap-6">
       <>
@@ -36,14 +39,12 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
                       className="ml-[-15px]"
                       variant="link"
                       onClick={() => {
-                        getAttachmentUrl(
-                          props.packageId,
-                          ATC.bucket,
-                          ATC.key,
-                          ATC.filename
-                        ).then(window.open);
+                        hook.onUrl(ATC).then(window.open);
                       }}
                     >
+                      {hook.loading && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
                       {ATC.filename}
                     </Button>
                   </Table.TableCell>
@@ -52,12 +53,17 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
             })}
           </Table.TableBody>
         </Table.Table>
+
         <Button
           variant="outline"
           className="w-max"
-          // TODO: OY2-26538
-          onClick={() => null}
+          disabled={!props.attachments?.length}
+          onClick={() => {
+            if (!props.attachments?.length) return;
+            hook.onZip(props.attachments);
+          }}
         >
+          {hook.loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Download documents
         </Button>
       </>
@@ -72,26 +78,24 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
 export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
   props
 ) => {
+  const hook = useAttachmentService(props);
+
   return (
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attached File</h2>
         {!props.attachments?.length && <p>No information submitted</p>}
         {props.attachments?.map((ATC) => (
-          <button
+          <Button
             key={`${props.id}-${ATC.key}`}
             className="text-blue-600 my-1"
             onClick={() => {
-              getAttachmentUrl(
-                props.packageId,
-                ATC.bucket,
-                ATC.key,
-                ATC.filename
-              ).then(window.open);
+              hook.onUrl(ATC).then(window.open);
             }}
           >
+            {hook.loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {ATC.filename}
-          </button>
+          </Button>
         ))}
       </div>
       <div>
@@ -105,26 +109,24 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
 export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
   props
 ) => {
+  const hook = useAttachmentService(props);
+
   return (
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attached File</h2>
         {!props.attachments?.length && <p>No information submitted</p>}
         {props.attachments?.map((ATC) => (
-          <button
+          <Button
             key={`${props.id}-${ATC.key}`}
             className="text-blue-600 my-1"
             onClick={() => {
-              getAttachmentUrl(
-                props.packageId,
-                ATC.bucket,
-                ATC.key,
-                ATC.filename
-              ).then(window.open);
+              hook.onUrl(ATC).then(window.open);
             }}
           >
+            {hook.loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {ATC.filename}
-          </button>
+          </Button>
         ))}
       </div>
       <div>
@@ -136,26 +138,24 @@ export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
 };
 
 export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
+  const hook = useAttachmentService(props);
+
   return (
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attached File</h2>
         {!props.attachments?.length && <p>No information submitted</p>}
         {props.attachments?.map((ATC) => (
-          <button
+          <Button
             key={`${props.id}-${ATC.key}`}
             className="text-blue-600 my-1"
             onClick={() => {
-              getAttachmentUrl(
-                props.packageId,
-                ATC.bucket,
-                ATC.key,
-                ATC.filename
-              ).then(window.open);
+              hook.onUrl(ATC).then(window.open);
             }}
           >
+            {hook.loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {ATC.filename}
-          </button>
+          </Button>
         ))}
       </div>
       <div>
