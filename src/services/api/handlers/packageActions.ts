@@ -124,7 +124,7 @@ export async function withdrawRai(body: RaiWithdraw, rais: any) {
       const query2 = `
       UPDATE SEA.dbo.State_Plan
         SET 
-          SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}')
+          SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}'),
           Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
         WHERE ID_Number = '${result.data.id}'
     `;
@@ -187,7 +187,7 @@ export async function respondToRai(body: RaiResponse, rais: any) {
     const query2 = `
       UPDATE SEA.dbo.State_Plan
         SET 
-          SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}')
+          SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}'),
           Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
         WHERE ID_Number = '${body.id}'
     `;
@@ -256,7 +256,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
   const query = `
     UPDATE SEA.dbo.State_Plan
       SET 
-        SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}')
+        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}'),
         Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
       WHERE ID_Number = '${body.id}'
   `;
