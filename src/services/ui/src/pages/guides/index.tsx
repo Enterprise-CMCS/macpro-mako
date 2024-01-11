@@ -6,6 +6,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { Guide } from "shared-types";
+
 export const ABPGuide = () => {
   return (
     <>
@@ -53,11 +55,11 @@ export const ABPGuide = () => {
   );
 };
 
-const abp_forms = [
+const abp_forms: Guide[] = [
   {
     title: "Introduction",
     linkTitle: "Introduction",
-    href: "/forms/IG_AbpIntroduction.doc",
+    href: "/forms/abp/IG_AbpIntroduction.doc",
   },
   {
     title: "ABP1",
