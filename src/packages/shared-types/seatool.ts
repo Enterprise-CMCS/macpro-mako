@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SEATOOL_STATUS, getStatus } from "./statusHelper";
+import { SEATOOL_STATUS, getStatus, finalDispositionStatuses } from "./statusHelper";
 import { PlanType } from "./planType";
 
 type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
@@ -146,11 +146,7 @@ const compileSrtList = (
   officers?.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
 
 const getFinalDispositionDate = (status: string, record: SeaToolSink) => {
-  const finalDispositionStatuses = [
-    SEATOOL_STATUS.APPROVED,
-    SEATOOL_STATUS.DISAPPROVED,
-    SEATOOL_STATUS.WITHDRAWN,
-  ];
+
   return status && finalDispositionStatuses.includes(status)
     ? getDateStringOrNullFromEpoc(record.STATE_PLAN.STATUS_DATE)
     : null;

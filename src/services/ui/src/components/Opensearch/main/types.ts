@@ -1,13 +1,13 @@
-import type { OsField, OsFilterable } from "shared-types";
+import type { opensearch } from "shared-types";
 
-export type OsDrawerFilterable = OsFilterable & { open: boolean };
+export type OsDrawerFilterable = opensearch.main.Filterable & { open: boolean };
 export type OsFilterComponentType = "multiSelect" | "multiCheck" | "dateRange";
 export type OsFilterGroup = {
   label: string;
-  field: OsField;
+  field: opensearch.main.Field;
   type: OsFilterComponentType;
 };
 
 export type OsTab = "waivers" | "spas";
 
-export { OsField };
+export * from "./Table/types";

@@ -1,21 +1,19 @@
-import {
-  OsExportHeaderOptions,
-  OsField,
-  OsFilterable,
-  OsMainSourceItem,
-} from "shared-types";
+import { opensearch } from "shared-types";
 import { OsFilterComponentType, OsTab } from "../types";
 import { UserRoles } from "shared-types";
 import { BLANK_VALUE } from "@/consts";
 import { LABELS } from "@/lib/labels";
-import { format } from "date-fns";
+import { formatSeatoolDate } from "shared-utils";
 
 type DrawerFilterableGroup = {
   label: string;
   component: OsFilterComponentType;
 };
 type FilterGroup = Partial<
-  Record<OsField, OsFilterable & DrawerFilterableGroup>
+  Record<
+    opensearch.main.Field,
+    opensearch.main.Filterable & DrawerFilterableGroup
+  >
 >;
 
 const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
@@ -175,10 +173,10 @@ export const FILTER_GROUPS = (user?: any, tab?: OsTab): FilterGroup => {
 export const EXPORT_GROUPS = (
   tab: OsTab,
   user?: any
-): OsExportHeaderOptions<OsMainSourceItem>[] => {
+): opensearch.ExportHeaderOptions<opensearch.main.Document>[] => {
   const idFieldName =
     tab === "spas" ? "SPA ID" : tab === "waivers" ? "Waiver Number" : "";
-  const actionField: OsExportHeaderOptions<OsMainSourceItem>[] =
+  const actionField: opensearch.ExportHeaderOptions<opensearch.main.Document>[] =
     tab === "waivers"
       ? [
           {
@@ -231,14 +229,14 @@ export const EXPORT_GROUPS = (
       name: "Initial Submission",
       transform: (data) =>
         data?.submissionDate
-          ? format(new Date(data.submissionDate), "MM/dd/yyyy")
+          ? formatSeatoolDate(data.submissionDate)
           : BLANK_VALUE,
     },
     {
       name: "Formal RAI Response",
       transform: (data) => {
         return data.raiReceivedDate && !data.raiWithdrawnDate
-          ? format(new Date(data.raiReceivedDate), "MM/dd/yyyy")
+          ? formatSeatoolDate(data.raiReceivedDate)
           : BLANK_VALUE;
       },
     },
