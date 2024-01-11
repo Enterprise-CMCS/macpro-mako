@@ -9,21 +9,19 @@ import { useState } from "react";
 import { ActionFormTemplate } from "@/pages/actions/template";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { ActionFormIntro } from "@/pages/actions/common";
+import { FormSetup } from "@/pages/actions/setups";
 
-const formSchema = z.object({
-  additionalInformation: z.string().max(4000),
-  attachments: z.object({
-    supportingDocumentation: z.array(z.instanceof(File)).nullish(),
-  }),
-});
-
-export const WithdrawRai = ({ item }: { item: opensearch.main.ItemResult }) => {
+export const WithdrawRai = ({
+  item,
+  schema,
+  attachments,
+}: FormSetup & { item: opensearch.main.ItemResult }) => {
   const { id } = useParams("/action/:id/:type");
   const [areYouSureModalOpen, setAreYouSureModalOpen] = useState(false);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
   });
-  const handleSubmit = useActionSubmitHandler<z.infer<typeof formSchema>>({
+  const handleSubmit = useActionSubmitHandler<z.infer<typeof schema>>({
     formHookReturn: form,
     authority: item?._source.authority as PlanType,
     addDataConditions: [
@@ -38,7 +36,7 @@ export const WithdrawRai = ({ item }: { item: opensearch.main.ItemResult }) => {
 
   return (
     <>
-      <ActionFormTemplate<z.infer<typeof formSchema>>
+      <ActionFormTemplate<z.infer<typeof schema>>
         item={item}
         formController={form}
         submitHandler={handleSubmit}
@@ -51,13 +49,7 @@ export const WithdrawRai = ({ item }: { item: opensearch.main.ItemResult }) => {
             </p>
           </ActionFormIntro>
         }
-        attachments={[
-          {
-            name: "supportingDocumentation",
-            label: "Supporting Documentation",
-            required: false,
-          },
-        ]}
+        attachments={attachments}
         attachmentFaqLink={"/faq/#medicaid-spa-rai-attachments"}
       />
 

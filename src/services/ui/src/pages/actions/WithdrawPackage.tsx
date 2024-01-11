@@ -6,26 +6,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { ActionFormTemplate } from "@/pages/actions/template";
-
-const formSchema = z.object({
-  additionalInformation: z
-    .string()
-    .max(4000, "This field may only be up to 4000 characters.")
-    .optional(),
-  attachments: z.object({
-    supportingDocumentation: z.array(z.instanceof(File)).optional(),
-  }),
-});
+import { FormSetup } from "@/pages/actions/setups";
 
 export const WithdrawPackage = ({
   item,
-}: {
-  item?: opensearch.main.ItemResult;
+  schema,
+  attachments,
+}: FormSetup & {
+  item: opensearch.main.ItemResult;
 }) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
   });
-  const handleSubmit = useActionSubmitHandler<z.infer<typeof formSchema>>({
+  const handleSubmit = useActionSubmitHandler({
     formHookReturn: form,
     authority: item?._source.authority as PlanType,
     addDataConditions: [
@@ -46,7 +39,7 @@ export const WithdrawPackage = ({
 
   if (!item) return <Navigate path={"/"} />; // Prevents optionals below
   return (
-    <ActionFormTemplate<z.infer<typeof formSchema>>
+    <ActionFormTemplate<z.infer<typeof schema>>
       item={item}
       formController={form}
       submitHandler={handleSubmit}
@@ -60,13 +53,7 @@ export const WithdrawPackage = ({
           </p>
         </ActionFormIntro>
       }
-      attachments={[
-        {
-          name: "supportingDocumentation",
-          label: "Supporting Documentation",
-          required: false,
-        },
-      ]}
+      attachments={attachments}
       attachmentFaqLink={"/faq"}
       attachmentInstructions={
         <p className="font-normal mb-4">

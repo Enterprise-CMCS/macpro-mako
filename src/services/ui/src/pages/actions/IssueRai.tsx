@@ -6,30 +6,23 @@ import { opensearch, PlanType } from "shared-types";
 import { ActionFormTemplate } from "@/pages/actions/template";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { ActionFormIntro } from "@/pages/actions/common";
+import { FormSetup } from "@/pages/actions/setups";
 
-const formSchema = z.object({
-  additionalInformation: z.string().max(4000),
-  attachments: z.object({
-    formalRaiLetter: z
-      .array(z.instanceof(File))
-      .refine((value) => value.length > 0, {
-        message: "Required",
-      }),
-    other: z.array(z.instanceof(File)).optional(),
-  }),
-});
-
-export const RaiIssue = ({ item }: { item: opensearch.main.ItemResult }) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+export const RaiIssue = ({
+  item,
+  schema,
+  attachments,
+}: FormSetup & { item: opensearch.main.ItemResult }) => {
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
   });
-  const handleSubmit = useActionSubmitHandler<z.infer<typeof formSchema>>({
+  const handleSubmit = useActionSubmitHandler<z.infer<typeof schema>>({
     formHookReturn: form,
     authority: item?._source.authority as PlanType,
   });
 
   return (
-    <ActionFormTemplate<z.infer<typeof formSchema>>
+    <ActionFormTemplate<z.infer<typeof schema>>
       item={item}
       formController={form}
       submitHandler={handleSubmit}
@@ -49,18 +42,7 @@ export const RaiIssue = ({ item }: { item: opensearch.main.ItemResult }) => {
           </p>
         </ActionFormIntro>
       }
-      attachments={[
-        {
-          name: "formalRaiLetter",
-          label: "Formal RAI Letter",
-          required: true,
-        },
-        {
-          name: "other",
-          label: "Other",
-          required: false,
-        },
-      ]}
+      attachments={attachments}
       attachmentFaqLink={"/faq/#medicaid-spa-rai-attachments"}
     />
   );

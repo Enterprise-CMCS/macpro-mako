@@ -1,39 +1,29 @@
 import * as I from "@/components/Inputs";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { opensearch, PlanType } from "shared-types";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { ActionFormIntro } from "@/pages/actions/common";
 import { ActionFormTemplate } from "@/pages/actions/template";
-
-const formSchema = z.object({
-  additionalInformation: z.string().max(4000).optional(),
-  attachments: z.object({
-    raiResponseLetter: z
-      .array(z.instanceof(File))
-      .refine((value) => value.length > 0, {
-        message: "Required",
-      }),
-    other: z.array(z.instanceof(File)).optional(),
-  }),
-});
+import { FormSetup } from "@/pages/actions/setups";
 
 export const RespondToRai = ({
   item,
-}: {
+  schema,
+  attachments,
+}: FormSetup & {
   item: opensearch.main.ItemResult;
 }) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm({
+    resolver: zodResolver(schema),
   });
-  const handleSubmit = useActionSubmitHandler<z.infer<typeof formSchema>>({
+  const handleSubmit = useActionSubmitHandler({
     formHookReturn: form,
     authority: item?._source.authority as PlanType,
   });
 
   return (
-    <ActionFormTemplate<z.infer<typeof formSchema>>
+    <ActionFormTemplate
       item={item}
       formController={form}
       submitHandler={handleSubmit}
@@ -51,18 +41,7 @@ export const RespondToRai = ({
           </p>
         </ActionFormIntro>
       }
-      attachments={[
-        {
-          name: "raiResponseLetter",
-          label: "RAI Response Letter",
-          required: true,
-        },
-        {
-          name: "other",
-          label: "Other",
-          required: false,
-        },
-      ]}
+      attachments={attachments}
       attachmentFaqLink={"/faq/#medicaid-spa-rai-attachments"}
     />
   );
