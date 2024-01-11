@@ -53,16 +53,13 @@ const StatusCard = (data: opensearch.main.Document) => {
             ? transformedStatuses.cmsStatus
             : transformedStatuses.stateStatus}
         </h2>
-        {checker.hasEnabledRaiWithdraw && (
-          <em className="text-xs my-4 mr-2">
-            {"Withdraw Formal RAI Response - Enabled"}
-          </em>
-        )}
         {user?.isCms && checker.isInSecondClock && (
-          <>
-            <br />
-            <span id="secondclock">2nd Clock</span>
-          </>
+          <span id="secondclock">2nd Clock</span>
+        )}
+        {checker.hasEnabledRaiWithdraw && (
+          <div className="text-xs italic">
+            {"Withdraw Formal RAI Response - Enabled"}
+          </div>
         )}
       </div>
     </DetailCardWrapper>
