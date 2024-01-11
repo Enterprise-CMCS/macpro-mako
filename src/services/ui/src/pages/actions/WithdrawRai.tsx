@@ -38,6 +38,7 @@ export const WithdrawRai = ({
       }
       attachments={attachments}
       attachmentFaqLink={"/faq/#medicaid-spa-rai-attachments"}
+      requireAddlInfo
     />
   );
 };

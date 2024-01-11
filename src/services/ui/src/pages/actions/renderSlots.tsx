@@ -46,7 +46,7 @@ export const SlotAdditionalInfo = <
 >({
   label,
   description,
-  required = false,
+  required,
   ...props
 }: {
   label: ReactNode;

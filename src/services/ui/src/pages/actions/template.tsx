@@ -31,6 +31,7 @@ export const ActionFormTemplate = <D extends FieldValues>({
   attachments,
   attachmentFaqLink,
   attachmentInstructions,
+  requireAddlInfo = false,
 }: {
   item: opensearch.main.ItemResult;
   formController: UseFormReturn<D>;
@@ -39,6 +40,7 @@ export const ActionFormTemplate = <D extends FieldValues>({
   attachments: AttachmentRecipe<D>[];
   attachmentFaqLink: string;
   attachmentInstructions?: ReactElement;
+  requireAddlInfo?: boolean;
 }) => {
   const { setCancelModalOpen } = useModalContext();
   return (
@@ -74,6 +76,7 @@ export const ActionFormTemplate = <D extends FieldValues>({
             label: "Add anything else you would like to share with the state.",
             description: "4,000 characters allowed",
             className: "pt-6",
+            required: requireAddlInfo,
           })}
         />
         <div className="flex gap-2 my-8">

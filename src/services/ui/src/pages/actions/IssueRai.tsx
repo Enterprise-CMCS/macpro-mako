@@ -44,6 +44,7 @@ export const RaiIssue = ({
       }
       attachments={attachments}
       attachmentFaqLink={"/faq/#medicaid-spa-rai-attachments"}
+      requireAddlInfo
     />
   );
 };
