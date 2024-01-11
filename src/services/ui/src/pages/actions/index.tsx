@@ -25,33 +25,28 @@ import {
 } from "@/pages/actions/setups";
 
 type SetupOptions = "CHIP SPA" | "Medicaid SPA";
-const useFormSetup = (item?: opensearch.main.ItemResult, type?: Action) => {
-  const getFormSetup = (opt: SetupOptions, type: Action): FormSetup => {
-    console.log(opt);
-    switch (type) {
-      case "issue-rai":
-        return defaultIssueRaiSetup;
-      case "respond-to-rai":
-        return {
-          "Medicaid SPA": medicaidRespondToRaiSetup,
-          "CHIP SPA": chipRespondToRaiSetup,
-        }[opt];
-      case "enable-rai-withdraw":
-      case "disable-rai-withdraw":
-        return;
-      case "withdraw-rai":
-        return defaultWithdrawRaiSetup;
-      case "withdraw-package":
-        return {
-          "Medicaid SPA": medicaidWithdrawPackageSetup,
-          "CHIP SPA": chipWithdrawPackageSetup,
-        }[opt];
-    }
-  };
-  // This null assertion is safe, because every valid submission is given
-  // a plan type, and the only way to arrive at this page is with a valid
-  // action `type` in the url
-  return getFormSetup(item!._source.planType as string as SetupOptions, type!);
+const getFormSetup = (opt: SetupOptions, type: Action): FormSetup | null => {
+  console.log(opt);
+  switch (type) {
+    case "issue-rai":
+      return defaultIssueRaiSetup;
+    case "respond-to-rai":
+      return {
+        "Medicaid SPA": medicaidRespondToRaiSetup,
+        "CHIP SPA": chipRespondToRaiSetup,
+      }[opt];
+    case "withdraw-rai":
+      return defaultWithdrawRaiSetup;
+    case "withdraw-package":
+      return {
+        "Medicaid SPA": medicaidWithdrawPackageSetup,
+        "CHIP SPA": chipWithdrawPackageSetup,
+      }[opt];
+    case "enable-rai-withdraw":
+    case "disable-rai-withdraw":
+    default:
+      return null;
+  }
 };
 
 const ActionFormSwitch = () => {
@@ -66,7 +61,6 @@ const ActionFormSwitch = () => {
     isLoading: actionsAreLoading,
     error: actionsError,
   } = useGetPackageActions(id!);
-  const setup = useFormSetup(item, type);
   // Safety bolt-on to limit non-null assertions needed
   if (!id || !type) return <Navigate path="/" />;
 
@@ -94,21 +88,33 @@ const ActionFormSwitch = () => {
       </Alert>
     );
 
-  // Form renders
-  switch (type) {
-    case Action.ISSUE_RAI:
-      return <RaiIssue item={item} {...setup} />;
-    case Action.RESPOND_TO_RAI:
-      return <RespondToRai item={item} {...setup} />;
-    case Action.ENABLE_RAI_WITHDRAW:
-    case Action.DISABLE_RAI_WITHDRAW:
-      return <ToggleRaiResponseWithdraw item={item} />;
-    case Action.WITHDRAW_RAI:
-      return <WithdrawRai item={item} {...setup} />;
-    case Action.WITHDRAW_PACKAGE:
-      return <WithdrawPackage item={item} {...setup} />;
-    default:
-      return <Navigate path="/" />;
+  // Enable/Disable Rai Withdraw is an "Admin Action", and breaks
+  // the mold for a "form" in that it does not utilize any form
+  // tooling or elements. A later refactor could be considered.
+  if (
+    (type as Action) === "enable-rai-withdraw" ||
+    (type as Action) === "disable-rai-withdraw"
+  ) {
+    return <ToggleRaiResponseWithdraw item={item} />;
+  } else {
+    const setup = getFormSetup(
+      item!._source.planType as string as SetupOptions,
+      type
+    );
+    if (!setup) return <Navigate path="/" />;
+    // Form renders
+    switch (type) {
+      case Action.ISSUE_RAI:
+        return <RaiIssue item={item} {...setup} />;
+      case Action.RESPOND_TO_RAI:
+        return <RespondToRai item={item} {...setup} />;
+      case Action.WITHDRAW_RAI:
+        return <WithdrawRai item={item} {...setup} />;
+      case Action.WITHDRAW_PACKAGE:
+        return <WithdrawPackage item={item} {...setup} />;
+      default:
+        return <Navigate path="/" />;
+    }
   }
 };
 
