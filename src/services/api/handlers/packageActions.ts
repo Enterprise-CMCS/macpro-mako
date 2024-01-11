@@ -52,8 +52,10 @@ export async function issueRai(body: RaiIssue) {
     // Update Status
     const query2 = `
       UPDATE SEA.dbo.State_Plan
-        SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}')
-        WHERE ID_Number = '${body.id}'
+      SET 
+        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}'),
+        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
+      WHERE ID_Number = '${body.id}'
     `;
     const result2 = await transaction.request().query(query2);
     console.log(result2);
@@ -121,7 +123,9 @@ export async function withdrawRai(body: RaiWithdraw, rais: any) {
       // Update Status
       const query2 = `
       UPDATE SEA.dbo.State_Plan
-        SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}')
+        SET 
+          SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}')
+          Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
         WHERE ID_Number = '${result.data.id}'
     `;
       const result2 = await transaction.request().query(query2);
@@ -182,7 +186,9 @@ export async function respondToRai(body: RaiResponse, rais: any) {
     // Update Status
     const query2 = `
       UPDATE SEA.dbo.State_Plan
-        SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}')
+        SET 
+          SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}')
+          Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
         WHERE ID_Number = '${body.id}'
     `;
     const result2 = await transaction.request().query(query2);
@@ -244,11 +250,14 @@ export async function withdrawPackage(body: WithdrawPackage) {
     });
   }
   // Begin query (data is confirmed)
+  const today = seaToolFriendlyTimestamp();
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
   const query = `
     UPDATE SEA.dbo.State_Plan
-      SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}')
+      SET 
+        SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}')
+        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
       WHERE ID_Number = '${body.id}'
   `;
 
