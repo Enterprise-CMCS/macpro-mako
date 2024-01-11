@@ -14,8 +14,7 @@ export const useActionSubmitHandler = <D extends FieldValues>({
   authority,
   addDataConditions,
 }: {
-  // TODO: Refine "any" in prop types
-  formHookReturn: UseFormReturn<any>;
+  formHookReturn: UseFormReturn<D>;
   authority: PlanType;
   /** Reserved for things zod cannot check. */
   addDataConditions?: ((data: D) => DataConditionError | null)[];
