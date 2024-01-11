@@ -49,3 +49,11 @@ export const getStatus = (seatoolStatus?: string | null) => {
   const cmsStatus = statusToDisplayToCmsUser[seatoolStatus ?? "Unknown"];
   return { stateStatus, cmsStatus };
 };
+
+export const stateUserSubStatus = {
+  WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED: "Withdraw Formal RAI Response - Enabled"
+};
+
+export const cmsUserSubStatus = {
+  SECOND_CLOCK: "2nd Clock"
+};

@@ -9,7 +9,13 @@ import {
   LoadingSpinner,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { Action, opensearch, UserRoles } from "shared-types";
+import {
+  Action,
+  opensearch,
+  UserRoles,
+  stateUserSubStatus,
+  cmsUserSubStatus,
+} from "shared-types";
 import { PackageCheck } from "shared-utils";
 import { useQuery } from "@/hooks";
 import { getAttachmentUrl, useGetItem } from "@/api";
@@ -55,12 +61,12 @@ const StatusCard = (data: opensearch.main.Document) => {
         </h2>
         {checker.hasEnabledRaiWithdraw && (
           <em className="text-xs my-4 mr-2">
-            {"Withdraw Formal RAI Response - Enabled"}
+            {stateUserSubStatus.WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED}
           </em>
         )}
         {user?.isCms && checker.isInSecondClock && (
           <span id="secondclock" className="ml-2">
-            2nd Clock
+            {cmsUserSubStatus.SECOND_CLOCK}
           </span>
         )}
       </div>

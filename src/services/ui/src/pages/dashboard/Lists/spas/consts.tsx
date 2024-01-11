@@ -1,7 +1,7 @@
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components/Opensearch/main";
-import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
-import { useGetUser } from "@/api/useGetUser";
+import { CMS_READ_ONLY_ROLES, UserRoles, opensearch } from "shared-types";
+import { useGetUser, OneMacUser } from "@/api/useGetUser";
 import {
   renderCellActions,
   renderCellDate,
@@ -9,6 +9,30 @@ import {
 } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
 import { formatSeatoolDate } from "shared-utils";
+import {
+  getStateStatusWithSubStatus,
+  getCmsStatusWithSubStatus,
+} from "@/utils";
+
+const useStatusWithSubStatus = (
+  props: OneMacUser,
+  data: opensearch.main.Document
+) => {
+  const params =
+    props?.isCms && !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
+      ? getCmsStatusWithSubStatus(data)
+      : getStateStatusWithSubStatus(data);
+
+  if (params?.subStatus) {
+    return (
+      <>
+        <div className="whitespace-pre-line">{params.status}</div>
+        {params?.subStatus}
+      </>
+    );
+  }
+  return <div>{params.status}</div>;
+};
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -40,11 +64,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
       label: "Status",
-      cell: (data) =>
-        props?.isCms &&
-        !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
-          ? data.cmsStatus
-          : data.stateStatus,
+      cell: (data) => useStatusWithSubStatus(props, data),
     },
     {
       field: "submissionDate",

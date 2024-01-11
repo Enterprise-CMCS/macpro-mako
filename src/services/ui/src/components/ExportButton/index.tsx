@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { useOsUrl } from "@/components/Opensearch/main";
 import { opensearch } from "shared-types";
+import { PackageCheck } from "shared-utils";
+import { stateUserSubStatus } from "shared-types";
 
 type Props<TData extends Record<string, any>> = {
   data: TData[] | (() => Promise<TData[]>);
@@ -13,7 +15,7 @@ type Props<TData extends Record<string, any>> = {
   // | Record<string, HeaderOptions<TData>>
 };
 
-export const ExportButton = <TData extends Record<string, any>>({
+export const ExportButton = <TData extends opensearch.main.Document>({
   data,
   headers,
 }: Props<TData>) => {
@@ -34,6 +36,13 @@ export const ExportButton = <TData extends Record<string, any>>({
 
     for (const item of resolvedData) {
       const column: Record<any, any> = {};
+
+      const checker = PackageCheck(item);
+      if (checker.hasEnabledRaiWithdraw) {
+        item.stateStatus =
+          item.stateStatus +
+          ` (${stateUserSubStatus.WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED})`;
+      }
 
       for (const header of headers) {
         column[header.name] = header.transform(item);
