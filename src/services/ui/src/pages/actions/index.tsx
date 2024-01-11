@@ -26,7 +26,6 @@ import {
 
 type SetupOptions = "CHIP SPA" | "Medicaid SPA";
 const getFormSetup = (opt: SetupOptions, type: Action): FormSetup | null => {
-  console.log(opt);
   switch (type) {
     case "issue-rai":
       return defaultIssueRaiSetup;
