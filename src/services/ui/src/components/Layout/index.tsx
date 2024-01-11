@@ -1,10 +1,4 @@
-import {
-  Link,
-  NavLink,
-  NavLinkProps,
-  Outlet,
-  useNavigate,
-} from "react-router-dom";
+import { NavLink, NavLinkProps, Outlet, Link } from "react-router-dom";
 import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -18,6 +12,7 @@ import { FAQ_TARGET } from "@/routes";
 import { useUserContext } from "../Context/userContext";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
+import { useNavigate } from "../Routing";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
   const isProd = window && window.location.hostname === "mako.cms.gov";
@@ -49,7 +44,7 @@ const UserDropdownMenu = () => {
   const navigate = useNavigate();
 
   const handleViewProfile = () => {
-    navigate("/profile");
+    navigate({ path: "/profile" });
   };
 
   const handleLogout = async () => {

@@ -1,6 +1,5 @@
-import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { OsTableColumn } from "@/components/Opensearch/Table/types";
+import { OsTableColumn } from "@/components/Opensearch/main";
 import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import {
@@ -8,6 +7,8 @@ import {
   renderCellDate,
   renderCellIdLink,
 } from "../renderCells";
+import { BLANK_VALUE } from "@/consts";
+import { formatSeatoolDate } from "shared-utils";
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -31,7 +32,10 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: "planType.keyword",
       label: "Type",
-      cell: (data) => removeUnderscoresAndCapitalize(data.planType),
+      cell: (data) =>
+        data?.planType
+          ? removeUnderscoresAndCapitalize(data.planType)
+          : BLANK_VALUE,
     },
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
@@ -52,9 +56,6 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       label: "Submission Source",
       visible: false,
       cell: (data) => {
-        if (data.origin?.toLowerCase() === "onemac") {
-          return "OneMAC";
-        }
         return data.origin;
       },
     },
@@ -69,7 +70,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       label: "Formal RAI Response",
       cell: (data) => {
         if (!data.raiReceivedDate || data.raiWithdrawnDate) return null;
-        return format(new Date(data.raiReceivedDate), "MM/dd/yyyy");
+        return formatSeatoolDate(data.raiReceivedDate);
       },
     },
     {

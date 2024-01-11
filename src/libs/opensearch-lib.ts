@@ -7,6 +7,7 @@ import * as aws4 from "aws4";
 import axios from "axios";
 import { aws4Interceptor } from "aws4-axios";
 import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
+import { opensearch } from "shared-types";
 let client: Client;
 
 export async function getClient(host: string) {
@@ -39,7 +40,7 @@ export async function updateData(host: string, indexObject: any) {
 
 export async function bulkUpdateData(
   host: string,
-  index: string,
+  index: opensearch.Index,
   arrayOfDocuments: any
 ) {
   client = client || (await getClient(host));
@@ -59,7 +60,7 @@ export async function bulkUpdateData(
   console.log(response);
 }
 
-export async function deleteIndex(host: string, index: string) {
+export async function deleteIndex(host: string, index: opensearch.Index) {
   client = client || (await getClient(host));
   var response = await client.indices.delete({ index });
 }
@@ -110,7 +111,7 @@ export async function mapRole(
   }
 }
 
-export async function search(host: string, index: string, query: any) {
+export async function search(host: string, index: opensearch.Index, query: any) {
   client = client || (await getClient(host));
   try {
     const response = await client.search({
@@ -123,7 +124,7 @@ export async function search(host: string, index: string, query: any) {
   }
 }
 
-export async function getItem(host: string, index: string, id: string) {
+export async function getItem(host: string, index: opensearch.Index, id: string) {
   client = client || (await getClient(host));
   try {
     const response = await client.get({ id, index });
@@ -133,27 +134,14 @@ export async function getItem(host: string, index: string, id: string) {
   }
 }
 
-export async function indexExists(host: string, index: string) {
+// check it exists - then create
+export async function createIndex(host: string, index: opensearch.Index) {
   client = client || (await getClient(host));
   try {
-    const indexExists = await client.indices.exists({ index });
-    if (indexExists.body) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    console.error("Error creating index:", error);
-    throw error;
-  }
-}
+    const exists = await client.indices.exists({ index });
+    if(!!exists.body) return;
 
-export async function createIndex(host: string, index: string) {
-  client = client || (await getClient(host));
-  try {
-    const createResponse = await client.indices.create({
-      index,
-    });
+    await client.indices.create({ index });
   } catch (error) {
     console.error("Error creating index:", error);
     throw error;
@@ -162,7 +150,7 @@ export async function createIndex(host: string, index: string) {
 
 export async function updateFieldMapping(
   host: string,
-  index: string,
+  index: opensearch.Index,
   properties: object
 ) {
   client = client || (await getClient(host));

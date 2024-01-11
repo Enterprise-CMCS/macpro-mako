@@ -14,7 +14,6 @@ export * from "./LoadingSpinner";
 export * from "./PackageDetails";
 export * from "./RaiList";
 export * from "./SearchForm";
-export * from "./SubmissionInfo";
 export * from "./Modal";
 export * from "./Dialog";
 export * from "./Modal/ConfirmationModal";

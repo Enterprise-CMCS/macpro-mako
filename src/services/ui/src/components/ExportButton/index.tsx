@@ -4,12 +4,12 @@ import { Download, Loader } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
-import { useOsParams } from "../Opensearch";
-import { OsExportHeaderOptions } from "shared-types";
+import { useOsUrl } from "@/components/Opensearch/main";
+import { opensearch } from "shared-types";
 
 type Props<TData extends Record<string, any>> = {
   data: TData[] | (() => Promise<TData[]>);
-  headers: OsExportHeaderOptions<TData>[];
+  headers: opensearch.ExportHeaderOptions<TData>[];
   // | Record<string, HeaderOptions<TData>>
 };
 
@@ -18,7 +18,7 @@ export const ExportButton = <TData extends Record<string, any>>({
   headers,
 }: Props<TData>) => {
   const [loading, setLoading] = useState(false);
-  const params = useOsParams();
+  const url = useOsUrl();
 
   const generateExport = async (): Promise<Record<any, any>> => {
     setLoading(true);
@@ -49,10 +49,7 @@ export const ExportButton = <TData extends Record<string, any>>({
   const handleExport = (data: Record<any, any>) => {
     const csvExporter = new ExportToCsv({
       useKeysAsHeaders: true,
-      filename: `${params.state.tab}-export-${format(
-        new Date(),
-        "MM/dd/yyyy"
-      )}`,
+      filename: `${url.state.tab}-export-${format(new Date(), "MM/dd/yyyy")}`,
     });
 
     csvExporter.generateCsv(data);

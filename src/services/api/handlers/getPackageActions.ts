@@ -1,9 +1,9 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { packageActionsForResult } from "shared-utils";
+import { getAvailableActions } from "shared-utils";
 import { getPackage } from "../libs/package/getPackage";
 import {
   getAuthDetails,
-  isAuthorized,
+  isAuthorizedToGetPackageActions,
   lookupUserAttributes,
 } from "../libs/auth/user";
 import { response } from "../libs/handler";
@@ -22,7 +22,10 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
   const body = JSON.parse(event.body) as GetPackageActionsBody;
   try {
     const result = await getPackage(body.id);
-    const passedStateAuth = await isAuthorized(event, result._source.state);
+    const passedStateAuth = await isAuthorizedToGetPackageActions(
+      event,
+      result._source.state
+    );
     if (!passedStateAuth)
       return response({
         statusCode: 401,
@@ -38,10 +41,11 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
       authDetails.userId,
       authDetails.poolId
     );
+
     return response({
       statusCode: 200,
       body: {
-        actions: packageActionsForResult(userAttr, result._source),
+        actions: getAvailableActions(userAttr, result._source),
       },
     });
   } catch (err) {
