@@ -13,5 +13,3 @@ What's expected and what you can expect
 {: .fs-6 .fw-300 }
 
 wip
-
-[Get started now](team){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } 
