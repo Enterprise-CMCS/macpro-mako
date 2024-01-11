@@ -103,14 +103,14 @@ const ActionFormSwitch = () => {
     );
     if (!setup) return <Navigate path="/" />;
     // Form renders
-    switch (type) {
-      case Action.ISSUE_RAI:
+    switch (type as Action) {
+      case "issue-rai":
         return <RaiIssue item={item} {...setup} />;
-      case Action.RESPOND_TO_RAI:
+      case "respond-to-rai":
         return <RespondToRai item={item} {...setup} />;
-      case Action.WITHDRAW_RAI:
+      case "withdraw-rai":
         return <WithdrawRai item={item} {...setup} />;
-      case Action.WITHDRAW_PACKAGE:
+      case "withdraw-package":
         return <WithdrawPackage item={item} {...setup} />;
       default:
         return <Navigate path="/" />;
