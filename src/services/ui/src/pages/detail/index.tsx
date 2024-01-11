@@ -59,9 +59,12 @@ const StatusCard = (data: opensearch.main.Document) => {
           </em>
         )}
         {user?.isCms && checker.isInSecondClock && (
-          <span id="secondclock" className="ml-2">
-            2nd Clock
-          </span>
+          <>
+            <br />
+            <span id="secondclock" className="ml-2">
+              2nd Clock
+            </span>
+          </>
         )}
       </div>
     </DetailCardWrapper>
