@@ -3,7 +3,7 @@ import { OsFilterComponentType, OsTab } from "../types";
 import { UserRoles } from "shared-types";
 import { BLANK_VALUE } from "@/consts";
 import { LABELS } from "@/lib/labels";
-import { format } from "date-fns";
+import { formatSeatoolDate } from "shared-utils";
 
 type DrawerFilterableGroup = {
   label: string;
@@ -229,14 +229,14 @@ export const EXPORT_GROUPS = (
       name: "Initial Submission",
       transform: (data) =>
         data?.submissionDate
-          ? format(new Date(data.submissionDate), "MM/dd/yyyy")
+          ? formatSeatoolDate(data.submissionDate)
           : BLANK_VALUE,
     },
     {
       name: "Formal RAI Response",
       transform: (data) => {
         return data.raiReceivedDate && !data.raiWithdrawnDate
-          ? format(new Date(data.raiReceivedDate), "MM/dd/yyyy")
+          ? formatSeatoolDate(data.raiReceivedDate)
           : BLANK_VALUE;
       },
     },
