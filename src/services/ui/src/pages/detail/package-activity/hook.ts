@@ -22,11 +22,8 @@ export const useAttachmentService = (
         ATT.filename
       );
     } catch (e) {
-      if (e instanceof Error) {
-        setError(e.message);
-      } else {
-        setError("You failed");
-      }
+      const err = e instanceof Error ? e.message : "Failed download";
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -51,8 +48,9 @@ export const useAttachmentService = (
           saveAs(content, `package-actions-${new Date().toISOString()}.zip`);
         });
       })
-      .catch(() => {
-        console.error("Failed to fetch files");
+      .catch((e) => {
+        const err = e instanceof Error ? e.message : "Failed download";
+        setError(err);
       })
       .finally(() => {
         setLoading(false);
