@@ -46,6 +46,21 @@ So, to have full AWS access, you will need two things:  access to the Cloud VPN 
 
 Please [follow this how-to guide](https://qmacbis.atlassian.net/l/cp/yY5s5is2) to obtain access to AWS and the Cloud VPN.
 
+## Zscaler VPN
+
+This project communicates with Seatool.  Sometimes, during development, access to the Seatool frontend is helpful.  To gain access to it, you must first get access to the Zscaler VPN.
+
+Please follow these [instructions to gain access to Zscaler](https://qmacbis.atlassian.net/wiki/spaces/DE/pages/3180560407/How+to+get+access+to+CMS+Zscaler+VPN+Access).
+
+
+## Snyk
+
+Snyk is a software tool that specializes in identifying and resolving security vulnerabilities in code dependencies and performing static code analysis. It scans project dependencies for known security issues and provides recommendations for fixing them, enhancing code security.
+
+CMS has a Snyk installation that our project ties into.  It can be found [https://snyk.cms.gov/](here).  Access is governed by a CMS job code, as well as Snyk permissions.
+
+Please follow the [instructions to gain Snyk access](needlink).
+
 ## Code Climate
 
 We use [Code Climate](https://codeclimate.com/) to monitor project quality.  This includes running maintainability checks for Pull Requests, which flags code that doesn't meet best practices.  Checks include function length, file length, cognitive complexity, and duplication.
