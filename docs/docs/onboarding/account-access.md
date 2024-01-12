@@ -52,7 +52,6 @@ This project communicates with Seatool.  Sometimes, during development, access t
 
 Please follow these [instructions to gain access to Zscaler](https://qmacbis.atlassian.net/wiki/spaces/DE/pages/3180560407/How+to+get+access+to+CMS+Zscaler+VPN+Access).
 
-
 ## Snyk
 
 Snyk is a software tool that specializes in identifying and resolving security vulnerabilities in code dependencies and performing static code analysis. It scans project dependencies for known security issues and provides recommendations for fixing them, enhancing code security.
