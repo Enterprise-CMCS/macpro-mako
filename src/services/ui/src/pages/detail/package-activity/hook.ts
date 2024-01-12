@@ -38,7 +38,8 @@ export const useAttachmentService = (
       if (!url) return;
       const response = await fetch(url);
       const data = await response.blob();
-      zip.file(`${ATT.filename}_${index + 1}`, data);
+      const [prefix, extension] = ATT.filename.split(".");
+      zip.file(`${prefix}_${index + 1}.${extension}`, data);
       return data;
     });
 
