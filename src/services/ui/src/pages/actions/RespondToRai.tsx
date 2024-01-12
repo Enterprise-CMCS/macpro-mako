@@ -43,6 +43,9 @@ export const RespondToRai = ({
       }
       attachments={attachments}
       attachmentFaqLink={"/faq/#medicaid-spa-rai-attachments"}
+      addlInfoInstructions={
+        <p>Add anything else that you would like to share with CMS.</p>
+      }
     />
   );
 };
