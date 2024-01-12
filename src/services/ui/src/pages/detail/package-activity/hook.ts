@@ -1,62 +1,43 @@
 import { getAttachmentUrl } from "@/api";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
-import { useState } from "react";
+
 import { opensearch } from "shared-types";
+import { useMutation } from "@tanstack/react-query";
 
 type Attachments = NonNullable<opensearch.changelog.Document["attachments"]>;
 
 export const useAttachmentService = (
   props: Pick<opensearch.changelog.Document, "packageId">
 ) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const onUrl = async (ATT: Attachments[number]) => {
-    setLoading(true);
-    try {
-      return await getAttachmentUrl(
-        props.packageId,
-        ATT.bucket,
-        ATT.key,
-        ATT.filename
-      );
-    } catch (e) {
-      const err = e instanceof Error ? e.message : "Failed download";
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { mutateAsync, error, isLoading } = useMutation(
+    (att: Attachments[number]) =>
+      getAttachmentUrl(props.packageId, att.bucket, att.key, att.filename)
+  );
 
   const onZip = (attachments: Attachments) => {
-    setLoading(true);
     const zip = new JSZip();
 
     const remoteZips = attachments.map(async (ATT, index) => {
-      const url = await onUrl(ATT);
+      const url = await mutateAsync(ATT);
       if (!url) return;
       const response = await fetch(url);
       const data = await response.blob();
       const [prefix, extension] = ATT.filename.split(".");
-      zip.file(`${prefix}_${index + 1}.${extension}`, data);
+      zip.file(`${prefix}(${index + 1}).${extension}`, data);
       return data;
     });
 
-    Promise.all(remoteZips)
+    Promise.allSettled(remoteZips)
       .then(() => {
         zip.generateAsync({ type: "blob" }).then((content) => {
           saveAs(content, `package-actions-${new Date().toISOString()}.zip`);
         });
       })
       .catch((e) => {
-        const err = e instanceof Error ? e.message : "Failed download";
-        setError(err);
-      })
-      .finally(() => {
-        setLoading(false);
+        console.error(e);
       });
   };
 
-  return { loading, error, onUrl, onZip };
+  return { loading: isLoading, error, onUrl: mutateAsync, onZip };
 };

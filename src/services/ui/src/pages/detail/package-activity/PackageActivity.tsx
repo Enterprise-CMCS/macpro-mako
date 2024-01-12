@@ -85,7 +85,8 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
         {props.attachments?.map((ATC) => (
           <Button
             key={`${props.id}-${ATC.key}`}
-            className="text-blue-600 my-1"
+            className="my-1 p-0"
+            variant="link"
             onClick={() => {
               hook.onUrl(ATC).then(window.open);
             }}
@@ -114,8 +115,9 @@ export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
         {!props.attachments?.length && <p>No information submitted</p>}
         {props.attachments?.map((ATC) => (
           <Button
+            variant="link"
             key={`${props.id}-${ATC.key}`}
-            className="text-blue-600 my-1"
+            className="my-1 p-0"
             onClick={() => {
               hook.onUrl(ATC).then(window.open);
             }}
@@ -142,8 +144,9 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
         {!props.attachments?.length && <p>No information submitted</p>}
         {props.attachments?.map((ATC) => (
           <Button
+            variant="link"
             key={`${props.id}-${ATC.key}`}
-            className="text-blue-600 my-1"
+            className="my-1 p-0"
             onClick={() => {
               hook.onUrl(ATC).then(window.open);
             }}
