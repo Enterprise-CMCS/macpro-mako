@@ -11,14 +11,18 @@ export const PackageActivities: FC<opensearch.main.Document> = (props) => {
 
   return (
     <DetailsSection
-      id="attachments"
+      id="package-activities"
       title={
         <div className="flex justify-between">
           {`Package Activity (${hook.data?.length})`}
-          <Button onClick={hook.onDownloadAll} variant="outline">
-            {hook.loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Download all documents
-          </Button>
+          {!!hook.data?.length && (
+            <Button onClick={hook.onDownloadAll} variant="outline">
+              {hook.loading && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              Download all documents
+            </Button>
+          )}
         </div>
       }
     >

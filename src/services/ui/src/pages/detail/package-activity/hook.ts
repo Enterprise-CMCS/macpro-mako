@@ -74,7 +74,7 @@ export const usePackageActivities = (props: opensearch.main.Document) => {
 
   return {
     data,
-    accordianDefault: [data?.[0]._source.id as string],
+    accordianDefault: [data?.[0]?._source?.id as string],
     onDownloadAll,
     ...service,
   };
