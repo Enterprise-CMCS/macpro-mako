@@ -25,14 +25,14 @@ export const PackageActivities: FC<opensearch.main.Document> = (props) => {
   );
 
   const onDownloadAll = () => {
-    const attachments = props.changelog?.reduce((ACC, ATT) => {
+    const attachmentsAggregate = props.changelog?.reduce((ACC, ATT) => {
       if (!ATT._source.attachments) return ACC;
       return ACC.concat(ATT._source.attachments);
     }, [] as any);
 
-    if (!attachments.length) return;
+    if (!attachmentsAggregate.length) return;
 
-    hook.onZip(attachments);
+    hook.onZip(attachmentsAggregate);
   };
 
   return (
