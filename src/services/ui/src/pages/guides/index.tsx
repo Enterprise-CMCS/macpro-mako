@@ -1,11 +1,5 @@
 import { SubNavHeader } from "@/components";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import * as UI from "@/components/Table";
 import { Guide } from "shared-types";
 
 export const ABPGuide = () => {
@@ -18,38 +12,32 @@ export const ABPGuide = () => {
       </SubNavHeader>
       <section className="max-w-screen-xl m-auto px-4 lg:px-8 py-8 gap-10">
         <div className="h-[5px] bg-gradient-to-r from-primary from-50% to-[#02bfe7] to-[66%] rounded-t"></div>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Guide</TableCell>
-                <TableCell>Link</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {abp_forms.map((row) => (
-                <TableRow
-                  key={row.title}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.title}
-                  </TableCell>
-                  <TableCell>
-                    <a
-                      className="underline"
-                      href={row.href}
-                      target={row.targetBlank ? "_blank" : undefined}
-                      rel="noreferrer"
-                    >
-                      {row.linkTitle}
-                    </a>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <UI.Table className="flex-1 min-h-[calc(100vh-350px)]">
+          <UI.TableHeader className="sticky top-0 bg-white">
+            <UI.TableRow>
+              <UI.TableHead className="w-[10px]">Guide</UI.TableHead>
+              <UI.TableHead className="w-[10px]">Link</UI.TableHead>
+            </UI.TableRow>
+          </UI.TableHeader>
+
+          <UI.TableBody>
+            {abp_forms.map((row) => (
+              <UI.TableRow className="h-10" key={row.title}>
+                <UI.TableCell>{row.title}</UI.TableCell>
+                <UI.TableCell>
+                  <a
+                    href={row.href}
+                    target={row.targetBlank ? "_blank" : undefined}
+                    rel="noreferrer"
+                    className="underline"
+                  >
+                    {row.linkTitle}
+                  </a>
+                </UI.TableCell>
+              </UI.TableRow>
+            ))}
+          </UI.TableBody>
+        </UI.Table>
       </section>
     </>
   );
