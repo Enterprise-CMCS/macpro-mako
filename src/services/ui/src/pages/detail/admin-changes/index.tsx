@@ -9,14 +9,20 @@ export const AdminChanges: FC<opensearch.main.Document> = (props) => {
   const data = props.changelog?.filter((CL) =>
     ACTIONS_ADMIN.includes(CL._source.actionType)
   );
+
+  if (!data?.length) return <></>;
+
   return (
     <DetailsSection
       id="admin-updates"
       title={`Administrative Package Changes (${data?.length})`}
       description="Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC."
     >
-      {!data?.length && <p className="text-gray-500">-- no logs --</p>}
-      <Accordion type="multiple" className="flex flex-col mt-6 gap-2">
+      <Accordion
+        type="multiple"
+        defaultValue={[data?.[0]._source.id as string]}
+        className="flex flex-col mt-6 gap-2"
+      >
         {data?.map((CL) => (
           <AdminChange {...CL._source} key={CL._source.id} />
         ))}

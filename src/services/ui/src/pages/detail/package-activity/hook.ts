@@ -4,6 +4,7 @@ import { saveAs } from "file-saver";
 
 import { opensearch } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
+import { useMemo } from "react";
 
 type Attachments = NonNullable<opensearch.changelog.Document["attachments"]>;
 
@@ -40,4 +41,41 @@ export const useAttachmentService = (
   };
 
   return { loading: isLoading, error, onUrl: mutateAsync, onZip };
+};
+
+export const ACTIONS_PA = [
+  "new-submission",
+  "withdraw-rai",
+  "withdraw-package",
+  "issue-rai",
+  "respond-to-rai",
+];
+
+export const usePackageActivities = (props: opensearch.main.Document) => {
+  const service = useAttachmentService({ packageId: props.id });
+  const data = useMemo(
+    () =>
+      props.changelog?.filter((CL) =>
+        ACTIONS_PA.includes(CL._source.actionType)
+      ),
+    [props.changelog]
+  );
+
+  const onDownloadAll = () => {
+    const attachmentsAggregate = props.changelog?.reduce((ACC, ATT) => {
+      if (!ATT._source.attachments) return ACC;
+      return ACC.concat(ATT._source.attachments);
+    }, [] as any);
+
+    if (!attachmentsAggregate.length) return;
+
+    service.onZip(attachmentsAggregate);
+  };
+
+  return {
+    data,
+    accordianDefault: [data?.[0]._source.id as string],
+    onDownloadAll,
+    ...service,
+  };
 };
