@@ -57,8 +57,8 @@ export const WithdrawPackage = ({
       attachmentFaqLink={"/faq"}
       attachmentInstructions={
         <p className="font-normal mb-4">
-          Upload your supporting documentation for withdrawal or explain your
-          need for withdrawal in the <em>Additional Information section.</em>
+          Official withdrawal letters are required and must be on state
+          letterhead signed by the State Medicaid Director or CHIP Director.
         </p>
       }
     />
