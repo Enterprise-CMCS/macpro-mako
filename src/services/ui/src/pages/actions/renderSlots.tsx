@@ -12,7 +12,7 @@ import {
   FieldPath,
   FieldValues,
 } from "react-hook-form";
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 
 export const SlotAttachments = <
   TFieldValues extends FieldValues = FieldValues,
@@ -49,8 +49,8 @@ export const SlotAdditionalInfo = <
   required,
   ...props
 }: {
-  label: ReactNode;
   description: string;
+  label?: ReactElement;
   required?: boolean;
   className?: string;
 }): ControllerProps<TFieldValues, TName>["render"] =>

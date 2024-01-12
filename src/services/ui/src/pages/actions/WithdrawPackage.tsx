@@ -61,6 +61,18 @@ export const WithdrawPackage = ({
           letterhead signed by the State Medicaid Director or CHIP Director.
         </p>
       }
+      addlInfoInstructions={
+        <p>
+          Explain your need for withdrawal, or upload supporting documentation.
+          <br />
+          <em>
+            Once you submit this form, a confirmation email is sent to you and
+            to CMS. CMS will use this content to review your package. If CMS
+            needs any additional information, they will follow up by email
+          </em>
+          .
+        </p>
+      }
     />
   );
 };

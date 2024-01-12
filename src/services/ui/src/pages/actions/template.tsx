@@ -12,7 +12,7 @@ import {
   FormMessage,
   RequiredIndicator,
 } from "@/components/Inputs";
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 import { opensearch } from "shared-types";
 import {
   FieldValues,
@@ -32,6 +32,7 @@ export const ActionFormTemplate = <D extends FieldValues>({
   attachmentFaqLink,
   attachmentInstructions,
   requireAddlInfo = false,
+  addlInfoInstructions,
 }: {
   item: opensearch.main.ItemResult;
   formController: UseFormReturn<D>;
@@ -41,6 +42,7 @@ export const ActionFormTemplate = <D extends FieldValues>({
   attachmentFaqLink: string;
   attachmentInstructions?: ReactElement;
   requireAddlInfo?: boolean;
+  addlInfoInstructions?: ReactElement;
 }) => {
   const { setCancelModalOpen } = useModalContext();
   return (
@@ -73,7 +75,7 @@ export const ActionFormTemplate = <D extends FieldValues>({
           control={formController.control}
           name={"additionalInformation" as Path<D>}
           render={SlotAdditionalInfo({
-            label: "Add anything else you would like to share with the state.",
+            label: addlInfoInstructions,
             description: "4,000 characters allowed",
             className: "pt-6",
             required: requireAddlInfo,
