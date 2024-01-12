@@ -58,7 +58,24 @@ Snyk is a software tool that specializes in identifying and resolving security v
 
 CMS has a Snyk installation that our project ties into.  It can be found [https://snyk.cms.gov/](here).  Access is governed by a CMS job code, as well as Snyk permissions.
 
-Please follow the [instructions to gain Snyk access](needlink).
+Please follow these steps to gain access to Snyk:
+1. Request / Confirm EUA job code: ENT_APPSEC_TOOLS: Access to Enterprise Application Security Tools: Snyk
+2. Login to Enterprise User Administration (EUA)
+3. Select View My Identity
+4. Select the "Job Codes" tab
+5. Review your current Job Codes.  Do you have ENT_APPSEC_TOOLS?
+6. If no, request job code ENT_APPSEC_TOOLS
+- On the “Task” sidebar select “Modify My Job Codes
+- Be sure to select the “*Confirmation (Required) check box
+- Select Next
+- At the bottom left of the page select “Add a Job Code”
+- Enter the job code you want to add, In this case ENT_APPSEC_TOOLS and select “Search”
+- Check the select box and click the “Select” bottom.
+- Click “Next”
+- Enter a “Justification Reason” and select “Finish”
+- Example: I am a CMS contractor, requesting Access to Enterprise Application Security Tools: Snyk order to support development and maintenance of the suite of MACPRO systems supported by Fearless and it’s sub-contractors under Primary Contract Number: GS-35F-115GA:75FCMC22F0093:
+- Now wait for the request to be approved. You need ENT_APPSEC_TOOLS before the cloud team will setup your access.
+7. Let me know when each user has confirmed that you have the ENT_APPSEC_TOOLS the Job Code and I will send a Snyk invite the email address associated with their EUA ID.
 
 ## Code Climate
 
