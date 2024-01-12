@@ -36,12 +36,12 @@ export const useAttachmentService = (
     setLoading(true);
     const zip = new JSZip();
 
-    const remoteZips = attachments.map(async (ATT) => {
+    const remoteZips = attachments.map(async (ATT, index) => {
       const url = await onUrl(ATT);
       if (!url) return;
       const response = await fetch(url);
       const data = await response.blob();
-      zip.file(ATT.filename, data);
+      zip.file(`${ATT.filename}_${index + 1}`, data);
       return data;
     });
 

@@ -24,7 +24,6 @@ export const PackageActivities: FC<opensearch.main.Document> = (props) => {
     [props.changelog]
   );
 
-  // TODO: OY2-26538
   const onDownloadAll = () => {
     const attachments = props.changelog?.reduce((ACC, ATT) => {
       if (!ATT._source.attachments) return ACC;

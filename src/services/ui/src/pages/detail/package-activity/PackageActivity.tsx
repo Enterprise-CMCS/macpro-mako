@@ -42,9 +42,6 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
                         hook.onUrl(ATC).then(window.open);
                       }}
                     >
-                      {hook.loading && (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      )}
                       {ATC.filename}
                     </Button>
                   </Table.TableCell>
@@ -93,7 +90,6 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
               hook.onUrl(ATC).then(window.open);
             }}
           >
-            {hook.loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {ATC.filename}
           </Button>
         ))}
@@ -124,7 +120,6 @@ export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
               hook.onUrl(ATC).then(window.open);
             }}
           >
-            {hook.loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {ATC.filename}
           </Button>
         ))}
@@ -153,7 +148,6 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
               hook.onUrl(ATC).then(window.open);
             }}
           >
-            {hook.loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {ATC.filename}
           </Button>
         ))}
