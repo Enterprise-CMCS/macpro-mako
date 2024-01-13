@@ -2,23 +2,21 @@ import { Navigate, useParams } from "@/components/Routing";
 import { Alert, LoadingSpinner } from "@/components";
 import { Action, PlanType, opensearch } from "shared-types";
 import { Button } from "@/components/Inputs";
-import { FC, useEffect, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { useSubmissionService } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
 import { ActionFormIntro, PackageInfo } from "@/pages/actions/common";
 import { useModalContext } from "@/pages/form/modals";
 
-export const ToggleRaiResponseWithdraw = ({
-  item,
-}: {
-  item?: opensearch.main.ItemResult;
-}) => {
+export const ToggleRaiResponseWithdraw: FC<opensearch.main.ItemResult> = (
+  props
+) => {
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const authority = item?._source.authority as PlanType;
+  const authority = props?._source.authority as PlanType;
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
+  const { mutate, isLoading, error } = useSubmissionService<{
     id: string;
   }>({
     data: { id: id! },
@@ -32,11 +30,7 @@ export const ToggleRaiResponseWithdraw = ({
     [type]
   );
 
-  useEffect(() => {
-    if (isSuccess) setSuccessModalOpen(true);
-  }, [isSuccess]);
-
-  if (!item) return <Navigate path={"/dashboard"} />; // Prevents optional chains below
+  if (!props) return <Navigate path={"/dashboard"} />; // Prevents optional chains below
   return (
     <>
       {isLoading && <LoadingSpinner />}
@@ -53,7 +47,7 @@ export const ToggleRaiResponseWithdraw = ({
           </strong>
         </p>
       </ActionFormIntro>
-      <PackageInfo item={item} />
+      <PackageInfo item={props} />
       {error && (
         <Alert className="mb-4 max-w-2xl" variant="destructive">
           <strong>ERROR {ACTION_WORD}ing RAI Response Withdraw: </strong>
@@ -61,7 +55,13 @@ export const ToggleRaiResponseWithdraw = ({
         </Alert>
       )}
       <div className="flex gap-2">
-        <Button onClick={() => mutate()}>Submit</Button>
+        <Button
+          onClick={() =>
+            mutate(undefined, { onSuccess: () => setSuccessModalOpen(true) })
+          }
+        >
+          Submit
+        </Button>
         <Button onClick={() => setCancelModalOpen(true)} variant="outline">
           Cancel
         </Button>

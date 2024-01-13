@@ -1,32 +1,32 @@
 import * as I from "@/components/Inputs";
-import { useForm } from "react-hook-form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { opensearch, PlanType } from "shared-types";
-import { useActionSubmitHandler } from "@/hooks/useActionFormController";
+import { useActionForm } from "@/hooks/useActionFormController";
 import { ActionFormIntro } from "@/pages/actions/common";
 import { ActionFormTemplate } from "@/pages/actions/template";
-import { FormSetup } from "@/pages/actions/setups";
+import {
+  chipRespondToRaiSetup,
+  medicaidRespondToRaiSetup,
+} from "@/pages/actions/setups";
+import { FC } from "react";
 
-export const RespondToRai = ({
-  item,
-  schema,
-  attachments,
-}: FormSetup & {
-  item: opensearch.main.ItemResult;
-}) => {
-  const form = useForm({
-    resolver: zodResolver(schema),
-  });
-  const handleSubmit = useActionSubmitHandler({
-    formHookReturn: form,
-    authority: item?._source.authority as PlanType,
+export const RespondToRai: FC<opensearch.main.ItemResult> = (props) => {
+  const setup = (() => {
+    if (props._source.planType === PlanType.CHIP_SPA)
+      return chipRespondToRaiSetup;
+    return medicaidRespondToRaiSetup;
+  })();
+
+  const form = useActionForm({
+    resolver: zodResolver(setup.schema),
+    item: props,
   });
 
   return (
     <ActionFormTemplate
-      item={item}
-      formController={form}
-      submitHandler={handleSubmit}
+      item={props}
+      form={form}
       intro={
         <ActionFormIntro title={`${item._source.planType} Formal RAI Details`}>
           <I.RequiredIndicator /> Indicates a required field
@@ -41,7 +41,7 @@ export const RespondToRai = ({
           </p>
         </ActionFormIntro>
       }
-      attachments={attachments}
+      attachments={setup.attachments}
       attachmentFaqLink={"/faq/#medicaid-spa-rai-attachments"}
       addlInfoInstructions={
         <p>Add anything else that you would like to share with CMS.</p>

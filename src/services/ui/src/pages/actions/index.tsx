@@ -23,6 +23,8 @@ import {
   medicaidRespondToRaiSetup,
   medicaidWithdrawPackageSetup,
 } from "@/pages/actions/setups";
+import { getAvailableActions } from "shared-utils";
+import { useGetUser } from "@/api/useGetUser";
 
 type SetupOptions = "CHIP SPA" | "Medicaid SPA";
 const getFormSetup = (opt: SetupOptions, type: Action): FormSetup | null => {
@@ -50,21 +52,24 @@ const getFormSetup = (opt: SetupOptions, type: Action): FormSetup | null => {
 
 const ActionFormSwitch = () => {
   const { id, type } = useParams("/action/:id/:type");
+  const { data: user } = useGetUser();
   const {
     data: item,
     isLoading: itemIsLoading,
     error: itemError,
   } = useGetItem(id!);
-  const {
-    data: actions,
-    isLoading: actionsAreLoading,
-    error: actionsError,
-  } = useGetPackageActions(id!);
+
+  if (!user?.user) return <></>;
+  const actions = getAvailableActions(
+    user?.user,
+    item?._source as opensearch.main.Document
+  );
+
   // Safety bolt-on to limit non-null assertions needed
   if (!id || !type) return <Navigate path="/" />;
 
   // Non-form renders
-  if (itemIsLoading || actionsAreLoading) return <LoadingSpinner />;
+  if (itemIsLoading) return <LoadingSpinner />;
   if (itemError)
     return (
       <Alert className="my-2 max-w-2xl" variant="destructive">
@@ -72,14 +77,8 @@ const ActionFormSwitch = () => {
         {itemError.response.data.message}
       </Alert>
     );
-  if (actionsError)
-    return (
-      <Alert className="my-2 max-w-2xl" variant="destructive">
-        <strong>ERROR getting available actions: </strong>
-        {actionsError.response.data.message}
-      </Alert>
-    );
-  if (!actionsError && !actions?.actions.includes(type))
+
+  if (!actions.includes(type))
     return (
       <Alert className="my-2 max-w-2xl" variant="destructive">
         <strong>ERROR, invalid action: </strong>
@@ -94,26 +93,21 @@ const ActionFormSwitch = () => {
     (type as Action) === "enable-rai-withdraw" ||
     (type as Action) === "disable-rai-withdraw"
   ) {
-    return <ToggleRaiResponseWithdraw item={item} />;
-  } else {
-    const setup = getFormSetup(
-      item!._source.planType as string as SetupOptions,
-      type
-    );
-    if (!setup) return <Navigate path="/" />;
-    // Form renders
-    switch (type as Action) {
-      case "issue-rai":
-        return <RaiIssue item={item} {...setup} />;
-      case "respond-to-rai":
-        return <RespondToRai item={item} {...setup} />;
-      case "withdraw-rai":
-        return <WithdrawRai item={item} {...setup} />;
-      case "withdraw-package":
-        return <WithdrawPackage item={item} {...setup} />;
-      default:
-        return <Navigate path="/" />;
-    }
+    return <ToggleRaiResponseWithdraw {...item} />;
+  }
+
+  // Form renders
+  switch (type as Action) {
+    case "issue-rai":
+      return <RaiIssue {...item} />;
+    case "respond-to-rai":
+      return <RespondToRai {...item} />;
+    case "withdraw-rai":
+      return <WithdrawRai {...item} />;
+    case "withdraw-package":
+      return <WithdrawPackage {...item} />;
+    default:
+      return <Navigate path="/" />;
   }
 };
 
