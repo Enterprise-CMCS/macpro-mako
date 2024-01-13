@@ -11,7 +11,7 @@ import {
   FormMessage,
   RequiredIndicator,
 } from "@/components/Inputs";
-import { ReactElement, ReactNode } from "react";
+import { ReactElement } from "react";
 import { opensearch } from "shared-types";
 import { FieldValues, Path } from "react-hook-form";
 import { AttachmentRecipe } from "@/lib";
@@ -67,8 +67,7 @@ export const ActionFormTemplate = <D extends FieldValues>({
         control={form.control}
         name={"additionalInformation" as Path<D>}
         render={SlotAdditionalInfo({
-          label:
-            "Add anything else you would like to share with the state." as any,
+          label: addlInfoInstructions,
           description: "4,000 characters allowed",
           className: "pt-6",
           required: requireAddlInfo,
