@@ -28,7 +28,7 @@ export const RespondToRai: FC<opensearch.main.ItemResult> = (props) => {
       item={props}
       form={form}
       intro={
-        <ActionFormIntro title={`${item._source.planType} Formal RAI Details`}>
+        <ActionFormIntro title={`${props._source.planType} Formal RAI Details`}>
           <I.RequiredIndicator /> Indicates a required field
           <p className="font-light mb-6 max-w-4xl">
             Once you submit this form, a confirmation email is sent to you and
