@@ -179,20 +179,20 @@ export const EXPORT_GROUPS = (
   const actionField: opensearch.ExportHeaderOptions<opensearch.main.Document>[] =
     tab === "waivers"
       ? [
-          {
-            name: "Action Type",
-            transform: (data) => {
-              if (data.actionType === undefined) {
-                return BLANK_VALUE;
-              }
+        {
+          name: "Action Type",
+          transform: (data) => {
+            if (data.actionType === undefined) {
+              return BLANK_VALUE;
+            }
 
-              return (
-                LABELS[data.actionType as keyof typeof LABELS] ||
-                data.actionType
-              );
-            },
+            return (
+              LABELS[data.actionType as keyof typeof LABELS] ||
+              data.actionType
+            );
           },
-        ]
+        },
+      ]
       : [];
 
   return [
@@ -212,7 +212,8 @@ export const EXPORT_GROUPS = (
     {
       name: "Status",
       transform(data) {
-        if (user?.data?.isCms && !user?.data?.user) {
+
+        if (user?.data?.isCms && user?.data?.user) {
           if (data.cmsStatus) {
             return data.cmsStatus;
           }

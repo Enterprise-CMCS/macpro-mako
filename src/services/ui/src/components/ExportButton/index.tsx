@@ -42,6 +42,9 @@ export const ExportButton = <TData extends opensearch.main.Document>({
         item.stateStatus =
           item.stateStatus +
           ` (${stateUserSubStatus.WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED})`;
+        item.cmsStatus =
+          item.cmsStatus +
+          ` (${stateUserSubStatus.WITHDRAW_FORMAL_RAI_RESPONSE_ENABLED})`;
       }
 
       for (const header of headers) {
