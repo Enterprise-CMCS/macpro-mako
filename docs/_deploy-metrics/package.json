@@ -25,7 +25,6 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
     "react-json-to-csv": "^1.2.0",
-    "react-markdown": "^9.0.1",
     "recharts": "^2.10.3"
   },
   "devDependencies": {

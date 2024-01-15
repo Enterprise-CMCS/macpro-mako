@@ -1,8 +1,6 @@
 import type { InferGetStaticPropsType } from "next";
-import Markdown from "react-markdown";
 import {
   Box,
-  Container,
   Divider,
   HStack,
   Heading,
@@ -16,6 +14,7 @@ import {
   ResultObject,
 } from "../../lib/formData";
 import React from "react";
+import { FormSchema } from "shared-types";
 
 export const getStaticProps = async () => {
   let allFormsWithData, allFormsAndVersions;
@@ -52,8 +51,9 @@ const WebformsDocs = ({
       bg="bg.surface"
       pt={{ base: "4", md: "8" }}
       pb={{ base: "12", md: "24" }}
+      mx="10"
     >
-      <Container>
+      <Box maxW={"4xl"}>
         <Stack spacing="4">
           <Heading size={{ base: "xs", md: "sm" }} fontWeight="medium">
             Webforms Documentation
@@ -102,7 +102,7 @@ const WebformsDocs = ({
             />
           )}
         </Stack>
-      </Container>
+      </Box>
     </Box>
   );
 };
@@ -116,8 +116,17 @@ const VersionDocs: React.FC<{
     (f) => f?.version === version
   );
   console.log({ selectedFormData });
-  const documentation = generateFormDocumentation(selectedFormData?.data);
-  console.log(documentation);
-  return <Markdown>{documentation}</Markdown>;
+  const documentation = generateFormDocumentation(selectedFormData?.data as FormSchema);
+  return <>
+  <h4>{documentation.header}</h4>
+  {documentation.data.map(d => (
+    <div key={d.name}>
+
+    <p>Question: {d.description}</p>
+    <p>name: {d.name}</p>
+    <p>type: {d.type}</p>
+    </div>
+  ))}
+  </>
 };
 export default WebformsDocs;

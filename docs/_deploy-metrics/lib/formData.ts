@@ -1,4 +1,4 @@
-
+import {FormSchema} from 'shared-types'
 
 export type FormResult = {
     version: string;
@@ -53,101 +53,27 @@ export type FormResult = {
     return resultObject;
   }
 
-  type FieldType = "Input" | "FieldArray" | "Select";
-
-interface Rule {
-  required: string;
-}
-
-interface FieldProps {
-  placeholder?: string;
-  appendText?: string;
-  sort?: string;
-  className?: string;
-  options?: { label: string; value: string }[];
-}
-
-interface Field {
-  rhf: FieldType;
-  name: string;
-  label: string;
-  rules?: Rule;
-  props?: FieldProps;
-  fields?: Field[];
-}
-
-interface FormSection {
-  title: string;
-  slots: Field[];
-}
-
-interface FormSchema {
-  header: string,
-  sections: FormSection[];
-}
-
-interface WebformsDocsResult {
-  title: string
-  sectionsDescriptions: string[]
-}
-
-// export function generateFormDocumentation(formSchema: FormSchema): WebformsDocsResult {
-//   const documentation = {
-//     title: formSchema.header,
-//     sectionsDescriptions: formSchema.sections.map((sec) => sec.title)
-//   }
-
-//   return documentation;
-// }
-
-// import { FormSchema, any, any } from "shared-types";
-
-export function generateFormDocumentation(schema: any): string {
-  let documentation = `# ${schema.header}\n\n`;
-
-  function processField(field: any, indentation: string = ""): void {
-    documentation += `${indentation}- **${field.description}**\n`;
-
-    if (field.slots) {
-      field.slots.forEach((slot: any) => {
-        documentation += `${indentation}  - *${slot.name}:* ${slot.rhf}\n`;
-
-        if (slot.props && slot.props.options) {
-          slot.props.options.forEach((option: any) => {
-            if (option.form) {
-              option.form.forEach((subField: any) => {
-                processField(subField, `${indentation}    `);
-              });
-            }
-
-            if (option.slots) {
-              option.slots.forEach((subSlot: any) => {
-                documentation += `${indentation}      - *${subSlot.name}:* ${subSlot.rhf}\n`;
-
-                if (subSlot.props && subSlot.props.options) {
-                  subSlot.props.options.forEach((subOption: any) => {
-                    if (subOption.form) {
-                      subOption.form.forEach((subField: any) => {
-                        processField(subField, `${indentation}        `);
-                      });
-                    }
-                  });
-                }
-              });
-            }
-          });
-        }
-      });
-    }
+  type Result = {
+    header: string,
+    data: {
+      description: string,
+      name: string,
+      type: string
+    }[]
   }
+export function generateFormDocumentation(schema: FormSchema): Result {
+  const result: any = {data: []}
 
-  schema.sections.forEach((section: any) => {
-    documentation += `\n## ${section.title}\n\n`;
+  result.header = schema.header
 
-    section.form.forEach((field: any) => {
-      processField(field, "  ");
-    });
-  });
-
-  return documentation;
+  schema.sections.forEach(section => {
+    section.form.forEach(form => {
+      form.slots.forEach(slot => {
+        
+        result.data?.push({description: `${form.description ?? ''} ${slot.description ?? ''}`.trim(), name: slot.name, type: slot.rhf})
+      })
+    })
+  })
+  
+  return result
 }
