@@ -115,7 +115,6 @@ const VersionDocs: React.FC<{
   const selectedFormData = allFormsWithData[form].find(
     (f) => f?.version === version
   );
-  console.log({ selectedFormData });
   const documentation = generateFormDocumentation(selectedFormData?.data as FormSchema);
   return <>
   <h4>{documentation.header}</h4>
@@ -125,6 +124,7 @@ const VersionDocs: React.FC<{
     <p>Question: {d.description}</p>
     <p>name: {d.name}</p>
     <p>type: {d.type}</p>
+    {d.options && <p>options: {d.options.join(', ')}</p>}
     </div>
   ))}
   </>

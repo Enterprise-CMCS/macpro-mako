@@ -53,13 +53,16 @@ export type FormResult = {
     return resultObject;
   }
 
+  type Item = {
+    description: string,
+    name: string,
+    type: string,
+    options?: string[]
+  }
+
   type Result = {
     header: string,
-    data: {
-      description: string,
-      name: string,
-      type: string
-    }[]
+    data: Item[]
   }
 export function generateFormDocumentation(schema: FormSchema): Result {
   const result: any = {data: []}
@@ -69,8 +72,16 @@ export function generateFormDocumentation(schema: FormSchema): Result {
   schema.sections.forEach(section => {
     section.form.forEach(form => {
       form.slots.forEach(slot => {
+
+        const item: Item = {description: `${form.description ?? ''} ${slot.description ?? ''}`.trim(), name: slot.name, type: slot.rhf}
         
-        result.data?.push({description: `${form.description ?? ''} ${slot.description ?? ''}`.trim(), name: slot.name, type: slot.rhf})
+        if (slot.rhf === 'Select' && slot.props) {
+          item.options = []
+            slot.props?.options.forEach(field => {
+              item.options?.push(field.value)
+            })
+        }
+        result.data?.push(item)
       })
     })
   })
