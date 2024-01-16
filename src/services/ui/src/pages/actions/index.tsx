@@ -3,7 +3,7 @@ import { ToggleRaiResponseWithdraw } from "@/pages/actions/ToggleRaiResponseWith
 import { RaiIssue } from "@/pages/actions/IssueRai";
 import { WithdrawPackage } from "@/pages/actions/WithdrawPackage";
 import { RespondToRai } from "@/pages/actions/RespondToRai";
-import { opensearch, Action } from "shared-types";
+import { Action } from "shared-types";
 import { WithdrawRai } from "./WithdrawRai";
 import { useGetItem, useGetPackageActions } from "@/api";
 import {

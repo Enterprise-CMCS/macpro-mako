@@ -54,19 +54,6 @@ export const WithdrawPackage = ({
   const handleSubmit = useActionSubmitHandler({
     formHookReturn: form,
     authority: item?._source.authority as PlanType,
-    addDataConditions:
-      (item?._source.planType as string as SetupOptions) === "Medicaid SPA"
-        ? [
-            (data) =>
-              !data.attachments.supportingDocumentation &&
-              !data.additionalInformation
-                ? {
-                    message:
-                      "An Attachment or Additional Information is required.",
-                  }
-                : null,
-          ]
-        : [],
   });
 
   if (!item) return <Navigate path={"/"} />; // Prevents optionals below
