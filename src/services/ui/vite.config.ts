@@ -9,12 +9,6 @@ export default defineConfig({
     react(),
     VitePluginRadar({
       enableDev: true,
-      // analytics: [
-      //   {
-      //     id: `${process.env.VITE_GOOGLE_ANALYTICS_GTAG}-isthetag`,
-      //     disable: false, // process.env.VITE_GOOGLE_ANALYTICS_DISABLE === "true",
-      //   },
-      // ],
       analytics: [
         {
           id: `${process.env.VITE_GOOGLE_ANALYTICS_GTAG}-isthetag`,
