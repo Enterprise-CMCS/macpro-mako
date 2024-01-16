@@ -25,6 +25,22 @@ const attachmentInstructions: Record<SetupOptions, ReactElement> = {
   ),
 };
 
+const addlInfoInstructions: Record<SetupOptions, ReactElement> = {
+  "Medicaid SPA": (
+    <p>
+      Explain your need for withdrawal, or upload supporting documentation.
+      <br />
+      <em>
+        Once you submit this form, a confirmation email is sent to you and to
+        CMS. CMS will use this content to review your package. If CMS needs any
+        additional information, they will follow up by email
+      </em>
+      .
+    </p>
+  ),
+  "CHIP SPA": <p>Explain your need for withdrawal.</p>,
+};
+
 export const WithdrawPackage = ({
   item,
   schema,
@@ -38,20 +54,19 @@ export const WithdrawPackage = ({
   const handleSubmit = useActionSubmitHandler({
     formHookReturn: form,
     authority: item?._source.authority as PlanType,
-    addDataConditions: [
-      (data) => {
-        if (
-          !data.attachments.supportingDocumentation &&
-          !data.additionalInformation
-        ) {
-          return {
-            message: "An Attachment or Additional Information is required.",
-          };
-        } else {
-          return null;
-        }
-      },
-    ],
+    addDataConditions:
+      (item?._source.planType as string as SetupOptions) === "Medicaid SPA"
+        ? [
+            (data) =>
+              !data.attachments.supportingDocumentation &&
+              !data.additionalInformation
+                ? {
+                    message:
+                      "An Attachment or Additional Information is required.",
+                  }
+                : null,
+          ]
+        : [],
   });
 
   if (!item) return <Navigate path={"/"} />; // Prevents optionals below
@@ -76,16 +91,7 @@ export const WithdrawPackage = ({
         attachmentInstructions[item!._source.planType as string as SetupOptions]
       }
       addlInfoInstructions={
-        <p>
-          Explain your need for withdrawal, or upload supporting documentation.
-          <br />
-          <em>
-            Once you submit this form, a confirmation email is sent to you and
-            to CMS. CMS will use this content to review your package. If CMS
-            needs any additional information, they will follow up by email
-          </em>
-          .
-        </p>
+        addlInfoInstructions[item!._source.planType as string as SetupOptions]
       }
     />
   );

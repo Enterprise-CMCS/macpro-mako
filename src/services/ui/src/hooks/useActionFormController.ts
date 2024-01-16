@@ -6,7 +6,7 @@ import { submit } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { PlanType } from "shared-types";
 
-type DataConditionError = {
+export type DataConditionError = {
   message: string;
 };
 
