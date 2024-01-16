@@ -1,7 +1,6 @@
 import type { InferGetStaticPropsType } from "next";
 import {
   Box,
-  Divider,
   HStack,
   Heading,
   Select,
@@ -14,7 +13,6 @@ import {
   generateDocs,
 } from "../../lib/formData";
 import React from "react";
-import { FormSchema } from "shared-types";
 
 export const getStaticProps = async () => {
   let allFormsWithData, allFormsAndVersions;
@@ -116,7 +114,7 @@ const VersionDocs: React.FC<{
   );
 
     const resultsArray: any = []
-    generateDocs(selectedFormData?.data as FormSchema, resultsArray);
+    generateDocs(selectedFormData?.data, resultsArray);
 
   return <>
     <Text fontSize='2xl'>{selectedFormData?.data?.header}</Text>
