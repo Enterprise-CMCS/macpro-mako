@@ -53,6 +53,8 @@ Above all else, please remember: your discretion and judgement supersedes this d
 
 - **Minimum Approvals**: PRs require a minimum number of approvals (1) from the team members before merging.
 - **Author Merges**: After receiving necessary approvals, the PR author is responsible for merging the code.
+- **Squashing Protocol**: When merging into the master branch, always squash and merge.  When merging into val and production, create a merge commit.
+- **Commit Messages**: We use semantic release to automatically release our product.  Semantic Release looks for commit messages with special [commit message syntax](https://semantic-release.gitbook.io/semantic-release/#commit-message-format).  Please follow this syntax when crafting your commit message.  Note: GitHub will use your PR title as the default commit message when squashing; so, it's recommended to set your PR title equal to the semantic release commit message appropriate for your changeset.
 
 ## Responsibility and Accountability
 
