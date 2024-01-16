@@ -39,6 +39,7 @@ export const WithdrawRai = ({
       attachments={attachments}
       attachmentFaqLink={"/faq/#medicaid-spa-rai-attachments"}
       requireAddlInfo
+      addlInfoInstructions={<p>Explain your need for withdrawal.</p>}
     />
   );
 };

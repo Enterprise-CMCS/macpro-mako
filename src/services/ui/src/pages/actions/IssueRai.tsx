@@ -45,6 +45,9 @@ export const RaiIssue = ({
       attachments={attachments}
       attachmentFaqLink={"/faq/#medicaid-spa-rai-attachments"}
       requireAddlInfo
+      addlInfoInstructions={
+        <p>Add anything else that you would like to share with the State.</p>
+      }
     />
   );
 };
