@@ -21,6 +21,7 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
   idmInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/idmInfo, ""}
+  googleAnalytics: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/googleAnalytics, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/googleAnalytics}
   serverlessTerminationProtection:
     stages:
       - master
@@ -46,6 +47,8 @@ custom:
         VITE_COGNITO_REDIRECT_SIGNIN=${param:ApplicationEndpointUrl}
         VITE_COGNITO_REDIRECT_SIGNOUT=${param:ApplicationEndpointUrl}
         VITE_IDM_HOME_URL=${self:custom.idmInfo.home_url, "https://test.home.idm.cms.gov"}
+        VITE_GOOGLE_ANALYTICS_ID=${self:custom.googleAnalytics.id}
+        VITE_GOOGLE_ANALYTICS_DISABLE=${self:custom.googleAnalytics.disable, false}
         """ > .env.local
         yarn build
       deploy:finalize: |
