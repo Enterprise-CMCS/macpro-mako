@@ -15,7 +15,7 @@ export const medicaidWithdrawPackageSetup = {
     })
     .superRefine((val, ctx) => {
       if (
-        !val.attachments.supportingDocumentation?.length ||
+        !val.attachments.supportingDocumentation?.length &&
         val.additionalInformation === undefined
       ) {
         ctx.addIssue({
