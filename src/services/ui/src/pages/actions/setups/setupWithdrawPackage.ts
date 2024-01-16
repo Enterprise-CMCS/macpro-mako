@@ -7,7 +7,7 @@ import {
 
 export const medicaidWithdrawPackageSetup = {
   schema: z.object({
-    additionalInformation: zAdditionalInfo,
+    additionalInformation: zAdditionalInfo.optional(),
     attachments: z.object({
       supportingDocumentation: zAttachmentOptional,
     }),
@@ -23,7 +23,7 @@ export const medicaidWithdrawPackageSetup = {
 
 export const chipWithdrawPackageSetup = {
   schema: z.object({
-    additionalInformation: zAdditionalInfo,
+    additionalInformation: zAdditionalInfo.optional(),
     attachments: z.object({
       officialWithdrawalLetter: zAttachmentRequired({ min: 1 }),
     }),

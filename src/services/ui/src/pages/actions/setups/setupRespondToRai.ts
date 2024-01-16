@@ -7,7 +7,7 @@ import {
 
 export const medicaidRespondToRaiSetup = {
   schema: z.object({
-    additionalInformation: zAdditionalInfo,
+    additionalInformation: zAdditionalInfo.optional(),
     attachments: z.object({
       raiResponseLetter: zAttachmentRequired({ min: 1 }),
       other: zAttachmentOptional,
