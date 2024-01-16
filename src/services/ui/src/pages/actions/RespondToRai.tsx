@@ -6,6 +6,7 @@ import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { ActionFormIntro } from "@/pages/actions/common";
 import { ActionFormTemplate } from "@/pages/actions/template";
 import { FormSetup } from "@/pages/actions/setups";
+import { SetupOptions } from "@/pages";
 
 export const RespondToRai = ({
   item,
@@ -45,6 +46,9 @@ export const RespondToRai = ({
       attachmentFaqLink={"/faq/#medicaid-spa-rai-attachments"}
       addlInfoInstructions={
         <p>Add anything else that you would like to share with CMS.</p>
+      }
+      requireAddlInfo={
+        (item._source.planType as string as SetupOptions) === "CHIP SPA"
       }
     />
   );
