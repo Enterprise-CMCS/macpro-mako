@@ -48,7 +48,7 @@ custom:
         VITE_COGNITO_REDIRECT_SIGNOUT=${param:ApplicationEndpointUrl}
         VITE_IDM_HOME_URL=${self:custom.idmInfo.home_url, "https://test.home.idm.cms.gov"}
         VITE_GOOGLE_ANALYTICS_ID=${self:custom.googleAnalytics.id}
-        VITE_GOOGLE_ANALYTICS_DISABLE=${self:custom.googleAnalytics.disable, false}
+        VITE_GOOGLE_ANALYTICS_DISABLE=${self:custom.googleAnalytics.disable, "false"}
         """ > .env.local
         yarn build
       deploy:finalize: |

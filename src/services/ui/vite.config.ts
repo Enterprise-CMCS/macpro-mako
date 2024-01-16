@@ -12,7 +12,7 @@ export default defineConfig({
       analytics: [
         {
           id: process.env.VITE_GOOGLE_ANALYTICS_ID,
-          disable: process.env.VITE_GOOGLE_ANALYTICS_DISABLE,
+          disable: process.env.VITE_GOOGLE_ANALYTICS_DISABLE === "true",
         },
       ],
     }),
