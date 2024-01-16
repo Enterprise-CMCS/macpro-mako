@@ -219,7 +219,9 @@ export const PackageActivities = (props: opensearch.main.Document) => {
         </div>
       }
     >
-      {!hook.data?.length && <p className="text-gray-500">-- no logs --</p>}
+      {!hook.data?.length && (
+        <p className="text-gray-500">No package activity recorded</p>
+      )}
       <Accordion
         type="multiple"
         className="flex flex-col gap-2"
