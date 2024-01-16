@@ -55,11 +55,16 @@ const WebformsDocs = ({
     >
       <Box maxW={"5xl"} m="auto">
         <Stack spacing="4">
-          <Heading size={{ base: "xs", md: "sm" }} fontWeight="medium">
+          <Heading size={{ base: "md", md: "lg" }} fontWeight="medium">
             Webforms Documentation
           </Heading>
+          <Text>
+            The purpose of this page is provide developers and anyone who might
+            need to use the data collected in these forms infomation about how
+            the data collected from the user connects to the form schema itself.
+          </Text>
           <Text color="fg.muted">
-            Details about webforms available via the onemac forms api
+            Choose a form and version to see all possible fields
           </Text>
           <HStack spacing={4}>
             <Select
@@ -87,12 +92,6 @@ const WebformsDocs = ({
                 ))}
             </Select>
           </HStack>
-          <Divider />
-          <Text>
-            The purpose of this page is provide developers and anyone who might
-            need to use the data collected in these forms infomation about how
-            the data collected from the user connects to the form schema itself.
-          </Text>
 
           {allFormsWithData[form] && version && (
             <VersionDocs
