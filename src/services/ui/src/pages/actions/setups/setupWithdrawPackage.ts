@@ -15,8 +15,8 @@ export const medicaidWithdrawPackageSetup = {
     })
     .superRefine((val, ctx) => {
       if (
-        !val.attachments.supportingDocumentation &&
-        !val.additionalInformation
+        !val.attachments.supportingDocumentation?.length ||
+        val.additionalInformation === undefined
       ) {
         ctx.addIssue({
           message: "An Attachment or Additional Information is required.",
