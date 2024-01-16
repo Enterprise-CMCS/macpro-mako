@@ -4,7 +4,6 @@ import { saveAs } from "file-saver";
 
 import { opensearch } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
-import { useMemo } from "react";
 
 type Attachments = NonNullable<opensearch.changelog.Document["attachments"]>;
 
@@ -22,17 +21,23 @@ export const useAttachmentService = (
     const remoteZips = attachments.map(async (ATT, index) => {
       const url = await mutateAsync(ATT);
       if (!url) return;
-      const response = await fetch(url);
-      const data = await response.blob();
-      const [prefix, extension] = ATT.filename.split(".");
-      zip.file(`${prefix}(${index + 1}).${extension}`, data);
+      const data = await fetch(url).then((res) => res.blob());
+
+      // append index for uniqueness (fileone.md -> fileone(1).md)
+      const filename = (() => {
+        const pieces = ATT.filename.split(".");
+        const ext = pieces.pop();
+        return `${pieces.join(".")}(${index + 1}).${ext}`;
+      })();
+
+      zip.file(filename, data);
       return data;
     });
 
     Promise.allSettled(remoteZips)
       .then(() => {
         zip.generateAsync({ type: "blob" }).then((content) => {
-          saveAs(content, `package-actions-${new Date().toISOString()}.zip`);
+          saveAs(content, `PackageActivity - ${new Date().toDateString()}.zip`);
         });
       })
       .catch((e) => {
@@ -43,25 +48,20 @@ export const useAttachmentService = (
   return { loading: isLoading, error, onUrl: mutateAsync, onZip };
 };
 
-export const ACTIONS_PA = [
-  "new-submission",
-  "withdraw-rai",
-  "withdraw-package",
-  "issue-rai",
-  "respond-to-rai",
-];
-
 export const usePackageActivities = (props: opensearch.main.Document) => {
   const service = useAttachmentService({ packageId: props.id });
-  const data = useMemo(
-    () =>
-      props.changelog?.filter((CL) =>
-        ACTIONS_PA.includes(CL._source.actionType)
-      ),
-    [props.changelog]
+  const data = props.changelog?.filter((CL) =>
+    [
+      "new-submission",
+      "withdraw-rai",
+      "withdraw-package",
+      "issue-rai",
+      "respond-to-rai",
+    ].includes(CL._source.actionType)
   );
 
   const onDownloadAll = () => {
+    // gathering all attachments across each changelog
     const attachmentsAggregate = props.changelog?.reduce((ACC, ATT) => {
       if (!ATT._source.attachments) return ACC;
       return ACC.concat(ATT._source.attachments);
