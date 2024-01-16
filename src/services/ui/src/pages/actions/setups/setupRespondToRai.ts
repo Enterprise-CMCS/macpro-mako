@@ -47,7 +47,7 @@ export const chipRespondToRaiSetup = {
     },
     {
       name: "officialRaiResponse",
-      label: "Official Rai Response",
+      label: "Official RAI Response",
       required: true,
     },
     {
