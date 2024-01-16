@@ -200,7 +200,10 @@ export const DetailsContent = ({
           <PackageActionsCard id={data._id} />
         </section>
         <div className="flex flex-col gap-3">
-          <DetailsSection id="package-details" title="Medicaid Package Details">
+          <DetailsSection
+            id="package-details"
+            title={`${data._source.planType} Package Details`}
+          >
             <DetailItemsGrid displayItems={spaDetails(data._source)} />
             <DetailItemsGrid displayItems={submissionDetails(data._source)} />
           </DetailsSection>
