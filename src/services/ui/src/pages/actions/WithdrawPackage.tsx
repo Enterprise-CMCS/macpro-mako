@@ -7,6 +7,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { ActionFormTemplate } from "@/pages/actions/template";
 import { FormSetup } from "@/pages/actions/setups";
+import { SetupOptions } from "@/pages";
+import { ReactElement } from "react";
+
+const attachmentInstructions: Record<SetupOptions, ReactElement> = {
+  "Medicaid SPA": (
+    <p>
+      Upload your supporting documentation for withdrawal or explain your need
+      for withdrawal in the Additional Information section.
+    </p>
+  ),
+  "CHIP SPA": (
+    <p className="font-normal mb-4">
+      Official withdrawal letters are required and must be on state letterhead
+      signed by the State Medicaid Director or CHIP Director.
+    </p>
+  ),
+};
 
 export const WithdrawPackage = ({
   item,
@@ -56,10 +73,7 @@ export const WithdrawPackage = ({
       attachments={attachments}
       attachmentFaqLink={"/faq"}
       attachmentInstructions={
-        <p className="font-normal mb-4">
-          Official withdrawal letters are required and must be on state
-          letterhead signed by the State Medicaid Director or CHIP Director.
-        </p>
+        attachmentInstructions[item!._source.planType as string as SetupOptions]
       }
       addlInfoInstructions={
         <p>

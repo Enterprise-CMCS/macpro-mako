@@ -24,7 +24,7 @@ import {
   medicaidWithdrawPackageSetup,
 } from "@/pages/actions/setups";
 
-type SetupOptions = "CHIP SPA" | "Medicaid SPA";
+export type SetupOptions = "CHIP SPA" | "Medicaid SPA";
 const getFormSetup = (opt: SetupOptions, type: Action): FormSetup | null => {
   switch (type) {
     case "issue-rai":
