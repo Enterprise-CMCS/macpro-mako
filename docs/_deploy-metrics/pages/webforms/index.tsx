@@ -9,9 +9,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import {
-  generateFormDocumentation,
   getAllFormData,
   ResultObject,
+  generateDocs,
 } from "../../lib/formData";
 import React from "react";
 import { FormSchema } from "shared-types";
@@ -53,7 +53,7 @@ const WebformsDocs = ({
       pb={{ base: "12", md: "24" }}
       mx="10"
     >
-      <Box maxW={"4xl"}>
+      <Box maxW={"5xl"} m="auto">
         <Stack spacing="4">
           <Heading size={{ base: "xs", md: "sm" }} fontWeight="medium">
             Webforms Documentation
@@ -115,18 +115,24 @@ const VersionDocs: React.FC<{
   const selectedFormData = allFormsWithData[form].find(
     (f) => f?.version === version
   );
-  const documentation = generateFormDocumentation(selectedFormData?.data as FormSchema);
-  return <>
-  <h4>{documentation.header}</h4>
-  {documentation.data.map(d => (
-    <div key={d.name}>
 
-    <p>Question: {d.description}</p>
-    <p>name: {d.name}</p>
-    <p>type: {d.type}</p>
-    {d.options && <p>options: {d.options.join(', ')}</p>}
-    </div>
-  ))}
+    const resultsArray: any = []
+    generateDocs(selectedFormData?.data as FormSchema, resultsArray);
+
+  return <>
+    <Text fontSize='2xl'>{selectedFormData?.data?.header}</Text>
+    {resultsArray.map((d: any, ind: number) => (
+      <div key={d.name + ind}>
+
+      {d.prompt && <p>Prompt: {d.prompt}</p>}
+      {d.label && <p>Label: {d.label}</p>}
+      {d.parentName && <p>Parent: {d.parentName}</p>}
+      <p>Name: {d.name}</p>
+      <p>Type: {d.rhf}</p>
+      {d.options && <p>options: {d.options.join(', ')}</p>}
+      <hr style={{ marginTop: 16}}/>
+      </div>
+    ))}
   </>
 };
 export default WebformsDocs;

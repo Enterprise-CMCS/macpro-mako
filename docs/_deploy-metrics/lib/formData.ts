@@ -1,5 +1,3 @@
-import {FormSchema} from 'shared-types'
-
 export type FormResult = {
     version: string;
     data: any; // replace 'any' with the actual type of the data returned from the API
@@ -53,38 +51,42 @@ export type FormResult = {
     return resultObject;
   }
 
-  type Item = {
-    description: string,
-    name: string,
-    type: string,
-    options?: string[]
+export function generateDocs(obj: any, results: any = [], parentName: string = '', prompt: string = '') {
+  if (typeof obj === 'object' && obj !== null) {
+      if ('rhf' in obj) {
+          const resultItem: any = { rhf: obj.rhf };
+          
+          if ('label' in obj) {
+              resultItem.label = obj.label;
+          }
+          
+          if ('name' in obj) {
+              resultItem.name = obj.name;
+          }
+
+          if ((obj.rhf === 'Select' || obj.rhf === 'Radio') && obj.props) {
+            resultItem.options = []
+              obj.props?.options.forEach((field: any) => {
+                resultItem.options?.push(field.value)
+              })
+          }
+          
+          resultItem.parentName = parentName;
+          resultItem.prompt = prompt;
+          
+          results.push(resultItem);
+      }
+
+      for (const key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            if ('name' in obj) {
+              parentName = obj.name;
+            }
+            if ('description' in obj) {
+              prompt = obj.description;
+            }
+              generateDocs(obj[key], results, parentName, prompt);
+          }
+      }
   }
-
-  type Result = {
-    header: string,
-    data: Item[]
-  }
-export function generateFormDocumentation(schema: FormSchema): Result {
-  const result: any = {data: []}
-
-  result.header = schema.header
-
-  schema.sections.forEach(section => {
-    section.form.forEach(form => {
-      form.slots.forEach(slot => {
-
-        const item: Item = {description: `${form.description ?? ''} ${slot.description ?? ''}`.trim(), name: slot.name, type: slot.rhf}
-        
-        if (slot.rhf === 'Select' && slot.props) {
-          item.options = []
-            slot.props?.options.forEach(field => {
-              item.options?.push(field.value)
-            })
-        }
-        result.data?.push(item)
-      })
-    })
-  })
-  
-  return result
 }
