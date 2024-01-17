@@ -120,14 +120,13 @@ const VersionDocs: React.FC<{
     <Text fontSize='2xl'>{selectedFormData?.data?.header}</Text>
     {resultsArray.map((d: any, ind: number) => (
       <div key={d.name + ind}>
-
-      {d.prompt && <p>Prompt: {d.prompt}</p>}
-      {d.label && <p>Label: {d.label}</p>}
-      {d.parentName && <p>Parent: {d.parentName}</p>}
-      <p>Name: {d.name}</p>
-      <p>Type: {d.rhf}</p>
-      {d.options && <p>options: {d.options.join(', ')}</p>}
-      <hr style={{ marginTop: 16}}/>
+        <Text fontSize='sm' fontWeight="extrabold">Name: {d.name}</Text>
+        <Text fontSize='sm' fontWeight="bold">Type: {d.rhf}</Text>
+        {d.prompt && <Text fontSize='sm' fontWeight="bold">Prompt: {d.prompt}</Text>}
+        {d.label && <Text fontSize='sm' fontWeight="bold">Label: {d.label}</Text>}
+        {d.parentName && <Text fontSize='sm'>Parent: {d.parentName}</Text>}
+        {d.options && <Text fontSize='sm'> options: {d.options.join(', ')}</Text>}
+        <hr style={{ marginTop: 16}}/>
       </div>
     ))}
   </>
