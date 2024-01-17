@@ -47,7 +47,7 @@ export const Welcome = () => {
       </div>
       {/* End Hero Section */}
       {/* Two Column Main Layout */}
-      <main className="max-w-screen-xl mx-auto p-4 lg:px-8">
+      <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
         <div className="flex flex-col justify-center gap-8">
           <div>
             <h3 className="text-2xl font-bold mb-4">State Users</h3>
@@ -186,7 +186,7 @@ export const Welcome = () => {
             </div>
           </div>
         </div>
-      </main>
+      </div>
       <section>
         <div className="flex justify-around items-center text-xl px-10 py-4 max-w-screen-xl mx-auto">
           <h4>Do you have questions or need support?</h4>
