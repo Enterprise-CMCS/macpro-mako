@@ -3,7 +3,7 @@ name: GitHub Pages
 
 on:
   push:
-    branches: ["webform-docs"]
+    branches: ["webforms-docs"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -34,8 +34,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v2
-      # - name: Setup Node.js environment
-      #   uses: actions/setup-node@v3.5.1
       - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
@@ -51,8 +49,6 @@ jobs:
             --region us-east-1 describe-stacks \
             --stack-name $PROJECT-api-$STAGE_NAME | jq -r '.Stacks[0].Outputs[] | select(.OutputKey == "ApiGatewayRestApiUrl") | .OutputValue'
           )" >> $GITHUB_ENV
-      - name: Test
-        run: echo $NEXT_PUBLIC_API_REST_URL
       - name: Install Packages
         run: |
           cd docs/_deploy-metrics
