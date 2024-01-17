@@ -2,13 +2,8 @@
 name: GitHub Pages
 
 on:
-  workflow_run:
-    workflows:
-      - "Deploy"
-    types:
-      - completed
-    # branches:
-    #   - webforms-docs
+  push:
+    branches: ["webform-docs"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
