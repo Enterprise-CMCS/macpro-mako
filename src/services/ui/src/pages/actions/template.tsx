@@ -1,4 +1,4 @@
-import { LoadingSpinner } from "@/components";
+import { Alert, LoadingSpinner } from "@/components";
 import { PackageInfo } from "@/pages/actions/common";
 import { AttachmentsSizeTypesDesc } from "@/pages/form/content";
 import {
@@ -81,6 +81,18 @@ export const ActionFormTemplate = <D extends FieldValues>({
             required: requireAddlInfo,
           })}
         />
+        {Object.keys(formController.formState.errors).length !== 0 ? (
+          <Alert className="my-6" variant="destructive">
+            Input validation error(s):
+            <ul className="list-disc">
+              {Object.values(formController.formState.errors).map((v, idx) => (
+                <li className="ml-8 my-2" key={idx}>
+                  {v?.message as string}
+                </li>
+              ))}
+            </ul>
+          </Alert>
+        ) : null}
         <div className="flex gap-2 my-8">
           <Button type="submit">Submit</Button>
           <Button onClick={() => setCancelModalOpen(true)} variant="outline">
