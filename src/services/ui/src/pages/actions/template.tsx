@@ -98,7 +98,11 @@ export const ActionFormTemplate = <D extends FieldValues>({
         )}
         <div className="flex gap-2 my-8">
           <Button type="submit">Submit</Button>
-          <Button onClick={() => setCancelModalOpen(true)} variant="outline">
+          <Button
+            type="button"
+            onClick={() => setCancelModalOpen(true)}
+            variant="outline"
+          >
             Cancel
           </Button>
         </div>
