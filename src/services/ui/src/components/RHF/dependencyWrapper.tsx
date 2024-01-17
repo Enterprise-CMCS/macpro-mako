@@ -54,6 +54,8 @@ export const DependencyWrapper = ({
       setWasSetLast(false);
     }
 
+    // This logic is to give the ability for checkboxes (and eventually radio groups) the ability to have show/hide logic based on UI form logic
+    // We are grabbing the parent value (checkbox group array) and remove the value of the child being hidden and filtering it out
     if (
       isTriggered &&
       dependency?.effect.type === "hide" &&
