@@ -47,9 +47,6 @@ export const RespondToRai = ({
       addlInfoInstructions={
         <p>Add anything else that you would like to share with CMS.</p>
       }
-      requireAddlInfo={
-        (item._source.planType as string as SetupOptions) === "CHIP SPA"
-      }
     />
   );
 };

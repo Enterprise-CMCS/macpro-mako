@@ -29,7 +29,7 @@ export const medicaidRespondToRaiSetup = {
 
 export const chipRespondToRaiSetup = {
   schema: z.object({
-    additionalInformation: zAdditionalInfo,
+    additionalInformation: zAdditionalInfo.optional(),
     attachments: z.object({
       revisedAmendedStatePlanLanguage: zAttachmentRequired({ min: 1 }),
       officialRaiResponse: zAttachmentRequired({ min: 1 }),
