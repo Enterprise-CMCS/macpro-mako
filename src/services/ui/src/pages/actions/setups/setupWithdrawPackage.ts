@@ -13,10 +13,10 @@ export const medicaidWithdrawPackageSetup = {
         supportingDocumentation: zAttachmentOptional,
       }),
     })
-    .superRefine((val, ctx) => {
+    .superRefine((data, ctx) => {
       if (
-        !val.attachments.supportingDocumentation?.length &&
-        val.additionalInformation === undefined
+        !data.attachments.supportingDocumentation?.length &&
+        data.additionalInformation === undefined
       ) {
         ctx.addIssue({
           message: "An Attachment or Additional Information is required.",

@@ -86,10 +86,10 @@ export const ActionFormTemplate = <D extends FieldValues>({
             Input validation error(s)
             <ul className="list-disc">
               {Object.values(formController.formState.errors).map(
-                (v, idx) =>
-                  v?.message && (
+                (err, idx) =>
+                  err?.message && (
                     <li className="ml-8 my-2" key={idx}>
-                      {v.message as string}
+                      {err.message as string}
                     </li>
                   )
               )}
