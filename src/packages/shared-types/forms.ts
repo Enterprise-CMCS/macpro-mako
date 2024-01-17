@@ -22,8 +22,11 @@ export type RHFSlotProps = {
   name: string;
   label?: string;
   labelStyling?: string;
+  formItemStyling?: string;
   groupNamePrefix?: string;
   description?: string;
+  descriptionAbove?: boolean;
+  descriptionStyling?: string;
   dependency?: DependencyRule;
   rules?: RegisterOptions;
 } & {
@@ -41,6 +44,7 @@ export type RHFSlotProps = {
 export type RHFOption = {
   label: string;
   value: string;
+  dependency?: DependencyRule;
   form?: FormGroup[];
   slots?: RHFSlotProps[];
 };
@@ -138,4 +142,7 @@ export interface DependencyRule {
 export interface DependencyWrapperProps {
   name?: string;
   dependency?: DependencyRule;
+  // The dependency wraper is passed two props from the checkbox button RHF used to change its value for depedency show/hide logic
+  changeMethod?: (...event: any[]) => void;
+  parentValue?: string[];
 }
