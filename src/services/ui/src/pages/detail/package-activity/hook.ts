@@ -37,7 +37,10 @@ export const useAttachmentService = (
     Promise.allSettled(remoteZips)
       .then(() => {
         zip.generateAsync({ type: "blob" }).then((content) => {
-          saveAs(content, `PackageActivity - ${new Date().toDateString()}.zip`);
+          saveAs(
+            content,
+            `${props.packageId} - ${new Date().toDateString()}.zip`
+          );
         });
       })
       .catch((e) => {

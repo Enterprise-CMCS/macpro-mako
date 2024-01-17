@@ -1,6 +1,6 @@
 import { Accordion, DetailsSection } from "@/components";
 import { opensearch } from "shared-types";
-import { FC, useMemo } from "react";
+import { FC, Fragment, useMemo } from "react";
 import { Button } from "@/components/Inputs";
 import {
   AccordionContent,
@@ -19,49 +19,57 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
 
   return (
     <div className="flex flex-col gap-6">
-      <Table.Table>
-        <Table.TableHeader>
-          <Table.TableRow>
-            <Table.TableHead className="w-[300px]">
-              Document Type
-            </Table.TableHead>
-            <Table.TableHead>Attached File</Table.TableHead>
-          </Table.TableRow>
-        </Table.TableHeader>
-        <Table.TableBody>
-          {props.attachments?.map((ATC) => {
-            return (
-              <Table.TableRow key={`${props.id}-${ATC.key}`}>
-                <Table.TableCell>{ATC.title}</Table.TableCell>
-                <Table.TableCell>
-                  <Button
-                    className="ml-[-15px]"
-                    variant="link"
-                    onClick={() => {
-                      hook.onUrl(ATC).then(window.open);
-                    }}
-                  >
-                    {ATC.filename}
-                  </Button>
-                </Table.TableCell>
+      <div>
+        <h2 className="font-bold text-lg mb-2">Attachments</h2>
+        {!props.attachments?.length && <p>No information submitted</p>}
+        {!!props.attachments?.length && (
+          <Table.Table>
+            <Table.TableHeader>
+              <Table.TableRow>
+                <Table.TableHead className="w-[300px]">
+                  Document Type
+                </Table.TableHead>
+                <Table.TableHead>Attached File</Table.TableHead>
               </Table.TableRow>
-            );
-          })}
-        </Table.TableBody>
-      </Table.Table>
+            </Table.TableHeader>
+            <Table.TableBody>
+              {props.attachments?.map((ATC) => {
+                return (
+                  <Table.TableRow key={`${props.id}-${ATC.key}`}>
+                    <Table.TableCell>{ATC.title}</Table.TableCell>
+                    <Table.TableCell>
+                      <Button
+                        className="ml-[-15px]"
+                        variant="link"
+                        onClick={() => {
+                          hook.onUrl(ATC).then(window.open);
+                        }}
+                      >
+                        {ATC.filename}
+                      </Button>
+                    </Table.TableCell>
+                  </Table.TableRow>
+                );
+              })}
+            </Table.TableBody>
+          </Table.Table>
+        )}
+      </div>
 
-      <Button
-        variant="outline"
-        className="w-max"
-        disabled={!props.attachments?.length}
-        loading={hook.loading}
-        onClick={() => {
-          if (!props.attachments?.length) return;
-          hook.onZip(props.attachments);
-        }}
-      >
-        Download documents
-      </Button>
+      {props.attachments && props.attachments?.length > 1 && (
+        <Button
+          variant="outline"
+          className="w-max"
+          disabled={!props.attachments?.length}
+          loading={hook.loading}
+          onClick={() => {
+            if (!props.attachments?.length) return;
+            hook.onZip(props.attachments);
+          }}
+        >
+          Download documents
+        </Button>
+      )}
 
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
@@ -79,21 +87,57 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="font-bold text-lg mb-2">Attached File</h2>
+        <h2 className="font-bold text-lg mb-2">Attachments</h2>
         {!props.attachments?.length && <p>No information submitted</p>}
-        {props.attachments?.map((ATC) => (
-          <Button
-            key={`${props.id}-${ATC.key}`}
-            className="my-1 p-0"
-            variant="link"
-            onClick={() => {
-              hook.onUrl(ATC).then(window.open);
-            }}
-          >
-            {ATC.filename}
-          </Button>
-        ))}
+        {!!props.attachments?.length && (
+          <Table.Table>
+            <Table.TableHeader>
+              <Table.TableRow>
+                <Table.TableHead className="w-[300px]">
+                  Document Type
+                </Table.TableHead>
+                <Table.TableHead>Attached File</Table.TableHead>
+              </Table.TableRow>
+            </Table.TableHeader>
+            <Table.TableBody>
+              {props.attachments?.map((ATC) => {
+                return (
+                  <Table.TableRow key={`${props.id}-${ATC.key}`}>
+                    <Table.TableCell>{ATC.title}</Table.TableCell>
+                    <Table.TableCell>
+                      <Button
+                        className="ml-[-15px]"
+                        variant="link"
+                        onClick={() => {
+                          hook.onUrl(ATC).then(window.open);
+                        }}
+                      >
+                        {ATC.filename}
+                      </Button>
+                    </Table.TableCell>
+                  </Table.TableRow>
+                );
+              })}
+            </Table.TableBody>
+          </Table.Table>
+        )}
       </div>
+
+      {props.attachments && props.attachments?.length > 1 && (
+        <Button
+          variant="outline"
+          className="w-max"
+          disabled={!props.attachments?.length}
+          loading={hook.loading}
+          onClick={() => {
+            if (!props.attachments?.length) return;
+            hook.onZip(props.attachments);
+          }}
+        >
+          Download documents
+        </Button>
+      )}
+
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
         <p>{props.additionalInformation || "No information submitted"}</p>
@@ -110,21 +154,57 @@ export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="font-bold text-lg mb-2">Attached File</h2>
+        <h2 className="font-bold text-lg mb-2">Attachments</h2>
         {!props.attachments?.length && <p>No information submitted</p>}
-        {props.attachments?.map((ATC) => (
-          <Button
-            variant="link"
-            key={`${props.id}-${ATC.key}`}
-            className="my-1 p-0"
-            onClick={() => {
-              hook.onUrl(ATC).then(window.open);
-            }}
-          >
-            {ATC.filename}
-          </Button>
-        ))}
+        {!!props.attachments?.length && (
+          <Table.Table>
+            <Table.TableHeader>
+              <Table.TableRow>
+                <Table.TableHead className="w-[300px]">
+                  Document Type
+                </Table.TableHead>
+                <Table.TableHead>Attached File</Table.TableHead>
+              </Table.TableRow>
+            </Table.TableHeader>
+            <Table.TableBody>
+              {props.attachments?.map((ATC) => {
+                return (
+                  <Table.TableRow key={`${props.id}-${ATC.key}`}>
+                    <Table.TableCell>{ATC.title}</Table.TableCell>
+                    <Table.TableCell>
+                      <Button
+                        className="ml-[-15px]"
+                        variant="link"
+                        onClick={() => {
+                          hook.onUrl(ATC).then(window.open);
+                        }}
+                      >
+                        {ATC.filename}
+                      </Button>
+                    </Table.TableCell>
+                  </Table.TableRow>
+                );
+              })}
+            </Table.TableBody>
+          </Table.Table>
+        )}
       </div>
+
+      {props.attachments && props.attachments?.length > 1 && (
+        <Button
+          variant="outline"
+          className="w-max"
+          disabled={!props.attachments?.length}
+          loading={hook.loading}
+          onClick={() => {
+            if (!props.attachments?.length) return;
+            hook.onZip(props.attachments);
+          }}
+        >
+          Download documents
+        </Button>
+      )}
+
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
         <p>{props.additionalInformation || "No information submitted"}</p>
@@ -139,21 +219,57 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="font-bold text-lg mb-2">Attached File</h2>
+        <h2 className="font-bold text-lg mb-2">Attachments</h2>
         {!props.attachments?.length && <p>No information submitted</p>}
-        {props.attachments?.map((ATC) => (
-          <Button
-            variant="link"
-            key={`${props.id}-${ATC.key}`}
-            className="my-1 p-0"
-            onClick={() => {
-              hook.onUrl(ATC).then(window.open);
-            }}
-          >
-            {ATC.filename}
-          </Button>
-        ))}
+        {!!props.attachments?.length && (
+          <Table.Table>
+            <Table.TableHeader>
+              <Table.TableRow>
+                <Table.TableHead className="w-[300px]">
+                  Document Type
+                </Table.TableHead>
+                <Table.TableHead>Attached File</Table.TableHead>
+              </Table.TableRow>
+            </Table.TableHeader>
+            <Table.TableBody>
+              {props.attachments?.map((ATC) => {
+                return (
+                  <Table.TableRow key={`${props.id}-${ATC.key}`}>
+                    <Table.TableCell>{ATC.title}</Table.TableCell>
+                    <Table.TableCell>
+                      <Button
+                        className="ml-[-15px]"
+                        variant="link"
+                        onClick={() => {
+                          hook.onUrl(ATC).then(window.open);
+                        }}
+                      >
+                        {ATC.filename}
+                      </Button>
+                    </Table.TableCell>
+                  </Table.TableRow>
+                );
+              })}
+            </Table.TableBody>
+          </Table.Table>
+        )}
       </div>
+
+      {props.attachments && props.attachments?.length > 1 && (
+        <Button
+          variant="outline"
+          className="w-max"
+          disabled={!props.attachments?.length}
+          loading={hook.loading}
+          onClick={() => {
+            if (!props.attachments?.length) return;
+            hook.onZip(props.attachments);
+          }}
+        >
+          Download documents
+        </Button>
+      )}
+
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
         <p>{props.additionalInformation || "No information submitted"}</p>
