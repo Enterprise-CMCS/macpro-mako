@@ -14,7 +14,6 @@ import {
 } from "@/components/Inputs";
 import { ReactElement, ReactNode } from "react";
 import { opensearch } from "shared-types";
-import { isStateUser } from "shared-utils";
 import {
   FieldValues,
   Path,
@@ -23,7 +22,6 @@ import {
 } from "react-hook-form";
 import { AttachmentRecipe } from "@/lib";
 import { useModalContext } from "@/pages/form/modals";
-import { useGetUser } from "@/api/useGetUser";
 import { Info } from "lucide-react";
 
 export const ActionFormTemplate = <D extends FieldValues>({
@@ -107,7 +105,7 @@ export const ActionFormTemplate = <D extends FieldValues>({
           </Alert>
         )}
         {preSubmitMessage && (
-          <Alert variant={"infoBlock"} className="my-2 w-5/6 flex-row text-sm">
+          <Alert variant={"infoBlock"} className="my-2 w-full flex-row text-sm">
             <Info />
             <p className="ml-2">{preSubmitMessage}</p>
           </Alert>
