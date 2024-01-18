@@ -1,6 +1,6 @@
-import { format } from "date-fns";
 import { FC, useMemo } from "react";
 import { opensearch } from "shared-types";
+import { format } from "date-fns";
 import {
   Accordion,
   AccordionContent,
@@ -14,10 +14,13 @@ export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
   props
 ) => {
   return (
-    <p>
-      {props.submitterName} has enabled package action to submit formal RAI
-      response
-    </p>
+    <div className="flex flex-col gap-2">
+      <p className="font-bold">Change made</p>
+      <p>
+        {props.submitterName} has enabled package action to submit formal RAI
+        response
+      </p>
+    </div>
   );
 };
 
@@ -25,10 +28,13 @@ export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
   props
 ) => {
   return (
-    <p>
-      {props.submitterName} has disabled package action to submit formal RAI
-      response
-    </p>
+    <div className="flex flex-col gap-2">
+      <p className="font-bold">Change made</p>
+      <p>
+        {props.submitterName} has disabled package action to submit formal RAI
+        response
+      </p>
+    </div>
   );
 };
 
@@ -40,9 +46,9 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
   const [label, Content] = useMemo(() => {
     switch (props.actionType) {
       case "disable-rai-withdraw":
-        return ["Disabled formal RAI response withdraw", AC_WithdrawDisabled];
+        return ["Disable formal RAI response withdraw", AC_WithdrawDisabled];
       case "enable-rai-withdraw":
-        return ["Enabled formal RAI response withdraw", AC_WithdrawEnabled];
+        return ["Enable formal RAI response withdraw", AC_WithdrawEnabled];
       case "update":
         return ["SPA ID update", AC_Update];
       default:

@@ -1,15 +1,16 @@
-import { Accordion, DetailsSection } from "@/components";
+import { FC, useMemo } from "react";
 import { opensearch } from "shared-types";
-import { FC, Fragment, useMemo } from "react";
-import { Button } from "@/components/Inputs";
+import { format } from "date-fns";
 import {
+  Accordion,
+  DetailsSection,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components";
+import { Button } from "@/components/Inputs";
 import * as Table from "@/components/Table";
 import { BLANK_VALUE } from "@/consts";
-import { format } from "date-fns";
 import { usePackageActivities, useAttachmentService } from "./hook";
 
 export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
