@@ -39,17 +39,19 @@ export const FieldGroup = <TFields extends FieldValues>(
                   key={adjustedSlotName}
                   control={props.control}
                   name={adjustedSlotName as never}
+                  disabled={!!props.readonly}
                   {...(SLOT.rules && { rules: SLOT.rules })}
                   render={RHFSlot({
                     ...SLOT,
                     control: props.control,
+                    readonly: props.readonly,
                     name: adjustedSlotName,
                     groupNamePrefix: adjustedPrefix,
                   })}
                 />
               );
             })}
-            {index >= 1 && (
+            {!props.readonly && index >= 1 && (
               <Button
                 className="self-end m-2 mr-0"
                 variant={"destructive"}
@@ -66,12 +68,14 @@ export const FieldGroup = <TFields extends FieldValues>(
           </div>
         );
       })}
-      <div className="flex items-center mt-2 self-end">
-        <Button type="button" size="sm" onClick={onAppend} variant="default">
-          <Plus className="h-5 w-5 mr-2" />
-          {props.appendText ?? "New Group"}
-        </Button>
-      </div>
+      {!props.readonly && (
+        <div className="flex items-center mt-2 self-end">
+          <Button type="button" size="sm" onClick={onAppend} variant="default">
+            <Plus className="h-5 w-5 mr-2" />
+            {props.appendText ?? "New Group"}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

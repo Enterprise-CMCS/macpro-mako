@@ -38,18 +38,20 @@ export const RHFFieldArray = <TFields extends FieldValues>(
                 <FormField
                   key={adjustedSlotName}
                   control={props.control}
+                  disabled={!!props.readonly}
                   name={adjustedSlotName as never}
                   {...(SLOT.rules && { rules: SLOT.rules })}
                   render={RHFSlot({
                     ...SLOT,
                     control: props.control,
+                    readonly: props.readonly,
                     name: adjustedSlotName,
                     groupNamePrefix: adjustedPrefix,
                   })}
                 />
               );
             })}
-            {index >= 1 && (
+            {!props.readonly && index >= 1 && (
               <Trash2
                 className="self-end mb-4 cursor-pointer stroke-primary"
                 onClick={() => fieldArr.remove(index)}
@@ -59,10 +61,12 @@ export const RHFFieldArray = <TFields extends FieldValues>(
         );
       })}
       <div className="flex items-center mt-2">
-        <Button type="button" size="sm" onClick={onAppend} variant="outline">
-          <Plus className="h-5 w-5 mr-2" />
-          {props.appendText ?? "New Row"}
-        </Button>
+        {!props.readonly && (
+          <Button type="button" size="sm" onClick={onAppend} variant="outline">
+            <Plus className="h-5 w-5 mr-2" />
+            {props.appendText ?? "New Row"}
+          </Button>
+        )}
       </div>
     </div>
   );

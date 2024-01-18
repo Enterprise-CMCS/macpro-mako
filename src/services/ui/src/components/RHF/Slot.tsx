@@ -36,6 +36,7 @@ export const RHFSlot = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   control,
+  readonly,
   rhf,
   label,
   description,
@@ -77,21 +78,21 @@ export const RHFSlot = <
             {rhf === "Input" &&
               (() => {
                 const hops = props as RHFComponentMap["Input"];
-                return <Input {...hops} {...field} />;
+                return <Input disabled={!!readonly} {...hops} {...field} />;
               })()}
 
             {/* ----------------------------------------------------------------------------- */}
             {rhf === "Textarea" &&
               (() => {
                 const hops = props as RHFComponentMap["Textarea"];
-                return <Textarea {...hops} {...field} />;
+                return <Textarea disabled={!!readonly} {...hops} {...field} />;
               })()}
 
             {/* ----------------------------------------------------------------------------- */}
             {rhf === "Switch" &&
               (() => {
                 const hops = props as RHFComponentMap["Switch"];
-                return <Switch {...hops} {...field} />;
+                return <Switch disabled={!!readonly} {...hops} {...field} />;
               })()}
 
             {/* ----------------------------------------------------------------------------- */}
@@ -114,6 +115,7 @@ export const RHFSlot = <
                     {...hops}
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    disabled={!!readonly}
                   >
                     <SelectTrigger {...hops}>
                       <SelectValue {...hops} />
@@ -138,6 +140,7 @@ export const RHFSlot = <
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                     className="flex flex-col space-y-1"
+                    disabled={!!readonly}
                   >
                     {hops.options.map((OPT) => {
                       return (
@@ -165,6 +168,7 @@ export const RHFSlot = <
                                     form={FORM}
                                     control={control}
                                     groupNamePrefix={groupNamePrefix}
+                                    childReadonly={readonly}
                                   />
                                 </div>
                               );
@@ -179,8 +183,13 @@ export const RHFSlot = <
                                 <FormField
                                   control={control}
                                   name={(groupNamePrefix ?? "") + SLOT.name}
+                                  disabled={readonly}
                                   {...(SLOT.rules && { rules: SLOT.rules })}
-                                  render={RHFSlot({ ...SLOT, control })}
+                                  render={RHFSlot({
+                                    ...SLOT,
+                                    control,
+                                    readonly,
+                                  })}
                                 />
                               </div>
                             ))}
@@ -202,6 +211,7 @@ export const RHFSlot = <
                         <Checkbox
                           label={OPT.label}
                           value={OPT.value}
+                          disabled={!!readonly}
                           checked={field.value?.includes(OPT.value)}
                           onCheckedChange={(c) => {
                             const filtered =
@@ -225,9 +235,10 @@ export const RHFSlot = <
                             >
                               <FormField
                                 control={control}
+                                disabled={readonly}
                                 name={(groupNamePrefix ?? "") + SLOT.name}
                                 {...(SLOT.rules && { rules: SLOT.rules })}
-                                render={RHFSlot({ ...SLOT, control })}
+                                render={RHFSlot({ ...SLOT, control, readonly })}
                               />
                             </div>
                           ))}
@@ -242,6 +253,7 @@ export const RHFSlot = <
                               <RHFFormGroup
                                 control={control}
                                 form={FORM}
+                                childReadonly={readonly}
                                 groupNamePrefix={groupNamePrefix}
                               />
                             </div>
@@ -262,6 +274,7 @@ export const RHFSlot = <
                       <FormControl>
                         <Button
                           variant={"outline"}
+                          disabled={!!readonly}
                           className={cn(
                             "w-[240px] pl-3 text-left font-normal",
                             !field.value && "text-muted-foreground"
@@ -295,6 +308,7 @@ export const RHFSlot = <
                 control={control}
                 name={name}
                 fields={rest.fields ?? []}
+                readonly={!!readonly}
                 groupNamePrefix={groupNamePrefix}
                 {...(props as RHFComponentMap["FieldArray"])}
               />
@@ -306,6 +320,7 @@ export const RHFSlot = <
                 control={control}
                 name={name}
                 fields={rest.fields ?? []}
+                readonly={!!readonly}
                 groupNamePrefix={groupNamePrefix}
                 {...(props as RHFComponentMap["FieldGroup"])}
               />
