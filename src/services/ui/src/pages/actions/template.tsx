@@ -1,6 +1,9 @@
 import { Alert, LoadingSpinner } from "@/components";
 import { PackageInfo } from "@/pages/actions/common";
-import { AttachmentsSizeTypesDesc } from "@/pages/form/content";
+import {
+  AttachmentsSizeTypesDesc,
+  PreSubmissionMessage,
+} from "@/pages/form/content";
 import {
   SlotAdditionalInfo,
   SlotAttachments,
@@ -12,8 +15,9 @@ import {
   FormMessage,
   RequiredIndicator,
 } from "@/components/Inputs";
-import { ReactElement, ReactNode } from "react";
+import { ReactElement } from "react";
 import { opensearch } from "shared-types";
+import { isStateUser } from "shared-utils";
 import {
   FieldValues,
   Path,
@@ -22,6 +26,7 @@ import {
 } from "react-hook-form";
 import { AttachmentRecipe } from "@/lib";
 import { useModalContext } from "@/pages/form/modals";
+import { useGetUser } from "@/api/useGetUser";
 
 export const ActionFormTemplate = <D extends FieldValues>({
   item,
@@ -45,6 +50,7 @@ export const ActionFormTemplate = <D extends FieldValues>({
   addlInfoInstructions?: ReactElement;
 }) => {
   const { setCancelModalOpen } = useModalContext();
+  const { data: user } = useGetUser();
   return (
     <Form {...formController}>
       <form onSubmit={formController.handleSubmit(submitHandler)}>
@@ -96,6 +102,7 @@ export const ActionFormTemplate = <D extends FieldValues>({
             </ul>
           </Alert>
         )}
+        {isStateUser(user!.user) && <PreSubmissionMessage />}
         <div className="flex gap-2 my-8">
           <Button type="submit">Submit</Button>
           <Button

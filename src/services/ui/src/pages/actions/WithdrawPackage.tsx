@@ -28,14 +28,7 @@ const attachmentInstructions: Record<SetupOptions, ReactElement> = {
 const addlInfoInstructions: Record<SetupOptions, ReactElement> = {
   "Medicaid SPA": (
     <p>
-      Explain your need for withdrawal, or upload supporting documentation.
-      <br />
-      <em>
-        Once you submit this form, a confirmation email is sent to you and to
-        CMS. CMS will use this content to review your package. If CMS needs any
-        additional information, they will follow up by email
-      </em>
-      .
+      Explain your need for withdrawal, or upload supporting documentation. .
     </p>
   ),
   "CHIP SPA": <p>Explain your need for withdrawal.</p>,
