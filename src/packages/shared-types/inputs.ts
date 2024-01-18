@@ -2,6 +2,7 @@ import { DayPicker } from "react-day-picker";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import * as SelectPrimitive from "@radix-ui/react-select";
+import { RHFOption } from "shared-types";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   className?: string;
@@ -28,7 +29,7 @@ export type RadioProps = React.ComponentPropsWithoutRef<
 export type SelectProps = React.ComponentPropsWithoutRef<
   typeof SelectPrimitive.Root
 > & {
-  options: { label: string; value: any }[];
+  options: RHFOption[];
   className?: string;
 };
 
