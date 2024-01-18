@@ -11,6 +11,7 @@ test.describe("homepage", () => {
     await page.goto("/");
     await page.waitForLoadState("networkidle"); // playwright is so fast this is sometimes helpful to slow it down to view results
     const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+    console.log("violations: ", accessibilityScanResults.violations.length);
     expect(accessibilityScanResults.violations).toEqual([]);
   });
 });
