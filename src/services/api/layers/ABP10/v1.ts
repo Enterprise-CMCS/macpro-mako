@@ -35,16 +35,24 @@ const ABP10: FormSchema = {
                   {
                     label: "No",
                     value: "no",
-                    slots: [
-                      {
-                        rhf: "Input",
-                        label: "Describe the approach",
-                        name: "describe_approach",
-                        rules: { required: "* Required" },
-                      },
-                    ],
                   },
                 ],
+              },
+            },
+            {
+              rhf: "Input",
+              label: "Describe the approach",
+              name: "describe_approach",
+              rules: { required: "* Required" },
+              dependency: {
+                conditions: [
+                  {
+                    name: "economy_and_efficeiency_same_approach_as_medicaid_state_plan",
+                    type: "expectedValue",
+                    expectedValue: "no",
+                  },
+                ],
+                effect: { type: "show" },
               },
             },
           ],
