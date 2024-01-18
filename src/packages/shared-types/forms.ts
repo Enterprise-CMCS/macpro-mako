@@ -20,7 +20,6 @@ export interface FormSchema {
 
 export type RHFSlotProps = {
   name: string;
-  readonly?: boolean;
   label?: string;
   labelStyling?: string;
   formItemStyling?: string;
@@ -98,7 +97,6 @@ export type FieldArrayProps<
 > = {
   control: Control<T, unknown>;
   name: TFieldArrayName;
-  readonly?: boolean;
   fields: RHFSlotProps[];
   groupNamePrefix?: string;
   appendText?: string;
@@ -109,7 +107,6 @@ export type FieldGroupProps<
   TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
 > = {
   control: Control<T, unknown>;
-  readonly?: boolean;
   name: TFieldArrayName;
   fields: RHFSlotProps[];
   appendText?: string;

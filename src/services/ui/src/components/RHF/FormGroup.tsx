@@ -3,16 +3,12 @@ import { FormLabel, FormField } from "../Inputs";
 import { DependencyWrapper } from "./dependencyWrapper";
 import { RHFSlot } from "./Slot";
 import * as TRhf from "shared-types";
-import { useReadOnlyContext } from "./utils";
 
 export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
   form: TRhf.FormGroup;
   control: Control<TFieldValues>;
   groupNamePrefix?: string;
-  childReadonly?: boolean;
 }) => {
-  const { readonly } = useReadOnlyContext();
-
   return (
     <DependencyWrapper {...props.form}>
       <div className="py-4">
@@ -28,12 +24,10 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
             <DependencyWrapper key={SLOT.name} {...SLOT}>
               <FormField
                 control={props.control}
-                disabled={props.childReadonly ?? readonly}
                 name={((props.groupNamePrefix ?? "") + SLOT.name) as never}
                 {...(SLOT.rules && { rules: SLOT.rules })}
                 render={RHFSlot({
                   ...SLOT,
-                  readonly: props.childReadonly ?? readonly,
                   control: props.control as Control,
                   groupNamePrefix: props.groupNamePrefix,
                 })}

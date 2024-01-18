@@ -4,12 +4,14 @@ import { Plus } from "lucide-react";
 import { RHFSlot } from "./Slot";
 import { Button, FormField } from "../Inputs";
 import { FieldGroupProps } from "shared-types";
-import { slotInitializer } from "./utils";
+import { slotInitializer, useReadOnlyContext } from "./utils";
 import { useEffect } from "react";
 
 export const FieldGroup = <TFields extends FieldValues>(
   props: FieldGroupProps<TFields>
 ) => {
+  const { readonly } = useReadOnlyContext();
+
   const fieldArr = useFieldArray({
     control: props.control,
     name: props.name,
@@ -39,19 +41,17 @@ export const FieldGroup = <TFields extends FieldValues>(
                   key={adjustedSlotName}
                   control={props.control}
                   name={adjustedSlotName as never}
-                  disabled={!!props.readonly}
                   {...(SLOT.rules && { rules: SLOT.rules })}
                   render={RHFSlot({
                     ...SLOT,
                     control: props.control,
-                    readonly: props.readonly,
                     name: adjustedSlotName,
                     groupNamePrefix: adjustedPrefix,
                   })}
                 />
               );
             })}
-            {!props.readonly && index >= 1 && (
+            {!readonly && index >= 1 && (
               <Button
                 className="self-end m-2 mr-0"
                 variant={"destructive"}
@@ -68,7 +68,7 @@ export const FieldGroup = <TFields extends FieldValues>(
           </div>
         );
       })}
-      {!props.readonly && (
+      {!readonly && (
         <div className="flex items-center mt-2 self-end">
           <Button type="button" size="sm" onClick={onAppend} variant="default">
             <Plus className="h-5 w-5 mr-2" />

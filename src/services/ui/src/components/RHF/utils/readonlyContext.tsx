@@ -10,13 +10,13 @@ export const ReadOnlyContext = createContext<ReadOnlyContextType>({
 
 export const useReadOnlyContext = () => useContext(ReadOnlyContext);
 
-export const ReadOnlyContextProvider = ({
+export const ReadOnlyProvider = ({
   children,
   ...props
 }: PropsWithChildren<ReadOnlyContextType>) => {
   return (
     <ReadOnlyContext.Provider value={props}>
-      {children}
+      <fieldset disabled={!!props.readonly}>{children}</fieldset>
     </ReadOnlyContext.Provider>
   );
 };
