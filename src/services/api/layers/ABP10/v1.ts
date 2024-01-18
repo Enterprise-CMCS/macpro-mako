@@ -27,6 +27,7 @@ const ABP10: FormSchema = {
               name: "economy_and_efficeiency_same_approach_as_medicaid_state_plan",
               label:
                 "Will economy and efficiency be achieved using the same approach as used for Medicaid state plan services?",
+              labelStyling: "font-bold",
               rules: { required: "* Required" },
               props: {
                 className: "w-[150px]",
@@ -40,9 +41,11 @@ const ABP10: FormSchema = {
               },
             },
             {
-              rhf: "Input",
+              rhf: "Textarea",
               label: "Describe the approach",
+              labelStyling: "font-bold",
               name: "describe_approach",
+              formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
               rules: { required: "* Required" },
               dependency: {
                 conditions: [
