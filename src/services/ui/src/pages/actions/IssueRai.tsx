@@ -1,13 +1,13 @@
-import * as I from "@/components/Inputs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { opensearch, PlanType } from "shared-types";
 import { ActionFormTemplate } from "@/pages/actions/template";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
-import { ActionFormIntro } from "@/pages/actions/common";
 import { FormSetup } from "@/pages/actions/setups";
 
+const preSubmitMessage =
+  "Once you submit this form, a confirmation email is sent to you and to the State.";
 export const RaiIssue = ({
   item,
   schema,
@@ -26,22 +26,20 @@ export const RaiIssue = ({
       item={item}
       formController={form}
       submitHandler={handleSubmit}
-      intro={
-        <ActionFormIntro title={"Formal RAI Details"}>
-          <I.RequiredIndicator /> Indicates a required field
-          <p className="font-light mb-6 max-w-4xl">
-            Issuance of a Formal RAI in OneMAC will create a Formal RAI email
-            sent to the State. This will also create a section in the package
-            details summary for you and the State to have record. Please attach
-            the Formal RAI Letter along with any additional information or
-            comments in the provided text box. Once you submit this form, a
-            confirmation email is sent to you and to the State.{" "}
-            <strong className="bold">
-              If you leave this page, you will lose your progress on this form.
-            </strong>
-          </p>
-        </ActionFormIntro>
+      title={"Formal RAI Details"}
+      description={
+        <p className="font-light mb-6 max-w-4xl">
+          Issuance of a Formal RAI in OneMAC will create a Formal RAI email sent
+          to the State. This will also create a section in the package details
+          summary for you and the State to have record. Please attach the Formal
+          RAI Letter along with any additional information or comments in the
+          provided text box. {preSubmitMessage}
+          <strong className="bold">
+            If you leave this page, you will lose your progress on this form.
+          </strong>
+        </p>
       }
+      preSubmitMessage={preSubmitMessage}
       attachments={attachments}
       attachmentFaqLink={"/faq/#medicaid-spa-rai-attachments"}
       requireAddlInfo

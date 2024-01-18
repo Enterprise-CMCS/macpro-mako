@@ -34,6 +34,8 @@ const addlInfoInstructions: Record<SetupOptions, ReactElement> = {
   "CHIP SPA": <p>Explain your need for withdrawal.</p>,
 };
 
+const preSubmitMessage =
+  "Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.";
 export const WithdrawPackage = ({
   item,
   schema,
@@ -55,16 +57,11 @@ export const WithdrawPackage = ({
       item={item}
       formController={form}
       submitHandler={handleSubmit}
-      intro={
-        <ActionFormIntro title={`Withdraw ${item._source.planType} Package`}>
-          <p>
-            Complete this form to withdraw a package. Once complete, you will
-            not be able to resubmit this package. CMS will be notified and will
-            use this content to review your request. If CMS needs any additional
-            information, they will follow up by email.
-          </p>
-        </ActionFormIntro>
+      title={`Withdraw ${item._source.planType} Package`}
+      description={
+        <p>Complete this form to withdraw a package. {preSubmitMessage}</p>
       }
+      preSubmitMessage={preSubmitMessage}
       attachments={attachments}
       attachmentFaqLink={"/faq"}
       attachmentInstructions={

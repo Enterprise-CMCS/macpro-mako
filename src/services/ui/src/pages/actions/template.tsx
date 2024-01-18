@@ -1,9 +1,6 @@
 import { Alert, LoadingSpinner } from "@/components";
-import { PackageInfo } from "@/pages/actions/common";
-import {
-  AttachmentsSizeTypesDesc,
-  PreSubmissionMessage,
-} from "@/pages/form/content";
+import { ActionFormIntro, PackageInfo } from "@/pages/actions/common";
+import { AttachmentsSizeTypesDesc } from "@/pages/form/content";
 import {
   SlotAdditionalInfo,
   SlotAttachments,
@@ -15,7 +12,7 @@ import {
   FormMessage,
   RequiredIndicator,
 } from "@/components/Inputs";
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 import { opensearch } from "shared-types";
 import { isStateUser } from "shared-utils";
 import {
@@ -27,12 +24,15 @@ import {
 import { AttachmentRecipe } from "@/lib";
 import { useModalContext } from "@/pages/form/modals";
 import { useGetUser } from "@/api/useGetUser";
+import { Info } from "lucide-react";
 
 export const ActionFormTemplate = <D extends FieldValues>({
   item,
   formController,
   submitHandler,
-  intro,
+  title,
+  description,
+  preSubmitMessage,
   attachments,
   attachmentFaqLink,
   attachmentInstructions,
@@ -42,7 +42,9 @@ export const ActionFormTemplate = <D extends FieldValues>({
   item: opensearch.main.ItemResult;
   formController: UseFormReturn<D>;
   submitHandler: SubmitHandler<D>;
-  intro: ReactElement;
+  title: string;
+  description: ReactNode;
+  preSubmitMessage?: string;
   attachments: AttachmentRecipe<D>[];
   attachmentFaqLink: string;
   attachmentInstructions?: ReactElement;
@@ -50,12 +52,14 @@ export const ActionFormTemplate = <D extends FieldValues>({
   addlInfoInstructions?: ReactElement;
 }) => {
   const { setCancelModalOpen } = useModalContext();
-  const { data: user } = useGetUser();
   return (
     <Form {...formController}>
       <form onSubmit={formController.handleSubmit(submitHandler)}>
         {formController.formState.isSubmitting && <LoadingSpinner />}
-        {intro}
+        <ActionFormIntro title={title}>
+          <RequiredIndicator /> Indicates a required field
+          {description}
+        </ActionFormIntro>
         <PackageInfo item={item} />
         <h3 className="font-bold text-2xl font-sans">Attachments</h3>
         {attachmentInstructions}
@@ -102,7 +106,12 @@ export const ActionFormTemplate = <D extends FieldValues>({
             </ul>
           </Alert>
         )}
-        {isStateUser(user!.user) && <PreSubmissionMessage />}
+        {preSubmitMessage && (
+          <Alert variant={"infoBlock"} className="my-2 w-5/6 flex-row text-sm">
+            <Info />
+            <p className="ml-2">{preSubmitMessage}</p>
+          </Alert>
+        )}
         <div className="flex gap-2 my-8">
           <Button type="submit">Submit</Button>
           <Button
