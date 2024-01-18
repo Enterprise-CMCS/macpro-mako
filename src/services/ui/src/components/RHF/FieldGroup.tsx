@@ -4,14 +4,12 @@ import { Plus } from "lucide-react";
 import { RHFSlot } from "./Slot";
 import { Button, FormField } from "../Inputs";
 import { FieldGroupProps } from "shared-types";
-import { slotInitializer, useReadOnlyContext } from "./utils";
+import { slotInitializer } from "./utils";
 import { useEffect } from "react";
 
 export const FieldGroup = <TFields extends FieldValues>(
   props: FieldGroupProps<TFields>
 ) => {
-  const { readonly } = useReadOnlyContext();
-
   const fieldArr = useFieldArray({
     control: props.control,
     name: props.name,
@@ -51,7 +49,7 @@ export const FieldGroup = <TFields extends FieldValues>(
                 />
               );
             })}
-            {!readonly && index >= 1 && (
+            {index >= 1 && (
               <Button
                 className="self-end m-2 mr-0"
                 variant={"destructive"}
@@ -68,14 +66,12 @@ export const FieldGroup = <TFields extends FieldValues>(
           </div>
         );
       })}
-      {!readonly && (
-        <div className="flex items-center mt-2 self-end">
-          <Button type="button" size="sm" onClick={onAppend} variant="default">
-            <Plus className="h-5 w-5 mr-2" />
-            {props.appendText ?? "New Group"}
-          </Button>
-        </div>
-      )}
+      <div className="flex items-center mt-2 self-end">
+        <Button type="button" size="sm" onClick={onAppend} variant="default">
+          <Plus className="h-5 w-5 mr-2" />
+          {props.appendText ?? "New Group"}
+        </Button>
+      </div>
     </div>
   );
 };

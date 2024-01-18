@@ -4,14 +4,12 @@ import { Plus, Trash2 } from "lucide-react";
 import { RHFSlot } from "./Slot";
 import { Button, FormField } from "../Inputs";
 import { FieldArrayProps } from "shared-types";
-import { slotInitializer, useReadOnlyContext } from "./utils";
+import { slotInitializer } from "./utils";
 import { useEffect } from "react";
 
 export const RHFFieldArray = <TFields extends FieldValues>(
   props: FieldArrayProps<TFields>
 ) => {
-  const { readonly } = useReadOnlyContext();
-
   const fieldArr = useFieldArray({
     control: props.control,
     name: props.name,
@@ -51,7 +49,7 @@ export const RHFFieldArray = <TFields extends FieldValues>(
                 />
               );
             })}
-            {!readonly && index >= 1 && (
+            {index >= 1 && (
               <Trash2
                 className="self-end mb-4 cursor-pointer stroke-primary"
                 onClick={() => fieldArr.remove(index)}
@@ -60,14 +58,12 @@ export const RHFFieldArray = <TFields extends FieldValues>(
           </div>
         );
       })}
-      {!readonly && (
-        <div className="flex items-center mt-2">
-          <Button type="button" size="sm" onClick={onAppend} variant="outline">
-            <Plus className="h-5 w-5 mr-2" />
-            {props.appendText ?? "New Row"}
-          </Button>
-        </div>
-      )}
+      <div className="flex items-center mt-2">
+        <Button type="button" size="sm" onClick={onAppend} variant="outline">
+          <Plus className="h-5 w-5 mr-2" />
+          {props.appendText ?? "New Row"}
+        </Button>
+      </div>
     </div>
   );
 };
