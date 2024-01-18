@@ -91,12 +91,14 @@ function WebformBody({
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-6">
           <RHFDocument document={data} {...form} readonly={readonly} />
-          <div className="flex justify-between text-blue-700 underline">
-            <Button type="button" onClick={onSave} variant="ghost">
-              Save draft
-            </Button>
-            <Button type="submit">Submit</Button>
-          </div>
+          {!readonly && (
+            <div className="flex justify-between text-blue-700 underline">
+              <Button type="button" onClick={onSave} variant="ghost">
+                Save draft
+              </Button>
+              <Button type="submit">Submit</Button>
+            </div>
+          )}
         </form>
       </Form>
       <Footer />
@@ -124,7 +126,7 @@ export function Webform() {
   return (
     <WebformBody
       data={data}
-      readonly={readonly}
+      readonly={true}
       id={id}
       version={version}
       values={savedData ? JSON.parse(savedData) : defaultValues}
