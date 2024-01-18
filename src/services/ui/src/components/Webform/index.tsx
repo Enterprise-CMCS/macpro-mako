@@ -126,7 +126,7 @@ export function Webform() {
   return (
     <WebformBody
       data={data}
-      readonly={true}
+      readonly={readonly}
       id={id}
       version={version}
       values={savedData ? JSON.parse(savedData) : defaultValues}
