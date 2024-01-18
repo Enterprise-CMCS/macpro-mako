@@ -7,7 +7,6 @@ import { FormSchema } from "shared-types";
 export const RHFDocument = <TFieldValues extends FieldValues>(props: {
   document: FormSchema;
   control: Control<TFieldValues>;
-  readonly?: boolean;
 }) => {
   return (
     <div>

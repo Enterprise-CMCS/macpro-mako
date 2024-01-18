@@ -180,10 +180,7 @@ export const RHFSlot = <
                                   control={control}
                                   name={(groupNamePrefix ?? "") + SLOT.name}
                                   {...(SLOT.rules && { rules: SLOT.rules })}
-                                  render={RHFSlot({
-                                    ...SLOT,
-                                    control,
-                                  })}
+                                  render={RHFSlot({ ...SLOT, control })}
                                 />
                               </div>
                             ))}

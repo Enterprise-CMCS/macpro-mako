@@ -91,7 +91,7 @@ function WebformBody({
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-6">
           <ReadOnlyProvider readonly={readonly}>
-            <RHFDocument document={data} {...form} readonly={readonly} />
+            <RHFDocument document={data} {...form} />
             {!readonly && (
               <div className="flex justify-between text-blue-700 underline">
                 <Button type="button" onClick={onSave} variant="ghost">
