@@ -28,6 +28,12 @@ export const Webforms = () => {
           >
             ABP 3
           </Link>
+          <Link
+            path="/webform/:id/:version"
+            params={{ id: "abp3_1", version: 1 }}
+          >
+            ABP 3.1
+          </Link>
           <Link path="/guides/abp">Implementation Guide</Link>
         </div>
       </section>

@@ -39,9 +39,12 @@ export const RHFSlot = <
   rhf,
   label,
   description,
+  descriptionAbove,
+  descriptionStyling,
   name,
   props,
   labelStyling,
+  formItemStyling,
   groupNamePrefix,
   ...rest
 }: RHFSlotProps & { control: any }): ControllerProps<
@@ -57,8 +60,17 @@ export const RHFSlot = <
     }, []);
 
     return (
-      <FormItem className="flex flex-col gap-1 py-2">
+      <FormItem
+        className={`flex flex-col gap-1 py-2${
+          formItemStyling ? ` ${formItemStyling}` : ""
+        }`}
+      >
         {label && <FormLabel className={labelStyling}>{label}</FormLabel>}
+        {descriptionAbove && (
+          <FormDescription className={descriptionStyling}>
+            {description}
+          </FormDescription>
+        )}
         <FormControl>
           <>
             {/* ----------------------------------------------------------------------------- */}
@@ -131,10 +143,15 @@ export const RHFSlot = <
                       return (
                         <div key={`OPT-${OPT.value}`} className="flex flex-col">
                           <div className="flex gap-2 items-center">
-                            <RadioGroupItem value={OPT.value} />
-                            <FormLabel className="font-normal">
-                              {OPT.label}
-                            </FormLabel>
+                            <RadioGroupItem value={OPT.value} id={OPT.value} />
+                            {
+                              <FormLabel
+                                className="font-normal"
+                                htmlFor={OPT.value}
+                              >
+                                {OPT.label}
+                              </FormLabel>
+                            }
                           </div>
                           {field.value === OPT.value &&
                             OPT.form &&
@@ -184,6 +201,7 @@ export const RHFSlot = <
                       <div key={`CHECK-${OPT.value}`}>
                         <Checkbox
                           label={OPT.label}
+                          value={OPT.value}
                           checked={field.value?.includes(OPT.value)}
                           onCheckedChange={(c) => {
                             const filtered =
@@ -193,6 +211,9 @@ export const RHFSlot = <
                             if (!c) return field.onChange(filtered);
                             field.onChange([...filtered, OPT.value]);
                           }}
+                          dependency={OPT.dependency}
+                          parentValue={field.value}
+                          changeMethod={field.onChange}
                         />
                         {field.value?.includes(OPT.value) &&
                           !!OPT.slots &&
@@ -291,7 +312,9 @@ export const RHFSlot = <
             )}
           </>
         </FormControl>
-        {description && <FormDescription>{description}</FormDescription>}
+        {description && !descriptionAbove && (
+          <FormDescription>{description}</FormDescription>
+        )}
         <FormMessage />
       </FormItem>
     );
