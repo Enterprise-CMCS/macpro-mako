@@ -11,7 +11,7 @@ nav_order: 2
 
 This document outlines our team's process for managing tasks using the JIRA Kanban board. It's designed to provide clarity and consistency on how we track and progress through work items.
 
-## Workflow Stages
+## Kanban Columns
 
 ### Backlog
 
