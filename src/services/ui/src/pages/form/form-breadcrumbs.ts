@@ -1,3 +1,4 @@
+import { Route } from "@/components/Routing/types";
 import { optionCrumbsFromPath } from "@/pages/create/create-breadcrumbs";
 import { submissionFormCrumb } from "@/utils/crumbs";
 
@@ -7,6 +8,6 @@ export const formCrumbsFromPath = (path: string) => {
   const previousOptionsCrumbs = [...optionCrumbsFromPath(path)];
   return [
     ...previousOptionsCrumbs,
-    submissionFormCrumb(path, previousOptionsCrumbs.length),
+    submissionFormCrumb(path as Route, previousOptionsCrumbs.length),
   ];
 };
