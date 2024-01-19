@@ -12,7 +12,6 @@ import {
   SimplePageContainer,
   SectionCard,
 } from "@/components";
-import { FAQ_TARGET } from "@/routes";
 import { submit } from "@/api/submissionService";
 import { PlanType } from "shared-types";
 import {
@@ -110,7 +109,7 @@ export const MedicaidForm = () => {
                     </Inputs.FormLabel>
                     <Link
                       to="/faq/#spa-id-format"
-                      target={FAQ_TARGET}
+                      target={"_blank"}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"
                     >

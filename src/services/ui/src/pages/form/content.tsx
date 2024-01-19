@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { FAQ_TARGET } from "@/routes";
 import { RequiredIndicator } from "@/components/Inputs";
 import { Alert } from "@/components";
 import { Info } from "lucide-react";
@@ -50,7 +49,7 @@ export const AttachmentsSizeTypesDesc = ({
       {
         <Link
           to={faqLink}
-          target={FAQ_TARGET}
+          target={"_blank"}
           rel="noopener noreferrer"
           className="text-blue-700 hover:underline"
         >
@@ -66,7 +65,7 @@ export const AttachmentsSizeTypesDesc = ({
       {
         <Link
           to="/faq/#acceptable-file-formats"
-          target={FAQ_TARGET}
+          target={"_blank"}
           rel="noopener noreferrer"
           className="text-blue-700 hover:underline"
         >

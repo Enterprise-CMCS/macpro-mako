@@ -12,7 +12,6 @@ import {
   SimplePageContainer,
 } from "@/components";
 import * as Inputs from "@/components/Inputs";
-import { FAQ_TARGET } from "@/routes";
 import { PlanType } from "shared-types";
 import {
   zAttachmentOptional,
@@ -105,7 +104,7 @@ export const ChipForm = () => {
                     </Inputs.FormLabel>
                     <Link
                       to="/faq/#spa-id-format"
-                      target={FAQ_TARGET}
+                      target={"_blank"}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"
                     >

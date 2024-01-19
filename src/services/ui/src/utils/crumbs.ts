@@ -1,4 +1,3 @@
-import { ROUTES } from "@/routes";
 import { BreadCrumbConfig } from "@/components";
 import { mapActionLabel, mapSubmissionCrumb } from "@/utils/labelMappers";
 import { Action } from "shared-types";
@@ -8,7 +7,7 @@ export const dashboardCrumb: BreadCrumbConfig = {
   displayText: "Dashboard",
   order: 1,
   default: true,
-  to: ROUTES.DASHBOARD,
+  to: "/dashboard",
 };
 
 export const detailsCrumb = (id: string): BreadCrumbConfig => ({

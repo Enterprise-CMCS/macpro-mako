@@ -31,7 +31,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "system",
         question: "Which system should I use for my state’s submission?",
         answerJSX: (
-          <section id={FAQ_SECTION.SYSTEM}>
+          <section id={"system"}>
             <p>
               Check which system to submit your state plan in with this
               crosswalk training document.

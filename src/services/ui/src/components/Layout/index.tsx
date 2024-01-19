@@ -8,7 +8,6 @@ import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
-import { FAQ_TARGET } from "@/routes";
 import { useUserContext } from "../Context/userContext";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
@@ -182,7 +181,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
         {getLinks(!!data.user, role).map((link) => (
           <NavLink
             to={link.link}
-            target={link.link === "/faq" ? FAQ_TARGET : undefined}
+            target={link.link === "/faq" ? "_blank" : "_self"}
             key={link.name}
             className={setClassBasedOnNav}
           >
@@ -227,7 +226,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 <Link
                   className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
-                  target={link.link === "/faq" ? FAQ_TARGET : undefined}
+                  target={link.link === "/faq" ? "_blank" : "_self"}
                 >
                   {link.name}
                 </Link>

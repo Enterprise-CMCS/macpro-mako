@@ -4,7 +4,6 @@ import { Link } from "@/components/Routing";
 import { PropsWithChildren, ReactElement } from "react";
 import { SimplePageTitle } from "@/pages/create/create-options";
 import { SimplePageContainer } from "@/components";
-import { FAQ_SECTION } from "@/routes";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { optionCrumbsFromPath } from "@/pages/create/create-breadcrumbs";
 export enum EXTERNAL_APP {
@@ -34,7 +33,7 @@ const FAQHelperText = () => (
         className="text-sky-600 hover:text-sky-800 underline"
         target={"_faq"}
         path="/faq"
-        hash={FAQ_SECTION.SYSTEM}
+        hash={"system"}
       >
         Crosswalk from Paper-based State Plan to MACPro and MMDL
       </Link>{" "}
