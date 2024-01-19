@@ -227,7 +227,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 <Link
                   className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
-                  target={link.link === "/faq" ? "_blank" : "_self"}
+                  target={link.link === "/faq" ? FAQ_TAB : "_self"}
                 >
                   {link.name}
                 </Link>
