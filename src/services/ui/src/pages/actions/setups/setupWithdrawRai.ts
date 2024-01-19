@@ -1,10 +1,11 @@
 import { z } from "zod";
+import { zAdditionalInfo, zAttachmentOptional } from "@/pages/form/zod";
 
 export const defaultWithdrawRaiSetup = {
   schema: z.object({
-    additionalInformation: z.string().max(4000),
+    additionalInformation: zAdditionalInfo,
     attachments: z.object({
-      supportingDocumentation: z.array(z.instanceof(File)).nullish(),
+      supportingDocumentation: zAttachmentOptional,
     }),
   }),
   attachments: [
