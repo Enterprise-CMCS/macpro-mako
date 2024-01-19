@@ -12,6 +12,7 @@ import { useUserContext } from "../Context/userContext";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
 import { useNavigate } from "../Routing";
+import { FAQ_TAB } from "../Routing/consts";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
   const isProd = window && window.location.hostname === "mako.cms.gov";
@@ -181,7 +182,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
         {getLinks(!!data.user, role).map((link) => (
           <NavLink
             to={link.link}
-            target={link.link === "/faq" ? "_blank" : "_self"}
+            target={link.link === "/faq" ? FAQ_TAB : "_self"}
             key={link.name}
             className={setClassBasedOnNav}
           >

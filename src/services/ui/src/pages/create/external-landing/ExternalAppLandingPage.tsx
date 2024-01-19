@@ -6,6 +6,7 @@ import { SimplePageTitle } from "@/pages/create/create-options";
 import { SimplePageContainer } from "@/components";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { optionCrumbsFromPath } from "@/pages/create/create-breadcrumbs";
+import { FAQ_TAB } from "@/components/Routing/consts";
 export enum EXTERNAL_APP {
   MAC_PRO = "https://www.medicaid.gov/resources-for-states/medicaid-and-chip-program-macpro-portal/index.html#MACPro",
   MMDL = "https://wms-mmdl.cms.gov/MMDL/faces/portal.jsp",
@@ -31,7 +32,7 @@ const FAQHelperText = () => (
       {/* TODO: Get desired FAQ `target` from Wale */}
       <Link
         className="text-sky-600 hover:text-sky-800 underline"
-        target={"_faq"}
+        target={FAQ_TAB}
         path="/faq"
         hash={"system"}
       >
