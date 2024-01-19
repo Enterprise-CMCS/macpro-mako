@@ -5,6 +5,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api/useGetUser";
 import { Link } from "@/components/Routing";
 import { Button } from "@/components/Inputs";
+import { FAQ_TAB } from "@/components/Routing/consts";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -190,7 +191,7 @@ export const Welcome = () => {
         <div className="flex justify-around items-center text-xl px-10 py-4 max-w-screen-xl mx-auto">
           <h4>Do you have questions or need support?</h4>
           <Button asChild>
-            <Link path={"/faq"} target={"_blank"}>
+            <Link path={"/faq"} target={FAQ_TAB}>
               View FAQ
             </Link>
           </Button>

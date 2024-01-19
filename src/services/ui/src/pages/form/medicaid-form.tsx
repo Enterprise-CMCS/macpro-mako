@@ -21,6 +21,7 @@ import {
 } from "@/pages/form/zod";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
+import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -109,7 +110,7 @@ export const MedicaidForm = () => {
                     </Inputs.FormLabel>
                     <Link
                       to="/faq/#spa-id-format"
-                      target={"_blank"}
+                      target={FAQ_TAB}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"
                     >

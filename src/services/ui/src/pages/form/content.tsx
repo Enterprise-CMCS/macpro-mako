@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { RequiredIndicator } from "@/components/Inputs";
 import { Alert } from "@/components";
 import { Info } from "lucide-react";
+import { FAQ_TAB } from "@/components/Routing/consts";
 
 export const FormIntroText = () => (
   <div>
@@ -49,7 +50,7 @@ export const AttachmentsSizeTypesDesc = ({
       {
         <Link
           to={faqLink}
-          target={"_blank"}
+          target={FAQ_TAB}
           rel="noopener noreferrer"
           className="text-blue-700 hover:underline"
         >
@@ -65,7 +66,7 @@ export const AttachmentsSizeTypesDesc = ({
       {
         <Link
           to="/faq/#acceptable-file-formats"
-          target={"_blank"}
+          target={FAQ_TAB}
           rel="noopener noreferrer"
           className="text-blue-700 hover:underline"
         >
