@@ -1,6 +1,10 @@
-import { Action, ActionRule, SEATOOL_STATUS, finalDispositionStatuses } from "../../shared-types";
-import { isCmsUser, isStateUser, isCmsReadonlyUser, isCmsWriteUser } from "../user-helper";
-import { PackageCheck } from "../packageCheck";
+import {
+  Action,
+  ActionRule,
+  SEATOOL_STATUS,
+  finalDispositionStatuses,
+} from "../../shared-types";
+import { isStateUser, isCmsWriteUser } from "../user-helper";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
@@ -24,7 +28,7 @@ const arEnableWithdrawRaiResponse: ActionRule = {
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     !checker.hasEnabledRaiWithdraw &&
-    isCmsWriteUser(user)
+    isCmsWriteUser(user),
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
@@ -33,7 +37,7 @@ const arDisableWithdrawRaiResponse: ActionRule = {
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
-    isCmsWriteUser(user)
+    isCmsWriteUser(user),
 };
 
 const arWithdrawRaiResponse: ActionRule = {
@@ -47,8 +51,7 @@ const arWithdrawRaiResponse: ActionRule = {
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
-    !checker.hasStatus(finalDispositionStatuses)
-    && isStateUser(user),
+    !checker.hasStatus(finalDispositionStatuses) && isStateUser(user),
 };
 
 export default [

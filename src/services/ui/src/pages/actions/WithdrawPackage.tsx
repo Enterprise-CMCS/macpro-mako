@@ -7,7 +7,35 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { ActionFormTemplate } from "@/pages/actions/template";
 import { FormSetup } from "@/pages/actions/setups";
+import { SetupOptions } from "@/pages";
+import { ReactElement } from "react";
 
+const attachmentInstructions: Record<SetupOptions, ReactElement> = {
+  "Medicaid SPA": (
+    <p>
+      Upload your supporting documentation for withdrawal or explain your need
+      for withdrawal in the Additional Information section.
+    </p>
+  ),
+  "CHIP SPA": (
+    <p className="font-normal mb-4">
+      Official withdrawal letters are required and must be on state letterhead
+      signed by the State Medicaid Director or CHIP Director.
+    </p>
+  ),
+};
+
+const addlInfoInstructions: Record<SetupOptions, ReactElement> = {
+  "Medicaid SPA": (
+    <p>
+      Explain your need for withdrawal, or upload supporting documentation. .
+    </p>
+  ),
+  "CHIP SPA": <p>Explain your need for withdrawal.</p>,
+};
+
+const preSubmitMessage =
+  "Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.";
 export const WithdrawPackage = ({
   item,
   schema,
@@ -21,20 +49,6 @@ export const WithdrawPackage = ({
   const handleSubmit = useActionSubmitHandler({
     formHookReturn: form,
     authority: item?._source.authority as PlanType,
-    addDataConditions: [
-      (data) => {
-        if (
-          !data.attachments.supportingDocumentation &&
-          !data.additionalInformation
-        ) {
-          return {
-            message: "An Attachment or Additional Information is required.",
-          };
-        } else {
-          return null;
-        }
-      },
-    ],
   });
 
   if (!item) return <Navigate path={"/"} />; // Prevents optionals below
@@ -43,35 +57,18 @@ export const WithdrawPackage = ({
       item={item}
       formController={form}
       submitHandler={handleSubmit}
-      intro={
-        <ActionFormIntro title={`Withdraw ${item._source.planType} Package`}>
-          <p>
-            Complete this form to withdraw a package. Once complete, you will
-            not be able to resubmit this package. CMS will be notified and will
-            use this content to review your request. If CMS needs any additional
-            information, they will follow up by email.
-          </p>
-        </ActionFormIntro>
+      title={`Withdraw ${item._source.planType} Package`}
+      description={
+        <p>Complete this form to withdraw a package. {preSubmitMessage}</p>
       }
+      preSubmitMessage={preSubmitMessage}
       attachments={attachments}
       attachmentFaqLink={"/faq"}
       attachmentInstructions={
-        <p className="font-normal mb-4">
-          Official withdrawal letters are required and must be on state
-          letterhead signed by the State Medicaid Director or CHIP Director.
-        </p>
+        attachmentInstructions[item!._source.planType as string as SetupOptions]
       }
       addlInfoInstructions={
-        <p>
-          Explain your need for withdrawal, or upload supporting documentation.
-          <br />
-          <em>
-            Once you submit this form, a confirmation email is sent to you and
-            to CMS. CMS will use this content to review your package. If CMS
-            needs any additional information, they will follow up by email
-          </em>
-          .
-        </p>
+        addlInfoInstructions[item!._source.planType as string as SetupOptions]
       }
     />
   );
