@@ -1,5 +1,4 @@
 import {
-  AdditionalInfo,
   Alert,
   CardWithTopBorder,
   ConfirmationModal,
@@ -12,7 +11,7 @@ import { useGetUser } from "@/api/useGetUser";
 import { Action, opensearch, UserRoles } from "shared-types";
 import { PackageCheck } from "shared-utils";
 import { useQuery } from "@/hooks";
-import { getAttachmentUrl, useGetItem } from "@/api";
+import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
 import { useLocation } from "react-router-dom";
