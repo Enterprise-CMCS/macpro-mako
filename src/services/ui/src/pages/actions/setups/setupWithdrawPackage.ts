@@ -6,12 +6,28 @@ import {
 } from "@/pages/form/zod";
 
 export const medicaidWithdrawPackageSetup = {
-  schema: z.object({
-    additionalInformation: zAdditionalInfo,
-    attachments: z.object({
-      supportingDocumentation: zAttachmentOptional,
+  schema: z
+    .object({
+      additionalInformation: zAdditionalInfo.optional(),
+      attachments: z.object({
+        supportingDocumentation: zAttachmentOptional,
+      }),
+    })
+    .superRefine((data, ctx) => {
+      if (
+        !data.attachments.supportingDocumentation?.length &&
+        data.additionalInformation === undefined
+      ) {
+        ctx.addIssue({
+          message: "An Attachment or Additional Information is required.",
+          code: z.ZodIssueCode.custom,
+          fatal: true,
+        });
+        // Zod says this is to appease types
+        // https://github.com/colinhacks/zod?tab=readme-ov-file#type-refinements
+        return z.NEVER;
+      }
     }),
-  }),
   attachments: [
     {
       name: "supportingDocumentation",
@@ -23,7 +39,7 @@ export const medicaidWithdrawPackageSetup = {
 
 export const chipWithdrawPackageSetup = {
   schema: z.object({
-    additionalInformation: zAdditionalInfo,
+    additionalInformation: zAdditionalInfo.optional(),
     attachments: z.object({
       officialWithdrawalLetter: zAttachmentRequired({ min: 1 }),
     }),
