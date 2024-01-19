@@ -36,6 +36,7 @@ This document outlines our team's process for managing tasks using the JIRA Kanb
 ### In Testing
 
 - **Quality Assurance**: Tasks in this column are undergoing thorough testing by the QA team.
+- **Env URL**: When a developer moves a ticket into In Testing, the dev should make a comment on the ticket that includes the deployed environment's URL, as well as probably tagging the QA team for convenience.
 - **Hands Off**: Developers should not push code that updates environments for work that is In Testing, without coordinating with the QA team.  This is to prevent deployments interfering with the QA process.
 - **Bug Reporting**: Any issues discovered during testing are reported and linked to the task.
 - **Failures**: If a ticket fails QA for reasons that should not be addressed separately (like a bug), the QA team will move the ticket back to In Review.
