@@ -4,7 +4,6 @@ import IDMInstructionsforOneMACUsers from "../../../assets/onboarding/IDMInstruc
 import OneMACIDMGuide from "../../../assets/onboarding/OneMACIDMGuide.pdf";
 import OneMACStateUserGuide from "../../../assets/onboarding/OneMACStateUserGuide.pdf";
 import OneMACCMSUserGuide from "../../../assets/onboarding/OneMACCMSUserGuide.pdf";
-import { FAQ_SECTION } from "@/routes";
 import { FILE_TYPES } from "shared-types/uploads";
 
 type QuestionAnswer = {
