@@ -1,16 +1,9 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import {
-  SeaToolRecordsToDelete,
-  SeaToolTransform,
-  transformSeatoolData,
-  transformOnemac,
-  transformOnemacLegacy,
-  Action,
-} from "shared-types";
 
-import { main } from "shared-types/opensearch";
+import * as main from "shared-types/opensearch/main";
+import { Action } from "shared-types";
 
 type Event = {
   /**
@@ -42,9 +35,8 @@ if (!process.env.osDomain) {
 const osDomain: string = process.env.osDomain;
 
 export const seatool: Handler<Event> = async (event) => {
-  const seaToolRecords: (SeaToolTransform | SeaToolRecordsToDelete)[] = [];
-  const docObject: Record<string, SeaToolTransform | SeaToolRecordsToDelete> =
-    {};
+  const seaToolRecords: any[] = [];
+  const docObject: any = {};
   const rawArr: any[] = [];
 
   for (const recordKey of Object.keys(event.records)) {
@@ -58,7 +50,9 @@ export const seatool: Handler<Event> = async (event) => {
         const id: string = JSON.parse(decode(key));
         const record = { id, ...JSON.parse(decode(value)) };
         const validPlanTypeIds = [122, 123, 124, 125];
-        const result = transformSeatoolData(id).safeParse(record);
+        const result = main.transforms
+          .transformSeatoolData(id)
+          .safeParse(record);
         if (!result.success) {
           console.log(
             "SEATOOL Validation Error. The following record failed to parse: ",
@@ -78,7 +72,8 @@ export const seatool: Handler<Event> = async (event) => {
       } else {
         // to handle deletes
         const id: string = JSON.parse(decode(key));
-        const seaTombstone: SeaToolRecordsToDelete = {
+        docObject[id] = {
+          // tombstone
           id,
           actionType: null,
           actionTypeId: null,
@@ -105,12 +100,7 @@ export const seatool: Handler<Event> = async (event) => {
           subject: null,
         };
 
-        docObject[id] = seaTombstone;
-
-        console.log(
-          `Record ${id} has been nullified with the following data: `,
-          JSON.stringify(seaTombstone)
-        );
+        console.log(`Record ${id} has been nullified with a tombstone.`);
       }
     }
   }
@@ -152,23 +142,41 @@ export const onemacDataTransform = (props: { key: string; value?: string }) => {
       !record.submitterName || record.submitterName === "-- --";
     if (notOriginatingFromOnemacLegacy) return null;
 
-    const result = transformOnemacLegacy(id).safeParse(record);
+    const result = main.transforms.transformOnemacLegacy(id).safeParse(record);
     return result.success ? result.data : null;
   }
 
   // NOTE: Make official decision on initial type by MVP - timebomb
   const isNewRecord = !record?.actionType;
   if (isNewRecord) {
-    const result = transformOnemac(id).safeParse(record);
+    const result = main.transforms.transformOnemac(id).safeParse(record);
     return result.success ? result.data : null;
   }
 
   // --------- Package-Actions ---------//
-  const transformFunction = main.transforms[record.actionType as Action];
-  if (transformFunction) {
-    const result = transformFunction(id).safeParse(record);
+
+  if (
+    record.actionType === Action.DISABLE_RAI_WITHDRAW ||
+    record.actionType === Action.ENABLE_RAI_WITHDRAW
+  ) {
+    const result = main.transforms
+      .transformToggleWithdrawRaiEnabled(id)
+      .safeParse(record);
     return result.success ? result.data : null;
   }
+
+  if (record.actionType === Action.WITHDRAW_RAI) {
+    const result = main.transforms.transformRaiWithdraw(id).safeParse(record);
+    return result.success ? result.data : null;
+  }
+
+  if (record.actionType === Action.WITHDRAW_PACKAGE) {
+    const result = main.transforms
+      .transformWithdrawPackage(id)
+      .safeParse(record);
+    return result.success ? result.data : null;
+  }
+
   return null;
 };
 
