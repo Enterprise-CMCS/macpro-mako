@@ -168,37 +168,19 @@ export const onemacDataTransform = (props: { key: string; value?: string }) => {
 
   // --------- Package-Actions ---------//
   // TODO: remove transform package-action below
-
-  if (record.actionType === Action.ENABLE_RAI_WITHDRAW) {
-    const result = transformToggleWithdrawRaiEnabled(id).safeParse(record);
+  const actionTransforms = {
+    [Action.ENABLE_RAI_WITHDRAW]: transformToggleWithdrawRaiEnabled,
+    [Action.DISABLE_RAI_WITHDRAW]: transformToggleWithdrawRaiEnabled, // Assuming it's the same as ENABLE
+    [Action.ISSUE_RAI]: transformRaiIssue,
+    [Action.RESPOND_TO_RAI]: transformRaiResponse,
+    [Action.WITHDRAW_RAI]: transformRaiWithdraw,
+    [Action.WITHDRAW_PACKAGE]: transformWithdrawPackage,
+  };
+  const transformFunction = actionTransforms[record.actionType as Action];
+  if (transformFunction) {
+    const result = transformFunction(id).safeParse(record);
     return result.success ? result.data : null;
   }
-
-  if (record.actionType === Action.DISABLE_RAI_WITHDRAW) {
-    const result = transformToggleWithdrawRaiEnabled(id).safeParse(record);
-    return result.success ? result.data : null;
-  }
-
-  if (record.actionType === Action.ISSUE_RAI) {
-    const result = transformRaiIssue(id).safeParse(record);
-    return result.success ? result.data : null;
-  }
-
-  if (record.actionType === Action.RESPOND_TO_RAI) {
-    const result = transformRaiResponse(id).safeParse(record);
-    return result.success ? result.data : null;
-  }
-
-  if (record.actionType === Action.WITHDRAW_RAI) {
-    const result = transformRaiWithdraw(id).safeParse(record);
-    return result.success ? result.data : null;
-  }
-
-  if (record.actionType === Action.WITHDRAW_PACKAGE) {
-    const result = transformWithdrawPackage(id).safeParse(record);
-    return result.success ? result.data : null;
-  }
-
   return null;
 };
 
