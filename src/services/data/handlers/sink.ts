@@ -7,8 +7,6 @@ import {
   transformSeatoolData,
   transformOnemac,
   transformOnemacLegacy,
-  transformRaiIssue,
-  transformRaiResponse,
   transformRaiWithdraw,
   transformWithdrawPackage,
   transformToggleWithdrawRaiEnabled,
@@ -170,9 +168,9 @@ export const onemacDataTransform = (props: { key: string; value?: string }) => {
   // TODO: remove transform package-action below
   const actionTransforms = {
     [Action.ENABLE_RAI_WITHDRAW]: transformToggleWithdrawRaiEnabled,
-    [Action.DISABLE_RAI_WITHDRAW]: transformToggleWithdrawRaiEnabled, // Assuming it's the same as ENABLE
-    [Action.ISSUE_RAI]: transformRaiIssue,
-    [Action.RESPOND_TO_RAI]: transformRaiResponse,
+    [Action.DISABLE_RAI_WITHDRAW]: transformToggleWithdrawRaiEnabled,
+    [Action.ISSUE_RAI]: null,
+    [Action.RESPOND_TO_RAI]: null,
     [Action.WITHDRAW_RAI]: transformRaiWithdraw,
     [Action.WITHDRAW_PACKAGE]: transformWithdrawPackage,
   };

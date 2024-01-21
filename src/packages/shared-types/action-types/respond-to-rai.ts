@@ -13,12 +13,3 @@ export const raiResponseSchema = z.object({
   submitterEmail: z.string(),
 });
 export type RaiResponse = z.infer<typeof raiResponseSchema>;
-
-export const transformRaiResponse = (id: string) => {
-  return raiResponseSchema.transform((data) => ({
-    id,
-  }));
-};
-export type RaiResponseTransform = z.infer<
-  ReturnType<typeof transformRaiResponse>
->;

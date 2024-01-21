@@ -2,8 +2,6 @@ import {
   SeaToolTransform,
   OnemacTransform,
   OnemacLegacyTransform,
-  RaiIssueTransform,
-  RaiResponseTransform,
   RaiWithdrawTransform,
   WithdrawPackageTransform,
   ToggleWithdrawRaiEnabledTransform,
@@ -21,8 +19,6 @@ import { ItemResult as Changelog } from "./changelog";
 export type Document = OnemacTransform &
   OnemacLegacyTransform &
   SeaToolTransform &
-  RaiIssueTransform &
-  RaiResponseTransform &
   RaiWithdrawTransform &
   WithdrawPackageTransform &
   ToggleWithdrawRaiEnabledTransform & { changelog?: Changelog[] };

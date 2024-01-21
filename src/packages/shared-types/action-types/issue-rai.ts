@@ -12,10 +12,3 @@ export const raiIssueSchema = z.object({
   submitterEmail: z.string(),
 });
 export type RaiIssue = z.infer<typeof raiIssueSchema>;
-
-export const transformRaiIssue = (id: string) => {
-  return raiIssueSchema.transform((data) => ({
-    id,
-  }));
-};
-export type RaiIssueTransform = z.infer<ReturnType<typeof transformRaiIssue>>;
