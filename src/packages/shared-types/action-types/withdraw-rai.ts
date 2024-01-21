@@ -13,13 +13,3 @@ export const raiWithdrawSchema = z.object({
   submitterEmail: z.string(),
 });
 export type RaiWithdraw = z.infer<typeof raiWithdrawSchema>;
-
-export const transformRaiWithdraw = (id: string) => {
-  return raiWithdrawSchema.transform((data) => ({
-    id,
-    raiWithdrawEnabled: false,
-  }));
-};
-export type RaiWithdrawTransform = z.infer<
-  ReturnType<typeof transformRaiWithdraw>
->;

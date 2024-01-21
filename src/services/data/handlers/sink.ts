@@ -7,11 +7,10 @@ import {
   transformSeatoolData,
   transformOnemac,
   transformOnemacLegacy,
-  transformRaiWithdraw,
-  transformWithdrawPackage,
-  transformToggleWithdrawRaiEnabled,
   Action,
 } from "shared-types";
+
+import { main } from "shared-types/opensearch";
 
 type Event = {
   /**
@@ -165,16 +164,7 @@ export const onemacDataTransform = (props: { key: string; value?: string }) => {
   }
 
   // --------- Package-Actions ---------//
-  // TODO: remove transform package-action below
-  const actionTransforms = {
-    [Action.ENABLE_RAI_WITHDRAW]: transformToggleWithdrawRaiEnabled,
-    [Action.DISABLE_RAI_WITHDRAW]: transformToggleWithdrawRaiEnabled,
-    [Action.ISSUE_RAI]: null,
-    [Action.RESPOND_TO_RAI]: null,
-    [Action.WITHDRAW_RAI]: transformRaiWithdraw,
-    [Action.WITHDRAW_PACKAGE]: transformWithdrawPackage,
-  };
-  const transformFunction = actionTransforms[record.actionType as Action];
+  const transformFunction = main.transforms[record.actionType as Action];
   if (transformFunction) {
     const result = transformFunction(id).safeParse(record);
     return result.success ? result.data : null;
