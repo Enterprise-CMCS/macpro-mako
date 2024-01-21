@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { onemacAttachmentSchema } from "./attachments";
+import { onemacAttachmentSchema } from "./../attachments";
 
 // This is the event schema we can expect streaming from legacy onemac.
 // It should be used by the sink to safe parse and then transform before publishing to opensearch.
