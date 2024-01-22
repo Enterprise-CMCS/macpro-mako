@@ -51,7 +51,11 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
-    const activeSubmissionTypes = [PlanType.CHIP_SPA, PlanType.MED_SPA];
+    const activeSubmissionTypes = [
+      PlanType.CHIP_SPA,
+      PlanType.MED_SPA,
+      PlanType["1915b"],
+    ];
     if (!activeSubmissionTypes.includes(body.authority)) {
       return response({
         statusCode: 400,

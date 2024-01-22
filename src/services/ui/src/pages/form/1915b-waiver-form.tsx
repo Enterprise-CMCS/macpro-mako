@@ -24,7 +24,7 @@ import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
-  id: zSpaIdSchema,
+  id: z.string(),
   additionalInformation: z.string().max(4000).optional(),
   // attachments: z.object({
   //   cmsForm179: zAttachmentRequired({
@@ -73,8 +73,13 @@ export const WaiverForm1915B = () => {
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
   const handleSubmit: SubmitHandler<Waiver1915B> = async (formData) => {
     try {
+      // AK-0260.R04.02
       await submit<Waiver1915B>({
-        data: formData,
+        data: {
+          id: formData.id,
+          proposedEffectiveDate: new Date(),
+          additionalInformation: "testing",
+        },
         endpoint: "/submit",
         user,
         authority: PlanType["1915b"],
