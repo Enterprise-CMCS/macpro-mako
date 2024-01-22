@@ -69,6 +69,11 @@ export const submit = async (event: APIGatewayEvent) => {
     const pool = await sql.connect(config);
     console.log(body);
 
+    const formattedSpaTypeName: Record<string, string> = {
+      [PlanType["1915b"]]: "1915 (b) Waiver",
+      // [PlanType["1915c"]]: "1915 (c) Waiver",
+    };
+
     const spaQuery = `
       Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
         values ('${body.id}'
@@ -83,16 +88,25 @@ export const submit = async (event: APIGatewayEvent) => {
     `;
 
     const waiverQuery = `
-    Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
+    Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, SPA_Type_ID)
       values ('${body.id}'
         ,'${body.state}'
-        ,(Select Region_ID from SEA.dbo.States where State_Code = '${body.state}')
-        ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${body.authority}')
+        ,(Select Region_ID from SEA.dbo.States where State_Code = '${
+          body.state
+        }')
+        ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${
+          body.authority
+        }')
         ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
         ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
-        ,dateadd(s, convert(int, left(${body.proposedEffectiveDate}, 10)), cast('19700101' as datetime))
+        ,dateadd(s, convert(int, left(${
+          body.proposedEffectiveDate
+        }, 10)), cast('19700101' as datetime))
         ,(Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = 'Pending')
-        ,0)
+        ,0
+        ,(Select SPA_Type_ID from dbo.SPA_Type where SPA_Type_Name = '${
+          formattedSpaTypeName[body.authority as PlanType]
+        }'))
   `;
 
     const queries: Record<PlanType, string> = {
