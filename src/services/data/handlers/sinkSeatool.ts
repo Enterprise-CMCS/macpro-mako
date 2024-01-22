@@ -22,34 +22,11 @@ export const seatool_main = async (event: KafkaEvent) => {
   for (const recordKey of Object.keys(event.records)) {
     for (const seatoolRecord of event.records[recordKey]) {
       const { key, value } = seatoolRecord;
+      const id: string = JSON.parse(decode(key));
 
-      if (value) {
-        const id: string = JSON.parse(decode(key));
-        const record = { id, ...JSON.parse(decode(value)) };
-        const validPlanTypeIds = [122, 123, 124, 125];
-        const result = main.transforms
-          .transformSeatoolData(id)
-          .safeParse(record);
-        if (!result.success) {
-          console.log(
-            "SEATOOL Validation Error. The following record failed to parse: ",
-            JSON.stringify(record),
-            "Because of the following Reason(s):",
-            result.error.message
-          );
-        } else {
-          if (
-            result.data.planTypeId &&
-            validPlanTypeIds.includes(result.data.planTypeId)
-          ) {
-            records[id] = result.data;
-          }
-        }
-      } else {
-        // to handle deletes
-        const id: string = JSON.parse(decode(key));
+      // Handle deletes and return
+      if (!value) {
         records[id] = {
-          // tombstone
           id,
           actionType: null,
           actionTypeId: null,
@@ -75,8 +52,27 @@ export const seatool_main = async (event: KafkaEvent) => {
           submissionDate: null,
           subject: null,
         };
+        return;
+      }
 
-        console.log(`Record ${id} has been nullified with a tombstone.`);
+      // Handle everything else
+      const record = { id, ...JSON.parse(decode(value)) };
+      const result = main.transforms.transformSeatoolData(id).safeParse(record);
+      if (!result.success) {
+        console.log(
+          "SEATOOL Validation Error. The following record failed to parse: ",
+          JSON.stringify(record),
+          "Because of the following Reason(s):",
+          result.error.message
+        );
+      } else {
+        const validPlanTypeIds = [122, 123, 124, 125];
+        if (
+          result.data.planTypeId &&
+          validPlanTypeIds.includes(result.data.planTypeId)
+        ) {
+          records[id] = result.data;
+        }
       }
     }
   }

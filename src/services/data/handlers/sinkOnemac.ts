@@ -46,7 +46,16 @@ export const onemac_main = async (event: KafkaEvent) => {
         const result = main.transforms
           .transformOnemacLegacy(id)
           .safeParse(record);
-        if (result.success) ACC.push(result.data);
+        if (result.success) {
+          ACC.push(result.data);
+        } else {
+          console.log(
+            "LEGACY Validation Error. The following record failed to parse: ",
+            JSON.stringify(record),
+            "Because of the following Reason(s):",
+            result.error.message
+          );
+        }
         return;
       }
 
@@ -68,7 +77,18 @@ export const onemac_main = async (event: KafkaEvent) => {
               .safeParse(record);
         }
       })();
-      if (result?.success) ACC.push(result.data);
+      if (result) {
+        if (result?.success) {
+          ACC.push(result.data);
+        } else {
+          console.log(
+            "ONEMAC Validation Error. The following record failed to parse: ",
+            JSON.stringify(record),
+            "Because of the following Reason(s):",
+            result?.error.message
+          );
+        }
+      }
     });
 
     return ACC;
