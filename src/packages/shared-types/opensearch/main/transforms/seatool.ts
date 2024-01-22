@@ -105,7 +105,7 @@ const getFinalDispositionDate = (status: string, record: SeaTool) => {
     : null;
 };
 
-export const transformSeatoolData = (id: string) => {
+export const seatool = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
@@ -147,10 +147,3 @@ export const transformSeatoolData = (id: string) => {
     };
   });
 };
-
-// export type SeaToolRecordsToDelete = Omit<
-//   {
-//     [Property in keyof SeaToolTransform]: null;
-//   },
-//   "id"
-// > & { id: string };

@@ -57,7 +57,7 @@ export const seatool_main = async (event: KafkaEvent) => {
 
       // Handle everything else
       const record = { id, ...JSON.parse(decode(value)) };
-      const result = main.transforms.transformSeatoolData(id).safeParse(record);
+      const result = main.transforms.seatool(id).safeParse(record);
       if (!result.success) {
         console.log(
           "SEATOOL Validation Error. The following record failed to parse: ",

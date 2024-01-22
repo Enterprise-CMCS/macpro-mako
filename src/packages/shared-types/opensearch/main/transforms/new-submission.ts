@@ -1,6 +1,6 @@
 import { onemacSchema, handleAttachment } from "./../../../../shared-types";
 
-export const transformOnemac = (id: string) => {
+export const newSubmission = (id: string) => {
   return onemacSchema.transform((data) => {
     const transformedData = {
       id,

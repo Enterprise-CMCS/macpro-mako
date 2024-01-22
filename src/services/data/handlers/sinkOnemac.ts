@@ -43,9 +43,7 @@ export const onemac_main = async (event: KafkaEvent) => {
         record?.submitterName && // Is originally from Legacy
         record?.submitterName !== "-- --" // Is originally from Legacy
       ) {
-        const result = main.transforms
-          .transformOnemacLegacy(id)
-          .safeParse(record);
+        const result = main.transforms.onemacLegacy(id).safeParse(record);
         if (result.success) {
           ACC.push(result.data);
         } else {
@@ -63,18 +61,16 @@ export const onemac_main = async (event: KafkaEvent) => {
       const result = (() => {
         switch (record?.actionType) {
           case undefined:
-            return main.transforms.transformOnemac(id).safeParse(record);
+            return main.transforms.newSubmission(id).safeParse(record);
           case Action.DISABLE_RAI_WITHDRAW:
           case Action.ENABLE_RAI_WITHDRAW:
             return main.transforms
-              .transformToggleWithdrawRaiEnabled(id)
+              .toggleWithdrawRaiEnabled(id)
               .safeParse(record);
           case Action.WITHDRAW_RAI:
-            return main.transforms.transformRaiWithdraw(id).safeParse(record);
+            return main.transforms.raiWithdraw(id).safeParse(record);
           case Action.WITHDRAW_PACKAGE:
-            return main.transforms
-              .transformWithdrawPackage(id)
-              .safeParse(record);
+            return main.transforms.withdrawPackage(id).safeParse(record);
         }
       })();
       if (result) {
