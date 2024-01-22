@@ -31,8 +31,13 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
     return (
       <>
         <POP.Popover>
-          <POP.PopoverTrigger disabled={!actions.length} className="block ml-3">
+          <POP.PopoverTrigger
+            disabled={!actions.length}
+            className="block ml-3"
+            aria-label="Available actions"
+          >
             <EllipsisVerticalIcon
+              aria-label="record actions"
               className={cn(
                 "w-8 ",
                 actions.length ? "text-blue-700" : "text-gray-400"
@@ -50,6 +55,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
                     )}
                     to={`/action/${data.id}/${action}`}
                     key={`${idx}-${action}`}
+                    aria-label={action}
                   >
                     {mapActionLabel(action)}
                   </Link>
