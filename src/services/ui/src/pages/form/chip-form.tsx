@@ -12,7 +12,6 @@ import {
   SimplePageContainer,
 } from "@/components";
 import * as Inputs from "@/components/Inputs";
-import { FAQ_TARGET } from "@/routes";
 import { PlanType } from "shared-types";
 import {
   zAttachmentOptional,
@@ -22,6 +21,7 @@ import {
 import * as Content from "@/pages/form/content";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
+import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -105,7 +105,7 @@ export const ChipForm = () => {
                     </Inputs.FormLabel>
                     <Link
                       to="/faq/#spa-id-format"
-                      target={FAQ_TARGET}
+                      target={FAQ_TAB}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"
                     >

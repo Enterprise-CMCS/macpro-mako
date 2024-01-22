@@ -1,15 +1,16 @@
 import { z } from "zod";
+import {
+  zAdditionalInfo,
+  zAttachmentOptional,
+  zAttachmentRequired,
+} from "@/pages/form/zod";
 
 export const defaultIssueRaiSetup = {
   schema: z.object({
-    additionalInformation: z.string().max(4000),
+    additionalInformation: zAdditionalInfo,
     attachments: z.object({
-      formalRaiLetter: z
-        .array(z.instanceof(File))
-        .refine((value) => value.length > 0, {
-          message: "Required",
-        }),
-      other: z.array(z.instanceof(File)).optional(),
+      formalRaiLetter: zAttachmentRequired({ min: 1 }),
+      other: zAttachmentOptional,
     }),
   }),
   attachments: [
