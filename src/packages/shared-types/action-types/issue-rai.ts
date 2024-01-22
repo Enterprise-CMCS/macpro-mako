@@ -1,12 +1,12 @@
 import { z } from "zod";
-import { onemacAttachmentSchema } from "../attachments";
+import { attachmentSchema } from "../attachments";
 
 export const raiIssueSchema = z.object({
   id: z.string(),
   authority: z.string(),
   origin: z.string(),
   requestedDate: z.number(),
-  attachments: z.array(onemacAttachmentSchema).nullish(),
+  attachments: z.array(attachmentSchema).nullish(),
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),

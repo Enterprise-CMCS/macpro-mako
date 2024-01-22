@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { onemacAttachmentSchema } from "../attachments";
+import { attachmentSchema } from "../attachments";
 
 export const raiWithdrawSchema = z.object({
   id: z.string(),
@@ -7,7 +7,7 @@ export const raiWithdrawSchema = z.object({
   origin: z.string(),
   requestedDate: z.number(),
   withdrawnDate: z.number(),
-  attachments: z.array(onemacAttachmentSchema).nullish(),
+  attachments: z.array(attachmentSchema).nullish(),
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),

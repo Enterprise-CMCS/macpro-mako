@@ -26,14 +26,14 @@ export const attachmentTitleMap: Record<string, string> = {
 export type AttachmentKey = keyof typeof attachmentTitleMap;
 export type AttachmentTitle = typeof attachmentTitleMap[AttachmentKey];
 
-export const onemacAttachmentSchema = z.object({
+export const attachmentSchema = z.object({
   filename: z.string(),
   title: z.string(),
   bucket: z.string(),
   key: z.string(),
   uploadDate: z.number(),
 });
-export type OnemacAttachmentSchema = z.infer<typeof onemacAttachmentSchema>;
+export type Attachment = z.infer<typeof attachmentSchema>;
 
 // Attachment schema for legacy records
 export const legacyAttachmentSchema = z.object({
@@ -47,7 +47,7 @@ export type LegacyAttachment = z.infer<typeof legacyAttachmentSchema>;
 
 export function handleLegacyAttachment(
   attachment: LegacyAttachment
-): OnemacAttachmentSchema | null {
+): Attachment | null {
   const parsedUrl = s3ParseUrl(attachment.url || "");
   if (!parsedUrl) return null;
   const bucket = parsedUrl.bucket;
@@ -59,5 +59,5 @@ export function handleLegacyAttachment(
     uploadDate,
     bucket,
     key,
-  } as OnemacAttachmentSchema;
+  } as Attachment;
 }

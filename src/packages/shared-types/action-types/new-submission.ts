@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { onemacAttachmentSchema } from "./../attachments";
+import { attachmentSchema } from "./../attachments";
 
 // This is the event schema for ne submissions from our system
 export const onemacSchema = z.object({
@@ -8,7 +8,7 @@ export const onemacSchema = z.object({
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),
-  attachments: z.array(onemacAttachmentSchema).nullish(),
+  attachments: z.array(attachmentSchema).nullish(),
   raiWithdrawEnabled: z.boolean().default(false),
 });
 

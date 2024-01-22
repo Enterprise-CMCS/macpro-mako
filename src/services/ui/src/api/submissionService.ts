@@ -1,6 +1,6 @@
 import { API } from "aws-amplify";
 import {
-  OnemacAttachmentSchema,
+  Attachment,
   PlanType,
   ReactQueryApiError,
   Action,
@@ -35,9 +35,7 @@ type UploadRecipe = PreSignedURL & {
 
 /** Pass in an array of UploadRecipes and get a back-end compatible object
  * to store attachment data */
-const buildAttachmentObject = (
-  recipes: UploadRecipe[]
-): OnemacAttachmentSchema[] => {
+const buildAttachmentObject = (recipes: UploadRecipe[]): Attachment[] => {
   return recipes
     .map(
       (r) =>
@@ -47,7 +45,7 @@ const buildAttachmentObject = (
           title: r.title,
           bucket: r.bucket,
           uploadDate: Date.now(),
-        } as OnemacAttachmentSchema)
+        } as Attachment)
     )
     .flat();
 };
