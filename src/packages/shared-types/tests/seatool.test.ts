@@ -13,7 +13,7 @@ describe("seatool has valid data", () => {
   it("can be transformed into a new object", () => {
     for (const record of seaToolRecords) {
       const transformedRecord = main.transforms
-        .transformSeatoolData("randomid")
+        .seatool("randomid")
         .parse(record);
 
       expect(transformedRecord.id).toEqual("randomid");

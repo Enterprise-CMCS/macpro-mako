@@ -1,11 +1,13 @@
 import { it, describe, expect } from "vitest";
 import onemacRecords from "./test-onemac-legacy.json";
-import { transformOnemacLegacy } from "../onemacLegacy";
+import * as main from "../opensearch/main";
 
 describe("onemac has valid data", () => {
   it("has valid data", () => {
     for (const record of onemacRecords) {
-      const transformedData = transformOnemacLegacy("randomid").parse(record);
+      const transformedData = main.transforms
+        .legacySubmission("randomid")
+        .parse(record);
 
       expect(transformedData).toHaveProperty(["attachments"]);
     }
