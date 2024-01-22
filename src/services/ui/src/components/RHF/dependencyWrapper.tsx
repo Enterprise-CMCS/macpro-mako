@@ -26,7 +26,22 @@ const checkTriggeringValue = (
   });
 };
 
-export const DependencyWrapper = ({
+export const DependencyWrapper = (
+  props: PropsWithChildren<DependencyWrapperProps>
+) => {
+  // Check for dependencies which won't exist outside of forms
+  if (
+    !props.dependency ||
+    !props.dependency.conditions ||
+    !props.dependency.effect
+  ) {
+    return <>{props.children}</>;
+  }
+
+  return <DependencyWrapperHandler {...props} />;
+};
+
+const DependencyWrapperHandler = ({
   name,
   dependency,
   children,
