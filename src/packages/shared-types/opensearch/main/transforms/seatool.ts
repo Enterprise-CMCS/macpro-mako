@@ -1,4 +1,8 @@
-import { seatoolSchema, SeaTool } from "./../../../../shared-types";
+import {
+  seatoolSchema,
+  SeaTool,
+  SeatoolOfficer,
+} from "./../../../../shared-types";
 
 import { z } from "zod";
 import {
@@ -82,20 +86,13 @@ const getRaiDate = (data: SeaTool) => {
   };
 };
 
-const zActionOfficer = z.object({
-  OFFICER_ID: z.number(),
-  FIRST_NAME: z.string(),
-  LAST_NAME: z.string(),
-});
-type ActionOfficer = z.infer<typeof zActionOfficer>;
-
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined
     ? new Date(epocDate).toISOString()
     : null;
 
 const compileSrtList = (
-  officers: ActionOfficer[] | null | undefined
+  officers: SeatoolOfficer[] | null | undefined
 ): string[] =>
   officers?.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
 

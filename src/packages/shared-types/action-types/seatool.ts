@@ -1,14 +1,16 @@
 import { z } from "zod";
 
-const zActionOfficer = z.object({
+// Reusable schema for officer data.
+export const seatoolOfficerSchema = z.object({
   OFFICER_ID: z.number(),
   FIRST_NAME: z.string(),
   LAST_NAME: z.string(),
 });
+export type SeatoolOfficer = z.infer<typeof seatoolOfficerSchema>;
 
 export const seatoolSchema = z.object({
-  ACTION_OFFICERS: z.array(zActionOfficer).nullish(),
-  LEAD_ANALYST: z.array(zActionOfficer).nullable(),
+  ACTION_OFFICERS: z.array(seatoolOfficerSchema).nullish(),
+  LEAD_ANALYST: z.array(seatoolOfficerSchema).nullable(),
   PLAN_TYPES: z
     .array(
       z.object({
