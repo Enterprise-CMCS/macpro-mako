@@ -32,8 +32,8 @@ export const onemacAttachmentSchema = z.object({
   title: z.string(),
   contentType: z.string().nullish(),
   url: z.string().url().nullish(),
-  bucket: z.string().nullish(),
-  key: z.string().nullish(),
+  bucket: z.string(),
+  key: z.string(),
   uploadDate: z.number().nullish(),
 });
 export type OnemacAttachmentSchema = z.infer<typeof onemacAttachmentSchema>;
