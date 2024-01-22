@@ -3,7 +3,7 @@ import {
   handleAttachment,
 } from "./../../../../shared-types";
 
-export const onemacLegacy = (id: string) => {
+export const legacySubmission = (id: string) => {
   return onemacLegacySchema.transform((data) => {
     const transformedData = {
       id,

@@ -43,7 +43,7 @@ export const onemac_main = async (event: KafkaEvent) => {
         record?.submitterName && // Is originally from Legacy
         record?.submitterName !== "-- --" // Is originally from Legacy
       ) {
-        const result = main.transforms.onemacLegacy(id).safeParse(record);
+        const result = main.transforms.legacySubmission(id).safeParse(record);
         if (result.success) {
           ACC.push(result.data);
         } else {
