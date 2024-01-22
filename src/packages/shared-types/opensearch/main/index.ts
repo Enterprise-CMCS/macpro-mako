@@ -10,12 +10,12 @@ import { ItemResult as Changelog } from "./../changelog";
 import * as transforms from "./transforms";
 export * as transforms from "./transforms";
 
-export type Document = z.infer<ReturnType<typeof transforms.transformOnemac>> &
-  z.infer<ReturnType<typeof transforms.transformOnemacLegacy>> &
-  z.infer<ReturnType<typeof transforms.transformRaiWithdraw>> &
-  z.infer<ReturnType<typeof transforms.transformWithdrawPackage>> &
-  z.infer<ReturnType<typeof transforms.transformToggleWithdrawRaiEnabled>> &
-  z.infer<ReturnType<typeof transforms.transformSeatoolData>> & {
+export type Document = z.infer<ReturnType<typeof transforms.newSubmission>> &
+  z.infer<ReturnType<typeof transforms.legacySubmission>> &
+  z.infer<ReturnType<typeof transforms.raiWithdraw>> &
+  z.infer<ReturnType<typeof transforms.withdrawPackage>> &
+  z.infer<ReturnType<typeof transforms.toggleWithdrawRaiEnabled>> &
+  z.infer<ReturnType<typeof transforms.seatool>> & {
     changelog?: Changelog[];
   };
 
