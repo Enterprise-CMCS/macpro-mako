@@ -5,10 +5,8 @@ import {
   QueryState,
   AggQuery,
 } from "./../_";
-
 import {
   OneMac,
-  OnemacLegacy,
   RaiIssue,
   RaiResponse,
   RaiWithdraw,
@@ -17,7 +15,6 @@ import {
 } from "../../action-types";
 
 export type Document = OneMac &
-  OnemacLegacy &
   WithdrawPackage &
   RaiResponse &
   RaiIssue &

@@ -1,13 +1,10 @@
-import { onemacSchema, handleAttachment } from "./../../../../shared-types";
+import { onemacSchema } from "./../../../../shared-types";
 
 export const newSubmission = (id: string) => {
   return onemacSchema.transform((data) => {
     const transformedData = {
       id,
-      attachments:
-        data.attachments?.map((attachment) => {
-          return handleAttachment(attachment);
-        }) ?? null,
+      attachments: data.attachments,
       raiWithdrawEnabled: data.raiWithdrawEnabled,
       additionalInformation: data.additionalInformation,
       submitterEmail: data.submitterEmail,

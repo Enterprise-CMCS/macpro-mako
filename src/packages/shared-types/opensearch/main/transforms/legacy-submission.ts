@@ -1,6 +1,6 @@
 import {
   onemacLegacySchema,
-  handleAttachment,
+  handleLegacyAttachment,
 } from "./../../../../shared-types";
 
 export const legacySubmission = (id: string) => {
@@ -9,7 +9,7 @@ export const legacySubmission = (id: string) => {
       id,
       attachments:
         data.attachments?.map((attachment) => {
-          return handleAttachment(attachment);
+          return handleLegacyAttachment(attachment);
         }) ?? null,
       raiWithdrawEnabled: data.raiWithdrawEnabled,
       additionalInformation: data.additionalInformation,
