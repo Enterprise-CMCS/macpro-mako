@@ -65,10 +65,10 @@ export const router = createBrowserRouter([
         path: "/new-submission/spa/chip/landing/chip-eligibility",
         element: <P.CHIPEligibilityLandingPage />,
       },
-      // {
-      //   path: "/new-submission/waiver/b/create",
-      //   element: <P.Waiver1915BFormPage />,
-      // },
+      {
+        path: "/new-submission/waiver/b/create",
+        element: <P.Waiver1915BFormPage />,
+      },
       { path: "/new-submission/spa/medicaid/create", element: <P.MedicaidSpaFormPage /> },
       { path: "/new-submission/spa/chip/create", element: <P.ChipSpaFormPage /> },
       { path: "/action/:id/:type", element: <P.ActionFormIndex /> },

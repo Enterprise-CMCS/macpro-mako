@@ -14,6 +14,7 @@ export const WAIVER_SUBMISSION_OPTIONS = "/new-submission/waiver";
 export const B_WAIVER_SUBMISSION_OPTIONS = "/new-submission/waiver/b";
 export const B4_WAIVER_OPTIONS = "/new-submission/waiver/b/b4";
 export const BCAP_WAIVER_OPTIONS = "/new-submission/waiver/b/capitated";
+export const WAIVER_1915_B_NEW = "/new-submission/waiver/b/create";
 export const MEDICAID_ABP_LANDING =
   "/new-submission/spa/medicaid/landing/medicaid-abp";
 export const MEDICAID_ELIGIBILITY_LANDING =
