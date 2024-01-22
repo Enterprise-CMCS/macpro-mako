@@ -1,6 +1,7 @@
 import { test as setup } from "@playwright/test";
 import * as Libs from "../../../../libs/secrets-manager-lib";
 import { testUsers } from "./users";
+import { LoginPage } from "../pages";
 
 const stage =
   process.env.STAGE_NAME === "production" || process.env.STAGE_NAME === "val"
@@ -13,18 +14,22 @@ const password = (await Libs.getSecretsValue(
   secretId
 )) as string;
 
-const authFile = "playwright/.auth/user.json";
+const stateSubmitterAuthFile = "playwright/.auth/state-user.json";
 
-setup("authenticate", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Sign In" }).click();
-  await page
-    .getByRole("textbox", { name: "name@host.com" })
-    .fill(testUsers.state);
-  await page.getByRole("textbox", { name: "Password" }).fill(password);
-  await page.getByRole("button", { name: "submit" }).click();
-  await page.getByRole("link", { name: "Dashboard" }).click();
-  // End of authentication steps.
+setup("authenticate state submitter", async ({ page, context }) => {
+  const loginPage = new LoginPage(page);
+  await loginPage.goto();
 
-  await page.context().storageState({ path: authFile });
+  await loginPage.login(testUsers.state, password);
+  await context.storageState({ path: stateSubmitterAuthFile });
+});
+
+const reviewerAuthFile = "playwright/.auth/reviewer-user.json";
+
+setup("authenticate cms reviewer", async ({ page, context }) => {
+  const loginPage = new LoginPage(page);
+  await loginPage.goto();
+
+  await loginPage.login(testUsers.reviewer, password);
+  await context.storageState({ path: reviewerAuthFile });
 });

@@ -34,15 +34,15 @@ export default defineConfig({
   // Note: we can test on multiple browsers and resolutions defined here
   projects: [
     // Setup project
-    { name: "setup", testMatch: /.*\.setup\.ts/ },
+    { name: "setup", testMatch: /.*\.setup\.ts/, fullyParallel: true },
 
     {
       // we can have different projects for different users/use cases
       name: "logged in state user",
       use: {
         ...devices["Desktop Chrome"],
-        // Use prepared auth state.
-        storageState: "playwright/.auth/user.json",
+        // Use prepared auth state for state submitter.
+        storageState: "playwright/.auth/state-user.json",
       },
       // Tests start already authenticated because we specified storageState in the config.
       dependencies: ["setup"],
