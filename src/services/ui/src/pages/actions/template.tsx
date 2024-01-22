@@ -1,5 +1,5 @@
-import { LoadingSpinner } from "@/components";
-import { PackageInfo } from "@/pages/actions/common";
+import { Alert, LoadingSpinner } from "@/components";
+import { ActionFormIntro, PackageInfo } from "@/pages/actions/common";
 import { AttachmentsSizeTypesDesc } from "@/pages/form/content";
 import {
   SlotAdditionalInfo,
@@ -22,12 +22,15 @@ import {
 } from "react-hook-form";
 import { AttachmentRecipe } from "@/lib";
 import { useModalContext } from "@/pages/form/modals";
+import { Info } from "lucide-react";
 
 export const ActionFormTemplate = <D extends FieldValues>({
   item,
   formController,
   submitHandler,
-  intro,
+  title,
+  description,
+  preSubmitMessage,
   attachments,
   attachmentFaqLink,
   attachmentInstructions,
@@ -37,7 +40,9 @@ export const ActionFormTemplate = <D extends FieldValues>({
   item: opensearch.main.ItemResult;
   formController: UseFormReturn<D>;
   submitHandler: SubmitHandler<D>;
-  intro: ReactElement;
+  title: string;
+  description: ReactNode;
+  preSubmitMessage?: string;
   attachments: AttachmentRecipe<D>[];
   attachmentFaqLink: string;
   attachmentInstructions?: ReactElement;
@@ -49,7 +54,10 @@ export const ActionFormTemplate = <D extends FieldValues>({
     <Form {...formController}>
       <form onSubmit={formController.handleSubmit(submitHandler)}>
         {formController.formState.isSubmitting && <LoadingSpinner />}
-        {intro}
+        <ActionFormIntro title={title}>
+          <RequiredIndicator /> Indicates a required field
+          {description}
+        </ActionFormIntro>
         <PackageInfo item={item} />
         <h3 className="font-bold text-2xl font-sans">Attachments</h3>
         {attachmentInstructions}
@@ -81,9 +89,34 @@ export const ActionFormTemplate = <D extends FieldValues>({
             required: requireAddlInfo,
           })}
         />
+        {Object.keys(formController.formState.errors).length !== 0 && (
+          <Alert className="my-6" variant="destructive">
+            Input validation error(s)
+            <ul className="list-disc">
+              {Object.values(formController.formState.errors).map(
+                (err, idx) =>
+                  err?.message && (
+                    <li className="ml-8 my-2" key={idx}>
+                      {err.message as string}
+                    </li>
+                  )
+              )}
+            </ul>
+          </Alert>
+        )}
+        {preSubmitMessage && (
+          <Alert variant={"infoBlock"} className="my-2 w-full flex-row text-sm">
+            <Info />
+            <p className="ml-2">{preSubmitMessage}</p>
+          </Alert>
+        )}
         <div className="flex gap-2 my-8">
           <Button type="submit">Submit</Button>
-          <Button onClick={() => setCancelModalOpen(true)} variant="outline">
+          <Button
+            type="button"
+            onClick={() => setCancelModalOpen(true)}
+            variant="outline"
+          >
             Cancel
           </Button>
         </div>
