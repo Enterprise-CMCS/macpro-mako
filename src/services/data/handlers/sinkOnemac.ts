@@ -37,22 +37,23 @@ export const onemac_main = async (event: KafkaEvent) => {
       const record = JSON.parse(decode(REC.value));
 
       // Handle legacy and return
-      if (
-        record?.origin !== "micro" && // Is Legacy
-        record?.sk === "Package" && // Is a Package View
-        record?.submitterName && // Is originally from Legacy
-        record?.submitterName !== "-- --" // Is originally from Legacy
-      ) {
-        const result = main.transforms.legacySubmission(id).safeParse(record);
-        if (result.success) {
-          ACC.push(result.data);
-        } else {
-          console.log(
-            "LEGACY Validation Error. The following record failed to parse: ",
-            JSON.stringify(record),
-            "Because of the following Reason(s):",
-            result.error.message
-          );
+      if (record?.origin !== "micro") {
+        if (
+          record?.sk === "Package" && // Is a Package View
+          record?.submitterName && // Is originally from Legacy
+          record?.submitterName !== "-- --" // Is originally from Legacy
+        ) {
+          const result = main.transforms.legacySubmission(id).safeParse(record);
+          if (result.success) {
+            ACC.push(result.data);
+          } else {
+            console.log(
+              "LEGACY Validation Error. The following record failed to parse: ",
+              JSON.stringify(record),
+              "Because of the following Reason(s):",
+              result.error.message
+            );
+          }
         }
         return;
       }
