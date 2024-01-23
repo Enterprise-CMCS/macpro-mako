@@ -35,10 +35,14 @@ const Form = () => {
           </strong>
         </p>
       }
-      preSubmitMessage={""}
+      preSubmitMessage={
+        "Once you submit this form, a confirmation email is sent to you and to CMS. CMS will use this content to review your package, and you will not be able to edit this form. If CMS needs any additional information, they will follow up by email."
+      }
       attachments={attachments}
       attachmentFaqLink={"/faq"}
-      addlInfoInstructions={<></>}
+      addlInfoInstructions={
+        <p>Add anything else that you would like to share with CMS.</p>
+      }
     />
   );
 };
