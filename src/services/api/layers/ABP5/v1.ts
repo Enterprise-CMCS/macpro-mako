@@ -212,6 +212,24 @@ const ABP5: FormSchema = {
             },
             {
               rhf: "Input",
+              label: "Other information regarding provider qualifications",
+              labelStyling: "font-bold",
+              name: "ambulatory_patient_services_provider_qualifications_other_information",
+              formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              rules: { required: "Required" },
+              dependency: {
+                conditions: [
+                  {
+                    name: "ambulatory_patient_services_provider_qualifications",
+                    type: "expectedValue",
+                    expectedValue: "other",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+            },
+            {
+              rhf: "Input",
               label: "Amount limit",
               labelStyling: "font-bold",
               name: "ambulatory_patient_services_amount_limit",
@@ -258,6 +276,7 @@ const ABP5: FormSchema = {
                           {
                             rhf: "Input",
                             label: "Benefit duplicated",
+                            labelStyling: "font-bold",
                             name: "benefit_duplicated",
                             rules: { required: "Required" },
                           },
@@ -274,6 +293,7 @@ const ABP5: FormSchema = {
                           {
                             rhf: "Input",
                             label: "Benefit substituted",
+                            labelStyling: "font-bold",
                             name: "benefit_substituted",
                             rules: { required: "Required" },
                           },
@@ -290,7 +310,7 @@ const ABP5: FormSchema = {
       ],
     },
     {
-      title: "Essential health benefit: Emergency services",
+      title: "2. Essential health benefit: Emergency services",
       subSection: true,
       form: [
         {
@@ -318,12 +338,156 @@ const ABP5: FormSchema = {
             },
             {
               rhf: "Input",
+              label:
+                "Other information regarding this benefit source, including the name of the source plan",
+              labelStyling: "font-bold",
+              name: "emergency_services_state_plan_other_information",
+              formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              rules: { required: "Required" },
+              dependency: {
+                conditions: [
+                  {
+                    name: "emergency_services_source",
+                    type: "expectedValue",
+                    expectedValue: "state_plan_other",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+            },
+            {
+              rhf: "Input",
+              label:
+                "Other information regarding this benefit source, including the name of the source plan",
+              labelStyling: "font-bold",
+              name: "emergency_services_secretary_approved_other_information",
+              formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              rules: { required: "Required" },
+              dependency: {
+                conditions: [
+                  {
+                    name: "emergency_services_source",
+                    type: "expectedValue",
+                    expectedValue: "secretary_approved_other",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+            },
+            {
+              rhf: "Input",
               label: "Authorization",
               labelStyling: "font-bold",
               name: "emergency_services_authorization",
               rules: { required: "Required" },
               props: {
                 className: "w-[300px]",
+              },
+            },
+            {
+              rhf: "Select",
+              label: "Provider qualifications",
+              labelStyling: "font-bold",
+              name: "emergency_services_provider_qualifications",
+              rules: { required: "Required" },
+              props: {
+                className: "w-[300px]",
+                options: providerQualificationsOptions,
+              },
+            },
+            {
+              rhf: "Input",
+              label: "Other information regarding provider qualifications",
+              labelStyling: "font-bold",
+              name: "emergency_services_provider_qualifications_other_information",
+              formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              rules: { required: "Required" },
+              dependency: {
+                conditions: [
+                  {
+                    name: "emergency_services_provider_qualifications",
+                    type: "expectedValue",
+                    expectedValue: "other",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+            },
+            {
+              rhf: "Input",
+              label: "Amount limit",
+              labelStyling: "font-bold",
+              name: "emergency_services_amount_limit",
+              rules: { required: "Required" },
+              props: {
+                className: "w-[300px]",
+              },
+            },
+            {
+              rhf: "Input",
+              label: "Duration limit",
+              labelStyling: "font-bold",
+              name: "emergency_services_duration_limit",
+              rules: { required: "Required" },
+              props: {
+                className: "w-[300px]",
+              },
+            },
+            {
+              rhf: "Input",
+              label: "Scope limit",
+              labelStyling: "font-bold",
+              name: "emergency_services_scope_limit",
+              rules: { required: "Required" },
+              props: {
+                className: "w-[300px]",
+              },
+            },
+            {
+              rhf: "Radio",
+              label:
+                "Is there an EHB benchmark benefit duplicated or substituted?",
+              labelStyling: "font-bold",
+              name: "emergency_services_ehb_benchmark_benefit_duplicated_or_substituted",
+              rules: { required: "Required" },
+              props: {
+                options: [
+                  {
+                    label: "Yes, a duplication",
+                    value: "yes_duplication",
+                    form: [
+                      {
+                        slots: [
+                          {
+                            rhf: "Input",
+                            label: "Benefit duplicated",
+                            labelStyling: "font-bold",
+                            name: "benefit_duplicated",
+                            rules: { required: "Required" },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    label: "Yes, a substitution",
+                    value: "yes_substitution",
+                    form: [
+                      {
+                        slots: [
+                          {
+                            rhf: "Input",
+                            label: "Benefit substituted",
+                            labelStyling: "font-bold",
+                            name: "benefit_substituted",
+                            rules: { required: "Required" },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  { label: "No", value: "no" },
+                ],
               },
             },
           ],
