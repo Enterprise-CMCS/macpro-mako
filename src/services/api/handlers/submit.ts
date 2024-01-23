@@ -90,9 +90,9 @@ export const submit = async (event: APIGatewayEvent) => {
     const statePlanTypeQuery = `
     INSERT INTO SEA.dbo.State_Plan_Service_Types (id_number, service_type_id) VALUES ('${
       body.id
-    }', Select SPA_Type_ID from dbo.SPA_Type where SPA_Type_Name = '${
+    }', (Select SPA_Type_ID from dbo.SPA_Type where SPA_Type_Name = '${
       formattedSpaTypeName[body.authority as PlanType]
-    }')
+    }'))
     `;
 
     const statePlanWaiverQuery = `
