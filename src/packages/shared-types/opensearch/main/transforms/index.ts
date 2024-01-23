@@ -1,6 +1,6 @@
-export * from "./legacy-submission";
-export * from "./new-submission";
-export * from "./toggle-withdraw-enabled";
-export * from "./withdraw-package";
-export * from "./withdraw-rai-response";
-export * from "./seatool";
+export * as legacySubmission from "./legacy-submission";
+export * as newSubmission from "./new-submission";
+export * as toggleWithdrawEnabled from "./toggle-withdraw-enabled";
+export * as withdrawPackage from "./withdraw-package";
+export * as withdrawRai from "./withdraw-rai-response";
+export * as seatool from "./seatool";

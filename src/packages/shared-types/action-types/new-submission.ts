@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { attachmentSchema } from "./../attachments";
+import { attachmentSchema } from "../attachments";
 
 // This is the event schema for ne submissions from our system
 export const onemacSchema = z.object({

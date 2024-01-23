@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import * as main from "shared-types/opensearch/main";
+import { opensearch } from "shared-types";
 import { Action } from "shared-types";
 import { KafkaEvent } from "shared-types";
 
@@ -43,17 +43,20 @@ export const onemac_main = async (event: KafkaEvent) => {
           record?.submitterName && // Is originally from Legacy
           record?.submitterName !== "-- --" // Is originally from Legacy
         ) {
-          const result = main.transforms.legacySubmission(id).safeParse(record);
-          if (result.success) {
-            ACC.push(result.data);
-          } else {
-            console.log(
+          const result = opensearch.main.legacySubmission
+            .transform(id)
+            .safeParse(record);
+
+          if (!result.success) {
+            return console.log(
               "LEGACY Validation Error. The following record failed to parse: ",
               JSON.stringify(record),
               "Because of the following Reason(s):",
               result.error.message
             );
           }
+
+          ACC.push(result.data);
         }
         return;
       }
@@ -62,30 +65,35 @@ export const onemac_main = async (event: KafkaEvent) => {
       const result = (() => {
         switch (record?.actionType) {
           case undefined:
-            return main.transforms.newSubmission(id).safeParse(record);
+            return opensearch.main.newSubmission
+              .transform(id)
+              .safeParse(record);
           case Action.DISABLE_RAI_WITHDRAW:
           case Action.ENABLE_RAI_WITHDRAW:
-            return main.transforms
-              .toggleWithdrawRaiEnabled(id)
+            return opensearch.main.toggleWithdrawEnabled
+              .transform(id)
               .safeParse(record);
           case Action.WITHDRAW_RAI:
-            return main.transforms.raiWithdraw(id).safeParse(record);
+            return opensearch.main.withdrawRai.transform(id).safeParse(record);
           case Action.WITHDRAW_PACKAGE:
-            return main.transforms.withdrawPackage(id).safeParse(record);
+            return opensearch.main.withdrawPackage
+              .transform(id)
+              .safeParse(record);
         }
       })();
-      if (result) {
-        if (result?.success) {
-          ACC.push(result.data);
-        } else {
-          console.log(
-            "ONEMAC Validation Error. The following record failed to parse: ",
-            JSON.stringify(record),
-            "Because of the following Reason(s):",
-            result?.error.message
-          );
-        }
+
+      if (!result) return;
+
+      if (!result?.success) {
+        return console.log(
+          "ONEMAC Validation Error. The following record failed to parse: ",
+          JSON.stringify(record),
+          "Because of the following Reason(s):",
+          result?.error.message
+        );
       }
+
+      ACC.push(result.data);
     });
 
     return ACC;

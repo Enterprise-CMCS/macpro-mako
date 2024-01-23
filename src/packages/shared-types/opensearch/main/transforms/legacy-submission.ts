@@ -1,16 +1,10 @@
-import {
-  onemacLegacySchema,
-  handleLegacyAttachment,
-} from "./../../../../shared-types";
+import { onemacLegacySchema, handleLegacyAttachment } from "../../..";
 
-export const legacySubmission = (id: string) => {
+export const transform = (id: string) => {
   return onemacLegacySchema.transform((data) => {
     const transformedData = {
       id,
-      attachments:
-        data.attachments?.map((attachment) => {
-          return handleLegacyAttachment(attachment);
-        }) ?? null,
+      attachments: data.attachments?.map(handleLegacyAttachment) ?? null,
       raiWithdrawEnabled: data.raiWithdrawEnabled,
       additionalInformation: data.additionalInformation,
       submitterEmail: data.submitterEmail,
@@ -20,3 +14,5 @@ export const legacySubmission = (id: string) => {
     return transformedData;
   });
 };
+
+export type Schema = ReturnType<typeof transform>;

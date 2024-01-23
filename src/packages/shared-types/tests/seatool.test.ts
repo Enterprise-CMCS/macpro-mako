@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import seaToolRecords from "./test-seatool.json";
-import { seatoolSchema } from "shared-types";
-import * as main from "shared-types/opensearch/main";
+import { seatoolSchema, opensearch } from "shared-types";
 
 describe("seatool has valid data", () => {
   it("can be validated against schema", () => {
@@ -12,10 +11,9 @@ describe("seatool has valid data", () => {
 
   it("can be transformed into a new object", () => {
     for (const record of seaToolRecords) {
-      const transformedRecord = main.transforms
-        .seatool("randomid")
+      const transformedRecord = opensearch.main.seatool
+        .transform("randomid")
         .parse(record);
-
       expect(transformedRecord.id).toEqual("randomid");
       // expect(transformedRecord.planType).toEqual("Medicaid_SPA");
     }

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { legacyAttachmentSchema } from "./../attachments";
+import { legacyAttachmentSchema } from "../attachments";
 
 // Event schema for legacy records
 export const onemacLegacySchema = z.object({
