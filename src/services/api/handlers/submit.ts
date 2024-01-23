@@ -87,38 +87,45 @@ export const submit = async (event: APIGatewayEvent) => {
           ,0)
     `;
 
-    const waiverQuery = `
-    Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, SPA_Type_ID)
+    const statePlanTypeQuery = `
+    INSERT INTO SEA.dbo.State_Plan_Service_Types (id_number, service_type_id) VALUES ('${
+      body.id
+    }', Select SPA_Type_ID from dbo.SPA_Type where SPA_Type_Name = '${
+      formattedSpaTypeName[body.authority as PlanType]
+    }')
+    `;
+
+    const statePlanWaiverQuery = `
+    Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
       values ('${body.id}'
         ,'${body.state}'
-        ,(Select Region_ID from SEA.dbo.States where State_Code = '${
-          body.state
-        }')
-        ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${
-          body.authority
-        }')
+        ,(Select Region_ID from SEA.dbo.States where State_Code = '${body.state}')
+        ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${body.authority}')
         ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
         ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
-        ,dateadd(s, convert(int, left(${
-          body.proposedEffectiveDate
-        }, 10)), cast('19700101' as datetime))
+        ,dateadd(s, convert(int, left(${body.proposedEffectiveDate}, 10)), cast('19700101' as datetime))
         ,(Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = 'Pending')
         ,0
-        ,(Select SPA_Type_ID from dbo.SPA_Type where SPA_Type_Name = '${
-          formattedSpaTypeName[body.authority as PlanType]
-        }'))
+        )
   `;
 
-    const queries: Record<PlanType, string> = {
-      [PlanType.CHIP_SPA]: spaQuery,
-      [PlanType.MED_SPA]: spaQuery,
-      [PlanType["1915b"]]: waiverQuery,
-      [PlanType["1915c"]]: waiverQuery,
-      [PlanType.WAIVER]: waiverQuery,
+    const queries: Record<PlanType, string[]> = {
+      [PlanType.CHIP_SPA]: [spaQuery],
+      [PlanType.MED_SPA]: [spaQuery],
+      [PlanType["1915b"]]: [statePlanTypeQuery, statePlanWaiverQuery],
+      [PlanType["1915c"]]: [statePlanTypeQuery, statePlanWaiverQuery],
+      [PlanType.WAIVER]: [statePlanTypeQuery, statePlanWaiverQuery],
     };
 
-    const result = await sql.query(queries[body.authority as PlanType]);
-    console.log(result);
+    for (const query of queries[body.authority as PlanType]) {
+      try {
+        const result = await sql.query(query);
+
+        console.log(result);
+      } catch (error: unknown) {
+        console.error(error);
+      }
+    }
 
     await pool.close();
 
