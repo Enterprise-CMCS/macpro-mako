@@ -3,10 +3,13 @@ import { z } from "zod";
 import { PlanType } from "shared-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
-import { FormSetup } from "@/lib";
 import { SubmissionFormTemplate } from "@/pages/form/template";
+import { ModalProvider } from "@/pages/form/modals";
+import { SimplePageContainer } from "@/components";
+import setupBCapInitialWaiver from "@/pages/form/setups/setupBCapInitialWaiver";
 
-export const BCapInitialWaiver = ({ schema, attachments }: FormSetup) => {
+const Form = () => {
+  const { schema, attachments } = setupBCapInitialWaiver;
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -29,3 +32,11 @@ export const BCapInitialWaiver = ({ schema, attachments }: FormSetup) => {
     />
   );
 };
+
+export const BCapInitialWaiver = () => (
+  <ModalProvider>
+    <SimplePageContainer>
+      <Form />
+    </SimplePageContainer>
+  </ModalProvider>
+);

@@ -3,13 +3,13 @@ import { z } from "zod";
 import { opensearch, PlanType } from "shared-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
-import { FormSetup } from "@/lib";
 import { SubmissionFormTemplate } from "@/pages/form/template";
+import { ModalProvider } from "@/pages/form/modals";
+import { SimplePageContainer } from "@/components";
+import setupBCapRenewalWaiver from "@/pages/form/setups/setupBCapRenewalWaiver";
 
-export const BCapRenewalWaiver = ({
-  schema,
-  attachments,
-}: FormSetup & { item?: opensearch.main.ItemResult }) => {
+export const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
+  const { schema, attachments } = setupBCapRenewalWaiver;
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -32,3 +32,11 @@ export const BCapRenewalWaiver = ({
     />
   );
 };
+
+export const BCapRenewalWaiver = () => (
+  <ModalProvider>
+    <SimplePageContainer>
+      <Form />
+    </SimplePageContainer>
+  </ModalProvider>
+);

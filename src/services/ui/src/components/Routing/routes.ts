@@ -23,6 +23,13 @@ export const CHIP_ELIGIBILITY_LANDING =
 export const CREATE = "/create";
 export const MEDICAID_NEW = "/new-submission/spa/medicaid/create";
 export const CHIP_NEW = "/new-submission/spa/chip/create";
+export const B4_NEW = "/new-submission/waiver/b/b4/initial/create";
+export const B4_RENEWAL = "/new-submission/waiver/b/b4/renewal/create";
+export const B4_AMENDMENT = "/new-submission/waiver/b/b4/amendment/create";
+export const BCAP_NEW = "/new-submission/waiver/b/capitated/initial/create";
+export const BCAP_RENEWAL = "/new-submission/waiver/b/capitated/renewal/create";
+export const BCAP_AMENDMENT =
+  "/new-submission/waiver/b/capitated/amendment/create";
 export const WEBFORMS = "/webforms";
 export const WEBFORM = "/webform/:id/:version";
 export const GUIDES = "/guides";

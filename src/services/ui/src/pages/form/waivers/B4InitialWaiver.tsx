@@ -3,10 +3,13 @@ import { z } from "zod";
 import { PlanType } from "shared-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
-import { FormSetup } from "@/lib";
 import { SubmissionFormTemplate } from "@/pages/form/template";
+import setupB4InitialWaiver from "@/pages/form/setups/setupB4InitialWaiver";
+import { ModalProvider } from "@/pages/form/modals";
+import { SimplePageContainer } from "@/components";
 
-export const B4InitialWaiver = ({ schema, attachments }: FormSetup) => {
+const Form = () => {
+  const { schema, attachments } = setupB4InitialWaiver;
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -24,8 +27,15 @@ export const B4InitialWaiver = ({ schema, attachments }: FormSetup) => {
       preSubmitMessage={""}
       attachments={attachments}
       attachmentFaqLink={"/faq"}
-      requireAddlInfo
       addlInfoInstructions={<></>}
     />
   );
 };
+
+export const B4InitialWaiver = () => (
+  <ModalProvider>
+    <SimplePageContainer>
+      <Form />
+    </SimplePageContainer>
+  </ModalProvider>
+);

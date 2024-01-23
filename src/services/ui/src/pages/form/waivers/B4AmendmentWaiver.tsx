@@ -3,13 +3,13 @@ import { z } from "zod";
 import { opensearch, PlanType } from "shared-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
-import { FormSetup } from "@/lib";
 import { SubmissionFormTemplate } from "@/pages/form/template";
+import { ModalProvider } from "@/pages/form/modals";
+import { SimplePageContainer } from "@/components";
+import setupB4AmendmentWaiver from "@/pages/form/setups/setupB4AmendmentWaiver";
 
-export const B4AmendmentWaiver = ({
-  schema,
-  attachments,
-}: FormSetup & { item?: opensearch.main.ItemResult }) => {
+const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
+  const { schema, attachments } = setupB4AmendmentWaiver;
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -32,3 +32,11 @@ export const B4AmendmentWaiver = ({
     />
   );
 };
+
+export const B4AmendmentWaiver = () => (
+  <ModalProvider>
+    <SimplePageContainer>
+      <Form />
+    </SimplePageContainer>
+  </ModalProvider>
+);
