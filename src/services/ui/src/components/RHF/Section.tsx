@@ -13,7 +13,14 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
     <DependencyWrapper {...props.section}>
       <div className="py-4">
         {props.section.title && (
-          <div className="bg-primary py-4 px-8 w-full text-white">
+          <div
+            className={
+              "py-4 px-8 w-full " +
+              (props.section.subSection
+                ? "bg-gray-300"
+                : "bg-primary text-white")
+            }
+          >
             <FormLabel className="text-2xl font-semibold">
               {props.section.title}
             </FormLabel>
