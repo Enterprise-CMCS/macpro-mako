@@ -34,11 +34,9 @@ export const Welcome = () => {
     <>
       <div className="w-full bg-primary p-2 md:p-4">
         <div className="max-w-screen-xl flex flex-col sm:flex-row sm:items-center gap-4 mx-auto p-4 lg:px-8">
-          <img
-            src={OneMacLogo}
-            alt="One Mac Logo"
-            className="p-4 min-w-[400px]"
-          />
+          <h1>
+            <img src={OneMacLogo} alt="onemac" className="p-4 min-w-[400px]" />
+          </h1>
           <p className="text-center text-white/100 font-light text-xl font-sans">
             Welcome to the official submission system for paper-based state plan
             amendments (SPAs) and section 1915 waivers.
@@ -47,10 +45,10 @@ export const Welcome = () => {
       </div>
       {/* End Hero Section */}
       {/* Two Column Main Layout */}
-      <main className="max-w-screen-xl mx-auto p-4 lg:px-8">
+      <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
         <div className="flex flex-col justify-center gap-8">
           <div>
-            <h3 className="text-2xl font-bold mb-4">State Users</h3>
+            <h2 className="text-2xl font-bold mb-4">State Users</h2>
             <div className="flex flex-col md:flex-row gap-12">
               <C.HowItWorks>
                 <C.Step
@@ -76,9 +74,9 @@ export const Welcome = () => {
                 />
               </C.HowItWorks>
               <div className="flex-grow">
-                <h4 className="font-bold text-xl mb-4">
+                <h3 className="font-bold text-xl mb-4">
                   Submission Types include:
-                </h4>
+                </h3>
                 <ul className="flex flex-col gap-4">
                   <li>
                     <p>
@@ -124,7 +122,7 @@ export const Welcome = () => {
             </div>
           </div>
           <div>
-            <h3 className="text-2xl font-bold mb-4">CMS Users</h3>
+            <h2 className="text-2xl font-bold mb-4">CMS Users</h2>
             <div className="flex flex-col md:flex-row gap-8">
               <C.HowItWorks>
                 <C.Step
@@ -150,9 +148,9 @@ export const Welcome = () => {
                 />
               </C.HowItWorks>
               <div>
-                <h4 className="font-bold text-xl mb-4">
+                <h3 className="font-bold text-xl mb-4">
                   Submission Types include:
-                </h4>
+                </h3>
                 <ul className="flex flex-col gap-4">
                   <li>
                     <p>Amendments to your Medicaid and CHIP State Plans.</p>
@@ -186,7 +184,7 @@ export const Welcome = () => {
             </div>
           </div>
         </div>
-      </main>
+      </div>
       <section>
         <div className="flex justify-around items-center text-xl px-10 py-4 max-w-screen-xl mx-auto">
           <h4>Do you have questions or need support?</h4>

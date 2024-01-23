@@ -57,7 +57,7 @@ const UserDropdownMenu = () => {
         asChild
         className="hover:text-white/70 p-4 data-[state=open]:bg-white data-[state=open]:text-primary"
       >
-        <div className="flex flex-row gap-4 items-center cursor-pointer">
+        <button className="flex flex-row gap-4 items-center cursor-pointer">
           <p className="flex">My Account</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +73,7 @@ const UserDropdownMenu = () => {
               d="M19.5 8.25l-7.5 7.5-7.5-7.5"
             />
           </svg>
-        </div>
+        </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
@@ -108,20 +108,20 @@ export const Layout = () => {
   return (
     <div className="min-h-full flex flex-col">
       <UsaBanner />
-      <div className="bg-primary">
+      <nav className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
             <Link to="/">
               <img
                 className="h-10 w-28 min-w-[112px] resize-none"
                 src={oneMacLogo}
-                alt="One Mac Site Logo"
+                alt="onemac site logo"
               />
             </Link>
             <ResponsiveNav isDesktop={isDesktop} />
           </div>
         </div>
-      </div>
+      </nav>
       <main className="flex-1">
         <Outlet />
       </main>
