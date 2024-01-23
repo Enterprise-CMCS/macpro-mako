@@ -7,7 +7,7 @@ import {
 
 export const medicaidRespondToRaiSetup = {
   schema: z.object({
-    additionalInformation: zAdditionalInfo,
+    additionalInformation: zAdditionalInfo.optional(),
     attachments: z.object({
       raiResponseLetter: zAttachmentRequired({ min: 1 }),
       other: zAttachmentOptional,
@@ -29,7 +29,7 @@ export const medicaidRespondToRaiSetup = {
 
 export const chipRespondToRaiSetup = {
   schema: z.object({
-    additionalInformation: zAdditionalInfo,
+    additionalInformation: zAdditionalInfo.optional(),
     attachments: z.object({
       revisedAmendedStatePlanLanguage: zAttachmentRequired({ min: 1 }),
       officialRaiResponse: zAttachmentRequired({ min: 1 }),
@@ -47,7 +47,7 @@ export const chipRespondToRaiSetup = {
     },
     {
       name: "officialRaiResponse",
-      label: "Official Rai Response",
+      label: "Official RAI Response",
       required: true,
     },
     {
