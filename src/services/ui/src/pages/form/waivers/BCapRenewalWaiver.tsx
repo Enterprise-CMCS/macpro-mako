@@ -6,7 +6,7 @@ import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { SubmissionFormTemplate } from "@/pages/form/template";
 import { ModalProvider } from "@/pages/form/modals";
 import { SimplePageContainer } from "@/components";
-import setupBCapRenewalWaiver from "@/pages/form/setups/setupBCapRenewalWaiver";
+import setupBCapRenewalWaiver from "@/pages/form/waivers/setups/setupBCapRenewalWaiver";
 
 export const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
   const { schema, attachments } = setupBCapRenewalWaiver;

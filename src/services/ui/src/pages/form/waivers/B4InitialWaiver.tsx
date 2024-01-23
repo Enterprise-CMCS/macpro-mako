@@ -4,7 +4,7 @@ import { PlanType } from "shared-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { SubmissionFormTemplate } from "@/pages/form/template";
-import setupB4InitialWaiver from "@/pages/form/setups/setupB4InitialWaiver";
+import setupB4InitialWaiver from "@/pages/form/waivers/setups/setupB4InitialWaiver";
 import { ModalProvider } from "@/pages/form/modals";
 import { SimplePageContainer } from "@/components";
 

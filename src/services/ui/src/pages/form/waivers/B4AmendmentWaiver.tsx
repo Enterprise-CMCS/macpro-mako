@@ -6,7 +6,7 @@ import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { SubmissionFormTemplate } from "@/pages/form/template";
 import { ModalProvider } from "@/pages/form/modals";
 import { SimplePageContainer } from "@/components";
-import setupB4AmendmentWaiver from "@/pages/form/setups/setupB4AmendmentWaiver";
+import setupB4AmendmentWaiver from "@/pages/form/waivers/setups/setupB4AmendmentWaiver";
 
 const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
   const { schema, attachments } = setupB4AmendmentWaiver;

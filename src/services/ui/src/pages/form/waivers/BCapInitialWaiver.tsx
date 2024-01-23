@@ -6,7 +6,7 @@ import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { SubmissionFormTemplate } from "@/pages/form/template";
 import { ModalProvider } from "@/pages/form/modals";
 import { SimplePageContainer } from "@/components";
-import setupBCapInitialWaiver from "@/pages/form/setups/setupBCapInitialWaiver";
+import setupBCapInitialWaiver from "@/pages/form/waivers/setups/setupBCapInitialWaiver";
 
 const Form = () => {
   const { schema, attachments } = setupBCapInitialWaiver;
