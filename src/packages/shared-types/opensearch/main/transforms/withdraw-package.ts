@@ -1,4 +1,4 @@
-import { withdrawPackageSchema } from "..";
+import { withdrawPackageSchema } from "../../..";
 
 export const transform = (id: string) => {
   // This does nothing.  Just putting the mechanics in place.

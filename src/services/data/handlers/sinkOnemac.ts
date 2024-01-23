@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import { transforms } from "shared-types";
+import { opensearch } from "shared-types";
 import { Action } from "shared-types";
 import { KafkaEvent } from "shared-types";
 
@@ -43,7 +43,7 @@ export const onemac_main = async (event: KafkaEvent) => {
           record?.submitterName && // Is originally from Legacy
           record?.submitterName !== "-- --" // Is originally from Legacy
         ) {
-          const result = transforms.legacySubmission
+          const result = opensearch.main.legacySubmission
             .transform(id)
             .safeParse(record);
 
@@ -65,16 +65,20 @@ export const onemac_main = async (event: KafkaEvent) => {
       const result = (() => {
         switch (record?.actionType) {
           case undefined:
-            return transforms.newSubmission.transform(id).safeParse(record);
+            return opensearch.main.newSubmission
+              .transform(id)
+              .safeParse(record);
           case Action.DISABLE_RAI_WITHDRAW:
           case Action.ENABLE_RAI_WITHDRAW:
-            return transforms.toggleWithdrawEnabled
+            return opensearch.main.toggleWithdrawEnabled
               .transform(id)
               .safeParse(record);
           case Action.WITHDRAW_RAI:
-            return transforms.withdrawRai.transform(id).safeParse(record);
+            return opensearch.main.withdrawRai.transform(id).safeParse(record);
           case Action.WITHDRAW_PACKAGE:
-            return transforms.withdrawPackage.transform(id).safeParse(record);
+            return opensearch.main.withdrawPackage
+              .transform(id)
+              .safeParse(record);
         }
       })();
 

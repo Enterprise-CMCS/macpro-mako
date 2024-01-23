@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import * as main from "shared-types/opensearch/main";
+import { opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
 
 const osDomain: string =
@@ -57,7 +57,7 @@ export const seatool_main = async (event: KafkaEvent) => {
 
       // Handle everything else
       const record = { id, ...JSON.parse(decode(value)) };
-      const result = main.transforms.seatool(id).safeParse(record);
+      const result = opensearch.main.seatool.transform(id).safeParse(record);
       if (!result.success) {
         console.log(
           "SEATOOL Validation Error. The following record failed to parse: ",

@@ -1,4 +1,4 @@
-import { toggleWithdrawRaiEnabledSchema } from "..";
+import { toggleWithdrawRaiEnabledSchema } from "../../..";
 
 export const transform = (id: string) => {
   return toggleWithdrawRaiEnabledSchema.transform((data) => ({

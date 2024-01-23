@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import seaToolRecords from "./test-seatool.json";
-import { seatoolSchema, transforms } from "shared-types";
+import { seatoolSchema, opensearch } from "shared-types";
 
 describe("seatool has valid data", () => {
   it("can be validated against schema", () => {
@@ -11,7 +11,7 @@ describe("seatool has valid data", () => {
 
   it("can be transformed into a new object", () => {
     for (const record of seaToolRecords) {
-      const transformedRecord = transforms.seatool
+      const transformedRecord = opensearch.main.seatool
         .transform("randomid")
         .parse(record);
       expect(transformedRecord.id).toEqual("randomid");

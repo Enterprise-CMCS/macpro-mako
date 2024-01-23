@@ -5,9 +5,9 @@ import {
   finalDispositionStatuses,
   SeaTool,
   SeatoolOfficer,
-} from "..";
+} from "../../..";
 
-import { PlanType } from "../planType";
+import { PlanType } from "../../../planType";
 
 type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 

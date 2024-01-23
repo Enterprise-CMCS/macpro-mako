@@ -1,11 +1,11 @@
 import { it, describe, expect } from "vitest";
 import onemacRecords from "./test-onemac-legacy.json";
-import { opensearch, transforms } from "..";
+import { opensearch } from "..";
 
 describe("onemac has valid data", () => {
   it("has valid data", () => {
     for (const record of onemacRecords) {
-      const transformedData = transforms.legacySubmission
+      const transformedData = opensearch.main.legacySubmission
         .transform("randomid")
         .parse(record);
 

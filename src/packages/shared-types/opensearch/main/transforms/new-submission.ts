@@ -1,13 +1,10 @@
-import { onemacLegacySchema, handleLegacyAttachment } from "..";
+import { onemacSchema } from "../../..";
 
 export const transform = (id: string) => {
-  return onemacLegacySchema.transform((data) => {
+  return onemacSchema.transform((data) => {
     const transformedData = {
       id,
-      attachments:
-        data.attachments?.map((attachment) => {
-          return handleLegacyAttachment(attachment);
-        }) ?? null,
+      attachments: data.attachments,
       raiWithdrawEnabled: data.raiWithdrawEnabled,
       additionalInformation: data.additionalInformation,
       submitterEmail: data.submitterEmail,

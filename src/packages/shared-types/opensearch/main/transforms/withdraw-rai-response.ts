@@ -1,4 +1,4 @@
-import { raiWithdrawSchema } from "..";
+import { raiWithdrawSchema } from "../../..";
 
 export const transform = (id: string) => {
   return raiWithdrawSchema.transform(() => ({

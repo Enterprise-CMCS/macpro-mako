@@ -2,7 +2,6 @@ export * from "./issue";
 export * from "./user";
 export * from "./errors";
 export * as opensearch from "./opensearch";
-export * as transforms from "./transforms";
 export * from "./uploads";
 export * from "./actions";
 export * from "./attachments";
