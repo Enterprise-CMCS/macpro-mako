@@ -4,7 +4,7 @@ import { z } from "zod";
 import { opensearch, PlanType } from "shared-types";
 import { ActionFormTemplate } from "@/pages/actions/template";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
-import { FormSetup } from "@/pages/actions/setups";
+import { FormSetup } from "@/lib";
 
 const preSubmitMessage =
   "Once complete, you and CMS will receive an email confirmation.";

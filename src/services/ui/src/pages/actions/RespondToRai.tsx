@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { opensearch, PlanType } from "shared-types";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { ActionFormTemplate } from "@/pages/actions/template";
-import { FormSetup } from "@/pages/actions/setups";
+import { FormSetup } from "@/lib";
 
 const preSubmitMessage =
   "Once you submit this form, a confirmation email is sent to you and to CMS. CMS will use this content to review your package, and you will not be able to edit this form. If CMS needs any additional information, they will follow up by email.";

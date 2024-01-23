@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { ActionFormTemplate } from "@/pages/actions/template";
-import { FormSetup } from "@/pages/actions/setups";
 import { SetupOptions } from "@/pages";
 import { ReactElement } from "react";
+import { FormSetup } from "@/lib";
 
 const attachmentInstructions: Record<SetupOptions, ReactElement> = {
   "Medicaid SPA": (

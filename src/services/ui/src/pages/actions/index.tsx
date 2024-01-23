@@ -19,10 +19,10 @@ import {
   chipWithdrawPackageSetup,
   defaultIssueRaiSetup,
   defaultWithdrawRaiSetup,
-  FormSetup,
   medicaidRespondToRaiSetup,
   medicaidWithdrawPackageSetup,
 } from "@/pages/actions/setups";
+import { FormSetup } from "@/lib";
 
 export type SetupOptions = "CHIP SPA" | "Medicaid SPA";
 const getFormSetup = (opt: SetupOptions, type: Action): FormSetup | null => {
