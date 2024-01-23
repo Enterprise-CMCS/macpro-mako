@@ -30,7 +30,8 @@ export const Profile = () => {
       </SubNavHeader>
 
       <section className="block max-w-screen-xl m-auto px-4 lg:px-8 py-8 gap-10">
-        <Alert className="mb-6 bg-sky-100 flex flex-row">
+        {/* using bg-sky-50 for a11y compliance */}
+        <Alert className="mb-6 bg-sky-50 flex flex-row">
           <div className="py-1 mr-2 flex-none w-8">
             <svg
               xmlns="http://www.w3.org/2000/svg"
