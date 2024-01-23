@@ -1,4 +1,4 @@
 export const testUsers = {
-    state: "george@example.com",
-    cmsAdmin: "cmsadmin@example.com"
+  state: "george@example.com",
+  reviewer: "reviewer@example.com",
 };

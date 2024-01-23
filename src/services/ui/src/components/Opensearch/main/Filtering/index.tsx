@@ -18,7 +18,7 @@ export const OsFiltering: FC<{
 
   return (
     <div>
-      <p className="mb-1 text-sm text-slate-400">
+      <p className="mb-1 text-sm">
         {"Search by Package ID, CPOC Name, or Submitter Name"}
       </p>
       <div className="flex flex-row content-between gap-2 mb-4">
