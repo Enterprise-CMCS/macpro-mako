@@ -78,6 +78,8 @@ export const onemac_main = async (event: KafkaEvent) => {
         }
       })();
 
+      if (!result) return;
+
       if (!result?.success) {
         return console.log(
           "ONEMAC Validation Error. The following record failed to parse: ",
