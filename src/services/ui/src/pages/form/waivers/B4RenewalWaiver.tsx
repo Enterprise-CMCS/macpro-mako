@@ -5,8 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { SubmissionFormTemplate } from "@/pages/form/template";
 import { ModalProvider } from "@/pages/form/modals";
-import { SimplePageContainer } from "@/components";
+import { BreadCrumbs, SimplePageContainer } from "@/components";
 import setupB4RenewalWaiver from "@/pages/form/waivers/setups/setupB4RenewalWaiver";
+import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 
 const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
   const { schema, attachments } = setupB4RenewalWaiver;
@@ -36,6 +37,7 @@ const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
 export const B4RenewalWaiver = () => (
   <ModalProvider>
     <SimplePageContainer>
+      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Form />
     </SimplePageContainer>
   </ModalProvider>

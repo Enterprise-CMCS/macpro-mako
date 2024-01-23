@@ -6,7 +6,8 @@ import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { SubmissionFormTemplate } from "@/pages/form/template";
 import setupB4InitialWaiver from "@/pages/form/waivers/setups/setupB4InitialWaiver";
 import { ModalProvider } from "@/pages/form/modals";
-import { SimplePageContainer } from "@/components";
+import { BreadCrumbs, SimplePageContainer } from "@/components";
+import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 
 const Form = () => {
   const { schema, attachments } = setupB4InitialWaiver;
@@ -35,6 +36,7 @@ const Form = () => {
 export const B4InitialWaiver = () => (
   <ModalProvider>
     <SimplePageContainer>
+      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Form />
     </SimplePageContainer>
   </ModalProvider>

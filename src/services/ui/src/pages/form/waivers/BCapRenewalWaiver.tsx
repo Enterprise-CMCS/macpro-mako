@@ -5,8 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { SubmissionFormTemplate } from "@/pages/form/template";
 import { ModalProvider } from "@/pages/form/modals";
-import { SimplePageContainer } from "@/components";
+import { BreadCrumbs, SimplePageContainer } from "@/components";
 import setupBCapRenewalWaiver from "@/pages/form/waivers/setups/setupBCapRenewalWaiver";
+import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 
 export const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
   const { schema, attachments } = setupBCapRenewalWaiver;
@@ -36,6 +37,7 @@ export const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
 export const BCapRenewalWaiver = () => (
   <ModalProvider>
     <SimplePageContainer>
+      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Form />
     </SimplePageContainer>
   </ModalProvider>

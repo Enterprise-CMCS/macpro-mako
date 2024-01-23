@@ -5,8 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { SubmissionFormTemplate } from "@/pages/form/template";
 import { ModalProvider } from "@/pages/form/modals";
-import { SimplePageContainer } from "@/components";
+import { BreadCrumbs, SimplePageContainer } from "@/components";
 import setupBCapInitialWaiver from "@/pages/form/waivers/setups/setupBCapInitialWaiver";
+import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 
 const Form = () => {
   const { schema, attachments } = setupBCapInitialWaiver;
@@ -36,6 +37,7 @@ const Form = () => {
 export const BCapInitialWaiver = () => (
   <ModalProvider>
     <SimplePageContainer>
+      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Form />
     </SimplePageContainer>
   </ModalProvider>
