@@ -1,6 +1,6 @@
-import { onemacSchema } from "./../../../../shared-types";
+import { onemacSchema } from "..";
 
-export const newSubmission = (id: string) => {
+export const transform = (id: string) => {
   return onemacSchema.transform((data) => {
     const transformedData = {
       id,
@@ -14,3 +14,5 @@ export const newSubmission = (id: string) => {
     return transformedData;
   });
 };
+
+export type Schema = ReturnType<typeof transform>;

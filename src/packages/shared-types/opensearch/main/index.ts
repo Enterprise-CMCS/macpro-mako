@@ -7,15 +7,14 @@ import {
 } from "./../_";
 import { z } from "zod";
 import { ItemResult as Changelog } from "./../changelog";
-import * as transforms from "./transforms";
-export * as transforms from "./transforms";
+import { transforms } from "../..";
 
-export type Document = z.infer<ReturnType<typeof transforms.newSubmission>> &
-  z.infer<ReturnType<typeof transforms.legacySubmission>> &
-  z.infer<ReturnType<typeof transforms.raiWithdraw>> &
-  z.infer<ReturnType<typeof transforms.withdrawPackage>> &
-  z.infer<ReturnType<typeof transforms.toggleWithdrawRaiEnabled>> &
-  z.infer<ReturnType<typeof transforms.seatool>> & {
+export type Document = z.infer<transforms.newSubmission.Schema> &
+  z.infer<transforms.legacySubmission.Schema> &
+  z.infer<transforms.withdrawRai.Schema> &
+  z.infer<transforms.withdrawPackage.Schema> &
+  z.infer<transforms.toggleWithdrawEnabled.Schema> &
+  z.infer<transforms.seatool.Schema> & {
     changelog?: Changelog[];
   };
 

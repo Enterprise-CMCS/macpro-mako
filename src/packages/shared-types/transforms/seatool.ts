@@ -1,16 +1,13 @@
 import {
   seatoolSchema,
-  SeaTool,
-  SeatoolOfficer,
-} from "./../../../../shared-types";
-
-import { z } from "zod";
-import {
   SEATOOL_STATUS,
   getStatus,
   finalDispositionStatuses,
-} from "./../../../statusHelper";
-import { PlanType } from "./../../../planType";
+  SeaTool,
+  SeatoolOfficer,
+} from "..";
+
+import { PlanType } from "../planType";
 
 type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
@@ -102,7 +99,7 @@ const getFinalDispositionDate = (status: string, record: SeaTool) => {
     : null;
 };
 
-export const seatool = (id: string) => {
+export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
@@ -144,3 +141,4 @@ export const seatool = (id: string) => {
     };
   });
 };
+export type Schema = ReturnType<typeof transform>;
