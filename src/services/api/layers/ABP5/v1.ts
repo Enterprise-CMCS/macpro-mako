@@ -31,27 +31,8 @@ const benefitSourceOptions = [
   { label: "State Plan 1915(j)", value: "state_plan_1915_j" },
   { label: "State Plan 1915(k)", value: "state_plan_1915_k" },
   { label: "State Plan 1945", value: "state_plan_1945" },
-  {
-    label: "State Plan Other",
-    value: "state_plan_other",
-    form: [
-      {
-        slots: [
-          {
-            rhf: "Input",
-            label:
-              "Other information regarding this benefit source, including the name of the source plan",
-            name: "other_information",
-            rules: { required: "Required" },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: "Secretary-Approved Other",
-    value: "secretary_approved_other",
-  },
+  { label: "State Plan Other", value: "state_plan_other" },
+  { label: "Secretary-Approved Other", value: "secretary_approved_other" },
 ];
 
 const providerQualificationsOptions = [
@@ -168,6 +149,44 @@ const ABP5: FormSchema = {
               props: {
                 className: "w-[300px]",
                 options: benefitSourceOptions,
+              },
+            },
+            {
+              rhf: "Input",
+              label:
+                "Other information regarding this benefit source, including the name of the source plan",
+              labelStyling: "font-bold",
+              name: "ambulatory_patient_services_state_plan_other_information",
+              formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              rules: { required: "Required" },
+              dependency: {
+                conditions: [
+                  {
+                    name: "ambulatory_patient_services_source",
+                    type: "expectedValue",
+                    expectedValue: "state_plan_other",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+            },
+            {
+              rhf: "Input",
+              label:
+                "Other information regarding this benefit source, including the name of the source plan",
+              labelStyling: "font-bold",
+              name: "ambulatory_patient_services_secretary_approved_other_information",
+              formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              rules: { required: "Required" },
+              dependency: {
+                conditions: [
+                  {
+                    name: "ambulatory_patient_services_source",
+                    type: "expectedValue",
+                    expectedValue: "secretary_approved_other",
+                  },
+                ],
+                effect: { type: "show" },
               },
             },
             {
