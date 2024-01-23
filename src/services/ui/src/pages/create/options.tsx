@@ -135,7 +135,7 @@ export const BCAP_WAIVER_OPTIONS: OptionData[] = [
     linkTo: "/new-submission/waiver/b/capitated/renewal/create",
   },
   {
-    title: "1915(b) Comprehensive (Capitated) Waiver Amendment ",
+    title: "1915(b) Comprehensive (Capitated) Waiver Amendment",
     description: "Amend an existing 1915(b) Comprehensive (Capitated) Waiver",
     linkTo: "/new-submission/waiver/b/capitated/amendment/create",
   },

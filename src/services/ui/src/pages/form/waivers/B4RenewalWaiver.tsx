@@ -23,7 +23,7 @@ const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
     <SubmissionFormTemplate<z.infer<typeof schema>>
       formController={form}
       submitHandler={handleSubmit}
-      title={"Formal RAI Details"}
+      title={"1915(b)(4) FFS Selective Contracting Renewal Waiver Details"}
       description={
         <p className="mb-6 max-w-4xl">
           Once you submit this form, a confirmation email is sent to you and to

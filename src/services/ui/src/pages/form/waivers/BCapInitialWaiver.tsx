@@ -23,7 +23,7 @@ const Form = () => {
     <SubmissionFormTemplate<z.infer<typeof schema>>
       formController={form}
       submitHandler={handleSubmit}
-      title={"Formal RAI Details"}
+      title={"1915(b) Comprehensive (Capitated) New Initial Waiver Details"}
       description={
         <p className="mb-6 max-w-4xl">
           Once you submit this form, a confirmation email is sent to you and to
