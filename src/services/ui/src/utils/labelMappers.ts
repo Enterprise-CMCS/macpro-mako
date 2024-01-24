@@ -28,6 +28,10 @@ export const mapSubmissionCrumb = (path: Route) => {
       return "Submit new CHIP SPA";
     case "/new-submission/waiver/cap-ammend/create":
       return "Amend a 1915(b) Waiver";
+    case "/new-submission/waiver/cap-initial/create":
+      return "1915(b) Waiver";
+    case "/new-submission/waiver/cap-renewal/create":
+      return "Renew a 1915(b) Waiver";
     default:
       return BLANK_VALUE;
   }

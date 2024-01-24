@@ -69,7 +69,7 @@ const attachmentList = [
   },
 ] as const;
 
-export const Capitated1915BWaiverAmmendment = () => {
+export const Capitated1915BWaiverRenewal = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
@@ -271,8 +271,8 @@ export const Capitated1915BWaiverAmmendment = () => {
   );
 };
 
-export const Capitated1915BWaiverAmmendmentPage = () => (
+export const Capitated1915BWaiverRenewalPage = () => (
   <ModalProvider>
-    <Capitated1915BWaiverAmmendment />
+    <Capitated1915BWaiverRenewal />
   </ModalProvider>
 );
