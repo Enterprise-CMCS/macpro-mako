@@ -1,5 +1,4 @@
 import { opensearch, PlanType, SEATOOL_STATUS } from "../shared-types";
-import { getLatestRai } from "./rai-helper";
 
 const secondClockStatuses = [
   SEATOOL_STATUS.PENDING,

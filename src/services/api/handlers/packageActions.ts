@@ -28,7 +28,6 @@ import {
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
-import { getLatestRai } from "shared-utils";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 
 const TOPIC_NAME = process.env.topicName as string;
