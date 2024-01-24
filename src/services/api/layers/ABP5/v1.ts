@@ -251,19 +251,6 @@ function subsection({
   };
 }
 
-/*
-  "Ambulatory patient services",
-  "Emergency services",
-  "Hospitalization",
-  "Maternity and newborn care",
-  "Mental health and substance use disorder services including behavioral health treatment",
-  "Prescription drugs",
-  "Rehabilitative and habilitative services and devices",
-  "Laboratory services",
-  "Preventive and wellness services and chronic disease management",
-  "Pediatric services including oral and vision care",
-*/
-
 const ABP5: FormSchema = {
   header: "ABP 5: Benefits description",
   sections: [
@@ -379,6 +366,7 @@ const ABP5: FormSchema = {
     }),
     {
       title: "6. Essential health benefit: Prescription drugs",
+      subsection: true,
       form: [
         {
           slots: [
@@ -395,10 +383,140 @@ const ABP5: FormSchema = {
                 ],
               },
             },
+            {
+              rhf: "Radio",
+              label: "Prescription drug limits (check all that apply)",
+              labelStyling: "font-bold",
+              name: "prescription_drug_limits",
+              props: {
+                options: [
+                  {
+                    label: "Limit on days of supply",
+                    value: "limit_on_days_of_supply",
+                  },
+                  {
+                    label: "Limit on number of prescriptions",
+                    value: "limit_on_number_of_prescriptions",
+                  },
+                  {
+                    label: "Limit on brand drugs",
+                    value: "limit_on_brand_drugs",
+                  },
+                  {
+                    label: "Other coverage limits",
+                    value: "other_coverage_limits",
+                  },
+                  {
+                    label: "Preferred drug list",
+                    value: "preferred_drug_list",
+                  },
+                ],
+              },
+            },
+            {
+              rhf: "Select",
+              label: "Authorization",
+              labelStyling: "font-bold",
+              name: "prescription_drug_authorization",
+              rules: { required: "Required" },
+              props: {
+                className: "w-[300px]",
+                options: [
+                  {
+                    label: "Yes",
+                    value: "yes",
+                  },
+                  {
+                    label: "No",
+                    value: "no",
+                  },
+                ],
+              },
+            },
+            {
+              rhf: "Select",
+              label: "Provider qualifications",
+              labelStyling: "font-bold",
+              name: "prescription_drug_provider_qualifications",
+              rules: { required: "Required" },
+              props: {
+                className: "w-[300px]",
+                options: [
+                  {
+                    label: "State licensed",
+                    value: "state_licensed",
+                  },
+                ],
+              },
+            },
+            {
+              rhf: "Input",
+              label: "Coverage that exceeds the minimum requirements or other",
+              labelStyling: "font-bold",
+              name: "prescription_drug_other_information",
+            },
+            {
+              rhf: "Radio",
+              label:
+                "Is there an EHB benchmark benefit duplicated or substituted?",
+              labelStyling: "font-bold",
+              name: "prescription_drug_benchmark_benefit_duplicated_or_substituted",
+              rules: { required: "Required" },
+              props: {
+                options: [
+                  {
+                    label: "Yes, a duplication",
+                    value: "yes_duplication",
+                  },
+                  {
+                    label: "Yes, a substitution",
+                    value: "yes_substitution",
+                  },
+                  { label: "No", value: "no" },
+                ],
+              },
+            },
           ],
         },
       ],
     },
+    subsection({
+      title:
+        "7. Essential health benefit: Rehabilitative and habilitative services and devices",
+      namePrefix: "rehabilitative_and_habilitative",
+      headerSlots: [
+        {
+          rhf: "Checkbox",
+          name: "rehabilitative_and_habilitative_does_not_apply_financial_requirement_or_treatment_limitation",
+          rules: { required: "Required" },
+          props: {
+            options: [
+              {
+                label:
+                  "The state/territory assures that it does not apply any financial requirement or treatment limitation to mental health or substance use disorder benefits in any classification that is more restrictive than the predominant financial requirement or treatment limitation of that type applied to substantially all medical/surgical benefits in the same classification.",
+                value: "yes",
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    subsection({
+      title: "8. Essential health benefit: Laboratory services",
+      namePrefix: "laboratory",
+    }),
+    subsection({
+      title:
+        "9. Essential health benefit: Preventive and wellness services and chronic disease management",
+      namePrefix: "preventive_and_wellness",
+      description:
+        "The state/territory must provide, at a minimum, a broad range of preventive services, including “A” and “B” services recommended by the United States Preventive Services Task Force; vaccines recommended by the Advisory Committee for Immunization Practices (ACIP); preventive care and screening for infants, children, and adults recommended by the Health Resources and Services Administration (HRSA) Bright Futures program; and additional preventive services for women recommended by the Institute of Medicine (IOM).",
+    }),
+    subsection({
+      title:
+        "10. Essential health benefit: Pediatric services including oral and vision care",
+      namePrefix: "pediatric",
+    }),
   ],
 };
 
