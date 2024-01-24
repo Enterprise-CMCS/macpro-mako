@@ -40,7 +40,6 @@ const DetailCardWrapper = ({
 );
 const StatusCard = (data: opensearch.main.Document) => {
   const transformedStatuses = getStatus(data.seatoolStatus);
-  const checker = PackageCheck(data);
   const { data: user } = useGetUser();
 
   return (
@@ -52,12 +51,12 @@ const StatusCard = (data: opensearch.main.Document) => {
             ? transformedStatuses.cmsStatus
             : transformedStatuses.stateStatus}
         </h2>
-        {checker.hasEnabledRaiWithdraw && (
+        {data.raiWithdrawEnabled && (
           <em className="text-xs my-4 mr-2">
             {"Withdraw Formal RAI Response - Enabled"}
           </em>
         )}
-        {user?.isCms && checker.isInSecondClock && (
+        {user?.isCms && data.secondClock && (
           <span id="secondclock" className="ml-2">
             2nd Clock
           </span>

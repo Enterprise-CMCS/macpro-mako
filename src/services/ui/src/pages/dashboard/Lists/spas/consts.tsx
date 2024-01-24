@@ -40,11 +40,25 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
       label: "Status",
-      cell: (data) =>
-        props?.isCms &&
-        !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
-          ? data.cmsStatus
-          : data.stateStatus,
+      cell: (data) => {
+        const status = (() => {
+          if (!props?.isCms) return data.stateStatus;
+          if (props.user?.["custom:cms-roles"] !== UserRoles.HELPDESK) {
+            return data.stateStatus;
+          }
+          return data.cmsStatus;
+        })();
+
+        const subStatus = data.raiWithdrawEnabled
+          ? "Withdraw Formal RAI Response - Enabled"
+          : null;
+        return (
+          <>
+            <p>{status}</p>
+            {!!subStatus && <p className="text-xs opacity-60">{subStatus}</p>}
+          </>
+        );
+      },
     },
     {
       field: "submissionDate",
