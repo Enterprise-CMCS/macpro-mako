@@ -8,7 +8,7 @@ import {
   renderCellIdLink,
 } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
-import { formatSeatoolDate } from "shared-utils";
+import { formatSeatoolDate, isCmsReadonlyUser } from "shared-utils";
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -43,9 +43,8 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       cell: (data) => {
         const status = (() => {
           if (!props?.isCms) return data.stateStatus;
-          if (props.user?.["custom:cms-roles"] !== UserRoles.HELPDESK) {
+          if (props.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK))
             return data.stateStatus;
-          }
           return data.cmsStatus;
         })();
 
