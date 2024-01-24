@@ -84,7 +84,7 @@ export interface Section {
   title: string;
   form: FormGroup[];
   dependency?: DependencyRule;
-  subSection?: boolean;
+  subsection?: boolean;
 }
 
 export interface Document {
