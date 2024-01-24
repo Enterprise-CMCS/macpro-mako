@@ -333,7 +333,7 @@ const ABP5: FormSchema = {
     }),
     subsection({
       title: "2. Essential health benefit: Emergency services",
-      namePrefix: "emergency_services",
+      namePrefix: "emergency",
     }),
     subsection({
       title: "3. Essential health benefit: Hospitalization",
