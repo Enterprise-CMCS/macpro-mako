@@ -2,7 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components/Inputs";
-import * as Content from "./content";
+import * as Content from "../content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
 import {
@@ -25,56 +25,60 @@ import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
   id: z.string(),
+  ammendedWaiverNumber: z.string(),
   additionalInformation: z.string().max(4000).optional(),
-  // attachments: z.object({
-  //   cmsForm179: zAttachmentRequired({
-  //     min: 1,
-  //     max: 1,
-  //     message: "Required: You must submit exactly one file for CMS Form 179.",
-  //   }),
-  //   spaPages: zAttachmentRequired({ min: 1 }),
-  //   coverLetter: zAttachmentOptional,
-  //   tribalEngagement: zAttachmentOptional,
-  //   existingStatePlanPages: zAttachmentOptional,
-  //   publicNotice: zAttachmentOptional,
-  //   sfq: zAttachmentOptional,
-  //   tribalConsultation: zAttachmentOptional,
-  //   other: zAttachmentOptional,
-  // }),
+  attachments: z.object({
+    comprehensiveWaiverAppPre1915B: zAttachmentRequired({
+      min: 1,
+      max: 1,
+      message: "Required: You must submit exactly one file for CMS Form 179.",
+    }),
+    comprehensiveWaiverCostEffectSpreadSheets1915B: zAttachmentRequired({
+      min: 1,
+    }),
+    tribalConsultation: zAttachmentOptional,
+    other: zAttachmentOptional,
+  }),
   proposedEffectiveDate: z.date(),
 });
-type Waiver1915B = z.infer<typeof formSchema>;
+type Waiver1915BCapitatedAmmendment = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
-  { name: "cmsForm179", label: "CMS Form 179", required: true },
-  { name: "spaPages", label: "SPA Pages", required: true },
-  { name: "coverLetter", label: "Cover Letter", required: false },
   {
-    name: "tribalEngagement",
-    label: "Document Demonstrating Good-Faith Tribal Engagement",
+    name: "comprehensiveWaiverAppPre1915B",
+    label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+    required: true,
+  },
+  {
+    name: "comprehensiveWaiverCostEffectSpreadSheets1915B",
+    label:
+      "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
     required: false,
   },
   {
-    name: "existingStatePlanPages",
-    label: "Existing State Plan Page(s)",
+    name: "tribalConsultation",
+    label: "Tribal Consulation",
     required: false,
   },
-  { name: "publicNotice", label: "Public Notice", required: false },
-  { name: "sfq", label: "Standard Funding Questions (SFQs)", required: false },
-  { name: "tribalConsultation", label: "Tribal Consultation", required: false },
-  { name: "other", label: "Other", required: false },
+  {
+    name: "other",
+    label: "Other",
+    required: false,
+  },
 ] as const;
 
-export const WaiverForm1915B = () => {
+export const Capitated1915BWaiverAmmendment = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const handleSubmit: SubmitHandler<Waiver1915B> = async (formData) => {
+  const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmmendment> = async (
+    formData
+  ) => {
     try {
       // AK-0260.R04.02
-      await submit<Waiver1915B>({
+      await submit<Waiver1915BCapitatedAmmendment>({
         data: {
           id: formData.id,
           proposedEffectiveDate: new Date(),
@@ -90,7 +94,7 @@ export const WaiverForm1915B = () => {
     }
   };
 
-  const form = useForm<Waiver1915B>({
+  const form = useForm<Waiver1915BCapitatedAmmendment>({
     resolver: zodResolver(formSchema),
   });
 
@@ -102,7 +106,7 @@ export const WaiverForm1915B = () => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col"
         >
-          <SectionCard title="Medicaid SPA Details">
+          <SectionCard title="1915(b) Waiver Amendment Details">
             <Content.FormIntroText />
             <Inputs.FormField
               control={form.control}
@@ -111,18 +115,53 @@ export const WaiverForm1915B = () => {
                 <Inputs.FormItem>
                   <div className="flex gap-4">
                     <Inputs.FormLabel className="text-lg font-bold">
-                      SPA ID
+                      Existing Waiver Number to Amend
                     </Inputs.FormLabel>
+                    <Inputs.RequiredIndicator />
+                  </div>
+                  <p className="text-gray-500 font-light">
+                    Enter the existing waiver number you are seeking to amend in
+                    the format it was approved, using a dash after the two
+                    character state abbreviation.
+                  </p>
+                  <Inputs.FormControl className="max-w-sm">
+                    <Inputs.Input
+                      {...field}
+                      onInput={(e) => {
+                        if (e.target instanceof HTMLInputElement) {
+                          e.target.value = e.target.value.toUpperCase();
+                        }
+                      }}
+                    />
+                  </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
+              )}
+            />
+            <Inputs.FormField
+              control={form.control}
+              name="ammendedWaiverNumber"
+              render={({ field }) => (
+                <Inputs.FormItem>
+                  <div className="flex gap-4">
+                    <Inputs.FormLabel className="text-lg font-bold">
+                      1915(b) Waiver Amendment Number
+                    </Inputs.FormLabel>
+                    <Inputs.RequiredIndicator />
                     <Link
                       to="/faq/#spa-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
+                      className="text-blue-700 hover:underline flex items-center"
                     >
-                      What is my SPA ID?
+                      What is my 1915(b) Waiver Amendment Number?
                     </Link>
                   </div>
-                  <Content.SpaIdFormattingDesc />
+                  <p className="text-gray-500 font-light">
+                    The Waiver Number must be in the format of SS-####.R##.## or
+                    SS-#####.R##.##. For amendments, the last two digits start
+                    with ‘01’ and ascends.
+                  </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
                       {...field}
@@ -141,11 +180,11 @@ export const WaiverForm1915B = () => {
               control={form.control}
               name="proposedEffectiveDate"
               render={({ field }) => (
-                <Inputs.FormItem className="max-w-sm">
+                <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of Medicaid SPA
+                    Proposed Effective Date of 1915(b) Waiver Amendment
                   </Inputs.FormLabel>
-                  <Inputs.FormControl>
+                  <Inputs.FormControl className="max-w-sm">
                     <Inputs.DatePicker
                       onChange={field.onChange}
                       date={field.value}
@@ -161,7 +200,7 @@ export const WaiverForm1915B = () => {
               faqLink="/faq/#medicaid-spa-attachments"
               includeCMS179
             />
-            {/* {attachmentList.map(({ name, label, required }) => (
+            {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
                 control={form.control}
@@ -169,16 +208,6 @@ export const WaiverForm1915B = () => {
                 render={({ field }) => (
                   <Inputs.FormItem>
                     <Inputs.FormLabel>{label}</Inputs.FormLabel>
-                    {
-                      <Inputs.FormDescription>
-                        {name === "cmsForm179"
-                          ? "One attachment is required"
-                          : ""}
-                        {name === "spaPages"
-                          ? "At least one attachment is required"
-                          : ""}
-                      </Inputs.FormDescription>
-                    }
                     <Inputs.Upload
                       files={field?.value ?? []}
                       setFiles={field.onChange}
@@ -187,7 +216,7 @@ export const WaiverForm1915B = () => {
                   </Inputs.FormItem>
                 )}
               />
-            ))} */}
+            ))}
           </SectionCard>
           <SectionCard title="Additional Information">
             <Inputs.FormField
@@ -244,8 +273,8 @@ export const WaiverForm1915B = () => {
   );
 };
 
-export const Waiver1915BFormPage = () => (
+export const Capitated1915BWaiverAmmendmentPage = () => (
   <ModalProvider>
-    <WaiverForm1915B />
+    <Capitated1915BWaiverAmmendment />
   </ModalProvider>
 );
