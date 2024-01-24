@@ -72,6 +72,7 @@ function subsection({
           {
             rhf: "FieldGroup",
             name: `${namePrefix}_benefit`,
+            groupNamePrefix: `${namePrefix}_benefit`,
             props: {
               appendText: "Add benefit",
               removeText: "Remove benefit",
