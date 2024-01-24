@@ -26,7 +26,7 @@ export const FieldGroup = <TFields extends FieldValues>(
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 w-max">
+    <div className="flex flex-col gap-4 w-full">
       {fieldArr.fields.map((FLD, index) => {
         return (
           <div className="flex flex-col gap-3" key={FLD.id}>
