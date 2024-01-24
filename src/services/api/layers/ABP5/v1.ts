@@ -69,181 +69,191 @@ function subsection({
         description: description,
         descriptionStyling: "font-normal",
         slots: [
-          ...headerSlots,
           {
-            rhf: "Input",
-            label: "Benefit provided",
-            labelStyling: "font-bold",
-            name: `${namePrefix}_benefit_provided`,
-            rules: { required: "Required" },
+            rhf: "FieldGroup",
+            name: `${namePrefix}_benefit`,
             props: {
-              className: "w-[300px]",
+              appendText: "Add benefit",
+              removeText: "Remove benefit",
             },
-          },
-          {
-            rhf: "Select",
-            label: "Source",
-            labelStyling: "font-bold",
-            name: `${namePrefix}_source`,
-            rules: { required: "Required" },
-            props: {
-              className: "w-[300px]",
-              options: benefitSourceOptions,
-            },
-          },
-          {
-            rhf: "Input",
-            label:
-              "Other information regarding this benefit source, including the name of the source plan",
-            labelStyling: "font-bold",
-            name: `${namePrefix}_state_plan_other_information`,
-            formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-            rules: { required: "Required" },
-            dependency: {
-              conditions: [
-                {
-                  name: `${namePrefix}_source`,
-                  type: "expectedValue",
-                  expectedValue: "state_plan_other",
+            fields: [
+              ...headerSlots,
+              {
+                rhf: "Input",
+                label: "Benefit provided",
+                labelStyling: "font-bold",
+                name: `${namePrefix}_benefit_provided`,
+                rules: { required: "* Required" },
+                props: {
+                  className: "w-[300px]",
                 },
-              ],
-              effect: { type: "show" },
-            },
-          },
-          {
-            rhf: "Input",
-            label:
-              "Other information regarding this benefit source, including the name of the source plan",
-            labelStyling: "font-bold",
-            name: `${namePrefix}_secretary_approved_other_information`,
-            formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-            rules: { required: "Required" },
-            dependency: {
-              conditions: [
-                {
-                  name: `${namePrefix}_source`,
-                  type: "expectedValue",
-                  expectedValue: "secretary_approved_other",
+              },
+              {
+                rhf: "Select",
+                label: "Source",
+                labelStyling: "font-bold",
+                name: `${namePrefix}_source`,
+                rules: { required: "* Required" },
+                props: {
+                  className: "w-[300px]",
+                  options: benefitSourceOptions,
                 },
-              ],
-              effect: { type: "show" },
-            },
-          },
-          {
-            rhf: "Input",
-            label: "Authorization",
-            labelStyling: "font-bold",
-            name: `${namePrefix}_authorization`,
-            rules: { required: "Required" },
-            props: {
-              className: "w-[300px]",
-            },
-          },
-          {
-            rhf: "Select",
-            label: "Provider qualifications",
-            labelStyling: "font-bold",
-            name: `${namePrefix}_provider_qualifications`,
-            rules: { required: "Required" },
-            props: {
-              className: "w-[300px]",
-              options: providerQualificationsOptions,
-            },
-          },
-          {
-            rhf: "Input",
-            label: "Other information regarding provider qualifications",
-            labelStyling: "font-bold",
-            name: `${namePrefix}_provider_qualifications_other_information`,
-            formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-            rules: { required: "Required" },
-            dependency: {
-              conditions: [
-                {
-                  name: `${namePrefix}_provider_qualifications`,
-                  type: "expectedValue",
-                  expectedValue: "other",
-                },
-              ],
-              effect: { type: "show" },
-            },
-          },
-          {
-            rhf: "Input",
-            label: "Amount limit",
-            labelStyling: "font-bold",
-            name: `${namePrefix}_amount_limit`,
-            rules: { required: "Required" },
-            props: {
-              className: "w-[300px]",
-            },
-          },
-          {
-            rhf: "Input",
-            label: "Duration limit",
-            labelStyling: "font-bold",
-            name: `${namePrefix}_duration_limit`,
-            rules: { required: "Required" },
-            props: {
-              className: "w-[300px]",
-            },
-          },
-          {
-            rhf: "Input",
-            label: "Scope limit",
-            labelStyling: "font-bold",
-            name: `${namePrefix}_scope_limit`,
-            rules: { required: "Required" },
-            props: {
-              className: "w-[300px]",
-            },
-          },
-          {
-            rhf: "Radio",
-            label:
-              "Is there an EHB benchmark benefit duplicated or substituted?",
-            labelStyling: "font-bold",
-            name: `${namePrefix}_benchmark_benefit_duplicated_or_substituted`,
-            rules: { required: "Required" },
-            props: {
-              options: [
-                {
-                  label: "Yes, a duplication",
-                  value: "yes_duplication",
-                  form: [
+              },
+              {
+                rhf: "Input",
+                label:
+                  "Other information regarding this benefit source, including the name of the source plan",
+                labelStyling: "font-bold",
+                name: `${namePrefix}_state_plan_other_information`,
+                formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                rules: { required: "* Required" },
+                dependency: {
+                  conditions: [
                     {
-                      slots: [
+                      name: `${namePrefix}_source`,
+                      type: "expectedValue",
+                      expectedValue: "state_plan_other",
+                    },
+                  ],
+                  effect: { type: "show" },
+                },
+              },
+              {
+                rhf: "Input",
+                label:
+                  "Other information regarding this benefit source, including the name of the source plan",
+                labelStyling: "font-bold",
+                name: `${namePrefix}_secretary_approved_other_information`,
+                formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                rules: { required: "* Required" },
+                dependency: {
+                  conditions: [
+                    {
+                      name: `${namePrefix}_source`,
+                      type: "expectedValue",
+                      expectedValue: "secretary_approved_other",
+                    },
+                  ],
+                  effect: { type: "show" },
+                },
+              },
+              {
+                rhf: "Input",
+                label: "Authorization",
+                labelStyling: "font-bold",
+                name: `${namePrefix}_authorization`,
+                rules: { required: "* Required" },
+                props: {
+                  className: "w-[300px]",
+                },
+              },
+              {
+                rhf: "Select",
+                label: "Provider qualifications",
+                labelStyling: "font-bold",
+                name: `${namePrefix}_provider_qualifications`,
+                rules: { required: "* Required" },
+                props: {
+                  className: "w-[300px]",
+                  options: providerQualificationsOptions,
+                },
+              },
+              {
+                rhf: "Input",
+                label: "Other information regarding provider qualifications",
+                labelStyling: "font-bold",
+                name: `${namePrefix}_provider_qualifications_other_information`,
+                formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                rules: { required: "* Required" },
+                dependency: {
+                  conditions: [
+                    {
+                      name: `${namePrefix}_provider_qualifications`,
+                      type: "expectedValue",
+                      expectedValue: "other",
+                    },
+                  ],
+                  effect: { type: "show" },
+                },
+              },
+              {
+                rhf: "Input",
+                label: "Amount limit",
+                labelStyling: "font-bold",
+                name: `${namePrefix}_amount_limit`,
+                rules: { required: "* Required" },
+                props: {
+                  className: "w-[300px]",
+                },
+              },
+              {
+                rhf: "Input",
+                label: "Duration limit",
+                labelStyling: "font-bold",
+                name: `${namePrefix}_duration_limit`,
+                rules: { required: "* Required" },
+                props: {
+                  className: "w-[300px]",
+                },
+              },
+              {
+                rhf: "Input",
+                label: "Scope limit",
+                labelStyling: "font-bold",
+                name: `${namePrefix}_scope_limit`,
+                rules: { required: "* Required" },
+                props: {
+                  className: "w-[300px]",
+                },
+              },
+              {
+                rhf: "Radio",
+                label:
+                  "Is there an EHB benchmark benefit duplicated or substituted?",
+                labelStyling: "font-bold",
+                name: `${namePrefix}_benchmark_benefit_duplicated_or_substituted`,
+                rules: { required: "* Required" },
+                props: {
+                  options: [
+                    {
+                      label: "Yes, a duplication",
+                      value: "yes_duplication",
+                      form: [
                         {
-                          rhf: "Input",
-                          label: "Benefit duplicated",
-                          labelStyling: "font-bold",
-                          name: "benefit_duplicated",
-                          rules: { required: "Required" },
+                          slots: [
+                            {
+                              rhf: "Input",
+                              label: "Benefit duplicated",
+                              labelStyling: "font-bold",
+                              name: "benefit_duplicated",
+                              rules: { required: "* Required" },
+                            },
+                          ],
                         },
                       ],
                     },
-                  ],
-                },
-                {
-                  label: "Yes, a substitution",
-                  value: "yes_substitution",
-                  form: [
                     {
-                      slots: [
+                      label: "Yes, a substitution",
+                      value: "yes_substitution",
+                      form: [
                         {
-                          rhf: "Input",
-                          label: "Benefit substituted",
-                          labelStyling: "font-bold",
-                          name: "benefit_substituted",
-                          rules: { required: "Required" },
+                          slots: [
+                            {
+                              rhf: "Input",
+                              label: "Benefit substituted",
+                              labelStyling: "font-bold",
+                              name: "benefit_substituted",
+                              rules: { required: "* Required" },
+                            },
+                          ],
                         },
                       ],
                     },
+                    { label: "No", value: "no" },
                   ],
                 },
-                { label: "No", value: "no" },
-              ],
-            },
+              },
+            ],
           },
         ],
       },
@@ -265,7 +275,7 @@ const ABP5: FormSchema = {
                 "Does this description of benefits align with the traditional state plan?",
               labelStyling: "font-bold",
               name: "benefits_align_with_traditional_state_plan",
-              rules: { required: "Required" },
+              rules: { required: "* Required" },
               props: {
                 className: "w-[150px]",
                 options: [
@@ -289,7 +299,7 @@ const ABP5: FormSchema = {
                 "Does the state/territory propose a benchmark-equivalent benefit package?",
               labelStyling: "font-bold",
               name: "benchmark_equivalent_benefit_package",
-              rules: { required: "Required" },
+              rules: { required: "* Required" },
               props: {
                 className: "w-[150px]",
                 options: [
@@ -313,7 +323,7 @@ const ABP5: FormSchema = {
                 "Enter the specific name of the base benchmark plan selected.",
               labelStyling: "font-bold",
               name: "base_benchmark_plan_name",
-              rules: { required: "Required" },
+              rules: { required: "* Required" },
             },
             {
               rhf: "Input",
@@ -321,7 +331,7 @@ const ABP5: FormSchema = {
                 "Enter the specific name of the Section 1937 coverage option selected, if other than Secretary-approved. Otherwise, enter “Secretary-approved.”",
               labelStyling: "font-bold",
               name: "section_1937_coverage_option_name",
-              rules: { required: "Required" },
+              rules: { required: "* Required" },
             },
           ],
         },
@@ -351,7 +361,7 @@ const ABP5: FormSchema = {
         {
           rhf: "Checkbox",
           name: "does_not_apply_financial_requirement_or_treatment_limitation",
-          rules: { required: "Required" },
+          rules: { required: "* Required" },
           props: {
             options: [
               {
@@ -418,7 +428,7 @@ const ABP5: FormSchema = {
               label: "Authorization",
               labelStyling: "font-bold",
               name: "prescription_drug_authorization",
-              rules: { required: "Required" },
+              rules: { required: "* Required" },
               props: {
                 className: "w-[300px]",
                 options: [
@@ -438,7 +448,7 @@ const ABP5: FormSchema = {
               label: "Provider qualifications",
               labelStyling: "font-bold",
               name: "prescription_drug_provider_qualifications",
-              rules: { required: "Required" },
+              rules: { required: "* Required" },
               props: {
                 className: "w-[300px]",
                 options: [
@@ -461,7 +471,7 @@ const ABP5: FormSchema = {
                 "Is there an EHB benchmark benefit duplicated or substituted?",
               labelStyling: "font-bold",
               name: "prescription_drug_benchmark_benefit_duplicated_or_substituted",
-              rules: { required: "Required" },
+              rules: { required: "* Required" },
               props: {
                 options: [
                   {
@@ -488,7 +498,7 @@ const ABP5: FormSchema = {
         {
           rhf: "Checkbox",
           name: "rehabilitative_and_habilitative_does_not_apply_financial_requirement_or_treatment_limitation",
-          rules: { required: "Required" },
+          rules: { required: "* Required" },
           props: {
             options: [
               {
