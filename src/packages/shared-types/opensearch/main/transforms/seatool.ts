@@ -100,18 +100,15 @@ const getFinalDispositionDate = (status: string, record: SeaTool) => {
 };
 
 const isInSecondClock = (data: any) => {
-  if (
+  return (
     authorityLookup(data.authority) != "CHIP" && // if it's not a chip
     [
       SEATOOL_STATUS.PENDING,
       SEATOOL_STATUS.PENDING_CONCURRENCE,
       SEATOOL_STATUS.PENDING_APPROVAL,
     ].includes(data.seatoolStatus) && // if it's in pending
-    data.raiReceivedDate // if it's latest rai has a received date
-  ) {
-    return true; // then we're in second clock
-  }
-  return false; // otherwise, we're not
+    data.raiReceivedDate
+  ); // if it's latest rai has a received date
 };
 
 export const transform = (id: string) => {
