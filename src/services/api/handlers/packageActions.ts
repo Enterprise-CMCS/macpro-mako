@@ -95,7 +95,7 @@ export async function issueRai(body: RaiIssue) {
 export async function withdrawRai(body: RaiWithdraw, document: any) {
   const raiToWithdraw =
     !!document.raiRequestedDate && !!document.raiReceivedDate
-      ? document.raiRequestedDate
+      ? new Date(document.raiRequestedDate).getTime()
       : null;
   if (!raiToWithdraw) throw "No RAI available for response";
   const today = seaToolFriendlyTimestamp();
@@ -108,7 +108,6 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
 
   if (result.success === true) {
     console.log("CMS withdrawing an RAI");
-    console.log(rais);
     console.log("LATEST RAI KEY: " + raiToWithdraw);
     const pool = await sql.connect(config);
     const transaction = new sql.Transaction(pool);
@@ -167,7 +166,7 @@ export async function respondToRai(body: RaiResponse, document: any) {
   console.log("State responding to RAI");
   const raiToRespondTo =
     !!document.raiRequestedDate && !document.raiReceivedDate
-      ? document.raiRequestedDate
+      ? new Date(document.raiRequestedDate).getTime()
       : null;
   if (!raiToRespondTo) throw "No RAI available for response";
   console.log("LATEST RAI KEY: " + raiToRespondTo);
