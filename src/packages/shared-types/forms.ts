@@ -75,6 +75,7 @@ export type RHFComponentMap = {
 
 export type FormGroup = {
   description?: string;
+  descriptionStyling?: string;
   slots: RHFSlotProps[];
   wrapperStyling?: string;
   dependency?: DependencyRule;
