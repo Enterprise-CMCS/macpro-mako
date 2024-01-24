@@ -77,21 +77,23 @@ export const RHFSlot = <
             {rhf === "Input" &&
               (() => {
                 const hops = props as RHFComponentMap["Input"];
-                return <Input {...hops} {...field} />;
+                return <Input {...hops} {...field} aria-label={field.name} />;
               })()}
 
             {/* ----------------------------------------------------------------------------- */}
             {rhf === "Textarea" &&
               (() => {
                 const hops = props as RHFComponentMap["Textarea"];
-                return <Textarea {...hops} {...field} />;
+                return (
+                  <Textarea {...hops} {...field} aria-label={field.name} />
+                );
               })()}
 
             {/* ----------------------------------------------------------------------------- */}
             {rhf === "Switch" &&
               (() => {
                 const hops = props as RHFComponentMap["Switch"];
-                return <Switch {...hops} {...field} />;
+                return <Switch {...hops} {...field} aria-label={field.name} />;
               })()}
 
             {/* ----------------------------------------------------------------------------- */}
@@ -115,7 +117,7 @@ export const RHFSlot = <
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger {...hops}>
+                    <SelectTrigger {...hops} aria-label={field.name}>
                       <SelectValue {...hops} />
                     </SelectTrigger>
                     <SelectContent className="overflow-auto max-h-60">
@@ -143,7 +145,11 @@ export const RHFSlot = <
                       return (
                         <div key={`OPT-${OPT.value}`} className="flex flex-col">
                           <div className="flex gap-2 items-center">
-                            <RadioGroupItem value={OPT.value} id={OPT.value} />
+                            <RadioGroupItem
+                              value={OPT.value}
+                              id={OPT.value}
+                              aria-label={OPT.value}
+                            />
                             {
                               <FormLabel
                                 className="font-normal"
@@ -214,6 +220,7 @@ export const RHFSlot = <
                           dependency={OPT.dependency}
                           parentValue={field.value}
                           changeMethod={field.onChange}
+                          aria-label={field.name}
                         />
                         {field.value?.includes(OPT.value) &&
                           !!OPT.slots &&
