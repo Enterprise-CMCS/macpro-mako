@@ -87,13 +87,20 @@ export const submit = async (event: APIGatewayEvent) => {
           ,0)
     `;
 
-    const statePlanTypeQuery = `
-    INSERT INTO SEA.dbo.State_Plan_Service_Types (id_number, service_type_id) VALUES ('${
-      body.id
-    }', (Select SPA_Type_ID from dbo.SPA_Type where SPA_Type_Name = '${
-      formattedSpaTypeName[body.authority as PlanType]
-    }'))
-    `;
+    // These below two queries will become useful when it comes to updating the plan type and plan sub type for waiver
+    // and probably also chip spas, and medicaid spas
+
+    // const statePlanTypeQuery = `
+    // INSERT INTO SEA.dbo.State_Plan_Service_Types (id_number, service_type_id) VALUES ('${
+    //   body.id
+    // }', (Select SPA_Type_ID from dbo.SPA_Type where SPA_Type_Name = '${
+    //   formattedSpaTypeName[body.authority as PlanType]
+    // }'))
+    // `;
+
+    // const statePlanSubTypeQuery = `
+    // INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (id_number, Service_SubType_ID) VALUES ('${body.id}', (Select SPA_Type_ID from dbo.Type where SPA_Type_Name = '1915 (b) (1)'))
+    // `;
 
     const statePlanWaiverQuery = `
     Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
@@ -112,9 +119,9 @@ export const submit = async (event: APIGatewayEvent) => {
     const queries: Record<PlanType, string[]> = {
       [PlanType.CHIP_SPA]: [spaQuery],
       [PlanType.MED_SPA]: [spaQuery],
-      [PlanType["1915b"]]: [statePlanTypeQuery, statePlanWaiverQuery],
-      [PlanType["1915c"]]: [statePlanTypeQuery, statePlanWaiverQuery],
-      [PlanType.WAIVER]: [statePlanTypeQuery, statePlanWaiverQuery],
+      [PlanType["1915b"]]: [statePlanWaiverQuery],
+      [PlanType["1915c"]]: [statePlanWaiverQuery],
+      [PlanType.WAIVER]: [statePlanWaiverQuery],
     };
 
     for (const query of queries[body.authority as PlanType]) {
