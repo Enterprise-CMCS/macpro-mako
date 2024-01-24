@@ -58,7 +58,7 @@ const StatusCard = (data: opensearch.main.Document) => {
         )}
         {user?.isCms && data.secondClock && (
           <span id="secondclock" className="ml-2">
-            2nd Clock
+            <br></br>2nd Clock
           </span>
         )}
       </div>
