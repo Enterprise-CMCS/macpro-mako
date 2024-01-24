@@ -1,4 +1,4 @@
-import { FormSchema, Section } from "shared-types";
+import { FormSchema, RHFSlotProps, Section } from "shared-types";
 
 const benefitSourceOptions = [
   {
@@ -48,16 +48,28 @@ const providerQualificationsOptions = [
   { label: "Other", value: "other" },
 ];
 
-const subsection: (title: string, namePrefix: string) => Section = function (
+interface SubsectionData {
+  title: string;
+  namePrefix: string;
+  description?: string;
+  headerSlots?: RHFSlotProps[];
+}
+
+function subsection({
   title,
-  namePrefix
-) {
+  namePrefix,
+  description,
+  headerSlots = [],
+}: SubsectionData): Section {
   return {
     title: title,
-    subSection: true,
+    subsection: true,
     form: [
       {
+        description: description,
+        descriptionStyling: "font-normal",
         slots: [
+          ...headerSlots,
           {
             rhf: "Input",
             label: "Benefit provided",
@@ -237,7 +249,7 @@ const subsection: (title: string, namePrefix: string) => Section = function (
       },
     ],
   };
-};
+}
 
 /*
   "Ambulatory patient services",
@@ -328,22 +340,65 @@ const ABP5: FormSchema = {
         },
       ],
     },
-    subsection(
-      "1. Essential health benefit: Ambulatory patient services",
-      "ambulatory_patient"
-    ),
-    subsection(
-      "2. Essential health benefit: Emergency services",
-      "emergency_services"
-    ),
-    subsection(
-      "3. Essential health benefit: Hospitalization",
-      "hospitalization"
-    ),
-    subsection(
-      "4. Essential health benefit: Maternity and newborn care",
-      "maternity_and_newborn_care"
-    ),
+    subsection({
+      title: "1. Essential health benefit: Ambulatory patient services",
+      namePrefix: "ambulatory_patient",
+    }),
+    subsection({
+      title: "2. Essential health benefit: Emergency services",
+      namePrefix: "emergency_services",
+    }),
+    subsection({
+      title: "3. Essential health benefit: Hospitalization",
+      namePrefix: "hospitalization",
+    }),
+    subsection({
+      title: "4. Essential health benefit: Maternity and newborn care",
+      namePrefix: "maternity_and_newborn_care",
+    }),
+    subsection({
+      title:
+        "5. Essential health benefit: Mental health and substance use disorder services including behavioral health treatment",
+      namePrefix: "mental_health_and_substance_use_disorder",
+      headerSlots: [
+        {
+          rhf: "Checkbox",
+          name: "does_not_apply_financial_requirement_or_treatment_limitation",
+          rules: { required: "Required" },
+          props: {
+            options: [
+              {
+                label:
+                  "The state/territory assures that it does not apply any financial requirement or treatment limitation to mental health or substance use disorder benefits in any classification that is more restrictive than the predominant financial requirement or treatment limitation of that type applied to substantially all medical/surgical benefits in the same classification.",
+                value: "yes",
+              },
+            ],
+          },
+        },
+      ],
+    }),
+    {
+      title: "6. Essential health benefit: Prescription drugs",
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Checkbox",
+              name: "prescription_drug_benefit_same_as_medicaid_state_plan",
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state/territory assures that the ABP prescription drug benefit plan is the same as under the approved Medicaid state plan for prescribed drugs.",
+                    value: "yes",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
   ],
 };
 
