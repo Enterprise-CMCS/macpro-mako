@@ -21,7 +21,6 @@ export const getItemData = async (event: APIGatewayEvent) => {
     const changelog = await getPackageChangelog(body.id);
     if (
       stateFilter &&
-      onemacOriginFilter &&
       (!packageResult._source.state ||
         !stateFilter.terms.state.includes(
           packageResult._source.state.toLocaleLowerCase()
