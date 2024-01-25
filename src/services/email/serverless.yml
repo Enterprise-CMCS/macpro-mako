@@ -22,6 +22,11 @@ provider:
           Action:
             - sts:AssumeRole
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - ses:ListIdentities
+            - ses:ListConfigurationSets
+          Resource: "*"
 
   stackTags:
     PROJECT: ${self:custom.project}
