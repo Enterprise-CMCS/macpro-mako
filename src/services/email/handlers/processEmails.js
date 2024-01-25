@@ -10,7 +10,7 @@ export const main = async (event, context, callback) => {
         MaxItems: Number("int"),
     };
     const command = new ListConfigurationSetsCommand(input);
-    const response = await client.send(command);
+    const response = await SES.send(command);
 
     console.log("got this response: ", response);
     callback(null, "Success");
