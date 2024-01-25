@@ -8,7 +8,7 @@ import {
   renderCellIdLink,
 } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
-import { formatSeatoolDate } from "shared-utils";
+import { formatSeatoolDate, isCmsReadonlyUser } from "shared-utils";
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -40,11 +40,24 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
       label: "Status",
-      cell: (data) =>
-        props?.isCms &&
-        !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
-          ? data.cmsStatus
-          : data.stateStatus,
+      cell: (data) => {
+        const status = (() => {
+          if (!props?.isCms) return data.stateStatus;
+          if (props.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK))
+            return data.stateStatus;
+          return data.cmsStatus;
+        })();
+
+        const subStatus = data.raiWithdrawEnabled
+          ? "Withdraw Formal RAI Response - Enabled"
+          : null;
+        return (
+          <>
+            <p>{status}</p>
+            {!!subStatus && <p className="text-xs opacity-60">{subStatus}</p>}
+          </>
+        );
+      },
     },
     {
       field: "submissionDate",

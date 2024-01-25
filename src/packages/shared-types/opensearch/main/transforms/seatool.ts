@@ -99,6 +99,27 @@ const getFinalDispositionDate = (status: string, record: SeaTool) => {
     : null;
 };
 
+const isInSecondClock = (
+  raiReceivedDate: any,
+  raiWithdrawnDate: any,
+  seatoolStatus: any,
+  authority: any
+) => {
+  if (
+    authority != "CHIP" && // if it's not a chip
+    [
+      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.PENDING_CONCURRENCE,
+      SEATOOL_STATUS.PENDING_APPROVAL,
+    ].includes(seatoolStatus) && // if it's in pending
+    raiReceivedDate && // if its latest rai has a received date
+    !raiWithdrawnDate // if the latest rai has not been withdrawn
+  ) {
+    return true; // then we're in second clock
+  }
+  return false; // otherwise, we're not
+};
+
 export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
@@ -138,6 +159,12 @@ export const transform = (id: string) => {
         data.STATE_PLAN.SUBMISSION_DATE
       ),
       subject: data.STATE_PLAN.TITLE_NAME,
+      secondClock: isInSecondClock(
+        raiReceivedDate,
+        raiWithdrawnDate,
+        seatoolStatus,
+        authorityLookup(data.STATE_PLAN.PLAN_TYPE)
+      ),
     };
   });
 };
