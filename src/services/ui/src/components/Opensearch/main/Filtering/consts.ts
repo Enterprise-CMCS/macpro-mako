@@ -225,7 +225,7 @@ export const EXPORT_GROUPS = (
           }
         })();
         const subStatus = data.raiWithdrawEnabled
-          ? " (Withdraw Formal Rai Response - Enabled)"
+          ? " (Withdraw Formal RAI Response - Enabled)"
           : null;
         return subStatus ? status + subStatus : status;
       },
