@@ -2,7 +2,6 @@ import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
 import { getStateFilter } from "../libs/auth/user";
 import * as os from "./../../../libs/opensearch-lib";
-import { onemacOriginFilter } from "shared-types/opensearch/main";
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
@@ -28,7 +27,13 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     if (stateFilter) {
       query.query.bool.must.push(stateFilter);
     }
-    query.query.bool.must.push(onemacOriginFilter);
+
+    // Only return records originating from OneMAC
+    query.query.bool.must.push({
+      terms: {
+        "origin.keyword": ["OneMAC"],
+      },
+    });
 
     query.from = query.from || 0;
     query.size = query.size || 100;

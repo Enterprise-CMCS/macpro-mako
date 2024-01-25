@@ -36,9 +36,3 @@ export type State = QueryState<Field>;
 export type Aggs = AggQuery<Field>;
 
 export * from "./transforms";
-
-export const onemacOriginFilter = {
-  terms: {
-    "origin.keyword": ["OneMAC"],
-  },
-};
