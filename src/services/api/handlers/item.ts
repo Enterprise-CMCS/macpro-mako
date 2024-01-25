@@ -2,6 +2,7 @@ import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
 import { getStateFilter } from "../libs/auth/user";
 import { getPackage, getPackageChangelog } from "../libs/package";
+import { onemacOriginFilter } from "shared-types/opensearch/main";
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
@@ -20,6 +21,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
     const changelog = await getPackageChangelog(body.id);
     if (
       stateFilter &&
+      onemacOriginFilter &&
       (!packageResult._source.state ||
         !stateFilter.terms.state.includes(
           packageResult._source.state.toLocaleLowerCase()
