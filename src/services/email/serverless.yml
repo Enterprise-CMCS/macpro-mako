@@ -51,7 +51,7 @@ functions:
   processEmailEvents:
     handler: handlers/processEmailEvents.main
     events:
-      - sns: !Ref EmailEventTopic
+      - sns: ${self:service}-${sls:stage}-email-events
 
 resources:
   Resources:
