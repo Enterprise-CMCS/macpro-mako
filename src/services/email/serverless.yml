@@ -19,10 +19,9 @@ provider:
       permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
       statements:
         - Effect: Allow
-          Principal:
-            Service: "lambda.amazonaws.com"
           Action:
             - sts:AssumeRole
+          Resource: "*"
 
   stackTags:
     PROJECT: ${self:custom.project}
