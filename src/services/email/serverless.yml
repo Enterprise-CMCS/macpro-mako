@@ -48,3 +48,32 @@ functions:
     maximumRetryAttempts: 0
     timeout: 60
     memorySize: 1024
+  processEmailEvents:
+    handler: handlers/processEmailEvents.main
+    events:
+      - sns: !Ref EmailEventTopic
+
+resources:
+  Resources:
+    EmailEventTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${self:service}-${sls:stage}-email-events
+        DisplayName: Monitoring the sending of emails
+
+    EmailEventTopicPolicy:
+      Type: AWS::SNS::TopicPolicy
+      Properties:
+        PolicyDocument:
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+                  - ses.amazonaws.com
+              Action:
+                - sns:Subscribe
+                - sns:Publish
+              Resource: !Ref EmailEventTopic
+        Topics:
+          - !Ref EmailEventTopic
