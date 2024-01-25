@@ -213,8 +213,16 @@ export const EXPORT_GROUPS = (
       name: "Status",
       transform(data) {
         const status = (() => {
-          if (user?.data?.isCms) return data.cmsStatus;
-          return data.stateStatus;
+          if (user?.data?.isCms) {
+            if (
+              user?.data.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+            ) {
+              return data.stateStatus;
+            }
+            return data.cmsStatus;
+          } else {
+            return data.stateStatus;
+          }
         })();
         const subStatus = data.raiWithdrawEnabled
           ? " (Withdraw Formal Rai Response - Enabled)"
