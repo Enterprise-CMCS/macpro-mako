@@ -17,6 +17,50 @@ export const zSpaIdSchema = z
       "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
   });
 
+export const zInitialWaiverNumberSchema = z
+  .string()
+  .regex(
+    /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/, // TODO: Change regex
+    "The Initial Waiver Number must be in the format of SS-####.R00.00 or SS-#####.R00.00"
+  )
+  .refine((value) => isAuthorizedState(value), {
+    message:
+      "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+  })
+  .refine(async (value) => idIsUnique(value), {
+    // TODO: New message requirement
+    message:
+      "According to our records, this Waiver Number already exists. Please check the SPA ID and try entering it again.",
+  });
+
+export const zRenewalWaiverNumberSchema = z
+  .string()
+  .regex(
+    /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/, // TODO: Change regex
+    "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with ‘01’ and ascends"
+  )
+  .refine((value) => isAuthorizedState(value), {
+    // TODO: New message requirement
+    message:
+      "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+  });
+
+export const zAmendmentWaiverNumberSchema = z
+  .string()
+  .regex(
+    /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/, // TODO: Change regex
+    "The 1915(b) Waiver Amendment Number must be in the format of SS-####.R##.## or SS-#####.R##.##. For amendments, the last two digits start with ‘01’ and ascends"
+  )
+  .refine((value) => isAuthorizedState(value), {
+    message:
+      "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+  })
+  .refine(async (value) => idIsUnique(value), {
+    // TODO: Change func
+    message:
+      "According to our records, this 1915(b) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again",
+  });
+
 export const zAttachmentOptional = z.array(z.instanceof(File)).optional();
 
 export const zAttachmentRequired = ({
