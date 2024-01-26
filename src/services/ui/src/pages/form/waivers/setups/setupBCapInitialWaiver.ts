@@ -3,11 +3,13 @@ import {
   zAdditionalInfo,
   zAttachmentOptional,
   zAttachmentRequired,
+  zInitialWaiverNumberSchema,
 } from "@/pages/form/zod";
 import { FormSetup } from "@/lib";
 
 export default {
   schema: z.object({
+    id: zInitialWaiverNumberSchema,
     proposedEffectiveDate: z.date(),
     attachments: z.object({
       b4WaiverApplication: zAttachmentRequired({ min: 1 }),
