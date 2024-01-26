@@ -79,14 +79,15 @@ export const ActionFormTemplate = <D extends FieldValues>({
             })}
           />
         ))}
+        <h3 className="pt-6 font-bold text-2xl font-sans">
+          Additional Information {requireAddlInfo && <RequiredIndicator />}
+        </h3>
         <FormField
           control={formController.control}
           name={"additionalInformation" as Path<D>}
           render={SlotAdditionalInfo({
             label: addlInfoInstructions,
             description: "4,000 characters allowed",
-            className: "pt-6",
-            required: requireAddlInfo,
           })}
         />
         {Object.keys(formController.formState.errors).length !== 0 && (

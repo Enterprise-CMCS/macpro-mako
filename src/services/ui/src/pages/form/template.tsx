@@ -116,20 +116,18 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
             />
           ))}
         </SectionCard>
-        <SectionCard title={"Additional information"}>
+        <SectionCard title={"Additional information"} className={"mt-8"}>
           <FormField
             control={formController.control}
             name={"additionalInformation" as Path<D>}
             render={SlotAdditionalInfo({
               label: addlInfoDescription,
               description: "4,000 characters allowed",
-              className: "pt-6",
-              required: requireAddlInfo,
             })}
           />
         </SectionCard>
         {Object.keys(formController.formState.errors).length !== 0 && (
-          <Alert className="my-6" variant="destructive">
+          <Alert className="my-4" variant="destructive">
             Input validation error(s)
             <ul className="list-disc">
               {Object.values(formController.formState.errors).map(
@@ -144,7 +142,7 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
           </Alert>
         )}
         {preSubmitMessage && (
-          <Alert variant={"infoBlock"} className="my-2 w-full flex-row text-sm">
+          <Alert variant={"infoBlock"} className="my-4 w-5/6 flex-row text-sm">
             <Info />
             <p className="ml-2">{preSubmitMessage}</p>
           </Alert>
