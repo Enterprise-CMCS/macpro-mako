@@ -8,6 +8,7 @@ import { FormSetup } from "@/lib";
 
 export default {
   schema: z.object({
+    proposedEffectiveDate: z.date(),
     attachments: z.object({
       b4WaiverApplication: zAttachmentRequired({ min: 1 }),
       tribalConsultation: zAttachmentOptional,

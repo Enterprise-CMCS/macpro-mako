@@ -4,6 +4,7 @@ import { AttachmentsSizeTypesDesc } from "@/pages/form/content";
 import {
   SlotAdditionalInfo,
   SlotAttachments,
+  SlotProposedEffectiveDate,
 } from "@/pages/actions/renderSlots";
 import {
   Form,
@@ -23,6 +24,7 @@ import {
 import { AttachmentRecipe } from "@/lib";
 import { useModalContext } from "@/pages/form/modals";
 import { Info } from "lucide-react";
+import * as Inputs from "@/components/Inputs";
 
 export const SubmissionFormTemplate = <D extends FieldValues>({
   item, // TODO: Will likely need for prefill
@@ -62,7 +64,13 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
         {/* TODO: Initial Waiver Number */}
         {/* TODO: Renewal/Amendment Waiver Number */}
         {/* TODO: Proposed Effective Date */}
-
+        <FormField
+          control={formController.control}
+          name={"proposedEffectiveDate" as Path<D>}
+          render={SlotProposedEffectiveDate({
+            label: "",
+          })}
+        />
         <h3 className="font-bold text-2xl font-sans">Attachments</h3>
         {attachmentInstructions}
         <AttachmentsSizeTypesDesc faqLink={attachmentFaqLink} />

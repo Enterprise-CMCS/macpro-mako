@@ -1,7 +1,10 @@
 import {
+  DatePicker,
+  FormControl,
   FormDescription,
   FormItem,
   FormLabel,
+  FormMessage,
   RequiredIndicator,
   Textarea,
   Upload,
@@ -13,6 +16,32 @@ import {
   FieldValues,
 } from "react-hook-form";
 import { ReactElement, ReactNode } from "react";
+
+export const SlotProposedEffectiveDate = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
+  label,
+  ...props
+}: {
+  label: ReactNode;
+  className?: string;
+}): ControllerProps<TFieldValues, TName>["render"] =>
+  function Render({
+    field,
+  }: {
+    field: ControllerRenderProps<TFieldValues, TName>;
+  }) {
+    return (
+      <FormItem {...props} className="max-w-sm">
+        <FormLabel className="text-lg font-bold block">{label}</FormLabel>
+        <FormControl>
+          <DatePicker onChange={field.onChange} date={field.value} />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    );
+  };
 
 export const SlotAttachments = <
   TFieldValues extends FieldValues = FieldValues,
