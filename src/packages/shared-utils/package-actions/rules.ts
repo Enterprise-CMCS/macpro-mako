@@ -8,6 +8,7 @@ import { isStateUser, isCmsWriteUser } from "../user-helper";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
+  url: (id: string) => `/action/${id}/issue-rai`,
   check: (checker, user) =>
     checker.isSpa &&
     checker.isInActivePendingStatus &&
@@ -17,6 +18,7 @@ const arIssueRai: ActionRule = {
 
 const arRespondToRai: ActionRule = {
   action: Action.RESPOND_TO_RAI,
+  url: (id: string) => `/action/${id}/respond-to-rai`,
   check: (checker, user) =>
     checker.isSpa &&
     checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
@@ -26,6 +28,7 @@ const arRespondToRai: ActionRule = {
 
 const arEnableWithdrawRaiResponse: ActionRule = {
   action: Action.ENABLE_RAI_WITHDRAW,
+  url: (id: string) => `/action/${id}/enable-rai-withdraw`,
   check: (checker, user) =>
     checker.isSpa &&
     checker.isNotWithdrawn &&
@@ -36,6 +39,7 @@ const arEnableWithdrawRaiResponse: ActionRule = {
 
 const arDisableWithdrawRaiResponse: ActionRule = {
   action: Action.DISABLE_RAI_WITHDRAW,
+  url: (id: string) => `/action/${id}/disable-rai-withdraw`,
   check: (checker, user) =>
     checker.isSpa &&
     checker.isNotWithdrawn &&
@@ -46,6 +50,7 @@ const arDisableWithdrawRaiResponse: ActionRule = {
 
 const arWithdrawRaiResponse: ActionRule = {
   action: Action.WITHDRAW_RAI,
+  url: (id: string) => `/action/${id}/withdraw-rai`,
   check: (checker, user) =>
     checker.isSpa &&
     checker.isInActivePendingStatus &&
@@ -56,6 +61,7 @@ const arWithdrawRaiResponse: ActionRule = {
 
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
+  url: (id: string) => `/action/${id}/withdraw-package`,
   check: (checker, user) =>
     checker.isSpa &&
     !checker.hasStatus(finalDispositionStatuses) &&
@@ -65,13 +71,15 @@ const arWithdrawPackage: ActionRule = {
 // TODO: Confirm rule
 const arRenewWaiver: ActionRule = {
   action: Action.RENEW_WAIVER,
-  check: (checker, user) => checker.isWaiver && isStateUser(user),
+  url: (id: string) => `/new-submission/waiver/b/b4/renewal/create?id=${id}`,
+  check: (checker, user) => checker.isSpa && isStateUser(user),
 };
 
 // TODO: Confirm rule
 const arAmendWaiver: ActionRule = {
   action: Action.AMEND_WAIVER,
-  check: (checker, user) => checker.isWaiver && isStateUser(user),
+  url: (id: string) => `/new-submission/waiver/b/b4/amendment/create?id=${id}`,
+  check: (checker, user) => checker.isSpa && isStateUser(user),
 };
 
 export default [

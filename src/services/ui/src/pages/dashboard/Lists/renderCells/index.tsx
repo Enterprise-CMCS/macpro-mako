@@ -46,14 +46,14 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
           </POP.PopoverTrigger>
           <POP.PopoverContent>
             <div className="flex flex-col">
-              {actions.map((action, idx) => {
+              {actions.map(({ action, url }, idx) => {
                 return (
                   <Link
                     className={cn(
                       "text-blue-500",
                       "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                     )}
-                    to={`/action/${data.id}/${action}`}
+                    to={url(data.id)}
                     key={`${idx}-${action}`}
                     aria-label={action}
                   >

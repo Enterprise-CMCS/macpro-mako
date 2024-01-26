@@ -14,8 +14,16 @@ export enum Action {
   AMEND_WAIVER = "amend-waiver",
 }
 
+type BWaiverSubtype = "b4" | "capitated";
+type BWaiverActionType = "renewal" | "amendment";
+type ActionUrlBuilder = (
+  id: string
+) =>
+  | `/action/${string}/${Action}`
+  | `/new-submission/waiver/b/${BWaiverSubtype}/${BWaiverActionType}/create?id=${string}`;
 export type ActionRule = {
   action: Action;
+  url: ActionUrlBuilder;
   check: (
     checker: IPackageCheck,
     user: CognitoUserAttributes,

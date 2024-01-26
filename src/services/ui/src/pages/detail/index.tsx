@@ -8,8 +8,13 @@ import {
   LoadingSpinner,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { Action, opensearch, UserRoles } from "shared-types";
-import { PackageCheck } from "shared-utils";
+import {
+  Action,
+  CognitoUserAttributes,
+  opensearch,
+  UserRoles,
+} from "shared-types";
+import { getAvailableActions, PackageCheck } from "shared-utils";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -24,6 +29,7 @@ import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 import { Link } from "@/components/Routing";
 import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
+import { Route } from "@/components/Routing/types";
 
 const DetailCardWrapper = ({
   title,
@@ -65,90 +71,36 @@ const StatusCard = (data: opensearch.main.Document) => {
     </DetailCardWrapper>
   );
 };
-const PackageActionsCard = ({ id }: { id: string }) => {
-  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { data } = useGetPackageActions(id, { retry: false });
-  if (isLoading) return <LoadingSpinner />;
+const PackageActionsCard = ({ data }: { data: opensearch.main.Document }) => {
+  const { data: user } = useGetUser();
+  const actions = getAvailableActions(
+    user!.user as CognitoUserAttributes,
+    data
+  );
+  console.log(actions);
   return (
     <DetailCardWrapper title={"Actions"}>
       <div>
-        {!data || !data.actions.length ? (
+        {!data || !actions.length ? (
           <em className="text-gray-400">
             No actions are currently available for this submission.
           </em>
         ) : (
           <ul>
-            {data.actions.map((type, idx) => {
+            {actions.map(({ action, url }, idx) => {
               return (
                 <Link
-                  key={`${idx}-${type}`}
-                  path="/action/:id/:type"
-                  params={{ id, type }}
+                  key={`${idx}-${action}`}
+                  path={url(data.id) as Route}
                   className="text-sky-500 underline"
                 >
-                  <li>{mapActionLabel(type)}</li>
+                  <li>{mapActionLabel(action)}</li>
                 </Link>
               );
             })}
           </ul>
         )}
       </div>
-
-      {/* Withdraw Modal */}
-      <ConfirmationModal
-        open={isWithdrawModalOpen}
-        onAccept={async () => {
-          setIsWithdrawModalOpen(false);
-          const dataToSubmit = {
-            id,
-          };
-          try {
-            setIsLoading(true);
-            await API.post("os", `/action/${Action.WITHDRAW_RAI}`, {
-              body: dataToSubmit,
-            });
-            setIsLoading(false);
-            setIsWithdrawModalOpen(false); // probably want a success modal?
-            setIsSuccessModalOpen(true);
-          } catch (err) {
-            setIsLoading(false);
-            setIsErrorModalOpen(true);
-            console.log(err); // probably want an error modal?
-          }
-        }}
-        onCancel={() => setIsWithdrawModalOpen(false)}
-        title="Withdraw RAI"
-        body={
-          <p>
-            Are you sure you would like to withdraw the RAI response for{" "}
-            <em>{id}</em>?
-          </p>
-        }
-      />
-
-      {/* Withdraw Success Modal */}
-      <ConfirmationModal
-        open={isSuccessModalOpen}
-        onAccept={async () => {
-          setIsSuccessModalOpen(false);
-        }}
-        onCancel={() => setIsSuccessModalOpen(false)}
-        title="Withdraw RAI Successful"
-      />
-
-      {/* Withdraw Error Modal */}
-      <ConfirmationModal
-        open={isErrorModalOpen}
-        onAccept={async () => {
-          setIsErrorModalOpen(false);
-        }}
-        onCancel={() => setIsErrorModalOpen(false)}
-        title="Failed to Withdraw"
-        body="RAI withdraw failed"
-      />
     </DetailCardWrapper>
   );
 };
@@ -195,7 +147,7 @@ export const DetailsContent = ({
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
         >
           <StatusCard {...data._source} />
-          <PackageActionsCard id={data._id} />
+          <PackageActionsCard data={data._source} />
         </section>
         <div className="flex flex-col gap-3">
           <DetailsSection
