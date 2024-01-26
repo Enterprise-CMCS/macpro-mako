@@ -77,7 +77,6 @@ const PackageActionsCard = ({ data }: { data: opensearch.main.Document }) => {
     user!.user as CognitoUserAttributes,
     data
   );
-  console.log(actions);
   return (
     <DetailCardWrapper title={"Actions"}>
       <div>
