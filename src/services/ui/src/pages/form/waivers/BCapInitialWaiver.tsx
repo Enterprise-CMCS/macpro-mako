@@ -35,6 +35,10 @@ const Form = () => {
           </strong>
         </p>
       }
+      idFieldLabel={""}
+      idFieldDescription={<></>}
+      idHelpLabel={""}
+      idHelpFAQHash={""}
       dateFieldLabel={"Proposed Effective Date of 1915(b) Initial Waiver"}
       attachments={attachments}
       attachmentFaqLink={"/faq"}

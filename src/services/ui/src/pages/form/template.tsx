@@ -4,6 +4,7 @@ import { AttachmentsSizeTypesDesc } from "@/pages/form/content";
 import {
   SlotAdditionalInfo,
   SlotAttachments,
+  SlotPackageId,
   SlotProposedEffectiveDate,
 } from "@/pages/actions/renderSlots";
 import {
@@ -32,6 +33,10 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
   submitHandler,
   title,
   description,
+  idFieldLabel,
+  idFieldDescription,
+  idHelpLabel,
+  idHelpFAQHash,
   dateFieldLabel,
   attachments,
   attachmentFaqLink,
@@ -45,6 +50,10 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
   submitHandler: SubmitHandler<D>;
   title: string;
   description: ReactNode;
+  idFieldLabel: string;
+  idFieldDescription: ReactElement;
+  idHelpLabel: string;
+  idHelpFAQHash: string;
   dateFieldLabel: string;
   attachments: AttachmentRecipe<D>[];
   attachmentFaqLink: string;
@@ -63,9 +72,19 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
           {description}
         </ActionFormIntro>
 
-        {/* TODO: Initial Waiver Number */}
-        {/* TODO: Renewal/Amendment Waiver Number */}
+        {/* TODO: Pre-filled ID field for renewals/amendments */}
 
+        <FormField
+          control={formController.control}
+          name={"id" as Path<D>}
+          render={SlotPackageId({
+            label: idFieldLabel,
+            description: idFieldDescription,
+            faqButtonLabel: idHelpLabel,
+            faqHash: idHelpFAQHash,
+            className: "pt-6",
+          })}
+        />
         <FormField
           control={formController.control}
           name={"proposedEffectiveDate" as Path<D>}

@@ -35,6 +35,10 @@ export const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
           </strong>
         </p>
       }
+      idFieldLabel={""}
+      idFieldDescription={<></>}
+      idHelpLabel={""}
+      idHelpFAQHash={""}
       dateFieldLabel={"Proposed Effective Date of 1915(b) Renewal Waiver"}
       attachments={attachments}
       attachmentFaqLink={"/faq"}
