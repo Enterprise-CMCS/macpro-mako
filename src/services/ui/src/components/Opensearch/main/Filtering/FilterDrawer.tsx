@@ -19,21 +19,11 @@ import { FilterableDateRange } from "./FilterableDateRange";
 import { FilterableMultiCheck } from "./FilterableMultiCheck";
 import { useFilterDrawer } from "./useFilterDrawer";
 import { Button } from "@/components/Inputs";
-import { checkMultiFilter } from "@/components/Opensearch";
-import { useOsUrl } from "@/components/Opensearch/main";
 import { FilterableBoolean } from "./FilterableBoolean";
 
 export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
-  const url = useOsUrl();
 
-  const filtersApplied = checkMultiFilter(url.state.filters, 1);
-  const handleFilterReset = () =>
-    url.onSet((s) => ({
-      ...s,
-      filters: [],
-      pagination: { ...s.pagination, number: 0 },
-    }));
   return (
     <Sheet open={hook.drawerOpen} onOpenChange={hook.setDrawerState}>
       <SheetTrigger asChild>
@@ -52,8 +42,8 @@ export const OsFilterDrawer = () => {
         <Button
           className="w-full my-2"
           variant="outline"
-          disabled={!filtersApplied}
-          onClick={handleFilterReset}
+          disabled={!hook.filtersApplied}
+          onClick={hook.onFilterReset}
         >
           Reset
         </Button>
@@ -91,7 +81,12 @@ export const OsFilterDrawer = () => {
                   />
                 )}
                 {PK.component === "boolean" && (
-                  <FilterableBoolean value={true} onChange={() => null} />
+                  <>
+                    <FilterableBoolean
+                      value={hook.filters[PK.field]?.value as boolean}
+                      onChange={hook.onFilterChange(PK.field)}
+                    />
+                  </>
                 )}
               </AccordionContent>
             </AccordionItem>

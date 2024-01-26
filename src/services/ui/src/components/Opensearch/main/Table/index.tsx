@@ -33,8 +33,8 @@ export const OsTable: FC<{
   };
 
   return (
-    <UI.Table className="flex-1 min-h-[calc(100vh-350px)]">
-      <UI.TableHeader className="sticky top-0 bg-white">
+    <UI.Table className="flex-1">
+      <UI.TableHeader className="sticky top-0 bg-white z-50">
         <UI.TableRow>
           <UI.TableHead
             className="w-[10px]"
@@ -76,9 +76,11 @@ export const OsTable: FC<{
         {/* TODO: Add a skeleton loader after discussing with HCD.
         See https://qmacbis.atlassian.net/browse/OY2-25623 */}
         {!context.data && (
-          <div className="p-4">
-            <LoadingSpinner />
-          </div>
+          <UI.TableRow>
+            <UI.TableCell>
+              <LoadingSpinner />
+            </UI.TableCell>
+          </UI.TableRow>
         )}
         {context.data && !context.data.hits.length && (
           <UI.TableRow className="h-10">
@@ -91,14 +93,14 @@ export const OsTable: FC<{
           </UI.TableRow>
         )}
         {context.data?.hits.map((DAT) => (
-          <UI.TableRow key={DAT._source.id}>
+          <UI.TableRow className="max-h-1" key={DAT._source.id}>
             <UI.TableCell className="fixed" />
-            {osColumns.map((COL, IDX) => {
+            {osColumns.map((COL) => {
               if (COL.hidden) return null;
               return (
                 <UI.TableCell
                   key={`${COL.field}-${DAT._source.id}`}
-                  className="font-medium whitespace-nowrap"
+                  className="font-medium whitespace-nowrap h-[10px]"
                 >
                   {COL.cell(DAT._source) ?? BLANK_VALUE}
                 </UI.TableCell>

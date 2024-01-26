@@ -58,14 +58,16 @@ const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       type: "range",
       value: { gte: undefined, lte: undefined },
     },
-    initialIntakeNeeded: {
-      label: "Initial Intake Needed",
-      field: "leadAnalystName",
-      component: "boolean",
-      prefix: "must",
-      type: "match",
-      value: null,
-    },
+    ...(isCms && {
+      initialIntakeNeeded: {
+        label: "Initial Intake Needed",
+        field: "initialIntakeNeeded",
+        component: "boolean",
+        prefix: "must",
+        type: "match",
+        value: null,
+      },
+    }),
     "leadAnalystName.keyword": {
       label: "CPOC Name",
       field: "leadAnalystName.keyword",
@@ -135,6 +137,16 @@ const WAIVER_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       type: "range",
       value: { gte: undefined, lte: undefined },
     },
+    ...(isCms && {
+      initialIntakeNeeded: {
+        label: "Initial Intake Needed",
+        field: "initialIntakeNeeded",
+        component: "boolean",
+        prefix: "must",
+        type: "match",
+        value: null,
+      },
+    }),
     "leadAnalystName.keyword": {
       label: "CPOC Name",
       field: "leadAnalystName.keyword",
@@ -219,7 +231,7 @@ export const EXPORT_GROUPS = (
     ...actionField,
     {
       name: "Status",
-      transform(data) {
+      transform: (data) => {
         const status = (() => {
           if (user?.data?.isCms) {
             if (
@@ -232,10 +244,16 @@ export const EXPORT_GROUPS = (
             return data.stateStatus;
           }
         })();
-        const subStatus = data.raiWithdrawEnabled
+
+        const subStatusRAI = data.raiWithdrawEnabled
           ? " (Withdraw Formal RAI Response - Enabled)"
-          : null;
-        return subStatus ? status + subStatus : status;
+          : "";
+
+        const subStatusInitialIntake = data.initialIntakeNeeded
+          ? " (Initial Intake Needed)"
+          : "";
+
+        return `${status}${subStatusRAI}${subStatusInitialIntake}`;
       },
     },
     {

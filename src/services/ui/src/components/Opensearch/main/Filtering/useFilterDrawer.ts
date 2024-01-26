@@ -6,6 +6,7 @@ import { opensearch } from "shared-types";
 import { useLabelMapping } from "@/hooks";
 import { useFilterDrawerContext } from "./FilterProvider";
 import { useGetUser } from "@/api/useGetUser";
+import { checkMultiFilter } from "@/components/Opensearch";
 
 export const useFilterDrawer = () => {
   const { drawerOpen, setDrawerState } = useFilterDrawerContext();
@@ -33,6 +34,10 @@ export const useFilterDrawer = () => {
             return !!value?.gte && !!value?.lte;
           }
 
+          if (FIL.type === "match") {
+            if (FIL.value === null) return false;
+          }
+
           return true;
         });
 
@@ -51,6 +56,15 @@ export const useFilterDrawer = () => {
     setAccordionValues(updateAccordion);
   };
 
+  const onFilterReset = () =>
+    url.onSet((s) => ({
+      ...s,
+      filters: [],
+      pagination: { ...s.pagination, number: 0 },
+    }));
+
+  const filtersApplied = checkMultiFilter(url.state.filters, 1);
+
   // update initial filter state + accordion default open items
   useEffect(() => {
     if (drawerOpen) return;
@@ -66,21 +80,16 @@ export const useFilterDrawer = () => {
             return updateFilter.value;
           }
           if (VAL.type === "terms") return [] as string[];
+          if (VAL.type === "match") return null;
           return { gte: undefined, lte: undefined } as opensearch.RangeValue;
         })();
 
         STATE[KEY] = { ...VAL, value };
-
         return STATE;
       }, {} as any);
     });
     setAccordionValues(updateAccordions);
   }, [url.state.filters, drawerOpen]);
-
-  // change base filters per tab
-  useEffect(() => {
-    setFilters(Consts.FILTER_GROUPS(user, url.state.tab));
-  }, [url.state.tab]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce((STATE, [KEY, AGG]) => {
@@ -99,6 +108,8 @@ export const useFilterDrawer = () => {
     drawerOpen,
     accordionValues,
     filters,
+    filtersApplied,
+    onFilterReset,
     onFilterChange,
     setDrawerState,
     onAccordionChange,

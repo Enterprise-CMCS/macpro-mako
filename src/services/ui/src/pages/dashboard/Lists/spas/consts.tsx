@@ -48,13 +48,17 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
           return data.cmsStatus;
         })();
 
-        const subStatus = data.raiWithdrawEnabled
-          ? "Withdraw Formal RAI Response - Enabled"
-          : null;
         return (
           <>
             <p>{status}</p>
-            {!!subStatus && <p className="text-xs opacity-60">{subStatus}</p>}
+            {data.raiWithdrawEnabled && (
+              <p className="text-xs opacity-60">
+                · Withdraw Formal RAI Response - Enabled
+              </p>
+            )}
+            {props?.isCms && data.initialIntakeNeeded && (
+              <p className="text-xs opacity-60">· Initial Intake Needed</p>
+            )}
           </>
         );
       },

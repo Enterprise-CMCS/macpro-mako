@@ -38,6 +38,7 @@ const DetailCardWrapper = ({
     </div>
   </CardWithTopBorder>
 );
+
 const StatusCard = (data: opensearch.main.Document) => {
   const transformedStatuses = getStatus(data.seatoolStatus);
   const { data: user } = useGetUser();
@@ -61,6 +62,13 @@ const StatusCard = (data: opensearch.main.Document) => {
             <br></br>2nd Clock
           </span>
         )}
+        {user?.isCms && data.initialIntakeNeeded && (
+          <em className="text-xs my-4 mr-2">
+            <br></br>
+            {"Initial Intake Needed"}
+          </em>
+        )}
+        {/*TODO: Add initial intake needed condition */}
       </div>
     </DetailCardWrapper>
   );
