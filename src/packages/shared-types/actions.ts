@@ -8,6 +8,10 @@ export enum Action {
   DISABLE_RAI_WITHDRAW = "disable-rai-withdraw",
   WITHDRAW_RAI = "withdraw-rai",
   WITHDRAW_PACKAGE = "withdraw-package",
+
+  // Waiver Exclusives
+  RENEW_WAIVER = "renew-waiver",
+  AMEND_WAIVER = "amend-waiver",
 }
 
 export type ActionRule = {

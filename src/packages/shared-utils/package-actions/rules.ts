@@ -53,12 +53,25 @@ const arWithdrawRaiResponse: ActionRule = {
     checker.hasEnabledRaiWithdraw &&
     isStateUser(user),
 };
+
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
     checker.isSpa &&
     !checker.hasStatus(finalDispositionStatuses) &&
     isStateUser(user),
+};
+
+// TODO: Confirm rule
+const arRenewWaiver: ActionRule = {
+  action: Action.RENEW_WAIVER,
+  check: (checker, user) => checker.isWaiver && isStateUser(user),
+};
+
+// TODO: Confirm rule
+const arAmendWaiver: ActionRule = {
+  action: Action.AMEND_WAIVER,
+  check: (checker, user) => checker.isWaiver && isStateUser(user),
 };
 
 export default [
@@ -68,4 +81,7 @@ export default [
   arDisableWithdrawRaiResponse,
   arWithdrawRaiResponse,
   arWithdrawPackage,
+  // Waiver Exclusives
+  arRenewWaiver,
+  arAmendWaiver,
 ];

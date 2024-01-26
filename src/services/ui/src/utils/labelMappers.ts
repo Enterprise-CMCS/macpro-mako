@@ -17,6 +17,10 @@ export const mapActionLabel = (a: Action) => {
       return "Withdraw Formal RAI Response";
     case Action.RESPOND_TO_RAI:
       return "Respond to Formal RAI";
+    case Action.RENEW_WAIVER:
+      return "Renew Waiver";
+    case Action.AMEND_WAIVER:
+      return "Amend Waiver";
   }
 };
 
