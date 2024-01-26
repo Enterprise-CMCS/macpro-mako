@@ -103,11 +103,11 @@ export const SlotAttachments = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   label,
-  message,
+  subtext,
   ...props
 }: {
   label: ReactNode;
-  message: ReactNode;
+  subtext?: string;
   className?: string;
 }): ControllerProps<TFieldValues, TName>["render"] =>
   function Render({
@@ -119,7 +119,8 @@ export const SlotAttachments = <
       <FormItem {...props}>
         <FormLabel>{label}</FormLabel>
         <Upload files={field?.value ?? []} setFiles={field.onChange} />
-        {message}
+        <FormDescription>{subtext}</FormDescription>
+        <FormMessage />
       </FormItem>
     );
   };

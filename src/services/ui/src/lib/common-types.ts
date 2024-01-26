@@ -11,8 +11,9 @@ export const buildActionUrl = (action: Action): PackageActionEndpoint =>
 
 export type AttachmentRecipe<S extends Record<string, unknown>> = {
   readonly name: keyof S["attachments"] | string;
-  readonly label: string;
   readonly required: boolean;
+  readonly label: string;
+  readonly subtext?: string;
 };
 
 export type FormSetup = {

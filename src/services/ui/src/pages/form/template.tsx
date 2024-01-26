@@ -96,7 +96,7 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
         <SectionCard title="Attachments" className={"mt-8"}>
           {attachmentInstructions}
           <AttachmentsSizeTypesDesc faqLink={attachmentFaqLink} />
-          {attachments.map(({ name, label, required }) => (
+          {attachments.map(({ name, label, subtext, required }) => (
             <FormField
               key={String(name)}
               control={formController.control}
@@ -108,7 +108,7 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
                     {required ? <RequiredIndicator /> : ""}
                   </>
                 ),
-                message: <FormMessage />,
+                subtext: subtext,
                 className: "my-4",
               })}
             />
@@ -125,7 +125,7 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
           />
         </SectionCard>
         {Object.keys(formController.formState.errors).length !== 0 && (
-          <Alert className="my-4" variant="destructive">
+          <Alert className="my-4 w-5/6" variant="destructive">
             Input validation error(s)
             <ul className="list-disc">
               {Object.values(formController.formState.errors).map(

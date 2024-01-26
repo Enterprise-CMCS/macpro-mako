@@ -8,18 +8,34 @@ import {
 import { FormSetup } from "@/lib";
 
 export default {
-  schema: z.object({
-    id: zRenewalWaiverNumberSchema,
-    proposedEffectiveDate: z.date(),
-    attachments: z.object({
-      b4WaiverApplication: zAttachmentRequired({ min: 1 }),
-      bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
-      bCapIndependentAssessment: zAttachmentOptional, // TODO: Make required ONLY for first 2 renewals
-      tribalConsultation: zAttachmentOptional,
-      other: zAttachmentOptional,
+  schema: z
+    .object({
+      id: zRenewalWaiverNumberSchema,
+      proposedEffectiveDate: z.date(),
+      attachments: z.object({
+        b4WaiverApplication: zAttachmentRequired({ min: 1 }),
+        bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
+        bCapIndependentAssessment: zAttachmentOptional,
+        tribalConsultation: zAttachmentOptional,
+        other: zAttachmentOptional,
+      }),
+      additionalInformation: zAdditionalInfo,
+    })
+    .superRefine((data, ctx) => {
+      const renewalIteration = data.id.split(".")[1]; // R## segment of Waiver Number
+      if (
+        ["R00", "R01"].includes(renewalIteration) &&
+        data.attachments.bCapIndependentAssessment === undefined
+      ) {
+        ctx.addIssue({
+          message:
+            "An Independent Assessment is required for the first two renewals.",
+          code: z.ZodIssueCode.custom,
+          fatal: true,
+        });
+      }
+      return z.NEVER;
     }),
-    additionalInformation: zAdditionalInfo,
-  }),
   attachments: [
     {
       name: "bCapWaiverApplication",
@@ -35,7 +51,7 @@ export default {
     {
       name: "bCapIndependentAssessment",
       label: "1915(b) Comprehensive (Capitated) Waiver Independent Assessment",
-      // TODO: Visually communicate required ONLY for first 2 renewals...somehow
+      subtext: "Required for the first two renewals",
       required: false,
     },
     {
