@@ -47,7 +47,7 @@ const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
       idHelpFAQHash={"waiver-renewal-id-format"}
       dateFieldLabel={"Proposed Effective Date of 1915(b) Renewal Waiver"}
       attachments={attachments}
-      attachmentFaqLink={"/faq"}
+      attachmentFaqLink={"/faq/#waiverb-attachments"}
       addlInfoDescription={
         <p>Add anything else that you would like to share with CMS.</p>
       }
