@@ -212,17 +212,22 @@ export const EXPORT_GROUPS = (
     {
       name: "Status",
       transform(data) {
-        if (user?.data?.isCms && !user?.data?.user) {
-          if (data.cmsStatus) {
+        const status = (() => {
+          if (user?.data?.isCms) {
+            if (
+              user?.data.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+            ) {
+              return data.stateStatus;
+            }
             return data.cmsStatus;
-          }
-          return BLANK_VALUE;
-        } else {
-          if (data.stateStatus) {
+          } else {
             return data.stateStatus;
           }
-          return BLANK_VALUE;
-        }
+        })();
+        const subStatus = data.raiWithdrawEnabled
+          ? " (Withdraw Formal RAI Response - Enabled)"
+          : null;
+        return subStatus ? status + subStatus : status;
       },
     },
     {

@@ -1,6 +1,13 @@
-import { z } from "zod";
-import { SEATOOL_STATUS, getStatus, finalDispositionStatuses } from "./statusHelper";
-import { PlanType } from "./planType";
+import {
+  seatoolSchema,
+  SEATOOL_STATUS,
+  getStatus,
+  finalDispositionStatuses,
+  SeaTool,
+  SeatoolOfficer,
+} from "../../..";
+
+import { PlanType } from "../../../planType";
 
 type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
@@ -17,7 +24,7 @@ const authorityLookup = (val: number | null): null | string => {
   return lookup[val];
 };
 
-function getLeadAnalyst(eventData: SeaToolSink) {
+function getLeadAnalyst(eventData: SeaTool) {
   let leadAnalystOfficerId: null | number = null;
   let leadAnalystName: null | string = null;
 
@@ -41,7 +48,7 @@ function getLeadAnalyst(eventData: SeaToolSink) {
   };
 }
 
-const getRaiDate = (data: SeaToolSink) => {
+const getRaiDate = (data: SeaTool) => {
   let raiReceivedDate: null | string = null;
   let raiRequestedDate: null | string = null;
   let raiWithdrawnDate: null | string = null;
@@ -76,83 +83,44 @@ const getRaiDate = (data: SeaToolSink) => {
   };
 };
 
-const zActionOfficer = z.object({
-  OFFICER_ID: z.number(),
-  FIRST_NAME: z.string(),
-  LAST_NAME: z.string(),
-});
-type ActionOfficer = z.infer<typeof zActionOfficer>;
-
-export const seatoolSchema = z.object({
-  ACTION_OFFICERS: z.array(zActionOfficer).nullish(),
-  LEAD_ANALYST: z.array(zActionOfficer).nullable(),
-  PLAN_TYPES: z
-    .array(
-      z.object({
-        PLAN_TYPE_NAME: z.string(),
-      })
-    )
-    .nonempty()
-    .nullable(),
-  STATE_PLAN: z.object({
-    SUBMISSION_DATE: z.number().nullable(),
-    PLAN_TYPE: z.number().nullable(),
-    LEAD_ANALYST_ID: z.number().nullable(),
-    CHANGED_DATE: z.number().nullable(),
-    APPROVED_EFFECTIVE_DATE: z.number().nullable(),
-    PROPOSED_DATE: z.number().nullable(),
-    SPW_STATUS_ID: z.number().nullable(),
-    STATE_CODE: z.string().nullish(),
-    STATUS_DATE: z.number().nullish(),
-    SUMMARY_MEMO: z.string().nullish(),
-    TITLE_NAME: z.string().nullish(),
-  }),
-  SPW_STATUS: z
-    .array(
-      z.object({
-        SPW_STATUS_DESC: z.string().nullable(),
-        SPW_STATUS_ID: z.number().nullable(),
-      })
-    )
-    .nullable(),
-  RAI: z
-    .array(
-      z.object({
-        RAI_RECEIVED_DATE: z.number().nullable(),
-        RAI_REQUESTED_DATE: z.number().nullable(),
-        RAI_WITHDRAWN_DATE: z.number().nullable(),
-      })
-    )
-    .nullable(),
-  ACTIONTYPES: z
-    .array(
-      z.object({
-        ACTION_ID: z.number(),
-        ACTION_NAME: z.string(),
-        PLAN_TYPE_ID: z.number(),
-      })
-    )
-    .nullable(),
-});
-
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined
     ? new Date(epocDate).toISOString()
     : null;
 
 const compileSrtList = (
-  officers: ActionOfficer[] | null | undefined
+  officers: SeatoolOfficer[] | null | undefined
 ): string[] =>
   officers?.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
 
-const getFinalDispositionDate = (status: string, record: SeaToolSink) => {
-
+const getFinalDispositionDate = (status: string, record: SeaTool) => {
   return status && finalDispositionStatuses.includes(status)
     ? getDateStringOrNullFromEpoc(record.STATE_PLAN.STATUS_DATE)
     : null;
 };
 
-export const transformSeatoolData = (id: string) => {
+const isInSecondClock = (
+  raiReceivedDate: any,
+  raiWithdrawnDate: any,
+  seatoolStatus: any,
+  authority: any
+) => {
+  if (
+    authority != "CHIP" && // if it's not a chip
+    [
+      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.PENDING_CONCURRENCE,
+      SEATOOL_STATUS.PENDING_APPROVAL,
+    ].includes(seatoolStatus) && // if it's in pending
+    raiReceivedDate && // if its latest rai has a received date
+    !raiWithdrawnDate // if the latest rai has not been withdrawn
+  ) {
+    return true; // then we're in second clock
+  }
+  return false; // otherwise, we're not
+};
+
+export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
@@ -162,27 +130,6 @@ export const transformSeatoolData = (id: string) => {
         (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
       )?.SPW_STATUS_DESC || "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    const rais: Record<
-      number,
-      {
-        requestedDate: number;
-        receivedDate: number | null;
-        withdrawnDate: number | null;
-      }
-    > = {};
-    if (data.RAI) {
-      data.RAI.forEach((rai) => {
-        // Should never be null, but if it is there's nothing we can do with it.
-        if (rai.RAI_REQUESTED_DATE === null) {
-          return;
-        }
-        rais[rai.RAI_REQUESTED_DATE] = {
-          requestedDate: rai.RAI_REQUESTED_DATE,
-          receivedDate: rai.RAI_RECEIVED_DATE,
-          withdrawnDate: rai.RAI_WITHDRAWN_DATE,
-        };
-      });
-    }
     return {
       id,
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
@@ -202,7 +149,6 @@ export const transformSeatoolData = (id: string) => {
       raiReceivedDate,
       raiRequestedDate,
       raiWithdrawnDate,
-      rais,
       reviewTeam: compileSrtList(data.ACTION_OFFICERS),
       state: data.STATE_PLAN.STATE_CODE,
       stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
@@ -213,15 +159,13 @@ export const transformSeatoolData = (id: string) => {
         data.STATE_PLAN.SUBMISSION_DATE
       ),
       subject: data.STATE_PLAN.TITLE_NAME,
+      secondClock: isInSecondClock(
+        raiReceivedDate,
+        raiWithdrawnDate,
+        seatoolStatus,
+        authorityLookup(data.STATE_PLAN.PLAN_TYPE)
+      ),
     };
   });
 };
-
-export type SeaToolTransform = z.infer<ReturnType<typeof transformSeatoolData>>;
-export type SeaToolSink = z.infer<typeof seatoolSchema>;
-export type SeaToolRecordsToDelete = Omit<
-  {
-    [Property in keyof SeaToolTransform]: null;
-  },
-  "id" | "rais"
-> & { id: string };
+export type Schema = ReturnType<typeof transform>;
