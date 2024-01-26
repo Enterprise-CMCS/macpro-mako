@@ -28,6 +28,11 @@ provider:
             - ses:ListConfigurationSets
             - ses:SendEmail
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - sns:Subscribe
+            - sns:Publish
+          Resource: "*"
 
   stackTags:
     PROJECT: ${self:custom.project}
@@ -35,6 +40,7 @@ provider:
 
 custom:
   project: ${env:PROJECT}
+  emailEventTopicName: ${self:service}-${sls:stage}-email-events
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
@@ -54,14 +60,14 @@ functions:
     events:
       - sns:
           arn: !Ref EmailEventTopic
-          topicName: ${self:service}-${sls:stage}-email-events
+          topicName: ${self:custom.emailEventTopicName}
 
 resources:
   Resources:
     EmailEventTopic:
       Type: AWS::SNS::Topic
       Properties:
-        TopicName: ${self:service}-${sls:stage}-email-events
+        TopicName: ${self:custom.emailEventTopicName}
         DisplayName: Monitoring the sending of emails
 
     EmailEventTopicPolicy:
