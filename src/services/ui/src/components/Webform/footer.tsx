@@ -1,6 +1,6 @@
 export const Footer = () => {
   return (
-    <div className="flex flex-col gap-2 my-6 text-sm text-slate-500">
+    <footer className="flex flex-col gap-2 my-6 text-sm text-slate-500">
       <b>{"PRA Disclosure Statement"}</b>
       <p>
         {
@@ -31,6 +31,6 @@ export const Footer = () => {
           "CMS, 7500 Security Boulevard, Attn: PRA Reports Clearance Officer, Mail Stop C4-26-05, Baltimore, Maryland 21244-1850."
         }
       </p>
-    </div>
+    </footer>
   );
 };
