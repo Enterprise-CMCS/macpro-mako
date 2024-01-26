@@ -41,7 +41,6 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
   attachments,
   attachmentFaqLink,
   attachmentInstructions,
-  requireAddlInfo = false,
   addlInfoDescription,
   preSubmitMessage,
 }: {
@@ -58,7 +57,6 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
   attachments: AttachmentRecipe<D>[];
   attachmentFaqLink: string;
   attachmentInstructions?: ReactElement;
-  requireAddlInfo?: boolean;
   addlInfoDescription?: ReactElement;
   preSubmitMessage?: string;
 }) => {
