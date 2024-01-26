@@ -53,7 +53,8 @@ functions:
     handler: handlers/processEmailEvents.main
     events:
       - sns:
-        arn: EmailEventTopic
+          arn: !Ref EmailEventTopic
+          topicName: ${self:service}-${sls:stage}-email-events
 
 resources:
   Resources:
@@ -87,28 +88,28 @@ resources:
         Endpoint: !GetAtt ProcessEmailEventsLambdaFunction.Arn
         Protocol: lambda
 
-    EmailEventConfigurationSet:
-      Type: AWS::SES::ConfigurationSet
-      Properties:
-        Name: "${self:service}-${sls:stage}-configuration"
+    # EmailEventConfigurationSet:
+    #   Type: AWS::SES::ConfigurationSet
+    #   Properties:
+    #     Name: "${self:service}-${sls:stage}-configuration"
 
-    EmailEventConfigurationSetEventDestination:
-      Type: AWS::SES::ConfigurationSetEventDestination
-      Properties:
-        ConfigurationSetName: !Ref EmailEventConfigurationSet
-        EventDestination:
-          Enabled: true
-          Name: "${self:service}-${sls:stage}-destination"
-          MatchingEventTypes:
-            - "send"
-            - "reject"
-            - "bounce"
-            - "complaint"
-            - "delivery"
-            - "open"
-            - "click"
-            - "renderingFailure"
-            - "deliveryDelay"
-            - "subscription"
-          SnsDestination:
-            TopicARN: !Ref EventEmailTopic
+    # EmailEventConfigurationSetEventDestination:
+    #   Type: AWS::SES::ConfigurationSetEventDestination
+    #   Properties:
+    #     ConfigurationSetName: !Ref EmailEventConfigurationSet
+    #     EventDestination:
+    #       Enabled: true
+    #       Name: "${self:service}-${sls:stage}-destination"
+    #       MatchingEventTypes:
+    #         - "send"
+    #         - "reject"
+    #         - "bounce"
+    #         - "complaint"
+    #         - "delivery"
+    #         - "open"
+    #         - "click"
+    #         - "renderingFailure"
+    #         - "deliveryDelay"
+    #         - "subscription"
+    #       SnsDestination:
+    #         TopicARN: !Ref EventEmailTopic
