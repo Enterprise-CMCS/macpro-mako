@@ -35,10 +35,16 @@ const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
           </strong>
         </p>
       }
-      idFieldLabel={""}
-      idFieldDescription={<></>}
-      idHelpLabel={""}
-      idHelpFAQHash={""}
+      idFieldLabel={"Waiver Amendment Number"}
+      idFieldDescription={
+        <span>
+          The Waiver Number must be in the format of SS-####.R##.## or
+          SS-#####.R##.##. For amendments, the last two digits start with ‘01’
+          and ascends
+        </span>
+      }
+      idHelpLabel={"What is my 1915(b) Waiver Amendment Number?"}
+      idHelpFAQHash={"waiver-amendment-id-format"}
       dateFieldLabel={"Proposed Effective Date of 1915(b) Waiver Amendment"}
       attachments={attachments}
       attachmentFaqLink={"/faq"}

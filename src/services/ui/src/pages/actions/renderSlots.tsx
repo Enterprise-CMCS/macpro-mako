@@ -59,6 +59,7 @@ export const SlotPackageId = <
           {/* eslint-disable-next-line react/jsx-no-undef */}
           <Input
             {...field}
+            className={"mt-4"}
             onInput={(e) => {
               if (e.target instanceof HTMLInputElement) {
                 e.target.value = e.target.value.toUpperCase();

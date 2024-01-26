@@ -35,10 +35,15 @@ const Form = () => {
           </strong>
         </p>
       }
-      idFieldLabel={""}
-      idFieldDescription={<></>}
-      idHelpLabel={""}
-      idHelpFAQHash={""}
+      idFieldLabel={"Initial Waiver Number"}
+      idFieldDescription={
+        <span>
+          Must be a new initial number with the format SS-####.R00.00 or
+          SS-#####.R00.00
+        </span>
+      }
+      idHelpLabel={"What is my Initial Waiver Number?"}
+      idHelpFAQHash={"initial-waiver-id-format"}
       dateFieldLabel={"Proposed Effective Date of 1915(b) Initial Waiver"}
       attachments={attachments}
       attachmentFaqLink={"/faq"}

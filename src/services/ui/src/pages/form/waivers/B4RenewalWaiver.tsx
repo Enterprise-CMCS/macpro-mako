@@ -35,10 +35,16 @@ const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
           </strong>
         </p>
       }
-      idFieldLabel={""}
-      idFieldDescription={<></>}
-      idHelpLabel={""}
-      idHelpFAQHash={""}
+      idFieldLabel={"Renewal Waiver Number"}
+      idFieldDescription={
+        <span>
+          The Waiver Number must be in the format of SS-####.R##.00 or
+          SS-#####.R##.00. For renewals, the “R##” starts with ‘R01’ and
+          ascends.
+        </span>
+      }
+      idHelpLabel={"What is my 1915(b) Waiver Renewal Number?"}
+      idHelpFAQHash={"waiver-renewal-id-format"}
       dateFieldLabel={"Proposed Effective Date of 1915(b) Renewal Waiver"}
       attachments={attachments}
       attachmentFaqLink={"/faq"}
