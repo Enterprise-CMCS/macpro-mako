@@ -69,6 +69,55 @@ resources:
       Properties:
         TopicName: ${self:custom.emailEventTopicName}
         DisplayName: Monitoring the sending of emails
+        KmsMasterKeyId: !Ref KmsKeyForEmails
+
+    KmsKeyForEmails:
+      Type: AWS::KMS::Key
+      Properties:
+        EnableKeyRotation: "true"
+        KeyPolicy:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: Allow access for Root User
+              Effect: Allow
+              Principal:
+                AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+              Action: "kms:*"
+              Resource: "*"
+            - Sid: Allow access for Key User (SNS Service Principal)
+              Effect: Allow
+              Principal:
+                Service: "sns.amazonaws.com"
+              Action:
+                - "kms:GenerateDataKey"
+                - "kms:Decrypt"
+              Resource: "*"
+            - Sid: Allow CloudWatch events to use the key
+              Effect: Allow
+              Principal:
+                Service: events.amazonaws.com
+              Action:
+                - "kms:Decrypt"
+                - "kms:GenerateDataKey"
+              Resource: "*"
+            - Sid: Allow CloudWatch for CMK
+              Effect: Allow
+              Principal:
+                Service:
+                  - cloudwatch.amazonaws.com
+              Action:
+                - "kms:Decrypt"
+                - "kms:GenerateDataKey*"
+              Resource: "*"
+            - Sid: Allow SES events to use the key
+              Effect: Allow
+              Principal:
+                Service:
+                  - ses.amazonaws.com
+              Action:
+                - "kms:Decrypt"
+                - "kms:GenerateDataKey*"
+              Resource: "*"
 
     EmailEventTopicPolicy:
       Type: AWS::SNS::TopicPolicy
