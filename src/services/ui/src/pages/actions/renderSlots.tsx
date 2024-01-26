@@ -33,7 +33,7 @@ export const SlotProposedEffectiveDate = <
     field: ControllerRenderProps<TFieldValues, TName>;
   }) {
     return (
-      <FormItem {...props} className="max-w-sm">
+      <FormItem {...props}>
         <FormLabel className="text-lg font-bold block">{label}</FormLabel>
         <FormControl>
           <DatePicker onChange={field.onChange} date={field.value} />

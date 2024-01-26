@@ -32,24 +32,26 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
   submitHandler,
   title,
   description,
-  preSubmitMessage,
+  dateFieldLabel,
   attachments,
   attachmentFaqLink,
   attachmentInstructions,
   requireAddlInfo = false,
   addlInfoInstructions,
+  preSubmitMessage,
 }: {
   item?: opensearch.main.ItemResult;
   formController: UseFormReturn<D>;
   submitHandler: SubmitHandler<D>;
   title: string;
   description: ReactNode;
-  preSubmitMessage?: string;
+  dateFieldLabel: string;
   attachments: AttachmentRecipe<D>[];
   attachmentFaqLink: string;
   attachmentInstructions?: ReactElement;
   requireAddlInfo?: boolean;
   addlInfoInstructions?: ReactElement;
+  preSubmitMessage?: string;
 }) => {
   const { setCancelModalOpen } = useModalContext();
   return (
@@ -63,15 +65,16 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
 
         {/* TODO: Initial Waiver Number */}
         {/* TODO: Renewal/Amendment Waiver Number */}
-        {/* TODO: Proposed Effective Date */}
+
         <FormField
           control={formController.control}
           name={"proposedEffectiveDate" as Path<D>}
           render={SlotProposedEffectiveDate({
-            label: "",
+            label: dateFieldLabel,
+            className: "pt-6",
           })}
         />
-        <h3 className="font-bold text-2xl font-sans">Attachments</h3>
+        <h3 className="pt-10 font-bold text-2xl font-sans">Attachments</h3>
         {attachmentInstructions}
         <AttachmentsSizeTypesDesc faqLink={attachmentFaqLink} />
         {attachments.map(({ name, label, required }) => (
