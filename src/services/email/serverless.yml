@@ -88,10 +88,10 @@ resources:
         Endpoint: !GetAtt ProcessEmailEventsLambdaFunction.Arn
         Protocol: lambda
 
-    # EmailEventConfigurationSet:
-    #   Type: AWS::SES::ConfigurationSet
-    #   Properties:
-    #     Name: "${self:service}-${sls:stage}-configuration"
+    EmailEventConfigurationSet:
+      Type: AWS::SES::ConfigurationSet
+      Properties:
+        Name: "${self:service}-${sls:stage}-configuration"
 
     # EmailEventConfigurationSetEventDestination:
     #   Type: AWS::SES::ConfigurationSetEventDestination
