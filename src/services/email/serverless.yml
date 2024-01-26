@@ -93,23 +93,23 @@ resources:
       Properties:
         Name: "${self:service}-${sls:stage}-configuration"
 
-    # EmailEventConfigurationSetEventDestination:
-    #   Type: AWS::SES::ConfigurationSetEventDestination
-    #   Properties:
-    #     ConfigurationSetName: !Ref EmailEventConfigurationSet
-    #     EventDestination:
-    #       Enabled: true
-    #       Name: "${self:service}-${sls:stage}-destination"
-    #       MatchingEventTypes:
-    #         - "send"
-    #         - "reject"
-    #         - "bounce"
-    #         - "complaint"
-    #         - "delivery"
-    #         - "open"
-    #         - "click"
-    #         - "renderingFailure"
-    #         - "deliveryDelay"
-    #         - "subscription"
-    #       SnsDestination:
-    #         TopicARN: !Ref EventEmailTopic
+    EmailEventConfigurationSetEventDestination:
+      Type: AWS::SES::ConfigurationSetEventDestination
+      Properties:
+        ConfigurationSetName: !Ref EmailEventConfigurationSet
+        EventDestination:
+          Enabled: true
+          Name: "${self:service}-${sls:stage}-destination"
+          MatchingEventTypes:
+            - "send"
+            - "reject"
+            - "bounce"
+            - "complaint"
+            - "delivery"
+            - "open"
+            - "click"
+            - "renderingFailure"
+            - "deliveryDelay"
+            - "subscription"
+          SnsDestination:
+            TopicARN: !Ref EmailEventTopic
