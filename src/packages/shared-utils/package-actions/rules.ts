@@ -72,14 +72,14 @@ const arWithdrawPackage: ActionRule = {
 const arRenewWaiver: ActionRule = {
   action: Action.RENEW_WAIVER,
   url: (id: string) => `/new-submission/waiver/b/b4/renewal/create?id=${id}`,
-  check: (checker, user) => checker.isSpa && isStateUser(user),
+  check: (checker, user) => checker.isWaiver && isStateUser(user),
 };
 
 // TODO: Confirm rule
 const arAmendWaiver: ActionRule = {
   action: Action.AMEND_WAIVER,
   url: (id: string) => `/new-submission/waiver/b/b4/amendment/create?id=${id}`,
-  check: (checker, user) => checker.isSpa && isStateUser(user),
+  check: (checker, user) => checker.isWaiver && isStateUser(user),
 };
 
 export default [
