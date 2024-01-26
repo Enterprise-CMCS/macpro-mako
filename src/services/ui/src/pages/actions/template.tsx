@@ -74,7 +74,6 @@ export const ActionFormTemplate = <D extends FieldValues>({
                   {required ? <RequiredIndicator /> : ""}
                 </>
               ),
-              message: <FormMessage />,
               className: "my-4",
             })}
           />
