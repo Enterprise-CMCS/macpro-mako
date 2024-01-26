@@ -26,6 +26,7 @@ provider:
           Action:
             - ses:ListIdentities
             - ses:ListConfigurationSets
+            - ses:SendEmail
           Resource: "*"
 
   stackTags:
@@ -51,7 +52,8 @@ functions:
   processEmailEvents:
     handler: handlers/processEmailEvents.main
     events:
-      - sns: ${self:service}-${sls:stage}-email-events
+      - sns:
+        arn: EmailEventTopic
 
 resources:
   Resources:
