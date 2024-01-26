@@ -28,7 +28,6 @@ import {
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
-import { getLatestRai } from "shared-utils";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 
 const TOPIC_NAME = process.env.topicName as string;
@@ -93,20 +92,23 @@ export async function issueRai(body: RaiIssue) {
   }
 }
 
-export async function withdrawRai(body: RaiWithdraw, rais: any) {
-  const activeKey = getLatestRai(rais)?.key;
+export async function withdrawRai(body: RaiWithdraw, document: any) {
+  const raiToWithdraw =
+    !!document.raiRequestedDate && !!document.raiReceivedDate
+      ? new Date(document.raiRequestedDate).getTime()
+      : null;
+  if (!raiToWithdraw) throw "No RAI available for response";
   const today = seaToolFriendlyTimestamp();
   const result = raiWithdrawSchema.safeParse({
     ...body,
-    requestedDate: activeKey,
+    requestedDate: raiToWithdraw,
     withdrawnDate: today,
   });
   console.log("Withdraw body is", body);
 
   if (result.success === true) {
     console.log("CMS withdrawing an RAI");
-    console.log(rais);
-    console.log("LATEST RAI KEY: " + activeKey);
+    console.log("LATEST RAI KEY: " + raiToWithdraw);
     const pool = await sql.connect(config);
     const transaction = new sql.Transaction(pool);
     try {
@@ -115,7 +117,7 @@ export async function withdrawRai(body: RaiWithdraw, rais: any) {
       const query1 = `
         UPDATE SEA.dbo.RAI
         SET RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
-          WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${activeKey}', 10)), CAST('19700101' AS DATETIME))
+          WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
       `;
       const result1 = await transaction.request().query(query1);
       console.log(result1);
@@ -160,14 +162,14 @@ export async function withdrawRai(body: RaiWithdraw, rais: any) {
   }
 }
 
-export async function respondToRai(body: RaiResponse, rais: any) {
+export async function respondToRai(body: RaiResponse, document: any) {
   console.log("State responding to RAI");
-  const latestRai = getLatestRai(rais);
-  if (latestRai?.status != "requested") {
-    throw "Latest RAI is not a candidate for response";
-  }
-  const activeKey = latestRai.key;
-  console.log("LATEST RAI KEY: " + activeKey);
+  const raiToRespondTo =
+    !!document.raiRequestedDate && !document.raiReceivedDate
+      ? new Date(document.raiRequestedDate).getTime()
+      : null;
+  if (!raiToRespondTo) throw "No RAI available for response";
+  console.log("LATEST RAI KEY: " + raiToRespondTo);
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
   console.log(body);
@@ -178,7 +180,7 @@ export async function respondToRai(body: RaiResponse, rais: any) {
     const query1 = `
       UPDATE SEA.dbo.RAI
         SET RAI_RECEIVED_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
-        WHERE ID_Number = '${body.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${activeKey}', 10)), CAST('19700101' AS DATETIME))
+        WHERE ID_Number = '${body.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToRespondTo}', 10)), CAST('19700101' AS DATETIME))
     `;
     const result1 = await transaction.request().query(query1);
     console.log(result1);
@@ -198,7 +200,7 @@ export async function respondToRai(body: RaiResponse, rais: any) {
     const result = raiResponseSchema.safeParse({
       ...body,
       responseDate: today,
-      requestedDate: activeKey,
+      requestedDate: raiToRespondTo,
     });
     if (result.success === false) {
       console.log(

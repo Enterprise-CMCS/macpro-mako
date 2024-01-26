@@ -21,7 +21,13 @@ export const Webforms = () => {
             path="/webform/:id/:version"
             params={{ id: "abp1", version: 1 }}
           >
-            ABP 1
+            ABP 1 v1
+          </Link>
+          <Link
+            path="/webform/:id/:version"
+            params={{ id: "abp1", version: 2 }}
+          >
+            ABP 1 v2
           </Link>
           <Link
             path="/webform/:id/:version"
@@ -34,6 +40,12 @@ export const Webforms = () => {
             params={{ id: "abp3_1", version: 1 }}
           >
             ABP 3.1
+          </Link>
+          <Link
+            path="/webform/:id/:version"
+            params={{ id: "abp10", version: 1 }}
+          >
+            ABP 10
           </Link>
           <Link path="/guides/abp">Implementation Guide</Link>
         </div>
