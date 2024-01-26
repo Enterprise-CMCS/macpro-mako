@@ -1,28 +1,18 @@
 import { Checkbox } from "@/components/Inputs";
-import { useEffect, useState } from "react";
+import { FC } from "react";
 
-type Props = {
+export const FilterableBoolean: FC<{
   value: boolean | null;
   onChange: (val: boolean | null) => void;
-};
+}> = (props) => {
+  const yes = props.value === null ? false : props.value;
+  const no = props.value === null ? false : !props.value;
 
-/**
- * @what -
- * - Filterable Group for boolean fields
- * @why -
- * - So users can filter by simple true/false boolean fields.
- * @concerns -
- * - Probably the easiest of the filterables
- */
-export const FilterableBoolean = (props: Props) => {
-  const yes = !!(props.value === null ? null : props.value);
-  const no = !!(props.value === null ? null : !props.value);
-
-  const handleYes = (mhm: boolean) => {
+  const onYes = (mhm: boolean) => {
     props.onChange(mhm ? true : null);
   };
 
-  const handleNo = (mhm: boolean) => {
+  const onNo = (mhm: boolean) => {
     props.onChange(mhm ? false : null);
   };
 
@@ -31,13 +21,13 @@ export const FilterableBoolean = (props: Props) => {
       <Checkbox
         checked={yes}
         defaultChecked={yes}
-        onCheckedChange={handleYes}
+        onCheckedChange={onYes}
         label="Yes"
       />
       <Checkbox
         checked={no}
         defaultChecked={no}
-        onCheckedChange={handleNo}
+        onCheckedChange={onNo}
         label="No"
       />
     </div>

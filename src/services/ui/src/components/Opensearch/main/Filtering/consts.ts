@@ -42,6 +42,16 @@ const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       type: "terms",
       value: [],
     },
+    ...(isCms && {
+      initialIntakeNeeded: {
+        label: "Initial Intake Needed",
+        field: "initialIntakeNeeded",
+        component: "boolean",
+        prefix: "must",
+        type: "match",
+        value: null,
+      },
+    }),
     submissionDate: {
       label: "Initial Submission",
       field: "submissionDate",
@@ -58,16 +68,7 @@ const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       type: "range",
       value: { gte: undefined, lte: undefined },
     },
-    ...(isCms && {
-      initialIntakeNeeded: {
-        label: "Initial Intake Needed",
-        field: "initialIntakeNeeded",
-        component: "boolean",
-        prefix: "must",
-        type: "match",
-        value: null,
-      },
-    }),
+
     "leadAnalystName.keyword": {
       label: "CPOC Name",
       field: "leadAnalystName.keyword",
@@ -121,6 +122,16 @@ const WAIVER_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       type: "terms",
       value: [],
     },
+    ...(isCms && {
+      initialIntakeNeeded: {
+        label: "Initial Intake Needed",
+        field: "initialIntakeNeeded",
+        component: "boolean",
+        prefix: "must",
+        type: "match",
+        value: null,
+      },
+    }),
     submissionDate: {
       label: "Initial Submission",
       field: "submissionDate",
@@ -137,16 +148,7 @@ const WAIVER_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       type: "range",
       value: { gte: undefined, lte: undefined },
     },
-    ...(isCms && {
-      initialIntakeNeeded: {
-        label: "Initial Intake Needed",
-        field: "initialIntakeNeeded",
-        component: "boolean",
-        prefix: "must",
-        type: "match",
-        value: null,
-      },
-    }),
+
     "leadAnalystName.keyword": {
       label: "CPOC Name",
       field: "leadAnalystName.keyword",
