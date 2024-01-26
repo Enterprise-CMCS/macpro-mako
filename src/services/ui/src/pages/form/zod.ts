@@ -20,7 +20,7 @@ export const zSpaIdSchema = z
 export const zInitialWaiverNumberSchema = z
   .string()
   .regex(
-    /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/, // TODO: Change regex
+    /^[A-Z]{2}-\d{4,5}.R00.00$/,
     "The Initial Waiver Number must be in the format of SS-####.R00.00 or SS-#####.R00.00"
   )
   .refine((value) => isAuthorizedState(value), {
@@ -36,7 +36,7 @@ export const zInitialWaiverNumberSchema = z
 export const zRenewalWaiverNumberSchema = z
   .string()
   .regex(
-    /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/, // TODO: Change regex
+    /^[A-Z]{2}-\d{4,5}.R\d{2}.00$/,
     "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with ‘01’ and ascends"
   )
   .refine((value) => isAuthorizedState(value), {
@@ -48,7 +48,7 @@ export const zRenewalWaiverNumberSchema = z
 export const zAmendmentWaiverNumberSchema = z
   .string()
   .regex(
-    /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/, // TODO: Change regex
+    /^[A-Z]{2}-\d{4,5}.R\d{2}.\d{2}$/,
     "The 1915(b) Waiver Amendment Number must be in the format of SS-####.R##.## or SS-#####.R##.##. For amendments, the last two digits start with ‘01’ and ascends"
   )
   .refine((value) => isAuthorizedState(value), {
