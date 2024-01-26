@@ -48,7 +48,7 @@ const Form = () => {
       attachments={attachments}
       attachmentFaqLink={"/faq"}
       requireAddlInfo
-      addlInfoInstructions={
+      addlInfoDescription={
         <p>Add anything else that you would like to share with CMS.</p>
       }
       preSubmitMessage={

@@ -1,4 +1,4 @@
-import { Alert, LoadingSpinner } from "@/components";
+import { Alert, LoadingSpinner, SectionCard } from "@/components";
 import { ActionFormIntro } from "@/pages/actions/common";
 import { AttachmentsSizeTypesDesc } from "@/pages/form/content";
 import {
@@ -42,7 +42,7 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
   attachmentFaqLink,
   attachmentInstructions,
   requireAddlInfo = false,
-  addlInfoInstructions,
+  addlInfoDescription,
   preSubmitMessage,
 }: {
   item?: opensearch.main.ItemResult;
@@ -59,7 +59,7 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
   attachmentFaqLink: string;
   attachmentInstructions?: ReactElement;
   requireAddlInfo?: boolean;
-  addlInfoInstructions?: ReactElement;
+  addlInfoDescription?: ReactElement;
   preSubmitMessage?: string;
 }) => {
   const { setCancelModalOpen } = useModalContext();
@@ -72,57 +72,62 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
           {description}
         </ActionFormIntro>
 
-        {/* TODO: Pre-filled ID field for renewals/amendments */}
+        <SectionCard title="Package Details">
+          {/* TODO: Pre-filled ID field for renewals/amendments */}
 
-        <FormField
-          control={formController.control}
-          name={"id" as Path<D>}
-          render={SlotPackageId({
-            label: idFieldLabel,
-            description: idFieldDescription,
-            faqButtonLabel: idHelpLabel,
-            faqHash: idHelpFAQHash,
-            className: "pt-6",
-          })}
-        />
-        <FormField
-          control={formController.control}
-          name={"proposedEffectiveDate" as Path<D>}
-          render={SlotProposedEffectiveDate({
-            label: dateFieldLabel,
-            className: "pt-6",
-          })}
-        />
-        <h3 className="pt-10 font-bold text-2xl font-sans">Attachments</h3>
-        {attachmentInstructions}
-        <AttachmentsSizeTypesDesc faqLink={attachmentFaqLink} />
-        {attachments.map(({ name, label, required }) => (
           <FormField
-            key={String(name)}
             control={formController.control}
-            name={`attachments.${String(name)}` as Path<D>}
-            render={SlotAttachments({
-              label: (
-                <>
-                  {label}
-                  {required ? <RequiredIndicator /> : ""}
-                </>
-              ),
-              message: <FormMessage />,
-              className: "my-4",
+            name={"id" as Path<D>}
+            render={SlotPackageId({
+              label: idFieldLabel,
+              description: idFieldDescription,
+              faqButtonLabel: idHelpLabel,
+              faqHash: idHelpFAQHash,
+              className: "pt-6",
             })}
           />
-        ))}
-        <FormField
-          control={formController.control}
-          name={"additionalInformation" as Path<D>}
-          render={SlotAdditionalInfo({
-            label: addlInfoInstructions,
-            description: "4,000 characters allowed",
-            className: "pt-6",
-            required: requireAddlInfo,
-          })}
-        />
+          <FormField
+            control={formController.control}
+            name={"proposedEffectiveDate" as Path<D>}
+            render={SlotProposedEffectiveDate({
+              label: dateFieldLabel,
+              className: "pt-6",
+            })}
+          />
+        </SectionCard>
+        <SectionCard title="Attachments" className={"mt-8"}>
+          {attachmentInstructions}
+          <AttachmentsSizeTypesDesc faqLink={attachmentFaqLink} />
+          {attachments.map(({ name, label, required }) => (
+            <FormField
+              key={String(name)}
+              control={formController.control}
+              name={`attachments.${String(name)}` as Path<D>}
+              render={SlotAttachments({
+                label: (
+                  <>
+                    {label}
+                    {required ? <RequiredIndicator /> : ""}
+                  </>
+                ),
+                message: <FormMessage />,
+                className: "my-4",
+              })}
+            />
+          ))}
+        </SectionCard>
+        <SectionCard title={"Additional information"}>
+          <FormField
+            control={formController.control}
+            name={"additionalInformation" as Path<D>}
+            render={SlotAdditionalInfo({
+              label: addlInfoDescription,
+              description: "4,000 characters allowed",
+              className: "pt-6",
+              required: requireAddlInfo,
+            })}
+          />
+        </SectionCard>
         {Object.keys(formController.formState.errors).length !== 0 && (
           <Alert className="my-6" variant="destructive">
             Input validation error(s)
