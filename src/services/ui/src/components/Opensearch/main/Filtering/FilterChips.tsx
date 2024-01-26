@@ -14,13 +14,7 @@ interface RenderProp {
   clearFilter: (filter: opensearch.main.Filterable, valIndex?: number) => void;
 }
 
-// simple date range chips
-const DateChip: FC<RenderProp> = ({
-  filter,
-  index,
-  openDrawer,
-  clearFilter,
-}) => {
+const ChipDate: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
   const value = filter.value as opensearch.RangeValue;
   return (
     <Chip
@@ -38,8 +32,7 @@ const DateChip: FC<RenderProp> = ({
   );
 };
 
-// simple date range chips
-const BooleanChip: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
+const ChipBool: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
   const value = filter.value as opensearch.RangeValue;
   return (
     <Chip
@@ -48,13 +41,13 @@ const BooleanChip: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
         clearFilter(filter);
       }}
     >
-      {filter?.label}: {value ? "Yes" : "No"}
+      {filter?.label}: <strong>{value ? "Yes" : "No"}</strong>
     </Chip>
   );
 };
 
 // array value chips
-const ChipList: FC<RenderProp> = ({ filter, clearFilter, openDrawer }) => {
+const ChipTerms: FC<RenderProp> = ({ filter, clearFilter, openDrawer }) => {
   const labelMap = useLabelMapping();
 
   if (!Array.isArray(filter.value)) return null;
@@ -121,15 +114,11 @@ export const FilterChips: FC = () => {
     <div className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2">
       {url.state.filters.map((filter, index) => {
         const props: RenderProp = { clearFilter, openDrawer, filter, index };
-        if (filter.type === "range") {
-          return <DateChip key={`${filter.field}-${index}`} {...props} />;
-        }
-        if (filter.type === "terms") {
-          return <ChipList key={`${filter.field}-${index}`} {...props} />;
-        }
-        if (filter.type === "match") {
-          return <BooleanChip key={`${filter.field}-${index}`} {...props} />;
-        }
+        const key = `${filter.field}-${index}`;
+
+        if (filter.type === "range") return <ChipDate key={key} {...props} />;
+        if (filter.type === "terms") return <ChipTerms key={key} {...props} />;
+        if (filter.type === "match") return <ChipBool key={key} {...props} />;
 
         return null;
       })}
