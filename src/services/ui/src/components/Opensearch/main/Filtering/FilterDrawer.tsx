@@ -16,11 +16,12 @@ import {
 
 import { FilterableSelect } from "./FilterableSelect";
 import { FilterableDateRange } from "./FilterableDateRange";
-import { FilterableCheckbox } from "./FilterableCheckbox";
+import { FilterableMultiCheck } from "./FilterableMultiCheck";
 import { useFilterDrawer } from "./useFilterDrawer";
 import { Button } from "@/components/Inputs";
 import { checkMultiFilter } from "@/components/Opensearch";
 import { useOsUrl } from "@/components/Opensearch/main";
+import { FilterableBoolean } from "./FilterableBoolean";
 
 export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
@@ -75,7 +76,7 @@ export const OsFilterDrawer = () => {
                   />
                 )}
                 {PK.component === "multiCheck" && (
-                  <FilterableCheckbox
+                  <FilterableMultiCheck
                     value={hook.filters[PK.field]?.value as string[]}
                     onChange={hook.onFilterChange(PK.field)}
                     options={hook.aggs?.[PK.field]}
@@ -88,6 +89,9 @@ export const OsFilterDrawer = () => {
                     }
                     onChange={hook.onFilterChange(PK.field)}
                   />
+                )}
+                {PK.component === "boolean" && (
+                  <FilterableBoolean value={true} onChange={() => null} />
                 )}
               </AccordionContent>
             </AccordionItem>

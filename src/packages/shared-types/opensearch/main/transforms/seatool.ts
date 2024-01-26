@@ -142,6 +142,7 @@ export const transform = (id: string) => {
       description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
+      initialIntakeNeeded: !leadAnalystName,
       leadAnalystName,
       planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME as PlanType | null,
       planTypeId: data.STATE_PLAN.PLAN_TYPE,

@@ -58,6 +58,14 @@ const SPA_FILTER_GROUP = (isCms: boolean): FilterGroup => {
       type: "range",
       value: { gte: undefined, lte: undefined },
     },
+    initialIntakeNeeded: {
+      label: "Initial Intake Needed",
+      field: "leadAnalystName",
+      component: "boolean",
+      prefix: "must",
+      type: "match",
+      value: null,
+    },
     "leadAnalystName.keyword": {
       label: "CPOC Name",
       field: "leadAnalystName.keyword",
