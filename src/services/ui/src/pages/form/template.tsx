@@ -13,6 +13,7 @@ import {
   FormField,
   FormMessage,
   RequiredIndicator,
+  FormLabel,
 } from "@/components/Inputs";
 import { ReactElement, ReactNode } from "react";
 import { opensearch } from "shared-types";
@@ -27,12 +28,16 @@ import { useModalContext } from "@/pages/form/modals";
 import { Info } from "lucide-react";
 import * as Inputs from "@/components/Inputs";
 
+type WaiverAuthority =
+  | "1915(b)(4) FFS Selective Contracting waivers"
+  | "All other 1915(b) Waivers";
 export const SubmissionFormTemplate = <D extends FieldValues>({
   item, // TODO: Will likely need for prefill
   formController,
   submitHandler,
   title,
   description,
+  waiverAuthority,
   idFieldLabel,
   idFieldDescription,
   idHelpLabel,
@@ -49,6 +54,7 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
   submitHandler: SubmitHandler<D>;
   title: string;
   description: ReactNode;
+  waiverAuthority: WaiverAuthority;
   idFieldLabel: string;
   idFieldDescription: ReactElement;
   idHelpLabel: string;
@@ -71,7 +77,22 @@ export const SubmissionFormTemplate = <D extends FieldValues>({
         </ActionFormIntro>
 
         <SectionCard title="Package Details">
-          {/* TODO: Pre-filled ID field for renewals/amendments */}
+          {/* TODO: Verify pre-fill works */}
+          {item && (
+            <div className="flex flex-col">
+              <FormLabel id="package-id-label">Initial Waiver Number</FormLabel>
+              <span className="text-xl" aria-labelledby="package-id-label">
+                {item._id}
+              </span>
+            </div>
+          )}
+
+          <div className="flex flex-col">
+            <FormLabel id="package-id-label">Waiver Authority</FormLabel>
+            <span className="text-xl" aria-labelledby="package-id-label">
+              {waiverAuthority}
+            </span>
+          </div>
 
           <FormField
             control={formController.control}

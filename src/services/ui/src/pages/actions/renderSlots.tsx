@@ -44,7 +44,9 @@ export const SlotPackageId = <
     return (
       <FormItem {...props}>
         <div className="flex gap-4">
-          <FormLabel className="text-lg font-bold">{label}</FormLabel>
+          <FormLabel className="text-lg font-bold">
+            {label} <RequiredIndicator />
+          </FormLabel>
           <Link
             to={`/faq/#${faqHash}`}
             target={FAQ_TAB}
@@ -89,7 +91,9 @@ export const SlotProposedEffectiveDate = <
   }) {
     return (
       <FormItem {...props}>
-        <FormLabel className="text-lg font-bold block">{label}</FormLabel>
+        <FormLabel className="text-lg font-bold block">
+          {label} <RequiredIndicator />
+        </FormLabel>
         <FormControl>
           <DatePicker onChange={field.onChange} date={field.value} />
         </FormControl>

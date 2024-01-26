@@ -35,6 +35,7 @@ const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
           </strong>
         </p>
       }
+      waiverAuthority={"All other 1915(b) Waivers"}
       idFieldLabel={"Waiver Amendment Number"}
       idFieldDescription={
         <span>

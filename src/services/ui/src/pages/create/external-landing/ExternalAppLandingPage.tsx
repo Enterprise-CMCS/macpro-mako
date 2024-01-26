@@ -29,7 +29,6 @@ const FAQHelperText = () => (
   <span className="max-w-xl">
     <i>
       For additional information on where to submit, refer to the{" "}
-      {/* TODO: Get desired FAQ `target` from Wale */}
       <Link
         className="text-sky-600 hover:text-sky-800 underline"
         target={FAQ_TAB}
@@ -59,7 +58,6 @@ const ExternalAppLandingPage = ({
   return (
     <SimplePageContainer>
       <BreadCrumbs options={optionCrumbsFromPath(location.pathname)} />
-      {/* TODO: Replace simple page title bar with breadcrumbs */}
       <SimplePageTitle title={pageTitle} />
       <div className="flex flex-col items-center justify-center m-4 pt-4 pb-12">
         {image}

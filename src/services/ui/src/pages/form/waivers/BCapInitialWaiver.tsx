@@ -35,6 +35,7 @@ const Form = () => {
           </strong>
         </p>
       }
+      waiverAuthority={"All other 1915(b) Waivers"}
       idFieldLabel={"Initial Waiver Number"}
       idFieldDescription={
         <span>

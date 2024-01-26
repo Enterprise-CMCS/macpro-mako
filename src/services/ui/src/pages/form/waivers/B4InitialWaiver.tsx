@@ -35,6 +35,7 @@ const Form = () => {
           </strong>
         </p>
       }
+      waiverAuthority={"1915(b)(4) FFS Selective Contracting waivers"}
       idFieldLabel={"Initial Waiver Number"}
       idFieldDescription={
         <span>

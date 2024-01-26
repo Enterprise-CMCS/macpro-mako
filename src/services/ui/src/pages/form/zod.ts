@@ -27,10 +27,10 @@ export const zInitialWaiverNumberSchema = z
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
+  // TODO: update idIsUnique with proper check
   .refine(async (value) => idIsUnique(value), {
-    // TODO: New message requirement
     message:
-      "According to our records, this Waiver Number already exists. Please check the SPA ID and try entering it again.",
+      "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
   });
 
 export const zRenewalWaiverNumberSchema = z
@@ -40,9 +40,13 @@ export const zRenewalWaiverNumberSchema = z
     "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with ‘01’ and ascends"
   )
   .refine((value) => isAuthorizedState(value), {
-    // TODO: New message requirement
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+  })
+  // TODO: update idIsUnique with proper check
+  .refine(async (value) => idIsUnique(value), {
+    message:
+      "According to our records, this 1915(b) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
   });
 
 export const zAmendmentWaiverNumberSchema = z
@@ -55,8 +59,8 @@ export const zAmendmentWaiverNumberSchema = z
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
+  // TODO: update idIsUnique with proper check
   .refine(async (value) => idIsUnique(value), {
-    // TODO: Change func
     message:
       "According to our records, this 1915(b) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again",
   });

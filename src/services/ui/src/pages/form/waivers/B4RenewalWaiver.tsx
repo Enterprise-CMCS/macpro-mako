@@ -35,6 +35,7 @@ const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
           </strong>
         </p>
       }
+      waiverAuthority={"1915(b)(4) FFS Selective Contracting waivers"}
       idFieldLabel={"Renewal Waiver Number"}
       idFieldDescription={
         <span>
