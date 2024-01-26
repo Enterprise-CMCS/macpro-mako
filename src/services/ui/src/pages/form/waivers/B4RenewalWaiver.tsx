@@ -48,7 +48,6 @@ const Form = ({ item }: { item?: opensearch.main.ItemResult }) => {
       dateFieldLabel={"Proposed Effective Date of 1915(b) Renewal Waiver"}
       attachments={attachments}
       attachmentFaqLink={"/faq"}
-      requireAddlInfo
       addlInfoDescription={
         <p>Add anything else that you would like to share with CMS.</p>
       }
