@@ -16,7 +16,7 @@ const config = {
 } as sql.config;
 
 import { Kafka, Message } from "kafkajs";
-import { PlanType, onemacSchema, transformOnemac } from "shared-types";
+import { PlanType, onemacSchema } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 
 const kafka = new Kafka({
@@ -64,6 +64,7 @@ export const submit = async (event: APIGatewayEvent) => {
     const today = seaToolFriendlyTimestamp();
     const pool = await sql.connect(config);
     console.log(body);
+    // add subject, description, type subtype
     const query = `
       Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
         values ('${body.id}'
