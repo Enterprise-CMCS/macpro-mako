@@ -30,7 +30,7 @@ export const UsaBanner = () => {
         {/* Display for Desktop */}
         {isDesktop && (
           <>
-            <div className="max-w-screen-xl px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center">
+            <div className="max-w-screen-2xl px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center">
               <img
                 className="w-4 h-[11px]"
                 src={UsFlag}

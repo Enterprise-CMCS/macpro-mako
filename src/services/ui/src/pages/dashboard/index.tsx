@@ -11,7 +11,6 @@ import {
   FilterChips,
   FilterDrawerProvider,
 } from "@/components/Opensearch/main";
-import { Button } from "@/components/Inputs";
 import { useUserContext } from "@/components/Context/userContext";
 import { useMemo } from "react";
 
@@ -58,7 +57,7 @@ export const Dashboard = () => {
       }}
     >
       <FilterDrawerProvider>
-        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
+        <div className="max-w-screen-2xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between my-4">
             <h1 className="text-xl">Dashboard</h1>
             {!userContext?.isCms && (

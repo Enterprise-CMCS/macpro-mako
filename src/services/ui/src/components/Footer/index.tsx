@@ -15,7 +15,7 @@ export const Footer = ({ email, address }: Props) => {
   return (
     <footer>
       <section className="bg-sky-100">
-        <div className="grid grid-cols-12 gap-4 px-10 py-4 max-w-screen-xl mx-auto">
+        <div className="grid grid-cols-12 gap-4 px-10 py-4 max-w-screen-2xl mx-auto">
           <img
             src={MedicaidLogo}
             alt="Logo for Medicaid"
@@ -34,10 +34,13 @@ export const Footer = ({ email, address }: Props) => {
         </div>
       </section>
       <div className="w-full bg-primary">
-        <div className="px-10 py-4 text-white text-[.8rem] flex flex-col items-center sm:flex-row max-w-screen-xl mx-auto">
+        <div className="px-10 py-4 text-white text-[.8rem] flex flex-col items-center sm:flex-row max-w-screen-2xl mx-auto">
           <div>
-            Email <a href={`mailto:${email}`} className="font-bold underline">{email}</a> for help or
-            feedback
+            Email{" "}
+            <a href={`mailto:${email}`} className="font-bold underline">
+              {email}
+            </a>{" "}
+            for help or feedback
           </div>
           <div className="flex-1"></div>
           <div>

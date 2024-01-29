@@ -33,7 +33,7 @@ export const Welcome = () => {
   return (
     <>
       <div className="w-full bg-primary p-2 md:p-4">
-        <div className="max-w-screen-xl flex flex-col sm:flex-row sm:items-center gap-4 mx-auto p-4 lg:px-8">
+        <div className="max-w-screen-2xl flex flex-col sm:flex-row sm:items-center gap-4 mx-auto p-4 lg:px-8">
           <h1>
             <img src={OneMacLogo} alt="onemac" className="p-4 min-w-[400px]" />
           </h1>
@@ -45,7 +45,7 @@ export const Welcome = () => {
       </div>
       {/* End Hero Section */}
       {/* Two Column Main Layout */}
-      <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
+      <div className="max-w-screen-2xl mx-auto p-4 lg:px-8">
         <div className="flex flex-col justify-center gap-8">
           <div>
             <h2 className="text-2xl font-bold mb-4">State Users</h2>
@@ -186,7 +186,7 @@ export const Welcome = () => {
         </div>
       </div>
       <section>
-        <div className="flex justify-around items-center text-xl px-10 py-4 max-w-screen-xl mx-auto">
+        <div className="flex justify-around items-center text-xl px-10 py-4 max-w-screen-2xl mx-auto">
           <h4>Do you have questions or need support?</h4>
           <Link path={"/faq"} target={FAQ_TAB}>
             <Button>View FAQ</Button>
