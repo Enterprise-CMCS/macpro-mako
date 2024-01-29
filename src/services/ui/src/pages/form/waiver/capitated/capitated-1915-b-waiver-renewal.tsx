@@ -15,51 +15,70 @@ import {
 import { submit } from "@/api/submissionService";
 import { PlanType } from "shared-types";
 import {
+  zAdditionalInfo,
+  zRenewalOriginalWaiverNumberSchema,
   zAttachmentOptional,
   zAttachmentRequired,
-  zSpaIdSchema,
+  zRenewalWaiverNumberSchema,
 } from "@/pages/form/zod";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
-const formSchema = z.object({
-  id: z.string(),
-  amendedWaiverNumber: z.string(),
-  additionalInformation: z.string().max(4000).optional(),
-  attachments: z.object({
-    comprehensiveWaiverAppPre1915B: zAttachmentRequired({
-      min: 1,
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
+const formSchema = z
+  .object({
+    waiverNumber: zRenewalOriginalWaiverNumberSchema,
+    renewalWaiverNumber: zRenewalWaiverNumberSchema,
+    proposedEffectiveDate: z.date(),
+    attachments: z.object({
+      bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
+      bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
+      bCapIndependentAssessment: zAttachmentOptional,
+      tribalConsultation: zAttachmentOptional,
+      other: zAttachmentOptional,
     }),
-    comprehensiveWaiverCostEffectSpreadSheets1915B: zAttachmentRequired({
-      min: 1,
-    }),
-    tribalConsultation: zAttachmentOptional,
-    other: zAttachmentOptional,
-  }),
-  proposedEffectiveDate: z.date(),
-});
-type Waiver1915BCapitatedAmendment = z.infer<typeof formSchema>;
+    additionalInformation: zAdditionalInfo,
+  })
+  .superRefine((data, ctx) => {
+    const renewalIteration = data.waiverNumber.split(".")[1]; // R## segment of Waiver Number
+    if (
+      ["R00", "R01"].includes(renewalIteration) &&
+      data.attachments.bCapIndependentAssessment === undefined
+    ) {
+      ctx.addIssue({
+        message:
+          "An Independent Assessment is required for the first two renewals.",
+        code: z.ZodIssueCode.custom,
+        fatal: true,
+      });
+    }
+    return z.NEVER;
+  });
+type Waiver1915BCapitatedRenewal = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
   {
-    name: "comprehensiveWaiverAppPre1915B",
+    name: "bCapWaiverApplication",
     label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
     required: true,
   },
   {
-    name: "comprehensiveWaiverCostEffectSpreadSheets1915B",
+    name: "bCapCostSpreadsheets",
     label:
       "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
+    required: true,
+  },
+  {
+    name: "bCapIndependentAssessment",
+    label: "1915(b) Comprehensive (Capitated) Waiver Independent Assessment",
+    subtext: "Required for the first two renewals",
     required: false,
   },
   {
     name: "tribalConsultation",
-    label: "Tribal Consulation",
+    label: "Tribal Consultation",
     required: false,
   },
   {
@@ -73,12 +92,12 @@ export const Capitated1915BWaiverRenewal = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmendment> = async (
+  const handleSubmit: SubmitHandler<Waiver1915BCapitatedRenewal> = async (
     formData
   ) => {
     try {
       // AK-0260.R04.02
-      await submit<Waiver1915BCapitatedAmendment>({
+      await submit<Waiver1915BCapitatedRenewal>({
         data: {
           ...formData,
         },
@@ -92,7 +111,7 @@ export const Capitated1915BWaiverRenewal = () => {
     }
   };
 
-  const form = useForm<Waiver1915BCapitatedAmendment>({
+  const form = useForm<Waiver1915BCapitatedRenewal>({
     resolver: zodResolver(formSchema),
   });
 
@@ -102,25 +121,25 @@ export const Capitated1915BWaiverRenewal = () => {
       <Inputs.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col"
+          className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
-          <SectionCard title="1915(b) Waiver Amendment Details">
+          <h1 className="text-2xl font-semibold mt-4 mb-2">
+            Renew a 1915(b) Waiver
+          </h1>
+          <SectionCard title="1915(b) Waiver Renewal Details">
             <Content.FormIntroText />
             <Inputs.FormField
               control={form.control}
-              name="id"
+              name="waiverNumber"
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
                     <Inputs.FormLabel className="text-lg font-bold">
-                      Existing Waiver Number to Amend
+                      Existing Waiver Number to Renew <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
-                    <Inputs.RequiredIndicator />
                   </div>
                   <p className="text-gray-500 font-light">
-                    Enter the existing waiver number you are seeking to amend in
-                    the format it was approved, using a dash after the two
-                    character state abbreviation.
+                    Enter the existing waiver number in the format it was approved, using a dash after the two character state appreviation.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -138,27 +157,26 @@ export const Capitated1915BWaiverRenewal = () => {
             />
             <Inputs.FormField
               control={form.control}
-              name="amendedWaiverNumber"
+              name="renewalWaiverNumber"
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
                     <Inputs.FormLabel className="text-lg font-bold">
-                      1915(b) Waiver Amendment Number
+                      1915(b) Waiver Renewal Number <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
-                    <Inputs.RequiredIndicator />
                     <Link
-                      to="/faq/#spa-id-format"
+                      to="/faq/#waiver-amendment-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline flex items-center"
                     >
-                      What is my 1915(b) Waiver Amendment Number?
+                      What is my 1915(b) Waiver Renewal Number?
                     </Link>
                   </div>
                   <p className="text-gray-500 font-light">
                     The Waiver Number must be in the format of SS-####.R##.## or
-                    SS-#####.R##.##. For amendments, the last two digits start
-                    with ‘01’ and ascends.
+                    SS-#####.R##.##. For renewals, the "R##" starts
+                    with ‘R01’ and ascends.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -180,7 +198,7 @@ export const Capitated1915BWaiverRenewal = () => {
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of 1915(b) Waiver Amendment
+                    Proposed Effective Date of 1915(b) Waiver Renewal <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.DatePicker
@@ -205,7 +223,10 @@ export const Capitated1915BWaiverRenewal = () => {
                 name={`attachments.${name}`}
                 render={({ field }) => (
                   <Inputs.FormItem>
-                    <Inputs.FormLabel>{label}</Inputs.FormLabel>
+                    <Inputs.FormLabel>
+                    {label}
+                    {required ? <Inputs.RequiredIndicator /> : null}
+                    </Inputs.FormLabel>
                     <Inputs.Upload
                       files={field?.value ?? []}
                       setFiles={field.onChange}

@@ -25,8 +25,8 @@ import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
-  waiverNumber: zAmendmentWaiverNumberSchema,
-  amendmentWaiverNumber: zAmendmentOriginalWaiverNumberSchema,
+  waiverNumber: zAmendmentOriginalWaiverNumberSchema,
+  amendmentWaiverNumber: zAmendmentWaiverNumberSchema,
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
     bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
