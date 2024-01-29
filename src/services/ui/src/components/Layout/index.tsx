@@ -15,7 +15,9 @@ import { useNavigate } from "../Routing";
 import { FAQ_TAB } from "../Routing/consts";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
-  const isProd = window && window.location.hostname === "mako.cms.gov";
+  const isProd =
+    (window && window.location.hostname === "mako.cms.gov") ||
+    window.location.hostname === "onemac.cms.gov";
   return [
     {
       name: "Home",
@@ -109,7 +111,7 @@ export const Layout = () => {
     <div className="min-h-full flex flex-col">
       <UsaBanner />
       <nav className="bg-primary">
-        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
+        <div className="max-w-screen-2xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
             <Link to="/">
               <img
@@ -272,7 +274,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
 
 export const SubNavHeader = ({ children }: { children: React.ReactNode }) => (
   <div className="bg-sky-100">
-    <div className="max-w-screen-xl m-auto px-4 lg:px-8">
+    <div className="max-w-screen-2xl m-auto px-4 lg:px-8">
       <div className="flex items-center">
         <div className="flex align-middle py-4">{children}</div>
       </div>
