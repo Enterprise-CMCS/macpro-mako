@@ -31,7 +31,7 @@ export const useFilterState = () => {
           if (isCms) return { [C.CHECK_CMSSTATUS.field]: C.CHECK_CMSSTATUS };
           return { [C.CHECK_STATESTATUS.field]: C.CHECK_STATESTATUS };
         })(),
-        ...(isCms && {
+        ...(!!user?.isCms && {
           [C.BOOL_INITIALINTAKENEEDED.field]: C.BOOL_INITIALINTAKENEEDED,
         }),
         [C.DATE_SUBMISSION.field]: C.DATE_SUBMISSION,
@@ -51,7 +51,7 @@ export const useFilterState = () => {
           if (isCms) return { [C.CHECK_CMSSTATUS.field]: C.CHECK_CMSSTATUS };
           return { [C.CHECK_STATESTATUS.field]: C.CHECK_STATESTATUS };
         })(),
-        ...(isCms && {
+        ...(!!user?.isCms && {
           [C.BOOL_INITIALINTAKENEEDED.field]: C.BOOL_INITIALINTAKENEEDED,
         }),
         [C.DATE_SUBMISSION.field]: C.DATE_SUBMISSION,
