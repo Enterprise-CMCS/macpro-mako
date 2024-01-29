@@ -1,21 +1,42 @@
-import { SESClient, ListConfigurationSetsCommand, ListIdentitiesCommand } from "@aws-sdk/client-ses";
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
-const createListIdentitiesCommand = () =>
-    new ListIdentitiesCommand({ IdentityType: "EmailAddress", MaxItems: 10 });
+const createSendEmailCommand = (event) =>
+    new SendEmailCommand({
+        Source: "kgrue@fearless.tech",
+        Destination: {
+            ToAddresses: [
+                "k.grue.stateuser@gmail.com",
+            ],
+        },
+        Message: {
+            Subject: {
+                Data: event.subject ?? "Subject Required",
+                Charset: "UTF-8",
+            },
+            Body: {
+                Text: {
+                    Data: "Body Text",
+                    Charset: "UTF-8",
+                },
+                Html: {
+                    Data: "<p>HTML body text</p><p>yup</p>",
+                    Charset: "UTF-8",
+                },
+            },
+        },
+        ConfigurationSetName: process.env.emailConfigSet,
+    });
 
 const SES = new SESClient({ region: process.env.region });
 
 export const main = async (event, context, callback) => {
     let response;
     console.log("Received event (stringified):", JSON.stringify(event, null, 4));
-    const listIdentitiesCommand = createListIdentitiesCommand();
+    const sendEmailCommand = createSendEmailCommand(event);
 
     try {
-        response = await SES.send(listIdentitiesCommand);
-        console.log("listIdentitiesCommand response: ", response);
-
-        response = await SES.send(new ListConfigurationSetsCommand({ NextToken: "", MaxItems: 10 }));
-        console.log("ListConfigurationSetsCommand response: ", response);
+        response = await SES.send(sendEmailCommand);
+        console.log("sendEmailCommand response: ", response);
     } catch (err) {
         console.log("Failed to list identities.", err);
     }
