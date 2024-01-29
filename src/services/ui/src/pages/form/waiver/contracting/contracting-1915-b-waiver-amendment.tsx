@@ -25,7 +25,7 @@ import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
   id: z.string(),
-  ammendedWaiverNumber: z.string(),
+  amendedWaiverNumber: z.string(),
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
     comprehensiveWaiverAppPre1915B: zAttachmentRequired({
@@ -41,7 +41,7 @@ const formSchema = z.object({
   }),
   proposedEffectiveDate: z.date(),
 });
-type Waiver1915BContractingAmmendment = z.infer<typeof formSchema>;
+type Waiver1915BContractingAmendment = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
@@ -69,16 +69,16 @@ const attachmentList = [
   },
 ] as const;
 
-export const Contracting1915BWaiverAmmendment = () => {
+export const Contracting1915BWaiverAmendment = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const handleSubmit: SubmitHandler<Waiver1915BContractingAmmendment> = async (
+  const handleSubmit: SubmitHandler<Waiver1915BContractingAmendment> = async (
     formData
   ) => {
     try {
       // AK-0260.R04.02
-      await submit<Waiver1915BContractingAmmendment>({
+      await submit<Waiver1915BContractingAmendment>({
         data: {
           ...formData,
         },
@@ -92,7 +92,7 @@ export const Contracting1915BWaiverAmmendment = () => {
     }
   };
 
-  const form = useForm<Waiver1915BContractingAmmendment>({
+  const form = useForm<Waiver1915BContractingAmendment>({
     resolver: zodResolver(formSchema),
   });
 
@@ -138,7 +138,7 @@ export const Contracting1915BWaiverAmmendment = () => {
             />
             <Inputs.FormField
               control={form.control}
-              name="ammendedWaiverNumber"
+              name="amendedWaiverNumber"
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
@@ -271,8 +271,8 @@ export const Contracting1915BWaiverAmmendment = () => {
   );
 };
 
-export const Contracting1915BWaiverAmmendmentPage = () => (
+export const Contracting1915BWaiverAmendmentPage = () => (
   <ModalProvider>
-    <Contracting1915BWaiverAmmendment />
+    <Contracting1915BWaiverAmendment />
   </ModalProvider>
 );

@@ -66,8 +66,8 @@ export const router = createBrowserRouter([
         element: <P.CHIPEligibilityLandingPage />,
       },
       {
-        path: "/new-submission/waiver/b/capitated/ammed/create",
-        element: <P.Capitated1915BWaiverAmmendmentPage />,
+        path: "/new-submission/waiver/b/capitated/amend/create",
+        element: <P.Capitated1915BWaiverAmendmentPage />,
       },
       {
         path: "/new-submission/waiver/b/capitated/initial/create",
@@ -86,8 +86,8 @@ export const router = createBrowserRouter([
         element: <P.Contracting1915BWaiverInitialPage />,
       },
       {
-        path: "/new-submission/waiver/b/contracting/ammendment/create",
-        element: <P.Contracting1915BWaiverAmmendmentPage />,
+        path: "/new-submission/waiver/b/contracting/amendment/create",
+        element: <P.Contracting1915BWaiverAmendmentPage />,
       },
       { path: "/new-submission/spa/medicaid/create", element: <P.MedicaidSpaFormPage /> },
       { path: "/new-submission/spa/chip/create", element: <P.ChipSpaFormPage /> },

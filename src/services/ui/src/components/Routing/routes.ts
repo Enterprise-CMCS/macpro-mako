@@ -14,16 +14,16 @@ export const WAIVER_SUBMISSION_OPTIONS = "/new-submission/waiver";
 export const B_WAIVER_SUBMISSION_OPTIONS = "/new-submission/waiver/b";
 export const B4_WAIVER_OPTIONS = "/new-submission/waiver/b/b4";
 export const BCAP_WAIVER_OPTIONS = "/new-submission/waiver/b/capitated";
-export const WAIVER_1915_B_AMMEND_CAP =
-  "/new-submission/waiver/b/capitated/ammed/create";
+export const WAIVER_1915_B_AMEND_CAP =
+  "/new-submission/waiver/b/capitated/amend/create";
 export const WAIVER_1915_B_RENEWAL_CAP =
   "/new-submission/waiver/b/capitated/renewal/create";
 export const WAIVER_1915_B_INITIAL_CAP =
   "/new-submission/waiver/b/capitated/initial/create";
 export const WAIVER_1915_B_INITIAL_CON =
   "/new-submission/waiver/b/contracting/initial/create";
-export const WAIVER_1915_B_AMMEND_CON =
-  "/new-submission/waiver/b/contracting/ammendment/create";
+export const WAIVER_1915_B_AMEND_CON =
+  "/new-submission/waiver/b/contracting/amendment/create";
 export const WAIVER_1915_B_RENEWAL_CON =
   "/new-submission/waiver/b/contracting/renewal/create";
 export const MEDICAID_ABP_LANDING =

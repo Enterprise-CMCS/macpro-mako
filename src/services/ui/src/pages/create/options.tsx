@@ -119,7 +119,7 @@ export const B4_WAIVER_OPTIONS: OptionData[] = [
     title: "1915(b)(4) FFS Selective Contracting Waiver Amendment",
     description:
       "Amend an existing 1915(b)(4) FFS Selective Contracting Waiver",
-    linkTo: "/new-submission/waiver/b/contracting/ammendment/create",
+    linkTo: "/new-submission/waiver/b/contracting/amendment/create",
   },
 ];
 export const BCAP_WAIVER_OPTIONS: OptionData[] = [
@@ -137,6 +137,6 @@ export const BCAP_WAIVER_OPTIONS: OptionData[] = [
   {
     title: "1915(b) Comprehensive (Capitated) Waiver Amendment ",
     description: "Amend an existing 1915(b) Comprehensive (Capitated) Waiver",
-    linkTo: "/new-submission/waiver/b/capitated/ammed/create",
+    linkTo: "/new-submission/waiver/b/capitated/amend/create",
   },
 ];

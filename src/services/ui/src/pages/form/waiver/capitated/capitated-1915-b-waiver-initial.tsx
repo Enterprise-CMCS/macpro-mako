@@ -25,7 +25,7 @@ import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
-  id: zInitialWaiverNumberSchema,
+  waiverNumber: zInitialWaiverNumberSchema,
   proposedEffectiveDate: z.date(),
   attachments: z.object({
     bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
@@ -35,7 +35,7 @@ const formSchema = z.object({
   }),
   additionalInformation: zAdditionalInfo,
 });
-type Waiver1915BCapitatedAmmendment = z.infer<typeof formSchema>;
+type Waiver1915BCapitatedAmendment = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
@@ -67,11 +67,11 @@ export const Capitated1915BWaiverInitial = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmmendment> = async (
+  const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmendment> = async (
     formData
   ) => {
     try {
-      await submit<Waiver1915BCapitatedAmmendment>({
+      await submit<Waiver1915BCapitatedAmendment>({
         data: formData,
         endpoint: "/submit",
         user,
@@ -83,7 +83,7 @@ export const Capitated1915BWaiverInitial = () => {
     }
   };
 
-  const form = useForm<Waiver1915BCapitatedAmmendment>({
+  const form = useForm<Waiver1915BCapitatedAmendment>({
     resolver: zodResolver(formSchema),
   });
 
@@ -110,7 +110,7 @@ export const Capitated1915BWaiverInitial = () => {
             </div>
             <Inputs.FormField
               control={form.control}
-              name="id"
+              name="waiverNumber"
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">

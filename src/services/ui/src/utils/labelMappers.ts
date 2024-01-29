@@ -26,7 +26,7 @@ export const mapSubmissionCrumb = (path: Route) => {
       return "Submit new Medicaid SPA";
     case "/new-submission/spa/chip/create":
       return "Submit new CHIP SPA";
-    case "/new-submission/waiver/b/capitated/ammed/create":
+    case "/new-submission/waiver/b/capitated/amend/create":
       return "Amend a 1915(b) Waiver";
     case "/new-submission/waiver/b/capitated/initial/create":
       return "1915(b) Waiver";
@@ -34,8 +34,8 @@ export const mapSubmissionCrumb = (path: Route) => {
       return "Renew a 1915(b) Waiver";
     case "/new-submission/waiver/b/contracting/renewal/create":
       return "Renew a 1915(b) Waiver";
-    case "/new-submission/waiver/b/contracting/ammendment/create":
-      return "Ammend a 1915(b) Waiver";
+    case "/new-submission/waiver/b/contracting/amendment/create":
+      return "Amend a 1915(b) Waiver";
     case "/new-submission/waiver/b/contracting/initial/create":
       return "1915(b) Initial Waiver Submission";
     default:
