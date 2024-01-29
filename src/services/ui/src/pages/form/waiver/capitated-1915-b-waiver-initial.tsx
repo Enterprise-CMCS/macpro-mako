@@ -25,7 +25,6 @@ import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
   id: z.string(),
-  ammendedWaiverNumber: z.string(),
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
     comprehensiveWaiverAppPre1915B: zAttachmentRequired({
@@ -111,54 +110,13 @@ export const Capitated1915BWaiverInitial = () => {
               name="id"
               render={({ field }) => (
                 <Inputs.FormItem>
-                  <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold">
-                      Existing Waiver Number to Amend
-                    </Inputs.FormLabel>
-                    <Inputs.RequiredIndicator />
-                  </div>
+                  <Inputs.FormLabel className="text-lg font-bold mr-1">
+                    Initial Waiver Number to Amend
+                  </Inputs.FormLabel>
+                  <Inputs.RequiredIndicator />
                   <p className="text-gray-500 font-light">
-                    Enter the existing waiver number you are seeking to amend in
-                    the format it was approved, using a dash after the two
-                    character state abbreviation.
-                  </p>
-                  <Inputs.FormControl className="max-w-sm">
-                    <Inputs.Input
-                      {...field}
-                      onInput={(e) => {
-                        if (e.target instanceof HTMLInputElement) {
-                          e.target.value = e.target.value.toUpperCase();
-                        }
-                      }}
-                    />
-                  </Inputs.FormControl>
-                  <Inputs.FormMessage />
-                </Inputs.FormItem>
-              )}
-            />
-            <Inputs.FormField
-              control={form.control}
-              name="ammendedWaiverNumber"
-              render={({ field }) => (
-                <Inputs.FormItem>
-                  <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold">
-                      1915(b) Waiver Amendment Number
-                    </Inputs.FormLabel>
-                    <Inputs.RequiredIndicator />
-                    <Link
-                      to="/faq/#spa-id-format"
-                      target={FAQ_TAB}
-                      rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline flex items-center"
-                    >
-                      What is my 1915(b) Waiver Amendment Number?
-                    </Link>
-                  </div>
-                  <p className="text-gray-500 font-light">
-                    The Waiver Number must be in the format of SS-####.R##.## or
-                    SS-#####.R##.##. For amendments, the last two digits start
-                    with ‘01’ and ascends.
+                    Must be a new initial number with the format of
+                    SS-####.R##.## or SS-#####.R##.##.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -180,7 +138,7 @@ export const Capitated1915BWaiverInitial = () => {
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of 1915(b) Waiver Amendment
+                    Proposed Effective Date of 1915(b) Initial Waiver
                   </Inputs.FormLabel>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.DatePicker
