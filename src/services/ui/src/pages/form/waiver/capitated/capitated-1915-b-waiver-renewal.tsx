@@ -2,7 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components/Inputs";
-import * as Content from "../content";
+import * as Content from "../../content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
 import {
@@ -69,7 +69,7 @@ const attachmentList = [
   },
 ] as const;
 
-export const Capitated1915BWaiverAmmendment = () => {
+export const Capitated1915BWaiverRenewal = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
@@ -271,8 +271,8 @@ export const Capitated1915BWaiverAmmendment = () => {
   );
 };
 
-export const Capitated1915BWaiverAmmendmentPage = () => (
+export const Capitated1915BWaiverRenewalPage = () => (
   <ModalProvider>
-    <Capitated1915BWaiverAmmendment />
+    <Capitated1915BWaiverRenewal />
   </ModalProvider>
 );

@@ -2,7 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components/Inputs";
-import * as Content from "../content";
+import * as Content from "../../content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
 import {
@@ -25,6 +25,7 @@ import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
   id: z.string(),
+  ammendedWaiverNumber: z.string(),
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
     comprehensiveWaiverAppPre1915B: zAttachmentRequired({
@@ -40,20 +41,20 @@ const formSchema = z.object({
   }),
   proposedEffectiveDate: z.date(),
 });
-type Waiver1915BCapitatedAmmendment = z.infer<typeof formSchema>;
+type Waiver1915BContractingAmmendment = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
   {
     name: "comprehensiveWaiverAppPre1915B",
-    label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+    label: "1915(b) Comprehensive (Contracting) Waiver Application Pre-print",
     required: true,
   },
   {
     name: "comprehensiveWaiverCostEffectSpreadSheets1915B",
     label:
-      "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
+      "1915(b) Comprehensive (Contracting) Waiver Cost Effectiveness Spreadsheets",
     required: false,
   },
   {
@@ -68,16 +69,16 @@ const attachmentList = [
   },
 ] as const;
 
-export const Capitated1915BWaiverInitial = () => {
+export const Contracting1915BWaiverAmmendment = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmmendment> = async (
+  const handleSubmit: SubmitHandler<Waiver1915BContractingAmmendment> = async (
     formData
   ) => {
     try {
       // AK-0260.R04.02
-      await submit<Waiver1915BCapitatedAmmendment>({
+      await submit<Waiver1915BContractingAmmendment>({
         data: {
           ...formData,
         },
@@ -91,7 +92,7 @@ export const Capitated1915BWaiverInitial = () => {
     }
   };
 
-  const form = useForm<Waiver1915BCapitatedAmmendment>({
+  const form = useForm<Waiver1915BContractingAmmendment>({
     resolver: zodResolver(formSchema),
   });
 
@@ -110,13 +111,54 @@ export const Capitated1915BWaiverInitial = () => {
               name="id"
               render={({ field }) => (
                 <Inputs.FormItem>
-                  <Inputs.FormLabel className="text-lg font-bold mr-1">
-                    Initial Waiver Number to Amend
-                  </Inputs.FormLabel>
-                  <Inputs.RequiredIndicator />
+                  <div className="flex gap-4">
+                    <Inputs.FormLabel className="text-lg font-bold">
+                      Existing Waiver Number to Amend
+                    </Inputs.FormLabel>
+                    <Inputs.RequiredIndicator />
+                  </div>
                   <p className="text-gray-500 font-light">
-                    Must be a new initial number with the format of
-                    SS-####.R##.## or SS-#####.R##.##.
+                    Enter the existing waiver number you are seeking to amend in
+                    the format it was approved, using a dash after the two
+                    character state abbreviation.
+                  </p>
+                  <Inputs.FormControl className="max-w-sm">
+                    <Inputs.Input
+                      {...field}
+                      onInput={(e) => {
+                        if (e.target instanceof HTMLInputElement) {
+                          e.target.value = e.target.value.toUpperCase();
+                        }
+                      }}
+                    />
+                  </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
+              )}
+            />
+            <Inputs.FormField
+              control={form.control}
+              name="ammendedWaiverNumber"
+              render={({ field }) => (
+                <Inputs.FormItem>
+                  <div className="flex gap-4">
+                    <Inputs.FormLabel className="text-lg font-bold">
+                      1915(b) Waiver Amendment Number
+                    </Inputs.FormLabel>
+                    <Inputs.RequiredIndicator />
+                    <Link
+                      to="/faq/#spa-id-format"
+                      target={FAQ_TAB}
+                      rel="noopener noreferrer"
+                      className="text-blue-700 hover:underline flex items-center"
+                    >
+                      What is my 1915(b) Waiver Amendment Number?
+                    </Link>
+                  </div>
+                  <p className="text-gray-500 font-light">
+                    The Waiver Number must be in the format of SS-####.R##.## or
+                    SS-#####.R##.##. For amendments, the last two digits start
+                    with ‘01’ and ascends.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -138,7 +180,7 @@ export const Capitated1915BWaiverInitial = () => {
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of 1915(b) Initial Waiver
+                    Proposed Effective Date of 1915(b) Waiver Amendment
                   </Inputs.FormLabel>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.DatePicker
@@ -229,8 +271,8 @@ export const Capitated1915BWaiverInitial = () => {
   );
 };
 
-export const Capitated1915BWaiverInitialPage = () => (
+export const Contracting1915BWaiverAmmendmentPage = () => (
   <ModalProvider>
-    <Capitated1915BWaiverInitial />
+    <Contracting1915BWaiverAmmendment />
   </ModalProvider>
 );

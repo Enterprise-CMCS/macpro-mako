@@ -107,19 +107,19 @@ export const B4_WAIVER_OPTIONS: OptionData[] = [
     title: "1915(b)(4) FFS Selective Contracting New Initial Waiver",
     description:
       "Create a new 1915(b)(4) FFS Selective Contracting Initial Waiver",
-    linkTo: "/dashboard",
+    linkTo: "/new-submission/waiver/b/contracting/initial/create",
   },
   {
     title: "1915(b)(4) FFS Selective Contracting Renewal Waiver",
     description:
       "Renew an existing 1915(b)(4) FFS Selective Contracting Waiver",
-    linkTo: "/dashboard",
+    linkTo: "/new-submission/waiver/b/contracting/renewal/create",
   },
   {
     title: "1915(b)(4) FFS Selective Contracting Waiver Amendment",
     description:
       "Amend an existing 1915(b)(4) FFS Selective Contracting Waiver",
-    linkTo: "/dashboard",
+    linkTo: "/new-submission/waiver/b/contracting/ammendment/create",
   },
 ];
 export const BCAP_WAIVER_OPTIONS: OptionData[] = [
