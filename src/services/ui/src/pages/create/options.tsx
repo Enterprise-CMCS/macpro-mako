@@ -127,16 +127,16 @@ export const BCAP_WAIVER_OPTIONS: OptionData[] = [
     title: "1915(b) Comprehensive (Capitated) New Initial Waiver",
     description:
       "Create a new 1915(b) Comprehensive (Capitated) Initial Waiver",
-    linkTo: "/dashboard",
+    linkTo: "/new-submission/waiver/b/capitated/initial/create",
   },
   {
     title: "1915(b) Comprehensive (Capitated) Renewal Waiver",
     description: "Renew an existing 1915(b) Comprehensive (Capitated) Waiver",
-    linkTo: "/dashboard",
+    linkTo: "/new-submission/waiver/b/capitated/renewal/create",
   },
   {
     title: "1915(b) Comprehensive (Capitated) Waiver Amendment ",
     description: "Amend an existing 1915(b) Comprehensive (Capitated) Waiver",
-    linkTo: "/dashboard",
+    linkTo: "/new-submission/waiver/b/capitated/ammed/create",
   },
 ];
