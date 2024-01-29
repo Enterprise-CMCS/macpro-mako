@@ -38,7 +38,7 @@ export const main = async (event, context, callback) => {
         response = await SES.send(sendEmailCommand);
         console.log("sendEmailCommand response: ", response);
     } catch (err) {
-        console.log("Failed to list identities.", err);
+        console.log("Failed to process emails.", err);
     }
     callback(null, "Success");
 };
