@@ -83,11 +83,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/new-submission/waiver/b/contracting/initial/create",
-        element: <P.Capitated1915BWaiverInitialPage />,
+        element: <P.Contracting1915BWaiverInitialPage />,
       },
       {
         path: "/new-submission/waiver/b/contracting/ammendment/create",
-        element: <P.Capitated1915BWaiverAmmendmentPage />,
+        element: <P.Contracting1915BWaiverAmmendmentPage />,
       },
       { path: "/new-submission/spa/medicaid/create", element: <P.MedicaidSpaFormPage /> },
       { path: "/new-submission/spa/chip/create", element: <P.ChipSpaFormPage /> },

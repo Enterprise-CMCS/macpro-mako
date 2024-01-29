@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components/Inputs";
 import * as Content from "../../content";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
 import {
   Alert,
@@ -22,12 +22,14 @@ import {
 } from "@/pages/form/zod";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
+import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
   proposedEffectiveDate: z.date(),
   attachments: z.object({
-    b4WaiverApplication: zAttachmentRequired({ min: 1 }),
+    bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
+    bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
@@ -39,9 +41,14 @@ type Waiver1915BCapitatedAmmendment = z.infer<typeof formSchema>;
 // second argument is used when mapping over for the label
 const attachmentList = [
   {
-    name: "b4WaiverApplication",
+    name: "bCapWaiverApplication",
+    label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+    required: true,
+  },
+  {
+    name: "bCapCostSpreadsheets",
     label:
-      "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
+      "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
     required: true,
   },
   {
@@ -64,11 +71,8 @@ export const Capitated1915BWaiverInitial = () => {
     formData
   ) => {
     try {
-      // AK-0260.R04.02
       await submit<Waiver1915BCapitatedAmmendment>({
-        data: {
-          ...formData,
-        },
+        data: formData,
         endpoint: "/submit",
         user,
         authority: PlanType["1915b"],
@@ -109,10 +113,19 @@ export const Capitated1915BWaiverInitial = () => {
               name="id"
               render={({ field }) => (
                 <Inputs.FormItem>
-                  <Inputs.FormLabel className="text-lg font-bold mr-1">
-                    Initial Waiver Number
-                  </Inputs.FormLabel>
-                  <Inputs.RequiredIndicator />
+                  <div className="flex gap-4">
+                    <Inputs.FormLabel className="text-lg font-bold mr-1">
+                      Initial Waiver Number <Inputs.RequiredIndicator />
+                    </Inputs.FormLabel>
+                    <Link
+                      to={"/faq/#initial-waiver-id-format"}
+                      target={FAQ_TAB}
+                      rel="noopener noreferrer"
+                      className="text-blue-700 hover:underline"
+                    >
+                      What is my Initial Waiver Number?
+                    </Link>
+                  </div>
                   <p className="text-gray-500 font-light">
                     Must be a new initial number with the format of
                     SS-####.R##.## or SS-#####.R##.##.
@@ -137,7 +150,8 @@ export const Capitated1915BWaiverInitial = () => {
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of 1915(b) Initial Waiver
+                    Proposed Effective Date of 1915(b) Initial Waiver{" "}
+                    <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.DatePicker
@@ -162,7 +176,10 @@ export const Capitated1915BWaiverInitial = () => {
                 name={`attachments.${name}`}
                 render={({ field }) => (
                   <Inputs.FormItem>
-                    <Inputs.FormLabel>{label}</Inputs.FormLabel>
+                    <Inputs.FormLabel>
+                      {label}
+                      {required ? <Inputs.RequiredIndicator /> : null}
+                    </Inputs.FormLabel>
                     <Inputs.Upload
                       files={field?.value ?? []}
                       setFiles={field.onChange}

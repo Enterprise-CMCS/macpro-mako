@@ -101,7 +101,7 @@ export const Contracting1915BWaiverInitial = () => {
       <Inputs.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col"
+          className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
           <SectionCard title="1915(b) Waiver Amendment Details">
             <Content.FormIntroText />

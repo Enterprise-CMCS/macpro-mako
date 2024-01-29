@@ -95,7 +95,7 @@ export const MedicaidForm = () => {
       <Inputs.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col"
+          className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
           <SectionCard title="Medicaid SPA Details">
             <Content.FormIntroText />

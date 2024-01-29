@@ -58,7 +58,7 @@ export const BreadCrumb = ({
   children,
 }: React.PropsWithChildren<BreadCrumbProps>) => {
   return (
-    <li className="flex items-center">
+    <li className="flex items-center text-sm">
       {showSeperator && <span>{seperator}</span>}
 
       {active && (
