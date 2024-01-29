@@ -13,19 +13,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/Accordion";
-
-import { FilterableSelect } from "./FilterableSelect";
-import { FilterableDateRange } from "./FilterableDateRange";
-import { FilterableMultiCheck } from "./FilterableMultiCheck";
-import { useFilterDrawer } from "./useFilterDrawer";
 import { Button } from "@/components/Inputs";
-import { FilterableBoolean } from "./FilterableBoolean";
+
+import * as F from "./Filterable";
+import { useFilterDrawer } from "./hooks";
 
 export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
 
   return (
-    <Sheet open={hook.drawerOpen} onOpenChange={hook.setDrawerState}>
+    <Sheet
+      open={hook.drawer.drawerOpen}
+      onOpenChange={hook.drawer.setDrawerState}
+    >
       <SheetTrigger asChild>
         <Button
           variant="outline"
@@ -59,21 +59,21 @@ export const OsFilterDrawer = () => {
               </AccordionTrigger>
               <AccordionContent>
                 {PK.component === "multiSelect" && (
-                  <FilterableSelect
+                  <F.FilterableSelect
                     value={hook.filters[PK.field]?.value as string[]}
                     onChange={hook.onFilterChange(PK.field)}
                     options={hook.aggs?.[PK.field]}
                   />
                 )}
                 {PK.component === "multiCheck" && (
-                  <FilterableMultiCheck
+                  <F.FilterableMultiCheck
                     value={hook.filters[PK.field]?.value as string[]}
                     onChange={hook.onFilterChange(PK.field)}
                     options={hook.aggs?.[PK.field]}
                   />
                 )}
                 {PK.component === "dateRange" && (
-                  <FilterableDateRange
+                  <F.FilterableDateRange
                     value={
                       hook.filters[PK.field]?.value as opensearch.RangeValue
                     }
@@ -82,7 +82,7 @@ export const OsFilterDrawer = () => {
                 )}
                 {PK.component === "boolean" && (
                   <>
-                    <FilterableBoolean
+                    <F.FilterableBoolean
                       value={hook.filters[PK.field]?.value as boolean}
                       onChange={hook.onFilterChange(PK.field)}
                     />

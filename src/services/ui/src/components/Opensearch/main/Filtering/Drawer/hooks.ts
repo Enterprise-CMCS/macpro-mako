@@ -1,20 +1,77 @@
 import { useState, useEffect, useMemo } from "react";
+import { useGetUser } from "@/api/useGetUser";
+import { UserRoles } from "shared-types";
 
-import * as Consts from "./consts";
-import { useOsAggregate, useOsUrl } from "../useOpensearch";
+import * as C from "./consts";
+import { useOsAggregate, useOsUrl } from "../../useOpensearch";
 import { opensearch } from "shared-types";
 import { useLabelMapping } from "@/hooks";
-import { useFilterDrawerContext } from "./FilterProvider";
-import { useGetUser } from "@/api/useGetUser";
+import { useFilterDrawerContext } from "../FilterProvider";
 import { checkMultiFilter } from "@/components/Opensearch";
 
-export const useFilterDrawer = () => {
-  const { drawerOpen, setDrawerState } = useFilterDrawerContext();
+type FilterGroup = Partial<
+  Record<opensearch.main.Field, C.DrawerFilterableGroup>
+>;
+
+export const useFilterState = () => {
   const { data: user } = useGetUser();
   const url = useOsUrl();
-  const [filters, setFilters] = useState(
-    Consts.FILTER_GROUPS(user, url.state.tab)
-  );
+
+  const isCms =
+    !!user?.isCms &&
+    !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK);
+
+  const filters: FilterGroup = (() => {
+    // ------------------------ SPAS ------------------------ //
+    if (url.state.tab === "spas") {
+      return {
+        [C.SELECT_STATE.field]: C.SELECT_STATE,
+        [C.CHECK_PLANTYPE.field]: C.CHECK_PLANTYPE,
+        ...(() => {
+          if (isCms) return { [C.CHECK_CMSSTATUS.field]: C.CHECK_CMSSTATUS };
+          return { [C.CHECK_STATESTATUS.field]: C.CHECK_STATESTATUS };
+        })(),
+        ...(isCms && {
+          [C.BOOL_INITIALINTAKENEEDED.field]: C.BOOL_INITIALINTAKENEEDED,
+        }),
+        [C.DATE_SUBMISSION.field]: C.DATE_SUBMISSION,
+        [C.DATE_RAIRECEIVED.field]: C.DATE_RAIRECEIVED,
+        [C.SELECT_CPOC.field]: C.SELECT_CPOC,
+        [C.SELECT_ORIGIN.field]: C.SELECT_ORIGIN,
+      };
+    }
+
+    // ------------------------ WAIVERS ------------------------ //
+    if (url.state.tab === "waivers") {
+      return {
+        [C.SELECT_STATE.field]: C.SELECT_STATE,
+        [C.CHECK_PLANTYPE.field]: C.CHECK_PLANTYPE,
+        [C.CHECK_ACTIONTYPE.field]: C.CHECK_ACTIONTYPE,
+        ...(() => {
+          if (isCms) return { [C.CHECK_CMSSTATUS.field]: C.CHECK_CMSSTATUS };
+          return { [C.CHECK_STATESTATUS.field]: C.CHECK_STATESTATUS };
+        })(),
+        ...(isCms && {
+          [C.BOOL_INITIALINTAKENEEDED.field]: C.BOOL_INITIALINTAKENEEDED,
+        }),
+        [C.DATE_SUBMISSION.field]: C.DATE_SUBMISSION,
+        [C.DATE_RAIRECEIVED.field]: C.DATE_RAIRECEIVED,
+        [C.SELECT_CPOC.field]: C.SELECT_CPOC,
+        [C.SELECT_ORIGIN.field]: C.SELECT_ORIGIN,
+      };
+    }
+
+    return {};
+  })();
+
+  return useState(filters);
+};
+
+export const useFilterDrawer = () => {
+  const url = useOsUrl();
+  const drawer = useFilterDrawerContext();
+  const [filters, setFilters] = useFilterState();
+
   const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const labelMap = useLabelMapping();
   const _aggs = useOsAggregate();
@@ -67,8 +124,8 @@ export const useFilterDrawer = () => {
 
   // update initial filter state + accordion default open items
   useEffect(() => {
-    if (drawerOpen) return;
-    const updateAccordions = [] as any[];
+    if (!drawer.drawerOpen) return;
+    const updateAccordions = [...accordionValues] as any[];
 
     setFilters((s) => {
       return Object.entries(s).reduce((STATE, [KEY, VAL]) => {
@@ -89,7 +146,7 @@ export const useFilterDrawer = () => {
       }, {} as any);
     });
     setAccordionValues(updateAccordions);
-  }, [url.state.filters, drawerOpen]);
+  }, [url.state.filters, drawer.drawerOpen]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce((STATE, [KEY, AGG]) => {
@@ -105,13 +162,12 @@ export const useFilterDrawer = () => {
 
   return {
     aggs,
-    drawerOpen,
+    drawer,
     accordionValues,
     filters,
     filtersApplied,
     onFilterReset,
     onFilterChange,
-    setDrawerState,
     onAccordionChange,
   };
 };

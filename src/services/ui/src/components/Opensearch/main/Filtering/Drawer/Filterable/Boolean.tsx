@@ -18,18 +18,8 @@ export const FilterableBoolean: FC<{
 
   return (
     <div className="flex flex-col items-start">
-      <Checkbox
-        checked={yes}
-        defaultChecked={yes}
-        onCheckedChange={onYes}
-        label="Yes"
-      />
-      <Checkbox
-        checked={no}
-        defaultChecked={no}
-        onCheckedChange={onNo}
-        label="No"
-      />
+      <Checkbox checked={yes} onCheckedChange={onYes} label="Yes" />
+      <Checkbox checked={no} onCheckedChange={onNo} label="No" />
     </div>
   );
 };

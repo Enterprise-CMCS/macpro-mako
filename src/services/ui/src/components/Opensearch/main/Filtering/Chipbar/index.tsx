@@ -1,20 +1,42 @@
-import { type FC, useCallback, Fragment } from "react";
+import { type FC, useCallback } from "react";
 
 import { Chip } from "@/components/Chip";
 import { useOsUrl } from "@/components/Opensearch/main";
 import { opensearch } from "shared-types";
-import { useFilterDrawerContext } from "./FilterProvider";
+import { useFilterDrawerContext } from "../FilterProvider";
 import { checkMultiFilter } from "@/components/Opensearch";
 import { useLabelMapping } from "@/hooks";
 
-interface RenderProp {
+export interface RenderProp {
   filter: opensearch.main.Filterable;
   index: number;
   openDrawer: () => void;
   clearFilter: (filter: opensearch.main.Filterable, valIndex?: number) => void;
 }
 
-const ChipDate: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
+export const ChipBool: FC<RenderProp> = ({
+  filter,
+  openDrawer,
+  clearFilter,
+}) => {
+  const value = filter.value as opensearch.RangeValue;
+  return (
+    <Chip
+      onChipClick={openDrawer}
+      onIconClick={() => {
+        clearFilter(filter);
+      }}
+    >
+      {filter?.label}: <strong>{value ? "Yes" : "No"}</strong>
+    </Chip>
+  );
+};
+
+export const ChipDate: FC<RenderProp> = ({
+  filter,
+  openDrawer,
+  clearFilter,
+}) => {
   const value = filter.value as opensearch.RangeValue;
   return (
     <Chip
@@ -32,22 +54,11 @@ const ChipDate: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
   );
 };
 
-const ChipBool: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
-  const value = filter.value as opensearch.RangeValue;
-  return (
-    <Chip
-      onChipClick={openDrawer}
-      onIconClick={() => {
-        clearFilter(filter);
-      }}
-    >
-      {filter?.label}: <strong>{value ? "Yes" : "No"}</strong>
-    </Chip>
-  );
-};
-
-// array value chips
-const ChipTerms: FC<RenderProp> = ({ filter, clearFilter, openDrawer }) => {
+export const ChipTerms: FC<RenderProp> = ({
+  filter,
+  clearFilter,
+  openDrawer,
+}) => {
   const labelMap = useLabelMapping();
 
   if (!Array.isArray(filter.value)) return null;
