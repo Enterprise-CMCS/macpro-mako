@@ -17,7 +17,7 @@ export const SpasList = () => {
   if (context.error) return <ErrorAlert error={context.error} />;
 
   return (
-    <section className="flex flex-col h-[calc(100vh-230px)]">
+    <section className="flex flex-col h-[100vh]">
       <OsFiltering />
       <OsTable columns={columns} />
       <Pagination
