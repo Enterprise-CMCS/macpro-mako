@@ -111,7 +111,7 @@ export const Contracting1915BWaiverInitial = () => {
               render={({ field }) => (
                 <Inputs.FormItem>
                   <Inputs.FormLabel className="text-lg font-bold mr-1">
-                    Initial Waiver Number to Amend
+                    Initial Waiver Number
                   </Inputs.FormLabel>
                   <Inputs.RequiredIndicator />
                   <p className="text-gray-500 font-light">
@@ -197,7 +197,7 @@ export const Contracting1915BWaiverInitial = () => {
           </SectionCard>
           <Content.PreSubmissionMessage />
           {Object.keys(form.formState.errors).length !== 0 ? (
-            <Alert className="mb-6 w-5/6" variant="destructive">
+            <Alert className="mb-6 " variant="destructive">
               Missing or malformed information. Please see errors above.
             </Alert>
           ) : null}
@@ -206,7 +206,7 @@ export const Contracting1915BWaiverInitial = () => {
               <LoadingSpinner />
             </div>
           ) : null}
-          <div className="flex gap-2 justify-end w-5/6">
+          <div className="flex gap-2 justify-end ">
             <Inputs.Button
               disabled={form.formState.isSubmitting}
               type="submit"

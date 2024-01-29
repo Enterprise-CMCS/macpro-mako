@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components/Inputs";
 import * as Content from "../../content";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
 import {
   Alert,
@@ -15,30 +15,23 @@ import {
 import { submit } from "@/api/submissionService";
 import { PlanType } from "shared-types";
 import {
+  zAdditionalInfo,
   zAttachmentOptional,
   zAttachmentRequired,
-  zSpaIdSchema,
+  zInitialWaiverNumberSchema,
 } from "@/pages/form/zod";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
-import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
-  id: z.string(),
-  additionalInformation: z.string().max(4000).optional(),
+  id: zInitialWaiverNumberSchema,
+  proposedEffectiveDate: z.date(),
   attachments: z.object({
-    comprehensiveWaiverAppPre1915B: zAttachmentRequired({
-      min: 1,
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
-    }),
-    comprehensiveWaiverCostEffectSpreadSheets1915B: zAttachmentRequired({
-      min: 1,
-    }),
+    b4WaiverApplication: zAttachmentRequired({ min: 1 }),
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
-  proposedEffectiveDate: z.date(),
+  additionalInformation: zAdditionalInfo,
 });
 type Waiver1915BCapitatedAmmendment = z.infer<typeof formSchema>;
 
@@ -46,19 +39,14 @@ type Waiver1915BCapitatedAmmendment = z.infer<typeof formSchema>;
 // second argument is used when mapping over for the label
 const attachmentList = [
   {
-    name: "comprehensiveWaiverAppPre1915B",
-    label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+    name: "b4WaiverApplication",
+    label:
+      "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
     required: true,
   },
   {
-    name: "comprehensiveWaiverCostEffectSpreadSheets1915B",
-    label:
-      "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
-    required: false,
-  },
-  {
     name: "tribalConsultation",
-    label: "Tribal Consulation",
+    label: "Tribal Consultation",
     required: false,
   },
   {
@@ -101,17 +89,28 @@ export const Capitated1915BWaiverInitial = () => {
       <Inputs.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col"
+          className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
-          <SectionCard title="1915(b) Waiver Amendment Details">
+          <h1 className="text-2xl font-semibold mt-4 mb-2">
+            1915(b) Initial Waiver Submission
+          </h1>
+          <SectionCard title="Initial Waiver Details">
             <Content.FormIntroText />
+            <div className="flex flex-col">
+              <Inputs.FormLabel className="font-semibold">
+                Waiver Authority
+              </Inputs.FormLabel>
+              <span className="text-lg font-thin">
+                All other 1915(b) Waivers
+              </span>
+            </div>
             <Inputs.FormField
               control={form.control}
               name="id"
               render={({ field }) => (
                 <Inputs.FormItem>
                   <Inputs.FormLabel className="text-lg font-bold mr-1">
-                    Initial Waiver Number to Amend
+                    Initial Waiver Number
                   </Inputs.FormLabel>
                   <Inputs.RequiredIndicator />
                   <p className="text-gray-500 font-light">
@@ -197,7 +196,7 @@ export const Capitated1915BWaiverInitial = () => {
           </SectionCard>
           <Content.PreSubmissionMessage />
           {Object.keys(form.formState.errors).length !== 0 ? (
-            <Alert className="mb-6 w-5/6" variant="destructive">
+            <Alert className="mb-6" variant="destructive">
               Missing or malformed information. Please see errors above.
             </Alert>
           ) : null}
@@ -206,7 +205,7 @@ export const Capitated1915BWaiverInitial = () => {
               <LoadingSpinner />
             </div>
           ) : null}
-          <div className="flex gap-2 justify-end w-5/6">
+          <div className="flex gap-2 justify-end">
             <Inputs.Button
               disabled={form.formState.isSubmitting}
               type="submit"

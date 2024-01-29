@@ -37,7 +37,7 @@ export const mapSubmissionCrumb = (path: Route) => {
     case "/new-submission/waiver/b/contracting/ammendment/create":
       return "Ammend a 1915(b) Waiver";
     case "/new-submission/waiver/b/contracting/initial/create":
-      return "Renew a 1915(b) Waiver";
+      return "1915(b) Initial Waiver Submission";
     default:
       return BLANK_VALUE;
   }

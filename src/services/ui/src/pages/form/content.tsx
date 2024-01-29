@@ -79,7 +79,7 @@ export const AttachmentsSizeTypesDesc = ({
 );
 
 export const PreSubmissionMessage = () => (
-  <Alert variant={"infoBlock"} className="my-2 w-5/6 flex-row text-sm">
+  <Alert variant={"infoBlock"} className="my-2 flex-row text-sm">
     <Info />
     <p className="ml-2">
       Once you submit this form, a confirmation email is sent to you and to CMS.
