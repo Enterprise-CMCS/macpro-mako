@@ -65,9 +65,11 @@ export const useFilterExportGroups = () => {
           ? " (Withdraw Formal RAI Response - Enabled)"
           : "";
 
-        const subStatusInitialIntake = data.initialIntakeNeeded
-          ? " (Initial Intake Needed)"
-          : "";
+        const subStatusInitialIntake = (() => {
+          if (!user?.isCms) return "";
+          if (!data.initialIntakeNeeded) return "";
+          return " (Initial Intake Needed)";
+        })();
 
         return `${status}${subStatusRAI}${subStatusInitialIntake}`;
       },
