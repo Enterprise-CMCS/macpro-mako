@@ -15,50 +15,39 @@ import {
 import { submit } from "@/api/submissionService";
 import { PlanType } from "shared-types";
 import {
+  zAdditionalInfo,
   zAttachmentOptional,
   zAttachmentRequired,
-  zSpaIdSchema,
+  zInitialWaiverNumberSchema,
 } from "@/pages/form/zod";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
-  id: z.string(),
-  additionalInformation: z.string().max(4000).optional(),
+  id: zInitialWaiverNumberSchema,
+  proposedEffectiveDate: z.date(),
   attachments: z.object({
-    comprehensiveWaiverAppPre1915B: zAttachmentRequired({
-      min: 1,
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
-    }),
-    comprehensiveWaiverCostEffectSpreadSheets1915B: zAttachmentRequired({
-      min: 1,
-    }),
+    b4WaiverApplication: zAttachmentRequired({ min: 1 }),
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
-  proposedEffectiveDate: z.date(),
+  additionalInformation: zAdditionalInfo,
 });
-type Waiver1915BContractingAmmendment = z.infer<typeof formSchema>;
+type Waiver1915BContractingInitial = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
   {
-    name: "comprehensiveWaiverAppPre1915B",
-    label: "1915(b) Comprehensive (Contracting) Waiver Application Pre-print",
+    name: "b4WaiverApplication",
+    label:
+      "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
     required: true,
   },
   {
-    name: "comprehensiveWaiverCostEffectSpreadSheets1915B",
-    label:
-      "1915(b) Comprehensive (Contracting) Waiver Cost Effectiveness Spreadsheets",
-    required: false,
-  },
-  {
     name: "tribalConsultation",
-    label: "Tribal Consulation",
+    label: "Tribal Consultation",
     required: false,
   },
   {
@@ -72,12 +61,12 @@ export const Contracting1915BWaiverInitial = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const handleSubmit: SubmitHandler<Waiver1915BContractingAmmendment> = async (
+  const handleSubmit: SubmitHandler<Waiver1915BContractingInitial> = async (
     formData
   ) => {
     try {
       // AK-0260.R04.02
-      await submit<Waiver1915BContractingAmmendment>({
+      await submit<Waiver1915BContractingInitial>({
         data: {
           ...formData,
         },
@@ -91,7 +80,7 @@ export const Contracting1915BWaiverInitial = () => {
     }
   };
 
-  const form = useForm<Waiver1915BContractingAmmendment>({
+  const form = useForm<Waiver1915BContractingInitial>({
     resolver: zodResolver(formSchema),
   });
 
@@ -103,20 +92,41 @@ export const Contracting1915BWaiverInitial = () => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
-          <SectionCard title="1915(b) Waiver Amendment Details">
+          <h1 className="text-2xl font-semibold mt-4 mb-2">
+            1915(b) Initial Waiver Submission
+          </h1>
+          <SectionCard title="Initial Waiver Details">
             <Content.FormIntroText />
+            <div className="flex flex-col">
+              <Inputs.FormLabel className="font-semibold">
+                Waiver Authority
+              </Inputs.FormLabel>
+              <span className="text-lg font-thin">
+                1915(b)(4) FS Selective Contracting waviers
+              </span>
+            </div>
             <Inputs.FormField
               control={form.control}
               name="id"
               render={({ field }) => (
                 <Inputs.FormItem>
-                  <Inputs.FormLabel className="text-lg font-bold mr-1">
-                    Initial Waiver Number
-                  </Inputs.FormLabel>
-                  <Inputs.RequiredIndicator />
+                  <div className="flex gap-4">
+                    <Inputs.FormLabel className="text-lg font-bold mr-1">
+                      Initial Waiver Number <Inputs.RequiredIndicator />
+                    </Inputs.FormLabel>
+                    <Link
+                      to={"/faq/#initial-waiver-id-format"}
+                      target={FAQ_TAB}
+                      rel="noopener noreferrer"
+                      className="text-blue-700 hover:underline"
+                    >
+                      What is my Initial Waiver Number?
+                    </Link>
+                  </div>
+
                   <p className="text-gray-500 font-light">
                     Must be a new initial number with the format of
-                    SS-####.R##.## or SS-#####.R##.##.
+                    SS-####.R00.00 or SS-#####.R00.00
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -138,7 +148,8 @@ export const Contracting1915BWaiverInitial = () => {
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of 1915(b) Initial Waiver
+                    Proposed Effective Date of 1915(b) Initial Waiver{" "}
+                    <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.DatePicker
@@ -163,7 +174,9 @@ export const Contracting1915BWaiverInitial = () => {
                 name={`attachments.${name}`}
                 render={({ field }) => (
                   <Inputs.FormItem>
-                    <Inputs.FormLabel>{label}</Inputs.FormLabel>
+                    <Inputs.FormLabel>
+                      {label} {required ? <Inputs.RequiredIndicator /> : null}
+                    </Inputs.FormLabel>
                     <Inputs.Upload
                       files={field?.value ?? []}
                       setFiles={field.onChange}
