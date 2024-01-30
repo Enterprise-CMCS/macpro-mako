@@ -25,7 +25,7 @@ import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
-  waiverNumber: zInitialWaiverNumberSchema,
+  id: zInitialWaiverNumberSchema,
   proposedEffectiveDate: z.date(),
   attachments: z.object({
     bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
@@ -111,7 +111,7 @@ export const Capitated1915BWaiverInitial = () => {
             </div>
             <Inputs.FormField
               control={form.control}
-              name="waiverNumber"
+              name="id"
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
