@@ -41,7 +41,7 @@ const formSchema = z.object({
   }),
   proposedEffectiveDate: z.date(),
 });
-type Waiver1915BContractingAmmendment = z.infer<typeof formSchema>;
+type Waiver1915BContractingAmendment = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
@@ -73,12 +73,12 @@ export const Contracting1915BWaiverRenewal = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const handleSubmit: SubmitHandler<Waiver1915BContractingAmmendment> = async (
+  const handleSubmit: SubmitHandler<Waiver1915BContractingAmendment> = async (
     formData
   ) => {
     try {
       // AK-0260.R04.02
-      await submit<Waiver1915BContractingAmmendment>({
+      await submit<Waiver1915BContractingAmendment>({
         data: {
           ...formData,
         },
@@ -92,7 +92,7 @@ export const Contracting1915BWaiverRenewal = () => {
     }
   };
 
-  const form = useForm<Waiver1915BContractingAmmendment>({
+  const form = useForm<Waiver1915BContractingAmendment>({
     resolver: zodResolver(formSchema),
   });
 
