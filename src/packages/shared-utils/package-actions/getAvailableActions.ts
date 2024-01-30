@@ -11,7 +11,12 @@ export const getAvailableActions = (
   result: opensearch.main.Document
 ) => {
   const checks = PackageCheck(result);
-  return checks.isSpa
-    ? rules.filter((r) => r.check(checks, user)).map((r) => r.action)
-    : [];
+  return [
+    ...(checks.isSpa
+      ? rules.filter((r) => r.check(checks, user)).map((r) => r.action)
+      : []),
+    ...(checks.isWaiver
+      ? rules.filter((r) => r.check(checks, user)).map((r) => r.action)
+      : []),
+  ];
 };
