@@ -95,12 +95,12 @@ export const zAmendmentOriginalWaiverNumberSchema = z
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
-  })
-  // This should already exist
-  .refine(async (value) => !idIsUnique(value), {
-    message:
-      "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Waiver Amendment Number and try entering it again",
   });
+// // This should already exist
+// .refine(async (value) => !idIsUnique(value), {
+//   message:
+//     "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Waiver Amendment Number and try entering it again",
+// });
 export const zRenewalOriginalWaiverNumberSchema = z
   .string()
   .regex(

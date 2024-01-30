@@ -26,7 +26,7 @@ import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,
-  amendmentWaiverNumber: zAmendmentWaiverNumberSchema,
+  id: zAmendmentWaiverNumberSchema,
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
     bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
@@ -136,7 +136,7 @@ export const Capitated1915BWaiverAmendment = () => {
             />
             <Inputs.FormField
               control={form.control}
-              name="amendmentWaiverNumber"
+              name="id"
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
