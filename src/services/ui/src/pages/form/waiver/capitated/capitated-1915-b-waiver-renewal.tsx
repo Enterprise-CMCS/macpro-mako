@@ -25,35 +25,34 @@ import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
-const formSchema = z
-  .object({
-    waiverNumber: zRenewalOriginalWaiverNumberSchema,
-    renewalWaiverNumber: zRenewalWaiverNumberSchema,
-    proposedEffectiveDate: z.date(),
-    attachments: z.object({
-      bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
-      bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
-      bCapIndependentAssessment: zAttachmentOptional,
-      tribalConsultation: zAttachmentOptional,
-      other: zAttachmentOptional,
-    }),
-    additionalInformation: zAdditionalInfo,
-  })
-  .superRefine((data, ctx) => {
-    const renewalIteration = data.waiverNumber.split(".")[1]; // R## segment of Waiver Number
-    if (
-      ["R00", "R01"].includes(renewalIteration) &&
-      data.attachments.bCapIndependentAssessment === undefined
-    ) {
-      ctx.addIssue({
-        message:
-          "An Independent Assessment is required for the first two renewals.",
-        code: z.ZodIssueCode.custom,
-        fatal: true,
-      });
-    }
-    return z.NEVER;
-  });
+const formSchema = z.object({
+  waiverNumber: zRenewalOriginalWaiverNumberSchema,
+  id: zRenewalWaiverNumberSchema,
+  proposedEffectiveDate: z.date(),
+  attachments: z.object({
+    bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
+    bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
+    bCapIndependentAssessment: zAttachmentOptional,
+    tribalConsultation: zAttachmentOptional,
+    other: zAttachmentOptional,
+  }),
+  additionalInformation: zAdditionalInfo,
+});
+// .superRefine((data, ctx) => {
+//   const renewalIteration = data.waiverNumber.split(".")[1]; // R## segment of Waiver Number
+//   if (
+//     ["R00", "R01"].includes(renewalIteration) &&
+//     data.attachments.bCapIndependentAssessment === undefined
+//   ) {
+//     ctx.addIssue({
+//       message:
+//         "An Independent Assessment is required for the first two renewals.",
+//       code: z.ZodIssueCode.custom,
+//       fatal: true,
+//     });
+//   }
+//   return z.NEVER;
+// });
 type Waiver1915BCapitatedRenewal = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
@@ -135,11 +134,14 @@ export const Capitated1915BWaiverRenewal = () => {
                 <Inputs.FormItem>
                   <div className="flex gap-4">
                     <Inputs.FormLabel className="text-lg font-bold">
-                      Existing Waiver Number to Renew <Inputs.RequiredIndicator />
+                      Existing Waiver Number to Renew{" "}
+                      <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                   </div>
                   <p className="text-gray-500 font-light">
-                    Enter the existing waiver number in the format it was approved, using a dash after the two character state appreviation.
+                    Enter the existing waiver number in the format it was
+                    approved, using a dash after the two character state
+                    appreviation.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -157,7 +159,7 @@ export const Capitated1915BWaiverRenewal = () => {
             />
             <Inputs.FormField
               control={form.control}
-              name="renewalWaiverNumber"
+              name="id"
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
@@ -175,8 +177,8 @@ export const Capitated1915BWaiverRenewal = () => {
                   </div>
                   <p className="text-gray-500 font-light">
                     The Waiver Number must be in the format of SS-####.R##.## or
-                    SS-#####.R##.##. For renewals, the "R##" starts
-                    with ‘R01’ and ascends.
+                    SS-#####.R##.##. For renewals, the &quotR##&quot starts with
+                    ‘R01’ and ascends.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -198,7 +200,8 @@ export const Capitated1915BWaiverRenewal = () => {
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of 1915(b) Waiver Renewal <Inputs.RequiredIndicator />
+                    Proposed Effective Date of 1915(b) Waiver Renewal{" "}
+                    <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.DatePicker
@@ -224,8 +227,8 @@ export const Capitated1915BWaiverRenewal = () => {
                 render={({ field }) => (
                   <Inputs.FormItem>
                     <Inputs.FormLabel>
-                    {label}
-                    {required ? <Inputs.RequiredIndicator /> : null}
+                      {label}
+                      {required ? <Inputs.RequiredIndicator /> : null}
                     </Inputs.FormLabel>
                     <Inputs.Upload
                       files={field?.value ?? []}

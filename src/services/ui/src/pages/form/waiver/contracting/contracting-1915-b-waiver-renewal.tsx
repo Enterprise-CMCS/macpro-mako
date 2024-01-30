@@ -25,35 +25,34 @@ import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
-const formSchema = z
-  .object({
-    waiverNumber: zRenewalOriginalWaiverNumberSchema,
-    renewalWaiverNumber: zRenewalWaiverNumberSchema,
-    proposedEffectiveDate: z.date(),
-    attachments: z.object({
-      bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
-      bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
-      bCapIndependentAssessment: zAttachmentOptional,
-      tribalConsultation: zAttachmentOptional,
-      other: zAttachmentOptional,
-    }),
-    additionalInformation: zAdditionalInfo,
-  })
-  .superRefine((data, ctx) => {
-    const renewalIteration = data.waiverNumber.split(".")[1]; // R## segment of Waiver Number
-    if (
-      ["R00", "R01"].includes(renewalIteration) &&
-      data.attachments.bCapIndependentAssessment === undefined
-    ) {
-      ctx.addIssue({
-        message:
-          "An Independent Assessment is required for the first two renewals.",
-        code: z.ZodIssueCode.custom,
-        fatal: true,
-      });
-    }
-    return z.NEVER;
-  });
+const formSchema = z.object({
+  waiverNumber: zRenewalOriginalWaiverNumberSchema,
+  renewalWaiverNumber: zRenewalWaiverNumberSchema,
+  proposedEffectiveDate: z.date(),
+  attachments: z.object({
+    bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
+    bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
+    bCapIndependentAssessment: zAttachmentOptional,
+    tribalConsultation: zAttachmentOptional,
+    other: zAttachmentOptional,
+  }),
+  additionalInformation: zAdditionalInfo,
+});
+// .superRefine((data, ctx) => {
+//   const renewalIteration = data.waiverNumber.split(".")[1]; // R## segment of Waiver Number
+//   if (
+//     ["R00", "R01"].includes(renewalIteration) &&
+//     data.attachments.bCapIndependentAssessment === undefined
+//   ) {
+//     ctx.addIssue({
+//       message:
+//         "An Independent Assessment is required for the first two renewals.",
+//       code: z.ZodIssueCode.custom,
+//       fatal: true,
+//     });
+//   }
+//   return z.NEVER;
+// });
 type Waiver1915BContractingRenewal = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
@@ -181,8 +180,8 @@ export const Contracting1915BWaiverRenewal = () => {
                   </div>
                   <p className="text-gray-500 font-light">
                     The Waiver Number must be in the format of SS-####.R##.## or
-                    SS-#####.R##.##. For renewals, the "R##" starts with ‘R01’
-                    and ascends.
+                    SS-#####.R##.##. For renewals, the &quotR##&quot starts with
+                    ‘R01’ and ascends.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
