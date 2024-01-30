@@ -18,6 +18,7 @@ const config = {
 import { Kafka, Message } from "kafkajs";
 import { PlanType, onemacSchema, transformOnemac } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
+import { z } from "zod";
 
 const kafka = new Kafka({
   clientId: "submit",
@@ -33,7 +34,22 @@ const kafka = new Kafka({
 
 const producer = kafka.producer();
 
+const initialWaiverSubmissionSchema = z.object({
+  waiverNumber: z.string(),
+  state: z.string(),
+  authority: z.nativeEnum(PlanType),
+  proposedEffectiveDate: z.number(),
+});
+
+const initialSpaSchema = z.object({
+  waiverNumber: z.string(),
+  state: z.string(),
+  authority: z.nativeEnum(PlanType),
+  proposedEffectiveDate: z.number(),
+});
+
 export const submit = async (event: APIGatewayEvent) => {
+  console.log("testing");
   try {
     if (!event.body) {
       return response({
@@ -74,7 +90,9 @@ export const submit = async (event: APIGatewayEvent) => {
       // [PlanType["1915c"]]: "1915 (c) Waiver",
     };
 
-    const spaQuery = `
+    console.log("body is here", JSON.stringify(body));
+
+    const spaQuery = (body: any) => `
       Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
         values ('${body.id}'
           ,'${body.state}'
@@ -102,9 +120,11 @@ export const submit = async (event: APIGatewayEvent) => {
     // INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (id_number, Service_SubType_ID) VALUES ('${body.id}', (Select SPA_Type_ID from dbo.Type where SPA_Type_Name = '1915 (b) (1)'))
     // `;
 
-    const statePlanWaiverQuery = `
+    const statePlanWaiverQuery = (
+      body: z.infer<typeof initialWaiverSubmissionSchema>
+    ) => `
     Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
-      values ('${body.id}'
+      values ('${body.waiverNumber}'
         ,'${body.state}'
         ,(Select Region_ID from SEA.dbo.States where State_Code = '${body.state}')
         ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${body.authority}')
@@ -116,17 +136,43 @@ export const submit = async (event: APIGatewayEvent) => {
         )
   `;
 
-    const queries: Record<PlanType, string[]> = {
-      [PlanType.CHIP_SPA]: [spaQuery],
-      [PlanType.MED_SPA]: [spaQuery],
-      [PlanType["1915b"]]: [statePlanWaiverQuery],
-      [PlanType["1915c"]]: [statePlanWaiverQuery],
-      [PlanType.WAIVER]: [statePlanWaiverQuery],
+    const queries: Record<
+      PlanType,
+      { query: (body: any) => string; schema: z.AnyZodObject }[]
+    > = {
+      [PlanType.CHIP_SPA]: [{ query: spaQuery, schema: initialSpaSchema }],
+      [PlanType.MED_SPA]: [{ query: spaQuery, schema: initialSpaSchema }],
+      [PlanType["1915b"]]: [
+        { query: statePlanWaiverQuery, schema: initialWaiverSubmissionSchema },
+      ],
+      [PlanType["1915c"]]: [],
+      [PlanType.WAIVER]: [
+        { query: statePlanWaiverQuery, schema: initialWaiverSubmissionSchema },
+      ],
     };
+
+    console.log("two things", body.authority, queries);
 
     for (const query of queries[body.authority as PlanType]) {
       try {
-        const result = await sql.query(query);
+        const result = query.schema.safeParse(body);
+
+        if (result.success === true) {
+          const queryResult = await sql.query(query.query(result.data));
+
+          console.log("the output of the query is the following", queryResult);
+        } else {
+          console.error(
+            "failed to parse the payload for submission",
+            result.error
+          );
+          return response({
+            statusCode: 500,
+            body: {
+              message: "an error occured",
+            },
+          });
+        }
 
         console.log(result);
       } catch (error: unknown) {
@@ -148,7 +194,7 @@ export const submit = async (event: APIGatewayEvent) => {
       console.log(eventBody);
       await produceMessage(
         process.env.topicName as string,
-        body.id,
+        body.id || body.waiverNumber,
         JSON.stringify(eventBody.data)
       );
 

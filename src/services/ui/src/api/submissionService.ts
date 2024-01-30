@@ -78,7 +78,9 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
           data.proposedEffectiveDate as Date
         ),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
-        state: (data.id as string).split("-")[0],
+        state: ((data?.id as string) || (data?.waiverNumber as string)).split(
+          "-"
+        )[0],
       };
     case buildActionUrl(Action.WITHDRAW_RAI):
       return {

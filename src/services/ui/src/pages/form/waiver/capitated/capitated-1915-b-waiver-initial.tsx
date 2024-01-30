@@ -71,6 +71,7 @@ export const Capitated1915BWaiverInitial = () => {
     formData
   ) => {
     try {
+      console.log("testing");
       await submit<Waiver1915BCapitatedAmendment>({
         data: formData,
         endpoint: "/submit",
