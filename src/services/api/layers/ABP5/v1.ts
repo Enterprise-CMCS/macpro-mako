@@ -53,6 +53,7 @@ interface SubsectionData {
   namePrefix: string;
   description?: string;
   headerSlots?: RHFSlotProps[];
+  showEHBBenchmark?: boolean;
 }
 
 function subsection({
@@ -60,6 +61,7 @@ function subsection({
   namePrefix,
   description,
   headerSlots = [],
+  showEHBBenchmark = true,
 }: SubsectionData): Section {
   return {
     title: title,
@@ -207,53 +209,57 @@ function subsection({
                   className: "w-[300px]",
                 },
               },
-              {
-                rhf: "Radio",
-                label:
-                  "Is there an EHB benchmark benefit duplicated or substituted?",
-                labelStyling: "font-bold",
-                name: `${namePrefix}_benchmark_benefit_duplicated_or_substituted`,
-                rules: { required: "* Required" },
-                props: {
-                  options: [
+              ...(showEHBBenchmark
+                ? [
                     {
-                      label: "Yes, a duplication",
-                      value: "yes_duplication",
-                      form: [
-                        {
-                          slots: [
-                            {
-                              rhf: "Input",
-                              label: "Benefit duplicated",
-                              labelStyling: "font-bold",
-                              name: "benefit_duplicated",
-                              rules: { required: "* Required" },
-                            },
-                          ],
-                        },
-                      ],
+                      rhf: "Radio",
+                      label:
+                        "Is there an EHB benchmark benefit duplicated or substituted?",
+                      labelStyling: "font-bold",
+                      name: `${namePrefix}_benchmark_benefit_duplicated_or_substituted`,
+                      rules: { required: "* Required" },
+                      props: {
+                        options: [
+                          {
+                            label: "Yes, a duplication",
+                            value: "yes_duplication",
+                            form: [
+                              {
+                                slots: [
+                                  {
+                                    rhf: "Input",
+                                    label: "Benefit duplicated",
+                                    labelStyling: "font-bold",
+                                    name: "benefit_duplicated",
+                                    rules: { required: "* Required" },
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                          {
+                            label: "Yes, a substitution",
+                            value: "yes_substitution",
+                            form: [
+                              {
+                                slots: [
+                                  {
+                                    rhf: "Input",
+                                    label: "Benefit substituted",
+                                    labelStyling: "font-bold",
+                                    name: "benefit_substituted",
+                                    rules: { required: "* Required" },
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                          { label: "No", value: "no" },
+                        ],
+                      },
                     },
-                    {
-                      label: "Yes, a substitution",
-                      value: "yes_substitution",
-                      form: [
-                        {
-                          slots: [
-                            {
-                              rhf: "Input",
-                              label: "Benefit substituted",
-                              labelStyling: "font-bold",
-                              name: "benefit_substituted",
-                              rules: { required: "* Required" },
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                    { label: "No", value: "no" },
-                  ],
-                },
-              },
+                  ]
+                : []),
             ],
           },
         ],
@@ -527,6 +533,35 @@ const ABP5: FormSchema = {
       title:
         "10. Essential health benefit: Pediatric services including oral and vision care",
       namePrefix: "pediatric",
+    }),
+    {
+      title: "Optional items",
+      form: [
+        {
+          slots: [],
+        },
+      ],
+    },
+    subsection({
+      title:
+        "11. Other covered benefits that are not essential health benefits",
+      namePrefix: "other",
+      showEHBBenchmark: false,
+    }),
+    {
+      title: "12. Other base benchmark benefits not covered",
+      subsection: true,
+      form: [
+        {
+          slots: [],
+        },
+      ],
+    },
+    subsection({
+      title:
+        "13. Additional covered benefits (this category of benefits is not applicable to the Adult group under Section 1902(a)(10)(A)(i)(VIII) of the Act)",
+      namePrefix: "additional_covered_benefits",
+      showEHBBenchmark: false,
     }),
   ],
 };
