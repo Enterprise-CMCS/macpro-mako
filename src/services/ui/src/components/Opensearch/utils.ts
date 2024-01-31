@@ -4,13 +4,14 @@ const filterMapQueryReducer = (
   state: Record<opensearch.Filterable<any>["prefix"], any[]>,
   filter: opensearch.Filterable<any>
 ) => {
-  if (!filter.value) return state;
-
+  // this was hoisted up since false is a valid "match" value
   if (filter.type === "match") {
     state[filter.prefix].push({
       match: { [filter.field]: filter.value },
     });
   }
+
+  if (!filter.value) return state;
 
   if (filter.type === "terms") {
     state[filter.prefix].push({
