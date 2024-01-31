@@ -15,51 +15,41 @@ import {
 import { submit } from "@/api/submissionService";
 import { PlanType } from "shared-types";
 import {
+  zAdditionalInfo,
   zAttachmentOptional,
   zAttachmentRequired,
-  zSpaIdSchema,
+  zInitialWaiverNumberSchema,
 } from "@/pages/form/zod";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
-  id: z.string(),
+  id: zInitialWaiverNumberSchema,
   amendedWaiverNumber: z.string(),
-  additionalInformation: z.string().max(4000).optional(),
+  proposedEffectiveDate: z.date(),
   attachments: z.object({
-    comprehensiveWaiverAppPre1915B: zAttachmentRequired({
-      min: 1,
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
-    }),
-    comprehensiveWaiverCostEffectSpreadSheets1915B: zAttachmentRequired({
-      min: 1,
-    }),
+    b4WaiverApplication: zAttachmentRequired({ min: 1 }),
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
-  proposedEffectiveDate: z.date(),
+  additionalInformation: zAdditionalInfo,
 });
+
 type Waiver1915BContractingAmendment = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
   {
-    name: "comprehensiveWaiverAppPre1915B",
-    label: "1915(b) Comprehensive (Contracting) Waiver Application Pre-print",
+    name: "b4WaiverApplication",
+    label:
+      "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
     required: true,
   },
   {
-    name: "comprehensiveWaiverCostEffectSpreadSheets1915B",
-    label:
-      "1915(b) Comprehensive (Contracting) Waiver Cost Effectiveness Spreadsheets",
-    required: false,
-  },
-  {
     name: "tribalConsultation",
-    label: "Tribal Consulation",
+    label: "Tribal Consultation",
     required: false,
   },
   {
@@ -77,11 +67,8 @@ export const Contracting1915BWaiverAmendment = () => {
     formData
   ) => {
     try {
-      // AK-0260.R04.02
       await submit<Waiver1915BContractingAmendment>({
-        data: {
-          ...formData,
-        },
+        data: formData,
         endpoint: "/submit",
         user,
         authority: PlanType["1915b"],
@@ -102,10 +89,21 @@ export const Contracting1915BWaiverAmendment = () => {
       <Inputs.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col"
+          className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
-          <SectionCard title="1915(b) Waiver Amendment Details">
+          <h1 className="text-2xl font-semibold mt-4 mb-2">
+            Amend a 1915(b) Waiver
+          </h1>
+          <SectionCard title="1915(b) Waiver Amendment Request Details">
             <Content.FormIntroText />
+            <div className="flex flex-col">
+              <Inputs.FormLabel className="font-semibold">
+                Waiver Authority
+              </Inputs.FormLabel>
+              <span className="text-lg font-thin">
+                1915(b)(4) FS Selective Contracting waviers
+              </span>
+            </div>
             <Inputs.FormField
               control={form.control}
               name="id"
@@ -113,9 +111,9 @@ export const Contracting1915BWaiverAmendment = () => {
                 <Inputs.FormItem>
                   <div className="flex gap-4">
                     <Inputs.FormLabel className="text-lg font-bold">
-                      Existing Waiver Number to Amend
+                      Existing Waiver Number to Amend{" "}
+                      <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
-                    <Inputs.RequiredIndicator />
                   </div>
                   <p className="text-gray-500 font-light">
                     Enter the existing waiver number you are seeking to amend in
@@ -143,14 +141,14 @@ export const Contracting1915BWaiverAmendment = () => {
                 <Inputs.FormItem>
                   <div className="flex gap-4">
                     <Inputs.FormLabel className="text-lg font-bold">
-                      1915(b) Waiver Amendment Number
+                      1915(b) Waiver Amendment Number{" "}
+                      <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
-                    <Inputs.RequiredIndicator />
                     <Link
-                      to="/faq/#spa-id-format"
+                      to="/faq/#waiver-amendment-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline flex items-center"
+                      className="text-blue-700 hover:underline"
                     >
                       What is my 1915(b) Waiver Amendment Number?
                     </Link>
@@ -205,7 +203,10 @@ export const Contracting1915BWaiverAmendment = () => {
                 name={`attachments.${name}`}
                 render={({ field }) => (
                   <Inputs.FormItem>
-                    <Inputs.FormLabel>{label}</Inputs.FormLabel>
+                    <Inputs.FormLabel>
+                      {label}
+                      {required ? <Inputs.RequiredIndicator /> : null}
+                    </Inputs.FormLabel>
                     <Inputs.Upload
                       files={field?.value ?? []}
                       setFiles={field.onChange}
