@@ -1,24 +1,19 @@
 import { SearchForm } from "@/components";
 import { FC } from "react";
-import { DEFAULT_FILTERS, useOsUrl } from "../useOpensearch";
-import { ExportButton } from "@/components/ExportButton";
+import { useOsUrl } from "../useOpensearch";
 import { useOsContext } from "../Provider";
-import { OsFilterDrawer } from "./FilterDrawer";
-import { getMainExportData } from "@/api";
-import { useGetUser } from "@/api/useGetUser";
-import { EXPORT_GROUPS } from "./consts";
+import { OsFilterDrawer } from "./Drawer";
+import { OsFilterExport } from "./Export";
 
 export const OsFiltering: FC<{
   disabled?: boolean;
 }> = (props) => {
   const url = useOsUrl();
   const context = useOsContext();
-  const user = useGetUser();
-  const filters = DEFAULT_FILTERS[url.state.tab]?.filters ?? [];
 
   return (
     <div>
-      <p className="mb-1 text-sm text-slate-400">
+      <p className="mb-1 text-sm">
         {"Search by Package ID, CPOC Name, or Submitter Name"}
       </p>
       <div className="flex flex-row content-between gap-2 mb-4">
@@ -34,10 +29,7 @@ export const OsFiltering: FC<{
           disabled={!!props.disabled}
         />
         <div className="flex flex-row gap-2">
-          <ExportButton
-            data={() => getMainExportData([...url.state.filters, ...filters])}
-            headers={EXPORT_GROUPS(url.state.tab, user)}
-          />
+          <OsFilterExport />
           <OsFilterDrawer />
         </div>
       </div>
@@ -45,5 +37,5 @@ export const OsFiltering: FC<{
   );
 };
 
-export * from "./FilterChips";
+export * from "./Chipbar";
 export * from "./FilterProvider";

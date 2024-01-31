@@ -75,7 +75,7 @@ export const handler = async (event: APIGatewayEvent) => {
         await issueRai(body);
         break;
       case Action.RESPOND_TO_RAI:
-        await respondToRai(body, result._source.rais);
+        await respondToRai(body, result._source);
         break;
       case Action.ENABLE_RAI_WITHDRAW:
         await toggleRaiResponseWithdraw(body, true);
@@ -84,7 +84,7 @@ export const handler = async (event: APIGatewayEvent) => {
         await toggleRaiResponseWithdraw(body, false);
         break;
       case Action.WITHDRAW_RAI:
-        await withdrawRai(body, result._source.rais);
+        await withdrawRai(body, result._source);
         break;
       default:
         throw `No ${actionType} action available`;

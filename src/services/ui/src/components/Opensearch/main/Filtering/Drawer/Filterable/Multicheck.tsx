@@ -6,7 +6,7 @@ type Props = {
   options: { label: string; value: string }[];
 };
 
-export const FilterableCheckbox = (props: Props) => {
+export const FilterableMultiCheck = (props: Props) => {
   const onClear = () => {
     props.onChange([]);
   };

@@ -1,5 +1,4 @@
 import { opensearch, PlanType, SEATOOL_STATUS } from "../shared-types";
-import { getLatestRai } from "./rai-helper";
 
 const secondClockStatuses = [
   SEATOOL_STATUS.PENDING,
@@ -21,11 +20,12 @@ const checkStatus = (seatoolStatus: string, authorized: string | string[]) =>
  * for business logic. */
 export const PackageCheck = ({
   seatoolStatus,
-  rais,
+  raiRequestedDate,
+  raiReceivedDate,
+  raiWithdrawnDate,
   raiWithdrawEnabled,
   planType,
 }: opensearch.main.Document) => {
-  const latestRai = getLatestRai(rais);
   const planChecks = {
     isSpa: checkPlan(planType, [PlanType.MED_SPA, PlanType.CHIP_SPA]),
     isWaiver: checkPlan(planType, [PlanType["1915b"]]),
@@ -43,7 +43,7 @@ export const PackageCheck = ({
     isInSecondClock:
       !planChecks.planTypeIs([PlanType.CHIP_SPA]) &&
       checkStatus(seatoolStatus, secondClockStatuses) &&
-      latestRai?.status === "received",
+      raiRequestedDate && raiReceivedDate && !raiWithdrawnDate,
     /** Is in any status except Package Withdrawn **/
     isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),
     /** Added for elasticity, but common checks should always bubble up as
@@ -53,11 +53,11 @@ export const PackageCheck = ({
   };
   const raiChecks = {
     /** Latest RAI is requested and status is Pending-RAI **/
-    hasRequestedRai: latestRai?.status === "requested",
+    hasRequestedRai: !!raiRequestedDate && !raiReceivedDate && !raiWithdrawnDate,
     /** Latest RAI is not null **/
-    hasLatestRai: latestRai !== null,
+    hasLatestRai: !!raiRequestedDate,
     /** Latest RAI has been responded to **/
-    hasRaiResponse: latestRai?.status === "received",
+    hasRaiResponse: !!raiRequestedDate && !!raiReceivedDate && !raiWithdrawnDate,
     /** RAI Withdraw has been enabled **/
     hasEnabledRaiWithdraw: raiWithdrawEnabled,
   };

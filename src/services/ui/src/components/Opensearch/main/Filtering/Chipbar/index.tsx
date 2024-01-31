@@ -1,30 +1,45 @@
-import { type FC, useCallback, Fragment } from "react";
+import { type FC, useCallback } from "react";
 
 import { Chip } from "@/components/Chip";
 import { useOsUrl } from "@/components/Opensearch/main";
 import { opensearch } from "shared-types";
-import { useFilterDrawerContext } from "./FilterProvider";
+import { useFilterDrawerContext } from "../FilterProvider";
 import { checkMultiFilter } from "@/components/Opensearch";
 import { useLabelMapping } from "@/hooks";
 
-interface RenderProp {
+export interface RenderProp {
   filter: opensearch.main.Filterable;
   index: number;
   openDrawer: () => void;
   clearFilter: (filter: opensearch.main.Filterable, valIndex?: number) => void;
 }
 
-// simple date range chips
-const DateChip: FC<RenderProp> = ({
+export const ChipBool: FC<RenderProp> = ({
   filter,
-  index,
   openDrawer,
   clearFilter,
 }) => {
   const value = filter.value as opensearch.RangeValue;
   return (
     <Chip
-      key={`${index}-${filter.field}`}
+      onChipClick={openDrawer}
+      onIconClick={() => {
+        clearFilter(filter);
+      }}
+    >
+      {filter?.label}: <strong>{value ? "Yes" : "No"}</strong>
+    </Chip>
+  );
+};
+
+export const ChipDate: FC<RenderProp> = ({
+  filter,
+  openDrawer,
+  clearFilter,
+}) => {
+  const value = filter.value as opensearch.RangeValue;
+  return (
+    <Chip
       onChipClick={openDrawer}
       onIconClick={() => {
         clearFilter(filter);
@@ -39,10 +54,8 @@ const DateChip: FC<RenderProp> = ({
   );
 };
 
-// array value chips
-const ChipList: FC<RenderProp> = ({
+export const ChipTerms: FC<RenderProp> = ({
   filter,
-  index,
   clearFilter,
   openDrawer,
 }) => {
@@ -51,12 +64,12 @@ const ChipList: FC<RenderProp> = ({
   if (!Array.isArray(filter.value)) return null;
 
   return (
-    <Fragment key={`${index}-${filter.field}-fragment`}>
+    <>
       {filter.value.map((v, vindex) => {
         const chipText = `${filter?.label + ": " ?? ""}${labelMap[v] ?? v}`;
         return (
           <Chip
-            key={`${index}-${vindex}-${filter.field}`}
+            key={`${vindex}-${filter.field}`}
             onChipClick={openDrawer}
             onIconClick={() => {
               clearFilter(filter, vindex);
@@ -66,7 +79,7 @@ const ChipList: FC<RenderProp> = ({
           </Chip>
         );
       })}
-    </Fragment>
+    </>
   );
 };
 
@@ -112,8 +125,12 @@ export const FilterChips: FC = () => {
     <div className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2">
       {url.state.filters.map((filter, index) => {
         const props: RenderProp = { clearFilter, openDrawer, filter, index };
-        if (filter.type === "range") return <DateChip {...props} />;
-        if (filter.type === "terms") return <ChipList {...props} />;
+        const key = `${filter.field}-${index}`;
+
+        if (filter.type === "range") return <ChipDate key={key} {...props} />;
+        if (filter.type === "terms") return <ChipTerms key={key} {...props} />;
+        if (filter.type === "match") return <ChipBool key={key} {...props} />;
+
         return null;
       })}
       {twoOrMoreFiltersApplied && (

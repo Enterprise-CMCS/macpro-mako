@@ -28,6 +28,13 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       query.query.bool.must.push(stateFilter);
     }
 
+    // Only return records originating from OneMAC
+    query.query.bool.must.push({
+      terms: {
+        "origin.keyword": ["OneMAC"],
+      },
+    });
+
     query.from = query.from || 0;
     query.size = query.size || 100;
 
