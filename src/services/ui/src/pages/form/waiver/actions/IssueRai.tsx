@@ -1,6 +1,17 @@
-import { SimplePageContainer } from "@/components";
+import { Alert, SimplePageContainer } from "@/components";
+import {
+  Button,
+  FormDescription,
+  FormItem,
+  FormLabel,
+  RequiredIndicator,
+  Textarea,
+  Upload,
+} from "@/components/Inputs";
+import { FAQ_TAB } from "@/components/Routing/consts";
+import { Info } from "lucide-react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { Form, useSubmit } from "react-router-dom";
+import { Form, Link, useSubmit } from "react-router-dom";
 import { z } from "zod";
 
 const issueRaiFormSchema = z.object({
@@ -45,7 +56,9 @@ export const IssueRai = () => {
             submit(data, e?.currentTarget)
           )}
         >
-          <AttachmentsSection />
+          <AttachmentsSection
+            attachments={[{ name: "Test Attachment", required: true }]}
+          />
           <AdditionalInformation />
           <AdditionalFormInformation />
           <SubmissionButtons />
@@ -65,36 +78,99 @@ const Heading = ({ title }: { title: string }) => {
 
 const PackageSection = ({ id, type }: { id: string; type: string }) => {
   return (
-    <section className="flex flex-col my-8">
-      <p>Package ID</p>
-      <p>{id}</p>
-      <p>Type</p>
-      <p>{type}</p>
+    <section className="flex flex-col my-8 space-y-8">
+      <div>
+        <p>Package ID</p>
+        <p className="text-xl">{id}</p>
+      </div>
+      <div>
+        <p>Type</p>
+        <p className="text-xl">{type}</p>
+      </div>
     </section>
   );
 };
 
-const AttachmentsSection = () => {
-  return <div></div>;
+const AttachmentsSection = ({
+  attachments,
+}: {
+  attachments: { name: string; required: boolean }[];
+}) => {
+  return (
+    <>
+      <h2 className="font-bold text-2xl font-sans mb-2">Attachments</h2>
+      <p>
+        Maximum file size of 80 MB per attachment.{" "}
+        <strong>You can add multiple files per attachment type.</strong> Read
+        the description for each of the attachment types on the{" "}
+        <Link
+          className="text-blue-700 hover:underline"
+          to={"/faq/#medicaid-spa-rai-attachments"}
+          target={FAQ_TAB}
+        >
+          {" "}
+          FAQ Page.
+        </Link>
+      </p>
+      <p>
+        We accept the following file formats:{" "}
+        <strong>.docx, .jpg, .png, .pdf, .xlsx,</strong>
+        and a few others. See the full list on the FAQ Page.
+      </p>
+      {attachments.map(({ name, required }) => (
+        <FormItem key={name} className="my-4 space-y-2">
+          <FormLabel>{name}</FormLabel> {required && <RequiredIndicator />}
+          <Upload files={[]} setFiles={() => []} />
+        </FormItem>
+      ))}
+    </>
+  );
 };
 
 const AdditionalInformation = () => {
-  return <div></div>;
+  return (
+    <section className="my-4">
+      <h2 className="font-bold text-2xl font-sans mb-2">
+        Additional Information <RequiredIndicator />
+      </h2>
+      <FormItem>
+        <FormLabel>
+          <p>Add anything else that you would like to share with the State.</p>
+        </FormLabel>
+        <Textarea className="h-[200px] resize-none" />
+        <FormDescription>4,000 characters allowed</FormDescription>
+      </FormItem>
+    </section>
+  );
 };
 
 const AdditionalFormInformation = () => {
-  return <div></div>;
+  return (
+    <Alert variant={"infoBlock"} className="space-x-2 mb-8">
+      <Info />
+      <p>
+        Once you submit this form, a confirmation email is sent to you and to
+        the State.
+      </p>
+    </Alert>
+  );
 };
 
 const SubmissionButtons = () => {
-  return <div></div>;
+  return (
+    <section className="space-x-2 mb-8">
+      <Button type="submit">Submit</Button>
+      <Button variant={"outline"} type="reset">
+        Cancel
+      </Button>
+    </section>
+  );
 };
 
 const RequiredFieldDescription = () => {
   return (
     <p>
-      <span className="text-red-500">*</span>
-      Indicates a required field
+      <span className="text-red-500">*</span> Indicates a required field
     </p>
   );
 };
