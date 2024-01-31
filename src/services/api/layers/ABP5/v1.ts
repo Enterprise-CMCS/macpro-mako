@@ -210,7 +210,7 @@ function subsection({
                 },
               },
               ...(showEHBBenchmark
-                ? [
+                ? ([
                     {
                       rhf: "Radio",
                       label:
@@ -258,7 +258,7 @@ function subsection({
                         ],
                       },
                     },
-                  ]
+                  ] as RHFSlotProps[])
                 : []),
             ],
           },
