@@ -97,7 +97,7 @@ export const router = createBrowserRouter([
       { path: "/webform/:id/:version", element: <C.Webform /> },
       { path: "/profile", element: <P.Profile /> },
       { path: "/guides/abp", element: <P.ABPGuide /> },
-      { path: "/testing", element: <IssueRai />}
+      { path: "/testing", element: <IssueRai /> }
     ],
     loader: rootLoader(queryClient),
   },

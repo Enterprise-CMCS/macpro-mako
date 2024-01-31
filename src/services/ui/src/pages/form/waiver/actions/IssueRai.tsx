@@ -1,21 +1,23 @@
 import { Alert, SimplePageContainer } from "@/components";
-import {
-  Button,
-  FormDescription,
-  FormItem,
-  FormLabel,
-  RequiredIndicator,
-  Textarea,
-  Upload,
-} from "@/components/Inputs";
+import * as UI from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { Info } from "lucide-react";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { Form, Link, useSubmit } from "react-router-dom";
+import {
+  FormProvider,
+  SubmitHandler,
+  useForm,
+  useFormContext,
+} from "react-hook-form";
+import { Link } from "react-router-dom";
 import { z } from "zod";
+import * as SC from "./shared-components";
+
+type IssueRaiSubmitHandler = SubmitHandler<z.infer<typeof issueRaiFormSchema>>;
 
 const issueRaiFormSchema = z.object({
-  additionalInformation: z.string(),
+  additionalInformation: z.string().min(10),
 });
 
 // we're going to simplify things (react-hook-form) is now only responsible for validation
@@ -23,21 +25,23 @@ const issueRaiFormSchema = z.object({
 
 const useTypeSafeContext = () =>
   useFormContext<z.infer<typeof issueRaiFormSchema>>();
-const useTypeSafeForm = () => useForm<z.infer<typeof issueRaiFormSchema>>();
-
-export const IssueRaiAction = () => {
-  console.log("something");
-};
+const useTypeSafeForm = () =>
+  useForm<z.infer<typeof issueRaiFormSchema>>({
+    resolver: zodResolver(issueRaiFormSchema),
+  });
 
 export const IssueRai = () => {
-  const submit = useSubmit();
   const methods = useTypeSafeForm();
+
+  const submitHandler: IssueRaiSubmitHandler = async (data) => {
+    console.log(data);
+  };
 
   return (
     <SimplePageContainer>
-      <Heading title="Formal RAI Details" />
-      <RequiredFieldDescription />
-      <ActionDescription>
+      <SC.Heading title="Formal RAI Details" />
+      <SC.RequiredFieldDescription />
+      <SC.ActionDescription>
         Issuance of a Formal RAI in OneMAC will create a Formal RAI email sent
         to the State. This will also create a section in the package details
         summary for you and the State to have record. Please attach the Formal
@@ -47,22 +51,20 @@ export const IssueRai = () => {
         <strong>
           If you leave this page, you will lose your progress on this form.
         </strong>
-      </ActionDescription>
+      </SC.ActionDescription>
       <PackageSection id="test-spa-id" type="medicaid spa" />
       <FormProvider {...methods}>
-        <Form
-          method="post"
-          onSubmit={methods.handleSubmit((data, e) =>
-            submit(data, e?.currentTarget)
-          )}
-        >
-          <AttachmentsSection
-            attachments={[{ name: "Test Attachment", required: true }]}
+        <form onSubmit={methods.handleSubmit(submitHandler)}>
+          <SC.AttachmentsSection
+            attachments={[
+              { name: "Formal RAI Letter", required: true },
+              { name: "Other", required: false },
+            ]}
           />
           <AdditionalInformation />
           <AdditionalFormInformation />
-          <SubmissionButtons />
-        </Form>
+          <SC.SubmissionButtons />
+        </form>
       </FormProvider>
     </SimplePageContainer>
   );
@@ -71,10 +73,6 @@ export const IssueRai = () => {
 /**
 Private Components for IssueRai
 **/
-
-const Heading = ({ title }: { title: string }) => {
-  return <h1 className="text-2xl font-semibold mt-4 mb-2">{title}</h1>;
-};
 
 const PackageSection = ({ id, type }: { id: string; type: string }) => {
   return (
@@ -91,55 +89,29 @@ const PackageSection = ({ id, type }: { id: string; type: string }) => {
   );
 };
 
-const AttachmentsSection = ({
-  attachments,
-}: {
-  attachments: { name: string; required: boolean }[];
-}) => {
-  return (
-    <>
-      <h2 className="font-bold text-2xl font-sans mb-2">Attachments</h2>
-      <p>
-        Maximum file size of 80 MB per attachment.{" "}
-        <strong>You can add multiple files per attachment type.</strong> Read
-        the description for each of the attachment types on the{" "}
-        <Link
-          className="text-blue-700 hover:underline"
-          to={"/faq/#medicaid-spa-rai-attachments"}
-          target={FAQ_TAB}
-        >
-          {" "}
-          FAQ Page.
-        </Link>
-      </p>
-      <p>
-        We accept the following file formats:{" "}
-        <strong>.docx, .jpg, .png, .pdf, .xlsx,</strong>
-        and a few others. See the full list on the FAQ Page.
-      </p>
-      {attachments.map(({ name, required }) => (
-        <FormItem key={name} className="my-4 space-y-2">
-          <FormLabel>{name}</FormLabel> {required && <RequiredIndicator />}
-          <Upload files={[]} setFiles={() => []} />
-        </FormItem>
-      ))}
-    </>
-  );
-};
-
 const AdditionalInformation = () => {
+  const form = useTypeSafeContext();
   return (
     <section className="my-4">
       <h2 className="font-bold text-2xl font-sans mb-2">
-        Additional Information <RequiredIndicator />
+        Additional Information <UI.RequiredIndicator />
       </h2>
-      <FormItem>
-        <FormLabel>
-          <p>Add anything else that you would like to share with the State.</p>
-        </FormLabel>
-        <Textarea className="h-[200px] resize-none" />
-        <FormDescription>4,000 characters allowed</FormDescription>
-      </FormItem>
+      <UI.FormField
+        control={form.control}
+        name="additionalInformation"
+        render={({ field }) => (
+          <UI.FormItem>
+            <UI.FormLabel>
+              <p>
+                Add anything else that you would like to share with the State.
+              </p>
+            </UI.FormLabel>
+            <UI.Textarea {...field} className="h-[200px] resize-none" />
+            <UI.FormMessage />
+            <UI.FormDescription>4,000 characters allowed</UI.FormDescription>
+          </UI.FormItem>
+        )}
+      />
     </section>
   );
 };
@@ -154,27 +126,4 @@ const AdditionalFormInformation = () => {
       </p>
     </Alert>
   );
-};
-
-const SubmissionButtons = () => {
-  return (
-    <section className="space-x-2 mb-8">
-      <Button type="submit">Submit</Button>
-      <Button variant={"outline"} type="reset">
-        Cancel
-      </Button>
-    </section>
-  );
-};
-
-const RequiredFieldDescription = () => {
-  return (
-    <p>
-      <span className="text-red-500">*</span> Indicates a required field
-    </p>
-  );
-};
-
-const ActionDescription = ({ children }: { children: React.ReactNode }) => {
-  return <p className="font-light mb-6 max-w-4xl">{children}</p>;
 };
