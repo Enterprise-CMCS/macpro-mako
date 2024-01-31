@@ -1,7 +1,11 @@
 import type { opensearch } from "shared-types";
 
 export type OsDrawerFilterable = opensearch.main.Filterable & { open: boolean };
-export type OsFilterComponentType = "multiSelect" | "multiCheck" | "dateRange";
+export type OsFilterComponentType =
+  | "multiSelect"
+  | "multiCheck"
+  | "dateRange"
+  | "boolean";
 export type OsFilterGroup = {
   label: string;
   field: opensearch.main.Field;

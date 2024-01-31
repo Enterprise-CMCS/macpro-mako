@@ -13,28 +13,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/Accordion";
-
-import { FilterableSelect } from "./FilterableSelect";
-import { FilterableDateRange } from "./FilterableDateRange";
-import { FilterableCheckbox } from "./FilterableCheckbox";
-import { useFilterDrawer } from "./useFilterDrawer";
 import { Button } from "@/components/Inputs";
-import { checkMultiFilter } from "@/components/Opensearch";
-import { useOsUrl } from "@/components/Opensearch/main";
+
+import * as F from "./Filterable";
+import { useFilterDrawer } from "./hooks";
 
 export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
-  const url = useOsUrl();
 
-  const filtersApplied = checkMultiFilter(url.state.filters, 1);
-  const handleFilterReset = () =>
-    url.onSet((s) => ({
-      ...s,
-      filters: [],
-      pagination: { ...s.pagination, number: 0 },
-    }));
   return (
-    <Sheet open={hook.drawerOpen} onOpenChange={hook.setDrawerState}>
+    <Sheet
+      open={hook.drawer.drawerOpen}
+      onOpenChange={hook.drawer.setDrawerState}
+    >
       <SheetTrigger asChild>
         <Button
           variant="outline"
@@ -51,8 +42,8 @@ export const OsFilterDrawer = () => {
         <Button
           className="w-full my-2"
           variant="outline"
-          disabled={!filtersApplied}
-          onClick={handleFilterReset}
+          disabled={!hook.filtersApplied}
+          onClick={hook.onFilterReset}
         >
           Reset
         </Button>
@@ -68,26 +59,34 @@ export const OsFilterDrawer = () => {
               </AccordionTrigger>
               <AccordionContent>
                 {PK.component === "multiSelect" && (
-                  <FilterableSelect
+                  <F.FilterableSelect
                     value={hook.filters[PK.field]?.value as string[]}
                     onChange={hook.onFilterChange(PK.field)}
                     options={hook.aggs?.[PK.field]}
                   />
                 )}
                 {PK.component === "multiCheck" && (
-                  <FilterableCheckbox
+                  <F.FilterableMultiCheck
                     value={hook.filters[PK.field]?.value as string[]}
                     onChange={hook.onFilterChange(PK.field)}
                     options={hook.aggs?.[PK.field]}
                   />
                 )}
                 {PK.component === "dateRange" && (
-                  <FilterableDateRange
+                  <F.FilterableDateRange
                     value={
                       hook.filters[PK.field]?.value as opensearch.RangeValue
                     }
                     onChange={hook.onFilterChange(PK.field)}
                   />
+                )}
+                {PK.component === "boolean" && (
+                  <>
+                    <F.FilterableBoolean
+                      value={hook.filters[PK.field]?.value as boolean}
+                      onChange={hook.onFilterChange(PK.field)}
+                    />
+                  </>
                 )}
               </AccordionContent>
             </AccordionItem>
