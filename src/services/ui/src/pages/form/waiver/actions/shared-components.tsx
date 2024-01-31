@@ -1,12 +1,17 @@
 import {
   Button,
+  FormDescription,
+  FormField,
   FormItem,
   FormLabel,
+  FormMessage,
   RequiredIndicator,
+  Textarea,
   Upload,
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { Link } from "react-router-dom";
+import { useTypeSafeBaseContext } from "./base-form-schema";
 
 export const RequiredFieldDescription = () => {
   return (
@@ -71,6 +76,49 @@ export const SubmissionButtons = () => {
       <Button variant={"outline"} type="reset">
         Cancel
       </Button>
+    </section>
+  );
+};
+
+export const PackageSection = ({ id, type }: { id: string; type: string }) => {
+  return (
+    <section className="flex flex-col my-8 space-y-8">
+      <div>
+        <p>Package ID</p>
+        <p className="text-xl">{id}</p>
+      </div>
+      <div>
+        <p>Type</p>
+        <p className="text-xl">{type}</p>
+      </div>
+    </section>
+  );
+};
+
+export const AdditionalInformation = () => {
+  const form = useTypeSafeBaseContext();
+
+  return (
+    <section className="my-4">
+      <h2 className="font-bold text-2xl font-sans mb-2">
+        Additional Information <RequiredIndicator />
+      </h2>
+      <FormField
+        control={form.control}
+        name="additionalInformation"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>
+              <p>
+                Add anything else that you would like to share with the State.
+              </p>
+            </FormLabel>
+            <Textarea {...field} className="h-[200px] resize-none" />
+            <FormMessage />
+            <FormDescription>4,000 characters allowed</FormDescription>
+          </FormItem>
+        )}
+      />
     </section>
   );
 };

@@ -1,37 +1,21 @@
 import { Alert, SimplePageContainer } from "@/components";
 import * as UI from "@/components/Inputs";
-import { FAQ_TAB } from "@/components/Routing/consts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Info } from "lucide-react";
-import {
-  FormProvider,
-  SubmitHandler,
-  useForm,
-  useFormContext,
-} from "react-hook-form";
-import { Link } from "react-router-dom";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import * as SC from "./shared-components";
+import { baseFormSchema } from "./base-form-schema";
 
 type IssueRaiSubmitHandler = SubmitHandler<z.infer<typeof issueRaiFormSchema>>;
 
-const issueRaiFormSchema = z.object({
-  additionalInformation: z.string().min(10),
-});
-
-// we're going to simplify things (react-hook-form) is now only responsible for validation
-// react router is global. it will now handle routing and form submitting data to backend
-
-const useTypeSafeContext = () =>
-  useFormContext<z.infer<typeof issueRaiFormSchema>>();
-const useTypeSafeForm = () =>
-  useForm<z.infer<typeof issueRaiFormSchema>>({
-    resolver: zodResolver(issueRaiFormSchema),
-  });
+const issueRaiFormSchema = baseFormSchema.merge(z.object({}));
 
 export const IssueRai = () => {
-  const methods = useTypeSafeForm();
+  const methods = useForm<z.infer<typeof issueRaiFormSchema>>({
+    resolver: zodResolver(issueRaiFormSchema),
+  });
 
   const submitHandler: IssueRaiSubmitHandler = async (data) => {
     console.log(data);
@@ -52,7 +36,7 @@ export const IssueRai = () => {
           If you leave this page, you will lose your progress on this form.
         </strong>
       </SC.ActionDescription>
-      <PackageSection id="test-spa-id" type="medicaid spa" />
+      <SC.PackageSection id="test-spa-id" type="medicaid spa" />
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(submitHandler)}>
           <SC.AttachmentsSection
@@ -61,7 +45,7 @@ export const IssueRai = () => {
               { name: "Other", required: false },
             ]}
           />
-          <AdditionalInformation />
+          <SC.AdditionalInformation />
           <AdditionalFormInformation />
           <SC.SubmissionButtons />
         </form>
@@ -73,48 +57,6 @@ export const IssueRai = () => {
 /**
 Private Components for IssueRai
 **/
-
-const PackageSection = ({ id, type }: { id: string; type: string }) => {
-  return (
-    <section className="flex flex-col my-8 space-y-8">
-      <div>
-        <p>Package ID</p>
-        <p className="text-xl">{id}</p>
-      </div>
-      <div>
-        <p>Type</p>
-        <p className="text-xl">{type}</p>
-      </div>
-    </section>
-  );
-};
-
-const AdditionalInformation = () => {
-  const form = useTypeSafeContext();
-  return (
-    <section className="my-4">
-      <h2 className="font-bold text-2xl font-sans mb-2">
-        Additional Information <UI.RequiredIndicator />
-      </h2>
-      <UI.FormField
-        control={form.control}
-        name="additionalInformation"
-        render={({ field }) => (
-          <UI.FormItem>
-            <UI.FormLabel>
-              <p>
-                Add anything else that you would like to share with the State.
-              </p>
-            </UI.FormLabel>
-            <UI.Textarea {...field} className="h-[200px] resize-none" />
-            <UI.FormMessage />
-            <UI.FormDescription>4,000 characters allowed</UI.FormDescription>
-          </UI.FormItem>
-        )}
-      />
-    </section>
-  );
-};
 
 const AdditionalFormInformation = () => {
   return (
