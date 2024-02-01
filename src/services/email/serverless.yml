@@ -87,6 +87,13 @@ functions:
           topicName: ${self:custom.emailEventTopicName}
 
 resources:
+  Conditions:
+    isDev:
+      Fn::Not:
+        - Fn::Equals:
+            - ${param:topicNamespace}
+            - ""
+
   Resources:
     EmailEventTopic:
       Type: AWS::SNS::Topic
