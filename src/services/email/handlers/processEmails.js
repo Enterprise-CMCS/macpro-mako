@@ -12,7 +12,7 @@ const Cognito = new CognitoIdentityProviderClient({
     region: process.env.region,
 });
 
-const createSendEmailCommand = async (event) =>
+const createSendEmailCommand = (event) =>
     new SendEmailCommand({
         Source: "kgrue@fearless.tech",
         Destination: {
@@ -44,7 +44,6 @@ export const main = async (event, context, callback) => {
     console.log("Received event (stringified):", JSON.stringify(event, null, 4));
     const commandListUsers = new ListUsersCommand({
         UserPoolId: process.env.cognitoPoolId,
-        // Filter: subFilter,
     });
 
     const sendEmailCommand = createSendEmailCommand(event);
@@ -54,7 +53,7 @@ export const main = async (event, context, callback) => {
         console.log("listUsers response: ", JSON.stringify(listUsersResponse, null, 4));
 
         response = await SES.send(sendEmailCommand);
-        console.log("sendEmailCommand response: ", response);
+        console.log("sendEmailCommand response: ", JSON.stringify(response, null, 4));
     } catch (err) {
         console.log("Failed to process emails.", err);
     }
