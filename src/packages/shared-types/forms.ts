@@ -33,9 +33,12 @@ export type RHFSlotProps = {
   [K in keyof RHFComponentMap]: {
     rhf: K;
     props?: RHFComponentMap[K];
+    text?: K extends "TextDisplay" ? string : never;
     fields?: K extends "FieldArray"
       ? RHFSlotProps[]
       : K extends "FieldGroup"
+      ? RHFSlotProps[]
+      : K extends "TableGroup"
       ? RHFSlotProps[]
       : never;
   };
@@ -71,6 +74,11 @@ export type RHFComponentMap = {
     appendText?: string;
     removeText?: string;
   };
+  TableGroup: {
+    initNumRows?: number;
+    scalable?: boolean;
+  };
+  TextDisplay: { className?: string };
 };
 
 export type FormGroup = {
@@ -112,6 +120,17 @@ export type FieldGroupProps<
   appendText?: string;
   removeText?: string;
   groupNamePrefix?: string;
+};
+
+export type TableGroupProps<
+  T extends FieldValues,
+  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
+> = {
+  control: Control<T, unknown>;
+  name: TFieldArrayName;
+  fields: RHFSlotProps[];
+  initNumRows?: number;
+  scalable?: boolean;
 };
 
 type ConditionRules =
