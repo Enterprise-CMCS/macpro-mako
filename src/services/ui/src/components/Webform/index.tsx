@@ -19,31 +19,31 @@ export const Webforms = () => {
         <div className="flex-1 space-x-5">
           <Link
             path="/webform/:id/:version"
-            params={{ id: "abp1", version: 1 }}
+            params={{ id: "abp1", version: 202401 }}
           >
             ABP 1 v1
           </Link>
           <Link
             path="/webform/:id/:version"
-            params={{ id: "abp1", version: 2 }}
+            params={{ id: "abp1", version: 202402 }}
           >
             ABP 1 v2
           </Link>
           <Link
             path="/webform/:id/:version"
-            params={{ id: "abp3", version: 1 }}
+            params={{ id: "abp3", version: 202401 }}
           >
             ABP 3
           </Link>
           <Link
             path="/webform/:id/:version"
-            params={{ id: "abp3_1", version: 1 }}
+            params={{ id: "abp3_1", version: 202401 }}
           >
             ABP 3.1
           </Link>
           <Link
             path="/webform/:id/:version"
-            params={{ id: "abp10", version: 1 }}
+            params={{ id: "abp10", version: 202401 }}
           >
             ABP 10
           </Link>
