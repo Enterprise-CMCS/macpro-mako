@@ -43,7 +43,7 @@ export const main = async (event, context, callback) => {
     let response;
     console.log("Received event (stringified):", JSON.stringify(event, null, 4));
     const commandListUsers = new ListUsersCommand({
-        UserPoolId: "grue-user-pool",
+        UserPoolId: "us-east-1_c5R7LR3yh",
         // Filter: subFilter,
     });
 
