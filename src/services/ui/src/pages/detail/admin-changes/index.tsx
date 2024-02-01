@@ -17,7 +17,7 @@ export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
     <div className="flex flex-col gap-2">
       <p className="font-bold">Change made</p>
       <p>
-        {props.submitterName} has enabled package action to submit formal RAI
+        {props.submitterName} has enabled package action to withdraw formal RAI
         response
       </p>
     </div>
@@ -31,7 +31,7 @@ export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
     <div className="flex flex-col gap-2">
       <p className="font-bold">Change made</p>
       <p>
-        {props.submitterName} has disabled package action to submit formal RAI
+        {props.submitterName} has disabled package action to withdraw formal RAI
         response
       </p>
     </div>

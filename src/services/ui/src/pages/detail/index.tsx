@@ -100,7 +100,7 @@ const PackageActionsCard = ({ id }: { id: string }) => {
                   key={`${idx}-${type}`}
                   path="/action/:id/:type"
                   params={{ id, type }}
-                  className="text-sky-500 underline"
+                  className="text-sky-700 underline"
                 >
                   <li>{mapActionLabel(type)}</li>
                 </Link>
