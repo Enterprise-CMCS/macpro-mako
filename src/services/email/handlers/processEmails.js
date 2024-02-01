@@ -19,7 +19,7 @@ const Cognito = new CognitoIdentityProviderClient({
         // Filter: subFilter,
       });
       try {
-        const listUsersResponse = await cognitoClient.send(commandListUsers);
+        const listUsersResponse = await Cognito.send(commandListUsers);
     
         console.log("listUsers response: ", listUsersResponse);
     
