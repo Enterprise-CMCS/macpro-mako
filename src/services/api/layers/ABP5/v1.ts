@@ -56,6 +56,139 @@ interface SubsectionData {
   showEHBBenchmark?: boolean;
 }
 
+function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
+  return [
+    {
+      rhf: "Input",
+      label: "Benefit provided",
+      labelStyling: "font-bold",
+      name: `${namePrefix}_benefit_provided`,
+      rules: { required: "* Required" },
+      props: {
+        className: "w-[300px]",
+      },
+    },
+    {
+      rhf: "Select",
+      label: "Source",
+      labelStyling: "font-bold",
+      name: `${namePrefix}_source`,
+      rules: { required: "* Required" },
+      props: {
+        className: "w-[300px]",
+        options: benefitSourceOptions,
+      },
+    },
+    {
+      rhf: "Input",
+      label:
+        "Other information regarding this benefit source, including the name of the source plan",
+      labelStyling: "font-bold",
+      name: `${namePrefix}_state_plan_other_information`,
+      formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      rules: { required: "* Required" },
+      dependency: {
+        conditions: [
+          {
+            name: `${namePrefix}_source`,
+            type: "expectedValue",
+            expectedValue: "state_plan_other",
+          },
+        ],
+        effect: { type: "show" },
+      },
+    },
+    {
+      rhf: "Input",
+      label:
+        "Other information regarding this benefit source, including the name of the source plan",
+      labelStyling: "font-bold",
+      name: `${namePrefix}_secretary_approved_other_information`,
+      formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      rules: { required: "* Required" },
+      dependency: {
+        conditions: [
+          {
+            name: `${namePrefix}_source`,
+            type: "expectedValue",
+            expectedValue: "secretary_approved_other",
+          },
+        ],
+        effect: { type: "show" },
+      },
+    },
+    {
+      rhf: "Input",
+      label: "Authorization",
+      labelStyling: "font-bold",
+      name: `${namePrefix}_authorization`,
+      rules: { required: "* Required" },
+      props: {
+        className: "w-[300px]",
+      },
+    },
+    {
+      rhf: "Select",
+      label: "Provider qualifications",
+      labelStyling: "font-bold",
+      name: `${namePrefix}_provider_qualifications`,
+      rules: { required: "* Required" },
+      props: {
+        className: "w-[300px]",
+        options: providerQualificationsOptions,
+      },
+    },
+    {
+      rhf: "Input",
+      label: "Other information regarding provider qualifications",
+      labelStyling: "font-bold",
+      name: `${namePrefix}_provider_qualifications_other_information`,
+      formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      rules: { required: "* Required" },
+      dependency: {
+        conditions: [
+          {
+            name: `${namePrefix}_provider_qualifications`,
+            type: "expectedValue",
+            expectedValue: "other",
+          },
+        ],
+        effect: { type: "show" },
+      },
+    },
+    {
+      rhf: "Input",
+      label: "Amount limit",
+      labelStyling: "font-bold",
+      name: `${namePrefix}_amount_limit`,
+      rules: { required: "* Required" },
+      props: {
+        className: "w-[300px]",
+      },
+    },
+    {
+      rhf: "Input",
+      label: "Duration limit",
+      labelStyling: "font-bold",
+      name: `${namePrefix}_duration_limit`,
+      rules: { required: "* Required" },
+      props: {
+        className: "w-[300px]",
+      },
+    },
+    {
+      rhf: "Input",
+      label: "Scope limit",
+      labelStyling: "font-bold",
+      name: `${namePrefix}_scope_limit`,
+      rules: { required: "* Required" },
+      props: {
+        className: "w-[300px]",
+      },
+    },
+  ];
+}
+
 function subsection({
   title,
   namePrefix,
@@ -81,134 +214,7 @@ function subsection({
             },
             fields: [
               ...headerSlots,
-              {
-                rhf: "Input",
-                label: "Benefit provided",
-                labelStyling: "font-bold",
-                name: `${namePrefix}_benefit_provided`,
-                rules: { required: "* Required" },
-                props: {
-                  className: "w-[300px]",
-                },
-              },
-              {
-                rhf: "Select",
-                label: "Source",
-                labelStyling: "font-bold",
-                name: `${namePrefix}_source`,
-                rules: { required: "* Required" },
-                props: {
-                  className: "w-[300px]",
-                  options: benefitSourceOptions,
-                },
-              },
-              {
-                rhf: "Input",
-                label:
-                  "Other information regarding this benefit source, including the name of the source plan",
-                labelStyling: "font-bold",
-                name: `${namePrefix}_state_plan_other_information`,
-                formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-                rules: { required: "* Required" },
-                dependency: {
-                  conditions: [
-                    {
-                      name: `${namePrefix}_source`,
-                      type: "expectedValue",
-                      expectedValue: "state_plan_other",
-                    },
-                  ],
-                  effect: { type: "show" },
-                },
-              },
-              {
-                rhf: "Input",
-                label:
-                  "Other information regarding this benefit source, including the name of the source plan",
-                labelStyling: "font-bold",
-                name: `${namePrefix}_secretary_approved_other_information`,
-                formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-                rules: { required: "* Required" },
-                dependency: {
-                  conditions: [
-                    {
-                      name: `${namePrefix}_source`,
-                      type: "expectedValue",
-                      expectedValue: "secretary_approved_other",
-                    },
-                  ],
-                  effect: { type: "show" },
-                },
-              },
-              {
-                rhf: "Input",
-                label: "Authorization",
-                labelStyling: "font-bold",
-                name: `${namePrefix}_authorization`,
-                rules: { required: "* Required" },
-                props: {
-                  className: "w-[300px]",
-                },
-              },
-              {
-                rhf: "Select",
-                label: "Provider qualifications",
-                labelStyling: "font-bold",
-                name: `${namePrefix}_provider_qualifications`,
-                rules: { required: "* Required" },
-                props: {
-                  className: "w-[300px]",
-                  options: providerQualificationsOptions,
-                },
-              },
-              {
-                rhf: "Input",
-                label: "Other information regarding provider qualifications",
-                labelStyling: "font-bold",
-                name: `${namePrefix}_provider_qualifications_other_information`,
-                formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-                rules: { required: "* Required" },
-                dependency: {
-                  conditions: [
-                    {
-                      name: `${namePrefix}_provider_qualifications`,
-                      type: "expectedValue",
-                      expectedValue: "other",
-                    },
-                  ],
-                  effect: { type: "show" },
-                },
-              },
-              {
-                rhf: "Input",
-                label: "Amount limit",
-                labelStyling: "font-bold",
-                name: `${namePrefix}_amount_limit`,
-                rules: { required: "* Required" },
-                props: {
-                  className: "w-[300px]",
-                },
-              },
-              {
-                rhf: "Input",
-                label: "Duration limit",
-                labelStyling: "font-bold",
-                name: `${namePrefix}_duration_limit`,
-                rules: { required: "* Required" },
-                props: {
-                  className: "w-[300px]",
-                },
-              },
-              {
-                rhf: "Input",
-                label: "Scope limit",
-                labelStyling: "font-bold",
-                name: `${namePrefix}_scope_limit`,
-                rules: { required: "* Required" },
-                props: {
-                  className: "w-[300px]",
-                },
-              },
+              ...subsectionFormFields(namePrefix),
               ...(showEHBBenchmark
                 ? ([
                     {
@@ -538,31 +544,67 @@ const ABP5: FormSchema = {
       title: "Optional items",
       form: [
         {
-          slots: [],
+          slots: [
+            {
+              rhf: "Checkbox",
+              name: "optional_items",
+              props: {
+                options: [
+                  {
+                    label:
+                      "11. Other covered benefits that are not essential health benefits",
+                    value: "other_covered_benefits_benefit",
+                    form: [
+                      {
+                        slots: [
+                          {
+                            rhf: "FieldGroup",
+                            name: "other_covered_benefits_benefit",
+                            groupNamePrefix: "other_covered_benefits_benefit",
+                            props: {
+                              appendText: "Add benefit",
+                              removeText: "Remove benefit",
+                            },
+                            fields: [
+                              ...subsectionFormFields("other_covered_benefits"),
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    label:
+                      "13. Additional covered benefits (this category of benefits is not applicable to the Adult group under Section 1902(a)(10)(A)(i)(VIII) of the Act)",
+                    value: "additional_covered_benefits",
+                    form: [
+                      {
+                        slots: [
+                          {
+                            rhf: "FieldGroup",
+                            name: "additional_covered_benefits",
+                            groupNamePrefix: "additional_covered_benefits",
+                            props: {
+                              appendText: "Add benefit",
+                              removeText: "Remove benefit",
+                            },
+                            fields: [
+                              ...subsectionFormFields(
+                                "additional_covered_benefits"
+                              ),
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
         },
       ],
     },
-    subsection({
-      title:
-        "11. Other covered benefits that are not essential health benefits",
-      namePrefix: "other",
-      showEHBBenchmark: false,
-    }),
-    {
-      title: "12. Other base benchmark benefits not covered",
-      subsection: true,
-      form: [
-        {
-          slots: [],
-        },
-      ],
-    },
-    subsection({
-      title:
-        "13. Additional covered benefits (this category of benefits is not applicable to the Adult group under Section 1902(a)(10)(A)(i)(VIII) of the Act)",
-      namePrefix: "additional_covered_benefits",
-      showEHBBenchmark: false,
-    }),
   ],
 };
 
