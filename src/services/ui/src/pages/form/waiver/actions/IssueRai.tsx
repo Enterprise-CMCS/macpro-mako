@@ -1,25 +1,21 @@
 import { Alert, SimplePageContainer } from "@/components";
 import * as UI from "@/components/Inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { UseMutateFunction, useMutation } from "@tanstack/react-query";
 import { Info } from "lucide-react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import * as SC from "./shared-components";
 import { baseFormSchema } from "./base-form-schema";
-
-type IssueRaiSubmitHandler = SubmitHandler<z.infer<typeof issueRaiFormSchema>>;
+import { usePackageActionForm } from "./package-action-form-hook";
 
 const issueRaiFormSchema = baseFormSchema.merge(z.object({}));
 
 export const IssueRai = () => {
-  const methods = useForm<z.infer<typeof issueRaiFormSchema>>({
-    resolver: zodResolver(issueRaiFormSchema),
+  const { form, handleSubmit, isSuccess, isError } = usePackageActionForm({
+    schema: issueRaiFormSchema,
+    submissionPayload: (data) => ({ brian: "is testing" }),
   });
-
-  const submitHandler: IssueRaiSubmitHandler = async (data) => {
-    console.log(data);
-  };
 
   return (
     <SimplePageContainer>
@@ -37,8 +33,8 @@ export const IssueRai = () => {
         </strong>
       </SC.ActionDescription>
       <SC.PackageSection id="test-spa-id" type="medicaid spa" />
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(submitHandler)}>
+      <FormProvider {...form}>
+        <form onSubmit={handleSubmit}>
           <SC.AttachmentsSection
             attachments={[
               { name: "Formal RAI Letter", required: true },
