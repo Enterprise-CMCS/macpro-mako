@@ -22,6 +22,7 @@ export type RHFSlotProps = {
   name: string;
   label?: string;
   labelStyling?: string;
+  tbColumnStyle?: string;
   formItemStyling?: string;
   groupNamePrefix?: string;
   removeFormDecoration?: boolean;

@@ -29,14 +29,17 @@ const FieldRow = <TFields extends FieldValues>(
           </TableCell>
         );
       })}
-      <TableCell>
-        {props.scalable && (
-          <Trash2
-            className="cursor-pointer stroke-primary"
+      {props.scalable && (
+        <TableCell className="p-0 pr-2 py-4 w-14">
+          <Button
             onClick={props.onTrashClick}
-          />
-        )}
-      </TableCell>
+            variant={"ghost"}
+            className="hover:text-destructive text-primary"
+          >
+            <Trash2 />
+          </Button>
+        </TableCell>
+      )}
     </TableRow>
   );
 };
@@ -113,13 +116,17 @@ export const TableGroup = <TFields extends FieldValues>({
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 w-full">
-      <Table>
+    <>
+      <Table className="table-auto">
         <TableHeader>
           <TableRow>
             {props.fields.map((v) => {
               return (
-                <TableHead key={`tableHeader.${v.label}`}>{v.label}</TableHead>
+                <TableHead key={`tableHeader.${v.label}`}>
+                  <div className={cn("max-w-xs", v.tbColumnStyle)}>
+                    {v.label}
+                  </div>
+                </TableHead>
               );
             })}
           </TableRow>
@@ -142,7 +149,7 @@ export const TableGroup = <TFields extends FieldValues>({
         </TableBody>
       </Table>
       {scalable && (
-        <div className="flex items-center mt-2 self-end">
+        <div className="w-full items-end mt-2 flex justify-end my-2">
           <Button type="button" size="sm" onClick={onAppend} variant="default">
             <Plus className="h-5 w-5 mr-2" />
             {"Add Row"}
@@ -161,6 +168,6 @@ export const TableGroup = <TFields extends FieldValues>({
           </Fragment>
         );
       })}
-    </div>
+    </>
   );
 };
