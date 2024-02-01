@@ -15,7 +15,7 @@ export const ReviewTeamList = ({ team }: { team: string[] | undefined }) => {
         <li key={`reviewteam-ul-${reviewer}-${idx}`}>{reviewer}</li>
       ))}
       {team && team?.length > 3 && (
-        <li className={"text-xs text-sky-600 hover:cursor-pointer"}>
+        <li className={"text-xs text-sky-700 hover:cursor-pointer"}>
           <button onClick={() => setExpanded((prev) => !prev)}>
             {expanded ? "Show less" : "Show more"}
           </button>

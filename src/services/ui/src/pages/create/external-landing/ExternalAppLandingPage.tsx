@@ -4,9 +4,9 @@ import { Link } from "@/components/Routing";
 import { PropsWithChildren, ReactElement } from "react";
 import { SimplePageTitle } from "@/pages/create/create-options";
 import { SimplePageContainer } from "@/components";
-import { FAQ_SECTION } from "@/routes";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { optionCrumbsFromPath } from "@/pages/create/create-breadcrumbs";
+import { FAQ_TAB } from "@/components/Routing/consts";
 export enum EXTERNAL_APP {
   MAC_PRO = "https://www.medicaid.gov/resources-for-states/medicaid-and-chip-program-macpro-portal/index.html#MACPro",
   MMDL = "https://wms-mmdl.cms.gov/MMDL/faces/portal.jsp",
@@ -31,10 +31,10 @@ const FAQHelperText = () => (
       For additional information on where to submit, refer to the{" "}
       {/* TODO: Get desired FAQ `target` from Wale */}
       <Link
-        className="text-sky-600 hover:text-sky-800 underline"
-        target={"_faq"}
+        className="text-sky-700 hover:text-sky-800 underline"
+        target={FAQ_TAB}
         path="/faq"
-        hash={FAQ_SECTION.SYSTEM}
+        hash={"system"}
       >
         Crosswalk from Paper-based State Plan to MACPro and MMDL
       </Link>{" "}
@@ -65,7 +65,9 @@ const ExternalAppLandingPage = ({
         {image}
         {description}
         <a className="mb-8" href={buttonLink} target="_blank" rel="noreferrer">
-          <Button className="landing-button">{buttonLabel}</Button>
+          <Button className="landing-button" aria-label={buttonLabel}>
+            {buttonLabel}
+          </Button>
         </a>
         <FAQHelperText />
       </div>
@@ -86,7 +88,7 @@ export const MedicaidABPLandingPage = () => (
             Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and
             Cost Sharing are managed within the{" "}
             <a
-              className="text-sky-600 hover:text-sky-800 underline"
+              className="text-sky-700 hover:text-sky-800 underline"
               href={EXTERNAL_APP.MMDL}
               target="_blank"
               rel="noreferrer"
@@ -121,7 +123,7 @@ export const MedicaidEligibilityLandingPage = () => (
             Medicaid Eligibility, Enrollment, Administration, and Health Homes
             SPA packages are submitted within the{" "}
             <a
-              className="text-sky-600 hover:text-sky-800 underline"
+              className="text-sky-700 hover:text-sky-800 underline"
               href={EXTERNAL_APP.MAC_PRO}
               target="_blank"
               rel="noreferrer"
@@ -152,7 +154,7 @@ export const CHIPEligibilityLandingPage = () => (
           <b>
             CHIP Eligibility SPAs are managed within the{" "}
             <a
-              className="text-sky-600 hover:text-sky-800 underline"
+              className="text-sky-700 hover:text-sky-800 underline"
               href={EXTERNAL_APP.MMDL}
               target="_blank"
               rel="noreferrer"

@@ -1,7 +1,7 @@
 export const HowItWorks = ({ children }: React.PropsWithChildren) => {
   return (
     <div className="py-8 px-6 border border-gray-300 rounded-md border-solid w-full">
-      <h4 className="text-bold text-xl">How it works</h4>
+      <h3 className="text-bold text-xl">How it works</h3>
       {children}
     </div>
   );

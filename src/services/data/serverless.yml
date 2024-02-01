@@ -163,7 +163,7 @@ params:
 
 functions:
   sinkSeatool:
-    handler: handlers/sink.seatool
+    handler: handlers/sinkSeatool.handler
     environment:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
@@ -176,7 +176,7 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
   sinkOnemac:
-    handler: handlers/sink.onemac
+    handler: handlers/sinkOnemac.handler
     environment:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}

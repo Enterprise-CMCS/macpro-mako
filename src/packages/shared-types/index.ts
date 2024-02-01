@@ -1,10 +1,7 @@
 export * from "./issue";
 export * from "./user";
 export * from "./errors";
-export * from "./seatool";
-export * from "./onemac";
-export * from "./onemacLegacy";
-export * from "./opensearch";
+export * as opensearch from "./opensearch";
 export * from "./uploads";
 export * from "./actions";
 export * from "./attachments";
@@ -14,3 +11,5 @@ export * from "./forms";
 export * from "./inputs";
 export * from "./states";
 export * from "./statusHelper";
+export * from "./guides";
+export * from "./lambda-events";

@@ -28,7 +28,8 @@ import {
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
-import { getLatestRai } from "shared-utils";
+import { seaToolFriendlyTimestamp } from "shared-utils";
+import { buildStatusMemoQuery } from "../libs/statusMemo";
 
 const TOPIC_NAME = process.env.topicName as string;
 
@@ -36,13 +37,14 @@ export async function issueRai(body: RaiIssue) {
   console.log("CMS issuing a new RAI");
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
+  const today = seaToolFriendlyTimestamp();
   try {
     await transaction.begin();
     // Issue RAI
     const query1 = `
       Insert into SEA.dbo.RAI (ID_Number, RAI_Requested_Date)
         values ('${body.id}'
-        ,dateadd(s, convert(int, left(${body.requestedDate}, 10)), cast('19700101' as datetime)))
+        ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)))
     `;
     const result1 = await transaction.request().query(query1);
     console.log(result1);
@@ -50,14 +52,21 @@ export async function issueRai(body: RaiIssue) {
     // Update Status
     const query2 = `
       UPDATE SEA.dbo.State_Plan
-        SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}')
-        WHERE ID_Number = '${body.id}'
+      SET 
+        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}'),
+        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
+      WHERE ID_Number = '${body.id}'
     `;
     const result2 = await transaction.request().query(query2);
     console.log(result2);
 
+    const statusMemoUpdate = await transaction
+      .request()
+      .query(buildStatusMemoQuery(body.id, "RAI Issued"));
+    console.log(statusMemoUpdate);
+
     // write to kafka here
-    const result = raiIssueSchema.safeParse(body);
+    const result = raiIssueSchema.safeParse({ ...body, requestedDate: today });
     if (result.success === false) {
       console.log(
         "RAI Validation Error. The following record failed to parse: ",
@@ -69,7 +78,10 @@ export async function issueRai(body: RaiIssue) {
       await produceMessage(
         TOPIC_NAME,
         body.id,
-        JSON.stringify({ ...result.data, actionType: Action.ISSUE_RAI })
+        JSON.stringify({
+          ...result.data,
+          actionType: Action.ISSUE_RAI,
+        })
       );
     }
 
@@ -86,28 +98,32 @@ export async function issueRai(body: RaiIssue) {
   }
 }
 
-export async function withdrawRai(body: RaiWithdraw, rais: any) {
-  const activeKey = getLatestRai(rais)?.key;
+export async function withdrawRai(body: RaiWithdraw, document: any) {
+  const raiToWithdraw =
+    !!document.raiRequestedDate && !!document.raiReceivedDate
+      ? new Date(document.raiRequestedDate).getTime()
+      : null;
+  if (!raiToWithdraw) throw "No RAI available for response";
+  const today = seaToolFriendlyTimestamp();
   const result = raiWithdrawSchema.safeParse({
     ...body,
-    requestedDate: activeKey,
+    requestedDate: raiToWithdraw,
+    withdrawnDate: today,
   });
   console.log("Withdraw body is", body);
 
   if (result.success === true) {
     console.log("CMS withdrawing an RAI");
-    console.log(rais);
-    console.log("LATEST RAI KEY: " + activeKey);
+    console.log("LATEST RAI KEY: " + raiToWithdraw);
     const pool = await sql.connect(config);
     const transaction = new sql.Transaction(pool);
-
     try {
       await transaction.begin();
       // Issue RAI
       const query1 = `
         UPDATE SEA.dbo.RAI
-        SET RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${result.data.withdrawnDate}', 10)), CAST('19700101' AS DATETIME))
-          WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${activeKey}', 10)), CAST('19700101' AS DATETIME))
+        SET RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
+          WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
       `;
       const result1 = await transaction.request().query(query1);
       console.log(result1);
@@ -115,17 +131,27 @@ export async function withdrawRai(body: RaiWithdraw, rais: any) {
       // Update Status
       const query2 = `
       UPDATE SEA.dbo.State_Plan
-        SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}')
+        SET 
+          SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}'),
+          Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
         WHERE ID_Number = '${result.data.id}'
     `;
       const result2 = await transaction.request().query(query2);
       console.log(result2);
 
+      const statusMemoUpdate = await transaction
+        .request()
+        .query(buildStatusMemoQuery(result.data.id, "RAI Response Withdrawn"));
+      console.log(statusMemoUpdate);
+
       // write to kafka here
       await produceMessage(
         TOPIC_NAME,
         result.data.id,
-        JSON.stringify({ ...result.data, actionType: Action.WITHDRAW_RAI })
+        JSON.stringify({
+          ...result.data,
+          actionType: Action.WITHDRAW_RAI,
+        })
       );
 
       // Commit transaction
@@ -147,24 +173,25 @@ export async function withdrawRai(body: RaiWithdraw, rais: any) {
   }
 }
 
-export async function respondToRai(body: RaiResponse, rais: any) {
+export async function respondToRai(body: RaiResponse, document: any) {
   console.log("State responding to RAI");
-  const latestRai = getLatestRai(rais);
-  if (latestRai?.status != "requested") {
-    throw "Latest RAI is not a candidate for response";
-  }
-  const activeKey = latestRai.key;
-  console.log("LATEST RAI KEY: " + activeKey);
+  const raiToRespondTo =
+    !!document.raiRequestedDate && !document.raiReceivedDate
+      ? new Date(document.raiRequestedDate).getTime()
+      : null;
+  if (!raiToRespondTo) throw "No RAI available for response";
+  console.log("LATEST RAI KEY: " + raiToRespondTo);
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
   console.log(body);
+  const today = seaToolFriendlyTimestamp();
   try {
     await transaction.begin();
     // Issue RAI
     const query1 = `
       UPDATE SEA.dbo.RAI
-        SET RAI_RECEIVED_DATE = DATEADD(s, CONVERT(int, LEFT('${body.responseDate}', 10)), CAST('19700101' AS DATETIME))
-        WHERE ID_Number = '${body.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${activeKey}', 10)), CAST('19700101' AS DATETIME))
+        SET RAI_RECEIVED_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
+        WHERE ID_Number = '${body.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToRespondTo}', 10)), CAST('19700101' AS DATETIME))
     `;
     const result1 = await transaction.request().query(query1);
     console.log(result1);
@@ -172,16 +199,24 @@ export async function respondToRai(body: RaiResponse, rais: any) {
     // Update Status
     const query2 = `
       UPDATE SEA.dbo.State_Plan
-        SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}')
+        SET 
+          SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}'),
+          Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
         WHERE ID_Number = '${body.id}'
     `;
     const result2 = await transaction.request().query(query2);
     console.log(result2);
 
+    const statusMemoUpdate = await transaction
+      .request()
+      .query(buildStatusMemoQuery(body.id, "RAI Response Received"));
+    console.log(statusMemoUpdate);
+
     //   // write to kafka here
     const result = raiResponseSchema.safeParse({
       ...body,
-      requestedDate: activeKey,
+      responseDate: today,
+      requestedDate: raiToRespondTo,
     });
     if (result.success === false) {
       console.log(
@@ -197,6 +232,7 @@ export async function respondToRai(body: RaiResponse, rais: any) {
         body.id,
         JSON.stringify({
           ...result.data,
+          responseDate: today,
           actionType: Action.RESPOND_TO_RAI,
         })
       );
@@ -213,7 +249,6 @@ export async function respondToRai(body: RaiResponse, rais: any) {
     // Close pool
     await pool.close();
   }
-
 }
 
 export async function withdrawPackage(body: WithdrawPackage) {
@@ -233,11 +268,14 @@ export async function withdrawPackage(body: WithdrawPackage) {
     });
   }
   // Begin query (data is confirmed)
+  const today = seaToolFriendlyTimestamp();
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
   const query = `
     UPDATE SEA.dbo.State_Plan
-      SET SPW_Status_ID = (Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}')
+      SET 
+        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}'),
+        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
       WHERE ID_Number = '${body.id}'
   `;
 
@@ -245,6 +283,10 @@ export async function withdrawPackage(body: WithdrawPackage) {
     await transaction.begin();
     const txnResult = await transaction.request().query(query);
     console.log(txnResult);
+    const statusMemoUpdate = await transaction
+      .request()
+      .query(buildStatusMemoQuery(result.data.id, "Package Withdrawn"));
+    console.log(statusMemoUpdate);
     await produceMessage(
       TOPIC_NAME,
       body.id,
