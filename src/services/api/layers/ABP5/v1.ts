@@ -574,6 +574,44 @@ const ABP5: FormSchema = {
                     ],
                   },
                   {
+                    label: "12. Other base benchmark benefits not covered",
+                    value: "other_base_benchmark_benefits_not_covered",
+                    form: [
+                      {
+                        slots: [
+                          {
+                            rhf: "FieldGroup",
+                            name: "other_base_benchmark_benefits_not_covered",
+                            groupNamePrefix:
+                              "other_base_benchmark_benefits_not_covered",
+                            props: {
+                              appendText: "Add benefit",
+                              removeText: "Remove benefit",
+                            },
+                            fields: [
+                              {
+                                rhf: "Input",
+                                label:
+                                  "Base benchmark benefit that was substituted",
+                                labelStyling: "font-bold",
+                                rules: { required: "* Required" },
+                                name: "base_benchmark_benefit_substituted",
+                              },
+                              {
+                                rhf: "Textarea",
+                                label:
+                                  "Explain why the state or territory chose not to include this benefit.",
+                                labelStyling: "font-bold",
+                                rules: { required: "* Required" },
+                                name: "explanation",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
                     label:
                       "13. Additional covered benefits (this category of benefits is not applicable to the Adult group under Section 1902(a)(10)(A)(i)(VIII) of the Act)",
                     value: "additional_covered_benefits",
