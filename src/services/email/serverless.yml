@@ -18,6 +18,10 @@ provider:
       path: /delegatedadmin/developer/
       permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
       statements:
+        - Effect: "Allow"
+          Action:
+            - cognito-idp:ListUsers
+          Resource: !GetAtt CognitoUserPool.Arn
         - Effect: Allow
           Action:
             - sts:AssumeRole
