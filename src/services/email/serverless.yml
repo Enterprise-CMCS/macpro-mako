@@ -57,6 +57,7 @@ functions:
     environment:
       region: ${self:provider.region}
       emailConfigSet: ${self:service}-${sls:stage}-configuration
+      cognitoPoolId: ${param:CognitoUserPoolId}
     maximumRetryAttempts: 0
     timeout: 60
     memorySize: 1024
