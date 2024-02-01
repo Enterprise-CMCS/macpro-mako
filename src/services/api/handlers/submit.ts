@@ -18,6 +18,7 @@ const config = {
 import { Kafka, Message } from "kafkajs";
 import { PlanType, onemacSchema, transformOnemac } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
+import { buildStatusMemoQuery } from "../libs/statusMemo";
 
 const kafka = new Kafka({
   clientId: "submit",
@@ -79,6 +80,11 @@ export const submit = async (event: APIGatewayEvent) => {
 
     const result = await sql.query(query);
     console.log(result);
+
+    const statusMemoUpdate = await sql.query(
+      buildStatusMemoQuery(body.id, "Package Submitted")
+    );
+    console.log(statusMemoUpdate);
 
     await pool.close();
 

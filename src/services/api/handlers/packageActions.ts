@@ -29,6 +29,7 @@ import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
 import { seaToolFriendlyTimestamp } from "shared-utils";
+import { buildStatusMemoQuery } from "../libs/statusMemo";
 
 const TOPIC_NAME = process.env.topicName as string;
 
@@ -58,6 +59,11 @@ export async function issueRai(body: RaiIssue) {
     `;
     const result2 = await transaction.request().query(query2);
     console.log(result2);
+
+    const statusMemoUpdate = await transaction
+      .request()
+      .query(buildStatusMemoQuery(body.id, "RAI Issued"));
+    console.log(statusMemoUpdate);
 
     // write to kafka here
     const result = raiIssueSchema.safeParse({ ...body, requestedDate: today });
@@ -133,6 +139,11 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
       const result2 = await transaction.request().query(query2);
       console.log(result2);
 
+      const statusMemoUpdate = await transaction
+        .request()
+        .query(buildStatusMemoQuery(result.data.id, "RAI Response Withdrawn"));
+      console.log(statusMemoUpdate);
+
       // write to kafka here
       await produceMessage(
         TOPIC_NAME,
@@ -195,6 +206,11 @@ export async function respondToRai(body: RaiResponse, document: any) {
     `;
     const result2 = await transaction.request().query(query2);
     console.log(result2);
+
+    const statusMemoUpdate = await transaction
+      .request()
+      .query(buildStatusMemoQuery(body.id, "RAI Response Received"));
+    console.log(statusMemoUpdate);
 
     //   // write to kafka here
     const result = raiResponseSchema.safeParse({
@@ -267,6 +283,10 @@ export async function withdrawPackage(body: WithdrawPackage) {
     await transaction.begin();
     const txnResult = await transaction.request().query(query);
     console.log(txnResult);
+    const statusMemoUpdate = await transaction
+      .request()
+      .query(buildStatusMemoQuery(result.data.id, "Package Withdrawn"));
+    console.log(statusMemoUpdate);
     await produceMessage(
       TOPIC_NAME,
       body.id,
