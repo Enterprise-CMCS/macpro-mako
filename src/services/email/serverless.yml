@@ -53,6 +53,16 @@ custom:
       - val
       - production
 
+params:
+  master:
+    topicNamespace: ""
+  val:
+    topicNamespace: ""
+  production:
+    topicNamespace: ""
+  default:
+    topicNamespace: --${self:custom.project}--${sls:stage}--
+
 functions:
   processEmails:
     handler: handlers/processEmails.main

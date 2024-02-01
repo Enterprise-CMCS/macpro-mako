@@ -47,4 +47,3 @@ services:
     path: src/services/email
     params:
       CognitoUserPoolId: ${auth.UserPoolId}
-      topicName: ${data.TopicName}
