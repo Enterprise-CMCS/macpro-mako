@@ -9,7 +9,6 @@ import {
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import { Action, opensearch, UserRoles } from "shared-types";
-import { PackageCheck } from "shared-utils";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -38,9 +37,9 @@ const DetailCardWrapper = ({
     </div>
   </CardWithTopBorder>
 );
+
 const StatusCard = (data: opensearch.main.Document) => {
   const transformedStatuses = getStatus(data.seatoolStatus);
-  const checker = PackageCheck(data);
   const { data: user } = useGetUser();
 
   return (
@@ -52,16 +51,29 @@ const StatusCard = (data: opensearch.main.Document) => {
             ? transformedStatuses.cmsStatus
             : transformedStatuses.stateStatus}
         </h2>
-        {checker.hasEnabledRaiWithdraw && (
-          <em className="text-xs my-4 mr-2">
-            {"Withdraw Formal RAI Response - Enabled"}
-          </em>
-        )}
-        {user?.isCms && checker.isInSecondClock && (
-          <span id="secondclock" className="ml-2">
-            2nd Clock
-          </span>
-        )}
+        <div className="flex mt-1 flex-col gap-1 items-start">
+          {data.raiWithdrawEnabled && (
+            <div className="flex flex-row gap-1">
+              <p className="text-xs font-bold opacity-80">·</p>
+              <p className="text-xs opacity-80">
+                Withdraw Formal RAI Response - Enabled
+              </p>
+            </div>
+          )}
+          {user?.isCms && data.secondClock && (
+            <div className="flex flex-row gap-1">
+              <p className="text-xs font-bold opacity-80">·</p>
+              <p className="text-xs opacity-80">2nd Clock</p>
+            </div>
+          )}
+
+          {user?.isCms && data.initialIntakeNeeded && (
+            <div className="flex flex-row gap-1">
+              <p className="text-xs font-bold opacity-80">·</p>
+              <p className="text-xs opacity-80">Initial Intake Needed</p>
+            </div>
+          )}
+        </div>
       </div>
     </DetailCardWrapper>
   );
@@ -88,7 +100,7 @@ const PackageActionsCard = ({ id }: { id: string }) => {
                   key={`${idx}-${type}`}
                   path="/action/:id/:type"
                   params={{ id, type }}
-                  className="text-sky-500 underline"
+                  className="text-sky-700 underline"
                 >
                   <li>{mapActionLabel(type)}</li>
                 </Link>

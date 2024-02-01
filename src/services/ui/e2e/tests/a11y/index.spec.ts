@@ -1,7 +1,23 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const staticRoutes = ["/", "/dashboard", "/faq", "/profile"];
+const staticRoutes = [
+  "/",
+  "/dashboard",
+  "/faq",
+  "/profile",
+  "/new-submission",
+  "/new-submission/spa",
+  "/new-submission/spa/medicaid",
+  "/new-submission/spa/chip",
+  "/new-submission/waiver",
+  "/new-submission/waiver/b",
+  "/new-submission/waiver/b/b4",
+  "/new-submission/waiver/b/capitated",
+  "/new-submission/spa/medicaid/landing/medicaid-abp",
+  "/new-submission/spa/medicaid/landing/medicaid-eligibility",
+  "/new-submission/spa/chip/landing/chip-eligibility",
+];
 
 test.describe("test a11y on static routes", () => {
   for (const route of staticRoutes) {
@@ -21,6 +37,7 @@ test.describe("test a11y on static routes", () => {
 });
 
 const webformRoutes = [
+  "/webforms",
   "/guides/abp",
   "/webform/abp10/1",
   "/webform/abp3_1/1",
