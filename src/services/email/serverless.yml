@@ -37,6 +37,15 @@ provider:
             - sns:Subscribe
             - sns:Publish
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - ec2:CreateNetworkInterface
+            - ec2:DescribeNetworkInterfaces
+            - ec2:DescribeVpcs
+            - ec2:DeleteNetworkInterface
+            - ec2:DescribeSubnets
+            - ec2:DescribeSecurityGroups
+          Resource: "*"
 
   stackTags:
     PROJECT: ${self:custom.project}
@@ -148,15 +157,6 @@ resources:
               Action:
                 - "kms:Decrypt"
                 - "kms:GenerateDataKey*"
-              Resource: "*"
-            - Effect: Allow
-              Action:
-                - ec2:CreateNetworkInterface
-                - ec2:DescribeNetworkInterfaces
-                - ec2:DescribeVpcs
-                - ec2:DeleteNetworkInterface
-                - ec2:DescribeSubnets
-                - ec2:DescribeSecurityGroups
               Resource: "*"
 
     EmailEventTopicPolicy:
