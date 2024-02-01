@@ -43,7 +43,7 @@ export const main = async (event, context, callback) => {
     let response;
     console.log("Received event (stringified):", JSON.stringify(event, null, 4));
     const commandListUsers = new ListUsersCommand({
-        UserPoolId: "us-east-1_c5R7LR3yh",
+        UserPoolId: process.env.cognitoPoolId,
         // Filter: subFilter,
     });
 
@@ -51,7 +51,7 @@ export const main = async (event, context, callback) => {
 
     try {
         const listUsersResponse = await Cognito.send(commandListUsers);
-        console.log("listUsers response: ", listUsersResponse);
+        console.log("listUsers response: ", JSON.stringify(listUsersResponse, null, 4));
 
         response = await SES.send(sendEmailCommand);
         console.log("sendEmailCommand response: ", response);
