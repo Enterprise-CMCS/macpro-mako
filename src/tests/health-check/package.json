@@ -1,0 +1,25 @@
+{
+  "name": "full-e2e-cypress",
+  "version": "1.0.0",
+  "description": "full e2e testsuite in Cypress",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "testsuite",
+    "e2e"
+  ],
+  "author": "Green Machine",
+  "license": "ISC",
+  "devDependencies": {
+    "@cypress/xpath": "^2.0.3",
+    "@badeball/cypress-cucumber-preprocessor": "^18.0.5",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
+    "axe-core": "^4.4.1",
+    "concurrently": "^6.5.1",
+    "cypress": "^13.3.0",
+    "cypress-axe": "^1.5.0",
+    "cypress-file-upload": "^5.0.8"
+  }
+}

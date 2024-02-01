@@ -1,0 +1,23 @@
+## MAKO Automated Testing with Cypress and Cucumber
+
+MAKO uses the Cypress (https://cypress.io) front end testing tool with Cucumber (https://cucumber.io) as the Behavior-Driven-Development (BDD) layer. This allows the team to test the intricate details of the MAKO application in a reliable and readable way.
+
+### Installing and using full cypress suite locally
+
+cd ~projectDir/src/tests/cypress
+npm i
+
+npx cypress open
+
+### Installing and using cypress health check suite locally
+
+cd ~projectDir/src/tests/health-check
+npm i
+
+npx cypress open
+
+
+## Run an individual cypress test rather than whole test suite
+
+go to test suite directory (based on which suite you are looking for /tests/{suite-name})
+npx cypress run --spec "./cypress/e2e/test-name.spec.feature" --headed
