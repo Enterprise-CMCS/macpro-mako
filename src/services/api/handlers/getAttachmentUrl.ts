@@ -4,9 +4,8 @@ import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-import * as os from "./../../../libs/opensearch-lib";
 import { getStateFilter } from "../libs/auth/user";
-import { OsMainSourceItem, OsResponse } from "shared-types";
+import { getPackage, getPackageChangelog } from "../libs/package";
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
@@ -29,52 +28,37 @@ export const handler = async (event: APIGatewayEvent) => {
   try {
     const body = JSON.parse(event.body);
 
-    let query: any = {};
-    query = {
-      query: {
-        bool: {
-          must: [
-            {
-              ids: {
-                values: [body.id],
-              },
-            },
-          ],
-        },
-      },
-    };
-    const stateFilter = await getStateFilter(event);
-    if (stateFilter) {
-      query.query.bool.must.push(stateFilter);
-    }
-
-    const results = (await os.search(
-      process.env.osDomain,
-      "main",
-      query
-    )) as OsResponse<OsMainSourceItem>;
-
-    if (!results) {
+    const mainResult = await getPackage(body.id);
+    if (!mainResult) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },
       });
     }
 
-    const allAttachments = [
-      ...(results.hits.hits[0]._source.attachments || []),
-      ...Object.values(results.hits.hits[0]._source.rais).flatMap((entry) => [
-        ...(entry.request?.attachments || []),
-        ...(entry.response?.attachments || []),
-        ...(entry.withdraw?.attachments || []),
-      ]),
-    ];
+    const stateFilter = await getStateFilter(event);
+    if (stateFilter) {
+      const stateAccessAllowed = stateFilter?.terms.state.includes(
+        mainResult?._source?.state?.toLocaleLowerCase() || ""
+      );
 
-    if (
-      !allAttachments.some((e) => {
-        return e.bucket === body.bucket && e.key === body.key;
-      })
-    ) {
+      if (!stateAccessAllowed) {
+        return response({
+          statusCode: 404,
+          body: { message: "state access not permitted for the given id" },
+        });
+      }
+    }
+
+    // add state
+    // Do we want to check
+    const changelogs = await getPackageChangelog(body.id);
+    const attachmentExists = changelogs.hits.hits.some((CL) => {
+      return CL._source.attachments?.some(
+        (ATT) => ATT.bucket === body.bucket && ATT.key === body.key
+      );
+    });
+    if (!attachmentExists) {
       return response({
         statusCode: 500,
         body: {
@@ -136,6 +120,7 @@ async function getClient(bucket: string) {
   }
 }
 
+//TODO: add check for resource before signing URL
 async function generatePresignedUrl(
   bucket: string,
   key: string,

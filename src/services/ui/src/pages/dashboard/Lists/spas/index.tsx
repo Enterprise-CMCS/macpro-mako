@@ -1,4 +1,4 @@
-import { ErrorAlert, LoadingSpinner } from "@/components";
+import { ErrorAlert } from "@/components";
 import { Pagination } from "@/components/Pagination";
 
 import {
@@ -6,7 +6,7 @@ import {
   OsFiltering,
   useOsContext,
   useOsUrl,
-} from "@/components/Opensearch";
+} from "@/components/Opensearch/main";
 import { useSpaTableColumns } from "./consts";
 
 export const SpasList = () => {
@@ -17,7 +17,7 @@ export const SpasList = () => {
   if (context.error) return <ErrorAlert error={context.error} />;
 
   return (
-    <section className="flex flex-col h-[calc(100vh-230px)]">
+    <section className="flex flex-col h-[100vh]">
       <OsFiltering />
       <OsTable columns={columns} />
       <Pagination

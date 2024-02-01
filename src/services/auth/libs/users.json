@@ -29,6 +29,35 @@
     ]
   },
   {
+    "username": "automated-state@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "automated-state@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Otto"
+      },
+      {
+        "Name": "family_name",
+        "Value": "State"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "TX,CA,NY,FL"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-micro-statesubmitter"
+      }
+    ]
+  },
+  {
     "username": "readonly@example.com",
     "attributes": [
       {
@@ -42,6 +71,35 @@
       {
         "Name": "family_name",
         "Value": "Only"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-micro-readonly"
+      }
+    ]
+  },
+  {
+    "username": "automated-readonly@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "automated-readonly@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Otto"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Readonly"
       },
       {
         "Name": "email_verified",
@@ -87,6 +145,35 @@
     ]
   },
   {
+    "username": "automated-reviewer@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "automated-reviewer@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Otto"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Reviewer"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-micro-reviewer"
+      }
+    ]
+  },
+  {
     "username": "helpdesk@example.com",
     "attributes": [
       {
@@ -96,6 +183,35 @@
       {
         "Name": "given_name",
         "Value": "CMS"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Helpdesk"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-micro-helpdesk"
+      }
+    ]
+  },
+  {
+    "username": "automated-helpdesk@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "automated-helpdesk@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Otto"
       },
       {
         "Name": "family_name",

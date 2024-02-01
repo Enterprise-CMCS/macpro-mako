@@ -1,6 +1,5 @@
-import { format } from "date-fns";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { OsTableColumn } from "@/components/Opensearch/Table/types";
+import { OsTableColumn } from "@/components/Opensearch/main";
 import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
 import { useGetUser } from "@/api/useGetUser";
 import {
@@ -9,6 +8,7 @@ import {
   renderCellIdLink,
 } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
+import { formatSeatoolDate } from "shared-utils";
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -40,11 +40,28 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
       label: "Status",
-      cell: (data) =>
-        props?.isCms &&
-        !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
-          ? data.cmsStatus
-          : data.stateStatus,
+      cell: (data) => {
+        const status = (() => {
+          if (!props?.isCms) return data.stateStatus;
+          if (props.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK))
+            return data.stateStatus;
+          return data.cmsStatus;
+        })();
+
+        return (
+          <>
+            <p>{status}</p>
+            {data.raiWithdrawEnabled && (
+              <p className="text-xs opacity-60">
+                · Withdraw Formal RAI Response - Enabled
+              </p>
+            )}
+            {props?.isCms && data.initialIntakeNeeded && (
+              <p className="text-xs opacity-60">· Initial Intake Needed</p>
+            )}
+          </>
+        );
+      },
     },
     {
       field: "submissionDate",
@@ -70,7 +87,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       label: "Formal RAI Response",
       cell: (data) => {
         if (!data.raiReceivedDate || data.raiWithdrawnDate) return null;
-        return format(new Date(data.raiReceivedDate), "MM/dd/yyyy");
+        return formatSeatoolDate(data.raiReceivedDate);
       },
     },
     {
