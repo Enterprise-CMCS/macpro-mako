@@ -21,7 +21,7 @@ provider:
         - Effect: "Allow"
           Action:
             - cognito-idp:ListUsers
-          Resource: ${param:CognitoUserPoolId}
+          Resource: "*"
         - Effect: Allow
           Action:
             - sts:AssumeRole
