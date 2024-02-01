@@ -21,13 +21,13 @@ export const Webforms = () => {
             path="/webform/:id/:version"
             params={{ id: "abp1", version: 202401 }}
           >
-            ABP 1 v1
+            ABP 1 (Jan 2024)
           </Link>
           <Link
             path="/webform/:id/:version"
             params={{ id: "abp1", version: 202402 }}
           >
-            ABP 1 v2
+            ABP 1 (Feb 2024)
           </Link>
           <Link
             path="/webform/:id/:version"
