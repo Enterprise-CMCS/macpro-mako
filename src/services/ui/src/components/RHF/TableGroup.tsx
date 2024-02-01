@@ -3,7 +3,7 @@ import { FieldValues, useFieldArray, useFormContext } from "react-hook-form";
 import { Plus, Trash2 } from "lucide-react";
 
 import { RHFSlotProps, TableGroupProps } from "shared-types";
-import { Button, FormControl, FormField } from "../Inputs";
+import { Button, FormField } from "../Inputs";
 import {
   Table,
   TableBody,
@@ -13,7 +13,8 @@ import {
   TableCell,
 } from "../Table";
 import { slotInitializer } from "./utils";
-import { UnwrappedFormSlot } from "./Slot";
+import { RHFSlot } from "./Slot";
+import { cn } from "@/lib";
 
 const FieldRow = <TFields extends FieldValues>(
   props: { onTrashClick: () => void } & TableGroupProps<TFields>
@@ -48,27 +49,20 @@ const FieldCell = <TFields extends FieldValues>({
   return (
     <FormField
       key={name}
-      name={name as never}
       control={props.control}
+      name={name as never}
       {...(SLOT.rules && { rules: SLOT.rules })}
-      render={({ field }) => {
-        useEffect(() => {
-          return () => {
-            props.control.unregister(field.name);
-          };
-        }, []);
-        return (
-          <FormControl>
-            <UnwrappedFormSlot
-              control={props.control}
-              field={field}
-              {...SLOT}
-              props={{ className: "border-slate-300", ...SLOT?.props } as any}
-              name={name}
-            />
-          </FormControl>
-        );
-      }}
+      render={RHFSlot({
+        ...SLOT,
+        control: props.control,
+        name: name,
+        removeFormDecoration: true,
+        formItemStyling: "gap-0 py-0",
+        props: {
+          ...SLOT.props,
+          className: cn("border-slate-300", (SLOT?.props as any)?.classname),
+        } as any,
+      })}
     />
   );
 };

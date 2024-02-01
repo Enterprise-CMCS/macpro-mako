@@ -48,7 +48,13 @@ export const RHFSlot = <
   descriptionStyling,
   labelStyling,
   formItemStyling,
-  ...rest
+  removeFormDecoration,
+  rhf,
+  name,
+  fields,
+  groupNamePrefix,
+  props,
+  text,
 }: RHFSlotProps & { control: any }): ControllerProps<
   TFieldValues,
   TName
@@ -67,294 +73,281 @@ export const RHFSlot = <
           formItemStyling ? ` ${formItemStyling}` : ""
         }`}
       >
-        {label && <FormLabel className={labelStyling}>{label}</FormLabel>}
-        {descriptionAbove && (
+        {!removeFormDecoration && label && (
+          <FormLabel className={labelStyling}>{label}</FormLabel>
+        )}
+        {!removeFormDecoration && descriptionAbove && (
           <FormDescription className={descriptionStyling}>
             {description}
           </FormDescription>
         )}
         <FormControl>
-          <UnwrappedFormSlot {...{ control, field, ...rest }} />
+          <>
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "Input" &&
+              (() => {
+                const hops = props as RHFComponentMap["Input"];
+                return <Input {...hops} {...field} aria-label={field.name} />;
+              })()}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "Textarea" &&
+              (() => {
+                const hops = props as RHFComponentMap["Textarea"];
+                return (
+                  <Textarea {...hops} {...field} aria-label={field.name} />
+                );
+              })()}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "Switch" &&
+              (() => {
+                const hops = props as RHFComponentMap["Switch"];
+                return <Switch {...hops} {...field} aria-label={field.name} />;
+              })()}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "Select" &&
+              (() => {
+                const hops = props as RHFComponentMap["Select"];
+                const opts = useMemo(() => {
+                  if (hops.sort) {
+                    const sorted = hops.options.sort((a, b) =>
+                      a.label.localeCompare(b.label)
+                    );
+                    hops.sort === "descending" && sorted.reverse();
+                    return sorted;
+                  }
+                  return hops.options;
+                }, [hops.options, hops.sort]);
+
+                return (
+                  <Select
+                    {...hops}
+                    onValueChange={field?.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger {...hops} aria-label={field.name}>
+                      <SelectValue {...hops} />
+                    </SelectTrigger>
+                    <SelectContent className="overflow-auto max-h-60">
+                      {opts.map((OPT) => (
+                        <SelectItem key={`OPT-${OPT.value}`} value={OPT.value}>
+                          {OPT.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                );
+              })()}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "Radio" &&
+              (() => {
+                const hops = props as RHFComponentMap["Radio"];
+                return (
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex flex-col space-y-1"
+                  >
+                    {hops.options.map((OPT) => {
+                      return (
+                        <div key={`OPT-${OPT.value}`} className="flex flex-col">
+                          <div className="flex gap-2 items-center">
+                            <RadioGroupItem
+                              value={OPT.value}
+                              id={OPT.value}
+                              aria-label={OPT.value}
+                            />
+                            {
+                              <FormLabel
+                                className="font-normal"
+                                htmlFor={OPT.value}
+                              >
+                                {OPT.label}
+                              </FormLabel>
+                            }
+                          </div>
+                          {field.value === OPT.value &&
+                            OPT.form &&
+                            OPT.form.map((FORM, index) => {
+                              return (
+                                <div
+                                  className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
+                                  key={`rhf-form-${index}-${FORM.description}`}
+                                >
+                                  <RHFFormGroup
+                                    form={FORM}
+                                    control={control}
+                                    groupNamePrefix={groupNamePrefix}
+                                  />
+                                </div>
+                              );
+                            })}
+                          {field.value === OPT.value &&
+                            OPT.slots &&
+                            OPT.slots.map((SLOT, index) => (
+                              <div
+                                className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
+                                key={SLOT.name + index}
+                              >
+                                <FormField
+                                  control={control}
+                                  name={(groupNamePrefix ?? "") + SLOT.name}
+                                  {...(SLOT.rules && { rules: SLOT.rules })}
+                                  render={RHFSlot({ ...SLOT, control })}
+                                />
+                              </div>
+                            ))}
+                        </div>
+                      );
+                    })}
+                  </RadioGroup>
+                );
+              })()}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "Checkbox" &&
+              (() => {
+                const hops = props as RHFComponentMap["Checkbox"];
+                return (
+                  <div className="flex flex-col gap-2">
+                    {hops.options.map((OPT) => (
+                      <div key={`CHECK-${OPT.value}`}>
+                        <Checkbox
+                          label={OPT.label}
+                          value={OPT.value}
+                          checked={field.value?.includes(OPT.value)}
+                          onCheckedChange={(c) => {
+                            const filtered =
+                              field.value?.filter(
+                                (f: unknown) => f !== OPT.value
+                              ) || [];
+                            if (!c) return field.onChange(filtered);
+                            field.onChange([...filtered, OPT.value]);
+                          }}
+                          dependency={OPT.dependency}
+                          parentValue={field.value}
+                          changeMethod={field.onChange}
+                          aria-label={field.name}
+                        />
+                        {field.value?.includes(OPT.value) &&
+                          !!OPT.slots &&
+                          OPT.slots &&
+                          OPT.slots.map((SLOT, index) => (
+                            <div
+                              className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
+                              key={`rhf-form-${index}-${SLOT.name}`}
+                            >
+                              <FormField
+                                control={control}
+                                name={(groupNamePrefix ?? "") + SLOT.name}
+                                {...(SLOT.rules && { rules: SLOT.rules })}
+                                render={RHFSlot({ ...SLOT, control })}
+                              />
+                            </div>
+                          ))}
+
+                        {field.value?.includes(OPT.value) &&
+                          !!OPT.form &&
+                          OPT.form.map((FORM: FormGroup) => (
+                            <div
+                              key={`CHECK-${OPT.value}-form-${FORM.description}`}
+                              className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
+                            >
+                              <RHFFormGroup
+                                control={control}
+                                form={FORM}
+                                groupNamePrefix={groupNamePrefix}
+                              />
+                            </div>
+                          ))}
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "DatePicker" &&
+              (() => {
+                const hops = props as RHFComponentMap["DatePicker"];
+                return (
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-[240px] pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        {...hops}
+                        selected={field.value}
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        onSelect={field.onChange}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                );
+              })()}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "FieldArray" && (
+              <RHFFieldArray
+                control={control}
+                name={name}
+                fields={fields ?? []}
+                groupNamePrefix={groupNamePrefix}
+                {...(props as RHFComponentMap["FieldArray"])}
+              />
+            )}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "FieldGroup" && (
+              <FieldGroup
+                control={control}
+                name={name}
+                fields={fields ?? []}
+                groupNamePrefix={groupNamePrefix}
+                {...(props as RHFComponentMap["FieldGroup"])}
+              />
+            )}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "TableGroup" && (
+              <TableGroup
+                control={control}
+                name={name}
+                fields={fields ?? []}
+                {...(props as RHFComponentMap["TableGroup"])}
+              />
+            )}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "TextDisplay" && (
+              <p {...(props as RHFComponentMap["TextDisplay"])}>{text}</p>
+            )}
+          </>
         </FormControl>
-        {description && !descriptionAbove && (
+        {!removeFormDecoration && description && !descriptionAbove && (
           <FormDescription>{description}</FormDescription>
         )}
-        <FormMessage />
+        {!removeFormDecoration && <FormMessage />}
       </FormItem>
     );
   };
-
-export const UnwrappedFormSlot = <
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
->({
-  name,
-  rhf,
-  props,
-  field,
-  groupNamePrefix,
-  control,
-  fields,
-  text,
-}: RHFSlotProps & {
-  field: ControllerRenderProps<TFieldValues, TName>;
-  control: any;
-}) => {
-  return (
-    <>
-      {/* ----------------------------------------------------------------------------- */}
-      {rhf === "Input" &&
-        (() => {
-          const hops = props as RHFComponentMap["Input"];
-          return <Input {...hops} {...field} aria-label={field.name} />;
-        })()}
-
-      {/* ----------------------------------------------------------------------------- */}
-      {rhf === "Textarea" &&
-        (() => {
-          const hops = props as RHFComponentMap["Textarea"];
-          return <Textarea {...hops} {...field} aria-label={field.name} />;
-        })()}
-
-      {/* ----------------------------------------------------------------------------- */}
-      {rhf === "Switch" &&
-        (() => {
-          const hops = props as RHFComponentMap["Switch"];
-          return <Switch {...hops} {...field} aria-label={field.name} />;
-        })()}
-
-      {/* ----------------------------------------------------------------------------- */}
-      {rhf === "Select" &&
-        (() => {
-          const hops = props as RHFComponentMap["Select"];
-          const opts = useMemo(() => {
-            if (hops.sort) {
-              const sorted = hops.options.sort((a, b) =>
-                a.label.localeCompare(b.label)
-              );
-              hops.sort === "descending" && sorted.reverse();
-              return sorted;
-            }
-            return hops.options;
-          }, [hops.options, hops.sort]);
-
-          return (
-            <Select
-              {...hops}
-              onValueChange={field?.onChange}
-              defaultValue={field.value}
-            >
-              <SelectTrigger {...hops} aria-label={field.name}>
-                <SelectValue {...hops} />
-              </SelectTrigger>
-              <SelectContent className="overflow-auto max-h-60">
-                {opts.map((OPT) => (
-                  <SelectItem key={`OPT-${OPT.value}`} value={OPT.value}>
-                    {OPT.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          );
-        })()}
-
-      {/* ----------------------------------------------------------------------------- */}
-      {rhf === "Radio" &&
-        (() => {
-          const hops = props as RHFComponentMap["Radio"];
-          return (
-            <RadioGroup
-              onValueChange={field.onChange}
-              defaultValue={field.value}
-              className="flex flex-col space-y-1"
-            >
-              {hops.options.map((OPT) => {
-                return (
-                  <div key={`OPT-${OPT.value}`} className="flex flex-col">
-                    <div className="flex gap-2 items-center">
-                      <RadioGroupItem
-                        value={OPT.value}
-                        id={OPT.value}
-                        aria-label={OPT.value}
-                      />
-                      {
-                        <FormLabel className="font-normal" htmlFor={OPT.value}>
-                          {OPT.label}
-                        </FormLabel>
-                      }
-                    </div>
-                    {field.value === OPT.value &&
-                      OPT.form &&
-                      OPT.form.map((FORM, index) => {
-                        return (
-                          <div
-                            className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
-                            key={`rhf-form-${index}-${FORM.description}`}
-                          >
-                            <RHFFormGroup
-                              form={FORM}
-                              control={control}
-                              groupNamePrefix={groupNamePrefix}
-                            />
-                          </div>
-                        );
-                      })}
-                    {field.value === OPT.value &&
-                      OPT.slots &&
-                      OPT.slots.map((SLOT, index) => (
-                        <div
-                          className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
-                          key={SLOT.name + index}
-                        >
-                          <FormField
-                            control={control}
-                            name={(groupNamePrefix ?? "") + SLOT.name}
-                            {...(SLOT.rules && { rules: SLOT.rules })}
-                            render={RHFSlot({ ...SLOT, control })}
-                          />
-                        </div>
-                      ))}
-                  </div>
-                );
-              })}
-            </RadioGroup>
-          );
-        })()}
-
-      {/* ----------------------------------------------------------------------------- */}
-      {rhf === "Checkbox" &&
-        (() => {
-          const hops = props as RHFComponentMap["Checkbox"];
-          return (
-            <div className="flex flex-col gap-2">
-              {hops.options.map((OPT) => (
-                <div key={`CHECK-${OPT.value}`}>
-                  <Checkbox
-                    label={OPT.label}
-                    value={OPT.value}
-                    checked={field.value?.includes(OPT.value)}
-                    onCheckedChange={(c) => {
-                      const filtered =
-                        field.value?.filter((f: unknown) => f !== OPT.value) ||
-                        [];
-                      if (!c) return field.onChange(filtered);
-                      field.onChange([...filtered, OPT.value]);
-                    }}
-                    dependency={OPT.dependency}
-                    parentValue={field.value}
-                    changeMethod={field.onChange}
-                    aria-label={field.name}
-                  />
-                  {field.value?.includes(OPT.value) &&
-                    !!OPT.slots &&
-                    OPT.slots &&
-                    OPT.slots.map((SLOT, index) => (
-                      <div
-                        className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
-                        key={`rhf-form-${index}-${SLOT.name}`}
-                      >
-                        <FormField
-                          control={control}
-                          name={(groupNamePrefix ?? "") + SLOT.name}
-                          {...(SLOT.rules && { rules: SLOT.rules })}
-                          render={RHFSlot({ ...SLOT, control })}
-                        />
-                      </div>
-                    ))}
-
-                  {field.value?.includes(OPT.value) &&
-                    !!OPT.form &&
-                    OPT.form.map((FORM: FormGroup) => (
-                      <div
-                        key={`CHECK-${OPT.value}-form-${FORM.description}`}
-                        className="ml-[0.7rem] px-4 border-l-4 border-l-primary"
-                      >
-                        <RHFFormGroup
-                          control={control}
-                          form={FORM}
-                          groupNamePrefix={groupNamePrefix}
-                        />
-                      </div>
-                    ))}
-                </div>
-              ))}
-            </div>
-          );
-        })()}
-
-      {/* ----------------------------------------------------------------------------- */}
-      {rhf === "DatePicker" &&
-        (() => {
-          const hops = props as RHFComponentMap["DatePicker"];
-          return (
-            <Popover>
-              <PopoverTrigger asChild>
-                <FormControl>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-[240px] pl-3 text-left font-normal",
-                      !field.value && "text-muted-foreground"
-                    )}
-                  >
-                    {field.value ? (
-                      format(field.value, "PPP")
-                    ) : (
-                      <span>Pick a date</span>
-                    )}
-                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                  </Button>
-                </FormControl>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  {...hops}
-                  selected={field.value}
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  onSelect={field.onChange}
-                />
-              </PopoverContent>
-            </Popover>
-          );
-        })()}
-
-      {/* ----------------------------------------------------------------------------- */}
-      {rhf === "FieldArray" && (
-        <RHFFieldArray
-          control={control}
-          name={name}
-          fields={fields ?? []}
-          groupNamePrefix={groupNamePrefix}
-          {...(props as RHFComponentMap["FieldArray"])}
-        />
-      )}
-
-      {/* ----------------------------------------------------------------------------- */}
-      {rhf === "FieldGroup" && (
-        <FieldGroup
-          control={control}
-          name={name}
-          fields={fields ?? []}
-          groupNamePrefix={groupNamePrefix}
-          {...(props as RHFComponentMap["FieldGroup"])}
-        />
-      )}
-
-      {/* ----------------------------------------------------------------------------- */}
-      {rhf === "TableGroup" && (
-        <TableGroup
-          control={control}
-          name={name}
-          fields={fields ?? []}
-          {...(props as RHFComponentMap["TableGroup"])}
-        />
-      )}
-
-      {/* ----------------------------------------------------------------------------- */}
-      {rhf === "TextDisplay" && (
-        <p {...(props as RHFComponentMap["TextDisplay"])}>{text}</p>
-      )}
-    </>
-  );
-};
