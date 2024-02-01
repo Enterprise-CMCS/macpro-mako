@@ -259,3 +259,19 @@ resources:
         StartingPosition: LATEST
         Topics:
           - ${param:topicNamespace}aws.onemac.migration.cdc
+
+    SecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
+      Properties:
+        GroupDescription: Security group for Sink Lambda Function.
+        VpcId: ${self:custom.vpc.id}
+        SecurityGroupEgress:
+          - IpProtocol: tcp
+            CidrIp: 0.0.0.0/0
+            FromPort: 443
+            ToPort: 443
+          - IpProtocol: tcp
+            CidrIp: 10.0.0.0/8
+            FromPort: 9094
+            ToPort: 9094
