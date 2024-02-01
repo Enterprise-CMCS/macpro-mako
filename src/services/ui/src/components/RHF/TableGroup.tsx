@@ -110,9 +110,12 @@ export const TableGroup = <TFields extends FieldValues>({
   useEffect(() => {
     if (fieldArr.fields.length) return;
 
+    const initArray = [];
     do {
-      fieldArr.append(props.fields.reduce(slotInitializer, {}) as never);
-    } while (fieldArr.fields.length === initNumRows);
+      initArray.push(props.fields.reduce(slotInitializer, {}));
+    } while (initArray.length < initNumRows);
+
+    fieldArr.append(initArray as never);
   }, []);
 
   return (
