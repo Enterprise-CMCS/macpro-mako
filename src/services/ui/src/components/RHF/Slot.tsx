@@ -53,7 +53,7 @@ export const RHFSlot = <
   TFieldValues,
   TName
 >["render"] =>
-  function SlotFormWrapper({ field }) {
+  function Slot({ field }) {
     // added to unregister/reset inputs when removed from dom
     useEffect(() => {
       return () => {
