@@ -22,7 +22,7 @@ export const formatSeatoolDate = (date: string): string => {
   return moment(date).tz("UTC").format("MM/DD/yyyy")
 }
 
-export const getCurrentOrNextBusinessDay = (date?: Date): number => {
+export const getNextBusinessDayTimestamp = (date?: Date): number => {
   if(!date) {
     date = new Date();
   }
@@ -39,7 +39,7 @@ export const getCurrentOrNextBusinessDay = (date?: Date): number => {
     nextDate.setDate(nextDate.getDate() + 1);
     nextDate.setHours(nextDate.getTimezoneOffset()/60,0,0,0)
     console.log("Current date is not valid.  Will try " + nextDate)
-    return getCurrentOrNextBusinessDay(nextDate)
+    return getNextBusinessDayTimestamp(nextDate)
   }
 
   // If it's none of the above, return the time of the localeDate; equivalent to the next business day's epoch for midnight UTC

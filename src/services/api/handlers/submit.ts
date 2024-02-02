@@ -18,7 +18,7 @@ const config = {
 import { Kafka, Message } from "kafkajs";
 import { PlanType, onemacSchema, transformOnemac } from "shared-types";
 import {
-  getCurrentOrNextBusinessDay,
+  getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
 } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
@@ -66,7 +66,7 @@ export const submit = async (event: APIGatewayEvent) => {
     }
 
     const today = seaToolFriendlyTimestamp();
-    const submissionDate = getCurrentOrNextBusinessDay();
+    const submissionDate = getNextBusinessDayTimestamp();
     console.log(
       "Initial Submission Date determined to be: " +
         new Date(submissionDate).toISOString()
