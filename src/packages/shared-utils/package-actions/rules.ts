@@ -10,7 +10,7 @@ const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
   check: (checker, user) =>
     checker.isInActivePendingStatus &&
-    (!checker.hasLatestRai || checker.hasRequestedRai) &&
+    (!checker.hasLatestRai || checker.hasCompletedRai) &&
     isCmsWriteUser(user),
 };
 

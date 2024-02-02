@@ -58,6 +58,8 @@ export const PackageCheck = ({
     hasLatestRai: !!raiRequestedDate,
     /** Latest RAI has been responded to **/
     hasRaiResponse: !!raiRequestedDate && !!raiReceivedDate && !raiWithdrawnDate,
+    /** Latest RAI has a response and/or has been withdrawn **/
+    hasCompletedRai: !!raiRequestedDate && (!!raiReceivedDate || !!raiWithdrawnDate),
     /** RAI Withdraw has been enabled **/
     hasEnabledRaiWithdraw: raiWithdrawEnabled,
   };
