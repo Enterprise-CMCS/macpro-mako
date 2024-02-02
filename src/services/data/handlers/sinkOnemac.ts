@@ -113,23 +113,28 @@ export const onemac_main = async (event: KafkaEvent) => {
 export const onemac_changelog = async (event: KafkaEvent) => {
   const data = Object.values(event.records).reduce((ACC, RECORDS) => {
     RECORDS.forEach((REC) => {
-      // Handle deletes and return
-      if (!REC.value) return;
+      try {
+        // Handle deletes and return
+        if (!REC.value) return;
 
-      const record = JSON.parse(decode(REC.value));
+        const record = JSON.parse(decode(REC.value));
 
-      // Handle legacy and return
-      if (record?.origin !== "micro") return;
+        // Handle legacy and return
+        if (record?.origin !== "micro") return;
 
-      // Handle everything else
-      const packageId = decode(REC.key);
-      ACC.push({
-        ...record,
-        ...(!record?.actionType && { actionType: "new-submission" }), // new-submission custom actionType
-        timestamp: REC.timestamp,
-        id: `${packageId}-${REC.offset}`,
-        packageId,
-      });
+        // Handle everything else
+        const packageId = decode(REC.key);
+        ACC.push({
+          ...record,
+          ...(!record?.actionType && { actionType: "new-submission" }), // new-submission custom actionType
+          timestamp: REC.timestamp,
+          id: `${packageId}-${REC.offset}`,
+          packageId,
+        });
+      } catch (error) {
+        console.log("SINK FAILURE:  There was an error sinking a record.");
+        console.log("Unedited event key: " + REC.key);
+      }
     });
 
     return ACC;
