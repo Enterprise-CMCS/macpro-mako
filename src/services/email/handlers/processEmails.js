@@ -1,3 +1,4 @@
+import { decode } from "base-64";
 import {
     CognitoIdentityProviderClient,
     ListUsersCommand,
