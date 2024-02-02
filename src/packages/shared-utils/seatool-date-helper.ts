@@ -33,17 +33,17 @@ export const getCurrentOrNextBusinessDay = (date?: Date): number => {
   // Some logging
   console.log(`Evaluating ${localeStringDate} at ${localeStringHours24}`);
 
-  // If it's after 5pm eastern, a holiday, or a weekend, recurse using the next day at noon utc.
+  // If it's after 5pm eastern, a holiday, or a weekend, recurse using the next day.
   if(parseInt(localeStringHours24,10) >= 17 || fedHolidays.isAHoliday(localeDate) || !(localeDate.getDay() % 6)) {
     let nextDate = localeDate;
     nextDate.setDate(nextDate.getDate() + 1);
-    nextDate.setHours(12,0,0,0)
+    nextDate.setHours(nextDate.getTimezoneOffset()/60,0,0,0)
     console.log("Current date is not valid.  Will try " + nextDate)
     return getCurrentOrNextBusinessDay(nextDate)
   }
 
   // If it's none of the above, return the time of the localeDate; equivalent to the next business day's epoch for midnight UTC
-  let ret = localeDate.getTime();
+  let ret = offsetForUtc(localeDate).getTime();
   console.log('Current date is a valid business date.  Will return ' + ret);
   return ret;
 }
