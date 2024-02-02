@@ -79,6 +79,7 @@ export type RHFComponentMap = {
   TableGroup: {
     initNumRows?: number;
     scalable?: boolean;
+    tableStyle?: string;
   };
   TextDisplay: { className?: string };
 };
@@ -133,6 +134,7 @@ export type TableGroupProps<
   fields: RHFSlotProps[];
   initNumRows?: number;
   scalable?: boolean;
+  tableStyle?: string;
 };
 
 type ConditionRules =

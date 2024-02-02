@@ -24,7 +24,10 @@ const FieldRow = <TFields extends FieldValues>(
       {props.fields.map((SLOT, i) => {
         const name = props.name + SLOT.name;
         return (
-          <TableCell key={`${props.name}cell.${i}`}>
+          <TableCell
+            key={`${props.name}cell.${i}`}
+            className={SLOT.tbColumnStyle}
+          >
             <FormField
               key={name}
               control={props.control}
@@ -87,6 +90,7 @@ const TableError = (props: { fieldName: string; row: number }) => {
 export const TableGroup = <TFields extends FieldValues>({
   initNumRows = 1,
   scalable = true,
+  tableStyle,
   ...props
 }: TableGroupProps<TFields>) => {
   const fieldArr = useFieldArray({
@@ -109,11 +113,11 @@ export const TableGroup = <TFields extends FieldValues>({
     } while (initArray.length < initNumRows);
 
     fieldArr.append(initArray as never);
-  }, []);
+  }, [fieldArr]);
 
   return (
     <>
-      <Table className="table-auto">
+      <Table className={cn("table-auto", tableStyle)}>
         <TableHeader>
           <TableRow>
             {props.fields.map((v) => {
