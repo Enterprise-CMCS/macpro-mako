@@ -19,81 +19,85 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 export const onemac_main = async (event: KafkaEvent) => {
   const records = Object.values(event.records).reduce((ACC, RECORDS) => {
     RECORDS.forEach((REC) => {
-      const id: string = decode(REC.key);
+      try {
+        const id: string = decode(REC.key);
 
-      // Handle deletes and return
-      if (!REC.value) {
-        ACC.push({
-          id,
-          additionalInformation: null,
-          raiWithdrawEnabled: null,
-          attachments: null,
-          submitterEmail: null,
-          submitterName: null,
-        });
-        return;
-      }
+        // Handle deletes and return
+        if (!REC.value) {
+          ACC.push({
+            id,
+            additionalInformation: null,
+            raiWithdrawEnabled: null,
+            attachments: null,
+            submitterEmail: null,
+            submitterName: null,
+          });
+          return;
+        }
+        const record = JSON.parse(decode(REC.value));
+        // Handle legacy and return
+        if (record?.origin !== "micro") {
+          if (
+            record?.sk === "Package" && // Is a Package View
+            record?.submitterName && // Is originally from Legacy
+            record?.submitterName !== "-- --" // Is originally from Legacy
+          ) {
+            const result = opensearch.main.legacySubmission
+              .transform(id)
+              .safeParse(record);
+            if (!result.success) {
+              return console.log(
+                "LEGACY Validation Error. The following record failed to parse: ",
+                JSON.stringify(record),
+                "Because of the following Reason(s):",
+                result.error.message
+              );
+            }
 
-      const record = JSON.parse(decode(REC.value));
-
-      // Handle legacy and return
-      if (record?.origin !== "micro") {
-        if (
-          record?.sk === "Package" && // Is a Package View
-          record?.submitterName && // Is originally from Legacy
-          record?.submitterName !== "-- --" // Is originally from Legacy
-        ) {
-          const result = opensearch.main.legacySubmission
-            .transform(id)
-            .safeParse(record);
-
-          if (!result.success) {
-            return console.log(
-              "LEGACY Validation Error. The following record failed to parse: ",
-              JSON.stringify(record),
-              "Because of the following Reason(s):",
-              result.error.message
-            );
+            ACC.push(result.data);
           }
-
-          ACC.push(result.data);
+          return;
         }
-        return;
-      }
 
-      // Handle everything else
-      const result = (() => {
-        switch (record?.actionType) {
-          case undefined:
-            return opensearch.main.newSubmission
-              .transform(id)
-              .safeParse(record);
-          case Action.DISABLE_RAI_WITHDRAW:
-          case Action.ENABLE_RAI_WITHDRAW:
-            return opensearch.main.toggleWithdrawEnabled
-              .transform(id)
-              .safeParse(record);
-          case Action.WITHDRAW_RAI:
-            return opensearch.main.withdrawRai.transform(id).safeParse(record);
-          case Action.WITHDRAW_PACKAGE:
-            return opensearch.main.withdrawPackage
-              .transform(id)
-              .safeParse(record);
+        // Handle everything else
+        const result = (() => {
+          switch (record?.actionType) {
+            case undefined:
+              return opensearch.main.newSubmission
+                .transform(id)
+                .safeParse(record);
+            case Action.DISABLE_RAI_WITHDRAW:
+            case Action.ENABLE_RAI_WITHDRAW:
+              return opensearch.main.toggleWithdrawEnabled
+                .transform(id)
+                .safeParse(record);
+            case Action.WITHDRAW_RAI:
+              return opensearch.main.withdrawRai
+                .transform(id)
+                .safeParse(record);
+            case Action.WITHDRAW_PACKAGE:
+              return opensearch.main.withdrawPackage
+                .transform(id)
+                .safeParse(record);
+          }
+        })();
+
+        if (!result) return;
+
+        if (!result?.success) {
+          return console.log(
+            "ONEMAC Validation Error. The following record failed to parse: ",
+            JSON.stringify(record),
+            "Because of the following Reason(s):",
+            result?.error.message
+          );
         }
-      })();
 
-      if (!result) return;
-
-      if (!result?.success) {
-        return console.log(
-          "ONEMAC Validation Error. The following record failed to parse: ",
-          JSON.stringify(record),
-          "Because of the following Reason(s):",
-          result?.error.message
-        );
+        ACC.push(result.data);
+      } catch (error) {
+        console.log("SINK FAILURE:  There was an error sinking a record.");
+        console.log("Unedited event key: " + REC.key);
       }
-
-      ACC.push(result.data);
     });
 
     return ACC;
