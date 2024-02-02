@@ -25,7 +25,7 @@ const ABP11: FormSchema = {
             {
               rhf: "Upload",
               name: "state_plan_attchmnt_alt_payment_method",
-              label: "Upload the state plan amendment attachment.",
+              label: "State plan ammendment attachment",
               labelStyling: "font-bold",
               description:
                 "Only required if not using the payment methodology in the approved state plan",
