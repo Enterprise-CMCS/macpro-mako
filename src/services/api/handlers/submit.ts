@@ -16,7 +16,7 @@ const config = {
 } as sql.config;
 
 import { Kafka, Message } from "kafkajs";
-import { PlanType, onemacSchema, transformOnemac } from "shared-types";
+import { PlanType, onemacSchema } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 
 const kafka = new Kafka({

@@ -6,7 +6,7 @@ import "@/api/amplifyConfig";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
 import { type Route } from "./components/Routing/types";
-import { IssueRai } from "./pages/form/waiver/actions/IssueRai";
+
 export const queryClient = new QueryClient();
 
 export const router = createBrowserRouter([
@@ -97,7 +97,6 @@ export const router = createBrowserRouter([
       { path: "/webform/:id/:version", element: <C.Webform /> },
       { path: "/profile", element: <P.Profile /> },
       { path: "/guides/abp", element: <P.ABPGuide /> },
-      { path: "/testing", element: <IssueRai /> }
     ],
     loader: rootLoader(queryClient),
   },
