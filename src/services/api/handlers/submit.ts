@@ -71,7 +71,6 @@ export const submit = async (event: APIGatewayEvent) => {
       "Initial Submission Date determined to be: " +
         new Date(submissionDate).toISOString()
     );
-    throw "stop here";
     const pool = await sql.connect(config);
     console.log(body);
     const query = `
