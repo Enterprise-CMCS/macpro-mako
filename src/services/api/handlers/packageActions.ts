@@ -125,8 +125,10 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
         // Set Received Date to null
         await transaction.request().query(`
           UPDATE SEA.dbo.RAI
-          SET RAI_RECEIVED_DATE = NULL
-            WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
+            SET 
+              RAI_RECEIVED_DATE = NULL,
+              RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
+          WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
         `);
         // Set Status to Pending - RAI
         await transaction.request().query(`
@@ -140,7 +142,8 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
         // Set Withdrawn_Date on the existing RAI
         await transaction.request().query(`
           UPDATE SEA.dbo.RAI
-          SET RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
+            SET 
+              RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
             WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
         `);
         // Set Status to Pending
@@ -213,7 +216,9 @@ export async function respondToRai(body: RaiResponse, document: any) {
     // Issue RAI
     const query1 = `
       UPDATE SEA.dbo.RAI
-        SET RAI_RECEIVED_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
+        SET 
+          RAI_RECEIVED_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME)),
+          RAI_WITHDRAWN_DATE = NULL
         WHERE ID_Number = '${body.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToRespondTo}', 10)), CAST('19700101' AS DATETIME))
     `;
     const result1 = await transaction.request().query(query1);
