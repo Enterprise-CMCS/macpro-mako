@@ -7,25 +7,31 @@ import { FILE_TYPES } from "shared-types/uploads";
 
 type UploadProps = {
   maxFiles?: number;
-  files: File[];
-  setFiles: (files: File[]) => void;
+  value?: File[];
+  onChange: (files: File[]) => void;
+  setError?: (e: string) => void;
 };
 
-export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
+export const Upload = ({
+  maxFiles,
+  value = [],
+  onChange,
+  setError,
+}: UploadProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       if (fileRejections.length > 0) {
-        setErrorMessage(
-          "Selected file(s) is too large or of a disallowed file type."
-        );
+        const errormsg =
+          "Selected file(s) is too large or of a disallowed file type.";
+        setError ? setError(errormsg) : setErrorMessage(errormsg);
       } else {
         setErrorMessage(null);
-        setFiles([...files, ...acceptedFiles]);
+        onChange([...value, ...acceptedFiles]);
       }
     },
-    [files]
+    [value]
   );
 
   const accept: Accept = {};
@@ -45,7 +51,7 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
   return (
     <>
       <div className="my-2 flex gap-2">
-        {files.map((file) => (
+        {value.map((file) => (
           // <div key={file.name} className="my-2 flex gap-2">
           <div
             className="flex border-2 rounded-md py-1 pl-2.5 pr-1 border-sky-500 items-center"
@@ -55,7 +61,7 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
             <I.Button
               onClick={(e) => {
                 e.preventDefault();
-                setFiles(files.filter((a) => a.name !== file.name));
+                onChange(value.filter((a) => a.name !== file.name));
               }}
               variant="ghost"
               className="p-0 h-0"

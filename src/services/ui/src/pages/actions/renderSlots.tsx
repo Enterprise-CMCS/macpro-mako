@@ -34,7 +34,7 @@ export const SlotAttachments = <
     return (
       <FormItem {...props}>
         <FormLabel>{label}</FormLabel>
-        <Upload files={field?.value ?? []} setFiles={field.onChange} />
+        <Upload {...field} />
         {message}
       </FormItem>
     );

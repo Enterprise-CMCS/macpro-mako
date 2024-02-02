@@ -174,10 +174,7 @@ export const MedicaidForm = () => {
                           : ""}
                       </Inputs.FormDescription>
                     }
-                    <Inputs.Upload
-                      files={field?.value ?? []}
-                      setFiles={field.onChange}
-                    />
+                    <Inputs.Upload {...field} />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}
