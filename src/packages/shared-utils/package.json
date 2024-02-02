@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
+  "scripts": {
+    "test": "vitest"
+  },
   "devDependencies": {},
   "dependencies": {
     "@18f/us-federal-holidays": "^4.0.0"
