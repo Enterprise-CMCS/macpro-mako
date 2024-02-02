@@ -2,7 +2,7 @@ import { Fragment, useEffect } from "react";
 import { FieldValues, useFieldArray, useFormContext } from "react-hook-form";
 import { Plus, Trash2 } from "lucide-react";
 
-import { RHFSlotProps, TableGroupProps } from "shared-types";
+import { TableGroupProps } from "shared-types";
 import { Button, FormField } from "../Inputs";
 import {
   Table,
@@ -25,7 +25,26 @@ const FieldRow = <TFields extends FieldValues>(
         const name = props.name + SLOT.name;
         return (
           <TableCell key={`${props.name}cell.${i}`}>
-            <FieldCell {...{ ...props, SLOT, name: name as never }} />
+            <FormField
+              key={name}
+              control={props.control}
+              name={name as never}
+              {...(SLOT.rules && { rules: SLOT.rules })}
+              render={RHFSlot({
+                ...SLOT,
+                control: props.control,
+                name: name,
+                removeFormDecoration: true,
+                formItemStyling: "gap-0 py-0",
+                props: {
+                  ...SLOT.props,
+                  className: cn(
+                    "border-slate-300",
+                    (SLOT?.props as any)?.classname
+                  ),
+                } as any,
+              })}
+            />
           </TableCell>
         );
       })}
@@ -41,32 +60,6 @@ const FieldRow = <TFields extends FieldValues>(
         </TableCell>
       )}
     </TableRow>
-  );
-};
-
-const FieldCell = <TFields extends FieldValues>({
-  name,
-  SLOT,
-  ...props
-}: { SLOT: RHFSlotProps } & TableGroupProps<TFields>) => {
-  return (
-    <FormField
-      key={name}
-      control={props.control}
-      name={name as never}
-      {...(SLOT.rules && { rules: SLOT.rules })}
-      render={RHFSlot({
-        ...SLOT,
-        control: props.control,
-        name: name,
-        removeFormDecoration: true,
-        formItemStyling: "gap-0 py-0",
-        props: {
-          ...SLOT.props,
-          className: cn("border-slate-300", (SLOT?.props as any)?.classname),
-        } as any,
-      })}
-    />
   );
 };
 
