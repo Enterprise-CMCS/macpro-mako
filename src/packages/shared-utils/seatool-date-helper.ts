@@ -25,13 +25,6 @@ export const formatSeatoolDate = (date: string): string => {
 export const getCurrentOrNextBusinessDay = (date?: Date): number => {
   if(!date) {
     date = new Date();
-
-    // // This is a nice test, because it emulates a submission at 7pm on the 19th, which is after 5pm
-    // // So it recurses, and checks the 20th, which is a holiday
-    // // So it recurses, and checks the 21st, which is a valid business day 
-    // date = new Date(2025, 0, 20);
-
-
   }
 
   let localeStringDate = date.toLocaleString("en-US", { timeZone: "America/New_York", dateStyle: "short" });
