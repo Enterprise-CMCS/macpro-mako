@@ -37,7 +37,7 @@ export const getNextBusinessDayTimestamp = (date?: Date): number => {
   if(parseInt(localeStringHours24,10) >= 17 || fedHolidays.isAHoliday(localeDate) || !(localeDate.getDay() % 6)) {
     let nextDate = localeDate;
     nextDate.setDate(nextDate.getDate() + 1);
-    nextDate.setHours(nextDate.getTimezoneOffset()/60,0,0,0)
+    nextDate.setHours(12,0,0,0)
     console.log("Current date is not valid.  Will try " + nextDate)
     return getNextBusinessDayTimestamp(nextDate)
   }
