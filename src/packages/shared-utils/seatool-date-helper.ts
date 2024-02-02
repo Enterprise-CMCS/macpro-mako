@@ -1,4 +1,6 @@
 import moment from "moment-timezone";
+import * as fedHolidays from '@18f/us-federal-holidays';
+
 
 // This manually accounts for the offset between the client's timezone and UTC.
 export const offsetForUtc = (date: Date): Date => {
@@ -18,4 +20,37 @@ export const seaToolFriendlyTimestamp = (date?: Date): number => {
 // This takes an epoch string and converts it to a standard format for display
 export const formatSeatoolDate = (date: string): string => {
   return moment(date).tz("UTC").format("MM/DD/yyyy")
+}
+
+export const getCurrentOrNextBusinessDay = (date?: Date): number => {
+  if(!date) {
+    date = new Date();
+
+    // // This is a nice test, because it emulates a submission at 7pm on the 19th, which is after 5pm
+    // // So it recurses, and checks the 20th, which is a holiday
+    // // So it recurses, and checks the 21st, which is a valid business day 
+    // date = new Date(2025, 0, 20);
+
+
+  }
+
+  let localeStringDate = date.toLocaleString("en-US", { timeZone: "America/New_York", dateStyle: "short" });
+  let localeStringHours24 = date.toLocaleString("en-US", { timeZone: "America/New_York", hour: 'numeric', hour12: false });
+  let localeDate = new Date(localeStringDate);
+  // Some logging
+  console.log(`Evaluating ${localeStringDate} at ${localeStringHours24}`);
+
+  // If it's after 5pm eastern, a holiday, or a weekend, recurse using the next day at noon utc.
+  if(parseInt(localeStringHours24,10) >= 17 || fedHolidays.isAHoliday(localeDate) || !(localeDate.getDay() % 6)) {
+    let nextDate = localeDate;
+    nextDate.setDate(nextDate.getDate() + 1);
+    nextDate.setHours(12,0,0,0)
+    console.log("Current date is not valid.  Will try " + nextDate)
+    return getCurrentOrNextBusinessDay(nextDate)
+  }
+
+  // If it's none of the above, return the time of the localeDate; equivalent to the next business day's epoch for midnight UTC
+  let ret = localeDate.getTime();
+  console.log('Current date is a valid business date.  Will return ' + ret);
+  return ret;
 }
