@@ -11,11 +11,11 @@ export const zSpaIdSchema = z
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+  })
+  .refine(async (value) => idIsUnique(value), {
+    message:
+      "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
   });
-// .refine(async (value) => idIsUnique(value), {
-//   message:
-//     "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
-// });
 
 export const zAttachmentOptional = z.array(z.instanceof(File)).optional();
 
@@ -63,12 +63,11 @@ export const zRenewalWaiverNumberSchema = z
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+  })
+  .refine(async (value) => idIsUnique(value), {
+    message:
+      "According to our records, this 1915(b) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
   });
-// // TODO: update idIsUnique with proper check
-// .refine(async (value) => idIsUnique(value), {
-//   message:
-//     "According to our records, this 1915(b) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
-// });
 
 export const zAmendmentWaiverNumberSchema = z
   .string()
@@ -79,12 +78,11 @@ export const zAmendmentWaiverNumberSchema = z
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+  })
+  .refine(async (value) => idIsUnique(value), {
+    message:
+      "According to our records, this 1915(b) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again",
   });
-// TODO: update idIsUnique with proper check
-// .refine(async (value) => idIsUnique(value), {
-//   message:
-//     "According to our records, this 1915(b) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again",
-// });
 
 export const zAmendmentOriginalWaiverNumberSchema = z
   .string()
@@ -95,12 +93,12 @@ export const zAmendmentOriginalWaiverNumberSchema = z
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+  })
+  // This should already exist.
+  .refine(async (value) => !idIsUnique(value), {
+    message:
+      "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Waiver Amendment Number and try entering it again",
   });
-// // This should already exist
-// .refine(async (value) => !idIsUnique(value), {
-//   message:
-//     "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Waiver Amendment Number and try entering it again",
-// });
 export const zRenewalOriginalWaiverNumberSchema = z
   .string()
   .regex(
@@ -110,9 +108,9 @@ export const zRenewalOriginalWaiverNumberSchema = z
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+  })
+  // This should already exist
+  .refine(async (value) => !idIsUnique(value), {
+    message:
+      "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Waiver Amendment Number and try entering it again",
   });
-// // This should already exist
-// .refine(async (value) => !idIsUnique(value), {
-//   message:
-//     "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Waiver Amendment Number and try entering it again",
-// });
