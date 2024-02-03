@@ -12,10 +12,7 @@ export const getAvailableActions = (
 ) => {
   const checks = PackageCheck(result);
   return [
-    ...(checks.isSpa
-      ? rules.filter((r) => r.check(checks, user)).map((r) => r.action)
-      : []),
-    ...(checks.isWaiver
+    ...((checks.isWaiver || checks.isSpa)
       ? rules.filter((r) => r.check(checks, user)).map((r) => r.action)
       : []),
   ];
