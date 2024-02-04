@@ -71,7 +71,8 @@ const attachmentList = [
   },
   {
     name: "bCapIndependentAssessment",
-    label: "1915(b) Comprehensive (Capitated) Waiver Independent Assessment",
+    label:
+      "1915(b) Comprehensive (Capitated) Waiver Independent Assessment (first two renewals only)",
     subtext: "Required for the first two renewals",
     required: false,
   },
@@ -141,7 +142,7 @@ export const Capitated1915BWaiverRenewal = () => {
                   <p className="text-gray-500 font-light">
                     Enter the existing waiver number in the format it was
                     approved, using a dash after the two character state
-                    appreviation.
+                    abbreviation.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -176,9 +177,9 @@ export const Capitated1915BWaiverRenewal = () => {
                     </Link>
                   </div>
                   <p className="text-gray-500 font-light">
-                    The Waiver Number must be in the format of SS-####.R##.## or
-                    SS-#####.R##.##. For renewals, the &quotR##&quot starts with
-                    ‘R01’ and ascends.
+                    The Waiver Number must be in the format of SS-####.R##.00 or
+                    SS-#####.R##.00. For renewals, the "R##" starts with 'R01'
+                    and ascends.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -215,10 +216,7 @@ export const Capitated1915BWaiverRenewal = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc
-              faqLink="/faq/#medicaid-spa-attachments"
-              includeCMS179
-            />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}

@@ -16,17 +16,18 @@ import { submit } from "@/api/submissionService";
 import { PlanType } from "shared-types";
 import {
   zAdditionalInfo,
+  zAmendmentOriginalWaiverNumberSchema,
+  zAmendmentWaiverNumberSchema,
   zAttachmentOptional,
   zAttachmentRequired,
-  zInitialWaiverNumberSchema,
 } from "@/pages/form/zod";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
-  id: zInitialWaiverNumberSchema,
-  amendedWaiverNumber: z.string(),
+  waiverNumber: zAmendmentOriginalWaiverNumberSchema,
+  id: zAmendmentWaiverNumberSchema,
   proposedEffectiveDate: z.date(),
   attachments: z.object({
     b4WaiverApplication: zAttachmentRequired({ min: 1 }),
@@ -106,15 +107,12 @@ export const Contracting1915BWaiverAmendment = () => {
             </div>
             <Inputs.FormField
               control={form.control}
-              name="id"
+              name="waiverNumber"
               render={({ field }) => (
                 <Inputs.FormItem>
-                  <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold">
-                      Existing Waiver Number to Amend{" "}
-                      <Inputs.RequiredIndicator />
-                    </Inputs.FormLabel>
-                  </div>
+                  <Inputs.FormLabel className="text-lg font-bold">
+                    Existing Waiver Number to Amend <Inputs.RequiredIndicator />
+                  </Inputs.FormLabel>
                   <p className="text-gray-500 font-light">
                     Enter the existing waiver number you are seeking to amend in
                     the format it was approved, using a dash after the two
@@ -136,7 +134,7 @@ export const Contracting1915BWaiverAmendment = () => {
             />
             <Inputs.FormField
               control={form.control}
-              name="amendedWaiverNumber"
+              name="id"
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
@@ -156,7 +154,7 @@ export const Contracting1915BWaiverAmendment = () => {
                   <p className="text-gray-500 font-light">
                     The Waiver Number must be in the format of SS-####.R##.## or
                     SS-#####.R##.##. For amendments, the last two digits start
-                    with ‘01’ and ascends.
+                    with '01' and ascends.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -178,7 +176,8 @@ export const Contracting1915BWaiverAmendment = () => {
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of 1915(b) Waiver Amendment
+                    Proposed Effective Date of 1915(b) Waiver Amendment{" "}
+                    <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.DatePicker
@@ -192,10 +191,7 @@ export const Contracting1915BWaiverAmendment = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc
-              faqLink="/faq/#medicaid-spa-attachments"
-              includeCMS179
-            />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}

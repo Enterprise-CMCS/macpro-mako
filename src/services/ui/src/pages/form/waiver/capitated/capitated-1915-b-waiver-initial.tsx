@@ -128,8 +128,8 @@ export const Capitated1915BWaiverInitial = () => {
                     </Link>
                   </div>
                   <p className="text-gray-500 font-light">
-                    Must be a new initial number with the format of
-                    SS-####.R##.## or SS-#####.R##.##.
+                    Must be a new initial number with the format SS-####.R##.##
+                    or SS-#####.R##.##.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -166,10 +166,7 @@ export const Capitated1915BWaiverInitial = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc
-              faqLink="/faq/#medicaid-spa-attachments"
-              includeCMS179
-            />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}

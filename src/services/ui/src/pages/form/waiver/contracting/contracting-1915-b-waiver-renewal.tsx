@@ -59,16 +59,16 @@ type Waiver1915BContractingRenewal = z.infer<typeof formSchema>;
 // second argument is used when mapping over for the label
 const attachmentList = [
   {
-    name: "bCapWaiverApplication",
+    name: "b4WaiverApplication",
     label:
-      "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Preprint",
+      "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
     required: true,
   },
   {
-    name: "bCapCostSpreadsheets",
+    name: "b4IndependentAssessment",
     label:
       "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
-    required: true,
+    required: false,
   },
   {
     name: "tribalConsultation",
@@ -144,7 +144,7 @@ export const Contracting1915BWaiverRenewal = () => {
                   <p className="text-gray-500 font-light">
                     Enter the existing waiver number in the format it was
                     approved, using a dash after the two character state
-                    appreviation.
+                    abbreviation.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -179,9 +179,9 @@ export const Contracting1915BWaiverRenewal = () => {
                     </Link>
                   </div>
                   <p className="text-gray-500 font-light">
-                    The Waiver Number must be in the format of SS-####.R##.## or
-                    SS-#####.R##.##. For renewals, the &quotR##&quot starts with
-                    ‘R01’ and ascends.
+                    The Waiver Number must be in the format of SS-####.R##.00 or
+                    SS-#####.R##.00. For renewals, the "R##" starts with 'R01'
+                    and ascends.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -218,10 +218,7 @@ export const Contracting1915BWaiverRenewal = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc
-              faqLink="/faq/#medicaid-spa-attachments"
-              includeCMS179
-            />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
