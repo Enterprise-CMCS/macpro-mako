@@ -30,9 +30,8 @@ const formSchema = z.object({
   renewalWaiverNumber: zRenewalWaiverNumberSchema,
   proposedEffectiveDate: z.date(),
   attachments: z.object({
-    bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
-    bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
-    bCapIndependentAssessment: zAttachmentOptional,
+    b4WaiverApplication: zAttachmentRequired({ min: 1 }),
+    b4IndependentAssessment: zAttachmentOptional,
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
