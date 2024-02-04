@@ -179,8 +179,8 @@ export const Contracting1915BWaiverRenewal = () => {
                   </div>
                   <p className="text-gray-500 font-light">
                     The Waiver Number must be in the format of SS-####.R##.00 or
-                    SS-#####.R##.00. For renewals, the "R##" starts with 'R01'
-                    and ascends.
+                    SS-#####.R##.00. For renewals, the {"\"R##\""} starts with
+                    {"'R01'"} and ascends.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input

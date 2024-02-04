@@ -154,7 +154,7 @@ export const Contracting1915BWaiverAmendment = () => {
                   <p className="text-gray-500 font-light">
                     The Waiver Number must be in the format of SS-####.R##.## or
                     SS-#####.R##.##. For amendments, the last two digits start
-                    with '01' and ascends.
+                    with {"'01'"} and ascends.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
