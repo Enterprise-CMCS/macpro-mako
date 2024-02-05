@@ -18,10 +18,10 @@ import {
   SlotAttachments,
 } from "@/pages/actions/renderSlots";
 import { Info } from "lucide-react";
-import { useModalContext } from "@/pages/form/modals";
+import { useModalContext } from "@/components/Context/modalContext";
 import { submit } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
-import { useParams } from "@/components/Routing";
+import { useNavigate, useParams } from "@/components/Routing";
 import { useGetUser } from "@/api/useGetUser";
 
 export const WithdrawRai = ({
@@ -29,11 +29,11 @@ export const WithdrawRai = ({
   schema,
   attachments,
 }: FormSetup & { item: opensearch.main.ItemResult }) => {
+  const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const { setSuccessModalOpen, setErrorModalOpen, setCancelModalOpen } =
-    useModalContext();
-  const form = useForm<z.infer<typeof schema>>({
+  const { setModalOpen, setContent, setAcceptPath } = useModalContext();
+  const form = useForm({
     resolver: zodResolver(schema),
   });
   return (
@@ -47,10 +47,9 @@ export const WithdrawRai = ({
               user,
               authority: item?._source.authority as PlanType,
             });
-            setSuccessModalOpen(true);
+            navigate({ path: "/dashboard" });
           } catch (e) {
             console.error(e);
-            setErrorModalOpen(true);
           }
         })}
       >
@@ -126,8 +125,17 @@ export const WithdrawRai = ({
           <Button type="submit">Submit</Button>
           <Button
             type="button"
-            onClick={() => setCancelModalOpen(true)}
             variant="outline"
+            onClick={() => {
+              setContent({
+                header: "Stop form submission?",
+                body: "All information you've entered on this form will be lost if you leave this page.",
+                acceptButtonText: "Yes, leave form",
+                cancelButtonText: "Return to form",
+              });
+              setAcceptPath("/dashboard");
+              setModalOpen(true);
+            }}
           >
             Cancel
           </Button>
