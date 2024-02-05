@@ -102,7 +102,7 @@ export const Contracting1915BWaiverAmendment = () => {
                 Waiver Authority
               </Inputs.FormLabel>
               <span className="text-lg font-thin">
-                1915(b)(4) FS Selective Contracting waviers
+                1915(b)(4) FFS Selective Contracting waviers
               </span>
             </div>
             <Inputs.FormField

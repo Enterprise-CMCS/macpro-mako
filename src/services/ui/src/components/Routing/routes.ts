@@ -21,11 +21,11 @@ export const WAIVER_1915_B_RENEWAL_CAP =
 export const WAIVER_1915_B_INITIAL_CAP =
   "/new-submission/waiver/b/capitated/initial/create";
 export const WAIVER_1915_B_INITIAL_CON =
-  "/new-submission/waiver/b/contracting/initial/create";
+  "/new-submission/waiver/b/b4/initial/create";
 export const WAIVER_1915_B_AMEND_CON =
-  "/new-submission/waiver/b/contracting/amendment/create";
+  "/new-submission/waiver/b/b4/amendment/create";
 export const WAIVER_1915_B_RENEWAL_CON =
-  "/new-submission/waiver/b/contracting/renewal/create";
+  "/new-submission/waiver/b/b4/renewal/create";
 export const MEDICAID_ABP_LANDING =
   "/new-submission/spa/medicaid/landing/medicaid-abp";
 export const MEDICAID_ELIGIBILITY_LANDING =

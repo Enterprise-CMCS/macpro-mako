@@ -79,15 +79,15 @@ export const router = createBrowserRouter([
         element: <P.Capitated1915BWaiverRenewalPage />,
       },
       {
-        path: "/new-submission/waiver/b/contracting/renewal/create",
+        path: "/new-submission/waiver/b/b4/renewal/create",
         element: <P.Contracting1915BWaiverRenewalPage />,
       },
       {
-        path: "/new-submission/waiver/b/contracting/initial/create",
+        path: "/new-submission/waiver/b/b4/initial/create",
         element: <P.Contracting1915BWaiverInitialPage />,
       },
       {
-        path: "/new-submission/waiver/b/contracting/amendment/create",
+        path: "/new-submission/waiver/b/b4/amendment/create",
         element: <P.Contracting1915BWaiverAmendmentPage />,
       },
       { path: "/new-submission/spa/medicaid/create", element: <P.MedicaidSpaFormPage /> },
