@@ -1,7 +1,6 @@
 import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { opensearch, PlanType } from "shared-types";
-import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { FormSetup } from "@/pages/actions/setups";
 import { useModalContext } from "@/pages/form/modals";
 import {
@@ -19,6 +18,10 @@ import {
   SlotAttachments,
 } from "@/pages/actions/renderSlots";
 import { Info } from "lucide-react";
+import { submit } from "@/api/submissionService";
+import { buildActionUrl } from "@/lib";
+import { useParams } from "@/components/Routing";
+import { useGetUser } from "@/api/useGetUser";
 
 export const RespondToRai = ({
   item,
@@ -27,18 +30,32 @@ export const RespondToRai = ({
 }: FormSetup & {
   item: opensearch.main.ItemResult;
 }) => {
+  const { id, type } = useParams("/action/:id/:type");
+  const { data: user } = useGetUser();
+  const { setSuccessModalOpen, setErrorModalOpen, setCancelModalOpen } =
+    useModalContext();
   const form = useForm({
     resolver: zodResolver(schema),
   });
-  const handleSubmit = useActionSubmitHandler({
-    formHookReturn: form,
-    authority: item?._source.authority as PlanType,
-  });
-  const { setCancelModalOpen } = useModalContext();
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(async (data) => {
+          try {
+            await submit({
+              data: { ...data, id: id! },
+              endpoint: buildActionUrl(type!),
+              user,
+              authority: item?._source.authority as PlanType,
+            });
+            setSuccessModalOpen(true);
+          } catch (e) {
+            console.error(e);
+            setErrorModalOpen(true);
+          }
+        })}
+      >
         {form.formState.isSubmitting && <LoadingSpinner />}
         {/* Intro */}
         <ActionFormIntro
