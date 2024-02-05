@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { submit } from "@/api/submissionService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -19,9 +19,10 @@ import {
   zSpaIdSchema,
 } from "@/pages/form/zod";
 import * as Content from "@/pages/form/content";
-import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
+import { useModalContext } from "@/components/Context/modalContext";
+import { useNavigate } from "@/components/Routing";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -63,10 +64,11 @@ const attachmentList = [
   { name: "other", label: "Other", required: false },
 ] as const;
 
-export const ChipForm = () => {
+export const ChipSpaFormPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { data: user } = useGetUser();
-  const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
+  const { setModalOpen, setContent, setAcceptPath } = useModalContext();
   const form = useForm<ChipFormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -78,7 +80,7 @@ export const ChipForm = () => {
         user,
         authority: PlanType.CHIP_SPA,
       });
-      setSuccessModalOpen(true);
+      navigate({ path: "/dashboard" });
     } catch (e) {
       console.error(e);
     }
@@ -214,7 +216,16 @@ export const ChipForm = () => {
             <Inputs.Button
               type="button"
               variant="outline"
-              onClick={() => setCancelModalOpen(true)}
+              onClick={() => {
+                setContent({
+                  header: "Stop form submission?",
+                  body: "All information you've entered on this form will be lost if you leave this page.",
+                  acceptButtonText: "Yes, leave form",
+                  cancelButtonText: "Return to form",
+                });
+                setAcceptPath("/dashboard");
+                setModalOpen(true);
+              }}
               className="px-12"
             >
               Cancel
@@ -225,9 +236,3 @@ export const ChipForm = () => {
     </SimplePageContainer>
   );
 };
-
-export const ChipSpaFormPage = () => (
-  <ModalProvider>
-    <ChipForm />
-  </ModalProvider>
-);

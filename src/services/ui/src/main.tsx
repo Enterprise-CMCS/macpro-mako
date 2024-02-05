@@ -13,9 +13,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <UserContextProvider>
-        <ModalProvider>
-          <RouterProvider router={router} />
-        </ModalProvider>
+        <RouterProvider router={router} />
       </UserContextProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

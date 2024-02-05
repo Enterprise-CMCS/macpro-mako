@@ -1,10 +1,12 @@
 import { PropsWithChildren, useState } from "react";
 import { createContextProvider } from "@/utils";
 import { ConfirmationModal } from "@/components";
+import { Route } from "@/components/Routing/types";
+import { useNavigate } from "@/components/Routing";
 
 const useModalController = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [onAccept, setOnAccept] = useState<VoidFunction>(() => void {});
+  const [acceptPath, setAcceptPath] = useState<Route>("/dashboard");
   const [content, setContent] = useState<SubmissionAlert>({
     header: "No header given",
     body: "No body given",
@@ -12,8 +14,8 @@ const useModalController = () => {
   return {
     content,
     setContent,
-    onAccept,
-    setOnAccept,
+    acceptPath,
+    setAcceptPath,
     modalOpen,
     setModalOpen,
   };
@@ -29,6 +31,7 @@ export const [ModalContextProvider, useModalContext] = createContextProvider<
 
 export const ModalProvider = ({ children }: PropsWithChildren) => {
   const context = useModalController();
+  const navigate = useNavigate();
   return (
     <ModalContextProvider value={context}>
       {children}
@@ -36,7 +39,7 @@ export const ModalProvider = ({ children }: PropsWithChildren) => {
         open={context.modalOpen}
         onAccept={() => {
           context.setModalOpen(false);
-          context.onAccept();
+          navigate({ path: context.acceptPath as Route });
         }}
         onCancel={() => context.setModalOpen(false)}
         cancelButtonVisible={context.content.cancelButtonText !== undefined}
