@@ -139,14 +139,6 @@ export const DetailsContent = ({
         ))}
       </aside>
       <div className="flex-1">
-        {state?.callout && (
-          <Alert className="bg-green-100 border-green-400" variant="default">
-            <h2 className="text-lg font-bold text-green-900">
-              {state.callout.heading}
-            </h2>
-            <p className="text-green-900">{state.callout.body}</p>
-          </Alert>
-        )}
         <section
           id="package-overview"
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
