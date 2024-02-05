@@ -68,7 +68,7 @@ const attachmentList = [
   { name: "other", label: "Other", required: false },
 ] as const;
 
-export const MedicaidForm = () => {
+export const MedicaidSpaFormPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { setModalOpen, setContent, setAcceptPath } = useModalContext();
