@@ -123,7 +123,6 @@ export const Contracting1915BWaiverInitial = () => {
                       What is my Initial Waiver Number?
                     </Link>
                   </div>
-
                   <p className="text-gray-500 font-light">
                     Must be a new initial number with the format SS-####.R00.00
                     or SS-#####.R00.00

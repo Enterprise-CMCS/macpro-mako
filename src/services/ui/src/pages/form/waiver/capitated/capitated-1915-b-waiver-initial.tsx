@@ -128,8 +128,8 @@ export const Capitated1915BWaiverInitial = () => {
                     </Link>
                   </div>
                   <p className="text-gray-500 font-light">
-                    Must be a new initial number with the format SS-####.R##.##
-                    or SS-#####.R##.##.
+                    Must be a new initial number with the format SS-####.R00.00
+                    or SS-#####.R00.00
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
