@@ -1,6 +1,8 @@
 type SubmissionAlert = {
   header: string;
   body: string;
+  cancelButtonText?: string;
+  acceptButtonText?: string;
 };
 type SubmissionAlertGenerator = (id: string) => SubmissionAlert;
 

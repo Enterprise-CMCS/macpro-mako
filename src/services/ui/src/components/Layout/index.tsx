@@ -123,6 +123,7 @@ export const Layout = () => {
         </div>
       </nav>
       <main className="flex-1">
+        {/* TODO: Plug in banners */}
         <Outlet />
       </main>
       <Footer
