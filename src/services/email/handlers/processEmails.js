@@ -38,9 +38,12 @@ export const onemacDataTransform = (props) => {
         submitterName: null,
       };
     }
-  
+    const mapActionToTransform = {
+      [Action.ENABLE_RAI_WITHDRAW]: transformToggleWithdrawRaiEnabled,
+    };
     const record = { id, ...JSON.parse(decode(props.value)) };
   
+    console.log("here is the decoded record: ", record);
     // is Legacy
     const isLegacy = record?.origin !== "micro";
     if (isLegacy) {
@@ -66,7 +69,7 @@ export const onemacDataTransform = (props) => {
     // TODO: remove transform package-action below
   
     if (record.actionType === Action.ENABLE_RAI_WITHDRAW) {
-      const result = transformToggleWithdrawRaiEnabled(id).safeParse(record);
+      const result = mapActionToTransform[record.actionType](id).safeParse(record);
       return result.success ? result.data : null;
     }
   
