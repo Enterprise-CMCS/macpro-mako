@@ -8,6 +8,13 @@ import { QueryClient } from "@tanstack/react-query";
 import { type Route } from "./components/Routing/types";
 export const queryClient = new QueryClient();
 
+const actionRoutes: RouteObject[] = [
+  {
+    path: "issue-rai",
+    element: <h1>Issue RAI</h1>,
+  },
+];
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -83,20 +90,9 @@ export const router = createBrowserRouter([
         // for now not
         path: "/action/waiver/:id",
         element: <P.ActionWrapper />,
-        children: [
-          {
-            path: "issue-rai",
-            element: <h1>Issue RAI</h1>,
-          },
-          // {
-          //   path: "/respond-to-rai",
-          //   element: <h1>Issue RAI</h1>,
-          // },
-          // {
-          //   path: "/issue-rai",
-          //   element: <h1>Issue RAI</h1>,
-          // },
-        ],
+        children: actionRoutes,
+        // we will also add a loader to this path
+        // this will help with managing permissions and re-routing if need be
       },
       { path: "/webforms", element: <C.Webforms /> },
       { path: "/webform/:id/:version", element: <C.Webform /> },
