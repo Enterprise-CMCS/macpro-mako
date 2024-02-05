@@ -1,5 +1,6 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
 import * as P from "@/pages";
+import * as F from "@/pages/form";
 import { loader as rootLoader } from "@/pages/welcome";
 import { dashboardLoader } from "@/pages/dashboard";
 import "@/api/amplifyConfig";
@@ -11,7 +12,8 @@ export const queryClient = new QueryClient();
 const actionRoutes: RouteObject[] = [
   {
     path: "issue-rai",
-    element: <h1>Issue RAI</h1>,
+    element: <F.IssueRai />,
+    action: F.issueRaiDefaultAction,
   },
 ];
 
