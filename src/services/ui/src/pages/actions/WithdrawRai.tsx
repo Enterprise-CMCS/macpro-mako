@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Path, useForm } from "react-hook-form";
 import { z } from "zod";
 import { opensearch, PlanType } from "shared-types";
-import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { FormSetup } from "@/pages/actions/setups";
 import {
   Button,
@@ -20,25 +19,41 @@ import {
 } from "@/pages/actions/renderSlots";
 import { Info } from "lucide-react";
 import { useModalContext } from "@/pages/form/modals";
+import { submit } from "@/api/submissionService";
+import { buildActionUrl } from "@/lib";
+import { useParams } from "@/components/Routing";
+import { useGetUser } from "@/api/useGetUser";
 
 export const WithdrawRai = ({
   item,
   schema,
   attachments,
 }: FormSetup & { item: opensearch.main.ItemResult }) => {
-  // const [areYouSureModalOpen, setAreYouSureModalOpen] = useState(false);
+  const { id, type } = useParams("/action/:id/:type");
+  const { data: user } = useGetUser();
+  const { setSuccessModalOpen, setErrorModalOpen, setCancelModalOpen } =
+    useModalContext();
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const handleSubmit = useActionSubmitHandler<z.infer<typeof schema>>({
-    formHookReturn: form,
-    authority: item?._source.authority as PlanType,
-  });
-  const { setCancelModalOpen } = useModalContext();
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(async (data) => {
+          try {
+            await submit({
+              data: { ...data, id: id! },
+              endpoint: buildActionUrl(type!),
+              user,
+              authority: item?._source.authority as PlanType,
+            });
+            setSuccessModalOpen(true);
+          } catch (e) {
+            console.error(e);
+            setErrorModalOpen(true);
+          }
+        })}
+      >
         {form.formState.isSubmitting && <LoadingSpinner />}
         {/* Intro */}
         <ActionFormIntro title={"Withdraw Formal RAI Response Details"}>
