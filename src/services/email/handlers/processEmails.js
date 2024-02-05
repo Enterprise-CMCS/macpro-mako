@@ -44,6 +44,17 @@ export const onemacDataTransform = (props) => {
     const record = { id, ...JSON.parse(decode(props.value)) };
   
     console.log("here is the decoded record: ", record);
+
+    // events to ignore: everything except micro's actions
+    if (record?.origin !== "micro") return null;
+
+    console.log("is not ignored");
+
+    // looks like initial submissions do not have an action type yet
+    const whichEmails = record.actionType ? record.actionType : "initial-submission";
+
+    console.log("whichEmail: ", whichEmails);
+
     // is Legacy
     const isLegacy = record?.origin !== "micro";
     if (isLegacy) {
