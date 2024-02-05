@@ -19,9 +19,10 @@ import {
   zAttachmentRequired,
   zSpaIdSchema,
 } from "@/pages/form/zod";
-import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
+import { useNavigate } from "@/components/Routing";
+import { useModalContext } from "@/components/Context/modalContext";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -69,8 +70,9 @@ const attachmentList = [
 
 export const MedicaidForm = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { setModalOpen, setContent, setAcceptPath } = useModalContext();
   const { data: user } = useGetUser();
-  const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
     try {
       await submit<MedicaidFormSchema>({
@@ -79,7 +81,7 @@ export const MedicaidForm = () => {
         user,
         authority: PlanType.MED_SPA,
       });
-      setSuccessModalOpen(true);
+      navigate({ path: "/dashboard" });
     } catch (e) {
       console.error(e);
     }
@@ -227,7 +229,16 @@ export const MedicaidForm = () => {
             <Inputs.Button
               type="button"
               variant="outline"
-              onClick={() => setCancelModalOpen(true)}
+              onClick={() => {
+                setContent({
+                  header: "Stop form submission?",
+                  body: "All information you've entered on this form will be lost if you leave this page.",
+                  acceptButtonText: "Yes, leave form",
+                  cancelButtonText: "Return to form",
+                });
+                setAcceptPath("/dashboard");
+                setModalOpen(true);
+              }}
               className="px-12"
             >
               Cancel
@@ -238,9 +249,3 @@ export const MedicaidForm = () => {
     </SimplePageContainer>
   );
 };
-
-export const MedicaidSpaFormPage = () => (
-  <ModalProvider>
-    <MedicaidForm />
-  </ModalProvider>
-);

@@ -66,8 +66,8 @@ const attachmentList = [
 
 export const ChipSpaFormPage = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const { data: user } = useGetUser();
+  const navigate = useNavigate();
   const { setModalOpen, setContent, setAcceptPath } = useModalContext();
   const form = useForm<ChipFormSchema>({
     resolver: zodResolver(formSchema),
