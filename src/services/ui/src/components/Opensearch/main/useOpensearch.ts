@@ -85,9 +85,9 @@ export const useOsAggregate = () => {
             size: 60,
           },
           {
-            field: "planType.keyword",
+            field: "authority.keyword",
             type: "terms",
-            name: "planType.keyword",
+            name: "authority.keyword",
             size: 10,
           },
           {
