@@ -132,12 +132,12 @@ export const transform = (id: string) => {
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
     return {
       id,
+      flavor: authorityLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
       actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE
       ),
-      authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
       changedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.CHANGED_DATE),
       description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
@@ -145,8 +145,8 @@ export const transform = (id: string) => {
       initialIntakeNeeded:
         !leadAnalystName && seatoolStatus !== SEATOOL_STATUS.WITHDRAWN,
       leadAnalystName,
-      planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME as Authority | null,
-      planTypeId: data.STATE_PLAN.PLAN_TYPE,
+      authority: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME as Authority | null,
+      authorityId: data.STATE_PLAN.PLAN_TYPE,
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,

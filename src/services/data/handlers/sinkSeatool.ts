@@ -28,17 +28,17 @@ export const seatool_main = async (event: KafkaEvent) => {
       if (!value) {
         records[id] = {
           id,
+          flavor: null,
           actionType: null,
           actionTypeId: null,
           approvedEffectiveDate: null,
-          authority: null,
           changedDate: null,
           description: null,
           finalDispositionDate: null,
           leadAnalystName: null,
           leadAnalystOfficerId: null,
-          planType: null,
-          planTypeId: null,
+          authority: null,
+          authorityId: null,
           proposedDate: null,
           raiReceivedDate: null,
           raiRequestedDate: null,
@@ -68,8 +68,8 @@ export const seatool_main = async (event: KafkaEvent) => {
       } else {
         const validPlanTypeIds = [122, 123, 124, 125];
         if (
-          result.data.planTypeId &&
-          validPlanTypeIds.includes(result.data.planTypeId)
+          result.data.authorityId &&
+          validPlanTypeIds.includes(result.data.authorityId)
         ) {
           records[id] = result.data;
         }
