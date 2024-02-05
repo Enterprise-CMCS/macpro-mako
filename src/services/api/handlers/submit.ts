@@ -16,7 +16,7 @@ const config = {
 } as sql.config;
 
 import { Kafka, Message } from "kafkajs";
-import { PlanType, onemacSchema, transformOnemac } from "shared-types";
+import { Authority, onemacSchema } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
 
@@ -52,7 +52,7 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
-    const activeSubmissionTypes = [PlanType.CHIP_SPA, PlanType.MED_SPA];
+    const activeSubmissionTypes = [Authority.CHIP_SPA, Authority.MED_SPA];
     if (!activeSubmissionTypes.includes(body.authority)) {
       return response({
         statusCode: 400,

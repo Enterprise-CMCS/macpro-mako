@@ -7,7 +7,7 @@ import {
   SeatoolOfficer,
 } from "../../..";
 
-import { PlanType } from "../../../planType";
+import { Authority } from "shared-types";
 
 type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
@@ -145,7 +145,7 @@ export const transform = (id: string) => {
       initialIntakeNeeded:
         !leadAnalystName && seatoolStatus !== SEATOOL_STATUS.WITHDRAWN,
       leadAnalystName,
-      planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME as PlanType | null,
+      planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME as Authority | null,
       planTypeId: data.STATE_PLAN.PLAN_TYPE,
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,

@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { opensearch, PlanType } from "shared-types";
+import { opensearch, Authority } from "shared-types";
 import { useActionSubmitHandler } from "@/hooks/useActionFormController";
 import { ActionFormTemplate } from "@/pages/actions/template";
 import { FormSetup } from "@/pages/actions/setups";
@@ -19,7 +19,7 @@ export const RespondToRai = ({
   });
   const handleSubmit = useActionSubmitHandler({
     formHookReturn: form,
-    authority: item?._source.authority as PlanType,
+    authority: item?._source.authority as Authority,
   });
 
   return (

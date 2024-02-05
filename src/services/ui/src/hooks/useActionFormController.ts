@@ -4,13 +4,13 @@ import { useGetUser } from "@/api/useGetUser";
 import { useModalContext } from "@/pages/form/modals";
 import { submit } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
-import { PlanType } from "shared-types";
+import { Authority } from "shared-types";
 
 export const useActionSubmitHandler = <D extends FieldValues>({
   authority,
 }: {
   formHookReturn: UseFormReturn<D>;
-  authority: PlanType;
+  authority: Authority;
 }): SubmitHandler<D> => {
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();

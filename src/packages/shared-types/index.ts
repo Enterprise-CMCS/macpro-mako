@@ -5,7 +5,7 @@ export * as opensearch from "./opensearch";
 export * from "./uploads";
 export * from "./actions";
 export * from "./attachments";
-export * from "./planType";
+export * from "./authority";
 export * from "./action-types";
 export * from "./forms";
 export * from "./inputs";
