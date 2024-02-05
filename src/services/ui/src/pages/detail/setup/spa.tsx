@@ -28,8 +28,8 @@ export const spaDetails = (
   },
   {
     label: "Type",
-    value: data?.planType
-      ? removeUnderscoresAndCapitalize(data.planType)
+    value: data?.authority
+      ? removeUnderscoresAndCapitalize(data.authority)
       : BLANK_VALUE,
     canView: () => true,
   },

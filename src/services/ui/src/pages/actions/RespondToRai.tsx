@@ -27,7 +27,7 @@ export const RespondToRai = ({
       item={item}
       formController={form}
       submitHandler={handleSubmit}
-      title={`${item._source.planType} Formal RAI Response Details`}
+      title={`${item._source.authority} Formal RAI Response Details`}
       description={
         <p className="font-light mb-6 max-w-4xl">
           {preSubmitMessage}{" "}

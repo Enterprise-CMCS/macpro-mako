@@ -56,7 +56,7 @@ export const WithdrawPackage = ({
       item={item}
       formController={form}
       submitHandler={handleSubmit}
-      title={`Withdraw ${item._source.planType} Package`}
+      title={`Withdraw ${item._source.authority} Package`}
       description={
         <p>Complete this form to withdraw a package. {preSubmitMessage}</p>
       }
@@ -64,10 +64,12 @@ export const WithdrawPackage = ({
       attachments={attachments}
       attachmentFaqLink={"/faq"}
       attachmentInstructions={
-        attachmentInstructions[item!._source.planType as string as SetupOptions]
+        attachmentInstructions[
+          item!._source.authority as string as SetupOptions
+        ]
       }
       addlInfoInstructions={
-        addlInfoInstructions[item!._source.planType as string as SetupOptions]
+        addlInfoInstructions[item!._source.authority as string as SetupOptions]
       }
     />
   );
