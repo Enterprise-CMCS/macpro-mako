@@ -115,7 +115,6 @@ export const DetailsContent = ({
 }: {
   data?: opensearch.main.ItemResult;
 }) => {
-  const { state } = useLocation();
   if (!data?._source) return <LoadingSpinner />;
   return (
     <div className="block md:flex">
