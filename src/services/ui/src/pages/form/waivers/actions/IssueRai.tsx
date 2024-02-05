@@ -7,22 +7,31 @@ import {
   SubmitHandler,
   FormProvider,
 } from "react-hook-form";
-import { ActionFunction, redirect, useSubmit } from "react-router-dom";
+import { ActionFunction, useNavigation, useSubmit } from "react-router-dom";
 import { z } from "zod";
 import { Info } from "lucide-react";
+import { submit } from "@/api/submissionService";
+import { getUser } from "@/api/useGetUser";
+import { PlanType } from "shared-types";
 
 const formSchema = z.object({
   additionalInformation: z.string(),
 });
 
 export const issueRaiDefaultAction: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
+  const data = Object.fromEntries(await request.formData());
+  const user = await getUser();
+  const authority = PlanType["1915(b)"];
 
-  const data = { ...Object.fromEntries(formData) };
+  try {
+    await submit({ data, endpoint: "/action/issue-rai", user, authority });
+  } catch (err) {
+    return {
+      error: "Submission Failed",
+    };
+  }
 
-  console.log(data);
-
-  return redirect("/");
+  return null;
 };
 
 export const IssueRai = () => {

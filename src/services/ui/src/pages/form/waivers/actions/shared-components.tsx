@@ -11,7 +11,7 @@ import {
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { useFormContext } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigation } from "react-router-dom";
 
 export const RequiredFieldDescription = () => {
   return (
@@ -70,10 +70,18 @@ export const AttachmentsSection = ({
 };
 
 export const SubmissionButtons = () => {
+  const { state } = useNavigation();
+
   return (
     <section className="space-x-2 mb-8">
-      <Button type="submit">Submit</Button>
-      <Button variant={"outline"} type="reset">
+      <Button type="submit" disabled={state === "submitting"}>
+        Submit
+      </Button>
+      <Button
+        variant={"outline"}
+        type="reset"
+        disabled={state === "submitting"}
+      >
         Cancel
       </Button>
     </section>
