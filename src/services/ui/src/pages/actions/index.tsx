@@ -130,3 +130,5 @@ export const ActionFormIndex = () => {
     </SimplePageContainer>
   );
 };
+
+export * from "./ActionWrapper";

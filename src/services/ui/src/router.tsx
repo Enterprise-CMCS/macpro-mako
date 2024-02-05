@@ -69,9 +69,35 @@ export const router = createBrowserRouter([
       //   path: "/new-submission/waiver/b/create",
       //   element: <P.Waiver1915BFormPage />,
       // },
-      { path: "/new-submission/spa/medicaid/create", element: <P.MedicaidSpaFormPage /> },
-      { path: "/new-submission/spa/chip/create", element: <P.ChipSpaFormPage /> },
+      {
+        path: "/new-submission/spa/medicaid/create",
+        element: <P.MedicaidSpaFormPage />,
+      },
+      {
+        path: "/new-submission/spa/chip/create",
+        element: <P.ChipSpaFormPage />,
+      },
       { path: "/action/:id/:type", element: <P.ActionFormIndex /> },
+      {
+        // this can be dynamic eventually /waiver can become /:type
+        // for now not
+        path: "/action/waiver/:id",
+        element: <P.ActionWrapper />,
+        children: [
+          {
+            path: "issue-rai",
+            element: <h1>Issue RAI</h1>,
+          },
+          // {
+          //   path: "/respond-to-rai",
+          //   element: <h1>Issue RAI</h1>,
+          // },
+          // {
+          //   path: "/issue-rai",
+          //   element: <h1>Issue RAI</h1>,
+          // },
+        ],
+      },
       { path: "/webforms", element: <C.Webforms /> },
       { path: "/webform/:id/:version", element: <C.Webform /> },
       { path: "/profile", element: <P.Profile /> },
