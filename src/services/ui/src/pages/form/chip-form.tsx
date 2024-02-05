@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { submit } from "@/api/submissionService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -20,7 +20,7 @@ import {
 } from "@/pages/form/zod";
 import * as Content from "@/pages/form/content";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
-import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
+import { useLocationCrumbs } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
@@ -64,7 +64,7 @@ const attachmentList = [
 ] as const;
 
 export const ChipForm = () => {
-  const location = useLocation();
+  const crumbs = useLocationCrumbs();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
   const form = useForm<ChipFormSchema>({
@@ -86,7 +86,7 @@ export const ChipForm = () => {
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
+      <BreadCrumbs options={crumbs} />
       <Inputs.Form {...form}>
         <form
           onSubmit={handleSubmit}

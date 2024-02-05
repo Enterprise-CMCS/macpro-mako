@@ -7,3 +7,4 @@ export * from "./form";
 export * from "./profile";
 export * from "./welcome";
 export * from "./guides";
+export * from "./app-k";
