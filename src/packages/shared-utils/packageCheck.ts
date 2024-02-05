@@ -6,10 +6,10 @@ const secondClockStatuses = [
   SEATOOL_STATUS.PENDING_CONCURRENCE,
 ];
 
-const checkPlan = (planType: Authority | null, validPlanTypes: Authority[]) =>
-  !planType
+const checkAuthority = (authority: Authority | null, validAuthorities: Authority[]) =>
+  !authority
     ? false
-    : validPlanTypes.includes(planType.toLowerCase() as Authority);
+    : validAuthorities.includes(authority.toLowerCase() as Authority);
 
 const checkStatus = (seatoolStatus: string, authorized: string | string[]) =>
   typeof authorized === "string"
@@ -24,14 +24,14 @@ export const PackageCheck = ({
   raiReceivedDate,
   raiWithdrawnDate,
   raiWithdrawEnabled,
-  planType,
+  authority,
 }: opensearch.main.Document) => {
   const planChecks = {
-    isSpa: checkPlan(planType, [Authority.MED_SPA, Authority.CHIP_SPA]),
-    isWaiver: checkPlan(planType, []),
+    isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
+    isWaiver: checkAuthority(authority, []),
     /** Keep excess methods to a minimum with `is` **/
-    planTypeIs: (validPlanTypes: Authority[]) =>
-      checkPlan(planType, validPlanTypes),
+    authorityIs: (validAuthorities: Authority[]) =>
+      checkAuthority(authority, validAuthorities),
   };
   const statusChecks = {
     /** Is in any of our pending statuses, sans Pending-RAI **/
@@ -41,7 +41,7 @@ export const PackageCheck = ({
     ]),
     /** Is in a second clock status and RAI has been received **/
     isInSecondClock:
-      !planChecks.planTypeIs([Authority.CHIP_SPA]) &&
+      !planChecks.authorityIs([Authority.CHIP_SPA]) &&
       checkStatus(seatoolStatus, secondClockStatuses) &&
       raiRequestedDate && raiReceivedDate && !raiWithdrawnDate,
     /** Is in any status except Package Withdrawn **/

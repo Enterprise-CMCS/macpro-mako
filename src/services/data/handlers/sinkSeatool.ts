@@ -66,10 +66,10 @@ export const seatool_main = async (event: KafkaEvent) => {
           result.error.message
         );
       } else {
-        const validPlanTypeIds = [122, 123, 124, 125];
+        const validAuthorityIds = [122, 123, 124, 125];
         if (
           result.data.authorityId &&
-          validPlanTypeIds.includes(result.data.authorityId)
+          validAuthorityIds.includes(result.data.authorityId)
         ) {
           records[id] = result.data;
         }
