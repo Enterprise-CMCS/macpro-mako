@@ -23,6 +23,7 @@ import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { useNavigate } from "@/components/Routing";
 import { useModalContext } from "@/components/Context/modalContext";
+import { useCallback } from "react";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -69,10 +70,17 @@ const attachmentList = [
 ] as const;
 
 export const MedicaidSpaFormPage = () => {
+  const { data: user } = useGetUser();
   const location = useLocation();
   const navigate = useNavigate();
-  const { setModalOpen, setContent, setAcceptPath } = useModalContext();
-  const { data: user } = useGetUser();
+  const { setModalOpen, setContent, setOnAccept } = useModalContext();
+  const acceptAction = useCallback(() => {
+    setModalOpen(false);
+    navigate({ path: "/dashboard" });
+  }, []);
+  const form = useForm<MedicaidFormSchema>({
+    resolver: zodResolver(formSchema),
+  });
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
     try {
       await submit<MedicaidFormSchema>({
@@ -86,11 +94,6 @@ export const MedicaidSpaFormPage = () => {
       console.error(e);
     }
   };
-
-  const form = useForm<MedicaidFormSchema>({
-    resolver: zodResolver(formSchema),
-  });
-
   return (
     <SimplePageContainer>
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
@@ -236,7 +239,7 @@ export const MedicaidSpaFormPage = () => {
                   acceptButtonText: "Yes, leave form",
                   cancelButtonText: "Return to form",
                 });
-                setAcceptPath("/dashboard");
+                setOnAccept(() => acceptAction);
                 setModalOpen(true);
               }}
               className="px-12"
