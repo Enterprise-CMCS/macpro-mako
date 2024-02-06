@@ -1,3 +1,4 @@
+import { Alert } from "@/components";
 import {
   Button,
   FormDescription,
@@ -10,8 +11,9 @@ import {
   Upload,
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
+import { Info } from "lucide-react";
 import { useFormContext } from "react-hook-form";
-import { Link, useNavigation } from "react-router-dom";
+import { Link, useNavigation, useRouteError } from "react-router-dom";
 
 export const RequiredFieldDescription = () => {
   return (
@@ -129,4 +131,19 @@ export const AdditionalInformation = () => {
       />
     </section>
   );
+};
+
+export const FormError = () => {
+  const error = useRouteError() as undefined | Error;
+
+  if (error) {
+    return (
+      <Alert variant={"destructive"}>
+        <Info />
+        <p>{error.message}</p>
+      </Alert>
+    );
+  }
+
+  return null;
 };

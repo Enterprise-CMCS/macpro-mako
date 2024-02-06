@@ -1,20 +1,9 @@
 import { Alert, SimplePageContainer } from "@/components";
 import * as SC from "./shared-components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FieldValues,
-  useForm,
-  SubmitHandler,
-  FormProvider,
-  useFormContext,
-} from "react-hook-form";
+import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
 import {
   ActionFunction,
   ActionFunctionArgs,
-  Outlet,
-  useActionData,
-  useNavigation,
-  useRouteError,
   useSubmit,
 } from "react-router-dom";
 import { z } from "zod";
@@ -47,8 +36,6 @@ export const issueRaiDefaultAction: ActionFunction = async ({
 export const IssueRai = () => {
   const methods = useFormContext<z.infer<typeof issueRaiSchema>>();
 
-  const error = useRouteError() as Error | undefined;
-
   const submit = useSubmit();
 
   const validSubmission: SubmitHandler<FieldValues> = (data, e) => {
@@ -61,7 +48,7 @@ export const IssueRai = () => {
 
   return (
     <SimplePageContainer>
-      {<p>{error?.message}</p>}
+      <SC.FormError />
       <SC.Heading title="Formal RAI Details" />
       <SC.RequiredFieldDescription />
       <SC.ActionDescription>
