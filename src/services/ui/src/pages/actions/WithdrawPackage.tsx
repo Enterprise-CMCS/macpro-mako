@@ -4,7 +4,7 @@ import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormSetup } from "@/pages/actions/setups";
 import { SetupOptions } from "@/pages";
-import { ReactElement, useCallback } from "react";
+import { ReactElement, useCallback, useState } from "react";
 import {
   Button,
   Form,
@@ -61,10 +61,15 @@ export const WithdrawPackage = ({
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const { setModalOpen, setContent, setOnAccept } = useModalContext();
-  const acceptAction = useCallback(() => {
+  const cancelOnAccept = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
   }, []);
+  const confirmOnAccept = useCallback(() => {
+    setConfirmed(true);
+    setModalOpen(false);
+  }, []);
+  const [confirmed, setConfirmed] = useState(false);
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -165,7 +170,25 @@ export const WithdrawPackage = ({
         </Alert>
         {/* Buttons */}
         <div className="flex gap-2 my-8">
-          <Button type="submit">Submit</Button>
+          <Button
+            type={!confirmed ? "button" : "submit"}
+            onClick={
+              !confirmed
+                ? () => {
+                    setContent({
+                      header: "Withdraw package?",
+                      body: `The package ${item._source.id} will be withdrawn.`,
+                      acceptButtonText: "Yes, withdraw package",
+                      cancelButtonText: "Cancel",
+                    });
+                    setOnAccept(() => confirmOnAccept);
+                    setModalOpen(true);
+                  }
+                : () => void {}
+            }
+          >
+            Submit
+          </Button>
           <Button
             type="button"
             variant="outline"
@@ -176,7 +199,7 @@ export const WithdrawPackage = ({
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setOnAccept(() => acceptAction);
+              setOnAccept(() => cancelOnAccept);
               setModalOpen(true);
             }}
           >
