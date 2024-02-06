@@ -138,21 +138,6 @@ export const AdditionalInformation = () => {
   );
 };
 
-export const FormError = () => {
-  const error = useRouteError() as undefined | Error;
-
-  if (error) {
-    return (
-      <Alert variant={"destructive"}>
-        <Info />
-        <p>{error.message}</p>
-      </Alert>
-    );
-  }
-
-  return null;
-};
-
 export const useSubmitForm = () => {
   const methods = useFormContext();
   const submit = useSubmit();

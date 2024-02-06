@@ -17,11 +17,9 @@ export const issueRaiDefaultAction: ActionFunction = async ({ request }) => {
       Object.fromEntries(await request.formData())
     );
 
-    console.log(data);
     const user = await getUser();
     const authority = PlanType["1915(b)"];
-    throw new Error("hello");
-    await submit({ data, endpoint: "/action/issue-rai", user, authority });
+    // await submit({ data, endpoint: "/action/issue-rai", user, authority });
   } catch (err) {
     throw new Error("Submission Failed");
   }
@@ -34,7 +32,6 @@ export const IssueRai = () => {
 
   return (
     <>
-      <SC.FormError />
       <SC.Heading title="Formal RAI Details" />
       <SC.RequiredFieldDescription />
       <SC.ActionDescription>
