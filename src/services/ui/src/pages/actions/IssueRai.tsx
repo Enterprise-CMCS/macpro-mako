@@ -23,6 +23,7 @@ import { useGetUser } from "@/api/useGetUser";
 import { submit } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { useModalContext } from "@/components/Context/modalContext";
+import { useCallback } from "react";
 
 export const RaiIssue = ({
   item,
@@ -35,7 +36,11 @@ export const RaiIssue = ({
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const { setModalOpen, setContent, setAcceptPath } = useModalContext();
+  const { setModalOpen, setContent, setOnAccept } = useModalContext();
+  const acceptAction = useCallback(() => {
+    setModalOpen(false);
+    navigate({ path: "/dashboard" });
+  }, []);
   return (
     <Form {...form}>
       <form
@@ -145,7 +150,7 @@ export const RaiIssue = ({
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setAcceptPath("/dashboard");
+              setOnAccept(acceptAction);
               setModalOpen(true);
             }}
           >
