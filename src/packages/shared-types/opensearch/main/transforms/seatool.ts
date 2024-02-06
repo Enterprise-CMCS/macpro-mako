@@ -125,6 +125,46 @@ const isInSecondClock = (
   return false; // otherwise, we're not
 };
 
+const getAuthority = (authorityId: number | undefined) => {
+  try {
+    if (!authorityId) return null;
+    return SEATOOL_AUTHORITIES[authorityId];
+  } catch (error) {
+    console.log("ERROR:  Error looking up authority.");
+    console.log(error);
+    return null;
+  }
+};
+
+const getType = (
+  authorityId: number | undefined,
+  typeId: number | undefined
+) => {
+  try {
+    if (!authorityId || !typeId) return null;
+    return SEATOOL_TYPES[authorityId][typeId];
+  } catch (error) {
+    console.log("ERROR:  Error looking up type.");
+    console.log(error);
+    return null;
+  }
+};
+
+const getSubType = (
+  authorityId: number | undefined,
+  typeId: number | undefined,
+  subTypeId: number | undefined
+) => {
+  try {
+    if (!authorityId || !typeId || !subTypeId) return null;
+    return SEATOOL_SUB_TYPES[authorityId][typeId][subTypeId];
+  } catch (error) {
+    console.log("ERROR:  Error looking up subtype.");
+    console.log(error);
+    return null;
+  }
+};
+
 export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
@@ -135,6 +175,9 @@ export const transform = (id: string) => {
         (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
       )?.SPW_STATUS_DESC || "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
+    const authorityId = data.PLAN_TYPES?.[0].PLAN_TYPE_ID;
+    const typeId = data.STATE_PLAN_SERVICETYPES?.[0].SERVICE_TYPE_ID;
+    const subTypeId = data.STATE_PLAN_SERVICE_SUBTYPES?.[0].SERVICE_SUBTYPE_ID;
     return {
       id,
       flavor: flavorLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
@@ -150,8 +193,12 @@ export const transform = (id: string) => {
       initialIntakeNeeded:
         !leadAnalystName && seatoolStatus !== SEATOOL_STATUS.WITHDRAWN,
       leadAnalystName,
-      authority: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME as Authority | null,
-      authorityId: data.STATE_PLAN.PLAN_TYPE,
+      authorityId,
+      authority: getAuthority(authorityId) as Authority | null,
+      typeId,
+      type: getType(authorityId, typeId),
+      subTypeId,
+      subType: getSubType(authorityId, typeId, subTypeId),
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,

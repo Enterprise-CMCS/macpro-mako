@@ -1,5 +1,11 @@
 // seatool subtypes/subtypeids organized by authority and type id
-export const SEATOOL_SUB_TYPES = {
+export const SEATOOL_SUB_TYPES: {
+  [key: string]: {
+    [key: string]: {
+      [key: string]: string;
+    };
+  };
+} = {
   "121": { "116": { "1004": "Test Type" } },
   "122": {
     "4": {

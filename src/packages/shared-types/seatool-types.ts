@@ -1,5 +1,9 @@
 // seatool types/typeids organized by authority id
-export const SEATOOL_TYPES = {
+export const SEATOOL_TYPES: {
+  [key: string]: {
+    [key: string]: string;
+  };
+} = {
   "122": {
     "4": "1915(b) Waivers Do Not Use",
     "31": "Hlth Care Ref (HCR) Do Not Use",
@@ -112,5 +116,4 @@ export const SEATOOL_TYPES = {
   "128": { "70": "Contract", "71": "RFP/SOW", "72": "E&E APD" },
   "129": { "79": "PA CAP", "80": "MAC Plan", "81": "SW CAP" },
   "130": { "77": "Institutional Payment (NIRT)", "78": "Non-Institut (NIPT)" },
-  blank: { "36": "Health Homes", "63": "Affordable Care Act" },
 };
