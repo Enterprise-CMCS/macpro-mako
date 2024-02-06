@@ -23,6 +23,7 @@ import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { useModalContext } from "@/components/Context/modalContext";
 import { useNavigate } from "@/components/Routing";
+import { useCallback } from "react";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -68,7 +69,11 @@ export const ChipSpaFormPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
-  const { setModalOpen, setContent, setAcceptPath } = useModalContext();
+  const { setModalOpen, setContent, setOnAccept } = useModalContext();
+  const acceptAction = useCallback(() => {
+    setModalOpen(false);
+    navigate({ path: "/dashboard" });
+  }, []);
   const form = useForm<ChipFormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -223,7 +228,7 @@ export const ChipSpaFormPage = () => {
                   acceptButtonText: "Yes, leave form",
                   cancelButtonText: "Return to form",
                 });
-                setAcceptPath("/dashboard");
+                setOnAccept(acceptAction);
                 setModalOpen(true);
               }}
               className="px-12"
