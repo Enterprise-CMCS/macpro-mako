@@ -4,7 +4,7 @@ import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormSetup } from "@/pages/actions/setups";
 import { SetupOptions } from "@/pages";
-import { ReactElement } from "react";
+import { ReactElement, useCallback } from "react";
 import {
   Button,
   Form,
@@ -60,7 +60,11 @@ export const WithdrawPackage = ({
   const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const { setModalOpen, setContent, setAcceptPath } = useModalContext();
+  const { setModalOpen, setContent, setOnAccept } = useModalContext();
+  const acceptAction = useCallback(() => {
+    setModalOpen(false);
+    navigate({ path: "/dashboard" });
+  }, []);
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -172,7 +176,7 @@ export const WithdrawPackage = ({
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setAcceptPath("/dashboard");
+              setOnAccept(acceptAction);
               setModalOpen(true);
             }}
           >
