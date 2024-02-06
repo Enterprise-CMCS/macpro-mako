@@ -7,14 +7,14 @@ import {
   SeatoolOfficer,
 } from "../../..";
 
-import { Authority } from "shared-types";
+import { Authority, SEATOOL_TYPES, SEATOOL_SUB_TYPES } from "shared-types";
 
-type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
+type Flavor = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
-const authorityLookup = (val: number | null): null | string => {
+const flavorLookup = (val: number | null): null | string => {
   if (!val) return null;
 
-  const lookup: Record<number, AuthorityType> = {
+  const lookup: Record<number, Flavor> = {
     122: "WAIVER",
     123: "WAIVER",
     124: "CHIP",
@@ -132,7 +132,7 @@ export const transform = (id: string) => {
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
     return {
       id,
-      flavor: authorityLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
+      flavor: flavorLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
       actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
@@ -165,7 +165,7 @@ export const transform = (id: string) => {
         raiReceivedDate,
         raiWithdrawnDate,
         seatoolStatus,
-        authorityLookup(data.STATE_PLAN.PLAN_TYPE)
+        flavorLookup(data.STATE_PLAN.PLAN_TYPE)
       ),
     };
   });
