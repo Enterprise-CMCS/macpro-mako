@@ -33,7 +33,7 @@ export const IssueRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
 
   return (
-    <SimplePageContainer>
+    <>
       <SC.FormError />
       <SC.Heading title="Formal RAI Details" />
       <SC.RequiredFieldDescription />
@@ -60,7 +60,7 @@ export const IssueRai = () => {
         <AdditionalFormInformation />
         <SC.SubmissionButtons />
       </form>
-    </SimplePageContainer>
+    </>
   );
 };
 
