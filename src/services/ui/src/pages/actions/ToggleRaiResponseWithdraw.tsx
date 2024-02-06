@@ -2,7 +2,7 @@ import { Navigate, useNavigate, useParams } from "@/components/Routing";
 import { Alert, LoadingSpinner } from "@/components";
 import { Action, PlanType, opensearch } from "shared-types";
 import { Button } from "@/components/Inputs";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useSubmissionService } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
@@ -17,7 +17,11 @@ export const ToggleRaiResponseWithdraw = ({
   const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const { setModalOpen, setContent, setAcceptPath } = useModalContext();
+  const { setModalOpen, setContent, setOnAccept } = useModalContext();
+  const acceptAction = useCallback(() => {
+    setModalOpen(false);
+    navigate({ path: "/dashboard" });
+  }, []);
   const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
     id: string;
   }>({
@@ -70,7 +74,7 @@ export const ToggleRaiResponseWithdraw = ({
               acceptButtonText: "Yes, leave form",
               cancelButtonText: "Return to form",
             });
-            setAcceptPath("/dashboard");
+            setOnAccept(acceptAction);
             setModalOpen(true);
           }}
           variant="outline"
