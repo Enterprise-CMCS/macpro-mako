@@ -4,7 +4,7 @@ import {
     ListUsersCommand,
     // UserType as CognitoUserType,
 } from "@aws-sdk/client-cognito-identity-provider";
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import { SESClient, SendTemplatedEmailCommand } from "@aws-sdk/client-ses";
 
 import {
     transformOnemac,
@@ -51,9 +51,15 @@ export const onemacDataTransform = (props) => {
     console.log("is not ignored");
 
     // looks like initial submissions do not have an action type yet
-    const whichEmails = record.actionType ? record.actionType : "initial-submission";
+    const whichEmails = (record.actionType ? record.actionType : "initial-submission") + ' ' + record?.authority;
 
     console.log("whichEmail: ", whichEmails);
+
+    const cmsTemplateName = whichEmails + '-cms';
+    const stateTemplateName = whichEmails + '-state';
+
+    console.log("cms template: ", cmsTemplateName);
+    console.log("state Template: ", stateTemplateName);
 
     // is Legacy
     const isLegacy = record?.origin !== "micro";
@@ -112,30 +118,16 @@ export const onemacDataTransform = (props) => {
     return null;
   };
 
-const createSendEmailCommand = (event) =>
-    new SendEmailCommand({
+const createSendTemplatedEmailCommand = (data) =>
+    new SendTemplatedEmailCommand({
         Source: "kgrue@fearless.tech",
         Destination: {
             ToAddresses: [
                 "k.grue.stateuser@gmail.com",
             ],
         },
-        Message: {
-            Subject: {
-                Data: event.subject ?? "Subject Required",
-                Charset: "UTF-8",
-            },
-            Body: {
-                Text: {
-                    Data: "Body Text",
-                    Charset: "UTF-8",
-                },
-                Html: {
-                    Data: "<p>HTML body text</p><p>yup</p>",
-                    Charset: "UTF-8",
-                },
-            },
-        },
+        TemplateData: JSON.stringify({ data }),
+        Template: 'initial-submission-cms',
         ConfigurationSetName: process.env.emailConfigSet,
     });
 
@@ -159,13 +151,13 @@ export const main = async (event, context, callback) => {
         UserPoolId: process.env.cognitoPoolId,
     });
 
-    const sendEmailCommand = createSendEmailCommand(event);
+    const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(records[0]);
 
     try {
         const listUsersResponse = await Cognito.send(commandListUsers);
         console.log("listUsers response: ", JSON.stringify(listUsersResponse, null, 4));
 
-        response = await SES.send(sendEmailCommand);
+        response = await SES.send(sendTemplatedEmailCommand);
         console.log("sendEmailCommand response: ", JSON.stringify(response, null, 4));
     } catch (err) {
         console.log("Failed to process emails.", err);

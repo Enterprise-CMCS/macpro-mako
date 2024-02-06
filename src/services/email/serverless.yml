@@ -8,6 +8,7 @@ plugins:
   - "@stratiformdigital/serverless-iam-helper"
   - serverless-plugin-scripts
   - serverless-esbuild
+  - "@haftahave/serverless-ses-template"
 
 provider:
   name: aws
@@ -61,6 +62,8 @@ custom:
       - master
       - val
       - production
+  sesTemplates:
+    addStage: true
 
 params:
   master:
