@@ -1,11 +1,6 @@
 import { Alert, SimplePageContainer } from "@/components";
 import * as SC from "./shared-components";
-import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
-import {
-  ActionFunction,
-  ActionFunctionArgs,
-  useSubmit,
-} from "react-router-dom";
+import { ActionFunction, ActionFunctionArgs } from "react-router-dom";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { submit } from "@/api/submissionService";
@@ -19,11 +14,14 @@ export const issueRaiSchema = z.object({
 export const issueRaiDefaultAction: ActionFunction = async ({
   request,
 }: ActionFunctionArgs) => {
-  const data = Object.fromEntries(await request.formData());
-  const user = await getUser();
-  const authority = PlanType["1915(b)"];
-
   try {
+    const data = issueRaiSchema.parse(
+      Object.fromEntries(await request.formData())
+    );
+
+    console.log(data);
+    const user = await getUser();
+    const authority = PlanType["1915(b)"];
     throw new Error("hello");
     await submit({ data, endpoint: "/action/issue-rai", user, authority });
   } catch (err) {
@@ -34,17 +32,7 @@ export const issueRaiDefaultAction: ActionFunction = async ({
 };
 
 export const IssueRai = () => {
-  const methods = useFormContext<z.infer<typeof issueRaiSchema>>();
-
-  const submit = useSubmit();
-
-  const validSubmission: SubmitHandler<FieldValues> = (data, e) => {
-    e?.preventDefault();
-
-    submit(data, {
-      method: "post",
-    });
-  };
+  const { handleSubmit } = SC.useSubmitForm();
 
   return (
     <SimplePageContainer>
@@ -63,7 +51,7 @@ export const IssueRai = () => {
         </strong>
       </SC.ActionDescription>
       <SC.PackageSection id="test-spa-id" type="medicaid spa" />
-      <form onSubmit={methods.handleSubmit(validSubmission)}>
+      <form onSubmit={handleSubmit}>
         <SC.AttachmentsSection
           attachments={[
             { name: "Formal RAI Letter", required: true },

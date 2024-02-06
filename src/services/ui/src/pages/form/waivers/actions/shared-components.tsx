@@ -12,8 +12,13 @@ import {
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { Info } from "lucide-react";
-import { useFormContext } from "react-hook-form";
-import { Link, useNavigation, useRouteError } from "react-router-dom";
+import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
+import {
+  Link,
+  useNavigation,
+  useRouteError,
+  useSubmit,
+} from "react-router-dom";
 
 export const RequiredFieldDescription = () => {
   return (
@@ -146,4 +151,18 @@ export const FormError = () => {
   }
 
   return null;
+};
+
+export const useSubmitForm = () => {
+  const methods = useFormContext();
+  const submit = useSubmit();
+
+  const validSubmission: SubmitHandler<FieldValues> = (data, e) => {
+    e?.preventDefault();
+    submit(data, {
+      method: "post",
+    });
+  };
+
+  return { handleSubmit: methods.handleSubmit(validSubmission) };
 };
