@@ -1,3 +1,6 @@
+import { z } from "zod";
+import { zAttachmentRequired } from "@/pages/form/zod";
+
 export const OPTIONS_STATE = [
   { label: "Alabama", value: "AL" },
   { label: "Alaska", value: "AK" },
@@ -95,3 +98,22 @@ export const OPTIONS_STATE = [
   { label: "Wisconsin", value: "WI" },
   { label: "Wyoming", value: "WY" },
 ];
+
+export const zWaiverId = z
+  .string()
+  .regex(
+    /\d{4,5}.R\d{2}.\d{2}$/,
+    "ID doesn't match format ####.R##.## or #####.R##.##"
+  );
+
+export const FORM = z.object({
+  waiverIds: z.array(zWaiverId),
+  state: z.string(),
+  additionalInformation: z.string().max(4000).optional(),
+  attachments: z.object({
+    appk: zAttachmentRequired({ min: 1 }),
+  }),
+  proposedEffectiveDate: z.date(),
+});
+
+export type SchemaForm = z.infer<typeof FORM>;

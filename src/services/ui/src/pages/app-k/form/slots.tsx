@@ -1,28 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useGetUser } from "@/api/useGetUser";
-import { BreadCrumbs, SectionCard, SimplePageContainer } from "@/components";
-import { useLocationCrumbs } from "@/pages/form/form-breadcrumbs";
-import { Select } from "@/components/Inputs";
-import {
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/Inputs";
 import { OPTIONS_STATE } from "./consts";
 import * as I from "@/components/Inputs";
-import * as C from "@/pages/form/content";
-import { z } from "zod";
-import { zAttachmentRequired, zSpaIdSchema } from "@/pages/form/zod";
 import {
-  useForm,
   ControllerProps,
   ControllerRenderProps,
   FieldPath,
   FieldValues,
   useFieldArray,
 } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode, useEffect, useState } from "react";
 import { useOsSearch } from "@/api";
 import { opensearch } from "shared-types";
@@ -32,18 +18,7 @@ import { Plus, XIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
 import { cn } from "@/lib";
-import { SlotAttachments } from "@/pages/actions/renderSlots";
-
-const formSchema = z.object({
-  waiverIds: z.array(zSpaIdSchema),
-  state: z.string(),
-  additionalInformation: z.string().max(4000).optional(),
-  attachments: z.object({
-    appk: zAttachmentRequired({ min: 1 }),
-  }),
-  proposedEffectiveDate: z.date(),
-});
-type ChipFormSchema = z.infer<typeof formSchema>;
+import { zWaiverId } from "./consts";
 
 export const SlotStateSelect = <
   TFieldValues extends FieldValues = FieldValues,
@@ -65,18 +40,18 @@ export const SlotStateSelect = <
     return (
       <I.FormItem {...props} className="w-[280px]">
         <I.FormLabel className="font-bold">{label}</I.FormLabel>
-        <Select onValueChange={field.onChange} value={field.value}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select State" />
-          </SelectTrigger>
-          <SelectContent className="overflow-auto max-h-60">
+        <I.Select onValueChange={field.onChange} value={field.value}>
+          <I.SelectTrigger>
+            <I.SelectValue placeholder="Select State" />
+          </I.SelectTrigger>
+          <I.SelectContent className="overflow-auto max-h-60">
             {stateAccess?.map((STATE) => (
-              <SelectItem key={`OPT-${STATE}`} value={STATE}>
+              <I.SelectItem key={`OPT-${STATE}`} value={STATE}>
                 {OPTIONS_STATE.find((OPT) => OPT.value === STATE)?.label}
-              </SelectItem>
+              </I.SelectItem>
             ))}
-          </SelectContent>
-        </Select>
+          </I.SelectContent>
+        </I.Select>
       </I.FormItem>
     );
   };
@@ -87,30 +62,35 @@ export const SlotWaiverId = <
 >({
   state,
   onRemove,
+  onIncludes,
   ...props
 }: {
   state: string;
   onRemove: () => void;
+  onIncludes: (val: string) => boolean;
   className?: string;
 }): ControllerProps<TFieldValues, TName>["render"] =>
   function Render({ field }) {
     const debounced = useDebounce(field.value, 750);
     const [status, setStatus] = useState<
-      "loading" | "valid" | "invalid" | "fresh"
-    >("fresh");
+      "loading" | "valid" | "invalid" | "init"
+    >("init");
     const search = useOsSearch<
       opensearch.main.Field,
       opensearch.main.Response
     >();
 
     const onValidate = async (value: string) => {
-      if (!state) return;
-      if (!value) return;
-      if (!String(value).match(/\d{4,5}.R00.00$/)) {
-        return setStatus("invalid");
-      }
+      const preExitConditions = !state || !value;
+      if (preExitConditions) return;
 
-      const res = await search.mutateAsync({
+      const parsed = zWaiverId.safeParse(String(value));
+      if (!parsed.success) return setStatus("invalid");
+
+      const includedInList = onIncludes(parsed.data);
+      if (includedInList) return setStatus("invalid");
+
+      const searchResult = await search.mutateAsync({
         index: "main",
         pagination: { number: 0, size: 100 },
         filters: [
@@ -118,18 +98,21 @@ export const SlotWaiverId = <
           {
             field: "id.keyword",
             prefix: "must",
-            value: `${state}-${value}`,
+            value: `${state}-${parsed.data}`,
             type: "match",
           },
         ],
       });
-
-      setStatus(res.hits.total.value ? "invalid" : "valid");
+      const entryExists = searchResult.hits.total.value;
+      setStatus(entryExists ? "invalid" : "valid");
     };
 
-    useEffect(() => {
-      onValidate(debounced);
-    }, [debounced]);
+    useEffect(
+      function onDebounceValidate() {
+        onValidate(debounced);
+      },
+      [debounced]
+    );
 
     useEffect(() => {
       if (!search.isLoading) return;
@@ -141,7 +124,6 @@ export const SlotWaiverId = <
         <div className="relative flex flex-row gap-1 items-center w-min">
           <p className="font-semibold">{state}-</p>
           <I.Input
-            // className={"outline-1 border-red-500"}
             className={cn({
               "w-[223px]": true,
               "border-red-500": status === "invalid",
@@ -215,11 +197,10 @@ export const WaiverIdFieldArray = (props: any) => {
 
         <div className="flex flex-col py-4 gap-4">
           {fieldArr.fields.map((FLD, index) => {
+            const inputIds = props.control._getFieldArray(props.name);
+
             return (
-              <div
-                key={`${props.name}.${index}`}
-                className="flex flex-row gap-2 items-center"
-              >
+              <div key={FLD.id} className="flex flex-row gap-2 items-center">
                 <p className="opacity-50 font-black">·</p>
                 <I.FormField
                   control={props.control}
@@ -228,6 +209,11 @@ export const WaiverIdFieldArray = (props: any) => {
                   // @ts-ignore
                   render={SlotWaiverId({
                     onRemove: () => fieldArr.remove(index),
+                    onIncludes: (val: string) => {
+                      return inputIds
+                        .filter((_: any, I: number) => I !== index)
+                        .includes(val);
+                    },
                     state: props.state,
                   })}
                 />
@@ -237,94 +223,5 @@ export const WaiverIdFieldArray = (props: any) => {
         </div>
       </div>
     </div>
-  );
-};
-
-export const AppKSubmissionForm = () => {
-  const crumbs = useLocationCrumbs();
-
-  const form = useForm<ChipFormSchema>({
-    resolver: zodResolver(formSchema),
-  });
-
-  return (
-    <SimplePageContainer>
-      <BreadCrumbs options={crumbs} />
-      <div className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col">
-        <I.Form {...form}>
-          <SectionCard title="Appendix K Details">
-            <I.FormField
-              control={form.control}
-              name="state"
-              render={SlotStateSelect({ label: "State" })}
-            />
-            <div className="px-4 border-l-2">
-              <WaiverIdFieldArray
-                {...form}
-                state={form.watch("state")}
-                name="waiverIds"
-              />
-            </div>
-            <I.FormField
-              control={form.control}
-              name="proposedEffectiveDate"
-              render={({ field }) => (
-                <I.FormItem className="max-w-sm">
-                  <I.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of CHIP SPA
-                  </I.FormLabel>
-                  <I.FormControl>
-                    <I.DatePicker
-                      onChange={field.onChange}
-                      date={field.value}
-                    />
-                  </I.FormControl>
-                  <I.FormMessage />
-                </I.FormItem>
-              )}
-            />
-          </SectionCard>
-          <SectionCard title="Attachments">
-            <C.AttachmentsSizeTypesDesc faqLink="/faq/#chip-spa-attachments" />
-
-            <I.FormField
-              key={String(name)}
-              control={form.control}
-              name={"attachments.appk"}
-              render={SlotAttachments({
-                label: (
-                  <I.FormLabel className="font-semibold">
-                    {"1915(c) Appendix K Amendment Waiver Template"}
-                    <I.RequiredIndicator />
-                  </I.FormLabel>
-                ),
-                message: <I.FormMessage />,
-                className: "my-4",
-              })}
-            />
-          </SectionCard>
-
-          <SectionCard title="Additional Information">
-            <I.FormField
-              control={form.control}
-              name="additionalInformation"
-              render={({ field }) => (
-                <I.FormItem>
-                  <I.FormLabel className="font-normal">
-                    Add anything else you would like to share with CMS, limited
-                    to 4000 characters
-                  </I.FormLabel>
-                  <I.Textarea {...field} className="h-[200px] resize-none" />
-                  <I.FormDescription>
-                    4,000 characters allowed
-                  </I.FormDescription>
-                </I.FormItem>
-              )}
-            />
-          </SectionCard>
-          <C.PreSubmissionMessage />
-        </I.Form>
-      </div>
-    </SimplePageContainer>
   );
 };
