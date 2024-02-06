@@ -51,7 +51,7 @@ export const onemacDataTransform = (props) => {
     console.log("is not ignored");
 
     // looks like initial submissions do not have an action type yet
-    const whichEmails = (record.actionType ? record.actionType : "initial-submission") + ' ' + record?.authority;
+    const whichEmails = record.actionType ? record.actionType : "initial-submission";
 
     console.log("whichEmail: ", whichEmails);
 
@@ -126,7 +126,7 @@ const createSendTemplatedEmailCommand = (data) =>
                 "k.grue.stateuser@gmail.com",
             ],
         },
-        TemplateData: JSON.stringify({ data }),
+        TemplateData: JSON.stringify({ authority: "An Authority", id: "the ID", applicationEndpoint: "onemac.cms.gov", packageDetails: "some details" }),
         Template: 'initial-submission-cms',
         ConfigurationSetName: process.env.emailConfigSet,
     });
@@ -152,7 +152,7 @@ export const main = async (event, context, callback) => {
     });
 
     const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(records[0]);
-
+    console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
     try {
         const listUsersResponse = await Cognito.send(commandListUsers);
         console.log("listUsers response: ", JSON.stringify(listUsersResponse, null, 4));
