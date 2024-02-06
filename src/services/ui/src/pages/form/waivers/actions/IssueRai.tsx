@@ -76,19 +76,17 @@ export const IssueRai = () => {
         </strong>
       </SC.ActionDescription>
       <SC.PackageSection id="test-spa-id" type="medicaid spa" />
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(validSubmission)}>
-          <SC.AttachmentsSection
-            attachments={[
-              { name: "Formal RAI Letter", required: true },
-              { name: "Other", required: false },
-            ]}
-          />
-          <SC.AdditionalInformation />
-          <AdditionalFormInformation />
-          <SC.SubmissionButtons />
-        </form>
-      </FormProvider>
+      <form onSubmit={methods.handleSubmit(validSubmission)}>
+        <SC.AttachmentsSection
+          attachments={[
+            { name: "Formal RAI Letter", required: true },
+            { name: "Other", required: false },
+          ]}
+        />
+        <SC.AdditionalInformation />
+        <AdditionalFormInformation />
+        <SC.SubmissionButtons />
+      </form>
     </SimplePageContainer>
   );
 };
