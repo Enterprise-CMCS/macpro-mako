@@ -7,7 +7,6 @@ import { queryClient, router } from "./router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { UserContextProvider } from "./components/Context/userContext";
-import { ModalProvider } from "@/components/Context/modalContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

@@ -14,6 +14,7 @@ import config from "@/config";
 import { useNavigate } from "../Routing";
 import { FAQ_TAB } from "../Routing/consts";
 import { ModalProvider } from "@/components/Context/modalContext";
+import { AlertProvider } from "@/components/Context/alertContext";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
   const isProd = window && window.location.hostname === "mako.cms.gov";
@@ -125,8 +126,9 @@ export const Layout = () => {
           </div>
         </nav>
         <main className="flex-1">
-          {/* TODO: Plug in banners */}
-          <Outlet />
+          <AlertProvider>
+            <Outlet />
+          </AlertProvider>
         </main>
         <Footer
           email="OneMAC_Helpdesk@cms.hhs.gov"

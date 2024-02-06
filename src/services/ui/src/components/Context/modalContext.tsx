@@ -2,6 +2,12 @@ import { PropsWithChildren, useState } from "react";
 import { createContextProvider } from "@/utils";
 import { ConfirmationModal } from "@/components";
 
+type SubmissionAlert = {
+  header: string;
+  body: string;
+  cancelButtonText?: string;
+  acceptButtonText?: string;
+};
 const useModalController = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [onAccept, setOnAccept] = useState<VoidFunction>(() => void {});
@@ -22,7 +28,7 @@ const useModalController = () => {
 export const [ModalContextProvider, useModalContext] = createContextProvider<
   ReturnType<typeof useModalController>
 >({
-  name: "Submission Form Modal Context",
+  name: "Modal Context",
   errorMessage:
     "This component requires the `ModalProvider` wrapper to make use of modal UIs.",
 });
