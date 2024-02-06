@@ -9,10 +9,10 @@ const schemas: Record<string, AnyZodObject> = {
 };
 
 export const ActionWrapper = () => {
-  const type = window.location.href.split("/").at(-1);
+  const packageActionType = window.location.href.split("/").at(-1);
 
   const methods = useForm({
-    resolver: zodResolver(schemas[type!]),
+    resolver: zodResolver(schemas[packageActionType!]),
   });
 
   return (
