@@ -79,7 +79,11 @@ export const MedicaidSpaFormPage = () => {
     setContent: setModalContent,
     setOnAccept: setModalOnAccept,
   } = useModalContext();
-  const { setContent: setBannerContent, setBannerShow } = useAlertContext();
+  const {
+    setContent: setBannerContent,
+    setBannerShow,
+    setBannerDisplayOn,
+  } = useAlertContext();
   const acceptAction = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
@@ -100,7 +104,8 @@ export const MedicaidSpaFormPage = () => {
         body: "Your submission has been received.",
       });
       setBannerShow(true);
-      navigate({ path: "/dashboard" });
+      setBannerDisplayOn("/dashboard");
+      navigate({ path: "/dashboard" }, { state: { callout: true } });
     } catch (e) {
       console.error(e);
     }
