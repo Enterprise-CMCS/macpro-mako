@@ -8,6 +8,7 @@ import { buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
 import { ActionFormIntro, PackageInfo } from "@/pages/actions/common";
 import { useModalContext } from "@/components/Context/modalContext";
+import { useAlertContext } from "@/components/Context/alertContext";
 
 export const ToggleRaiResponseWithdraw = ({
   item,
@@ -17,7 +18,12 @@ export const ToggleRaiResponseWithdraw = ({
   const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const { setModalOpen, setContent, setOnAccept } = useModalContext();
+  const {
+    setModalOpen,
+    setContent: setModalContent,
+    setOnAccept: setModalOnAccept,
+  } = useModalContext();
+  const { setContent: setBannerContent, setBannerShow } = useAlertContext();
   const acceptAction = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
@@ -37,7 +43,17 @@ export const ToggleRaiResponseWithdraw = ({
   );
 
   useEffect(() => {
-    if (isSuccess) navigate({ path: "/dashboard" });
+    if (isSuccess) {
+      setBannerContent({
+        header: `RAI response withdrawal ${ACTION_WORD.toLowerCase()}d`,
+        body:
+          ACTION_WORD === "Enable"
+            ? "The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied."
+            : "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
+      });
+      setBannerShow(true);
+      navigate({ path: "/dashboard" });
+    }
   }, [isSuccess]);
 
   if (!item) return <Navigate path={"/dashboard"} />; // Prevents optional chains below
@@ -68,13 +84,13 @@ export const ToggleRaiResponseWithdraw = ({
         <Button onClick={() => mutate()}>Submit</Button>
         <Button
           onClick={() => {
-            setContent({
+            setModalContent({
               header: "Stop form submission?",
               body: "All information you've entered on this form will be lost if you leave this page.",
               acceptButtonText: "Yes, leave form",
               cancelButtonText: "Return to form",
             });
-            setOnAccept(() => acceptAction);
+            setModalOnAccept(() => acceptAction);
             setModalOpen(true);
           }}
           variant="outline"
