@@ -22,6 +22,7 @@ import { submit } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { useNavigate, useParams } from "@/components/Routing";
 import { useGetUser } from "@/api/useGetUser";
+import { useCallback } from "react";
 
 export const RespondToRai = ({
   item,
@@ -33,7 +34,11 @@ export const RespondToRai = ({
   const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const { setModalOpen, setContent, setAcceptPath } = useModalContext();
+  const { setModalOpen, setContent, setOnAccept } = useModalContext();
+  const acceptAction = useCallback(() => {
+    setModalOpen(false);
+    navigate({ path: "/dashboard" });
+  }, []);
   const form = useForm({
     resolver: zodResolver(schema),
   });
@@ -147,7 +152,7 @@ export const RespondToRai = ({
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setAcceptPath("/dashboard");
+              setOnAccept(acceptAction);
               setModalOpen(true);
             }}
           >
