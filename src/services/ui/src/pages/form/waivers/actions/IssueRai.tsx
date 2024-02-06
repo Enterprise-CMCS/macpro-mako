@@ -1,26 +1,38 @@
-import { Alert, SimplePageContainer } from "@/components";
+import { Alert } from "@/components";
 import * as SC from "./shared-components";
-import { ActionFunction, ActionFunctionArgs } from "react-router-dom";
+import { ActionFunction, Form } from "react-router-dom";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { submit } from "@/api/submissionService";
 import { getUser } from "@/api/useGetUser";
 import { PlanType } from "shared-types";
+import { zAttachmentOptional, zAttachmentRequired } from "../../zod";
+import { unflatten } from "flat";
 
+type Attachments = keyof z.infer<typeof issueRaiSchema>["attachments"];
 export const issueRaiSchema = z.object({
   additionalInformation: z.string(),
+  attachments: z.object({
+    formalRaiLetter: zAttachmentRequired({ min: 1 }),
+    other: zAttachmentOptional,
+  }),
 });
 
 export const issueRaiDefaultAction: ActionFunction = async ({ request }) => {
   try {
-    const data = issueRaiSchema.parse(
-      Object.fromEntries(await request.formData())
-    );
+    const formData = Object.fromEntries(await request.formData());
+
+    const unflattenedFormData = unflatten(formData);
+
+    const data = issueRaiSchema.parse(unflattenedFormData);
 
     const user = await getUser();
     const authority = PlanType["1915(b)"];
     // await submit({ data, endpoint: "/action/issue-rai", user, authority });
+
+    console.log(data);
   } catch (err) {
+    console.log(err);
     throw new Error("Submission Failed");
   }
 
@@ -47,10 +59,14 @@ export const IssueRai = () => {
       </SC.ActionDescription>
       <SC.PackageSection id="test-spa-id" type="medicaid spa" />
       <form onSubmit={handleSubmit}>
-        <SC.AttachmentsSection
+        <SC.AttachmentsSection<Attachments>
           attachments={[
-            { name: "Formal RAI Letter", required: true },
-            { name: "Other", required: false },
+            {
+              name: "Formal RAI Letter",
+              required: true,
+              registerName: "formalRaiLetter",
+            },
+            { name: "Other", required: false, registerName: "other" },
           ]}
         />
         <SC.AdditionalInformation />

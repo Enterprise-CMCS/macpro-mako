@@ -11,14 +11,10 @@ import {
   Upload,
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
-import { Info } from "lucide-react";
 import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
-import {
-  Link,
-  useNavigation,
-  useRouteError,
-  useSubmit,
-} from "react-router-dom";
+import { Link, useNavigation, useSubmit } from "react-router-dom";
+
+// Components
 
 export const RequiredFieldDescription = () => {
   return (
@@ -40,11 +36,13 @@ export const Heading = ({ title }: { title: string }) => {
   return <h1 className="text-2xl font-semibold mt-4 mb-2">{title}</h1>;
 };
 
-export const AttachmentsSection = ({
+export const AttachmentsSection = <T extends string>({
   attachments,
 }: {
-  attachments: { name: string; required: boolean }[];
+  attachments: { name: string; required: boolean; registerName: T }[];
 }) => {
+  const form = useFormContext();
+
   return (
     <>
       <h2 className="font-bold text-2xl font-sans mb-2">Attachments</h2>
@@ -66,11 +64,18 @@ export const AttachmentsSection = ({
         <strong>.docx, .jpg, .png, .pdf, .xlsx,</strong>
         and a few others. See the full list on the FAQ Page.
       </p>
-      {attachments.map(({ name, required }) => (
-        <FormItem key={name} className="my-4 space-y-2">
-          <FormLabel>{name}</FormLabel> {required && <RequiredIndicator />}
-          <Upload files={[]} setFiles={() => []} />
-        </FormItem>
+      {attachments.map(({ name, required, registerName }) => (
+        <FormField
+          key={name}
+          control={form.control}
+          name={`attachments.${registerName}`}
+          render={({ field }) => (
+            <FormItem key={name} className="my-4 space-y-2">
+              <FormLabel>{name}</FormLabel> {required && <RequiredIndicator />}
+              <Upload files={field?.value ?? []} setFiles={field.onChange} />
+            </FormItem>
+          )}
+        />
       ))}
     </>
   );
@@ -138,16 +143,36 @@ export const AdditionalInformation = () => {
   );
 };
 
+// Hooks
+
 export const useSubmitForm = () => {
   const methods = useFormContext();
   const submit = useSubmit();
 
-  const validSubmission: SubmitHandler<FieldValues> = (data, e) => {
-    e?.preventDefault();
-    submit(data, {
+  const validSubmission: SubmitHandler<any> = (data) => {
+    const formData = new FormData();
+
+    // Append all other data
+    for (const key in data) {
+      if (key !== "attachments") {
+        formData.append(key, data[key]);
+      }
+    }
+
+    const attachments = data.attachments || {};
+    for (const key in attachments) {
+      attachments[key]?.forEach((file: any, index: number) => {
+        formData.append(`attachments.${key}.${index}`, file as any);
+      });
+    }
+
+    submit(formData, {
       method: "post",
+      encType: "multipart/form-data",
     });
   };
 
-  return { handleSubmit: methods.handleSubmit(validSubmission) };
+  return {
+    handleSubmit: methods.handleSubmit(validSubmission),
+  };
 };
