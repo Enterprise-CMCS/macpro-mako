@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { Outlet } from "react-router-dom";
-import { issueRaiSchema } from "../form";
+import { issueRaiSchema } from "../..";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnyZodObject } from "zod";
 

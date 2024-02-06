@@ -131,4 +131,4 @@ export const ActionFormIndex = () => {
   );
 };
 
-export * from "./ActionWrapper";
+export * from "../form/waivers/actions/ActionWrapper";

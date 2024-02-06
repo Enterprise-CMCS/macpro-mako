@@ -11,9 +11,7 @@ export const issueRaiSchema = z.object({
   additionalInformation: z.string(),
 });
 
-export const issueRaiDefaultAction: ActionFunction = async ({
-  request,
-}: ActionFunctionArgs) => {
+export const issueRaiDefaultAction: ActionFunction = async ({ request }) => {
   try {
     const data = issueRaiSchema.parse(
       Object.fromEntries(await request.formData())
