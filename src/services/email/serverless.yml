@@ -80,6 +80,7 @@ functions:
     handler: handlers/processEmails.main
     environment:
       region: ${self:provider.region}
+      stage: ${sls:stage}
       emailConfigSet: ${self:service}-${sls:stage}-configuration
       cognitoPoolId: ${param:CognitoUserPoolId}
     maximumRetryAttempts: 0

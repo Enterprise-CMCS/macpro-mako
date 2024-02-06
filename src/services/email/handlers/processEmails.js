@@ -127,7 +127,7 @@ const createSendTemplatedEmailCommand = (data) =>
             ],
         },
         TemplateData: JSON.stringify({ authority: "An Authority", id: "the ID", applicationEndpoint: "onemac.cms.gov", packageDetails: "some details" }),
-        Template: 'initial-submission-cms',
+        Template: `initial-submission-cms_${process.env.stage}`,
         ConfigurationSetName: process.env.emailConfigSet,
     });
 
