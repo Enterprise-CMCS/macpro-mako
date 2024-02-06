@@ -4,7 +4,7 @@ import {
     ListUsersCommand,
     // UserType as CognitoUserType,
 } from "@aws-sdk/client-cognito-identity-provider";
-import { SESClient, /*SendTemplatedEmailCommand*/ } from "@aws-sdk/client-ses";
+import { SESClient, SendTemplatedEmailCommand } from "@aws-sdk/client-ses";
 
 import {
     transformOnemac,
@@ -118,18 +118,18 @@ export const onemacDataTransform = (props) => {
     return null;
   };
 
-// const createSendTemplatedEmailCommand = (data) =>
-//     new SendTemplatedEmailCommand({
-//         Source: "kgrue@fearless.tech",
-//         Destination: {
-//             ToAddresses: [
-//                 "k.grue.stateuser@gmail.com",
-//             ],
-//         },
-//         TemplateData: JSON.stringify({ data }),
-//         Template: 'initial-submission-cms',
-//         ConfigurationSetName: process.env.emailConfigSet,
-//     });
+const createSendTemplatedEmailCommand = (data) =>
+    new SendTemplatedEmailCommand({
+        Source: "kgrue@fearless.tech",
+        Destination: {
+            ToAddresses: [
+                "k.grue.stateuser@gmail.com",
+            ],
+        },
+        TemplateData: JSON.stringify({ data }),
+        Template: 'initial-submission-cms',
+        ConfigurationSetName: process.env.emailConfigSet,
+    });
 
 export const main = async (event, context, callback) => {
     let response;
@@ -151,13 +151,13 @@ export const main = async (event, context, callback) => {
         UserPoolId: process.env.cognitoPoolId,
     });
 
-//    const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(records[0]);
+    const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(records[0]);
 
     try {
         const listUsersResponse = await Cognito.send(commandListUsers);
         console.log("listUsers response: ", JSON.stringify(listUsersResponse, null, 4));
 
-//        response = await SES.send(sendTemplatedEmailCommand);
+        response = await SES.send(sendTemplatedEmailCommand);
         console.log("sendEmailCommand response: ", JSON.stringify(response, null, 4));
     } catch (err) {
         console.log("Failed to process emails.", err);
