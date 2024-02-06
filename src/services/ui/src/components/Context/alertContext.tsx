@@ -1,5 +1,5 @@
 import { PropsWithChildren, useState } from "react";
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { createContextProvider } from "@/utils";
 import { Alert, SimplePageContainer } from "@/components";
 
@@ -37,10 +37,17 @@ export const AlertProvider = ({ children }: PropsWithChildren) => {
       {context.bannerShow && (
         <SimplePageContainer>
           <Alert variant={"success"} className="mt-4 mb-8 flex-row text-sm">
-            <Check />
-            <div className={"ml-2"}>
-              <h3 className={"text-lg font-bold"}>{context.content.header}</h3>
-              <p>{context.content.body}</p>
+            <div className={"flex items-start justify-between"}>
+              <Check />
+              <div className={"ml-2 w-full"}>
+                <h3 className={"text-lg font-bold"}>
+                  {context.content.header}
+                </h3>
+                <p>{context.content.body}</p>
+              </div>
+              <button onClick={() => context.setBannerShow(false)}>
+                <X size={20} />
+              </button>
             </div>
           </Alert>
         </SimplePageContainer>
