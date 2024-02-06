@@ -24,6 +24,7 @@ import { FAQ_TAB } from "@/components/Routing/consts";
 import { useModalContext } from "@/components/Context/modalContext";
 import { useNavigate } from "@/components/Routing";
 import { useCallback } from "react";
+import { useAlertContext } from "@/components/Context/alertContext";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -69,7 +70,12 @@ export const ChipSpaFormPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
-  const { setModalOpen, setContent, setOnAccept } = useModalContext();
+  const {
+    setModalOpen,
+    setContent: setModalContent,
+    setOnAccept: setModalOnAccept,
+  } = useModalContext();
+  const { setContent: setBannerContent, setBannerShow } = useAlertContext();
   const acceptAction = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
@@ -85,6 +91,11 @@ export const ChipSpaFormPage = () => {
         user,
         authority: PlanType.CHIP_SPA,
       });
+      setBannerContent({
+        header: "Package submitted",
+        body: "Your submission has been received.",
+      });
+      setBannerShow(true);
       navigate({ path: "/dashboard" });
     } catch (e) {
       console.error(e);
@@ -222,13 +233,13 @@ export const ChipSpaFormPage = () => {
               type="button"
               variant="outline"
               onClick={() => {
-                setContent({
+                setModalContent({
                   header: "Stop form submission?",
                   body: "All information you've entered on this form will be lost if you leave this page.",
                   acceptButtonText: "Yes, leave form",
                   cancelButtonText: "Return to form",
                 });
-                setOnAccept(() => acceptAction);
+                setModalOnAccept(() => acceptAction);
                 setModalOpen(true);
               }}
               className="px-12"
