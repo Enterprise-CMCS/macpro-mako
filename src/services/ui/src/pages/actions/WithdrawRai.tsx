@@ -34,9 +34,13 @@ export const WithdrawRai = ({
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const { setModalOpen, setContent, setOnAccept } = useModalContext();
-  const acceptAction = useCallback(() => {
+  const cancelOnAccept = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
+  }, []);
+  const confirmOnAccept = useCallback(() => {
+    setConfirmed(true);
+    setModalOpen(false);
   }, []);
   const [confirmed, setConfirmed] = useState(false);
   const form = useForm({
@@ -138,7 +142,25 @@ export const WithdrawRai = ({
         </Alert>
         {/* Buttons */}
         <div className="flex gap-2 my-8">
-          <Button type="submit">Submit</Button>
+          <Button
+            type={!confirmed ? "button" : "submit"}
+            onClick={
+              !confirmed
+                ? () => {
+                    setContent({
+                      header: "Withdraw RAI response?",
+                      body: `The RAI response for ${item._source.id} will be withdrawn, and CMS will be notified.`,
+                      acceptButtonText: "Yes, withdraw response",
+                      cancelButtonText: "Cancel",
+                    });
+                    setOnAccept(() => confirmOnAccept);
+                    setModalOpen(true);
+                  }
+                : () => void {}
+            }
+          >
+            Submit
+          </Button>
           <Button
             type="button"
             variant="outline"
@@ -149,7 +171,7 @@ export const WithdrawRai = ({
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setOnAccept(() => acceptAction);
+              setOnAccept(() => cancelOnAccept);
               setModalOpen(true);
             }}
           >
