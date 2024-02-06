@@ -514,6 +514,7 @@ export const SEATOOL_SUB_TYPES: {
       "231": "Developmental Disability Do Not Use",
       "232": "Habilitation (OBRA'89) Do Not Use",
       "233": "MR-Related Conditions Do Not Use",
+      "234": "PT, OT, Speech Do Not Use",
       "235": "Substance abuse Do Not Use",
     },
     "25": {
