@@ -125,45 +125,64 @@ const isInSecondClock = (
   return false; // otherwise, we're not
 };
 
-const getAuthority = (authorityId: number | undefined) => {
+const getAuthority = (
+  authorityId: number | undefined,
+  id: string | undefined
+) => {
   try {
     if (!authorityId) return null;
     return SEATOOL_AUTHORITIES[authorityId];
   } catch (error) {
-    console.log("ERROR:  Error looking up authority.");
+    console.log(`SEATOOL AUTHORITY LOOKUP ERROR: ${id} ${authorityId}`);
     console.log(error);
     return null;
   }
 };
 
-const getType = (
-  authorityId: number | undefined,
-  typeId: number | undefined
-) => {
-  try {
-    if (!authorityId || !typeId) return null;
-    return SEATOOL_TYPES[authorityId][typeId];
-  } catch (error) {
-    console.log("ERROR:  Error looking up type.");
-    console.log(error);
-    return null;
+const getSubType = (subTypeId: number | undefined, id: string | undefined) => {
+  if (!subTypeId) return null;
+  const subType = findByKeyInNestedObject(SEATOOL_SUB_TYPES, subTypeId);
+  if (!subType) {
+    console.log(
+      `SEATOOL LOOKUP WARNING: Subtype ID ${subTypeId} not found.  Record ${id}`
+    );
   }
+  return subType;
 };
 
-const getSubType = (
-  authorityId: number | undefined,
-  typeId: number | undefined,
-  subTypeId: number | undefined
-) => {
+const getType = (typeId: number | undefined, id: string | undefined) => {
+  if (!typeId) return null;
+  const type = findByKeyInNestedObject(SEATOOL_TYPES, typeId);
+  if (!type) {
+    console.log(
+      `SEATOOL LOOKUP WARNING: Type ID ${typeId} not found.  Record ${id}`
+    );
+  }
+  return type;
+};
+
+function findByKeyInNestedObject(
+  obj: any,
+  itemKey: number | undefined
+): string | null {
   try {
-    if (!authorityId || !typeId || !subTypeId) return null;
-    return SEATOOL_SUB_TYPES[authorityId][typeId][subTypeId];
+    if (!itemKey) return null;
+    for (const key of Object.keys(obj)) {
+      if (key === itemKey.toString()) {
+        return obj[key];
+      } else if (typeof obj[key] === "object") {
+        const result = findByKeyInNestedObject(obj[key], itemKey);
+        if (result) {
+          return result; // Return the found value if any
+        }
+      }
+    }
+    return null;
   } catch (error) {
-    console.log("ERROR:  Error looking up subtype.");
-    console.log(error);
+    console.log("SEATOOL LOOKUP ERROR:  " + error);
     return null;
   }
-};
+}
 
 export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
@@ -194,11 +213,11 @@ export const transform = (id: string) => {
         !leadAnalystName && seatoolStatus !== SEATOOL_STATUS.WITHDRAWN,
       leadAnalystName,
       authorityId: authorityId || null,
-      authority: getAuthority(authorityId) as Authority | null,
+      authority: getAuthority(authorityId, id) as Authority | null,
       typeId: typeId || null,
-      type: getType(authorityId, typeId),
+      type: getType(typeId, id),
       subTypeId: subTypeId || null,
-      subType: getSubType(authorityId, typeId, subTypeId),
+      subType: getSubType(subTypeId, id),
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
