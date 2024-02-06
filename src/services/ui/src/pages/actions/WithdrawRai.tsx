@@ -23,6 +23,7 @@ import { submit } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { useNavigate, useParams } from "@/components/Routing";
 import { useGetUser } from "@/api/useGetUser";
+import { useCallback, useState } from "react";
 
 export const WithdrawRai = ({
   item,
@@ -32,7 +33,12 @@ export const WithdrawRai = ({
   const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const { setModalOpen, setContent, setAcceptPath } = useModalContext();
+  const { setModalOpen, setContent, setOnAccept } = useModalContext();
+  const acceptAction = useCallback(() => {
+    setModalOpen(false);
+    navigate({ path: "/dashboard" });
+  }, []);
+  const [confirmed, setConfirmed] = useState(false);
   const form = useForm({
     resolver: zodResolver(schema),
   });
@@ -40,16 +46,26 @@ export const WithdrawRai = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(async (data) => {
-          try {
-            await submit({
-              data: { ...data, id: id! },
-              endpoint: buildActionUrl(type!),
-              user,
-              authority: item?._source.authority as PlanType,
+          if (!confirmed) {
+            setContent({
+              header: "Withdraw RAI response?",
+              body: `The RAI response for ${item._source.id} will be withdrawn, and CMS will be notified.`,
+              acceptButtonText: "Yes, withdraw response",
+              cancelButtonText: "Cancel",
             });
-            navigate({ path: "/dashboard" });
-          } catch (e) {
-            console.error(e);
+            setModalOpen(true);
+          } else {
+            try {
+              await submit({
+                data: { ...data, id: id! },
+                endpoint: buildActionUrl(type!),
+                user,
+                authority: item?._source.authority as PlanType,
+              });
+              navigate({ path: "/dashboard" });
+            } catch (e) {
+              console.error(e);
+            }
           }
         })}
       >
@@ -133,7 +149,7 @@ export const WithdrawRai = ({
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setAcceptPath("/dashboard");
+              setOnAccept(acceptAction);
               setModalOpen(true);
             }}
           >
