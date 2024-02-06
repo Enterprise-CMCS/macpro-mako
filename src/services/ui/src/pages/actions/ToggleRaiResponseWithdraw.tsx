@@ -74,7 +74,7 @@ export const ToggleRaiResponseWithdraw = ({
               acceptButtonText: "Yes, leave form",
               cancelButtonText: "Return to form",
             });
-            setOnAccept(acceptAction);
+            setOnAccept(() => acceptAction);
             setModalOpen(true);
           }}
           variant="outline"

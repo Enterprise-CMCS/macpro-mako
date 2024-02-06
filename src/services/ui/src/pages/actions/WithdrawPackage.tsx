@@ -176,7 +176,7 @@ export const WithdrawPackage = ({
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setOnAccept(acceptAction);
+              setOnAccept(() => acceptAction);
               setModalOpen(true);
             }}
           >
