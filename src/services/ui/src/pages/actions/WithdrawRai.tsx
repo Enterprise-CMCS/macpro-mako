@@ -23,7 +23,7 @@ import { submit } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { useNavigate, useParams } from "@/components/Routing";
 import { useGetUser } from "@/api/useGetUser";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useAlertContext } from "@/components/Context/alertContext";
 
 export const WithdrawRai = ({
@@ -34,6 +34,9 @@ export const WithdrawRai = ({
   const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
+  const form = useForm({
+    resolver: zodResolver(schema),
+  });
   const {
     setModalOpen,
     setContent: setModalContent,
@@ -49,36 +52,30 @@ export const WithdrawRai = ({
     navigate({ path: "/dashboard" });
   }, []);
   const confirmOnAccept = useCallback(() => {
-    setConfirmed(true);
     setModalOpen(false);
+    form.handleSubmit(async (data) => {
+      try {
+        await submit({
+          data: { ...data, id: id! },
+          endpoint: buildActionUrl(type!),
+          user,
+          authority: item?._source.authority as PlanType,
+        });
+        setBannerContent({
+          header: "RAI response withdrawn",
+          body: `The RAI response for ${item._source.id} has been withdrawn. CMS may follow up if additional information is needed.`,
+        });
+        setBannerShow(true);
+        setBannerDisplayOn("/dashboard");
+        navigate({ path: "/dashboard" });
+      } catch (e) {
+        console.error(e);
+      }
+    })();
   }, []);
-  const [confirmed, setConfirmed] = useState(false);
-  const form = useForm({
-    resolver: zodResolver(schema),
-  });
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(async (data) => {
-          try {
-            await submit({
-              data: { ...data, id: id! },
-              endpoint: buildActionUrl(type!),
-              user,
-              authority: item?._source.authority as PlanType,
-            });
-            setBannerContent({
-              header: "RAI response withdrawn",
-              body: `The RAI response for ${item._source.id} has been withdrawn. CMS may follow up if additional information is needed.`,
-            });
-            setBannerShow(true);
-            setBannerDisplayOn("/dashboard");
-            navigate({ path: "/dashboard" });
-          } catch (e) {
-            console.error(e);
-          }
-        })}
-      >
+      <form>
         {form.formState.isSubmitting && <LoadingSpinner />}
         {/* Intro */}
         <ActionFormIntro title={"Withdraw Formal RAI Response Details"}>
@@ -149,21 +146,17 @@ export const WithdrawRai = ({
         {/* Buttons */}
         <div className="flex gap-2 my-8">
           <Button
-            type={!confirmed ? "button" : "submit"}
-            onClick={
-              !confirmed
-                ? () => {
-                    setModalContent({
-                      header: "Withdraw RAI response?",
-                      body: `The RAI response for ${item._source.id} will be withdrawn, and CMS will be notified.`,
-                      acceptButtonText: "Yes, withdraw response",
-                      cancelButtonText: "Cancel",
-                    });
-                    setModalOnAccept(() => confirmOnAccept);
-                    setModalOpen(true);
-                  }
-                : () => void {}
-            }
+            type={"button"}
+            onClick={() => {
+              setModalContent({
+                header: "Withdraw RAI response?",
+                body: `The RAI response for ${item._source.id} will be withdrawn, and CMS will be notified.`,
+                acceptButtonText: "Yes, withdraw response",
+                cancelButtonText: "Cancel",
+              });
+              setModalOnAccept(() => confirmOnAccept);
+              setModalOpen(true);
+            }}
           >
             Submit
           </Button>

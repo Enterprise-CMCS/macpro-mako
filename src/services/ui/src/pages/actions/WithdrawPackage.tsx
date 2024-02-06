@@ -61,6 +61,9 @@ export const WithdrawPackage = ({
   const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+  });
   const {
     setModalOpen,
     setContent: setModalContent,
@@ -76,36 +79,30 @@ export const WithdrawPackage = ({
     navigate({ path: "/dashboard" });
   }, []);
   const confirmOnAccept = useCallback(() => {
-    setConfirmed(true);
     setModalOpen(false);
+    form.handleSubmit(async (data) => {
+      try {
+        await submit({
+          data: { ...data, id: id! },
+          endpoint: buildActionUrl(type!),
+          user,
+          authority: item?._source.authority as PlanType,
+        });
+        setBannerContent({
+          header: "Package withdrawn",
+          body: `The package ${item._source.id} has been withdrawn.`,
+        });
+        setBannerShow(true);
+        setBannerDisplayOn("/dashboard");
+        navigate({ path: "/dashboard" });
+      } catch (e) {
+        console.error(e);
+      }
+    })();
   }, []);
-  const [confirmed, setConfirmed] = useState(false);
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
-  });
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(async (data) => {
-          try {
-            await submit({
-              data: { ...data, id: id! },
-              endpoint: buildActionUrl(type!),
-              user,
-              authority: item?._source.authority as PlanType,
-            });
-            setBannerContent({
-              header: "Package withdrawn",
-              body: `The package ${item._source.id} has been withdrawn.`,
-            });
-            setBannerShow(true);
-            setBannerDisplayOn("/dashboard");
-            navigate({ path: "/dashboard" });
-          } catch (e) {
-            console.error(e);
-          }
-        })}
-      >
+      <form>
         {form.formState.isSubmitting && <LoadingSpinner />}
         {/* Intro */}
         <ActionFormIntro title={`Withdraw ${item._source.planType} Package`}>
@@ -187,21 +184,17 @@ export const WithdrawPackage = ({
         {/* Buttons */}
         <div className="flex gap-2 my-8">
           <Button
-            type={!confirmed ? "button" : "submit"}
-            onClick={
-              !confirmed
-                ? () => {
-                    setModalContent({
-                      header: "Withdraw package?",
-                      body: `The package ${item._source.id} will be withdrawn.`,
-                      acceptButtonText: "Yes, withdraw package",
-                      cancelButtonText: "Cancel",
-                    });
-                    setModalOnAccept(() => confirmOnAccept);
-                    setModalOpen(true);
-                  }
-                : () => void {}
-            }
+            type={"button"}
+            onClick={() => {
+              setModalContent({
+                header: "Withdraw package?",
+                body: `The package ${item._source.id} will be withdrawn.`,
+                acceptButtonText: "Yes, withdraw package",
+                cancelButtonText: "Cancel",
+              });
+              setModalOnAccept(() => confirmOnAccept);
+              setModalOpen(true);
+            }}
           >
             Submit
           </Button>
