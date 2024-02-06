@@ -25,6 +25,7 @@ import { buildActionUrl } from "@/lib";
 import { useNavigate, useParams } from "@/components/Routing";
 import { useGetUser } from "@/api/useGetUser";
 import { useModalContext } from "@/components/Context/modalContext";
+import { useAlertContext } from "@/components/Context/alertContext";
 
 const attachmentInstructions: Record<SetupOptions, ReactElement> = {
   "Medicaid SPA": (
@@ -60,7 +61,12 @@ export const WithdrawPackage = ({
   const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const { setModalOpen, setContent, setOnAccept } = useModalContext();
+  const {
+    setModalOpen,
+    setContent: setModalContent,
+    setOnAccept: setModalOnAccept,
+  } = useModalContext();
+  const { setContent: setBannerContent, setBannerShow } = useAlertContext();
   const cancelOnAccept = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
@@ -84,6 +90,11 @@ export const WithdrawPackage = ({
               user,
               authority: item?._source.authority as PlanType,
             });
+            setBannerContent({
+              header: "Package withdrawn",
+              body: `The package ${item._source.id} has been withdrawn.`,
+            });
+            setBannerShow(true);
             navigate({ path: "/dashboard" });
           } catch (e) {
             console.error(e);
@@ -175,13 +186,13 @@ export const WithdrawPackage = ({
             onClick={
               !confirmed
                 ? () => {
-                    setContent({
+                    setModalContent({
                       header: "Withdraw package?",
                       body: `The package ${item._source.id} will be withdrawn.`,
                       acceptButtonText: "Yes, withdraw package",
                       cancelButtonText: "Cancel",
                     });
-                    setOnAccept(() => confirmOnAccept);
+                    setModalOnAccept(() => confirmOnAccept);
                     setModalOpen(true);
                   }
                 : () => void {}
@@ -193,13 +204,13 @@ export const WithdrawPackage = ({
             type="button"
             variant="outline"
             onClick={() => {
-              setContent({
+              setModalContent({
                 header: "Stop form submission?",
                 body: "All information you've entered on this form will be lost if you leave this page.",
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setOnAccept(() => cancelOnAccept);
+              setModalOnAccept(() => cancelOnAccept);
               setModalOpen(true);
             }}
           >
