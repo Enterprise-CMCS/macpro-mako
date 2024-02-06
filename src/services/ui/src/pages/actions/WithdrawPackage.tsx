@@ -66,7 +66,11 @@ export const WithdrawPackage = ({
     setContent: setModalContent,
     setOnAccept: setModalOnAccept,
   } = useModalContext();
-  const { setContent: setBannerContent, setBannerShow } = useAlertContext();
+  const {
+    setContent: setBannerContent,
+    setBannerShow,
+    setBannerDisplayOn,
+  } = useAlertContext();
   const cancelOnAccept = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
@@ -95,6 +99,7 @@ export const WithdrawPackage = ({
               body: `The package ${item._source.id} has been withdrawn.`,
             });
             setBannerShow(true);
+            setBannerDisplayOn("/dashboard");
             navigate({ path: "/dashboard" });
           } catch (e) {
             console.error(e);

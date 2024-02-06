@@ -23,7 +23,11 @@ export const ToggleRaiResponseWithdraw = ({
     setContent: setModalContent,
     setOnAccept: setModalOnAccept,
   } = useModalContext();
-  const { setContent: setBannerContent, setBannerShow } = useAlertContext();
+  const {
+    setContent: setBannerContent,
+    setBannerShow,
+    setBannerDisplayOn,
+  } = useAlertContext();
   const acceptAction = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
@@ -52,6 +56,7 @@ export const ToggleRaiResponseWithdraw = ({
             : "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
       });
       setBannerShow(true);
+      setBannerDisplayOn("/dashboard");
       navigate({ path: "/dashboard" });
     }
   }, [isSuccess]);

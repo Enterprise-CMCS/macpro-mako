@@ -42,7 +42,11 @@ export const RaiIssue = ({
     setContent: setModalContent,
     setOnAccept: setModalOnAccept,
   } = useModalContext();
-  const { setContent: setBannerContent, setBannerShow } = useAlertContext();
+  const {
+    setContent: setBannerContent,
+    setBannerShow,
+    setBannerDisplayOn,
+  } = useAlertContext();
   const acceptAction = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
@@ -63,6 +67,7 @@ export const RaiIssue = ({
               body: `The RAI for ${item._source.id} has been submitted. An email confirmation will be sent to you and the state.`,
             });
             setBannerShow(true);
+            setBannerDisplayOn("/dashboard");
             navigate({ path: "/dashboard" });
           } catch (e) {
             console.error(e);

@@ -39,7 +39,11 @@ export const WithdrawRai = ({
     setContent: setModalContent,
     setOnAccept: setModalOnAccept,
   } = useModalContext();
-  const { setContent: setBannerContent, setBannerShow } = useAlertContext();
+  const {
+    setContent: setBannerContent,
+    setBannerShow,
+    setBannerDisplayOn,
+  } = useAlertContext();
   const cancelOnAccept = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
@@ -68,6 +72,7 @@ export const WithdrawRai = ({
               body: `The RAI response for ${item._source.id} has been withdrawn. CMS may follow up if additional information is needed.`,
             });
             setBannerShow(true);
+            setBannerDisplayOn("/dashboard");
             navigate({ path: "/dashboard" });
           } catch (e) {
             console.error(e);

@@ -75,7 +75,11 @@ export const ChipSpaFormPage = () => {
     setContent: setModalContent,
     setOnAccept: setModalOnAccept,
   } = useModalContext();
-  const { setContent: setBannerContent, setBannerShow } = useAlertContext();
+  const {
+    setContent: setBannerContent,
+    setBannerShow,
+    setBannerDisplayOn,
+  } = useAlertContext();
   const acceptAction = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
@@ -96,6 +100,7 @@ export const ChipSpaFormPage = () => {
         body: "Your submission has been received.",
       });
       setBannerShow(true);
+      setBannerDisplayOn("/dashboard");
       navigate({ path: "/dashboard" });
     } catch (e) {
       console.error(e);
