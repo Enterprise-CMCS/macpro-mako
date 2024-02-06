@@ -23,6 +23,7 @@ import { buildActionUrl } from "@/lib";
 import { useNavigate, useParams } from "@/components/Routing";
 import { useGetUser } from "@/api/useGetUser";
 import { useCallback } from "react";
+import { useAlertContext } from "@/components/Context/alertContext";
 
 export const RespondToRai = ({
   item,
@@ -34,7 +35,12 @@ export const RespondToRai = ({
   const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const { setModalOpen, setContent, setOnAccept } = useModalContext();
+  const {
+    setModalOpen,
+    setContent: setModalContent,
+    setOnAccept: setModalOnAccept,
+  } = useModalContext();
+  const { setContent: setBannerContent, setBannerShow } = useAlertContext();
   const acceptAction = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
@@ -54,6 +60,11 @@ export const RespondToRai = ({
               user,
               authority: item?._source.authority as PlanType,
             });
+            setBannerContent({
+              header: "RAI response submitted",
+              body: `The RAI response for ${item._source.id} has been submitted.`,
+            });
+            setBannerShow(true);
             navigate({ path: "/dashboard" });
           } catch (e) {
             console.error(e);
@@ -146,13 +157,13 @@ export const RespondToRai = ({
             type="button"
             variant="outline"
             onClick={() => {
-              setContent({
+              setModalContent({
                 header: "Stop form submission?",
                 body: "All information you've entered on this form will be lost if you leave this page.",
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setOnAccept(() => acceptAction);
+              setModalOnAccept(() => acceptAction);
               setModalOpen(true);
             }}
           >
