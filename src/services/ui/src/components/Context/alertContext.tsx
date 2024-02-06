@@ -1,7 +1,7 @@
 import { PropsWithChildren, useState } from "react";
-import { Info } from "lucide-react";
+import { Check } from "lucide-react";
 import { createContextProvider } from "@/utils";
-import { Alert } from "@/components";
+import { Alert, SimplePageContainer } from "@/components";
 
 type BannerContent = {
   header: string;
@@ -34,13 +34,17 @@ export const AlertProvider = ({ children }: PropsWithChildren) => {
   const context = useAlertController();
   return (
     <AlertContextProvider value={context}>
-      <Alert variant={"infoBlock"} className="my-2 w-full flex-row text-sm">
-        <Info />
-        <p className="ml-2">
-          Once you submit this form, a confirmation email is sent to you and to
-          the State.
-        </p>
-      </Alert>
+      {context.bannerShow && (
+        <SimplePageContainer>
+          <Alert variant={"success"} className="mt-4 mb-8 flex-row text-sm">
+            <Check />
+            <div className={"ml-2"}>
+              <h3 className={"text-lg font-bold"}>{context.content.header}</h3>
+              <p>{context.content.body}</p>
+            </div>
+          </Alert>
+        </SimplePageContainer>
+      )}
       {children}
     </AlertContextProvider>
   );
