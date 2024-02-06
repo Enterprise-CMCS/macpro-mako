@@ -13,6 +13,7 @@ const actionRoutes: RouteObject[] = [
   {
     path: "issue-rai",
     element: <F.IssueRai />,
+    errorElement: <F.IssueRai />,
     action: F.issueRaiDefaultAction,
   },
 ];

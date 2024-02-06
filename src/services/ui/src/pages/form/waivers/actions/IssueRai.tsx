@@ -6,38 +6,48 @@ import {
   useForm,
   SubmitHandler,
   FormProvider,
+  useFormContext,
 } from "react-hook-form";
-import { ActionFunction, useNavigation, useSubmit } from "react-router-dom";
+import {
+  ActionFunction,
+  ActionFunctionArgs,
+  Outlet,
+  useActionData,
+  useNavigation,
+  useRouteError,
+  useSubmit,
+} from "react-router-dom";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { submit } from "@/api/submissionService";
 import { getUser } from "@/api/useGetUser";
 import { PlanType } from "shared-types";
 
-const formSchema = z.object({
+export const issueRaiSchema = z.object({
   additionalInformation: z.string(),
 });
 
-export const issueRaiDefaultAction: ActionFunction = async ({ request }) => {
+export const issueRaiDefaultAction: ActionFunction = async ({
+  request,
+}: ActionFunctionArgs) => {
   const data = Object.fromEntries(await request.formData());
   const user = await getUser();
   const authority = PlanType["1915(b)"];
 
   try {
+    throw new Error("hello");
     await submit({ data, endpoint: "/action/issue-rai", user, authority });
   } catch (err) {
-    return {
-      error: "Submission Failed",
-    };
+    throw new Error("Submission Failed");
   }
 
   return null;
 };
 
 export const IssueRai = () => {
-  const methods = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-  });
+  const methods = useFormContext<z.infer<typeof issueRaiSchema>>();
+
+  const error = useRouteError() as Error | undefined;
 
   const submit = useSubmit();
 
@@ -51,6 +61,7 @@ export const IssueRai = () => {
 
   return (
     <SimplePageContainer>
+      {<p>{error?.message}</p>}
       <SC.Heading title="Formal RAI Details" />
       <SC.RequiredFieldDescription />
       <SC.ActionDescription>
