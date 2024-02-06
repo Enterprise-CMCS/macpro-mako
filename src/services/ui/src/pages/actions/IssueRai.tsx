@@ -24,6 +24,7 @@ import { submit } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { useModalContext } from "@/components/Context/modalContext";
 import { useCallback } from "react";
+import { useAlertContext } from "@/components/Context/alertContext";
 
 export const RaiIssue = ({
   item,
@@ -36,7 +37,12 @@ export const RaiIssue = ({
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const { setModalOpen, setContent, setOnAccept } = useModalContext();
+  const {
+    setModalOpen,
+    setContent: setModalContent,
+    setOnAccept: setModalOnAccept,
+  } = useModalContext();
+  const { setContent: setBannerContent, setBannerShow } = useAlertContext();
   const acceptAction = useCallback(() => {
     setModalOpen(false);
     navigate({ path: "/dashboard" });
@@ -52,6 +58,11 @@ export const RaiIssue = ({
               user,
               authority: item?._source.authority as PlanType,
             });
+            setBannerContent({
+              header: "RAI issued",
+              body: `The RAI for ${item._source.id} has been submitted. An email confirmation will be sent to you and the state.`,
+            });
+            setBannerShow(true);
             navigate({ path: "/dashboard" });
           } catch (e) {
             console.error(e);
@@ -144,13 +155,13 @@ export const RaiIssue = ({
             type="button"
             variant="outline"
             onClick={() => {
-              setContent({
+              setModalContent({
                 header: "Stop form submission?",
                 body: "All information you've entered on this form will be lost if you leave this page.",
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setOnAccept(() => acceptAction);
+              setModalOnAccept(() => acceptAction);
               setModalOpen(true);
             }}
           >
