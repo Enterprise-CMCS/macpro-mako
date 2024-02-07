@@ -70,18 +70,10 @@ export const ChipSpaFormPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
-  const {
-    setModalOpen,
-    setContent: setModalContent,
-    setOnAccept: setModalOnAccept,
-  } = useModalContext();
-  const {
-    setContent: setBannerContent,
-    setBannerShow,
-    setBannerDisplayOn,
-  } = useAlertContext();
+  const modal = useModalContext();
+  const alert = useAlertContext();
   const acceptAction = useCallback(() => {
-    setModalOpen(false);
+    modal.setModalOpen(false);
     navigate({ path: "/dashboard" });
   }, []);
   const form = useForm<ChipFormSchema>({
@@ -95,12 +87,12 @@ export const ChipSpaFormPage = () => {
         user,
         authority: PlanType.CHIP_SPA,
       });
-      setBannerContent({
+      alert.setContent({
         header: "Package submitted",
         body: "Your submission has been received.",
       });
-      setBannerShow(true);
-      setBannerDisplayOn("/dashboard");
+      alert.setBannerShow(true);
+      alert.setBannerDisplayOn("/dashboard");
       navigate({ path: "/dashboard" });
     } catch (e) {
       console.error(e);
@@ -238,14 +230,14 @@ export const ChipSpaFormPage = () => {
               type="button"
               variant="outline"
               onClick={() => {
-                setModalContent({
+                modal.setContent({
                   header: "Stop form submission?",
                   body: "All information you've entered on this form will be lost if you leave this page.",
                   acceptButtonText: "Yes, leave form",
                   cancelButtonText: "Return to form",
                 });
-                setModalOnAccept(() => acceptAction);
-                setModalOpen(true);
+                modal.setOnAccept(() => acceptAction);
+                modal.setModalOpen(true);
               }}
               className="px-12"
             >
