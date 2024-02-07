@@ -1,6 +1,7 @@
 import {
   Action,
   ActionRule,
+  PlanType,
   SEATOOL_STATUS,
   finalDispositionStatuses,
 } from "../../shared-types";
@@ -10,7 +11,14 @@ const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
   check: (checker, user) =>
     checker.isInActivePendingStatus &&
-    (!checker.hasLatestRai || checker.hasCompletedRai) &&
+    (
+      // Doesn't have any RAIs
+      !checker.hasLatestRai || 
+      (
+        // It's latest RAI is complete, and its NOT a medicaid spa (med spas only get 1 rai)
+        checker.hasCompletedRai && !checker.planTypeIs([PlanType.MED_SPA])
+      )
+    ) &&
     isCmsWriteUser(user),
 };
 
