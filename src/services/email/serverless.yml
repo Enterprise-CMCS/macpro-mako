@@ -58,7 +58,7 @@ custom:
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
   emailSource: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/emailSource, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/emailSource,"k.grue@fearless.tech"}
-  emailRecipients: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/emailRecipients, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/emailRecipients}
+  osgEmail: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/osgEmail, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/osgEmail}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
@@ -84,7 +84,7 @@ functions:
       region: ${self:provider.region}
       stage: ${sls:stage}
       emailSource: ${self:custom.emailSource}
-      emailRecipients: ${self:custom.emailRecipients}
+      osgEmail: ${self:custom.osgEmail}
       emailConfigSet: ${self:service}-${sls:stage}-configuration
       cognitoPoolId: ${param:CognitoUserPoolId}
     maximumRetryAttempts: 0
