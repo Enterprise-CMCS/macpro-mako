@@ -10,7 +10,7 @@ export const ABPGuide = () => {
           Medicaid Alternative Benefit Plan Implementation Guides
         </h1>
       </SubNavHeader>
-      <section className="max-w-screen-2xl m-auto px-4 lg:px-8 py-8 gap-10">
+      <section className="max-w-screen-xl m-auto px-4 lg:px-8 py-8 gap-10">
         <div className="h-[5px] bg-gradient-to-r from-primary from-50% to-[#02bfe7] to-[66%] rounded-t"></div>
         <UI.Table className="flex-1 min-h-[calc(100vh-350px)]">
           <UI.TableHeader className="sticky top-0 bg-white">

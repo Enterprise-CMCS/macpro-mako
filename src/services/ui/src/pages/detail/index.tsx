@@ -9,6 +9,7 @@ import {
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import { Action, opensearch, UserRoles } from "shared-types";
+import { PackageCheck } from "shared-utils";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -30,7 +31,7 @@ const DetailCardWrapper = ({
 }: PropsWithChildren<{
   title: string;
 }>) => (
-  <CardWithTopBorder>
+  <CardWithTopBorder className="max-w-[18rem]">
     <div className="p-4">
       <h2>{title}</h2>
       {children}
@@ -191,7 +192,7 @@ export const DetailsContent = ({
         )}
         <section
           id="package-overview"
-          className="lg:grid lg:grid-cols-2 gap-4 my-6"
+          className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
         >
           <StatusCard {...data._source} />
           <PackageActionsCard id={data._id} />
@@ -226,7 +227,7 @@ export const Details = () => {
 
   return (
     <>
-      <div className="max-w-screen-2xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
+      <div className="max-w-screen-xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
         <BreadCrumbs options={detailsAndActionsCrumbs({ id })} />
         <DetailsContent data={data} />
       </div>

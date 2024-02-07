@@ -59,7 +59,7 @@ export const Create = () => {
       <SubNavHeader>
         <h1 className="text-xl font-medium">Initial Submission</h1>
       </SubNavHeader>
-      <section className="block md:flex md:flex-row max-w-screen-2xl m-auto px-4 lg:px-8 pt-8 gap-10">
+      <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col space-y-2">
             <label htmlFor="state" className="text-gray-600 font-semibold">
