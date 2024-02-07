@@ -10,6 +10,13 @@
     d "1"
     es5-ext "^0.10.47"
 
+"@18f/us-federal-holidays@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@18f/us-federal-holidays/-/us-federal-holidays-4.0.0.tgz#1c0c2963ffd3f52b7527ff8e3cd1ecc89b48533d"
+  integrity sha512-93eCrGIE8lZZvMByJz1Me76e4RIEuMq3n2Tn5yYgnXFB5ZhoLVe2/tWGnE+7VpRA6X1lPDln5YgChClIFP6kPA==
+  dependencies:
+    dayjs "^1.10.6"
+
 "@aashutoshrathi/word-wrap@^1.2.3":
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz#bd9154aec9983f77b3a034ecaa015c2e4201f6cf"
@@ -8918,7 +8925,7 @@ dateformat@^3.0.0:
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
 
-dayjs@^1.11.8:
+dayjs@^1.10.6, dayjs@^1.11.8:
   version "1.11.10"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.10.tgz#68acea85317a6e164457d6d6947564029a6a16a0"
   integrity sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==
