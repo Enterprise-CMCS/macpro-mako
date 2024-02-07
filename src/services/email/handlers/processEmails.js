@@ -63,7 +63,7 @@ export const main = async (event, context, callback) => {
       if (!record?.actionType) record.actionType = "initial-submission";
       if (!emailsToSend[`${record.actionType}-default`]) return;
       emailsToSend[`${record.actionType}-default`].forEach((anEmail) => {
-        ACC.push({...anEmail, ...record});
+        ACC.push({ ...anEmail, ...record });
       })
     });
 
@@ -74,6 +74,7 @@ export const main = async (event, context, callback) => {
   try {
     await Promise.all(
       emails.map(async (oneEmail) => {
+        oneEmail.ToAddresses.replace("stateSubmitter", `"${oneEmail.submitterName}" <${oneEmail.submitterEmail}>`);
         if (oneEmail.ToAddresses.includes("allStateUsers")) {
           try {
             const commandListUsers = new ListUsersCommand({
