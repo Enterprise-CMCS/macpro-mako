@@ -34,7 +34,7 @@ const formSchema = z.object({
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
-  additionalInformation: zAdditionalInfo,
+  additionalInformation: zAdditionalInfo.optional(),
 });
 
 type Waiver1915BContractingAmendment = z.infer<typeof formSchema>;

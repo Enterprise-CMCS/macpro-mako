@@ -36,7 +36,7 @@ const formSchema = z.object({
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
-  additionalInformation: zAdditionalInfo,
+  additionalInformation: zAdditionalInfo.optional(),
 });
 // .superRefine((data, ctx) => {
 //   const renewalIteration = data.waiverNumber.split(".")[1]; // R## segment of Waiver Number
