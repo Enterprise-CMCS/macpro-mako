@@ -19,8 +19,16 @@ module.exports = async (serverless, options) => [{
     The submission will be listed on the dashboard page, and you can view its 
     details by clicking on its ID number.</li>
     </ul>
-    {{packageDetails}}
-    {{packageWarnings}}
+    <p>
+    <br><b>State or territory:</b> {{territory}}
+    <br><b>Name:</b> {{submitterFullName}}
+    <br><b>Email:</b> {{submitterEmail}}
+    <br><b>{{authority}} ID: {{id}}</b>
+    <br><b>Proposed Effective Date:</b> {{proposedEffectiveDate}}
+    </p>
+    <p>
+    <br><b>Files:</b>
+    <br>{{formattedFileList}}
     <br>
     <p>If the contents of this email seem suspicious, do not open them, and instead 
     forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
