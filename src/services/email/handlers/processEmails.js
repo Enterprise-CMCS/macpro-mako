@@ -57,7 +57,7 @@ export const main = async (event, context, callback) => {
   const emails = Object.values(event.records).reduce((ACC, RECORDS) => {
     RECORDS.forEach((REC) => {
       if (!REC.value) return;
-      const record = { id: decode(props.key), ...JSON.parse(decode(REC.value)) };
+      const record = { id: decode(REC.key), ...JSON.parse(decode(REC.value)) };
       console.log("here is the decoded record: ", record);
       if (record?.origin !== "micro") return;
       if (!record?.actionType) record.actionType = "initial-submission";
