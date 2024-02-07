@@ -27,7 +27,7 @@ import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
   waiverNumber: zRenewalOriginalWaiverNumberSchema,
-  renewalWaiverNumber: zRenewalWaiverNumberSchema,
+  id: zRenewalWaiverNumberSchema,
   proposedEffectiveDate: z.date(),
   attachments: z.object({
     b4WaiverApplication: zAttachmentRequired({ min: 1 }),
@@ -161,7 +161,7 @@ export const Contracting1915BWaiverRenewal = () => {
             />
             <Inputs.FormField
               control={form.control}
-              name="renewalWaiverNumber"
+              name="id"
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
