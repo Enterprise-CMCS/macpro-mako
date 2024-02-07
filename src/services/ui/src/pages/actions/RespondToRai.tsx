@@ -35,18 +35,10 @@ export const RespondToRai = ({
   const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const {
-    setModalOpen,
-    setContent: setModalContent,
-    setOnAccept: setModalOnAccept,
-  } = useModalContext();
-  const {
-    setContent: setBannerContent,
-    setBannerShow,
-    setBannerDisplayOn,
-  } = useAlertContext();
+  const modal = useModalContext();
+  const alert = useAlertContext();
   const acceptAction = useCallback(() => {
-    setModalOpen(false);
+    modal.setModalOpen(false);
     navigate({ path: "/dashboard" });
   }, []);
   const form = useForm({
@@ -64,12 +56,12 @@ export const RespondToRai = ({
               user,
               authority: item?._source.authority as PlanType,
             });
-            setBannerContent({
+            alert.setContent({
               header: "RAI response submitted",
               body: `The RAI response for ${item._source.id} has been submitted.`,
             });
-            setBannerShow(true);
-            setBannerDisplayOn("/dashboard");
+            alert.setBannerShow(true);
+            alert.setBannerDisplayOn("/dashboard");
             navigate({ path: "/dashboard" });
           } catch (e) {
             console.error(e);
@@ -162,14 +154,14 @@ export const RespondToRai = ({
             type="button"
             variant="outline"
             onClick={() => {
-              setModalContent({
+              modal.setContent({
                 header: "Stop form submission?",
                 body: "All information you've entered on this form will be lost if you leave this page.",
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setModalOnAccept(() => acceptAction);
-              setModalOpen(true);
+              modal.setOnAccept(() => acceptAction);
+              modal.setModalOpen(true);
             }}
           >
             Cancel
