@@ -15,8 +15,12 @@ const arIssueRai: ActionRule = {
       // Doesn't have any RAIs
       !checker.hasLatestRai || 
       (
-        // It's latest RAI is complete, and its NOT a medicaid spa (med spas only get 1 rai)
-        checker.hasCompletedRai && !checker.planTypeIs([PlanType.MED_SPA])
+        // The latest RAI is complete
+        checker.hasCompletedRai && 
+        // The package is not a medicaid spa (med spas only get 1 rai)
+        !checker.planTypeIs([PlanType.MED_SPA]) && 
+        // The package does not have RAI Response Withdraw enabled
+        !checker.hasEnabledRaiWithdraw
       )
     ) &&
     isCmsWriteUser(user),
