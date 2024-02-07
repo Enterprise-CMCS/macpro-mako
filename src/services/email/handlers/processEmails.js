@@ -74,7 +74,7 @@ export const main = async (event, context, callback) => {
   try {
     await Promise.all(
       emails.map(async (oneEmail) => {
-        oneEmail.ToAddresses.replace("stateSubmitter", `"${oneEmail.submitterName}" <${oneEmail.submitterEmail}>`);
+        oneEmail.ToAddresses.replace("submitterEmail", `"${oneEmail.submitterName}" <${oneEmail.submitterEmail}>`);
         if (oneEmail.ToAddresses.includes("allStateUsers")) {
           try {
             const commandListUsers = new ListUsersCommand({
