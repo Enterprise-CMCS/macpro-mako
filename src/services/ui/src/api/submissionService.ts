@@ -67,8 +67,6 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
 
   switch (endpoint) {
     case "/submit":
-      console.log(data);
-      console.log("timmy");
       return {
         authority: authority,
         origin: "micro",

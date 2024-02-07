@@ -90,7 +90,7 @@ export const submit = async (event: APIGatewayEvent) => {
         SET Action_Type = (
           SELECT Action_ID
           FROM SEA.dbo.Action_Types
-          WHERE Action_Name = '${body.actionType}'
+          WHERE Action_Name = '${body.seaActionType}'
           AND Plan_Type_ID = (
             SELECT Plan_Type_ID
             FROM SEA.dbo.Plan_Types

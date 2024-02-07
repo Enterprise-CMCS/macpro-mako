@@ -35,7 +35,7 @@ const formSchema = z.object({
     other: zAttachmentOptional,
   }),
   additionalInformation: zAdditionalInfo.optional(),
-  actionType: z.string().default("Amend"),
+  seaActionType: z.string().default("Amend"),
 });
 
 type Waiver1915BContractingAmendment = z.infer<typeof formSchema>;

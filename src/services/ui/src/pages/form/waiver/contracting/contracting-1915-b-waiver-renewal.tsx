@@ -36,7 +36,7 @@ const formSchema = z.object({
     other: zAttachmentOptional,
   }),
   additionalInformation: zAdditionalInfo.optional(),
-  actionType: z.string().default("Renew"),
+  seaActionType: z.string().default("Renew"),
 });
 // .superRefine((data, ctx) => {
 //   const renewalIteration = data.waiverNumber.split(".")[1]; // R## segment of Waiver Number
