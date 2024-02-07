@@ -64,22 +64,14 @@ export const WithdrawPackage = ({
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const {
-    setModalOpen,
-    setContent: setModalContent,
-    setOnAccept: setModalOnAccept,
-  } = useModalContext();
-  const {
-    setContent: setBannerContent,
-    setBannerShow,
-    setBannerDisplayOn,
-  } = useAlertContext();
+  const modal = useModalContext();
+  const alert = useAlertContext();
   const cancelOnAccept = useCallback(() => {
-    setModalOpen(false);
+    modal.setModalOpen(false);
     navigate({ path: "/dashboard" });
   }, []);
   const confirmOnAccept = useCallback(() => {
-    setModalOpen(false);
+    modal.setModalOpen(false);
     form.handleSubmit(async (data) => {
       try {
         await submit({
@@ -88,12 +80,12 @@ export const WithdrawPackage = ({
           user,
           authority: item?._source.authority as PlanType,
         });
-        setBannerContent({
+        alert.setContent({
           header: "Package withdrawn",
           body: `The package ${item._source.id} has been withdrawn.`,
         });
-        setBannerShow(true);
-        setBannerDisplayOn("/dashboard");
+        alert.setBannerShow(true);
+        alert.setBannerDisplayOn("/dashboard");
         navigate({ path: "/dashboard" });
       } catch (e) {
         console.error(e);
@@ -186,14 +178,14 @@ export const WithdrawPackage = ({
           <Button
             type={"button"}
             onClick={() => {
-              setModalContent({
+              modal.setContent({
                 header: "Withdraw package?",
                 body: `The package ${item._source.id} will be withdrawn.`,
                 acceptButtonText: "Yes, withdraw package",
                 cancelButtonText: "Cancel",
               });
-              setModalOnAccept(() => confirmOnAccept);
-              setModalOpen(true);
+              modal.setOnAccept(() => confirmOnAccept);
+              modal.setModalOpen(true);
             }}
           >
             Submit
@@ -202,14 +194,14 @@ export const WithdrawPackage = ({
             type="button"
             variant="outline"
             onClick={() => {
-              setModalContent({
+              modal.setContent({
                 header: "Stop form submission?",
                 body: "All information you've entered on this form will be lost if you leave this page.",
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setModalOnAccept(() => cancelOnAccept);
-              setModalOpen(true);
+              modal.setOnAccept(() => cancelOnAccept);
+              modal.setModalOpen(true);
             }}
           >
             Cancel
