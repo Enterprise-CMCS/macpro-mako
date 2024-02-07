@@ -33,6 +33,8 @@ const formSchema = z.object({
     other: zAttachmentOptional,
   }),
   additionalInformation: zAdditionalInfo.optional(),
+  // actionType: z.string().default("New").optional(),
+  actionType: z.string().default("New"),
 });
 type Waiver1915BContractingInitial = z.infer<typeof formSchema>;
 
@@ -66,10 +68,10 @@ export const Contracting1915BWaiverInitial = () => {
   ) => {
     try {
       // AK-0260.R04.02
+      console.log("mike jones");
+      console.log(formData);
       await submit<Waiver1915BContractingInitial>({
-        data: {
-          ...formData,
-        },
+        data: formData,
         endpoint: "/submit",
         user,
         authority: PlanType["1915b"],

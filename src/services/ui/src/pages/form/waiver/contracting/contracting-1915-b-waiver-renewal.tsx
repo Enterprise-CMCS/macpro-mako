@@ -36,6 +36,7 @@ const formSchema = z.object({
     other: zAttachmentOptional,
   }),
   additionalInformation: zAdditionalInfo.optional(),
+  actionType: z.string().default("Renew"),
 });
 // .superRefine((data, ctx) => {
 //   const renewalIteration = data.waiverNumber.split(".")[1]; // R## segment of Waiver Number
@@ -91,9 +92,7 @@ export const Contracting1915BWaiverRenewal = () => {
     try {
       // AK-0260.R04.02
       await submit<Waiver1915BContractingRenewal>({
-        data: {
-          ...formData,
-        },
+        data: formData,
         endpoint: "/submit",
         user,
         authority: PlanType["1915b"],
