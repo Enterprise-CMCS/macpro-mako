@@ -18,18 +18,10 @@ export const ToggleRaiResponseWithdraw = ({
   const navigate = useNavigate();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const {
-    setModalOpen,
-    setContent: setModalContent,
-    setOnAccept: setModalOnAccept,
-  } = useModalContext();
-  const {
-    setContent: setBannerContent,
-    setBannerShow,
-    setBannerDisplayOn,
-  } = useAlertContext();
+  const modal = useModalContext();
+  const alert = useAlertContext();
   const acceptAction = useCallback(() => {
-    setModalOpen(false);
+    modal.setModalOpen(false);
     navigate({ path: "/dashboard" });
   }, []);
   const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
@@ -48,15 +40,15 @@ export const ToggleRaiResponseWithdraw = ({
 
   useEffect(() => {
     if (isSuccess) {
-      setBannerContent({
+      alert.setContent({
         header: `RAI response withdrawal ${ACTION_WORD.toLowerCase()}d`,
         body:
           ACTION_WORD === "Enable"
             ? "The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied."
             : "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
       });
-      setBannerShow(true);
-      setBannerDisplayOn("/dashboard");
+      alert.setBannerShow(true);
+      alert.setBannerDisplayOn("/dashboard");
       navigate({ path: "/dashboard" });
     }
   }, [isSuccess]);
@@ -89,14 +81,14 @@ export const ToggleRaiResponseWithdraw = ({
         <Button onClick={() => mutate()}>Submit</Button>
         <Button
           onClick={() => {
-            setModalContent({
+            modal.setContent({
               header: "Stop form submission?",
               body: "All information you've entered on this form will be lost if you leave this page.",
               acceptButtonText: "Yes, leave form",
               cancelButtonText: "Return to form",
             });
-            setModalOnAccept(() => acceptAction);
-            setModalOpen(true);
+            modal.setOnAccept(() => acceptAction);
+            modal.setModalOpen(true);
           }}
           variant="outline"
         >
