@@ -37,18 +37,10 @@ export const RaiIssue = ({
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const {
-    setModalOpen,
-    setContent: setModalContent,
-    setOnAccept: setModalOnAccept,
-  } = useModalContext();
-  const {
-    setContent: setBannerContent,
-    setBannerShow,
-    setBannerDisplayOn,
-  } = useAlertContext();
+  const modal = useModalContext();
+  const alert = useAlertContext();
   const acceptAction = useCallback(() => {
-    setModalOpen(false);
+    modal.setModalOpen(false);
     navigate({ path: "/dashboard" });
   }, []);
   return (
@@ -62,12 +54,12 @@ export const RaiIssue = ({
               user,
               authority: item?._source.authority as PlanType,
             });
-            setBannerContent({
+            alert.setContent({
               header: "RAI issued",
               body: `The RAI for ${item._source.id} has been submitted. An email confirmation will be sent to you and the state.`,
             });
-            setBannerShow(true);
-            setBannerDisplayOn("/dashboard");
+            alert.setBannerShow(true);
+            alert.setBannerDisplayOn("/dashboard");
             navigate({ path: "/dashboard" });
           } catch (e) {
             console.error(e);
@@ -160,14 +152,14 @@ export const RaiIssue = ({
             type="button"
             variant="outline"
             onClick={() => {
-              setModalContent({
+              modal.setContent({
                 header: "Stop form submission?",
                 body: "All information you've entered on this form will be lost if you leave this page.",
                 acceptButtonText: "Yes, leave form",
                 cancelButtonText: "Return to form",
               });
-              setModalOnAccept(() => acceptAction);
-              setModalOpen(true);
+              modal.setOnAccept(() => acceptAction);
+              modal.setModalOpen(true);
             }}
           >
             Cancel
