@@ -28,7 +28,7 @@ import {
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
-import { seaToolFriendlyTimestamp } from "shared-utils";
+import { formatSeatoolDate, seaToolFriendlyTimestamp } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
 
 const TOPIC_NAME = process.env.topicName as string;
@@ -157,17 +157,19 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
       }
 
       // Set a detailed message in the Status Memo
-      const statusMemoUpdate = await transaction
-        .request()
-        .query(
-          buildStatusMemoQuery(
-            result.data.id,
-            `"RAI Response Withdrawn.  Response was received ${document.raiReceivedDate.slice(
-              0,
-              10
-            )} and withdrawn ${new Date(today).toISOString().slice(0, 10)}`
-          )
-        );
+      const statusMemoUpdate = await transaction.request().query(
+        buildStatusMemoQuery(
+          result.data.id,
+          `RAI Response Withdrawn.  Response was received ${formatSeatoolDate(
+            document.raiReceivedDate
+          )} and withdrawn ${new Date().toLocaleString("en-US", {
+            timeZone: "America/New_York",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })}`
+        )
+      );
       console.log(statusMemoUpdate);
 
       // write to kafka here
