@@ -28,7 +28,7 @@ export const PackageCheck = ({
 }: opensearch.main.Document) => {
   const planChecks = {
     isSpa: checkPlan(planType, [PlanType.MED_SPA, PlanType.CHIP_SPA]),
-    isWaiver: checkPlan(planType, []),
+    isWaiver: checkPlan(planType, [PlanType["1915b"]]),
     /** Keep excess methods to a minimum with `is` **/
     planTypeIs: (validPlanTypes: PlanType[]) =>
       checkPlan(planType, validPlanTypes),
