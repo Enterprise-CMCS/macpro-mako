@@ -26,6 +26,18 @@ export const mapSubmissionCrumb = (path: Route) => {
       return "Submit new Medicaid SPA";
     case "/new-submission/spa/chip/create":
       return "Submit new CHIP SPA";
+    case "/new-submission/waiver/b/capitated/initial/create":
+      return "1915(b) Comprehensive (Capitated) New Initial Waiver";
+    case "/new-submission/waiver/b/capitated/renewal/create":
+      return "1915(b) Comprehensive (Capitated) Renewal Waiver";
+    case "/new-submission/waiver/b/capitated/amend/create":
+      return "1915(b) Comprehensive (Capitated) Waiver Amendment";
+    case "/new-submission/waiver/b/b4/initial/create":
+      return "1915(b)(4) FFS Selective Contracting Initial Waiver";
+    case "/new-submission/waiver/b/b4/renewal/create":
+      return "1915(b)(4) FFS Selective Contracting Renewal Waiver";
+    case "/new-submission/waiver/b/b4/amendment/create":
+      return "1915(b)(4) FFS Selective Contracting Waiver Amendment";
     default:
       return BLANK_VALUE;
   }

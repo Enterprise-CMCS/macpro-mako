@@ -5,6 +5,7 @@ import { attachmentSchema } from "../attachments";
 // TODO: APP-K Parent Id
 export const onemacSchema = z.object({
   authority: z.string(),
+  seaActionType: z.string().optional(), // Used by waivers.
   origin: z.string(),
   appkParentId: z.string().nullable().default(null),
   isAppkParent: z.boolean().default(false),

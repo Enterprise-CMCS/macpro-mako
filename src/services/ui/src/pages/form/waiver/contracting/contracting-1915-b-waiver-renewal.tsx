@@ -2,8 +2,8 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components/Inputs";
-import * as Content from "./content";
-import { Link } from "react-router-dom";
+import * as Content from "../../content";
+import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
 import {
   Alert,
@@ -15,69 +15,89 @@ import {
 import { submit } from "@/api/submissionService";
 import { PlanType } from "shared-types";
 import {
+  zAdditionalInfo,
+  zRenewalOriginalWaiverNumberSchema,
   zAttachmentOptional,
   zAttachmentRequired,
-  zSpaIdSchema,
+  zRenewalWaiverNumberSchema,
 } from "@/pages/form/zod";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
-import { useLocationCrumbs } from "@/pages/form/form-breadcrumbs";
+import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
-const formSchema = z.object({
-  id: zSpaIdSchema,
-  additionalInformation: z.string().max(4000).optional(),
-  attachments: z.object({
-    cmsForm179: zAttachmentRequired({
-      min: 1,
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
+const formSchema = z
+  .object({
+    waiverNumber: zRenewalOriginalWaiverNumberSchema,
+    id: zRenewalWaiverNumberSchema,
+    proposedEffectiveDate: z.date(),
+    attachments: z.object({
+      b4WaiverApplication: zAttachmentRequired({ min: 1 }),
+      b4IndependentAssessment: zAttachmentOptional,
+      tribalConsultation: zAttachmentOptional,
+      other: zAttachmentOptional,
     }),
-    spaPages: zAttachmentRequired({ min: 1 }),
-    coverLetter: zAttachmentOptional,
-    tribalEngagement: zAttachmentOptional,
-    existingStatePlanPages: zAttachmentOptional,
-    publicNotice: zAttachmentOptional,
-    sfq: zAttachmentOptional,
-    tribalConsultation: zAttachmentOptional,
-    other: zAttachmentOptional,
-  }),
-  proposedEffectiveDate: z.date(),
-});
-type MedicaidFormSchema = z.infer<typeof formSchema>;
+    additionalInformation: zAdditionalInfo.optional(),
+    seaActionType: z.string().default("Renew"),
+  })
+  .superRefine((data, ctx) => {
+    const renewalIteration = data.id.split(".")[1]; // R## segment of Waiver Number
+    if (
+      ["R00", "R01"].includes(renewalIteration) &&
+      data.attachments.b4IndependentAssessment === undefined
+    ) {
+      ctx.addIssue({
+        message:
+          "An Independent Assessment is required for the first two renewals.",
+        code: z.ZodIssueCode.custom,
+        fatal: true,
+        path: ["attachments", "b4IndependentAssessment"],
+      });
+    }
+    return z.never;
+  });
+type Waiver1915BContractingRenewal = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
-  { name: "cmsForm179", label: "CMS Form 179", required: true },
-  { name: "spaPages", label: "SPA Pages", required: true },
-  { name: "coverLetter", label: "Cover Letter", required: false },
   {
-    name: "tribalEngagement",
-    label: "Document Demonstrating Good-Faith Tribal Engagement",
+    name: "b4WaiverApplication",
+    label:
+      "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
+    required: true,
+  },
+  {
+    name: "b4IndependentAssessment",
+    label:
+      "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
     required: false,
   },
   {
-    name: "existingStatePlanPages",
-    label: "Existing State Plan Page(s)",
+    name: "tribalConsultation",
+    label: "Tribal Consultation",
     required: false,
   },
-  { name: "publicNotice", label: "Public Notice", required: false },
-  { name: "sfq", label: "Standard Funding Questions (SFQs)", required: false },
-  { name: "tribalConsultation", label: "Tribal Consultation", required: false },
-  { name: "other", label: "Other", required: false },
+  {
+    name: "other",
+    label: "Other",
+    required: false,
+  },
 ] as const;
 
-export const MedicaidForm = () => {
-  const crumbs = useLocationCrumbs();
+export const Contracting1915BWaiverRenewal = () => {
+  const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
+  const handleSubmit: SubmitHandler<Waiver1915BContractingRenewal> = async (
+    formData
+  ) => {
     try {
-      await submit<MedicaidFormSchema>({
+      // AK-0260.R04.02
+      await submit<Waiver1915BContractingRenewal>({
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType.MED_SPA,
+        authority: PlanType["1915b"],
       });
       setSuccessModalOpen(true);
     } catch (e) {
@@ -85,20 +105,61 @@ export const MedicaidForm = () => {
     }
   };
 
-  const form = useForm<MedicaidFormSchema>({
+  const form = useForm<Waiver1915BContractingRenewal>({
     resolver: zodResolver(formSchema),
   });
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={crumbs} />
+      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Inputs.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
-          <SectionCard title="Medicaid SPA Details">
+          <h1 className="text-2xl font-semibold mt-4 mb-2">
+            Renew a 1915(b) Waiver
+          </h1>
+          <SectionCard title="1915(b) Waiver Renewal Details">
             <Content.FormIntroText />
+            <div className="flex flex-col">
+              <Inputs.FormLabel className="font-semibold">
+                Waiver Authority
+              </Inputs.FormLabel>
+              <span className="text-lg font-thin">
+                1915(b)(4) FFS Selective Contracting waviers
+              </span>
+            </div>
+            <Inputs.FormField
+              control={form.control}
+              name="waiverNumber"
+              render={({ field }) => (
+                <Inputs.FormItem>
+                  <div className="flex gap-4">
+                    <Inputs.FormLabel className="text-lg font-bold">
+                      Existing Waiver Number to Renew{" "}
+                      <Inputs.RequiredIndicator />
+                    </Inputs.FormLabel>
+                  </div>
+                  <p className="text-gray-500 font-light">
+                    Enter the existing waiver number in the format it was
+                    approved, using a dash after the two character state
+                    abbreviation.
+                  </p>
+                  <Inputs.FormControl className="max-w-sm">
+                    <Inputs.Input
+                      {...field}
+                      onInput={(e) => {
+                        if (e.target instanceof HTMLInputElement) {
+                          e.target.value = e.target.value.toUpperCase();
+                        }
+                      }}
+                    />
+                  </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
+              )}
+            />
             <Inputs.FormField
               control={form.control}
               name="id"
@@ -106,18 +167,22 @@ export const MedicaidForm = () => {
                 <Inputs.FormItem>
                   <div className="flex gap-4">
                     <Inputs.FormLabel className="text-lg font-bold">
-                      SPA ID
+                      1915(b) Waiver Renewal Number <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
-                      to="/faq/#spa-id-format"
+                      to="/faq/#waiver-amendment-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
+                      className="text-blue-700 hover:underline flex items-center"
                     >
-                      What is my SPA ID?
+                      What is my 1915(b) Waiver Renewal Number?
                     </Link>
                   </div>
-                  <Content.SpaIdFormattingDesc />
+                  <p className="text-gray-500 font-light">
+                    The Waiver Number must be in the format of SS-####.R##.00 or
+                    SS-#####.R##.00. For renewals, the {"'R##'"} starts with
+                    {" 'R01'"} and ascends.
+                  </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
                       {...field}
@@ -136,11 +201,12 @@ export const MedicaidForm = () => {
               control={form.control}
               name="proposedEffectiveDate"
               render={({ field }) => (
-                <Inputs.FormItem className="max-w-sm">
+                <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of Medicaid SPA
+                    Proposed Effective Date of 1915(b) Waiver Renewal{" "}
+                    <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
-                  <Inputs.FormControl>
+                  <Inputs.FormControl className="max-w-sm">
                     <Inputs.DatePicker
                       onChange={field.onChange}
                       date={field.value}
@@ -152,10 +218,7 @@ export const MedicaidForm = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc
-              faqLink="/faq/#medicaid-spa-attachments"
-              includeCMS179
-            />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
@@ -163,17 +226,10 @@ export const MedicaidForm = () => {
                 name={`attachments.${name}`}
                 render={({ field }) => (
                   <Inputs.FormItem>
-                    <Inputs.FormLabel>{label}</Inputs.FormLabel>
-                    {
-                      <Inputs.FormDescription>
-                        {name === "cmsForm179"
-                          ? "One attachment is required"
-                          : ""}
-                        {name === "spaPages"
-                          ? "At least one attachment is required"
-                          : ""}
-                      </Inputs.FormDescription>
-                    }
+                    <Inputs.FormLabel>
+                      {label}
+                      {required ? <Inputs.RequiredIndicator /> : null}
+                    </Inputs.FormLabel>
                     <Inputs.Upload
                       files={field?.value ?? []}
                       setFiles={field.onChange}
@@ -207,7 +263,7 @@ export const MedicaidForm = () => {
           </SectionCard>
           <Content.PreSubmissionMessage />
           {Object.keys(form.formState.errors).length !== 0 ? (
-            <Alert className="mb-6" variant="destructive">
+            <Alert className="mb-6 " variant="destructive">
               Missing or malformed information. Please see errors above.
             </Alert>
           ) : null}
@@ -216,7 +272,7 @@ export const MedicaidForm = () => {
               <LoadingSpinner />
             </div>
           ) : null}
-          <div className="flex gap-2 justify-end">
+          <div className="flex gap-2 justify-end ">
             <Inputs.Button
               disabled={form.formState.isSubmitting}
               type="submit"
@@ -239,8 +295,8 @@ export const MedicaidForm = () => {
   );
 };
 
-export const MedicaidSpaFormPage = () => (
+export const Contracting1915BWaiverRenewalPage = () => (
   <ModalProvider>
-    <MedicaidForm />
+    <Contracting1915BWaiverRenewal />
   </ModalProvider>
 );
