@@ -16,27 +16,24 @@ const Cognito = new CognitoIdentityProviderClient({
 const emailsToSend = {
   "initial-submission-default": [{
     "templateBase": "initial-submission-cms",
-    "ToAddresses": [process.env.osgEmail],
-    "CcAddresses": [],
+    "sendTo": [process.env.osgEmail],
   }, {
     "templateBase": "initial-submission-state",
-    "ToAddresses": ["submitterEmail"],
-    "CcAddresses": [],
+    "sendTo": ["submitterEmail"],
   }],
   "initial-submission-chip": [{
     "templateBase": "initial-submission-cms",
-    "ToAddresses": [process.env.chipEmail],
-    "CcAddresses": [`${process.env.chipCCList}`],
+    "sendTo": [process.env.chipEmail],
+    "addCC": [`${process.env.chipCCList}`],
   }, {
     "templateBase": "initial-submission-state",
-    "ToAddresses": ["submitterEmail"],
-    "CcAddresses": [],
+    "sendTo": ["submitterEmail"],
   }],
 }
 
 const createSendTemplatedEmailCommand = (data) =>
   new SendTemplatedEmailCommand({
-    Source: process.env.emailSource ?? "k.grue@fearless.tech",
+    Source: process.env.emailSource ?? "kgrue@fearless.tech",
     Destination: {
       ToAddresses: data.ToAddresses,
       CcAddresses: data.CcAddresses,
@@ -62,6 +59,7 @@ export const main = async (event, context, callback) => {
       if (record?.origin !== "micro") return;
       if (!record?.actionType) record.actionType = "initial-submission";
       if (!emailsToSend[`${record.actionType}-default`]) return;
+      record.territory = record.id.toString().substring(0,2);
       emailsToSend[`${record.actionType}-default`].forEach((anEmail) => {
         ACC.push({ ...anEmail, ...record });
       })
@@ -77,9 +75,9 @@ export const main = async (event, context, callback) => {
 
         let getStateUsersFlag = false;
 
-        oneEmail.ToAddresses.map((oneAddress) => {
+        oneEmail.ToAddresses = oneEmail.sendTo.map((oneAddress) => {
           oneAddress.replace("submitterEmail", `"${oneEmail.submitterName}" <${oneEmail.submitterEmail}>`);
-          if (oneAddress === "allStateUsers") getStateUsers = true;
+          if (oneAddress === "allStateUsers") getStateUsersFlag = true;
           return oneAddress;
         });
 
