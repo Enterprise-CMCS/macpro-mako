@@ -11,6 +11,7 @@ import fs from "fs";
 import asyncfs from "fs/promises";
 import * as constants from "./constants";
 import * as utils from "./utils";
+import {FileExtension, MimeType, fileTypeFromFile} from 'file-type';
 
 const s3Client: S3Client = new S3Client();
 
@@ -206,8 +207,21 @@ export const uploadAVDefinitions = async (): Promise<void[]> => {
  *
  * @param pathToFile Path in the filesystem where the file is stored.
  */
-export const scanLocalFile = (pathToFile: string): string | null => {
+export const scanLocalFile = async (pathToFile: string, contentType: string | undefined): Promise<string | null> => {
   try {
+    if(!contentType){
+      utils.generateSystemMessage("FAILURE - EXTENSION UNKNOWN");
+      return constants.STATUS_UNKNOWN_EXTENSION;
+    }
+    
+    let detectedContentType = await getFileTypeFromContents(pathToFile);
+    console.log(`File declared extension:  ${contentType}`); 
+    console.log(`File detected extension:  ${detectedContentType}`)
+    if(contentType !== detectedContentType){
+      utils.generateSystemMessage(`FAILURE - FILE EXTENSION DOES NOT MATCH FILE CONTENTS`);
+      return constants.STATUS_EXTENSION_MISMATCH_FILE
+    }
+
     const avResult: SpawnSyncReturns<Buffer> = spawnSync(
       constants.PATH_TO_CLAMAV,
       [
@@ -242,3 +256,22 @@ export const scanLocalFile = (pathToFile: string): string | null => {
     return constants.STATUS_ERROR_PROCESSING_FILE;
   }
 };
+
+async function getFileTypeFromContents(filePath: string): Promise<MimeType | null> {
+  try {
+      const fileBuffer = await fs.promises.readFile(filePath);
+
+      // Get the file type from its contents
+      const type = await fileTypeFromFile(filePath);
+
+      if (!type) {
+        console.log('Could not determine file type.');
+        return null;
+      }
+      console.log(`File type is ${type.mime} with extension ${type.ext}`);
+      return type.mime
+  } catch (error) {
+      console.error('Error reading file:', error);
+      return null
+  }
+}
