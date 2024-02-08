@@ -94,7 +94,7 @@ const attachmentList = [
   },
 ] as const;
 
-export const Capitated1915BWaiverRenewal = () => {
+export const Capitated1915BWaiverRenewalPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();

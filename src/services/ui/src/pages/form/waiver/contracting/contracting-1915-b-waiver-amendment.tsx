@@ -64,7 +64,7 @@ const attachmentList = [
   },
 ] as const;
 
-export const Contracting1915BWaiverAmendment = () => {
+export const Contracting1915BWaiverAmendmentPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
