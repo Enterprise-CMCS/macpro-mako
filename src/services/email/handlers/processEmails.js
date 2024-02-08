@@ -46,7 +46,6 @@ const createSendTemplatedEmailCommand = (data) =>
 export const main = async (event, context, callback) => {
   let response;
   console.log("Received event (stringified):", JSON.stringify(event, null, 4));
-  console.log("the environment parameters are: ", JSON.stringify(process.env, null, 4));
 
   // Verify we have all the information we need, set defaults where possible
 
@@ -74,13 +73,11 @@ export const main = async (event, context, callback) => {
       emails.map(async (oneEmail) => {
 
         let getStateUsersFlag = false;
-        console.log("The ToAddresses before the map", oneEmail?.ToAddresses);
         oneEmail.ToAddresses = oneEmail.sendTo.map((oneAddress) => {
           if (oneAddress === "submitterEmail") return `"${oneEmail.submitterName}" <${oneEmail.submitterEmail}>`;
           if (oneAddress === "allStateUsers") getStateUsersFlag = true;
           return oneAddress;
         });
-        console.log("The ToAddresses after the map", oneEmail?.ToAddresses);
 
         if (getStateUsersFlag) {
           try {
@@ -96,7 +93,8 @@ export const main = async (event, context, callback) => {
         }
 
         try {
-          oneEmail.formattedFileList = "<p>here is the file list</p>";
+          oneEmail.formattedFileList = `<ul><li>${oneEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('</li><li>')}</li></ul`;
+          console.log('formattedFileList becomes: ', oneEmail.formattedFileList);
           const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(oneEmail);
           console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
           response = await SES.send(sendTemplatedEmailCommand);
