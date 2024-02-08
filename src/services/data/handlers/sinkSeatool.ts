@@ -52,7 +52,8 @@ export const seatool_main = async (event: KafkaEvent) => {
           submissionDate: null,
           subject: null,
         };
-        return;
+        console.log(`SEATOOL DELETE EVENT:  ${id}`);
+        continue;
       }
 
       // Handle everything else
