@@ -96,6 +96,7 @@ export const main = async (event, context, callback) => {
         }
 
         try {
+          oneEmail.formattedFileList = "<p>here is the file list</p>";
           const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(oneEmail);
           console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
           response = await SES.send(sendTemplatedEmailCommand);
