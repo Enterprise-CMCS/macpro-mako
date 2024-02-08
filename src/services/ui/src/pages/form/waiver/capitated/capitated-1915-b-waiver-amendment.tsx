@@ -21,9 +21,12 @@ import {
   zAttachmentOptional,
   zAttachmentRequired,
 } from "@/pages/form/zod";
-import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
+import { useModalContext } from "@/components/Context/modalContext";
+import { useNavigate } from "@/components/Routing";
+import { useAlertContext } from "@/components/Context/alertContext";
+import { useCallback } from "react";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,
@@ -64,10 +67,17 @@ const attachmentList = [
   },
 ] as const;
 
-export const Capitated1915BWaiverAmendment = () => {
+export const Capitated1915BWaiverAmendmentPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { data: user } = useGetUser();
-  const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
+  const alert = useAlertContext();
+  const modal = useModalContext();
+  const modalAcceptAction = useCallback(() => {
+    modal.setModalOpen(false);
+    navigate({ path: "/dashboard" });
+  }, []);
+
   const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmendment> = async (
     formData
   ) => {
@@ -78,7 +88,13 @@ export const Capitated1915BWaiverAmendment = () => {
         user,
         authority: PlanType["1915b"],
       });
-      setSuccessModalOpen(true);
+      alert.setContent({
+        header: "Package submitted",
+        body: "Your submission has been received.",
+      });
+      alert.setBannerShow(true);
+      alert.setBannerDisplayOn("/dashboard");
+      navigate({ path: "/dashboard" }, { state: { callout: true } });
     } catch (e) {
       console.error(e);
     }
@@ -260,8 +276,16 @@ export const Capitated1915BWaiverAmendment = () => {
             <Inputs.Button
               type="button"
               variant="outline"
-              onClick={() => setCancelModalOpen(true)}
-              className="px-12"
+              onClick={() => {
+                modal.setContent({
+                  header: "Stop form submission?",
+                  body: "All information you've entered on this form will be lost if you leave this page.",
+                  acceptButtonText: "Yes, leave form",
+                  cancelButtonText: "Return to form",
+                });
+                modal.setOnAccept(() => modalAcceptAction);
+                modal.setModalOpen(true);
+              }}
             >
               Cancel
             </Inputs.Button>
@@ -271,9 +295,3 @@ export const Capitated1915BWaiverAmendment = () => {
     </SimplePageContainer>
   );
 };
-
-export const Capitated1915BWaiverAmendmentPage = () => (
-  <ModalProvider>
-    <Capitated1915BWaiverAmendment />
-  </ModalProvider>
-);
