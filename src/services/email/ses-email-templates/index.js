@@ -24,7 +24,7 @@ module.exports = async (serverless, options) => [{
     <br><b>Name:</b> {{submitterName}}
     <br><b>Email:</b> {{submitterEmail}}
     <br><b>{{authority}} ID: {{id}}</b>
-    <br><b>Proposed Effective Date:</b> {{proposedEffectiveDate}}
+    <br><b>Proposed Effective Date:</b> proposedEffectiveDate, when available
     </p>
     <p>
     <br><b>Files:</b>
