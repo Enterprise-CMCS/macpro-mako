@@ -12,6 +12,7 @@ import { SlotStateSelect, WaiverIdFieldArray } from "./slots";
 import { ModalProvider } from "@/pages/form/modals";
 import { submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
+import { PlanType } from "shared-types";
 
 export const AppKSubmissionForm = () => {
   const crumbs = useLocationCrumbs();
@@ -25,6 +26,7 @@ export const AppKSubmissionForm = () => {
     try {
       await submit({
         data: draft,
+        authority: PlanType["1915c"],
         endpoint: "/appk",
         user,
       });
@@ -38,10 +40,7 @@ export const AppKSubmissionForm = () => {
       <ModalProvider>
         <BreadCrumbs options={crumbs} />
         <I.Form {...form}>
-          <form
-            onSubmit={onSubmit}
-            className="my-6 space-y-8 items-center flex flex-col"
-          >
+          <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
             <SectionCard title="Appendix K Details">
               <I.FormField
                 control={form.control}

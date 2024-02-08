@@ -114,6 +114,7 @@ export const FORM = z.object({
     appk: zAttachmentRequired({ min: 1 }),
   }),
   proposedEffectiveDate: z.date(),
+  seaActionType: z.string().default("Amend"),
 });
 
 export type SchemaForm = z.infer<typeof FORM>;

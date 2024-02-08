@@ -3,7 +3,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import * as sql from "mssql";
 import { isAuthorized } from "../libs/auth/user";
 
-import { PlanType, onemacSchema } from "shared-types";
+import { onemacSchema } from "shared-types";
 import {
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
@@ -39,17 +39,26 @@ export const submit = async (event: APIGatewayEvent) => {
 
     // APP_K
     const waiverIds = body.waiverIds as string[];
+
     const seatoolWaivers = body.waiverIds.map(async (WID: string) => {
-      return await sql.query(`
-        Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
+      await sql.query(`
+        Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Action_Type, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
           values (
             '${`${body.state}-${WID}`}'
             ,'${body.state}'
+            ,(SELECT Action_ID
+              FROM SEA.dbo.Action_Types
+              WHERE Action_Name = '${body.seaActionType}'
+              AND Plan_Type_ID = (
+                SELECT Plan_Type_ID
+                FROM SEA.dbo.Plan_Types
+                WHERE Plan_Type_Name = '${body.authority}'
+              ))
             ,(Select Region_ID from SEA.dbo.States where State_Code = '${
               body.state
             }')
             ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${
-              PlanType.APP_K
+              body.authority
             }')
             ,dateadd(s, convert(int, left(${submissionDate}, 10)), cast('19700101' as datetime))
             ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))

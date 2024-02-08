@@ -84,7 +84,7 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
       return {
         ...data,
         ...userDetails,
-        authority: PlanType.APP_K,
+        authority: PlanType["1915c"],
         origin: "micro",
         proposedEffectiveDate: seaToolFriendlyTimestamp(
           data.proposedEffectiveDate as Date
