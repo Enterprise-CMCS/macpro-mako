@@ -2,7 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components/Inputs";
-import * as Content from "./content";
+import * as Content from "../../content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
 import {
@@ -15,69 +15,69 @@ import {
 import { submit } from "@/api/submissionService";
 import { PlanType } from "shared-types";
 import {
+  zAdditionalInfo,
   zAttachmentOptional,
   zAttachmentRequired,
-  zSpaIdSchema,
+  zInitialWaiverNumberSchema,
 } from "@/pages/form/zod";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
 const formSchema = z.object({
-  id: zSpaIdSchema,
-  additionalInformation: z.string().max(4000).optional(),
+  id: zInitialWaiverNumberSchema,
+  proposedEffectiveDate: z.date(),
   attachments: z.object({
-    cmsForm179: zAttachmentRequired({
-      min: 1,
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
-    }),
-    spaPages: zAttachmentRequired({ min: 1 }),
-    coverLetter: zAttachmentOptional,
-    tribalEngagement: zAttachmentOptional,
-    existingStatePlanPages: zAttachmentOptional,
-    publicNotice: zAttachmentOptional,
-    sfq: zAttachmentOptional,
+    bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
+    bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
-  proposedEffectiveDate: z.date(),
+  additionalInformation: zAdditionalInfo.optional(),
+  seaActionType: z.string().default("New"),
 });
-type MedicaidFormSchema = z.infer<typeof formSchema>;
+type Waiver1915BCapitatedAmendment = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
-  { name: "cmsForm179", label: "CMS Form 179", required: true },
-  { name: "spaPages", label: "SPA Pages", required: true },
-  { name: "coverLetter", label: "Cover Letter", required: false },
   {
-    name: "tribalEngagement",
-    label: "Document Demonstrating Good-Faith Tribal Engagement",
+    name: "bCapWaiverApplication",
+    label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+    required: true,
+  },
+  {
+    name: "bCapCostSpreadsheets",
+    label:
+      "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
+    required: true,
+  },
+  {
+    name: "tribalConsultation",
+    label: "Tribal Consultation",
     required: false,
   },
   {
-    name: "existingStatePlanPages",
-    label: "Existing State Plan Page(s)",
+    name: "other",
+    label: "Other",
     required: false,
   },
-  { name: "publicNotice", label: "Public Notice", required: false },
-  { name: "sfq", label: "Standard Funding Questions (SFQs)", required: false },
-  { name: "tribalConsultation", label: "Tribal Consultation", required: false },
-  { name: "other", label: "Other", required: false },
 ] as const;
 
-export const MedicaidForm = () => {
+export const Capitated1915BWaiverInitial = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
+  const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmendment> = async (
+    formData
+  ) => {
     try {
-      await submit<MedicaidFormSchema>({
+      console.log("testing");
+      await submit<Waiver1915BCapitatedAmendment>({
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType.MED_SPA,
+        authority: PlanType["1915b"],
       });
       setSuccessModalOpen(true);
     } catch (e) {
@@ -85,7 +85,7 @@ export const MedicaidForm = () => {
     }
   };
 
-  const form = useForm<MedicaidFormSchema>({
+  const form = useForm<Waiver1915BCapitatedAmendment>({
     resolver: zodResolver(formSchema),
   });
 
@@ -97,27 +97,41 @@ export const MedicaidForm = () => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
-          <SectionCard title="Medicaid SPA Details">
+          <h1 className="text-2xl font-semibold mt-4 mb-2">
+            1915(b) Initial Waiver Submission
+          </h1>
+          <SectionCard title="Initial Waiver Details">
             <Content.FormIntroText />
+            <div className="flex flex-col">
+              <Inputs.FormLabel className="font-semibold">
+                Waiver Authority
+              </Inputs.FormLabel>
+              <span className="text-lg font-thin">
+                All other 1915(b) Waivers
+              </span>
+            </div>
             <Inputs.FormField
               control={form.control}
               name="id"
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold">
-                      SPA ID
+                    <Inputs.FormLabel className="text-lg font-bold mr-1">
+                      Initial Waiver Number <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
-                      to="/faq/#spa-id-format"
+                      to={"/faq/#initial-waiver-id-format"}
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"
                     >
-                      What is my SPA ID?
+                      What is my Initial Waiver Number?
                     </Link>
                   </div>
-                  <Content.SpaIdFormattingDesc />
+                  <p className="text-gray-500 font-light">
+                    Must be a new initial number with the format SS-####.R00.00
+                    or SS-#####.R00.00
+                  </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
                       {...field}
@@ -136,11 +150,12 @@ export const MedicaidForm = () => {
               control={form.control}
               name="proposedEffectiveDate"
               render={({ field }) => (
-                <Inputs.FormItem className="max-w-sm">
+                <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of Medicaid SPA
+                    Proposed Effective Date of 1915(b) Initial Waiver{" "}
+                    <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
-                  <Inputs.FormControl>
+                  <Inputs.FormControl className="max-w-sm">
                     <Inputs.DatePicker
                       onChange={field.onChange}
                       date={field.value}
@@ -152,10 +167,7 @@ export const MedicaidForm = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc
-              faqLink="/faq/#medicaid-spa-attachments"
-              includeCMS179
-            />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
@@ -163,17 +175,10 @@ export const MedicaidForm = () => {
                 name={`attachments.${name}`}
                 render={({ field }) => (
                   <Inputs.FormItem>
-                    <Inputs.FormLabel>{label}</Inputs.FormLabel>
-                    {
-                      <Inputs.FormDescription>
-                        {name === "cmsForm179"
-                          ? "One attachment is required"
-                          : ""}
-                        {name === "spaPages"
-                          ? "At least one attachment is required"
-                          : ""}
-                      </Inputs.FormDescription>
-                    }
+                    <Inputs.FormLabel>
+                      {label}
+                      {required ? <Inputs.RequiredIndicator /> : null}
+                    </Inputs.FormLabel>
                     <Inputs.Upload
                       files={field?.value ?? []}
                       setFiles={field.onChange}
@@ -239,8 +244,8 @@ export const MedicaidForm = () => {
   );
 };
 
-export const MedicaidSpaFormPage = () => (
+export const Capitated1915BWaiverInitialPage = () => (
   <ModalProvider>
-    <MedicaidForm />
+    <Capitated1915BWaiverInitial />
   </ModalProvider>
 );
