@@ -13,20 +13,24 @@ const Cognito = new CognitoIdentityProviderClient({
   region: process.env.region,
 });
 
+const prettyAuthority = {
+  "medicaid spa": "Medicaid SPA"
+}
+
 const emailsToSend = {
-  "initial-submission-default": [{
-    "templateBase": "initial-submission-cms",
+  "initial-submission-medicaid-spa": [{
+    "templateBase": "initial-submission-medicaid-spa-cms",
     "sendTo": [process.env.osgEmail],
   }, {
-    "templateBase": "initial-submission-state",
+    "templateBase": "initial-submission-medicaid-spa-state",
     "sendTo": ["submitterEmail"],
   }],
-  "initial-submission-chip": [{
-    "templateBase": "initial-submission-cms",
+  "initial-submission-chip-spa": [{
+    "templateBase": "initial-submission-chip-spa-cms",
     "sendTo": [process.env.chipEmail],
     "addCC": [`${process.env.chipCCList}`],
   }, {
-    "templateBase": "initial-submission-state",
+    "templateBase": "initial-submission-chip-spa-state",
     "sendTo": ["submitterEmail"],
   }],
 }
@@ -38,8 +42,8 @@ const createSendTemplatedEmailCommand = (data) =>
       ToAddresses: data.ToAddresses,
       CcAddresses: data.CcAddresses,
     },
-    TemplateData: JSON.stringify({ applicationEndpoint: "onemac.cms.gov", packageDetails: "some details", packageWarnings: "looks like missing attributes are rendering failures... that is not good", ...data }),
-    Template: `initial-submission-cms_${process.env.stage}`,
+    TemplateData: JSON.stringify({ applicationEndpoint: "onemac.cms.gov", ...data }),
+    Template: `${data.templateBase}_${process.env.stage}`,
     ConfigurationSetName: process.env.emailConfigSet,
   });
 
@@ -57,9 +61,10 @@ export const main = async (event, context, callback) => {
       console.log("here is the decoded record: ", record);
       if (record?.origin !== "micro") return;
       if (!record?.actionType) record.actionType = "initial-submission";
-      if (!emailsToSend[`${record.actionType}-default`]) return;
+      const emailsConfig = `${record.actionType}-${record.authority.replace(" ","-")}`;
+      if (!emailsToSend[emailsConfig]) return;
       record.territory = record.id.toString().substring(0,2);
-      emailsToSend[`${record.actionType}-default`].forEach((anEmail) => {
+      emailsToSend[emailsConfig].forEach((anEmail) => {
         ACC.push({ ...anEmail, ...record });
       })
     });
@@ -93,8 +98,10 @@ export const main = async (event, context, callback) => {
         }
 
         try {
-          oneEmail.formattedFileList = `<ul><li>${oneEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('</li><li>')}</li></ul`;
+          oneEmail.formattedFileList = `<ul><li>${oneEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('</li><li>')}</li></ul>`;
+          oneEmail.textFileList = `${oneEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('\n')}\n\n`;
           console.log('formattedFileList becomes: ', oneEmail.formattedFileList);
+          console.log('textFileList is: ', oneEmail.textFileList);
           const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(oneEmail);
           console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
           response = await SES.send(sendTemplatedEmailCommand);
