@@ -6,7 +6,8 @@ import { attachmentSchema } from "../attachments";
 export const onemacSchema = z.object({
   authority: z.string(),
   origin: z.string(),
-  parentId: z.string().nullable(),
+  appkParentId: z.string().nullable().default(null),
+  isAppkParent: z.boolean().default(false),
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),

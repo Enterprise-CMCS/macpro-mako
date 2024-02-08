@@ -10,16 +10,27 @@ import { SlotAttachments } from "@/pages/actions/renderSlots";
 import { FORM, SchemaForm } from "./consts";
 import { SlotStateSelect, WaiverIdFieldArray } from "./slots";
 import { ModalProvider } from "@/pages/form/modals";
+import { submit } from "@/api/submissionService";
+import { useGetUser } from "@/api/useGetUser";
 
 export const AppKSubmissionForm = () => {
   const crumbs = useLocationCrumbs();
+  const { data: user } = useGetUser();
 
   const form = useForm<SchemaForm>({
     resolver: zodResolver(FORM),
   });
 
-  const onSubmit = form.handleSubmit((draft) => {
-    console.log(draft);
+  const onSubmit = form.handleSubmit(async (draft) => {
+    try {
+      await submit({
+        data: draft,
+        endpoint: "/appk",
+        user,
+      });
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   return (

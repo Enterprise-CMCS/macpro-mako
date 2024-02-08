@@ -35,7 +35,9 @@ type UploadRecipe = PreSignedURL & {
 
 /** Pass in an array of UploadRecipes and get a back-end compatible object
  * to store attachment data */
-const buildAttachmentObject = (recipes: UploadRecipe[]): Attachment[] => {
+export const buildAttachmentObject = (
+  recipes: UploadRecipe[]
+): Attachment[] => {
   return recipes
     .map(
       (r) =>
@@ -77,6 +79,17 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
         state: (data.id as string).split("-")[0],
+      };
+    case "/appk":
+      return {
+        ...data,
+        ...userDetails,
+        authority: PlanType.APP_K,
+        origin: "micro",
+        proposedEffectiveDate: seaToolFriendlyTimestamp(
+          data.proposedEffectiveDate as Date
+        ),
+        attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
     case buildActionUrl(Action.WITHDRAW_RAI):
       return {

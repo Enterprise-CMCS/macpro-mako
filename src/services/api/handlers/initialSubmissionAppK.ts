@@ -3,28 +3,12 @@ import { APIGatewayEvent } from "aws-lambda";
 import * as sql from "mssql";
 import { isAuthorized } from "../libs/auth/user";
 
-const user = process.env.dbUser;
-const password = process.env.dbPassword;
-const server = process.env.dbIp;
-const port = parseInt(process.env.dbPort as string);
-
-import { Kafka, Message } from "kafkajs";
-import { onemacSchema } from "shared-types";
-import { seaToolFriendlyTimestamp } from "shared-utils";
-
-const kafka = new Kafka({
-  clientId: "submit",
-  brokers: process.env.brokerString?.split(",") as string[],
-  retry: {
-    initialRetryTime: 300,
-    retries: 8,
-  },
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
-const producer = kafka.producer();
+import { PlanType, onemacSchema } from "shared-types";
+import {
+  getNextBusinessDayTimestamp,
+  seaToolFriendlyTimestamp,
+} from "shared-utils";
+import { produceMessage } from "../libs/kafka";
 
 export const submit = async (event: APIGatewayEvent) => {
   try {
@@ -44,51 +28,48 @@ export const submit = async (event: APIGatewayEvent) => {
     }
 
     const today = seaToolFriendlyTimestamp();
+    const submissionDate = getNextBusinessDayTimestamp();
     const pool = await sql.connect({
-      user: user,
-      password: password,
-      server: server as string,
-      port: port,
+      user: process.env.dbUser,
+      password: process.env.dbPassword,
+      server: process.env.dbIp as string,
+      port: parseInt(process.env.dbPort as string),
       database: "SEA",
     });
 
     // APP_K
     const waiverIds = body.waiverIds as string[];
     const seatoolWaivers = body.waiverIds.map(async (WID: string) => {
-      return await sql.query(
-        `INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
-            values ('${`${body.state}-${WID}`}'
+      return await sql.query(`
+        Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
+          values (
+            '${`${body.state}-${WID}`}'
             ,'${body.state}'
             ,(Select Region_ID from SEA.dbo.States where State_Code = '${
               body.state
             }')
             ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${
-              body.authority
+              PlanType.APP_K
             }')
-            ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
+            ,dateadd(s, convert(int, left(${submissionDate}, 10)), cast('19700101' as datetime))
             ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
             ,dateadd(s, convert(int, left(${
               body.proposedEffectiveDate
             }, 10)), cast('19700101' as datetime))
             ,(Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = 'Pending')
-            ,0)
-        `
-      );
+            ,0
+          )
+      `);
     });
 
     await Promise.all(seatoolWaivers);
 
     await pool.close();
-    const parentId = waiverIds[0];
     const kafkaWaivers = waiverIds.map(async (WID, index) => {
       const data = {
-        authority: "",
-        origin: "micro",
-        additionalInformation: body.additionalInformation,
-        submitterName: body.submitterName,
-        submitterEmail: body.submitterEmail,
-        attachments: body.attachments,
-        ...(!!index && { parentId }),
+        ...body,
+        ...(!index && { isAppkParent: true }),
+        ...(!!index && { appkParentId: `${body.state}-${waiverIds[0]}` }),
       };
 
       const eventBody = onemacSchema.safeParse(data);
@@ -122,31 +103,5 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 };
-
-async function produceMessage(topic: string, key: string, value: string) {
-  console.log("about to connect");
-  await producer.connect();
-  console.log("connected");
-
-  const message: Message = {
-    key: key,
-    value: value,
-    partition: 0,
-    headers: { source: "micro" },
-  };
-  console.log(message);
-
-  try {
-    await producer.send({
-      topic,
-      messages: [message],
-    });
-    console.log("Message sent successfully");
-  } catch (error) {
-    console.error("Error sending message:", error);
-  } finally {
-    await producer.disconnect();
-  }
-}
 
 export const handler = submit;
