@@ -74,12 +74,13 @@ export const main = async (event, context, callback) => {
       emails.map(async (oneEmail) => {
 
         let getStateUsersFlag = false;
-
+        console.log("The ToAddresses before the map", oneEmail?.ToAddresses);
         oneEmail.ToAddresses = oneEmail.sendTo.map((oneAddress) => {
-          oneAddress.replace("submitterEmail", `"${oneEmail.submitterName}" <${oneEmail.submitterEmail}>`);
+          if (oneAddress === "submitterEmail") return `"${oneEmail.submitterName}" <${oneEmail.submitterEmail}>`;
           if (oneAddress === "allStateUsers") getStateUsersFlag = true;
           return oneAddress;
         });
+        console.log("The ToAddresses after the map", oneEmail?.ToAddresses);
 
         if (getStateUsersFlag) {
           try {

@@ -21,7 +21,7 @@ module.exports = async (serverless, options) => [{
     </ul>
     <p>
     <br><b>State or territory:</b> {{territory}}
-    <br><b>Name:</b> {{submitterFullName}}
+    <br><b>Name:</b> {{submitterName}}
     <br><b>Email:</b> {{submitterEmail}}
     <br><b>{{authority}} ID: {{id}}</b>
     <br><b>Proposed Effective Date:</b> {{proposedEffectiveDate}}
