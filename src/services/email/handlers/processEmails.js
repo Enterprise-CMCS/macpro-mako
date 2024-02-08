@@ -16,21 +16,21 @@ const Cognito = new CognitoIdentityProviderClient({
 const emailsToSend = {
   "initial-submission-default": [{
     "templateBase": "initial-submission-cms",
-    "ToAddresses": process.env.osgEmail,
-    "CcAddresses": process.env.testingEmail,
+    "ToAddresses": [process.env.osgEmail],
+    "CcAddresses": [],
   }, {
     "templateBase": "initial-submission-state",
-    "ToAddresses": "submitterEmail",
-    "CcAddresses": process.env.testingEmail,
+    "ToAddresses": ["submitterEmail"],
+    "CcAddresses": [],
   }],
   "initial-submission-chip": [{
     "templateBase": "initial-submission-cms",
-    "ToAddresses": process.env.chipEmail,
-    "CcAddresses": `${process.env.chipCCList};${process.env.testingEmail}`,
+    "ToAddresses": [process.env.chipEmail],
+    "CcAddresses": [`${process.env.chipCCList}`],
   }, {
     "templateBase": "initial-submission-state",
-    "ToAddresses": "submitterEmail",
-    "CcAddresses": process.env.testingEmail,
+    "ToAddresses": ["submitterEmail"],
+    "CcAddresses": [],
   }],
 }
 
@@ -74,8 +74,16 @@ export const main = async (event, context, callback) => {
   try {
     await Promise.all(
       emails.map(async (oneEmail) => {
-        oneEmail.ToAddresses.replace("submitterEmail", `"${oneEmail.submitterName}" <${oneEmail.submitterEmail}>`);
-        if (oneEmail.ToAddresses.includes("allStateUsers")) {
+
+        let getStateUsersFlag = false;
+
+        oneEmail.ToAddresses.map((oneAddress) => {
+          oneAddress.replace("submitterEmail", `"${oneEmail.submitterName}" <${oneEmail.submitterEmail}>`);
+          if (oneAddress === "allStateUsers") getStateUsers = true;
+          return oneAddress;
+        });
+
+        if (getStateUsersFlag) {
           try {
             const commandListUsers = new ListUsersCommand({
               UserPoolId: process.env.cognitoPoolId,
@@ -85,6 +93,7 @@ export const main = async (event, context, callback) => {
           } catch (err) {
             console.log("Failed to List users.", err, JSON.stringify(oneEmail, null, 4));
           }
+          oneEmail.ToAddresses.push("\"State usesr\" <k.grue@theta-llc.com>");
         }
 
         try {
