@@ -52,19 +52,19 @@ export const FieldGroup = <TFields extends FieldValues>(
               );
 
               // If the slot has a dependency, wrap it in a dependency wrapper.
-              // Otherwise, just return the form field.
+              // Ensure the conditions are adjusted to the new name within the FieldGroup.
+              // Otherwise, just return the form field:
               return SLOT.dependency ? (
                 <DependencyWrapper
                   {...SLOT}
                   key={adjustedSlotName}
                   name={adjustedSlotName}
                   dependency={
-                    SLOT.dependency && {
+                    SLOT.dependency.conditions && {
                       conditions: [
                         {
-                          name: `${prefix}${SLOT.dependency.conditions?.[0].name}`,
-                          type: SLOT.dependency.conditions?.[0].type,
-                          expectedValue: "state_plan_other",
+                          ...SLOT.dependency.conditions[0],
+                          name: `${prefix}${SLOT.dependency.conditions[0].name}`,
                         },
                       ],
                       effect: { type: "show" },
