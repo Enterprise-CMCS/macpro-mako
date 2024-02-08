@@ -16,11 +16,8 @@ const config = {
 } as sql.config;
 
 import { Kafka, Message } from "kafkajs";
-import { PlanType, onemacSchema, transformOnemac } from "shared-types";
-import {
-  getNextBusinessDayTimestamp,
-  seaToolFriendlyTimestamp,
-} from "shared-utils";
+import { PlanType, onemacSchema } from "shared-types";
+import { getNextBusinessDayTimestamp, seaToolFriendlyTimestamp } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
 
 const kafka = new Kafka({
@@ -55,7 +52,11 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
-    const activeSubmissionTypes = [PlanType.CHIP_SPA, PlanType.MED_SPA];
+    const activeSubmissionTypes = [
+      PlanType.CHIP_SPA,
+      PlanType.MED_SPA,
+      PlanType["1915b"],
+    ];
     if (!activeSubmissionTypes.includes(body.authority)) {
       return response({
         statusCode: 400,
@@ -88,6 +89,24 @@ export const submit = async (event: APIGatewayEvent) => {
 
     const result = await sql.query(query);
     console.log(result);
+    if (body.authority == PlanType["1915b"]) {
+      const actionTypeQuery = `
+        UPDATE SEA.dbo.State_Plan
+        SET Action_Type = (
+          SELECT Action_ID
+          FROM SEA.dbo.Action_Types
+          WHERE Action_Name = '${body.seaActionType}'
+          AND Plan_Type_ID = (
+            SELECT Plan_Type_ID
+            FROM SEA.dbo.Plan_Types
+            WHERE Plan_Type_Name = '${body.authority}'
+          )
+        )
+        WHERE ID_Number = '${body.id}'
+      `;
+      const actionTypeQueryResult = await sql.query(actionTypeQuery);
+      console.log(actionTypeQueryResult);
+    }
 
     const statusMemoUpdate = await sql.query(
       buildStatusMemoQuery(body.id, "Package Submitted")

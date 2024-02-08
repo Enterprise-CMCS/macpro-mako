@@ -2,7 +2,7 @@ import { removeUnderscoresAndCapitalize } from "@/utils";
 import { isCmsUser } from "shared-utils";
 import { LABELS } from "@/lib";
 import { BLANK_VALUE } from "@/consts";
-import { opensearch } from "shared-types";
+import { PlanType, opensearch } from "shared-types";
 import { ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
 import { ReviewTeamList } from "@/components/PackageDetails/ReviewTeamList";
@@ -16,6 +16,15 @@ export type DetailSectionItem = {
 export const spaDetails = (
   data: opensearch.main.Document
 ): DetailSectionItem[] => [
+  {
+    label: "Waiver Authority",
+    value: data.planType,
+    canView: () => {
+      console.log(data.authority);
+      console.log(PlanType.WAIVER);
+      return data.authority?.toLowerCase() == PlanType.WAIVER;
+    },
+  },
   {
     label: "Submission ID",
     value: data.id,
