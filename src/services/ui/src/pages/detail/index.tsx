@@ -79,8 +79,7 @@ const StatusCard = (data: opensearch.main.Document) => {
   );
 };
 const PackageActionsCard = ({ id }: { id: string }) => {
-  const [isLoading] = useState(false);
-  const { data } = useGetPackageActions(id, { retry: false });
+  const { data, isLoading } = useGetPackageActions(id, { retry: false });
   if (isLoading) return <LoadingSpinner />;
   return (
     <DetailCardWrapper title={"Actions"}>
