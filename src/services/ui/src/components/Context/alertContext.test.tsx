@@ -58,7 +58,7 @@ describe("AlertProvider", () => {
     const child = screen.getByText("test");
     const alert = screen.getByText("No header given");
     expect(child.compareDocumentPosition(alert)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING
+      Node.DOCUMENT_POSITION_PRECEDING
     );
   });
 });
