@@ -6,6 +6,7 @@ import { Button, FormField } from "../Inputs";
 import { FieldGroupProps } from "shared-types";
 import { slotInitializer } from "./utils";
 import { useEffect } from "react";
+import { DependencyWrapper } from "./dependencyWrapper";
 
 export const FieldGroup = <TFields extends FieldValues>(
   props: FieldGroupProps<TFields>
@@ -34,7 +35,8 @@ export const FieldGroup = <TFields extends FieldValues>(
               const prefix = `${props.name}.${index}.`;
               const adjustedPrefix = (props.groupNamePrefix ?? "") + prefix;
               const adjustedSlotName = prefix + SLOT.name;
-              return (
+
+              const formField = (
                 <FormField
                   key={adjustedSlotName}
                   control={props.control}
@@ -47,6 +49,32 @@ export const FieldGroup = <TFields extends FieldValues>(
                     groupNamePrefix: adjustedPrefix,
                   })}
                 />
+              );
+
+              // If the slot has a dependency, wrap it in a dependency wrapper.
+              // Otherwise, just return the form field.
+              return SLOT.dependency ? (
+                <DependencyWrapper
+                  {...SLOT}
+                  key={adjustedSlotName}
+                  name={adjustedSlotName}
+                  dependency={
+                    SLOT.dependency && {
+                      conditions: [
+                        {
+                          name: `${prefix}${SLOT.dependency.conditions?.[0].name}`,
+                          type: SLOT.dependency.conditions?.[0].type,
+                          expectedValue: "state_plan_other",
+                        },
+                      ],
+                      effect: { type: "show" },
+                    }
+                  }
+                >
+                  {formField}
+                </DependencyWrapper>
+              ) : (
+                formField
               );
             })}
             {index >= 1 && (
