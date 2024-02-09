@@ -8,6 +8,7 @@ import { LoadingSpinner } from "@/components";
 import { Footer } from "./footer";
 import { Link, useParams } from "../Routing";
 import { useReadOnlyUser } from "./useReadOnlyUser";
+import { useState } from "react";
 
 export const Webforms = () => {
   return (
@@ -72,6 +73,7 @@ function WebformBody({
   const form = useForm({
     defaultValues: values,
   });
+  const [subData, setSubData] = useState("");
 
   const onSave = () => {
     const values = form.getValues();
@@ -80,15 +82,16 @@ function WebformBody({
   };
 
   const reset = () => {
+    setSubData("");
     form.reset(documentInitializer(data));
     localStorage.removeItem(`${id}v${version}`);
+    alert("Data Cleared");
   };
 
   const onSubmit = form.handleSubmit(
     (draft) => {
       console.log({ draft });
-      alert(JSON.stringify(draft));
-      alert(JSON.stringify(draft, undefined, 2));
+      setSubData(JSON.stringify(draft, undefined, 2));
       /**
        * The validator is intended to be a replica of RHF validation.
        * To be used in backend api handlers to validate incoming/outgoing form data against document when...
@@ -131,6 +134,7 @@ function WebformBody({
           </fieldset>
         </form>
       </Form>
+      {subData && <pre className="my-2 text-sm">{subData}</pre>}
       <Footer />
     </div>
   );
