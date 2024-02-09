@@ -98,7 +98,7 @@ export const main = async (event, context, callback) => {
 
       return sendResults;
     })));
-
+    console.log("results back are: ", results);
 
   // decode the records in the event and build the list of emails to send
   // there can be multiple records per event and multiple emails per record
@@ -162,5 +162,5 @@ export const main = async (event, context, callback) => {
   // } catch (err) {
   //   console.log("Failed to process emails.", err);
   // }
-  callback(null, results);
+  callback(null, JSON.stringify(results, null,4));
 };
