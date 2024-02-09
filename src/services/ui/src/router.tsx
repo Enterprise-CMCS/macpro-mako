@@ -7,16 +7,8 @@ import "@/api/amplifyConfig";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
 import { type Route } from "./components/Routing/types";
+import { ActionWrapper, packageActionRoutes } from "@/features/package-actions";
 export const queryClient = new QueryClient();
-
-const packageActionRoutes: RouteObject[] = [
-  {
-    path: "issue-rai",
-    element: <F.IssueRai />,
-    errorElement: <F.IssueRai />,
-    action: F.issueRaiDefaultAction,
-  },
-];
 
 export const router = createBrowserRouter([
   {
@@ -88,15 +80,7 @@ export const router = createBrowserRouter([
         element: <P.ChipSpaFormPage />,
       },
       { path: "/action/:id/:type", element: <P.ActionFormIndex /> },
-      {
-        // this can be dynamic eventually /waiver can become /:type
-        // for now not
-        path: "/action/waiver/:id",
-        element: <P.ActionWrapper />,
-        children: packageActionRoutes,
-        // we will also add a loader to this path
-        // this will help with managing permissions and re-routing if need be
-      },
+      { packageActionRoutes },
       { path: "/webforms", element: <C.Webforms /> },
       { path: "/webform/:id/:version", element: <C.Webform /> },
       { path: "/profile", element: <P.Profile /> },
