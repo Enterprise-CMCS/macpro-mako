@@ -57,7 +57,7 @@ export const zInitialWaiverNumberSchema = z
 export const zRenewalWaiverNumberSchema = z
   .string()
   .regex(
-    /^[A-Z]{2}-\d{4,5}\.R\d{2}\.00$/,
+    /^[A-Z]{2}-\d{4,5}\.R\d{2}\.(?!00)\d{2}$/,
     "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with ‘01’ and ascends."
   )
   .refine((value) => isAuthorizedState(value), {
