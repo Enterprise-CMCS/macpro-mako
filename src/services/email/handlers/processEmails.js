@@ -47,26 +47,27 @@ export const main = async (event, context, callback) => {
   let response;
   console.log("Received event (stringified):", JSON.stringify(event, null, 4));
 
-  const results = await Promise.all(event.records.map(async (encodedRecord) => {
-    if (!encodedRecord.value) return ["No Emails Sent: Record has no value"];
-    const record = { id: decode(encodedRecord.key), ...JSON.parse(decode(encodedRecord.value)) };
-    console.log("here is the decoded record: ", record);
-    if (record?.origin !== "micro") return ["No Emails Sent: Not an emailable record"];
-    if (!record?.actionType) record.actionType = "initial-submission";
-    const emailsConfig = `${record.actionType}-${record.authority.replace(" ","-")}`;
-    if (!emailsToSend[emailsConfig]) return ["No Emails Sent: No email configuration available"];
-    record.territory = record.id.toString().substring(0,2);
-    console.log("matching email config: ", emailsToSend[emailsConfig]);
-    const sendResults = await Promise.all(emailsToSend[emailsConfig].map( async (oneEmail) => {
-      const theEmail = { ...oneEmail, ...record};
-      let getStateUsersFlag = false;
-      theEmail.ToAddresses = oneEmail.sendTo.map((oneAddress) => {
-        if (oneAddress === "submitterEmail") return `"${theEmail.submitterName}" <${theEmail.submitterEmail}>`;
-        if (oneAddress === "allStateUsers") getStateUsersFlag = true;
-        return oneAddress;
-      });
+  const results = await Promise.all(Object.values(event.records).map(async (oneSource) =>
+    oneSource.map(async (encodedRecord) => {
+      if (!encodedRecord.value) return ["No Emails Sent: Record has no value"];
+      const record = { id: decode(encodedRecord.key), ...JSON.parse(decode(encodedRecord.value)) };
+      console.log("here is the decoded record: ", record);
+      if (record?.origin !== "micro") return ["No Emails Sent: Not an emailable record"];
+      if (!record?.actionType) record.actionType = "initial-submission";
+      const emailsConfig = `${record.actionType}-${record.authority.replace(" ", "-")}`;
+      if (!emailsToSend[emailsConfig]) return ["No Emails Sent: No email configuration available"];
+      record.territory = record.id.toString().substring(0, 2);
+      console.log("matching email config: ", emailsToSend[emailsConfig]);
+      const sendResults = await Promise.all(emailsToSend[emailsConfig].map(async (oneEmail) => {
+        const theEmail = { ...oneEmail, ...record };
+        let getStateUsersFlag = false;
+        theEmail.ToAddresses = oneEmail.sendTo.map((oneAddress) => {
+          if (oneAddress === "submitterEmail") return `"${theEmail.submitterName}" <${theEmail.submitterEmail}>`;
+          if (oneAddress === "allStateUsers") getStateUsersFlag = true;
+          return oneAddress;
+        });
 
-      if (getStateUsersFlag) {
+        if (getStateUsersFlag) {
           try {
             const commandListUsers = new ListUsersCommand({
               UserPoolId: process.env.cognitoPoolId,
@@ -79,24 +80,24 @@ export const main = async (event, context, callback) => {
           theEmail.ToAddresses.push("\"State user\" <k.grue@theta-llc.com>");
         }
 
-      try {
-        theEmail.formattedFileList = `<ul><li>${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('</li><li>')}</li></ul>`;
-        theEmail.textFileList = `${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('\n')}\n\n`;
-        console.log('formattedFileList becomes: ', theEmail.formattedFileList);
-        console.log('textFileList is: ', theEmail.textFileList);
-        const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(theEmail);
-        console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
-        response = await SES.send(sendTemplatedEmailCommand);
-        console.log("sendEmailCommand response: ", JSON.stringify(response, null, 4));
-        return response;
-      } catch (err) {
-        console.log("Failed to process theEmail.", err, JSON.stringify(theEmail, null, 4));
-        return err;
-      }
-    }));
+        try {
+          theEmail.formattedFileList = `<ul><li>${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('</li><li>')}</li></ul>`;
+          theEmail.textFileList = `${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('\n')}\n\n`;
+          console.log('formattedFileList becomes: ', theEmail.formattedFileList);
+          console.log('textFileList is: ', theEmail.textFileList);
+          const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(theEmail);
+          console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
+          response = await SES.send(sendTemplatedEmailCommand);
+          console.log("sendEmailCommand response: ", JSON.stringify(response, null, 4));
+          return response;
+        } catch (err) {
+          console.log("Failed to process theEmail.", err, JSON.stringify(theEmail, null, 4));
+          return err;
+        }
+      }));
 
-    return sendResults;
-  }));
+      return sendResults;
+    })));
 
 
   // decode the records in the event and build the list of emails to send
