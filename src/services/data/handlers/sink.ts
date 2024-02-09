@@ -13,38 +13,15 @@ import {
   transformWithdrawPackage,
   transformToggleWithdrawRaiEnabled,
   Action,
+  KafkaEvent,
 } from "shared-types";
-
-type Event = {
-  /**
-   * @example "SelfManagedKafka"
-   */
-  eventSource: string;
-  /**
-   * @example: "b-1.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094,b-2.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094,b-3.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094"
-   */
-  bootstrapServers: string; // comma separated string
-  records: Record<
-    string,
-    {
-      topic: string;
-      partition: number;
-      offset: number;
-      timestamp: number;
-      timestampType: string;
-      key: string;
-      headers: string[];
-      value: string;
-    }[]
-  >;
-};
 
 if (!process.env.osDomain) {
   throw "ERROR:  process.env.osDomain is required,";
 }
 const osDomain: string = process.env.osDomain;
 
-export const seatool: Handler<Event> = async (event) => {
+export const seatool: Handler<KafkaEvent> = async (event) => {
   const seaToolRecords: (SeaToolTransform | SeaToolRecordsToDelete)[] = [];
   const docObject: Record<string, SeaToolTransform | SeaToolRecordsToDelete> =
     {};
@@ -202,7 +179,7 @@ export const onemacDataTransform = (props: { key: string; value?: string }) => {
   return null;
 };
 
-export const onemac_main = async (event: Event) => {
+export const onemac_main = async (event: KafkaEvent) => {
   const records = Object.values(event.records).reduce((ACC, RECORDS) => {
     RECORDS.forEach((REC) => {
       const dataTransform = onemacDataTransform(REC);
@@ -220,7 +197,7 @@ export const onemac_main = async (event: Event) => {
   }
 };
 
-export const onemac_changelog = async (event: Event) => {
+export const onemac_changelog = async (event: KafkaEvent) => {
   const data = Object.values(event.records).reduce((ACC, RECORDS) => {
     RECORDS.forEach((REC) => {
       // omit delete event
@@ -251,7 +228,7 @@ export const onemac_changelog = async (event: Event) => {
   }
 };
 
-export const onemac: Handler<Event> = async (event) => {
+export const onemac: Handler<KafkaEvent> = async (event) => {
   await onemac_main(event);
   await onemac_changelog(event);
 };
