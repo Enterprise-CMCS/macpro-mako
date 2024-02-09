@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { decode } from "base-64";
 import {
   CognitoIdentityProviderClient,
@@ -43,7 +44,7 @@ const createSendTemplatedEmailCommand = (data) =>
     ConfigurationSetName: process.env.emailConfigSet,
   });
 
-export const main = async (event, context, callback) => {
+export const main = async (event) => {
   let response;
   console.log("Received event (stringified):", JSON.stringify(event, null, 4));
 
@@ -54,6 +55,8 @@ export const main = async (event, context, callback) => {
       console.log("here is the decoded record: ", record);
       if (record?.origin !== "micro") return ["No Emails Sent: Not an emailable record"];
       if (!record?.actionType) record.actionType = "initial-submission";
+      record.proposedEffectiveDateNice = record?.proposedEffectiveDate ? format(new Date(record.proposedEffectiveDate),'MM/DD/YYYY') : "Pending";
+
       const emailsConfig = `${record.actionType}-${record.authority.replace(" ", "-")}`;
       if (!emailsToSend[emailsConfig]) return ["No Emails Sent: No email configuration available"];
       record.territory = record.id.toString().substring(0, 2);
@@ -162,5 +165,4 @@ export const main = async (event, context, callback) => {
   // } catch (err) {
   //   console.log("Failed to process emails.", err);
   // }
-  callback(null, JSON.stringify(results, null,4));
 };

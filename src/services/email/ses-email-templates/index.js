@@ -24,7 +24,7 @@ details by clicking on its ID number.</li>
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email:</b> {{submitterEmail}}
 <br><b>Medicaid SPA ID: {{id}}</b>
-<br><b>Proposed Effective Date:</b> proposedEffectiveDate, when available
+<br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
 </p>
 <p>
 <br><b>Files:</b>
@@ -47,7 +47,7 @@ State or territory: {{territory}}\n
 Name: {{submitterName}}\n
 Email: {{submitterEmail}}\n
 Medicaid SPA ID: {{id}}\n
-Proposed Effective Date: proposedEffectiveDate, when available\n
+Proposed Effective Date: {{proposedEffectiveDateNice}}\n
 \n\n
 Files:\n
 {{textFileList}}\n\n
@@ -65,7 +65,7 @@ Thank you!`,
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
 <br><b>Medicaid SPA ID: {{id}}</b>
-<br><b>Proposed Effective Date:</b> proposedEffectiveDate, when available
+<br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
 <br><b>90th Day Deadline:</b> not sure where we are getting this from
 </p>
 <>
@@ -88,7 +88,7 @@ State or territory: {{territory}}\n
 Name: {{submitterName}}\n
 Email Address: {{submitterEmail}}\n
 Medicaid SPA ID: {{id}}\n
-Proposed Effective Date: proposedEffectiveDate, when available\n
+Proposed Effective Date:  {{proposedEffectiveDateNice}}\n
 90th Day Deadline: not sure where we are getting this from\n
 \n
 Summary:\n
