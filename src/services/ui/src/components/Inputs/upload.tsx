@@ -51,7 +51,7 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
             className="flex border-2 rounded-md py-1 pl-2.5 pr-1 border-sky-500 items-center"
             key={file.name}
           >
-            <span className="text-sky-500">{file.name}</span>
+            <span className="text-sky-700">{file.name}</span>
             <I.Button
               onClick={(e) => {
                 e.preventDefault();
@@ -60,7 +60,7 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
               variant="ghost"
               className="p-0 h-0"
             >
-              <X className="ml-2 text-sky-500 w-5" />
+              <X className="ml-2 text-sky-700 w-5" />
             </I.Button>
             {/* </div> */}
           </div>
@@ -76,7 +76,7 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
       >
         <p>
           Drag file here or{" "}
-          <span className="text-sky-500 underline hover:cursor-pointer">
+          <span className="text-sky-700 underline hover:cursor-pointer">
             choose from folder
           </span>
         </p>
