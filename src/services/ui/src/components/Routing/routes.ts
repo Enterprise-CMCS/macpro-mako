@@ -15,7 +15,7 @@ export const B_WAIVER_SUBMISSION_OPTIONS = "/new-submission/waiver/b";
 export const B4_WAIVER_OPTIONS = "/new-submission/waiver/b/b4";
 export const BCAP_WAIVER_OPTIONS = "/new-submission/waiver/b/capitated";
 export const WAIVER_1915_B_AMEND_CAP =
-  "/new-submission/waiver/b/capitated/amend/create";
+  "/new-submission/waiver/b/capitated/amendment/create";
 export const WAIVER_1915_B_RENEWAL_CAP =
   "/new-submission/waiver/b/capitated/renewal/create";
 export const WAIVER_1915_B_INITIAL_CAP =
