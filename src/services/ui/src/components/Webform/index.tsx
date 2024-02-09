@@ -79,9 +79,16 @@ function WebformBody({
     alert("Saved");
   };
 
+  const reset = () => {
+    form.reset(documentInitializer(data));
+    localStorage.removeItem(`${id}v${version}`);
+  };
+
   const onSubmit = form.handleSubmit(
     (draft) => {
       console.log({ draft });
+      alert(JSON.stringify(draft));
+      alert(JSON.stringify(draft, undefined, 2));
       /**
        * The validator is intended to be a replica of RHF validation.
        * To be used in backend api handlers to validate incoming/outgoing form data against document when...
@@ -104,10 +111,20 @@ function WebformBody({
           <fieldset disabled={readonly}>
             <RHFDocument document={data} {...form} />
             {!readonly && (
-              <div className="flex justify-between text-blue-700 underline">
-                <Button type="button" onClick={onSave} variant="ghost">
-                  Save draft
-                </Button>
+              <div className="flex justify-between text-blue-700 underline my-2">
+                <div>
+                  <Button type="button" onClick={onSave} variant="ghost">
+                    Save draft
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={reset}
+                    variant="outline"
+                    className="mx-2"
+                  >
+                    Clear Data
+                  </Button>
+                </div>
                 <Button type="submit">Submit</Button>
               </div>
             )}
