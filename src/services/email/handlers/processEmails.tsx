@@ -46,61 +46,67 @@ const createSendTemplatedEmailCommand = (data) =>
   });
 
 export const main = async (event: KafkaEvent) => {
-  let response;
   console.log("Received event (stringified):", JSON.stringify(event, null, 4));
 
-  const results = await Promise.all(Object.values(event.records).map(async (oneSource) =>
-    oneSource.map(async (encodedRecord) => {
-      if (!encodedRecord.value) return Promise.resolve("No Emails Sent: Record has no value");
+  const emailQueue: any[] = [];
+  const getStateUsersFor: string[] = [];
+  Object.values(event.records).forEach((oneSource) =>
+    oneSource.forEach((encodedRecord) => {
+      if (!encodedRecord.value) return;
       const record = { id: decode(encodedRecord.key), ...JSON.parse(decode(encodedRecord.value)) };
       console.log("here is the decoded record: ", record);
-      if (record?.origin !== "micro") return Promise.resolve("No Emails Sent: Not an emailable record");
+      if (record?.origin !== "micro") return;
       if (!record?.actionType) record.actionType = "initial-submission";
       record.proposedEffectiveDateNice = record?.proposedEffectiveDate ? (new Date(record.proposedEffectiveDate)).toDateString() : "Pending";
 
       const emailsConfig = `${record.actionType}-${record.authority.replace(" ", "-")}`;
-      if (!emailsToSend[emailsConfig]) return Promise.resolve("No Emails Sent: No email configuration available");
+      if (!emailsToSend[emailsConfig]) return;
       record.territory = record.id.toString().substring(0, 2);
       console.log("matching email config: ", emailsToSend[emailsConfig]);
-      const sendResults = await Promise.all(emailsToSend[emailsConfig].map(async (oneEmail) => {
+      emailsToSend[emailsConfig].map((oneEmail) => {
         const theEmail = { ...oneEmail, ...record };
-        let getStateUsersFlag = false;
         theEmail.ToAddresses = oneEmail.sendTo.map((oneAddress) => {
           if (oneAddress === "submitterEmail") return `"State User Substitute" <k.grue.stateuser@gmail.com>`; //`"${theEmail.submitterName}" <${theEmail.submitterEmail}>`;
-          if (oneAddress === "allStateUsers") getStateUsersFlag = true;
+          if (oneAddress === "allStateUsers") getStateUsersFor.push(record.territory);
           return oneAddress;
         });
 
-        if (getStateUsersFlag) {
-          try {
-            const commandListUsers = new ListUsersCommand({
-              UserPoolId: process.env.cognitoPoolId,
-            });
-            const listUsersResponse = await Cognito.send(commandListUsers);
-            console.log("listUsers response: ", JSON.stringify(listUsersResponse, null, 4));
-          } catch (err) {
-            console.log("Failed to List users.", err, JSON.stringify(oneEmail, null, 4));
-          }
-          theEmail.ToAddresses.push("\"State user\" <k.grue@theta-llc.com>");
-        }
+        theEmail.formattedFileList = `<ul><li>${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('</li><li>')}</li></ul>`;
+        theEmail.textFileList = `${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('\n')}\n\n`;
+        emailQueue.push(theEmail);
+      })
+    }));
 
-        try {
-          theEmail.formattedFileList = `<ul><li>${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('</li><li>')}</li></ul>`;
-          theEmail.textFileList = `${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('\n')}\n\n`;
+  const stateUsers = await Promise.all(getStateUsersFor.map(async (oneState) => {
+    try {
+      const commandListUsers = new ListUsersCommand({
+        UserPoolId: process.env.cognitoPoolId,
+      });
+      const listUsersResponse = await Cognito.send(commandListUsers);
+      console.log("listUsers response: ", JSON.stringify(listUsersResponse, null, 4));
+    } catch (err) {
+      console.log("Failed to List users.", err);
+    }
+    return {
+      "state": oneState,
+      "emailList": `\"${oneState} State user\" <k.grue@theta-llc.com>`
+    };
+  }));
+  console.log("state users are: ", stateUsers);
 
-          const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(theEmail);
-          console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
-          response = await SES.send(sendTemplatedEmailCommand);
-          console.log("sendEmailCommand response: ", JSON.stringify(response, null, 4));
-          return response;
-        } catch (err) {
-          console.log("Failed to process theEmail.", err, JSON.stringify(theEmail, null, 4));
-          return Promise.resolve(err);
-        }
-      }));
+  const sendResults = await Promise.all(emailQueue.map(async (theEmail) => {
+    try {
+      const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(theEmail);
+      console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
+      const response = await SES.send(sendTemplatedEmailCommand);
+      console.log("sendEmailCommand response: ", JSON.stringify(response, null, 4));
+      return response;
+    } catch (err) {
+      console.log("Failed to process theEmail.", err, JSON.stringify(theEmail, null, 4));
+      return Promise.resolve(err);
+    }
+  }));
 
-      return Promise.resolve(sendResults);
-    })));
-    console.log("results back are: ", JSON.stringify(results, null,4));
-    return results;
-};
+  console.log("the sendResults are: ", sendResults);
+  return sendResults;
+}

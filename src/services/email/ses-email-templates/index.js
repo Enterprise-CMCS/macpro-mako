@@ -68,8 +68,7 @@ Thank you!`,
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
 <br><b>90th Day Deadline:</b> not sure where we are getting this from
 </p>
-<>
-Summary:
+<b>Summary:</b>
 <br>{{additionalInformation}}
 <br>
 <p>This response confirms the receipt of your Medicaid State Plan Amendment 
