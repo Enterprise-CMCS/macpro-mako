@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { decode } from "base-64";
 import {
   CognitoIdentityProviderClient,
@@ -55,7 +54,7 @@ export const main = async (event) => {
       console.log("here is the decoded record: ", record);
       if (record?.origin !== "micro") return ["No Emails Sent: Not an emailable record"];
       if (!record?.actionType) record.actionType = "initial-submission";
-      record.proposedEffectiveDateNice = record?.proposedEffectiveDate ? format(new Date(record.proposedEffectiveDate),'MM/DD/YYYY') : "Pending";
+      record.proposedEffectiveDateNice = record?.proposedEffectiveDate ? (new Date(record.proposedEffectiveDate)).toDateString() : "Pending";
 
       const emailsConfig = `${record.actionType}-${record.authority.replace(" ", "-")}`;
       if (!emailsToSend[emailsConfig]) return ["No Emails Sent: No email configuration available"];
