@@ -74,11 +74,12 @@ export const submit = async (event: APIGatewayEvent) => {
     );
     const pool = await sql.connect(config);
     console.log(body);
-    // add subject, description, type subtype
     const query = `
-      Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
+      Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
         values ('${body.id}'
           ,'${body.state}'
+          ,'${body.subject}'
+          ,'${body.description}'
           ,(Select Region_ID from SEA.dbo.States where State_Code = '${body.state}')
           ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${body.authority}')
           ,dateadd(s, convert(int, left(${submissionDate}, 10)), cast('19700101' as datetime))

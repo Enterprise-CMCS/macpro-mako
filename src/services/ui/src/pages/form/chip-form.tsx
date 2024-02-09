@@ -26,6 +26,8 @@ import { FAQ_TAB } from "@/components/Routing/consts";
 const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
+  subject: z.string(),
+  description: z.string(),
   attachments: z.object({
     currentStatePlan: zAttachmentRequired({ min: 1 }),
     amendedLanguage: zAttachmentRequired({ min: 1 }),
@@ -101,7 +103,7 @@ export const ChipForm = () => {
                 <Inputs.FormItem>
                   <div className="flex gap-4">
                     <Inputs.FormLabel className="text-lg font-bold">
-                      SPA ID
+                      SPA ID <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
                       to="/faq/#spa-id-format"
@@ -133,7 +135,7 @@ export const ChipForm = () => {
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-sm">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of CHIP SPA
+                    Proposed Effective Date of CHIP SPA <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
                   <Inputs.FormControl>
                     <Inputs.DatePicker
@@ -141,6 +143,37 @@ export const ChipForm = () => {
                       date={field.value}
                     />
                   </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
+              )}
+            />
+            <Inputs.FormField
+              control={form.control}
+              name="subject"
+              render={({ field }) => (
+                <Inputs.FormItem className="max-w-xl">
+                  <Inputs.FormLabel className="text-lg font-bold block">
+                    Subject <Inputs.RequiredIndicator />
+                  </Inputs.FormLabel>
+                  <Inputs.FormControl>
+                    <Inputs.Input {...field} />
+                  </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
+              )}
+            />
+            <Inputs.FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <Inputs.FormItem className="max-w-xl">
+                  <Inputs.FormLabel className="text-lg font-bold block">
+                    Description <Inputs.RequiredIndicator />
+                  </Inputs.FormLabel>
+                  <Inputs.Textarea
+                    {...field}
+                    className="h-[100px] resize-none"
+                  />
                   <Inputs.FormMessage />
                 </Inputs.FormItem>
               )}
@@ -155,7 +188,7 @@ export const ChipForm = () => {
                 name={`attachments.${name}`}
                 render={({ field }) => (
                   <Inputs.FormItem>
-                    <Inputs.FormLabel>{label}</Inputs.FormLabel>
+                    <Inputs.FormLabel>{label} {required ? <Inputs.RequiredIndicator /> : null}</Inputs.FormLabel>
                     {required && (
                       <Inputs.FormDescription>
                         At least one attachment is required

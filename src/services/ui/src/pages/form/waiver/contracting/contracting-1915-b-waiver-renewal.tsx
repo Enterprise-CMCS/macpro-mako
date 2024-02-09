@@ -30,6 +30,8 @@ const formSchema = z
     waiverNumber: zRenewalOriginalWaiverNumberSchema,
     id: zRenewalWaiverNumberSchema,
     proposedEffectiveDate: z.date(),
+    subject: z.string(),
+    description: z.string(),
     attachments: z.object({
       b4WaiverApplication: zAttachmentRequired({ min: 1 }),
       b4IndependentAssessment: zAttachmentOptional,
@@ -212,6 +214,37 @@ export const Contracting1915BWaiverRenewal = () => {
                       date={field.value}
                     />
                   </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
+              )}
+            />
+            <Inputs.FormField
+              control={form.control}
+              name="subject"
+              render={({ field }) => (
+                <Inputs.FormItem className="max-w-xl">
+                  <Inputs.FormLabel className="text-lg font-bold block">
+                    Subject <Inputs.RequiredIndicator />
+                  </Inputs.FormLabel>
+                  <Inputs.FormControl>
+                    <Inputs.Input {...field} />
+                  </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
+              )}
+            />
+            <Inputs.FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <Inputs.FormItem className="max-w-xl">
+                  <Inputs.FormLabel className="text-lg font-bold block">
+                    Description <Inputs.RequiredIndicator />
+                  </Inputs.FormLabel>
+                  <Inputs.Textarea
+                    {...field}
+                    className="h-[100px] resize-none"
+                  />
                   <Inputs.FormMessage />
                 </Inputs.FormItem>
               )}

@@ -27,6 +27,8 @@ import { FAQ_TAB } from "@/components/Routing/consts";
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
   proposedEffectiveDate: z.date(),
+  subject: z.string(),
+  description: z.string(),
   attachments: z.object({
     bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
     bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
@@ -161,6 +163,37 @@ export const Capitated1915BWaiverInitial = () => {
                       date={field.value}
                     />
                   </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
+              )}
+            />
+            <Inputs.FormField
+              control={form.control}
+              name="subject"
+              render={({ field }) => (
+                <Inputs.FormItem className="max-w-xl">
+                  <Inputs.FormLabel className="text-lg font-bold block">
+                    Subject <Inputs.RequiredIndicator />
+                  </Inputs.FormLabel>
+                  <Inputs.FormControl>
+                    <Inputs.Input {...field} />
+                  </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
+              )}
+            />
+            <Inputs.FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <Inputs.FormItem className="max-w-xl">
+                  <Inputs.FormLabel className="text-lg font-bold block">
+                    Description <Inputs.RequiredIndicator />
+                  </Inputs.FormLabel>
+                  <Inputs.Textarea
+                    {...field}
+                    className="h-[100px] resize-none"
+                  />
                   <Inputs.FormMessage />
                 </Inputs.FormItem>
               )}

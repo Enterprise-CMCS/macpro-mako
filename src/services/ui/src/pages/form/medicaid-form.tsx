@@ -28,8 +28,8 @@ const formSchema = z.object({
   additionalInformation: z.string().max(4000).optional(),
   subject: z.string(),
   description: z.string(),
-  type: z.string().default("chip spa"),
-  subType: z.string().default("chip spa"),
+  planType: z.string(),
+  planSubType: z.string(),
   attachments: z.object({
     cmsForm179: zAttachmentRequired({
       min: 1,
@@ -76,6 +76,7 @@ export const MedicaidForm = () => {
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
+
     try {
       await submit<MedicaidFormSchema>({
         data: formData,
@@ -151,6 +152,70 @@ export const MedicaidForm = () => {
                       date={field.value}
                     />
                   </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
+              )}
+            />
+            <Inputs.FormField
+              control={form.control}
+              name="planType"
+              render={({ field }) => (
+                <Inputs.FormItem className="max-w-sm">
+                  <Inputs.FormLabel className="text-lg font-bold block">
+                    Plan Type <Inputs.RequiredIndicator />
+                  </Inputs.FormLabel>
+                    <Inputs.Select {...field} >
+                  <Inputs.FormControl>
+                  <Inputs.SelectTrigger>
+                    <Inputs.SelectValue placeholder="Select a plan type" />
+                  </Inputs.SelectTrigger>
+                  </Inputs.FormControl>
+                      <Inputs.SelectContent>
+                        <Inputs.SelectItem value="125">Medicaid SPA</Inputs.SelectItem>
+                      </Inputs.SelectContent>
+                      </Inputs.Select>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
+              )}
+            />
+            <Inputs.FormField
+              control={form.control}
+              name="planSubType"
+              render={({ field }) => (
+                <Inputs.FormItem className="max-w-sm">
+                  <Inputs.FormLabel className="text-lg font-bold block">
+                    Plan Sub Type <Inputs.RequiredIndicator />
+                  </Inputs.FormLabel>
+                    <Inputs.Select {...field} >
+                  <Inputs.FormControl>
+                  <Inputs.SelectTrigger>
+                    <Inputs.SelectValue placeholder="Select a plan sub-type" />
+                  </Inputs.SelectTrigger>
+                  </Inputs.FormControl>
+                      <Inputs.SelectContent>
+                        <Inputs.SelectItem value="782">Copays/Deductibles/Coinsurance</Inputs.SelectItem>
+                        <Inputs.SelectItem value="783">Premiums/Enrollment Fees</Inputs.SelectItem>
+                        <Inputs.SelectItem value="784">Aged/Blind/Disabled Eligibility</Inputs.SelectItem>
+                        <Inputs.SelectItem value="785">Application</Inputs.SelectItem>
+                        <Inputs.SelectItem value="786">Asset Verification System</Inputs.SelectItem>
+                        <Inputs.SelectItem value="787">Authorized Representative</Inputs.SelectItem>
+                        <Inputs.SelectItem value="788">Breast & Cervical Cancer</Inputs.SelectItem>
+                        <Inputs.SelectItem value="789">Citizenship and Non-Citizen Eligibility</Inputs.SelectItem>
+                        <Inputs.SelectItem value="790">Cost of Living Adjustment</Inputs.SelectItem>
+                        <Inputs.SelectItem value="791">Cost Sharing/Copayment</Inputs.SelectItem>
+                        <Inputs.SelectItem value="792">Disabled Children</Inputs.SelectItem>
+                        <Inputs.SelectItem value="793">Disregards</Inputs.SelectItem>
+                        <Inputs.SelectItem value="794">Eligibility Process</Inputs.SelectItem>
+                        <Inputs.SelectItem value="795">Express Lane</Inputs.SelectItem>
+                        <Inputs.SelectItem value="796">Family Planning</Inputs.SelectItem>
+                        <Inputs.SelectItem value="797">Family/Adult Eligibility</Inputs.SelectItem>
+                        <Inputs.SelectItem value="798">Federal Benefit Rate</Inputs.SelectItem>
+                        <Inputs.SelectItem value="799">Home Equity</Inputs.SelectItem>
+                        <Inputs.SelectItem value="800">Hospital Presumptive Eligibility</Inputs.SelectItem>
+                        <Inputs.SelectItem value="801">Income Standard—Territories</Inputs.SelectItem>
+                        <Inputs.SelectItem value="802">Income/Resource Methodologies</Inputs.SelectItem>
+                      </Inputs.SelectContent>
+                      </Inputs.Select>
                   <Inputs.FormMessage />
                 </Inputs.FormItem>
               )}
