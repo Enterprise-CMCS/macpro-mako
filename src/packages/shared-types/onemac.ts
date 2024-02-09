@@ -19,6 +19,7 @@ export const onemacSchema = z.object({
       })
     )
     .nullish(),
+  proposedEffectiveDate: z.string().nullish(),
 });
 
 export type OneMac = z.infer<typeof onemacSchema>;
