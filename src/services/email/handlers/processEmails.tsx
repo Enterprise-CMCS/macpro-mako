@@ -51,15 +51,15 @@ export const main = async (event: KafkaEvent) => {
 
   const results = await Promise.all(Object.values(event.records).map(async (oneSource) =>
     oneSource.map(async (encodedRecord) => {
-      if (!encodedRecord.value) return ["No Emails Sent: Record has no value"];
+      if (!encodedRecord.value) return Promise.resolve("No Emails Sent: Record has no value");
       const record = { id: decode(encodedRecord.key), ...JSON.parse(decode(encodedRecord.value)) };
       console.log("here is the decoded record: ", record);
-      if (record?.origin !== "micro") return ["No Emails Sent: Not an emailable record"];
+      if (record?.origin !== "micro") return Promise.resolve("No Emails Sent: Not an emailable record");
       if (!record?.actionType) record.actionType = "initial-submission";
       record.proposedEffectiveDateNice = record?.proposedEffectiveDate ? (new Date(record.proposedEffectiveDate)).toDateString() : "Pending";
 
       const emailsConfig = `${record.actionType}-${record.authority.replace(" ", "-")}`;
-      if (!emailsToSend[emailsConfig]) return ["No Emails Sent: No email configuration available"];
+      if (!emailsToSend[emailsConfig]) return Promise.resolve("No Emails Sent: No email configuration available");
       record.territory = record.id.toString().substring(0, 2);
       console.log("matching email config: ", emailsToSend[emailsConfig]);
       const sendResults = await Promise.all(emailsToSend[emailsConfig].map(async (oneEmail) => {
@@ -95,11 +95,11 @@ export const main = async (event: KafkaEvent) => {
           return response;
         } catch (err) {
           console.log("Failed to process theEmail.", err, JSON.stringify(theEmail, null, 4));
-          return err;
+          return Promise.resolve(err);
         }
       }));
 
-      return sendResults;
+      return Promise.resolve(sendResults);
     })));
     console.log("results back are: ", JSON.stringify(results, null,4));
     return results;
