@@ -213,13 +213,15 @@ export const scanLocalFile = async (pathToFile: string, contentType: string | un
       utils.generateSystemMessage("FAILURE - EXTENSION UNKNOWN");
       return constants.STATUS_UNKNOWN_EXTENSION;
     }
-    
     let detectedContentType = await getFileTypeFromContents(pathToFile);
-    console.log(`File declared extension:  ${contentType}`); 
-    console.log(`File detected extension:  ${detectedContentType}`)
-    if(contentType !== detectedContentType){
-      utils.generateSystemMessage(`FAILURE - FILE EXTENSION DOES NOT MATCH FILE CONTENTS`);
-      return constants.STATUS_EXTENSION_MISMATCH_FILE
+    if(detectedContentType){
+      console.log(`File declared extension:  ${contentType}`); 
+      console.log(`File detected extension:  ${detectedContentType}`)
+      let same = areMimeTypesEquivalent(contentType, detectedContentType)
+      if(!same){
+        utils.generateSystemMessage(`FAILURE - FILE EXTENSION DOES NOT MATCH FILE CONTENTS`);
+        return constants.STATUS_EXTENSION_MISMATCH_FILE
+      }
     }
 
     const avResult: SpawnSyncReturns<Buffer> = spawnSync(
@@ -274,4 +276,25 @@ async function getFileTypeFromContents(filePath: string): Promise<MimeType | nul
       console.error('Error reading file:', error);
       return null
   }
+}
+
+function areMimeTypesEquivalent(mime1: string, mime2: string): boolean {
+  const equivalentTypes: { [key: string]: Set<string> } = {
+      'application/rtf': new Set(['text/rtf']),
+      'application/vnd.ms-excel': new Set(['application/x-cfb']),
+      'application/vnd.ms-powerpoint': new Set(['application/x-cfb']),
+      'application/msword': new Set(['application/x-cfb'])
+  };
+  mime1 = mime1.toLowerCase();
+  mime2 = mime2.toLowerCase();
+  if (mime1 === mime2) {
+      return true;
+  }
+  for (const baseType in equivalentTypes) {
+      const equivalents = equivalentTypes[baseType];
+      if ((mime1 === baseType && equivalents.has(mime2)) || (mime2 === baseType && equivalents.has(mime1))) {
+          return true;
+      }
+  }
+  return false;
 }
