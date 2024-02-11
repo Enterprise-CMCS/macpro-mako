@@ -1,87 +1,119 @@
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as Inputs from "@/components/Inputs";
+import * as Content from "../../content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { submit } from "@/api/submissionService";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Alert,
   BreadCrumbs,
   LoadingSpinner,
-  SectionCard,
   SimplePageContainer,
+  SectionCard,
 } from "@/components";
-import * as Inputs from "@/components/Inputs";
-import { Authority } from "shared-types";
+import { submit } from "@/api/submissionService";
+import { PlanType } from "shared-types";
 import {
+  zAdditionalInfo,
+  zRenewalOriginalWaiverNumberSchema,
   zAttachmentOptional,
   zAttachmentRequired,
-  zSpaIdSchema,
+  zRenewalWaiverNumberSchema,
 } from "@/pages/form/zod";
-import * as Content from "@/pages/form/content";
 import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 
-const formSchema = z.object({
-  id: zSpaIdSchema,
-  additionalInformation: z.string().max(4000).optional(),
-  attachments: z.object({
-    currentStatePlan: zAttachmentRequired({ min: 1 }),
-    amendedLanguage: zAttachmentRequired({ min: 1 }),
-    coverLetter: zAttachmentRequired({ min: 1 }),
-    budgetDocuments: zAttachmentOptional,
-    publicNotice: zAttachmentOptional,
-    tribalConsultation: zAttachmentOptional,
-    other: zAttachmentOptional,
-  }),
-  proposedEffectiveDate: z.date(),
-});
-type ChipFormSchema = z.infer<typeof formSchema>;
+const formSchema = z
+  .object({
+    waiverNumber: zRenewalOriginalWaiverNumberSchema,
+    id: zRenewalWaiverNumberSchema,
+    proposedEffectiveDate: z.date(),
+    attachments: z.object({
+      bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
+      bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
+      bCapIndependentAssessment: zAttachmentOptional,
+      tribalConsultation: zAttachmentOptional,
+      other: zAttachmentOptional,
+    }),
+    additionalInformation: zAdditionalInfo.optional(),
+    seaActionType: z.string().default("Renew"),
+  })
+  .superRefine((data, ctx) => {
+    const renewalIteration = data.id.split(".")[1]; // R## segment of Waiver Number
+    if (
+      ["R00", "R01"].includes(renewalIteration) &&
+      data.attachments.bCapIndependentAssessment === undefined
+    ) {
+      ctx.addIssue({
+        message:
+          "An Independent Assessment is required for the first two renewals.",
+        code: z.ZodIssueCode.custom,
+        fatal: true,
+        path: ["attachments", "bCapIndependentAssessment"],
+      });
+    }
+    return z.never;
+  });
+type Waiver1915BCapitatedRenewal = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
-  { name: "currentStatePlan", label: "Current State Plan", required: true },
   {
-    name: "amendedLanguage",
-    label: "Amended State Plan Language",
+    name: "bCapWaiverApplication",
+    label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
     required: true,
   },
   {
-    name: "coverLetter",
-    label: "Cover Letter",
+    name: "bCapCostSpreadsheets",
+    label:
+      "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
     required: true,
   },
   {
-    name: "budgetDocuments",
-    label: "Budget Documents",
+    name: "bCapIndependentAssessment",
+    label:
+      "1915(b) Comprehensive (Capitated) Waiver Independent Assessment (first two renewals only)",
+    subtext: "Required for the first two renewals",
     required: false,
   },
-  { name: "publicNotice", label: "Public Notice", required: false },
-  { name: "tribalConsultation", label: "Tribal Consultation", required: false },
-  { name: "other", label: "Other", required: false },
+  {
+    name: "tribalConsultation",
+    label: "Tribal Consultation",
+    required: false,
+  },
+  {
+    name: "other",
+    label: "Other",
+    required: false,
+  },
 ] as const;
 
-export const ChipForm = () => {
+export const Capitated1915BWaiverRenewal = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
-  const form = useForm<ChipFormSchema>({
-    resolver: zodResolver(formSchema),
-  });
-  const handleSubmit = form.handleSubmit(async (formData) => {
+  const handleSubmit: SubmitHandler<Waiver1915BCapitatedRenewal> = async (
+    formData
+  ) => {
     try {
-      await submit<ChipFormSchema>({
+      // AK-0260.R04.02
+      await submit<Waiver1915BCapitatedRenewal>({
         data: formData,
         endpoint: "/submit",
         user,
-        authority: Authority.CHIP_SPA,
+        authority: PlanType["1915b"],
       });
       setSuccessModalOpen(true);
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const form = useForm<Waiver1915BCapitatedRenewal>({
+    resolver: zodResolver(formSchema),
   });
 
   return (
@@ -89,11 +121,44 @@ export const ChipForm = () => {
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Inputs.Form {...form}>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
-          <SectionCard title="CHIP SPA Details">
+          <h1 className="text-2xl font-semibold mt-4 mb-2">
+            Renew a 1915(b) Waiver
+          </h1>
+          <SectionCard title="1915(b) Waiver Renewal Details">
             <Content.FormIntroText />
+            <Inputs.FormField
+              control={form.control}
+              name="waiverNumber"
+              render={({ field }) => (
+                <Inputs.FormItem>
+                  <div className="flex gap-4">
+                    <Inputs.FormLabel className="text-lg font-bold">
+                      Existing Waiver Number to Renew{" "}
+                      <Inputs.RequiredIndicator />
+                    </Inputs.FormLabel>
+                  </div>
+                  <p className="text-gray-500 font-light">
+                    Enter the existing waiver number in the format it was
+                    approved, using a dash after the two character state
+                    abbreviation.
+                  </p>
+                  <Inputs.FormControl className="max-w-sm">
+                    <Inputs.Input
+                      {...field}
+                      onInput={(e) => {
+                        if (e.target instanceof HTMLInputElement) {
+                          e.target.value = e.target.value.toUpperCase();
+                        }
+                      }}
+                    />
+                  </Inputs.FormControl>
+                  <Inputs.FormMessage />
+                </Inputs.FormItem>
+              )}
+            />
             <Inputs.FormField
               control={form.control}
               name="id"
@@ -101,18 +166,22 @@ export const ChipForm = () => {
                 <Inputs.FormItem>
                   <div className="flex gap-4">
                     <Inputs.FormLabel className="text-lg font-bold">
-                      SPA ID
+                      1915(b) Waiver Renewal Number <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
-                      to="/faq/#spa-id-format"
+                      to="/faq/#waiver-amendment-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
+                      className="text-blue-700 hover:underline flex items-center"
                     >
-                      What is my SPA ID?
+                      What is my 1915(b) Waiver Renewal Number?
                     </Link>
                   </div>
-                  <Content.SpaIdFormattingDesc />
+                  <p className="text-gray-500 font-light">
+                    The Waiver Number must be in the format of SS-####.R##.00 or
+                    SS-#####.R##.00. For renewals, the {"'R##'"} starts with{" "}
+                    {" 'R01'"} and ascends.
+                  </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
                       {...field}
@@ -131,11 +200,12 @@ export const ChipForm = () => {
               control={form.control}
               name="proposedEffectiveDate"
               render={({ field }) => (
-                <Inputs.FormItem className="max-w-sm">
+                <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of CHIP SPA
+                    Proposed Effective Date of 1915(b) Waiver Renewal{" "}
+                    <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
-                  <Inputs.FormControl>
+                  <Inputs.FormControl className="max-w-sm">
                     <Inputs.DatePicker
                       onChange={field.onChange}
                       date={field.value}
@@ -147,7 +217,7 @@ export const ChipForm = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#chip-spa-attachments" />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
@@ -155,12 +225,10 @@ export const ChipForm = () => {
                 name={`attachments.${name}`}
                 render={({ field }) => (
                   <Inputs.FormItem>
-                    <Inputs.FormLabel>{label}</Inputs.FormLabel>
-                    {required && (
-                      <Inputs.FormDescription>
-                        At least one attachment is required
-                      </Inputs.FormDescription>
-                    )}
+                    <Inputs.FormLabel>
+                      {label}
+                      {required ? <Inputs.RequiredIndicator /> : null}
+                    </Inputs.FormLabel>
                     <Inputs.Upload
                       files={field?.value ?? []}
                       setFiles={field.onChange}
@@ -226,8 +294,8 @@ export const ChipForm = () => {
   );
 };
 
-export const ChipSpaFormPage = () => (
+export const Capitated1915BWaiverRenewalPage = () => (
   <ModalProvider>
-    <ChipForm />
+    <Capitated1915BWaiverRenewal />
   </ModalProvider>
 );

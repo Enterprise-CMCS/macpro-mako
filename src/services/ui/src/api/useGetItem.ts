@@ -1,6 +1,6 @@
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { opensearch, ReactQueryApiError } from "shared-types";
+import { opensearch, ReactQueryApiError, SEATOOL_STATUS } from "shared-types";
 
 export const getItem = async (
   id: string
@@ -13,6 +13,15 @@ export const idIsUnique = async (id: string) => {
     return false;
   } catch (e) {
     return true;
+  }
+};
+
+export const idIsApproved = async (id: string) => {
+  try {
+    const record = await getItem(id);
+    return record._source.seatoolStatus == SEATOOL_STATUS.APPROVED;
+  } catch (e) {
+    return false;
   }
 };
 

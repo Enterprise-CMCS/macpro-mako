@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { type ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
+import { Route } from "../Routing/types";
 
 type BreadCrumbsProps = {
   options: BreadCrumbConfig[];
@@ -57,7 +58,7 @@ export const BreadCrumb = ({
   children,
 }: React.PropsWithChildren<BreadCrumbProps>) => {
   return (
-    <li className="flex items-center">
+    <li className="flex items-center text-sm">
       {showSeperator && <span>{seperator}</span>}
 
       {active && (
