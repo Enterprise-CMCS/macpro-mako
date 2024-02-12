@@ -11,8 +11,8 @@ export const onemacSchema = z.object({
   submitterEmail: z.string(),
   attachments: z.array(attachmentSchema).nullish(),
   raiWithdrawEnabled: z.boolean().default(false),
-  proposedEffectiveDate: z.string().nullish(),
-  submissionDate: z.string().nullish(),
+  proposedEffectiveDate: z.number().nullish(),
+  submissionDate: z.number().nullish(),
 });
 
 export type OneMac = z.infer<typeof onemacSchema>;
