@@ -10,8 +10,8 @@ import {
 import {
   Authority,
   SEATOOL_AUTHORITIES,
-  SEATOOL_TYPES,
-  SEATOOL_SUB_TYPES,
+  // SEATOOL_TYPES,
+  // SEATOOL_SUB_TYPES,
 } from "shared-types";
 
 type Flavor = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
@@ -139,27 +139,27 @@ const getAuthority = (
   }
 };
 
-const getSubType = (subTypeId: number | undefined, id: string | undefined) => {
-  if (!subTypeId) return null;
-  const subType = findByKeyInNestedObject(SEATOOL_SUB_TYPES, subTypeId);
-  if (!subType) {
-    console.log(
-      `SEATOOL LOOKUP WARNING: Subtype ID ${subTypeId} not found.  Record ${id}`
-    );
-  }
-  return subType;
-};
+// const getSubType = (subTypeId: number | undefined, id: string | undefined) => {
+//   if (!subTypeId) return null;
+//   const subType = findByKeyInNestedObject(SEATOOL_SUB_TYPES, subTypeId);
+//   if (!subType) {
+//     console.log(
+//       `SEATOOL LOOKUP WARNING: Subtype ID ${subTypeId} not found.  Record ${id}`
+//     );
+//   }
+//   return subType;
+// };
 
-const getType = (typeId: number | undefined, id: string | undefined) => {
-  if (!typeId) return null;
-  const type = findByKeyInNestedObject(SEATOOL_TYPES, typeId);
-  if (!type) {
-    console.log(
-      `SEATOOL LOOKUP WARNING: Type ID ${typeId} not found.  Record ${id}`
-    );
-  }
-  return type;
-};
+// const getType = (typeId: number | undefined, id: string | undefined) => {
+//   if (!typeId) return null;
+//   const type = findByKeyInNestedObject(SEATOOL_TYPES, typeId);
+//   if (!type) {
+//     console.log(
+//       `SEATOOL LOOKUP WARNING: Type ID ${typeId} not found.  Record ${id}`
+//     );
+//   }
+//   return type;
+// };
 
 function findByKeyInNestedObject(
   obj: any,
@@ -215,9 +215,9 @@ export const transform = (id: string) => {
       authorityId: authorityId || null,
       authority: getAuthority(authorityId, id) as Authority | null,
       typeId: typeId || null,
-      type: getType(typeId, id),
+      // type: getType(typeId, id),
       subTypeId: subTypeId || null,
-      subType: getSubType(subTypeId, id),
+      // subType: getSubType(subTypeId, id),
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,

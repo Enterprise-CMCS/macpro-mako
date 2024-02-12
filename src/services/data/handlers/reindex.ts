@@ -6,6 +6,7 @@ import {
   UpdateEventSourceMappingCommand,
 } from "@aws-sdk/client-lambda";
 import * as os from "./../../../libs/opensearch-lib";
+import { getConsumerGroupInfo } from "../libs/lambda-trigger-lib";
 
 export const toggleTriggers: Handler = async () => {
   try {
@@ -109,24 +110,6 @@ export const resetConsumerGroups: Handler = async () => {
   }
 };
 
-async function getConsumerGroupInfo(functionName: string) {
-  const lambdaClient = new LambdaClient({});
-  const response = await lambdaClient.send(
-    new ListEventSourceMappingsCommand({ FunctionName: functionName })
-  );
-  const triggerInfo = [];
-  for (const eventSourceMapping of response.EventSourceMappings || []) {
-    if (eventSourceMapping.SelfManagedKafkaEventSourceConfig) {
-      triggerInfo.push({
-        groupId:
-          eventSourceMapping.SelfManagedKafkaEventSourceConfig.ConsumerGroupId,
-        topics: eventSourceMapping.Topics,
-      });
-    }
-  }
-  return triggerInfo;
-}
-
 export const deleteIndex: Handler = async () => {
   try {
     if (!process.env.osDomain) {
@@ -135,6 +118,8 @@ export const deleteIndex: Handler = async () => {
     await os.deleteIndex(process.env.osDomain, "main");
     await os.deleteIndex(process.env.osDomain, "changelog");
     await os.deleteIndex(process.env.osDomain, "seatool");
+    await os.deleteIndex(process.env.osDomain, "types");
+    await os.deleteIndex(process.env.osDomain, "subtypes");
   } catch (error: any) {
     if (error.meta.body.error.type == "index_not_found_exception") {
       console.log("Index does not exist.");

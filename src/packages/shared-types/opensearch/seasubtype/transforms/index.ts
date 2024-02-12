@@ -1,0 +1,1 @@
+export * as subtype from "./subtype";
