@@ -7,7 +7,7 @@ export const handler: Handler = async (event, context, callback) => {
     statusCode: 200,
   };
   try {
-    const requiredEnvVars = ['osDomain', 'msterRoleToAssume', 'osRoleName', 'iamRoleName'];
+    const requiredEnvVars = ['osDomain', 'masterRoleToAssume', 'osRoleName', 'iamRoleName'];
 
     requiredEnvVars.forEach(envVar => {
       if (!process.env[envVar]) {
@@ -16,7 +16,7 @@ export const handler: Handler = async (event, context, callback) => {
     });
     let reply = await os.mapRole(
       process.env.osDomain!,
-      process.env.msterRoleToAssume!,
+      process.env.masterRoleToAssume!,
       process.env.osRoleName!,
       process.env.iamRoleName!
     );
