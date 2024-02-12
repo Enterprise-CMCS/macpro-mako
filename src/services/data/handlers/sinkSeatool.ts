@@ -27,7 +27,6 @@ const getSubtype = async (id: number) => {
 
 let typeCache: { [key: number]: string | null } = {};
 const getType = async (id: number) => {
-  console.log(`typeId: ${id}`)
   if(!id) return null;
   if(!typeCache[id]){
     let item = await os.getItem(osDomain,"types",id.toString())
