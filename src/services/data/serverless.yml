@@ -180,24 +180,25 @@ stepFunctions:
             Choices:
               - Variable: $.ready
                 BooleanEquals: true
-                # Next: EnableOtherTriggers
-                Next: SuccessState
+                Next: EnableOtherTriggers
               - Variable: $.ready
                 BooleanEquals: false
-                # Next: Wait10Seconds2
-                Next: SuccessState
-            # Default: Wait10Seconds2
-            Default: SuccessState
-          # Wait10Seconds2:
-          #   Type: Wait
-          #   Seconds: 10
-          #   Next: GetLookupLag
-          # EnableOtherTriggers:
-          #   Type: Task
-          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-enableOtherTriggers"
-          #   Parameters:
-          #     Context.$: $$
-          #   Next: SuccessState
+                Next: Wait10Seconds2
+            Default: Wait10Seconds2
+          Wait10Seconds2:
+            Type: Wait
+            Seconds: 10
+            Next: EnableDataSink
+          EnableDataSink:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-toggleTriggers"
+            Parameters:
+              Context.$: $$
+              Functions:
+                - !Ref SinkSeatoolLambdaFunction
+                - !Ref SinkOnemacLambdaFunction
+              Enabled: true
+            Next: SuccessState
           SuccessState:
             Type: Succeed
 
