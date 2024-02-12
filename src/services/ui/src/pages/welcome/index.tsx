@@ -2,10 +2,10 @@ import * as C from "@/components";
 import OneMacLogo from "@/assets/onemac_logo.svg";
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
-import { getUser } from "@/api/useGetUser";
-import { Link } from "@/components/Routing";
-import { Button } from "@/components/Inputs";
-import { FAQ_TAB } from "@/components/Routing/consts";
+import { getUser } from "@/api";
+import { Link } from "@/components";
+import { Button } from "@/components";
+import { FAQ_TAB } from "@/components";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {

@@ -1,8 +1,8 @@
-import { useGetUser } from "@/api/useGetUser";
+import { useGetUser } from "@/api";
 import { UserRoles } from "shared-types";
 import { DEFAULT_FILTERS, useOsUrl } from "../../useOpensearch";
 import { opensearch } from "shared-types";
-import { LABELS } from "@/lib/labels";
+import { LABELS } from "@/utils/labels";
 import { BLANK_VALUE } from "@/consts";
 import { formatSeatoolDate } from "shared-utils";
 import { getMainExportData } from "@/api";

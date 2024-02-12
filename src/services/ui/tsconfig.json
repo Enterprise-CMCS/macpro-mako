@@ -20,6 +20,9 @@
       "@/selectors": ["e2e/selectors/index"],
       "@/components": ["src/components/index"],
       "@/pages": ["src/pages/index"],
+      "@/features": ["src/features/index"],
+      "@/utils": ["src/utils/index"],
+      "@/hooks": ["src/hooks/index"],
       "@/*": ["src/*"]
     }
   },

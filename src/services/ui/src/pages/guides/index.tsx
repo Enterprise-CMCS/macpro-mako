@@ -1,5 +1,5 @@
 import { SubNavHeader } from "@/components";
-import * as UI from "@/components/Table";
+import * as UI from "@/components";
 import { Guide } from "shared-types";
 
 export const ABPGuide = () => {

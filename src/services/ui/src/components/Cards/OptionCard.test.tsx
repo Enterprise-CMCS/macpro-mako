@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { OptionCard, OptionFieldset } from "@/components/Cards/OptionCard";
+import { OptionCard, OptionFieldset } from "@/components";
 import { BrowserRouter } from "react-router-dom";
 
 describe("OptionCard Component System", () => {

@@ -2,7 +2,7 @@ import { FC } from "react";
 import type { Props } from "./types";
 
 import { pageStateResolver } from "./utils";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils";
 
 const maxRecordCount = 10000;
 
@@ -148,3 +148,6 @@ export const Pagination: FC<Props> = (props) => {
     </div>
   );
 };
+
+export * from "./types";
+export * from "./utils";

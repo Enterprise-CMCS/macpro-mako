@@ -1,10 +1,14 @@
 import { useForm } from "react-hook-form";
-import { Button, Form } from "@/components/Inputs";
-import { RHFDocument } from "@/components/RHF";
-import { SubNavHeader } from "@/components";
-import { documentInitializer, documentValidator } from "@/components/RHF/utils";
+import {
+  Button,
+  Form,
+  RHFDocument,
+  SubNavHeader,
+  documentInitializer,
+  documentValidator,
+  LoadingSpinner,
+} from "@/components";
 import { useGetForm } from "@/api";
-import { LoadingSpinner } from "@/components";
 import { Footer } from "./footer";
 import { Link, useParams } from "../Routing";
 import { useReadOnlyUser } from "./useReadOnlyUser";

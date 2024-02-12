@@ -1,9 +1,9 @@
-import * as POP from "@/components/Popover";
+import * as POP from "@/components";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { CognitoUserAttributes, opensearch } from "shared-types";
 import { getAvailableActions } from "shared-utils";
 import { Link } from "react-router-dom";
-import { cn } from "@/lib";
+import { cn } from "@/utils";
 import { mapActionLabel } from "@/utils";
 import { formatSeatoolDate } from "shared-utils";
 

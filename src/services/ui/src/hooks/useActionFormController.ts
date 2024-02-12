@@ -1,9 +1,9 @@
 import { FieldValues, SubmitHandler, UseFormReturn } from "react-hook-form";
-import { useParams } from "@/components/Routing";
-import { useGetUser } from "@/api/useGetUser";
-import { useModalContext } from "@/pages/form/modals";
-import { submit } from "@/api/submissionService";
-import { buildActionUrl } from "@/lib";
+import { useParams } from "@/components";
+import { useGetUser } from "@/api";
+import { useModalContext } from "@/features/components/modals";
+import { submit } from "@/api";
+import { buildActionUrl } from "@/utils";
 import { PlanType } from "shared-types";
 
 export const useActionSubmitHandler = <D extends FieldValues>({

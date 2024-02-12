@@ -20,3 +20,4 @@ export function Modal({ showModal, children }: PropsWithChildren<Props>) {
     </>
   );
 }
+export * from "./ConfirmationModal";

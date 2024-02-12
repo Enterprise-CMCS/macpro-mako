@@ -1,10 +1,10 @@
 import { getOsData, useOsSearch } from "@/api";
-import { useLzUrl } from "@/hooks/useParams";
+import { useLzUrl } from "@/hooks";
 import { useEffect, useState } from "react";
 import { UserRoles, opensearch } from "shared-types";
 import { createSearchFilterable } from "../utils";
 import { useQuery } from "@tanstack/react-query";
-import { useGetUser } from "@/api/useGetUser";
+import { useGetUser } from "@/api";
 import { OsTab } from "./types";
 
 export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {

@@ -1,11 +1,6 @@
 import { ErrorAlert } from "@/components";
-import { Pagination } from "@/components/Pagination";
-import {
-  OsTable,
-  OsFiltering,
-  useOsContext,
-  useOsUrl,
-} from "@/components/Opensearch/main";
+import { Pagination } from "@/components";
+import { OsTable, OsFiltering, useOsContext, useOsUrl } from "@/components";
 import { useWaiverTableColumns } from "./consts";
 
 export const WaiversList = () => {

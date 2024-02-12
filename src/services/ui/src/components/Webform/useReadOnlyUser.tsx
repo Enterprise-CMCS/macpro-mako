@@ -1,4 +1,4 @@
-import { useGetUser } from "@/api/useGetUser";
+import { useGetUser } from "@/api";
 import { UserRoles } from "shared-types";
 
 export const useReadOnlyUser = () => {

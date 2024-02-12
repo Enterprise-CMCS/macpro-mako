@@ -1,7 +1,7 @@
 import { BreadCrumbConfig } from "@/components";
 import { mapActionLabel, mapSubmissionCrumb } from "@/utils/labelMappers";
 import { Action } from "shared-types";
-import { Route } from "@/components/Routing/types";
+import { Route } from "@/components";
 
 export const dashboardCrumb: BreadCrumbConfig = {
   displayText: "Dashboard",

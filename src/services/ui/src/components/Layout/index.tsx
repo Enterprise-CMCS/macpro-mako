@@ -3,7 +3,7 @@ import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useMemo, useState } from "react";
-import { useGetUser } from "@/api/useGetUser";
+import { useGetUser } from "@/api";
 import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Footer } from "../Footer";
@@ -111,7 +111,7 @@ export const Layout = () => {
     <div className="min-h-full flex flex-col">
       <UsaBanner />
       <nav className="bg-primary">
-        <div className="max-w-screen-2xl mx-auto px-4 lg:px-8">
+        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
             <Link to="/">
               <img
@@ -274,7 +274,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
 
 export const SubNavHeader = ({ children }: { children: React.ReactNode }) => (
   <div className="bg-sky-100">
-    <div className="max-w-screen-2xl m-auto px-4 lg:px-8">
+    <div className="max-w-screen-xl m-auto px-4 lg:px-8">
       <div className="flex items-center">
         <div className="flex align-middle py-4">{children}</div>
       </div>

@@ -1,5 +1,5 @@
-import { useGetUser } from "@/api/useGetUser";
-import { DetailSectionItem } from "@/pages/detail/setup/spa";
+import { useGetUser } from "@/api";
+import { DetailSectionItem } from "@/features";
 
 export const DetailItemsGrid = ({
   displayItems,

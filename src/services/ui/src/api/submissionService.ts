@@ -6,8 +6,8 @@ import {
   Action,
   attachmentTitleMap,
 } from "shared-types";
-import { buildActionUrl, SubmissionServiceEndpoint } from "@/lib";
-import { OneMacUser } from "@/api/useGetUser";
+import { buildActionUrl, SubmissionServiceEndpoint } from "@/utils";
+import { OneMacUser } from "@/api";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 

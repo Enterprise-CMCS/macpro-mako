@@ -1,8 +1,6 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
 import * as P from "@/pages";
-import { loader as rootLoader } from "@/pages/welcome";
-import { dashboardLoader } from "@/pages/dashboard";
-import "@/api/amplifyConfig";
+import "@/api";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
 import { type Route } from "./components/Routing/types";
@@ -18,7 +16,7 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <P.Dashboard />,
-        loader: dashboardLoader(queryClient),
+        loader: P.dashboardLoader(queryClient),
       },
       { path: "/details", element: <P.Details /> },
       { path: "/faq", element: <P.Faq /> },
@@ -98,7 +96,7 @@ export const router = createBrowserRouter([
       { path: "/profile", element: <P.Profile /> },
       { path: "/guides/abp", element: <P.ABPGuide /> },
     ],
-    loader: rootLoader(queryClient),
+    loader: P.loader(queryClient),
   },
 ] satisfies TypedRouteObject[]);
 

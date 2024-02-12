@@ -15,9 +15,15 @@ import {
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
-import { cn } from "@/lib/utils";
-import { Button, Calendar, Input } from "@/components/Inputs";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
+import { cn } from "@/utils";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Button,
+  Calendar,
+  Input,
+} from "@/components";
 import { opensearch } from "shared-types";
 
 type Props = Omit<

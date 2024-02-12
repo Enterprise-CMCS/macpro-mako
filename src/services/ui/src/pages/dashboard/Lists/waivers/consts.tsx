@@ -1,9 +1,9 @@
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { OsTableColumn } from "@/components/Opensearch/main";
-import { LABELS } from "@/lib";
+import { OsTableColumn } from "@/components";
+import { LABELS } from "@/utils";
 import { BLANK_VALUE } from "@/consts";
 import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
-import { useGetUser } from "@/api/useGetUser";
+import { useGetUser } from "@/api";
 import {
   renderCellActions,
   renderCellDate,

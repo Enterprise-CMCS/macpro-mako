@@ -20,3 +20,12 @@ export const useGetForm = (formId: string, formVersion?: string) => {
     getForm(formId, formVersion)
   );
 };
+
+export const getAllForms = async () => {
+  const results = await API.get("os", "/allForms", {});
+  return results;
+};
+
+export const useGetAllForm = () => {
+  return useQuery(["All Webforms"], () => getAllForms());
+};
