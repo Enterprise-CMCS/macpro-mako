@@ -26,6 +26,9 @@ details by clicking on its ID number.</li>
 <br><b>Medicaid SPA ID: {{id}}</b>
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
 </p>
+<b>Summary:</b>
+<br>{{additionalInformation}}
+<br>
 <p>
 <br><b>Files:</b>
 <br>{{formattedFileList}}
@@ -49,6 +52,8 @@ Email: {{submitterEmail}}\n
 Medicaid SPA ID: {{id}}\n
 Proposed Effective Date: {{proposedEffectiveDateNice}}\n
 \n\n
+Summary:\n
+{{additionalInformation}}\n\n
 Files:\n
 {{textFileList}}\n\n
 If the contents of this email seem suspicious, do not open them, and instead 
