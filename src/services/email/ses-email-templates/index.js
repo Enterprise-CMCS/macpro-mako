@@ -74,7 +74,7 @@ Thank you!`,
 <p>This response confirms the receipt of your Medicaid State Plan Amendment 
 (SPA or your response to a SPA Request for Additional Information (RAI)). 
 You can expect a formal response to your submittal to be issued within 90 days, 
-before [insert 90th day deadline].</p>
+before {{ninetyDaysDateNice}}.</p>
 <p>This mailbox is for the submittal of State Plan Amendments and non-web-based
 responses to Requests for Additional Information (RAI) on submitted SPAs only.
 Any other correspondence will be disregarded.</p>
@@ -95,7 +95,7 @@ Summary:\n
 This response confirms the receipt of your Medicaid State Plan Amendment 
 (SPA or your response to a SPA Request for Additional Information (RAI)). 
 You can expect a formal response to your submittal to be issued within 90 days, 
-before [insert 90th day deadline].\n\n
+before {{ninetyDaysDateNice}}.\n\n
 This mailbox is for the submittal of State Plan Amendments and non-web-based
 responses to Requests for Additional Information (RAI) on submitted SPAs only.
 Any other correspondence will be disregarded.\n\n
