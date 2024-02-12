@@ -407,6 +407,17 @@ const ABP5: FormSchema = {
               },
             },
             {
+              rhf: "TextDisplay",
+              name: "prescription_drug_benefit_provided",
+              text: "Benefit provided",
+              labelStyling: "font-bold",
+            },
+            {
+              rhf: "TextDisplay",
+              name: "prescription_drug_benefit_description",
+              text: "Coverage is at least the greater of one drug in each U.S. Pharmacopeia (USP) category and class or the same number of prescription drugs in each category and class as the base benchmark.",
+            },
+            {
               rhf: "Radio",
               label: "Prescription drug limits (check all that apply)",
               labelStyling: "font-bold",
@@ -598,10 +609,15 @@ const ABP5: FormSchema = {
                                 name: "base_benchmark_benefit_substituted",
                               },
                               {
-                                name: "test",
+                                name: "benchmark_provided",
                                 rhf: "TextDisplay",
-                                text: "Benchmark provided",
                                 labelStyling: "font-bold",
+                                text: "Benchmark provided",
+                              },
+                              {
+                                name: "base_benchmark",
+                                rhf: "TextDisplay",
+                                text: "Base benchmark",
                               },
                               {
                                 rhf: "Textarea",
