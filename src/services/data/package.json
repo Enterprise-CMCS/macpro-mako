@@ -26,6 +26,7 @@
     "zod": "^3.22.3"
   },
   "scripts": {
-    "lint": "eslint '**/*.{ts,js}'"
+    "lint": "eslint '**/*.{ts,js}'",
+    "test": "vitest"
   }
 }
