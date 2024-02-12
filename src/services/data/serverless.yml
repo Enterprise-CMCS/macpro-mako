@@ -106,7 +106,7 @@ stepFunctions:
               Functions:
                 - !Ref SinkSeatoolLambdaFunction
                 - !Ref SinkOnemacLambdaFunction
-                - !Ref SinkOnemacLambdaFunction
+                - !Ref SinkLookupDataLambdaFunction
               Enabled: false
             Next: GetConsumerGroupStatus
           GetConsumerGroupStatus:
@@ -117,7 +117,7 @@ stepFunctions:
               Functions:
                 - !Ref SinkSeatoolLambdaFunction
                 - !Ref SinkOnemacLambdaFunction
-                - !Ref SinkOnemacLambdaFunction
+                - !Ref SinkLookupDataLambdaFunction
               BrokerString: ${self:custom.brokerString}
             Next: IsConsumerGroupReady
           IsConsumerGroupReady:
@@ -142,7 +142,7 @@ stepFunctions:
               Functions:
                 - !Ref SinkSeatoolLambdaFunction
                 - !Ref SinkOnemacLambdaFunction
-                - !Ref SinkOnemacLambdaFunction
+                - !Ref SinkLookupDataLambdaFunction
               BrokerString: ${self:custom.brokerString}
             Next: DeleteIndex
           DeleteIndex:
@@ -156,29 +156,38 @@ stepFunctions:
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-setupIndex"
             Parameters:
               Context.$: $$
-            Next: SuccessState
-          # EnableLookupTriggers:
-          #   Type: Task
-          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-enableLookupTriggers"
-          #   Parameters:
-          #     Context.$: $$
-          #   Next: GetLookupLag
-          # GetLookupLag:
-          #   Type: Task
-          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getLookupLag"
-          #   Parameters:
-          #     Context.$: $$
-          #   Next: IsLookupReady
-          # IsLookupReady:
-          #   Type: Choice
-          #   Choices:
-          #     - Variable: $.ready
-          #       BooleanEquals: true
-          #       Next: EnableOtherTriggers
-          #     - Variable: $.ready
-          #       BooleanEquals: false
-          #       Next: Wait10Seconds2
-          #   Default: Wait10Seconds2
+            Next: EnableLookupIndexSink
+          EnableLookupIndexSink:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-toggleTriggers"
+            Parameters:
+              Context.$: $$
+              Functions:
+                - !Ref SinkLookupDataLambdaFunction
+              Enabled: true
+            Next: CheckConsumerLagForLookupSinks
+          CheckConsumerLagForLookupSinks:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getLookupLag"
+            Parameters:
+              Context.$: $$
+              Functions:
+                - !Ref SinkLookupDataLambdaFunction
+              BrokerString: ${self:custom.brokerString}
+            Next: IsLookupIndexReady
+          IsLookupIndexReady:
+            Type: Choice
+            Choices:
+              - Variable: $.ready
+                BooleanEquals: true
+                # Next: EnableOtherTriggers
+                Next: SuccessState
+              - Variable: $.ready
+                BooleanEquals: false
+                # Next: Wait10Seconds2
+                Next: SuccessState
+            # Default: Wait10Seconds2
+            Default: SuccessState
           # Wait10Seconds2:
           #   Type: Wait
           #   Seconds: 10
@@ -285,7 +294,7 @@ functions:
     environment:
       region: ${self:provider.region}
   getLookupLag:
-    handler: handlers/waitForLookupData.getLookupLag
+    handler: handlers/checkConsumerLag.handler
     timeout: 900
     vpc:
       securityGroupIds:
