@@ -360,6 +360,11 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
+  runReindex:
+    handler: handlers/runReindex.handler
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
 
 resources:
   Conditions:
@@ -373,6 +378,11 @@ resources:
       Type: AWS::Logs::LogGroup
       Properties:
         LogGroupName: /aws/vendedlogs/states/${self:service}-${sls:stage}-reindex
+    RunReindex:
+      Type: Custom::RunReindex
+      Properties:
+        ServiceToken: !GetAtt RunReindexLambdaFunction.Arn
+        StateMachine: !Ref ReindexDataStateMachine
     # SinkTypesTrigger:
     #   Type: AWS::Lambda::EventSourceMapping
     #   Properties:
