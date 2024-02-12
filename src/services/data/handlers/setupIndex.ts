@@ -36,7 +36,7 @@ const manageIndexResource = async (resource: {
     process.env.osDomain,
     resource.index
   );
-  console.log({ createIndex });
+  console.log(createIndex);
 
   if (!resource.update) return;
 
