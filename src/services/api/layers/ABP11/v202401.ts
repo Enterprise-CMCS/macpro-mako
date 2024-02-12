@@ -16,7 +16,7 @@ const ABP11: FormSchema = {
                 options: [
                   {
                     label:
-                      "The state or territory provides assurance that, for each benefit provided under an Alternative Benefit Plan that is not provided through managed care, it will use the payment methodology in its approved state plan or hereby submits state plan amendment Attachment 4.19a, 4.19b, or 4.19d, as appropriate, describing the payment methodlogy for the benefit.",
+                      "The state or territory provides assurance that, for each benefit provided under an Alternative Benefit Plan that is not provided through managed care, it will use the payment methodology in its approved state plan or hereby submits state plan amendment Attachment 4.19a, 4.19b, or 4.19d, as appropriate, describing the payment methodology for the benefit.",
                     value: "assures_alternative_benefit_plan_in_accordance",
                   },
                 ],
@@ -25,7 +25,7 @@ const ABP11: FormSchema = {
             {
               rhf: "Upload",
               name: "state_plan_attchmnt_alt_payment_method",
-              label: "State plan ammendment attachment",
+              label: "State plan amendment attachment",
               labelStyling: "font-bold",
               description:
                 "Only required if not using the payment methodology in the approved state plan",
