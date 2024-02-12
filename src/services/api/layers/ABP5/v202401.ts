@@ -419,7 +419,7 @@ const ABP5: FormSchema = {
             },
             {
               rhf: "Radio",
-              label: "Prescription drug limits (check all that apply)",
+              label: "Prescription drug limits",
               labelStyling: "font-bold",
               name: "prescription_drug_limits",
               props: {
