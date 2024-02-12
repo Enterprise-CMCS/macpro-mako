@@ -7,28 +7,23 @@ export const handler: Handler = async (event, context, callback) => {
     statusCode: 200,
   };
   try {
-    if (!event.MasterRoleToAssume) {
-      throw "ERROR:  Property MasterRoleToAssume is required, but was not supplied.";
-    }
-    if (!event.OSRoleName) {
-      throw "ERROR:  Property OSRoleName is required, but was not supplied.";
-    }
-    if (!event.IAMRoleName) {
-      throw "ERROR:  Property IAMRoleName is required, but was not supplied.";
-    }
-    if (!process.env.osDomain) {
-      throw "ERROR:  process.env.osDomain must be defined";
-    }
+    const requiredEnvVars = ['osDomain', 'msterRoleToAssume', 'osRoleName', 'iamRoleName'];
+
+    requiredEnvVars.forEach(envVar => {
+      if (!process.env[envVar]) {
+        throw `ERROR: process.env.${envVar} is required, but was not supplied.`;
+      }
+    });
     let reply = await os.mapRole(
-      process.env.osDomain,
-      event.ResourceProperties.MasterRoleToAssume,
-      event.ResourceProperties.OSRoleName,
-      event.ResourceProperties.IAMRoleName
+      process.env.osDomain!,
+      process.env.msterRoleToAssume!,
+      process.env.osRoleName!,
+      process.env.iamRoleName!
     );
     console.log(reply);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
     response.statusCode = 500;
+    callback(error, response);
   } finally {
     callback(null, response);
   }

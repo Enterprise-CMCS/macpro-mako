@@ -97,9 +97,6 @@ stepFunctions:
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-mapRole"
             Parameters:
               Context.$: $$
-              MasterRoleToAssume: !GetAtt OpenSearchMasterRole.Arn
-              OSRoleName: all_access
-              IAMRoleName: !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
             Next: SuccessState
           # DisableTriggers:
           #   Type: Task
@@ -328,6 +325,9 @@ functions:
     environment:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+      masterRoleToAssume: !GetAtt OpenSearchMasterRole.Arn
+      osRoleName: all_access
+      iamRoleName: !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
     maximumRetryAttempts: 0
     timeout: 10
     memorySize: 1024
