@@ -150,13 +150,13 @@ stepFunctions:
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteIndex"
             Parameters:
               Context.$: $$
+            Next: SetupIndex
+          SetupIndex:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-setupIndex"
+            Parameters:
+              Context.$: $$
             Next: SuccessState
-          # SetupIndex:
-          #   Type: Task
-          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-setupIndex"
-          #   Parameters:
-          #     Context.$: $$
-          #   Next: EnableLookupTriggers
           # EnableLookupTriggers:
           #   Type: Task
           #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-enableLookupTriggers"
@@ -359,7 +359,7 @@ functions:
       bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
       region: ${self:provider.region}
   setupIndex:
-    handler: handlers/index.handler
+    handler: handlers/setupIndex.handler
     environment:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
