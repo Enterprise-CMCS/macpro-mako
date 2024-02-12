@@ -22,48 +22,52 @@ export const attachmentTitleMap: Record<string, string> = {
   other: "Other",
   // RAI WITHDRAW
   supportingDocumentation: "Supporting Documentation",
+  bCapWaiverApplication:
+    "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+  bCapCostSpreadsheets:
+    "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
+  bCapIndependentAssessment:
+    "1915(b) Comprehensive (Capitated) Waiver Independent Assessment",
+  b4WaiverApplication:
+    "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
+  b4IndependentAssessment:
+    "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment",
 };
 export type AttachmentKey = keyof typeof attachmentTitleMap;
 export type AttachmentTitle = typeof attachmentTitleMap[AttachmentKey];
 
-export const onemacAttachmentSchema = z.object({
-  s3Key: z.string().nullish(),
+export const attachmentSchema = z.object({
   filename: z.string(),
   title: z.string(),
-  contentType: z.string().nullish(),
-  url: z.string().url().nullish(),
-  bucket: z.string().nullish(),
-  key: z.string().nullish(),
-  uploadDate: z.number().nullish(),
+  bucket: z.string(),
+  key: z.string(),
+  uploadDate: z.number(),
 });
-export type OnemacAttachmentSchema = z.infer<typeof onemacAttachmentSchema>;
+export type Attachment = z.infer<typeof attachmentSchema>;
 
-export function handleAttachment(attachment: OnemacAttachmentSchema) {
-  let bucket = "";
-  let key = "";
-  let uploadDate = 0;
-  if ("bucket" in attachment) {
-    bucket = attachment.bucket as string;
-  }
-  if ("key" in attachment) {
-    key = attachment.key as string;
-  }
-  if ("uploadDate" in attachment) {
-    uploadDate = attachment.uploadDate as number;
-  }
-  if (bucket == "") {
-    const parsedUrl = s3ParseUrl(attachment.url || "");
-    if (!parsedUrl) return null;
-    bucket = parsedUrl.bucket;
-    key = parsedUrl.key;
-    uploadDate = parseInt(attachment.s3Key?.split("/")[0] || "0");
-  }
+// Attachment schema for legacy records
+export const legacyAttachmentSchema = z.object({
+  s3Key: z.string(),
+  filename: z.string(),
+  title: z.string(),
+  contentType: z.string(),
+  url: z.string().url(),
+});
+export type LegacyAttachment = z.infer<typeof legacyAttachmentSchema>;
 
+export function handleLegacyAttachment(
+  attachment: LegacyAttachment
+): Attachment | null {
+  const parsedUrl = s3ParseUrl(attachment.url || "");
+  if (!parsedUrl) return null;
+  const bucket = parsedUrl.bucket;
+  const key = parsedUrl.key;
+  const uploadDate = parseInt(attachment.s3Key?.split("/")[0] || "0");
   return {
     title: attachment.title,
     filename: attachment.filename,
     uploadDate,
     bucket,
     key,
-  };
+  } as Attachment;
 }

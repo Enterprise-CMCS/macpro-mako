@@ -7,6 +7,8 @@ import { useGetForm } from "@/api";
 import { LoadingSpinner } from "@/components";
 import { Footer } from "./footer";
 import { Link, useParams } from "../Routing";
+import { useReadOnlyUser } from "./useReadOnlyUser";
+import { useState } from "react";
 
 export const Webforms = () => {
   return (
@@ -18,25 +20,31 @@ export const Webforms = () => {
         <div className="flex-1 space-x-5">
           <Link
             path="/webform/:id/:version"
-            params={{ id: "abp1", version: 1 }}
+            params={{ id: "abp1", version: 202401 }}
           >
-            ABP 1
+            ABP 1 (Jan 2024)
           </Link>
           <Link
             path="/webform/:id/:version"
-            params={{ id: "abp3", version: 1 }}
+            params={{ id: "abp1", version: 202402 }}
+          >
+            ABP 1 (Feb 2024)
+          </Link>
+          <Link
+            path="/webform/:id/:version"
+            params={{ id: "abp3", version: 202401 }}
           >
             ABP 3
           </Link>
           <Link
             path="/webform/:id/:version"
-            params={{ id: "abp3_1", version: 1 }}
+            params={{ id: "abp3_1", version: 202401 }}
           >
             ABP 3.1
           </Link>
           <Link
             path="/webform/:id/:version"
-            params={{ id: "abp10", version: 1 }}
+            params={{ id: "abp10", version: 202401 }}
           >
             ABP 10
           </Link>
@@ -47,16 +55,25 @@ export const Webforms = () => {
   );
 };
 
-export function Webform() {
-  const { id, version } = useParams("/webform/:id/:version");
+interface WebformBodyProps {
+  id: string;
+  version: string;
+  data: any;
+  readonly: boolean;
+  values: any;
+}
 
-  const { data, isLoading, error } = useGetForm(id as string, version);
-
-  const defaultValues = data ? documentInitializer(data) : {};
-  const savedData = localStorage.getItem(`${id}v${version}`);
+function WebformBody({
+  version,
+  id,
+  data,
+  values,
+  readonly,
+}: WebformBodyProps) {
   const form = useForm({
-    defaultValues: savedData ? JSON.parse(savedData) : defaultValues,
+    defaultValues: values,
   });
+  const [subData, setSubData] = useState("");
 
   const onSave = () => {
     const values = form.getValues();
@@ -64,9 +81,17 @@ export function Webform() {
     alert("Saved");
   };
 
+  const reset = () => {
+    setSubData("");
+    form.reset(documentInitializer(data));
+    localStorage.removeItem(`${id}v${version}`);
+    alert("Data Cleared");
+  };
+
   const onSubmit = form.handleSubmit(
     (draft) => {
       console.log({ draft });
+      setSubData(JSON.stringify(draft, undefined, 2));
       /**
        * The validator is intended to be a replica of RHF validation.
        * To be used in backend api handlers to validate incoming/outgoing form data against document when...
@@ -82,6 +107,47 @@ export function Webform() {
     }
   );
 
+  return (
+    <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
+      <Form {...form}>
+        <form onSubmit={onSubmit} className="space-y-6">
+          <fieldset disabled={readonly}>
+            <RHFDocument document={data} {...form} />
+            {!readonly && (
+              <div className="flex justify-between text-blue-700 underline my-2">
+                <div>
+                  <Button type="button" onClick={onSave} variant="ghost">
+                    Save draft
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={reset}
+                    variant="outline"
+                    className="mx-2"
+                  >
+                    Clear Data
+                  </Button>
+                </div>
+                <Button type="submit">Submit</Button>
+              </div>
+            )}
+          </fieldset>
+        </form>
+      </Form>
+      {subData && <pre className="my-2 text-sm">{subData}</pre>}
+      <Footer />
+    </div>
+  );
+}
+
+export function Webform() {
+  const { id, version } = useParams("/webform/:id/:version");
+
+  const { data, isLoading, error } = useGetForm(id as string, version);
+  const readonly = useReadOnlyUser();
+  const defaultValues = data ? documentInitializer(data) : {};
+  const savedData = localStorage.getItem(`${id}v${version}`);
+
   if (isLoading) return <LoadingSpinner />;
   if (error || !data) {
     return (
@@ -92,19 +158,12 @@ export function Webform() {
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
-      <Form {...form}>
-        <form onSubmit={onSubmit} className="space-y-6">
-          <RHFDocument document={data} {...form} />
-          <div className="flex justify-between text-blue-700 underline">
-            <Button type="button" onClick={onSave} variant="ghost">
-              Save draft
-            </Button>
-            <Button type="submit">Submit</Button>
-          </div>
-        </form>
-      </Form>
-      <Footer />
-    </div>
+    <WebformBody
+      data={data}
+      readonly={readonly}
+      id={id}
+      version={version}
+      values={savedData ? JSON.parse(savedData) : defaultValues}
+    />
   );
 }
