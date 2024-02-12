@@ -1,4 +1,3 @@
-export * from "./dashboard";
 export * from "./faq";
 export * from "./form";
 export * from "./profile";

@@ -16,8 +16,8 @@ export const router = createBrowserRouter([
       { path: "/", index: true, element: <P.Welcome /> },
       {
         path: "/dashboard",
-        element: <P.Dashboard />,
-        loader: P.dashboardLoader(queryClient),
+        element: <F.Dashboard />,
+        loader: F.dashboardLoader(queryClient),
       },
       { path: "/details", element: <F.Details /> },
       { path: "/faq", element: <P.Faq /> },
