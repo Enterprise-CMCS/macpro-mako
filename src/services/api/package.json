@@ -32,6 +32,7 @@
     "buildLayers": "tsc -p layers",
     "lint": "eslint '**/*.{ts,js}'",
     "compileRepack": "tsc -p repack",
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   }
 }

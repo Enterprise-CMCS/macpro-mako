@@ -11,7 +11,8 @@
     "zod": "^3.22.3"
   },
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "s3-url-parser": "^1.0.3",
