@@ -5,7 +5,7 @@ import { PropsWithChildren, ReactElement } from "react";
 import { SimplePageTitle } from "@/features/new-submission/plan-types";
 import { SimplePageContainer } from "@/components";
 import { BreadCrumbs } from "@/components";
-import { optionCrumbsFromPath } from "@/features/common/create-breadcrumbs";
+import { optionCrumbsFromPath } from "@/components/BreadCrumb/create-breadcrumbs";
 import { FAQ_TAB } from "@/components";
 export enum EXTERNAL_APP {
   MAC_PRO = "https://www.medicaid.gov/resources-for-states/medicaid-and-chip-program-macpro-portal/index.html#MACPro",

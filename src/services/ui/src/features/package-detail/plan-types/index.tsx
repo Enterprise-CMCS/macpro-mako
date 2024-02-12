@@ -22,7 +22,7 @@ import { getStatus } from "shared-types/statusHelper";
 import {
   recordDetails,
   submissionDetails,
-} from "@/features/common/data-transform";
+} from "@/features/package-detail/record-data-details";
 import { Link } from "@/components";
 import { PackageActivities } from "../package-activity";
 import { AdminChanges } from "../admin-changes";

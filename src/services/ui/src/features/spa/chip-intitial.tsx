@@ -17,10 +17,10 @@ import {
   zAttachmentOptional,
   zAttachmentRequired,
   zSpaIdSchema,
-} from "@/features/common/zod";
-import * as Content from "@/features/components/content";
-import { ModalProvider, useModalContext } from "@/features/components/modals";
-import { formCrumbsFromPath } from "@/features/components/form-breadcrumbs";
+} from "@/utils/zod";
+import * as Content from "@/components/Form/content";
+import { ModalProvider, useModalContext } from "@/components/Modal/FormModals";
+import { formCrumbsFromPath } from "@/components";
 import { FAQ_TAB } from "@/components";
 
 const formSchema = z.object({

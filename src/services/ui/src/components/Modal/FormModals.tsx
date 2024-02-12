@@ -1,8 +1,6 @@
-import { ConfirmationModal } from "@/components";
-
+import { ConfirmationModal, useNavigate } from "@/components";
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from "react";
 import { createContextProvider } from "@/utils";
-import { useNavigate } from "@/components";
 
 type ModalProps = {
   open: boolean;

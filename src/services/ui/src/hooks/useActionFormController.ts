@@ -1,7 +1,7 @@
 import { FieldValues, SubmitHandler, UseFormReturn } from "react-hook-form";
 import { useParams } from "@/components";
 import { useGetUser } from "@/api";
-import { useModalContext } from "@/features/components/modals";
+import { useModalContext } from "@/components/Modal/FormModals";
 import { submit } from "@/api";
 import { buildActionUrl } from "@/utils";
 import { PlanType } from "shared-types";

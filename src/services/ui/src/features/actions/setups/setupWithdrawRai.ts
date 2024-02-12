@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { zAdditionalInfo, zAttachmentOptional } from "@/features/common/zod";
+import { zAdditionalInfo, zAttachmentOptional } from "@/utils/zod";
 
 export const defaultWithdrawRaiSetup = {
   schema: z.object({

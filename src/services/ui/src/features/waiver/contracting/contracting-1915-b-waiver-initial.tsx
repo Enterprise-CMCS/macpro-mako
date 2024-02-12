@@ -2,7 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components";
-import * as Content from "../../components/content";
+import * as Content from "@/components/Form/content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api";
 import {
@@ -11,6 +11,10 @@ import {
   LoadingSpinner,
   SimplePageContainer,
   SectionCard,
+  ModalProvider,
+  useModalContext,
+  formCrumbsFromPath,
+  FAQ_TAB,
 } from "@/components";
 import { submit } from "@/api";
 import { PlanType } from "shared-types";
@@ -19,10 +23,7 @@ import {
   zAttachmentOptional,
   zAttachmentRequired,
   zInitialWaiverNumberSchema,
-} from "@/features/common/zod";
-import { ModalProvider, useModalContext } from "@/features/components/modals";
-import { formCrumbsFromPath } from "@/features/components/form-breadcrumbs";
-import { FAQ_TAB } from "@/components";
+} from "@/utils/zod";
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,

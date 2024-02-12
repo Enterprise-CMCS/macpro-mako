@@ -1,6 +1,6 @@
 // Specific to the path of each Options page
+import { submissionFormCrumb, dashboardCrumb } from "@/utils";
 import { BreadCrumbConfig } from "@/components";
-import { dashboardCrumb } from "@/utils/crumbs";
 import { Route } from "@/components";
 
 type Keys =
@@ -60,3 +60,13 @@ export const optionCrumbsFromPath = (path: string): BreadCrumbConfig[] => [
     })
     .filter((v) => v.displayText !== undefined),
 ];
+
+export const formCrumbsFromPath = (path: string) => {
+  // We broke this out of the Option crumb flow as that's more complex due to the nature
+  // of the options triage (New Submission choice flow).
+  const previousOptionsCrumbs = [...optionCrumbsFromPath(path)];
+  return [
+    ...previousOptionsCrumbs,
+    submissionFormCrumb(path as Route, previousOptionsCrumbs.length),
+  ];
+};

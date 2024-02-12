@@ -1,8 +1,6 @@
 import {
   ActionFormIntro,
   PackageInfo,
-  AttachmentsSizeTypesDesc,
-  useModalContext,
   SlotAdditionalInfo,
   SlotAttachments,
 } from "@/features";
@@ -14,6 +12,8 @@ import {
   RequiredIndicator,
   Alert,
   LoadingSpinner,
+  AttachmentsSizeTypesDesc,
+  useModalContext,
 } from "@/components";
 import { ReactElement, ReactNode } from "react";
 import { opensearch } from "shared-types";

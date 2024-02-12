@@ -2,7 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components";
-import * as Content from "../../components/content";
+import * as Content from "../../../components/Form/content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api";
 import {
@@ -20,9 +20,9 @@ import {
   zAmendmentWaiverNumberSchema,
   zAttachmentOptional,
   zAttachmentRequired,
-} from "@/features/common/zod";
-import { ModalProvider, useModalContext } from "@/features/components/modals";
-import { formCrumbsFromPath } from "@/features/components/form-breadcrumbs";
+} from "@/utils/zod";
+import { ModalProvider, useModalContext } from "@/components/Modal/FormModals";
+import { formCrumbsFromPath } from "@/components";
 import { FAQ_TAB } from "@/components";
 
 const formSchema = z.object({

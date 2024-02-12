@@ -1,9 +1,9 @@
-import eligibilityPDF from "../../../assets/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf";
-import WelcometoOneMAC from "../../../assets/onboarding/WelcometoOneMAC.pdf";
-import IDMInstructionsforOneMACUsers from "../../../assets/onboarding/IDMInstructionsforOneMACUsers.pdf";
-import OneMACIDMGuide from "../../../assets/onboarding/OneMACIDMGuide.pdf";
-import OneMACStateUserGuide from "../../../assets/onboarding/OneMACStateUserGuide.pdf";
-import OneMACCMSUserGuide from "../../../assets/onboarding/OneMACCMSUserGuide.pdf";
+import eligibilityPDF from "@/assets/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf";
+import WelcometoOneMAC from "@/assets/onboarding/WelcometoOneMAC.pdf";
+import IDMInstructionsforOneMACUsers from "@/assets/onboarding/IDMInstructionsforOneMACUsers.pdf";
+import OneMACIDMGuide from "@/assets/onboarding/OneMACIDMGuide.pdf";
+import OneMACStateUserGuide from "@/assets/onboarding/OneMACStateUserGuide.pdf";
+import OneMACCMSUserGuide from "@/assets/onboarding/OneMACCMSUserGuide.pdf";
 import { FILE_TYPES } from "shared-types/uploads";
 
 type QuestionAnswer = {

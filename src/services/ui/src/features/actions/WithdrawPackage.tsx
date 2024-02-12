@@ -4,9 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionSubmitHandler } from "@/hooks";
-import { ActionFormTemplate } from "@/features/actions/template";
-import { FormSetup } from "@/features/actions/setups";
-import { SetupOptions } from "@/pages";
+import { SetupOptions, FormSetup, ActionFormTemplate } from "@/features";
 import { ReactElement } from "react";
 
 const attachmentInstructions: Record<SetupOptions, ReactElement> = {

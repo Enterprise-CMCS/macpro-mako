@@ -11,7 +11,7 @@ export * from "./Dialog";
 export * from "./ErrorAlert";
 export * from "./ExportButton";
 export * from "./Footer";
-export * from "./FormDescriptionText";
+export * from "./Form";
 export * from "./GovernmentBuildingIcon";
 export * from "./HowItWorks";
 export * from "./index";

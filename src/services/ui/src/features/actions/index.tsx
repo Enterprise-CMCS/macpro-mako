@@ -6,13 +6,13 @@ import {
   SimplePageContainer,
   Navigate,
   useParams,
+  ModalProvider,
 } from "@/components";
 import {
   ToggleRaiResponseWithdraw,
   RaiIssue,
   WithdrawPackage,
   RespondToRai,
-  ModalProvider,
   detailsAndActionsCrumbs,
   chipRespondToRaiSetup,
   chipWithdrawPackageSetup,

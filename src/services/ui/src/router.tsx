@@ -1,5 +1,6 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
 import * as P from "@/pages";
+import * as F from "@/features";
 import "@/api";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
@@ -18,59 +19,59 @@ export const router = createBrowserRouter([
         element: <P.Dashboard />,
         loader: P.dashboardLoader(queryClient),
       },
-      { path: "/details", element: <P.Details /> },
+      { path: "/details", element: <F.Details /> },
       { path: "/faq", element: <P.Faq /> },
       {
         path: "/new-submission",
-        element: <P.NewSubmissionInitialOptions />,
+        element: <F.NewSubmissionInitialOptions />,
       },
       {
         path: "/new-submission/spa",
-        element: <P.SPASubmissionOptions />,
+        element: <F.SPASubmissionOptions />,
       },
       {
         path: "/new-submission/waiver",
-        element: <P.WaiverSubmissionOptions />,
+        element: <F.WaiverSubmissionOptions />,
       },
       {
         path: "/new-submission/waiver/b",
-        element: <P.BWaiverSubmissionOptions />,
+        element: <F.BWaiverSubmissionOptions />,
       },
       {
         path: "/new-submission/waiver/b/b4",
-        element: <P.B4WaiverSubmissionOptions />,
+        element: <F.B4WaiverSubmissionOptions />,
       },
       {
         path: "/new-submission/waiver/b/capitated",
-        element: <P.BCapWaiverSubmissionOptions />,
+        element: <F.BCapWaiverSubmissionOptions />,
       },
       {
         path: "/new-submission/spa/medicaid",
-        element: <P.MedicaidSPASubmissionOptions />,
+        element: <F.MedicaidSPASubmissionOptions />,
       },
       {
         path: "/new-submission/spa/chip",
-        element: <P.ChipSPASubmissionOptions />,
+        element: <F.ChipSPASubmissionOptions />,
       },
       {
         path: "/new-submission/spa/medicaid/landing/medicaid-abp",
-        element: <P.MedicaidABPLandingPage />,
+        element: <F.MedicaidABPLandingPage />,
       },
       {
         path: "/new-submission/spa/medicaid/landing/medicaid-eligibility",
-        element: <P.MedicaidEligibilityLandingPage />,
+        element: <F.MedicaidEligibilityLandingPage />,
       },
       {
         path: "/new-submission/spa/chip/landing/chip-eligibility",
-        element: <P.CHIPEligibilityLandingPage />,
+        element: <F.CHIPEligibilityLandingPage />,
       },
       {
         path: "/new-submission/waiver/b/capitated/amend/create",
-        element: <P.Capitated1915BWaiverAmendmentPage />,
+        element: <F.Capitated1915BWaiverAmendmentPage />,
       },
       {
         path: "/new-submission/waiver/b/capitated/initial/create",
-        element: <P.Capitated1915BWaiverInitialPage />,
+        element: <F.Capitated1915BWaiverInitialPage />,
       },
       {
         path: "/new-submission/waiver/b/capitated/renewal/create",
@@ -90,7 +91,7 @@ export const router = createBrowserRouter([
       },
       { path: "/new-submission/spa/medicaid/create", element: <P.MedicaidSpaFormPage /> },
       { path: "/new-submission/spa/chip/create", element: <P.ChipSpaFormPage /> },
-      { path: "/action/:id/:type", element: <P.ActionFormIndex /> },
+      { path: "/action/:id/:type", element: <F.ActionFormIndex /> },
       { path: "/webforms", element: <C.Webforms /> },
       { path: "/webform/:id/:version", element: <C.Webform /> },
       { path: "/profile", element: <P.Profile /> },

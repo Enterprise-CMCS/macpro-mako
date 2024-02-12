@@ -4,12 +4,13 @@ import {
   Alert,
   LoadingSpinner,
   Button,
+  useModalContext,
 } from "@/components";
 import { Action, PlanType, opensearch } from "shared-types";
-import { FC, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useSubmissionService, useGetUser } from "@/api";
 import { buildActionUrl } from "@/utils";
-import { ActionFormIntro, PackageInfo, useModalContext } from "@/features";
+import { ActionFormIntro, PackageInfo } from "@/features";
 
 export const ToggleRaiResponseWithdraw = ({
   item,

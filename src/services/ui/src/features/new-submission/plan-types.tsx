@@ -12,7 +12,7 @@ import {
 import { SimplePageContainer } from "@/components";
 import { BreadCrumbs } from "@/components";
 import { useLocation } from "react-router-dom";
-import { optionCrumbsFromPath } from "@/features/common/create-breadcrumbs";
+import { optionCrumbsFromPath } from "@/components/BreadCrumb/create-breadcrumbs";
 
 /** Can be removed once page title bar with back nav is integrated */
 export const SimplePageTitle = ({ title }: { title: string }) => (
