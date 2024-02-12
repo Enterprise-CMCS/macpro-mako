@@ -46,6 +46,7 @@ export const RHFSlot = <
   labelStyling,
   formItemStyling,
   groupNamePrefix,
+  text,
   ...rest
 }: RHFSlotProps & { control: any }): ControllerProps<
   TFieldValues,
@@ -316,6 +317,11 @@ export const RHFSlot = <
                 groupNamePrefix={groupNamePrefix}
                 {...(props as RHFComponentMap["FieldGroup"])}
               />
+            )}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "TextDisplay" && (
+              <p {...(props as RHFComponentMap["TextDisplay"])}>{text}</p>
             )}
           </>
         </FormControl>

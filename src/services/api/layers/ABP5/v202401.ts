@@ -598,6 +598,12 @@ const ABP5: FormSchema = {
                                 name: "base_benchmark_benefit_substituted",
                               },
                               {
+                                name: "test",
+                                rhf: "TextDisplay",
+                                text: "Benchmark provided",
+                                labelStyling: "font-bold",
+                              },
+                              {
                                 rhf: "Textarea",
                                 label:
                                   "Explain why the state or territory chose not to include this benefit.",

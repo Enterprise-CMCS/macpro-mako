@@ -33,6 +33,7 @@ export type RHFSlotProps = {
   [K in keyof RHFComponentMap]: {
     rhf: K;
     props?: RHFComponentMap[K];
+    text?: K extends "TextDisplay" ? string : never;
     fields?: K extends "FieldArray"
       ? RHFSlotProps[]
       : K extends "FieldGroup"
@@ -71,6 +72,7 @@ export type RHFComponentMap = {
     appendText?: string;
     removeText?: string;
   };
+  TextDisplay: { className?: string };
 };
 
 export type FormGroup = {
