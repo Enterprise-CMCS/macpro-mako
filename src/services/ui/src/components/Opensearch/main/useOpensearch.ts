@@ -26,6 +26,12 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
         value: ["WAIVER"],
         prefix: "must",
       },
+      {
+        field: "appkParentId",
+        type: "exists",
+        value: true,
+        prefix: "must_not",
+      },
     ],
   },
 };

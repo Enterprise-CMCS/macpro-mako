@@ -13,7 +13,7 @@ import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
-import { useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren, useState } from "react";
 import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
@@ -23,6 +23,7 @@ import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 import { Link } from "@/components/Routing";
 import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
+import { AppK } from "./app-k";
 
 const DetailCardWrapper = ({
   title,
@@ -60,6 +61,7 @@ const StatusCard = (data: opensearch.main.Document) => {
               </p>
             </div>
           )}
+
           {user?.isCms && data.secondClock && (
             <div className="flex flex-row gap-1">
               <p className="text-xs font-bold opacity-80">·</p>
@@ -195,6 +197,7 @@ export const DetailsContent = ({
         ))}
       </aside>
       <div className="flex-1">
+        {/* TODO: What is callout */}
         {state?.callout && (
           <Alert className="bg-green-100 border-green-400" variant="default">
             <h2 className="text-lg font-bold text-green-900">
@@ -218,6 +221,7 @@ export const DetailsContent = ({
             <DetailItemsGrid displayItems={spaDetails(data._source)} />
             <DetailItemsGrid displayItems={submissionDetails(data._source)} />
           </DetailsSection>
+          <AppK.Component {...data._source} />
           <PackageActivities {...data._source} />
           <AdminChanges {...data._source} />
         </div>
@@ -245,5 +249,13 @@ export const Details = () => {
         <DetailsContent data={data} />
       </div>
     </>
+  );
+};
+
+export const PackageDetailsWrapper = () => {
+  return (
+    <main>
+      <Outlet />
+    </main>
   );
 };

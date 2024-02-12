@@ -20,8 +20,6 @@ export const spaDetails = (
     label: "Waiver Authority",
     value: data.planType,
     canView: () => {
-      console.log(data.authority);
-      console.log(PlanType.WAIVER);
       return data.authority?.toLowerCase() == PlanType.WAIVER;
     },
   },
