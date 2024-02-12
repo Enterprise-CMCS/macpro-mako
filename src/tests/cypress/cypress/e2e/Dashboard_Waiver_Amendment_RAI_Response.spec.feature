@@ -7,11 +7,11 @@ Feature: RAI Response for 1915B Waiver Amendment - Package View
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
+
         Then click 1915b Waiver Amendment check box
         Then click on Type
         Then click on Status
-        Then uncheck all of the status checkboxes
+
         Then click RAI Issued checkbox
 
     Scenario: Respond to RAI from package dashboard

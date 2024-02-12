@@ -29,7 +29,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker
         Then verify Final Disposition checkbox exists
         Then click show hide columns button
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Waivers Tab - Uncheck all and verify Waiver Number and actions exists
         Then click show hide columns button
@@ -52,7 +52,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker
         Then verify Final Disposition column exists
         Then verify CPOC Name column exists
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Waivers Tab - verify tabs reset after login
         Then verify show hide columns button exists
@@ -66,7 +66,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker
         Then verify Formal RAI Received column exists
         Then verify actions column exists
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Verify state doesn't exists, but is selectable
         Then verify state column does not exist
@@ -79,4 +79,4 @@ Feature: Package Dashboard - Waiver Tab Column Picker
         Then click show hide columns button
         Then verify state column does not exist
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button

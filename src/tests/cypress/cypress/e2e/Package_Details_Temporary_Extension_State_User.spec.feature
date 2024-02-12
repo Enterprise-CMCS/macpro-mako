@@ -6,14 +6,14 @@ Feature: Waiver Package Details View:  Temporary Extension for a State User
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
+
 
     Scenario: Screen Enhance: 1915b Temporary Extension Details View - Submitted
         Then click 1915b Temporary Extension check box
         Then click on Type
         Then click on Status
-        Then uncheck all of the status checkboxes
-        Then click Submitted checkbox
+
+        #Then click Submitted checkbox
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
         Then verify 2 action cards exist
@@ -36,8 +36,8 @@ Feature: Waiver Package Details View:  Temporary Extension for a State User
         Then click 1915c Temporary Extension check box
         Then click on Type
         Then click on Status
-        Then uncheck all of the status checkboxes
-        Then click Submitted checkbox
+
+        #Then click Submitted checkbox
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
         Then verify 2 action cards exist

@@ -1,6 +1,6 @@
-const submitBTN = "#form-submission-button";
-const cancelBTN = "#form-cancel-button";
-const idElement = "#componentId";
+const submitBTN = "button[type='submit']";
+const cancelBTN = "//button[text()='Cancel']";
+const idElement = "[name='id']";
 const parentIdElement = "#parent-componentId";
 const packageFormPt2ErrorMsg = "#componentIdStatusMsg1";
 const typeHeader = "//h3[text()='Type']";
@@ -10,8 +10,7 @@ const modalTitle = "#dialog-title";
 const modalText = "#dialog-content";
 const modalCancelBTN =
   "//*[@id='react-aria-modal-dialog']//button[text()='Cancel']";
-const attachmentInfoDescription =
-  "//h3[text()='Attachments']/following-sibling::p[1]";
+const attachmentInfoDescription = "//h1[text()='Attachments']//following::div[p[contains(text(), 'per attachment')]]";
 const enterMmdlBtn = "//button[contains(text(),'Enter the MMDL system')]";
 const enterMacProBtn = "//button[contains(text(),'Enter the MACPro system')]";
 
@@ -39,7 +38,7 @@ const elementFromLabel = {
   "1915(b) Waiver Renewal Number": idElement,
   "Existing Waiver Number to Renew": parentIdElement,
   "Existing Waiver Number to Amend": parentIdElement,
-  "Additional Information": "#additional-information",
+  "Additional Information": "textarea[name='additionalInformation']",
 };
 const errorMessageLine1FromLabel = {
   "SPA ID": "#componentIdStatusMsg0",
@@ -68,7 +67,7 @@ const hintTextFromLabel = {
 };
 const dateElementsFromLabel = {
   "Proposed Effective Date of Medicaid SPA": "#proposed-effective-date",
-  "Proposed Effective Date of CHIP SPA": "#proposed-effective-date",
+  "Proposed Effective Date of CHIP SPA": "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(b) Initial Waiver":
     "#proposed-effective-date",
   "Proposed Effective Date of 1915(b) Waiver Renewal":
@@ -78,6 +77,13 @@ const dateElementsFromLabel = {
   "Proposed Effective Date of 1915(c) Appendix K Amendment":
     "#proposed-effective-date",
 };
+const nextMonthDatePickerBtn = "button[name='next-month']";
+const lastMonthDatePickerBtn = "button[name='previous-month']";
+const dayDatePickerBtn = "button[name='day']";
+const addFileBTN = "input[type='file']";
+
+const submissionModal = "*[role='dialog'][data-state='open']";
+const goToDashBoardBtn = "//button[text()='Go to Dashboard']";
 
 //internal function for proposed effective date
 function caculateMonthsInFuture(numMonths) {
@@ -179,9 +185,17 @@ export class oneMacFormPage {
     cy.xpath(waiverAuthorityLabel).next("div").contains(whatAuthority);
   }
   addMonthsTo(whichDate, numMonths) {
-    cy.get(dateElementsFromLabel[whichDate]).type(
-      caculateMonthsInFuture(numMonths)
-    );
+    cy.xpath(dateElementsFromLabel[whichDate]).then(($datePicker) =>
+    {
+      cy.wrap($datePicker).click()
+      for(let i = 0; i < numMonths; i++){
+        cy.get(nextMonthDatePickerBtn).click();
+      }
+    })
+    
+    let aday = Math.floor(Math.random() * 29) + 1;
+    cy.get(dayDatePickerBtn).filter(":contains(" + aday + ")").first().click()
+
   }
   selectWaiverAuthority(whichAuthority) {}
   verifyTempExtensionType(whatType) {
@@ -191,12 +205,10 @@ export class oneMacFormPage {
     cy.get(tempExtensionTypeBtn).select(whatType);
   }
   uploadAttachment(fileName, attachmentIndex) {
-    const addFileBTN = `//tbody/tr[${attachmentIndex}]/td[2]/label[1]`;
-    const innerBTN = `#uploader-input-${attachmentIndex - 1}`;
+   // const innerBTN = `#uploader-input-${attachmentIndex - 1}`;
     const filePath = `/files/${fileName}`;
 
-    cy.xpath(addFileBTN).click();
-    cy.get(innerBTN).attachFile(filePath);
+    cy.get(addFileBTN).eq(attachmentIndex - 1).attachFile(filePath);
   }
   removeFirstAttachment(attachmentIndex) {
     const closeBTNXPath = `//*[@id="main"]/div[2]/div[2]/form/div[3]/div/table/tbody/tr[${attachmentIndex}]/td[3]/div[1]/button`;
@@ -217,10 +229,10 @@ export class oneMacFormPage {
     cy.get(submitBTN).should("be.disabled");
   }
   verifyCancelBtnExists() {
-    cy.get(cancelBTN).scrollIntoView().should("be.visible");
+    cy.xpath(cancelBTN).scrollIntoView().should("be.visible");
   }
   clickCancelBtn() {
-    cy.get(cancelBTN).scrollIntoView().click();
+    cy.xpath(cancelBTN).scrollIntoView().click();
   }
   clickModalCancelBtn() {
     cy.xpath(modalCancelBTN).click();
@@ -230,7 +242,7 @@ export class oneMacFormPage {
   }
   verifyAttachmentInfoDecription() {
     cy.xpath(attachmentInfoDescription)
-      .contains("Maximum file size of")
+      .contains("Maximum file size of 80 MB")
       .contains("You can add multiple files per attachment type");
   }
   verifyAttachmentInfoLinkFor(packageType) {
@@ -248,7 +260,7 @@ export class oneMacFormPage {
       case "CHIP SPA":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/FAQ#chip-spa-attachments");
+          .should("have.attr", "href", "/faq/#chip-spa-attachments");
         break;
       case "CHIP RAI":
         cy.xpath(attachmentInfoDescription)
@@ -318,6 +330,12 @@ export class oneMacFormPage {
   }
   verifyAttachmentType(attachmentType) {
     cy.xpath(`//h3[text()='${attachmentType}']`).should("be.visible");
+  }
+  verifySuccessMessageIsDisplayedInModal() {
+    cy.get(submissionModal).contains("Submission Successful");
+  }
+  clickGoToDashBoardBtn(){
+    cy.xpath(goToDashBoardBtn).click();
   }
 }
 export default oneMacFormPage;

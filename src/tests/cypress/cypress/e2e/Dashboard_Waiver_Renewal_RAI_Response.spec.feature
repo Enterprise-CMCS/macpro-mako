@@ -8,12 +8,12 @@ Feature: RAI Response for Renewal Waiver - Package View
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Status
-        Then uncheck all of the status checkboxes
+
         Then click RAI Issued checkbox
         Then click on Status
         Then click on Type
-        Then uncheck all of the type checkboxes
-        Then click 1915b Waiver Renewal check box
+
+        Then click the Renewal check box
         Then Click on Filter Button
 
     Scenario: validate response to RAI from package dashboard

@@ -6,14 +6,14 @@ Feature: Waiver Package Details View: Appendix K Amendment for a State User
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
+
         Then click 1915c Appendix K Amendment check box
         Then click on Type
         Then click on Status
-        Then uncheck all of the status checkboxes
+
 
     Scenario: Screen Enhance: Appendix K Details View - Submitted
-        Then click Submitted checkbox
+        #Then click Submitted checkbox
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
         Then verify 2 action cards exist
@@ -82,7 +82,7 @@ Feature: Waiver Package Details View: Appendix K Amendment for a State User
         Then verify the status on the card is "RAI Issued"
         Then verify package actions header is visible
         Then verify withdraw package action exists
-        Then verify Respond to RAI action exists
+        Then verify Respond to Formal RAI action exists
         Then verify the details section exists
         Then verify the package details title contains "Appendix K Amendment Package"
         Then verify the waiver authority header exists

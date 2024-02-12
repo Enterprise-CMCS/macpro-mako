@@ -6,7 +6,7 @@ Feature: OY2-16707 CMS Users Denied a CRA Role loses Read Only Access to OneMAC
         Then Click on User Management Tab
         Then reset EUA CMS Read Only User state if needed
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Denied EUA CMS user requests and denied but still see same info
         Then Verify I am on the login page and not logged in
@@ -31,7 +31,7 @@ Feature: OY2-16707 CMS Users Denied a CRA Role loses Read Only Access to OneMAC
         Then Status text is not displayed
         Then Click on My Account
         Then verify the logout button exists
-        Then click the logout button
+        Then click the sign out button
         Then Verify I am on the login page and not logged in
         When clicking the Sign In Button
         When Login with "an Active" "CMS System Admin" user
@@ -42,7 +42,7 @@ Feature: OY2-16707 CMS Users Denied a CRA Role loses Read Only Access to OneMAC
         Then verify success message for denied role
         Then Click on My Account
         Then verify the logout button exists
-        Then click the logout button
+        Then click the sign out button
         Then Verify I am on the login page and not logged in
         When clicking the Sign In Button
         When Login with "an Active" "CMS Read Only" user

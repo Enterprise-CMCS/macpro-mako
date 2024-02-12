@@ -46,7 +46,7 @@ Feature: Package Dashboard - SPA Tab Column Picker for CMS User
         Then verify Final Disposition column exists
         Then verify Formal RAI Received column does not exist
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Verify state exists, click state from drop down, verify it no longer exists, click it again, verify it exists again.
         Then Verify State Column Exists
@@ -59,7 +59,7 @@ Feature: Package Dashboard - SPA Tab Column Picker for CMS User
         Then click show hide columns button
         Then Verify State Column Exists
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Verify type exists, click type from drop down, verify it no longer exists, click it again, verify it exists again.
         Then verify type column exists
@@ -72,7 +72,7 @@ Feature: Package Dashboard - SPA Tab Column Picker for CMS User
         Then click show hide columns button
         Then verify type column exists
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Filter for medicaid spa only, remove all check from drop down and keep TYPE, verify type state medicaid spa
         Then Click on Filter Button
@@ -90,7 +90,7 @@ Feature: Package Dashboard - SPA Tab Column Picker for CMS User
         Then verify the type on row one exists
         Then verify the type on row one is Medicaid SPA
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Search with no results and verify error message is correct, verify columns are existing per selection on filter
         Then search for "pending"
@@ -103,7 +103,7 @@ Feature: Package Dashboard - SPA Tab Column Picker for CMS User
         Then verify Initial Submission Date column exists
         Then verify submitted by column does not exist
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Uncheck all but type and state, search with results, then remove State and verify that the type column still exists and search criteria is still valid
         Then click show hide columns button
@@ -122,7 +122,7 @@ Feature: Package Dashboard - SPA Tab Column Picker for CMS User
         Then verify type column exists
         Then verify the type on row one exists
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
 
     Scenario: Verify State Column Exists and is sortable
@@ -130,7 +130,7 @@ Feature: Package Dashboard - SPA Tab Column Picker for CMS User
         Then Verify State Column Exists
         Then Verify State Column is sortable
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Verify submitted by doesn't exists, but is selectable
         Then verify submitted by column does not exist
@@ -143,4 +143,4 @@ Feature: Package Dashboard - SPA Tab Column Picker for CMS User
         Then click show hide columns button
         Then verify submitted by column does not exist
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button

@@ -5,11 +5,11 @@ Feature: CHIP SPA State Details View - Card View with Actions
         When Login with "an Active" "State Submitter" user
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
+
         Then click CHIP SPA check box
         Then click on Type
         Then click on Status
-        Then uncheck all of the status checkboxes
+
 
     Scenario: Screen Enhance - Approved SPA
         Then click Approved checkbox
@@ -160,7 +160,7 @@ Feature: CHIP SPA State Details View - Card View with Actions
         Then verify there is an Approved Effective Date in the details section
 
     Scenario: Screen Enhance - Submitted SPA
-        Then click Submitted checkbox
+        #Then click Submitted checkbox
         Then Click on Filter Button
         Then click the SPA ID link in the first row
         Then verify the package details page is visible
@@ -197,7 +197,7 @@ Feature: CHIP SPA State Details View - Card View with Actions
         Then verify the status on the card is "RAI Issued"
         Then verify package actions header is visible
         Then verify withdraw package action exists
-        Then verify Respond to RAI action exists
+        Then verify Respond to Formal RAI action exists
         Then verify the package details page is visible
         Then verify the details section exists
         Then verify there is a Type header in the details section

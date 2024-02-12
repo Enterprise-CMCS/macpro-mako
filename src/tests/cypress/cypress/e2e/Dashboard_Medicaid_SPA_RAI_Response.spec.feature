@@ -5,20 +5,20 @@ Feature: RAI Response for Medicaid SPA package view
         When Login with "an Active" "State Submitter" user
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
+
         Then click Medicaid SPA check box
         Then click on Type
         Then click on Status
-        Then uncheck all of the status checkboxes
+
         Then click RAI Issued checkbox
         Then Click on Filter Button
 
     Scenario: validate response to RAI from package details page
         Then copy the ID from the link in the first row
         Then click the SPA ID link in the first row
-        Then verify Respond to RAI action exists
+        Then verify Respond to Formal RAI action exists
         Then click on Respond to RAI package action
-        Then verify the form is titled Formal Request for Additional Information Response
+        Then verify the form is titled "Medicaid SPA Formal RAI Response Details"
         Then verify the attachment info descriptiion
         Then verify the attachment info link is for "Medicaid RAI"
         Then attach "adobe.pdf" file to attachment 1
@@ -32,7 +32,7 @@ Feature: RAI Response for Medicaid SPA package view
         Then click the actions button in row one
         Then verify the Respond to RAI button is displayed
         Then click the Respond to RAI button
-        Then verify the form is titled Formal Request for Additional Information Response
+        Then verify the form is titled "Medicaid SPA Formal RAI Response Details"
         Then attach "adobe.pdf" file to attachment 1
         Then into "Additional Information" type "This is just a test."
         Then Click the Submit Button without waiting

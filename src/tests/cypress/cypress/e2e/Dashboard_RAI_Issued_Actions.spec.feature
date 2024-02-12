@@ -9,10 +9,10 @@ Feature: Verify package actions in RAI Issued Status in the package dashboard
     Scenario: Demonstrate withdraw package and respond to rai are available for CHIP SPA in RAI Issued Status
         Then Click on Filter Button
         Then click on Status
-        Then uncheck all of the status checkboxes
+
         Then click RAI Issued checkbox
         Then click on Type
-        Then uncheck all of the type checkboxes
+
         Then click CHIP SPA check box
         Then click the actions button in row one
         Then verify withdraw package button is visible for package in package dashboard
@@ -21,10 +21,10 @@ Feature: Verify package actions in RAI Issued Status in the package dashboard
     Scenario: Demonstrate withdraw package and respond to rai are available for Medicaid SPA in RAI Issued Status
         Then Click on Filter Button
         Then click on Status
-        Then uncheck all of the status checkboxes
+
         Then click RAI Issued checkbox
         Then click on Type
-        Then uncheck all of the type checkboxes
+
         Then click Medicaid SPA check box
         Then click the actions button in row one
         Then verify withdraw package button is visible for package in package dashboard
@@ -34,11 +34,12 @@ Feature: Verify package actions in RAI Issued Status in the package dashboard
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Status
-        Then uncheck all of the status checkboxes
+
         Then click RAI Issued checkbox
         Then click on Type
-        Then uncheck all of the type checkboxes
-        Then click 1915b Initial Waiver check box
+
+        Then click on Action Type
+        Then click the Initial check box
         Then click the actions button in row one
         Then verify withdraw package button is visible for package in package dashboard
         Then verify the Respond to RAI button is displayed
@@ -47,11 +48,11 @@ Feature: Verify package actions in RAI Issued Status in the package dashboard
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Status
-        Then uncheck all of the status checkboxes
+
         Then click RAI Issued checkbox
         Then click on Type
-        Then uncheck all of the type checkboxes
-        Then click 1915b Waiver Renewal check box
+
+        Then click the Renewal check box
         Then click the actions button in row one
         Then verify withdraw package button is visible for package in package dashboard
         Then verify the Respond to RAI button is displayed
@@ -60,10 +61,10 @@ Feature: Verify package actions in RAI Issued Status in the package dashboard
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Status
-        Then uncheck all of the status checkboxes
+
         Then click RAI Issued checkbox
         Then click on Type
-        Then uncheck all of the type checkboxes
+
         Then click 1915b Waiver Amendment check box
         Then click the actions button in row one
         Then verify withdraw package button is visible for package in package dashboard
@@ -73,10 +74,10 @@ Feature: Verify package actions in RAI Issued Status in the package dashboard
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Status
-        Then uncheck all of the status checkboxes
+
         Then click RAI Issued checkbox
         Then click on Type
-        Then uncheck all of the type checkboxes
+
         Then click 1915c Appendix K Amendment check box
         Then click the actions button in row one
         Then verify withdraw package button is visible for package in package dashboard

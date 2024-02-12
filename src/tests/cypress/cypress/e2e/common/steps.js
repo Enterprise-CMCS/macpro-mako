@@ -4,24 +4,24 @@ import oneMacDevLoginPage from "../../../support/pages/oneMacDevLoginPage";
 import oneMacHomePage from "../../../support/pages/oneMacHomePage";
 import oneMacFormPage from "../../../support/pages/oneMacFormPage";
 import oneMacSubmissionTypePage from "../../../support/pages/oneMacSubmissionTypePage";
-import oneMacNewSubmissionPage from "../../../support/pages/oneMacNewSubmissionPage";
 import oneMacUserManagmentPage from "../../../support/pages/oneMacUserManagmentPage";
 import oneMacMyProfilePage from "../../../support/pages/oneMacMyProfilePage";
 import oneMacFAQPage from "../../../support/pages/oneMacFAQPage";
 import oneMacRequestARoleChangePage from "../../../support/pages/oneMacRequestARoleChangePage";
 import oneMacPackageDetailsPage from "../../../support/pages/oneMacPackageDetailsPage";
+import utilities from "../../../support/utilities/utilities";
 
 const OneMacDashboardPage = new oneMacDashboardPage();
 const OneMacDevLoginPage = new oneMacDevLoginPage();
 const OneMacHomePage = new oneMacHomePage();
 const OneMacFormPage = new oneMacFormPage();
 const OneMacSubmissionTypePage = new oneMacSubmissionTypePage();
-const OneMacNewSubmissionPage = new oneMacNewSubmissionPage();
 const OneMacUserManagmentPage = new oneMacUserManagmentPage();
 const OneMacMyProfilePage = new oneMacMyProfilePage();
 const OneMacFAQPage = new oneMacFAQPage();
 const OneMacRequestARoleChangePage = new oneMacRequestARoleChangePage();
 const OneMacPackageDetailsPage = new oneMacPackageDetailsPage();
+const util = new utilities();
 
 Given("I am on Login Page", () => {
   OneMacHomePage.launch();
@@ -33,7 +33,6 @@ Then("Verify I am on the login page and not logged in", () => {
 When("clicking the Sign In Button", () => {
   OneMacHomePage.clicksignInBtn();
 });
-
 When("Clicking on FAQ Tab", () => {
   OneMacHomePage.clickFAQPage();
 });
@@ -44,14 +43,17 @@ When("Login with {string} {string} user", (status, userRole) => {
 Then("click on New Submission", () => {
   OneMacDashboardPage.clickNewSubmission();
 });
+Then("click the main Dashboard Button", () => {
+  OneMacDashboardPage.clickDashboardBtn();
+});
 Then(
   "verify {string} choice goes to {string}",
   (choiceText, destinationUrl) => {
-    OneMacNewSubmissionPage.verifyChoiceGoesTo(choiceText, destinationUrl);
+    OneMacSubmissionTypePage.verifyChoiceGoesTo(choiceText, destinationUrl);
   }
 );
 Then("click on {string} choice", (choiceText) => {
-  OneMacNewSubmissionPage.clickChoice(choiceText);
+  OneMacSubmissionTypePage.clickChoice(choiceText);
 });
 Then("Click on State Plan Amendment SPA", () => {
   OneMacSubmissionTypePage.clickStatePlanAmendmentSPA();
@@ -937,10 +939,13 @@ Then("Verify Filter button exists", () => {
 Then("Click on Filter Button", () => {
   OneMacDashboardPage.clickOnfilterButton();
 });
-Then("verify Filter By Exists", () => {
+Then("Click on the close Filter Button", () => {
+  OneMacDashboardPage.clickOnCloseFilterBtn();
+});
+Then("verify Filters header Exists", () => {
   OneMacDashboardPage.verifyfilterByExists();
 });
-Then("verify Close Exists", () => {
+Then("verify the filter close button exists", () => {
   OneMacDashboardPage.verifycloseButtonExists();
 });
 Then("verify type dropdown filter exists", () => {
@@ -952,8 +957,17 @@ Then("verify reset Exists", () => {
 Then("click on Type", () => {
   OneMacDashboardPage.clickTypeDropDown();
 });
-Then("verify 1915b Initial Waiver exists", () => {
-  OneMacDashboardPage.verifyInitialWaiver1915bCheckBoxExists();
+Then("click on Action Type", () => {
+  OneMacDashboardPage.clickActionTypeDropDown();
+});
+Then("verify the 1915b type filter exists", () => {
+  OneMacDashboardPage.verify1915bTypeFilterExists();
+});
+Then("verify the 1915c type filter exists", () => {
+  OneMacDashboardPage.verify1915cTypeFilterExists();
+});
+Then("verify the Initial type action filter exists", () => {
+  OneMacDashboardPage.verifyInitialWaiverFilterExists();
 });
 Then("verify 1915b Intial Waiver exists in list", () => {
   OneMacDashboardPage.verifyInitialWaiverInListExists();
@@ -1015,10 +1029,13 @@ Then("click the Formal RAI Response - Withdrawal Requested checkbox", () => {
 Then("click the Withdraw Formal RAI Response Enabled checkbox", () => {
   OneMacPackagePage.clickRaiResponseWithdrawEnabledCheckBox();
 });
-Then("click 1915b Initial Waiver check box", () => {
+Then("click the 1915b check box", () => {
   OneMacDashboardPage.clickInitialWaiver1915bCheckBox();
 });
-Then("click 1915b Waiver Renewal check box", () => {
+Then("click the Initial check box", () => {
+  OneMacDashboardPage.clickInitialWaiver1915bCheckBox();
+});
+Then("click the Renewal check box", () => {
   OneMacDashboardPage.clickWaiverRenewal1915bCheckBox();
 });
 Then("click 1915c Appendix K Amendment check box", () => {
@@ -1165,17 +1182,11 @@ Then("verify Initial Submission Date filter dropdown exists", () => {
 Then("click on Initial Submission Date filter dropdown", () => {
   OneMacDashboardPage.clickOnInitialSubmissionDateFilterDropDown();
 });
-Then("verify Initial Submission Date date picker filter exists", () => {
-  OneMacDashboardPage.verifyInitialSubmissionDateDatePickerFilterExists();
+Then("verify the date picker for the filter exists", () => {
+  OneMacDashboardPage.verifyDatePickerFilterExists();
 });
-Then("click on Initial Submission Date date picker filter", () => {
-  OneMacDashboardPage.clickOnInitialSubmissionDateDatePickerFilter();
-});
-Then("click on Formal RAI Received date picker filter", () => {
-  OneMacDashboardPage.clickOnFormalRAIReceivedDatePickerFilter();
-});
-Then("click on Final Disposition date picker filter", () => {
-  OneMacDashboardPage.clickOnFinalDispositionDatePickerFilter();
+Then("click the date picker for the filter", () => {
+  OneMacDashboardPage.clickOnDatePickerFilter();
 });
 Then("click on this quarter date picker button", () => {
   OneMacDashboardPage.clickOnThisQuarterDatePickerBtn();
@@ -1527,7 +1538,7 @@ Then("verify there are no package actions available", () => {
 Then("verify the package actions section is unavailable", () => {
   OneMacPackageDetailsPage.verifyPackageActionsSectionDoesNotExist();
 });
-Then("verify Respond to RAI action exists", () => {
+Then("verify Respond to Formal RAI action exists", () => {
   OneMacPackageDetailsPage.verifyRespondtoRAIActionExists();
 });
 Then("verify withdraw package action exists", () => {
@@ -1645,6 +1656,12 @@ Then(
     );
   }
 );
+Then(
+  "verify the form is titled {string}",
+  (formH1Title) => {
+    OneMacFormPage.verifyPageHeader(formH1Title);
+  }
+);
 Then("verify user is on new initial waiver page", () => {
   OneMacSubmissionTypePage.verifyNewInitialWaiverPage();
 });
@@ -1702,7 +1719,7 @@ Then("click the deny access button", () => {
 Then("verify the logout button exists", () => {
   OneMacDashboardPage.verifyLogoutBtnExists();
 });
-Then("click the logout button", () => {
+Then("click the sign out button", () => {
   OneMacDashboardPage.clickLogoutBtn();
 });
 Then(
@@ -2072,4 +2089,34 @@ Then("verify all sections are expanded", () => {
 });
 Then("verify page url contains {string}", (checkUrl) => {
   OneMacDashboardPage.verifyPageByURL(checkUrl);
+});
+
+Then("type the generated SPA ID into the ID Input box", () => {
+  let spaID = util.generateSPAID("MD");
+  OneMacFormPage.inputID(spaID);
+  cy.fixture("generatedIDs.json").then((obj) => {
+    obj.generatedChipSPAID1 = spaID;
+    // write the merged object
+    cy.writeFile("./fixtures/generatedIDs.json", obj)
+  })
+});
+
+Then("type a generated SPA ID into the ID Input box using the state {string}", (state) => {
+  let spaID = util.generateSPAID(state);
+  OneMacFormPage.inputID(spaID);
+  cy.writeFile("cypress/fixtures/generatedIDs.json", { generatedChipSPAID1: spaID });
+});
+
+Then("verify submission successful message in the modal", () => {
+  OneMacFormPage.verifySuccessMessageIsDisplayedInModal();
+});
+
+Then("click the Go to Dashboard button", () => {
+  OneMacFormPage.clickGoToDashBoardBtn();
+});
+Then("search for the generated CHIP SPA ID", () => {
+  cy.fixture("generatedIDs.json").then((data) => {
+    OneMacDashboardPage.searchFor(data.generatedChipSPAID1);
+  });
+  cy.wait(1000);
 });

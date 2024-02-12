@@ -6,11 +6,11 @@ Feature: Waiver Package Details View: Appendix K Amendment for a CMS User
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
+
         Then click 1915c Appendix K Amendment check box
         Then click on Type
         Then click on Status
-        Then uncheck all of the status checkboxes
+
 
     Scenario: Screen Enhance: Appendix K Details View - Submitted - Intake Needed
         Then click Submitted - Intake Needed checkbox

@@ -6,11 +6,11 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a CMS User
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
+
         Then click 1915b Waiver Amendment check box
         Then click on Type
         Then click on Status
-        Then uncheck all of the status checkboxes
+
 
     Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - Submitted - Intake Needed
         Then click Submitted - Intake Needed checkbox

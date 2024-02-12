@@ -30,8 +30,9 @@ Feature: OY2-14464 Package Dashboard - Separate Tab for Waivers and SPAs
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
-        Then click 1915b Initial Waiver check box
+
+        Then click on Action Type
+        Then click the Initial check box
         Then Click on Filter Button
         Then verify the type in row one is Initial Waiver
         Then verify the waiver number format in row one is SS.#### or SS.#####
@@ -40,8 +41,8 @@ Feature: OY2-14464 Package Dashboard - Separate Tab for Waivers and SPAs
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
-        Then click 1915b Waiver Renewal check box
+
+        Then click the Renewal check box
         Then Click on Filter Button
         Then verify the type in row one is Waiver Renewal
         Then verify the waiver number format in row one is SS.#####.S## or SS.####.S##

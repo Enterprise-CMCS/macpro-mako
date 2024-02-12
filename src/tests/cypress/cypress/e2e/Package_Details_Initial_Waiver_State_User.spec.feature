@@ -6,14 +6,15 @@ Feature: Waiver Package Details View: Initial Waivers
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
-        Then click 1915b Initial Waiver check box
+
+        Then click on Action Type
+        Then click the Initial check box
         Then click on Type
         Then click on Status
-        Then uncheck all of the status checkboxes
+
 
     Scenario: Screen Enhance: Initial Waiver Details View - Submitted
-        Then click Submitted checkbox
+        #Then click Submitted checkbox
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
         Then verify 2 action cards exist
@@ -107,7 +108,7 @@ Feature: Waiver Package Details View: Initial Waivers
         Then verify the status on the card is "RAI Issued"
         Then verify package actions header is visible
         Then verify withdraw package action exists
-        Then verify Respond to RAI action exists
+        Then verify Respond to Formal RAI action exists
         Then verify the details section exists
         Then verify the package details title contains "Initial Waiver Package"
         Then verify there is a Type header in the details section

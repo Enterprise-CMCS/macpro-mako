@@ -7,11 +7,12 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Status
-        Then uncheck all of the status checkboxes
+
         Then click Under Review checkbox
         Then click on Type
-        Then uncheck all of the type checkboxes
-        Then click 1915b Initial Waiver check box
+
+        Then click on Action Type
+        Then click the Initial check box
 
     Scenario: Screen Enhance - Validate Initial Waiver Withdrawal Page from dashboard
         Then click the actions button in row one
@@ -29,7 +30,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click form cancel button
         Then click Leave Anyway form button
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
 
     Scenario: Screen Enhance - Validate Initial Waiver Withdrawal Page from details page
@@ -49,7 +50,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click form cancel button
         Then click Leave Anyway form button
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Screen Enhance - Validate Form logic
         Then click the actions button in row one
@@ -66,4 +67,4 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify yes, withdraw package button exists
         Then click modal cancel button
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button

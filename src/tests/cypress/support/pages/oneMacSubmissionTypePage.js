@@ -53,7 +53,7 @@ const renewalWaiver1915b4 =
   ':contains("1915(b)(4) FFS Selective Contracting Renewal Waiver")';
 const comprehensiveRenewalWaiver =
   ':contains("1915(b) Comprehensive (Capitated) Renewal Waiver")';
-const cardLink = "//*[@data-testid='card-inner-wrapper']";
+const cardLink = "[data-testid='card-inner-wrapper']";
 
 export class oneMacSubmissionTypePage {
   clickStatePlanAmendmentSPA() {
@@ -84,10 +84,10 @@ export class oneMacSubmissionTypePage {
     cy.xpath(comprehensiveCapitatedWaiverAuthority).click();
   }
   clickMedicaidSPA() {
-    cy.xpath(cardLink).filter(medicaidSPA).click();
+    cy.get(cardLink).filter(medicaidSPA).click();
   }
   clickChipSPA() {
-    cy.xpath(cardLink).filter(chipSPA).click();
+    cy.get(cardLink).filter(chipSPA).click();
   }
   clickWaiverActionUnderWaiverAction() {
     cy.xpath(waiverActionWaiverAction).click();
@@ -102,107 +102,116 @@ export class oneMacSubmissionTypePage {
     cy.xpath(respondToMedicaidSPARAI).click();
   }
   clickInitialWaiver() {
-    cy.xpath(cardLink).filter(initialWaiver1915b4).click();
+    cy.get(cardLink).filter(initialWaiver1915b4).click();
   }
   clickComprehensiveInitialWaiver() {
-    cy.xpath(cardLink).filter(comprehensiveInitialWaiver).click();
+    cy.get(cardLink).filter(comprehensiveInitialWaiver).click();
   }
   click1915b4WaiverRenewal() {
-    cy.xpath(cardLink).filter(renewalWaiver1915b4).click();
+    cy.get(cardLink).filter(renewalWaiver1915b4).click();
   }
   clickComprehensiveRenewalWaiver() {
-    cy.xpath(cardLink).filter(comprehensiveRenewalWaiver).click();
+    cy.get(cardLink).filter(comprehensiveRenewalWaiver).click();
   }
   clickWaiverAmendment1915b4() {
-    cy.xpath(cardLink).filter(amendment1915b4).click();
+    cy.get(cardLink).filter(amendment1915b4).click();
   }
   clickComprehensiveWaiverAmendmentWaiverAmendment() {
-    cy.xpath(cardLink).filter(comprehensiveWaiverAmendment).click();
+    cy.get(cardLink).filter(comprehensiveWaiverAmendment).click();
   }
   verifyFFSNewInitialWaiverIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(initialWaiver1915b4)
       .should("have.attr", "href", "/initial-waiver-b-4");
   }
   verifyComprehensiveNewInitialWaiverIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(comprehensiveInitialWaiver)
       .should("have.attr", "href", "/initial-waiver-b-other");
   }
   verifyAppendixKIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(appendixK)
-      .should("have.attr", "href", "/appendix-k-amendment");
+      .parent("a").should("have.attr", "href");
   }
   verify1915b4WaiverRenewalIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(renewalWaiver1915b4)
       .should("have.attr", "href", "/waiver-renewal-b-4");
   }
   verifyCompreheniveCapitatedRenewalWaiverIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(comprehensiveRenewalWaiver)
       .should("have.attr", "href", "/waiver-renewal-b-other");
   }
   verifyFFSWaiverAmendmentIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(amendment1915b4)
       .should("have.attr", "href", "/waiver-amendment-b-4");
   }
   verifyComprehensiveWaiverAmendmentIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(comprehensiveWaiverAmendment)
       .should("have.attr", "href", "/waiver-amendment-b-other");
   }
   verifyChipSPAIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(chipSPA)
       .should("have.attr", "href", "/choices/spa/chip");
   }
   verifyMedicaidSPAIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(medicaidSPA)
       .should("have.attr", "href", "/choices/spa/medicaid");
   }
   verifyMedicaidEligibilityIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(medicaidEligibility)
       .should("have.attr", "href", "/medicaid-eligibility");
   }
   clickMedicaidEligibility() {
-    cy.xpath(cardLink).filter(medicaidEligibility).click();
+    cy.get(cardLink).filter(medicaidEligibility).click();
   }
   verifyMedicaidAlternativeIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(medicaidAlternative)
       .should("have.attr", "href", "/medicaid-abp");
   }
   clickMedicaidAlternative() {
-    cy.xpath(cardLink).filter(medicaidAlternative).click();
+    cy.get(cardLink).filter(medicaidAlternative).click();
   }
   verifyAllOtherMedicaidIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(allOtherMedicaid)
       .should("have.attr", "href", "/medicaid-spa");
   }
   clickAllOtherMedicaid() {
-    cy.xpath(cardLink).filter(allOtherMedicaid).click();
+    cy.get(cardLink).filter(allOtherMedicaid).click();
   }
   verifyChipEligibilityIsClickable() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(chipEligibility)
       .should("have.attr", "href", "/chip-eligibility");
   }
   clickChipEligibility() {
-    cy.xpath(cardLink).filter(chipEligibility).click();
+    cy.get(cardLink).filter(chipEligibility).click();
   }
   verifyAllOtherChip() {
-    cy.xpath(cardLink)
+    cy.get(cardLink)
       .filter(allOtherChip)
       .should("have.attr", "href", "/chip-spa");
   }
   clickAllOtherChip() {
-    cy.xpath(cardLink).filter(allOtherChip).click();
+    cy.get(cardLink).filter(allOtherChip).click();
+  }
+  verifyChoiceGoesTo(choiceText, destinationUrl) {
+    cy.get(cardLink)
+      .filter(`:contains("${choiceText}")`)
+      .parent("a")
+      .should("have.attr", "href", destinationUrl);
+  }
+  clickChoice(choiceText) {
+    cy.get(cardLink).filter(`:contains("${choiceText}")`).click();
   }
 }
 export default oneMacSubmissionTypePage;

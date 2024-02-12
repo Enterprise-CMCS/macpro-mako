@@ -6,10 +6,10 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click on Packages
         Then Click on Filter Button
         Then click on Status
-        Then uncheck all of the status checkboxes
+
         Then click Under Review checkbox
         Then click on Type
-        Then uncheck all of the type checkboxes
+
         Then click CHIP SPA check box
 
     Scenario: Screen Enhance - Validate CHIP Withdrawal Page from the dashboard

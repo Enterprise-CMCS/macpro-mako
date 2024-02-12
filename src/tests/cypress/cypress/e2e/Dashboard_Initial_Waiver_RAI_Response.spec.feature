@@ -8,12 +8,13 @@ Feature: RAI Response for Initial Waiver - Package View
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Status
-        Then uncheck all of the status checkboxes
+
         Then click RAI Issued checkbox
         Then click on Status
         Then click on Type
-        Then uncheck all of the type checkboxes
-        Then click 1915b Initial Waiver check box
+
+        Then click on Action Type
+        Then click the Initial check box
         Then Click on Filter Button
 
     Scenario: validate response to RAI from package dashboard

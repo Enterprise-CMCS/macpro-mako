@@ -6,7 +6,7 @@ Feature: Waiver Package Details View: Temporary Extension for a CMS User
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
+
 
     Scenario: Screen Enhance: 1915b Temporary Extension Details View - Requested
         Then click 1915b Temporary Extension check box

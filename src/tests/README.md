@@ -2,6 +2,7 @@
 
 MAKO uses the Cypress (https://cypress.io) front end testing tool with Cucumber (https://cucumber.io) as the Behavior-Driven-Development (BDD) layer. This allows the team to test the intricate details of the MAKO application in a reliable and readable way.
 
+*Working with Node v18+ (untested with v16 and will not work with v14 or earlier)*
 ### Installing and using full cypress suite locally
 
 cd ~projectDir/src/tests/cypress

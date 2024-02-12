@@ -13,9 +13,9 @@ const statusHeader = "//h3[contains(text(),'Status')]";
 const date90thDay = "//h3[contains(text(),'90th Day')]";
 const packageActionsHeader =
   "//div[contains(@class, 'mac-detail-card')]//section[@class='package-actions']//h3";
-const packageActionsList = "//ul[@class='action-list']";
-const respondToRAIAction = "//a[text()='Respond to RAI']";
-const withdrawPackageAction = "//a[text()='Withdraw Package']";
+const packageActionsList = "//section[@id='package-overview']//h2[text()='Actions']";
+const respondToRAIAction = "//a/li[text()='Respond to Formal RAI']";
+const withdrawPackageAction = "//a/li[text()='Withdraw Package']";
 const requestTempExtensionPackageAction =
   "//a[text()='Request Temporary Extension']";
 const addAmendmentPackageAction = "//a[text()='Add Amendment']";
@@ -88,6 +88,7 @@ export class oneMacPackageDetailsPage {
   verifyNoPackageActionsAvailable() {
     cy.xpath(packageActionsList)
       .should("be.visible")
+      .next("div")
       .contains("No actions are currently available for this submission");
   }
   verifyPackageActionsSectionDoesNotExist() {

@@ -14,7 +14,7 @@ Feature: OY2-13094 Package Dashboard - Filter by State
         Then verify state filter select exists
         Then verify no states are selected
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: filter by state full name
         Then Click on Filter Button
@@ -23,7 +23,7 @@ Feature: OY2-13094 Package Dashboard - Filter by State
         Then verify states selected includes "Maryland"
         Then verify "MD" is showing in the state column
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: filter by state Abbrev
         Then Click on Filter Button
@@ -31,7 +31,7 @@ Feature: OY2-13094 Package Dashboard - Filter by State
         Then set value on state filter select to "NJ"
         Then verify states selected includes "New Jersey"
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario:  filter by non-state
         Then Click on Filter Button
@@ -39,7 +39,7 @@ Feature: OY2-13094 Package Dashboard - Filter by State
         Then set value on state filter select to "foobar"
         Then verify no states are selected
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: filter and then reset
         Then Click on Filter Button

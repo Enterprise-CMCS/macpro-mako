@@ -3,6 +3,7 @@ Feature: Appendix K Waiver Type Selection
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
+        Then click the main Dashboard Button
         Then click on New Submission
         Then Click on Waiver Action
 

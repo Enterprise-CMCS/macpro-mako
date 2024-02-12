@@ -3,6 +3,7 @@ Feature: Package Dashboard Read Only View
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "CMS Read Only" user
+        Then click the main Dashboard Button
 
     Scenario: CMS Read Only user actions column unavailable in Package Dashboard
 

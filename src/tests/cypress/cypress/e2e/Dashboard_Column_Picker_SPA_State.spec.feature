@@ -49,7 +49,7 @@ Feature: Package Dashboard - SPA Tab Column Picker
         Then verify Formal RAI Received column does not exist
         Then verify CPOC Name column exists
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Verify state doesn't exists, but is selectable
         Then verify state column does not exist
@@ -62,7 +62,7 @@ Feature: Package Dashboard - SPA Tab Column Picker
         Then click show hide columns button
         Then verify state column does not exist
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Verify type exists, click type from drop down, verify it no longer exists, click it again, verify it exists again.
         Then verify type column exists
@@ -75,7 +75,7 @@ Feature: Package Dashboard - SPA Tab Column Picker
         Then click show hide columns button
         Then verify type column exists
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Filter for medicaid spa only, remove all check from drop down and keep TYPE, verify type state medicaid spa
         Then Click on Filter Button
@@ -92,7 +92,7 @@ Feature: Package Dashboard - SPA Tab Column Picker
         Then verify the type on row one exists
         Then verify the type on row one is Medicaid SPA
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Search with no results and verify error message is correct, verify columns are existing per selection on filter
         Then search for "pending"
@@ -106,7 +106,7 @@ Feature: Package Dashboard - SPA Tab Column Picker
         Then verify submitted by column exists
         Then verify actions column exists
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button
 
     Scenario: Uncheck all but type and state, then remove State and verify that the type column still exists and search criteria is still valid
         Then click show hide columns button
@@ -127,4 +127,4 @@ Feature: Package Dashboard - SPA Tab Column Picker
         Then verify type column exists
         Then verify the type on row one exists
         Then Click on My Account
-        Then click the logout button
+        Then click the sign out button

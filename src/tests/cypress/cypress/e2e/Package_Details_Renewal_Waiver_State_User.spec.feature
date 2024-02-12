@@ -6,14 +6,14 @@ Feature: Waiver Package Details View: Waiver Renewals for a State User
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
-        Then click 1915b Waiver Renewal check box
+
+        Then click the Renewal check box
         Then click on Type
         Then click on Status
-        Then uncheck all of the status checkboxes
+
 
     Scenario: Screen Enhance: Waiver Renewal Details View - Submitted
-        Then click Submitted checkbox
+        #Then click Submitted checkbox
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
         Then verify 2 action cards exist
@@ -103,7 +103,7 @@ Feature: Waiver Package Details View: Waiver Renewals for a State User
         Then verify the status on the card is "RAI Issued"
         Then verify package actions header is visible
         Then verify withdraw package action exists
-        Then verify Respond to RAI action exists
+        Then verify Respond to Formal RAI action exists
         Then verify the details section exists
         Then verify there is a Type header in the details section
         Then verify the type is Waiver Renewal

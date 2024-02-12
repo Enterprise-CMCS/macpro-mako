@@ -5,11 +5,11 @@ Feature: Medicaid SPA CMS Details View - Card View with Actions
         When Login with "an Active" "CMS Read Only" user
         Then Click on Filter Button
         Then click on Type
-        Then uncheck all of the type checkboxes
+
         Then click Medicaid SPA check box
         Then click on Type
         Then click on Status
-        Then uncheck all of the status checkboxes
+
 
     Scenario: Screen Enhance - Submitted - Intake Needed Medicaid SPA
         Then click Submitted - Intake Needed checkbox
