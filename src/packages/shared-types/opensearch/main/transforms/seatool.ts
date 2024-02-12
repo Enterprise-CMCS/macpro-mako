@@ -139,28 +139,6 @@ const getAuthority = (
   }
 };
 
-// const getSubType = (subTypeId: number | undefined, id: string | undefined) => {
-//   if (!subTypeId) return null;
-//   const subType = findByKeyInNestedObject(SEATOOL_SUB_TYPES, subTypeId);
-//   if (!subType) {
-//     console.log(
-//       `SEATOOL LOOKUP WARNING: Subtype ID ${subTypeId} not found.  Record ${id}`
-//     );
-//   }
-//   return subType;
-// };
-
-// const getType = (typeId: number | undefined, id: string | undefined) => {
-//   if (!typeId) return null;
-//   const type = findByKeyInNestedObject(SEATOOL_TYPES, typeId);
-//   if (!type) {
-//     console.log(
-//       `SEATOOL LOOKUP WARNING: Type ID ${typeId} not found.  Record ${id}`
-//     );
-//   }
-//   return type;
-// };
-
 function findByKeyInNestedObject(
   obj: any,
   itemKey: number | undefined
@@ -195,8 +173,8 @@ export const transform = (id: string) => {
       )?.SPW_STATUS_DESC || "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
     const authorityId = data.PLAN_TYPES?.[0].PLAN_TYPE_ID;
-    const typeId = data.STATE_PLAN_SERVICETYPES?.[0].SERVICE_TYPE_ID;
-    const subTypeId = data.STATE_PLAN_SERVICE_SUBTYPES?.[0].SERVICE_SUBTYPE_ID;
+    const typeId = data.STATE_PLAN_SERVICETYPES?.[0]?.SERVICE_TYPE_ID;
+    const subTypeId = data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.SERVICE_SUBTYPE_ID;
     return {
       id,
       flavor: flavorLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
