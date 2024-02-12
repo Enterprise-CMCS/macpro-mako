@@ -108,45 +108,49 @@ stepFunctions:
                 - !Ref SinkOnemacLambdaFunction
                 - !Ref SinkOnemacLambdaFunction
               Enabled: false
+            Next: GetConsumerGroupStatus
+          GetConsumerGroupStatus:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getConsumerGroupStatus"
+            Parameters:
+              Context.$: $$
+              Functions:
+                - !Ref SinkSeatoolLambdaFunction
+                - !Ref SinkOnemacLambdaFunction
+                - !Ref SinkOnemacLambdaFunction
+              BrokerString: ${self:custom.brokerString}
+            Next: IsConsumerGroupReady
+          IsConsumerGroupReady:
+            Type: Choice
+            Choices:
+              - Variable: $.ready
+                BooleanEquals: true
+                Next: ResetConsumerGroups
+              - Variable: $.ready
+                BooleanEquals: false
+                Next: Wait10Seconds
+            Default: Wait10Seconds
+          Wait10Seconds:
+            Type: Wait
+            Seconds: 10
+            Next: GetConsumerGroupStatus
+          ResetConsumerGroups:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-resetConsumerGroups"
+            Parameters:
+              Context.$: $$
+              Functions:
+                - !Ref SinkSeatoolLambdaFunction
+                - !Ref SinkOnemacLambdaFunction
+                - !Ref SinkOnemacLambdaFunction
+              BrokerString: ${self:custom.brokerString}
+            Next: DeleteIndex
+          DeleteIndex:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteIndex"
+            Parameters:
+              Context.$: $$
             Next: SuccessState
-          # DisableTriggers:
-          #   Type: Task
-          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-disableTriggers"
-          #   Parameters:
-          #     Context.$: $$
-          #   Next: GetConsumerGroupStatus
-          # GetConsumerGroupStatus:
-          #   Type: Task
-          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getConsumerGroupStatus"
-          #   Parameters:
-          #     Context.$: $$
-          #   Next: IsConsumerGroupReady
-          # IsConsumerGroupReady:
-          #   Type: Choice
-          #   Choices:
-          #     - Variable: $.ready
-          #       BooleanEquals: true
-          #       Next: ResetConsumerGroups
-          #     - Variable: $.ready
-          #       BooleanEquals: false
-          #       Next: Wait10Seconds
-          #   Default: Wait10Seconds
-          # Wait10Seconds:
-          #   Type: Wait
-          #   Seconds: 10
-          #   Next: GetConsumerGroupStatus
-          # ResetConsumerGroups:
-          #   Type: Task
-          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-resetConsumerGroups"
-          #   Parameters:
-          #     Context.$: $$
-          #   Next: DeleteIndex
-          # DeleteIndex:
-          #   Type: Task
-          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteIndex"
-          #   Parameters:
-          #     Context.$: $$
-          #   Next: SetupIndex
           # SetupIndex:
           #   Type: Task
           #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-setupIndex"
@@ -271,7 +275,7 @@ functions:
       enabled: true
       functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
   getConsumerGroupStatus:
-    handler: handlers/reindex.getConsumerGroupStatus
+    handler: handlers/getConsumerGroupStatus.handler
     timeout: 900
     vpc:
       securityGroupIds:
@@ -280,8 +284,6 @@ functions:
         ${self:custom.vpc.privateSubnets}
     environment:
       region: ${self:provider.region}
-      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction},${SinkLookupDataLambdaFunction}"
-      brokerString: ${self:custom.brokerString}
   getLookupLag:
     handler: handlers/waitForLookupData.getLookupLag
     timeout: 900
@@ -295,7 +297,7 @@ functions:
       functions: !Sub "${SinkLookupDataLambdaFunction}"
       brokerString: ${self:custom.brokerString}
   resetConsumerGroups:
-    handler: handlers/reindex.resetConsumerGroups
+    handler: handlers/resetConsumerGroups.handler
     timeout: 900
     vpc:
       securityGroupIds:
@@ -304,10 +306,8 @@ functions:
         ${self:custom.vpc.privateSubnets}
     environment:
       region: ${self:provider.region}
-      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction},${SinkLookupDataLambdaFunction}"
-      brokerString: ${self:custom.brokerString}
   deleteIndex:
-    handler: handlers/reindex.deleteIndex
+    handler: handlers/deleteIndex.handler
     environment:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
