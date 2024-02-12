@@ -38,18 +38,3 @@ export const packageActionRoutes: RouteObject = {
 };
 
 export * from "./ActionWrapper";
-export {
-  IssueRai,
-  issueRaiSchema,
-  issueRaiDefaultAction as issueRaiSubmission,
-} from "./IssueRai";
-export {
-  WithdrawRai,
-  withdrawRaiSchema,
-  onValidSubmission as withdrawRaiWithdrawSubmission,
-} from "./WithdrawRai";
-export {
-  ToggleRaiResponseWithdraw,
-  toggleRaiResponseWithdrawSchema,
-  onValidSubmission as toggleRaiWithdrawSubmission,
-} from "./ToggleRaiResponseWithdraw";
