@@ -245,7 +245,7 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
   toggleTriggers:
-    handler: handlers/reindex.toggleTriggersTwo
+    handler: handlers/toggleTriggers.handler
     timeout: 60
     environment:
       region: ${self:provider.region}
