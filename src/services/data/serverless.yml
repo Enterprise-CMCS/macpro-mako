@@ -97,6 +97,17 @@ stepFunctions:
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-mapRole"
             Parameters:
               Context.$: $$
+            Next: DisableAllTriggers
+          DisableAllTriggers:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-toggleTriggers"
+            Parameters:
+              Context.$: $$
+              Functions:
+                - !Ref SinkSeatoolLambdaFunction
+                - !Ref SinkOnemacLambdaFunction
+                - !Ref SinkOnemacLambdaFunction
+              Enabled: false
             Next: SuccessState
           # DisableTriggers:
           #   Type: Task
@@ -233,6 +244,11 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
+  toggleTriggers:
+    handler: handlers/reindex.toggleTriggersTwo
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
   disableTriggers:
     handler: handlers/reindex.toggleTriggers
     timeout: 60
