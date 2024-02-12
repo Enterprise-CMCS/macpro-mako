@@ -158,7 +158,6 @@ export const useSubmitForm = () => {
         formData.append(key, data[key]);
       }
     }
-
     const attachments = data.attachments || {};
     for (const key in attachments) {
       attachments[key]?.forEach((file: any, index: number) => {
@@ -174,5 +173,6 @@ export const useSubmitForm = () => {
 
   return {
     handleSubmit: methods.handleSubmit(validSubmission),
+    formMethods: methods,
   };
 };

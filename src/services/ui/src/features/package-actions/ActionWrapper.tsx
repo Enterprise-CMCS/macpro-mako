@@ -1,6 +1,10 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { Outlet, useParams } from "react-router-dom";
-import { issueRaiSchema, withdrawRaiSchema } from "@/features/package-actions";
+import {
+  issueRaiSchema,
+  withdrawRaiSchema,
+  toggleRaiResponseWithdrawSchema,
+} from "@/features/package-actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnyZodObject } from "zod";
 import { BreadCrumbBar, BreadCrumbs, SimplePageContainer } from "@/components";
@@ -11,6 +15,8 @@ import { useEffect } from "react";
 const schemas: Record<string, AnyZodObject> = {
   "issue-rai": issueRaiSchema,
   "withdraw-rai": withdrawRaiSchema,
+  "enable-rai-response-withdraw": toggleRaiResponseWithdrawSchema,
+  "disable-rai-response-withdraw": toggleRaiResponseWithdrawSchema,
 };
 
 export const ActionWrapper = () => {
