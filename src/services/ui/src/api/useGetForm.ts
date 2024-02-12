@@ -21,11 +21,17 @@ export const useGetForm = (formId: string, formVersion?: string) => {
   );
 };
 
+export type ResultObject = {
+  [formId: string]: string[];
+};
+
 export const getAllForms = async () => {
   const results = await API.get("os", "/allForms", {});
   return results;
 };
 
-export const useGetAllForm = () => {
-  return useQuery(["All Webforms"], () => getAllForms());
+export const useGetAllForms = () => {
+  return useQuery<ResultObject, ReactQueryApiError>(["All Webforms"], () =>
+    getAllForms()
+  );
 };

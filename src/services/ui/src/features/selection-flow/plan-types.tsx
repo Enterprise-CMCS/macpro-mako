@@ -8,7 +8,7 @@ import {
   MEDICAID_SPA_OPTIONS,
   SPA_OPTIONS,
   WAIVER_OPTIONS,
-} from "@/features/new-submission/options";
+} from "@/features/selection-flow/options";
 import { SimplePageContainer } from "@/components";
 import { BreadCrumbs } from "@/components";
 import { useLocation } from "react-router-dom";

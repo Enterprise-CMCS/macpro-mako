@@ -4,7 +4,7 @@ import { BLANK_VALUE } from "@/consts";
 import { PlanType, opensearch } from "shared-types";
 import { ReactNode } from "react";
 import { OneMacUser } from "@/api";
-import { ReviewTeamList } from "@/components";
+import { ReviewTeamList } from "./ui";
 import { formatSeatoolDate } from "shared-utils";
 
 export type DetailSectionItem = {

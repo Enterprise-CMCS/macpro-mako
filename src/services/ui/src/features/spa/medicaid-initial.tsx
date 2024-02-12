@@ -22,6 +22,7 @@ import {
 import { ModalProvider, useModalContext } from "@/components/Modal/FormModals";
 import { formCrumbsFromPath } from "@/components";
 import { FAQ_TAB } from "@/components";
+import { ServiceTypeSubTypeSelect } from "../common";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -155,7 +156,13 @@ export const MedicaidForm = () => {
                 </Inputs.FormItem>
               )}
             />
-            <Inputs.FormField
+
+            <ServiceTypeSubTypeSelect
+              control={form.control}
+              serviceTypeId="serviceTypeId"
+              serviceSubTypeId="serviceSubTypeId"
+            />
+            {/* <Inputs.FormField
               control={form.control}
               name="serviceTypeId"
               render={({ field }) => (
@@ -211,7 +218,7 @@ export const MedicaidForm = () => {
                   <Inputs.FormMessage />
                 </Inputs.FormItem>
               )}
-            />
+            /> */}
             <Inputs.FormField
               control={form.control}
               name="subject"

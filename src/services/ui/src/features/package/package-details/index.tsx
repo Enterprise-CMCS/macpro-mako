@@ -2,11 +2,11 @@ import {
   Alert,
   CardWithTopBorder,
   ConfirmationModal,
-  DetailItemsGrid,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
 } from "@/components";
+import { DetailItemsGrid } from "../ui";
 import { useGetUser } from "@/api";
 import { Action, opensearch, UserRoles } from "shared-types";
 import { useQuery } from "@/hooks";
@@ -19,10 +19,7 @@ import { PropsWithChildren, useState } from "react";
 import { detailsAndActionsCrumbs } from "@/features";
 import { API } from "aws-amplify";
 import { getStatus } from "shared-types/statusHelper";
-import {
-  recordDetails,
-  submissionDetails,
-} from "@/features/package-detail/record-data-details";
+import { recordDetails, submissionDetails } from "@/features";
 import { Link } from "@/components";
 import { PackageActivities } from "../package-activity";
 import { AdminChanges } from "../admin-changes";
@@ -226,7 +223,7 @@ export const DetailsContent = ({
   );
 };
 
-export const Details = () => {
+export const PackageDetails = () => {
   const query = useQuery();
   const id = query.get("id") as string;
   const { data, isLoading, error } = useGetItem(id);

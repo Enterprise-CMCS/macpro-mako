@@ -21,7 +21,6 @@ export * from "./LoadingSpinner";
 export * from "./LockIcon";
 export * from "./Modal";
 export * from "./Opensearch";
-export * from "./PackageDetails";
 export * from "./Pagination";
 export * from "./Popover";
 export * from "./RHF";

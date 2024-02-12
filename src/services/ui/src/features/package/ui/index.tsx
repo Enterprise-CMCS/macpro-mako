@@ -1,5 +1,30 @@
 import { useMemo, useState } from "react";
 import { BLANK_VALUE } from "@/consts";
+import { useGetUser } from "@/api";
+import { DetailSectionItem } from "@/features";
+
+export const DetailItemsGrid = ({
+  displayItems,
+}: {
+  displayItems: DetailSectionItem[];
+}) => {
+  const { data: user } = useGetUser();
+  return (
+    <>
+      <div className="grid grid-cols-2 gap-4">
+        {displayItems.map(({ label, value, canView }) => {
+          return !canView(user) ? null : (
+            <div key={label}>
+              <h3 className="text-sm">{label}</h3>
+              {value}
+            </div>
+          );
+        })}
+      </div>
+      <hr className="my-4" />
+    </>
+  );
+};
 
 export const ReviewTeamList = ({ team }: { team: string[] | undefined }) => {
   const [expanded, setExpanded] = useState(false);

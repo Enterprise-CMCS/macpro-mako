@@ -3,7 +3,7 @@ import {
   zAdditionalInfo,
   zAttachmentOptional,
   zAttachmentRequired,
-} from "@/features";
+} from "@/utils";
 
 export const defaultIssueRaiSetup = {
   schema: z.object({

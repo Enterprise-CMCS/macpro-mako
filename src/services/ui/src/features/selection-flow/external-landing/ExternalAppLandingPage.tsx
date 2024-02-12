@@ -2,7 +2,7 @@ import { Button } from "@/components";
 import { useLocation } from "react-router-dom";
 import { Link } from "@/components";
 import { PropsWithChildren, ReactElement } from "react";
-import { SimplePageTitle } from "@/features/new-submission/plan-types";
+import { SimplePageTitle } from "@/features/selection-flow/plan-types";
 import { SimplePageContainer } from "@/components";
 import { BreadCrumbs } from "@/components";
 import { optionCrumbsFromPath } from "@/components/BreadCrumb/create-breadcrumbs";

@@ -1,4 +1,4 @@
-import { OptionData } from "@/features/new-submission/plan-types";
+import { OptionData } from "@/features/selection-flow/plan-types";
 
 export const AUTHORITY_OPTIONS: OptionData[] = [
   {

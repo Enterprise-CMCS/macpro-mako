@@ -8,51 +8,62 @@ import {
   documentValidator,
   LoadingSpinner,
 } from "@/components";
-import { useGetForm } from "@/api";
+import { useGetAllForms, useGetForm } from "@/api";
 import { Footer } from "./footer";
 import { Link, useParams } from "../Routing";
 import { useReadOnlyUser } from "./useReadOnlyUser";
 import { useState } from "react";
 
 export const Webforms = () => {
+  const { data, isLoading } = useGetAllForms();
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
     <>
       <SubNavHeader>
         <h1 className="text-xl font-medium">Webforms</h1>
       </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
-        <div className="flex-1 space-x-5">
-          <Link
-            path="/webform/:id/:version"
-            params={{ id: "abp1", version: 202401 }}
-          >
-            ABP 1 (Jan 2024)
-          </Link>
-          <Link
-            path="/webform/:id/:version"
-            params={{ id: "abp1", version: 202402 }}
-          >
-            ABP 1 (Feb 2024)
-          </Link>
-          <Link
-            path="/webform/:id/:version"
-            params={{ id: "abp3", version: 202401 }}
-          >
-            ABP 3
-          </Link>
-          <Link
-            path="/webform/:id/:version"
-            params={{ id: "abp3_1", version: 202401 }}
-          >
-            ABP 3.1
-          </Link>
-          <Link
-            path="/webform/:id/:version"
-            params={{ id: "abp10", version: 202401 }}
-          >
-            ABP 10
-          </Link>
-          <Link path="/guides/abp">Implementation Guide</Link>
+        <div>
+          <table className="table-auto">
+            <thead>
+              <tr>
+                <th>Form</th>
+                <th>Version</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data &&
+                Object.entries(data).map(([key, versions]) =>
+                  versions.map((version) => (
+                    <tr key={`${key}-${version}`}>
+                      <td>{key}</td>
+                      <td>{version}</td>
+                      <td>
+                        <Link
+                          className="cursor-pointer text-blue-600"
+                          path="/webform/:id/:version"
+                          params={{ id: key.toLowerCase(), version: version }}
+                        >
+                          link
+                        </Link>
+                      </td>
+                    </tr>
+                  ))
+                )}
+            </tbody>
+          </table>
+
+          <div className="mt-2">
+            <Link
+              className="cursor-pointer text-blue-600 ml-0"
+              path="/guides/abp"
+            >
+              Implementation Guide
+            </Link>
+          </div>
         </div>
       </section>
     </>

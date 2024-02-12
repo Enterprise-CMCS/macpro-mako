@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
         element: <F.Dashboard />,
         loader: F.dashboardLoader(queryClient),
       },
-      { path: "/details", element: <F.Details /> },
+      { path: "/details", element: <F.PackageDetails /> },
       { path: "/faq", element: <P.Faq /> },
       {
         path: "/new-submission",
@@ -75,22 +75,22 @@ export const router = createBrowserRouter([
       },
       {
         path: "/new-submission/waiver/b/capitated/renewal/create",
-        element: <P.Capitated1915BWaiverRenewalPage />,
+        element: <F.Capitated1915BWaiverRenewalPage />,
       },
       {
         path: "/new-submission/waiver/b/b4/renewal/create",
-        element: <P.Contracting1915BWaiverRenewalPage />,
+        element: <F.Contracting1915BWaiverRenewalPage />,
       },
       {
         path: "/new-submission/waiver/b/b4/initial/create",
-        element: <P.Contracting1915BWaiverInitialPage />,
+        element: <F.Contracting1915BWaiverInitialPage />,
       },
       {
         path: "/new-submission/waiver/b/b4/amendment/create",
-        element: <P.Contracting1915BWaiverAmendmentPage />,
+        element: <F.Contracting1915BWaiverAmendmentPage />,
       },
-      { path: "/new-submission/spa/medicaid/create", element: <P.MedicaidSpaFormPage /> },
-      { path: "/new-submission/spa/chip/create", element: <P.ChipSpaFormPage /> },
+      { path: "/new-submission/spa/medicaid/create", element: <F.MedicaidSpaFormPage /> },
+      { path: "/new-submission/spa/chip/create", element: <F.ChipSpaFormPage /> },
       { path: "/action/:id/:type", element: <F.ActionFormIndex /> },
       { path: "/webforms", element: <C.Webforms /> },
       { path: "/webform/:id/:version", element: <C.Webform /> },
