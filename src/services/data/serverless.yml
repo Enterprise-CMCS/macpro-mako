@@ -180,7 +180,7 @@ stepFunctions:
             Choices:
               - Variable: $.ready
                 BooleanEquals: true
-                Next: EnableOtherTriggers
+                Next: EnableDataSink
               - Variable: $.ready
                 BooleanEquals: false
                 Next: Wait10Seconds2
@@ -263,27 +263,6 @@ functions:
     timeout: 60
     environment:
       region: ${self:provider.region}
-  disableTriggers:
-    handler: handlers/reindex.toggleTriggers
-    timeout: 60
-    environment:
-      region: ${self:provider.region}
-      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction},${SinkLookupDataLambdaFunction}"
-      enabled: false
-  enableLookupTriggers:
-    handler: handlers/reindex.toggleTriggers
-    timeout: 60
-    environment:
-      region: ${self:provider.region}
-      enabled: true
-      functions: !Sub "${SinkLookupDataLambdaFunction}"
-  enableOtherTriggers:
-    handler: handlers/reindex.toggleTriggers
-    timeout: 60
-    environment:
-      region: ${self:provider.region}
-      enabled: true
-      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
   getConsumerGroupStatus:
     handler: handlers/getConsumerGroupStatus.handler
     timeout: 900
@@ -469,24 +448,6 @@ resources:
     #     Topics:
     #       - aws.ksqldb.seatool.agg.State_Plan
     #   DependsOn: SetupIndex
-    CloudWatchAlarmForSinkSeatoolTriggerErrors:
-      Type: AWS::CloudWatch::Alarm
-      Properties:
-        AlarmName: ${self:service}-${sls:stage}-sinkSeatoolErrorsCount
-        AlarmDescription: Alarm for SinkSeatoolTrigger Lambda Errors
-        Namespace: ${self:service}-${sls:stage}/lambda/sinkSEATOOL-Errors-Alarm
-        MetricName: SinkSeatoolErrors
-        Dimensions:
-          - Name: FunctionName
-            Value: !GetAtt SinkSeatoolLambdaFunction.Arn
-        ComparisonOperator: GreaterThanOrEqualToThreshold
-        EvaluationPeriods: 1
-        Period: 300
-        Statistic: Sum
-        TreatMissingData: notBreaching
-        Threshold: 1
-        AlarmActions:
-          - ${param:ECSFailureTopicArn}
     # SinkOnemacTrigger:
     #   Type: AWS::Lambda::EventSourceMapping
     #   Properties:
@@ -537,6 +498,24 @@ resources:
     #     Topics:
     #       - ${param:topicNamespace}aws.onemac.migration.cdc
     #   DependsOn: SetupIndex
+    CloudWatchAlarmForSinkSeatoolTriggerErrors:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmName: ${self:service}-${sls:stage}-sinkSeatoolErrorsCount
+        AlarmDescription: Alarm for SinkSeatoolTrigger Lambda Errors
+        Namespace: ${self:service}-${sls:stage}/lambda/sinkSEATOOL-Errors-Alarm
+        MetricName: SinkSeatoolErrors
+        Dimensions:
+          - Name: FunctionName
+            Value: !GetAtt SinkSeatoolLambdaFunction.Arn
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Period: 300
+        Statistic: Sum
+        TreatMissingData: notBreaching
+        Threshold: 1
+        AlarmActions:
+          - ${param:ECSFailureTopicArn}
     CloudWatchAlarmForSinkOnemacTriggerErrors:
       Type: AWS::CloudWatch::Alarm
       Properties:
@@ -754,7 +733,6 @@ resources:
               - - ${self:custom.vpc.privateSubnets.0}
               - >-
                 ${self:custom.vpc.privateSubnets}
-
     OpenSearchRole:
       Type: AWS::IAM::Role
       Properties:
