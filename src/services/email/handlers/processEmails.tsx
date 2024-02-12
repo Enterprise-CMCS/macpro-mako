@@ -74,7 +74,7 @@ export const main = async (event: KafkaEvent) => {
 
         theEmail.formattedFileList = `<ul><li>${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('</li><li>')}</li></ul>`;
         theEmail.textFileList = `${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('\n')}\n\n`;
-        theEmail.ninetyDaysDate = theEmail?.submissionDate ? DateTime.fromMillis(theEmail.submissionDate)
+        theEmail.ninetyDaysDateNice = theEmail?.submissionDate ? DateTime.fromMillis(theEmail.submissionDate)
           .setZone("America/New_York")
           .plus({ days: 90 })
           .toFormat("DDDD '@ 11:59pm' ZZZZ") : "Pending";

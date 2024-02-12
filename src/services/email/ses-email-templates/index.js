@@ -4,7 +4,7 @@
  * @returns {Promise<{name: string, subject: string, html: string, text}[]>}
  */
 
-module.exports = async (serverless, options) => [{
+module.exports = async () => [{
     name: "initial-submission-medicaid-spa-cms",
     subject:  "Medicaid SPA {{id}} Submitted",
     html: `
@@ -12,7 +12,7 @@ module.exports = async (serverless, options) => [{
 <ul>
 <li>The submission can be accessed in the OneMAC application, which you 
 can find at <a href='{{applicationEndpoint}}'>this link</a>.</li>
-<li>If you are not already logged in, please click the \"Login\" link 
+<li>If you are not already logged in, please click the "Login" link 
 at the top of the page and log in using your Enterprise User 
 Administration (EUA) credentials.</li>
 <li>After you have logged in, you will be taken to the OneMAC application. 
@@ -37,7 +37,7 @@ forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p
 The OneMAC Submission Portal received a Medicaid SPA Submission:
 \n\nThe submission can be accessed in the OneMAC application, which you can 
 find at {{applicationEndpoint}}.\n\n
-If you are not already logged in, please click the \"Login\" link at the top 
+If you are not already logged in, please click the "Login" link at the top 
 of the page and log in using your Enterprise User Administration (EUA) 
 credentials.\n\n
 After you have logged in, you will be taken to the OneMAC application. 
@@ -66,7 +66,7 @@ Thank you!`,
 <br><b>Email Address:</b> {{submitterEmail}}
 <br><b>Medicaid SPA ID: {{id}}</b>
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
-<br><b>90th Day Deadline:</b> not sure where we are getting this from
+<br><b>90th Day Deadline:</b> {{ninetyDaysDateNice}}
 </p>
 <b>Summary:</b>
 <br>{{additionalInformation}}
@@ -88,7 +88,7 @@ Name: {{submitterName}}\n
 Email Address: {{submitterEmail}}\n
 Medicaid SPA ID: {{id}}\n
 Proposed Effective Date:  {{proposedEffectiveDateNice}}\n
-90th Day Deadline: {{ninetyDaysDate}} not sure where we are getting this from\n
+90th Day Deadline: {{ninetyDaysDateNice}} not sure where we are getting this from\n
 \n
 Summary:\n
 {{additionalInformation}}\n\n
