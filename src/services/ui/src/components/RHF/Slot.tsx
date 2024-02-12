@@ -321,7 +321,12 @@ export const RHFSlot = <
 
             {/* ----------------------------------------------------------------------------- */}
             {rhf === "TextDisplay" && (
-              <p {...(props as RHFComponentMap["TextDisplay"])}>{text}</p>
+              <p
+                className={labelStyling}
+                {...(props as RHFComponentMap["TextDisplay"])}
+              >
+                {text}
+              </p>
             )}
           </>
         </FormControl>
