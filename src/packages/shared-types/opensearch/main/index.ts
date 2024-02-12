@@ -22,7 +22,12 @@ export type Document = z.infer<newSubmission.Schema> &
   z.infer<withdrawRai.Schema> &
   z.infer<withdrawPackage.Schema> &
   z.infer<toggleWithdrawEnabled.Schema> &
-  z.infer<seatool.Schema> & {
+  z.infer<seatool.Schema> &
+  {
+    type: string | null, // added by the sink
+    subType: string | null, // added by the sink
+  } &
+  {
     changelog?: Changelog[];
   };
 
