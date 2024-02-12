@@ -88,7 +88,7 @@ Name: {{submitterName}}\n
 Email Address: {{submitterEmail}}\n
 Medicaid SPA ID: {{id}}\n
 Proposed Effective Date:  {{proposedEffectiveDateNice}}\n
-90th Day Deadline: not sure where we are getting this from\n
+90th Day Deadline: {{ninetyDaysDate}} not sure where we are getting this from\n
 \n
 Summary:\n
 {{additionalInformation}}\n\n
