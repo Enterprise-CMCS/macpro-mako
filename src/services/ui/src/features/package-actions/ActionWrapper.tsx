@@ -10,6 +10,7 @@ import { issueRaiSchema } from "./IssueRai";
 import { withdrawRaiSchema } from "./WithdrawRai";
 import { toggleRaiResponseWithdrawSchema } from "./ToggleRaiResponseWithdraw";
 import { withdrawPackageSchema } from "./WithdrawPackage";
+import { respondToRaiSchema } from "./RespondToRai";
 
 const schemas: Record<string, AnyZodObject> = {
   "issue-rai": issueRaiSchema,
@@ -17,6 +18,7 @@ const schemas: Record<string, AnyZodObject> = {
   "enable-rai-response-withdraw": toggleRaiResponseWithdrawSchema,
   "disable-rai-response-withdraw": toggleRaiResponseWithdrawSchema,
   "withdraw-package": withdrawPackageSchema,
+  "respond-to-rai": respondToRaiSchema,
 };
 
 export const ActionWrapper = () => {

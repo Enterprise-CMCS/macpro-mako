@@ -12,6 +12,10 @@ import {
   WithdrawPackage,
   onValidSubmission as withdrawPackageSubmission,
 } from "./WithdrawPackage";
+import {
+  RespondToRai,
+  onValidSubmission as respondToRaiSubmission,
+} from "./RespondToRai";
 import { ActionWrapper } from "./ActionWrapper";
 
 export const packageActionRoutes: RouteObject = {
@@ -42,6 +46,11 @@ export const packageActionRoutes: RouteObject = {
       path: "withdraw-package",
       element: <WithdrawPackage />,
       action: withdrawPackageSubmission,
+    },
+    {
+      path: "respond-to-rai",
+      element: <RespondToRai />,
+      action: respondToRaiSubmission,
     },
   ],
 };
