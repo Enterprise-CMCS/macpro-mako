@@ -8,6 +8,10 @@ import {
   WithdrawRai,
   onValidSubmission as withdrawRaiSubmission,
 } from "./WithdrawRai";
+import {
+  WithdrawPackage,
+  onValidSubmission as withdrawPackageSubmission,
+} from "./WithdrawPackage";
 import { ActionWrapper } from "./ActionWrapper";
 
 export const packageActionRoutes: RouteObject = {
@@ -33,6 +37,11 @@ export const packageActionRoutes: RouteObject = {
       path: "disable-rai-response-withdraw",
       element: <ToggleRaiResponseWithdraw isEnabled={false} />,
       action: toggleRaiWithdrawSubmission,
+    },
+    {
+      path: "withdraw-package",
+      element: <WithdrawPackage />,
+      action: withdrawPackageSubmission,
     },
   ],
 };

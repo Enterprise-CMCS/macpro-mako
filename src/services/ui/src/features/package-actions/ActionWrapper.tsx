@@ -9,12 +9,14 @@ import { useEffect } from "react";
 import { issueRaiSchema } from "./IssueRai";
 import { withdrawRaiSchema } from "./WithdrawRai";
 import { toggleRaiResponseWithdrawSchema } from "./ToggleRaiResponseWithdraw";
+import { withdrawPackageSchema } from "./WithdrawPackage";
 
 const schemas: Record<string, AnyZodObject> = {
   "issue-rai": issueRaiSchema,
   "withdraw-rai": withdrawRaiSchema,
   "enable-rai-response-withdraw": toggleRaiResponseWithdrawSchema,
   "disable-rai-response-withdraw": toggleRaiResponseWithdrawSchema,
+  "withdraw-package": withdrawPackageSchema,
 };
 
 export const ActionWrapper = () => {
