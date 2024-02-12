@@ -7,29 +7,11 @@ import {
   ExportHeaderOptions,
 } from "./../_";
 import { z } from "zod";
-import { ItemResult as Changelog } from "./../changelog";
 import {
-  newSubmission,
-  legacySubmission,
-  withdrawPackage,
-  withdrawRai,
-  toggleWithdrawEnabled,
-  seatool,
+  type,
 } from "./transforms";
 
-export type Document = z.infer<newSubmission.Schema> &
-  z.infer<legacySubmission.Schema> &
-  z.infer<withdrawRai.Schema> &
-  z.infer<withdrawPackage.Schema> &
-  z.infer<toggleWithdrawEnabled.Schema> &
-  z.infer<seatool.Schema> &
-  {
-    type: string | null, // added by the sink
-    subType: string | null, // added by the sink
-  } &
-  {
-    changelog?: Changelog[];
-  };
+export type Document = z.infer<type.Schema>;
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {

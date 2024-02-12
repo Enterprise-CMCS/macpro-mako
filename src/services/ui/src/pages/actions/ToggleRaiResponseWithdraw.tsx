@@ -1,6 +1,6 @@
 import { Navigate, useParams } from "@/components/Routing";
 import { Alert, LoadingSpinner } from "@/components";
-import { Action, PlanType, opensearch } from "shared-types";
+import { Action, Authority, opensearch } from "shared-types";
 import { Button } from "@/components/Inputs";
 import { FC, useEffect, useMemo } from "react";
 import { useSubmissionService } from "@/api/submissionService";
@@ -16,7 +16,7 @@ export const ToggleRaiResponseWithdraw = ({
 }) => {
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const authority = item?._source.authority as PlanType;
+  const authority = item?._source.authority as Authority;
   const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
   const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
     id: string;

@@ -30,11 +30,11 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       cell: (data) => data.state,
     },
     {
-      field: "planType.keyword",
+      field: "authority.keyword",
       label: "Type",
       cell: (data) =>
-        data?.planType
-          ? removeUnderscoresAndCapitalize(data.planType)
+        data?.authority
+          ? removeUnderscoresAndCapitalize(data.authority)
           : BLANK_VALUE,
     },
     {

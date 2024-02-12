@@ -1,4 +1,4 @@
-export enum PlanType {
+export enum Authority {
   MED_SPA = "medicaid spa",
   CHIP_SPA = "chip spa",
   WAIVER = "waiver",

@@ -7,14 +7,19 @@ import {
   SeatoolOfficer,
 } from "../../..";
 
-import { PlanType } from "../../../planType";
+import {
+  Authority,
+  SEATOOL_AUTHORITIES,
+  // SEATOOL_TYPES,
+  // SEATOOL_SUB_TYPES,
+} from "shared-types";
 
-type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
+type Flavor = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
-const authorityLookup = (val: number | null): null | string => {
+const flavorLookup = (val: number | null): null | string => {
   if (!val) return null;
 
-  const lookup: Record<number, AuthorityType> = {
+  const lookup: Record<number, Flavor> = {
     122: "WAIVER",
     123: "WAIVER",
     124: "CHIP",
@@ -120,6 +125,43 @@ const isInSecondClock = (
   return false; // otherwise, we're not
 };
 
+const getAuthority = (
+  authorityId: number | undefined,
+  id: string | undefined
+) => {
+  try {
+    if (!authorityId) return null;
+    return SEATOOL_AUTHORITIES[authorityId];
+  } catch (error) {
+    console.log(`SEATOOL AUTHORITY LOOKUP ERROR: ${id} ${authorityId}`);
+    console.log(error);
+    return null;
+  }
+};
+
+function findByKeyInNestedObject(
+  obj: any,
+  itemKey: number | undefined
+): string | null {
+  try {
+    if (!itemKey) return null;
+    for (const key of Object.keys(obj)) {
+      if (key === itemKey.toString()) {
+        return obj[key];
+      } else if (typeof obj[key] === "object") {
+        const result = findByKeyInNestedObject(obj[key], itemKey);
+        if (result) {
+          return result; // Return the found value if any
+        }
+      }
+    }
+    return null;
+  } catch (error) {
+    console.log("SEATOOL LOOKUP ERROR:  " + error);
+    return null;
+  }
+}
+
 export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
@@ -130,14 +172,17 @@ export const transform = (id: string) => {
         (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
       )?.SPW_STATUS_DESC || "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
+    const authorityId = data.PLAN_TYPES?.[0].PLAN_TYPE_ID;
+    const typeId = data.STATE_PLAN_SERVICETYPES?.[0]?.SERVICE_TYPE_ID;
+    const subTypeId = data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.SERVICE_SUBTYPE_ID;
     return {
       id,
+      flavor: flavorLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
       actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE
       ),
-      authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
       changedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.CHANGED_DATE),
       description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
@@ -145,8 +190,12 @@ export const transform = (id: string) => {
       initialIntakeNeeded:
         !leadAnalystName && seatoolStatus !== SEATOOL_STATUS.WITHDRAWN,
       leadAnalystName,
-      planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME as PlanType | null,
-      planTypeId: data.STATE_PLAN.PLAN_TYPE,
+      authorityId: authorityId || null,
+      authority: getAuthority(authorityId, id) as Authority | null,
+      typeId: typeId || null,
+      // type: getType(typeId, id),
+      subTypeId: subTypeId || null,
+      // subType: getSubType(subTypeId, id),
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
@@ -165,7 +214,7 @@ export const transform = (id: string) => {
         raiReceivedDate,
         raiWithdrawnDate,
         seatoolStatus,
-        authorityLookup(data.STATE_PLAN.PLAN_TYPE)
+        flavorLookup(data.STATE_PLAN.PLAN_TYPE)
       ),
     };
   });

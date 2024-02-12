@@ -24,9 +24,9 @@ export const SELECT_STATE: DrawerFilterableGroup = {
   value: [],
 };
 
-export const CHECK_PLANTYPE: DrawerFilterableGroup = {
+export const CHECK_AUTHORITY: DrawerFilterableGroup = {
   label: "Type",
-  field: "planType.keyword",
+  field: "authority.keyword",
   component: "multiCheck",
   prefix: "must",
   type: "terms",
