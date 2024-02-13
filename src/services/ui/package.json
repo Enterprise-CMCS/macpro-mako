@@ -53,6 +53,7 @@
     "file-saver": "^2.0.5",
     "framer-motion": "^10.16.1",
     "jszip": "^3.10.1",
+    "launchdarkly-react-client-sdk": "^3.0.10",
     "lucide-react": "^0.291.0",
     "lz-string": "^1.5.0",
     "moment-timezone": "^0.5.44",
