@@ -15,6 +15,26 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   await seatool_seatool(event);
 };
 
+let subtypeCache: { [key: number]: string | null } = {};
+const getSubtype = async (id: number) => {
+  if(!id) return null;
+  if(!subtypeCache[id]){
+    let item = await os.getItem(osDomain,"subtypes",id.toString())
+    subtypeCache[id] = item?._source.name;
+  }
+  return subtypeCache[id];
+};
+
+let typeCache: { [key: number]: string | null } = {};
+const getType = async (id: number) => {
+  if(!id) return null;
+  if(!typeCache[id]){
+    let item = await os.getItem(osDomain,"types",id.toString())
+    typeCache[id] = item?._source.name;
+  }
+  return typeCache[id];
+};
+
 export const seatool_main = async (event: KafkaEvent) => {
   const docs: any[] = [];
   const records: any = {};
@@ -28,17 +48,17 @@ export const seatool_main = async (event: KafkaEvent) => {
       if (!value) {
         records[id] = {
           id,
+          flavor: null,
           actionType: null,
           actionTypeId: null,
           approvedEffectiveDate: null,
-          authority: null,
           changedDate: null,
           description: null,
           finalDispositionDate: null,
           leadAnalystName: null,
           leadAnalystOfficerId: null,
-          planType: null,
-          planTypeId: null,
+          authority: null,
+          authorityId: null,
           proposedDate: null,
           raiReceivedDate: null,
           raiRequestedDate: null,
@@ -67,12 +87,14 @@ export const seatool_main = async (event: KafkaEvent) => {
           result.error.message
         );
       } else {
-        const validPlanTypeIds = [122, 123, 124, 125];
+        const validAuthorityIds = [122, 123, 124, 125];
         if (
-          result.data.planTypeId &&
-          validPlanTypeIds.includes(result.data.planTypeId)
+          result.data.authorityId &&
+          validAuthorityIds.includes(result.data.authorityId)
         ) {
-          records[id] = result.data;
+            let type = result.data.typeId ? await getType(result.data.typeId) : null
+            let subType = result.data.subTypeId ? await getSubtype(result.data.subTypeId) : null
+            records[id] = {...result.data, type, subType};
         }
       }
     }

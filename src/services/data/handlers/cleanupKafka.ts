@@ -46,11 +46,13 @@ export const handler = async function (
         console.error(`Failed to delete topics after ${maxRetries} retries.`);
         responseStatus = FAILED;
       }
+      await send(event, context, responseStatus, responseData, undefined);
+    } else {
+      await send(event, context, responseStatus, responseData, "static");
     }
   } catch (error) {
     console.error(error);
     responseStatus = FAILED;
-  } finally {
     await send(event, context, responseStatus, responseData, "static");
   }
 };

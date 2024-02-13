@@ -32,6 +32,7 @@ provider:
             - lambda:PutFunctionConcurrency
             - lambda:DeleteEventSourceMapping
             - lambda:UpdateEventSourceMapping
+            - lambda:GetEventSourceMapping
           Resource: "*"
         - Effect: Allow
           Action:
@@ -55,6 +56,11 @@ provider:
           Action:
             - sts:AssumeRole
           Resource: !GetAtt OpenSearchMasterRole.Arn
+        - Effect: Allow
+          Action:
+            - states:StartExecution
+          Resource:
+            - !Sub arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${self:service}-${sls:stage}-reindex
 
   stackTags:
     PROJECT: ${self:custom.project}
@@ -90,60 +96,172 @@ stepFunctions:
           - !GetAtt StateMachineLogGroup.Arn
       definition:
         Comment: "A state machine to reindex the OpenSearch index."
-        StartAt: DisableTriggers
+        StartAt: MapRole
         States:
-          DisableTriggers:
+          MapRole:
             Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-disableTriggers"
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-mapRole"
             Parameters:
               Context.$: $$
-            Next: GetConsumerGroupStatus
-          GetConsumerGroupStatus:
+            Next: DeleteAllTriggers
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
+          DeleteAllTriggers:
             Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getConsumerGroupStatus"
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteTriggers"
             Parameters:
               Context.$: $$
-            Next: IsConsumerGroupReady
-          IsConsumerGroupReady:
-            Type: Choice
-            Choices:
-              - Variable: $.ready
-                BooleanEquals: true
-                Next: ResetConsumerGroups
-              - Variable: $.ready
-                BooleanEquals: false
-                Next: Wait10Seconds
-            Default: Wait10Seconds
-          Wait10Seconds:
-            Type: Wait
-            Seconds: 10
-            Next: GetConsumerGroupStatus
-          ResetConsumerGroups:
-            Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-resetConsumerGroups"
-            Parameters:
-              Context.$: $$
+              Functions:
+                - !Ref SinkSeatoolLambdaFunction
+                - !Ref SinkOnemacLambdaFunction
+                - !Ref SinkLookupDataLambdaFunction
             Next: DeleteIndex
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
           DeleteIndex:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteIndex"
             Parameters:
               Context.$: $$
             Next: SetupIndex
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
           SetupIndex:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-setupIndex"
             Parameters:
               Context.$: $$
-            Next: EnableTriggers
-          EnableTriggers:
+            Next: CreateLookupIndexSinks
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
+          CreateLookupIndexSinks:
             Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-enableTriggers"
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-createTriggers"
             Parameters:
               Context.$: $$
+              BrokerString: ${self:custom.brokerString}
+              SecurityGroup: !Sub security_group:${SecurityGroup}
+              Subnets:
+                - ${self:custom.vpc.privateSubnets.0}
+                - ${self:custom.vpc.privateSubnets.1}
+                - ${self:custom.vpc.privateSubnets.2}
+
+              Triggers:
+                - Function: !Ref SinkLookupDataLambdaFunction
+                  BatchSize: 10000
+                  Topics:
+                    - aws.seatool.cmcs.dbo.SPA_Type
+                    - aws.seatool.cmcs.dbo.Type
+            Next: CheckConsumerLagForLookupSinks
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
+          CheckConsumerLagForLookupSinks:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-checkConsumerLag"
+            Parameters:
+              Context.$: $$
+              Triggers:
+                - Function: !Ref SinkLookupDataLambdaFunction
+                  Topics:
+                    - aws.seatool.cmcs.dbo.SPA_Type
+                    - aws.seatool.cmcs.dbo.Type
+              BrokerString: ${self:custom.brokerString}
+            Next: IsLookupIndexReady
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
+          IsLookupIndexReady:
+            Type: Choice
+            Choices:
+              - Variable: $.ready
+                BooleanEquals: true
+                Next: CreateDataSinks
+              - Variable: $.ready
+                BooleanEquals: false
+                Next: WaitForLookupSinks
+            Default: WaitForLookupSinks
+          WaitForLookupSinks:
+            Type: Wait
+            Seconds: 10
+            Next: CheckConsumerLagForLookupSinks
+          CreateDataSinks:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-createTriggers"
+            Parameters:
+              Context.$: $$
+              BrokerString: ${self:custom.brokerString}
+              SecurityGroup: !Sub security_group:${SecurityGroup}
+              Subnets:
+                - ${self:custom.vpc.privateSubnets.0}
+                - ${self:custom.vpc.privateSubnets.1}
+                - ${self:custom.vpc.privateSubnets.2}
+              Triggers:
+                - Function: !Ref SinkSeatoolLambdaFunction
+                  Topics:
+                    - aws.ksqldb.seatool.agg.State_Plan
+                - Function: !Ref SinkOnemacLambdaFunction
+                  Topics:
+                    - aws.onemac.migration.cdc
+                    - ${param:topicNamespace}aws.onemac.migration.cdc
+            Next: CheckConsumerLagForDataSinks
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
+          CheckConsumerLagForDataSinks:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-checkConsumerLag"
+            Parameters:
+              Context.$: $$
+              Triggers:
+                - Function: !Ref SinkSeatoolLambdaFunction
+                  Topics:
+                    - aws.ksqldb.seatool.agg.State_Plan
+                - Function: !Ref SinkOnemacLambdaFunction
+                  Topics:
+                    - aws.onemac.migration.cdc
+                    - ${param:topicNamespace}aws.onemac.migration.cdc
+              BrokerString: ${self:custom.brokerString}
+            Next: IsDataIndexReady
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
+          IsDataIndexReady:
+            Type: Choice
+            Choices:
+              - Variable: $.ready
+                BooleanEquals: true
+                Next: NotifyOfSuccess
+              - Variable: $.ready
+                BooleanEquals: false
+                Next: WaitForDataSinks
+            Default: WaitForDataSinks
+          WaitForDataSinks:
+            Type: Wait
+            Seconds: 10
+            Next: CheckConsumerLagForDataSinks
+          NotifyOfSuccess:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-cfnNotify"
+            Parameters:
+              Context.$: $$
+              Success: true
             Next: SuccessState
+          NotifyOfFailure:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-cfnNotify"
+            Parameters:
+              Context.$: $$
+              Success: false
+            Next: FailureState
           SuccessState:
             Type: Succeed
+          FailureState:
+            Type: Fail
 
 params:
   master:
@@ -188,22 +306,21 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-  disableTriggers:
-    handler: handlers/reindex.toggleTriggers
-    timeout: 60
+  sinkLookupData:
+    handler: handlers/sinkLookupData.handler
     environment:
       region: ${self:provider.region}
-      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
-      enabled: false
-  enableTriggers:
-    handler: handlers/reindex.toggleTriggers
+      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+    maximumRetryAttempts: 0
     timeout: 60
-    environment:
-      region: ${self:provider.region}
-      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
-      enabled: true
-  getConsumerGroupStatus:
-    handler: handlers/reindex.getConsumerGroupStatus
+    memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  checkConsumerLag:
+    handler: handlers/checkConsumerLag.handler
     timeout: 900
     vpc:
       securityGroupIds:
@@ -212,22 +329,9 @@ functions:
         ${self:custom.vpc.privateSubnets}
     environment:
       region: ${self:provider.region}
-      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
-      brokerString: ${self:custom.brokerString}
-  resetConsumerGroups:
-    handler: handlers/reindex.resetConsumerGroups
-    timeout: 900
-    vpc:
-      securityGroupIds:
-        - Ref: SecurityGroup
-      subnetIds: >-
-        ${self:custom.vpc.privateSubnets}
-    environment:
-      region: ${self:provider.region}
-      functions: !Sub "${SinkSeatoolLambdaFunction},${SinkOnemacLambdaFunction}"
       brokerString: ${self:custom.brokerString}
   deleteIndex:
-    handler: handlers/reindex.deleteIndex
+    handler: handlers/deleteIndex.handler
     environment:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
@@ -261,6 +365,9 @@ functions:
     environment:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+      masterRoleToAssume: !GetAtt OpenSearchMasterRole.Arn
+      osRoleName: all_access
+      iamRoleName: !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
     maximumRetryAttempts: 0
     timeout: 10
     memorySize: 1024
@@ -275,21 +382,8 @@ functions:
       userPoolId: !Ref CognitoUserPool
       bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
       region: ${self:provider.region}
-  setupIndexCustomResource:
-    handler: handlers/index.customResourceWrapper
-    environment:
-      region: ${self:provider.region}
-      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
-    maximumRetryAttempts: 0
-    timeout: 60
-    memorySize: 1024
-    vpc:
-      securityGroupIds:
-        - Ref: SecurityGroup
-      subnetIds: >-
-        ${self:custom.vpc.privateSubnets}
   setupIndex:
-    handler: handlers/index.handler
+    handler: handlers/setupIndex.handler
     environment:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
@@ -301,6 +395,31 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
+  runReindex:
+    handler: handlers/runReindex.handler
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
+  cfnNotify:
+    handler: handlers/cfnNotify.handler
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
+  createTriggers:
+    handler: handlers/createTriggers.handler
+    timeout: 900
+    environment:
+      region: ${self:provider.region}
+  deleteTriggers:
+    handler: handlers/deleteTriggers.handler
+    timeout: 900
+    environment:
+      region: ${self:provider.region}
+  cleanupTriggersOnDelete:
+    handler: handlers/deleteTriggers.customResourceWrapper
+    timeout: 900
+    environment:
+      region: ${self:provider.region}
 
 resources:
   Conditions:
@@ -314,31 +433,11 @@ resources:
       Type: AWS::Logs::LogGroup
       Properties:
         LogGroupName: /aws/vendedlogs/states/${self:service}-${sls:stage}-reindex
-    SinkSeatoolTrigger:
-      Type: AWS::Lambda::EventSourceMapping
+    RunReindex:
+      Type: Custom::RunReindex
       Properties:
-        BatchSize: 1000
-        Enabled: true
-        FunctionName: !GetAtt SinkSeatoolLambdaFunction.Arn
-        SelfManagedEventSource:
-          Endpoints:
-            KafkaBootstrapServers:
-              Fn::Split:
-                - ","
-                - ${self:custom.brokerString}
-        SourceAccessConfigurations:
-          - Type: VPC_SUBNET
-            URI: subnet:${self:custom.vpc.privateSubnets.0}
-          - Type: VPC_SUBNET
-            URI: subnet:${self:custom.vpc.privateSubnets.1}
-          - Type: VPC_SUBNET
-            URI: subnet:${self:custom.vpc.privateSubnets.2}
-          - Type: VPC_SECURITY_GROUP
-            URI: !Sub security_group:${SecurityGroup}
-        StartingPosition: TRIM_HORIZON
-        Topics:
-          - aws.ksqldb.seatool.agg.State_Plan
-      DependsOn: SetupIndex
+        ServiceToken: !GetAtt RunReindexLambdaFunction.Arn
+        StateMachine: !Ref ReindexDataStateMachine
     CloudWatchAlarmForSinkSeatoolTriggerErrors:
       Type: AWS::CloudWatch::Alarm
       Properties:
@@ -357,56 +456,6 @@ resources:
         Threshold: 1
         AlarmActions:
           - ${param:ECSFailureTopicArn}
-    SinkOnemacTrigger:
-      Type: AWS::Lambda::EventSourceMapping
-      Properties:
-        BatchSize: 1000
-        Enabled: true
-        FunctionName: !GetAtt SinkOnemacLambdaFunction.Arn
-        SelfManagedEventSource:
-          Endpoints:
-            KafkaBootstrapServers:
-              Fn::Split:
-                - ","
-                - ${self:custom.brokerString}
-        SourceAccessConfigurations:
-          - Type: VPC_SUBNET
-            URI: subnet:${self:custom.vpc.privateSubnets.0}
-          - Type: VPC_SUBNET
-            URI: subnet:${self:custom.vpc.privateSubnets.1}
-          - Type: VPC_SUBNET
-            URI: subnet:${self:custom.vpc.privateSubnets.2}
-          - Type: VPC_SECURITY_GROUP
-            URI: !Sub security_group:${SecurityGroup}
-        StartingPosition: TRIM_HORIZON
-        Topics:
-          - aws.onemac.migration.cdc # We always want to sink onemacs data
-    SinkOnemacNamespacedTopicTrigger:
-      Type: AWS::Lambda::EventSourceMapping
-      Condition: isDev # We will only sink the namespaced topic if we're in a dev env
-      Properties:
-        BatchSize: 1000
-        Enabled: true
-        FunctionName: !GetAtt SinkOnemacLambdaFunction.Arn
-        SelfManagedEventSource:
-          Endpoints:
-            KafkaBootstrapServers:
-              Fn::Split:
-                - ","
-                - ${self:custom.brokerString}
-        SourceAccessConfigurations:
-          - Type: VPC_SUBNET
-            URI: subnet:${self:custom.vpc.privateSubnets.0}
-          - Type: VPC_SUBNET
-            URI: subnet:${self:custom.vpc.privateSubnets.1}
-          - Type: VPC_SUBNET
-            URI: subnet:${self:custom.vpc.privateSubnets.2}
-          - Type: VPC_SECURITY_GROUP
-            URI: !Sub security_group:${SecurityGroup}
-        StartingPosition: TRIM_HORIZON
-        Topics:
-          - ${param:topicNamespace}aws.onemac.migration.cdc
-      DependsOn: SetupIndex
     CloudWatchAlarmForSinkOnemacTriggerErrors:
       Type: AWS::CloudWatch::Alarm
       Properties:
@@ -624,7 +673,6 @@ resources:
               - - ${self:custom.vpc.privateSubnets.0}
               - >-
                 ${self:custom.vpc.privateSubnets}
-
     OpenSearchRole:
       Type: AWS::IAM::Role
       Properties:
@@ -686,13 +734,6 @@ resources:
       Type: AWS::Logs::LogGroup
       Properties:
         LogGroupName: /aws/opensearch/${self:service}-${sls:stage}-error
-    MapRole:
-      Type: Custom::ClusterInfo
-      Properties:
-        ServiceToken: !GetAtt MapRoleLambdaFunction.Arn
-        MasterRoleToAssume: !GetAtt OpenSearchMasterRole.Arn
-        OSRoleName: all_access
-        IAMRoleName: !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
     CreateTopics:
       Type: AWS::CloudFormation::CustomResource
       Properties:
@@ -708,11 +749,14 @@ resources:
         BrokerString: ${self:custom.brokerString}
         TopicPatternsToDelete:
           - ${param:topicNamespace}aws.onemac.migration.cdc
-    SetupIndex:
-      Type: Custom::SetupIndex
+    CleanupTriggersOnDelete:
+      Type: Custom::CleanupTriggersOnDelete
       Properties:
-        ServiceToken: !GetAtt SetupIndexCustomResourceLambdaFunction.Arn
-      DependsOn: MapRole # This lambda needs the roles mapped before setting up the index
+        ServiceToken: !GetAtt CleanupTriggersOnDeleteLambdaFunction.Arn
+        Functions:
+          - !Ref SinkOnemacLambdaFunction
+          - !Ref SinkSeatoolLambdaFunction
+          - !Ref SinkLookupDataLambdaFunction
   Outputs:
     OpenSearchDomainArn:
       Value: !GetAtt OpenSearch.Arn

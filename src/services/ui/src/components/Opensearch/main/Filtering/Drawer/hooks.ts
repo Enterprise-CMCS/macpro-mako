@@ -26,7 +26,7 @@ export const useFilterState = () => {
     if (url.state.tab === "spas") {
       return {
         [C.SELECT_STATE.field]: C.SELECT_STATE,
-        [C.CHECK_PLANTYPE.field]: C.CHECK_PLANTYPE,
+        [C.CHECK_AUTHORITY.field]: C.CHECK_AUTHORITY,
         ...(() => {
           if (isCms) return { [C.CHECK_CMSSTATUS.field]: C.CHECK_CMSSTATUS };
           return { [C.CHECK_STATESTATUS.field]: C.CHECK_STATESTATUS };
@@ -45,7 +45,7 @@ export const useFilterState = () => {
     if (url.state.tab === "waivers") {
       return {
         [C.SELECT_STATE.field]: C.SELECT_STATE,
-        [C.CHECK_PLANTYPE.field]: C.CHECK_PLANTYPE,
+        [C.CHECK_AUTHORITY.field]: C.CHECK_AUTHORITY,
         [C.CHECK_ACTIONTYPE.field]: C.CHECK_ACTIONTYPE,
         ...(() => {
           if (isCms) return { [C.CHECK_CMSSTATUS.field]: C.CHECK_CMSSTATUS };
