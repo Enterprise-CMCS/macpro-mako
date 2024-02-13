@@ -55,6 +55,11 @@ provider:
           Action:
             - sts:AssumeRole
           Resource: !GetAtt OpenSearchMasterRole.Arn
+        - Effect: Allow
+          Action:
+            - states:StartExecution
+          Resource:
+            - !Sub arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${self:service}-${sls:stage}-reindex
 
   stackTags:
     PROJECT: ${self:custom.project}
@@ -98,6 +103,9 @@ stepFunctions:
             Parameters:
               Context.$: $$
             Next: DisableAllTriggers
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
           DisableAllTriggers:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-toggleTriggers"
@@ -109,6 +117,9 @@ stepFunctions:
                 - !Ref SinkLookupDataLambdaFunction
               Enabled: false
             Next: GetConsumerGroupStatus
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
           GetConsumerGroupStatus:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getConsumerGroupStatus"
@@ -120,6 +131,9 @@ stepFunctions:
                 - !Ref SinkLookupDataLambdaFunction
               BrokerString: ${self:custom.brokerString}
             Next: IsConsumerGroupReady
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
           IsConsumerGroupReady:
             Type: Choice
             Choices:
@@ -145,18 +159,27 @@ stepFunctions:
                 - !Ref SinkLookupDataLambdaFunction
               BrokerString: ${self:custom.brokerString}
             Next: DeleteIndex
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
           DeleteIndex:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteIndex"
             Parameters:
               Context.$: $$
             Next: SetupIndex
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
           SetupIndex:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-setupIndex"
             Parameters:
               Context.$: $$
             Next: EnableLookupIndexSink
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
           EnableLookupIndexSink:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-toggleTriggers"
@@ -166,6 +189,9 @@ stepFunctions:
                 - !Ref SinkLookupDataLambdaFunction
               Enabled: true
             Next: CheckConsumerLagForLookupSinks
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
           CheckConsumerLagForLookupSinks:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getLookupLag"
@@ -175,6 +201,9 @@ stepFunctions:
                 - !Ref SinkLookupDataLambdaFunction
               BrokerString: ${self:custom.brokerString}
             Next: IsLookupIndexReady
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
           IsLookupIndexReady:
             Type: Choice
             Choices:
@@ -198,9 +227,28 @@ stepFunctions:
                 - !Ref SinkSeatoolLambdaFunction
                 - !Ref SinkOnemacLambdaFunction
               Enabled: true
+            Next: NotifyOfSuccess
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
+          NotifyOfSuccess:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-cfnNotify"
+            Parameters:
+              Context.$: $$
+              Success: true
             Next: SuccessState
+          NotifyOfFailure:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-cfnNotify"
+            Parameters:
+              Context.$: $$
+              Success: false
+            Next: FailureState
           SuccessState:
             Type: Succeed
+          FailureState:
+            Type: Fail
 
 params:
   master:
@@ -362,6 +410,11 @@ functions:
         ${self:custom.vpc.privateSubnets}
   runReindex:
     handler: handlers/runReindex.handler
+    timeout: 60
+    environment:
+      region: ${self:provider.region}
+  cfnNotify:
+    handler: handlers/cfnNotify.handler
     timeout: 60
     environment:
       region: ${self:provider.region}

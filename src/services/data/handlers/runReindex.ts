@@ -1,20 +1,30 @@
 import { Handler } from "aws-lambda";
 import { send, SUCCESS, FAILED } from "cfn-response-async";
-type ResponseStatus = typeof SUCCESS | typeof FAILED;
+import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
 
 export const handler: Handler = async (event, context) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
-  const responseData = {};
-  let responseStatus: ResponseStatus = SUCCESS;
   try {
-    if (event.RequestType == "Create" || event.RequestType == "Update") {
-      console.log(event.ResourceProperties.StateMachine)
+    if (event.RequestType == "Create") {
+      const stepFunctionsClient = new SFNClient({}); 
+      const stateMachineArn = event.ResourceProperties.StateMachine;
+
+      const startExecutionCommand = new StartExecutionCommand({
+        stateMachineArn: stateMachineArn,
+        input: JSON.stringify({
+          cfnEvent: event,
+          cfnContext: context
+        }),
+      });
+
+      const execution = await stepFunctionsClient.send(startExecutionCommand);
+      console.log(`State machine execution started: ${execution.executionArn}`);
+      console.log(`The state machine is now in charge of this resource, and will notify of success or failure upon completion.`);
+    } else {
+      await send(event, context, SUCCESS, {});
     }
   } catch (error) {
     console.log(error);
-    responseStatus = FAILED;
-  } finally {
-    console.log("finally");
-    await send(event, context, responseStatus, responseData);
+    await send(event, context, FAILED, {});
   }
 };
