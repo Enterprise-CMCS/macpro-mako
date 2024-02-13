@@ -1,5 +1,5 @@
 import { Handler } from "aws-lambda";
-import { CreateEventSourceMappingCommand, GetEventSourceMappingCommand, LambdaClient, ListEventSourceMappingsCommand, UpdateEventSourceMappingCommand } from "@aws-sdk/client-lambda";
+import { CreateEventSourceMappingCommand, CreateEventSourceMappingCommandInput, GetEventSourceMappingCommand, LambdaClient, ListEventSourceMappingsCommand, UpdateEventSourceMappingCommand } from "@aws-sdk/client-lambda";
 
 export const handler: Handler = async (event, _, callback) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
@@ -32,7 +32,7 @@ export const handler: Handler = async (event, _, callback) => {
           Topics: [topic],
         };
         console.log(JSON.stringify(createEventSourceMappingParams,null,2));
-        const command = new CreateEventSourceMappingCommand(createEventSourceMappingParams);
+        const command = new CreateEventSourceMappingCommand(createEventSourceMappingParams as CreateEventSourceMappingCommandInput);
         const result = await lambdaClient.send(command);
         uuidsToCheck.push(result.UUID);
         console.log(result);
