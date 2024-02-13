@@ -27,6 +27,8 @@ import { useModalContext } from "@/components/Context/modalContext";
 import { useNavigate } from "@/components/Routing";
 import { useAlertContext } from "@/components/Context/alertContext";
 import { useCallback } from "react";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { useQuery as useQueryString } from "@/hooks";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,
@@ -68,11 +70,13 @@ export const Contracting1915BWaiverAmendmentPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
+  const urlQuery = useQueryString();
   const alert = useAlertContext();
   const modal = useModalContext();
-  const modalAcceptAction = useCallback(() => {
+  const originPath = useOriginPath();
+  const cancelOnAccept = useCallback(() => {
     modal.setModalOpen(false);
-    navigate({ path: "/dashboard" });
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const handleSubmit: SubmitHandler<Waiver1915BContractingAmendment> = async (
     formData
@@ -89,8 +93,14 @@ export const Contracting1915BWaiverAmendmentPage = () => {
         body: "Your submission has been received.",
       });
       alert.setBannerShow(true);
-      alert.setBannerDisplayOn("/dashboard");
-      navigate({ path: "/dashboard" }, { state: { callout: true } });
+      alert.setBannerDisplayOn(
+        // This uses the originRoute map because this value doesn't work
+        // when any queries are added, such as the case of /details?id=...
+        urlQuery.get(ORIGIN)
+          ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+          : "/dashboard"
+      );
+      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
       console.error(e);
     }
@@ -279,7 +289,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
                   acceptButtonText: "Yes, leave form",
                   cancelButtonText: "Return to form",
                 });
-                modal.setOnAccept(() => modalAcceptAction);
+                modal.setOnAccept(() => cancelOnAccept);
                 modal.setModalOpen(true);
               }}
             >
