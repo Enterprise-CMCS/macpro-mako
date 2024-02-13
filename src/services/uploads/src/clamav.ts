@@ -210,14 +210,7 @@ export const scanLocalFile = (pathToFile: string): string | null => {
   try {
     const avResult: SpawnSyncReturns<Buffer> = spawnSync(
       constants.PATH_TO_CLAMAV,
-      [
-        "--stdout",
-        "-v",
-        "-a",
-        "-d",
-        constants.FRESHCLAM_WORK_DIR,
-        pathToFile,
-      ]
+      ["--stdout", "-v", "-a", "-d", constants.FRESHCLAM_WORK_DIR, pathToFile]
     );
 
     // status 1 means that the file is infected.
