@@ -32,6 +32,7 @@ provider:
             - lambda:PutFunctionConcurrency
             - lambda:DeleteEventSourceMapping
             - lambda:UpdateEventSourceMapping
+            - lambda:GetEventSourceMapping
           Resource: "*"
         - Effect: Allow
           Action:
@@ -176,18 +177,28 @@ stepFunctions:
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-setupIndex"
             Parameters:
               Context.$: $$
-            Next: EnableLookupIndexSink
+            Next: CreateLookupIndexSinks
             Catch:
               - ErrorEquals: ["States.ALL"]
                 Next: NotifyOfFailure
-          EnableLookupIndexSink:
+          CreateLookupIndexSinks:
             Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-toggleTriggers"
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-createTriggers"
             Parameters:
               Context.$: $$
-              Functions:
-                - !Ref SinkLookupDataLambdaFunction
-              Enabled: true
+              BrokerString: ${self:custom.brokerString}
+              SecurityGroup: !Sub security_group:${SecurityGroup}
+              Subnets:
+                - ${self:custom.vpc.privateSubnets.0}
+                - ${self:custom.vpc.privateSubnets.1}
+                - ${self:custom.vpc.privateSubnets.2}
+
+              Triggers:
+                - Function: !Ref SinkLookupDataLambdaFunction
+                  BatchSize: 10000
+                  Topics:
+                    - aws.seatool.cmcs.dbo.SPA_Type
+                    - aws.seatool.cmcs.dbo.Type
             Next: CheckConsumerLagForLookupSinks
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -209,7 +220,7 @@ stepFunctions:
             Choices:
               - Variable: $.ready
                 BooleanEquals: true
-                Next: EnableDataSink
+                Next: CreateDataSinks
               - Variable: $.ready
                 BooleanEquals: false
                 Next: Wait10Seconds2
@@ -217,16 +228,26 @@ stepFunctions:
           Wait10Seconds2:
             Type: Wait
             Seconds: 10
-            Next: EnableDataSink
-          EnableDataSink:
+            Next: CheckConsumerLagForLookupSinks
+          CreateDataSinks:
             Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-toggleTriggers"
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-createTriggers"
             Parameters:
               Context.$: $$
-              Functions:
-                - !Ref SinkSeatoolLambdaFunction
-                - !Ref SinkOnemacLambdaFunction
-              Enabled: true
+              BrokerString: ${self:custom.brokerString}
+              SecurityGroup: !Sub security_group:${SecurityGroup}
+              Subnets:
+                - ${self:custom.vpc.privateSubnets.0}
+                - ${self:custom.vpc.privateSubnets.1}
+                - ${self:custom.vpc.privateSubnets.2}
+              Triggers:
+                - Function: !Ref SinkSeatoolLambdaFunction
+                  Topics:
+                    - aws.ksqldb.seatool.agg.State_Plan
+                - Function: !Ref SinkOnemacLambdaFunction
+                  Topics:
+                    - aws.onemac.migration.cdc
+                    - ${param:topicNamespace}aws.onemac.migration.cdc
             Next: NotifyOfSuccess
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -418,6 +439,11 @@ functions:
     timeout: 60
     environment:
       region: ${self:provider.region}
+  createTriggers:
+    handler: handlers/createTriggers.handler
+    timeout: 900
+    environment:
+      region: ${self:provider.region}
 
 resources:
   Conditions:
@@ -436,131 +462,6 @@ resources:
       Properties:
         ServiceToken: !GetAtt RunReindexLambdaFunction.Arn
         StateMachine: !Ref ReindexDataStateMachine
-    # SinkTypesTrigger:
-    #   Type: AWS::Lambda::EventSourceMapping
-    #   Properties:
-    #     BatchSize: 10000
-    #     Enabled: true
-    #     FunctionName: !GetAtt SinkLookupDataLambdaFunction.Arn
-    #     SelfManagedEventSource:
-    #       Endpoints:
-    #         KafkaBootstrapServers:
-    #           Fn::Split:
-    #             - ","
-    #             - ${self:custom.brokerString}
-    #     SourceAccessConfigurations:
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.0}
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.1}
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.2}
-    #       - Type: VPC_SECURITY_GROUP
-    #         URI: !Sub security_group:${SecurityGroup}
-    #     StartingPosition: TRIM_HORIZON
-    #     Topics:
-    #       - aws.seatool.cmcs.dbo.SPA_Type
-    #   DependsOn: SetupIndex
-    # SinkSubTypesTrigger:
-    #   Type: AWS::Lambda::EventSourceMapping
-    #   Properties:
-    #     BatchSize: 10000
-    #     Enabled: true
-    #     FunctionName: !GetAtt SinkLookupDataLambdaFunction.Arn
-    #     SelfManagedEventSource:
-    #       Endpoints:
-    #         KafkaBootstrapServers:
-    #           Fn::Split:
-    #             - ","
-    #             - ${self:custom.brokerString}
-    #     SourceAccessConfigurations:
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.0}
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.1}
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.2}
-    #       - Type: VPC_SECURITY_GROUP
-    #         URI: !Sub security_group:${SecurityGroup}
-    #     StartingPosition: TRIM_HORIZON
-    #     Topics:
-    #       - aws.seatool.cmcs.dbo.Type
-    #   DependsOn: SetupIndex
-    # SinkSeatoolTrigger:
-    #   Type: AWS::Lambda::EventSourceMapping
-    #   Properties:
-    #     BatchSize: 1000
-    #     Enabled: true
-    #     FunctionName: !GetAtt SinkSeatoolLambdaFunction.Arn
-    #     SelfManagedEventSource:
-    #       Endpoints:
-    #         KafkaBootstrapServers:
-    #           Fn::Split:
-    #             - ","
-    #             - ${self:custom.brokerString}
-    #     SourceAccessConfigurations:
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.0}
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.1}
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.2}
-    #       - Type: VPC_SECURITY_GROUP
-    #         URI: !Sub security_group:${SecurityGroup}
-    #     StartingPosition: TRIM_HORIZON
-    #     Topics:
-    #       - aws.ksqldb.seatool.agg.State_Plan
-    #   DependsOn: SetupIndex
-    # SinkOnemacTrigger:
-    #   Type: AWS::Lambda::EventSourceMapping
-    #   Properties:
-    #     BatchSize: 1000
-    #     Enabled: true
-    #     FunctionName: !GetAtt SinkOnemacLambdaFunction.Arn
-    #     SelfManagedEventSource:
-    #       Endpoints:
-    #         KafkaBootstrapServers:
-    #           Fn::Split:
-    #             - ","
-    #             - ${self:custom.brokerString}
-    #     SourceAccessConfigurations:
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.0}
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.1}
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.2}
-    #       - Type: VPC_SECURITY_GROUP
-    #         URI: !Sub security_group:${SecurityGroup}
-    #     StartingPosition: TRIM_HORIZON
-    #     Topics:
-    #       - aws.onemac.migration.cdc # We always want to sink onemacs data
-    # SinkOnemacNamespacedTopicTrigger:
-    #   Type: AWS::Lambda::EventSourceMapping
-    #   Condition: isDev # We will only sink the namespaced topic if we're in a dev env
-    #   Properties:
-    #     BatchSize: 1000
-    #     Enabled: true
-    #     FunctionName: !GetAtt SinkOnemacLambdaFunction.Arn
-    #     SelfManagedEventSource:
-    #       Endpoints:
-    #         KafkaBootstrapServers:
-    #           Fn::Split:
-    #             - ","
-    #             - ${self:custom.brokerString}
-    #     SourceAccessConfigurations:
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.0}
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.1}
-    #       - Type: VPC_SUBNET
-    #         URI: subnet:${self:custom.vpc.privateSubnets.2}
-    #       - Type: VPC_SECURITY_GROUP
-    #         URI: !Sub security_group:${SecurityGroup}
-    #     StartingPosition: TRIM_HORIZON
-    #     Topics:
-    #       - ${param:topicNamespace}aws.onemac.migration.cdc
-    #   DependsOn: SetupIndex
     CloudWatchAlarmForSinkSeatoolTriggerErrors:
       Type: AWS::CloudWatch::Alarm
       Properties:
