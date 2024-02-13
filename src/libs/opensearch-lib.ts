@@ -102,7 +102,7 @@ export async function mapRole(
           path: "/and_backend_roles",
           value: [iamRoleName],
         },
-      ],
+      ]
     );
     return patchResponse.data;
   } catch (error) {
