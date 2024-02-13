@@ -25,6 +25,8 @@ import { useNavigate, useParams } from "@/components/Routing";
 import { useGetUser } from "@/api/useGetUser";
 import { useCallback } from "react";
 import { useAlertContext } from "@/components/Context/alertContext";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { useQuery as useQueryString } from "@/hooks";
 
 export const WithdrawRai = ({
   item,
@@ -32,6 +34,7 @@ export const WithdrawRai = ({
   attachments,
 }: FormSetup & { item: opensearch.main.ItemResult }) => {
   const navigate = useNavigate();
+  const urlQuery = useQueryString();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const form = useForm({
@@ -39,9 +42,10 @@ export const WithdrawRai = ({
   });
   const modal = useModalContext();
   const alert = useAlertContext();
+  const originPath = useOriginPath();
   const cancelOnAccept = useCallback(() => {
     modal.setModalOpen(false);
-    navigate({ path: "/dashboard" });
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const confirmOnAccept = useCallback(() => {
     modal.setModalOpen(false);
@@ -58,8 +62,14 @@ export const WithdrawRai = ({
           body: `The RAI response for ${item._source.id} has been withdrawn. CMS may follow up if additional information is needed.`,
         });
         alert.setBannerShow(true);
-        alert.setBannerDisplayOn("/dashboard");
-        navigate({ path: "/dashboard" });
+        alert.setBannerDisplayOn(
+          // This uses the originRoute map because this value doesn't work
+          // when any queries are added, such as the case of /details?id=...
+          urlQuery.get(ORIGIN)
+            ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+            : "/dashboard"
+        );
+        navigate(originPath ? { path: originPath } : { path: "/dashboard" });
       } catch (e) {
         console.error(e);
       }

@@ -9,6 +9,8 @@ import { useGetUser } from "@/api/useGetUser";
 import { ActionFormIntro, PackageInfo } from "@/pages/actions/common";
 import { useModalContext } from "@/components/Context/modalContext";
 import { useAlertContext } from "@/components/Context/alertContext";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { useQuery as useQueryString } from "@/hooks";
 
 export const ToggleRaiResponseWithdraw = ({
   item,
@@ -16,13 +18,15 @@ export const ToggleRaiResponseWithdraw = ({
   item?: opensearch.main.ItemResult;
 }) => {
   const navigate = useNavigate();
+  const urlQuery = useQueryString();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const modal = useModalContext();
   const alert = useAlertContext();
+  const originPath = useOriginPath();
   const acceptAction = useCallback(() => {
     modal.setModalOpen(false);
-    navigate({ path: "/dashboard" });
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
     id: string;
@@ -48,8 +52,14 @@ export const ToggleRaiResponseWithdraw = ({
             : "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
       });
       alert.setBannerShow(true);
-      alert.setBannerDisplayOn("/dashboard");
-      navigate({ path: "/dashboard" });
+      alert.setBannerDisplayOn(
+        // This uses the originRoute map because this value doesn't work
+        // when any queries are added, such as the case of /details?id=...
+        urlQuery.get(ORIGIN)
+          ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+          : "/dashboard"
+      );
+      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     }
   }, [isSuccess]);
 

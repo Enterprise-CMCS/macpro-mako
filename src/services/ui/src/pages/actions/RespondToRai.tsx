@@ -24,6 +24,8 @@ import { useNavigate, useParams } from "@/components/Routing";
 import { useGetUser } from "@/api/useGetUser";
 import { useCallback } from "react";
 import { useAlertContext } from "@/components/Context/alertContext";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { useQuery as useQueryString } from "@/hooks";
 
 export const RespondToRai = ({
   item,
@@ -33,13 +35,15 @@ export const RespondToRai = ({
   item: opensearch.main.ItemResult;
 }) => {
   const navigate = useNavigate();
+  const urlQuery = useQueryString();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const modal = useModalContext();
   const alert = useAlertContext();
+  const originPath = useOriginPath();
   const acceptAction = useCallback(() => {
     modal.setModalOpen(false);
-    navigate({ path: "/dashboard" });
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const form = useForm({
     resolver: zodResolver(schema),
@@ -61,8 +65,16 @@ export const RespondToRai = ({
               body: `The RAI response for ${item._source.id} has been submitted.`,
             });
             alert.setBannerShow(true);
-            alert.setBannerDisplayOn("/dashboard");
-            navigate({ path: "/dashboard" });
+            alert.setBannerDisplayOn(
+              // This uses the originRoute map because this value doesn't work
+              // when any queries are added, such as the case of /details?id=...
+              urlQuery.get(ORIGIN)
+                ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+                : "/dashboard"
+            );
+            navigate(
+              originPath ? { path: originPath } : { path: "/dashboard" }
+            );
           } catch (e) {
             console.error(e);
           }

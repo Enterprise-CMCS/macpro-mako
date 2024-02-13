@@ -25,6 +25,8 @@ import { buildActionUrl } from "@/lib";
 import { useModalContext } from "@/components/Context/modalContext";
 import { useCallback } from "react";
 import { useAlertContext } from "@/components/Context/alertContext";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { useQuery as useQueryString } from "@/hooks";
 
 export const RaiIssue = ({
   item,
@@ -32,6 +34,7 @@ export const RaiIssue = ({
   attachments,
 }: FormSetup & { item: opensearch.main.ItemResult }) => {
   const navigate = useNavigate();
+  const urlQuery = useQueryString();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const form = useForm<z.infer<typeof schema>>({
@@ -39,10 +42,11 @@ export const RaiIssue = ({
   });
   const modal = useModalContext();
   const alert = useAlertContext();
+  const originPath = useOriginPath();
   const acceptAction = useCallback(() => {
     modal.setModalOpen(false);
-    navigate({ path: "/dashboard" });
-  }, []);
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+  }, [originPath]);
   return (
     <Form {...form}>
       <form
@@ -59,8 +63,16 @@ export const RaiIssue = ({
               body: `The RAI for ${item._source.id} has been submitted. An email confirmation will be sent to you and the state.`,
             });
             alert.setBannerShow(true);
-            alert.setBannerDisplayOn("/dashboard");
-            navigate({ path: "/dashboard" });
+            alert.setBannerDisplayOn(
+              // This uses the originRoute map because this value doesn't work
+              // when any queries are added, such as the case of /details?id=...
+              urlQuery.get(ORIGIN)
+                ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+                : "/dashboard"
+            );
+            navigate(
+              originPath ? { path: originPath } : { path: "/dashboard" }
+            );
           } catch (e) {
             console.error(e);
           }

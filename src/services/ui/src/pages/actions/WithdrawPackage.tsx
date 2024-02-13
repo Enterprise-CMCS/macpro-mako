@@ -26,6 +26,8 @@ import { useNavigate, useParams } from "@/components/Routing";
 import { useGetUser } from "@/api/useGetUser";
 import { useModalContext } from "@/components/Context/modalContext";
 import { useAlertContext } from "@/components/Context/alertContext";
+import { useQuery as useQueryString } from "@/hooks";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 
 const attachmentInstructions: Record<SetupOptions, ReactElement> = {
   "Medicaid SPA": (
@@ -59,6 +61,7 @@ export const WithdrawPackage = ({
   item: opensearch.main.ItemResult;
 }) => {
   const navigate = useNavigate();
+  const urlQuery = useQueryString();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const form = useForm<z.infer<typeof schema>>({
@@ -66,9 +69,10 @@ export const WithdrawPackage = ({
   });
   const modal = useModalContext();
   const alert = useAlertContext();
+  const originPath = useOriginPath();
   const cancelOnAccept = useCallback(() => {
     modal.setModalOpen(false);
-    navigate({ path: "/dashboard" });
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const confirmOnAccept = useCallback(() => {
     modal.setModalOpen(false);
@@ -85,8 +89,14 @@ export const WithdrawPackage = ({
           body: `The package ${item._source.id} has been withdrawn.`,
         });
         alert.setBannerShow(true);
-        alert.setBannerDisplayOn("/dashboard");
-        navigate({ path: "/dashboard" });
+        alert.setBannerDisplayOn(
+          // This uses the originRoute map because this value doesn't work
+          // when any queries are added, such as the case of /details?id=...
+          urlQuery.get(ORIGIN)
+            ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+            : "/dashboard"
+        );
+        navigate(originPath ? { path: originPath } : { path: "/dashboard" });
       } catch (e) {
         console.error(e);
       }
