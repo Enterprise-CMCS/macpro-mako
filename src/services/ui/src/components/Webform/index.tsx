@@ -1,16 +1,41 @@
 import { useForm } from "react-hook-form";
 import { Button, Form } from "@/components/Inputs";
 import { RHFDocument } from "@/components/RHF";
-import { SubNavHeader } from "@/components";
+import { Alert, SubNavHeader } from "@/components";
 import { documentInitializer, documentValidator } from "@/components/RHF/utils";
 import { useGetForm } from "@/api";
 import { LoadingSpinner } from "@/components";
 import { Footer } from "./footer";
 import { Link, useParams } from "../Routing";
 import { useReadOnlyUser } from "./useReadOnlyUser";
+import { useLDClient } from "launchdarkly-react-client-sdk";
+import { featureFlags } from "shared-utils";
 import { useState } from "react";
 
 export const Webforms = () => {
+  function maintenanceBannerForVariation(flag: string): React.ReactNode {
+    if (flag === "UNSCHEDULED") {
+      return (
+        <h1 className="text-xl font-medium">Unschedule Maintenance Flag</h1>
+      );
+    } else if (flag === "SCHEDULED") {
+      return (
+        <h1 className="text-xl font-medium">Scheduled Maintenance Flag</h1>
+      );
+    }
+    return undefined;
+  }
+
+  const ldClient = useLDClient();
+  const siteUnderMaintenanceBannerFlag: string = ldClient?.variation(
+    featureFlags.SITE_UNDER_MAINTENANCE_BANNER.flag,
+    featureFlags.SITE_UNDER_MAINTENANCE_BANNER.defaultValue
+  );
+
+  const possibleMaintenaceBanner = maintenanceBannerForVariation(
+    siteUnderMaintenanceBannerFlag
+  );
+
   return (
     <>
       <SubNavHeader>
@@ -18,6 +43,11 @@ export const Webforms = () => {
       </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1 space-x-5">
+          {possibleMaintenaceBanner && (
+            <Alert className="mb-6 w-5/6" variant="destructive">
+              {possibleMaintenaceBanner}
+            </Alert>
+          )}
           <Link
             path="/webform/:id/:version"
             params={{ id: "abp1", version: 202401 }}

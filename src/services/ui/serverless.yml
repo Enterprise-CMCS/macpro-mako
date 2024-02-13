@@ -50,6 +50,7 @@ custom:
         VITE_IDM_HOME_URL=${self:custom.idmInfo.home_url, "https://test.home.idm.cms.gov"}
         VITE_GOOGLE_ANALYTICS_GTAG=${self:custom.googleAnalytics.gtag}
         VITE_GOOGLE_ANALYTICS_DISABLE=${self:custom.googleAnalytics.disable, "false"}
+        VITE_LAUNCHDARKLY_CLIENT_ID=${self:custom.launchdarklyClientID}
         """ > .env.local
         yarn build
       deploy:finalize: |
