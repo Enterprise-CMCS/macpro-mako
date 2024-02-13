@@ -1,28 +1,25 @@
 import {
-  Alert,
   CardWithTopBorder,
-  ConfirmationModal,
   DetailItemsGrid,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { Action, opensearch, UserRoles } from "shared-types";
+import { opensearch, UserRoles } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
-import { useLocation } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren } from "react";
 import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
-import { API } from "aws-amplify";
 import { getStatus } from "shared-types/statusHelper";
 import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 import { Link } from "@/components/Routing";
 import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
+import { Route } from "@/components/Routing/types";
 
 const DetailCardWrapper = ({
   title,
@@ -94,7 +91,10 @@ const PackageActionsCard = ({ id }: { id: string }) => {
               return (
                 <Link
                   key={`${idx}-${type}`}
-                  path="/action/:id/:type"
+                  path={"/action/:id/:type"}
+                  query={{
+                    origin: "actions-details",
+                  }}
                   params={{ id, type }}
                   className="text-sky-700 underline"
                 >
