@@ -15,7 +15,6 @@ export const getTableName = (recordKey:string) => {
 }
 
 export const handler: Handler<KafkaEvent> = async (event) => {
-  // console.log(JSON.stringify(event, null,2));
   for (const recordKey of Object.keys(event.records)) {
     const tableName = getTableName(recordKey);
     switch(tableName) {
