@@ -137,29 +137,6 @@ const getAuthority = (
   }
 };
 
-function findByKeyInNestedObject(
-  obj: any,
-  itemKey: number | undefined
-): string | null {
-  try {
-    if (!itemKey) return null;
-    for (const key of Object.keys(obj)) {
-      if (key === itemKey.toString()) {
-        return obj[key];
-      } else if (typeof obj[key] === "object") {
-        const result = findByKeyInNestedObject(obj[key], itemKey);
-        if (result) {
-          return result; // Return the found value if any
-        }
-      }
-    }
-    return null;
-  } catch (error) {
-    console.log("SEATOOL LOOKUP ERROR:  " + error);
-    return null;
-  }
-}
-
 export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
