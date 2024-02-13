@@ -14,7 +14,7 @@ export const handler:Handler = async (event, _, callback) => {
       console.log("No cfnEvent.  No one to notify.  Will proceed");
     } else {
       console.log("Sending notification to CFN... Success: " + event.Success);
-      const result = event.Success ? SUCCESS : FAILED
+      const result = event.Success ? SUCCESS : FAILED;
       await send(cfnEvent, cfnContext, result, responseData, "static");
     }
   } catch (error: any) {

@@ -24,18 +24,18 @@ export const handler: Handler = async (
           new ListEventSourceMappingsCommand({ FunctionName: trigger.Function })
         );
         if(!response.EventSourceMappings){
-          throw `ERROR:  No event source mapping found for function ${trigger.Function} and topic ${topic}`
+          throw `ERROR:  No event source mapping found for function ${trigger.Function} and topic ${topic}`;
         }
         const mappingForCurrentTopic = response.EventSourceMappings.filter(mapping => 
           mapping.Topics && mapping.Topics.includes(topic as string)
         );
         if(mappingForCurrentTopic.length > 1){
-          throw `ERROR:  Multiple event source mappings found for function ${trigger.Function} and topic ${topic}`
+          throw `ERROR:  Multiple event source mappings found for function ${trigger.Function} and topic ${topic}`;
         }
         triggerInfo.push({
           groupId: mappingForCurrentTopic[0].SelfManagedKafkaEventSourceConfig?.ConsumerGroupId,
           topics: [topic],
-        })
+        });
       }
     }
     const kafka = new Kafka({
@@ -53,7 +53,7 @@ export const handler: Handler = async (
     let offsets: { [key: string]: any } = {};
     for (const trigger of triggerInfo) {
       for (const topic of trigger.topics) {
-        let groupId :string = trigger.groupId;
+        const groupId :string = trigger.groupId;
         const topicOffsets = await admin.fetchTopicOffsets(topic);
         const groupOffsets = await admin.fetchOffsets({
           groupId,
@@ -65,7 +65,7 @@ export const handler: Handler = async (
         offsets[groupId] = {
           latestOffset,
           currentOffset,
-        }
+        };
         console.log(`Topic: ${topic}, Group: ${groupId}, Latest Offset: ${latestOffset}, Current Offset: ${currentOffset}`);
       }
     }

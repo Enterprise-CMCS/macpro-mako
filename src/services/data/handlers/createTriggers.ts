@@ -12,7 +12,7 @@ export const handler: Handler = async (event, _, callback) => {
     let uuidsToCheck = [];
     for(const trigger of event.Triggers) {
       for(const topic of [...new Set(trigger.Topics)]) {
-        console.log(`would create a mapping to trigger ${trigger.Function} off ${topic}`)
+        console.log(`would create a mapping to trigger ${trigger.Function} off ${topic}`);
         const createEventSourceMappingParams = {
           BatchSize: trigger.BatchSize || 1000,
           Enabled: true,
@@ -31,7 +31,7 @@ export const handler: Handler = async (event, _, callback) => {
           StartingPosition: event.StartingPosition || "TRIM_HORIZON",
           Topics: [topic],
         };
-        console.log(JSON.stringify(createEventSourceMappingParams,null,2))
+        console.log(JSON.stringify(createEventSourceMappingParams,null,2));
         const command = new CreateEventSourceMappingCommand(createEventSourceMappingParams);
         const result = await lambdaClient.send(command);
         uuidsToCheck.push(result.UUID);
