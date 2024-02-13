@@ -15,7 +15,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
 
     const data = toggleRaiResponseWithdrawSchema.parse(formData);
     const user = await getUser();
-    const authority = PlanType["1915(b)"];
+    const authority = PlanType["1915b"];
     const enableOrDisable = data.raiWithdrawEnabled
       ? "/action/enable-rai-withdraw"
       : "/action/disable-rai-withdraw";

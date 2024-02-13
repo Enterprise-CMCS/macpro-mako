@@ -26,7 +26,7 @@ export const issueRaiDefaultAction: ActionFunction = async ({ request }) => {
     const data = issueRaiSchema.parse(unflattenedFormData);
 
     const user = await getUser();
-    const authority = PlanType["1915(b)"];
+    const authority = PlanType["1915b"];
     // await submit({ data, endpoint: "/action/issue-rai", user, authority });
 
     console.log(data);

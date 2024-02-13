@@ -102,7 +102,7 @@ const PackageActionsCard = ({
         ) : (
           <ul>
             {data.actions.map((type, idx) => {
-              console.log("hello");
+              console.log("hello world");
               if (authority === "WAIVER") {
                 return (
                   <Link

@@ -23,7 +23,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
 
     const data = withdrawRaiSchema.parse(unflattenedFormData);
     const user = await getUser();
-    const authority = PlanType["1915(b)"];
+    const authority = PlanType["1915b"];
 
     await submit({ data, endpoint: "/action/withdraw-rai", user, authority });
 
