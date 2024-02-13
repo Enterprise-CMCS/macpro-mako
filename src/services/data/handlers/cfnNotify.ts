@@ -1,8 +1,7 @@
 import { Handler } from "aws-lambda";
 import { send, SUCCESS, FAILED } from "cfn-response-async";
-type ResponseStatus = typeof SUCCESS | typeof FAILED;
 
-export const handler:Handler = async (event, context, callback) => {
+export const handler:Handler = async (event, _, callback) => {
   const response = {
     statusCode: 200,
   };

@@ -3,8 +3,8 @@ import * as os from "./../../../libs/opensearch-lib";
 import { Index } from "shared-types/opensearch";
 
 export const handler: Handler = async (
-  event,
-  context,
+  _,
+  __,
   callback
 ) => {
   const response = {

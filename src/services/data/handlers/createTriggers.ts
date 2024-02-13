@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import { CreateEventSourceMappingCommand, GetEventSourceMappingCommand, LambdaClient, ListEventSourceMappingsCommand, UpdateEventSourceMappingCommand } from "@aws-sdk/client-lambda";
 
-export const handler: Handler = async (event, context, callback) => {
+export const handler: Handler = async (event, _, callback) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
   const response = {
     statusCode: 200,

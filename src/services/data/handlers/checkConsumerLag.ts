@@ -4,7 +4,7 @@ import { LambdaClient, ListEventSourceMappingsCommand } from "@aws-sdk/client-la
 
 export const handler: Handler = async (
   event, 
-  context, 
+  _, 
   callback
 ) => {
   const response = {

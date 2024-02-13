@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import * as os from "./../../../libs/opensearch-lib";
 
-export const handler: Handler = async (event, context, callback) => {
+export const handler: Handler = async (event, _, callback) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
   const response = {
     statusCode: 200,
