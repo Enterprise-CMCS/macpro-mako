@@ -90,7 +90,7 @@ export const ChipForm = () => {
       <Inputs.Form {...form}>
         <form
           onSubmit={handleSubmit}
-          className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col"
+          className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
           <SectionCard title="CHIP SPA Details">
             <Content.FormIntroText />
@@ -191,7 +191,7 @@ export const ChipForm = () => {
           </SectionCard>
           <Content.PreSubmissionMessage />
           {Object.keys(form.formState.errors).length !== 0 ? (
-            <Alert className="mb-6 w-5/6" variant="destructive">
+            <Alert className="mb-6 " variant="destructive">
               Missing or malformed information. Please see errors above.
             </Alert>
           ) : null}
@@ -200,7 +200,7 @@ export const ChipForm = () => {
               <LoadingSpinner />
             </div>
           ) : null}
-          <div className="flex gap-2 justify-end w-5/6">
+          <div className="flex gap-2 justify-end ">
             <Inputs.Button
               disabled={form.formState.isSubmitting}
               type="submit"
