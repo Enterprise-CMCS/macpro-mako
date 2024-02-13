@@ -103,7 +103,7 @@ export const Contracting1915BWaiverInitial = () => {
                 Waiver Authority
               </Inputs.FormLabel>
               <span className="text-lg font-thin">
-                1915(b)(4) FFS Selective Contracting waviers
+                1915(b)
               </span>
             </div>
             <Inputs.FormField
