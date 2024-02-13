@@ -78,13 +78,20 @@ const StatusCard = (data: opensearch.main.Document) => {
     </DetailCardWrapper>
   );
 };
-const PackageActionsCard = ({ id }: { id: string }) => {
+const PackageActionsCard = ({
+  id,
+  authority,
+}: {
+  id: string;
+  authority: string;
+}) => {
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { data } = useGetPackageActions(id, { retry: false });
   if (isLoading) return <LoadingSpinner />;
+
   return (
     <DetailCardWrapper title={"Actions"}>
       <div>
@@ -95,16 +102,31 @@ const PackageActionsCard = ({ id }: { id: string }) => {
         ) : (
           <ul>
             {data.actions.map((type, idx) => {
-              return (
-                <Link
-                  key={`${idx}-${type}`}
-                  path="/action/:id/:type"
-                  params={{ id, type }}
-                  className="text-sky-700 underline"
-                >
-                  <li>{mapActionLabel(type)}</li>
-                </Link>
-              );
+              console.log("hello");
+              if (authority === "WAIVER") {
+                return (
+                  <Link
+                    path="/action/waiver/:id/:type"
+                    key={`${idx}-${type}`}
+                    params={{ id, type }}
+                    className="text-sky-700 underline"
+                  >
+                    {/* /action/waiver/someid/sometype */}
+                    <li>{mapActionLabel(type)}</li>
+                  </Link>
+                );
+              } else {
+                return (
+                  <Link
+                    key={`${idx}-${type}`}
+                    path="/action/:id/:type"
+                    params={{ id, type }}
+                    className="text-sky-700 underline"
+                  >
+                    <li>{mapActionLabel(type)}</li>
+                  </Link>
+                );
+              }
             })}
           </ul>
         )}
@@ -208,7 +230,10 @@ export const DetailsContent = ({
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
         >
           <StatusCard {...data._source} />
-          <PackageActionsCard id={data._id} />
+          <PackageActionsCard
+            id={data._id}
+            authority={data._source.authority ?? ""}
+          />
         </section>
         <div className="flex flex-col gap-3">
           <DetailsSection
