@@ -65,13 +65,11 @@ export const customResourceWrapper: Handler = async (event, context) => {
   try {
     if (event.RequestType == "Delete"){
       await (deleteAllTriggersForFunctions(event.ResourceProperties.Functions));
-      await send(event, context, responseStatus, responseData, undefined);
-    } else {
-      await send(event, context, responseStatus, responseData, "static");
     }
   } catch (error) {
     console.error(error);
     responseStatus = FAILED;
+  } finally {
     await send(event, context, responseStatus, responseData, "static");
   }
 };
