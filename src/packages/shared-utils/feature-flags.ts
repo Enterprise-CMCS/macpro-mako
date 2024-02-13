@@ -2,7 +2,7 @@
  * Source of truth for feature flags in application.
  * Ensures some type safety around flag names when we're enabling/disabling features in our code.
  *
- * This file also used to generate types for our Jest unit tests, Cypress tests, and for Yup validation logic.
+ * This file also used to generate types for our Jest unit tests and Cypress tests validation logic.
  */
 
 export const featureFlags = {
