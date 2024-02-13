@@ -1,15 +1,23 @@
 import { submit } from "@/api/submissionService";
 import { getUser } from "@/api/useGetUser";
 import * as SC from "@/features/package-actions/shared-components";
-import { ActionFunction, useActionData } from "react-router-dom";
+import { ActionFunction, useActionData, useParams } from "react-router-dom";
 import { PlanType } from "shared-types";
 import { z } from "zod";
 
 export const toggleRaiResponseWithdrawSchema = z.object({
-  raiWithdrawEnabled: z.string().transform((enabled) => Boolean(enabled)),
+  raiWithdrawEnabled: z
+    .string()
+    .or(z.boolean())
+    .transform((enabled) => {
+      return enabled.toString() === "true";
+    }),
 });
 
-export const onValidSubmission: ActionFunction = async ({ request }) => {
+export const onValidSubmission: ActionFunction = async ({
+  request,
+  params,
+}) => {
   try {
     const formData = Object.fromEntries(await request.formData());
 
@@ -21,7 +29,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
       : "/action/disable-rai-withdraw";
 
     await submit({
-      data,
+      data: { ...data, id: params.id },
       endpoint: enableOrDisable,
       user,
       authority,
@@ -51,8 +59,10 @@ export const ToggleRaiResponseWithdraw = ({ isEnabled }: Props) => {
     : "Once you submit this form, you will disable the previous Formal RAI Response Withdraw - Enabled action. The State will not be able to withdraw the Formal RAI Response. ";
 
   if (!formMethods.getValues("raiWithdrawEnabled")) {
+    console.log("testing", isEnabled);
     formMethods.setValue("raiWithdrawEnabled", isEnabled);
   }
+  const { id } = useParams();
 
   return (
     <>
@@ -65,7 +75,7 @@ export const ToggleRaiResponseWithdraw = ({ isEnabled }: Props) => {
           If you leave this page, you will lose your progress on this form.
         </strong>
       </SC.ActionDescription>
-      <SC.PackageSection id="test-spa-id" type="testing" />
+      <SC.PackageSection id={id!} type="Waiver 1915(b)" />
       <form onSubmit={handleSubmit}>
         <SC.SubmissionButtons />
       </form>

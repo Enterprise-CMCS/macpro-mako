@@ -33,12 +33,12 @@ export const packageActionRoutes: RouteObject = {
       action: withdrawRaiSubmission,
     },
     {
-      path: "enable-rai-response-withdraw",
+      path: "enable-rai-withdraw",
       element: <ToggleRaiResponseWithdraw isEnabled />,
       action: toggleRaiWithdrawSubmission,
     },
     {
-      path: "disable-rai-response-withdraw",
+      path: "disable-rai-withdraw",
       element: <ToggleRaiResponseWithdraw isEnabled={false} />,
       action: toggleRaiWithdrawSubmission,
     },

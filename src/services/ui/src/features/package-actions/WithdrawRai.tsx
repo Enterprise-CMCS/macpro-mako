@@ -3,7 +3,11 @@ import { getUser } from "@/api/useGetUser";
 import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/pages/form/zod";
 import { unflatten } from "flat";
-import { useActionData, type ActionFunction } from "react-router-dom";
+import {
+  useActionData,
+  type ActionFunction,
+  useParams,
+} from "react-router-dom";
 import { PlanType } from "shared-types";
 import { z } from "zod";
 
@@ -41,6 +45,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
 export const WithdrawRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const { errorMessage } = useActionData() as { errorMessage: string };
+  const { id } = useParams();
 
   // do something to handle potential error message
 
@@ -52,7 +57,7 @@ export const WithdrawRai = () => {
         Complete this form to withdraw the Formal RAI response. Once complete,
         you and CMS will receive an email confirmation.
       </SC.ActionDescription>
-      <SC.PackageSection id="test-spa-id" type="medicaid spa" />
+      <SC.PackageSection id={id!} type="Waiver 1915(b)" />
       <form onSubmit={handleSubmit}>
         <SC.AttachmentsSection<Attachments>
           attachments={[

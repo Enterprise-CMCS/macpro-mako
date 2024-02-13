@@ -7,6 +7,7 @@ import { getUser } from "@/api/useGetUser";
 import { PlanType } from "shared-types";
 import { unflatten } from "flat";
 import { zAttachmentOptional, zAttachmentRequired } from "@/pages/form/zod";
+import { submit } from "@/api/submissionService";
 
 type Attachments = keyof z.infer<typeof respondToRaiSchema>["attachments"];
 export const respondToRaiSchema = z.object({
@@ -27,7 +28,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
 
     const user = await getUser();
     const authority = PlanType["1915b"];
-    // await submit({ data, endpoint: "/action/issue-rai", user, authority });
+    await submit({ data, endpoint: "/action/issue-rai", user, authority });
 
     console.log(data);
   } catch (err) {
@@ -40,6 +41,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
 
 export const RespondToRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
+  const { id } = useParams();
 
   return (
     <>
@@ -54,7 +56,7 @@ export const RespondToRai = () => {
           If you leave this page, you will lose your progress on this form.
         </strong>
       </SC.ActionDescription>
-      <SC.PackageSection id="test-spa-id" type="medicaid spa" />
+      <SC.PackageSection id={id!} type="Waiver 1915(b)" />
       <form onSubmit={handleSubmit}>
         <SC.AttachmentsSection<Attachments>
           attachments={[
