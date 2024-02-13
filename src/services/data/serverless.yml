@@ -96,73 +96,73 @@ stepFunctions:
           - !GetAtt StateMachineLogGroup.Arn
       definition:
         Comment: "A state machine to reindex the OpenSearch index."
-        StartAt: MapRole
+        # StartAt: MapRole
+        StartAt: DeleteAllTriggers
         States:
-          MapRole:
+          # MapRole:
+          #   Type: Task
+          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-mapRole"
+          #   Parameters:
+          #     Context.$: $$
+          #   Next: DeleteAllTriggers
+          #   Catch:
+          #     - ErrorEquals: ["States.ALL"]
+          #       Next: NotifyOfFailure
+          DeleteAllTriggers:
             Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-mapRole"
-            Parameters:
-              Context.$: $$
-            Next: DisableAllTriggers
-            Catch:
-              - ErrorEquals: ["States.ALL"]
-                Next: NotifyOfFailure
-          DisableAllTriggers:
-            Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-toggleTriggers"
-            Parameters:
-              Context.$: $$
-              Functions:
-                - !Ref SinkSeatoolLambdaFunction
-                - !Ref SinkOnemacLambdaFunction
-                - !Ref SinkLookupDataLambdaFunction
-              Enabled: false
-            Next: GetConsumerGroupStatus
-            Catch:
-              - ErrorEquals: ["States.ALL"]
-                Next: NotifyOfFailure
-          GetConsumerGroupStatus:
-            Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getConsumerGroupStatus"
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteTriggers"
             Parameters:
               Context.$: $$
               Functions:
                 - !Ref SinkSeatoolLambdaFunction
                 - !Ref SinkOnemacLambdaFunction
                 - !Ref SinkLookupDataLambdaFunction
-              BrokerString: ${self:custom.brokerString}
-            Next: IsConsumerGroupReady
-            Catch:
-              - ErrorEquals: ["States.ALL"]
-                Next: NotifyOfFailure
-          IsConsumerGroupReady:
-            Type: Choice
-            Choices:
-              - Variable: $.ready
-                BooleanEquals: true
-                Next: ResetConsumerGroups
-              - Variable: $.ready
-                BooleanEquals: false
-                Next: Wait10Seconds
-            Default: Wait10Seconds
-          Wait10Seconds:
-            Type: Wait
-            Seconds: 10
-            Next: GetConsumerGroupStatus
-          ResetConsumerGroups:
-            Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-resetConsumerGroups"
-            Parameters:
-              Context.$: $$
-              Functions:
-                - !Ref SinkSeatoolLambdaFunction
-                - !Ref SinkOnemacLambdaFunction
-                - !Ref SinkLookupDataLambdaFunction
-              BrokerString: ${self:custom.brokerString}
             Next: DeleteIndex
             Catch:
               - ErrorEquals: ["States.ALL"]
                 Next: NotifyOfFailure
+          # GetConsumerGroupStatus:
+          #   Type: Task
+          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getConsumerGroupStatus"
+          #   Parameters:
+          #     Context.$: $$
+          #     Functions:
+          #       - !Ref SinkSeatoolLambdaFunction
+          #       - !Ref SinkOnemacLambdaFunction
+          #       - !Ref SinkLookupDataLambdaFunction
+          #     BrokerString: ${self:custom.brokerString}
+          #   Next: IsConsumerGroupReady
+          #   Catch:
+          #     - ErrorEquals: ["States.ALL"]
+          #       Next: NotifyOfFailure
+          # IsConsumerGroupReady:
+          #   Type: Choice
+          #   Choices:
+          #     - Variable: $.ready
+          #       BooleanEquals: true
+          #       Next: ResetConsumerGroups
+          #     - Variable: $.ready
+          #       BooleanEquals: false
+          #       Next: Wait10Seconds
+          #   Default: Wait10Seconds
+          # Wait10Seconds:
+          #   Type: Wait
+          #   Seconds: 10
+          #   Next: GetConsumerGroupStatus
+          # ResetConsumerGroups:
+          #   Type: Task
+          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-resetConsumerGroups"
+          #   Parameters:
+          #     Context.$: $$
+          #     Functions:
+          #       - !Ref SinkSeatoolLambdaFunction
+          #       - !Ref SinkOnemacLambdaFunction
+          #       - !Ref SinkLookupDataLambdaFunction
+          #     BrokerString: ${self:custom.brokerString}
+          #   Next: DeleteIndex
+          #   Catch:
+          #     - ErrorEquals: ["States.ALL"]
+          #       Next: NotifyOfFailure
           DeleteIndex:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteIndex"
@@ -441,6 +441,11 @@ functions:
       region: ${self:provider.region}
   createTriggers:
     handler: handlers/createTriggers.handler
+    timeout: 900
+    environment:
+      region: ${self:provider.region}
+  deleteTriggers:
+    handler: handlers/deleteTriggers.handler
     timeout: 900
     environment:
       region: ${self:provider.region}
