@@ -61,8 +61,8 @@ export const AttachmentsSizeTypesDesc = ({
     </p>
     <p>
       We accept the following file formats:{" "}
-      <strong className="bold">.docx, .jpg, .png, .pdf, .xlsx,</strong> and a
-      few others. See the full list on the{" "}
+      <strong className="bold">.docx, .jpg, .pdf, .png, .xlsx.</strong> See the
+      full list on the{" "}
       {
         <Link
           to="/faq/#acceptable-file-formats"
@@ -79,7 +79,7 @@ export const AttachmentsSizeTypesDesc = ({
 );
 
 export const PreSubmissionMessage = () => (
-  <Alert variant={"infoBlock"} className="my-2 w-5/6 flex-row text-sm">
+  <Alert variant={"infoBlock"} className="my-2 flex-row text-sm">
     <Info />
     <p className="ml-2">
       Once you submit this form, a confirmation email is sent to you and to CMS.
