@@ -1,6 +1,6 @@
 import { Handler } from "aws-lambda";
 import { Kafka } from "kafkajs";
-import { getConsumerGroupInfo } from "../libs/lambda-trigger-lib";
+import { LambdaClient, ListEventSourceMappingsCommand } from "@aws-sdk/client-lambda";
 
 export const handler: Handler = async (
   event, 
@@ -15,9 +15,27 @@ export const handler: Handler = async (
   };
   try {
     const triggerInfo: any[] = [];
-    for (const functionName of event.Functions) {
-      console.log(`Getting consumer groups for function: ${functionName}`);
-      triggerInfo.push(...(await getConsumerGroupInfo(functionName)));
+    const lambdaClient = new LambdaClient({});
+    for(const trigger of event.Triggers) {
+      for(const topic of [...new Set(trigger.Topics)]) {
+        console.log(`Getting consumer groups for function: ${trigger.Function} and topic ${topic}`);
+        const response = await lambdaClient.send(
+          new ListEventSourceMappingsCommand({ FunctionName: trigger.Function })
+        );
+        if(!response.EventSourceMappings){
+          throw `ERROR:  No event source mapping found for function ${trigger.Function} and topic ${topic}`
+        }
+        const mappingForCurrentTopic = response.EventSourceMappings.filter(mapping => 
+          mapping.Topics && mapping.Topics.includes(topic as string)
+        );
+        if(mappingForCurrentTopic.length > 1){
+          throw `ERROR:  Multiple event source mappings found for function ${trigger.Function} and topic ${topic}`
+        }
+        triggerInfo.push({
+          groupId: mappingForCurrentTopic[0].SelfManagedKafkaEventSourceConfig?.ConsumerGroupId,
+          topics: [topic],
+        })
+      }
     }
     const kafka = new Kafka({
       clientId: "consumerGroupResetter",

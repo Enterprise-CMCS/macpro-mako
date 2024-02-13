@@ -20,11 +20,14 @@ export const handler: Handler = async (event, context) => {
       const execution = await stepFunctionsClient.send(startExecutionCommand);
       console.log(`State machine execution started: ${execution.executionArn}`);
       console.log(`The state machine is now in charge of this resource, and will notify of success or failure upon completion.`);
-    } else {
-      await send(event, context, SUCCESS, {});
+    } else if (event.RequestType == "Update"){
+      await send(event, context, SUCCESS, {}, "static");
+    } else if (event.RequestType == "Delete"){
+      // need to delete all triggers here  to do
+      await send(event, context, SUCCESS, {}, "static");
     }
   } catch (error) {
     console.log(error);
-    await send(event, context, FAILED, {});
+    await send(event, context, FAILED, {}, "static");
   }
 };

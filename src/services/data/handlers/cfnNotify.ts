@@ -15,7 +15,7 @@ export const handler:Handler = async (event, context, callback) => {
     } else {
       console.log("Sending notification to CFN... Success: " + event.Success)
       const result = event.Success ? SUCCESS : FAILED
-      await send(cfnEvent, cfnContext, result, responseData);
+      await send(cfnEvent, cfnContext, result, responseData, "static");
     }
   } catch (error: any) {
     response.statusCode = 500;

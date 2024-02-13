@@ -96,18 +96,17 @@ stepFunctions:
           - !GetAtt StateMachineLogGroup.Arn
       definition:
         Comment: "A state machine to reindex the OpenSearch index."
-        # StartAt: MapRole
-        StartAt: DeleteAllTriggers
+        StartAt: MapRole
         States:
-          # MapRole:
-          #   Type: Task
-          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-mapRole"
-          #   Parameters:
-          #     Context.$: $$
-          #   Next: DeleteAllTriggers
-          #   Catch:
-          #     - ErrorEquals: ["States.ALL"]
-          #       Next: NotifyOfFailure
+          MapRole:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-mapRole"
+            Parameters:
+              Context.$: $$
+            Next: DeleteAllTriggers
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
           DeleteAllTriggers:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteTriggers"
@@ -121,48 +120,6 @@ stepFunctions:
             Catch:
               - ErrorEquals: ["States.ALL"]
                 Next: NotifyOfFailure
-          # GetConsumerGroupStatus:
-          #   Type: Task
-          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getConsumerGroupStatus"
-          #   Parameters:
-          #     Context.$: $$
-          #     Functions:
-          #       - !Ref SinkSeatoolLambdaFunction
-          #       - !Ref SinkOnemacLambdaFunction
-          #       - !Ref SinkLookupDataLambdaFunction
-          #     BrokerString: ${self:custom.brokerString}
-          #   Next: IsConsumerGroupReady
-          #   Catch:
-          #     - ErrorEquals: ["States.ALL"]
-          #       Next: NotifyOfFailure
-          # IsConsumerGroupReady:
-          #   Type: Choice
-          #   Choices:
-          #     - Variable: $.ready
-          #       BooleanEquals: true
-          #       Next: ResetConsumerGroups
-          #     - Variable: $.ready
-          #       BooleanEquals: false
-          #       Next: Wait10Seconds
-          #   Default: Wait10Seconds
-          # Wait10Seconds:
-          #   Type: Wait
-          #   Seconds: 10
-          #   Next: GetConsumerGroupStatus
-          # ResetConsumerGroups:
-          #   Type: Task
-          #   Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-resetConsumerGroups"
-          #   Parameters:
-          #     Context.$: $$
-          #     Functions:
-          #       - !Ref SinkSeatoolLambdaFunction
-          #       - !Ref SinkOnemacLambdaFunction
-          #       - !Ref SinkLookupDataLambdaFunction
-          #     BrokerString: ${self:custom.brokerString}
-          #   Next: DeleteIndex
-          #   Catch:
-          #     - ErrorEquals: ["States.ALL"]
-          #       Next: NotifyOfFailure
           DeleteIndex:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteIndex"
@@ -205,11 +162,14 @@ stepFunctions:
                 Next: NotifyOfFailure
           CheckConsumerLagForLookupSinks:
             Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-getLookupLag"
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-checkConsumerLag"
             Parameters:
               Context.$: $$
-              Functions:
-                - !Ref SinkLookupDataLambdaFunction
+              Triggers:
+                - Function: !Ref SinkLookupDataLambdaFunction
+                  Topics:
+                    - aws.seatool.cmcs.dbo.SPA_Type
+                    - aws.seatool.cmcs.dbo.Type
               BrokerString: ${self:custom.brokerString}
             Next: IsLookupIndexReady
             Catch:
@@ -223,9 +183,9 @@ stepFunctions:
                 Next: CreateDataSinks
               - Variable: $.ready
                 BooleanEquals: false
-                Next: Wait10Seconds2
-            Default: Wait10Seconds2
-          Wait10Seconds2:
+                Next: WaitForLookupSinks
+            Default: WaitForLookupSinks
+          WaitForLookupSinks:
             Type: Wait
             Seconds: 10
             Next: CheckConsumerLagForLookupSinks
@@ -248,10 +208,42 @@ stepFunctions:
                   Topics:
                     - aws.onemac.migration.cdc
                     - ${param:topicNamespace}aws.onemac.migration.cdc
-            Next: NotifyOfSuccess
+            Next: CheckConsumerLagForDataSinks
             Catch:
               - ErrorEquals: ["States.ALL"]
                 Next: NotifyOfFailure
+          CheckConsumerLagForDataSinks:
+            Type: Task
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-checkConsumerLag"
+            Parameters:
+              Context.$: $$
+              Triggers:
+                - Function: !Ref SinkSeatoolLambdaFunction
+                  Topics:
+                    - aws.ksqldb.seatool.agg.State_Plan
+                - Function: !Ref SinkOnemacLambdaFunction
+                  Topics:
+                    - aws.onemac.migration.cdc
+                    - ${param:topicNamespace}aws.onemac.migration.cdc
+              BrokerString: ${self:custom.brokerString}
+            Next: IsDataIndexReady
+            Catch:
+              - ErrorEquals: ["States.ALL"]
+                Next: NotifyOfFailure
+          IsDataIndexReady:
+            Type: Choice
+            Choices:
+              - Variable: $.ready
+                BooleanEquals: true
+                Next: NotifyOfSuccess
+              - Variable: $.ready
+                BooleanEquals: false
+                Next: WaitForDataSinks
+            Default: WaitForDataSinks
+          WaitForDataSinks:
+            Type: Wait
+            Seconds: 10
+            Next: CheckConsumerLagForDataSinks
           NotifyOfSuccess:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-cfnNotify"
@@ -327,22 +319,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-  toggleTriggers:
-    handler: handlers/toggleTriggers.handler
-    timeout: 60
-    environment:
-      region: ${self:provider.region}
-  getConsumerGroupStatus:
-    handler: handlers/getConsumerGroupStatus.handler
-    timeout: 900
-    vpc:
-      securityGroupIds:
-        - Ref: SecurityGroup
-      subnetIds: >-
-        ${self:custom.vpc.privateSubnets}
-    environment:
-      region: ${self:provider.region}
-  getLookupLag:
+  checkConsumerLag:
     handler: handlers/checkConsumerLag.handler
     timeout: 900
     vpc:
@@ -352,18 +329,7 @@ functions:
         ${self:custom.vpc.privateSubnets}
     environment:
       region: ${self:provider.region}
-      functions: !Sub "${SinkLookupDataLambdaFunction}"
       brokerString: ${self:custom.brokerString}
-  resetConsumerGroups:
-    handler: handlers/resetConsumerGroups.handler
-    timeout: 900
-    vpc:
-      securityGroupIds:
-        - Ref: SecurityGroup
-      subnetIds: >-
-        ${self:custom.vpc.privateSubnets}
-    environment:
-      region: ${self:provider.region}
   deleteIndex:
     handler: handlers/deleteIndex.handler
     environment:
