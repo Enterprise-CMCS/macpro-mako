@@ -21,9 +21,9 @@ export const useOriginPath = () => {
   const { id } = useParams("/action/:id/:type");
   return useMemo(() => {
     const origin = urlQuery.get(ORIGIN) as Origin | null;
-    if (!origin || !originRoute[origin as Origin]) return null;
-    return (origin as Origin) === "actionsDetails"
-      ? (`${originRoute[origin as Origin]}?id=${id}` as Route)
-      : (originRoute[origin as Origin] as Route);
+    if (!origin || !originRoute[origin]) return null;
+    return origin === "actionsDetails"
+      ? (`${originRoute[origin]}?id=${id}` as Route)
+      : (originRoute[origin] as Route);
   }, []);
 };
