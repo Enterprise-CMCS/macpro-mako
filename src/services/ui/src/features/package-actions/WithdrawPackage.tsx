@@ -19,7 +19,10 @@ export const withdrawPackageSchema = z.object({
 });
 type Attachments = keyof z.infer<typeof withdrawPackageSchema>["attachments"];
 
-export const onValidSubmission: ActionFunction = async ({ request }) => {
+export const onValidSubmission: ActionFunction = async ({
+  request,
+  params,
+}) => {
   try {
     const formData = Object.fromEntries(await request.formData());
 
@@ -30,7 +33,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
     const authority = PlanType["1915b"];
 
     await submit({
-      data,
+      data: { ...data, id: params.id },
       endpoint: "/action/withdraw-package",
       user,
       authority,
