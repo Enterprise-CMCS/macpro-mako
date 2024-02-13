@@ -28,7 +28,7 @@ export const PackageCheck = ({
 }: opensearch.main.Document) => {
   const planChecks = {
     isSpa: checkPlan(planType, [PlanType.MED_SPA, PlanType.CHIP_SPA]),
-    isWaiver: checkPlan(planType, []),
+    isWaiver: checkPlan(planType, [PlanType["1915b"]]),
     /** Keep excess methods to a minimum with `is` **/
     planTypeIs: (validPlanTypes: PlanType[]) =>
       checkPlan(planType, validPlanTypes),
@@ -52,12 +52,14 @@ export const PackageCheck = ({
       checkStatus(seatoolStatus, authorizedStatuses),
   };
   const raiChecks = {
-    /** Latest RAI is requested and status is Pending-RAI **/
-    hasRequestedRai: !!raiRequestedDate && !raiReceivedDate && !raiWithdrawnDate,
-    /** Latest RAI is not null **/
+    /** There is an RAI and it does not have a response **/
+    hasRequestedRai: !!raiRequestedDate && !raiReceivedDate,
+    /** There is an RAI **/
     hasLatestRai: !!raiRequestedDate,
-    /** Latest RAI has been responded to **/
+    /** There is an RAI, it has a response, and it has not been withdrawn **/
     hasRaiResponse: !!raiRequestedDate && !!raiReceivedDate && !raiWithdrawnDate,
+    /** Latest RAI has a response and/or has been withdrawn **/
+    hasCompletedRai: !!raiRequestedDate && !!raiReceivedDate,
     /** RAI Withdraw has been enabled **/
     hasEnabledRaiWithdraw: raiWithdrawEnabled,
   };
