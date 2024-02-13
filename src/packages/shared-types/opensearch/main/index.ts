@@ -24,8 +24,14 @@ export type Document = z.infer<newSubmission.Schema> &
   z.infer<toggleWithdrawEnabled.Schema> &
   z.infer<seatool.Schema> &
   {
-    type: string | null, // added by the sink
-    subType: string | null, // added by the sink
+    // added by the State_Plan_Service_TypesIndexer
+    type: string | null,
+    typeId: number | null,
+  } &
+  {
+    // added by the State_Plan_Service_SubTypesIndexer
+    subtype: string | null
+    subtypeId: number | null
   } &
   {
     changelog?: Changelog[];

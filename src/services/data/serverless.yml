@@ -204,6 +204,8 @@ stepFunctions:
                 - Function: !Ref SinkSeatoolLambdaFunction
                   Topics:
                     - aws.ksqldb.seatool.agg.State_Plan
+                    - aws.seatool.cmcs.dbo.State_Plan_Service_Types
+                    - aws.seatool.cmcs.dbo.State_Plan_Service_SubTypes
                 - Function: !Ref SinkOnemacLambdaFunction
                   Topics:
                     - aws.onemac.migration.cdc

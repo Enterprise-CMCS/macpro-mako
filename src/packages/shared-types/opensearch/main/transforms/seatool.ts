@@ -148,8 +148,6 @@ export const transform = (id: string) => {
       )?.SPW_STATUS_DESC || "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
     const authorityId = data.PLAN_TYPES?.[0].PLAN_TYPE_ID;
-    const typeId = data.STATE_PLAN_SERVICETYPES?.[0]?.SERVICE_TYPE_ID;
-    const subTypeId = data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.SERVICE_SUBTYPE_ID;
     return {
       id,
       flavor: flavorLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
@@ -167,8 +165,6 @@ export const transform = (id: string) => {
       leadAnalystName,
       authorityId: authorityId || null,
       authority: getAuthority(authorityId, id) as Authority | null,
-      typeId: typeId || null,
-      subTypeId: subTypeId || null,
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
