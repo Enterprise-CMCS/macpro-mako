@@ -1,5 +1,5 @@
 import { Handler } from "aws-lambda";
-import { DeleteEventSourceMappingCommand, GetEventSourceMappingCommand, LambdaClient, ListEventSourceMappingsCommand, UpdateEventSourceMappingCommand } from "@aws-sdk/client-lambda";
+import { DeleteEventSourceMappingCommand, GetEventSourceMappingCommand, LambdaClient, ListEventSourceMappingsCommand } from "@aws-sdk/client-lambda";
 
 export const handler: Handler = async (event, _, callback) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
@@ -43,7 +43,7 @@ export const deleteAllTriggersForFunctions = async (functions:string[]) => {
       while (!deleted) {
         const listCommand = new GetEventSourceMappingCommand({ UUID: uuid });
         try {
-          const mappingResult = await lambdaClient.send(listCommand);
+          await lambdaClient.send(listCommand);
           console.log(`Waiting for mapping ${uuid} to be enabled...`);
           await new Promise(resolve => setTimeout(resolve, 10000));
         } catch(error){
