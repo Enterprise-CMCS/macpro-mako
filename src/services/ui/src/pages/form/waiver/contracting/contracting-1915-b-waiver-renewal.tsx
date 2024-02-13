@@ -143,7 +143,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
           <h1 className="text-2xl font-semibold mt-4 mb-2">
-            Renew a 1915(b) Waiver
+            1915(b)(4) FFS Selective Contracting Renewal Waiver
           </h1>
           <SectionCard title="1915(b) Waiver Renewal Details">
             <Content.FormIntroText />
@@ -152,7 +152,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
                 Waiver Authority
               </Inputs.FormLabel>
               <span className="text-lg font-thin">
-                1915(b)(4) FFS Selective Contracting waviers
+                1915(b)
               </span>
             </div>
             <Inputs.FormField
