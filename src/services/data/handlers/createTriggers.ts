@@ -9,7 +9,7 @@ export const handler: Handler = async (event, _, callback) => {
   let errorResponse = null;
   try {
     const lambdaClient = new LambdaClient({});
-    let uuidsToCheck = [];
+    const uuidsToCheck = [];
     for(const trigger of event.Triggers) {
       for(const topic of [...new Set(trigger.Topics)]) {
         console.log(`would create a mapping to trigger ${trigger.Function} off ${topic}`);

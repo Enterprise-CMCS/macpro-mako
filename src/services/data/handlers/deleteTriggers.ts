@@ -8,7 +8,7 @@ export const handler: Handler = async (event, _, callback) => {
   };
   let errorResponse = null;
   try {
-    await deleteAllTriggersForFunctions(event.Functions)
+    await deleteAllTriggersForFunctions(event.Functions);
   } catch (error: any) {
     response.statusCode = 500;
     errorResponse = error;
@@ -19,7 +19,7 @@ export const handler: Handler = async (event, _, callback) => {
 
 export const deleteAllTriggersForFunctions = async (functions:string[]) => {
   const lambdaClient = new LambdaClient({});
-    let uuidsToCheck = [];
+    const uuidsToCheck = [];
     for(const functionName of functions) {
       const response = await lambdaClient.send(
         new ListEventSourceMappingsCommand({ FunctionName: functionName })
@@ -34,7 +34,7 @@ export const deleteAllTriggersForFunctions = async (functions:string[]) => {
               UUID: eventSourceMapping.UUID,
             })
           );
-          uuidsToCheck.push(eventSourceMapping.UUID)
+          uuidsToCheck.push(eventSourceMapping.UUID);
         }
       }
     }
@@ -47,13 +47,13 @@ export const deleteAllTriggersForFunctions = async (functions:string[]) => {
           console.log(`Waiting for mapping ${uuid} to be enabled...`);
           await new Promise(resolve => setTimeout(resolve, 10000));
         } catch(error){
-          console.log(error)
+          console.log(error);
           deleted = true;
         }
       }
       console.log(`Mapping ${uuid} is now deleted.`);
     }
-}
+};
 
 import { send, SUCCESS, FAILED } from "cfn-response-async";
 type ResponseStatus = typeof SUCCESS | typeof FAILED;
@@ -64,7 +64,7 @@ export const customResourceWrapper: Handler = async (event, context) => {
   let responseStatus: ResponseStatus = SUCCESS;
   try {
     if (event.RequestType == "Delete"){
-      await (deleteAllTriggersForFunctions(event.ResourceProperties.Functions))
+      await (deleteAllTriggersForFunctions(event.ResourceProperties.Functions));
       await send(event, context, responseStatus, responseData, undefined);
     } else {
       await send(event, context, responseStatus, responseData, "static");

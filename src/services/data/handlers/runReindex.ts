@@ -19,7 +19,7 @@ export const handler: Handler = async (event, context) => {
 
       const execution = await stepFunctionsClient.send(startExecutionCommand);
       console.log(`State machine execution started: ${execution.executionArn}`);
-      console.log(`The state machine is now in charge of this resource, and will notify of success or failure upon completion.`);
+      console.log("The state machine is now in charge of this resource, and will notify of success or failure upon completion.");
     } else if (event.RequestType == "Update"){
       await send(event, context, SUCCESS, {}, "static");
     } else if (event.RequestType == "Delete"){

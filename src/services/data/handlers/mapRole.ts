@@ -8,14 +8,14 @@ export const handler: Handler = async (event, _, callback) => {
   };
   let errorResponse = null;
   try {
-    const requiredEnvVars = ['osDomain', 'masterRoleToAssume', 'osRoleName', 'iamRoleName'];
+    const requiredEnvVars = ["osDomain", "masterRoleToAssume", "osRoleName", "iamRoleName"];
 
     requiredEnvVars.forEach(envVar => {
       if (!process.env[envVar]) {
         throw `ERROR: process.env.${envVar} is required, but was not supplied.`;
       }
     });
-    let reply = await os.mapRole(
+    const reply = await os.mapRole(
       process.env.osDomain!,
       process.env.masterRoleToAssume!,
       process.env.osRoleName!,

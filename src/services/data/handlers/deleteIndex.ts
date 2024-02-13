@@ -10,12 +10,12 @@ export const handler: Handler = async (
   const response = {
     statusCode: 200,
   };
-  let errorResponse = null
+  let errorResponse = null;
   try {
     if (!process.env.osDomain) {
       throw "process.env.osDomain cannot be undefined";
     }
-    const indices = ["main", "changelog", "seatool", "types", "subtypes"]
+    const indices = ["main", "changelog", "seatool", "types", "subtypes"];
     for (const index of indices) {
       try {
         await os.deleteIndex(process.env.osDomain, index as Index);

@@ -13,7 +13,7 @@ export const handler: Handler = async (
   };
   let errorResponse = null;
   try {
-    const indices = ["main", "changelog", "seatool", "types", "subtypes"]
+    const indices = ["main", "changelog", "seatool", "types", "subtypes"];
     for (const index of indices) {
       await manageIndexResource({ index: index as Index});
     }

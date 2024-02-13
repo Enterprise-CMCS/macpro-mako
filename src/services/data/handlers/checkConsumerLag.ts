@@ -50,7 +50,7 @@ export const handler: Handler = async (
     const info = await admin.describeGroups(triggerInfo.map((a) => a.groupId));
     const statuses = info.groups.map((a) => a.state.toString());
     // Get topic and group offset for each consumer group
-    let offsets: { [key: string]: any } = {};
+    const offsets: { [key: string]: any } = {};
     for (const trigger of triggerInfo) {
       for (const topic of trigger.topics) {
         const groupId :string = trigger.groupId;

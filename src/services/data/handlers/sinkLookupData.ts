@@ -11,8 +11,8 @@ const osDomain: string =
   })();
 
 export const getTableName = (recordKey:string) => {
-  return recordKey.split('.').pop()?.split('-').slice(0, -1).join('-') || '';
-}
+  return recordKey.split(".").pop()?.split("-").slice(0, -1).join("-") || "";
+};
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   for (const recordKey of Object.keys(event.records)) {
@@ -20,14 +20,14 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     switch(tableName) {
       case "SPA_Type":
         console.log("would process type records");
-        await typeIndexer(event.records[recordKey])
+        await typeIndexer(event.records[recordKey]);
         break;
       case "Type":
         console.log("would process sub type records");
-        await subtypeIndexer(event.records[recordKey])
+        await subtypeIndexer(event.records[recordKey]);
         break;
       default:
-        console.log(`ERROR:  Unknown topic event source ${recordKey}`)
+        console.log(`ERROR:  Unknown topic event source ${recordKey}`);
     }
   }
 };
@@ -38,9 +38,9 @@ export const typeIndexer = async(records: KafkaRecord[]) => {
     const { key, value } = kafkaRecord;
     try {
       const id: string = JSON.parse(decode(key));
-      let record = JSON.parse(decode(value)).payload.after;
+      const record = JSON.parse(decode(value)).payload.after;
       if (!record) {
-        console.log('delete detected... TODO:  handle deletes')
+        console.log("delete detected... TODO:  handle deletes");
         continue;
       }
       const result = opensearch.types.spa_type.transform(id).safeParse(record);
@@ -63,7 +63,7 @@ export const typeIndexer = async(records: KafkaRecord[]) => {
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 export const subtypeIndexer = async(records: KafkaRecord[]) => {
   const docs: any = [];
@@ -71,9 +71,9 @@ export const subtypeIndexer = async(records: KafkaRecord[]) => {
     const { key, value } = kafkaRecord;
     try {
       const id: string = JSON.parse(decode(key));
-      let record = JSON.parse(decode(value)).payload.after;
+      const record = JSON.parse(decode(value)).payload.after;
       if (!record) {
-        console.log('delete detected... TODO:  handle deletes')
+        console.log("delete detected... TODO:  handle deletes");
         continue;
       }
       const result = opensearch.subtypes.type.transform(id).safeParse(record);
@@ -96,4 +96,4 @@ export const subtypeIndexer = async(records: KafkaRecord[]) => {
   } catch (error) {
     console.error(error);
   }
-}
+};

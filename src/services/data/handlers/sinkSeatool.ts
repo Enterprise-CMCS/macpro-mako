@@ -15,21 +15,21 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   await seatool_seatool(event);
 };
 
-let subtypeCache: { [key: number]: string | null } = {};
+const subtypeCache: { [key: number]: string | null } = {};
 const getSubtype = async (id: number) => {
   if(!id) return null;
   if(!subtypeCache[id]){
-    let item = await os.getItem(osDomain,"subtypes",id.toString())
+    const item = await os.getItem(osDomain,"subtypes",id.toString());
     subtypeCache[id] = item?._source.name;
   }
   return subtypeCache[id];
 };
 
-let typeCache: { [key: number]: string | null } = {};
+const typeCache: { [key: number]: string | null } = {};
 const getType = async (id: number) => {
   if(!id) return null;
   if(!typeCache[id]){
-    let item = await os.getItem(osDomain,"types",id.toString())
+    const item = await os.getItem(osDomain,"types",id.toString());
     typeCache[id] = item?._source.name;
   }
   return typeCache[id];
@@ -92,8 +92,8 @@ export const seatool_main = async (event: KafkaEvent) => {
           result.data.authorityId &&
           validAuthorityIds.includes(result.data.authorityId)
         ) {
-            let type = result.data.typeId ? await getType(result.data.typeId) : null
-            let subType = result.data.subTypeId ? await getSubtype(result.data.subTypeId) : null
+            const type = result.data.typeId ? await getType(result.data.typeId) : null;
+            const subType = result.data.subTypeId ? await getSubtype(result.data.subTypeId) : null;
             records[id] = {...result.data, type, subType};
         }
       }
