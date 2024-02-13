@@ -25,6 +25,8 @@ import { useModalContext } from "@/components/Context/modalContext";
 import { useNavigate } from "@/components/Routing";
 import { useCallback } from "react";
 import { useAlertContext } from "@/components/Context/alertContext";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { useQuery as useQueryString } from "@/hooks";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -70,11 +72,13 @@ export const ChipSpaFormPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
+  const urlQuery = useQueryString();
   const modal = useModalContext();
   const alert = useAlertContext();
-  const acceptAction = useCallback(() => {
+  const originPath = useOriginPath();
+  const cancelOnAccept = useCallback(() => {
     modal.setModalOpen(false);
-    navigate({ path: "/dashboard" });
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const form = useForm<ChipFormSchema>({
     resolver: zodResolver(formSchema),
@@ -92,8 +96,14 @@ export const ChipSpaFormPage = () => {
         body: "Your submission has been received.",
       });
       alert.setBannerShow(true);
-      alert.setBannerDisplayOn("/dashboard");
-      navigate({ path: "/dashboard" });
+      alert.setBannerDisplayOn(
+        // This uses the originRoute map because this value doesn't work
+        // when any queries are added, such as the case of /details?id=...
+        urlQuery.get(ORIGIN)
+          ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+          : "/dashboard"
+      );
+      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
       console.error(e);
     }
@@ -236,7 +246,7 @@ export const ChipSpaFormPage = () => {
                   acceptButtonText: "Yes, leave form",
                   cancelButtonText: "Return to form",
                 });
-                modal.setOnAccept(() => acceptAction);
+                modal.setOnAccept(() => cancelOnAccept);
                 modal.setModalOpen(true);
               }}
               className="px-12"
