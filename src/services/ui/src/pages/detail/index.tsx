@@ -93,7 +93,7 @@ const PackageActionsCard = ({ id }: { id: string }) => {
                   key={`${idx}-${type}`}
                   path={"/action/:id/:type"}
                   query={{
-                    origin: "actions-details",
+                    origin: "actionsDetails",
                   }}
                   params={{ id, type }}
                   className="text-sky-700 underline"
