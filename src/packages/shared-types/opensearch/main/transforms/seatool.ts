@@ -10,8 +10,6 @@ import {
 import {
   Authority,
   SEATOOL_AUTHORITIES,
-  // SEATOOL_TYPES,
-  // SEATOOL_SUB_TYPES,
 } from "shared-types";
 
 type Flavor = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
