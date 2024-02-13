@@ -25,7 +25,10 @@ export function TypeSubTypeSelect<TFieldValues extends FieldValues>({
             <Inputs.FormLabel className="text-lg font-bold block">
               Service Type <Inputs.RequiredIndicator />
             </Inputs.FormLabel>
-            <Inputs.Select {...field}>
+            <Inputs.Select
+              onValueChange={field.onChange}
+              defaultValue={field.value}
+            >
               <Inputs.FormControl>
                 <Inputs.SelectTrigger>
                   <Inputs.SelectValue placeholder="Select a service type" />
@@ -48,7 +51,10 @@ export function TypeSubTypeSelect<TFieldValues extends FieldValues>({
             <Inputs.FormLabel className="text-lg font-bold block">
               Service Sub Type <Inputs.RequiredIndicator />
             </Inputs.FormLabel>
-            <Inputs.Select {...field}>
+            <Inputs.Select
+              onValueChange={field.onChange}
+              defaultValue={field.value}
+            >
               <Inputs.FormControl>
                 <Inputs.SelectTrigger>
                   <Inputs.SelectValue placeholder="Select a service sub-type" />

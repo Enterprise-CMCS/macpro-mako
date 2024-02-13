@@ -10,6 +10,10 @@ import {
   LoadingSpinner,
   SectionCard,
   SimplePageContainer,
+  ModalProvider,
+  useModalContext,
+  formCrumbsFromPath,
+  FAQ_TAB,
 } from "@/components";
 import * as Inputs from "@/components";
 import { PlanType } from "shared-types";
@@ -19,9 +23,7 @@ import {
   zSpaIdSchema,
 } from "@/utils/zod";
 import * as Content from "@/components/Form/content";
-import { ModalProvider, useModalContext } from "@/components/Modal/FormModals";
-import { formCrumbsFromPath } from "@/components";
-import { FAQ_TAB } from "@/components";
+import { SubjectDescription } from "../common";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -148,36 +150,10 @@ export const ChipForm = () => {
                 </Inputs.FormItem>
               )}
             />
-            <Inputs.FormField
+            <SubjectDescription
               control={form.control}
-              name="subject"
-              render={({ field }) => (
-                <Inputs.FormItem className="max-w-xl">
-                  <Inputs.FormLabel className="text-lg font-bold block">
-                    Subject <Inputs.RequiredIndicator />
-                  </Inputs.FormLabel>
-                  <Inputs.FormControl>
-                    <Inputs.Input {...field} />
-                  </Inputs.FormControl>
-                  <Inputs.FormMessage />
-                </Inputs.FormItem>
-              )}
-            />
-            <Inputs.FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <Inputs.FormItem className="max-w-xl">
-                  <Inputs.FormLabel className="text-lg font-bold block">
-                    Description <Inputs.RequiredIndicator />
-                  </Inputs.FormLabel>
-                  <Inputs.Textarea
-                    {...field}
-                    className="h-[100px] resize-none"
-                  />
-                  <Inputs.FormMessage />
-                </Inputs.FormItem>
-              )}
+              subjectFieldName="subject"
+              descriptionFieldName="description"
             />
           </SectionCard>
           <SectionCard title="Attachments">

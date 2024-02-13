@@ -22,7 +22,7 @@ import {
 import { ModalProvider, useModalContext } from "@/components/Modal/FormModals";
 import { formCrumbsFromPath } from "@/components";
 import { FAQ_TAB } from "@/components";
-import { TypeSubTypeSelect } from "../common";
+import { SubjectDescription, TypeSubTypeSelect } from "../common";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -164,36 +164,10 @@ export const MedicaidForm = () => {
               authorityId={122}
             />
 
-            <Inputs.FormField
+            <SubjectDescription
               control={form.control}
-              name="subject"
-              render={({ field }) => (
-                <Inputs.FormItem className="max-w-xl">
-                  <Inputs.FormLabel className="text-lg font-bold block">
-                    Subject <Inputs.RequiredIndicator />
-                  </Inputs.FormLabel>
-                  <Inputs.FormControl>
-                    <Inputs.Input {...field} />
-                  </Inputs.FormControl>
-                  <Inputs.FormMessage />
-                </Inputs.FormItem>
-              )}
-            />
-            <Inputs.FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <Inputs.FormItem className="max-w-xl">
-                  <Inputs.FormLabel className="text-lg font-bold block">
-                    Description <Inputs.RequiredIndicator />
-                  </Inputs.FormLabel>
-                  <Inputs.Textarea
-                    {...field}
-                    className="h-[100px] resize-none"
-                  />
-                  <Inputs.FormMessage />
-                </Inputs.FormItem>
-              )}
+              subjectFieldName="subject"
+              descriptionFieldName="description"
             />
           </SectionCard>
           <SectionCard title="Attachments">

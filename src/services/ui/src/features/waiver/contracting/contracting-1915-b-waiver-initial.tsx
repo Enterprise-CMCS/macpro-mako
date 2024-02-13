@@ -24,6 +24,7 @@ import {
   zAttachmentRequired,
   zInitialWaiverNumberSchema,
 } from "@/utils/zod";
+import { SubjectDescription } from "@/features";
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
@@ -161,36 +162,10 @@ export const Contracting1915BWaiverInitial = () => {
                 </Inputs.FormItem>
               )}
             />
-            <Inputs.FormField
+            <SubjectDescription
               control={form.control}
-              name="subject"
-              render={({ field }) => (
-                <Inputs.FormItem className="max-w-xl">
-                  <Inputs.FormLabel className="text-lg font-bold block">
-                    Subject <Inputs.RequiredIndicator />
-                  </Inputs.FormLabel>
-                  <Inputs.FormControl>
-                    <Inputs.Input {...field} />
-                  </Inputs.FormControl>
-                  <Inputs.FormMessage />
-                </Inputs.FormItem>
-              )}
-            />
-            <Inputs.FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <Inputs.FormItem className="max-w-xl">
-                  <Inputs.FormLabel className="text-lg font-bold block">
-                    Description <Inputs.RequiredIndicator />
-                  </Inputs.FormLabel>
-                  <Inputs.Textarea
-                    {...field}
-                    className="h-[100px] resize-none"
-                  />
-                  <Inputs.FormMessage />
-                </Inputs.FormItem>
-              )}
+              subjectFieldName="subject"
+              descriptionFieldName="description"
             />
           </SectionCard>
           <SectionCard title="Attachments">
