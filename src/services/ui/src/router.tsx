@@ -67,7 +67,7 @@ export const router = createBrowserRouter([
         element: <P.CHIPEligibilityLandingPage />,
       },
       {
-        path: "/new-submission/waiver/b/capitated/amend/create",
+        path: "/new-submission/waiver/b/capitated/amendment/create",
         element: <P.Capitated1915BWaiverAmendmentPage />,
       },
       {

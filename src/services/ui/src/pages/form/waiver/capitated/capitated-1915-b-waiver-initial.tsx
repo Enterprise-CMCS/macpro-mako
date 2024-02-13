@@ -98,7 +98,7 @@ export const Capitated1915BWaiverInitial = () => {
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
           <h1 className="text-2xl font-semibold mt-4 mb-2">
-            1915(b) Initial Waiver Submission
+            1915(b) Comprehensive (Capitated) Initial Waiver
           </h1>
           <SectionCard title="Initial Waiver Details">
             <Content.FormIntroText />
@@ -107,7 +107,7 @@ export const Capitated1915BWaiverInitial = () => {
                 Waiver Authority
               </Inputs.FormLabel>
               <span className="text-lg font-thin">
-                All other 1915(b) Waivers
+                1915(b)
               </span>
             </div>
             <Inputs.FormField
