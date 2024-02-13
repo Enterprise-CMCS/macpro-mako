@@ -22,15 +22,15 @@ import {
 import { ModalProvider, useModalContext } from "@/components/Modal/FormModals";
 import { formCrumbsFromPath } from "@/components";
 import { FAQ_TAB } from "@/components";
-import { ServiceTypeSubTypeSelect } from "../common";
+import { TypeSubTypeSelect } from "../common";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
   subject: z.string(),
   description: z.string(),
-  serviceTypeId: z.string(),
-  serviceSubTypeId: z.string(),
+  typeId: z.string(),
+  subTypeId: z.string(),
   attachments: z.object({
     cmsForm179: zAttachmentRequired({
       min: 1,
@@ -157,68 +157,13 @@ export const MedicaidForm = () => {
               )}
             />
 
-            <ServiceTypeSubTypeSelect
+            <TypeSubTypeSelect
               control={form.control}
-              serviceTypeId="serviceTypeId"
-              serviceSubTypeId="serviceSubTypeId"
+              typeName="typeId"
+              subTypeName="subTypeId"
+              authorityId={122}
             />
-            {/* <Inputs.FormField
-              control={form.control}
-              name="serviceTypeId"
-              render={({ field }) => (
-                <Inputs.FormItem className="max-w-sm">
-                  <Inputs.FormLabel className="text-lg font-bold block">
-                    Plan Type <Inputs.RequiredIndicator />
-                  </Inputs.FormLabel>
-                  <Inputs.Select {...field}>
-                    <Inputs.FormControl>
-                      <Inputs.SelectTrigger>
-                        <Inputs.SelectValue placeholder="Select a plan type" />
-                      </Inputs.SelectTrigger>
-                    </Inputs.FormControl>
-                    <Inputs.SelectContent>
-                      <Inputs.SelectItem value="125">
-                        Medicaid SPA
-                      </Inputs.SelectItem>
-                    </Inputs.SelectContent>
-                  </Inputs.Select>
-                  <Inputs.FormMessage />
-                </Inputs.FormItem>
-              )}
-            />
-            <Inputs.FormField
-              control={form.control}
-              name="serviceSubTypeId"
-              render={({ field }) => (
-                <Inputs.FormItem className="max-w-sm">
-                  <Inputs.FormLabel className="text-lg font-bold block">
-                    Plan Sub Type <Inputs.RequiredIndicator />
-                  </Inputs.FormLabel>
-                  <Inputs.Select {...field}>
-                    <Inputs.FormControl>
-                      <Inputs.SelectTrigger>
-                        <Inputs.SelectValue placeholder="Select a plan sub-type" />
-                      </Inputs.SelectTrigger>
-                    </Inputs.FormControl>
-                    <Inputs.SelectContent>
-                      <Inputs.SelectItem value="782">
-                        Copays/Deductibles/Coinsurance
-                      </Inputs.SelectItem>
-                      <Inputs.SelectItem value="783">
-                        Premiums/Enrollment Fees
-                      </Inputs.SelectItem>
-                      <Inputs.SelectItem value="784">
-                        Aged/Blind/Disabled Eligibility
-                      </Inputs.SelectItem>
-                      <Inputs.SelectItem value="785">
-                        Application
-                      </Inputs.SelectItem>
-                    </Inputs.SelectContent>
-                  </Inputs.Select>
-                  <Inputs.FormMessage />
-                </Inputs.FormItem>
-              )}
-            /> */}
+
             <Inputs.FormField
               control={form.control}
               name="subject"

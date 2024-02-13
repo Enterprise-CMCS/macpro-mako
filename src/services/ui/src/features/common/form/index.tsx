@@ -1,22 +1,25 @@
 import * as Inputs from "@/components/Inputs";
 import { Control, FieldValues, Path } from "react-hook-form";
 
-type SelectFormFieldProps<TFieldValues extends FieldValues> = {
+type TypeSubTypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
-  serviceTypeId: Path<TFieldValues>;
-  serviceSubTypeId: Path<TFieldValues>;
+  typeName: Path<TFieldValues>;
+  subTypeName: Path<TFieldValues>;
+  authorityId: number;
 };
 
-export function ServiceTypeSubTypeSelect<TFieldValues extends FieldValues>({
+export function TypeSubTypeSelect<TFieldValues extends FieldValues>({
   control,
-  serviceTypeId,
-  serviceSubTypeId,
-}: SelectFormFieldProps<TFieldValues>) {
+  typeName,
+  subTypeName,
+  authorityId,
+}: TypeSubTypeSelectFormFieldProps<TFieldValues>) {
+  console.log({ authorityId });
   return (
     <>
       <Inputs.FormField
         control={control}
-        name={serviceTypeId}
+        name={typeName}
         render={({ field }) => (
           <Inputs.FormItem className="max-w-sm">
             <Inputs.FormLabel className="text-lg font-bold block">
@@ -39,7 +42,7 @@ export function ServiceTypeSubTypeSelect<TFieldValues extends FieldValues>({
       />
       <Inputs.FormField
         control={control}
-        name={serviceSubTypeId}
+        name={subTypeName}
         render={({ field }) => (
           <Inputs.FormItem className="max-w-sm">
             <Inputs.FormLabel className="text-lg font-bold block">
