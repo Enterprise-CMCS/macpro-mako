@@ -3,17 +3,19 @@ import { API } from "aws-amplify";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { types, subtypes } from "shared-types/opensearch";
 
-type GetTypesResponse = {
-  data: types.Document[];
+// Types //
+const getSeaTypes = async (authorityId: number): Promise<types.Document[]> => {
+  const { seaTypes } = await API.post("os", "/getSeaTypes", {
+    body: { authorityId },
+  });
+  return seaTypes.hits?.hits.map((h: any) => h._source) || [];
 };
-const getSeaTypes = async (authorityId: string): Promise<GetTypesResponse> =>
-  await API.post("os", "/getSeaTypes", { body: { authorityId } });
 
 export const useGetSeaTypes = (
-  authorityId: string,
-  options?: UseQueryOptions<GetTypesResponse, ReactQueryApiError>
+  authorityId: number,
+  options?: UseQueryOptions<types.Document[], ReactQueryApiError>
 ) => {
-  return useQuery<GetTypesResponse, ReactQueryApiError>(
+  return useQuery<types.Document[], ReactQueryApiError>(
     ["packeage-types", authorityId],
     () => getSeaTypes(authorityId),
     options
@@ -22,21 +24,21 @@ export const useGetSeaTypes = (
 
 // SubTypes //
 
-type GetSubTypesResponse = {
-  data: subtypes.Document[];
-};
 const getSeaSubTypes = async (
-  authorityId: string,
+  authorityId: number,
   typeId: string
-): Promise<GetSubTypesResponse> =>
-  await API.post("os", "/getSeaSubTypes", { body: { authorityId, typeId } });
-
+): Promise<subtypes.Document[]> => {
+  const { seaSubTypes } = await API.post("os", "/getSeaSubTypes", {
+    body: { authorityId, typeId },
+  });
+  return seaSubTypes.hits?.hits.map((h: any) => h._source) || [];
+};
 export const useGetSeaSubTypes = (
-  authorityId: string,
+  authorityId: number,
   typeId: string,
-  options?: UseQueryOptions<GetSubTypesResponse, ReactQueryApiError>
+  options?: UseQueryOptions<subtypes.Document[], ReactQueryApiError>
 ) => {
-  return useQuery<GetSubTypesResponse, ReactQueryApiError>(
+  return useQuery<subtypes.Document[], ReactQueryApiError>(
     ["packeage-sub-types", authorityId, typeId],
     () => getSeaSubTypes(authorityId, typeId),
     options

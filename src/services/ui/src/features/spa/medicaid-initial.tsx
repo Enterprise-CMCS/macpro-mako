@@ -27,7 +27,7 @@ import { useCallback } from "react";
 import { useAlertContext } from "@/components/Context/alertContext";
 import { useQuery as useQueryString } from "@/hooks";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
-import { TypeSubTypeSelect, SubjectDescription } from "../common";
+import { SeaTypeSelect, SeaSubTypeSelect, SubjectDescription } from "../common";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -92,6 +92,8 @@ export const MedicaidSpaFormPage = () => {
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
   });
+
+  form.watch("typeId");
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
     try {
       await submit<MedicaidFormSchema>({
@@ -180,11 +182,16 @@ export const MedicaidSpaFormPage = () => {
               )}
             />
 
-            <TypeSubTypeSelect
+            <SeaTypeSelect
               control={form.control}
-              typeName="typeId"
-              subTypeName="subTypeId"
-              authorityId={122}
+              name="typeId"
+              authorityId={122} // medicaid authority
+            />
+            <SeaSubTypeSelect
+              control={form.control}
+              typeId={form.watch("typeId")}
+              name="subTypeId"
+              authorityId={122} // medicaid authority
             />
 
             <SubjectDescription

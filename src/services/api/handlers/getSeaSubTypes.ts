@@ -1,36 +1,51 @@
 import { APIGatewayEvent } from "aws-lambda";
-import * as os from "./../../../libs/opensearch-lib";
+import * as os from "../../../libs/opensearch-lib";
 import { response } from "../libs/handler";
 import { opensearch } from "shared-types";
 
-type GetSeaTypeBody = {
+type GetSeaSubTypeBody = {
   authorityId: string;
+  typeId: string;
 };
 
-export const getAllSeaTypes = async (authorityId: string) => {
+export const getAllSeaSubTypes = async (
+  authorityId: string,
+  typeId: string
+) => {
   if (!process.env.osDomain) {
     throw new Error("process.env.osDomain must be defined");
   }
 
-  return (await os.search(process.env.osDomain, "types", {
+  return (await os.search(process.env.osDomain, "subtypes", {
     query: {
-      match: {
-        authorityId: authorityId,
+      bool: {
+        must: [
+          {
+            match: {
+              authorityId: authorityId,
+            },
+          },
+          {
+            match: {
+              typeId: typeId,
+            },
+          },
+        ],
       },
     },
-  })) as opensearch.types.Response;
+  })) as opensearch.subtypes.Response;
 };
 
-export const getSeaTypes = async (event: APIGatewayEvent) => {
+export const getSeaSubTypes = async (event: APIGatewayEvent) => {
   if (!event.body) {
     return response({
       statusCode: 400,
       body: { message: "Event body required" },
     });
   }
-  const body = JSON.parse(event.body) as GetSeaTypeBody;
+  const body = JSON.parse(event.body) as GetSeaSubTypeBody;
   try {
-    const result = await getAllSeaTypes(body.authorityId);
+    const result = await getAllSeaSubTypes(body.authorityId, body.typeId);
 
     if (!result)
       return response({
@@ -41,7 +56,7 @@ export const getSeaTypes = async (event: APIGatewayEvent) => {
     return response({
       statusCode: 200,
       body: {
-        seaTypes: result,
+        seaSubTypes: result,
       },
     });
   } catch (err) {
@@ -52,4 +67,4 @@ export const getSeaTypes = async (event: APIGatewayEvent) => {
     });
   }
 };
-export const handler = getSeaTypes;
+export const handler = getSeaSubTypes;

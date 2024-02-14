@@ -4,5 +4,6 @@ export * from "./useGetItem";
 export * from "./useGetUser";
 export * from "./getAttachmentUrl";
 export * from "./useGetPackageActions";
+export * from "./useGetPackageTypes";
 export * from "./amplifyConfig";
 export * from "./submissionService";

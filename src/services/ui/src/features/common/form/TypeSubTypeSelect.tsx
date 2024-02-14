@@ -1,84 +1,99 @@
+import { useGetSeaTypes, useGetSeaSubTypes } from "@/api";
 import * as Inputs from "@/components/Inputs";
 import { Control, FieldValues, Path } from "react-hook-form";
 
-type TypeSubTypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
+type SeaTypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
-  typeName: Path<TFieldValues>;
-  subTypeName: Path<TFieldValues>;
+  name: Path<TFieldValues>;
   authorityId: number;
 };
 
-export function TypeSubTypeSelect<TFieldValues extends FieldValues>({
+export function SeaTypeSelect<TFieldValues extends FieldValues>({
   control,
-  typeName,
-  subTypeName,
+  name,
   authorityId,
-}: TypeSubTypeSelectFormFieldProps<TFieldValues>) {
-  console.log({ authorityId });
+}: SeaTypeSelectFormFieldProps<TFieldValues>) {
+  const { data } = useGetSeaTypes(authorityId);
+
   return (
-    <>
-      <Inputs.FormField
-        control={control}
-        name={typeName}
-        render={({ field }) => (
-          <Inputs.FormItem className="max-w-sm">
-            <Inputs.FormLabel className="text-lg font-bold block">
-              Service Type <Inputs.RequiredIndicator />
-            </Inputs.FormLabel>
-            <Inputs.Select
-              onValueChange={field.onChange}
-              defaultValue={field.value}
-            >
-              <Inputs.FormControl>
-                <Inputs.SelectTrigger>
-                  <Inputs.SelectValue placeholder="Select a service type" />
-                </Inputs.SelectTrigger>
-              </Inputs.FormControl>
-              <Inputs.SelectContent>
-                {/* map through some options here */}
-                <Inputs.SelectItem value="125">Medicaid SPA</Inputs.SelectItem>
-              </Inputs.SelectContent>
-            </Inputs.Select>
-            <Inputs.FormMessage />
-          </Inputs.FormItem>
-        )}
-      />
-      <Inputs.FormField
-        control={control}
-        name={subTypeName}
-        render={({ field }) => (
-          <Inputs.FormItem className="max-w-sm">
-            <Inputs.FormLabel className="text-lg font-bold block">
-              Service Sub Type <Inputs.RequiredIndicator />
-            </Inputs.FormLabel>
-            <Inputs.Select
-              onValueChange={field.onChange}
-              defaultValue={field.value}
-            >
-              <Inputs.FormControl>
-                <Inputs.SelectTrigger>
-                  <Inputs.SelectValue placeholder="Select a service sub-type" />
-                </Inputs.SelectTrigger>
-              </Inputs.FormControl>
-              <Inputs.SelectContent>
-                {/* map through some options here */}
-                <Inputs.SelectItem value="782">
-                  Copays/Deductibles/Coinsurance
-                </Inputs.SelectItem>
-                <Inputs.SelectItem value="783">
-                  Premiums/Enrollment Fees
-                </Inputs.SelectItem>
-                <Inputs.SelectItem value="784">
-                  Aged/Blind/Disabled Eligibility
-                </Inputs.SelectItem>
-                <Inputs.SelectItem value="785">Application</Inputs.SelectItem>
-                {/* map through some options here */}
-              </Inputs.SelectContent>
-            </Inputs.Select>
-            <Inputs.FormMessage />
-          </Inputs.FormItem>
-        )}
-      />
-    </>
+    <Inputs.FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <Inputs.FormItem className="max-w-sm">
+          <Inputs.FormLabel className="text-lg font-bold block">
+            Type <Inputs.RequiredIndicator />
+          </Inputs.FormLabel>
+          <Inputs.Select
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+          >
+            <Inputs.FormControl>
+              <Inputs.SelectTrigger>
+                <Inputs.SelectValue placeholder="Select a type" />
+              </Inputs.SelectTrigger>
+            </Inputs.FormControl>
+            <Inputs.SelectContent>
+              {data &&
+                data.map((T) => (
+                  <Inputs.SelectItem key={T.id} value={String(T.id)}>
+                    {T.name}
+                  </Inputs.SelectItem>
+                ))}
+            </Inputs.SelectContent>
+          </Inputs.Select>
+          <Inputs.FormMessage />
+        </Inputs.FormItem>
+      )}
+    />
+  );
+}
+
+type SeaSubTypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
+  control: Control<TFieldValues>;
+  name: Path<TFieldValues>;
+  authorityId: number;
+  typeId: string;
+};
+
+export function SeaSubTypeSelect<TFieldValues extends FieldValues>({
+  control,
+  typeId,
+  name,
+  authorityId,
+}: SeaSubTypeSelectFormFieldProps<TFieldValues>) {
+  const { data } = useGetSeaSubTypes(authorityId, typeId);
+
+  return (
+    <Inputs.FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <Inputs.FormItem className="max-w-sm">
+          <Inputs.FormLabel className="text-lg font-bold block">
+            Sub Type <Inputs.RequiredIndicator />
+          </Inputs.FormLabel>
+          <Inputs.Select
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+          >
+            <Inputs.FormControl>
+              <Inputs.SelectTrigger>
+                <Inputs.SelectValue placeholder="Select a sub type" />
+              </Inputs.SelectTrigger>
+            </Inputs.FormControl>
+            <Inputs.SelectContent>
+              {data &&
+                data.map((T) => (
+                  <Inputs.SelectItem key={T.id} value={String(T.id)}>
+                    {T.name}
+                  </Inputs.SelectItem>
+                ))}
+            </Inputs.SelectContent>
+          </Inputs.Select>
+          <Inputs.FormMessage />
+        </Inputs.FormItem>
+      )}
+    />
   );
 }
