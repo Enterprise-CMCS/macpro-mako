@@ -1,21 +1,47 @@
-import { Action, ReactQueryApiError } from "shared-types";
+import { ReactQueryApiError } from "shared-types";
 import { API } from "aws-amplify";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-type PackageActionsResponse = {
-  actions: Action[];
-};
-const getPackageTypes = async (
-  authorityId: string
-): Promise<PackageActionsResponse> =>
-  await API.post("os", "/getPackageTypes", { body: { authorityId } });
+import { SeaTypeDocument } from "shared-types/opensearch/types";
+import { SeaSubTypeDocument } from "shared-types/opensearch/subtypes";
 
-export const useGetPackageActions = (
+// Types //
+
+type GetTypesResponse = {
+  data: SeaTypeDocument[];
+};
+const getSeaTypes = async (authorityId: string): Promise<GetTypesResponse> =>
+  await API.post("os", "/getSeaTypes", { body: { authorityId } });
+
+export const useGetSeaTypes = (
   authorityId: string,
-  options?: UseQueryOptions<PackageActionsResponse, ReactQueryApiError>
+  options?: UseQueryOptions<GetTypesResponse, ReactQueryApiError>
 ) => {
-  return useQuery<PackageActionsResponse, ReactQueryApiError>(
+  return useQuery<GetTypesResponse, ReactQueryApiError>(
     ["packeage-types", authorityId],
-    () => getPackageTypes(authorityId),
+    () => getSeaTypes(authorityId),
+    options
+  );
+};
+
+// SubTypes //
+
+type GetSubTypesResponse = {
+  data: SeaSubTypeDocument[];
+};
+const getSeaSubTypes = async (
+  authorityId: string,
+  typeId: string
+): Promise<GetSubTypesResponse> =>
+  await API.post("os", "/getSeaSubTypes", { body: { authorityId, typeId } });
+
+export const useGetSeaSubTypes = (
+  authorityId: string,
+  typeId: string,
+  options?: UseQueryOptions<GetSubTypesResponse, ReactQueryApiError>
+) => {
+  return useQuery<GetSubTypesResponse, ReactQueryApiError>(
+    ["packeage-sub-types", authorityId, typeId],
+    () => getSeaSubTypes(authorityId, typeId),
     options
   );
 };

@@ -1,7 +1,7 @@
-import { seaSubtypeSchema } from "../../..";
+import { seaSubTypeSchema } from "../../..";
 
-export const transform = (id: string) => {
-  return seaSubtypeSchema.transform((data) => {
+export const transform = () => {
+  return seaSubTypeSchema.transform((data) => {
     const transformedData = {
       id: data.Type_Id,
       name: data.Type_Name,
@@ -12,4 +12,4 @@ export const transform = (id: string) => {
   });
 };
 
-export type Schema = ReturnType<typeof transform>;
+export type SeaSubTypeSchema = ReturnType<typeof transform>;
