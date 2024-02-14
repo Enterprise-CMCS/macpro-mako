@@ -20,9 +20,14 @@ import {
   zAttachmentRequired,
   zInitialWaiverNumberSchema,
 } from "@/pages/form/zod";
-import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
+import { useModalContext } from "@/components/Context/modalContext";
+import { useNavigate } from "@/components/Routing";
+import { useAlertContext } from "@/components/Context/alertContext";
+import { useCallback } from "react";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { useQuery as useQueryString } from "@/hooks";
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
@@ -58,10 +63,18 @@ const attachmentList = [
   },
 ] as const;
 
-export const Contracting1915BWaiverInitial = () => {
+export const Contracting1915BWaiverInitialPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
-  const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
+  const navigate = useNavigate();
+  const urlQuery = useQueryString();
+  const alert = useAlertContext();
+  const modal = useModalContext();
+  const originPath = useOriginPath();
+  const cancelOnAccept = useCallback(() => {
+    modal.setModalOpen(false);
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+  }, []);
   const handleSubmit: SubmitHandler<Waiver1915BContractingInitial> = async (
     formData
   ) => {
@@ -75,7 +88,19 @@ export const Contracting1915BWaiverInitial = () => {
         user,
         authority: Authority["1915b"],
       });
-      setSuccessModalOpen(true);
+      alert.setContent({
+        header: "Package submitted",
+        body: "Your submission has been received.",
+      });
+      alert.setBannerShow(true);
+      alert.setBannerDisplayOn(
+        // This uses the originRoute map because this value doesn't work
+        // when any queries are added, such as the case of /details?id=...
+        urlQuery.get(ORIGIN)
+          ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+          : "/dashboard"
+      );
+      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
       console.error(e);
     }
@@ -227,8 +252,16 @@ export const Contracting1915BWaiverInitial = () => {
             <Inputs.Button
               type="button"
               variant="outline"
-              onClick={() => setCancelModalOpen(true)}
-              className="px-12"
+              onClick={() => {
+                modal.setContent({
+                  header: "Stop form submission?",
+                  body: "All information you've entered on this form will be lost if you leave this page.",
+                  acceptButtonText: "Yes, leave form",
+                  cancelButtonText: "Return to form",
+                });
+                modal.setOnAccept(() => cancelOnAccept);
+                modal.setModalOpen(true);
+              }}
             >
               Cancel
             </Inputs.Button>
@@ -238,9 +271,3 @@ export const Contracting1915BWaiverInitial = () => {
     </SimplePageContainer>
   );
 };
-
-export const Contracting1915BWaiverInitialPage = () => (
-  <ModalProvider>
-    <Contracting1915BWaiverInitial />
-  </ModalProvider>
-);
