@@ -11,10 +11,9 @@ import {
   LoadingSpinner,
   SimplePageContainer,
   SectionCard,
-  formCrumbsFromPath,
   FAQ_TAB,
-  ModalProvider,
   useModalContext,
+  formCrumbsFromPath,
 } from "@/components";
 import { submit } from "@/api";
 import { PlanType } from "shared-types";
@@ -25,7 +24,12 @@ import {
   zAttachmentOptional,
   zAttachmentRequired,
 } from "@/utils";
-import { SubjectDescription } from "@/features";
+import { useNavigate } from "@/components/Routing";
+import { useAlertContext } from "@/components/Context/alertContext";
+import { useCallback } from "react";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { useQuery as useQueryString } from "@/hooks";
+import { SubjectDescription } from "@/features/common";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,
@@ -65,10 +69,18 @@ const attachmentList = [
   },
 ] as const;
 
-export const Contracting1915BWaiverAmendment = () => {
+export const Contracting1915BWaiverAmendmentPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
-  const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
+  const navigate = useNavigate();
+  const urlQuery = useQueryString();
+  const alert = useAlertContext();
+  const modal = useModalContext();
+  const originPath = useOriginPath();
+  const cancelOnAccept = useCallback(() => {
+    modal.setModalOpen(false);
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+  }, []);
   const handleSubmit: SubmitHandler<Waiver1915BContractingAmendment> = async (
     formData
   ) => {
@@ -79,7 +91,19 @@ export const Contracting1915BWaiverAmendment = () => {
         user,
         authority: PlanType["1915b"],
       });
-      setSuccessModalOpen(true);
+      alert.setContent({
+        header: "Package submitted",
+        body: "Your submission has been received.",
+      });
+      alert.setBannerShow(true);
+      alert.setBannerDisplayOn(
+        // This uses the originRoute map because this value doesn't work
+        // when any queries are added, such as the case of /details?id=...
+        urlQuery.get(ORIGIN)
+          ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+          : "/dashboard"
+      );
+      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
       console.error(e);
     }
@@ -98,7 +122,7 @@ export const Contracting1915BWaiverAmendment = () => {
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
           <h1 className="text-2xl font-semibold mt-4 mb-2">
-            Amend a 1915(b) Waiver
+            1915(b)(4) FFS Selective Contracting Waiver Amendment
           </h1>
           <SectionCard title="1915(b) Waiver Amendment Request Details">
             <Content.FormIntroText />
@@ -106,9 +130,7 @@ export const Contracting1915BWaiverAmendment = () => {
               <Inputs.FormLabel className="font-semibold">
                 Waiver Authority
               </Inputs.FormLabel>
-              <span className="text-lg font-thin">
-                1915(b)(4) FFS Selective Contracting waviers
-              </span>
+              <span className="text-lg font-thin">1915(b)</span>
             </div>
             <Inputs.FormField
               control={form.control}
@@ -266,8 +288,16 @@ export const Contracting1915BWaiverAmendment = () => {
             <Inputs.Button
               type="button"
               variant="outline"
-              onClick={() => setCancelModalOpen(true)}
-              className="px-12"
+              onClick={() => {
+                modal.setContent({
+                  header: "Stop form submission?",
+                  body: "All information you've entered on this form will be lost if you leave this page.",
+                  acceptButtonText: "Yes, leave form",
+                  cancelButtonText: "Return to form",
+                });
+                modal.setOnAccept(() => cancelOnAccept);
+                modal.setModalOpen(true);
+              }}
             >
               Cancel
             </Inputs.Button>
@@ -277,9 +307,3 @@ export const Contracting1915BWaiverAmendment = () => {
     </SimplePageContainer>
   );
 };
-
-export const Contracting1915BWaiverAmendmentPage = () => (
-  <ModalProvider>
-    <Contracting1915BWaiverAmendment />
-  </ModalProvider>
-);

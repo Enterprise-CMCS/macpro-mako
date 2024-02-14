@@ -13,6 +13,8 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
 import { useNavigate } from "../Routing";
 import { FAQ_TAB } from "../Routing/consts";
+import { ModalProvider } from "@/components/Context/modalContext";
+import { AlertProvider } from "@/components/Context/alertContext";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
   const isProd =
@@ -108,35 +110,39 @@ export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   return (
-    <div className="min-h-full flex flex-col">
-      <UsaBanner />
-      <nav className="bg-primary">
-        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
-          <div className="h-[70px] flex gap-12 items-center text-white">
-            <Link to="/">
-              <img
-                className="h-10 w-28 min-w-[112px] resize-none"
-                src={oneMacLogo}
-                alt="onemac site logo"
-              />
-            </Link>
-            <ResponsiveNav isDesktop={isDesktop} />
+    <ModalProvider>
+      <div className="min-h-full flex flex-col">
+        <UsaBanner />
+        <nav className="bg-primary">
+          <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
+            <div className="h-[70px] flex gap-12 items-center text-white">
+              <Link to="/">
+                <img
+                  className="h-10 w-28 min-w-[112px] resize-none"
+                  src={oneMacLogo}
+                  alt="onemac site logo"
+                />
+              </Link>
+              <ResponsiveNav isDesktop={isDesktop} />
+            </div>
           </div>
-        </div>
-      </nav>
-      <main className="flex-1">
-        <Outlet />
-      </main>
-      <Footer
-        email="OneMAC_Helpdesk@cms.hhs.gov"
-        address={{
-          city: "Baltimore",
-          state: "MD",
-          street: "7500 Security Boulevard",
-          zip: 21244,
-        }}
-      />
-    </div>
+        </nav>
+        <main className="flex-1">
+          <AlertProvider>
+            <Outlet />
+          </AlertProvider>
+        </main>
+        <Footer
+          email="OneMAC_Helpdesk@cms.hhs.gov"
+          address={{
+            city: "Baltimore",
+            state: "MD",
+            street: "7500 Security Boulevard",
+            zip: 21244,
+          }}
+        />
+      </div>
+    </ModalProvider>
   );
 };
 

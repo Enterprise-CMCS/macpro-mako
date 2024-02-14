@@ -27,10 +27,10 @@ export const mapSubmissionCrumb = (path: Route) => {
     case "/new-submission/spa/chip/create":
       return "Submit new CHIP SPA";
     case "/new-submission/waiver/b/capitated/initial/create":
-      return "1915(b) Comprehensive (Capitated) New Initial Waiver";
+      return "1915(b) Comprehensive (Capitated) Initial Waiver";
     case "/new-submission/waiver/b/capitated/renewal/create":
       return "1915(b) Comprehensive (Capitated) Renewal Waiver";
-    case "/new-submission/waiver/b/capitated/amend/create":
+    case "/new-submission/waiver/b/capitated/amendment/create":
       return "1915(b) Comprehensive (Capitated) Waiver Amendment";
     case "/new-submission/waiver/b/b4/initial/create":
       return "1915(b)(4) FFS Selective Contracting Initial Waiver";

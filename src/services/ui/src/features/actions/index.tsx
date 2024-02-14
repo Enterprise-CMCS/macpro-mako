@@ -6,7 +6,6 @@ import {
   SimplePageContainer,
   Navigate,
   useParams,
-  ModalProvider,
 } from "@/components";
 import {
   ToggleRaiResponseWithdraw,
@@ -122,12 +121,10 @@ export const ActionFormIndex = () => {
   const { id, type } = useParams("/action/:id/:type");
   return (
     <SimplePageContainer>
-      <ModalProvider>
-        <BreadCrumbs
-          options={detailsAndActionsCrumbs({ id: id, action: type })}
-        />
-        <ActionFormSwitch />
-      </ModalProvider>
+      <BreadCrumbs
+        options={detailsAndActionsCrumbs({ id: id, action: type })}
+      />
+      <ActionFormSwitch />
     </SimplePageContainer>
   );
 };
@@ -139,7 +136,6 @@ export * from "./IssueRai";
 export * from "./renderSlots";
 export * from "./RespondToRai";
 export * from "./setups";
-export * from "./template";
 export * from "./ToggleRaiResponseWithdraw";
 export * from "./WithdrawPackage";
 export * from "./WithdrawRai";

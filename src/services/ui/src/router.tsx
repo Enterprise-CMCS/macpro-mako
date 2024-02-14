@@ -1,7 +1,6 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
 import * as P from "@/pages";
 import * as F from "@/features";
-import "@/api";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
 import { type Route } from "./components/Routing/types";
