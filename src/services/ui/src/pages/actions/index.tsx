@@ -127,5 +127,3 @@ export const ActionFormIndex = () => {
     </SimplePageContainer>
   );
 };
-
-export * from "../form/waivers/actions/ActionWrapper";
