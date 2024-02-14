@@ -105,6 +105,14 @@ function WebformBody({
   });
   const [subData, setSubData] = useState("");
 
+  const ldClient = useLDClient();
+  const clearDataButton: string = ldClient?.variation(
+    featureFlags.CLEAR_DATA_BUTTON.flag,
+    featureFlags.CLEAR_DATA_BUTTON.defaultValue
+  );
+
+  console.log(clearDataButton);
+
   const onSave = () => {
     const values = form.getValues();
     localStorage.setItem(`${id}v${version}`, JSON.stringify(values));
@@ -149,14 +157,16 @@ function WebformBody({
                   <Button type="button" onClick={onSave} variant="ghost">
                     Save draft
                   </Button>
-                  <Button
-                    type="button"
-                    onClick={reset}
-                    variant="outline"
-                    className="mx-2"
-                  >
-                    Clear Data
-                  </Button>
+                  {clearDataButton && (
+                    <Button
+                      type="button"
+                      onClick={reset}
+                      variant="outline"
+                      className="mx-2"
+                    >
+                      Clear Data
+                    </Button>
+                  )}
                 </div>
                 <Button type="submit">Submit</Button>
               </div>
