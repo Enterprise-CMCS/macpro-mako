@@ -68,7 +68,7 @@ const attachmentList = [
   { name: "other", label: "Other", required: false },
 ] as const;
 
-export const ChipForm = () => {
+export const ChipSpaFormPage = () => {
   const crumbs = useLocationCrumbs();
   const { data: user } = useGetUser();
   const navigate = useNavigate();

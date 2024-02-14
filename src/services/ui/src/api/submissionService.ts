@@ -35,9 +35,8 @@ type UploadRecipe = PreSignedURL & {
 
 /** Pass in an array of UploadRecipes and get a back-end compatible object
  * to store attachment data */
-export const buildAttachmentObject = (
-  recipes: UploadRecipe[]
-): Attachment[] => {
+export const buildAttachmentObject = (recipes?: UploadRecipe[]) => {
+  if (!recipes) return null;
   return recipes
     .map(
       (r) =>
@@ -47,7 +46,7 @@ export const buildAttachmentObject = (
           title: r.title,
           bucket: r.bucket,
           uploadDate: Date.now(),
-        }) as Attachment
+        } as Attachment)
     )
     .flat();
 };
@@ -89,15 +88,24 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         proposedEffectiveDate: seaToolFriendlyTimestamp(
           data.proposedEffectiveDate as Date
         ),
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        attachments: buildAttachmentObject(attachments),
       };
+    case buildActionUrl(Action.REMOVE_APPK_CHILD):
+      return {
+        ...data,
+        ...userDetails,
+        authority: PlanType["1915c"],
+        origin: "micro",
+        attachments: buildAttachmentObject(attachments),
+      };
+
     case buildActionUrl(Action.WITHDRAW_RAI):
       return {
         authority: authority,
         origin: "micro",
         ...data,
         ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        attachments: buildAttachmentObject(attachments),
       };
     case buildActionUrl(Action.ISSUE_RAI):
       return {
@@ -105,7 +113,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        attachments: buildAttachmentObject(attachments),
       };
     case buildActionUrl(Action.RESPOND_TO_RAI):
       return {
@@ -113,7 +121,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        attachments: buildAttachmentObject(attachments),
       };
     case buildActionUrl(Action.WITHDRAW_PACKAGE):
       return {
@@ -121,7 +129,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        attachments: buildAttachmentObject(attachments),
       };
     case buildActionUrl(Action.ENABLE_RAI_WITHDRAW):
     case buildActionUrl(Action.DISABLE_RAI_WITHDRAW):
@@ -131,7 +139,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        attachments: buildAttachmentObject(attachments),
       };
   }
 };

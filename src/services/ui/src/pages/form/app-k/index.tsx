@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SlotAttachments } from "@/pages/actions/renderSlots";
 import { FORM, SchemaForm } from "./consts";
 import { SlotStateSelect, WaiverIdFieldArray } from "./slots";
-import { ModalProvider } from "@/pages/form/modals";
+import { ModalProvider } from "@/components/Context/modalContext";
 import { submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
 import { PlanType } from "shared-types";

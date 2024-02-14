@@ -1,6 +1,6 @@
 import { ConfirmationModal, DetailsSection } from "@/components";
 import { spaDetails, submissionDetails } from "./hooks";
-import { opensearch } from "shared-types";
+import { PlanType, opensearch } from "shared-types";
 import { FC } from "react";
 import { useOsSearch } from "@/api";
 import { useEffect, useState } from "react";
@@ -11,9 +11,9 @@ import { Plug } from "lucide-react";
 
 import { DetailSectionItem } from "./hooks";
 import { useGetUser } from "@/api/useGetUser";
-import { ModalProvider } from "@/pages/form/modals";
 import { API } from "aws-amplify";
 import { buildSubmissionPayload } from "@/api/submissionService";
+import { submit } from "@/api/submissionService";
 
 export const AppK = (props: opensearch.main.Document) => {
   const [removeChild, setRemoveChild] = useState("");
@@ -45,12 +45,14 @@ export const AppK = (props: opensearch.main.Document) => {
   }, []);
 
   const onChildRemove = async (id: string) => {
-    const body = buildSubmissionPayload({ appkChildId: id }, user, "/appk");
     try {
-      await API.post("os", "/appk/remove-child", {
-        body,
-      }).then(() => setRemoveChild(""));
-      setRemoveChild("");
+      await submit({
+        data: { id },
+        user: user,
+        authority: props.authority as PlanType,
+        endpoint: "/action/remove-appk-child",
+      });
+      setTimeout(() => setRemoveChild(""), 2000);
     } catch (err) {
       console.error(err);
     }
