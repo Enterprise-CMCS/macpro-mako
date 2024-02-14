@@ -17,19 +17,19 @@ const Cognito = new CognitoIdentityProviderClient({
 });
 
 const emailsToSend = {
-  "initial-submission-medicaid-spa": [{
-    "templateBase": "initial-submission-medicaid-spa-cms",
+  "new-submission-medicaid-spa": [{
+    "templateBase": "new-submission-medicaid-spa-cms",
     "sendTo": [process.env.osgEmail],
   }, {
-    "templateBase": "initial-submission-medicaid-spa-state",
+    "templateBase": "new-submission-medicaid-spa-state",
     "sendTo": ["submitterEmail"],
   }],
-  "initial-submission-chip-spa": [{
-    "templateBase": "initial-submission-chip-spa-cms",
+  "new-submission-chip-spa": [{
+    "templateBase": "new-submission-chip-spa-cms",
     "sendTo": [process.env.chipEmail],
     "addCC": [`${process.env.chipCCList}`],
   }, {
-    "templateBase": "initial-submission-chip-spa-state",
+    "templateBase": "new-submission-chip-spa-state",
     "sendTo": ["submitterEmail"],
   }],
 }
@@ -41,7 +41,7 @@ const createSendTemplatedEmailCommand = (data) =>
       ToAddresses: data.ToAddresses,
       CcAddresses: data.CcAddresses,
     },
-    TemplateData: JSON.stringify({ applicationEndpoint: "onemac.cms.gov", ...data }),
+    TemplateData: JSON.stringify({ applicationEndpoint: process.env.applicationEndpoint, ...data }),
     Template: `${data.templateBase}_${process.env.stage}`,
     ConfigurationSetName: process.env.emailConfigSet,
   });
@@ -57,8 +57,7 @@ export const main = async (event: KafkaEvent) => {
       const record = { id: decode(encodedRecord.key), ...JSON.parse(decode(encodedRecord.value)) };
       console.log("here is the decoded record: ", record);
       if (record?.origin !== "micro") return;
-      if (!record?.actionType) record.actionType = "initial-submission";
-      record.proposedEffectiveDateNice = record?.proposedEffectiveDate ? (new Date(record.proposedEffectiveDate)).toDateString() : "Pending";
+      if (!record?.actionType) record.actionType = "new-submission";
 
       const emailsConfig = `${record.actionType}-${record.authority.replace(" ", "-")}`;
       if (!emailsToSend[emailsConfig]) return;
@@ -74,7 +73,8 @@ export const main = async (event: KafkaEvent) => {
 
         theEmail.formattedFileList = `<ul><li>${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('</li><li>')}</li></ul>`;
         theEmail.textFileList = `${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('\n')}\n\n`;
-        theEmail.ninetyDaysDateNice = theEmail?.submissionDate ? DateTime.fromMillis(theEmail.submissionDate)
+        theEmail.proposedEffectiveDateNice = theEmail?.notificationMetadata?.proposedEffectiveDate ? (new Date(theEmail.notificationMetadata.proposedEffectiveDate)).toDateString() : "Pending";
+        theEmail.ninetyDaysDateNice = theEmail?.notificationMetadata?.submissionDate ? DateTime.fromMillis(theEmail.notificationMetadata.submissionDate)
           .plus({ days: 90 })
           .toFormat("DDDD '@ 11:59pm' ZZZZ") : "Pending";
         emailQueue.push(theEmail);

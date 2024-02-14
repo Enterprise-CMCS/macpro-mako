@@ -70,10 +70,10 @@ export const submit = async (event: APIGatewayEvent) => {
     }
 
     const today = seaToolFriendlyTimestamp();
-    body.submissionDate = getNextBusinessDayTimestamp();
+    const submissionDate = getNextBusinessDayTimestamp();
     console.log(
       "Initial Submission Date determined to be: " +
-        new Date(body.submissionDate).toISOString()
+        new Date(submissionDate).toISOString()
     );
     const pool = await sql.connect(config);
     console.log(body);
@@ -83,7 +83,7 @@ export const submit = async (event: APIGatewayEvent) => {
           ,'${body.state}'
           ,(Select Region_ID from SEA.dbo.States where State_Code = '${body.state}')
           ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${body.authority}')
-          ,dateadd(s, convert(int, left(${body.submissionDate}, 10)), cast('19700101' as datetime))
+          ,dateadd(s, convert(int, left(${submissionDate}, 10)), cast('19700101' as datetime))
           ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
           ,dateadd(s, convert(int, left(${body.proposedEffectiveDate}, 10)), cast('19700101' as datetime))
           ,(Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = 'Pending')

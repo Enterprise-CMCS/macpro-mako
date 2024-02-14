@@ -5,7 +5,7 @@
  */
 
 module.exports = async () => [{
-    name: "initial-submission-medicaid-spa-cms",
+    name: "new-submission-medicaid-spa-cms",
     subject:  "Medicaid SPA {{id}} Submitted",
     html: `
 <p>The OneMAC Submission Portal received a Medicaid SPA Submission:</p>
@@ -61,7 +61,7 @@ forward this email to SPAM@cms.hhs.gov.\n\n
 Thank you!`,
 },
 {
-    name: "initial-submission-medicaid-spa-state",
+    name: "new-submission-medicaid-spa-state",
     subject:  "Your Medicaid SPA {{id}} has been submitted to CMS",
     html: `
 <p>This response confirms that you submitted a Medicaid SPA to CMS for review:</p>

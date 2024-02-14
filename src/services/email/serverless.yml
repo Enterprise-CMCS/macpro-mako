@@ -87,6 +87,7 @@ functions:
       osgEmail: ${self:custom.osgEmail}
       emailConfigSet: ${self:service}-${sls:stage}-configuration
       cognitoPoolId: ${param:CognitoUserPoolId}
+      applicationEndpoint: ${param:ApplicationEndpointUrl}
     maximumRetryAttempts: 0
     timeout: 60
     memorySize: 1024
@@ -219,32 +220,6 @@ resources:
 
     SinkEmailTrigger:
       Type: AWS::Lambda::EventSourceMapping
-      Properties:
-        BatchSize: 1000
-        Enabled: true
-        FunctionName: !GetAtt ProcessEmailsLambdaFunction.Arn
-        SelfManagedEventSource:
-          Endpoints:
-            KafkaBootstrapServers:
-              Fn::Split:
-                - ","
-                - ${self:custom.brokerString}
-        SourceAccessConfigurations:
-          - Type: VPC_SUBNET
-            URI: subnet:${self:custom.vpc.privateSubnets.0}
-          - Type: VPC_SUBNET
-            URI: subnet:${self:custom.vpc.privateSubnets.1}
-          - Type: VPC_SUBNET
-            URI: subnet:${self:custom.vpc.privateSubnets.2}
-          - Type: VPC_SECURITY_GROUP
-            URI: !Sub security_group:${SecurityGroup}
-        StartingPosition: LATEST
-        Topics:
-          - aws.onemac.migration.cdc # We always want to sink onemacs data
-
-    SinkEmailNamespacedTopicTrigger:
-      Type: AWS::Lambda::EventSourceMapping
-      Condition: isDev # We will only sink the namespaced topic if we're in a dev env
       Properties:
         BatchSize: 1000
         Enabled: true
