@@ -14,8 +14,23 @@ export const getAllSeaTypes = async (authorityId: string) => {
 
   return (await os.search(process.env.osDomain, "types", {
     query: {
-      match: {
-        authorityId: authorityId,
+      bool: {
+        must: [
+          {
+            match: {
+              authorityId: authorityId,
+            },
+          },
+        ],
+        must_not: [
+          {
+            match_phrase: {
+              name: {
+                query: "Do Not Use",
+              },
+            },
+          },
+        ],
       },
     },
   })) as opensearch.types.Response;

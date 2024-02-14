@@ -31,6 +31,15 @@ export const getAllSeaSubTypes = async (
             },
           },
         ],
+        must_not: [
+          {
+            match_phrase: {
+              name: {
+                query: "Do Not Use",
+              },
+            },
+          },
+        ],
       },
     },
   })) as opensearch.subtypes.Response;
