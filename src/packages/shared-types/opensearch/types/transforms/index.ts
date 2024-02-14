@@ -1,0 +1,1 @@
+export * as spa_type from "./spa_type";

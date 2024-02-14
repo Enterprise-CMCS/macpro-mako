@@ -97,7 +97,7 @@ const ActionFormSwitch = () => {
     return <ToggleRaiResponseWithdraw item={item} />;
   } else {
     const setup = getFormSetup(
-      item!._source.planType as string as SetupOptions,
+      item!._source.authority as string as SetupOptions,
       type
     );
     if (!setup) return <Navigate path="/" />;

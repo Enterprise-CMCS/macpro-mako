@@ -15,8 +15,8 @@ import {
   formCrumbsFromPath,
   FAQ_TAB,
 } from "@/components";
-import { submit } from "@/api";
-import { PlanType } from "shared-types";
+import { submit } from "@/api/submissionService";
+import { Authority } from "shared-types";
 import {
   zAdditionalInfo,
   zAttachmentOptional,
@@ -87,7 +87,7 @@ export const Contracting1915BWaiverInitialPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType["1915b"],
+        authority: Authority["1915b"],
       });
       alert.setContent({
         header: "Package submitted",

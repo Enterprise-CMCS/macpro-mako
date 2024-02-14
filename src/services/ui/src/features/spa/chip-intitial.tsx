@@ -14,8 +14,8 @@ import {
   formCrumbsFromPath,
   FAQ_TAB,
 } from "@/components";
-import * as Inputs from "@/components";
-import { PlanType } from "shared-types";
+import * as Inputs from "@/components/Inputs";
+import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
@@ -34,6 +34,8 @@ const formSchema = z.object({
   additionalInformation: z.string().max(4000).optional(),
   subject: z.string(),
   description: z.string(),
+  typeId: z.string(),
+  subTypeId: z.string(),
   attachments: z.object({
     currentStatePlan: zAttachmentRequired({ min: 1 }),
     amendedLanguage: zAttachmentRequired({ min: 1 }),
@@ -92,7 +94,7 @@ export const ChipSpaFormPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType.CHIP_SPA,
+        authority: Authority.CHIP_SPA,
       });
       alert.setContent({
         header: "Package submitted",

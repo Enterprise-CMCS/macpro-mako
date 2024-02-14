@@ -13,8 +13,8 @@ import {
   SectionCard,
   formCrumbsFromPath,
 } from "@/components";
-import { submit } from "@/api";
-import { PlanType } from "shared-types";
+import { submit } from "@/api/submissionService";
+import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
@@ -98,7 +98,7 @@ export const MedicaidSpaFormPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType.MED_SPA,
+        authority: Authority.MED_SPA,
       });
       alert.setContent({
         header: "Package submitted",

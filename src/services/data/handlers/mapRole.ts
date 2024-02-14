@@ -1,38 +1,31 @@
 import { Handler } from "aws-lambda";
-import { send, SUCCESS, FAILED } from "cfn-response-async";
-type ResponseStatus = typeof SUCCESS | typeof FAILED;
 import * as os from "./../../../libs/opensearch-lib";
 
-export const handler: Handler = async (event, context) => {
+export const handler: Handler = async (event, _, callback) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
-  const responseData = {};
-  let responseStatus: ResponseStatus = SUCCESS;
+  const response = {
+    statusCode: 200,
+  };
+  let errorResponse = null;
   try {
-    if (event.RequestType == "Create" || event.RequestType == "Update") {
-      if (!event.ResourceProperties.MasterRoleToAssume) {
-        throw "ERROR:  Property MasterRoleToAssume is required, but was not supplied.";
+    const requiredEnvVars = ["osDomain", "masterRoleToAssume", "osRoleName", "iamRoleName"];
+
+    requiredEnvVars.forEach(envVar => {
+      if (!process.env[envVar]) {
+        throw `ERROR: process.env.${envVar} is required, but was not supplied.`;
       }
-      if (!event.ResourceProperties.OSRoleName) {
-        throw "ERROR:  Property OSRoleName is required, but was not supplied.";
-      }
-      if (!event.ResourceProperties.IAMRoleName) {
-        throw "ERROR:  Property IAMRoleName is required, but was not supplied.";
-      }
-      if (!process.env.osDomain) {
-        throw "ERROR:  process.env.osDomain must be defined";
-      }
-      await os.mapRole(
-        process.env.osDomain,
-        event.ResourceProperties.MasterRoleToAssume,
-        event.ResourceProperties.OSRoleName,
-        event.ResourceProperties.IAMRoleName
-      );
-    }
-  } catch (error) {
-    console.log(error);
-    responseStatus = FAILED;
+    });
+    const reply = await os.mapRole(
+      process.env.osDomain!,
+      process.env.masterRoleToAssume!,
+      process.env.osRoleName!,
+      process.env.iamRoleName!
+    );
+    console.log(reply);
+  } catch (error: any) {
+    response.statusCode = 500;
+    errorResponse = error;
   } finally {
-    console.log("finally");
-    await send(event, context, responseStatus, responseData);
+    callback(errorResponse, response);
   }
 };

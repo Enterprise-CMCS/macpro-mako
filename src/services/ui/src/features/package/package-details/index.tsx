@@ -146,7 +146,7 @@ export const DetailsContent = ({
         <div className="flex flex-col gap-3">
           <DetailsSection
             id="package-details"
-            title={`${data._source.planType} Package Details`}
+            title={`${data._source.authority} Package Details`}
           >
             <DetailItemsGrid displayItems={recordDetails(data._source)} />
             <DetailItemsGrid displayItems={submissionDetails(data._source)} />

@@ -31,7 +31,7 @@ export const useFilterExportGroups = () => {
     },
     {
       name: "Type",
-      transform: (data) => data.planType ?? BLANK_VALUE,
+      transform: (data) => data.authority ?? BLANK_VALUE,
     },
     ...((): opensearch.main.ExportHeader[] => {
       if (url.state.tab !== "waivers") return [];

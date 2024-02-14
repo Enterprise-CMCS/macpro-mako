@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Path, useForm } from "react-hook-form";
-import { opensearch, PlanType } from "shared-types";
+import { opensearch, Authority } from "shared-types";
 import {
   Button,
   Form,
@@ -54,7 +54,7 @@ export const WithdrawRai = ({
           data: { ...data, id: id! },
           endpoint: buildActionUrl(type!),
           user,
-          authority: item?._source.authority as PlanType,
+          authority: item?._source.authority as Authority,
         });
         alert.setContent({
           header: "RAI response withdrawn",

@@ -13,8 +13,8 @@ import {
   SectionCard,
   formCrumbsFromPath,
 } from "@/components";
-import { submit } from "@/api";
-import { PlanType } from "shared-types";
+import { submit } from "@/api/submissionService";
+import { Authority } from "shared-types";
 import {
   zAdditionalInfo,
   zRenewalOriginalWaiverNumberSchema,
@@ -120,7 +120,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType["1915b"],
+        authority: Authority["1915b"],
       });
       alert.setContent({
         header: "Package submitted",
