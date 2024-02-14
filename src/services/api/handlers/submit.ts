@@ -90,6 +90,12 @@ export const submit = async (event: APIGatewayEvent) => {
           ,0)
     `;
 
+    // data for emails
+    body.notificationMetadata = {
+      submissionDate,
+      proposedEffectiveDate: body.proposedEffectiveDate,
+    };
+
     const result = await sql.query(query);
     console.log(result);
     if (body.authority == PlanType["1915b"]) {
