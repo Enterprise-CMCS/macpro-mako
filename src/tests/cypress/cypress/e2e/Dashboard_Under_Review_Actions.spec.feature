@@ -3,7 +3,7 @@ Feature: Verify user can use withdraw package action in Under Review Status in t
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
-        Then click on Packages
+        Then click the main Dashboard Button
 
     Scenario: Demonstrate withdraw package is available for CHIP SPA in Under Review Status
         Then Click on Filter Button
@@ -60,7 +60,7 @@ Feature: Verify user can use withdraw package action in Under Review Status in t
         Then click Under Review checkbox
         Then click on Type
 
-        Then click 1915b Waiver Amendment check box
+        Then click the Waiver Amendment check box
         Then click the actions button in row one
         Then verify withdraw package button is visible for package in package dashboard
 

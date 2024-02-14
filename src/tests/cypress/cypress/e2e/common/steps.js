@@ -496,10 +496,6 @@ Then("verify id number in the first row matches CHIP SPA ID", () => {
   });
 });
 
-Then("click on Packages", () => {
-  OneMacDashboardPage.clickPackageTab();
-});
-
 Then(
   "verify that value of the column for the ID is NA Pending or a date",
   () => {
@@ -972,11 +968,11 @@ Then("verify the Initial type action filter exists", () => {
 Then("verify 1915b Intial Waiver exists in list", () => {
   OneMacDashboardPage.verifyInitialWaiverInListExists();
 });
-Then("verify 1915b Waiver Renewal exists", () => {
-  OneMacDashboardPage.verifyWaiverRenewal1915bCheckBoxExists();
+Then("verify the Renewal type action filter exists", () => {
+  OneMacDashboardPage.verifyWaiverRenewalFilterCheckBoxExists();
 });
-Then("verify 1915b Waiver Amendment check box exists", () => {
-  OneMacDashboardPage.verify1915bWaiverAmendmentCheckBox();
+Then("verify the Amendment type action filter exists", () => {
+  OneMacDashboardPage.verifyWaiverAmendmentFilterCheckBox();
 });
 Then("verify 1915c Appendix K Amendment check box exists", () => {
   OneMacDashboardPage.verify1915cAppendixKAmendmentCheckBox();
@@ -1027,22 +1023,25 @@ Then("click the Formal RAI Response - Withdrawal Requested checkbox", () => {
   OneMacDashboardPage.clickRaiResponseWithdrawalRequestedCheckBox();
 });
 Then("click the Withdraw Formal RAI Response Enabled checkbox", () => {
-  OneMacPackagePage.clickRaiResponseWithdrawEnabledCheckBox();
+  OneMacDashboardPage.clickRaiResponseWithdrawEnabledCheckBox();
 });
 Then("click the 1915b check box", () => {
-  OneMacDashboardPage.clickInitialWaiver1915bCheckBox();
+  OneMacDashboardPage.click1915bTypeFilterCheckBox();
+});
+Then("click the 1915c check box", () => {
+  OneMacDashboardPage.click1915cTypeFilterCheckBox();
 });
 Then("click the Initial check box", () => {
-  OneMacDashboardPage.clickInitialWaiver1915bCheckBox();
+  OneMacDashboardPage.clickInitialWaiverCheckBox();
 });
 Then("click the Renewal check box", () => {
-  OneMacDashboardPage.clickWaiverRenewal1915bCheckBox();
+  OneMacDashboardPage.clickWaiverRenewalFilterCheckBox();
 });
 Then("click 1915c Appendix K Amendment check box", () => {
   OneMacDashboardPage.click1915cAppendixKAmendmentCheckBox();
 });
-Then("click 1915b Waiver Amendment check box", () => {
-  OneMacDashboardPage.click1915bWaiverAmendmentCheckBox();
+Then("click the Waiver Amendment check box", () => {
+  OneMacDashboardPage.clickWaiverAmendmentFilterCheckBox();
 });
 Then("click 1915b Temporary Extension check box", () => {
   OneMacDashboardPage.click1915bTemporaryExtensionCheckBox();
@@ -1227,10 +1226,10 @@ Then("click on Final Disposition dropdown filter", () => {
   OneMacDashboardPage.clickOnFinalDispositionDateFilterDropdownDropDown();
 });
 Then("verify state filter select exists", () => {
-  OneMacDashboardPage.verifyStateFilterSelectExists();
+  OneMacDashboardPage.verifyFilterInputSelectExists();
 });
 Then("verify no states are selected", () => {
-  OneMacDashboardPage.verifyStateFilterSelectIsEmpty();
+  OneMacDashboardPage.verifyFilterInputSelectIsEmpty();
 });
 Then("set value on state filter select to {string}", (state) => {
   OneMacDashboardPage.typeStateToSelect(state + "{enter}");
@@ -1707,7 +1706,7 @@ Then("verify the Request Temporary Extension button is displayed", () => {
 Then("verify the Add Amendment button is displayed", () => {
   OneMacDashboardPage.verifyAddAmendmentBtnExists();
 });
-Then("verify the Respond to RAI button is displayed", () => {
+Then("verify the Respond to Formal RAI button is displayed", () => {
   OneMacDashboardPage.verifyRespondToRAIBtnExists();
 });
 Then("click the pending user action button", () => {

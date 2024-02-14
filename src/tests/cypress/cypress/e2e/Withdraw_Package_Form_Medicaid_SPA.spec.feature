@@ -3,7 +3,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
-        Then click on Packages
+        Then click the main Dashboard Button
         Then Click on Filter Button
         Then click on Status
 

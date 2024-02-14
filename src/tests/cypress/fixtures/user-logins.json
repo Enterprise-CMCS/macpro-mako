@@ -18,7 +18,7 @@
         "Active": "readonly@example.com"
     },
     "CMS System Admin": {
-        "Active": "systemadmin@nightwatch.test"
+        "Active": "reviewer@example.com"
     }
 } 
 

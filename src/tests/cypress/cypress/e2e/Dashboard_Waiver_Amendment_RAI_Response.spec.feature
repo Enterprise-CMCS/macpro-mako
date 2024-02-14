@@ -8,7 +8,7 @@ Feature: RAI Response for 1915B Waiver Amendment - Package View
         Then Click on Filter Button
         Then click on Type
 
-        Then click 1915b Waiver Amendment check box
+        Then click the Waiver Amendment check box
         Then click on Type
         Then click on Status
 

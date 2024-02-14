@@ -10,7 +10,7 @@ const modalTitle = "#dialog-title";
 const modalText = "#dialog-content";
 const modalCancelBTN =
   "//*[@id='react-aria-modal-dialog']//button[text()='Cancel']";
-const attachmentInfoDescription = "//h1[text()='Attachments']//following::div[p[contains(text(), 'per attachment')]]";
+const attachmentInfoDescription = "//h3[text()='Attachments']//following::p[contains(text(), 'per attachment')]";
 const enterMmdlBtn = "//button[contains(text(),'Enter the MMDL system')]";
 const enterMacProBtn = "//button[contains(text(),'Enter the MACPro system')]";
 
@@ -250,12 +250,12 @@ export class oneMacFormPage {
       case "Medicaid SPA":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/FAQ#medicaid-spa-attachments");
+          .should("have.attr", "href", "/faq/#medicaid-spa-attachments");
         break;
       case "Medicaid RAI":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/FAQ#medicaid-spa-rai-attachments");
+          .should("have.attr", "href", "/faq/#medicaid-spa-rai-attachments");
         break;
       case "CHIP SPA":
         cy.xpath(attachmentInfoDescription)
@@ -265,7 +265,7 @@ export class oneMacFormPage {
       case "CHIP RAI":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/FAQ#chip-spa-rai-attachments");
+          .should("have.attr", "href", "/faq/#chip-spa-rai-attachments");
         break;
       case "1915b Waiver":
         cy.xpath(attachmentInfoDescription)

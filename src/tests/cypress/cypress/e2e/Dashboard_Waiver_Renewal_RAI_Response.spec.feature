@@ -4,7 +4,7 @@ Feature: RAI Response for Renewal Waiver - Package View
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
-        Then click on Packages
+        Then click the main Dashboard Button
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Status

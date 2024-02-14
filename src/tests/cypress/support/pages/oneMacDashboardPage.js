@@ -33,7 +33,6 @@ const uploadedAttachments =
   "div.header-and-content:nth-child(1) article.form-container div.read-only-submission section.choice-container.file-list-container:nth-child(3)";
 const logoutBtn = "//button[text()='Sign Out']";
 const rcSuccessMessage = "#alert-bar";
-const actionsRowOne = "#packageActions-0";
 
 //Element is Xpath use cy.xpath instead of cy.get
 const nintieththDayColumn = '//th[@id="ninetiethDayColHeader"]';
@@ -110,11 +109,11 @@ const type1915bCheckBox =
   "//button[@id='1915(b)']";
 const type1915cCheckBox =
   "//button[@id='1915(c)']";
-const waiverRenewal1915bCheckBox =
-  "//label[contains(@for,'1915(b) Waiver Renewal')]";
+const waiverRenewalFilterCheckBox =
+  "//label[contains(@for,'Renewal')]";
 const appendixKAmendmentCheckBox =
   "//label[contains(@for,'1915(c) Appendix K Amendment')]";
-const waiverAmendment1915bCheckbox =
+const waiverAmendmentFilterCheckbox =
   "//label[contains(@for,'Amendment')]";
 const initialWaiverCheckBox =
   "//label[contains(@for,'Initial')]";
@@ -176,7 +175,7 @@ const actionsColumn = "#packageActionsColHeader";
 const formalRAIReceivedColumn = "#latestRaiResponseTimestampColHeader";
 const cPOCNameColumn = "#cpocNameColHeader";
 const packageRowOneType = "#componentType-0";
-const packageRowOneState = "#territory-0";
+const packageRowOneState = "tr:nth-of-type(1) > td:nth-of-type(3)";
 //first obj is a header and second obj is row if there are results
 const packageRows = "tr";
 const packageRowOne = "tbody > tr:nth-child(1)";
@@ -196,7 +195,7 @@ const waiverTerminated =
 const Unsubmitted =
   "//a[contains(text(),'MD.83420')]/../following-sibling::td[contains(@id,'packageActions')]/button";
 const stateDropdownFilter = "//button[text()='State']";
-const stateFilterSelect = "#territory-filter-select";
+const filterInput = "//*[@data-state='open']//input";
 const statesSelected = "#territory";
 //Element is Xpath use cy.xpath instead of cy.get
 const removeBtn = (state) => `//*[@aria-label='Remove ${state}']`;
@@ -241,10 +240,10 @@ const withdrawResponseConfirmBtn =
 // const successMessage = "#alert-bar";
 //Element is Xpath use cy.xpath instead of cy.get
 const packageRowOneIDLink = "//tr[1]//a[contains(@href,'/details?id')]";
-const packageRowOneActionsBtn = "//td[@id='packageActions-0']//button";
+const packageRowOneActionsBtn = "//button[@aria-label='Available actions']";
 const packageRowOneCPOC = "#cpocName-0";
 const respondToRAIBtn =
-  "//*[@data-testid='action-popup']//a[text()= 'Respond to RAI']";
+  "//a[text()= 'Respond to Formal RAI']";
 const RequestTempExtensionBtn = "//a[text()='Request Temporary Extension']";
 const addAmendmentBtn = "//a[text()='Add Amendment']";
 const waiverNumLink = (n) => `//a[text()="${n}"]`;
@@ -310,9 +309,6 @@ export class oneMacDashboardPage {
   verifyIDNumberIsDisplayed(s) {
     cy.xpath(IDNUMBER(s)).should("be.visible");
   }
-  clickPackageTab() {
-    cy.xpath(packageTab).click();
-  }
   navigatetoURL(s) {
     cy.visit(s);
   }
@@ -326,7 +322,7 @@ export class oneMacDashboardPage {
     cy.get(rcSuccessMessage).contains("Status Change");
   }
   verifyActionsBtnDisabledOnFirstRow() {
-    cy.get(actionsRowOne).find("button").should("be.disabled");
+    cy.xpath(packageRowOneActionsBtn).should("be.disabled");
   }
 
   verify90thDayColumn() {
@@ -402,7 +398,7 @@ export class oneMacDashboardPage {
     cy.xpath(filterButton).click();
   }
   clickOnCloseFilterBtn() {
-    cy.xpath(closeFilterBtn).click({force: true});
+    cy.xpath(closeFilterBtn).click({ force: true });
     cy.wait(2000);
   }
   verifyfilterByExists() {
@@ -484,7 +480,7 @@ export class oneMacDashboardPage {
     cy.xpath(typeDropDown).wait(1000);
     cy.xpath(typeDropDown).click();
   }
-  
+
   clickActionTypeDropDown() {
     cy.xpath(actionTypeDropDown).wait(1000);
     cy.xpath(actionTypeDropDown).click();
@@ -495,8 +491,14 @@ export class oneMacDashboardPage {
   verify1915cTypeFilterExists() {
     cy.xpath(type1915cCheckBox).should("be.visible");
   }
-  verifyWaiverRenewal1915bCheckBoxExists() {
-    cy.xpath(waiverRenewal1915bCheckBox).should("be.visible");
+  click1915bTypeFilterCheckBox() {
+    cy.xpath(type1915bCheckBox).click();
+  }
+  click1915cTypeFilterCheckBox() {
+    cy.xpath(type1915cCheckBox).click();
+  }
+  verifyWaiverRenewalFilterCheckBoxExists() {
+    cy.xpath(waiverRenewalFilterCheckBox).should("be.visible");
   }
   verifyInitialWaiverFilterExists() {
     cy.xpath(initialWaiverCheckBox).should("be.visible");
@@ -544,11 +546,11 @@ export class oneMacDashboardPage {
   clickWithdrawnCheckBoxExists() {
     cy.xpath(withdrawnCheckBox).first().click();
   }
-  clickInitialWaiver1915bCheckBox() {
-    cy.xpath(initialWaiver1915bCheckBox).click();
+  clickInitialWaiverCheckBox() {
+    cy.xpath(initialWaiverCheckBox).click();
   }
-  clickWaiverRenewal1915bCheckBox() {
-    cy.xpath(waiverRenewal1915bCheckBox).click();
+  clickWaiverRenewalFilterCheckBox() {
+    cy.xpath(waiverRenewalFilterCheckBox).click();
   }
   verify1915cAppendixKAmendmentCheckBox() {
     cy.xpath(appendixKAmendmentCheckBox).should("be.visible");
@@ -556,11 +558,11 @@ export class oneMacDashboardPage {
   click1915cAppendixKAmendmentCheckBox() {
     cy.xpath(appendixKAmendmentCheckBox).click();
   }
-  verify1915bWaiverAmendmentCheckBox() {
-    cy.xpath(waiverAmendment1915bCheckbox).should("be.visible");
+  verifyWaiverAmendmentFilterCheckBox() {
+    cy.xpath(waiverAmendmentFilterCheckbox).should("be.visible");
   }
-  click1915bWaiverAmendmentCheckBox() {
-    cy.xpath(waiverAmendment1915bCheckbox).click();
+  clickWaiverAmendmentFilterCheckBox() {
+    cy.xpath(waiverAmendmentFilterCheckbox).click();
   }
   verify1915bTemporaryExtensionCheckBoxExists() {
     cy.xpath(temporaryExtension1915bCheckBox).should("be.visible");
@@ -731,24 +733,17 @@ export class oneMacDashboardPage {
     cy.xpath(stateDropdownFilter).wait(1000);
     cy.xpath(stateDropdownFilter).click();
   }
-  verifyStateFilterSelectExists() {
-    cy.get(stateFilterSelect).should("be.visible");
-  }
-  verifyStatesSelectedExists() {
-    cy.get(statesSelected).should("be.visible");
+  verifyFilterInputSelectExists() {
+    cy.xpath(filterInput).should("be.visible");
   }
   verifyStatesSelectedIncludes(state) {
-    cy.get(statesSelected).contains(state);
+    cy.xpath(filterInput).parent().prev().contains(state);
   }
-  verifyStateFilterSelectIsEmpty() {
-    cy.get(stateFilterSelect).should(
-      "have.attr",
-      "aria-describedby",
-      "react-select-3-placeholder"
-    );
+  verifyFilterInputSelectIsEmpty() {
+    cy.xpath(filterInput).parent().prev().should("contain", "Select");
   }
   typeStateToSelect(state) {
-    cy.get(stateFilterSelect).focus().type(state);
+    cy.xpath(filterInput).focus().type(state);
   }
   verifypackageRowOneValueIs(state) {
     cy.get(packageRowOneState).contains(state);
@@ -916,7 +911,7 @@ export class oneMacDashboardPage {
     cy.xpath(packageRowOneIDLink).click();
   }
   clickPackageRowOneActionsBtn() {
-    cy.xpath(packageRowOneActionsBtn).click();
+    cy.xpath(packageRowOneActionsBtn).first().click();
   }
   clickRespondToRAIBtn() {
     cy.xpath(respondToRAIBtn).click({ force: true });

@@ -3,7 +3,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
-        Then click on Packages
+        Then click the main Dashboard Button
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Status
@@ -11,7 +11,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click Under Review checkbox
         Then click on Type
 
-        Then click 1915b Waiver Amendment check box
+        Then click the Waiver Amendment check box
 
     Scenario: Screen Enhance - Validate 1915B Waiver Amendment Withdrawal Page from dashboard
         Then click the actions button in row one
