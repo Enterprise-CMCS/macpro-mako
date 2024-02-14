@@ -1,4 +1,6 @@
 import { Alert, LoadingSpinner } from "@/components";
+import { useAlertContext } from "@/components/Context/alertContext";
+import { useModalContext } from "@/components/Context/modalContext";
 import {
   Button,
   FormDescription,
@@ -11,8 +13,16 @@ import {
   Upload,
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
+import { useOriginPath } from "@/utils/formOrigin";
+import { useEffect } from "react";
 import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
-import { Link, useNavigation, useSubmit } from "react-router-dom";
+import {
+  Link,
+  useActionData,
+  useNavigate,
+  useNavigation,
+  useSubmit,
+} from "react-router-dom";
 
 // Components
 
@@ -83,6 +93,8 @@ export const AttachmentsSection = <T extends string>({
 
 export const SubmissionButtons = () => {
   const { state } = useNavigation();
+  // const modal = useModalContext();
+  // const alert = useAlertContext();
 
   return (
     <section className="space-x-2 mb-8">
@@ -180,4 +192,22 @@ export const useSubmitForm = () => {
     handleSubmit: methods.handleSubmit(validSubmission),
     formMethods: methods,
   };
+};
+
+export const useDisplaySubmissionAlert = (header: string, body: string) => {
+  const alert = useAlertContext();
+  const data = useActionData() as { submitted: boolean } | null;
+  const navigate = useNavigate();
+
+  return useEffect(() => {
+    if (data && data.submitted) {
+      alert.setContent({
+        header,
+        body,
+      });
+      alert.setBannerShow(true);
+      alert.setBannerDisplayOn("/dashboard");
+      navigate("/dashboard");
+    }
+  }, [data]);
 };

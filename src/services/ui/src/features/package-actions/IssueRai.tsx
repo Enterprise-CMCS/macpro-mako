@@ -1,11 +1,6 @@
 import { Alert, LoadingSpinner } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
-import {
-  ActionFunction,
-  useLoaderData,
-  useNavigation,
-  useParams,
-} from "react-router-dom";
+import { ActionFunction, useParams } from "react-router-dom";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
@@ -43,19 +38,23 @@ export const issueRaiDefaultAction: ActionFunction = async ({
       authority,
     });
 
-    console.log(data);
+    return {
+      submitted: true,
+    };
   } catch (err) {
     console.log(err);
-    throw new Error("Submission Failed");
+    return null;
   }
-
-  return null;
 };
 
 export const IssueRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const { id } = useParams();
-  const { state } = useNavigation();
+
+  SC.useDisplaySubmissionAlert(
+    "RAI issued",
+    `The RAI for ${id} has been submitted. An email confirmation will be sent to you and the state.`
+  );
 
   return (
     <>
