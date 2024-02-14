@@ -175,8 +175,8 @@ export const submit = async <T extends Record<string, unknown>>({
     }));
     // Upload attachments
     await Promise.all(
-      uploadRecipes.map(({ url, data }) => {
-        fetch(url, {
+      uploadRecipes.map(async ({ url, data }) => {
+        await fetch(url, {
           body: data,
           method: "PUT",
         });
