@@ -1,6 +1,6 @@
 import { Alert, LoadingSpinner } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
-import { ActionFunction, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
@@ -18,7 +18,7 @@ export const issueRaiSchema = z.object({
   }),
 });
 
-export const issueRaiDefaultAction: ActionFunction = async ({
+export const issueRaiDefaultAction: SC.ActionFunction = async ({
   request,
   params,
 }) => {
@@ -43,7 +43,7 @@ export const issueRaiDefaultAction: ActionFunction = async ({
     };
   } catch (err) {
     console.log(err);
-    return null;
+    return { submitted: false };
   }
 };
 

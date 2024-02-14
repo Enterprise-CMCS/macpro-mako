@@ -17,6 +17,7 @@ import { useOriginPath } from "@/utils/formOrigin";
 import { useEffect } from "react";
 import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
 import {
+  ActionFunctionArgs,
   Link,
   useActionData,
   useNavigate,
@@ -196,7 +197,7 @@ export const useSubmitForm = () => {
 
 export const useDisplaySubmissionAlert = (header: string, body: string) => {
   const alert = useAlertContext();
-  const data = useActionData() as { submitted: boolean } | null;
+  const data = useActionData() as ActionFunctionReturnType;
   const navigate = useNavigate();
 
   return useEffect(() => {
@@ -211,3 +212,9 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
     }
   }, [data]);
 };
+
+// Types
+export type ActionFunction = (
+  args: ActionFunctionArgs
+) => Promise<{ submitted: boolean }>;
+export type ActionFunctionReturnType = Awaited<ReturnType<ActionFunction>>;
