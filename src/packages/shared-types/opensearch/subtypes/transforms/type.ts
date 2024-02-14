@@ -12,4 +12,4 @@ export const transform = () => {
   });
 };
 
-export type SeaSubTypeSchema = ReturnType<typeof transform>;
+export type Schema = ReturnType<typeof transform>;

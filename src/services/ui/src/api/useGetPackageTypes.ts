@@ -1,13 +1,10 @@
 import { ReactQueryApiError } from "shared-types";
 import { API } from "aws-amplify";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { SeaTypeDocument } from "shared-types/opensearch/types";
-import { SeaSubTypeDocument } from "shared-types/opensearch/subtypes";
-
-// Types //
+import { types, subtypes } from "shared-types/opensearch";
 
 type GetTypesResponse = {
-  data: SeaTypeDocument[];
+  data: types.Document[];
 };
 const getSeaTypes = async (authorityId: string): Promise<GetTypesResponse> =>
   await API.post("os", "/getSeaTypes", { body: { authorityId } });
@@ -26,7 +23,7 @@ export const useGetSeaTypes = (
 // SubTypes //
 
 type GetSubTypesResponse = {
-  data: SeaSubTypeDocument[];
+  data: subtypes.Document[];
 };
 const getSeaSubTypes = async (
   authorityId: string,

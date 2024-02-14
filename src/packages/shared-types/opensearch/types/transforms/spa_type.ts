@@ -11,4 +11,4 @@ export const transform = () => {
   });
 };
 
-export type SeaTypeSchema = ReturnType<typeof transform>;
+export type Schema = ReturnType<typeof transform>;

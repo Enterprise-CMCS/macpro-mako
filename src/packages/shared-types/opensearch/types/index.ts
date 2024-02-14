@@ -9,17 +9,17 @@ import {
 import { z } from "zod";
 import { spa_type } from "./transforms";
 
-export type SeaTypeDocument = z.infer<spa_type.SeaTypeSchema>;
+export type Document = z.infer<spa_type.Schema>;
 
-export type Response = Res<SeaTypeDocument>;
-export type ItemResult = Hit<SeaTypeDocument> & {
+export type Response = Res<Document>;
+export type ItemResult = Hit<Document> & {
   found: boolean;
 };
 
-export type Field = keyof SeaTypeDocument | `${keyof SeaTypeDocument}.keyword`;
+export type Field = keyof Document | `${keyof Document}.keyword`;
 export type Filterable = FIL<Field>;
 export type State = QueryState<Field>;
 export type Aggs = AggQuery<Field>;
-export type ExportHeader = ExportHeaderOptions<SeaTypeDocument>;
+export type ExportHeader = ExportHeaderOptions<Document>;
 
 export * from "./transforms";

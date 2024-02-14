@@ -6,4 +6,4 @@ export const seaSubTypeSchema = z.object({
   Type_Class: z.number().optional(),
   Plan_Type_ID: z.number().optional(),
 });
-export type SeaSubTypeSchema = z.infer<typeof seaSubTypeSchema>;
+export type SeaSubType = z.infer<typeof seaSubTypeSchema>;
