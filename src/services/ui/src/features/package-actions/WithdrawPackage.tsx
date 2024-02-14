@@ -1,5 +1,6 @@
 import { submit } from "@/api/submissionService";
 import { getUser } from "@/api/useGetUser";
+import { LoadingSpinner } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/pages/form/zod";
 import { unflatten } from "flat";
@@ -7,6 +8,7 @@ import {
   useActionData,
   type ActionFunction,
   useParams,
+  useNavigation,
 } from "react-router-dom";
 import { PlanType } from "shared-types";
 import { z } from "zod";
@@ -54,6 +56,7 @@ export const WithdrawPackage = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const data = useActionData() as { errorMessage: string };
   const { id } = useParams();
+  const { state } = useNavigation();
 
   // do something to handle potential error message
 
@@ -79,6 +82,7 @@ export const WithdrawPackage = () => {
           ]}
         />
         <SC.AdditionalInformation />
+        <SC.FormLoadingSpinner />
         <SC.SubmissionButtons />
       </form>
     </>

@@ -1,4 +1,4 @@
-import { Alert } from "@/components";
+import { Alert, LoadingSpinner } from "@/components";
 import {
   Button,
   FormDescription,
@@ -141,6 +141,11 @@ export const AdditionalInformation = () => {
       />
     </section>
   );
+};
+
+export const FormLoadingSpinner = () => {
+  const { state } = useNavigation();
+  return state === "submitting" && <LoadingSpinner />;
 };
 
 // Hooks

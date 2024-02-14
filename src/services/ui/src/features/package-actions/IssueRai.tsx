@@ -1,6 +1,11 @@
-import { Alert } from "@/components";
+import { Alert, LoadingSpinner } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
-import { ActionFunction, useLoaderData, useParams } from "react-router-dom";
+import {
+  ActionFunction,
+  useLoaderData,
+  useNavigation,
+  useParams,
+} from "react-router-dom";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
@@ -18,7 +23,10 @@ export const issueRaiSchema = z.object({
   }),
 });
 
-export const issueRaiDefaultAction: ActionFunction = async ({ request }) => {
+export const issueRaiDefaultAction: ActionFunction = async ({
+  request,
+  params,
+}) => {
   try {
     const formData = Object.fromEntries(await request.formData());
 
@@ -28,7 +36,12 @@ export const issueRaiDefaultAction: ActionFunction = async ({ request }) => {
 
     const user = await getUser();
     const authority = PlanType["1915b"];
-    await submit({ data, endpoint: "/action/issue-rai", user, authority });
+    await submit({
+      data: { ...data, id: params.id },
+      endpoint: "/action/issue-rai",
+      user,
+      authority,
+    });
 
     console.log(data);
   } catch (err) {
@@ -42,6 +55,7 @@ export const issueRaiDefaultAction: ActionFunction = async ({ request }) => {
 export const IssueRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const { id } = useParams();
+  const { state } = useNavigation();
 
   return (
     <>
@@ -72,6 +86,7 @@ export const IssueRai = () => {
         />
         <SC.AdditionalInformation />
         <AdditionalFormInformation />
+        <SC.FormLoadingSpinner />
         <SC.SubmissionButtons />
       </form>
     </>

@@ -1,7 +1,13 @@
 import { submit } from "@/api/submissionService";
 import { getUser } from "@/api/useGetUser";
+import { LoadingSpinner } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
-import { ActionFunction, useActionData, useParams } from "react-router-dom";
+import {
+  ActionFunction,
+  useActionData,
+  useNavigation,
+  useParams,
+} from "react-router-dom";
 import { PlanType } from "shared-types";
 import { z } from "zod";
 
@@ -53,6 +59,7 @@ type Props = {
 
 export const ToggleRaiResponseWithdraw = ({ isEnabled }: Props) => {
   const { formMethods, handleSubmit } = SC.useSubmitForm();
+  const { state } = useNavigation();
   const raiTypeText = isEnabled ? "Enable" : "Disable";
   const raiDescriptionText = isEnabled
     ? "Once you submit this form, the most recent Formal RAI Response for this package will be able to be withdrawn by the state. "
@@ -77,6 +84,7 @@ export const ToggleRaiResponseWithdraw = ({ isEnabled }: Props) => {
       </SC.ActionDescription>
       <SC.PackageSection id={id!} type="Waiver 1915(b)" />
       <form onSubmit={handleSubmit}>
+        <SC.FormLoadingSpinner />
         <SC.SubmissionButtons />
       </form>
     </>

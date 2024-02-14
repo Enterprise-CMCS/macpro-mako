@@ -1,5 +1,6 @@
 import { submit } from "@/api/submissionService";
 import { getUser } from "@/api/useGetUser";
+import { LoadingSpinner } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/pages/form/zod";
 import { unflatten } from "flat";
@@ -7,6 +8,7 @@ import {
   useActionData,
   type ActionFunction,
   useParams,
+  useNavigation,
 } from "react-router-dom";
 import { PlanType } from "shared-types";
 import { z } from "zod";
@@ -19,7 +21,10 @@ export const withdrawRaiSchema = z.object({
 });
 type Attachments = keyof z.infer<typeof withdrawRaiSchema>["attachments"];
 
-export const onValidSubmission: ActionFunction = async ({ request }) => {
+export const onValidSubmission: ActionFunction = async ({
+  request,
+  params,
+}) => {
   try {
     const formData = Object.fromEntries(await request.formData());
 
@@ -29,7 +34,12 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
     const user = await getUser();
     const authority = PlanType["1915b"];
 
-    await submit({ data, endpoint: "/action/withdraw-rai", user, authority });
+    await submit({
+      data: { ...data, id: params.id },
+      endpoint: "/action/withdraw-rai",
+      user,
+      authority,
+    });
 
     return null;
   } catch (err) {
@@ -44,8 +54,9 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
 
 export const WithdrawRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
-  const { errorMessage } = useActionData() as { errorMessage: string };
+  const data = useActionData() as { errorMessage: string };
   const { id } = useParams();
+  const { state } = useNavigation();
 
   // do something to handle potential error message
 
@@ -69,6 +80,7 @@ export const WithdrawRai = () => {
           ]}
         />
         <SC.AdditionalInformation />
+        <SC.FormLoadingSpinner />
         <SC.SubmissionButtons />
       </form>
     </>
