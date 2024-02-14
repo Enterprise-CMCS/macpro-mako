@@ -66,7 +66,7 @@ export const main = async (event: KafkaEvent) => {
       emailsToSend[emailsConfig].map((oneEmail) => {
         const theEmail = { ...oneEmail, ...record };
         theEmail.ToAddresses = oneEmail.sendTo.map((oneAddress) => {
-          if (oneAddress === "submitterEmail") return `"State User Substitute" <k.grue.stateuser@gmail.com>`; //`"${theEmail.submitterName}" <${theEmail.submitterEmail}>`;
+          if (oneAddress === "submitterEmail") return `"${theEmail.submitterName}" <${theEmail.submitterEmail}>`;
           if (oneAddress === "allStateUsers") getStateUsersFor.push(record.territory);
           return oneAddress;
         });
