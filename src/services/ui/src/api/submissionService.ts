@@ -47,14 +47,14 @@ export const buildAttachmentObject = (
           title: r.title,
           bucket: r.bucket,
           uploadDate: Date.now(),
-        } as Attachment)
+        }) as Attachment
     )
     .flat();
 };
 
 /** Builds the payload for submission based on which variant a developer has
  * configured the {@link submit} function with */
-const buildSubmissionPayload = <T extends Record<string, unknown>>(
+export const buildSubmissionPayload = <T extends Record<string, unknown>>(
   data: T,
   user: OneMacUser | undefined,
   endpoint: SubmissionServiceEndpoint,

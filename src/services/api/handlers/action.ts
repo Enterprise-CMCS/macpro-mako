@@ -10,6 +10,7 @@ import { getAvailableActions } from "shared-utils";
 import { Action } from "shared-types";
 import {
   issueRai,
+  removeAppkChild,
   respondToRai,
   toggleRaiResponseWithdraw,
   withdrawPackage,
@@ -56,6 +57,15 @@ export const handler = async (event: APIGatewayEvent) => {
     );
 
     // Check that the package action is available
+
+    if (actionType === Action.REMOVE_APPK_CHILD) {
+      await removeAppkChild(result._source);
+      return response({
+        statusCode: 200,
+        body: { message: "success" },
+      });
+    }
+
     const actions: Action[] = getAvailableActions(userAttr, result._source);
     if (!actions.includes(actionType)) {
       return response({

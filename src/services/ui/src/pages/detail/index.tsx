@@ -2,8 +2,6 @@ import {
   Alert,
   CardWithTopBorder,
   ConfirmationModal,
-  DetailItemsGrid,
-  DetailsSection,
   ErrorAlert,
   LoadingSpinner,
 } from "@/components";
@@ -19,11 +17,11 @@ import { PropsWithChildren, useState } from "react";
 import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
 import { API } from "aws-amplify";
 import { getStatus } from "shared-types/statusHelper";
-import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 import { Link } from "@/components/Routing";
 import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
-import { AppK } from "./app-k";
+
+import { PackageDetails } from "./package-details";
 
 const DetailCardWrapper = ({
   title,
@@ -214,14 +212,7 @@ export const DetailsContent = ({
           <PackageActionsCard id={data._id} />
         </section>
         <div className="flex flex-col gap-3">
-          <DetailsSection
-            id="package-details"
-            title={`${data._source.planType} Package Details`}
-          >
-            <DetailItemsGrid displayItems={spaDetails(data._source)} />
-            <DetailItemsGrid displayItems={submissionDetails(data._source)} />
-          </DetailsSection>
-          <AppK.Component {...data._source} />
+          <PackageDetails {...data._source} />
           <PackageActivities {...data._source} />
           <AdminChanges {...data._source} />
         </div>
@@ -235,12 +226,9 @@ export const Details = () => {
   const id = query.get("id") as string;
   const { data, isLoading, error } = useGetItem(id);
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-  if (error) {
-    return <ErrorAlert error={error} />;
-  }
+  if (isLoading) return <LoadingSpinner />;
+  if (!data?._source) return <LoadingSpinner />;
+  if (error) return <ErrorAlert error={error} />;
 
   return (
     <>

@@ -273,8 +273,8 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
-  newSubmissionAppk:
-    handler: handlers/newSubmissionAppk.handler
+  appkNewSubmission:
+    handler: handlers/appkNewSubmission.handler
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}

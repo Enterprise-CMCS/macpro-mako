@@ -1,12 +1,38 @@
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { isCmsUser } from "shared-utils";
-import { LABELS } from "@/lib";
+
 import { BLANK_VALUE } from "@/consts";
 import { PlanType, opensearch } from "shared-types";
-import { ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
-import { ReviewTeamList } from "@/components/PackageDetails/ReviewTeamList";
+
 import { formatSeatoolDate } from "shared-utils";
+import { useMemo, useState } from "react";
+
+export const ReviewTeamList: FC<opensearch.main.Document> = (props) => {
+  const [expanded, setExpanded] = useState(false);
+  const displayTeam = useMemo(
+    () => (expanded ? props.reviewTeam : props.reviewTeam?.slice(0, 3)),
+    [expanded, props.reviewTeam]
+  );
+
+  if (!displayTeam || !displayTeam.length) return BLANK_VALUE;
+
+  return (
+    <ul>
+      {displayTeam.map((reviewer, idx) => (
+        <li key={`reviewteam-ul-${reviewer}-${idx}`}>{reviewer}</li>
+      ))}
+      {props.reviewTeam && props.reviewTeam?.length > 3 && (
+        <li className={"text-xs text-sky-700 hover:cursor-pointer"}>
+          <button onClick={() => setExpanded((prev) => !prev)}>
+            {expanded ? "Show less" : "Show more"}
+          </button>
+        </li>
+      )}
+    </ul>
+  );
+};
 
 export type DetailSectionItem = {
   label: string;
@@ -105,7 +131,7 @@ export const submissionDetails = (
   },
   {
     label: "Review Team (SRT)",
-    value: <ReviewTeamList team={data.reviewTeam} />,
+    value: <ReviewTeamList {...data} />,
     canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
   },
 ];

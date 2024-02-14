@@ -66,6 +66,7 @@ export const onemac_main = async (event: KafkaEvent) => {
               return opensearch.main.newSubmission
                 .transform(id)
                 .safeParse(record);
+
             case Action.DISABLE_RAI_WITHDRAW:
             case Action.ENABLE_RAI_WITHDRAW:
               return opensearch.main.toggleWithdrawEnabled
@@ -77,6 +78,10 @@ export const onemac_main = async (event: KafkaEvent) => {
                 .safeParse(record);
             case Action.WITHDRAW_PACKAGE:
               return opensearch.main.withdrawPackage
+                .transform(id)
+                .safeParse(record);
+            case Action.REMOVE_APPK_CHILD:
+              return opensearch.main.removeAppkChild
                 .transform(id)
                 .safeParse(record);
           }

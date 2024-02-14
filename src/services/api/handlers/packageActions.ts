@@ -24,12 +24,15 @@ import {
   WithdrawPackage,
   toggleWithdrawRaiEnabledSchema,
   ToggleWithdrawRaiEnabled,
+  removeAppkChildSchema,
+  opensearch,
 } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
 import { formatSeatoolDate, seaToolFriendlyTimestamp } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
+import { getPackage } from "../libs/package";
 
 const TOPIC_NAME = process.env.topicName as string;
 
@@ -385,4 +388,28 @@ export async function toggleRaiResponseWithdraw(
       statusCode: 500,
     });
   }
+}
+
+export async function removeAppkChild(doc: opensearch.main.Document) {
+  const data = removeAppkChildSchema.safeParse({
+    ...doc,
+    appkParentId: null,
+  });
+
+  if (!data.success) {
+    return response({
+      statusCode: 400,
+      body: {
+        message: "Remove Appk Child event validation error",
+      },
+    });
+  }
+
+  await produceMessage(
+    TOPIC_NAME,
+    doc.id,
+    JSON.stringify({
+      actionType: Action.REMOVE_APPK_CHILD,
+    })
+  );
 }
