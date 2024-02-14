@@ -1,95 +1,92 @@
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as Inputs from "@/components/Inputs";
+import * as Content from "../../content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
-import { useForm } from "react-hook-form";
-import { submit } from "@/api/submissionService";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Alert,
   BreadCrumbs,
   LoadingSpinner,
-  SectionCard,
   SimplePageContainer,
+  SectionCard,
 } from "@/components";
-import * as Inputs from "@/components/Inputs";
+import { submit } from "@/api/submissionService";
 import { PlanType } from "shared-types";
 import {
+  zAdditionalInfo,
   zAttachmentOptional,
   zAttachmentRequired,
-  zSpaIdSchema,
+  zInitialWaiverNumberSchema,
 } from "@/pages/form/zod";
-import * as Content from "@/pages/form/content";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { useModalContext } from "@/components/Context/modalContext";
 import { useNavigate } from "@/components/Routing";
-import { useCallback } from "react";
 import { useAlertContext } from "@/components/Context/alertContext";
+import { useCallback } from "react";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
 
 const formSchema = z.object({
-  id: zSpaIdSchema,
-  additionalInformation: z.string().max(4000).optional(),
+  id: zInitialWaiverNumberSchema,
+  proposedEffectiveDate: z.date(),
   attachments: z.object({
-    currentStatePlan: zAttachmentRequired({ min: 1 }),
-    amendedLanguage: zAttachmentRequired({ min: 1 }),
-    coverLetter: zAttachmentRequired({ min: 1 }),
-    budgetDocuments: zAttachmentOptional,
-    publicNotice: zAttachmentOptional,
+    b4WaiverApplication: zAttachmentRequired({ min: 1 }),
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
-  proposedEffectiveDate: z.date(),
+  additionalInformation: zAdditionalInfo.optional(),
+  seaActionType: z.string().default("New"),
 });
-type ChipFormSchema = z.infer<typeof formSchema>;
+type Waiver1915BContractingInitial = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
-  { name: "currentStatePlan", label: "Current State Plan", required: true },
   {
-    name: "amendedLanguage",
-    label: "Amended State Plan Language",
+    name: "b4WaiverApplication",
+    label:
+      "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
     required: true,
   },
   {
-    name: "coverLetter",
-    label: "Cover Letter",
-    required: true,
-  },
-  {
-    name: "budgetDocuments",
-    label: "Budget Documents",
+    name: "tribalConsultation",
+    label: "Tribal Consultation",
     required: false,
   },
-  { name: "publicNotice", label: "Public Notice", required: false },
-  { name: "tribalConsultation", label: "Tribal Consultation", required: false },
-  { name: "other", label: "Other", required: false },
+  {
+    name: "other",
+    label: "Other",
+    required: false,
+  },
 ] as const;
 
-export const ChipSpaFormPage = () => {
+export const Contracting1915BWaiverInitialPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
   const urlQuery = useQueryString();
-  const modal = useModalContext();
   const alert = useAlertContext();
+  const modal = useModalContext();
   const originPath = useOriginPath();
   const cancelOnAccept = useCallback(() => {
     modal.setModalOpen(false);
     navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
-  const form = useForm<ChipFormSchema>({
-    resolver: zodResolver(formSchema),
-  });
-  const handleSubmit = form.handleSubmit(async (formData) => {
+  const handleSubmit: SubmitHandler<Waiver1915BContractingInitial> = async (
+    formData
+  ) => {
     try {
-      await submit<ChipFormSchema>({
+      // AK-0260.R04.02
+      console.log("mike jones");
+      console.log(formData);
+      await submit<Waiver1915BContractingInitial>({
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType.CHIP_SPA,
+        authority: PlanType["1915b"],
       });
       alert.setContent({
         header: "Package submitted",
@@ -107,6 +104,10 @@ export const ChipSpaFormPage = () => {
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const form = useForm<Waiver1915BContractingInitial>({
+    resolver: zodResolver(formSchema),
   });
 
   return (
@@ -114,30 +115,44 @@ export const ChipSpaFormPage = () => {
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Inputs.Form {...form}>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
-          <SectionCard title="CHIP SPA Details">
+          <h1 className="text-2xl font-semibold mt-4 mb-2">
+            1915(b)(4) FFS Selective Contracting Initial Waiver
+          </h1>
+          <SectionCard title="Initial Waiver Details">
             <Content.FormIntroText />
+            <div className="flex flex-col">
+              <Inputs.FormLabel className="font-semibold">
+                Waiver Authority
+              </Inputs.FormLabel>
+              <span className="text-lg font-thin">
+                1915(b)
+              </span>
+            </div>
             <Inputs.FormField
               control={form.control}
               name="id"
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold">
-                      SPA ID
+                    <Inputs.FormLabel className="text-lg font-bold mr-1">
+                      Initial Waiver Number <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
-                      to="/faq/#spa-id-format"
+                      to={"/faq/#initial-waiver-id-format"}
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"
                     >
-                      What is my SPA ID?
+                      What is my Initial Waiver Number?
                     </Link>
                   </div>
-                  <Content.SpaIdFormattingDesc />
+                  <p className="text-gray-500 font-light">
+                    Must be a new initial number with the format SS-####.R00.00
+                    or SS-#####.R00.00
+                  </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
                       {...field}
@@ -156,11 +171,12 @@ export const ChipSpaFormPage = () => {
               control={form.control}
               name="proposedEffectiveDate"
               render={({ field }) => (
-                <Inputs.FormItem className="max-w-sm">
+                <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of CHIP SPA
+                    Proposed Effective Date of 1915(b) Initial Waiver{" "}
+                    <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
-                  <Inputs.FormControl>
+                  <Inputs.FormControl className="max-w-sm">
                     <Inputs.DatePicker
                       onChange={field.onChange}
                       date={field.value}
@@ -172,7 +188,7 @@ export const ChipSpaFormPage = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#chip-spa-attachments" />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
@@ -180,12 +196,9 @@ export const ChipSpaFormPage = () => {
                 name={`attachments.${name}`}
                 render={({ field }) => (
                   <Inputs.FormItem>
-                    <Inputs.FormLabel>{label}</Inputs.FormLabel>
-                    {required && (
-                      <Inputs.FormDescription>
-                        At least one attachment is required
-                      </Inputs.FormDescription>
-                    )}
+                    <Inputs.FormLabel>
+                      {label} {required ? <Inputs.RequiredIndicator /> : null}
+                    </Inputs.FormLabel>
                     <Inputs.Upload
                       files={field?.value ?? []}
                       setFiles={field.onChange}
@@ -249,7 +262,6 @@ export const ChipSpaFormPage = () => {
                 modal.setOnAccept(() => cancelOnAccept);
                 modal.setModalOpen(true);
               }}
-              className="px-12"
             >
               Cancel
             </Inputs.Button>
