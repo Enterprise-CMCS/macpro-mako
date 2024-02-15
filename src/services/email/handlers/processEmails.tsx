@@ -94,7 +94,7 @@ export const main = async (event: KafkaEvent) => {
     }
     return {
       "state": oneState,
-      "emailList": `\"${oneState} State user\" <k.grue@theta-llc.com>`
+      "emailList": `\"${oneState} State user\" <kgrue@theta-llc.com>`
     };
   }));
   console.log("state users are: ", stateUsers);
