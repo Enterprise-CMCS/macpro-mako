@@ -46,5 +46,4 @@ services:
   email:
     path: src/services/email
     params:
-      CognitoUserPoolId: ${auth.UserPoolId}
       ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
