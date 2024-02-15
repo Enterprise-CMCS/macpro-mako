@@ -11,6 +11,7 @@ import fs from "fs";
 import asyncfs from "fs/promises";
 import * as constants from "./constants";
 import * as utils from "./utils";
+import { FileExtension, MimeType, fileTypeFromFile } from "file-type";
 
 const s3Client: S3Client = new S3Client();
 
@@ -20,7 +21,7 @@ export async function listBucketFiles(bucketName: string): Promise<string[]> {
       new ListObjectsV2Command({ Bucket: bucketName })
     );
     if (listFilesResult.Contents) {
-      const keys: string[] = listFilesResult.Contents.map((c) => c.Key);
+      const keys = listFilesResult.Contents.map((c) => c.Key) as string[];
       return keys;
     } else {
       return [];
@@ -206,8 +207,28 @@ export const uploadAVDefinitions = async (): Promise<void[]> => {
  *
  * @param pathToFile Path in the filesystem where the file is stored.
  */
-export const scanLocalFile = (pathToFile: string): string | null => {
+export const scanLocalFile = async (
+  pathToFile: string,
+  contentType: string | undefined
+): Promise<string | null> => {
   try {
+    if (!contentType) {
+      utils.generateSystemMessage("FAILURE - EXTENSION UNKNOWN");
+      return constants.STATUS_UNKNOWN_EXTENSION;
+    }
+    let detectedContentType = await getFileTypeFromContents(pathToFile);
+    if (detectedContentType) {
+      console.log(`File declared extension:  ${contentType}`);
+      console.log(`File detected extension:  ${detectedContentType}`);
+      let same = areMimeTypesEquivalent(contentType, detectedContentType);
+      if (!same) {
+        utils.generateSystemMessage(
+          `FAILURE - FILE EXTENSION DOES NOT MATCH FILE CONTENTS`
+        );
+        return constants.STATUS_EXTENSION_MISMATCH_FILE;
+      }
+    }
+
     const avResult: SpawnSyncReturns<Buffer> = spawnSync(
       constants.PATH_TO_CLAMAV,
       ["--stdout", "-v", "-a", "-d", constants.FRESHCLAM_WORK_DIR, pathToFile]
@@ -235,3 +256,48 @@ export const scanLocalFile = (pathToFile: string): string | null => {
     return constants.STATUS_ERROR_PROCESSING_FILE;
   }
 };
+
+async function getFileTypeFromContents(
+  filePath: string
+): Promise<MimeType | null> {
+  try {
+    const fileBuffer = await fs.promises.readFile(filePath);
+
+    // Get the file type from its contents
+    const type = await fileTypeFromFile(filePath);
+
+    if (!type) {
+      console.log("Could not determine file type.");
+      return null;
+    }
+    console.log(`File type is ${type.mime} with extension ${type.ext}`);
+    return type.mime;
+  } catch (error) {
+    console.error("Error reading file:", error);
+    return null;
+  }
+}
+
+function areMimeTypesEquivalent(mime1: string, mime2: string): boolean {
+  const equivalentTypes: { [key: string]: Set<string> } = {
+    "application/rtf": new Set(["text/rtf"]),
+    "application/vnd.ms-excel": new Set(["application/x-cfb"]),
+    "application/vnd.ms-powerpoint": new Set(["application/x-cfb"]),
+    "application/msword": new Set(["application/x-cfb", "application/rtf"]),
+  };
+  mime1 = mime1.toLowerCase();
+  mime2 = mime2.toLowerCase();
+  if (mime1 === mime2) {
+    return true;
+  }
+  for (const baseType in equivalentTypes) {
+    const equivalents = equivalentTypes[baseType];
+    if (
+      (mime1 === baseType && equivalents.has(mime2)) ||
+      (mime2 === baseType && equivalents.has(mime1))
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
