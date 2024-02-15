@@ -13,7 +13,7 @@ import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 const ldClientId = config.launchDarkly?.CLIENT_ID;
 if (ldClientId === undefined) {
   throw new Error(
-    "To configure LaunchDarkly, you must set REACT_APP_LD_CLIENT_ID"
+    "To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID"
   );
 }
 
@@ -30,14 +30,14 @@ const initializeLaunchDarkly = async () => {
 
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
-      <LDProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <LDProvider>
           <UserContextProvider>
             <RouterProvider router={router} />
           </UserContextProvider>
           <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </LDProvider>
+        </LDProvider>
+      </QueryClientProvider>
     </React.StrictMode>
   );
 };
