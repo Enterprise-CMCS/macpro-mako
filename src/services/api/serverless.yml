@@ -80,6 +80,14 @@ params:
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
     submitProvisionedConcurrency: 2
+  # removepremerge
+  twofive:
+    formsProvisionedConcurrency: 2
+    getAllFormsProvisionedConcurrency: 1
+    searchProvisionedConcurrency: 4
+    itemProvisionedConcurrency: 2
+    getAttachmentUrlProvisionedConcurrency: 2
+    submitProvisionedConcurrency: 2
   val:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1

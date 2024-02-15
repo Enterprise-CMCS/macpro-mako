@@ -203,7 +203,9 @@ stepFunctions:
               Triggers:
                 - Function: !Ref SinkSeatoolLambdaFunction
                   Topics:
-                    - aws.ksqldb.seatool.agg.State_Plan
+                    # This should be switched premerge
+                    # - aws.ksqldb.seatool.agg.State_Plan
+                    - --seatool--twofive--aws.ksqldb.seatool.agg.State_Plan
                 - Function: !Ref SinkOnemacLambdaFunction
                   Topics:
                     - aws.onemac.migration.cdc
