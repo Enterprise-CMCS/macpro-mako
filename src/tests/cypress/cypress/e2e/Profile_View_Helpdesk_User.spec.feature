@@ -7,7 +7,7 @@ Feature: Helpdesk User
         Then i am on Dashboard Page
         Then verify the SPAs tab is selected
         Then verify Export to Excel CSV is Displayed
-        Then verify IDNumber column exists
+        Then verify Waiver Number column exists
         Then verify type column exists
         Then verify state column does not exist
         Then verify submitted by column exists

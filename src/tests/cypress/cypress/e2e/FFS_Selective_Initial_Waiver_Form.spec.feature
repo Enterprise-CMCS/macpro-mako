@@ -41,7 +41,7 @@ Feature: FFS Selective Initial Waiver
         Then attach "picture.jpg" file to attachment 1
         Then into "Additional Information" type "This is just a test."
         Then Click on Submit Button
-        Then verify submission successful message in the alert bar
+        Then verify package submitted message in the alert bar
         Then verify the Waivers tab is selected
         Then search for Initial Waiver Number 3 with 12 Characters
         Then verify id number in the first row matches Initial Waiver Number 3

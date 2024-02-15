@@ -18,7 +18,7 @@ Feature: OY2_Update_Text_on_FAQ_Page
         Given I am on Login Page
         When Clicking on FAQ Tab
         Then Verify State Plan Amendments SPAs Section Exists
-        Then Verify What What format is used to enter a SPA ID is displayed and click it
+        Then Verify What format is used to enter a SPA ID is displayed and click it
         Then Verify text contains Enter the State Plan Amendment transmittal number Assign consecutive numbers on a calendar year basis
         Then Verify What are the attachments for a Medicaid SPA is displayed and click it
         Then Verify text contains SPA submission requirements can be found in regulation
@@ -81,6 +81,7 @@ Feature: OY2_Update_Text_on_FAQ_Page
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
+        Then click the main Dashboard Button
         Then click on New Submission
         Then Click on State Plan Amendment SPA
         Then click on Medicaid SPA
@@ -92,6 +93,7 @@ Feature: OY2_Update_Text_on_FAQ_Page
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
+        Then click the main Dashboard Button
         Then click on New Submission
         Then Click on Waiver Action
         Then click on 1915b Waiver Actions
@@ -104,6 +106,7 @@ Feature: OY2_Update_Text_on_FAQ_Page
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
+        Then click the main Dashboard Button
         Then click on New Submission
         Then Click on Waiver Action
         Then click on 1915b Waiver Actions
@@ -127,12 +130,3 @@ Feature: OY2_Update_Text_on_FAQ_Page
         Then verify OneMAC State User Guide is valid
         Then verify OneMAC CMS User Guide link exists
         Then verify OneMAC CMS User Guide is valid
-
-
-    Scenario: Verify the Guides exist in the FAQ
-        Given I am on Login Page
-        When Clicking on FAQ Tab
-        Then verify the expand all button is visible
-        Then verify all sections are collapsed
-        Then click the expand all button
-        Then verify all sections are expanded

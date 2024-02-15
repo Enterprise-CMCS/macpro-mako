@@ -10,7 +10,7 @@ const modalTitle = "#dialog-title";
 const modalText = "#dialog-content";
 const modalCancelBTN =
   "//*[@id='react-aria-modal-dialog']//button[text()='Cancel']";
-const attachmentInfoDescription = "//h3[text()='Attachments']//following::p[contains(text(), 'per attachment')]";
+const attachmentInfoDescription = "//h2[text()='Attachments']//following::p[contains(text(), 'per attachment')]";
 const enterMmdlBtn = "//button[contains(text(),'Enter the MMDL system')]";
 const enterMacProBtn = "//button[contains(text(),'Enter the MACPro system')]";
 
@@ -66,16 +66,16 @@ const hintTextFromLabel = {
   "Existing Waiver Number to Amend": "#parent-fieldHint0",
 };
 const dateElementsFromLabel = {
-  "Proposed Effective Date of Medicaid SPA": "#proposed-effective-date",
+  "Proposed Effective Date of Medicaid SPA": "//button//*[text()='Pick a date']",
   "Proposed Effective Date of CHIP SPA": "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(b) Initial Waiver":
-    "#proposed-effective-date",
+    "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(b) Waiver Renewal":
-    "#proposed-effective-date",
+    "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(b) Waiver Amendment":
-    "#proposed-effective-date",
+    "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(c) Appendix K Amendment":
-    "#proposed-effective-date",
+    "//button//*[text()='Pick a date']",
 };
 const nextMonthDatePickerBtn = "button[name='next-month']";
 const lastMonthDatePickerBtn = "button[name='previous-month']";
@@ -138,11 +138,7 @@ export class oneMacFormPage {
   }
   clickLinkWithLabel(linkLabel) {
     cy.get("a:visible")
-      .contains(linkLabel)
-      .invoke("attr", "href")
-      .then((href) => {
-        cy.visit(href);
-      });
+      .contains(linkLabel).invoke('removeAttr', 'target').click();
   }
   inputID(anId) {
     cy.get(IDInputBox).type(anId);

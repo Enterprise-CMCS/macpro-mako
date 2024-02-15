@@ -1,6 +1,5 @@
 {
-  "generatedMedicaidSPAID1": "MD-22-4234",
-  "generatedMedicaidSPAID2": "MD-22-4235",
-  "generatedChipSPAID1": "MD-24-2389-VM",
-  "generatedChipSPAID2": "MD-22-0283-VM"
+  "generatedSPAID1": "MD-22-4234",
+  "generatedSPAID2": "MD-24-1672-VM",
+  "generatedWaiverID1": "MD-99540.R00.00"
 }

@@ -12,7 +12,6 @@ Feature: Package Dashboard: CHIP SPA Initial Submission
     Scenario: Screen Enhance - CHIP Eligibility is Outside of OneMAC
         Then verify "CHIP Eligibility" choice goes to "/new-submission/spa/chip/landing/chip-eligibility"
         Then click on "CHIP Eligibility" choice
-        Then verify page url contains "/chip-eligibility"
         Then verify the page header is "CHIP Eligibility SPAs"
         Then verify Enter the MMDL System button is visible and clickable
 
@@ -20,19 +19,18 @@ Feature: Package Dashboard: CHIP SPA Initial Submission
     Scenario: Create CHIP SPA Initial Submission in OneMAC using the All Other CHIP SPA Submissions choice
         Then verify "All Other CHIP SPA Submissions" choice goes to "/new-submission/spa/chip/create"
         Then click on "All Other CHIP SPA Submissions" choice
-        Then verify page url contains "/spa/chip/create"
-        Then verify the page header is "CHIP SPA Details"
-        Then type the generated SPA ID into the ID Input box
+        Then verify the form title is "CHIP SPA Details"
+        Then type the generated SPA ID 1 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of CHIP SPA" to 3 months from today
         Then verify the attachment info descriptiion
         Then verify the attachment info link is for "CHIP SPA"
         Then attach "picture.jpg" file to attachment 1
         Then attach "adobe.pdf" file to attachment 2
         Then attach "adobe.pdf" file to attachment 3
-        Then into "Additional Information" type "This is just a test."
+        Then into "Additional Information" type "This is an automated test."
         Then Click the Submit Button without waiting
-        Then verify submission successful message in the modal
+        Then verify package submitted message in the alert bar
         Then click the Go to Dashboard button
         Then verify the SPAs tab is selected
-        Then search for the generated CHIP SPA ID
-        #Then verify id number in the first row matches CHIP SPA ID
+        Then search for the generated SPA ID 1
+        Then verify the id number in the first row matches the generated SPA ID 1

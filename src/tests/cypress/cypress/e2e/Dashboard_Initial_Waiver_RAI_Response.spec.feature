@@ -8,11 +8,10 @@ Feature: RAI Response for Initial Waiver - Package View
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Status
-
         Then click RAI Issued checkbox
         Then click on Status
         Then click on Type
-
+        Then click the 1915b check box
         Then click on Action Type
         Then click the Initial check box
         Then Click on Filter Button

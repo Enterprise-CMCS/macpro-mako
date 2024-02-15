@@ -31,7 +31,6 @@ Feature: OY2-12297 Home Page Update - Include guidance for CMS User
     Scenario: verify CMS Users section information
         Given I am on Login Page
         Then cms users section exists
-        Then How to review a submission exists
         Then Receive an email for submission notification exists
         Then Receive an email for submission notification information exists
         Then Login with EUA exists

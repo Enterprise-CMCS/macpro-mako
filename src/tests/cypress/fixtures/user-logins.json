@@ -1,15 +1,9 @@
 {
     "State Submitter": {
-        "Active": "george@example.com",
-        "Pending": "statesubmitterpending@cms.hhs.local"
+        "Active": "george@example.com"
     },
     "State System Admin": {
         "Active": "statesystemadmin@nightwatch.test"
-    },
-    "CMS Role Approver": {
-        "Active": "cmsroleapprover@nightwatch.test",
-        "Denied": "cmsroleapproverdenied@cms.hhs.local",
-        "Revoked": "cmsroleapproverrevoked@cms.hhs.local"
     },
     "Help Desk": {
         "Active": "helpdesk@example.com"

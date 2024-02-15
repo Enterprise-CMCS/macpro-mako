@@ -116,6 +116,9 @@ Then("click Stay on Page", () => {
 Then("verify the success message is {string}", (s) => {
   OneMacDashboardPage.verifySuccessMessageIs(s);
 });
+Then("verify package submitted message in the alert bar", () => {
+  OneMacDashboardPage.verifyPackageSubmittedIsDisplayed();
+});
 Then("verify submission successful message in the alert bar", () => {
   OneMacDashboardPage.verifySuccessMessage1IsDisplayed();
 });
@@ -355,30 +358,6 @@ Then(
     OneMacSubmissionTypePage.verifyComprehensiveWaiverAmendmentIsClickable();
   }
 );
-Then("verify CHIP SPA is a clickable option", () => {
-  OneMacSubmissionTypePage.verifyChipSPAIsClickable();
-});
-Then("verify Medicaid SPA is a clickable option", () => {
-  OneMacSubmissionTypePage.verifyMedicaidSPAIsClickable();
-});
-Then(
-  "verify Medicaid Eligibility, Enrollment, Administration, and Health Homes is a clickable option",
-  () => {
-    OneMacSubmissionTypePage.verifyMedicaidEligibilityIsClickable();
-  }
-);
-Then(
-  "click Medicaid Eligibility, Enrollment, Administration, and Health Homes",
-  () => {
-    OneMacSubmissionTypePage.clickMedicaidEligibility();
-  }
-);
-Then(
-  "verify Medicaid Alternative Benefits Plans ABP, and Medicaid Premiums and Cost Sharing is a clickable option",
-  () => {
-    OneMacSubmissionTypePage.verifyMedicaidAlternativeIsClickable();
-  }
-);
 Then(
   "click Medicaid Alternative Benefits Plans ABP, and Medicaid Premiums and Cost Sharing",
   () => {
@@ -579,7 +558,7 @@ Then("Verify State Plan Amendments SPAs Section Exists", () => {
   OneMacFAQPage.verifySPASectionExists();
 });
 Then(
-  "Verify What What format is used to enter a SPA ID is displayed and click it",
+  "Verify What format is used to enter a SPA ID is displayed and click it",
   () => {
     OneMacFAQPage.VerifyWhatWhatformatisusedtoenteraSPAIDisdisplayedandclickit();
   }
@@ -845,10 +824,6 @@ Then(
   }
 );
 
-Then("How to review a submission exists", () => {
-  OneMacHomePage.verifyhowToReviewASubmissionExists();
-});
-
 Then("Receive an email for submission notification exists", () => {
   OneMacHomePage.verifyReceiveAnEmailForSubmissionNotificationExists();
 });
@@ -917,13 +892,16 @@ Then(
 Then("verify x in search bar exists to clear search and click it", () => {
   OneMacDashboardPage.verifyxexistsandClickIt();
 });
+Then("verify x in search bar exists to clear", () => {
+  OneMacDashboardPage.verifyXExists();
+});
 Then("verify Error message details is displayed", () => {
   OneMacDashboardPage.verifyErrorMessageDetails();
 });
-Then("type in search bar not existing ID in search bar", () => {
-  OneMacDashboardPage.typeNinExistingID();
+Then("type in search bar an ID that does not exist in search bar", () => {
+  OneMacDashboardPage.searchFor("ZZ-00-0000");
 });
-Then("Verify State Column Exists", () => {
+Then("verify State column exists", () => {
   OneMacDashboardPage.verifyStateColumnExists();
 });
 Then("Verify State Column is sortable", () => {
@@ -1079,6 +1057,9 @@ Then("verify submitted by checkbox exists", () => {
 Then("verify type checkbox exists", () => {
   OneMacDashboardPage.verifycheckBoxTypeExists();
 });
+Then("verify action type checkbox exists", () => {
+  OneMacDashboardPage.verifycheckBoxTypeActionExists();
+});
 Then("verify CPOC Name checkbox exists", () => {
   OneMacDashboardPage.verifycheckBoxCPOCNameExists();
 });
@@ -1091,9 +1072,6 @@ Then("verify Final Disposition checkbox exists", () => {
 Then("verify Initial Submission Date column exists", () => {
   OneMacDashboardPage.verifyinitialSubmissionDateColumnExists();
 });
-Then("verify state column exists", () => {
-  OneMacDashboardPage.verifystateColumnExists();
-});
 Then("verify status column exists", () => {
   OneMacDashboardPage.verifystatusColumnExists();
 });
@@ -1103,8 +1081,8 @@ Then("verify submitted by column exists", () => {
 Then("verify type column exists", () => {
   OneMacDashboardPage.verifytypeColumnExists();
 });
-Then("verify IDNumber column exists", () => {
-  OneMacDashboardPage.verifyIDNumberColumnExists();
+Then("verify action type column exists", () => {
+  OneMacDashboardPage.verifyActionTypeColumnExists();
 });
 Then("verify actions column exists", () => {
   OneMacDashboardPage.verifyactionsColumnExists();
@@ -1127,32 +1105,38 @@ Then("verify Final Disposition column exists", () => {
 Then("verify Final Disposition column does not exist", () => {
   OneMacDashboardPage.verifyFinalDispositionColumnDoesNotExist();
 });
-Then("click Initial Submission Date checkbox", () => {
+Then("click Initial Submission Date column visibility toggle button", () => {
   OneMacDashboardPage.clickCheckBoxInitialSubmissionDate();
 });
-Then("click state checkbox", () => {
+Then("click state column visibility toggle button", () => {
   OneMacDashboardPage.clickCheckboxState();
 });
-Then("click status checkbox", () => {
+Then("click status column visibility toggle button", () => {
   OneMacDashboardPage.clickCheckboxStatus();
 });
-Then("click submitted by checkbox", () => {
+Then("click submitted by column visibility toggle button", () => {
   OneMacDashboardPage.clickCheckBoxSubmittedBy();
 });
-Then("click type checkbox", () => {
+Then("click type column visibility toggle button", () => {
   OneMacDashboardPage.clickCheckBoxType();
 });
-Then("click CPOC Name checkbox", () => {
+Then("click action type column visibility toggle button", () => {
+  OneMacDashboardPage.clickCheckBoxATypeAction();
+});
+Then("click CPOC Name column visibility toggle button", () => {
   OneMacDashboardPage.clickCPOCNameCheckBox();
 });
-Then("click Formal RAI Received checkbox", () => {
-  OneMacDashboardPage.clickFormalRAIReceivedCheckbox();
+Then("click Formal RAI Response column visibility toggle button", () => {
+  OneMacDashboardPage.clickFormalRAIReceivedVisibilityToggleBtn();
 });
 Then("click Final Disposition checkbox", () => {
   OneMacDashboardPage.clickFinalDispositionDateCheckBox();
 });
 Then("verify type column does not exist", () => {
   OneMacDashboardPage.verifytypeColumnDoesNotExist();
+});
+Then("verify action type column does not exist", () => {
+  OneMacDashboardPage.verifyActionTypeColumnDoesNotExist();
 });
 Then("verify state column does not exist", () => {
   OneMacDashboardPage.verifyStateColumnDoesNotExist();
@@ -1168,9 +1152,6 @@ Then("verify submitted by column does not exist", () => {
 });
 Then("verify the type on row one exists", () => {
   OneMacDashboardPage.verifypackageRowOneTypeExists();
-});
-Then("verify the type on row one is Medicaid SPA", () => {
-  OneMacDashboardPage.verifypackageRowOneTypeHasTextMedicaidSPA();
 });
 Then("verify the state on row one exists", () => {
   OneMacDashboardPage.verifypackageRowOneStateExists();
@@ -1262,12 +1243,10 @@ Then("verify status DropDown Filter exists", () => {
   OneMacDashboardPage.verifystatusDropDownFilterExists();
 });
 Then("verify the SPAs tab is selected", () => {
-  //if it's disabled then it is selected.
-  OneMacDashboardPage.verifySPAsTabIsDisabled();
+  OneMacDashboardPage.verifySPAsTabIsActive();
 });
 Then("verify the Waivers tab is selected", () => {
-  //if it's disabled then it is selected.
-  OneMacDashboardPage.verifyWaiversTabIsDisabled();
+  OneMacDashboardPage.verifyWaiversTabIsActive();
 });
 Then("verify the Waivers tab is clickable", () => {
   OneMacDashboardPage.verifyWaiversTabIsClickable();
@@ -1341,22 +1320,16 @@ Then("click Requested checkbox", () => {
 Then("click the Pending checkbox", () => {
   OneMacDashboardPage.clickPendingCheckbox();
 });
-Then("verify the type in row one is Initial Waiver", () => {
-  OneMacDashboardPage.verifypackageRowOneTypeHasTextInitialWaiver();
+Then("verify the type action in row one is {string}", (s) => {
+  OneMacDashboardPage.verifypackageRowOneTypeActionHasText(s);
 });
-Then("verify the type in row one is Waiver Renewal", () => {
-  OneMacDashboardPage.verifypackageRowOneTypeHasTextWaiverRenewal();
+Then("verify the type in row one is {string}", (s) => {
+  OneMacDashboardPage.verifypackageRowOneTypeHasText(s);
 });
 Then(
-  "verify the waiver number format in row one is SS.#### or SS.#####",
+  "verify the waiver number format in row one is SS-#####.S## or SS-####.S##",
   () => {
-    OneMacDashboardPage.verifypackageRowOneIDInitialWaiverFormat();
-  }
-);
-Then(
-  "verify the waiver number format in row one is SS.#####.S## or SS.####.S##",
-  () => {
-    OneMacDashboardPage.verifypackageRowOneIDWaiverRenewalFormat();
+    OneMacDashboardPage.verifypackageRowOneIDWaiverFormat();
   }
 );
 Then("verify Onboarding Materials exists", () => {
@@ -2090,20 +2063,14 @@ Then("verify page url contains {string}", (checkUrl) => {
   OneMacDashboardPage.verifyPageByURL(checkUrl);
 });
 
-Then("type the generated SPA ID into the ID Input box", () => {
-  let spaID = util.generateSPAID("MD");
+Then("type the generated SPA ID {int} into the ID Input box using the state {string}", (count, state) => {
+  let spaID = util.generateSPAID(state || 'MD');
   OneMacFormPage.inputID(spaID);
   cy.fixture("generatedIDs.json").then((obj) => {
-    obj.generatedChipSPAID1 = spaID;
+    obj["generatedSPAID" + count] = spaID;
     // write the merged object
     cy.writeFile("./fixtures/generatedIDs.json", obj)
   })
-});
-
-Then("type a generated SPA ID into the ID Input box using the state {string}", (state) => {
-  let spaID = util.generateSPAID(state);
-  OneMacFormPage.inputID(spaID);
-  cy.writeFile("cypress/fixtures/generatedIDs.json", { generatedChipSPAID1: spaID });
 });
 
 Then("verify submission successful message in the modal", () => {
@@ -2113,9 +2080,39 @@ Then("verify submission successful message in the modal", () => {
 Then("click the Go to Dashboard button", () => {
   OneMacFormPage.clickGoToDashBoardBtn();
 });
-Then("search for the generated CHIP SPA ID", () => {
+Then("search for the generated SPA ID {int}", (count) => {
   cy.fixture("generatedIDs.json").then((data) => {
-    OneMacDashboardPage.searchFor(data.generatedChipSPAID1);
+    OneMacDashboardPage.searchFor(data["generatedSPAID" + count]);
   });
   cy.wait(1000);
 });
+Then("type the generated Initial Waiver Number {int} into the ID Input box using the state {string}", (count, state) => {
+  let waiverID = util.generateInitialWaiverNumberWith4Digits(state || 'MD');
+  OneMacFormPage.inputID(waiverID);
+  cy.fixture("generatedIDs.json").then((obj) => {
+    obj["generatedWaiverID" + count] = spaID;
+    // write the merged object
+    cy.writeFile("./fixtures/generatedIDs.json", obj)
+  })
+});
+Then("search for the generated Waiver Number {int}", (count) => {
+  cy.fixture("generatedIDs.json").then((data) => {
+    OneMacDashboardPage.searchFor(data["generatedWaiverID" + count]);
+  });
+  cy.wait(1000);
+});
+Then(
+  "verify the id number in the first row matches the generated SPA ID {int}",
+  (count) => {
+    cy.fixture("generatedIDs.json").then((data) => {
+      OneMacDashboardPage.verifyIDNumberInFirstRowIs(data["generatedSPAID" + count] );
+    });
+  }
+);
+Then(
+  "verify the id number in the first row matches the generated Waiver ID {int}",(count) => {
+    cy.fixture("generatedIDs.json").then((data) => {
+      OneMacDashboardPage.verifyIDNumberInFirstRowIs(data["generatedWaiverID" + count]);
+    });
+  }
+);

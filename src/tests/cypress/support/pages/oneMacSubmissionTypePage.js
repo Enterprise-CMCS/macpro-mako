@@ -1,10 +1,9 @@
 //Element is Xpath use cy.xpath instead of cy.get
 const statePlanAmendmentSPA = '//*[text()="State Plan Amendment (SPA)"]';
 //Element is Xpath use cy.xpath instead of cy.get
-const waiverAction =
-  "//a[@href='/new-submission/waiver']//*[text()='Waiver Action']";
+const waiverAction = "//*[text()='Waiver Action']";
 const waiverActions1915b =
-  "//a[contains(@href,'waiver-b')]//*[text()='1915(b) Waiver Actions']";
+  "//*[text()='1915(b) Waiver Actions']";
 //Element is Xpath use cy.xpath instead of cy.get
 const medicaidSPA = ':contains("Medicaid SPA")';
 //Element is Xpath use cy.xpath instead of cy.get
@@ -23,9 +22,9 @@ const chipEligibility = ':contains("CHIP Eligibility")';
 const allOtherChip = ':contains("All Other CHIP SPA Submissions")';
 //Element is Xpath use cy.xpath instead of cy.get
 const ffsSelectiveAuthority =
-  "//*[contains(text(),'1915(b)(4) FFS Selective Contracting Waivers')]";
+  ":contains('1915(b)(4) FFS Selective Contracting Waivers')";
 const comprehensiveCapitatedWaiverAuthority =
-  "//*[contains(text(),'1915(b) Comprehensive (Capitated) Waiver Authority')]";
+  ":contains((text(),'1915(b) Comprehensive (Capitated) Waiver Authority')";
 //Element is Xpath use cy.xpath instead of cy.get
 const RequestTemporaryExtension = '//*[text()="Request Temporary Extension"]';
 //Element is Xpath use cy.xpath instead of cy.get
@@ -53,7 +52,7 @@ const renewalWaiver1915b4 =
   ':contains("1915(b)(4) FFS Selective Contracting Renewal Waiver")';
 const comprehensiveRenewalWaiver =
   ':contains("1915(b) Comprehensive (Capitated) Renewal Waiver")';
-const cardLink = "[data-testid='card-inner-wrapper']";
+const cardLink = "[data-testid='card-inner-wrapper'] h2";
 
 export class oneMacSubmissionTypePage {
   clickStatePlanAmendmentSPA() {
@@ -78,10 +77,10 @@ export class oneMacSubmissionTypePage {
     cy.xpath(waiverActions1915b).click();
   }
   clickFssSelectiveAuthority() {
-    cy.xpath(ffsSelectiveAuthority).click();
+    cy.get(cardLink).filter(ffsSelectiveAuthority).click();
   }
   click1915bComprehensiveCapitatedWaiverAuthority() {
-    cy.xpath(comprehensiveCapitatedWaiverAuthority).click();
+    cy.get(cardLink).filter(comprehensiveCapitatedWaiverAuthority).click();
   }
   clickMedicaidSPA() {
     cy.get(cardLink).filter(medicaidSPA).click();
@@ -164,21 +163,8 @@ export class oneMacSubmissionTypePage {
       .filter(medicaidSPA)
       .should("have.attr", "href", "/choices/spa/medicaid");
   }
-  verifyMedicaidEligibilityIsClickable() {
-    cy.get(cardLink)
-      .filter(medicaidEligibility)
-      .should("have.attr", "href", "/medicaid-eligibility");
-  }
   clickMedicaidEligibility() {
     cy.get(cardLink).filter(medicaidEligibility).click();
-  }
-  verifyMedicaidAlternativeIsClickable() {
-    cy.get(cardLink)
-      .filter(medicaidAlternative)
-      .should("have.attr", "href", "/medicaid-abp");
-  }
-  clickMedicaidAlternative() {
-    cy.get(cardLink).filter(medicaidAlternative).click();
   }
   verifyAllOtherMedicaidIsClickable() {
     cy.get(cardLink)
@@ -207,8 +193,8 @@ export class oneMacSubmissionTypePage {
   verifyChoiceGoesTo(choiceText, destinationUrl) {
     cy.get(cardLink)
       .filter(`:contains("${choiceText}")`)
-      .parent("a")
-      .should("have.attr", "href", destinationUrl);
+      .parents("a")
+      .should("have.attr", "href").and('contain', destinationUrl);
   }
   clickChoice(choiceText) {
     cy.get(cardLink).filter(`:contains("${choiceText}")`).click();

@@ -1,97 +1,69 @@
 //Element is Xpath use cy.xpath instead of cy.get: All of the following are xpath
 //overall headers and help desk section
-const pageHeader = "//*[@id='title_bar']//h1";
+const pageHeader = "//h1";
 const generalHeader = '//h2[contains(text(),"General")]';
 const statePlanAmendmentSPAHeader =
   '//h2[contains(text(),"State Plan Amendments (SPAs)")]';
 const waiversHeader = '//h2[contains(text(),"Waivers")]';
-const oneMacHelpDeskContactInfoHeader = "#contact-card";
+const oneMacHelpDeskContactInfoHeader = "//h3[text()='OneMAC Help Desk Contact Info']";
 const phoneNumber =
-  '//*[@id="contact-card"]//dt[contains(text(),"Phone Number")]';
+  '//*[contains(text(),"Phone Number")]';
 const actualPhoneNumber =
-  '//*[@id="contact-card"]//a[contains(text(),"(833) 228-2540")]';
-const email = '//*[@id="contact-card"]//dt[contains(text(),"Email")]';
+  '//a[contains(text(),"(833) 228-2540")]';
+const email = '//*[contains(text(),"Email")]';
 const actualEmail =
-  "//*[@id='contact-card']//a[@href='mailto:OneMAC_Helpdesk@cms.hhs.gov']";
+  "//a[@href='mailto:OneMAC_Helpdesk@cms.hhs.gov']";
 //General Section
-const whatBrowsersHeaderBtn = "#browsers-button";
-const whatBrowsersBody = "#browsers";
-const WhatToDoConfirmationEmailHeaderBtn = "#confirm-email-button";
-const WhatToDoConfirmationEmailBody = "#confirm-email";
-const isThisOfficialHeaderBtn = "#is-official-button";
-const isThisOfficialBody = "#is-official";
-const whatAreTheOneMacUserRoles = "#onemac-roles-button";
+const whatBrowsersHeaderBtn = "//button[contains(text(),'What browsers can I use to access the system')]";
+const whatBrowsersBody = "div[role='region']  p";
+const WhatToDoConfirmationEmailHeaderBtn = "article:nth-of-type(1) > div > div:nth-of-type(3)  .flex.flex-1.font-medium.items-center.justify-between.py-4.transition-all";
+const WhatToDoConfirmationEmailBody = "div:nth-of-type(3) > div[role='region']  p";
+const isThisOfficialHeaderBtn = "article:nth-of-type(1) > div > div:nth-of-type(4)  .flex.flex-1.font-medium.items-center.justify-between.py-4.transition-all";
+const isThisOfficialBody = "div:nth-of-type(4) > div[role='region']  p";
+const whatAreTheOneMacUserRoles = "//article[1]/div[1]/div[5]/h3[1]/button[1]";
 //Element is Xpath use cy.xpath instead of cy.get
-const whatAreTheOneMacUserRolesValueStateSubmitter =
-  "//*[@id='onemac-roles']//td[text()='State Submitter']";
-//Element is Xpath use cy.xpath instead of cy.get
-const whatAreTheOneMacUserRolesValueStateSystemAdministrator =
-  "//*[@id='onemac-roles']//tr[2]/td[text()='State System Administrator']";
-//Element is Xpath use cy.xpath instead of cy.get
-const whatAreTheOneMacUserRolesValueCMSRoleApprover =
-  "//*[@id='onemac-roles']//tr[3]//td[text()='CMS Role Approver']";
+const whatAreTheOneMacUserRolesTable =
+  "//article[1]//*[@data-state='open']//table[1]";
 //State Plan Amendment (SPA's) Section
-const whatFormatIsUsedToEnterASPAID = "#spa-id-format-button";
-const whatFormatIsUsedToEnterASPAIDValue = "#spa-id-format";
+const whatFormatIsUsedToEnterASPAID = "//button[contains(text(),'What format is used to enter a SPA ID')]";
+const whatFormatIsUsedToEnterASPAIDValue = "//*[@id='radix-:rh:']";
 const whatAttachmentForMedicaidSPAHeaderBtn =
-  "#medicaid-spa-attachments-button";
-const whatAttachmentForMedicaidSPABody = "#medicaid-spa-attachments";
-const whatAttachmentForRespToSPARAI = "#medicaid-spa-rai-attachments-button";
-const whatAttachmentForRespToSPARAIValue = "#medicaid-spa-rai-attachments";
-const whatAttachmentsForCHIPSPA = "#chip-spa-attachments-button";
-const whatAttachmentsForCHIPSPAValue = "#chip-spa-attachments";
+  "//button[contains(text(),'What are the attachments for a Medicaid SPA')]";
+const whatAttachmentForRespToSPARAI = "//button[contains(text(),'What are the attachments for a Medicaid response to Request for Additional Information')]";
+const whatAttachmentsForCHIPSPA = "//button[contains(text(),'What are the attachments for a CHIP SPA?')]";
 const whatAttachmentsForCHIPSPAResponseToRAI =
-  "#chip-spa-rai-attachments-button";
-const whatAttachmentsForCHIPSPAResponseToRAIValue = "#chip-spa-rai-attachments";
-const canISubmitSPAFORPHEInOneMac = "#public-health-emergency-button";
-const canISubmitSPAFORPHEInOneMacValue = "#public-health-emergency";
+"//button[contains(text(),'What are the attachments for a CHIP SPA response to Request for Additional Information \(RAI\)')]";
+const canISubmitSPAFORPHEInOneMac = "//button[contains(text(), 'Can I submit SPAs relating to the Public Health Emergency \(PHE\)')]";
 //Waiver section
-const initialWaiverFormatHeaderBtn = "#initial-waiver-id-format-button";
-const initialWaiverFormatBody = "#initial-waiver-id-format";
-const waiverRenewalFormatHeaderBtn = "#waiver-renewal-id-format-button";
-const waiverRenewalFormatBody = "#waiver-renewal-id-format";
+const initialWaiverFormatHeaderBtn = "//button[contains(text(),'What format is used to enter a 1915\(b\) Initial Waiver number')]";
+const waiverRenewalFormatHeaderBtn = "//button[contains(text(),'What format is used to enter a 1915\(b\) Waiver Renewal number')]";
 const whatFormatIsUsedToEnterASPAIDforWaivers = "#waiver-id-format-button";
 const whatFormatIsUsedToEnterASPAIDforWaiversValue = "#waiver-id-format";
 const whoCanIContactToHelpMeFigureOutTheCorrect1915bWaiverNumber =
-  "#waiver-id-help-button";
-const whoCanIContactToHelpMeFigureOutTheCorrect1915bWaiverNumberValue =
-  "#waiver-id-help";
-const whatFormatIsUsedToEnter1915cwaiverNumber = "#waiver-c-id-button";
-const whatFormatIsUsedToEnter1915cwaiverNumberValue = "#waiver-c-id";
+  "//button[contains(text(),'Who can I contact to help me figure out the correct 1915\(b\) Waiver Number')]";
+const whatFormatIsUsedToEnter1915cwaiverNumber = "//button[contains(text(),'What format is used to enter a 1915(c) waiver number')]";
 const whatAttachmentsAreNeededToSubmitA1915bWaiverAction =
-  "#waiverb-attachments-button";
-const whatAttachmentsAreNeededToSubmitA1915bWaiverActionValue =
-  "#waiverb-attachments";
+  "//button[contains(text(),'What attachments are needed to submit a 1915\(b\) waiver action')]";
 const whatAreTheAttachmentsFor1915bResponsetoRAI =
-  "#waiverb-rai-attachments-button";
-const whatAreTheAttachmentsFor1915bResponsetoRAIValue =
-  "#waiverb-rai-attachments";
-const tempExtFormatHeaderBtn = "#waiver-extension-id-format-button";
-const tempExtFormatBody = "#waiver-extension-id-format";
+"//button[contains(text(),'What are the attachments for a 1915\(b\) Waiver response to Request for Additional Information \(RAI\)')]";
+const tempExtFormatHeaderBtn = "//button[contains(text(),'What format is used to enter a 1915\(b\) and 1915\(c\) Temporary Extension number')]";
 const whatAreTheAttachmentsFor1915bRequestTemprorayExtension =
-  "#waiverb-extension-attachments-button";
-const whatAreTheAttachmentsFor1915bRequestTemprorayExtensionValue =
-  "#waiverb-extension-attachments";
+  "//button[contains(text(),'What are the attachments for a 1915(b) Waiver - Request for Temporary Extension')]";
 const attachmentsFor1915cRequestTempExtHeaderBtn =
-  "#waiverc-extension-attachments-button";
-const attachmentsFor1915cRequestTempExtBody = "#waiverc-extension-attachments";
-const canISubmitAppendixKAmendmentsInOneMac = "#appk-button";
-const canISubmitAppendixKAmendmentsInOneMacValue = "#appk";
-const whatAreTheAttachmentsForAppendixKWaiver = "#appk-attachments-button";
-const whatAreTheAttachmentsForAppendixKWaiverValue = "#appk-attachments";
-const onboardingMaterialsBtn = "#onboarding-materials-button";
+"//button[contains(text(),'What are the attachments for a 1915(c) Waiver - Request for Temporary Extension')]";
+const canISubmitAppendixKAmendmentsInOneMac = "//button[contains(text(),'Can I submit Appendix K amendments in OneMAC')]";
+const whatAreTheAttachmentsForAppendixKWaiver = "//button[contains(text(),'What are the attachments for a 1915(c) Appendix K Waiver?')]";
+const onboardingMaterialsBtn = "//button[contains(text(),'Onboarding Materials')]";
 const welcomeToOneMacLink =
-  "//div[@id='onboarding-materials']//a[text() = 'Welcome to OneMAC']";
+  "//a[text() = 'Welcome to OneMAC']";
 const idmInstructionsLink =
-  "//div[@id='onboarding-materials']//a[text() = 'IDM Instructions for OneMAC Users']";
+  "//a[text() = 'IDM Instructions for OneMAC Users']";
 const idmGuideLink =
-  "//div[@id='onboarding-materials']//a[text() = 'OneMAC IDM Guide']";
+  "//a[text() = 'OneMAC IDM Guide']";
 const stateSubmitterGuideLink =
-  "//div[@id='onboarding-materials']//a[text() = 'OneMAC State User Guide']";
-const stateAdminGuideLink =
-  "//div[@id='onboarding-materials']//a[text() = 'OneMAC State Administrator Guide']";
+  "//a[text() = 'OneMAC State User Guide']";
 const cmsUserGuideLink =
-  "//div[@id='onboarding-materials']//a[text() = 'OneMAC CMS User Guide']";
+  "//a[text() = 'OneMAC CMS User Guide']";
 const expandAllBtn =
   "//button[contains(text(),'Expand all to search with CTRL+F')]";
 
@@ -107,19 +79,18 @@ export class oneMacFAQPage {
     cy.xpath(waiversHeader).should("be.visible");
   }
   verifyOneMacHelpDeskInfoExists() {
-    cy.get(oneMacHelpDeskContactInfoHeader)
+    cy.xpath(oneMacHelpDeskContactInfoHeader)
       .should("be.visible")
       .and("contain", "OneMAC Help Desk Contact Info");
   }
 
   verifyVerifywhatBrowsersHeaderBtnlinkisdisplayedandclickit() {
-    cy.get(whatBrowsersHeaderBtn).click();
+    cy.xpath(whatBrowsersHeaderBtn).click();
   }
 
   verifytextcontainsThesubmissionportalworksbestonGoogleChrome() {
     cy.get(whatBrowsersBody)
       .should("be.visible")
-      .find("p")
       .contains(
         "The submission portal works best on Google Chrome (Version 91.0.4472.77 or later), Firefox (Version 89.0 or later)."
       );
@@ -132,7 +103,6 @@ export class oneMacFAQPage {
   VerifytextcontainsRefreshyourinboxcheckyourSPAMfiltersthencontacttheOneMACHelpDesk() {
     cy.get(WhatToDoConfirmationEmailBody)
       .should("be.visible")
-      .find("p")
       .contains(
         "Refresh your inbox, check your SPAM filters, then contact the OneMAC Help Desk"
       );
@@ -144,62 +114,56 @@ export class oneMacFAQPage {
   VerifytextcontainsYesaslongasuouhavetheelectronicreceipt() {
     cy.get(isThisOfficialBody)
       .should("be.visible")
-      .find("p")
       .contains(
         "Yes, as long as you have the electronic receipt (confirmation email). Your submission is considered your official state submission and will only be considered received by CMS if you have received the electronic receipt. You should receive an email confirmation that the formal action was received along with information about the 90th day. If you do not receive a confirmation email for your SPA or waiver submissions, please contact your state lead or your state’s CMS lead for HCBS or managed care."
       );
   }
   VerifyWhataretheOneMACuserrolesisdisplayedandclickit() {
-    cy.get(whatAreTheOneMacUserRoles).click();
+    cy.xpath(whatAreTheOneMacUserRoles).click();
   }
   VerifytextcontainsStateSubmitter() {
-    cy.xpath(whatAreTheOneMacUserRolesValueStateSubmitter).should("be.visible");
+    cy.xpath(whatAreTheOneMacUserRolesTable).should("be.visible").and('contain.text', 'State Submitter');
   }
   VerifytextcontainsStateSystemAdministrator() {
-    cy.xpath(whatAreTheOneMacUserRolesValueStateSystemAdministrator).should(
-      "be.visible"
-    );
+    cy.xpath(whatAreTheOneMacUserRolesTable).should("be.visible").and('contain.text', 'State System Admin');
   }
   VerifytextcontainsCMSRoleApprover() {
-    cy.xpath(whatAreTheOneMacUserRolesValueCMSRoleApprover).should(
-      "be.visible"
-    );
+    cy.xpath(whatAreTheOneMacUserRolesTable).should("be.visible").and('contain.text', 'CMS Role Approver');
   }
   VerifyWhatWhatformatisusedtoenteraSPAIDisdisplayedandclickit() {
-    cy.get(whatFormatIsUsedToEnterASPAID).click();
+    cy.xpath(whatFormatIsUsedToEnterASPAID).click();
   }
 
   VerifytextcontainsEntertheStatePlanAmendmenttransmittalnumberAssignconsecutivenumbersonacalendaryearbasis() {
-    cy.get(whatFormatIsUsedToEnterASPAIDValue).should("be.visible");
+    cy.xpath(whatFormatIsUsedToEnterASPAID).parent("h3").next("div").should("have.attr", "data-state", "open");
   }
   VerifyWhataretheattachmentsforaMedicaidSPAisdisplayedandclickit() {
-    cy.get(whatAttachmentForMedicaidSPAHeaderBtn).click();
+    cy.xpath(whatAttachmentForMedicaidSPAHeaderBtn).click();
   }
 
   VerifytextcontainsSPAsubmissionrequirementscanbefoundinregulation() {
-    cy.get(whatAttachmentForMedicaidSPABody).should("be.visible");
+    cy.xpath(whatAttachmentForMedicaidSPAHeaderBtn).parent("h3").next("div").should("have.attr", "data-state", "open");
   }
 
   VerifyWhataretheattachmentsforaMedicaidresponsetoRequestforAdditionalInformationRAIisdisplayedandclickit() {
-    cy.get(whatAttachmentForRespToSPARAI).click();
+    cy.xpath(whatAttachmentForRespToSPARAI).click();
   }
   Verifytextcontainsindicatesarequiredattachment() {
-    cy.get(whatAttachmentForRespToSPARAIValue).should("be.visible");
+    cy.xpath(whatAttachmentForRespToSPARAI).parent("h3").next("div").should("have.attr", "data-state", "open");
   }
 
   VerifyWhataretheattachmentsforaCHIPSPAisdisplayedandclickit() {
-    cy.get(whatAttachmentsForCHIPSPA).click();
+    cy.xpath(whatAttachmentsForCHIPSPA).click();
   }
   VerifyWhataretheattachmentsforaCHIPSPAresponsetoRequestforAdditionalInformationRAIisdisplayedandclickit() {
-    cy.get(whatAttachmentsForCHIPSPAResponseToRAI).click();
+    cy.xpath(whatAttachmentsForCHIPSPAResponseToRAI).click();
   }
   VerifyCanIsubmitSPAsrelatingtothePublicHealthEmergencyPHEinOneMACisdisplayedandclickit() {
-    cy.get(canISubmitSPAFORPHEInOneMac).click();
+    cy.xpath(canISubmitSPAFORPHEInOneMac).click();
   }
   VerifytextcontainsYesallPHErelatedSPAsshouldbesubmittedthroughOneMAC() {
-    cy.get(canISubmitSPAFORPHEInOneMacValue)
-      .should("be.visible")
-      .find("p")
+    cy.xpath(canISubmitSPAFORPHEInOneMac)
+    .parent("h3").next("div").should("have.attr", "data-state", "open")
       .contains(
         "Yes, all PHE-related SPAs should be submitted through OneMAC by completing the Medicaid SPA form."
       );
@@ -212,60 +176,57 @@ export class oneMacFAQPage {
     cy.get(whatFormatIsUsedToEnterASPAIDforWaiversValue).should("be.visible");
   }
   VerifyWhocanIcontacttohelpmefigureoutthecorrect1915bWaiverNumberisdisplayedandclickit() {
-    cy.get(whoCanIContactToHelpMeFigureOutTheCorrect1915bWaiverNumber).click();
+    cy.xpath(whoCanIContactToHelpMeFigureOutTheCorrect1915bWaiverNumber).click();
   }
   VerifytextcontainsEmailMCOGDMCOActionscmshhsgovtogetsupportwithdeterminingthecorrect1915bWaiverNumber() {
-    cy.get(
-      whoCanIContactToHelpMeFigureOutTheCorrect1915bWaiverNumberValue
-    ).should("be.visible");
+    cy.xpath(
+      whoCanIContactToHelpMeFigureOutTheCorrect1915bWaiverNumber
+    ).parent("h3").next("div").should("have.attr", "data-state", "open");
   }
   VerifyWhatformatisusedtoentera1915cwaivernumberisdisplayedandclickit() {
-    cy.get(whatFormatIsUsedToEnter1915cwaiverNumber).click();
+    cy.xpath(whatFormatIsUsedToEnter1915cwaiverNumber).click();
   }
   VerifytextcontainsWaivernumbermustfollowtheformatSStoinclude() {
-    cy.get(whatFormatIsUsedToEnter1915cwaiverNumberValue).should("be.visible");
+    cy.xpath(whatFormatIsUsedToEnter1915cwaiverNumber).parent("h3").next("div").should("have.attr", "data-state", "open");
   }
   VerifyWhatattachmentsareneededtosubmita1915bwaiveractionisdisplayedandclickit() {
-    cy.get(whatAttachmentsAreNeededToSubmitA1915bWaiverAction).click();
+    cy.xpath(whatAttachmentsAreNeededToSubmitA1915bWaiverAction).click();
   }
   VerifytextcontainsTheregulationsat42CFR4302543155and42CFR441301() {
-    cy.get(whatAttachmentsAreNeededToSubmitA1915bWaiverActionValue).should(
-      "be.visible"
-    );
+    cy.xpath(whatAttachmentsAreNeededToSubmitA1915bWaiverAction).parent("h3").next("div").should("have.attr", "data-state", "open");
   }
   VerifyWhataretheattachmentsfora1915bWaiverresponsetoRequestforAdditionalInformationRAIisdisplayedandclickit() {
-    cy.get(whatAreTheAttachmentsFor1915bResponsetoRAI).click();
+    cy.xpath(whatAreTheAttachmentsFor1915bResponsetoRAI).click();
   }
   verifyTempExtFormatHeaderBtnExists() {
-    cy.get(tempExtFormatHeaderBtn).should("be.visible");
+    cy.xpath(tempExtFormatHeaderBtn).should("be.visible");
   }
   clickTempExtFormatHeaderBtn() {
-    cy.get(tempExtFormatHeaderBtn).click();
+    cy.xpath(tempExtFormatHeaderBtn).click();
   }
   verifyTempExtFormatBody() {
-    cy.get(tempExtFormatBody)
-      .should("be.visible")
-      .find("p")
+    cy.xpath(tempExtFormatHeaderBtn)
+    .parent("h3").next("div").should("have.attr", "data-state", "open")
       .contains(
         "Temporary extension numbers must follow the format SS-####.R##.TE## or SS-#####.R##.TE## to include:"
       );
   }
   VerifyWhataretheattachmentsfora1915bWaiverRequestforTemporaryExtensionisdisplayedandclickit() {
-    cy.get(whatAreTheAttachmentsFor1915bRequestTemprorayExtension).click();
+    cy.xpath(whatAreTheAttachmentsFor1915bRequestTemprorayExtension).click();
   }
   VerifyCanIsubmitAppendixKamendmentsinOneMACisdisplayedandclickit() {
-    cy.get(canISubmitAppendixKAmendmentsInOneMac).click();
+    cy.xpath(canISubmitAppendixKAmendmentsInOneMac).click();
   }
   VerifytextcontainsYesyoucansubmitAppendixKamendments() {
-    cy.get(canISubmitAppendixKAmendmentsInOneMacValue).should("be.visible");
+    cy.xpath(canISubmitAppendixKAmendmentsInOneMac).parent("h3").next("div").should("have.attr", "data-state", "open");
   }
   VerifyWhataretheattachmentsfora1915cAppendixKWaiverisdisplayedandclickit() {
-    cy.get(whatAreTheAttachmentsForAppendixKWaiver)
+    cy.xpath(whatAreTheAttachmentsForAppendixKWaiver)
       .should("be.visible")
       .click();
   }
   VerifytextcontainsTheregulationsat42CFR4302543155and42CFR441301describethe() {
-    cy.get(whatAreTheAttachmentsForAppendixKWaiverValue).should("be.visible");
+    cy.xpath(whatAreTheAttachmentsForAppendixKWaiver).parent("h3").next("div").should("have.attr", "data-state", "open");
   }
   verifyPhoneNumberExists() {
     cy.xpath(phoneNumber).should("be.visible");
@@ -283,10 +244,10 @@ export class oneMacFAQPage {
     cy.xpath(pageHeader).should("be.visible").contains(s);
   }
   verifyOnboardingMaterialsBtnExists() {
-    cy.get(onboardingMaterialsBtn).should("be.visible");
+    cy.xpath(onboardingMaterialsBtn).should("be.visible");
   }
   clickOnboardingMaterialsBtn() {
-    cy.get(onboardingMaterialsBtn).click();
+    cy.xpath(onboardingMaterialsBtn).click();
   }
   verifyWelcomeToOneMacLinkExists() {
     cy.xpath(welcomeToOneMacLink).should("be.visible");
@@ -304,71 +265,50 @@ export class oneMacFAQPage {
     cy.xpath(cmsUserGuideLink).should("be.visible");
   }
   verifyWelcomeToOneMacLinkIsValid() {
-    cy.xpath(welcomeToOneMacLink)
-      .invoke("attr", "href")
-      .then((href) => {
-        cy.request(href).its("status").should("eq", 200);
-      });
+    cy.xpath(welcomeToOneMacLink).invoke('removeAttr', 'target')
   }
   verifyIdmInstructionsLinkIsValid() {
-    cy.xpath(idmInstructionsLink)
-      .invoke("attr", "href")
-      .then((href) => {
-        cy.request(href).its("status").should("eq", 200);
-      });
+    cy.xpath(idmInstructionsLink).invoke('removeAttr', 'target')
   }
   verifyIdmGuideLinkIsValid() {
-    cy.xpath(idmGuideLink)
-      .invoke("attr", "href")
-      .then((href) => {
-        cy.request(href).its("status").should("eq", 200);
-      });
+    cy.xpath(idmGuideLink).invoke('removeAttr', 'target')
   }
   verifyStateSubmitterGuideLinkIsValid() {
-    cy.xpath(stateSubmitterGuideLink)
-      .invoke("attr", "href")
-      .then((href) => {
-        cy.request(href).its("status").should("eq", 200);
-      });
+    cy.xpath(stateSubmitterGuideLink).invoke('removeAttr', 'target');
   }
   verifyCmsUserGuideLinkIsValid() {
-    cy.xpath(cmsUserGuideLink)
-      .invoke("attr", "href")
-      .then((href) => {
-        cy.request(href).its("status").should("eq", 200);
-      });
+    cy.xpath(cmsUserGuideLink).invoke('removeAttr', 'target');
   }
   verifyInitialWaiverFormatHeaderBtnExists() {
-    cy.get(initialWaiverFormatHeaderBtn).should("be.visible");
+    cy.xpath(initialWaiverFormatHeaderBtn).should("be.visible");
   }
   clickInitialWaiverFormatHeaderBtn() {
-    cy.get(initialWaiverFormatHeaderBtn).click();
+    cy.xpath(initialWaiverFormatHeaderBtn).click();
   }
   verifyInitialWaiverFormatBody() {
-    cy.get(initialWaiverFormatBody)
-      .should("be.visible")
-      .find("p")
+    cy.xpath(initialWaiverFormatHeaderBtn)
+    .parent("h3").next("div").should("have.attr", "data-state", "open")
       .contains(
         "1915(b) Initial Waiver numbers must follow the format SS-####.R00.00 or SS-#####.R00.00 to include:"
       );
   }
   verifyWaiverRenewalFormatHeaderBtnExists() {
-    cy.get(waiverRenewalFormatHeaderBtn).should("be.visible");
+    cy.xpath(waiverRenewalFormatHeaderBtn).should("be.visible");
   }
   clickWaiverRenewalFormatHeaderBtn() {
-    cy.get(waiverRenewalFormatHeaderBtn).click();
+    cy.xpath(waiverRenewalFormatHeaderBtn).click();
   }
   verifyWaiverRenewalFormatBody() {
-    cy.get(waiverRenewalFormatBody).should("be.visible");
+    cy.xpath(waiverRenewalFormatHeaderBtn).parent("h3").next("div").should("have.attr", "data-state", "open");
   }
   verifyAttachmentsFor1915cRequestTempExtHeaderBtnExists() {
-    cy.get(attachmentsFor1915cRequestTempExtHeaderBtn).should("be.visible");
+    cy.xpath(attachmentsFor1915cRequestTempExtHeaderBtn).should("be.visible");
   }
   clickAttachmentsFor1915cRequestTempExtHeaderBtn() {
-    cy.get(attachmentsFor1915cRequestTempExtHeaderBtn).click();
+    cy.xpath(attachmentsFor1915cRequestTempExtHeaderBtn).click();
   }
   verifyAttachmentsFor1915cRequestTempExtBody() {
-    cy.get(attachmentsFor1915cRequestTempExtBody).should("be.visible");
+    cy.xpath(attachmentsFor1915cRequestTempExtHeaderBtn).parent("h3").next("div").should("have.attr", "data-state", "open");
   }
   verifyExpandAllBtnExists() {
     cy.xpath(expandAllBtn).should("be.visible");

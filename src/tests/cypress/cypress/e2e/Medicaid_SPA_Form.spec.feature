@@ -3,46 +3,37 @@ Feature: Package Dashboard: Medicaid SPA Form
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
+        Then click the main Dashboard Button
         Then click on New Submission
-        Then Click on State Plan Amendment SPA
+        Then click on "State Plan Amendment (SPA)" choice
+        Then verify "Medicaid SPA" choice goes to "/new-submission/spa/medicaid"
+        Then click on "Medicaid SPA" choice
 
     Scenario: Screen Enhance - Medicaid Eligibility, Enrollment, Administration, and Health Homes
-        Then verify Medicaid SPA is a clickable option
-        Then click on Medicaid SPA
-        Then verify Medicaid Eligibility, Enrollment, Administration, and Health Homes is a clickable option
-        Then click Medicaid Eligibility, Enrollment, Administration, and Health Homes
-        Then verify page url contains "/medicaid-eligibility"
+        Then verify "Medicaid Eligibility, Enrollment, Administration, and Health Homes" choice goes to "/medicaid-eligibility"
+        Then click on "Medicaid Eligibility, Enrollment, Administration, and Health Homes" choice
         Then verify the page header is "Medicaid Eligibility, Enrollment, Administration, and Health Homes"
         Then verify Enter the MACPro system button is visible and clickable
 
     Scenario: Screen Enhance - Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing
-        Then verify Medicaid SPA is a clickable option
-        Then click on Medicaid SPA
-        Then verify Medicaid Alternative Benefits Plans ABP, and Medicaid Premiums and Cost Sharing is a clickable option
-        Then click Medicaid Alternative Benefits Plans ABP, and Medicaid Premiums and Cost Sharing
-        Then verify page url contains "/medicaid-abp"
+        Then verify "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing" choice goes to "/medicaid-abp"
+        Then click on "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing" choice
         Then verify the page header is "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing"
         Then verify Enter the MMDL System button is visible and clickable
 
-    Scenario: Screen Enhance - All Other Medicaid SPA
-        Then verify Medicaid SPA is a clickable option
-        Then click on Medicaid SPA
-        Then verify All Other Medicaid SPA Submissions is a clickable option
-        Then click All Other Medicaid SPA Submissions
-        Then verify page url contains "/medicaid-spa"
+    Scenario: Create All Other Medicaid SPA Submission from package dashboard and search it
+        Then verify "All Other Medicaid SPA Submissions" choice goes to "/new-submission/spa/medicaid/create"
+        Then click on "All Other Medicaid SPA Submissions" choice
+        Then verify the form title is "Medicaid SPA Details"
+        Then type the generated SPA ID 2 into the ID Input box using the state "MD"
+        Then set "Proposed Effective Date of Medicaid SPA" to 3 months from today
         Then verify the attachment info descriptiion
         Then verify the attachment info link is for "Medicaid SPA"
-
-    Scenario: Create All Other Medicaid SPA Submission from package dashboard and search it
-        Then click on Medicaid SPA
-        Then click All Other Medicaid SPA Submissions
-        Then into "SPA ID" type "MD-22-4234"
-        Then set "Proposed Effective Date of Medicaid SPA" to 3 months from today
         Then attach "adobe.pdf" file to attachment 1
         Then attach "picture.jpg" file to attachment 2
-        Then into "Additional Information" type "This is just a test."
+        Then into "Additional Information" type "This is an automated test."
         Then Click on Submit Button
-        Then verify submission successful message in the alert bar
+        Then verify package submitted message in the alert bar
         Then verify the SPAs tab is selected
-        Then search for Medicaid SPA ID
-        Then verify id number in the first row matches Medicaid SPA ID
+        Then search for the generated SPA ID 2
+        Then verify the id number in the first row matches the generated SPA ID 2

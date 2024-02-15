@@ -6,104 +6,99 @@ const FAQPage = "//a[text()='FAQ']";
 //xpath, use cy.xpath
 const HomePageLink = "//a[contains(text(),'Home')]";
 //xpath, use cy.xpath
-const RegisterLink = "//a[contains(text(),'Register')]";
-const loginBTN = "#loginBtn";
+const RegisterLink = "//button[contains(text(),'Register')]";
 //xpath, use cy.xpath
-const welcomeMSG = "//div[@class='home-header-text']";
+const welcomeMSG = "//*[contains(text(),'Welcome to the official submission system for pape')]";
 //xpath, use cy.xpath
-const stateUsersSection = "//h1[contains(text(),'State Users')]";
+const stateUsersSection = "//h2[contains(text(),'State Users')]";
 //xpath, use cy.xpath
-const cmsUsersSection = "//h1[contains(text(),'CMS Users')]";
+const cmsUsersSection = "//h2[contains(text(),'CMS Users')]";
 //xpath, use cy.xpath
 const doYouHaveQuestionsOrNeedSupport =
-  "//div[contains(text(),'Do you have questions or need support?')]";
+  "//*[contains(text(),'Do you have questions or need support?')]";
 //xpath, use cy.xpath
-const viewFAQ = "//a[contains(text(),'View FAQ')]";
+const viewFAQ = "//button[contains(text(),'View FAQ')]";
 
 //State Users Section
 
 //xpath, use cy.xpath
 const howToCreateASubmission =
-  "//div[contains(text(),'How to create a submission')]";
+  "//h3[contains(text(),'How it works')]";
 //xpath, use cy.xpath
-const loginWithIDM = "//h2[contains(text(),'Login with IDM')]";
+const loginWithIDM = "//*[contains(text(),'Login with IDM')]";
 //xpath, use cy.xpath
 const loginWithIDMInfo =
-  "//p[contains(text(),'Login with your IDM username and password to acces')]";
+  "//*[contains(text(),'Login with your IDM username and password to acces')]";
 //xpath, use cy.xpath
-const AttachYourDocuments = "//h2[contains(text(),'Attach your documents')]";
+const AttachYourDocuments = "//*[contains(text(),'Attach your documents')]";
 //xpath, use cy.xpath
 const AttachYourDocumentsInfo =
-  "//p[contains(text(),'Select a submission type and attach required docum')]";
+  "//*[contains(text(),'Select a submission type and attach required docum')]";
 //xpath, use cy.xpath
 const receiveAnEmailConformation =
-  "//h2[contains(text(),'Receive an email confirmation')]";
+  "//*[contains(text(),'Receive an email confirmation')]";
 //xpath, use cy.xpath
 const receiveAnEmailConformationInfo =
-  "//p[contains(text(),'After you submit, you will receive an email confir')]";
+  "//*[contains(text(),'After you submit, you will receive an email confir')]";
 //xpath, use cy.xpath
 const submissionTypesInclude =
-  "//h2[contains(text(),'Submission Types include:')]";
+  "//*[contains(text(),'Submission Types include:')]";
 //xpath, use cy.xpath
 const firstBullet =
-  "//li[contains(text(),'Amendments to your Medicaid and CHIP State Plans (')]";
+  "//*[contains(text(),'Amendments to your Medicaid and CHIP State Plans (')]";
 //xpath, use cy.xpath
 const secondBullet =
-  "//li[text()='Official state responses to formal requests for additional information (RAIs) for SPAs (not submitted through MACPro).']";
+  "//*[text()='Official state responses to formal requests for additional information (RAIs) for SPAs (not submitted through MACPro).']";
 //xpath, use cy.xpath
 const thirdBullet =
-  "//li[contains(text(),'Section 1915(b) waiver submissions (those not subm')]";
+  "//*[contains(text(),'Section 1915(b) waiver submissions (those not subm')]";
 //xpath, use cy.xpath
 const fourthBullet =
-  "//li[contains(text(),'Section 1915(c) Appendix K amendments (which canno')]";
+  "//*[contains(text(),'Section 1915(c) Appendix K amendments (which canno')]";
 //xpath, use cy.xpath
 const fifthBullet =
-  "//li[text()='Official state responses to formal requests for additional information (RAIs) for Section 1915(b) waiver actions (in addition to submitting waiver changes in WMS, if applicable).']";
+  "//*[text()='Official state responses to formal requests for additional information (RAIs) for Section 1915(b) waiver actions (in addition to submitting waiver changes in WMS, if applicable).']";
 //xpath, use cy.xpath
 const sixthBullet =
-  "//li[text()='State requests for Temporary Extensions for section 1915(b) and 1915(c) waivers.']";
+  "//*[text()='State requests for Temporary Extensions for section 1915(b) and 1915(c) waivers.']";
 
 // CMS Users Section
-
-//xpath, use cy.xpath
-const howToReviewASubmission =
-  "//div[contains(text(),'How to review a submission')]";
 //xpath, use cy.xpath
 const ReceiveAnEmailForSubmissionNotification =
-  "//h2[contains(text(),'Receive an email for submission notification')]";
+  "//*[contains(text(),'Receive an email for submission notification')]";
 
 //xpath, use cy.xpath
 const ReceiveAnEmailForSubmissionNotificationInfo =
-  "//p[contains(text(),'After a state adds a submission to OneMAC, you wil')]";
+  "//*[contains(text(),'After a state adds a submission to OneMAC, you wil')]";
 //xpath, use cy.xpath
-const loginWithEUA = "//h2[contains(text(),'Login with EUA')]";
+const loginWithEUA = "//*[contains(text(),'Login with EUA')]";
 //xpath, use cy.xpath
 const loginWithEUAInfo =
-  "//p[contains(text(),'Login with your EUA username and password to acces')]";
+  "//*[contains(text(),'Login with your EUA username and password to acces')]";
 //xpath, use cy.xpath
 const ReviewYourAssignedSubmission =
-  "//h2[contains(text(),'Review your assigned submission')]";
+  "//*[contains(text(),'Review your assigned submission')]";
 //xpath, use cy.xpath
 const ReviewYourAssignedSubmissionInfo =
-  "//p[contains(text(),'Search the submission ID from the email and click ')]";
+  "//*[contains(text(),'Search the submission ID from the email and click ')]";
 //xpath, use cy.xpath
 const CMSBullet1 =
-  "//li[contains(text(),'Amendments to your Medicaid and CHIP State Plans.')]";
+  "//*[contains(text(),'Amendments to your Medicaid and CHIP State Plans.')]";
 //xpath, use cy.xpath
 const CMSBullet2 =
-  "//li[text()='Official state responses to formal requests for additional information (RAIs) for SPAs.']";
+  "//*[text()='Official state responses to formal requests for additional information (RAIs) for SPAs.']";
 //xpath, use cy.xpath
 const CMSBullet3 =
-  "//li[contains(text(),'Section 1915(b) waiver submissions.')]";
+  "//*[contains(text(),'Section 1915(b) waiver submissions.')]";
 //xpath, use cy.xpath
 const CMSBullet4 =
-  "//li[contains(text(),'Section 1915(c) Appendix K amendments.')]";
+  "//*[contains(text(),'Section 1915(c) Appendix K amendments.')]";
 //xpath, use cy.xpath
 const CMSBullet5 =
-  "//li[text()='Official state responses to formal requests for additional information (RAIs) for Section 1915(b) waiver actions.']";
+  "//*[text()='Official state responses to formal requests for additional information (RAIs) for Section 1915(b) waiver actions.']";
 //xpath, use cy.xpath
 const CMSBullet6 =
-  "//li[text()='State requests for Temporary Extensions for section 1915(b) and 1915(c) waivers.']";
+  "//*[text()='State requests for Temporary Extensions for section 1915(b) and 1915(c) waivers.']";
 
 export class oneMacHomePage {
   launch() {
@@ -112,7 +107,7 @@ export class oneMacHomePage {
 
   verifyUserIsNotLoggedInOnLoginPage() {
     cy.wait(2000);
-    cy.get(loginBTN)
+    cy.xpath(signInBtn)
       .should("be.visible")
       .xpath(welcomeMSG)
       .should("be.visible");
@@ -123,11 +118,7 @@ export class oneMacHomePage {
   }
 
   clickFAQPage() {
-    cy.xpath(FAQPage)
-      .invoke("attr", "href")
-      .then((href) => {
-        cy.visit(href);
-      });
+    cy.xpath(FAQPage).invoke('removeAttr', 'target').click()
   }
 
   verifyHomePageLinkExists() {
@@ -143,7 +134,7 @@ export class oneMacHomePage {
   }
 
   verifyloginBTNExists() {
-    cy.get(loginBTN).should("be.visible");
+    cy.xpath(signInBtn).should("be.visible");
   }
 
   verifywelcomeMSGExists() {
@@ -218,9 +209,6 @@ export class oneMacHomePage {
   }
 
   //CMS USERS SECTION
-  verifyhowToReviewASubmissionExists() {
-    cy.xpath(howToReviewASubmission).should("be.visible");
-  }
   verifyReceiveAnEmailForSubmissionNotificationExists() {
     cy.xpath(ReceiveAnEmailForSubmissionNotification).should("be.visible");
   }

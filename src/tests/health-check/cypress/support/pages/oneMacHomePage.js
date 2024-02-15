@@ -25,11 +25,7 @@ export class oneMacHomePage {
   }
 
   clickFAQLink() {
-    cy.xpath(FAQLink)
-      .invoke("attr", "href")
-      .then((href) => {
-        cy.visit(href);
-      });
+    cy.xpath(FAQLink).invoke('removeAttr', 'target').click();
   }
 }
 export default oneMacHomePage;
