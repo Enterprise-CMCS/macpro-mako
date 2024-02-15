@@ -59,7 +59,8 @@ export const main = async (event: KafkaEvent) => {
           ToAddresses: email.sendTo.map(address => mapAddress(address)),
           formattedFileList: formatAttachments("html"),
           textFileList: formatAttachments("text"),
-          ninetyDaysDateNice: formatSubmissionDate()
+          ninetyDaysDateNice: formatSubmissionDate(),
+          proposedEffectiveDateNice: formatProposedEffectiveDate()
         };
 
         emailQueue.push(emailData);
@@ -100,10 +101,17 @@ export const main = async (event: KafkaEvent) => {
       }
 
       function formatSubmissionDate() {
-        if (!record.submissionDate) return "Pending";
-        return DateTime.fromMillis(record.submissionDate)
+        if (!record?.notificationMetadata?.submissionDate) return "Pending";
+        return DateTime.fromMillis(record.notificationMetadata.submissionDate)
           .plus({ days: 90 })
           .toFormat("DDDD '@ 11:59pm' ZZZZ");
+      }
+
+      function formatProposedEffectiveDate() {
+        if (!record?.notificationMetadata?.proposedEffectiveDate) return "Pending";
+        return DateTime.fromMillis(record.notificationMetadata.proposedEffectiveDate)
+          .toFormat('DDDD');
+
       }
     }));
 
