@@ -1,6 +1,11 @@
 /* eslint-disable react/prop-types */
 
-import { BreadCrumbs, SectionCard, SimplePageContainer } from "@/components";
+import {
+  BreadCrumbs,
+  LoadingSpinner,
+  SectionCard,
+  SimplePageContainer,
+} from "@/components";
 import { useLocationCrumbs } from "@/pages/form/form-breadcrumbs";
 import * as I from "@/components/Inputs";
 import * as C from "@/pages/form/content";
@@ -10,33 +15,53 @@ import { SlotAttachments } from "@/pages/actions/renderSlots";
 import { FORM, SchemaForm } from "./consts";
 import { SlotStateSelect, WaiverIdFieldArray } from "./slots";
 import { ModalProvider } from "@/components/Context/modalContext";
-import { submit } from "@/api/submissionService";
+import { SubmissionServiceParameters, submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
 import { PlanType } from "shared-types";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "@/components/Routing";
+import { useState } from "react";
 
 export const AppKSubmissionForm = () => {
+  const nav = useNavigate();
   const crumbs = useLocationCrumbs();
   const { data: user } = useGetUser();
+  const [isNavigating, setIsNavigating] = useState(false); // delay for opensearch record to be ready
 
   const form = useForm<SchemaForm>({
     resolver: zodResolver(FORM),
   });
 
+  const submission = useMutation({
+    mutationFn: (config: SubmissionServiceParameters<any>) => submit(config),
+  });
+
   const onSubmit = form.handleSubmit(async (draft) => {
-    try {
-      await submit({
+    await submission.mutateAsync(
+      {
         data: draft,
         authority: PlanType["1915c"],
         endpoint: "/appk",
         user,
-      });
-    } catch (err) {
-      console.error(err);
-    }
+      },
+      {
+        onSuccess: () => {
+          setIsNavigating(true);
+          setTimeout(() => {
+            nav({
+              path: "/details",
+              query: { id: `${draft.state}-${draft.waiverIds[0]}` },
+            });
+          }, 5000); // delay for opensearch record to be ready
+        },
+        onError: (err) => console.error(err),
+      }
+    );
   });
 
   return (
     <SimplePageContainer>
+      {(submission.isLoading || isNavigating) && <LoadingSpinner />}
       <ModalProvider>
         <BreadCrumbs options={crumbs} />
         <I.Form {...form}>

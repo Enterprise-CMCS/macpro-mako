@@ -11,7 +11,7 @@ import { OneMacUser } from "@/api/useGetUser";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 
-type SubmissionServiceParameters<T> = {
+export type SubmissionServiceParameters<T> = {
   data: T;
   endpoint: SubmissionServiceEndpoint;
   user: OneMacUser | undefined;
@@ -46,7 +46,7 @@ export const buildAttachmentObject = (recipes?: UploadRecipe[]) => {
           title: r.title,
           bucket: r.bucket,
           uploadDate: Date.now(),
-        } as Attachment)
+        }) as Attachment
     )
     .flat();
 };
@@ -96,7 +96,6 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...userDetails,
         authority: PlanType["1915c"],
         origin: "micro",
-        attachments: buildAttachmentObject(attachments),
       };
 
     case buildActionUrl(Action.WITHDRAW_RAI):

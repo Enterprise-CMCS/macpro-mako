@@ -35,6 +35,9 @@ export const onemac_main = async (event: KafkaEvent) => {
           return;
         }
         const record = JSON.parse(decode(REC.value));
+        console.log("---------------------------");
+        console.log(record);
+        console.log("---------------------------");
         // Handle legacy and return
         if (record?.origin !== "micro") {
           if (
@@ -88,7 +91,6 @@ export const onemac_main = async (event: KafkaEvent) => {
         })();
 
         if (!result) return;
-
         if (!result?.success) {
           return console.log(
             "ONEMAC Validation Error. The following record failed to parse: ",
@@ -126,6 +128,17 @@ export const onemac_changelog = async (event: KafkaEvent) => {
 
         // Handle legacy and return
         if (record?.origin !== "micro") return;
+
+        // TODO: remove-appk-child Event??
+        if (record?.actionType === Action.REMOVE_APPK_CHILD) {
+          return ACC.push({
+            ...record,
+            appkChildId: record.id,
+            timestamp: REC.timestamp,
+            id: `${record.appkParentId}-${REC.offset}`,
+            packageId: record.appkParentId,
+          });
+        }
 
         // Handle everything else
         const packageId = decode(REC.key);

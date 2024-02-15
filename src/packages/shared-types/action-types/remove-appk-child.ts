@@ -3,8 +3,8 @@ import { z } from "zod";
 export const removeAppkChildSchema = z.object({
   id: z.string(),
   authority: z.string(),
-  appkParentId: z.string().nullable().default(null),
-  isAppkParent: z.boolean().default(false),
+  origin: z.string(),
+  appkParentId: z.string(),
   submitterName: z.string(),
   submitterEmail: z.string(),
 });

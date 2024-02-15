@@ -12,6 +12,24 @@ import { Button } from "@/components/Inputs";
 import * as Table from "@/components/Table";
 import { BLANK_VALUE } from "@/consts";
 import { usePackageActivities, useAttachmentService } from "./hook";
+import { Link } from "@/components/Routing";
+
+export const PA_RemoveAppkChild: FC<opensearch.changelog.Document> = (
+  props
+) => {
+  return (
+    <div className="flex gap-1">
+      <Link
+        path="/details"
+        query={{ id: props.appkChildId }}
+        className="hover:underline font-semibold text-blue-600"
+      >
+        {props.appkChildId}
+      </Link>
+      <p>was removed</p>
+    </div>
+  );
+};
 
 export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
   props
@@ -293,6 +311,8 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
         return ["RAI issued", PA_RaiIssued];
       case "respond-to-rai":
         return ["RAI response submitted", PA_ResponseSubmitted];
+      case "remove-appk-child":
+        return [`Removed : ${props.appkChildId}`, PA_RemoveAppkChild];
       default:
         return [BLANK_VALUE, PA_ResponseSubmitted];
     }

@@ -391,12 +391,9 @@ export async function toggleRaiResponseWithdraw(
 }
 
 export async function removeAppkChild(doc: opensearch.main.Document) {
-  const data = removeAppkChildSchema.safeParse({
-    ...doc,
-    appkParentId: null,
-  });
+  const result = removeAppkChildSchema.safeParse(doc);
 
-  if (!data.success) {
+  if (!result.success) {
     return response({
       statusCode: 400,
       body: {
@@ -410,6 +407,7 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
     doc.id,
     JSON.stringify({
       actionType: Action.REMOVE_APPK_CHILD,
+      ...result.data,
     })
   );
 }

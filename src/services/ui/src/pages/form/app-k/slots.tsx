@@ -14,15 +14,16 @@ import { useOsSearch } from "@/api";
 import { opensearch } from "shared-types";
 import { DEFAULT_FILTERS } from "@/components/Opensearch/main";
 import { useDebounce } from "@/hooks";
-import { Plus, XIcon } from "lucide-react";
+import { AsteriskIcon, Grip, HelpCircleIcon, Plus, XIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
 import { cn } from "@/lib";
 import { zWaiverId } from "./consts";
+import { DragNDrop } from "./DragNDrop";
 
 export const SlotStateSelect = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   label,
   ...props
@@ -58,14 +59,16 @@ export const SlotStateSelect = <
 
 export const SlotWaiverId = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   state,
+  index,
   onRemove,
   onIncludes,
   ...props
 }: {
   state: string;
+  index: number;
   onRemove: () => void;
   onIncludes: (val: string) => boolean;
   className?: string;
@@ -87,8 +90,8 @@ export const SlotWaiverId = <
       const parsed = zWaiverId.safeParse(String(value));
       if (!parsed.success) return setStatus("invalid");
 
-      const includedInList = onIncludes(parsed.data);
-      if (includedInList) return setStatus("invalid");
+      const existsInList = onIncludes(parsed.data);
+      if (existsInList) return setStatus("invalid");
 
       const searchResult = await search.mutateAsync({
         index: "main",
@@ -121,28 +124,41 @@ export const SlotWaiverId = <
 
     return (
       <I.FormItem {...props}>
-        <div className="relative flex flex-row gap-1 items-center w-min">
-          <p className="font-semibold">{state}-</p>
-          <I.Input
-            className={cn({
-              "w-[223px]": true,
-              "border-red-500": status === "invalid",
-              "border-green-500": status === "valid",
-            })}
-            autoFocus
-            onChange={field.onChange}
-            value={field.value}
+        <div className="relative flex gap-1 items-center">
+          <Grip size={20} className="mr-2 cursor-move" />
+          <div className="relative flex gap-1 items-center">
+            <I.Input
+              value={state}
+              readOnly
+              className="w-[50px] font-bold cursor-default"
+            />
+            <p className="font-semibold">-</p>
+            <I.Input
+              className={cn({
+                "w-[223px]": true,
+                "border-red-500": status === "invalid",
+                "border-green-500": status === "valid",
+              })}
+              autoFocus
+              onChange={field.onChange}
+              value={field.value}
+            />
+            {status === "loading" && (
+              <motion.div
+                className="absolute right-[10px] inset-y-0 w-6 h-6 my-auto origin-center flex items-center justify-center"
+                animate={{ rotate: "360deg" }}
+                transition={{ repeat: Infinity, duration: 0.5 }}
+              >
+                <Loader className="w-4 h-4 text-slate-950" />
+              </motion.div>
+            )}
+          </div>
+          {!index && <p className="ml-1 text-lg">*</p>}
+          <XIcon
+            size={20}
+            onClick={onRemove}
+            className={cn("cursor-pointer", { "opacity-0": !index })}
           />
-          {status === "loading" && (
-            <motion.div
-              className="absolute right-[30px] inset-y-0 w-6 h-6 my-auto origin-center flex items-center justify-center"
-              animate={{ rotate: "360deg" }}
-              transition={{ repeat: Infinity, duration: 0.5 }}
-            >
-              <Loader className="w-4 h-4 text-slate-950" />
-            </motion.div>
-          )}
-          <XIcon onClick={onRemove} className="cursor-pointer" />
         </div>
       </I.FormItem>
     );
@@ -154,6 +170,10 @@ export const WaiverIdFieldArray = (props: any) => {
     name: props.name,
     shouldUnregister: true,
   });
+
+  const onDragEnd = (dragItem: number, dragOver: number) => {
+    fieldArr.move(dragItem, dragOver);
+  };
 
   useEffect(() => {
     if (!props.state) return;
@@ -185,41 +205,46 @@ export const WaiverIdFieldArray = (props: any) => {
             to include:
           </p>
 
-          <ul className="italic text-gray-500 font-light">
+          <ul className="italic text-gray-500 font-light pl-2">
             <li>##### = 4 or 5 digit waiver initial number</li>
             <li>
               R## = renewal number (R01, R02, ...) (Use R00 for waivers without
               renewals)
             </li>
             <li>## = appendix K amendment number (01)</li>
+            <li>
+              <strong>*</strong> ID used to represent APP-K
+            </li>
           </ul>
         </div>
 
         <div className="flex flex-col py-4 gap-4">
-          {fieldArr.fields.map((FLD, index) => {
-            const inputIds = props.control._getFieldArray(props.name);
+          <DragNDrop onDragEnd={onDragEnd}>
+            {fieldArr.fields.map((FLD, index) => {
+              const inputIds = props.control._getFieldArray(props.name);
 
-            return (
-              <div key={FLD.id} className="flex flex-row gap-2 items-center">
-                <p className="opacity-50 font-black">·</p>
-                <I.FormField
-                  control={props.control}
-                  name={`${props.name}.${index}`}
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  render={SlotWaiverId({
-                    onRemove: () => fieldArr.remove(index),
-                    onIncludes: (val: string) => {
-                      return inputIds
-                        .filter((_: any, I: number) => I !== index)
-                        .includes(val);
-                    },
-                    state: props.state,
-                  })}
-                />
-              </div>
-            );
-          })}
+              return (
+                <div key={FLD.id} style={{ width: "max-content" }}>
+                  <I.FormField
+                    control={props.control}
+                    name={`${props.name}.${index}`}
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    render={SlotWaiverId({
+                      index,
+                      onRemove: () => fieldArr.remove(index),
+                      onIncludes: (val: string) => {
+                        return inputIds
+                          .filter((_: any, I: number) => I !== index)
+                          .includes(val);
+                      },
+                      state: props.state,
+                    })}
+                  />
+                </div>
+              );
+            })}
+          </DragNDrop>
         </div>
       </div>
     </div>

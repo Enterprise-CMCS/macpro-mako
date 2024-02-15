@@ -56,16 +56,15 @@ export const handler = async (event: APIGatewayEvent) => {
       authDetails.poolId
     );
 
-    // Check that the package action is available
-
     if (actionType === Action.REMOVE_APPK_CHILD) {
-      await removeAppkChild(result._source);
+      await removeAppkChild(body);
       return response({
         statusCode: 200,
         body: { message: "success" },
       });
     }
 
+    // Check that the package action is available
     const actions: Action[] = getAvailableActions(userAttr, result._source);
     if (!actions.includes(actionType)) {
       return response({

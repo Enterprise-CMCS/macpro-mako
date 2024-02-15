@@ -5,9 +5,7 @@ export const transform = (id: string) => {
     return {
       ...data,
       id,
-      appkParentId: data.appkParentId,
-      isAppkParent: false,
-      origin: "OneMAC",
+      appkParentId: null,
     };
   });
 };
