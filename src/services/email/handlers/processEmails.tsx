@@ -55,16 +55,16 @@ export const main = async (event: KafkaEvent) => {
         const emailData = {
           ...email,
           ...record,
-          ToAddresses: email.sendTo.map(address => mapAddress(address, record)),
-          formattedFileList: formatAttachments(email.attachments, "html"),
-          textFileList: formatAttachments(email.attachments, "text"),
-          ninetyDaysDateNice: formatSubmissionDate(email.submissionDate)
+          ToAddresses: email.sendTo.map(address => mapAddress(address)),
+          formattedFileList: formatAttachments("html"),
+          textFileList: formatAttachments("text"),
+          ninetyDaysDateNice: formatSubmissionDate()
         };
 
         emailQueue.push(emailData);
       });
 
-      function mapAddress(address, record) {
+      function mapAddress(address) {
         if (address === "submitterEmail")
           if (record.submitterEmail = "george@example.com")
             return `"George's Substitute" <k.grue.stateuser@gmail.com>`;
@@ -73,8 +73,8 @@ export const main = async (event: KafkaEvent) => {
         return address;
       }
 
-      function formatAttachments(attachments, formatType) {
-        console.log("got attachments for format: ", attachments, formatType);
+      function formatAttachments(formatType) {
+        console.log("got attachments for format: ", record.attachments, formatType);
         const formatChoices = {
           "text": {
             begin: "\n\n",
@@ -92,15 +92,15 @@ export const main = async (event: KafkaEvent) => {
           console.log("new format type? ", formatType);
           return "attachment List";
         }
-        if (!attachments || attachments.length===0)
+        if (!record?.attachments || record.attachments.length===0)
           return "no attachments";
         else 
-          return `${format.begin}${attachments.map(a => `${a.title}: ${a.filename}`).join(format.joiner)}${format.end}`;
+          return `${format.begin}${record.attachments.map(a => `${a.title}: ${a.filename}`).join(format.joiner)}${format.end}`;
       }
 
-      function formatSubmissionDate(submissionDate) {
-        if (!submissionDate) return "Pending";
-        return DateTime.fromMillis(submissionDate)
+      function formatSubmissionDate() {
+        if (!record.submissionDate) return "Pending";
+        return DateTime.fromMillis(record.submissionDate)
           .plus({ days: 90 })
           .toFormat("DDDD '@ 11:59pm' ZZZZ");
       }
