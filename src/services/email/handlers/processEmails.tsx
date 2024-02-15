@@ -55,6 +55,7 @@ export const main = async (event: KafkaEvent) => {
         const emailData = {
           ...email,
           ...record,
+          territory: record.id.toString().substring(0, 2),
           ToAddresses: email.sendTo.map(address => mapAddress(address)),
           formattedFileList: formatAttachments("html"),
           textFileList: formatAttachments("text"),
