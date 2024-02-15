@@ -102,8 +102,8 @@ export const submit = async (event: APIGatewayEvent) => {
       INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID)
       VALUES ('${body.id}', TRY_CAST('${body.subTypeId}' AS INT));
   
-      -- Insert into State_Plan_Services_Type
-      INSERT INTO SEA.dbo.State_Plan_Services_Type (ID_Number, Service_Type_ID)
+      -- Insert into State_Plan_Service_Types
+      INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID)
       VALUES ('${body.id}', TRY_CAST('${body.typeId}' AS INT));
     `;
 
