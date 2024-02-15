@@ -81,6 +81,7 @@ export const main = async (event: KafkaEvent) => {
       })
     }));
 
+    // placeholder function so don't lose the "how"
   const stateUsers = await Promise.all(getStateUsersFor.map(async (oneState) => {
     try {
       const commandListUsers = new ListUsersCommand({
