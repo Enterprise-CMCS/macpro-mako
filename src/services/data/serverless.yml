@@ -154,8 +154,8 @@ stepFunctions:
                 - Function: !Ref SinkLookupDataLambdaFunction
                   BatchSize: 10000
                   Topics:
-                    - aws.seatool.cmcs.dbo.SPA_Type
-                    - aws.seatool.cmcs.dbo.Type
+                    - --seatool--twofive--aws.seatool.cmcs.SEA.dbo.SPA_Type
+                    - --seatool--twofive--aws.seatool.cmcs.SEA.dbo.Type
             Next: CheckConsumerLagForLookupSinks
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -168,8 +168,8 @@ stepFunctions:
               Triggers:
                 - Function: !Ref SinkLookupDataLambdaFunction
                   Topics:
-                    - aws.seatool.cmcs.dbo.SPA_Type
-                    - aws.seatool.cmcs.dbo.Type
+                    - --seatool--twofive--aws.seatool.cmcs.SEA.dbo.SPA_Type
+                    - --seatool--twofive--aws.seatool.cmcs.SEA.dbo.Type
               BrokerString: ${self:custom.brokerString}
             Next: IsLookupIndexReady
             Catch:
@@ -222,7 +222,7 @@ stepFunctions:
               Triggers:
                 - Function: !Ref SinkSeatoolLambdaFunction
                   Topics:
-                    - aws.ksqldb.seatool.agg.State_Plan
+                    - --seatool--twofive--aws.ksqldb.seatool.agg.State_Plan
                 - Function: !Ref SinkOnemacLambdaFunction
                   Topics:
                     - aws.onemac.migration.cdc
