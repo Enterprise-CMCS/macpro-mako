@@ -1,20 +1,10 @@
 import { DateTime } from "luxon";
 import { decode } from "base-64";
-import {
-  CognitoIdentityProviderClient,
-  ListUsersCommand,
-  // UserType as CognitoUserType,
-} from "@aws-sdk/client-cognito-identity-provider";
 import { SESClient, SendTemplatedEmailCommand } from "@aws-sdk/client-ses";
 
 import { KafkaEvent } from "shared-types";
 
-// import { CognitoUserAttributes } from "shared-types";
-
 const SES = new SESClient({ region: process.env.region });
-const Cognito = new CognitoIdentityProviderClient({
-  region: process.env.region,
-});
 
 const emailsToSend = {
   "new-submission-medicaid-spa": [{
@@ -22,14 +12,6 @@ const emailsToSend = {
     "sendTo": [process.env.osgEmail],
   }, {
     "templateBase": "new-submission-medicaid-spa-state",
-    "sendTo": ["submitterEmail"],
-  }],
-  "new-submission-chip-spa": [{
-    "templateBase": "new-submission-chip-spa-cms",
-    "sendTo": [process.env.chipEmail],
-    "addCC": [`${process.env.chipCCList}`],
-  }, {
-    "templateBase": "new-submission-chip-spa-state",
     "sendTo": ["submitterEmail"],
   }],
 }
@@ -50,62 +32,66 @@ export const main = async (event: KafkaEvent) => {
   console.log("Received event (stringified):", JSON.stringify(event, null, 4));
 
   const emailQueue: any[] = [];
-  const getStateUsersFor: string[] = [];
-  Object.values(event.records).forEach((oneSource) =>
-    oneSource.forEach((encodedRecord) => {
+
+  Object.values(event.records).forEach((source) =>
+    source.forEach((encodedRecord) => {
       if (!encodedRecord.value) return;
       const record = { id: decode(encodedRecord.key), ...JSON.parse(decode(encodedRecord.value)) };
-      console.log("here is the decoded record: ", record);
+      console.log("Decoded record: ", record);
       if (record?.origin !== "micro") return;
       if (!record?.actionType) record.actionType = "new-submission";
 
-      const emailsConfig = `${record.actionType}-${record.authority.replace(" ", "-")}`;
-      if (!emailsToSend[emailsConfig]) return;
-      record.territory = record.id.toString().substring(0, 2);
-      console.log("matching email config: ", emailsToSend[emailsConfig]);
-      emailsToSend[emailsConfig].map((oneEmail) => {
-        const theEmail = { ...oneEmail, ...record };
-        theEmail.ToAddresses = oneEmail.sendTo.map((oneAddress) => {
-          if (oneAddress === "submitterEmail") return `"${theEmail.submitterName}" <${theEmail.submitterEmail}>`;
-          if (oneAddress === "allStateUsers") getStateUsersFor.push(record.territory);
-          return oneAddress;
-        });
+      const configKey = `${record.actionType}-${record.authority.replace(/\s+/g, "-")}`;
+      const emailConfig = emailsToSend[configKey];
 
-        theEmail.formattedFileList = `<ul><li>${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('</li><li>')}</li></ul>`;
-        theEmail.textFileList = `${theEmail.attachments.map((anAttachment) => anAttachment.title + ": " + anAttachment.filename).join('\n')}\n\n`;
-        theEmail.proposedEffectiveDateNice = theEmail?.notificationMetadata?.proposedEffectiveDate ? (new Date(theEmail.notificationMetadata.proposedEffectiveDate)).toDateString() : "Pending";
-        theEmail.ninetyDaysDateNice = theEmail?.notificationMetadata?.submissionDate ? DateTime.fromMillis(theEmail.notificationMetadata.submissionDate)
-          .plus({ days: 90 })
-          .toFormat("DDDD '@ 11:59pm' ZZZZ") : "Pending";
-        emailQueue.push(theEmail);
-      })
-    }));
+      // Early return if there's no configuration for the given key.
+      if (!emailConfig) {
+        console.log(`No email configuration found for: `, configKey);
+        return;
+      }
+      console.log(`Matching email config: `, emailConfig);
 
-    // placeholder function so don't lose the "how"
-  const stateUsers = await Promise.all(getStateUsersFor.map(async (oneState) => {
-    try {
-      const commandListUsers = new ListUsersCommand({
-        UserPoolId: process.env.cognitoPoolId,
+      emailConfig.forEach(email => {
+        const emailData = {
+          ...email,
+          ...record,
+          ToAddresses: email.sendTo.map(address => mapAddress(address, record)),
+          formattedFileList: formatAttachments(email.attachments, true),
+          textFileList: formatAttachments(email.attachments, false),
+          ninetyDaysDateNice: formatSubmissionDate(email.submissionDate)
+        };
+
+        emailQueue.push(emailData);
       });
-      const listUsersResponse = await Cognito.send(commandListUsers);
-      console.log("listUsers response: ", JSON.stringify(listUsersResponse, null, 4));
-    } catch (err) {
-      console.log("Failed to List users.", err);
-    }
-    return {
-      "state": oneState,
-      "emailList": `\"${oneState} State user\" <kgrue@theta-llc.com>`
-    };
-  }));
-  console.log("state users are: ", stateUsers);
+
+      function mapAddress(address, record) {
+        if (address === "submitterEmail")
+          if (record.submitterEmail = "george@example.com")
+            return `"George's Substitute" <k.grue.stateuser@gmail.com>`;
+          else
+            return `"${record.submitterName}" <${record.submitterEmail}>`;
+        return address;
+      }
+
+      function formatAttachments(attachments, isHtml) {
+        const joiner = isHtml ? '</li><li>' : '\n';
+        const wrapWith = isHtml ? `<ul><li>${attachments.map(a => `${a.title}: ${a.filename}`).join(joiner)}</li></ul>` : `${attachments.map(a => `${a.title}: ${a.filename}`).join(joiner)}\n\n`;
+        return wrapWith;
+      }
+
+      function formatSubmissionDate(submissionDate) {
+        if (!submissionDate) return "Pending";
+        return DateTime.fromMillis(submissionDate)
+          .plus({ days: 90 })
+          .toFormat("DDDD '@ 11:59pm' ZZZZ");
+      }
+    }));
 
   const sendResults = await Promise.all(emailQueue.map(async (theEmail) => {
     try {
       const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(theEmail);
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
-      const response = await SES.send(sendTemplatedEmailCommand);
-      console.log("sendEmailCommand response: ", JSON.stringify(response, null, 4));
-      return response;
+      return await SES.send(sendTemplatedEmailCommand);
     } catch (err) {
       console.log("Failed to process theEmail.", err, JSON.stringify(theEmail, null, 4));
       return Promise.resolve(err);
