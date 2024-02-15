@@ -27,7 +27,12 @@ import { useCallback } from "react";
 import { useAlertContext } from "@/components/Context/alertContext";
 import { useQuery as useQueryString } from "@/hooks";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
-import { SeaTypeSelect, SeaSubTypeSelect, SubjectDescription } from "../common";
+import {
+  TypeSelect,
+  SubTypeSelect,
+  SubjectInput,
+  DescriptionInput,
+} from "../common";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -182,23 +187,20 @@ export const MedicaidSpaFormPage = () => {
               )}
             />
 
-            <SeaTypeSelect
+            <TypeSelect
               control={form.control}
               name="typeId"
-              authorityId={122} // medicaid authority
+              authorityId={125} // medicaid authority
             />
-            <SeaSubTypeSelect
+            <SubTypeSelect
               control={form.control}
               typeId={form.watch("typeId")}
               name="subTypeId"
-              authorityId={122} // medicaid authority
+              authorityId={125} // medicaid authority
             />
 
-            <SubjectDescription
-              control={form.control}
-              subjectFieldName="subject"
-              descriptionFieldName="description"
-            />
+            <SubjectInput control={form.control} name="subject" />
+            <DescriptionInput control={form.control} name="description" />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc

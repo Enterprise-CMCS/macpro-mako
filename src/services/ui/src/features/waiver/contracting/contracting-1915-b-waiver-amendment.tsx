@@ -29,7 +29,12 @@ import { useAlertContext } from "@/components/Context/alertContext";
 import { useCallback } from "react";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
-import { SubjectDescription } from "@/features/common";
+import {
+  DescriptionInput,
+  SubTypeSelect,
+  SubjectInput,
+  TypeSelect,
+} from "@/features/common";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,
@@ -37,6 +42,8 @@ const formSchema = z.object({
   proposedEffectiveDate: z.date(),
   subject: z.string(),
   description: z.string(),
+  typeId: z.string(),
+  subTypeId: z.string(),
   attachments: z.object({
     b4WaiverApplication: zAttachmentRequired({ min: 1 }),
     tribalConsultation: zAttachmentOptional,
@@ -216,11 +223,20 @@ export const Contracting1915BWaiverAmendmentPage = () => {
                 </Inputs.FormItem>
               )}
             />
-            <SubjectDescription
+            <TypeSelect
               control={form.control}
-              subjectFieldName="subject"
-              descriptionFieldName="description"
+              name="typeId"
+              authorityId={122} // waivers authority
             />
+            <SubTypeSelect
+              control={form.control}
+              typeId={form.watch("typeId")}
+              name="subTypeId"
+              authorityId={122} // waivers authority
+            />
+
+            <SubjectInput control={form.control} name="subject" />
+            <DescriptionInput control={form.control} name="description" />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />

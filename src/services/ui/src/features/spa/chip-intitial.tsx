@@ -27,7 +27,12 @@ import { useCallback } from "react";
 import { useAlertContext } from "@/components/Context/alertContext";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
-import { SubjectDescription } from "../common";
+import {
+  DescriptionInput,
+  SubTypeSelect,
+  SubjectInput,
+  TypeSelect,
+} from "../common";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -176,11 +181,20 @@ export const ChipSpaFormPage = () => {
                 </Inputs.FormItem>
               )}
             />
-            <SubjectDescription
+            <TypeSelect
               control={form.control}
-              subjectFieldName="subject"
-              descriptionFieldName="description"
+              name="typeId"
+              authorityId={124} // chip authority
             />
+            <SubTypeSelect
+              control={form.control}
+              typeId={form.watch("typeId")}
+              name="subTypeId"
+              authorityId={124} // chip authority
+            />
+
+            <SubjectInput control={form.control} name="subject" />
+            <DescriptionInput control={form.control} name="description" />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/#chip-spa-attachments" />

@@ -1,2 +1,4 @@
-export * from "./TypeSubTypeSelect";
-export * from "./SubjectDescription";
+export * from "./TypeSelect";
+export * from "./SubTypeSelect";
+export * from "./SubjectInput";
+export * from "./DescriptionInput";

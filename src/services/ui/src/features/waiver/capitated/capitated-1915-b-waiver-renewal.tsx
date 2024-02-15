@@ -29,7 +29,12 @@ import { useCallback } from "react";
 import { useModalContext } from "@/components/Context/modalContext";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
-import { SubjectDescription } from "@/features/common";
+import {
+  DescriptionInput,
+  SubTypeSelect,
+  SubjectInput,
+  TypeSelect,
+} from "@/features/common";
 
 const formSchema = z
   .object({
@@ -38,6 +43,8 @@ const formSchema = z
     proposedEffectiveDate: z.date(),
     subject: z.string(),
     description: z.string(),
+    typeId: z.string(),
+    subTypeId: z.string(),
     attachments: z.object({
       bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
       bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
@@ -272,11 +279,20 @@ export const Capitated1915BWaiverRenewalPage = () => {
                 )}
               />
             ))}
-            <SubjectDescription
+            <TypeSelect
               control={form.control}
-              subjectFieldName="subject"
-              descriptionFieldName="description"
+              name="typeId"
+              authorityId={122} // waivers authority
             />
+            <SubTypeSelect
+              control={form.control}
+              typeId={form.watch("typeId")}
+              name="subTypeId"
+              authorityId={122} // waivers authority
+            />
+
+            <SubjectInput control={form.control} name="subject" />
+            <DescriptionInput control={form.control} name="description" />
           </SectionCard>
           <SectionCard title="Additional Information">
             <Inputs.FormField
