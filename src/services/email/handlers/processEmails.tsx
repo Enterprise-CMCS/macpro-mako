@@ -56,8 +56,8 @@ export const main = async (event: KafkaEvent) => {
           ...email,
           ...record,
           ToAddresses: email.sendTo.map(address => mapAddress(address, record)),
-          formattedFileList: formatAttachments(email.attachments, true),
-          textFileList: formatAttachments(email.attachments, false),
+          formattedFileList: formatAttachments(email.attachments, "html"),
+          textFileList: formatAttachments(email.attachments, "text"),
           ninetyDaysDateNice: formatSubmissionDate(email.submissionDate)
         };
 
@@ -73,10 +73,29 @@ export const main = async (event: KafkaEvent) => {
         return address;
       }
 
-      function formatAttachments(attachments, isHtml) {
-        const joiner = isHtml ? '</li><li>' : '\n';
-        const wrapWith = isHtml ? `<ul><li>${attachments.map(a => `${a.title}: ${a.filename}`).join(joiner)}</li></ul>` : `${attachments.map(a => `${a.title}: ${a.filename}`).join(joiner)}\n\n`;
-        return wrapWith;
+      function formatAttachments(attachments, formatType) {
+        console.log("got attachments for format: ", attachments, formatType);
+        const formatChoices = {
+          "text": {
+            begin: "\n\n",
+            joiner: "\n",
+            end: "\n\n"
+          },
+          "html": {
+            begin: "<ul><li>",
+            joiner: "</li><li>",
+            end: "</li></ul>"
+          },
+        };
+        const format = formatChoices[formatType];
+        if (!format) {
+          console.log("new format type? ", formatType);
+          return "attachment List";
+        }
+        if (!attachments || attachments.length===0)
+          return "no attachments";
+        else 
+          return `${format.begin}${attachments.map(a => `${a.title}: ${a.filename}`).join(format.joiner)}${format.end}`;
       }
 
       function formatSubmissionDate(submissionDate) {
