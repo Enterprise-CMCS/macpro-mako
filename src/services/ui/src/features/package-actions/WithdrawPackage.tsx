@@ -1,27 +1,21 @@
 import { submit } from "@/api/submissionService";
 import { getUser } from "@/api/useGetUser";
-import { LoadingSpinner } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/pages/form/zod";
 import { unflatten } from "flat";
-import {
-  useActionData,
-  type ActionFunction,
-  useParams,
-  useNavigation,
-} from "react-router-dom";
+import { type ActionFunction, useParams } from "react-router-dom";
 import { PlanType } from "shared-types";
 import { z } from "zod";
 
 export const withdrawPackageSchema = z.object({
-  additionalInformation: z.string().optional(),
+  additionalInformation: z.string(),
   attachments: z.object({
     supportingDocumentation: zAttachmentOptional,
   }),
 });
 type Attachments = keyof z.infer<typeof withdrawPackageSchema>["attachments"];
 
-export const onValidSubmission: ActionFunction = async ({
+export const onValidSubmission: SC.ActionFunction = async ({
   request,
   params,
 }) => {
@@ -41,24 +35,19 @@ export const onValidSubmission: ActionFunction = async ({
       authority,
     });
 
-    return null;
+    return { submitted: true };
   } catch (err) {
-    if (err instanceof Error) {
-      return {
-        errorMessage: err.message,
-      };
-    }
-    return null;
+    return { submitted: false };
   }
 };
 
 export const WithdrawPackage = () => {
   const { handleSubmit } = SC.useSubmitForm();
-  const data = useActionData() as { errorMessage: string };
   const { id } = useParams();
-  const { state } = useNavigation();
-
-  // do something to handle potential error message
+  SC.useDisplaySubmissionAlert(
+    "Package withdrawn",
+    `The package ${id} has been withdrawn.`
+  );
 
   return (
     <>
@@ -83,6 +72,7 @@ export const WithdrawPackage = () => {
         />
         <SC.AdditionalInformation />
         <SC.FormLoadingSpinner />
+        <SC.ErrorBanner />
         <SC.SubmissionButtons />
       </form>
     </>

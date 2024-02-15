@@ -13,15 +13,15 @@ import {
   Upload,
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
-import { useOriginPath } from "@/utils/formOrigin";
 import { useEffect } from "react";
-import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
+import { SubmitHandler, useFormContext } from "react-hook-form";
 import {
   ActionFunctionArgs,
   Link,
   useActionData,
   useNavigate,
   useNavigation,
+  useParams,
   useSubmit,
 } from "react-router-dom";
 
@@ -94,8 +94,14 @@ export const AttachmentsSection = <T extends string>({
 
 export const SubmissionButtons = () => {
   const { state } = useNavigation();
-  // const modal = useModalContext();
-  // const alert = useAlertContext();
+  const modal = useModalContext();
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const acceptAction = () => {
+    modal.setModalOpen(false);
+    navigate(`/details?id=${id}`);
+  };
 
   return (
     <section className="space-x-2 mb-8">
@@ -103,6 +109,18 @@ export const SubmissionButtons = () => {
         Submit
       </Button>
       <Button
+        onClick={() => {
+          modal.setContent({
+            header: "Stop form submission?",
+            body: "All information you've entered on this form will be lost if you leave this page.",
+            acceptButtonText: "Yes, leave form",
+            cancelButtonText: "Return to form",
+          });
+
+          modal.setOnAccept(() => acceptAction);
+
+          modal.setModalOpen(true);
+        }}
         variant={"outline"}
         type="reset"
         disabled={state === "submitting"}
@@ -156,6 +174,30 @@ export const AdditionalInformation = () => {
   );
 };
 
+export const ErrorBanner = () => {
+  const form = useFormContext();
+
+  return (
+    <>
+      {Object.keys(form.formState.errors).length !== 0 && (
+        <Alert className="my-6" variant="destructive">
+          Input validation error(s)
+          <ul className="list-disc">
+            {Object.values(form.formState.errors).map(
+              (err, idx) =>
+                err?.message && (
+                  <li className="ml-8 my-2" key={idx}>
+                    {err.message as string}
+                  </li>
+                )
+            )}
+          </ul>
+        </Alert>
+      )}
+    </>
+  );
+};
+
 export const FormLoadingSpinner = () => {
   const { state } = useNavigation();
   return state === "submitting" && <LoadingSpinner />;
@@ -167,7 +209,7 @@ export const useSubmitForm = () => {
   const methods = useFormContext();
   const submit = useSubmit();
 
-  const validSubmission: SubmitHandler<any> = (data) => {
+  const validSubmission: SubmitHandler<any> = (data, e) => {
     const formData = new FormData();
 
     // Append all other data
