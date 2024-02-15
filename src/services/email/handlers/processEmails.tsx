@@ -104,7 +104,7 @@ export const main = async (event: KafkaEvent) => {
         if (!record?.notificationMetadata?.submissionDate) return "Pending";
         return DateTime.fromMillis(record.notificationMetadata.submissionDate)
           .plus({ days: 90 })
-          .toFormat("DDDD '@ 11:59pm' ZZZZ");
+          .toFormat("DDDD '@ 11:59pm ET'");
       }
 
       function formatProposedEffectiveDate() {
