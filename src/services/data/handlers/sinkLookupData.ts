@@ -23,11 +23,11 @@ const tables: {
 } = {
   SPA_Type: {
     index: "types",
-    transform: opensearch.types.spa_type,
+    transform: opensearch.types.SPA_Type.transform,
   },
   Type: {
     index: "subtypes",
-    transform: opensearch.subtypes.type,
+    transform: opensearch.subtypes.Type.transform,
   },
 };
 
@@ -37,17 +37,17 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     if (!(tableName in tables)) {
       throw new Error(`Unknown table: ${tableName}`);
     }
+    const { index, transform } = tables[tableName];
     const docs: any = [];
     for (const kafkaRecord of event.records[recordKey]) {
       const { key, value } = kafkaRecord;
       try {
-        const id: string = JSON.parse(decode(key));
         const record = JSON.parse(decode(value)).payload.after;
         if (!record) {
           console.log("delete detected... TODO:  handle deletes");
           continue;
         }
-        const result = tables[tableName].transform(id).safeParse(record);
+        const result = transform().safeParse(record);
         if (!result.success) {
           console.log(
             "TYPES Validation Error. The following record failed to parse: ",
@@ -65,7 +65,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
       }
     }
     try {
-      await os.bulkUpdateData(osDomain, tables[tableName].index, docs);
+      await os.bulkUpdateData(osDomain, index, docs);
     } catch (error) {
       console.error(error);
     }
