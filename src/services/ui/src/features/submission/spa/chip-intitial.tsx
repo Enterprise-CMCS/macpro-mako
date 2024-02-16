@@ -1,9 +1,9 @@
-import { z } from "zod";
-import { Link, useLocation } from "react-router-dom";
-import { useGetUser } from "@/api/useGetUser";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { submit } from "@/api/submissionService";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "@/components/Routing";
 import {
   Alert,
   BreadCrumbs,
@@ -13,19 +13,21 @@ import {
   useModalContext,
   formCrumbsFromPath,
   FAQ_TAB,
+  useAlertContext,
 } from "@/components";
 import * as Inputs from "@/components/Inputs";
+import * as Content from "@/components";
+import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
   zSpaIdSchema,
+  Origin,
+  ORIGIN,
+  originRoute,
+  useOriginPath,
 } from "@/utils";
-import * as Content from "@/components";
-import { useNavigate } from "@/components/Routing";
-import { useCallback } from "react";
-import { useAlertContext } from "@/components/Context/alertContext";
-import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
 import {
   DescriptionInput,

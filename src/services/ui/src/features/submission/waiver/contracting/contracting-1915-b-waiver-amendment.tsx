@@ -1,10 +1,8 @@
+import { useCallback } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as Inputs from "@/components";
-import * as Content from "@/components/Form/content";
 import { Link, useLocation } from "react-router-dom";
-import { useGetUser } from "@/api";
 import {
   Alert,
   BreadCrumbs,
@@ -13,9 +11,13 @@ import {
   SectionCard,
   FAQ_TAB,
   useModalContext,
+  useNavigate,
+  useAlertContext,
   formCrumbsFromPath,
 } from "@/components";
-import { submit } from "@/api/submissionService";
+import * as Content from "@/components/Form/content";
+import * as Inputs from "@/components/Inputs";
+import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
 import {
   zAdditionalInfo,
@@ -23,18 +25,18 @@ import {
   zAmendmentWaiverNumberSchema,
   zAttachmentOptional,
   zAttachmentRequired,
+  Origin,
+  ORIGIN,
+  originRoute,
+  useOriginPath,
 } from "@/utils";
-import { useNavigate } from "@/components/Routing";
-import { useAlertContext } from "@/components/Context/alertContext";
-import { useCallback } from "react";
-import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
 import {
   DescriptionInput,
   SubTypeSelect,
   SubjectInput,
   TypeSelect,
-} from "@/features/submission/common";
+} from "@/features";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,

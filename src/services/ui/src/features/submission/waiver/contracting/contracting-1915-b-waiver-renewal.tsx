@@ -1,19 +1,23 @@
+import { useCallback } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as Inputs from "@/components";
-import * as Content from "../../../../components/Form/content";
 import { Link, useLocation } from "react-router-dom";
-import { useGetUser } from "@/api";
 import {
   Alert,
   BreadCrumbs,
   LoadingSpinner,
   SimplePageContainer,
   SectionCard,
+  FAQ_TAB,
   formCrumbsFromPath,
+  useAlertContext,
+  useModalContext,
+  useNavigate,
 } from "@/components";
-import { submit } from "@/api/submissionService";
+import * as Content from "@/components/Form/content";
+import * as Inputs from "@/components/Inputs";
+import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
 import {
   zAdditionalInfo,
@@ -21,20 +25,18 @@ import {
   zAttachmentOptional,
   zAttachmentRequired,
   zRenewalWaiverNumberSchema,
+  Origin,
+  ORIGIN,
+  originRoute,
+  useOriginPath,
 } from "@/utils";
-import { FAQ_TAB } from "@/components/Routing/consts";
-import { useNavigate } from "@/components/Routing";
-import { useAlertContext } from "@/components/Context/alertContext";
-import { useModalContext } from "@/components/Context/modalContext";
-import { useCallback } from "react";
-import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
 import {
   DescriptionInput,
   SubTypeSelect,
   SubjectInput,
   TypeSelect,
-} from "@/features/submission/common";
+} from "@/features";
 
 const formSchema = z
   .object({

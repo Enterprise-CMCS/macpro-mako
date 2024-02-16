@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactQueryApiError } from "shared-types";
-import { FormSchema } from "shared-types";
+import { ReactQueryApiError, FormSchema } from "shared-types";
 import { reInsertRegex } from "shared-utils";
 
 export const getForm = async (

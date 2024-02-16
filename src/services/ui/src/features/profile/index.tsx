@@ -1,6 +1,5 @@
 import { useGetUser } from "@/api";
-import { Alert, CardWithTopBorder, SubNavHeader } from "@/components";
-import { Button } from "@/components";
+import { Alert, CardWithTopBorder, SubNavHeader, Button } from "@/components";
 import { RoleDescriptionStrings } from "shared-types";
 import { convertStateAbbreviations } from "@/utils";
 import config from "@/config";

@@ -1,3 +1,10 @@
+import { ReactElement, ReactNode } from "react";
+import {
+  ControllerProps,
+  ControllerRenderProps,
+  FieldPath,
+  FieldValues,
+} from "react-hook-form";
 import {
   FormDescription,
   FormItem,
@@ -6,13 +13,6 @@ import {
   Textarea,
   Upload,
 } from "@/components";
-import {
-  ControllerProps,
-  ControllerRenderProps,
-  FieldPath,
-  FieldValues,
-} from "react-hook-form";
-import { ReactElement, ReactNode } from "react";
 
 export const SlotAttachments = <
   TFieldValues extends FieldValues = FieldValues,

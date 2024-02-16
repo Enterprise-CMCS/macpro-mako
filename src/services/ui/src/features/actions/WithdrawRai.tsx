@@ -1,14 +1,22 @@
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback } from "react";
 import { Path, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { opensearch, Authority } from "shared-types";
+import { Info } from "lucide-react";
 import {
   Button,
   Form,
   FormField,
   FormMessage,
   RequiredIndicator,
-} from "@/components/Inputs";
-import { Alert, LoadingSpinner, AttachmentsSizeTypesDesc } from "@/components";
+  Alert,
+  LoadingSpinner,
+  AttachmentsSizeTypesDesc,
+  useNavigate,
+  useParams,
+  useModalContext,
+  useAlertContext,
+} from "@/components";
 import {
   SlotAdditionalInfo,
   SlotAttachments,
@@ -16,15 +24,14 @@ import {
   ActionFormIntro,
   PackageInfo,
 } from "@/features";
-import { Info } from "lucide-react";
-import { useModalContext } from "@/components/Context/modalContext";
-import { submit } from "@/api/submissionService";
-import { buildActionUrl } from "@/utils";
-import { useNavigate, useParams } from "@/components/Routing";
-import { useGetUser } from "@/api/useGetUser";
-import { useCallback } from "react";
-import { useAlertContext } from "@/components/Context/alertContext";
-import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { submit, useGetUser } from "@/api";
+import {
+  buildActionUrl,
+  Origin,
+  ORIGIN,
+  originRoute,
+  useOriginPath,
+} from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
 
 export const WithdrawRai = ({

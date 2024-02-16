@@ -1,7 +1,7 @@
 import { ReactQueryApiError } from "shared-types";
+import { types, subtypes } from "shared-types/opensearch";
 import { API } from "aws-amplify";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { types, subtypes } from "shared-types/opensearch";
 
 // Types //
 const getSeaTypes = async (authorityId: number): Promise<types.Document[]> => {

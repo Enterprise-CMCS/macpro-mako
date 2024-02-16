@@ -1,11 +1,9 @@
-import { useGetUser } from "@/api";
-import { UserRoles } from "shared-types";
-import { DEFAULT_FILTERS, useOsUrl } from "../../useOpensearch";
-import { opensearch } from "shared-types";
-import { LABELS } from "@/utils/labels";
-import { BLANK_VALUE } from "@/consts";
+import { UserRoles, opensearch } from "shared-types";
 import { formatSeatoolDate } from "shared-utils";
-import { getMainExportData } from "@/api";
+import { useGetUser, getMainExportData } from "@/api";
+import { LABELS } from "@/utils";
+import { BLANK_VALUE } from "@/consts";
+import { DEFAULT_FILTERS, useOsUrl } from "../../useOpensearch";
 
 export const useFilterExportGroups = () => {
   const { data: user } = useGetUser();

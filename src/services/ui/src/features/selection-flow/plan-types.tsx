@@ -1,4 +1,12 @@
-import { MACFieldsetOption, OptionCard, OptionFieldset } from "@/components";
+import { useLocation } from "react-router-dom";
+import {
+  MACFieldsetOption,
+  OptionCard,
+  OptionFieldset,
+  SimplePageContainer,
+  BreadCrumbs,
+  optionCrumbsFromPath,
+} from "@/components";
 import {
   AUTHORITY_OPTIONS,
   B4_WAIVER_OPTIONS,
@@ -8,11 +16,7 @@ import {
   MEDICAID_SPA_OPTIONS,
   SPA_OPTIONS,
   WAIVER_OPTIONS,
-} from "@/features/selection-flow/options";
-import { SimplePageContainer } from "@/components";
-import { BreadCrumbs } from "@/components";
-import { useLocation } from "react-router-dom";
-import { optionCrumbsFromPath } from "@/components/BreadCrumb/create-breadcrumbs";
+} from "@/features";
 
 /** Can be removed once page title bar with back nav is integrated */
 export const SimplePageTitle = ({ title }: { title: string }) => (

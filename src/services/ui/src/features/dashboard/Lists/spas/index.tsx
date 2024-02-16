@@ -1,7 +1,11 @@
-import { ErrorAlert } from "@/components";
-import { Pagination } from "@/components";
-
-import { OsTable, OsFiltering, useOsContext, useOsUrl } from "@/components";
+import {
+  OsTable,
+  OsFiltering,
+  useOsContext,
+  useOsUrl,
+  Pagination,
+  ErrorAlert,
+} from "@/components";
 import { useSpaTableColumns } from "./consts";
 
 export const SpasList = () => {

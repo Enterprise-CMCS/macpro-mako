@@ -12,6 +12,7 @@ import {
   SimplePageContainer,
   SectionCard,
   formCrumbsFromPath,
+  useNavigate,
 } from "@/components";
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
@@ -25,7 +26,6 @@ import { FAQ_TAB } from "@/components/Routing/consts";
 import { useModalContext } from "@/components/Context/modalContext";
 import { useAlertContext } from "@/components/Context/alertContext";
 import { useCallback } from "react";
-import { useNavigate } from "@/components/Routing";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
 import {

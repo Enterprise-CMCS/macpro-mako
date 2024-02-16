@@ -1,5 +1,9 @@
 /* eslint-disable react/prop-types */
+import { useEffect, useMemo } from "react";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
+import type { RHFSlotProps, RHFComponentMap, FormGroup } from "shared-types";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
 import {
   Button,
   FormControl,
@@ -21,15 +25,9 @@ import {
   FormField,
   Checkbox,
 } from "../Inputs";
-import { RHFFormGroup } from "./FormGroup";
-import { CalendarIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components";
 import { cn } from "@/utils";
-import { format } from "date-fns";
-import { RHFFieldArray } from "./FieldArray";
-import { FieldGroup } from "./FieldGroup";
-import type { RHFSlotProps, RHFComponentMap, FormGroup } from "shared-types";
-import { useEffect, useMemo } from "react";
+import { RHFFieldArray, FieldGroup, RHFFormGroup } from ".";
 
 export const RHFSlot = <
   TFieldValues extends FieldValues = FieldValues,

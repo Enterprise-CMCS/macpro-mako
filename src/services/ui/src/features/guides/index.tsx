@@ -1,15 +1,14 @@
-import { SubNavHeader } from "@/components";
 import * as UI from "@/components";
 import { Guide } from "shared-types";
 
 export const ABPGuide = () => {
   return (
     <>
-      <SubNavHeader>
+      <UI.SubNavHeader>
         <h1 className="text-xl font-medium">
           Medicaid Alternative Benefit Plan Implementation Guides
         </h1>
-      </SubNavHeader>
+      </UI.SubNavHeader>
       <section className="max-w-screen-xl m-auto px-4 lg:px-8 py-8 gap-10">
         <div className="h-[5px] bg-gradient-to-r from-primary from-50% to-[#02bfe7] to-[66%] rounded-t"></div>
         <UI.Table className="flex-1 min-h-[calc(100vh-350px)]">

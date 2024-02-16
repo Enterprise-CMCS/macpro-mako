@@ -1,11 +1,10 @@
+import { ReactNode } from "react";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { isCmsUser } from "shared-utils";
+import { isCmsUser, formatSeatoolDate } from "shared-utils";
 import { BLANK_VALUE } from "@/consts";
 import { Authority, opensearch } from "shared-types";
-import { ReactNode } from "react";
 import { OneMacUser } from "@/api";
 import { ReviewTeamList } from "./ui";
-import { formatSeatoolDate } from "shared-utils";
 
 export type DetailSectionItem = {
   label: string;

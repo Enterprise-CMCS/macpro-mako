@@ -1,7 +1,6 @@
 import * as React from "react";
-
-import { cn } from "@/utils";
 import { ArrowUp, ArrowDown } from "lucide-react";
+import { cn } from "@/utils";
 
 const Table = React.forwardRef<
   HTMLTableElement,

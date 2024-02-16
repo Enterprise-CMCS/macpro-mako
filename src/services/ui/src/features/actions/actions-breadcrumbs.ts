@@ -1,6 +1,6 @@
 import { Action } from "shared-types";
 import { BreadCrumbConfig } from "@/components";
-import { actionCrumb, dashboardCrumb, detailsCrumb } from "@/utils/crumbs";
+import { actionCrumb, dashboardCrumb, detailsCrumb } from "@/utils";
 
 export const detailsAndActionsCrumbs = ({
   id,

@@ -1,10 +1,12 @@
+import { PropsWithChildren } from "react";
 import {
   CardWithTopBorder,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
+  BreadCrumbs,
+  Link,
 } from "@/components";
-import { useGetUser } from "@/api/useGetUser";
 import {
   DetailItemsGrid,
   AdminChanges,
@@ -13,15 +15,10 @@ import {
   detailsAndActionsCrumbs,
   recordDetails,
 } from "@/features";
-import { opensearch, UserRoles } from "shared-types";
+import { opensearch, UserRoles, getStatus } from "shared-types";
 import { useQuery } from "@/hooks";
-import { useGetItem } from "@/api";
-import { BreadCrumbs } from "@/components";
+import { useGetUser, useGetItem, useGetPackageActions } from "@/api";
 import { mapActionLabel } from "@/utils";
-import { useGetPackageActions } from "@/api/useGetPackageActions";
-import { PropsWithChildren } from "react";
-import { getStatus } from "shared-types/statusHelper";
-import { Link } from "@/components/Routing";
 
 const DetailCardWrapper = ({
   title,

@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import { RequiredIndicator } from "@/components";
-import { Alert } from "@/components";
 import { Info } from "lucide-react";
-import { FAQ_TAB } from "@/components";
+import { RequiredIndicator, Alert, FAQ_TAB } from "@/components";
 
 export const FormIntroText = () => (
   <div>

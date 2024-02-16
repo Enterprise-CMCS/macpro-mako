@@ -21,8 +21,8 @@ import {
   medicaidRespondToRaiSetup,
   medicaidWithdrawPackageSetup,
 } from "@/features";
-import { WithdrawRai } from "./WithdrawRai";
 import { useGetItem, useGetPackageActions } from "@/api";
+import { WithdrawRai } from "./WithdrawRai";
 
 export type SetupOptions = "CHIP SPA" | "Medicaid SPA";
 const getFormSetup = (opt: SetupOptions, type: Action): FormSetup | null => {

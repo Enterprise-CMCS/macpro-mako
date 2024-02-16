@@ -1,19 +1,23 @@
-import { Link, Navigate, redirect } from "@/components";
+import { useMemo } from "react";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components";
 import {
   OsProvider,
   type OsTab,
   useOsData,
   FilterChips,
   FilterDrawerProvider,
+  useUserContext,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Link,
+  Navigate,
+  redirect,
 } from "@/components";
-import { Button } from "@/components";
-import { useUserContext } from "@/components";
-import { useMemo } from "react";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {

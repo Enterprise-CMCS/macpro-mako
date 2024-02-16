@@ -1,6 +1,6 @@
-import { removeUnderscoresAndCapitalize } from "@/utils";
 import { PropsWithChildren } from "react";
 import { opensearch } from "shared-types";
+import { removeUnderscoresAndCapitalize } from "@/utils";
 
 // Keeps aria stuff and classes condensed
 const SectionTemplate = ({

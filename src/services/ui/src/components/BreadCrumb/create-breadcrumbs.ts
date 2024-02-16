@@ -1,7 +1,6 @@
 // Specific to the path of each Options page
 import { submissionFormCrumb, dashboardCrumb } from "@/utils";
-import { BreadCrumbConfig } from "@/components";
-import { Route } from "@/components";
+import { BreadCrumbConfig, Route } from "@/components";
 
 type Keys =
   | "new-submission"

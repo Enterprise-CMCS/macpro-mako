@@ -1,6 +1,11 @@
-import { ErrorAlert } from "@/components";
-import { Pagination } from "@/components";
-import { OsTable, OsFiltering, useOsContext, useOsUrl } from "@/components";
+import {
+  OsTable,
+  OsFiltering,
+  useOsContext,
+  useOsUrl,
+  Pagination,
+  ErrorAlert,
+} from "@/components";
 import { useWaiverTableColumns } from "./consts";
 
 export const WaiversList = () => {
