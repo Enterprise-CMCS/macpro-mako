@@ -7,11 +7,9 @@ import {
   ExportHeaderOptions,
 } from "./../_";
 import { z } from "zod";
-import {
-  spa_type,
-} from "./transforms";
+import { SPA_Type } from "./transforms";
 
-export type Document = z.infer<spa_type.Schema>;
+export type Document = z.infer<SPA_Type.Schema>;
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
