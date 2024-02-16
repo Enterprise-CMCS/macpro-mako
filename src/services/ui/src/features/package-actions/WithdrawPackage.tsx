@@ -9,11 +9,15 @@ import { z } from "zod";
 
 export const withdrawPackageSchema = z.object({
   additionalInformation: z.string(),
-  attachments: z.object({
-    supportingDocumentation: zAttachmentOptional,
-  }),
+  attachments: z
+    .object({
+      supportingDocumentation: zAttachmentOptional,
+    })
+    .optional(),
 });
-type Attachments = keyof z.infer<typeof withdrawPackageSchema>["attachments"];
+type Attachments = keyof NonNullable<
+  z.infer<typeof withdrawPackageSchema>["attachments"]
+>;
 
 export const onValidSubmission: SC.ActionFunction = async ({
   request,

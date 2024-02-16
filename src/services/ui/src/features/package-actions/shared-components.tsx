@@ -218,7 +218,10 @@ export const useSubmitForm = () => {
         formData.append(key, data[key]);
       }
     }
-    const attachments = data.attachments || {};
+    const attachments =
+      Object.keys(filterUndefinedValues(data.attachments)).length > 0
+        ? data.attachments
+        : {};
     for (const key in attachments) {
       attachments[key]?.forEach((file: any, index: number) => {
         formData.append(`attachments.${key}.${index}`, file as any);
@@ -253,6 +256,13 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
       navigate("/dashboard");
     }
   }, [data]);
+};
+
+// Utility Functions
+const filterUndefinedValues = (obj: Record<any, any>) => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([key, value]) => value !== undefined)
+  );
 };
 
 // Types
