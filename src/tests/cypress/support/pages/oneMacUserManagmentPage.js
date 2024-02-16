@@ -1,5 +1,5 @@
 const myAccountDropDown = "//nav//button//*[text()='My Account']";
-const manageProfileBTN = "#manageAccountLink";
+const manageProfileBTN = "//div[@role='menuitem']//button[contains(text(),'View Profile')]";
 //Element is Xpath use cy.xpath instead of cy.get
 const userManagmentHeader = '//h1[contains(text(),"User Management")]';
 const nameHeader = "#nameColHeader";
@@ -25,7 +25,7 @@ export class oneMacUserManagmentPage {
     cy.xpath(myAccountDropDown).click();
   }
   clickmanageProfileBTN() {
-    cy.get(manageProfileBTN).click();
+    cy.xpath(manageProfileBTN).click();
   }
   verifyRequestARoleChangeBtnExists() {
     cy.get(requestARoleBtn).should("be.visible");

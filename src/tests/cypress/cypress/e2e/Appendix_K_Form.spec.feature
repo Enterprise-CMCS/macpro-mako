@@ -46,7 +46,6 @@ Feature: Appendix K Waiver Type Selection
         Then verify id number in the first row matches "MD-22106.R01.02"
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
-        Then verify 2 action cards exist
         Then verify the status on the card is "Submitted"
         Then verify package actions header is visible
         Then verify there are no package actions available

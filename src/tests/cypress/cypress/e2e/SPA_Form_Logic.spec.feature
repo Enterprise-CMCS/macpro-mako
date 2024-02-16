@@ -18,8 +18,10 @@ Feature: SPA Form Logic
         Then verify the submit button is not disabled
         Then clear the ID Input box
         Then into "SPA ID" type "MD-DD-DDDD"
-        Then verify the ID error message is "The SPA ID must be in the format of SS-YY-NNNN or SS-YY-NNNN-xxxx"
-        Then verify the submit button is disabled
+        Then verify the submit button is not disabled
+        Then Click the Submit Button without waiting
+        Then verify the ID error message is "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX"
+        Then verify the submit button is not disabled
         Then clear the ID Input box
         Then into "SPA ID" type "MD-22-4235"
         Then verify "SPA ID" has no error messages
@@ -37,8 +39,9 @@ Feature: SPA Form Logic
         Then verify the submit button is not disabled
         Then clear the ID Input box
         Then into "SPA ID" type "MD-DD-DDDD"
-        Then verify the ID error message is "The SPA ID must be in the format of SS-YY-NNNN-xxxx"
-        Then verify the submit button is disabled
+        Then verify the submit button is not disabled
+        Then Click the Submit Button without waiting
+        Then verify the ID error message is "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX"
         Then clear the ID Input box
         Then type "MD-22-0283-VM" into the ID Input box
         Then verify ID error message is not present

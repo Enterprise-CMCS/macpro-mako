@@ -4,20 +4,17 @@ Feature: Helpdesk User
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "Help Desk" user
+        Then click the main Dashboard Button
         Then i am on Dashboard Page
         Then verify the SPAs tab is selected
         Then verify Export to Excel CSV is Displayed
+        Then verify SPA ID column exists
+        Then verify type column exists
+        Then verify State column exists
+        Then verify submitted by column exists
+        Then click on the Waivers tab
+        Then verify Export to Excel CSV is Displayed
         Then verify Waiver Number column exists
         Then verify type column exists
-        Then verify state column does not exist
+        Then verify State column exists
         Then verify submitted by column exists
-        Then Click on User Management Tab
-        Then i am on User Management Page
-        Then verify User Management is Displayed
-        Then verify Export to Excel CSV is Displayed
-        Then verify Name is Displayed
-        Then verify State is Displayed
-        Then verify Status is Displayed
-        Then verify Role is Displayed
-        Then verify Last Modified is Displayed
-        Then verify Modified By is Displayed

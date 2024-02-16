@@ -18,19 +18,8 @@ const date = "#submittedAt-0";
 const respondToRAI = '//li[(text()="Respond to RAI")]';
 const userManagementTab = "#userManagementLink";
 //Element is Xpath use cy.xpath instead of cy.get
-const submissionList = '//h1[contains(text(),"Submission List")]';
-const exportToEXcelCSVBTN = "#new-submission-button";
-const idNumberHeader = "#transmittalNumberColHeader";
-const typeHeader = "#typeColHeader";
-const initialSubmissionDateHeader = "#submissionTimestampColHeader";
-const submittedByHeader = "#submitterColHeader";
+const exportToEXcelCSVBTN = "//button//span[contains(text(),'Export')]";
 //Element is Xpath use cy.xpath instead of cy.get
-const packageTab = '//a[@id="packageListLink"]';
-
-const spaIDLink =
-  "div.header-and-content:nth-child(1) div.dashboard-white div.dashboard-container table.submissions-table.submissions-table-actions-column tbody:nth-child(2) tr:nth-child(1) td:nth-child(1) > a:nth-child(1)";
-const uploadedAttachments =
-  "div.header-and-content:nth-child(1) article.form-container div.read-only-submission section.choice-container.file-list-container:nth-child(3)";
 const logoutBtn = "//button[text()='Sign Out']";
 const rcSuccessMessage = "#alert-bar";
 
@@ -222,7 +211,7 @@ const submittedIntakeNeededCheckbox =
 const doubleDashCheckbox =
   "//label[contains(@for,'Requested')]";
 const pendingCheckbox =
-  "//label[contains(@for,'Pending')]/span[text()='Pending']";
+  "//label[@for='Pending']";
 const unsubmittedCheckbox =
   "//label[contains(@for,'Unsubmitted')]";
 const packageRowTwoID = "#componentId-1";
@@ -296,7 +285,7 @@ export class oneMacDashboardPage {
   }
 
   verifyexportToEXcelCSVBTNIsDisplayed() {
-    cy.get(exportToEXcelCSVBTN).should("be.visible");
+    cy.xpath(exportToEXcelCSVBTN).should("be.visible");
   }
   verifyNewSubmissionBTNIsDisplayed() {
     cy.xpath(newSubmissionBTN).should("be.visible");

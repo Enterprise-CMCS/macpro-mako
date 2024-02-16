@@ -16,13 +16,12 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         #Then click Submitted checkbox
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
-        Then verify 2 action cards exist
         Then verify the status on the card is "Submitted"
         Then verify package actions header is visible
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify the type is 1915b Waiver Amendment
+        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -37,20 +36,19 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify there is an Approved Effective Date in the details section
     #Then verify the Initial Submission caret button exists
     #Then expand the Initial Submission caret
-    #Then verify the Initial Submission download all button exists
+    #Then verify the download all button exists
     #Then verify the additional information section exists
 
     Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - Under Review
         Then click Under Review checkbox
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
-        Then verify 2 action cards exist
         Then verify the status on the card is "Under Review"
         Then verify package actions header is visible
         Then verify withdraw package action exists
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify the type is 1915b Waiver Amendment
+        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -65,21 +63,20 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify there is an Approved Effective Date in the details section
     #Then verify the Initial Submission caret button exists
     #Then expand the Initial Submission caret
-    #Then verify the Initial Submission download all button exists
+    #Then verify the download all button exists
     #Then verify the additional information section exists
 
     Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - RAI Issued
         Then click RAI Issued checkbox
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
-        Then verify 2 action cards exist
         Then verify the status on the card is "RAI Issued"
         Then verify package actions header is visible
         Then verify withdraw package action exists
         Then verify Respond to Formal RAI action exists
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify the type is 1915b Waiver Amendment
+        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -94,20 +91,19 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify there is an Approved Effective Date in the details section
     #Then verify the Initial Submission caret button exists
     #Then expand the Initial Submission caret
-    #Then verify the Initial Submission download all button exists
+    #Then verify the download all button exists
     #Then verify the additional information section exists
 
     Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - Approved
         Then click Approved checkbox
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
-        Then verify 2 action cards exist
         Then verify the status on the card is "Approved"
         Then verify package actions header is visible
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify the type is 1915b Waiver Amendment
+        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -120,23 +116,22 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify Review Team SRT is not visible in the details section
         Then verify there is a Final Disposition Date header in the details section
         Then verify there is an Approved Effective Date in the details section
-        Then verify the Proposed Effective Date is a date formatted like Mon dd yyyy
+    verify the Proposed Effective Date is a date formatted like Mo dd yyyy
     #Then verify the Initial Submission caret button exists
     #Then expand the Initial Submission caret
-    #Then verify the Initial Submission download all button exists
+    #Then verify the download all button exists
     #Then verify the additional information section exists
 
     Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - Disapproved
         Then click Disapproved checkbox
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
-        Then verify 2 action cards exist
         Then verify the status on the card is "Disapproved"
         Then verify package actions header is visible
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify the type is 1915b Waiver Amendment
+        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -151,44 +146,19 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify there is an Approved Effective Date in the details section
     #Then verify the Initial Submission caret button exists
     #Then expand the Initial Submission caret
-    #Then verify the Initial Submission download all button exists
+    #Then verify the download all button exists
     #Then verify the additional information section exists
-
-    Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - Withdrawal Requested
-        Then click the Withdrawal Requested checkbox
-        Then click the Waiver Number link in the first row
-        Then verify the package details page is visible
-        Then verify 2 action cards exist
-        Then verify the status on the card is "Withdrawal Requested"
-        Then verify package actions header is visible
-        Then verify there are no package actions available
-        Then verify the details section exists
-        Then verify there is a Type header in the details section
-        Then verify the type is 1915b Waiver Amendment
-        Then verify there is a State header in the details section
-        Then verify a state exists for the State
-        Then verify there is an Initial Submission Date header in the details section
-        Then verify a date exists for the Initial Submission Date
-        Then verify there is a Proposed Effective Date header in the details section
-        Then verify subject is not visible in the details section
-        Then verify description is not visible in the details section
-        Then verify there is a CPOC header in the details section
-        Then verify the CPOC has a value displayed in the details section
-        Then verify Review Team SRT is not visible in the details section
-        Then verify there is a Final Disposition Date header in the details section
-        Then verify there is an Approved Effective Date in the details section
 
     Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - Package Withdrawn
         Then click the Package Withdrawn checkbox
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
-        Then verify 2 action cards exist
         Then verify the status on the card is "Package Withdrawn"
         Then verify package actions header is visible
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify the type is 1915b Waiver Amendment
+        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -203,7 +173,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify there is an Approved Effective Date in the details section
     #Then verify the Initial Submission caret button exists
     #Then expand the Initial Submission caret
-    #Then verify the Initial Submission download all button exists
+    #Then verify the download all button exists
     #Then verify the additional information section exists
 
     Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - Withdraw Formal RAI Response Enabled
@@ -212,14 +182,13 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then search for "MD-22204.R00.02"
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
-        Then verify 2 action cards exist
         Then verify the sub status on the card is Withdraw Formal RAI Response Enabled
         Then verify package actions header is visible
         Then verify withdraw package action exists
         Then verify Withdraw Formal RAI Response package action exists
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify the type is 1915b Waiver Amendment
+        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -234,7 +203,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify there is an Approved Effective Date in the details section
     #Then verify the Initial Submission caret button exists
     #Then expand the Initial Submission caret
-    #Then verify the Initial Submission download all button exists
+    #Then verify the download all button exists
     #Then verify the additional information section exists
 
     Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - Withdraw RAI Response

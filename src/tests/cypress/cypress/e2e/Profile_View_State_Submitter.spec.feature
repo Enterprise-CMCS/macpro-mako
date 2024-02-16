@@ -15,7 +15,7 @@ Feature: OY2_9990_State_Submitter_Profile_Screen_Enhancements
         Then Click on My Account
         Then Click on Manage Profile
         When I am on My Profile Page
-        Then verify Profile Information is Displayed
+        Then verify My Information Header is Displayed
         Then Full Name text is Displayed
         Then Actual Full Name is Displayed
         Then Role text is Displayed

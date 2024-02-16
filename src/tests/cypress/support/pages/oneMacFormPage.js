@@ -15,7 +15,7 @@ const enterMmdlBtn = "//button[contains(text(),'Enter the MMDL system')]";
 const enterMacProBtn = "//button[contains(text(),'Enter the MACPro system')]";
 
 const IDInputBox = idElement;
-const errorMessageID = "#componentIdStatusMsg0";
+const errorMessageID = "p[id*='form-item-message']";
 const errorMessageLine2ID = "#componentIdStatusMsg1";
 const parentIDInputBox = "#parent-componentId";
 const errorMessageParentID = "#parent-componentIdStatusMsg0";
@@ -151,11 +151,11 @@ export class oneMacFormPage {
       cy.xpath(`//h3[text()='${idLabel}']`).should("be.visible");
   }
   verifyIDErrorMessageIsNotDisplayed() {
-    cy.get(errorMessageID).should("not.exist");
+    cy.get(idElement).parent().next(errorMessageID).should("not.exist");
   }
   verifyIDErrorMessageContains(errorMessage) {
-    cy.get(errorMessageID).should("be.visible");
-    cy.get(errorMessageID).contains(errorMessage);
+    cy.get(idElement).parent().next(errorMessageID).should("exist");
+    cy.get(idElement).parent().next(errorMessageID).contains(errorMessage);
   }
   verifyIDErrorMessage2Contains(errorMessage) {
     cy.get(errorMessageLine2ID).should("be.visible");
