@@ -22,7 +22,7 @@ custom:
   region: ${opt:region, self:provider.region}
   idmInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/idmInfo, ""}
   googleAnalytics: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/googleAnalytics, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/googleAnalytics}
-  launchdarklyClientID: ${ssm:/${self:service}/${sls:stage}/launchdarklyClientID, ssm:/${self:service}/default/launchdarklyClientID}
+  launchdarklyClientID: ${env:VITE_LAUNCHDARKLY_CLIENT_ID, ssm:/${self:service}/${sls:stage}/launchdarklyClientID, ssm:/${self:service}/default/launchdarklyClientID}
   serverlessTerminationProtection:
     stages:
       - master

@@ -15,51 +15,6 @@ const password = (await Libs.getSecretsValue(
   secretId
 )) as string;
 
-// function ldClientMock(featureFlags) {
-//   return {
-//     track: vi.fn(),
-//     identify: vi.fn(),
-//     close: vi.fn(),
-//     flush: vi.fn(),
-//     getContext: vi.fn(),
-//     off: vi.fn(),
-//     on: vi.fn(),
-//     setStreaming: vi.fn(),
-//     variationDetail: vi.fn(),
-//     waitForInitialization: vi.fn(),
-//     waitUntilGoalsReady: vi.fn(),
-//     waitUntilReady: vi.fn(),
-//     variation: vi.fn(
-//       (flag, defaultValue) => featureFlags[flag] ?? defaultValue
-//     ),
-//     allFlags: vi.fn(() => featureFlags),
-//   };
-// }
-
-// const ldProviderConfig = {
-//   clientSideID: "test-url",
-//   options: {
-//     bootstrap: {},
-//     baseUrl: "test-url",
-//     streamUrl: "test-url",
-//     eventsUrl: "test-url",
-//   },
-//   ldClient: ldClientMock({}),
-// };
-
-const mockAsyncWithLDProvider = async () => {
-  // Return whatever mocked data you need for testing
-  return {
-    flags: {}, // Mocked flags
-    ldClient: null, // Mocked LD client
-    ldProvider: "<div>Mocked LD Provider</div>", // Mocked LD provider
-  };
-};
-
-vi.mock("launchdarkly-react-client-sdk", () => ({
-  asyncWithLDProvider: mockAsyncWithLDProvider,
-}));
-
 const stateSubmitterAuthFile = "playwright/.auth/state-user.json";
 
 setup("authenticate state submitter", async ({ page, context }) => {
