@@ -1,21 +1,22 @@
 import { Handler } from "aws-lambda";
 import * as os from "./../../../libs/opensearch-lib";
 import { opensearch } from "shared-types";
-import { Index } from "shared-types/opensearch";
 
-export const handler: Handler = async (
-  _,
-  __,
-  callback
-) => {
+export const handler: Handler = async (_, __, callback) => {
   const response = {
     statusCode: 200,
   };
   let errorResponse = null;
   try {
-    const indices = ["main", "changelog", "seatool", "types", "subtypes"];
+    const indices = [
+      "main",
+      "changelog",
+      "seatool",
+      "types",
+      "subtypes",
+    ] as const;
     for (const index of indices) {
-      await manageIndexResource({ index: index as Index});
+      await manageIndexResource({ index: index });
     }
   } catch (error: any) {
     response.statusCode = 500;

@@ -12,14 +12,13 @@ const osDomain: string =
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   await seatool_main(event);
-  await seatool_seatool(event);
 };
 
 const subtypeCache: { [key: number]: string | null } = {};
 const getSubtype = async (id: number) => {
-  if(!id) return null;
-  if(!subtypeCache[id]){
-    const item = await os.getItem(osDomain,"subtypes",id.toString());
+  if (!id) return null;
+  if (!subtypeCache[id]) {
+    const item = await os.getItem(osDomain, "subtypes", id.toString());
     subtypeCache[id] = item?._source.name;
   }
   return subtypeCache[id];
@@ -27,9 +26,9 @@ const getSubtype = async (id: number) => {
 
 const typeCache: { [key: number]: string | null } = {};
 const getType = async (id: number) => {
-  if(!id) return null;
-  if(!typeCache[id]){
-    const item = await os.getItem(osDomain,"types",id.toString());
+  if (!id) return null;
+  if (!typeCache[id]) {
+    const item = await os.getItem(osDomain, "types", id.toString());
     typeCache[id] = item?._source.name;
   }
   return typeCache[id];
@@ -90,11 +89,16 @@ export const seatool_main = async (event: KafkaEvent) => {
         const validAuthorityIds = [122, 123, 124, 125];
         if (
           result.data.authorityId &&
-          validAuthorityIds.includes(result.data.authorityId)
+          validAuthorityIds.includes(result.data.authorityId) &&
+          result.data.seatoolStatus
         ) {
-            const type = result.data.typeId ? await getType(result.data.typeId) : null;
-            const subType = result.data.subTypeId ? await getSubtype(result.data.subTypeId) : null;
-            records[id] = {...result.data, type, subType};
+          const type = result.data.typeId
+            ? await getType(result.data.typeId)
+            : null;
+          const subType = result.data.subTypeId
+            ? await getSubtype(result.data.subTypeId)
+            : null;
+          records[id] = { ...result.data, type, subType };
         }
       }
     }
@@ -104,30 +108,6 @@ export const seatool_main = async (event: KafkaEvent) => {
   }
   try {
     await os.bulkUpdateData(osDomain, "main", docs);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const seatool_seatool = async (event: KafkaEvent) => {
-  const data = Object.values(event.records).reduce((ACC, RECORDS) => {
-    RECORDS.forEach((REC) => {
-      // omit delete event
-      if (!REC.value) return;
-
-      const id = decode(REC.key);
-      const record = JSON.parse(decode(REC.value));
-      ACC.push({
-        ...record,
-        id,
-      });
-    });
-
-    return ACC;
-  }, [] as any[]);
-
-  try {
-    await os.bulkUpdateData(osDomain, "seatool", data);
   } catch (error) {
     console.error(error);
   }

@@ -7,9 +7,9 @@ import {
   ExportHeaderOptions,
 } from "./../_";
 import { z } from "zod";
-import { type } from "./transforms";
+import { Type } from "./transforms";
 
-export type Document = z.infer<type.Schema>;
+export type Document = z.infer<Type.Schema>;
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {

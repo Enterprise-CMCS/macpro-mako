@@ -59,7 +59,9 @@ export async function bulkUpdateData(
 
 export async function deleteIndex(host: string, index: opensearch.Index) {
   client = client || (await getClient(host));
-  var response = await client.indices.delete({ index });
+  const exists = await client.indices.exists({ index });
+  if (!exists) return;
+  await client.indices.delete({ index });
 }
 
 export async function mapRole(

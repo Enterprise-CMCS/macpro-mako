@@ -1,2 +1,2 @@
-export * from "./type";
-export * from "./subtype";
+export * from "./Type";
+export * from "./SPA_Type";

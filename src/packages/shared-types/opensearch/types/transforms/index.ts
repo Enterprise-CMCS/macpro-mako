@@ -1,1 +1,1 @@
-export * as spa_type from "./spa_type";
+export * as SPA_Type from "./SPA_Type";
