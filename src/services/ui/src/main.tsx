@@ -30,16 +30,14 @@ const initializeLaunchDarkly = async () => {
 
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
-      {LDProvider ? (
-        <QueryClientProvider client={queryClient}>
-          <UserContextProvider>
-            <LDProvider>
-              <RouterProvider router={router} />
-            </LDProvider>
-          </UserContextProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      ) : null}
+      <QueryClientProvider client={queryClient}>
+        <UserContextProvider>
+          <LDProvider>
+            <RouterProvider router={router} />
+          </LDProvider>
+        </UserContextProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </React.StrictMode>
   );
 };
