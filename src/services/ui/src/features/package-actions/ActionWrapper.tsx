@@ -11,17 +11,29 @@ import { toggleRaiResponseWithdrawSchema } from "./ToggleRaiResponseWithdraw";
 import { withdrawPackageSchema } from "./WithdrawPackage";
 import { respondToRaiSchema } from "./RespondToRai";
 
-const schemas: Record<string, AnyZodObject> = {
+const schemas = {
   "issue-rai": issueRaiSchema,
   "withdraw-rai": withdrawRaiSchema,
   "enable-rai-withdraw": toggleRaiResponseWithdrawSchema,
   "disable-rai-withdraw": toggleRaiResponseWithdrawSchema,
   "withdraw-package": withdrawPackageSchema,
   "respond-to-rai": respondToRaiSchema,
+} as const;
+type SchemaKeys = keyof typeof schemas;
+
+const actions: Record<SchemaKeys, Action> = {
+  "issue-rai": Action.ISSUE_RAI,
+  "disable-rai-withdraw": Action.DISABLE_RAI_WITHDRAW,
+  "enable-rai-withdraw": Action.ENABLE_RAI_WITHDRAW,
+  "respond-to-rai": Action.RESPOND_TO_RAI,
+  "withdraw-package": Action.WITHDRAW_PACKAGE,
+  "withdraw-rai": Action.WITHDRAW_RAI,
 };
 
 export const ActionWrapper = () => {
-  const packageActionType = window.location.href.split("/").at(-1);
+  const packageActionType = window.location.href
+    .split("/")
+    .at(-1) as SchemaKeys;
   const { id } = useParams() as { id: string };
 
   const methods = useForm({
@@ -31,7 +43,10 @@ export const ActionWrapper = () => {
   return (
     <SimplePageContainer>
       <BreadCrumbs
-        options={detailsAndActionsCrumbs({ id, action: Action.ISSUE_RAI })}
+        options={detailsAndActionsCrumbs({
+          id,
+          action: actions[packageActionType],
+        })}
       />
       <FormProvider {...methods}>
         <Outlet />
