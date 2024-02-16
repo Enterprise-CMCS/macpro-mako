@@ -11,7 +11,6 @@ import { submit } from "@/api/submissionService";
 
 type Attachments = keyof z.infer<typeof issueRaiSchema>["attachments"];
 export const issueRaiSchema = z.object({
-  testing: z.string(),
   additionalInformation: z.string(),
   attachments: z.object({
     formalRaiLetter: zAttachmentRequired({ min: 1 }),
