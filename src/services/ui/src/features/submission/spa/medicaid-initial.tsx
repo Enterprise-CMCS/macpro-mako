@@ -16,111 +16,96 @@ import {
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
 import {
-  zAdditionalInfo,
-  zRenewalOriginalWaiverNumberSchema,
   zAttachmentOptional,
   zAttachmentRequired,
-  zRenewalWaiverNumberSchema,
+  zSpaIdSchema,
 } from "@/utils";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { useNavigate } from "@/components/Routing";
-import { useAlertContext } from "@/components/Context/alertContext";
 import { useModalContext } from "@/components/Context/modalContext";
 import { useCallback } from "react";
-import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { useAlertContext } from "@/components/Context/alertContext";
 import { useQuery as useQueryString } from "@/hooks";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import {
-  DescriptionInput,
+  TypeSelect,
   SubTypeSelect,
   SubjectInput,
-  TypeSelect,
-} from "@/features/common";
+  DescriptionInput,
+} from "../common";
 
-const formSchema = z
-  .object({
-    waiverNumber: zRenewalOriginalWaiverNumberSchema,
-    id: zRenewalWaiverNumberSchema,
-    proposedEffectiveDate: z.date(),
-    subject: z.string(),
-    description: z.string(),
-    typeId: z.string(),
-    subTypeId: z.string(),
-    attachments: z.object({
-      b4WaiverApplication: zAttachmentRequired({ min: 1 }),
-      b4IndependentAssessment: zAttachmentOptional,
-      tribalConsultation: zAttachmentOptional,
-      other: zAttachmentOptional,
+const formSchema = z.object({
+  id: zSpaIdSchema,
+  additionalInformation: z.string().max(4000).optional(),
+  subject: z.string(),
+  description: z.string(),
+  typeId: z.string(),
+  subTypeId: z.string(),
+  attachments: z.object({
+    cmsForm179: zAttachmentRequired({
+      min: 1,
+      max: 1,
+      message: "Required: You must submit exactly one file for CMS Form 179.",
     }),
-    additionalInformation: zAdditionalInfo.optional(),
-    seaActionType: z.string().default("Renew"),
-  })
-  .superRefine((data, ctx) => {
-    const renewalIteration = data.id.split(".")[1]; // R## segment of Waiver Number
-    if (
-      ["R00", "R01"].includes(renewalIteration) &&
-      data.attachments.b4IndependentAssessment === undefined
-    ) {
-      ctx.addIssue({
-        message:
-          "An Independent Assessment is required for the first two renewals.",
-        code: z.ZodIssueCode.custom,
-        fatal: true,
-        path: ["attachments", "b4IndependentAssessment"],
-      });
-    }
-    return z.never;
-  });
-type Waiver1915BContractingRenewal = z.infer<typeof formSchema>;
+    spaPages: zAttachmentRequired({ min: 1 }),
+    coverLetter: zAttachmentOptional,
+    tribalEngagement: zAttachmentOptional,
+    existingStatePlanPages: zAttachmentOptional,
+    publicNotice: zAttachmentOptional,
+    sfq: zAttachmentOptional,
+    tribalConsultation: zAttachmentOptional,
+    other: zAttachmentOptional,
+  }),
+  proposedEffectiveDate: z.date(),
+});
+type MedicaidFormSchema = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
+  { name: "cmsForm179", label: "CMS Form 179", required: true },
+  { name: "spaPages", label: "SPA Pages", required: true },
+  { name: "coverLetter", label: "Cover Letter", required: false },
   {
-    name: "b4WaiverApplication",
-    label:
-      "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
-    required: true,
-  },
-  {
-    name: "b4IndependentAssessment",
-    label:
-      "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
+    name: "tribalEngagement",
+    label: "Document Demonstrating Good-Faith Tribal Engagement",
     required: false,
   },
   {
-    name: "tribalConsultation",
-    label: "Tribal Consultation",
+    name: "existingStatePlanPages",
+    label: "Existing State Plan Page(s)",
     required: false,
   },
-  {
-    name: "other",
-    label: "Other",
-    required: false,
-  },
+  { name: "publicNotice", label: "Public Notice", required: false },
+  { name: "sfq", label: "Standard Funding Questions (SFQs)", required: false },
+  { name: "tribalConsultation", label: "Tribal Consultation", required: false },
+  { name: "other", label: "Other", required: false },
 ] as const;
 
-export const Contracting1915BWaiverRenewalPage = () => {
-  const location = useLocation();
+export const MedicaidSpaFormPage = () => {
   const { data: user } = useGetUser();
+  const location = useLocation();
   const navigate = useNavigate();
   const urlQuery = useQueryString();
-  const alert = useAlertContext();
   const modal = useModalContext();
+  const alert = useAlertContext();
   const originPath = useOriginPath();
   const cancelOnAccept = useCallback(() => {
     modal.setModalOpen(false);
     navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
-  const handleSubmit: SubmitHandler<Waiver1915BContractingRenewal> = async (
-    formData
-  ) => {
+  const form = useForm<MedicaidFormSchema>({
+    resolver: zodResolver(formSchema),
+  });
+
+  form.watch("typeId");
+  const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
     try {
-      // AK-0260.R04.02
-      await submit<Waiver1915BContractingRenewal>({
+      await submit<MedicaidFormSchema>({
         data: formData,
         endpoint: "/submit",
         user,
-        authority: Authority["1915b"],
+        authority: Authority.MED_SPA,
       });
       alert.setContent({
         header: "Package submitted",
@@ -139,11 +124,6 @@ export const Contracting1915BWaiverRenewalPage = () => {
       console.error(e);
     }
   };
-
-  const form = useForm<Waiver1915BContractingRenewal>({
-    resolver: zodResolver(formSchema),
-  });
-
   return (
     <SimplePageContainer>
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
@@ -152,47 +132,8 @@ export const Contracting1915BWaiverRenewalPage = () => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
-          <h1 className="text-2xl font-semibold mt-4 mb-2">
-            1915(b)(4) FFS Selective Contracting Renewal Waiver
-          </h1>
-          <SectionCard title="1915(b) Waiver Renewal Details">
+          <SectionCard title="Medicaid SPA Details">
             <Content.FormIntroText />
-            <div className="flex flex-col">
-              <Inputs.FormLabel className="font-semibold">
-                Waiver Authority
-              </Inputs.FormLabel>
-              <span className="text-lg font-thin">1915(b)</span>
-            </div>
-            <Inputs.FormField
-              control={form.control}
-              name="waiverNumber"
-              render={({ field }) => (
-                <Inputs.FormItem>
-                  <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold">
-                      Existing Waiver Number to Renew{" "}
-                      <Inputs.RequiredIndicator />
-                    </Inputs.FormLabel>
-                  </div>
-                  <p className="text-gray-500 font-light">
-                    Enter the existing waiver number in the format it was
-                    approved, using a dash after the two character state
-                    abbreviation.
-                  </p>
-                  <Inputs.FormControl className="max-w-sm">
-                    <Inputs.Input
-                      {...field}
-                      onInput={(e) => {
-                        if (e.target instanceof HTMLInputElement) {
-                          e.target.value = e.target.value.toUpperCase();
-                        }
-                      }}
-                    />
-                  </Inputs.FormControl>
-                  <Inputs.FormMessage />
-                </Inputs.FormItem>
-              )}
-            />
             <Inputs.FormField
               control={form.control}
               name="id"
@@ -200,22 +141,18 @@ export const Contracting1915BWaiverRenewalPage = () => {
                 <Inputs.FormItem>
                   <div className="flex gap-4">
                     <Inputs.FormLabel className="text-lg font-bold">
-                      1915(b) Waiver Renewal Number <Inputs.RequiredIndicator />
+                      SPA ID <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
-                      to="/faq/#waiver-amendment-id-format"
+                      to="/faq/#spa-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline flex items-center"
+                      className="text-blue-700 hover:underline"
                     >
-                      What is my 1915(b) Waiver Renewal Number?
+                      What is my SPA ID?
                     </Link>
                   </div>
-                  <p className="text-gray-500 font-light">
-                    The Waiver Number must be in the format of SS-####.R##.00 or
-                    SS-#####.R##.00. For renewals, the {"'R##'"} starts with
-                    {" 'R01'"} and ascends.
-                  </p>
+                  <Content.SpaIdFormattingDesc />
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
                       {...field}
@@ -234,12 +171,12 @@ export const Contracting1915BWaiverRenewalPage = () => {
               control={form.control}
               name="proposedEffectiveDate"
               render={({ field }) => (
-                <Inputs.FormItem className="max-w-lg">
+                <Inputs.FormItem className="max-w-md">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of 1915(b) Waiver Renewal{" "}
+                    Proposed Effective Date of Medicaid SPA{" "}
                     <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
-                  <Inputs.FormControl className="max-w-sm">
+                  <Inputs.FormControl>
                     <Inputs.DatePicker
                       onChange={field.onChange}
                       date={field.value}
@@ -249,23 +186,27 @@ export const Contracting1915BWaiverRenewalPage = () => {
                 </Inputs.FormItem>
               )}
             />
+
             <TypeSelect
               control={form.control}
               name="typeId"
-              authorityId={122} // waivers authority
+              authorityId={125} // medicaid authority
             />
             <SubTypeSelect
               control={form.control}
               typeId={form.watch("typeId")}
               name="subTypeId"
-              authorityId={122} // waivers authority
+              authorityId={125} // medicaid authority
             />
 
             <SubjectInput control={form.control} name="subject" />
             <DescriptionInput control={form.control} name="description" />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
+            <Content.AttachmentsSizeTypesDesc
+              faqLink="/faq/#medicaid-spa-attachments"
+              includeCMS179
+            />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
@@ -274,9 +215,18 @@ export const Contracting1915BWaiverRenewalPage = () => {
                 render={({ field }) => (
                   <Inputs.FormItem>
                     <Inputs.FormLabel>
-                      {label}
-                      {required ? <Inputs.RequiredIndicator /> : null}
+                      {label} {required ? <Inputs.RequiredIndicator /> : null}
                     </Inputs.FormLabel>
+                    {
+                      <Inputs.FormDescription>
+                        {name === "cmsForm179"
+                          ? "One attachment is required"
+                          : ""}
+                        {name === "spaPages"
+                          ? "At least one attachment is required"
+                          : ""}
+                      </Inputs.FormDescription>
+                    }
                     <Inputs.Upload
                       files={field?.value ?? []}
                       setFiles={field.onChange}
@@ -310,7 +260,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
           </SectionCard>
           <Content.PreSubmissionMessage />
           {Object.keys(form.formState.errors).length !== 0 ? (
-            <Alert className="mb-6 " variant="destructive">
+            <Alert className="mb-6" variant="destructive">
               Missing or malformed information. Please see errors above.
             </Alert>
           ) : null}
@@ -319,7 +269,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
               <LoadingSpinner />
             </div>
           ) : null}
-          <div className="flex gap-2 justify-end ">
+          <div className="flex gap-2 justify-end">
             <Inputs.Button
               disabled={form.formState.isSubmitting}
               type="submit"
@@ -340,6 +290,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
                 modal.setOnAccept(() => cancelOnAccept);
                 modal.setModalOpen(true);
               }}
+              className="px-12"
             >
               Cancel
             </Inputs.Button>

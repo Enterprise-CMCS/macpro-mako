@@ -10,14 +10,14 @@ const osDomain: string =
     throw new Error("ERROR: process.env.osDomain is required");
   })();
 
-export const getTableName = (recordKey:string) => {
+export const getTableName = (recordKey: string) => {
   return recordKey.split(".").pop()?.split("-").slice(0, -1).join("-") || "";
 };
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   for (const recordKey of Object.keys(event.records)) {
     const tableName = getTableName(recordKey);
-    switch(tableName) {
+    switch (tableName) {
       case "SPA_Type":
         console.log("would process type records");
         await typeIndexer(event.records[recordKey]);
@@ -32,18 +32,17 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   }
 };
 
-export const typeIndexer = async(records: KafkaRecord[]) => {
+export const typeIndexer = async (records: KafkaRecord[]) => {
   const docs: any = [];
   for (const kafkaRecord of records) {
-    const { key, value } = kafkaRecord;
+    const { value } = kafkaRecord;
     try {
-      const id: string = JSON.parse(decode(key));
       const record = JSON.parse(decode(value)).payload.after;
       if (!record) {
         console.log("delete detected... TODO:  handle deletes");
         continue;
       }
-      const result = opensearch.types.spa_type.transform(id).safeParse(record);
+      const result = opensearch.types.spa_type.transform().safeParse(record);
       if (!result.success) {
         console.log(
           "TYPES Validation Error. The following record failed to parse: ",
@@ -54,9 +53,11 @@ export const typeIndexer = async(records: KafkaRecord[]) => {
       } else {
         docs.push(result.data);
       }
-    } catch(error) {
-      console.log(`ERROR UKNOWN:  An unknown error occurred.  Loop continuing.  Error:  ${error}`);
-    } 
+    } catch (error) {
+      console.log(
+        `ERROR UKNOWN:  An unknown error occurred.  Loop continuing.  Error:  ${error}`
+      );
+    }
   }
   try {
     await os.bulkUpdateData(osDomain, "types", docs);
@@ -65,18 +66,17 @@ export const typeIndexer = async(records: KafkaRecord[]) => {
   }
 };
 
-export const subtypeIndexer = async(records: KafkaRecord[]) => {
+export const subtypeIndexer = async (records: KafkaRecord[]) => {
   const docs: any = [];
   for (const kafkaRecord of records) {
-    const { key, value } = kafkaRecord;
+    const { value } = kafkaRecord;
     try {
-      const id: string = JSON.parse(decode(key));
       const record = JSON.parse(decode(value)).payload.after;
       if (!record) {
         console.log("delete detected... TODO:  handle deletes");
         continue;
       }
-      const result = opensearch.subtypes.type.transform(id).safeParse(record);
+      const result = opensearch.subtypes.type.transform().safeParse(record);
       if (!result.success) {
         console.log(
           "SUBTYPES Validation Error. The following record failed to parse: ",
@@ -87,9 +87,11 @@ export const subtypeIndexer = async(records: KafkaRecord[]) => {
       } else {
         docs.push(result.data);
       }
-    } catch(error) {
-      console.log(`ERROR UKNOWN:  An unknown error occurred.  Loop continuing.  Error:  ${error}`);
-    } 
+    } catch (error) {
+      console.log(
+        `ERROR UKNOWN:  An unknown error occurred.  Loop continuing.  Error:  ${error}`
+      );
+    }
   }
   try {
     await os.bulkUpdateData(osDomain, "subtypes", docs);

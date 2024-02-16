@@ -2,7 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components";
-import * as Content from "../../../components/Form/content";
+import * as Content from "@/components/Form/content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api";
 import {
@@ -11,22 +11,22 @@ import {
   LoadingSpinner,
   SimplePageContainer,
   SectionCard,
+  FAQ_TAB,
+  useModalContext,
   formCrumbsFromPath,
 } from "@/components";
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
 import {
   zAdditionalInfo,
-  zRenewalOriginalWaiverNumberSchema,
+  zAmendmentOriginalWaiverNumberSchema,
+  zAmendmentWaiverNumberSchema,
   zAttachmentOptional,
   zAttachmentRequired,
-  zRenewalWaiverNumberSchema,
 } from "@/utils";
-import { FAQ_TAB } from "@/components/Routing/consts";
 import { useNavigate } from "@/components/Routing";
 import { useAlertContext } from "@/components/Context/alertContext";
 import { useCallback } from "react";
-import { useModalContext } from "@/components/Context/modalContext";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
 import {
@@ -34,65 +34,35 @@ import {
   SubTypeSelect,
   SubjectInput,
   TypeSelect,
-} from "@/features/common";
+} from "@/features/submission/common";
 
-const formSchema = z
-  .object({
-    waiverNumber: zRenewalOriginalWaiverNumberSchema,
-    id: zRenewalWaiverNumberSchema,
-    proposedEffectiveDate: z.date(),
-    subject: z.string(),
-    description: z.string(),
-    typeId: z.string(),
-    subTypeId: z.string(),
-    attachments: z.object({
-      bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
-      bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
-      bCapIndependentAssessment: zAttachmentOptional,
-      tribalConsultation: zAttachmentOptional,
-      other: zAttachmentOptional,
-    }),
-    additionalInformation: zAdditionalInfo.optional(),
-    seaActionType: z.string().default("Renew"),
-  })
-  .superRefine((data, ctx) => {
-    const renewalIteration = data.id.split(".")[1]; // R## segment of Waiver Number
-    if (
-      ["R00", "R01"].includes(renewalIteration) &&
-      data.attachments.bCapIndependentAssessment === undefined
-    ) {
-      ctx.addIssue({
-        message:
-          "An Independent Assessment is required for the first two renewals.",
-        code: z.ZodIssueCode.custom,
-        fatal: true,
-        path: ["attachments", "bCapIndependentAssessment"],
-      });
-    }
-    return z.never;
-  });
-type Waiver1915BCapitatedRenewal = z.infer<typeof formSchema>;
+const formSchema = z.object({
+  waiverNumber: zAmendmentOriginalWaiverNumberSchema,
+  id: zAmendmentWaiverNumberSchema,
+  proposedEffectiveDate: z.date(),
+  subject: z.string(),
+  description: z.string(),
+  typeId: z.string(),
+  subTypeId: z.string(),
+  attachments: z.object({
+    b4WaiverApplication: zAttachmentRequired({ min: 1 }),
+    tribalConsultation: zAttachmentOptional,
+    other: zAttachmentOptional,
+  }),
+  additionalInformation: zAdditionalInfo.optional(),
+  seaActionType: z.string().default("Amend"),
+});
+
+type Waiver1915BContractingAmendment = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
   {
-    name: "bCapWaiverApplication",
-    label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
-    required: true,
-  },
-  {
-    name: "bCapCostSpreadsheets",
+    name: "b4WaiverApplication",
     label:
-      "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
+      "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
     required: true,
-  },
-  {
-    name: "bCapIndependentAssessment",
-    label:
-      "1915(b) Comprehensive (Capitated) Waiver Independent Assessment (first two renewals only)",
-    subtext: "Required for the first two renewals",
-    required: false,
   },
   {
     name: "tribalConsultation",
@@ -106,7 +76,7 @@ const attachmentList = [
   },
 ] as const;
 
-export const Capitated1915BWaiverRenewalPage = () => {
+export const Contracting1915BWaiverAmendmentPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
@@ -118,12 +88,11 @@ export const Capitated1915BWaiverRenewalPage = () => {
     modal.setModalOpen(false);
     navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
-  const handleSubmit: SubmitHandler<Waiver1915BCapitatedRenewal> = async (
+  const handleSubmit: SubmitHandler<Waiver1915BContractingAmendment> = async (
     formData
   ) => {
     try {
-      // AK-0260.R04.02
-      await submit<Waiver1915BCapitatedRenewal>({
+      await submit<Waiver1915BContractingAmendment>({
         data: formData,
         endpoint: "/submit",
         user,
@@ -147,7 +116,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
     }
   };
 
-  const form = useForm<Waiver1915BCapitatedRenewal>({
+  const form = useForm<Waiver1915BContractingAmendment>({
     resolver: zodResolver(formSchema),
   });
 
@@ -160,9 +129,9 @@ export const Capitated1915BWaiverRenewalPage = () => {
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
           <h1 className="text-2xl font-semibold mt-4 mb-2">
-            1915(b) Comprehensive (Capitated) Renewal Waiver
+            1915(b)(4) FFS Selective Contracting Waiver Amendment
           </h1>
-          <SectionCard title="1915(b) Waiver Renewal Details">
+          <SectionCard title="1915(b) Waiver Amendment Request Details">
             <Content.FormIntroText />
             <div className="flex flex-col">
               <Inputs.FormLabel className="font-semibold">
@@ -175,16 +144,13 @@ export const Capitated1915BWaiverRenewalPage = () => {
               name="waiverNumber"
               render={({ field }) => (
                 <Inputs.FormItem>
-                  <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold">
-                      Existing Waiver Number to Renew{" "}
-                      <Inputs.RequiredIndicator />
-                    </Inputs.FormLabel>
-                  </div>
+                  <Inputs.FormLabel className="text-lg font-bold">
+                    Existing Waiver Number to Amend <Inputs.RequiredIndicator />
+                  </Inputs.FormLabel>
                   <p className="text-gray-500 font-light">
-                    Enter the existing waiver number in the format it was
-                    approved, using a dash after the two character state
-                    abbreviation.
+                    Enter the existing waiver number you are seeking to amend in
+                    the format it was approved, using a dash after the two
+                    character state abbreviation.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -207,21 +173,22 @@ export const Capitated1915BWaiverRenewalPage = () => {
                 <Inputs.FormItem>
                   <div className="flex gap-4">
                     <Inputs.FormLabel className="text-lg font-bold">
-                      1915(b) Waiver Renewal Number <Inputs.RequiredIndicator />
+                      1915(b) Waiver Amendment Number{" "}
+                      <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
                       to="/faq/#waiver-amendment-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline flex items-center"
+                      className="text-blue-700 hover:underline"
                     >
-                      What is my 1915(b) Waiver Renewal Number?
+                      What is my 1915(b) Waiver Amendment Number?
                     </Link>
                   </div>
                   <p className="text-gray-500 font-light">
-                    The Waiver Number must be in the format of SS-####.R##.00 or
-                    SS-#####.R##.00. For renewals, the {"'R##'"} starts with{" "}
-                    {" 'R01'"} and ascends.
+                    The Waiver Number must be in the format of SS-####.R##.## or
+                    SS-#####.R##.##. For amendments, the last two digits start
+                    with {"'01'"} and ascends.
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
@@ -243,7 +210,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-lg">
                   <Inputs.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date of 1915(b) Waiver Renewal{" "}
+                    Proposed Effective Date of 1915(b) Waiver Amendment{" "}
                     <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
                   <Inputs.FormControl className="max-w-sm">
@@ -256,6 +223,20 @@ export const Capitated1915BWaiverRenewalPage = () => {
                 </Inputs.FormItem>
               )}
             />
+            <TypeSelect
+              control={form.control}
+              name="typeId"
+              authorityId={122} // waivers authority
+            />
+            <SubTypeSelect
+              control={form.control}
+              typeId={form.watch("typeId")}
+              name="subTypeId"
+              authorityId={122} // waivers authority
+            />
+
+            <SubjectInput control={form.control} name="subject" />
+            <DescriptionInput control={form.control} name="description" />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
@@ -279,20 +260,6 @@ export const Capitated1915BWaiverRenewalPage = () => {
                 )}
               />
             ))}
-            <TypeSelect
-              control={form.control}
-              name="typeId"
-              authorityId={122} // waivers authority
-            />
-            <SubTypeSelect
-              control={form.control}
-              typeId={form.watch("typeId")}
-              name="subTypeId"
-              authorityId={122} // waivers authority
-            />
-
-            <SubjectInput control={form.control} name="subject" />
-            <DescriptionInput control={form.control} name="description" />
           </SectionCard>
           <SectionCard title="Additional Information">
             <Inputs.FormField

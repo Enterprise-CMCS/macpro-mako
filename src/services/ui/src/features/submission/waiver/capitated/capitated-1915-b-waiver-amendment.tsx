@@ -2,7 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components";
-import * as Content from "../../../components/Form/content";
+import * as Content from "../../../../components/Form/content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api";
 import {
@@ -34,7 +34,7 @@ import {
   SubTypeSelect,
   SubjectInput,
   TypeSelect,
-} from "@/features/common";
+} from "@/features/submission/common";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,

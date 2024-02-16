@@ -1,5 +1,4 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
-import * as P from "@/pages";
 import * as F from "@/features";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
@@ -12,14 +11,14 @@ export const router = createBrowserRouter([
     path: "/",
     element: <C.Layout />,
     children: [
-      { path: "/", index: true, element: <P.Welcome /> },
+      { path: "/", index: true, element: <F.Welcome /> },
       {
         path: "/dashboard",
         element: <F.Dashboard />,
         loader: F.dashboardLoader(queryClient),
       },
       { path: "/details", element: <F.PackageDetails /> },
-      { path: "/faq", element: <P.Faq /> },
+      { path: "/faq", element: <F.Faq /> },
       {
         path: "/new-submission",
         element: <F.NewSubmissionInitialOptions />,
@@ -93,10 +92,10 @@ export const router = createBrowserRouter([
       { path: "/action/:id/:type", element: <F.ActionFormIndex /> },
       { path: "/webforms", element: <C.Webforms /> },
       { path: "/webform/:id/:version", element: <C.Webform /> },
-      { path: "/profile", element: <P.Profile /> },
-      { path: "/guides/abp", element: <P.ABPGuide /> },
+      { path: "/profile", element: <F.Profile /> },
+      { path: "/guides/abp", element: <F.ABPGuide /> },
     ],
-    loader: P.loader(queryClient),
+    loader: F.loader(queryClient),
   },
 ] satisfies TypedRouteObject[]);
 

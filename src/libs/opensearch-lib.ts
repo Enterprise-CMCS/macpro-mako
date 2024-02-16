@@ -1,7 +1,4 @@
-import {
-  Client,
-  Connection,
-} from "@opensearch-project/opensearch";
+import { Client, Connection } from "@opensearch-project/opensearch";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import * as aws4 from "aws4";
 import axios from "axios";
@@ -111,7 +108,11 @@ export async function mapRole(
   }
 }
 
-export async function search(host: string, index: opensearch.Index, query: any) {
+export async function search(
+  host: string,
+  index: opensearch.Index,
+  query: any
+) {
   client = client || (await getClient(host));
   try {
     const response = await client.search({
@@ -124,7 +125,11 @@ export async function search(host: string, index: opensearch.Index, query: any) 
   }
 }
 
-export async function getItem(host: string, index: opensearch.Index, id: string) {
+export async function getItem(
+  host: string,
+  index: opensearch.Index,
+  id: string
+) {
   client = client || (await getClient(host));
   try {
     const response = await client.get({ id, index });
@@ -139,7 +144,7 @@ export async function createIndex(host: string, index: opensearch.Index) {
   client = client || (await getClient(host));
   try {
     const exists = await client.indices.exists({ index });
-    if(!!exists.body) return;
+    if (!!exists.body) return;
 
     await client.indices.create({ index });
   } catch (error) {

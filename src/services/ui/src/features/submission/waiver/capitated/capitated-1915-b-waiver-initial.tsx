@@ -2,7 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components";
-import * as Content from "@/components/Form/content";
+import * as Content from "../../../../components/Form/content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api";
 import {
@@ -11,9 +11,7 @@ import {
   LoadingSpinner,
   SimplePageContainer,
   SectionCard,
-  useModalContext,
   formCrumbsFromPath,
-  FAQ_TAB,
 } from "@/components";
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
@@ -23,10 +21,11 @@ import {
   zAttachmentRequired,
   zInitialWaiverNumberSchema,
 } from "@/utils";
-
-import { useNavigate } from "@/components/Routing";
+import { FAQ_TAB } from "@/components/Routing/consts";
+import { useModalContext } from "@/components/Context/modalContext";
 import { useAlertContext } from "@/components/Context/alertContext";
 import { useCallback } from "react";
+import { useNavigate } from "@/components/Routing";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
 import {
@@ -34,7 +33,7 @@ import {
   SubTypeSelect,
   SubjectInput,
   TypeSelect,
-} from "@/features/common";
+} from "@/features/submission/common";
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
@@ -44,22 +43,28 @@ const formSchema = z.object({
   typeId: z.string(),
   subTypeId: z.string(),
   attachments: z.object({
-    b4WaiverApplication: zAttachmentRequired({ min: 1 }),
+    bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
+    bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
   additionalInformation: zAdditionalInfo.optional(),
   seaActionType: z.string().default("New"),
 });
-type Waiver1915BContractingInitial = z.infer<typeof formSchema>;
+type Waiver1915BCapitatedAmendment = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
 const attachmentList = [
   {
-    name: "b4WaiverApplication",
+    name: "bCapWaiverApplication",
+    label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+    required: true,
+  },
+  {
+    name: "bCapCostSpreadsheets",
     label:
-      "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
+      "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
     required: true,
   },
   {
@@ -74,7 +79,7 @@ const attachmentList = [
   },
 ] as const;
 
-export const Contracting1915BWaiverInitialPage = () => {
+export const Capitated1915BWaiverInitialPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
@@ -86,11 +91,12 @@ export const Contracting1915BWaiverInitialPage = () => {
     modal.setModalOpen(false);
     navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
-  const handleSubmit: SubmitHandler<Waiver1915BContractingInitial> = async (
+  const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmendment> = async (
     formData
   ) => {
     try {
-      await submit<Waiver1915BContractingInitial>({
+      console.log("testing");
+      await submit<Waiver1915BCapitatedAmendment>({
         data: formData,
         endpoint: "/submit",
         user,
@@ -114,7 +120,7 @@ export const Contracting1915BWaiverInitialPage = () => {
     }
   };
 
-  const form = useForm<Waiver1915BContractingInitial>({
+  const form = useForm<Waiver1915BCapitatedAmendment>({
     resolver: zodResolver(formSchema),
   });
 
@@ -127,7 +133,7 @@ export const Contracting1915BWaiverInitialPage = () => {
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
           <h1 className="text-2xl font-semibold mt-4 mb-2">
-            1915(b)(4) FFS Selective Contracting Initial Waiver
+            1915(b) Comprehensive (Capitated) Initial Waiver
           </h1>
           <SectionCard title="Initial Waiver Details">
             <Content.FormIntroText />
@@ -217,7 +223,8 @@ export const Contracting1915BWaiverInitialPage = () => {
                 render={({ field }) => (
                   <Inputs.FormItem>
                     <Inputs.FormLabel>
-                      {label} {required ? <Inputs.RequiredIndicator /> : null}
+                      {label}
+                      {required ? <Inputs.RequiredIndicator /> : null}
                     </Inputs.FormLabel>
                     <Inputs.Upload
                       files={field?.value ?? []}
@@ -252,7 +259,7 @@ export const Contracting1915BWaiverInitialPage = () => {
           </SectionCard>
           <Content.PreSubmissionMessage />
           {Object.keys(form.formState.errors).length !== 0 ? (
-            <Alert className="mb-6 " variant="destructive">
+            <Alert className="mb-6" variant="destructive">
               Missing or malformed information. Please see errors above.
             </Alert>
           ) : null}
@@ -261,7 +268,7 @@ export const Contracting1915BWaiverInitialPage = () => {
               <LoadingSpinner />
             </div>
           ) : null}
-          <div className="flex gap-2 justify-end ">
+          <div className="flex gap-2 justify-end">
             <Inputs.Button
               disabled={form.formState.isSubmitting}
               type="submit"

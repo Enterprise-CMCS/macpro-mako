@@ -18,12 +18,6 @@
     "baseUrl": ".",
     "paths": {
       "@/selectors": ["e2e/selectors"],
-      "@/assets": ["src/assets"],
-      "@/components": ["src/components"],
-      "@/pages": ["src/pages"],
-      "@/features": ["src/features"],
-      "@/utils": ["src/utils"],
-      "@/hooks": ["src/hooks"],
       "@/*": ["src/*"]
     }
   },
