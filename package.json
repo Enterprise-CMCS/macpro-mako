@@ -59,7 +59,11 @@
   },
   "release": {
     "branches": [
-      "production"
+      "production",
+      {
+        "name": "val",
+        "prerelease": true
+      }
     ],
     "plugins": [
       "@semantic-release/commit-analyzer",
