@@ -1,5 +1,4 @@
 import { Handler } from "aws-lambda";
-import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
 import { KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
@@ -37,7 +36,8 @@ export const typeIndexer = async (records: KafkaRecord[]) => {
   for (const kafkaRecord of records) {
     const { value } = kafkaRecord;
     try {
-      const record = JSON.parse(decode(value)).payload.after;
+      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
+      const record = JSON.parse(decodedValue).payload.after;
       if (!record) {
         console.log("delete detected... TODO:  handle deletes");
         continue;
@@ -71,7 +71,8 @@ export const subtypeIndexer = async (records: KafkaRecord[]) => {
   for (const kafkaRecord of records) {
     const { value } = kafkaRecord;
     try {
-      const record = JSON.parse(decode(value)).payload.after;
+      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
+      const record = JSON.parse(decodedValue).payload.after;
       if (!record) {
         console.log("delete detected... TODO:  handle deletes");
         continue;
