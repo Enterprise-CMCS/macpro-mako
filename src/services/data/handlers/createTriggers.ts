@@ -43,8 +43,10 @@ export const handler: Handler = async (event, _, callback) => {
           createEventSourceMappingParams as CreateEventSourceMappingCommandInput
         );
         const result = await lambdaClient.send(command);
-        uuidsToCheck.push(result.UUID);
         console.log(result);
+        if (createEventSourceMappingParams.Enabled) {
+          uuidsToCheck.push(result.UUID);
+        }
       }
       for (const uuid of uuidsToCheck) {
         let isEnabled = false;
