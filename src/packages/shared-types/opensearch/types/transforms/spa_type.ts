@@ -1,6 +1,6 @@
 import { seaTypeSchema } from "../../..";
 
-export const transform = (id: string) => {
+export const transform = () => {
   return seaTypeSchema.transform((data) => {
     const transformedData = {
       id: data.SPA_Type_ID,
