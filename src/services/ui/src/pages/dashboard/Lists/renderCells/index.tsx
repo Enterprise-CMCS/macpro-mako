@@ -2,10 +2,11 @@ import * as POP from "@/components/Popover";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { CognitoUserAttributes, opensearch } from "shared-types";
 import { getAvailableActions } from "shared-utils";
-import { Link } from "react-router-dom";
 import { cn } from "@/lib";
 import { mapActionLabel } from "@/utils";
 import { formatSeatoolDate } from "shared-utils";
+import { Link as TypedLink } from "@/components/Routing";
+import { Link } from "react-router-dom";
 
 export const renderCellDate = (key: keyof opensearch.main.Document) =>
   function Cell(data: opensearch.main.Document) {
@@ -47,6 +48,22 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
           <POP.PopoverContent>
             <div className="flex flex-col">
               {actions.map((action, idx) => {
+                if (data.authority === "WAIVER") {
+                  return (
+                    <TypedLink
+                      path="/action/waiver/:id/:type"
+                      key={`${idx}-${action}`}
+                      params={{ id: data.id, type: action }}
+                      className={cn(
+                        "text-blue-500",
+                        "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                      )}
+                    >
+                      {/* /action/waiver/someid/sometype */}
+                      {mapActionLabel(action)}
+                    </TypedLink>
+                  );
+                }
                 return (
                   <Link
                     className={cn(
