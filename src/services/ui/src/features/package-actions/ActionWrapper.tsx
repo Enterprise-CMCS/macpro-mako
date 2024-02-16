@@ -18,7 +18,7 @@ const schemas = {
   "disable-rai-withdraw": toggleRaiResponseWithdrawSchema,
   "withdraw-package": withdrawPackageSchema,
   "respond-to-rai": respondToRaiSchema,
-} as const;
+} satisfies Record<string, AnyZodObject>;
 type SchemaKeys = keyof typeof schemas;
 
 const actions: Record<SchemaKeys, Action> = {
