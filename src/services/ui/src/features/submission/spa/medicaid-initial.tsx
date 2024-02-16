@@ -30,11 +30,12 @@ import {
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
 import {
+  AdditionalInfoInput,
   DescriptionInput,
   SubTypeSelect,
   SubjectInput,
   TypeSelect,
-} from "../common";
+} from "../shared-components";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -239,27 +240,10 @@ export const MedicaidSpaFormPage = () => {
               />
             ))}
           </SectionCard>
-          <SectionCard title="Additional Information">
-            <Inputs.FormField
-              control={form.control}
-              name="additionalInformation"
-              render={({ field }) => (
-                <Inputs.FormItem>
-                  <Inputs.FormLabel className="font-normal">
-                    Add anything else you would like to share with CMS, limited
-                    to 4000 characters
-                  </Inputs.FormLabel>
-                  <Inputs.Textarea
-                    {...field}
-                    className="h-[200px] resize-none"
-                  />
-                  <Inputs.FormDescription>
-                    4,000 characters allowed
-                  </Inputs.FormDescription>
-                </Inputs.FormItem>
-              )}
-            />
-          </SectionCard>
+          <AdditionalInfoInput
+            control={form.control}
+            name="additionalInformation"
+          />
           <Content.PreSubmissionMessage />
           {Object.keys(form.formState.errors).length !== 0 ? (
             <Alert className="mb-6" variant="destructive">

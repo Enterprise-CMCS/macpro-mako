@@ -1,4 +1,4 @@
-export * from "./submission/common";
+export * from "./submission/shared-components";
 export * from "./selection-flow";
 export * from "./package";
 export * from "./submission/spa";
