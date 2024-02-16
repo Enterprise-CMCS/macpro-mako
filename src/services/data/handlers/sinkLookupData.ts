@@ -34,7 +34,9 @@ const tables: {
 export const handler: Handler<KafkaEvent> = async (event) => {
   for (const recordKey of Object.keys(event.records)) {
     const tableName = getTableName(recordKey);
-
+    if (!(tableName in tables)) {
+      throw new Error(`Unknown table: ${tableName}`);
+    }
     const docs: any = [];
     for (const kafkaRecord of event.records[recordKey]) {
       const { key, value } = kafkaRecord;
