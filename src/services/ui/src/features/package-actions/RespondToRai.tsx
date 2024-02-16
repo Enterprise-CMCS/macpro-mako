@@ -1,11 +1,6 @@
-import { Alert, LoadingSpinner } from "@/components";
+import { Alert } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
-import {
-  ActionFunction,
-  useLoaderData,
-  useNavigation,
-  useParams,
-} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
@@ -23,7 +18,7 @@ export const respondToRaiSchema = z.object({
   }),
 });
 
-export const onValidSubmission: ActionFunction = async ({
+export const onValidSubmission: SC.ActionFunction = async ({
   request,
   params,
 }) => {
@@ -43,19 +38,23 @@ export const onValidSubmission: ActionFunction = async ({
       authority,
     });
 
-    console.log(data);
+    return {
+      submitted: true,
+    };
   } catch (err) {
-    console.log(err);
-    throw new Error("Submission Failed");
+    return {
+      submitted: false,
+    };
   }
-
-  return null;
 };
 
 export const RespondToRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const { id } = useParams();
-  const { state } = useNavigation();
+  SC.useDisplaySubmissionAlert(
+    "RAI response submitted",
+    `The RAI response for ${id} has been submitted.`
+  );
 
   return (
     <>
@@ -85,6 +84,7 @@ export const RespondToRai = () => {
         <SC.AdditionalInformation />
         <AdditionalFormInformation />
         <SC.FormLoadingSpinner />
+        <SC.ErrorBanner />
         <SC.SubmissionButtons />
       </form>
     </>

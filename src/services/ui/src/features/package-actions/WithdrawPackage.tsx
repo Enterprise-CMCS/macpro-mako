@@ -3,7 +3,7 @@ import { getUser } from "@/api/useGetUser";
 import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/pages/form/zod";
 import { unflatten } from "flat";
-import { type ActionFunction, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { PlanType } from "shared-types";
 import { z } from "zod";
 
