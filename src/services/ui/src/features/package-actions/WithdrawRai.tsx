@@ -1,15 +1,9 @@
 import { submit } from "@/api/submissionService";
 import { getUser } from "@/api/useGetUser";
-import { LoadingSpinner } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/pages/form/zod";
 import { unflatten } from "flat";
-import {
-  useActionData,
-  type ActionFunction,
-  useParams,
-  useNavigation,
-} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { PlanType } from "shared-types";
 import { z } from "zod";
 
@@ -21,7 +15,7 @@ export const withdrawRaiSchema = z.object({
 });
 type Attachments = keyof z.infer<typeof withdrawRaiSchema>["attachments"];
 
-export const onValidSubmission: ActionFunction = async ({
+export const onValidSubmission: SC.ActionFunction = async ({
   request,
   params,
 }) => {
@@ -41,24 +35,23 @@ export const onValidSubmission: ActionFunction = async ({
       authority,
     });
 
-    return null;
+    return {
+      submitted: true,
+    };
   } catch (err) {
-    if (err instanceof Error) {
-      return {
-        errorMessage: err.message,
-      };
-    }
-    return null;
+    return {
+      submitted: false,
+    };
   }
 };
 
 export const WithdrawRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
-  const data = useActionData() as { errorMessage: string };
   const { id } = useParams();
-  const { state } = useNavigation();
-
-  // do something to handle potential error message
+  SC.useDisplaySubmissionAlert(
+    "RAI response withdrawn",
+    `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`
+  );
 
   return (
     <>
@@ -81,6 +74,7 @@ export const WithdrawRai = () => {
         />
         <SC.AdditionalInformation />
         <SC.FormLoadingSpinner />
+        <SC.ErrorBanner />
         <SC.SubmissionButtons />
       </form>
     </>
