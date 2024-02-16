@@ -116,6 +116,7 @@ stepFunctions:
                 - !Ref SinkSeatoolLambdaFunction
                 - !Ref SinkOnemacLambdaFunction
                 - !Ref SinkLookupDataLambdaFunction
+                - !Ref SinkRawSeatoolLambdaFunction
             Next: DeleteIndex
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -208,6 +209,10 @@ stepFunctions:
                   Topics:
                     - aws.onemac.migration.cdc
                     - ${param:topicNamespace}aws.onemac.migration.cdc
+                - Function: !Ref SinkRawSeatoolLambdaFunction
+                  Topics:
+                    - aws.ksqldb.seatool.agg.State_Plan
+                  Enabled: false # This is for dev purposes, and can be enabled manually if needed.
             Next: CheckConsumerLagForDataSinks
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -308,6 +313,19 @@ functions:
         ${self:custom.vpc.privateSubnets}
   sinkLookupData:
     handler: handlers/sinkLookupData.handler
+    environment:
+      region: ${self:provider.region}
+      osDomain: !Sub https://${OpenSearch.DomainEndpoint}
+    maximumRetryAttempts: 0
+    timeout: 60
+    memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  sinkRawSeatool:
+    handler: handlers/sinkRawSeatool.handler
     environment:
       region: ${self:provider.region}
       osDomain: !Sub https://${OpenSearch.DomainEndpoint}
@@ -756,6 +774,7 @@ resources:
         Functions:
           - !Ref SinkOnemacLambdaFunction
           - !Ref SinkSeatoolLambdaFunction
+          - !Ref SinkRawSeatoolLambdaFunction
           - !Ref SinkLookupDataLambdaFunction
   Outputs:
     OpenSearchDomainArn:

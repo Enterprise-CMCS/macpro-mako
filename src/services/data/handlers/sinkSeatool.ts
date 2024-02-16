@@ -12,7 +12,6 @@ const osDomain: string =
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   await seatool_main(event);
-  await seatool_seatool(event);
 };
 
 const subtypeCache: { [key: number]: string | null } = {};
@@ -109,30 +108,6 @@ export const seatool_main = async (event: KafkaEvent) => {
   }
   try {
     await os.bulkUpdateData(osDomain, "main", docs);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const seatool_seatool = async (event: KafkaEvent) => {
-  const data = Object.values(event.records).reduce((ACC, RECORDS) => {
-    RECORDS.forEach((REC) => {
-      // omit delete event
-      if (!REC.value) return;
-
-      const id = decode(REC.key);
-      const record = JSON.parse(decode(REC.value));
-      ACC.push({
-        ...record,
-        id,
-      });
-    });
-
-    return ACC;
-  }, [] as any[]);
-
-  try {
-    await os.bulkUpdateData(osDomain, "seatool", data);
   } catch (error) {
     console.error(error);
   }
