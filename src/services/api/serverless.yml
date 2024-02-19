@@ -273,10 +273,6 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
-layers:
-  forms:
-    path: layers
-    description: Lambda Layer for forms function
 resources:
   Resources:
     ApiGateway400ErrorCount:
