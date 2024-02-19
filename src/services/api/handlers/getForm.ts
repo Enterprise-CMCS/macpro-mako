@@ -1,7 +1,7 @@
 import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
 import { convertRegexToString } from "shared-utils";
-import { webforms } from "../webforms";
+import { webformVersions } from "../webforms";
 
 type GetFormBody = {
   formId: string;
@@ -17,7 +17,6 @@ export const getForm = async (event: APIGatewayEvent) => {
   }
   try {
     const body = JSON.parse(event.body) as GetFormBody;
-
     if (!body.formId) {
       return response({
         statusCode: 400,
@@ -27,28 +26,26 @@ export const getForm = async (event: APIGatewayEvent) => {
 
     const id = body.formId.toUpperCase();
 
-    if (!webforms[id]) {
+    if (!webformVersions[id]) {
       return response({
         statusCode: 400,
         body: { error: "Form ID not found" },
       });
     }
 
-    let version;
+    let version = "v";
     if (body.formVersion) {
-      version = body.formVersion;
+      version += body.formVersion;
     } else {
-      version = getMaxVersion(id);
+      version += getMaxVersion(id);
     }
 
-    if (id && version && version in webforms[id]) {
-      const formObj = await webforms[id][version];
+    if (id && version) {
+      const formObj = await webformVersions[id][version];
       const cleanedForm = convertRegexToString(formObj);
       return response({
         statusCode: 200,
-        body: {
-          data: cleanedForm,
-        },
+        body: cleanedForm,
       });
     }
   } catch (error: any) {
@@ -69,7 +66,7 @@ export const getForm = async (event: APIGatewayEvent) => {
 };
 
 function getMaxVersion(id: string): string {
-  const webform = webforms[id];
+  const webform = webformVersions[id];
 
   const keys = Object.keys(webform);
   keys.sort();

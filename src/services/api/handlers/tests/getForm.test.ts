@@ -2,9 +2,9 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { getForm } from "../getForm";
 
 vi.mock("../../webforms", () => ({
-  webforms: {
+  webformVersions: {
     TESTFORM: {
-      "1.0": { name: "Test Form", version: "1.0" },
+      v022024: { name: "Test Form", data: "hello world" },
     },
   },
 }));
@@ -42,7 +42,7 @@ describe("forms handler", () => {
 
   it("returns 200 with form data if form ID and version are valid", async () => {
     const event = {
-      body: JSON.stringify({ formId: "TESTFORM", formVersion: "1.0" }),
+      body: JSON.stringify({ formId: "TESTFORM", formVersion: "022024" }),
     };
     const result = await getForm(event as any);
     expect(result.statusCode).toBe(200);

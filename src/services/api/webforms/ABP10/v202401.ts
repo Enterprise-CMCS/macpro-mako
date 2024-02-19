@@ -1,6 +1,6 @@
 import { FormSchema } from "shared-types";
 
-export const ABP10: FormSchema = {
+export const v202401: FormSchema = {
   header: "ABP 10: General assurances",
   sections: [
     {
@@ -98,5 +98,3 @@ export const ABP10: FormSchema = {
     },
   ],
 };
-
-export default ABP10;

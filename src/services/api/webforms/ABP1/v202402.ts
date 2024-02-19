@@ -1,6 +1,6 @@
 import { FormSchema } from "shared-types";
 
-const ABP1v202402: FormSchema = {
+export const v202402: FormSchema = {
   header: "ABP 1: Alternative Benefit Plan populations",
   sections: [
     {
@@ -1293,5 +1293,3 @@ const ABP1v202402: FormSchema = {
     // },
   ],
 };
-
-export default ABP1v202402;
