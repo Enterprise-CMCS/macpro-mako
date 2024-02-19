@@ -29,7 +29,6 @@
   "version": "0.0.0",
   "scripts": {
     "build": "tsc",
-    "buildLayers": "tsc -p layers",
     "lint": "eslint '**/*.{ts,js}'",
     "compileRepack": "tsc -p repack"
   }

@@ -1,6 +1,6 @@
 import { FormSchema } from "shared-types";
 
-const ABP1: FormSchema = {
+const ABP1v202402: FormSchema = {
   header: "ABP 1: Alternative Benefit Plan populations",
   sections: [
     {
@@ -50,10 +50,6 @@ const ABP1: FormSchema = {
                       {
                         label: "Transitional Medical Assistance",
                         value: "transitional_medical_assist",
-                      },
-                      {
-                        label: "Extended Medicaid Due to Earnings",
-                        value: "extend_medicaid_earnings",
                       },
                       {
                         label:
@@ -146,22 +142,6 @@ const ABP1: FormSchema = {
                         value: "disabled_adult_children",
                       },
                       {
-                        label: "Qualified Medicare Beneficiaries",
-                        value: "qualified_medicare_beneficiaries",
-                      },
-                      {
-                        label: "Qualified Disabled and Working Individuals",
-                        value: "qualified_disabled_working_individuals",
-                      },
-                      {
-                        label: "Specified Low Income Medicare Beneficiaries",
-                        value: "spec_low_income_medicare_beneficiaries",
-                      },
-                      {
-                        label: "Qualifying Individuals",
-                        value: "qualifying_individuals",
-                      },
-                      {
                         label:
                           "Optional Coverage of Parents and Other Caretaker Relatives",
                         value: "opt_coverage_parents_other_caretaker_relatives",
@@ -182,11 +162,6 @@ const ABP1: FormSchema = {
                       {
                         label: "Optional Targeted Low Income Children",
                         value: "opt_targeted_low_income_children",
-                      },
-                      {
-                        label:
-                          "Individuals Electing COBRA Continuation Coverage",
-                        value: "individuals_electing_COBRA_cont_converage",
                       },
                       {
                         label:
@@ -1319,4 +1294,4 @@ const ABP1: FormSchema = {
   ],
 };
 
-export const form = ABP1;
+export default ABP1v202402;

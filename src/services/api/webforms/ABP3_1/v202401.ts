@@ -1786,4 +1786,4 @@ const ABP3_1: FormSchema = {
   ],
 };
 
-export const form = ABP3_1;
+export default ABP3_1;

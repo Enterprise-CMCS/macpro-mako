@@ -68,10 +68,10 @@ custom:
       package:compileEvents:
         - yarn compileRepack
         - ./repack/repack.js
-  scripts:
-    hooks:
-      package:initialize: |
-        yarn buildLayers
+  # scripts:
+  #   hooks:
+  #     package:initialize: |
+  #       yarn buildLayers
 params:
   master:
     formsProvisionedConcurrency: 2
@@ -236,7 +236,7 @@ functions:
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
   forms:
-    handler: handlers/forms.handler
+    handler: handlers/getForm.handler
     layers:
       - !Ref FormsLambdaLayer
     maximumRetryAttempts: 0
@@ -246,7 +246,7 @@ functions:
     events:
       - http:
           path: /forms
-          method: get
+          method: post
           cors: true
     vpc:
       securityGroupIds:
