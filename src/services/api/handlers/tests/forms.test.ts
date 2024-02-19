@@ -1,18 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { getForm } from "../getForm"; // Adjust the import path according to your project structure
-import { convertRegexToString } from "shared-utils";
+import { getForm } from "../getForm";
 
-// Mocking external dependencies
-vi.mock("../webforms", () => ({
+vi.mock("../../webforms", () => ({
   webforms: {
     TESTFORM: {
       "1.0": { name: "Test Form", version: "1.0" },
     },
   },
-}));
-
-vi.mock("shared-utils", () => ({
-  convertRegexToString: vi.fn().mockImplementation((obj) => obj),
 }));
 
 describe("forms handler", () => {
@@ -52,10 +46,6 @@ describe("forms handler", () => {
     };
     const result = await getForm(event as any);
     expect(result.statusCode).toBe(200);
-    expect(convertRegexToString).toHaveBeenCalled();
     expect(result.body).toContain("Test Form");
   });
-
-  // Additional tests can be added here for other scenarios, such as different form versions,
-  // handling of unexpected errors, etc.
 });

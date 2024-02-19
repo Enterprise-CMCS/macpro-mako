@@ -27,7 +27,7 @@ export const getForm = async (event: APIGatewayEvent) => {
 
     const id = body.formId.toUpperCase();
 
-    if (!(id in webforms)) {
+    if (!webforms[id]) {
       return response({
         statusCode: 400,
         body: { error: "Form ID not found" },
