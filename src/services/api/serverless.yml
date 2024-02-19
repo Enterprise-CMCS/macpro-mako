@@ -237,8 +237,6 @@ functions:
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
   forms:
     handler: handlers/getForm.handler
-    layers:
-      - !Ref FormsLambdaLayer
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
@@ -256,8 +254,6 @@ functions:
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
   getAllForms:
     handler: handlers/getAllForms.handler
-    layers:
-      - !Ref FormsLambdaLayer
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
