@@ -35,6 +35,7 @@ provider:
             - s3:PutBucketPolicy
             - s3:ListBucketVersions
             - s3:DeleteObjectVersion
+            - s3:HeadObject
           Resource:
             - arn:aws:s3:::${self:custom.attachmentsBucketName}/*
             - arn:aws:s3:::${self:custom.clamDefsBucketName}/*
