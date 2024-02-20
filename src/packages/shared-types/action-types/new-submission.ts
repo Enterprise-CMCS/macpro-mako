@@ -7,7 +7,6 @@ export const onemacSchema = z.object({
   seaActionType: z.string().optional(), // Used by waivers.
   origin: z.string(),
   appkParentId: z.string().nullable().default(null),
-  isAppkParent: z.boolean().default(false),
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),

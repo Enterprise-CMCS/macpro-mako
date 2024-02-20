@@ -77,7 +77,6 @@ export const submit = async (event: APIGatewayEvent) => {
     const kafkaWaivers = waiverIds.map(async (WID, index) => {
       const data = {
         ...body,
-        ...(!index && { isAppkParent: true }),
         ...(!!index && { appkParentId: `${body.state}-${waiverIds[0]}` }),
       };
 

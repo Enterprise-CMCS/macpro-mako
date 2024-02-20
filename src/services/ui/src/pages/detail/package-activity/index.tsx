@@ -26,7 +26,7 @@ export const PA_RemoveAppkChild: FC<opensearch.changelog.Document> = (
       >
         {props.appkChildId}
       </Link>
-      <p>was removed</p>
+      <p>was withdrawn</p>
     </div>
   );
 };
@@ -312,7 +312,7 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
       case "respond-to-rai":
         return ["RAI response submitted", PA_ResponseSubmitted];
       case "remove-appk-child":
-        return [`Removed : ${props.appkChildId}`, PA_RemoveAppkChild];
+        return [`Waiver withdrawn : ${props.appkChildId}`, PA_RemoveAppkChild];
       default:
         return [BLANK_VALUE, PA_ResponseSubmitted];
     }

@@ -4,8 +4,7 @@ import { useOsSearch } from "@/api";
 import { useEffect, useState } from "react";
 import * as T from "@/components/Table";
 import { Button } from "@/components/Inputs";
-import {} from "@radix-ui/react-icons";
-import { Plug } from "lucide-react";
+import { Undo2 } from "lucide-react";
 
 import { useGetUser } from "@/api/useGetUser";
 import { SubmissionServiceParameters, submit } from "@/api/submissionService";
@@ -89,8 +88,13 @@ export const AppK = (props: opensearch.main.Document) => {
               <T.TableRow key={`${CHILD._id}`}>
                 <T.TableCell className="font-medium">{CHILD._id}</T.TableCell>
                 <T.TableCell>
-                  <Button size="sm" onClick={() => setRemoveChild(CHILD._id)}>
-                    <Plug /> Remove
+                  <Button
+                    size="sm"
+                    className="flex gap-1"
+                    onClick={() => setRemoveChild(CHILD._id)}
+                  >
+                    <Undo2 size={20} />
+                    Withdraw
                   </Button>
                 </T.TableCell>
               </T.TableRow>
