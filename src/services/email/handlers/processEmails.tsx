@@ -73,12 +73,15 @@ export const main = async (event: KafkaEvent) => {
           ...record,
           territory: record.id.toString().substring(0, 2),
           ToAddresses: email.sendTo.map(address => mapAddress(address)),
-          CcAddresses: email.ccList.map(address => mapAddress(address)),
           formattedFileList: formatAttachments("html"),
           textFileList: formatAttachments("text"),
           ninetyDaysDateNice: formatSubmissionDate(),
           proposedEffectiveDateNice: formatProposedEffectiveDate()
         };
+        // don't include CcAddresses attribute unless we use it
+        if (email?.ccList && email?.ccList.length > 0) {
+          emailData.CcAddresses = email.ccList.map(address => mapAddress(address));
+        }
 
         emailQueue.push(emailData);
       });
