@@ -42,7 +42,6 @@ services:
       CognitoUserPoolId: ${auth.UserPoolId}
       CognitoUserPoolClientId: ${auth.UserPoolClientId}
       CognitoUserPoolClientDomain: ${auth.UserPoolClientDomain}
-      BootstrapUsersPassword: ${auth.BootstrapUsersPassword}
   email:
     path: src/services/email
     params:
