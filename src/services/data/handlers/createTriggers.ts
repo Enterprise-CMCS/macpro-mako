@@ -5,6 +5,7 @@ import {
   GetEventSourceMappingCommand,
   LambdaClient,
 } from "@aws-sdk/client-lambda";
+import { randomUUID } from "crypto";
 
 export const handler: Handler = async (event, _, callback) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
@@ -17,8 +18,9 @@ export const handler: Handler = async (event, _, callback) => {
     const uuidsToCheck = [];
     for (const trigger of event.Triggers) {
       for (const topic of [...new Set(trigger.Topics)]) {
+        const consumerGroupId = `${event.ConsumerGroupPrefix}${randomUUID()}`;
         console.log(
-          `would create a mapping to trigger ${trigger.Function} off ${topic}`
+          `Creating a mapping to trigger ${trigger.Function} off ${topic} with consumer group ID ${consumerGroupId}`
         );
         const createEventSourceMappingParams = {
           BatchSize: trigger.BatchSize || 1000,
@@ -28,6 +30,9 @@ export const handler: Handler = async (event, _, callback) => {
             Endpoints: {
               KAFKA_BOOTSTRAP_SERVERS: event.BrokerString.split(","),
             },
+          },
+          SelfManagedKafkaEventSourceConfig: {
+            ConsumerGroupId: consumerGroupId,
           },
           SourceAccessConfigurations: [
             { Type: "VPC_SUBNET", URI: event.Subnets[0] },

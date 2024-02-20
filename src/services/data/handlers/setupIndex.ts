@@ -11,7 +11,7 @@ export const handler: Handler = async (_, __, callback) => {
     const indices = [
       "main",
       "changelog",
-      "seatool",
+      "insights",
       "types",
       "subtypes",
     ] as const;
