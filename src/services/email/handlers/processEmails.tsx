@@ -14,6 +14,14 @@ const emailsToSend = {
     "templateBase": "new-submission-medicaid-spa-state",
     "sendTo": ["submitterEmail"],
   }],
+  "new-submission-chip-spa": [{
+    "templateBase": "new-submission-chip-spa-cms",
+    "sendTo": [process.env.chipToEmail],
+    "ccList": [process.env.chipCCList]
+  }, {
+    "templateBase": "new-submission-chip-spa-state",
+    "sendTo": ["submitterEmail"],
+  }],
 }
 
 const createSendTemplatedEmailCommand = (data) =>
