@@ -5,6 +5,7 @@
       "outputs": ["dist/**"],
       "cache": false
     },
+    "coverage": {},
     "lint": {
       "cache": false
     },
