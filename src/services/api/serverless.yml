@@ -68,10 +68,6 @@ custom:
       package:compileEvents:
         - yarn compileRepack
         - ./repack/repack.js
-  scripts:
-    hooks:
-      package:initialize: |
-        yarn buildLayers
 params:
   master:
     formsProvisionedConcurrency: 2
@@ -236,9 +232,7 @@ functions:
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
   forms:
-    handler: handlers/forms.handler
-    layers:
-      - !Ref FormsLambdaLayer
+    handler: handlers/getForm.handler
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
@@ -246,7 +240,7 @@ functions:
     events:
       - http:
           path: /forms
-          method: get
+          method: post
           cors: true
     vpc:
       securityGroupIds:
@@ -256,8 +250,6 @@ functions:
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
   getAllForms:
     handler: handlers/getAllForms.handler
-    layers:
-      - !Ref FormsLambdaLayer
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
@@ -273,10 +265,6 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
-layers:
-  forms:
-    path: layers
-    description: Lambda Layer for forms function
 resources:
   Resources:
     ApiGateway400ErrorCount:
