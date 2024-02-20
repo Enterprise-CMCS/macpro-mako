@@ -12,6 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:gui": "vitest --ui",
+    "coverage": "vitest run --coverage",
     "e2e:ui": "playwright test --ui"
   },
   "dependencies": {

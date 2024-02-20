@@ -9,6 +9,7 @@ import { Footer } from "./footer";
 import { Link, useParams } from "../Routing";
 import { useReadOnlyUser } from "./useReadOnlyUser";
 import { useState } from "react";
+import { FormSchema } from "shared-types";
 
 export const Webforms = () => {
   return (
@@ -64,7 +65,7 @@ export const Webforms = () => {
 interface WebformBodyProps {
   id: string;
   version: string;
-  data: any;
+  data: FormSchema;
   readonly: boolean;
   values: any;
 }
