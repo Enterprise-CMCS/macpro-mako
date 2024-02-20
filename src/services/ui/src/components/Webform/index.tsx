@@ -11,6 +11,7 @@ import { useReadOnlyUser } from "./useReadOnlyUser";
 import { useLDClient } from "launchdarkly-react-client-sdk";
 import { featureFlags } from "shared-utils";
 import { useState } from "react";
+import { FormSchema } from "shared-types";
 
 export const Webforms = () => {
   function maintenanceBannerForVariation(flag: string): React.ReactNode {
@@ -88,7 +89,7 @@ export const Webforms = () => {
 interface WebformBodyProps {
   id: string;
   version: string;
-  data: any;
+  data: FormSchema;
   readonly: boolean;
   values: any;
 }
