@@ -1945,8 +1945,8 @@ Then("select {string} as the Temporary Extension Type", (whichType) => {
 Then("verify Form Intro Text is {string}", (introText) => {
   OneMacFormPage.verifyFormIntro(introText);
 });
-Then("verify ID Label is {string}", (idLabel) => {
-  OneMacFormPage.verifyIDLabelIs(idLabel);
+Then("verify ID Label is {string}", (label) => {
+  OneMacFormPage.verifyIDLabelIs(label);
 });
 Then("verify Type is {string}", (string) => {
   OneMacFormPage.verifyTypeIs(string);

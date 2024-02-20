@@ -24,7 +24,7 @@ const amendmentTitleField = "#title";
 const tempExtensionTypeHeader =
   "//h3[contains(text(),'Temporary Extension Type')]";
 const tempExtensionTypeBtn = "#temp-ext-type";
-const formIntroElement = "#form-intro";
+const formIntroElement = "form p:first-of-type";
 
 const labelElementFromLabel = {
   "Additional Information": "#additional-information-label",
@@ -84,6 +84,8 @@ const addFileBTN = "input[type='file']";
 
 const submissionModal = "*[role='dialog'][data-state='open']";
 const goToDashBoardBtn = "//button[text()='Go to Dashboard']";
+
+const withdrawLabel = "#package-id-label";
 
 //internal function for proposed effective date
 function caculateMonthsInFuture(numMonths) {
@@ -146,9 +148,8 @@ export class oneMacFormPage {
   clearIDInputBox() {
     cy.get(IDInputBox).clear();
   }
-  verifyIDLabelIs(idLabel) {
-    elementFromLabel[idLabel] === idElement &&
-      cy.xpath(`//h3[text()='${idLabel}']`).should("be.visible");
+  verifyIDLabelIs(label) {
+      cy.get(withdrawLabel).should("be.visible").and("contain", label);
   }
   verifyIDErrorMessageIsNotDisplayed() {
     cy.get(idElement).parent().next(errorMessageID).should("not.exist");
@@ -175,7 +176,7 @@ export class oneMacFormPage {
     cy.get(errorMessageParentID).contains(errorMessage);
   }
   verifyTypeIs(s) {
-    cy.xpath(typeHeader).next().contains(s);
+    cy.get(withdrawLabel).should("have.text", "Type").next().contains(s);
   }
   verifyWaiverAuthorityContains(whatAuthority) {
     cy.xpath(waiverAuthorityLabel).next("div").contains(whatAuthority);
@@ -322,7 +323,7 @@ export class oneMacFormPage {
     cy.get(modalText).contains(s);
   }
   verifyFormIntro(introText) {
-    cy.get(formIntroElement).should("be.visible").contains(introText);
+    cy.get(formIntroElement).first().should("be.visible").contains(introText);
   }
   verifyAttachmentType(attachmentType) {
     cy.xpath(`//h3[text()='${attachmentType}']`).should("be.visible");
