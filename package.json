@@ -44,6 +44,7 @@
     "@vitest/ui": "^0.29.8",
     "aws-sdk-client-mock": "^2.0.1",
     "esbuild": "^0.19.3",
+    "msw": "^2.2.1",
     "prettier": "2.7.1",
     "semantic-release": "^21.0.1",
     "serverless": "^3.38.0",
