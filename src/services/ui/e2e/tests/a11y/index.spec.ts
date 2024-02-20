@@ -39,10 +39,11 @@ test.describe("test a11y on static routes", () => {
 const webformRoutes = [
   "/webforms",
   "/guides/abp",
-  "/webform/abp10/1",
-  "/webform/abp3_1/1",
-  "/webform/abp3/1",
-  "/webform/abp1/1",
+  "/webform/abp10/202401",
+  "/webform/abp3_1/202401",
+  "/webform/abp3/202401",
+  "/webform/abp1/202401",
+  "/webform/abp1/202402",
 ];
 
 test.describe("test a11y on webform routes", () => {

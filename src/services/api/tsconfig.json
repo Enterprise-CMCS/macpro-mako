@@ -4,7 +4,8 @@
     "moduleResolution": "node",
     "module": "commonjs",
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "noEmit": true
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules"]

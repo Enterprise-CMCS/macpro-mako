@@ -7,8 +7,8 @@ export const getForm = async (
   formId: string,
   formVersion?: string
 ): Promise<FormSchema> => {
-  const form = await API.get("os", "/forms", {
-    queryStringParameters: { formId, formVersion },
+  const form = await API.post("os", "/forms", {
+    body: { formId, formVersion },
   });
 
   return reInsertRegex(form);

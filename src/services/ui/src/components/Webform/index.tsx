@@ -14,6 +14,7 @@ import {
 import { Footer } from "./footer";
 import { useGetAllForms, useGetForm } from "@/api";
 import { useReadOnlyUser } from "./useReadOnlyUser";
+import { FormSchema } from "shared-types";
 
 export const Webforms = () => {
   const { data, isLoading } = useGetAllForms();
@@ -74,7 +75,7 @@ export const Webforms = () => {
 interface WebformBodyProps {
   id: string;
   version: string;
-  data: any;
+  data: FormSchema;
   readonly: boolean;
   values: any;
 }
