@@ -5,6 +5,8 @@ import axios from "axios";
 import { aws4Interceptor } from "aws4-axios";
 import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 import { opensearch } from "shared-types";
+import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
+
 let client: Client;
 
 export async function getClient(host: string) {
@@ -40,6 +42,11 @@ export async function bulkUpdateData(
   index: opensearch.Index,
   arrayOfDocuments: any
 ) {
+  // Skip if no documents have been supplied
+  if (arrayOfDocuments.length === 0) {
+    console.log("No documents to update. Skipping bulk update operation.");
+    return;
+  }
   client = client || (await getClient(host));
   var response = await client.helpers.bulk({
     datasource: arrayOfDocuments,
@@ -59,9 +66,18 @@ export async function bulkUpdateData(
 
 export async function deleteIndex(host: string, index: opensearch.Index) {
   client = client || (await getClient(host));
-  const exists = await client.indices.exists({ index });
-  if (!exists) return;
-  await client.indices.delete({ index });
+  try {
+    await client.indices.delete({ index });
+  } catch (error) {
+    if (
+      error instanceof OpensearchErrors.ResponseError &&
+      error.message.includes("index_not_found_exception")
+    ) {
+      console.log(`Index ${index} not found.  Continuing...`);
+    } else {
+      throw error;
+    }
+  }
 }
 
 export async function mapRole(

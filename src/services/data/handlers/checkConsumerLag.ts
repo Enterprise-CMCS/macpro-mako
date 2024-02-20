@@ -1,12 +1,11 @@
 import { Handler } from "aws-lambda";
 import { Kafka } from "kafkajs";
-import { LambdaClient, ListEventSourceMappingsCommand } from "@aws-sdk/client-lambda";
+import {
+  LambdaClient,
+  ListEventSourceMappingsCommand,
+} from "@aws-sdk/client-lambda";
 
-export const handler: Handler = async (
-  event, 
-  _, 
-  callback
-) => {
+export const handler: Handler = async (event, _, callback) => {
   const response = {
     statusCode: 200,
     stable: false,
@@ -17,23 +16,28 @@ export const handler: Handler = async (
   try {
     const triggerInfo: any[] = [];
     const lambdaClient = new LambdaClient({});
-    for(const trigger of event.Triggers) {
-      for(const topic of [...new Set(trigger.Topics)]) {
-        console.log(`Getting consumer groups for function: ${trigger.Function} and topic ${topic}`);
+    for (const trigger of event.Triggers) {
+      for (const topic of [...new Set(trigger.Topics)]) {
+        console.log(
+          `Getting consumer groups for function: ${trigger.Function} and topic ${topic}`
+        );
         const response = await lambdaClient.send(
           new ListEventSourceMappingsCommand({ FunctionName: trigger.Function })
         );
-        if(!response.EventSourceMappings){
+        if (!response.EventSourceMappings) {
           throw `ERROR:  No event source mapping found for function ${trigger.Function} and topic ${topic}`;
         }
-        const mappingForCurrentTopic = response.EventSourceMappings.filter(mapping => 
-          mapping.Topics && mapping.Topics.includes(topic as string)
+        const mappingForCurrentTopic = response.EventSourceMappings.filter(
+          (mapping) =>
+            mapping.Topics && mapping.Topics.includes(topic as string)
         );
-        if(mappingForCurrentTopic.length > 1){
+        if (mappingForCurrentTopic.length > 1) {
           throw `ERROR:  Multiple event source mappings found for function ${trigger.Function} and topic ${topic}`;
         }
         triggerInfo.push({
-          groupId: mappingForCurrentTopic[0].SelfManagedKafkaEventSourceConfig?.ConsumerGroupId,
+          groupId:
+            mappingForCurrentTopic[0].SelfManagedKafkaEventSourceConfig
+              ?.ConsumerGroupId,
           topics: [topic],
         });
       }
@@ -45,7 +49,7 @@ export const handler: Handler = async (
     });
     const admin = await kafka.admin();
     await admin.connect();
-    
+
     // Get status for each consumer group
     const info = await admin.describeGroups(triggerInfo.map((a) => a.groupId));
     const statuses = info.groups.map((a) => a.state.toString());
@@ -53,7 +57,7 @@ export const handler: Handler = async (
     const offsets: { [key: string]: any } = {};
     for (const trigger of triggerInfo) {
       for (const topic of trigger.topics) {
-        const groupId :string = trigger.groupId;
+        const groupId: string = trigger.groupId;
         const topicOffsets = await admin.fetchTopicOffsets(topic);
         const groupOffsets = await admin.fetchOffsets({
           groupId,
@@ -66,12 +70,16 @@ export const handler: Handler = async (
           latestOffset,
           currentOffset,
         };
-        console.log(`Topic: ${topic}, Group: ${groupId}, Latest Offset: ${latestOffset}, Current Offset: ${currentOffset}`);
+        console.log(
+          `Topic: ${topic}, Group: ${groupId}, Latest Offset: ${latestOffset}, Current Offset: ${currentOffset}`
+        );
       }
     }
     await admin.disconnect();
-    response.stable = statuses.every(status => status === "Stable");
-    response.current = Object.values(offsets).every(o => o.latestOffset === o.currentOffset);
+    response.stable = statuses.every((status) => status === "Stable");
+    response.current = Object.values(offsets).every(
+      (o) => o.latestOffset === o.currentOffset
+    );
     response.ready = response.stable && response.current;
   } catch (error: any) {
     response.statusCode = 500;

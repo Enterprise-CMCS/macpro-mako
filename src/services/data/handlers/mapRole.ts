@@ -8,9 +8,14 @@ export const handler: Handler = async (event, _, callback) => {
   };
   let errorResponse = null;
   try {
-    const requiredEnvVars = ["osDomain", "masterRoleToAssume", "osRoleName", "iamRoleName"];
+    const requiredEnvVars = [
+      "osDomain",
+      "masterRoleToAssume",
+      "osRoleName",
+      "iamRoleName",
+    ];
 
-    requiredEnvVars.forEach(envVar => {
+    requiredEnvVars.forEach((envVar) => {
       if (!process.env[envVar]) {
         throw `ERROR: process.env.${envVar} is required, but was not supplied.`;
       }
