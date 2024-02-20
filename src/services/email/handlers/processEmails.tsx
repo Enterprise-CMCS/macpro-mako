@@ -1,10 +1,12 @@
 import { DateTime } from "luxon";
 import { decode } from "base-64";
 import { SESClient, SendTemplatedEmailCommand } from "@aws-sdk/client-ses";
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm"; // ES Modules import
 
 import { KafkaEvent } from "shared-types";
 
 const SES = new SESClient({ region: process.env.region });
+const SSM = new SSMClient({ region: process.env.region });
 
 const emailsToSend = {
   "new-submission-medicaid-spa": [{
@@ -17,7 +19,7 @@ const emailsToSend = {
   "new-submission-chip-spa": [{
     "templateBase": "new-submission-chip-spa-cms",
     "sendTo": [process.env.chipToEmail],
-    "ccList": [process.env.chipCCList]
+    "ccList": [process.env.chipCcList]
   }, {
     "templateBase": "new-submission-chip-spa-state",
     "sendTo": ["submitterEmail"],
@@ -38,7 +40,13 @@ const createSendTemplatedEmailCommand = (data) =>
 
 export const main = async (event: KafkaEvent) => {
   console.log("Received event (stringified):", JSON.stringify(event, null, 4));
-
+  const input = { // GetParameterRequest
+    Name: "/om-email/recipientLists",
+  };
+  const command = new GetParameterCommand(input);
+  const response = await SSM.send(command);
+  console.log("SSM Param: ", response);
+  
   const emailQueue: any[] = [];
 
   Object.values(event.records).forEach((source) =>
@@ -65,6 +73,7 @@ export const main = async (event: KafkaEvent) => {
           ...record,
           territory: record.id.toString().substring(0, 2),
           ToAddresses: email.sendTo.map(address => mapAddress(address)),
+          CcAddresses: email.ccList.map(address => mapAddress(address)),
           formattedFileList: formatAttachments("html"),
           textFileList: formatAttachments("text"),
           ninetyDaysDateNice: formatSubmissionDate(),
