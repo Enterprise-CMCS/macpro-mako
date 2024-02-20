@@ -25,7 +25,7 @@ test.describe("test a11y on static routes", () => {
       page,
     }) => {
       await page.goto(route);
-      await page.waitForTimeout(4000);
+      await page.waitForTimeout(2000);
       const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
       console.log(
         `${route} violations: `,
@@ -51,7 +51,7 @@ test.describe("test a11y on webform routes", () => {
       page,
     }) => {
       await page.goto(route);
-      await page.waitForTimeout(4000);
+      await page.waitForTimeout(2000);
       const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
       console.log(
         `${route} violations: `,
