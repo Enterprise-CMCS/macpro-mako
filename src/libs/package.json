@@ -17,8 +17,8 @@
     "vitest": "^0.30.1"
   },
   "scripts": {
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
     "test:gui": "vitest --ui"
   }
 }

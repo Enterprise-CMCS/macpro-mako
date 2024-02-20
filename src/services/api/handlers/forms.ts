@@ -11,7 +11,7 @@ export const forms = async (event: APIGatewayEvent) => {
     if (!formId) {
       return response({
         statusCode: 400,
-        body: JSON.stringify({ error: "File ID was not provided" }),
+        body: { error: "File ID was not provided" },
       });
     }
 
@@ -20,9 +20,9 @@ export const forms = async (event: APIGatewayEvent) => {
     if (!filePath) {
       return response({
         statusCode: 404,
-        body: JSON.stringify({
+        body: {
           error: "No file was found with provided formId and formVersion",
-        }),
+        },
       });
     }
 
@@ -31,9 +31,9 @@ export const forms = async (event: APIGatewayEvent) => {
     if (!jsonData) {
       return response({
         statusCode: 404,
-        body: JSON.stringify({
+        body: {
           error: `File found for ${formId}, but it's empty`,
-        }),
+        },
       });
     }
 
@@ -53,20 +53,20 @@ export const forms = async (event: APIGatewayEvent) => {
       console.error("Error importing module:", importError);
       return response({
         statusCode: 500,
-        body: JSON.stringify({
+        body: {
           error: importError.message
             ? importError.message
             : "Internal server error",
-        }),
+        },
       });
     }
   } catch (error: any) {
     console.error("Error:", error);
     return response({
       statusCode: 502,
-      body: JSON.stringify({
+      body: {
         error: error.message ? error.message : "Internal server error",
-      }),
+      },
     });
   }
 };
