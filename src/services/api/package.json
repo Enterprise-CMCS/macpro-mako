@@ -30,6 +30,8 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint '**/*.{ts,js}'",
-    "compileRepack": "tsc -p repack"
+    "compileRepack": "tsc -p repack",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   }
 }
