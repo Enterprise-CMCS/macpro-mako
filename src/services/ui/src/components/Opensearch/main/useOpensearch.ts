@@ -11,7 +11,7 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
   spas: {
     filters: [
       {
-        field: "authority.keyword",
+        field: "flavor.keyword",
         type: "terms",
         value: ["CHIP", "MEDICAID"],
         prefix: "must",
@@ -21,7 +21,7 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
   waivers: {
     filters: [
       {
-        field: "authority.keyword",
+        field: "flavor.keyword",
         type: "terms",
         value: ["WAIVER"],
         prefix: "must",
@@ -85,9 +85,9 @@ export const useOsAggregate = () => {
             size: 60,
           },
           {
-            field: "planType.keyword",
+            field: "authority.keyword",
             type: "terms",
-            name: "planType.keyword",
+            name: "authority.keyword",
             size: 10,
           },
           {

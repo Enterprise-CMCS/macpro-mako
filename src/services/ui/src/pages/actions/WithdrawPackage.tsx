@@ -1,4 +1,4 @@
-import { PlanType, opensearch } from "shared-types";
+import { Authority, opensearch } from "shared-types";
 import { z } from "zod";
 import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -82,7 +82,7 @@ export const WithdrawPackage = ({
           data: { ...data, id: id! },
           endpoint: buildActionUrl(type!),
           user,
-          authority: item?._source.authority as PlanType,
+          authority: item?._source.authority as Authority,
         });
         alert.setContent({
           header: "Package withdrawn",
@@ -107,7 +107,7 @@ export const WithdrawPackage = ({
       <form>
         {form.formState.isSubmitting && <LoadingSpinner />}
         {/* Intro */}
-        <ActionFormIntro title={`Withdraw ${item._source.planType} Package`}>
+        <ActionFormIntro title={`Withdraw ${item._source.authority} Package`}>
           <RequiredIndicator /> Indicates a required field
           <p>
             Complete this form to withdraw a package. Once complete, you will
@@ -122,7 +122,7 @@ export const WithdrawPackage = ({
         <h3 className="font-bold text-2xl font-sans">Attachments</h3>
         {
           attachmentInstructions[
-            item!._source.planType as string as SetupOptions
+            item!._source.authority as string as SetupOptions
           ]
         }
         <AttachmentsSizeTypesDesc faqLink={"/faq"} />
@@ -150,7 +150,7 @@ export const WithdrawPackage = ({
           render={SlotAdditionalInfo({
             label:
               addlInfoInstructions[
-                item!._source.planType as string as SetupOptions
+                item!._source.authority as string as SetupOptions
               ],
             description: "4,000 characters allowed",
             className: "pt-6",
