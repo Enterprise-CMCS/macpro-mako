@@ -92,7 +92,8 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       if (
         result.data.authorityId &&
         validAuthorityIds.includes(result.data.authorityId) &&
-        result.data.seatoolStatus
+        typeof result.data.seatoolStatus === "string" &&
+        result.data.seatoolStatus != "Unknown"
       ) {
         const type = result.data.typeId
           ? await getType(result.data.typeId)
