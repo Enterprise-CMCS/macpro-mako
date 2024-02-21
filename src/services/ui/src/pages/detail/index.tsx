@@ -6,7 +6,7 @@ import {
   LoadingSpinner,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { opensearch, UserRoles } from "shared-types";
+import { Authority, opensearch, UserRoles } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -80,7 +80,7 @@ const PackageActionsCard = ({
   authority,
 }: {
   id: string;
-  authority: string;
+  authority: Authority;
 }) => {
   const { data, isLoading } = useGetPackageActions(id, { retry: false });
   if (isLoading) return <LoadingSpinner />;
@@ -96,7 +96,7 @@ const PackageActionsCard = ({
           <ul>
             {data.actions.map((type, idx) => {
               console.log("hello world");
-              if (authority === "WAIVER") {
+              if (authority === Authority["1915b"]) {
                 return (
                   <Link
                     path="/action/waiver/:id/:type"
@@ -163,7 +163,7 @@ export const DetailsContent = ({
           <StatusCard {...data._source} />
           <PackageActionsCard
             id={data._id}
-            authority={data._source.authority ?? ""}
+            authority={data._source.authority!}
           />
         </section>
         <div className="flex flex-col gap-3">

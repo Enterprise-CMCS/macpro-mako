@@ -1,6 +1,6 @@
 import * as POP from "@/components/Popover";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { CognitoUserAttributes, opensearch } from "shared-types";
+import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
 import { getAvailableActions } from "shared-utils";
 import { cn } from "@/lib";
 import { mapActionLabel } from "@/utils";
@@ -48,7 +48,9 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
           <POP.PopoverContent>
             <div className="flex flex-col">
               {actions.map((action, idx) => {
-                if (data.authority === "WAIVER") {
+                console.log(data.authority, Authority.WAIVER);
+                if (data.authority === Authority["1915b"]) {
+                  console.log("hello");
                   return (
                     <TypedLink
                       path="/action/waiver/:id/:type"

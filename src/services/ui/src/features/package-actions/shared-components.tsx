@@ -260,9 +260,12 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
 
 // Utility Functions
 const filterUndefinedValues = (obj: Record<any, any>) => {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([key, value]) => value !== undefined)
-  );
+  if (obj) {
+    return Object.fromEntries(
+      Object.entries(obj).filter(([key, value]) => value !== undefined)
+    );
+  }
+  return {};
 };
 
 // Types
