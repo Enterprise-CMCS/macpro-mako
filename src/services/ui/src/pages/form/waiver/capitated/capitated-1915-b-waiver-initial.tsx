@@ -13,7 +13,7 @@ import {
   SectionCard,
 } from "@/components";
 import { submit } from "@/api/submissionService";
-import { PlanType } from "shared-types";
+import { PlanType, SEATOOL_STATUS } from "shared-types";
 import {
   zAdditionalInfo,
   zAttachmentOptional,
@@ -24,10 +24,60 @@ import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { useModalContext } from "@/components/Context/modalContext";
 import { useAlertContext } from "@/components/Context/alertContext";
-import { useCallback } from "react";
-import { useNavigate } from "@/components/Routing";
+import { useCallback, useRef, useState } from "react";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
+import { queryClient } from "@/router";
+import { useQuery } from "@tanstack/react-query";
+import { getItem } from "@/api";
+import { useNavigate } from "@/components/Routing";
+import { Route } from "@/components/Routing/types";
+
+type SeaStatus = (typeof SEATOOL_STATUS)[keyof typeof SEATOOL_STATUS];
+
+const useHandleSyncData = ({
+  expectedStatus,
+  path,
+}: {
+  expectedStatus: SeaStatus;
+  path: Route;
+}) => {
+  const navigate = useNavigate();
+  const [runQuery, setRunQuery] = useState(false);
+  const [id, setId] = useState("");
+
+  useQuery({
+    queryKey: ["record", id],
+    queryFn: () => getItem(id),
+    refetchInterval: (data, query) => {
+      // don't want to hammer it if nothing is happening (likely something is wrong at this point)
+      if (query.state.dataUpdateCount > 10) {
+        navigate({ path });
+        return false;
+      }
+
+      console.log("status in seatool is: ", data?._source.seatoolStatus);
+      console.log("status expected is: ", expectedStatus);
+
+      // return to dashboard when the status has successfuly updated
+      if (data && data._source.seatoolStatus === expectedStatus) {
+        console.log("it got here");
+        navigate({ path });
+        return false;
+      }
+
+      // otherwise try again in two seconds
+      return 2000; //aka 2 seconds
+    },
+    enabled: runQuery,
+  });
+
+  // return a callback function that the user executes to kick the above function off and start polling
+  return (id: string) => {
+    setRunQuery(true);
+    setId(id);
+  };
+};
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
@@ -70,6 +120,10 @@ const attachmentList = [
 ] as const;
 
 export const Capitated1915BWaiverInitialPage = () => {
+  const checkStatus = useHandleSyncData({
+    expectedStatus: "Pending",
+    path: "/dashboard",
+  });
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
@@ -104,7 +158,8 @@ export const Capitated1915BWaiverInitialPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard"
       );
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+      checkStatus(formData.id);
+      // navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
       console.error(e);
     }
@@ -131,9 +186,7 @@ export const Capitated1915BWaiverInitialPage = () => {
               <Inputs.FormLabel className="font-semibold">
                 Waiver Authority
               </Inputs.FormLabel>
-              <span className="text-lg font-thin">
-                1915(b)
-              </span>
+              <span className="text-lg font-thin">1915(b)</span>
             </div>
             <Inputs.FormField
               control={form.control}
