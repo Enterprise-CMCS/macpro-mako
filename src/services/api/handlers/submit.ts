@@ -16,7 +16,7 @@ const config = {
 } as sql.config;
 
 import { Kafka, Message } from "kafkajs";
-import { PlanType, onemacSchema } from "shared-types";
+import { Authority, onemacSchema } from "shared-types";
 import {
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
@@ -56,9 +56,9 @@ export const submit = async (event: APIGatewayEvent) => {
     }
 
     const activeSubmissionTypes = [
-      PlanType.CHIP_SPA,
-      PlanType.MED_SPA,
-      PlanType["1915b"],
+      Authority.CHIP_SPA,
+      Authority.MED_SPA,
+      Authority["1915b"],
     ];
     if (!activeSubmissionTypes.includes(body.authority)) {
       return response({
@@ -98,7 +98,7 @@ export const submit = async (event: APIGatewayEvent) => {
 
     const result = await sql.query(query);
     console.log(result);
-    if (body.authority == PlanType["1915b"]) {
+    if (body.authority == Authority["1915b"]) {
       const actionTypeQuery = `
         UPDATE SEA.dbo.State_Plan
         SET Action_Type = (

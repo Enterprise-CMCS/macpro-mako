@@ -27,7 +27,7 @@ jobs:
       STAGE_NAME: ${{ inputs.environment || (startsWith(github.event.ref, 'snyk-') && 'snyk' || github.event.ref) }}
     permissions:
       id-token: write
-      contents: read
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
