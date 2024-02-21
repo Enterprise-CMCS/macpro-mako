@@ -4,7 +4,7 @@ import { attachmentSchema } from "../attachments";
 // This is the event schema for ne submissions from our system
 export const onemacSchema = z.object({
   authority: z.string(),
-  seaActionType: z.string().optional(), // Used by waivers.
+  seaActionType: z.string().optional(), // Used by waivers and chip spas
   origin: z.string(),
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),

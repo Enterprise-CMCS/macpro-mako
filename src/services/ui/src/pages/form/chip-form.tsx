@@ -41,6 +41,7 @@ const formSchema = z.object({
     other: zAttachmentOptional,
   }),
   proposedEffectiveDate: z.date(),
+  seaActionType: z.string().default("Amend"),
 });
 type ChipFormSchema = z.infer<typeof formSchema>;
 
