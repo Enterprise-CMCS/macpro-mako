@@ -158,9 +158,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
               <Inputs.FormLabel className="font-semibold">
                 Waiver Authority
               </Inputs.FormLabel>
-              <span className="text-lg font-thin">
-                1915(b)
-              </span>
+              <span className="text-lg font-thin">1915(b)</span>
             </div>
             <Inputs.FormField
               control={form.control}
@@ -262,10 +260,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
                       {label}
                       {required ? <Inputs.RequiredIndicator /> : null}
                     </Inputs.FormLabel>
-                    <Inputs.Upload
-                      files={field?.value ?? []}
-                      setFiles={field.onChange}
-                    />
+                    <Inputs.Upload {...field} />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}

@@ -1,6 +1,6 @@
 import { FormSchema } from "shared-types";
 
-const ABP11: FormSchema = {
+export const v202401: FormSchema = {
   header: "ABP 11: Payment methodology",
   sections: [
     {
@@ -38,5 +38,3 @@ const ABP11: FormSchema = {
     },
   ],
 };
-
-export const form = ABP11;
