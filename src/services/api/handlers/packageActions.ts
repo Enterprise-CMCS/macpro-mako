@@ -24,6 +24,7 @@ import {
   WithdrawPackage,
   toggleWithdrawRaiEnabledSchema,
   ToggleWithdrawRaiEnabled,
+  Authority,
 } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
@@ -121,7 +122,7 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
       await transaction.begin();
       // How we withdraw an RAI Response varies based on authority or not
       // Medicaid is handled differently from the rest.
-      if (body.authority == "MEDICAID") {
+      if (body.authority.toLowerCase() == Authority.MED_SPA) {
         // Set Received Date to null
         await transaction.request().query(`
           UPDATE SEA.dbo.RAI
