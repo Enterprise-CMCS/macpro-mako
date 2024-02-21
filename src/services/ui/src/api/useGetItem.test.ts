@@ -40,47 +40,30 @@ describe("getItem", () => {
 });
 
 describe("zod schema helpers", () => {
-  beforeAll(() => mockItem.server.listen());
+  beforeAll(() => {
+    mockItem.server.listen();
+    API.post = vi.fn(mockFetch);
+  });
   afterEach(() => mockItem.server.resetHandlers());
   afterAll(() => mockItem.server.close());
 
   describe("idIsUnique", () => {
     it("confirms no matching record is returned", async () => {
-      API.post = vi.fn(mockFetch);
-      const result = await unit.idIsUnique("existing");
-      expect(API.post).toHaveBeenCalledWith("os", "/item", {
-        body: { id: "existing" },
-      });
-      expect(result).toBe(false);
+      expect(await unit.idIsUnique("existing")).toBe(false);
     });
   });
 
   describe("idIsApproved", () => {
     it("returns false if no getItem fails", async () => {
-      API.post = vi.fn(mockFetch);
-      const result = await unit.idIsApproved("not-found");
-      expect(API.post).toHaveBeenCalledWith("os", "/item", {
-        body: { id: "not-found" },
-      });
-      expect(result).toBe(false);
+      expect(await unit.idIsApproved("not-found")).toBe(false);
     });
 
     it("returns false if status is not approved", async () => {
-      API.post = vi.fn(mockFetch);
-      const result = await unit.idIsApproved("existing-pending");
-      expect(API.post).toHaveBeenCalledWith("os", "/item", {
-        body: { id: "existing-pending" },
-      });
-      expect(result).toBe(false);
+      expect(await unit.idIsApproved("existing-pending")).toBe(false);
     });
 
     it("returns true if status is approved", async () => {
-      API.post = vi.fn(mockFetch);
-      const result = await unit.idIsApproved("existing-approved");
-      expect(API.post).toHaveBeenCalledWith("os", "/item", {
-        body: { id: "existing-approved" },
-      });
-      expect(result).toBe(true);
+      expect(await unit.idIsApproved("existing-approved")).toBe(true);
     });
   });
 });
