@@ -16,6 +16,13 @@ const emailsToSend = {
     "templateBase": "new-submission-medicaid-spa-state",
     "sendTo": ["submitterEmail"],
   }],
+  "respond-to-rai-medicaid-spa": [{
+    "templateBase": "respond-to-rai-medicaid-spa-cms",
+    "sendTo": [process.env.osgEmail],
+  }, {
+    "templateBase": "respond-to-rai-medicaid-spa-state",
+    "sendTo": ["submitterEmail"],
+  }],
   "new-submission-chip-spa": [{
     "templateBase": "new-submission-chip-spa-cms",
     "sendTo": [process.env.chipToEmail],
@@ -52,8 +59,12 @@ export const main = async (event: KafkaEvent) => {
   const command = new GetParameterCommand(input);
   const response = await SSM.send(command);
   console.log("SSM Param: ", response);
+  try {
   const recipients = JSON.parse(response?.Parameter?.Value ?? defaultRecipients);
   console.log("Recipients: ", recipients);
+  } catch (error) {
+    console.log("SSM param error is: ", error);
+  }
   
   const emailQueue: any[] = [];
 
@@ -65,7 +76,7 @@ export const main = async (event: KafkaEvent) => {
       if (record?.origin !== "micro") return;
       if (!record?.actionType) record.actionType = "new-submission";
 
-      const configKey = `${record.actionType}-${record.authority.replace(/\s+/g, "-")}`;
+      const configKey = `${record.actionType}-${record.authority.toLowerCase().replace(/\s+/g, "-")}`;
       const emailConfig = emailsToSend[configKey];
 
       // Early return if there's no configuration for the given key.
