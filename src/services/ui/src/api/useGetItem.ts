@@ -3,13 +3,14 @@ import { API } from "aws-amplify";
 import { opensearch, ReactQueryApiError, SEATOOL_STATUS } from "shared-types";
 
 export const getItem = async (
-  id: string
+  id: string,
+  ignoreCase = false
 ): Promise<opensearch.main.ItemResult> =>
-  await API.post("os", "/item", { body: { id } });
+  await API.post("os", "/item", { body: { id, ignoreCase } });
 
 export const idIsUnique = async (id: string) => {
   try {
-    await getItem(id);
+    await getItem(id, true);
     return false;
   } catch (e) {
     return true;
