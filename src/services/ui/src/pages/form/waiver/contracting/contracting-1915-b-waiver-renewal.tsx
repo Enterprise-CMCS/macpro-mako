@@ -13,7 +13,7 @@ import {
   SectionCard,
 } from "@/components";
 import { submit } from "@/api/submissionService";
-import { PlanType } from "shared-types";
+import { Authority } from "shared-types";
 import {
   zAdditionalInfo,
   zRenewalOriginalWaiverNumberSchema,
@@ -110,7 +110,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType["1915b"],
+        authority: Authority["1915b"],
       });
       alert.setContent({
         header: "Package submitted",

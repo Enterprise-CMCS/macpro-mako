@@ -24,8 +24,8 @@ export const PackageInfo = ({ item }: { item: opensearch.main.ItemResult }) => (
     <SectionTemplate
       label={"Type"}
       value={
-        item?._source?.planType
-          ? removeUnderscoresAndCapitalize(item._source.planType)
+        item?._source?.authority
+          ? removeUnderscoresAndCapitalize(item._source.authority as string)
           : "No package type found"
       }
     />

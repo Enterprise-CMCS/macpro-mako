@@ -13,7 +13,7 @@ import {
   SectionCard,
 } from "@/components";
 import { submit } from "@/api/submissionService";
-import { PlanType } from "shared-types";
+import { Authority } from "shared-types";
 import {
   zAdditionalInfo,
   zAttachmentOptional,
@@ -90,7 +90,7 @@ export const Capitated1915BWaiverInitialPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType["1915b"],
+        authority: Authority["1915b"],
       });
       alert.setContent({
         header: "Package submitted",
