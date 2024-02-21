@@ -38,6 +38,12 @@ const createSendTemplatedEmailCommand = (data) =>
     ConfigurationSetName: process.env.emailConfigSet,
   });
 
+  const defaultRecipients = JSON.stringify({
+    "osgEmail": '"OSG" <k.grue@theta-llc.com>',
+    "chipToEmail": '"CHIP To" <k.grue.cmsapprover@gmail.com>',
+    "chipCcList": '"CHIP 1" <k.grue@theta-llc.com>' //;"CHIP 2" <k.grue.stateuser@gmail.com>'
+  }, null, 4);
+
 export const main = async (event: KafkaEvent) => {
   console.log("Received event (stringified):", JSON.stringify(event, null, 4));
   const input = { // GetParameterRequest
@@ -46,6 +52,8 @@ export const main = async (event: KafkaEvent) => {
   const command = new GetParameterCommand(input);
   const response = await SSM.send(command);
   console.log("SSM Param: ", response);
+  const recipients = JSON.parse(response?.Parameter?.Value ?? defaultRecipients);
+  console.log("Recipients: ", recipients);
   
   const emailQueue: any[] = [];
 
@@ -79,7 +87,7 @@ export const main = async (event: KafkaEvent) => {
           proposedEffectiveDateNice: formatProposedEffectiveDate()
         };
         // don't include CcAddresses attribute unless we use it
-        if (email?.ccList && email?.ccList.length > 0) {
+        if (email?.ccList && email?.ccList.length > 0 && !!email.ccList[0]) {
           emailData.CcAddresses = email.ccList.map(address => mapAddress(address));
         }
 
@@ -88,7 +96,7 @@ export const main = async (event: KafkaEvent) => {
 
       function mapAddress(address) {
         if (address === "submitterEmail")
-          if (record.submitterEmail = "george@example.com")
+          if (record.submitterEmail === "george@example.com")
             return `"George's Substitute" <k.grue.stateuser@gmail.com>`;
           else
             return `"${record.submitterName}" <${record.submitterEmail}>`;
