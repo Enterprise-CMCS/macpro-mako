@@ -6,7 +6,10 @@ const secondClockStatuses = [
   SEATOOL_STATUS.PENDING_CONCURRENCE,
 ];
 
-const checkAuthority = (authority: Authority | null, validAuthorities: Authority[]) =>
+const checkAuthority = (
+  authority: Authority | null,
+  validAuthorities: Authority[]
+) =>
   !authority
     ? false
     : validAuthorities.includes(authority.toLowerCase() as Authority);
@@ -18,7 +21,7 @@ const checkStatus = (seatoolStatus: string, authorized: string | string[]) =>
 
 /** A object of booleans and methods handling common conditions
  * for business logic. */
-export const PackageCheck = ({
+export const seatoolStatus = ({
   seatoolStatus,
   raiRequestedDate,
   raiReceivedDate,
@@ -43,7 +46,9 @@ export const PackageCheck = ({
     isInSecondClock:
       !planChecks.authorityIs([Authority.CHIP_SPA]) &&
       checkStatus(seatoolStatus, secondClockStatuses) &&
-      raiRequestedDate && raiReceivedDate && !raiWithdrawnDate,
+      raiRequestedDate &&
+      raiReceivedDate &&
+      !raiWithdrawnDate,
     /** Is in any status except Package Withdrawn **/
     isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),
     /** Added for elasticity, but common checks should always bubble up as
@@ -57,7 +62,8 @@ export const PackageCheck = ({
     /** There is an RAI **/
     hasLatestRai: !!raiRequestedDate,
     /** There is an RAI, it has a response, and it has not been withdrawn **/
-    hasRaiResponse: !!raiRequestedDate && !!raiReceivedDate && !raiWithdrawnDate,
+    hasRaiResponse:
+      !!raiRequestedDate && !!raiReceivedDate && !raiWithdrawnDate,
     /** Latest RAI has a response and/or has been withdrawn **/
     hasCompletedRai: !!raiRequestedDate && !!raiReceivedDate,
     /** RAI Withdraw has been enabled **/
