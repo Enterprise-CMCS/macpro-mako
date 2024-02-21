@@ -139,9 +139,10 @@ export const transform = (id: string) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
       getRaiDate(data);
-    const seatoolStatus = data.SPW_STATUS?.find(
-      (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
-    )?.SPW_STATUS_DESC;
+    const seatoolStatus =
+      data.SPW_STATUS?.find(
+        (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
+      )?.SPW_STATUS_DESC || "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
     const authorityId = data.PLAN_TYPES?.[0].PLAN_TYPE_ID;
     const typeId = data.STATE_PLAN_SERVICETYPES?.[0]?.SERVICE_TYPE_ID;
@@ -171,9 +172,9 @@ export const transform = (id: string) => {
       raiWithdrawnDate,
       reviewTeam: compileSrtList(data.ACTION_OFFICERS),
       state: data.STATE_PLAN.STATE_CODE,
-      stateStatus,
+      stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
       statusDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.STATUS_DATE),
-      cmsStatus,
+      cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       seatoolStatus,
       submissionDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.SUBMISSION_DATE

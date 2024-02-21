@@ -21,7 +21,7 @@ const checkStatus = (seatoolStatus: string, authorized: string | string[]) =>
 
 /** A object of booleans and methods handling common conditions
  * for business logic. */
-export const seatoolStatus = ({
+export const PackageCheck = ({
   seatoolStatus,
   raiRequestedDate,
   raiReceivedDate,

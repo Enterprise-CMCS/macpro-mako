@@ -44,10 +44,8 @@ export const finalDispositionStatuses = [
   SEATOOL_STATUS.WITHDRAWN,
 ];
 
-export const getStatus = (seatoolStatus: string) => {
-  const stateStatus =
-    statusToDisplayToStateUser[seatoolStatus ?? SEATOOL_STATUS.UNKNOWN];
-  const cmsStatus =
-    statusToDisplayToCmsUser[seatoolStatus ?? SEATOOL_STATUS.UNKNOWN];
+export const getStatus = (seatoolStatus?: string | null) => {
+  const stateStatus = statusToDisplayToStateUser[seatoolStatus ?? "Unknown"];
+  const cmsStatus = statusToDisplayToCmsUser[seatoolStatus ?? "Unknown"];
   return { stateStatus, cmsStatus };
 };
