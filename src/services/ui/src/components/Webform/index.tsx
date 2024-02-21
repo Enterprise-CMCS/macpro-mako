@@ -14,29 +14,6 @@ import { useState } from "react";
 import { FormSchema } from "shared-types";
 
 export const Webforms = () => {
-  function maintenanceBannerForVariation(flag: string): React.ReactNode {
-    if (flag === "UNSCHEDULED") {
-      return (
-        <h1 className="text-xl font-medium">Unschedule Maintenance Flag</h1>
-      );
-    } else if (flag === "SCHEDULED") {
-      return (
-        <h1 className="text-xl font-medium">Scheduled Maintenance Flag</h1>
-      );
-    }
-    return undefined;
-  }
-
-  const ldClient = useLDClient();
-  const siteUnderMaintenanceBannerFlag: string = ldClient?.variation(
-    featureFlags.SITE_UNDER_MAINTENANCE_BANNER.flag,
-    featureFlags.SITE_UNDER_MAINTENANCE_BANNER.defaultValue
-  );
-
-  const possibleMaintenaceBanner = maintenanceBannerForVariation(
-    siteUnderMaintenanceBannerFlag
-  );
-
   return (
     <>
       <SubNavHeader>
@@ -44,11 +21,7 @@ export const Webforms = () => {
       </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1 space-x-5">
-          {possibleMaintenaceBanner && (
-            <Alert className="mb-6 w-5/6" variant="destructive">
-              {possibleMaintenaceBanner}
-            </Alert>
-          )}
+          <UnderMaintenanceBanner />
           <Link
             path="/webform/:id/:version"
             params={{ id: "abp1", version: 202401 }}
@@ -208,3 +181,38 @@ export function Webform() {
     />
   );
 }
+
+const UnderMaintenanceBanner = () => {
+  const banners = {
+    UNSCHEDULED: (
+      <h1 className="text-xl font-medium">Unschedule Maintenance Flag</h1>
+    ),
+    SCHEDULED: (
+      <h1 className="text-xl font-medium">Scheduled Maintenance Flag</h1>
+    ),
+  };
+
+  // Simplified function to get the maintenance banner
+  function getMaintenanceBanner(flag: string) {
+    return banners[flag as keyof typeof banners] || undefined;
+  }
+
+  const ldClient = useLDClient();
+  const siteUnderMaintenanceBannerFlag = ldClient?.variation(
+    featureFlags.SITE_UNDER_MAINTENANCE_BANNER.flag,
+    featureFlags.SITE_UNDER_MAINTENANCE_BANNER.defaultValue
+  );
+
+  const possibleMaintenanceBanner = getMaintenanceBanner(
+    siteUnderMaintenanceBannerFlag
+  );
+
+  if (possibleMaintenanceBanner) {
+    return (
+      <Alert className="mb-6 w-5/6" variant="destructive">
+        {possibleMaintenanceBanner}
+      </Alert>
+    );
+  }
+  return null;
+};
