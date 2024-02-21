@@ -12,7 +12,7 @@ import {
   SimplePageContainer,
 } from "@/components";
 import * as Inputs from "@/components/Inputs";
-import { PlanType } from "shared-types";
+import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
@@ -41,6 +41,7 @@ const formSchema = z.object({
     other: zAttachmentOptional,
   }),
   proposedEffectiveDate: z.date(),
+  seaActionType: z.string().default("Amend"),
 });
 type ChipFormSchema = z.infer<typeof formSchema>;
 
@@ -89,7 +90,7 @@ export const ChipSpaFormPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType.CHIP_SPA,
+        authority: Authority.CHIP_SPA,
       });
       alert.setContent({
         header: "Package submitted",
@@ -186,10 +187,7 @@ export const ChipSpaFormPage = () => {
                         At least one attachment is required
                       </Inputs.FormDescription>
                     )}
-                    <Inputs.Upload
-                      files={field?.value ?? []}
-                      setFiles={field.onChange}
-                    />
+                    <Inputs.Upload {...field} />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}
