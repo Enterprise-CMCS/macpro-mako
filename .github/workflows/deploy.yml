@@ -126,9 +126,11 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - deploy
+    environment:
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     env:
       baseurl: ${{ needs.deploy.outputs.app-url }}
-    if: ${{ github.ref != 'refs/heads/production' && github.ref != 'refs/heads/val' }}
+    if: ${{ github.ref != 'refs/heads/production' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3

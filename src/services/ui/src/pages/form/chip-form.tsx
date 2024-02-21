@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { submit } from "@/api/submissionService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -12,16 +12,21 @@ import {
   SimplePageContainer,
 } from "@/components";
 import * as Inputs from "@/components/Inputs";
-import { PlanType } from "shared-types";
+import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
   zSpaIdSchema,
 } from "@/pages/form/zod";
 import * as Content from "@/pages/form/content";
-import { ModalProvider, useModalContext } from "@/pages/form/modals";
 import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
+import { useModalContext } from "@/components/Context/modalContext";
+import { useNavigate } from "@/components/Routing";
+import { useCallback } from "react";
+import { useAlertContext } from "@/components/Context/alertContext";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { useQuery as useQueryString } from "@/hooks";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -63,10 +68,18 @@ const attachmentList = [
   { name: "other", label: "Other", required: false },
 ] as const;
 
-export const ChipForm = () => {
+export const ChipSpaFormPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
-  const { setCancelModalOpen, setSuccessModalOpen } = useModalContext();
+  const navigate = useNavigate();
+  const urlQuery = useQueryString();
+  const modal = useModalContext();
+  const alert = useAlertContext();
+  const originPath = useOriginPath();
+  const cancelOnAccept = useCallback(() => {
+    modal.setModalOpen(false);
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+  }, []);
   const form = useForm<ChipFormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -76,9 +89,21 @@ export const ChipForm = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType.CHIP_SPA,
+        authority: Authority.CHIP_SPA,
       });
-      setSuccessModalOpen(true);
+      alert.setContent({
+        header: "Package submitted",
+        body: "Your submission has been received.",
+      });
+      alert.setBannerShow(true);
+      alert.setBannerDisplayOn(
+        // This uses the originRoute map because this value doesn't work
+        // when any queries are added, such as the case of /details?id=...
+        urlQuery.get(ORIGIN)
+          ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+          : "/dashboard"
+      );
+      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
       console.error(e);
     }
@@ -90,7 +115,7 @@ export const ChipForm = () => {
       <Inputs.Form {...form}>
         <form
           onSubmit={handleSubmit}
-          className="my-6 space-y-8 mx-auto justify-center items-center flex flex-col"
+          className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
           <SectionCard title="CHIP SPA Details">
             <Content.FormIntroText />
@@ -194,7 +219,7 @@ export const ChipForm = () => {
           </SectionCard>
           <Content.PreSubmissionMessage />
           {Object.keys(form.formState.errors).length !== 0 ? (
-            <Alert className="mb-6 w-5/6" variant="destructive">
+            <Alert className="mb-6 " variant="destructive">
               Missing or malformed information. Please see errors above.
             </Alert>
           ) : null}
@@ -203,7 +228,7 @@ export const ChipForm = () => {
               <LoadingSpinner />
             </div>
           ) : null}
-          <div className="flex gap-2 justify-end w-5/6">
+          <div className="flex gap-2 justify-end ">
             <Inputs.Button
               disabled={form.formState.isSubmitting}
               type="submit"
@@ -214,7 +239,16 @@ export const ChipForm = () => {
             <Inputs.Button
               type="button"
               variant="outline"
-              onClick={() => setCancelModalOpen(true)}
+              onClick={() => {
+                modal.setContent({
+                  header: "Stop form submission?",
+                  body: "All information you've entered on this form will be lost if you leave this page.",
+                  acceptButtonText: "Yes, leave form",
+                  cancelButtonText: "Return to form",
+                });
+                modal.setOnAccept(() => cancelOnAccept);
+                modal.setModalOpen(true);
+              }}
               className="px-12"
             >
               Cancel
@@ -225,9 +259,3 @@ export const ChipForm = () => {
     </SimplePageContainer>
   );
 };
-
-export const ChipSpaFormPage = () => (
-  <ModalProvider>
-    <ChipForm />
-  </ModalProvider>
-);

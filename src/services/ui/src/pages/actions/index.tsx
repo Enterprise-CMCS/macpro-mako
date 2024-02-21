@@ -12,7 +12,6 @@ import {
   LoadingSpinner,
   SimplePageContainer,
 } from "@/components";
-import { ModalProvider } from "@/pages/form/modals";
 import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
 import {
   chipRespondToRaiSetup,
@@ -97,7 +96,7 @@ const ActionFormSwitch = () => {
     return <ToggleRaiResponseWithdraw item={item} />;
   } else {
     const setup = getFormSetup(
-      item!._source.planType as string as SetupOptions,
+      item!._source.authority as string as SetupOptions,
       type
     );
     if (!setup) return <Navigate path="/" />;
@@ -121,12 +120,10 @@ export const ActionFormIndex = () => {
   const { id, type } = useParams("/action/:id/:type");
   return (
     <SimplePageContainer>
-      <ModalProvider>
-        <BreadCrumbs
-          options={detailsAndActionsCrumbs({ id: id, action: type })}
-        />
-        <ActionFormSwitch />
-      </ModalProvider>
+      <BreadCrumbs
+        options={detailsAndActionsCrumbs({ id: id, action: type })}
+      />
+      <ActionFormSwitch />
     </SimplePageContainer>
   );
 };

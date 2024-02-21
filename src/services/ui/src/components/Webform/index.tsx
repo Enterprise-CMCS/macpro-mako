@@ -8,6 +8,8 @@ import { LoadingSpinner } from "@/components";
 import { Footer } from "./footer";
 import { Link, useParams } from "../Routing";
 import { useReadOnlyUser } from "./useReadOnlyUser";
+import { useState } from "react";
+import { FormSchema } from "shared-types";
 
 export const Webforms = () => {
   return (
@@ -63,7 +65,7 @@ export const Webforms = () => {
 interface WebformBodyProps {
   id: string;
   version: string;
-  data: any;
+  data: FormSchema;
   readonly: boolean;
   values: any;
 }
@@ -78,6 +80,7 @@ function WebformBody({
   const form = useForm({
     defaultValues: values,
   });
+  const [subData, setSubData] = useState("");
 
   const onSave = () => {
     const values = form.getValues();
@@ -85,9 +88,17 @@ function WebformBody({
     alert("Saved");
   };
 
+  const reset = () => {
+    setSubData("");
+    form.reset(documentInitializer(data));
+    localStorage.removeItem(`${id}v${version}`);
+    alert("Data Cleared");
+  };
+
   const onSubmit = form.handleSubmit(
     (draft) => {
       console.log({ draft });
+      setSubData(JSON.stringify(draft, undefined, 2));
       /**
        * The validator is intended to be a replica of RHF validation.
        * To be used in backend api handlers to validate incoming/outgoing form data against document when...
@@ -111,15 +122,26 @@ function WebformBody({
             <RHFDocument document={data} {...form} />
             {!readonly && (
               <div className="flex justify-between text-blue-700 underline my-2">
-                <Button type="button" onClick={onSave} variant="ghost">
-                  Save draft
-                </Button>
+                <div>
+                  <Button type="button" onClick={onSave} variant="ghost">
+                    Save draft
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={reset}
+                    variant="outline"
+                    className="mx-2"
+                  >
+                    Clear Data
+                  </Button>
+                </div>
                 <Button type="submit">Submit</Button>
               </div>
             )}
           </fieldset>
         </form>
       </Form>
+      {subData && <pre className="my-2 text-sm">{subData}</pre>}
       <Footer />
     </div>
   );

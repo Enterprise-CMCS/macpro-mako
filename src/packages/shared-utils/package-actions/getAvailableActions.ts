@@ -1,6 +1,5 @@
 import {
   CognitoUserAttributes,
-  PlanType,
   opensearch,
 } from "../../shared-types";
 import rules from "./rules";
@@ -11,7 +10,9 @@ export const getAvailableActions = (
   result: opensearch.main.Document
 ) => {
   const checks = PackageCheck(result);
-  return checks.isSpa
-    ? rules.filter((r) => r.check(checks, user)).map((r) => r.action)
-    : [];
+  return [
+    ...((checks.isWaiver || checks.isSpa)
+      ? rules.filter((r) => r.check(checks, user)).map((r) => r.action)
+      : []),
+  ];
 };

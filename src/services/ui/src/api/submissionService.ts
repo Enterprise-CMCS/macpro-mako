@@ -1,7 +1,7 @@
 import { API } from "aws-amplify";
 import {
   Attachment,
-  PlanType,
+  Authority,
   ReactQueryApiError,
   Action,
   attachmentTitleMap,
@@ -15,7 +15,7 @@ type SubmissionServiceParameters<T> = {
   data: T;
   endpoint: SubmissionServiceEndpoint;
   user: OneMacUser | undefined;
-  authority?: PlanType;
+  authority?: Authority;
 };
 type SubmissionServiceResponse = {
   body: {
@@ -162,8 +162,8 @@ export const submit = async <T extends Record<string, unknown>>({
     }));
     // Upload attachments
     await Promise.all(
-      uploadRecipes.map(({ url, data }) => {
-        fetch(url, {
+      uploadRecipes.map(async ({ url, data }) => {
+        await fetch(url, {
           body: data,
           method: "PUT",
         });

@@ -2,7 +2,7 @@ import { removeUnderscoresAndCapitalize } from "@/utils";
 import { isCmsUser } from "shared-utils";
 import { LABELS } from "@/lib";
 import { BLANK_VALUE } from "@/consts";
-import { opensearch } from "shared-types";
+import { Authority, opensearch } from "shared-types";
 import { ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
 import { ReviewTeamList } from "@/components/PackageDetails/ReviewTeamList";
@@ -17,6 +17,15 @@ export const spaDetails = (
   data: opensearch.main.Document
 ): DetailSectionItem[] => [
   {
+    label: "Waiver Authority",
+    value: data.authority,
+    canView: () => {
+      console.log(data.authority);
+      console.log(Authority.WAIVER);
+      return data.authority?.toLowerCase() == Authority.WAIVER;
+    },
+  },
+  {
     label: "Submission ID",
     value: data.id,
     canView: () => true,
@@ -28,8 +37,8 @@ export const spaDetails = (
   },
   {
     label: "Type",
-    value: data?.planType
-      ? removeUnderscoresAndCapitalize(data.planType)
+    value: data?.authority
+      ? removeUnderscoresAndCapitalize(data.authority)
       : BLANK_VALUE,
     canView: () => true,
   },

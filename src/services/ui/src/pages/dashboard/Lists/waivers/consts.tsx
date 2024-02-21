@@ -30,11 +30,11 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       cell: (data) => data.state,
     },
     {
-      field: "planType.keyword",
+      field: "authority.keyword",
       label: "Type",
       cell: (data) =>
-        data?.planType
-          ? removeUnderscoresAndCapitalize(data.planType)
+        data?.authority
+          ? removeUnderscoresAndCapitalize(data.authority)
           : BLANK_VALUE,
     },
     {
@@ -48,11 +48,28 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
       label: "Status",
-      cell: (data) =>
-        props?.isCms &&
-        !(props.user?.["custom:cms-roles"] === UserRoles.HELPDESK)
-          ? data.cmsStatus
-          : data.stateStatus,
+      cell: (data) => {
+        const status = (() => {
+          if (!props?.isCms) return data.stateStatus;
+          if (props.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK))
+            return data.stateStatus;
+          return data.cmsStatus;
+        })();
+
+        return (
+          <>
+            <p>{status}</p>
+            {data.raiWithdrawEnabled && (
+              <p className="text-xs opacity-60">
+                · Withdraw Formal RAI Response - Enabled
+              </p>
+            )}
+            {props?.isCms && data.initialIntakeNeeded && (
+              <p className="text-xs opacity-60">· Initial Intake Needed</p>
+            )}
+          </>
+        );
+      },
     },
     {
       field: "submissionDate",

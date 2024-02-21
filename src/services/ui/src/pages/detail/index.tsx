@@ -1,28 +1,25 @@
 import {
-  Alert,
   CardWithTopBorder,
-  ConfirmationModal,
   DetailItemsGrid,
   DetailsSection,
   ErrorAlert,
   LoadingSpinner,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { Action, opensearch, UserRoles } from "shared-types";
+import { opensearch, UserRoles } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
-import { useLocation } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren } from "react";
 import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
-import { API } from "aws-amplify";
 import { getStatus } from "shared-types/statusHelper";
 import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 import { Link } from "@/components/Routing";
 import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
+import { Route } from "@/components/Routing/types";
 
 const DetailCardWrapper = ({
   title,
@@ -79,11 +76,7 @@ const StatusCard = (data: opensearch.main.Document) => {
   );
 };
 const PackageActionsCard = ({ id }: { id: string }) => {
-  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { data } = useGetPackageActions(id, { retry: false });
+  const { data, isLoading } = useGetPackageActions(id, { retry: false });
   if (isLoading) return <LoadingSpinner />;
   return (
     <DetailCardWrapper title={"Actions"}>
@@ -98,7 +91,10 @@ const PackageActionsCard = ({ id }: { id: string }) => {
               return (
                 <Link
                   key={`${idx}-${type}`}
-                  path="/action/:id/:type"
+                  path={"/action/:id/:type"}
+                  query={{
+                    origin: "actionsDetails",
+                  }}
                   params={{ id, type }}
                   className="text-sky-700 underline"
                 >
@@ -109,59 +105,6 @@ const PackageActionsCard = ({ id }: { id: string }) => {
           </ul>
         )}
       </div>
-
-      {/* Withdraw Modal */}
-      <ConfirmationModal
-        open={isWithdrawModalOpen}
-        onAccept={async () => {
-          setIsWithdrawModalOpen(false);
-          const dataToSubmit = {
-            id,
-          };
-          try {
-            setIsLoading(true);
-            await API.post("os", `/action/${Action.WITHDRAW_RAI}`, {
-              body: dataToSubmit,
-            });
-            setIsLoading(false);
-            setIsWithdrawModalOpen(false); // probably want a success modal?
-            setIsSuccessModalOpen(true);
-          } catch (err) {
-            setIsLoading(false);
-            setIsErrorModalOpen(true);
-            console.log(err); // probably want an error modal?
-          }
-        }}
-        onCancel={() => setIsWithdrawModalOpen(false)}
-        title="Withdraw RAI"
-        body={
-          <p>
-            Are you sure you would like to withdraw the RAI response for{" "}
-            <em>{id}</em>?
-          </p>
-        }
-      />
-
-      {/* Withdraw Success Modal */}
-      <ConfirmationModal
-        open={isSuccessModalOpen}
-        onAccept={async () => {
-          setIsSuccessModalOpen(false);
-        }}
-        onCancel={() => setIsSuccessModalOpen(false)}
-        title="Withdraw RAI Successful"
-      />
-
-      {/* Withdraw Error Modal */}
-      <ConfirmationModal
-        open={isErrorModalOpen}
-        onAccept={async () => {
-          setIsErrorModalOpen(false);
-        }}
-        onCancel={() => setIsErrorModalOpen(false)}
-        title="Failed to Withdraw"
-        body="RAI withdraw failed"
-      />
     </DetailCardWrapper>
   );
 };
@@ -171,7 +114,6 @@ export const DetailsContent = ({
 }: {
   data?: opensearch.main.ItemResult;
 }) => {
-  const { state } = useLocation();
   if (!data?._source) return <LoadingSpinner />;
   return (
     <div className="block md:flex">
@@ -195,14 +137,6 @@ export const DetailsContent = ({
         ))}
       </aside>
       <div className="flex-1">
-        {state?.callout && (
-          <Alert className="bg-green-100 border-green-400" variant="default">
-            <h2 className="text-lg font-bold text-green-900">
-              {state.callout.heading}
-            </h2>
-            <p className="text-green-900">{state.callout.body}</p>
-          </Alert>
-        )}
         <section
           id="package-overview"
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
@@ -213,7 +147,7 @@ export const DetailsContent = ({
         <div className="flex flex-col gap-3">
           <DetailsSection
             id="package-details"
-            title={`${data._source.planType} Package Details`}
+            title={`${data._source.authority} Package Details`}
           >
             <DetailItemsGrid displayItems={spaDetails(data._source)} />
             <DetailItemsGrid displayItems={submissionDetails(data._source)} />

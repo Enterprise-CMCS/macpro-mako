@@ -1,6 +1,7 @@
 import {
   Action,
   ActionRule,
+  Authority,
   SEATOOL_STATUS,
   finalDispositionStatuses,
 } from "../../shared-types";
@@ -10,7 +11,18 @@ const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
   check: (checker, user) =>
     checker.isInActivePendingStatus &&
-    (!checker.hasLatestRai || checker.hasRequestedRai) &&
+    (
+      // Doesn't have any RAIs
+      !checker.hasLatestRai || 
+      (
+        // The latest RAI is complete
+        checker.hasCompletedRai && 
+        // The package is not a medicaid spa (med spas only get 1 rai)
+        !checker.authorityIs([Authority.MED_SPA]) && 
+        // The package does not have RAI Response Withdraw enabled
+        !checker.hasEnabledRaiWithdraw
+      )
+    ) &&
     isCmsWriteUser(user),
 };
 
