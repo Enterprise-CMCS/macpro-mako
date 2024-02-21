@@ -1,6 +1,6 @@
 import { FormSchema } from "shared-types";
 
-const ABP3_1: FormSchema = {
+export const v202401: FormSchema = {
   header:
     "ABP 3.1 Selection of benchmark benefit package or benchmark-equivalent benefit package",
   sections: [
@@ -1785,5 +1785,3 @@ const ABP3_1: FormSchema = {
     },
   ],
 };
-
-export const form = ABP3_1;
