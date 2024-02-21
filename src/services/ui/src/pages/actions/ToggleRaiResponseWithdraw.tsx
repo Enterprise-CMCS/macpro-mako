@@ -1,6 +1,6 @@
 import { Navigate, useNavigate, useParams } from "@/components/Routing";
 import { Alert, LoadingSpinner } from "@/components";
-import { Action, PlanType, opensearch } from "shared-types";
+import { Action, Authority, opensearch } from "shared-types";
 import { Button } from "@/components/Inputs";
 import { useCallback, useEffect, useMemo } from "react";
 import { useSubmissionService } from "@/api/submissionService";
@@ -34,7 +34,7 @@ export const ToggleRaiResponseWithdraw = ({
     data: { id: id! },
     endpoint: buildActionUrl(type!),
     user,
-    authority: item?._source.authority as PlanType,
+    authority: item?._source.authority as Authority,
   });
 
   const ACTION_WORD = useMemo(
