@@ -2,7 +2,7 @@ import { submit } from "@/api/submissionService";
 import { getUser } from "@/api/useGetUser";
 import * as SC from "@/features/package-actions/shared-components";
 import { useParams } from "react-router-dom";
-import { PlanType } from "shared-types";
+import { Authority } from "shared-types";
 import { z } from "zod";
 
 export const toggleRaiResponseWithdrawSchema = z.object({
@@ -23,7 +23,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
     const data = toggleRaiResponseWithdrawSchema.parse(formData);
     const user = await getUser();
-    const authority = PlanType["1915b"];
+    const authority = Authority["1915b"];
     const enableOrDisable = data.raiWithdrawEnabled
       ? "/action/enable-rai-withdraw"
       : "/action/disable-rai-withdraw";

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
-import { PlanType } from "shared-types";
+import { Authority } from "shared-types";
 import { unflatten } from "flat";
 import { zAttachmentOptional, zAttachmentRequired } from "@/pages/form/zod";
 import { submit } from "@/api/submissionService";
@@ -30,7 +30,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
     const data = respondToRaiSchema.parse(unflattenedFormData);
 
     const user = await getUser();
-    const authority = PlanType["1915b"];
+    const authority = Authority["1915b"];
     await submit({
       data: { ...data, id: params.id },
       endpoint: "/action/respond-to-rai",

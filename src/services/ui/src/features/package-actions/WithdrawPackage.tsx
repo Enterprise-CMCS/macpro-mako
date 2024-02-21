@@ -4,7 +4,7 @@ import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/pages/form/zod";
 import { unflatten } from "flat";
 import { useParams } from "react-router-dom";
-import { PlanType } from "shared-types";
+import { Authority } from "shared-types";
 import { z } from "zod";
 
 export const withdrawPackageSchema = z.object({
@@ -30,7 +30,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
     const data = withdrawPackageSchema.parse(unflattenedFormData);
     const user = await getUser();
-    const authority = PlanType["1915b"];
+    const authority = Authority["1915b"];
 
     await submit({
       data: { ...data, id: params.id },
