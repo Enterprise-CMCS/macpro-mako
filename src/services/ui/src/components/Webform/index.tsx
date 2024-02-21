@@ -192,7 +192,6 @@ const UnderMaintenanceBanner = () => {
     ),
   };
 
-  // Simplified function to get the maintenance banner
   function getMaintenanceBanner(flag: string) {
     return banners[flag as keyof typeof banners] || undefined;
   }
