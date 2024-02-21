@@ -1,6 +1,5 @@
 import {
   CognitoUserAttributes,
-  PlanType,
   opensearch,
 } from "../../shared-types";
 import rules from "./rules";

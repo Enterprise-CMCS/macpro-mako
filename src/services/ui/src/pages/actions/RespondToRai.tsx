@@ -1,6 +1,6 @@
 import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { opensearch, PlanType } from "shared-types";
+import { opensearch, Authority } from "shared-types";
 import { FormSetup } from "@/pages/actions/setups";
 import { useModalContext } from "@/components/Context/modalContext";
 import {
@@ -58,7 +58,7 @@ export const RespondToRai = ({
               data: { ...data, id: id! },
               endpoint: buildActionUrl(type!),
               user,
-              authority: item?._source.authority as PlanType,
+              authority: item?._source.authority as Authority,
             });
             alert.setContent({
               header: "RAI response submitted",
@@ -83,7 +83,7 @@ export const RespondToRai = ({
         {form.formState.isSubmitting && <LoadingSpinner />}
         {/* Intro */}
         <ActionFormIntro
-          title={`${item._source.planType} Formal RAI Response Details`}
+          title={`${item._source.authority} Formal RAI Response Details`}
         >
           <RequiredIndicator /> Indicates a required field
           <p className="font-light mb-6 max-w-4xl">
