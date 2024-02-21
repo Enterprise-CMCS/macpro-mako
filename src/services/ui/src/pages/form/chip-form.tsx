@@ -12,7 +12,7 @@ import {
   SimplePageContainer,
 } from "@/components";
 import * as Inputs from "@/components/Inputs";
-import { PlanType } from "shared-types";
+import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
@@ -89,7 +89,7 @@ export const ChipSpaFormPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType.CHIP_SPA,
+        authority: Authority.CHIP_SPA,
       });
       alert.setContent({
         header: "Package submitted",
