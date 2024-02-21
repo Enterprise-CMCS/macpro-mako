@@ -187,10 +187,7 @@ export const ChipSpaFormPage = () => {
                         At least one attachment is required
                       </Inputs.FormDescription>
                     )}
-                    <Inputs.Upload
-                      files={field?.value ?? []}
-                      setFiles={field.onChange}
-                    />
+                    <Inputs.Upload {...field} />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}
