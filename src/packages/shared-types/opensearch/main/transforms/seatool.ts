@@ -7,10 +7,7 @@ import {
   SeatoolOfficer,
 } from "../../..";
 
-import {
-  Authority,
-  SEATOOL_AUTHORITIES,
-} from "shared-types";
+import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
 
 type Flavor = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
@@ -150,7 +147,7 @@ export const transform = (id: string) => {
     const authorityId = data.PLAN_TYPES?.[0].PLAN_TYPE_ID;
     const typeId = data.STATE_PLAN_SERVICETYPES?.[0]?.SERVICE_TYPE_ID;
     const subTypeId = data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.SERVICE_SUBTYPE_ID;
-    return {
+    const resp = {
       id,
       flavor: flavorLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
@@ -189,7 +186,14 @@ export const transform = (id: string) => {
         seatoolStatus,
         flavorLookup(data.STATE_PLAN.PLAN_TYPE)
       ),
+      raiWithdrawEnabled: finalDispositionStatuses.includes(cmsStatus)
+        ? false
+        : undefined,
     };
+    if (!finalDispositionStatuses.includes(cmsStatus)) {
+      resp.raiWithdrawEnabled = false;
+    }
+    return resp;
   });
 };
 export type Schema = ReturnType<typeof transform>;
