@@ -47,6 +47,11 @@ provider:
             - ec2:DescribeSubnets
             - ec2:DescribeSecurityGroups
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - es:ESHttpGet
+          Resource: ${param:osDomainArn}/*
+
 
   stackTags:
     PROJECT: ${self:custom.project}
@@ -83,6 +88,7 @@ functions:
     environment:
       region: ${self:provider.region}
       stage: ${sls:stage}
+      osDomain: ${param:osDomain}
       emailSource: ${self:custom.emailSource}
       osgEmail: ${self:custom.osgEmail}
       emailConfigSet: ${self:service}-${sls:stage}-configuration

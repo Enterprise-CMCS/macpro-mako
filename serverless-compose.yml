@@ -46,3 +46,5 @@ services:
     path: src/services/email
     params:
       ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
+      osDomainArn: ${data.OpenSearchDomainArn}
+      osDomain: ${data.OpenSearchDomainEndpoint}

@@ -4,6 +4,7 @@ import { SESClient, SendTemplatedEmailCommand } from "@aws-sdk/client-ses";
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm"; // ES Modules import
 
 import { KafkaEvent } from "shared-types";
+import * as os from "../../../libs/opensearch-lib";
 
 const SES = new SESClient({ region: process.env.region });
 const SSM = new SSMClient({ region: process.env.region });
@@ -155,6 +156,20 @@ export const main = async (event: KafkaEvent) => {
     }));
 
   const sendResults = await Promise.all(emailQueue.map(async (theEmail) => {
+    try {
+      if (!process.env.osDomain) {
+        throw new Error("process.env.osDomain must be defined");
+      }
+      const osItem = await os.getItem(
+      process.env.osDomain,
+      "main",
+      theEmail.id
+    );
+    console.log("The OpenSearch Item for %s is: ", theEmail.id, JSON.stringify(osItem, null, 4));
+  } catch (error) {
+    console.log("OpenSearch error is: ", error);
+  }
+  
     try {
       const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(theEmail);
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
