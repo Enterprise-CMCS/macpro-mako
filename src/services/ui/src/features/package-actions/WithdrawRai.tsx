@@ -1,5 +1,7 @@
 import { submit } from "@/api/submissionService";
 import { getUser } from "@/api/useGetUser";
+import { Alert } from "@/components";
+import { Info } from "lucide-react";
 import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/pages/form/zod";
 import { unflatten } from "flat";
@@ -8,12 +10,16 @@ import { Authority } from "shared-types";
 import { z } from "zod";
 
 export const withdrawRaiSchema = z.object({
-  additionalInformation: z.string().optional(),
-  attachments: z.object({
-    supportingDocumentation: zAttachmentOptional,
-  }),
+  additionalInformation: z.string(),
+  attachments: z
+    .object({
+      supportingDocumentation: zAttachmentOptional,
+    })
+    .optional(),
 });
-type Attachments = keyof z.infer<typeof withdrawRaiSchema>["attachments"];
+type Attachments = keyof NonNullable<
+  z.infer<typeof withdrawRaiSchema>["attachments"]
+>;
 
 export const onValidSubmission: SC.ActionFunction = async ({
   request,
@@ -49,7 +55,7 @@ export const WithdrawRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
   const title: Record<Authority, string> = {
-    "1915(b)": "1915(b) Waiver Formal RAI Details",
+    "1915(b)": "1915(b) Withdraw Formal RAI Response Details",
     "1915(c)": "Formal RAI Details",
     "chip spa": "Formal RAI Details",
     "medicaid spa": "Formal RAI Details",
@@ -79,11 +85,26 @@ export const WithdrawRai = () => {
             },
           ]}
         />
-        <SC.AdditionalInformation />
+        <SC.AdditionalInformation helperText="Explain your need for withdrawal." />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
+        <AdditionalFormInformation />
         <SC.SubmissionButtons />
       </form>
     </>
+  );
+};
+
+const AdditionalFormInformation = () => {
+  return (
+    <Alert variant={"infoBlock"} className="space-x-2 mb-8">
+      <Info />
+      <p>
+        Once you submit this form, a confirmation email is sent to you and to
+        CMS. CMS will use this content to review your package, and you will not
+        be able to edit this form. If CMS needs any additional information, they
+        will follow up by email.
+      </p>
+    </Alert>
   );
 };

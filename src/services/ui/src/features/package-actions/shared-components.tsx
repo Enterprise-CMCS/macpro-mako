@@ -83,7 +83,6 @@ export const AttachmentsSection = <T extends string>({
           {" "}
           FAQ Page.
         </Link>
-        .
       </p>
       {attachments.map(({ name, required, registerName }) => (
         <FormField
@@ -167,15 +166,17 @@ export const PackageSection = () => {
 
 export const AdditionalInformation = ({
   helperText = "Add anything else that you would like to share with the State.",
+  required = true,
 }: {
   helperText?: string;
+  required?: boolean;
 }) => {
   const form = useFormContext();
 
   return (
     <section className="my-4">
       <h2 className="font-bold text-2xl font-sans mb-2">
-        Additional Information <RequiredIndicator />
+        Additional Information {required && <RequiredIndicator />}
       </h2>
       <FormField
         control={form.control}
