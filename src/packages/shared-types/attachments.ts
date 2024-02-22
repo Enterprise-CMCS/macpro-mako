@@ -12,7 +12,7 @@ export const attachmentTitleMap: Record<string, string> = {
   publicNotice: "Public Notice",
   sfq: "SFQ",
   tribalConsultation: "Tribal Consultation",
-  amendedLanguage: "Amended Language",
+  amendedLanguage: "Amended State Plan Language",
   budgetDocuments: "Budget Documents",
   // ISSUE RAI
   formalRaiLetter: "Formal RAI Letter",
