@@ -51,6 +51,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 export const RespondToRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
+
   const title: Record<Authority, string> = {
     "1915(b)": "1915(b) Waiver Formal RAI Response Details",
     "1915(c)": "1915(c) Waiver Formal RAI Response Details",
@@ -58,6 +59,7 @@ export const RespondToRai = () => {
     "medicaid spa": "Formal RAI Response Details",
     waiver: "Waiver Formal RAI Response Details",
   };
+
   const attachmentTitle: Record<Authority, string> = {
     "1915(b)": "Waiver RAI Response",
     "1915(c)": "Waiver RAI Response",
@@ -95,7 +97,10 @@ export const RespondToRai = () => {
             { name: "Other", required: false, registerName: "other" },
           ]}
         />
-        <SC.AdditionalInformation helperText="Add anything else that you would like to share with CMS." />
+        <SC.AdditionalInformation
+          helperText="Add anything else that you would like to share with CMS."
+          required={false}
+        />
         <AdditionalFormInformation />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
