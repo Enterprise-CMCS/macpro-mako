@@ -36,7 +36,6 @@ import {
   DescriptionInput,
   SubTypeSelect,
   SubjectInput,
-  TypeSelect,
 } from "@/features/submission/shared-components";
 
 const formSchema = z
@@ -46,7 +45,7 @@ const formSchema = z
     proposedEffectiveDate: z.date(),
     subject: z.string(),
     description: z.string(),
-    typeId: z.string(),
+    typeId: z.string().default("111"),
     subTypeId: z.string(),
     attachments: z.object({
       bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
@@ -259,6 +258,15 @@ export const Capitated1915BWaiverRenewalPage = () => {
                 </Inputs.FormItem>
               )}
             />
+            <SubTypeSelect
+              control={form.control}
+              typeId={"111"}
+              name="subTypeId"
+              authorityId={122} // waivers authority
+            />
+
+            <SubjectInput control={form.control} name="subject" />
+            <DescriptionInput control={form.control} name="description" />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
@@ -279,20 +287,6 @@ export const Capitated1915BWaiverRenewalPage = () => {
                 )}
               />
             ))}
-            <TypeSelect
-              control={form.control}
-              name="typeId"
-              authorityId={122} // waivers authority
-            />
-            <SubTypeSelect
-              control={form.control}
-              typeId={form.watch("typeId")}
-              name="subTypeId"
-              authorityId={122} // waivers authority
-            />
-
-            <SubjectInput control={form.control} name="subject" />
-            <DescriptionInput control={form.control} name="description" />
           </SectionCard>
           <AdditionalInfoInput
             control={form.control}

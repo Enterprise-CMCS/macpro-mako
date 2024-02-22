@@ -29,6 +29,7 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
           <Inputs.Select
             onValueChange={field.onChange}
             defaultValue={field.value}
+            disabled={!typeId}
           >
             <Inputs.FormControl>
               <Inputs.SelectTrigger>

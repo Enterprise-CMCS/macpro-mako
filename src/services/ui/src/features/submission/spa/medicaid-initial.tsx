@@ -101,7 +101,6 @@ export const MedicaidSpaFormPage = () => {
     resolver: zodResolver(formSchema),
   });
 
-  form.watch("typeId");
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
     try {
       await submit<MedicaidFormSchema>({

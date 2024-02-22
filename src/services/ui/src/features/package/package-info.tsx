@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { removeUnderscoresAndCapitalize } from "@/utils";
 import { isCmsUser, formatSeatoolDate } from "shared-utils";
 import { BLANK_VALUE } from "@/consts";
 import { Authority, opensearch } from "shared-types";
@@ -18,8 +17,6 @@ export const recordDetails = (
     label: "Waiver Authority",
     value: data.authority,
     canView: () => {
-      console.log(data.authority);
-      console.log(Authority.WAIVER);
       return data.authority?.toLowerCase() == Authority.WAIVER;
     },
   },
@@ -35,9 +32,12 @@ export const recordDetails = (
   },
   {
     label: "Type",
-    value: data?.authority
-      ? removeUnderscoresAndCapitalize(data.authority)
-      : BLANK_VALUE,
+    value: data.type ?? BLANK_VALUE,
+    canView: () => true,
+  },
+  {
+    label: "Sub Type",
+    value: data.subType ?? BLANK_VALUE,
     canView: () => true,
   },
   {

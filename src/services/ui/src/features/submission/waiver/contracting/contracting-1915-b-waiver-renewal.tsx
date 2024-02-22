@@ -36,7 +36,6 @@ import {
   DescriptionInput,
   SubTypeSelect,
   SubjectInput,
-  TypeSelect,
 } from "@/features";
 
 const formSchema = z
@@ -46,7 +45,7 @@ const formSchema = z
     proposedEffectiveDate: z.date(),
     subject: z.string(),
     description: z.string(),
-    typeId: z.string(),
+    typeId: z.string().default("111"),
     subTypeId: z.string(),
     attachments: z.object({
       b4WaiverApplication: zAttachmentRequired({ min: 1 }),
@@ -252,14 +251,9 @@ export const Contracting1915BWaiverRenewalPage = () => {
                 </Inputs.FormItem>
               )}
             />
-            <TypeSelect
-              control={form.control}
-              name="typeId"
-              authorityId={122} // waivers authority
-            />
             <SubTypeSelect
               control={form.control}
-              typeId={form.watch("typeId")}
+              typeId={"111"}
               name="subTypeId"
               authorityId={122} // waivers authority
             />

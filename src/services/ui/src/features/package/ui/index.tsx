@@ -15,8 +15,8 @@ export const DetailItemsGrid = ({
         {displayItems.map(({ label, value, canView }) => {
           return !canView(user) ? null : (
             <div key={label}>
-              <h3 className="text-sm">{label}</h3>
-              {value}
+              <h3 className="text-sm font-medium">{label}</h3>
+              <p className="font-thin">{value}</p>
             </div>
           );
         })}
