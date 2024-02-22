@@ -92,7 +92,7 @@ export const submit = async (event: APIGatewayEvent) => {
 
     const result = await sql.query(query);
     console.log(result);
-    if (body.authority == Authority["1915b"]) {
+    if ([Authority["1915b"], Authority.CHIP_SPA].includes(body.authority)) {
       const actionTypeQuery = `
         UPDATE SEA.dbo.State_Plan
         SET Action_Type = (
