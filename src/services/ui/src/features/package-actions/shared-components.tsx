@@ -101,7 +101,7 @@ export const AttachmentsSection = <T extends string>({
   );
 };
 
-export const SubmissionButtons = () => {
+export const SubmissionButtons = ({ onSubmit }: { onSubmit?: () => void }) => {
   const { state } = useNavigation();
   const modal = useModalContext();
   const navigate = useNavigate();
@@ -113,7 +113,11 @@ export const SubmissionButtons = () => {
 
   return (
     <section className="space-x-2 mb-8">
-      <Button type="submit" disabled={state === "submitting"}>
+      <Button
+        type={onSubmit ? "button" : "submit"}
+        onClick={onSubmit}
+        disabled={state === "submitting"}
+      >
         Submit
       </Button>
       <Button

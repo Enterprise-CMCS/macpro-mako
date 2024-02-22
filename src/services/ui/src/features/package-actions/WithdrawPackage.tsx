@@ -64,6 +64,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 };
 
 export const WithdrawPackage = () => {
+  const modal = useModalContext();
   const { handleSubmit } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
 
@@ -112,69 +113,27 @@ export const WithdrawPackage = () => {
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
         <AdditionalFormInformation />
-        <SubmissionButtons handleSubmit={handleSubmit} />
+        <SC.SubmissionButtons
+          onSubmit={() => {
+            const acceptAction = () => {
+              modal.setModalOpen(false);
+              handleSubmit();
+            };
+
+            modal.setContent({
+              header: "Withdraw Package?",
+              body: `The package ${id} will be withdrawn.`,
+              acceptButtonText: "Yes, leave form",
+              cancelButtonText: "Return to form",
+            });
+
+            modal.setOnAccept(() => acceptAction);
+
+            modal.setModalOpen(true);
+          }}
+        />
       </form>
     </>
-  );
-};
-
-export const SubmissionButtons = ({
-  handleSubmit,
-}: {
-  handleSubmit: () => void;
-}) => {
-  const { state } = useNavigation();
-  const modal = useModalContext();
-  const navigate = useNavigate();
-
-  const acceptActionCancel = () => {
-    modal.setModalOpen(false);
-    navigate(-1);
-  };
-  const acceptActionSubmit = () => {
-    modal.setModalOpen(false);
-    handleSubmit();
-  };
-
-  return (
-    <section className="space-x-2 mb-8">
-      <Button
-        disabled={state === "submitting"}
-        onClick={() => {
-          modal.setContent({
-            header: "Stop form submission?",
-            body: "All information you've entered on this form will be lost if you leave this page.",
-            acceptButtonText: "Yes, leave form",
-            cancelButtonText: "Return to form",
-          });
-
-          modal.setOnAccept(() => acceptActionSubmit);
-
-          modal.setModalOpen(true);
-        }}
-      >
-        Submit
-      </Button>
-      <Button
-        onClick={() => {
-          modal.setContent({
-            header: "Stop form submission?",
-            body: "All information you've entered on this form will be lost if you leave this page.",
-            acceptButtonText: "Yes, leave form",
-            cancelButtonText: "Return to form",
-          });
-
-          modal.setOnAccept(() => acceptActionCancel);
-
-          modal.setModalOpen(true);
-        }}
-        variant={"outline"}
-        type="reset"
-        disabled={state === "submitting"}
-      >
-        Cancel
-      </Button>
-    </section>
   );
 };
 
