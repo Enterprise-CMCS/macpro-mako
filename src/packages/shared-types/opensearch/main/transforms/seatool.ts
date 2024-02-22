@@ -186,12 +186,9 @@ export const transform = (id: string) => {
         seatoolStatus,
         flavorLookup(data.STATE_PLAN.PLAN_TYPE)
       ),
-      raiWithdrawEnabled: finalDispositionStatuses.includes(cmsStatus)
-        ? false
-        : undefined,
     };
     if (!finalDispositionStatuses.includes(cmsStatus)) {
-      resp.raiWithdrawEnabled = false;
+      resp["raiWithdrawEnabled"] = false;
     }
     return resp;
   });
