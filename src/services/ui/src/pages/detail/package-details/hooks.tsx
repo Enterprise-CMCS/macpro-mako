@@ -3,7 +3,7 @@ import { isCmsUser } from "shared-utils";
 
 import { BLANK_VALUE } from "@/consts";
 import { Authority, opensearch } from "shared-types";
-import { ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
 
 import { formatSeatoolDate } from "shared-utils";
@@ -15,10 +15,9 @@ export const ReviewTeamList: FC<opensearch.main.Document> = (props) => {
     () => (expanded ? props.reviewTeam : props.reviewTeam?.slice(0, 3)),
     [expanded, props.reviewTeam]
   );
-
-  if (!displayTeam || !displayTeam.length) return BLANK_VALUE;
-
-  return (
+  return !displayTeam || !displayTeam.length ? (
+    BLANK_VALUE
+  ) : (
     <ul>
       {displayTeam.map((reviewer, idx) => (
         <li key={`reviewteam-ul-${reviewer}-${idx}`}>{reviewer}</li>
