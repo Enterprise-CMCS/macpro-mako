@@ -19,6 +19,20 @@ const filterMapQueryReducer = (
     });
   }
 
+  if (filter.type === "term") {
+    state[filter.prefix].push({
+      term: {
+        [filter.field]: (() => {
+          if (!filter.options) return filter.value;
+          return {
+            value: filter.value,
+            ...filter.options,
+          };
+        })(),
+      },
+    });
+  }
+
   if (filter.type === "range") {
     state[filter.prefix].push({
       range: { [filter.field]: filter.value },
