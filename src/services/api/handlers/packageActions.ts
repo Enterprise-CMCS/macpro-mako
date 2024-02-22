@@ -24,6 +24,7 @@ import {
   WithdrawPackage,
   toggleWithdrawRaiEnabledSchema,
   ToggleWithdrawRaiEnabled,
+  Authority,
   removeAppkChildSchema,
   opensearch,
 } from "shared-types";
@@ -32,7 +33,6 @@ import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
 import { formatSeatoolDate, seaToolFriendlyTimestamp } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
-import { getPackage } from "../libs/package";
 
 const TOPIC_NAME = process.env.topicName as string;
 
@@ -124,7 +124,7 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
       await transaction.begin();
       // How we withdraw an RAI Response varies based on authority or not
       // Medicaid is handled differently from the rest.
-      if (body.authority == "MEDICAID") {
+      if (body.authority.toLowerCase() == Authority.MED_SPA) {
         // Set Received Date to null
         await transaction.request().query(`
           UPDATE SEA.dbo.RAI

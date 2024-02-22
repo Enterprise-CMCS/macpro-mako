@@ -13,7 +13,7 @@ import {
   SectionCard,
 } from "@/components";
 import { submit } from "@/api/submissionService";
-import { PlanType } from "shared-types";
+import { Authority } from "shared-types";
 import {
   zAdditionalInfo,
   zAmendmentOriginalWaiverNumberSchema,
@@ -86,7 +86,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType["1915b"],
+        authority: Authority["1915b"],
       });
       alert.setContent({
         header: "Package submitted",
@@ -127,9 +127,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
               <Inputs.FormLabel className="font-semibold">
                 Waiver Authority
               </Inputs.FormLabel>
-              <span className="text-lg font-thin">
-                1915(b)
-              </span>
+              <span className="text-lg font-thin">1915(b)</span>
             </div>
             <Inputs.FormField
               control={form.control}
@@ -229,10 +227,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
                       {label}
                       {required ? <Inputs.RequiredIndicator /> : null}
                     </Inputs.FormLabel>
-                    <Inputs.Upload
-                      files={field?.value ?? []}
-                      setFiles={field.onChange}
-                    />
+                    <Inputs.Upload {...field} />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}

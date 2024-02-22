@@ -1,6 +1,5 @@
 import { Control, FieldValues } from "react-hook-form";
 
-import { FormLabel } from "../Inputs";
 import { RHFSection } from "./Section";
 import { FormSchema } from "shared-types";
 

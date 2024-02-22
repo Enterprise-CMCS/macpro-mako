@@ -2,8 +2,8 @@ import { removeUnderscoresAndCapitalize } from "@/utils";
 import { isCmsUser } from "shared-utils";
 
 import { BLANK_VALUE } from "@/consts";
-import { PlanType, opensearch } from "shared-types";
-import { FC, ReactNode } from "react";
+import { Authority, opensearch } from "shared-types";
+import { ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
 
 import { formatSeatoolDate } from "shared-utils";
@@ -44,9 +44,11 @@ export const spaDetails = (
 ): DetailSectionItem[] => [
   {
     label: "Waiver Authority",
-    value: data.planType,
+    value: data.authority,
     canView: () => {
-      return data.authority?.toLowerCase() == PlanType.WAIVER;
+      console.log(data.authority);
+      console.log(Authority.WAIVER);
+      return data.authority?.toLowerCase() == Authority.WAIVER;
     },
   },
   {
@@ -61,8 +63,8 @@ export const spaDetails = (
   },
   {
     label: "Type",
-    value: data?.planType
-      ? removeUnderscoresAndCapitalize(data.planType)
+    value: data?.authority
+      ? removeUnderscoresAndCapitalize(data.authority)
       : BLANK_VALUE,
     canView: () => true,
   },

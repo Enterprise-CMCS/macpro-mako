@@ -15,9 +15,24 @@ export const seatoolSchema = z.object({
     .array(
       z.object({
         PLAN_TYPE_NAME: z.string(),
+        PLAN_TYPE_ID: z.number(),
       })
     )
     .nonempty()
+    .nullable(),
+  STATE_PLAN_SERVICETYPES: z
+    .array(
+      z.object({
+        SERVICE_TYPE_ID: z.number(),
+      })
+    )
+    .nullable(),
+  STATE_PLAN_SERVICE_SUBTYPES: z
+    .array(
+      z.object({
+        SERVICE_SUBTYPE_ID: z.number(),
+      })
+    )
     .nullable(),
   STATE_PLAN: z.object({
     SUBMISSION_DATE: z.number().nullable(),

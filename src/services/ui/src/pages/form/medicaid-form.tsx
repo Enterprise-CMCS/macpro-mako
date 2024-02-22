@@ -13,7 +13,7 @@ import {
   SectionCard,
 } from "@/components";
 import { submit } from "@/api/submissionService";
-import { PlanType } from "shared-types";
+import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
@@ -93,7 +93,7 @@ export const MedicaidSpaFormPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: PlanType.MED_SPA,
+        authority: Authority.MED_SPA,
       });
       alert.setContent({
         header: "Package submitted",
@@ -197,10 +197,7 @@ export const MedicaidSpaFormPage = () => {
                           : ""}
                       </Inputs.FormDescription>
                     }
-                    <Inputs.Upload
-                      files={field?.value ?? []}
-                      setFiles={field.onChange}
-                    />
+                    <Inputs.Upload {...field} />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}

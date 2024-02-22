@@ -9,6 +9,7 @@ import { Footer } from "./footer";
 import { Link, useParams } from "../Routing";
 import { useReadOnlyUser } from "./useReadOnlyUser";
 import { useState } from "react";
+import { FormSchema } from "shared-types";
 
 export const Webforms = () => {
   return (
@@ -48,6 +49,12 @@ export const Webforms = () => {
           >
             ABP 10
           </Link>
+          <Link
+            path="/webform/:id/:version"
+            params={{ id: "abp11", version: 202401 }}
+          >
+            ABP 11
+          </Link>
           <Link path="/guides/abp">Implementation Guide</Link>
         </div>
       </section>
@@ -58,7 +65,7 @@ export const Webforms = () => {
 interface WebformBodyProps {
   id: string;
   version: string;
-  data: any;
+  data: FormSchema;
   readonly: boolean;
   values: any;
 }
