@@ -145,37 +145,15 @@ export async function search(
 
 export async function getItem(
   host: string,
-  index: string,
-  id: string,
-  ignoreCase: boolean = false
-): Promise<any> {
+  index: opensearch.Index,
+  id: string
+) {
   client = client || (await getClient(host));
-  if (!ignoreCase) {
-    try {
-      const response = await client.get({ id, index });
-      return response.body;
-    } catch (e) {
-      console.log({ e });
-    }
-  } else {
-    try {
-      const response = await client.search({
-        index,
-        body: {
-          query: {
-            match_phrase: {
-              id: {
-                query: id,
-              },
-            },
-          },
-        },
-      });
-      return response.body;
-    } catch (e) {
-      console.log({ e });
-      throw e;
-    }
+  try {
+    const response = await client.get({ id, index });
+    return response.body;
+  } catch (e) {
+    console.log({ e });
   }
 }
 

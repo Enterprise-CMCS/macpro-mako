@@ -3,10 +3,9 @@ import { API } from "aws-amplify";
 import { opensearch, ReactQueryApiError, SEATOOL_STATUS } from "shared-types";
 
 export const getItem = async (
-  id: string,
-  ignoreCase = false
+  id: string
 ): Promise<opensearch.main.ItemResult> =>
-  await API.post("os", "/item", { body: { id, ignoreCase } });
+  await API.post("os", "/item", { body: { id } });
 
 export const idIsApproved = async (id: string) => {
   try {
