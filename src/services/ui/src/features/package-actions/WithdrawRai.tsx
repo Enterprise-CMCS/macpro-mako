@@ -47,7 +47,14 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
 export const WithdrawRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
-  const { id } = useParams();
+  const { id, authority } = useParams() as { id: string; authority: Authority };
+  const title: Record<Authority, string> = {
+    "1915(b)": "1915(b) Waiver Formal RAI Details",
+    "1915(c)": "Formal RAI Details",
+    "chip spa": "Formal RAI Details",
+    "medicaid spa": "Formal RAI Details",
+    waiver: "Formal RAI Details",
+  };
   SC.useDisplaySubmissionAlert(
     "RAI response withdrawn",
     `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`
@@ -55,7 +62,7 @@ export const WithdrawRai = () => {
 
   return (
     <>
-      <SC.Heading title="Withdraw Formal RAI Response Details" />
+      <SC.Heading title={title[authority]} />
       <SC.RequiredFieldDescription />
       <SC.ActionDescription>
         Complete this form to withdraw the Formal RAI response. Once complete,

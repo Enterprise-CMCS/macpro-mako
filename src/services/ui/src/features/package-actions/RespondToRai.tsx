@@ -13,7 +13,7 @@ type Attachments = keyof z.infer<typeof respondToRaiSchema>["attachments"];
 export const respondToRaiSchema = z.object({
   additionalInformation: z.string().optional(),
   attachments: z.object({
-    waiverRaiResponse: zAttachmentRequired({ min: 1 }),
+    raiResponse: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,
   }),
 });
@@ -50,7 +50,21 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
 export const RespondToRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
-  const { id } = useParams();
+  const { id, authority } = useParams() as { id: string; authority: Authority };
+  const title: Record<Authority, string> = {
+    "1915(b)": "1915(b) Waiver Formal RAI Response Details",
+    "1915(c)": "1915(c) Waiver Formal RAI Response Details",
+    "chip spa": "Formal RAI Response Details",
+    "medicaid spa": "Formal RAI Response Details",
+    waiver: "Waiver Formal RAI Response Details",
+  };
+  const attachmentTitle: Record<Authority, string> = {
+    "1915(b)": "Waiver RAI Response",
+    "1915(c)": "Waiver RAI Response",
+    "chip spa": "RAI Response",
+    "medicaid spa": "RAI Response",
+    waiver: "Waiver RAI Response",
+  };
   SC.useDisplaySubmissionAlert(
     "RAI response submitted",
     `The RAI response for ${id} has been submitted.`
@@ -58,7 +72,7 @@ export const RespondToRai = () => {
 
   return (
     <>
-      <SC.Heading title="Formal RAI Details" />
+      <SC.Heading title={title[authority]} />
       <SC.RequiredFieldDescription />
       <SC.ActionDescription>
         Once you submit this form, a confirmation email is sent to you and to
@@ -74,9 +88,9 @@ export const RespondToRai = () => {
         <SC.AttachmentsSection<Attachments>
           attachments={[
             {
-              name: "Waiver RAI Response",
+              name: attachmentTitle[authority],
               required: true,
-              registerName: "waiverRaiResponse",
+              registerName: "raiResponse",
             },
             { name: "Other", required: false, registerName: "other" },
           ]}

@@ -49,7 +49,14 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
 export const WithdrawPackage = () => {
   const { handleSubmit } = SC.useSubmitForm();
-  const { id } = useParams();
+  const { id, authority } = useParams() as { id: string; authority: Authority };
+  const title: Record<Authority, string> = {
+    "1915(b)": "Withdraw Waiver",
+    "1915(c)": "Withdraw Waiver",
+    "chip spa": "Withdraw CHIP SPA Package",
+    "medicaid spa": "Withdraw Medicaid SPA Package",
+    waiver: "Withdraw Waiver",
+  };
   SC.useDisplaySubmissionAlert(
     "Package withdrawn",
     `The package ${id} has been withdrawn.`
@@ -57,7 +64,7 @@ export const WithdrawPackage = () => {
 
   return (
     <>
-      <SC.Heading title="Withdraw Medicaid SPA Package" />
+      <SC.Heading title={title[authority]} />
       <SC.RequiredFieldDescription />
       <SC.ActionDescription>
         Complete this form to withdraw a package. Once complete, you will not be
