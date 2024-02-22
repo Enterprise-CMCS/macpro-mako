@@ -1,7 +1,7 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { Outlet, useParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AnyZodObject } from "zod";
+import { AnyZodObject, ZodSchema } from "zod";
 import { BreadCrumbs, SimplePageContainer } from "@/components";
 import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
 import { Action } from "shared-types";
@@ -18,7 +18,7 @@ const schemas = {
   "disable-rai-withdraw": toggleRaiResponseWithdrawSchema,
   "withdraw-package": withdrawPackageSchema,
   "respond-to-rai": respondToRaiSchema,
-} satisfies Record<string, AnyZodObject>;
+} satisfies Record<string, ZodSchema<any>>;
 type SchemaKeys = keyof typeof schemas;
 
 const actions: Record<SchemaKeys, Action> = {

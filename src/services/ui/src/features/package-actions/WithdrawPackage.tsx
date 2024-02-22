@@ -11,6 +11,21 @@ import { useNavigate, useNavigation, useParams } from "react-router-dom";
 import { Authority } from "shared-types";
 import { z } from "zod";
 
+const title: Record<Authority, string> = {
+  "1915(b)": "Withdraw Waiver",
+  "1915(c)": "Withdraw Waiver",
+  "chip spa": "Withdraw CHIP SPA Package",
+  "medicaid spa": "Withdraw Medicaid SPA Package",
+  waiver: "Withdraw Waiver",
+};
+const descriptionText: Record<Authority, string> = {
+  "1915(b)": "this 1915(b) Waiver",
+  "1915(c)": "this 1915(c) Waiver",
+  "chip spa": "",
+  "medicaid spa": "",
+  waiver: "this Waiver",
+};
+
 export const withdrawPackageSchema = z
   .object({
     additionalInformation: z.string().optional(),
@@ -67,21 +82,6 @@ export const WithdrawPackage = () => {
   const modal = useModalContext();
   const { handleSubmit } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
-
-  const title: Record<Authority, string> = {
-    "1915(b)": "Withdraw Waiver",
-    "1915(c)": "Withdraw Waiver",
-    "chip spa": "Withdraw CHIP SPA Package",
-    "medicaid spa": "Withdraw Medicaid SPA Package",
-    waiver: "Withdraw Waiver",
-  };
-  const descriptionText: Record<Authority, string> = {
-    "1915(b)": "this 1915(b) Waiver",
-    "1915(c)": "this 1915(c) Waiver",
-    "chip spa": "",
-    "medicaid spa": "",
-    waiver: "this Waiver",
-  };
 
   SC.useDisplaySubmissionAlert(
     "Package withdrawn",

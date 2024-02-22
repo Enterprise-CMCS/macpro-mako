@@ -9,6 +9,14 @@ import { useParams } from "react-router-dom";
 import { Authority } from "shared-types";
 import { z } from "zod";
 
+const title: Record<Authority, string> = {
+  "1915(b)": "1915(b) Withdraw Formal RAI Response Details",
+  "1915(c)": "Formal RAI Details",
+  "chip spa": "Formal RAI Details",
+  "medicaid spa": "Formal RAI Details",
+  waiver: "Formal RAI Details",
+};
+
 export const withdrawRaiSchema = z.object({
   additionalInformation: z.string(),
   attachments: z
@@ -54,13 +62,6 @@ export const onValidSubmission: SC.ActionFunction = async ({
 export const WithdrawRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
-  const title: Record<Authority, string> = {
-    "1915(b)": "1915(b) Withdraw Formal RAI Response Details",
-    "1915(c)": "Formal RAI Details",
-    "chip spa": "Formal RAI Details",
-    "medicaid spa": "Formal RAI Details",
-    waiver: "Formal RAI Details",
-  };
   SC.useDisplaySubmissionAlert(
     "RAI response withdrawn",
     `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`

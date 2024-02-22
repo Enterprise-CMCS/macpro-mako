@@ -9,6 +9,22 @@ import { unflatten } from "flat";
 import { zAttachmentOptional, zAttachmentRequired } from "@/pages/form/zod";
 import { submit } from "@/api/submissionService";
 
+const title: Record<Authority, string> = {
+  "1915(b)": "1915(b) Waiver Formal RAI Response Details",
+  "1915(c)": "1915(c) Waiver Formal RAI Response Details",
+  "chip spa": "Formal RAI Response Details",
+  "medicaid spa": "Formal RAI Response Details",
+  waiver: "Waiver Formal RAI Response Details",
+};
+
+const attachmentTitle: Record<Authority, string> = {
+  "1915(b)": "Waiver RAI Response",
+  "1915(c)": "Waiver RAI Response",
+  "chip spa": "RAI Response",
+  "medicaid spa": "RAI Response",
+  waiver: "Waiver RAI Response",
+};
+
 type Attachments = keyof z.infer<typeof respondToRaiSchema>["attachments"];
 export const respondToRaiSchema = z.object({
   additionalInformation: z.string().optional(),
@@ -52,21 +68,6 @@ export const RespondToRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
 
-  const title: Record<Authority, string> = {
-    "1915(b)": "1915(b) Waiver Formal RAI Response Details",
-    "1915(c)": "1915(c) Waiver Formal RAI Response Details",
-    "chip spa": "Formal RAI Response Details",
-    "medicaid spa": "Formal RAI Response Details",
-    waiver: "Waiver Formal RAI Response Details",
-  };
-
-  const attachmentTitle: Record<Authority, string> = {
-    "1915(b)": "Waiver RAI Response",
-    "1915(c)": "Waiver RAI Response",
-    "chip spa": "RAI Response",
-    "medicaid spa": "RAI Response",
-    waiver: "Waiver RAI Response",
-  };
   SC.useDisplaySubmissionAlert(
     "RAI response submitted",
     `The RAI response for ${id} has been submitted.`
