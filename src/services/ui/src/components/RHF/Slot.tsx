@@ -24,6 +24,7 @@ import {
   Calendar,
   FormField,
   Checkbox,
+  Upload,
 } from "../Inputs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components";
 import { cn } from "@/utils";
@@ -292,6 +293,13 @@ export const RHFSlot = <
                     </PopoverContent>
                   </Popover>
                 );
+              })()}
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "Upload" &&
+              (() => {
+                const hops = props as RHFComponentMap["Upload"];
+
+                return <Upload {...field} {...hops} />;
               })()}
 
             {/* ----------------------------------------------------------------------------- */}

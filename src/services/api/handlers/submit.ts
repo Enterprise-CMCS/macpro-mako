@@ -109,7 +109,7 @@ export const submit = async (event: APIGatewayEvent) => {
 
     const result = await sql.query(query);
     console.log(result);
-    if (body.authority == Authority["1915b"]) {
+    if ([Authority["1915b"], Authority.CHIP_SPA].includes(body.authority)) {
       const actionTypeQuery = `
       UPDATE sp
       SET sp.Action_Type = at.Action_ID

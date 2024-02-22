@@ -280,10 +280,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
                       {label}
                       {required ? <Inputs.RequiredIndicator /> : null}
                     </Inputs.FormLabel>
-                    <Inputs.Upload
-                      files={field?.value ?? []}
-                      setFiles={field.onChange}
-                    />
+                    <Inputs.Upload {...field} />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}
