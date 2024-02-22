@@ -53,15 +53,18 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
                   console.log("hello");
                   return (
                     <TypedLink
-                      path="/action/waiver/:id/:type"
+                      path="/action/:authority/:id/:type"
                       key={`${idx}-${action}`}
-                      params={{ id: data.id, type: action }}
+                      params={{
+                        id: data.id,
+                        type: action,
+                        authority: data.authority,
+                      }}
                       className={cn(
                         "text-blue-500",
                         "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                       )}
                     >
-                      {/* /action/waiver/someid/sometype */}
                       {mapActionLabel(action)}
                     </TypedLink>
                   );

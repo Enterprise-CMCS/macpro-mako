@@ -98,12 +98,11 @@ const PackageActionsCard = ({
               if (authority === Authority["1915b"]) {
                 return (
                   <Link
-                    path="/action/waiver/:id/:type"
+                    path="/action/:authority/:id/:type"
                     key={`${idx}-${type}`}
-                    params={{ id, type }}
+                    params={{ id, type, authority }}
                     className="text-sky-700 underline"
                   >
-                    {/* /action/waiver/someid/sometype */}
                     <li>{mapActionLabel(type)}</li>
                   </Link>
                 );

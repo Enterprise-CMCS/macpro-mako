@@ -65,7 +65,7 @@ export const WithdrawPackage = () => {
         content to review your request. If CMS needs any additional information,
         they will follow up by email.
       </SC.ActionDescription>
-      <SC.PackageSection id={id!} type="Waiver 1915(b)" />
+      <SC.PackageSection />
       <form onSubmit={handleSubmit}>
         <SC.AttachmentsSection<Attachments>
           attachments={[

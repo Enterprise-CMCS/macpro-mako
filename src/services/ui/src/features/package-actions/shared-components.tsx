@@ -24,6 +24,7 @@ import {
   useParams,
   useSubmit,
 } from "react-router-dom";
+import { Authority } from "shared-types";
 
 // Components
 
@@ -139,16 +140,26 @@ export const SubmissionButtons = () => {
   );
 };
 
-export const PackageSection = ({ id, type }: { id: string; type: string }) => {
+export const PackageSection = () => {
+  const { authority, id } = useParams() as { authority: Authority; id: string };
+
   return (
     <section className="flex flex-col my-8 space-y-8">
       <div>
-        <p>Waiver Number</p>
+        <p>
+          {authority === Authority["1915b"] && "Waiver Number"}
+          {authority === Authority["CHIP_SPA"] && "Package ID"}
+          {authority === Authority["MED_SPA"] && "Package ID"}
+        </p>
         <p className="text-xl">{id}</p>
       </div>
       <div>
         <p>Type</p>
-        <p className="text-xl">{type}</p>
+        <p className="text-xl">
+          {authority === Authority["1915b"] && "Waiver 1915(b)"}
+          {authority === Authority["CHIP_SPA"] && "CHIP SPA"}
+          {authority === Authority["MED_SPA"] && "Medicaid SPA"}
+        </p>
       </div>
     </section>
   );

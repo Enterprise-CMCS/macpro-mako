@@ -61,7 +61,7 @@ export const WithdrawRai = () => {
         Complete this form to withdraw the Formal RAI response. Once complete,
         you and CMS will receive an email confirmation.
       </SC.ActionDescription>
-      <SC.PackageSection id={id!} type="Waiver 1915(b)" />
+      <SC.PackageSection />
       <form onSubmit={handleSubmit}>
         <SC.AttachmentsSection<Attachments>
           attachments={[

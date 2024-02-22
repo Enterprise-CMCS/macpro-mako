@@ -76,7 +76,7 @@ export const ToggleRaiResponseWithdraw = ({ isEnabled }: Props) => {
           If you leave this page, you will lose your progress on this form.
         </strong>
       </SC.ActionDescription>
-      <SC.PackageSection id={id!} type="Waiver 1915(b)" />
+      <SC.PackageSection />
       <form onSubmit={handleSubmit}>
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />

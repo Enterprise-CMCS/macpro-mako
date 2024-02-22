@@ -19,7 +19,7 @@ import {
 import { ActionWrapper } from "./ActionWrapper";
 
 export const packageActionRoutes: RouteObject = {
-  path: "/action/waiver/:id",
+  path: "/action/:authority/:id",
   element: <ActionWrapper />,
   children: [
     {
