@@ -1,5 +1,5 @@
 import { FormProvider, useForm } from "react-hook-form";
-import { Outlet, useParams } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnyZodObject, ZodSchema } from "zod";
 import { BreadCrumbs, SimplePageContainer } from "@/components";
@@ -10,6 +10,7 @@ import { withdrawRaiSchema } from "./WithdrawRai";
 import { toggleRaiResponseWithdrawSchema } from "./ToggleRaiResponseWithdraw";
 import { withdrawPackageSchema } from "./WithdrawPackage";
 import { respondToRaiSchema } from "./RespondToRai";
+import { useParams } from "@/components/Routing";
 
 const schemas = {
   "issue-rai": issueRaiSchema,
@@ -31,10 +32,10 @@ const actions: Record<SchemaKeys, Action> = {
 };
 
 export const ActionWrapper = () => {
-  const packageActionType = window.location.href
-    .split("/")
-    .at(-1) as SchemaKeys;
-  const { id } = useParams() as { id: string };
+  const location = useLocation();
+  const packageActionType = location.pathname.split("/").pop() as SchemaKeys;
+
+  const { id } = useParams("/action/:authority/:id/:type");
 
   const methods = useForm({
     resolver: zodResolver(schemas[packageActionType!]),

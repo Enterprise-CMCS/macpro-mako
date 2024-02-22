@@ -1,4 +1,4 @@
-import { RouteObject } from "react-router-dom";
+import { Navigate, RouteObject, redirect, useNavigate } from "react-router-dom";
 import { IssueRai, issueRaiDefaultAction } from "./IssueRai";
 import {
   ToggleRaiResponseWithdraw,
@@ -51,6 +51,10 @@ export const packageActionRoutes: RouteObject = {
       path: "respond-to-rai",
       element: <RespondToRai />,
       action: respondToRaiSubmission,
+    },
+    {
+      path: "*",
+      element: <Navigate to="/" />,
     },
   ],
 };
