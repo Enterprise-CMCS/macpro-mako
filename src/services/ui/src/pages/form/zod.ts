@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { isAuthorizedState } from "@/utils";
-import { idIsApproved, idIsUnique } from "@/api";
+import { idIsApproved, itemExists } from "@/api";
 
 export const zSpaIdSchema = z
   .string()
@@ -12,7 +12,7 @@ export const zSpaIdSchema = z
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
-  .refine(async (value) => idIsUnique(value), {
+  .refine(async (value) => !(await itemExists(value)), {
     message:
       "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
   });
@@ -48,8 +48,7 @@ export const zInitialWaiverNumberSchema = z
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
-  // TODO: update idIsUnique with proper check
-  .refine(async (value) => idIsUnique(value), {
+  .refine(async (value) => !(await itemExists(value)), {
     message:
       "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
   });
@@ -64,7 +63,7 @@ export const zRenewalWaiverNumberSchema = z
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
-  .refine(async (value) => idIsUnique(value), {
+  .refine(async (value) => !(await itemExists(value)), {
     message:
       "According to our records, this 1915(b) Waiver Renewal Number already exists. Please check the 1915(b) Waiver Renewal Number and try entering it again.",
   });
@@ -79,7 +78,7 @@ export const zAmendmentWaiverNumberSchema = z
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
-  .refine(async (value) => idIsUnique(value), {
+  .refine(async (value) => !(await itemExists(value)), {
     message:
       "According to our records, this 1915(b) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
   });
@@ -95,7 +94,7 @@ export const zAmendmentOriginalWaiverNumberSchema = z
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
   // This should already exist.
-  .refine(async (value) => !(await idIsUnique(value)), {
+  .refine(async (value) => await itemExists(value), {
     message:
       "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
   })
@@ -114,7 +113,7 @@ export const zRenewalOriginalWaiverNumberSchema = z
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
   // This should already exist
-  .refine(async (value) => !(await idIsUnique(value)), {
+  .refine(async (value) => await itemExists(value), {
     message:
       "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
   })
