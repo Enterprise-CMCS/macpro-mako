@@ -24,7 +24,7 @@ export const handler = async (event: APIGatewayEvent) => {
     console.log(packageResult);
     console.log(JSON.stringify(packageResult, null, 2));
 
-    if (!packageResult?.found) {
+    if (packageResult?.hits.total.value == 0) {
       return response({
         statusCode: 200,
         body: { message: "No record found for the given id", exists: false },
@@ -32,7 +32,7 @@ export const handler = async (event: APIGatewayEvent) => {
     } else {
       return response({
         statusCode: 200,
-        body: { message: "Record found for the given id", exists: false },
+        body: { message: "Record found for the given id", exists: true },
       });
     }
   } catch (error) {
