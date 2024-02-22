@@ -122,7 +122,11 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
       await transaction.begin();
       // How we withdraw an RAI Response varies based on authority or not
       // Medicaid is handled differently from the rest.
-      if (body.authority.toLowerCase() == Authority.MED_SPA) {
+      if (
+        [Authority.MED_SPA, Authority["1915b"], Authority["1915c"]].includes(
+          body.authority.toLowerCase() as Authority
+        )
+      ) {
         // Set Received Date to null
         await transaction.request().query(`
           UPDATE SEA.dbo.RAI
