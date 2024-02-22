@@ -50,14 +50,17 @@ export const Heading = ({ title }: { title: string }) => {
 
 export const AttachmentsSection = <T extends string>({
   attachments,
+  supportingInformation,
 }: {
   attachments: { name: string; required: boolean; registerName: T }[];
+  supportingInformation?: string;
 }) => {
   const form = useFormContext();
 
   return (
     <>
       <h2 className="font-bold text-2xl font-sans mb-2">Attachments</h2>
+      {supportingInformation && <p>{supportingInformation}</p>}
       <p>
         Maximum file size of 80 MB per attachment.{" "}
         <strong>You can add multiple files per attachment type.</strong> Read
@@ -159,7 +162,7 @@ export const PackageSection = () => {
       <div>
         <p>Type</p>
         <p className="text-xl">
-          {authority === Authority["1915b"] && "Waiver 1915(b)"}
+          {authority === Authority["1915b"] && "1915(b) Waiver"}
           {authority === Authority["CHIP_SPA"] && "CHIP SPA"}
           {authority === Authority["MED_SPA"] && "Medicaid SPA"}
         </p>

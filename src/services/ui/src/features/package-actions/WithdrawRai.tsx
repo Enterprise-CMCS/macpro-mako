@@ -8,6 +8,7 @@ import { unflatten } from "flat";
 import { useParams } from "react-router-dom";
 import { Authority } from "shared-types";
 import { z } from "zod";
+import { useModalContext } from "@/components/Context/modalContext";
 
 const title: Record<Authority, string> = {
   "1915(b)": "1915(b) Withdraw Formal RAI Response Details",
@@ -60,6 +61,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 };
 
 export const WithdrawRai = () => {
+  const modal = useModalContext();
   const { handleSubmit } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
   SC.useDisplaySubmissionAlert(
@@ -90,7 +92,25 @@ export const WithdrawRai = () => {
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
         <AdditionalFormInformation />
-        <SC.SubmissionButtons />
+        <SC.SubmissionButtons
+          onSubmit={() => {
+            const acceptAction = () => {
+              modal.setModalOpen(false);
+              handleSubmit();
+            };
+
+            modal.setContent({
+              header: "Withdraw RAI response?",
+              body: `The RAI response for ${id} will be withdrawn, and CMS will be notified.`,
+              acceptButtonText: "Yes, withdraw response",
+              cancelButtonText: "Cancel",
+            });
+
+            modal.setOnAccept(() => acceptAction);
+
+            modal.setModalOpen(true);
+          }}
+        />
       </form>
     </>
   );

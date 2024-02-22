@@ -45,7 +45,7 @@ const buildAttachmentObject = (recipes: UploadRecipe[]): Attachment[] => {
           title: r.title,
           bucket: r.bucket,
           uploadDate: Date.now(),
-        } as Attachment)
+        }) as Attachment
     )
     .flat();
 };
@@ -64,6 +64,8 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
     submitterName:
       `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
   };
+
+  console.log(endpoint);
 
   switch (endpoint) {
     case "/submit":
@@ -169,6 +171,7 @@ export const submit = async <T extends Record<string, unknown>>({
         });
       })
     );
+
     // Submit form data
     return await API.post("os", endpoint, {
       body: buildSubmissionPayload(

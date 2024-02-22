@@ -29,9 +29,11 @@ const descriptionText: Record<Authority, string> = {
 export const withdrawPackageSchema = z
   .object({
     additionalInformation: z.string().optional(),
-    attachments: z.object({
-      supportingDocumentation: zAttachmentOptional,
-    }),
+    attachments: z
+      .object({
+        supportingDocumentation: zAttachmentOptional,
+      })
+      .optional(),
   })
   .superRefine((data, ctx) => {
     if (
@@ -74,6 +76,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
     return { submitted: true };
   } catch (err) {
+    console.log(err);
     return { submitted: false };
   }
 };
@@ -101,6 +104,7 @@ export const WithdrawPackage = () => {
       <SC.PackageSection />
       <form onSubmit={handleSubmit}>
         <SC.AttachmentsSection<Attachments>
+          supportingInformation="Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information box"
           attachments={[
             {
               name: "Supporting Documentation",
@@ -109,7 +113,7 @@ export const WithdrawPackage = () => {
             },
           ]}
         />
-        <SC.AdditionalInformation />
+        <SC.AdditionalInformation helperText="Explain your need for withdrawal or upload supporting documentation" />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
         <AdditionalFormInformation />
@@ -123,7 +127,7 @@ export const WithdrawPackage = () => {
             modal.setContent({
               header: "Withdraw Package?",
               body: `The package ${id} will be withdrawn.`,
-              acceptButtonText: "Yes, leave form",
+              acceptButtonText: "Yes, withdraw package",
               cancelButtonText: "Return to form",
             });
 
