@@ -32,11 +32,10 @@ export const PackageDetails: FC<opensearch.main.Document> = (props) => {
   return (
     <DetailsSection
       id="package-details"
-      title={`${props.planType} Package Details`}
+      title={`${props.authority} Package Details`}
     >
       <DetailItemsGrid displayItems={spaDetails(props)} />
       <DetailItemsGrid displayItems={submissionDetails(props)} />
-
       <AppK {...props} />
     </DetailsSection>
   );
