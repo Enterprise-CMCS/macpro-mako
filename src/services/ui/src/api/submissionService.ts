@@ -83,7 +83,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
       return {
         ...data,
         ...userDetails,
-        authority: PlanType["1915c"],
+        authority: Authority["1915c"],
         origin: "micro",
         proposedEffectiveDate: seaToolFriendlyTimestamp(
           data.proposedEffectiveDate as Date
@@ -94,7 +94,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
       return {
         ...data,
         ...userDetails,
-        authority: PlanType["1915c"],
+        authority: Authority["1915c"],
         origin: "micro",
       };
 

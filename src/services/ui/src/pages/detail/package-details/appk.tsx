@@ -1,5 +1,5 @@
 import { ConfirmationModal, LoadingSpinner } from "@/components";
-import { PlanType, opensearch } from "shared-types";
+import { Authority, opensearch } from "shared-types";
 import { useOsSearch } from "@/api";
 import { useEffect, useState } from "react";
 import * as T from "@/components/Table";
@@ -52,7 +52,7 @@ export const AppK = (props: opensearch.main.Document) => {
       {
         data: { id, appkParentId: props.id },
         user,
-        authority: props.authority as PlanType,
+        authority: props.authority as Authority,
         endpoint: "/action/remove-appk-child",
       },
       {

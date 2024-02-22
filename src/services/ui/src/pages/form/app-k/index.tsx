@@ -17,7 +17,7 @@ import { SlotStateSelect, WaiverIdFieldArray } from "./slots";
 import { ModalProvider } from "@/components/Context/modalContext";
 import { SubmissionServiceParameters, submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
-import { PlanType } from "shared-types";
+import { Authority } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
 import { useState } from "react";
@@ -40,7 +40,7 @@ export const AppKSubmissionForm = () => {
     await submission.mutateAsync(
       {
         data: draft,
-        authority: PlanType["1915c"],
+        authority: Authority["1915c"],
         endpoint: "/appk",
         user,
       },
