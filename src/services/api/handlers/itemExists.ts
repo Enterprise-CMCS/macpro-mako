@@ -20,10 +20,6 @@ export const handler = async (event: APIGatewayEvent) => {
         },
       },
     });
-    console.log("ASDFASDFASDF");
-    console.log(packageResult);
-    console.log(JSON.stringify(packageResult, null, 2));
-
     if (packageResult?.hits.total.value == 0) {
       return response({
         statusCode: 200,
