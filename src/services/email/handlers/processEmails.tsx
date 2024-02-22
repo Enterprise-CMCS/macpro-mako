@@ -160,17 +160,69 @@ export const main = async (event: KafkaEvent) => {
       if (!process.env.osDomain) {
         throw new Error("process.env.osDomain must be defined");
       }
-      const osItem = await os.getItem(
+      const osMainItem = await os.getItem(
       process.env.osDomain,
       "main",
       theEmail.id
     );
-    console.log("The OpenSearch Item for %s is: ", theEmail.id, JSON.stringify(osItem, null, 4));
+    console.log("The OpenSearch Item index main for %s is: ", theEmail.id, JSON.stringify(osMainItem, null, 4));
   } catch (error) {
     console.log("OpenSearch error is: ", error);
   }
   
-    try {
+  try {
+    if (!process.env.osDomain) {
+      throw new Error("process.env.osDomain must be defined");
+    }
+    const osInsightsItem = await os.getItem(
+    process.env.osDomain,
+    "insights",
+    theEmail.id
+  );
+  console.log("The OpenSearch Item index Insights for %s is: ", theEmail.id, JSON.stringify(osInsightsItem, null, 4));
+} catch (error) {
+  console.log("OpenSearch error is: ", error);
+}
+try {
+  if (!process.env.osDomain) {
+    throw new Error("process.env.osDomain must be defined");
+  }
+  const osChangeLogItem = await os.getItem(
+  process.env.osDomain,
+  "changelog",
+  theEmail.id
+);
+console.log("The OpenSearch Item index changelog for %s is: ", theEmail.id, JSON.stringify(osChangeLogItem, null, 4));
+} catch (error) {
+console.log("OpenSearch error is: ", error);
+}
+try {
+  if (!process.env.osDomain) {
+    throw new Error("process.env.osDomain must be defined");
+  }
+  const osTypesItem = await os.getItem(
+  process.env.osDomain,
+  "types",
+  theEmail.id
+);
+console.log("The OpenSearch Item index types for %s is: ", theEmail.id, JSON.stringify(osTypesItem, null, 4));
+} catch (error) {
+console.log("OpenSearch error is: ", error);
+}
+try {
+  if (!process.env.osDomain) {
+    throw new Error("process.env.osDomain must be defined");
+  }
+  const osSubTypesItem = await os.getItem(
+  process.env.osDomain,
+  "subtypes",
+  theEmail.id
+);
+console.log("The OpenSearch Item index subtypes for %s is: ", theEmail.id, JSON.stringify(osSubTypesItem, null, 4));
+} catch (error) {
+console.log("OpenSearch error is: ", error);
+}
+try {
       const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(theEmail);
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
       return await SES.send(sendTemplatedEmailCommand);
