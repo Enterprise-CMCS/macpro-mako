@@ -6,6 +6,7 @@ export const mapWebformsKeys = (
   webforms: Record<string, Record<string, FormSchema>>
 ): Record<string, string[]> => {
   const result: Record<string, string[]> = {};
+  console.log(webforms);
 
   Object.entries(webforms).forEach(([key, value]) => {
     result[key] = Object.keys(value);
@@ -17,7 +18,7 @@ export const mapWebformsKeys = (
 export const getAllForms = async () => {
   try {
     const formsWithVersions = mapWebformsKeys(webformVersions);
-
+    console.log(formsWithVersions);
     if (formsWithVersions) {
       return response({
         statusCode: 200,
