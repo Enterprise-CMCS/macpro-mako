@@ -1,9 +1,11 @@
 import { submit } from "@/api/submissionService";
 import { getUser } from "@/api/useGetUser";
+import { useModalContext } from "@/components/Context/modalContext";
+import { Button } from "@/components/Inputs";
 import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/pages/form/zod";
 import { unflatten } from "flat";
-import { useParams } from "react-router-dom";
+import { useNavigate, useNavigation, useParams } from "react-router-dom";
 import { Authority } from "shared-types";
 import { z } from "zod";
 
@@ -77,8 +79,68 @@ export const WithdrawPackage = () => {
         <SC.AdditionalInformation />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
-        <SC.SubmissionButtons />
+        <SubmissionButtons handleSubmit={handleSubmit} />
       </form>
     </>
+  );
+};
+
+export const SubmissionButtons = ({
+  handleSubmit,
+}: {
+  handleSubmit: () => void;
+}) => {
+  const { state } = useNavigation();
+  const modal = useModalContext();
+  const navigate = useNavigate();
+
+  const acceptActionCancel = () => {
+    modal.setModalOpen(false);
+    navigate(-1);
+  };
+  const acceptActionSubmit = () => {
+    modal.setModalOpen(false);
+    handleSubmit();
+  };
+
+  return (
+    <section className="space-x-2 mb-8">
+      <Button
+        disabled={state === "submitting"}
+        onClick={() => {
+          modal.setContent({
+            header: "Stop form submission?",
+            body: "All information you've entered on this form will be lost if you leave this page.",
+            acceptButtonText: "Yes, leave form",
+            cancelButtonText: "Return to form",
+          });
+
+          modal.setOnAccept(() => acceptActionSubmit);
+
+          modal.setModalOpen(true);
+        }}
+      >
+        Submit
+      </Button>
+      <Button
+        onClick={() => {
+          modal.setContent({
+            header: "Stop form submission?",
+            body: "All information you've entered on this form will be lost if you leave this page.",
+            acceptButtonText: "Yes, leave form",
+            cancelButtonText: "Return to form",
+          });
+
+          modal.setOnAccept(() => acceptActionCancel);
+
+          modal.setModalOpen(true);
+        }}
+        variant={"outline"}
+        type="reset"
+        disabled={state === "submitting"}
+      >
+        Cancel
+      </Button>
+    </section>
   );
 };

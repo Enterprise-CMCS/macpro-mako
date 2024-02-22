@@ -11,9 +11,9 @@ import { submit } from "@/api/submissionService";
 
 type Attachments = keyof z.infer<typeof respondToRaiSchema>["attachments"];
 export const respondToRaiSchema = z.object({
-  additionalInformation: z.string(),
+  additionalInformation: z.string().optional(),
   attachments: z.object({
-    raiResponseLetter: zAttachmentRequired({ min: 1 }),
+    waiverRaiResponse: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,
   }),
 });
@@ -74,14 +74,14 @@ export const RespondToRai = () => {
         <SC.AttachmentsSection<Attachments>
           attachments={[
             {
-              name: "RAI Response Letter",
+              name: "Waiver RAI Response",
               required: true,
-              registerName: "raiResponseLetter",
+              registerName: "waiverRaiResponse",
             },
             { name: "Other", required: false, registerName: "other" },
           ]}
         />
-        <SC.AdditionalInformation />
+        <SC.AdditionalInformation helperText="Add anything else that you would like to share with CMS." />
         <AdditionalFormInformation />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
@@ -103,7 +103,7 @@ const AdditionalFormInformation = () => {
         Once you submit this form, a confirmation email is sent to you and to
         CMS. CMS will use this content to review your package, and you will not
         be able to edit this form. If CMS needs any additional information, they
-        will follow up by email. Submit
+        will follow up by email.
       </p>
     </Alert>
   );

@@ -73,7 +73,16 @@ export const AttachmentsSection = <T extends string>({
       <p>
         We accept the following file formats:{" "}
         <strong>.docx, .jpg, .png, .pdf, .xlsx,</strong>
-        and a few others. See the full list on the FAQ Page.
+        and a few others. See the full list on the{" "}
+        <Link
+          className="text-blue-700 hover:underline"
+          to={"/faq/#medicaid-spa-rai-attachments"}
+          target={FAQ_TAB}
+        >
+          {" "}
+          FAQ Page.
+        </Link>
+        .
       </p>
       {attachments.map(({ name, required, registerName }) => (
         <FormField
@@ -96,11 +105,10 @@ export const SubmissionButtons = () => {
   const { state } = useNavigation();
   const modal = useModalContext();
   const navigate = useNavigate();
-  const { id } = useParams();
 
   const acceptAction = () => {
     modal.setModalOpen(false);
-    navigate(`/details?id=${id}`);
+    navigate(-1);
   };
 
   return (
@@ -135,7 +143,7 @@ export const PackageSection = ({ id, type }: { id: string; type: string }) => {
   return (
     <section className="flex flex-col my-8 space-y-8">
       <div>
-        <p>Package ID</p>
+        <p>Waiver Number</p>
         <p className="text-xl">{id}</p>
       </div>
       <div>
@@ -146,7 +154,11 @@ export const PackageSection = ({ id, type }: { id: string; type: string }) => {
   );
 };
 
-export const AdditionalInformation = () => {
+export const AdditionalInformation = ({
+  helperText = "Add anything else that you would like to share with the State.",
+}: {
+  helperText?: string;
+}) => {
   const form = useFormContext();
 
   return (
@@ -160,9 +172,7 @@ export const AdditionalInformation = () => {
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              <p>
-                Add anything else that you would like to share with the State.
-              </p>
+              <p>{helperText}</p>
             </FormLabel>
             <Textarea {...field} className="h-[200px] resize-none" />
             <FormMessage />

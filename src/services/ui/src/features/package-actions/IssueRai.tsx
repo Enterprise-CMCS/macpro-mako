@@ -58,7 +58,7 @@ export const IssueRai = () => {
 
   return (
     <>
-      <SC.Heading title="Formal RAI Details" />
+      <SC.Heading title="1915(b) Waiver Formal RAI Details" />
       <SC.RequiredFieldDescription />
       <SC.ActionDescription>
         Issuance of a Formal RAI in OneMAC will create a Formal RAI email sent

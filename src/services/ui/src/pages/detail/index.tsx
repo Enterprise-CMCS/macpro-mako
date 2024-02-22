@@ -95,7 +95,6 @@ const PackageActionsCard = ({
         ) : (
           <ul>
             {data.actions.map((type, idx) => {
-              console.log("hello world");
               if (authority === Authority["1915b"]) {
                 return (
                   <Link
