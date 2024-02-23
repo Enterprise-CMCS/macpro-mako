@@ -19,5 +19,5 @@ export const itemExists = async (id: string): Promise<boolean> => {
       },
     ],
   });
-  return !!data.hits.hits;
+  return data.hits.hits.length > 0;
 };
