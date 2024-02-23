@@ -25,7 +25,7 @@ export const getForm = async (event: APIGatewayEvent) => {
     }
 
     const id = body.formId.toUpperCase();
-    console.log(id);
+    console.log(id, webformVersions, webformVersions[id]);
     if (!webformVersions[id]) {
       return response({
         statusCode: 400,
