@@ -66,8 +66,8 @@ const formatAttachments = (formatType, attachmentList) => {
   else
     return `${format.begin}${attachmentList.map(a => `${a.title}: ${a.filename}`).join(format.joiner)}${format.end}`;
 }
-const createSendTemplatedEmailCommand = (data) =>
-  new SendTemplatedEmailCommand({
+const createSendTemplatedEmailCommandInput = (data) =>
+  ({
     Source: process.env.emailSource ?? "kgrue@fearless.tech",
     Destination: data.Destination,
     TemplateData: data.TemplateData,
@@ -212,7 +212,7 @@ export const main = async (event: KafkaEvent) => {
       command.TemplateData = templateDataString;
       command.Destination = { ToAddresses: buildAddressList(command.ToAddresses, emailBundle) };
       if (command?.CcAddresses) command.Destination.CcAddresses = buildAddressList(command.CcAddresses, emailBundle);
-      const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(command);
+      const sendTemplatedEmailCommand = createSendTemplatedEmailCommandInput(command);
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
 
       emailQueue.push({ ...sendTemplatedEmailCommand });
@@ -223,7 +223,9 @@ export const main = async (event: KafkaEvent) => {
   // send the emails
   const sendResults = await Promise.all(emailQueue.map(async (email) => {
     try {
-      return await SES.send(email);
+      const TemplatedEmailCommand = new SendTemplatedEmailCommand(email);
+      console.log("TemplatedEmailCommand: ", TemplatedEmailCommand);
+      return await SES.send(TemplatedEmailCommand);
     } catch (err) {
       console.log("Failed to process theEmail.", err, JSON.stringify(email, null, 4));
       return Promise.resolve(err);
