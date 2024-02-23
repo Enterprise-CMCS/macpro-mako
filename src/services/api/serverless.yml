@@ -5,7 +5,6 @@ plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
-  - serverless-scriptable-plugin
   - serverless-plugin-scripts
 
 provider:
@@ -63,11 +62,7 @@ custom:
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
   dbInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/seatool/dbInfo, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/seatool/dbInfo}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
-  scriptable:
-    hooks:
-      package:compileEvents:
-        - yarn compileRepack
-        - ./repack/repack.js
+
 params:
   master:
     formsProvisionedConcurrency: 2
@@ -283,6 +278,7 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
+
 resources:
   Resources:
     ApiGateway400ErrorCount:
