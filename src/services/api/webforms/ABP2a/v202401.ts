@@ -2,7 +2,7 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header:
-    "ABP 2a: Voluntary benefit package selection assurances - Eligibility group under Section 1902(a)(10)(A)(i)(VIII) of the Act",
+    "ABP 2A: Voluntary benefit package selection assurances - Eligibility group under Section 1902(a)(10)(A)(i)(VIII) of the Act",
   sections: [
     {
       title: "Benefit package details",
