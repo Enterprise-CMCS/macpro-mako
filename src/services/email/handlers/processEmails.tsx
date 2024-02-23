@@ -69,10 +69,7 @@ const formatAttachments = (formatType, attachmentList) => {
 const createSendTemplatedEmailCommand = (data) =>
   new SendTemplatedEmailCommand({
     Source: process.env.emailSource ?? "kgrue@fearless.tech",
-    Destination: {
-      ToAddresses: data.ToAddresses,
-      CcAddresses: data.CcAddresses,
-    },
+    Destination: data.Destination,
     TemplateData: data.TemplateData,
     Template: data.Template,
     ConfigurationSetName: process.env.emailConfigSet,
@@ -91,7 +88,7 @@ function formatProposedEffectiveDate(emailBundle) {
 }
 function buildAddressList(addressList, data) {
   const newList: any[] = [];
-  // turn all string address lists into array elements
+
   for (const address in addressList) {
     let mappedAddress = address;
     if (address === "submitterEmail")
@@ -103,6 +100,8 @@ function buildAddressList(addressList, data) {
       mappedAddress = process?.env?.osgEmail ? process.env.osgEmail : "'OSG Substitute' <k.grue@theta-llc.com>";
     if (address === "cpocEmail")
       mappedAddress = data?.cpocEmail ? data.cpocEmail : "'CPOC Substitute in mapaddress' <k.grue.cmsapprover@gmail.com>";
+      if (address === "srtList")
+      mappedAddress = data?.srtList ? data.srtList : "'SRT 1 Substitute in mapaddress' <k.grue.cmsapprover@gmail.com>;'SRT 2 Substitute in mapaddress' <k.grue.stateadmn@gmail.com>";
 
     const extraAddresses = mappedAddress.split(';');
     extraAddresses.forEach((address) => {
@@ -212,6 +211,7 @@ export const main = async (event: KafkaEvent) => {
     emailBundle.emailCommands.forEach((command) => {
       command.TemplateData = templateDataString;
       command.Destination = { ToAddresses: buildAddressList(command.ToAddresses, emailBundle) };
+      if (command?.CcAddresses) command.Destination.CcAddresses = buildAddressList(command.CcAddresses, emailBundle);
       const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(command);
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
 
