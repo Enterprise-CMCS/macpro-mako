@@ -45,7 +45,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
             ...(await onemac(event.records[topicPartition], topicPartition))
           );
           break;
-        case "aws.ksqldb.seatool.agg.State_Plan":
+        case "aws.seatool.ksql.onemac.agg.State_Plan":
           docs.push(
             ...(await ksql(event.records[topicPartition], topicPartition))
           );
@@ -67,7 +67,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
-    const { key, value } = kafkaRecord;
+    const { key, value, timestamp } = kafkaRecord;
     try {
       const id: string = JSON.parse(decode(key));
 
@@ -79,7 +79,9 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
 
       // Handle everything else and continue
       const record = { id, ...JSON.parse(decode(value)) };
-      const result = opensearch.main.seatool.transform(id).safeParse(record);
+      const result = opensearch.main.seatool
+        .transform(id, timestamp)
+        .safeParse(record);
       if (!result.success) {
         logError({
           type: ErrorType.VALIDATION,
