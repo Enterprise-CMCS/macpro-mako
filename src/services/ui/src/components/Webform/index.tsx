@@ -33,7 +33,7 @@ export const Webforms = () => {
           </Link>
           <Link
             path="/webform/:id/:version"
-            params={{ id: "abp2a", version: 202401 }}
+            params={{ id: "abp2A", version: 202401 }}
           >
             ABP 2a
           </Link>

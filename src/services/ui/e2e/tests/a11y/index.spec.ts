@@ -42,7 +42,7 @@ const webformRoutes = [
   "/webform/abp10/202401",
   "/webform/abp3_1/202401",
   "/webform/abp3/202401",
-  "/webform/abp2a/202401",
+  "/webform/abp2A/202401",
   "/webform/abp1/202401",
   "/webform/abp1/202402",
 ];
