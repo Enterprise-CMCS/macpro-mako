@@ -9,35 +9,39 @@ const SES = new SESClient({ region: process.env.region });
 
 const eventToEmailsMapping = {
   "new-submission-medicaid-spa": {
-    "lookupList": ["cpocEmailAndSrtList", "allStateSubmitters"],
     "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
     "emailCommands": [{
       "Template": `new-submission-medicaid-spa-cms_${process.env.stage}`,
-      "ToAddresses": ["osgEmail", "cpocEmailAndSrtList"],
+      "ToAddresses": ["osgEmail"],
     },
     {
       "Template": `new-submission-medicaid-spa-state_${process.env.stage}`,
       "ToAddresses": ["submitterEmail"],
-      "CcAddresses": ["allStateSubmitters"]
     },
     ]
   },
-  "respond-to-rai-medicaid-spa": [{
-    "templateBase": "respond-to-rai-medicaid-spa-cms",
-    "sendTo": ["osgEmail", "CPOCEmail", "SRTList"],
-  }, {
-    "templateBase": "respond-to-rai-medicaid-spa-state",
-    "sendTo": ["submitterEmail"],
-  }],
-  "new-submission-chip-spa": [{
-    "templateBase": "new-submission-chip-spa-cms",
-    "sendTo": ["chipToEmail"],
-    "ccList": ["chipCcList"]
-  }, {
-    "templateBase": "new-submission-chip-spa-state",
-    "sendTo": ["submitterEmail"],
-  }],
-}
+  "respond-to-rai-medicaid-spa": {
+    "lookupList": ["cpocEmailAndSrtList", "ninetyDaysDateNice"],
+    "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
+    "emailCommands": [{
+      "Template": `respond-to-rai-medicaid-spa-cms_${process.env.stage}`,
+      "ToAddresses": ["osgEmail", "cpocEmailAndSrtList"],
+    },
+    {
+      "Template": `respond-to-rai-medicaid-spa-state_${process.env.stage}`,
+      "ToAddresses": ["submitterEmail"],
+    }],
+  },
+  // "new-submission-chip-spa": [{
+  //   "templateBase": "new-submission-chip-spa-cms",
+  //   "sendTo": ["chipToEmail"],
+  //   "ccList": ["chipCcList"]
+  // }, {
+  //   "templateBase": "new-submission-chip-spa-state",
+  //   "sendTo": ["submitterEmail"],
+  // }],
+};
+
 const formatAttachments = (formatType, attachmentList) => {
   console.log("got attachments for format: ", attachmentList, formatType);
   const formatChoices = {
@@ -85,13 +89,27 @@ function formatProposedEffectiveDate(emailBundle) {
     .toFormat('DDDD');
 
 }
-function mapAddress(address, data) {
-  if (address === "submitterEmail")
-    if (data.submitterEmail === "george@example.com")
-      return `"George's Substitute" <k.grue.stateuser@gmail.com>`;
-    else
-      return `"${data.submitterName}" <${data.submitterEmail}>`;
-  return address;
+function buildAddressList(addressList, data) {
+  const newList: any[] = [];
+  // turn all string address lists into array elements
+  for (const address in addressList) {
+    let mappedAddress = address;
+    if (address === "submitterEmail")
+      if (data.submitterEmail === "george@example.com")
+        mappedAddress = `"George's Substitute" <k.grue.stateuser@gmail.com>`;
+      else
+        mappedAddress = `"${data.submitterName}" <${data.submitterEmail}>`;
+    if (address === "osgEmail")
+      mappedAddress = process?.env?.osgEmail ? process.env.osgEmail : "'OSG Substitute' <k.grue@theta-llc.com>";
+    if (address === "cpocEmail")
+      mappedAddress = data?.cpocEmail ? data.cpocEmail : "'CPOC Substitute in mapaddress' <k.grue.cmsapprover@gmail.com>";
+
+    const extraAddresses = mappedAddress.split(';');
+    extraAddresses.forEach((address) => {
+      newList.push(address);
+    })
+  }
+  return newList;
 }
 
 const buildKeyFromEventData = (data) => {
@@ -154,7 +172,7 @@ export const main = async (event: KafkaEvent) => {
 
   // every bundle has the potential to have lookups, async lookups must complete before we
   // can build the emails
-  const bundleQueue2 = await Promise.allSettled(bundleQueue.map(async (bundle) => {
+  const bundlePromises = await Promise.allSettled(bundleQueue.map(async (bundle) => {
     if (!bundle?.lookupList || !Array.isArray(bundle.lookupList) || bundle.lookupList.length === 0) return bundle;
 
     if (bundle.lookupList.includes("cpocEmailAndSrtList")) {
@@ -166,11 +184,11 @@ export const main = async (event: KafkaEvent) => {
     }
     return bundle;
   }))
-  console.log("bundleQueue2: ", bundleQueue2);
+  console.log("bundlePromises: ", bundlePromises);
   // if any events need a user list from Cognito
 
   // build the email commands
-  bundleQueue2.forEach((lookupResult) => {
+  bundlePromises.forEach((lookupResult) => {
     if (lookupResult.status !== "fulfilled") return;
     const emailBundle = lookupResult.value;
 
@@ -179,16 +197,11 @@ export const main = async (event: KafkaEvent) => {
         if (dataType === 'territory') return { "territory": emailBundle.id.toString().substring(0, 2) };
         if (dataType === 'proposedEffectiveDateNice') return { "proposedEffectiveDateNice": formatProposedEffectiveDate(emailBundle) }
         if (dataType === 'applicationEndpoint') return { "applicationEndoint": process.env.applicationEndpoint };
+        if (dataType === 'fomattedFileList') return { "fomattedFileList": formatAttachments("html", emailBundle.attachments) };
+        if (dataType === 'textFileList') return { "textFileList": formatAttachments("text", emailBundle.attachments) };
+
         if (!!emailBundle[dataType]) return { [dataType]: emailBundle[dataType] };
-        return { dataType: "not sure about this one" };
-        //   try {
-        //   if (dataType === "packageDetails")
-        //     emailBundle.packageDetails = await getPackageDetails(emailBundle.id);
-        //   if (lookupType === "allStateSubmitters")
-        //     cognitoDetailsLookupList.push(eventData.id.toString().substring(0, 2));
-        //   } catch (e) {
-        //       console.log("got error",e);
-        //   }
+        return { [dataType]: "not sure about this one" };
       });
       console.log("TemplateDataList: ", emailBundle.TemplateDataList);
     }
@@ -198,9 +211,7 @@ export const main = async (event: KafkaEvent) => {
     console.log("templateData is: ", templateDataString);
     emailBundle.emailCommands.forEach((command) => {
       command.TemplateData = templateDataString;
-      command.Destination = {ToAddresses: command.ToAddresses.map((address) => {
-        return mapAddress(address, emailBundle);
-      })};
+      command.Destination = { ToAddresses: buildAddressList(command.ToAddresses, emailBundle) };
       const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(command);
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
 
@@ -222,49 +233,3 @@ export const main = async (event: KafkaEvent) => {
   console.log("the sendResults are: ", sendResults);
   return sendResults;
 }
-/*
-
- 
-// done with events, then do lookups
-// done with lookups, now do data assignments
-// data is ready, send emails
-
-emailConfig.forEach(email => {
-
-  email.Command.TemplateData = email.TemplateDataList.map((dataType) => {
-
-  })
-
-  // don't include CcAddresses attribute unless we use it
-  if (email?.ccList && email?.ccList.length > 0 && !!email.ccList[0]) {
-    email.CcAddresses = email.ccList.map(address => mapAddress(address));
-  }
-
-  emailQueue.push(email);
-});
-
-function mapAddress(address) {
-  if (address === "submitterEmail")
-    if (record.submitterEmail === "george@example.com")
-      return `"George's Substitute" <k.grue.stateuser@gmail.com>`;
-    else
-      return `"${record.submitterName}" <${record.submitterEmail}>`;
-  return address;
-}
-
-
-function formatSubmissionDate() {
-  if (!record?.notificationMetadata?.submissionDate) return "Pending";
-  return DateTime.fromMillis(record.notificationMetadata.submissionDate)
-    .plus({ days: 90 })
-    .toFormat("DDDD '@ 11:59pm ET'");
-}
-
-function formatProposedEffectiveDate() {
-  if (!record?.notificationMetadata?.proposedEffectiveDate) return "Pending";
-  return DateTime.fromMillis(record.notificationMetadata.proposedEffectiveDate)
-    .toFormat('DDDD');
-
-}
-}));
-*/
