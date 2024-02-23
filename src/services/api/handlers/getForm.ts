@@ -32,16 +32,19 @@ export const getForm = async (event: APIGatewayEvent) => {
         body: { error: "Form ID not found" },
       });
     }
-
+    console.log("1");
     let version = "v";
     if (body.formVersion) {
       version += body.formVersion;
+      console.log("2", version);
     } else {
       version += getMaxVersion(id);
+      console.log("3", version);
     }
 
     if (id && version) {
-      const formObj = await webformVersions[id][version];
+      console.log("4", id, version, webformVersions);
+      const formObj = webformVersions[id][version];
       const cleanedForm = convertRegexToString(formObj);
       return response({
         statusCode: 200,
