@@ -171,7 +171,12 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
               .safeParse(record);
         }
       })();
-
+      if (result === undefined) {
+        console.log(
+          `no action to take for ${id} action ${record.actionType}.  Continuing...`
+        );
+        continue;
+      }
       if (!result?.success) {
         logError({
           type: ErrorType.VALIDATION,

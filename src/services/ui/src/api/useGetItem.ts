@@ -7,15 +7,6 @@ export const getItem = async (
 ): Promise<opensearch.main.ItemResult> =>
   await API.post("os", "/item", { body: { id } });
 
-export const idIsUnique = async (id: string) => {
-  try {
-    await getItem(id);
-    return false;
-  } catch (e) {
-    return true;
-  }
-};
-
 export const idIsApproved = async (id: string) => {
   try {
     const record = await getItem(id);
