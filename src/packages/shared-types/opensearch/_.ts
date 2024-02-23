@@ -53,6 +53,9 @@ export type Filterable<_FIELD> = {
   field: _FIELD;
   value: FilterValue;
   prefix: "must" | "must_not" | "should" | "filter";
+  options?: {
+    case_insensitive?: boolean;
+  };
 };
 
 export type QueryState<_FIELD> = {
