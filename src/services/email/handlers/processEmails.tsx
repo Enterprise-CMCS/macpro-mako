@@ -7,30 +7,18 @@ import * as os from "../../../libs/opensearch-lib";
 
 const SES = new SESClient({ region: process.env.region });
 
-const commonTemplateDetails = {
-  Source: process.env.emailSource ?? "kgrue@fearless.tech",
-  ConfigurationSetName: process.env.emailConfigSet,
-};
-
-const defaultPackageDetails = {
-  "id": "zz-99-9999",
-}
-
 const eventToEmailsMapping = {
   "new-submission-medicaid-spa": {
+    "lookupList": ["cpocEmailAndSrtList", "allStateSubmitters"],
     "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
     "emailCommands": [{
       "Template": `new-submission-medicaid-spa-cms_${process.env.stage}`,
-      "Destination": {
-        "ToAddresses": ["osgEmail","cpocEmailAndSrtList"],
-      }
+      "ToAddresses": ["osgEmail", "cpocEmailAndSrtList"],
     },
     {
       "Template": `new-submission-medicaid-spa-state_${process.env.stage}`,
-      "Destination": {
-        "ToAddresses": ["submitterEmail"],
-        "CcAddresses": ["allStateSubmitters"]
-      }
+      "ToAddresses": ["submitterEmail"],
+      "CcAddresses": ["allStateSubmitters"]
     },
     ]
   },
@@ -91,8 +79,6 @@ const decodeRecord = (encodedRecord) => {
   return { id: decode(encodedRecord.key), ...JSON.parse(decode(encodedRecord.value)) };
 };
 
-const getTemplateDataString = (emailBundle) => {return JSON.stringify({"applicationEndPoint": "theend"})};
-
 function formatProposedEffectiveDate(emailBundle) {
   if (!emailBundle?.notificationMetadata?.proposedEffectiveDate) return "Pending";
   return DateTime.fromMillis(emailBundle.notificationMetadata.proposedEffectiveDate)
@@ -118,17 +104,33 @@ const buildKeyFromEventData = (data) => {
   return `${actionType}-${authority}`;
 }
 
+const getCpocEmailAndSrtList = async (id) => {
+  try {
+    if (!process.env.osDomain) {
+      throw new Error("process.env.osDomain must be defined");
+    }
+
+    const osInsightsItem = await os.getItem(
+      process.env.osDomain,
+      "insights",
+      id
+    );
+    console.log("The OpenSearch Item index Insights for %s is: ", id, JSON.stringify(osInsightsItem, null, 4));
+    if (osInsightsItem) return "'CPOC Insights' <k.grue.cmsapprover@gmail.com>;'SRT Insights' <k.grue.stateadmn@gmail.com>";
+    return "'CPOC Substitute' <k.grue.cmsapprover@gmail.com>;'SRT 1' <k.grue.stateadmn@gmail.com>";
+  } catch (error) {
+    console.log("OpenSearch error is: ", error);
+  }
+};
+
+
 export const main = async (event: KafkaEvent) => {
   console.log("Received event (stringified):", JSON.stringify(event, null, 4));
 
   const bundleQueue: any[] = [];
   const emailQueue: any[] = [];
-  // go through the records, filter for emailable events, and create email queue
-  // perform all lookups
-  // build template data for events
-  // send emails
 
-  // create the emailQueue out of emailable events paired with configs
+  // create emailQueue out of emailable events paired with configs
   Object.values(event.records).forEach((source) =>
     source.forEach((record) => {
       const eventData = decodeRecord(record);
@@ -143,73 +145,66 @@ export const main = async (event: KafkaEvent) => {
       console.log("emailBundle: ", emailBundle);
       if (!emailBundle) return;
       bundleQueue.push({ ...eventData, ...emailBundle });
-
     })
   );
 
-  console.log("bundleQueue: ", JSON.stringify(bundleQueue, null,4));
+  console.log("bundleQueue: ", JSON.stringify(bundleQueue, null, 4));
   // don't bother continuing if there are no emails to send
   if (bundleQueue.length === 0) return;
 
-  // if any events need package details from OpenSearch, get them
-  // let packageDetails: void[] = [];
-  // if (packageDetailsLookupList.length > 0) {
-  //   packageDetails = await Promise.all(packageDetailsLookupList.map(async (id) => {
-  //     try {
-  //       if (!process.env.osDomain) {
-  //         throw new Error("process.env.osDomain must be defined");
-  //       }
+  // every bundle has the potential to have lookups, async lookups must complete before we
+  // can build the emails
+  const bundleQueue2 = await Promise.allSettled(bundleQueue.map(async (bundle) => {
+    if (!bundle?.lookupList || !Array.isArray(bundle.lookupList) || bundle.lookupList.length === 0) return bundle;
 
-  //       const osInsightsItem = await os.getItem(
-  //         process.env.osDomain,
-  //         "insights",
-  //         id
-  //       );
-  //       console.log("The OpenSearch Item index Insights for %s is: ", id, JSON.stringify(osInsightsItem, null, 4));
-  //       if (osInsightsItem) return { ...osInsightsItem.value };
-  //       return { ...defaultPackageDetails };
-  //     } catch (error) {
-  //       console.log("OpenSearch error is: ", error);
-  //     }
-  //   }));
-  // }
-  // console.log("package Details: ", packageDetails);
+    if (bundle.lookupList.includes("cpocEmailAndSrtList")) {
+      bundle.cpocEmailAndSrtList = await getCpocEmailAndSrtList(bundle.id);
+    }
 
+    if (bundle.lookupList.includes("allStateSubmitters")) {
+      bundle.allStateSubmitters = "'State 1' <k.grue.stateuser@gmail.com>;'State 2' <k.grue.stateadmn@gmail.com>";
+    }
+    return bundle;
+  }))
+  console.log("bundleQueue2: ", bundleQueue2);
   // if any events need a user list from Cognito
 
   // build the email commands
-  bundleQueue.forEach((emailBundle) => {
-    if (emailBundle.TemplateDataList && Array.isArray(emailBundle.TemplateDataList) && emailBundle.TemplateDataList.length === 0) {
-        emailBundle.TemplateData = emailBundle.TemplateDataList.map((dataType) => {
-          if (dataType === 'territory') return { dataType: emailBundle.id.toString().substring(0, 2)};
-          if (dataType === 'proposedEffectiveDateNice') return { dataType: formatProposedEffectiveDate(emailBundle) }
-          if (dataType === 'applicationEndpoint') return {"applicationEndoint": process.env.applicationEndpoint};
-          if (!!emailBundle[dataType]) return {dataType: emailBundle[dataType]};
-          return { dataType: "not sure about this one"};
-          //   try {
-          //   if (dataType === "packageDetails")
-          //     emailBundle.packageDetails = await getPackageDetails(emailBundle.id);
-          //   if (lookupType === "allStateSubmitters")
-          //     cognitoDetailsLookupList.push(eventData.id.toString().substring(0, 2));
-          //   } catch (e) {
-          //       console.log("got error",e);
-          //   }
-          });    
-        console.log("TemplateDataList: ", emailBundle.TemplateDataList);
+  bundleQueue2.forEach((lookupResult) => {
+    if (lookupResult.status !== "fulfilled") return;
+    const emailBundle = lookupResult.value;
+
+    if (emailBundle.TemplateDataList && Array.isArray(emailBundle.TemplateDataList) && emailBundle.TemplateDataList.length !== 0) {
+      emailBundle.TemplateData = emailBundle.TemplateDataList.map((dataType) => {
+        if (dataType === 'territory') return { dataType: emailBundle.id.toString().substring(0, 2) };
+        if (dataType === 'proposedEffectiveDateNice') return { dataType: formatProposedEffectiveDate(emailBundle) }
+        if (dataType === 'applicationEndpoint') return { "applicationEndoint": process.env.applicationEndpoint };
+        if (!!emailBundle[dataType]) return { dataType: emailBundle[dataType] };
+        return { dataType: "not sure about this one" };
+        //   try {
+        //   if (dataType === "packageDetails")
+        //     emailBundle.packageDetails = await getPackageDetails(emailBundle.id);
+        //   if (lookupType === "allStateSubmitters")
+        //     cognitoDetailsLookupList.push(eventData.id.toString().substring(0, 2));
+        //   } catch (e) {
+        //       console.log("got error",e);
+        //   }
+      });
+      console.log("TemplateDataList: ", emailBundle.TemplateDataList);
     }
 
     // data is at bundle level, but needs to be available for each command
-    const templateDataString = JSON.stringify(emailBundle.TemplateData);
+    const templateDataString = emailBundle?.TemplateData ? JSON.stringify(emailBundle.TemplateData) : [{ "here": "is dummy data" }];
     console.log("templateData is: ", templateDataString);
     emailBundle.emailCommands.forEach((command) => {
       command.TemplateData = templateDataString;
-      command.ToAddresses = command.ToAddresses.map((address) => {
-       return mapAddress(address,emailBundle);
+      command.Destination.ToAddresses = command.ToAddresses.map((address) => {
+        return mapAddress(address, emailBundle);
       })
       const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(command);
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
 
-      emailQueue.push({...sendTemplatedEmailCommand});
+      emailQueue.push({ ...sendTemplatedEmailCommand });
     })
   });
   console.log("email queue: ", emailQueue);
