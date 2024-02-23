@@ -121,10 +121,8 @@ const AdditionalFormInformation = () => {
     <Alert variant={"infoBlock"} className="space-x-2 mb-8">
       <Info />
       <p>
-        Once you submit this form, a confirmation email is sent to you and to
-        CMS. CMS will use this content to review your package, and you will not
-        be able to edit this form. If CMS needs any additional information, they
-        will follow up by email.
+        Complete this form to withdraw the Formal RAI response. Once complete,
+        you and CMS will receive an email confirmation.
       </p>
     </Alert>
   );
