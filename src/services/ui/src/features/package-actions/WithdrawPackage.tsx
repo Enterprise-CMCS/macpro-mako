@@ -28,7 +28,7 @@ const descriptionText: Record<Authority, string> = {
 
 export const withdrawPackageSchema = z
   .object({
-    additionalInformation: z.string().optional(),
+    additionalInformation: z.string().optional().default(""),
     attachments: z
       .object({
         supportingDocumentation: zAttachmentOptional,
@@ -38,7 +38,7 @@ export const withdrawPackageSchema = z
   .superRefine((data, ctx) => {
     if (
       !data.attachments?.supportingDocumentation?.length &&
-      data.additionalInformation === undefined
+      data.additionalInformation.length === 0
     ) {
       ctx.addIssue({
         message: "An Attachment or Additional Information is required.",

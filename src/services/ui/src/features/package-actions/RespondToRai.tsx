@@ -27,7 +27,7 @@ const attachmentTitle: Record<Authority, string> = {
 
 type Attachments = keyof z.infer<typeof respondToRaiSchema>["attachments"];
 export const respondToRaiSchema = z.object({
-  additionalInformation: z.string().optional(),
+  additionalInformation: z.string().optional().default(""),
   attachments: z.object({
     raiResponse: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,
