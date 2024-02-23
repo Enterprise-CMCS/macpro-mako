@@ -18,18 +18,18 @@ const defaultPackageDetails = {
 
 const eventToEmailsMapping = {
   "new-submission-medicaid-spa": {
-    "lookupList": [],
     "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
     "emailCommands": [{
       "Template": `new-submission-medicaid-spa-cms_${process.env.stage}`,
       "Destination": {
-        "ToAddresses": ["osgEmail"],
+        "ToAddresses": ["osgEmail","cpocEmailAndSrtList"],
       }
     },
     {
       "Template": `new-submission-medicaid-spa-state_${process.env.stage}`,
       "Destination": {
         "ToAddresses": ["submitterEmail"],
+        "CcAddresses": ["allStateSubmitters"]
       }
     },
     ]
@@ -131,8 +131,10 @@ export const main = async (event: KafkaEvent) => {
       if (!emailBundle) return;
       bundleQueue.push({ ...eventData, ...emailBundle });
 
-    }));
-  console.log("the packageDetails needed are:", packageDetailsLookupList);
+    })
+  );
+
+  console.log("bundleQueue: ", JSON.stringify(bundleQueue, null,4));
   // don't bother continuing if there are no emails to send
   if (bundleQueue.length === 0) return;
 
@@ -165,18 +167,18 @@ export const main = async (event: KafkaEvent) => {
   // build the email commands
   bundleQueue.forEach(async (emailBundle) => {
 
-    if (emailBundle.lookupList && Array.isArray(emailBundle.lookupList) && emailBundle.lookupList.length === 0) {
-        // emailBundle.lookupList.foreach(async (lookupType) => {
-        //     try {
-        //     if (lookupType === "packageDetails")
-        //       emailBundle.packageDetails = await getPackageDetails(emailBundle.id);
-        //     if (lookupType === "allStateSubmitters")
-        //       cognitoDetailsLookupList.push(eventData.id.toString().substring(0, 2));
-        //     } catch (e) {
-        //         console.log("got error",e);
-        //     }
-        //   });    
-        console.log("lookup list: ", emailBundle.lookupList);
+    if (emailBundle.TemplateDataList && Array.isArray(emailBundle.TemplateDataList) && emailBundle.TemplateDataList.length === 0) {
+        emailBundle.TemplateDataList.foreach(async (dataType) => {
+          //   try {
+          //   if (dataType === "packageDetails")
+          //     emailBundle.packageDetails = await getPackageDetails(emailBundle.id);
+          //   if (lookupType === "allStateSubmitters")
+          //     cognitoDetailsLookupList.push(eventData.id.toString().substring(0, 2));
+          //   } catch (e) {
+          //       console.log("got error",e);
+          //   }
+          });    
+        console.log("TemplateDataList: ", emailBundle.TemplateDataList);
     }
 
     // data is at bundle level, but needs to be available for each command
