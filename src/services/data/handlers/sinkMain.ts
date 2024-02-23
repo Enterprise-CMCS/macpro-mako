@@ -46,6 +46,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           );
           break;
         case "aws.seatool.ksql.onemac.agg.State_Plan":
+          console.log("we have seatool docs to handle");
           docs.push(
             ...(await ksql(event.records[topicPartition], topicPartition))
           );
@@ -78,10 +79,12 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       }
 
       // Handle everything else and continue
-      const record = { id, ...JSON.parse(decode(value)) };
-      const result = opensearch.main.seatool
-        .transform(id, timestamp)
-        .safeParse(record);
+      const record = {
+        id,
+        CHANGED_DATE: timestamp,
+        ...JSON.parse(decode(value)),
+      };
+      const result = opensearch.main.seatool.transform(id).safeParse(record);
       if (!result.success) {
         logError({
           type: ErrorType.VALIDATION,

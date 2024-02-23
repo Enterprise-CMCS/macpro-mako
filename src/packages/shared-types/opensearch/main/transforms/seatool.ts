@@ -134,7 +134,7 @@ const getAuthority = (
   }
 };
 
-export const transform = (id: string, timestamp: number) => {
+export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
@@ -155,7 +155,7 @@ export const transform = (id: string, timestamp: number) => {
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE
       ),
-      changedDate: getDateStringOrNullFromEpoc(timestamp),
+      changedDate: getDateStringOrNullFromEpoc(data.CHANGED_DATE),
       description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
