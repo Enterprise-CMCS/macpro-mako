@@ -5,6 +5,7 @@ import {
   finalDispositionStatuses,
   SeaTool,
   SeatoolOfficer,
+  SEATOOL_SPW_STATUS,
 } from "../../..";
 
 import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
@@ -139,10 +140,9 @@ export const transform = (id: string) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
       getRaiDate(data);
-    const seatoolStatus =
-      data.SPW_STATUS?.find(
-        (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
-      )?.SPW_STATUS_DESC || "Unknown";
+    const seatoolStatus = data.STATE_PLAN.SPW_STATUS_ID
+      ? SEATOOL_SPW_STATUS[data.STATE_PLAN.SPW_STATUS_ID]
+      : "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
     const authorityId = data.PLAN_TYPES?.[0].PLAN_TYPE_ID;
     const typeId = data.STATE_PLAN_SERVICETYPES?.[0]?.SERVICE_TYPE_ID;

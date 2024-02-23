@@ -13,5 +13,5 @@ export * from "./states";
 export * from "./statusHelper";
 export * from "./guides";
 export * from "./lambda-events";
-export * from "./seatool-authorities";
+export * from "./seatool-statics";
 export * from "./seatool-tables";
