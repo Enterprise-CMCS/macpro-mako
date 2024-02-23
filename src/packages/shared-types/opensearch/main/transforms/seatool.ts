@@ -144,7 +144,7 @@ export const transform = (id: string) => {
       ? SEATOOL_SPW_STATUS[data.STATE_PLAN.SPW_STATUS_ID]
       : "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    const authorityId = data.PLAN_TYPES?.[0].PLAN_TYPE_ID;
+    const authorityId = data.STATE_PLAN?.PLAN_TYPE;
     const typeId = data.STATE_PLAN_SERVICETYPES?.[0]?.SERVICE_TYPE_ID;
     const subTypeId = data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.SERVICE_SUBTYPE_ID;
     const resp = {
