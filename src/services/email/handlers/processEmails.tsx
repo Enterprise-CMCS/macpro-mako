@@ -98,10 +98,8 @@ function buildAddressList(addressList, data) {
         mappedAddress = `"${data.submitterName}" <${data.submitterEmail}>`;
     if (address === "osgEmail")
       mappedAddress = process?.env?.osgEmail ? process.env.osgEmail : "'OSG Substitute' <k.grue@theta-llc.com>";
-    if (address === "cpocEmail")
-      mappedAddress = data?.cpocEmail ? data.cpocEmail : "'CPOC Substitute in mapaddress' <k.grue.cmsapprover@gmail.com>";
-      if (address === "srtList")
-      mappedAddress = data?.srtList ? data.srtList : "'SRT 1 Substitute in mapaddress' <k.grue.cmsapprover@gmail.com>;'SRT 2 Substitute in mapaddress' <k.grue.stateadmn@gmail.com>";
+    if (address === "cpocEmailAndSrtList")
+      mappedAddress = data?.cpocEmailAndSrtList ? data.cpocEmailAndSrtList : "'CPOC Substitute in mapaddress' <k.grue.cmsapprover@gmail.com>;'SRT 1 Substitute in mapaddress' <k.grue.cmsapprover@gmail.com>;'SRT 2 Substitute in mapaddress' <k.grue.stateadmn@gmail.com>";
 
     const extraAddresses = mappedAddress.split(';');
     extraAddresses.forEach((address) => {
@@ -186,7 +184,7 @@ export const main = async (event: KafkaEvent) => {
   console.log("bundlePromises: ", bundlePromises);
   // if any events need a user list from Cognito
 
-  // build the email commands
+  // build the email command structures
   bundlePromises.forEach((lookupResult) => {
     if (lookupResult.status !== "fulfilled") return;
     const emailBundle = lookupResult.value;
