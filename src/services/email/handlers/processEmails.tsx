@@ -176,10 +176,10 @@ export const main = async (event: KafkaEvent) => {
 
     if (emailBundle.TemplateDataList && Array.isArray(emailBundle.TemplateDataList) && emailBundle.TemplateDataList.length !== 0) {
       emailBundle.TemplateData = emailBundle.TemplateDataList.map((dataType) => {
-        if (dataType === 'territory') return { dataType: emailBundle.id.toString().substring(0, 2) };
-        if (dataType === 'proposedEffectiveDateNice') return { dataType: formatProposedEffectiveDate(emailBundle) }
+        if (dataType === 'territory') return { "territory": emailBundle.id.toString().substring(0, 2) };
+        if (dataType === 'proposedEffectiveDateNice') return { "proposedEffectiveDateNice": formatProposedEffectiveDate(emailBundle) }
         if (dataType === 'applicationEndpoint') return { "applicationEndoint": process.env.applicationEndpoint };
-        if (!!emailBundle[dataType]) return { dataType: emailBundle[dataType] };
+        if (!!emailBundle[dataType]) return { [dataType]: emailBundle[dataType] };
         return { dataType: "not sure about this one" };
         //   try {
         //   if (dataType === "packageDetails")
@@ -198,9 +198,9 @@ export const main = async (event: KafkaEvent) => {
     console.log("templateData is: ", templateDataString);
     emailBundle.emailCommands.forEach((command) => {
       command.TemplateData = templateDataString;
-      command.Destination.ToAddresses = command.ToAddresses.map((address) => {
+      command.Destination = {ToAddresses: command.ToAddresses.map((address) => {
         return mapAddress(address, emailBundle);
-      })
+      })};
       const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(command);
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
 
