@@ -29,7 +29,7 @@ type Attachments = keyof z.infer<typeof respondToRaiSchema>["attachments"];
 export const respondToRaiSchema = z.object({
   additionalInformation: z.string().optional().default(""),
   attachments: z.object({
-    raiResponse: zAttachmentRequired({ min: 1 }),
+    raiResponseLetter: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,
   }),
 });
@@ -93,7 +93,7 @@ export const RespondToRai = () => {
             {
               name: attachmentTitle[authority],
               required: true,
-              registerName: "raiResponse",
+              registerName: "raiResponseLetter",
             },
             { name: "Other", required: false, registerName: "other" },
           ]}
