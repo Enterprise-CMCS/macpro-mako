@@ -23,9 +23,7 @@ const mockFetch = vi.fn(async (apiName, path, init) => {
     method: "POST",
   });
   if (res.status !== 200)
-    throw Error(
-      `useGetItem > mockFetch: item query for ${init.body.id} returned status code ${res.status}`
-    );
+    throw Error("useGetItem > mockFetch: Expected error thrown by test.");
   return await res.json();
 });
 
