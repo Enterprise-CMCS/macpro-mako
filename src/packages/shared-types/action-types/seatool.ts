@@ -38,7 +38,6 @@ export const seatoolSchema = z.object({
     SUBMISSION_DATE: z.number().nullable(),
     PLAN_TYPE: z.number().nullable(),
     LEAD_ANALYST_ID: z.number().nullable(),
-    CHANGED_DATE: z.number().nullable(),
     APPROVED_EFFECTIVE_DATE: z.number().nullable(),
     PROPOSED_DATE: z.number().nullable(),
     SPW_STATUS_ID: z.number().nullable(),
