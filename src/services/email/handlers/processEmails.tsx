@@ -93,6 +93,21 @@ const decodeRecord = (encodedRecord) => {
 
 const getTemplateDataString = (emailBundle) => {return JSON.stringify({"applicationEndPoint": "theend"})};
 
+function formatProposedEffectiveDate(emailBundle) {
+  if (!emailBundle?.notificationMetadata?.proposedEffectiveDate) return "Pending";
+  return DateTime.fromMillis(emailBundle.notificationMetadata.proposedEffectiveDate)
+    .toFormat('DDDD');
+
+}
+function mapAddress(address, data) {
+  if (address === "submitterEmail")
+    if (data.submitterEmail === "george@example.com")
+      return `"George's Substitute" <k.grue.stateuser@gmail.com>`;
+    else
+      return `"${data.submitterName}" <${data.submitterEmail}>`;
+  return address;
+}
+
 const buildKeyFromEventData = (data) => {
   if (data?.origin !== "micro" || !data?.authority) return;
 
@@ -108,8 +123,6 @@ export const main = async (event: KafkaEvent) => {
 
   const bundleQueue: any[] = [];
   const emailQueue: any[] = [];
-  const packageDetailsLookupList: any[] = [];
-  const cognitoDetailsLookupList: any[] = [];
   // go through the records, filter for emailable events, and create email queue
   // perform all lookups
   // build template data for events
@@ -139,36 +152,40 @@ export const main = async (event: KafkaEvent) => {
   if (bundleQueue.length === 0) return;
 
   // if any events need package details from OpenSearch, get them
-  let packageDetails: void[] = [];
-  if (packageDetailsLookupList.length > 0) {
-    packageDetails = await Promise.all(packageDetailsLookupList.map(async (id) => {
-      try {
-        if (!process.env.osDomain) {
-          throw new Error("process.env.osDomain must be defined");
-        }
+  // let packageDetails: void[] = [];
+  // if (packageDetailsLookupList.length > 0) {
+  //   packageDetails = await Promise.all(packageDetailsLookupList.map(async (id) => {
+  //     try {
+  //       if (!process.env.osDomain) {
+  //         throw new Error("process.env.osDomain must be defined");
+  //       }
 
-        const osInsightsItem = await os.getItem(
-          process.env.osDomain,
-          "insights",
-          id
-        );
-        console.log("The OpenSearch Item index Insights for %s is: ", id, JSON.stringify(osInsightsItem, null, 4));
-        if (osInsightsItem) return { ...osInsightsItem.value };
-        return { ...defaultPackageDetails };
-      } catch (error) {
-        console.log("OpenSearch error is: ", error);
-      }
-    }));
-  }
-  console.log("package Details: ", packageDetails);
+  //       const osInsightsItem = await os.getItem(
+  //         process.env.osDomain,
+  //         "insights",
+  //         id
+  //       );
+  //       console.log("The OpenSearch Item index Insights for %s is: ", id, JSON.stringify(osInsightsItem, null, 4));
+  //       if (osInsightsItem) return { ...osInsightsItem.value };
+  //       return { ...defaultPackageDetails };
+  //     } catch (error) {
+  //       console.log("OpenSearch error is: ", error);
+  //     }
+  //   }));
+  // }
+  // console.log("package Details: ", packageDetails);
 
   // if any events need a user list from Cognito
 
   // build the email commands
-  bundleQueue.forEach(async (emailBundle) => {
-
+  bundleQueue.forEach((emailBundle) => {
     if (emailBundle.TemplateDataList && Array.isArray(emailBundle.TemplateDataList) && emailBundle.TemplateDataList.length === 0) {
-        emailBundle.TemplateDataList.foreach(async (dataType) => {
+        emailBundle.TemplateData = emailBundle.TemplateDataList.map((dataType) => {
+          if (dataType === 'territory') return { dataType: emailBundle.id.toString().substring(0, 2)};
+          if (dataType === 'proposedEffectiveDateNice') return { dataType: formatProposedEffectiveDate(emailBundle) }
+          if (dataType === 'applicationEndpoint') return {"applicationEndoint": process.env.applicationEndpoint};
+          if (!!emailBundle[dataType]) return {dataType: emailBundle[dataType]};
+          return { dataType: "not sure about this one"};
           //   try {
           //   if (dataType === "packageDetails")
           //     emailBundle.packageDetails = await getPackageDetails(emailBundle.id);
@@ -182,10 +199,13 @@ export const main = async (event: KafkaEvent) => {
     }
 
     // data is at bundle level, but needs to be available for each command
-    const templateDataString = getTemplateDataString(emailBundle);
-
+    const templateDataString = JSON.stringify(emailBundle.TemplateData);
+    console.log("templateData is: ", templateDataString);
     emailBundle.emailCommands.forEach((command) => {
       command.TemplateData = templateDataString;
+      command.ToAddresses = command.ToAddresses.map((address) => {
+       return mapAddress(address,emailBundle);
+      })
       const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(command);
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
 
