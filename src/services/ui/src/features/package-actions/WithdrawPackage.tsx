@@ -104,7 +104,7 @@ export const WithdrawPackage = () => {
       <SC.PackageSection />
       <form onSubmit={handleSubmit}>
         <SC.AttachmentsSection<Attachments>
-          supportingInformation="Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information box"
+          supportingInformation="Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information box."
           attachments={[
             {
               name: "Supporting Documentation",
@@ -113,7 +113,7 @@ export const WithdrawPackage = () => {
             },
           ]}
         />
-        <SC.AdditionalInformation helperText="Explain your need for withdrawal or upload supporting documentation" />
+        <SC.AdditionalInformation helperText="Explain your need for withdrawal or upload supporting documentation." />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
         <AdditionalFormInformation />
