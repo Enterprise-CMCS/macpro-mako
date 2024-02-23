@@ -62,8 +62,7 @@ custom:
   emailEventTopicName: ${self:service}-${sls:stage}-email-events
   vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
-  emailSource: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/emailSource, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/emailSource,"kgrue@fearless.tech"}
-  osgEmail: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/osgEmail, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/osgEmail}
+  emailAddressLookup: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/emailAddressLookup, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/emailAddressLookup}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
@@ -89,8 +88,9 @@ functions:
       region: ${self:provider.region}
       stage: ${sls:stage}
       osDomain: ${param:osDomain}
-      emailSource: ${self:custom.emailSource}
-      osgEmail: ${self:custom.osgEmail}
+      emailSource: ${self:custom.emailAddressLookup.sourceEmail}
+      osgEmail: ${self:custom.emailAddressLookup.osgEmail}
+      chipToEmail: ${self:custom.emailAddressLookup.chipToEmail}
       emailConfigSet: ${self:service}-${sls:stage}-configuration
       applicationEndpoint: ${param:ApplicationEndpointUrl}
     maximumRetryAttempts: 0

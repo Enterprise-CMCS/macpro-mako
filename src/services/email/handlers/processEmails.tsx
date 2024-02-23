@@ -1,39 +1,79 @@
 import { DateTime } from "luxon";
 import { decode } from "base-64";
 import { SESClient, SendTemplatedEmailCommand } from "@aws-sdk/client-ses";
-import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm"; // ES Modules import
 
 import { KafkaEvent } from "shared-types";
 import * as os from "../../../libs/opensearch-lib";
 
 const SES = new SESClient({ region: process.env.region });
-const SSM = new SSMClient({ region: process.env.region });
 
-const emailsToSend = {
-  "new-submission-medicaid-spa": [{
-    "templateBase": "new-submission-medicaid-spa-cms",
-    "sendTo": [process.env.osgEmail],
-  }, {
-    "templateBase": "new-submission-medicaid-spa-state",
-    "sendTo": ["submitterEmail"],
-  }],
+const commonTemplateDetails = {
+  Source: process.env.emailSource ?? "kgrue@fearless.tech",
+  ConfigurationSetName: process.env.emailConfigSet,
+};
+
+const defaultPackageDetails = {
+  "id": "zz-99-9999",
+}
+
+const eventToEmailsMapping = {
+  "new-submission-medicaid-spa": {
+    "lookupList": [],
+    "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
+    "emailCommands": [{
+      "Template": `new-submission-medicaid-spa-cms_${process.env.stage}`,
+      "Destination": {
+        "ToAddresses": ["osgEmail"],
+      }
+    },
+    {
+      "Template": `new-submission-medicaid-spa-state_${process.env.stage}`,
+      "Destination": {
+        "ToAddresses": ["submitterEmail"],
+      }
+    },
+    ]
+  },
   "respond-to-rai-medicaid-spa": [{
     "templateBase": "respond-to-rai-medicaid-spa-cms",
-    "sendTo": [process.env.osgEmail],
+    "sendTo": ["osgEmail", "CPOCEmail", "SRTList"],
   }, {
     "templateBase": "respond-to-rai-medicaid-spa-state",
     "sendTo": ["submitterEmail"],
   }],
   "new-submission-chip-spa": [{
     "templateBase": "new-submission-chip-spa-cms",
-    "sendTo": [process.env.chipToEmail],
-    "ccList": [process.env.chipCcList]
+    "sendTo": ["chipToEmail"],
+    "ccList": ["chipCcList"]
   }, {
     "templateBase": "new-submission-chip-spa-state",
     "sendTo": ["submitterEmail"],
   }],
 }
-
+const formatAttachments = (formatType, attachmentList) => {
+  console.log("got attachments for format: ", attachmentList, formatType);
+  const formatChoices = {
+    "text": {
+      begin: "\n\n",
+      joiner: "\n",
+      end: "\n\n"
+    },
+    "html": {
+      begin: "<ul><li>",
+      joiner: "</li><li>",
+      end: "</li></ul>"
+    },
+  };
+  const format = formatChoices[formatType];
+  if (!format) {
+    console.log("new format type? ", formatType);
+    return "attachment List";
+  }
+  if (!attachmentList || attachmentList.length === 0)
+    return "no attachments";
+  else
+    return `${format.begin}${attachmentList.map(a => `${a.title}: ${a.filename}`).join(format.joiner)}${format.end}`;
+}
 const createSendTemplatedEmailCommand = (data) =>
   new SendTemplatedEmailCommand({
     Source: process.env.emailSource ?? "kgrue@fearless.tech",
@@ -41,193 +81,123 @@ const createSendTemplatedEmailCommand = (data) =>
       ToAddresses: data.ToAddresses,
       CcAddresses: data.CcAddresses,
     },
-    TemplateData: JSON.stringify({ applicationEndpoint: process.env.applicationEndpoint, ...data }),
-    Template: `${data.templateBase}_${process.env.stage}`,
+    TemplateData: data.TemplateData,
+    Template: data.Template,
     ConfigurationSetName: process.env.emailConfigSet,
   });
 
-  const defaultRecipients = JSON.stringify({
-    "osgEmail": '"OSG" <k.grue@theta-llc.com>',
-    "chipToEmail": '"CHIP To" <k.grue.cmsapprover@gmail.com>',
-    "chipCcList": '"CHIP 1" <k.grue@theta-llc.com>' //;"CHIP 2" <k.grue.stateuser@gmail.com>'
-  }, null, 4);
+const decodeRecord = (encodedRecord) => {
+  if (!encodedRecord.value) return;
+  return { id: decode(encodedRecord.key), ...JSON.parse(decode(encodedRecord.value)) };
+};
+
+const getTemplateDataString = (emailBundle) => {return JSON.stringify({"applicationEndPoint": "theend"})};
+
+const buildKeyFromEventData = (data) => {
+  if (data?.origin !== "micro" || !data?.authority) return;
+
+  const actionType = data?.actionType ? data.actionType : "new-submission";
+
+  const authority = data.authority.toLowerCase().replace(/\s+/g, "-");
+
+  return `${actionType}-${authority}`;
+}
 
 export const main = async (event: KafkaEvent) => {
   console.log("Received event (stringified):", JSON.stringify(event, null, 4));
-  const input = { // GetParameterRequest
-    Name: "/om-email/recipientLists",
-  };
-  const command = new GetParameterCommand(input);
-  const response = await SSM.send(command);
-  console.log("SSM Param: ", response);
-  try {
-  const recipients = JSON.parse(response?.Parameter?.Value ?? defaultRecipients);
-  console.log("Recipients: ", recipients);
-  } catch (error) {
-    console.log("SSM param error is: ", error);
-  }
-  
+
+  const bundleQueue: any[] = [];
   const emailQueue: any[] = [];
+  const packageDetailsLookupList: any[] = [];
+  const cognitoDetailsLookupList: any[] = [];
+  // go through the records, filter for emailable events, and create email queue
+  // perform all lookups
+  // build template data for events
+  // send emails
 
+  // create the emailQueue out of emailable events paired with configs
   Object.values(event.records).forEach((source) =>
-    source.forEach((encodedRecord) => {
-      if (!encodedRecord.value) return;
-      const record = { id: decode(encodedRecord.key), ...JSON.parse(decode(encodedRecord.value)) };
-      console.log("Decoded record: ", record);
-      if (record?.origin !== "micro") return;
-      if (!record?.actionType) record.actionType = "new-submission";
+    source.forEach((record) => {
+      const eventData = decodeRecord(record);
+      console.log("eventData: ", eventData);
+      if (!eventData) return;
 
-      const configKey = `${record.actionType}-${record.authority.toLowerCase().replace(/\s+/g, "-")}`;
-      const emailConfig = emailsToSend[configKey];
+      const configKey = buildKeyFromEventData(eventData);
+      console.log("configKey: ", configKey);
+      if (!configKey) return;
 
-      // Early return if there's no configuration for the given key.
-      if (!emailConfig) {
-        console.log(`No email configuration found for: `, configKey);
-        return;
-      }
-      console.log(`Matching email config: `, emailConfig);
+      const emailBundle = eventToEmailsMapping[configKey];
+      console.log("emailBundle: ", emailBundle);
+      if (!emailBundle) return;
+      bundleQueue.push({ ...eventData, ...emailBundle });
 
-      emailConfig.forEach(email => {
-        const emailData = {
-          ...email,
-          ...record,
-          territory: record.id.toString().substring(0, 2),
-          ToAddresses: email.sendTo.map(address => mapAddress(address)),
-          formattedFileList: formatAttachments("html"),
-          textFileList: formatAttachments("text"),
-          ninetyDaysDateNice: formatSubmissionDate(),
-          proposedEffectiveDateNice: formatProposedEffectiveDate()
-        };
-        // don't include CcAddresses attribute unless we use it
-        if (email?.ccList && email?.ccList.length > 0 && !!email.ccList[0]) {
-          emailData.CcAddresses = email.ccList.map(address => mapAddress(address));
+    }));
+  console.log("the packageDetails needed are:", packageDetailsLookupList);
+  // don't bother continuing if there are no emails to send
+  if (bundleQueue.length === 0) return;
+
+  // if any events need package details from OpenSearch, get them
+  let packageDetails: void[] = [];
+  if (packageDetailsLookupList.length > 0) {
+    packageDetails = await Promise.all(packageDetailsLookupList.map(async (id) => {
+      try {
+        if (!process.env.osDomain) {
+          throw new Error("process.env.osDomain must be defined");
         }
 
-        emailQueue.push(emailData);
-      });
-
-      function mapAddress(address) {
-        if (address === "submitterEmail")
-          if (record.submitterEmail === "george@example.com")
-            return `"George's Substitute" <k.grue.stateuser@gmail.com>`;
-          else
-            return `"${record.submitterName}" <${record.submitterEmail}>`;
-        return address;
-      }
-
-      function formatAttachments(formatType) {
-        console.log("got attachments for format: ", record.attachments, formatType);
-        const formatChoices = {
-          "text": {
-            begin: "\n\n",
-            joiner: "\n",
-            end: "\n\n"
-          },
-          "html": {
-            begin: "<ul><li>",
-            joiner: "</li><li>",
-            end: "</li></ul>"
-          },
-        };
-        const format = formatChoices[formatType];
-        if (!format) {
-          console.log("new format type? ", formatType);
-          return "attachment List";
-        }
-        if (!record?.attachments || record.attachments.length===0)
-          return "no attachments";
-        else 
-          return `${format.begin}${record.attachments.map(a => `${a.title}: ${a.filename}`).join(format.joiner)}${format.end}`;
-      }
-
-      function formatSubmissionDate() {
-        if (!record?.notificationMetadata?.submissionDate) return "Pending";
-        return DateTime.fromMillis(record.notificationMetadata.submissionDate)
-          .plus({ days: 90 })
-          .toFormat("DDDD '@ 11:59pm ET'");
-      }
-
-      function formatProposedEffectiveDate() {
-        if (!record?.notificationMetadata?.proposedEffectiveDate) return "Pending";
-        return DateTime.fromMillis(record.notificationMetadata.proposedEffectiveDate)
-          .toFormat('DDDD');
-
+        const osInsightsItem = await os.getItem(
+          process.env.osDomain,
+          "insights",
+          id
+        );
+        console.log("The OpenSearch Item index Insights for %s is: ", id, JSON.stringify(osInsightsItem, null, 4));
+        if (osInsightsItem) return { ...osInsightsItem.value };
+        return { ...defaultPackageDetails };
+      } catch (error) {
+        console.log("OpenSearch error is: ", error);
       }
     }));
+  }
+  console.log("package Details: ", packageDetails);
 
-  const sendResults = await Promise.all(emailQueue.map(async (theEmail) => {
-    try {
-      if (!process.env.osDomain) {
-        throw new Error("process.env.osDomain must be defined");
-      }
-      const osMainItem = await os.getItem(
-      process.env.osDomain,
-      "main",
-      theEmail.id
-    );
-    console.log("The OpenSearch Item index main for %s is: ", theEmail.id, JSON.stringify(osMainItem, null, 4));
-  } catch (error) {
-    console.log("OpenSearch error is: ", error);
-  }
-  
-  try {
-    if (!process.env.osDomain) {
-      throw new Error("process.env.osDomain must be defined");
+  // if any events need a user list from Cognito
+
+  // build the email commands
+  bundleQueue.forEach(async (emailBundle) => {
+
+    if (emailBundle.lookupList && Array.isArray(emailBundle.lookupList) && emailBundle.lookupList.length === 0) {
+        // emailBundle.lookupList.foreach(async (lookupType) => {
+        //     try {
+        //     if (lookupType === "packageDetails")
+        //       emailBundle.packageDetails = await getPackageDetails(emailBundle.id);
+        //     if (lookupType === "allStateSubmitters")
+        //       cognitoDetailsLookupList.push(eventData.id.toString().substring(0, 2));
+        //     } catch (e) {
+        //         console.log("got error",e);
+        //     }
+        //   });    
+        console.log("lookup list: ", emailBundle.lookupList);
     }
-    const osInsightsItem = await os.getItem(
-    process.env.osDomain,
-    "insights",
-    theEmail.id
-  );
-  console.log("The OpenSearch Item index Insights for %s is: ", theEmail.id, JSON.stringify(osInsightsItem, null, 4));
-} catch (error) {
-  console.log("OpenSearch error is: ", error);
-}
-try {
-  if (!process.env.osDomain) {
-    throw new Error("process.env.osDomain must be defined");
-  }
-  const osChangeLogItem = await os.getItem(
-  process.env.osDomain,
-  "changelog",
-  theEmail.id
-);
-console.log("The OpenSearch Item index changelog for %s is: ", theEmail.id, JSON.stringify(osChangeLogItem, null, 4));
-} catch (error) {
-console.log("OpenSearch error is: ", error);
-}
-try {
-  if (!process.env.osDomain) {
-    throw new Error("process.env.osDomain must be defined");
-  }
-  const osTypesItem = await os.getItem(
-  process.env.osDomain,
-  "types",
-  theEmail.id
-);
-console.log("The OpenSearch Item index types for %s is: ", theEmail.id, JSON.stringify(osTypesItem, null, 4));
-} catch (error) {
-console.log("OpenSearch error is: ", error);
-}
-try {
-  if (!process.env.osDomain) {
-    throw new Error("process.env.osDomain must be defined");
-  }
-  const osSubTypesItem = await os.getItem(
-  process.env.osDomain,
-  "subtypes",
-  theEmail.id
-);
-console.log("The OpenSearch Item index subtypes for %s is: ", theEmail.id, JSON.stringify(osSubTypesItem, null, 4));
-} catch (error) {
-console.log("OpenSearch error is: ", error);
-}
-try {
-      const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(theEmail);
+
+    // data is at bundle level, but needs to be available for each command
+    const templateDataString = getTemplateDataString(emailBundle);
+
+    emailBundle.emailCommands.forEach((command) => {
+      command.TemplateData = templateDataString;
+      const sendTemplatedEmailCommand = createSendTemplatedEmailCommand(command);
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
-      return await SES.send(sendTemplatedEmailCommand);
+
+      emailQueue.push({...sendTemplatedEmailCommand});
+    })
+  });
+  console.log("email queue: ", emailQueue);
+
+  // send the emails
+  const sendResults = await Promise.all(emailQueue.map(async (email) => {
+    try {
+      return await SES.send(email);
     } catch (err) {
-      console.log("Failed to process theEmail.", err, JSON.stringify(theEmail, null, 4));
+      console.log("Failed to process theEmail.", err, JSON.stringify(email, null, 4));
       return Promise.resolve(err);
     }
   }));
@@ -235,3 +205,49 @@ try {
   console.log("the sendResults are: ", sendResults);
   return sendResults;
 }
+/*
+
+ 
+// done with events, then do lookups
+// done with lookups, now do data assignments
+// data is ready, send emails
+
+emailConfig.forEach(email => {
+
+  email.Command.TemplateData = email.TemplateDataList.map((dataType) => {
+
+  })
+
+  // don't include CcAddresses attribute unless we use it
+  if (email?.ccList && email?.ccList.length > 0 && !!email.ccList[0]) {
+    email.CcAddresses = email.ccList.map(address => mapAddress(address));
+  }
+
+  emailQueue.push(email);
+});
+
+function mapAddress(address) {
+  if (address === "submitterEmail")
+    if (record.submitterEmail === "george@example.com")
+      return `"George's Substitute" <k.grue.stateuser@gmail.com>`;
+    else
+      return `"${record.submitterName}" <${record.submitterEmail}>`;
+  return address;
+}
+
+
+function formatSubmissionDate() {
+  if (!record?.notificationMetadata?.submissionDate) return "Pending";
+  return DateTime.fromMillis(record.notificationMetadata.submissionDate)
+    .plus({ days: 90 })
+    .toFormat("DDDD '@ 11:59pm ET'");
+}
+
+function formatProposedEffectiveDate() {
+  if (!record?.notificationMetadata?.proposedEffectiveDate) return "Pending";
+  return DateTime.fromMillis(record.notificationMetadata.proposedEffectiveDate)
+    .toFormat('DDDD');
+
+}
+}));
+*/
