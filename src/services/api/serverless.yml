@@ -219,6 +219,24 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:itemProvisionedConcurrency}
+  itemExists:
+    handler: handlers/itemExists.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /itemExists
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:itemProvisionedConcurrency}
   submit:
     handler: handlers/submit.handler
     maximumRetryAttempts: 0

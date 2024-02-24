@@ -7,3 +7,4 @@ export * from "./useGetPackageActions";
 export * from "./useGetPackageTypes";
 export * from "./amplifyConfig";
 export * from "./submissionService";
+export * from "./itemExists";

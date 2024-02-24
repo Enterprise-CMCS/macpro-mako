@@ -18,11 +18,10 @@ const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.APPROVED]: "Approved",
   [SEATOOL_STATUS.DISAPPROVED]: "Disapproved",
   [SEATOOL_STATUS.WITHDRAWN]: "Package Withdrawn",
-  [SEATOOL_STATUS.TERMINATED]: "Waiver Terrminated",
+  [SEATOOL_STATUS.TERMINATED]: "Waiver Terminated",
   [SEATOOL_STATUS.PENDING_CONCURRENCE]: "Under Review",
   [SEATOOL_STATUS.UNSUBMITTED]: "Unsubmitted",
   [SEATOOL_STATUS.PENDING_APPROVAL]: "Under Review",
-  [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
   [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
 };
 
@@ -36,6 +35,7 @@ const statusToDisplayToCmsUser = {
   [SEATOOL_STATUS.PENDING_CONCURRENCE]: "Pending - Concurrence",
   [SEATOOL_STATUS.UNSUBMITTED]: "Unsubmitted",
   [SEATOOL_STATUS.PENDING_APPROVAL]: "Pending - Approval",
+  [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
 };
 
 export const finalDispositionStatuses = [
