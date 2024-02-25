@@ -1,6 +1,7 @@
 import { useGetSeaTypes } from "@/api";
 import * as Inputs from "@/components/Inputs";
 import { Control, FieldValues, Path } from "react-hook-form";
+import { opensearch } from "shared-types";
 
 type TypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
@@ -13,7 +14,7 @@ export function TypeSelect<TFieldValues extends FieldValues>({
   name,
   authorityId,
 }: TypeSelectFormFieldProps<TFieldValues>) {
-  const { data } = useGetSeaTypes(authorityId);
+  const { data } = useGetSeaTypes<opensearch.types.Document>(authorityId);
 
   return (
     <Inputs.FormField

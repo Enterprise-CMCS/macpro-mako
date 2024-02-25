@@ -72,6 +72,7 @@ params:
   master:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
+    getSeaTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
@@ -79,6 +80,7 @@ params:
   val:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
+    getSeaTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
@@ -86,6 +88,7 @@ params:
   production:
     formsProvisionedConcurrency: 5
     getAllFormsProvisionedConcurrency: 1
+    getSeaTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 10
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
@@ -93,6 +96,7 @@ params:
   default:
     formsProvisionedConcurrency: 0
     getAllFormsProvisionedConcurrency: 1
+    getSeaTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 0
     itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
@@ -183,6 +187,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
+
   getSeaTypes:
     handler: handlers/getSeaTypes.handler
     maximumRetryAttempts: 0
@@ -200,25 +205,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:itemProvisionedConcurrency}
-  getSeaSubTypes:
-    handler: handlers/getSeaSubTypes.handler
-    maximumRetryAttempts: 0
-    environment:
-      region: ${self:provider.region}
-      osDomain: ${param:osDomain}
-    events:
-      - http:
-          path: /getSeaSubTypes
-          method: post
-          cors: true
-          authorizer: aws_iam
-    vpc:
-      securityGroupIds:
-        - Ref: SecurityGroup
-      subnetIds: >-
-        ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:itemProvisionedConcurrency}
+    provisionedConcurrency: ${param:getSeaTypesProvisionedConcurrency}
   itemExists:
     handler: handlers/itemExists.handler
     maximumRetryAttempts: 0

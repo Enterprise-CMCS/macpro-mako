@@ -4,43 +4,36 @@ import { API } from "aws-amplify";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 // Types //
-const getSeaTypes = async (authorityId: number): Promise<types.Document[]> => {
-  const { seaTypes } = await API.post("os", "/getSeaTypes", {
-    body: { authorityId },
-  });
-  return seaTypes.hits?.hits.map((h: any) => h._source) || [];
-};
-
-export const useGetSeaTypes = (
+const getSeaTypesCombined = async <T>(
   authorityId: number,
-  options?: UseQueryOptions<types.Document[], ReactQueryApiError>
-) => {
-  return useQuery<types.Document[], ReactQueryApiError>(
-    ["packeage-types", authorityId],
-    () => getSeaTypes(authorityId),
-    options
+  typeId?: string
+): Promise<T[]> => {
+  const endpoint = "/getSeaTypes";
+  const body = typeId ? { authorityId, typeId } : { authorityId };
+
+  const response = await API.post("os", endpoint, {
+    body,
+  });
+
+  const results = typeId ? response.seaSubTypes : response.seaTypes;
+
+  return (
+    results.hits?.hits.map(
+      (h: types.ItemResult | subtypes.ItemResult) => h._source
+    ) || []
   );
 };
 
-// SubTypes //
-
-const getSeaSubTypes = async (
+export const useGetSeaTypes = <T>(
   authorityId: number,
-  typeId: string
-): Promise<subtypes.Document[]> => {
-  const { seaSubTypes } = await API.post("os", "/getSeaSubTypes", {
-    body: { authorityId, typeId },
-  });
-  return seaSubTypes.hits?.hits.map((h: any) => h._source) || [];
-};
-export const useGetSeaSubTypes = (
-  authorityId: number,
-  typeId: string,
-  options?: UseQueryOptions<subtypes.Document[], ReactQueryApiError>
+  typeId?: string,
+  options?: UseQueryOptions<T[], ReactQueryApiError>
 ) => {
-  return useQuery<subtypes.Document[], ReactQueryApiError>(
-    ["packeage-sub-types", authorityId, typeId],
-    () => getSeaSubTypes(authorityId, typeId),
-    options
+  return useQuery<T[], ReactQueryApiError>(
+    ["types-subtypes", authorityId, typeId],
+    () => getSeaTypesCombined(authorityId, typeId),
+    {
+      ...options,
+    }
   );
 };

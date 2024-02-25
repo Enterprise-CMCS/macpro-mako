@@ -1,18 +1,22 @@
 import { APIGatewayEvent } from "aws-lambda";
-import * as os from "./../../../libs/opensearch-lib";
+import * as os from "../../../libs/opensearch-lib";
 import { response } from "../libs/handler";
-import { opensearch } from "shared-types";
 
-type GetSeaTypeBody = {
+type GetSeaTypesBoby = {
   authorityId: string;
+  typeId?: string;
 };
 
-export const getAllSeaTypes = async (authorityId: string) => {
+export const getAllSeaTypesCombined = async (
+  authorityId: string,
+  typeId?: string
+) => {
   if (!process.env.osDomain) {
     throw new Error("process.env.osDomain must be defined");
   }
 
-  return (await os.search(process.env.osDomain, "types", {
+  const index = typeId ? "subtypes" : "types";
+  const query: any = {
     query: {
       bool: {
         must: [
@@ -33,19 +37,29 @@ export const getAllSeaTypes = async (authorityId: string) => {
         ],
       },
     },
-  })) as opensearch.types.Response;
+  };
+
+  if (typeId) {
+    query.query.bool.must.push({
+      match: {
+        typeId: typeId,
+      },
+    });
+  }
+
+  return await os.search(process.env.osDomain, index, query);
 };
 
-export const getSeaTypes = async (event: APIGatewayEvent) => {
+export const getSeaTypesCombined = async (event: APIGatewayEvent) => {
   if (!event.body) {
     return response({
       statusCode: 400,
       body: { message: "Event body required" },
     });
   }
-  const body = JSON.parse(event.body) as GetSeaTypeBody;
+  const body = JSON.parse(event.body) as GetSeaTypesBoby;
   try {
-    const result = await getAllSeaTypes(body.authorityId);
+    const result = await getAllSeaTypesCombined(body.authorityId, body.typeId);
 
     if (!result)
       return response({
@@ -55,9 +69,7 @@ export const getSeaTypes = async (event: APIGatewayEvent) => {
 
     return response({
       statusCode: 200,
-      body: {
-        seaTypes: result,
-      },
+      body: body.typeId ? { seaSubTypes: result } : { seaTypes: result },
     });
   } catch (err) {
     console.error({ err });
@@ -67,4 +79,5 @@ export const getSeaTypes = async (event: APIGatewayEvent) => {
     });
   }
 };
-export const handler = getSeaTypes;
+
+export const handler = getSeaTypesCombined;

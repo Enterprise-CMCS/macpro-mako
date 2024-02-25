@@ -1,6 +1,7 @@
-import { useGetSeaSubTypes } from "@/api";
+import { useGetSeaTypes } from "@/api";
 import * as Inputs from "@/components/Inputs";
 import { Control, FieldValues, Path } from "react-hook-form";
+import { opensearch } from "shared-types";
 
 type SubTypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
@@ -15,7 +16,10 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
   name,
   authorityId,
 }: SubTypeSelectFormFieldProps<TFieldValues>) {
-  const { data } = useGetSeaSubTypes(authorityId, typeId);
+  const { data } = useGetSeaTypes<opensearch.subtypes.Document>(
+    authorityId,
+    typeId
+  );
 
   return (
     <Inputs.FormField
