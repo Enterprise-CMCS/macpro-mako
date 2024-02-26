@@ -86,6 +86,15 @@ function formatProposedEffectiveDate(emailBundle) {
     .toFormat('DDDD');
 
 }
+
+function formatNinetyDaysDate(emailBundle) {
+  if (!emailBundle?.notificationMetadata?.submissionDate) return "Pending";
+  return DateTime.fromMillis(emailBundle.notificationMetadata.submissionDate)
+    .plus({ days: 90 })
+    .toFormat("DDDD '@ 11:59pm' ZZZZ");
+
+}
+
 function buildAddressList(addressList, data) {
   const newList: any[] = [];
   console.log("address list and data in: ", addressList, data);
@@ -145,7 +154,8 @@ const getCpocEmailAndSrtList = async (id) => {
 };
 
 const buildTemplateData = (dataList,data) => {
-  const returnObject = {...dataList};
+  const returnObject = {};
+
   if (!dataList || !Array.isArray(dataList) || dataList.length === 0) 
     return { error: "init statement fail", dataList, data};
 
@@ -153,22 +163,23 @@ const buildTemplateData = (dataList,data) => {
   dataList.forEach((dataType) => {
     switch (dataType) {
       case 'territory':
-        returnObject.territory = data.id.toString().substring(0, 2);
+        returnObject['territory'] = data.id.toString().substring(0, 2);
         break;
     case 'proposedEffectiveDateNice':
-      returnObject.proposedEffectiveDateNice = formatProposedEffectiveDate(data);
+      returnObject['proposedEffectiveDateNice'] = formatProposedEffectiveDate(data);
       break;
     case 'applicationEndpoint':
-      returnObject.applicationEndoint = process.env.applicationEndpoint;
+      returnObject['applicationEndoint'] = process.env.applicationEndpoint;
       break;
-    case 'fomattedFileList':
-      returnObject.fomattedFileList = formatAttachments("html", data.attachments);
+    case 'formattedFileList':
+      returnObject['fomattedFileList'] = formatAttachments("html", data.attachments);
       break;
     case 'textFileList':
-      returnObject.textFileList = formatAttachments("text", data.attachments);
+      returnObject['textFileList'] = formatAttachments("text", data.attachments);
+    case 'ninetyDaysDateNice':
+      returnObject['ninetyDaysDateNice'] = formatNinetyDaysDate(data);
     default:
-      if (!!data[dataType]) 
-        returnObject[dataType] = data[dataType];
+      returnObject[dataType] = !!data[dataType] ? data[dataType] : "missing data";
     }});
   console.log("returnObject: ", returnObject);
   return returnObject;
