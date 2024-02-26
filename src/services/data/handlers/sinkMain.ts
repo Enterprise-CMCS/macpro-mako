@@ -10,26 +10,6 @@ if (!osDomain) {
 }
 const index = "main";
 
-const subtypeCache: { [key: number]: string | null } = {};
-const getSubtype = async (id: number) => {
-  if (!id) return null;
-  if (!subtypeCache[id]) {
-    const item = await os.getItem(osDomain, "subtypes", id.toString());
-    subtypeCache[id] = item?._source.name;
-  }
-  return subtypeCache[id];
-};
-
-const typeCache: { [key: number]: string | null } = {};
-const getType = async (id: number) => {
-  if (!id) return null;
-  if (!typeCache[id]) {
-    const item = await os.getItem(osDomain, "types", id.toString());
-    typeCache[id] = item?._source.name;
-  }
-  return typeCache[id];
-};
-
 export const handler: Handler<KafkaEvent> = async (event) => {
   const loggableEvent = { ...event, records: "too large to display" };
   const docs: any[] = [];
@@ -99,13 +79,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         typeof result.data.seatoolStatus === "string" &&
         result.data.seatoolStatus != "Unknown"
       ) {
-        const type = result.data.typeId
-          ? await getType(result.data.typeId)
-          : null;
-        const subType = result.data.subTypeId
-          ? await getSubtype(result.data.subTypeId)
-          : null;
-        docs.push({ ...result.data, type, subType });
+        docs.push({ ...result.data });
       }
     } catch (error) {
       logError({
