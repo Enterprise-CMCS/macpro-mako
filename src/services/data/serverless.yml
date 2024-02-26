@@ -320,7 +320,7 @@ params:
     osInstanceType: t3.small.search
     bootstrapKibanaUsers: "true"
     topicNamespace: --${self:custom.project}--${sls:stage}--
-    sinkProvisionedConcurrency: 0
+    sinkProvisionedConcurrency: 3
 
 functions:
   bootstrapUsers:
