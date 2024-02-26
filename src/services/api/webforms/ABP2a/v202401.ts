@@ -5,291 +5,22 @@ export const v202401: FormSchema = {
     "ABP 2A: Voluntary benefit package selection assurances - Eligibility group under Section 1902(a)(10)(A)(i)(VIII) of the Act",
   sections: [
     {
-      title: "Benefit package details",
-      form: [
-        {
-          description: "Select one of the following",
-          slots: [
-            {
-              rhf: "Radio",
-              name: "benefit_package_details",
-              rules: { required: "* Required" },
-              props: {
-                options: [
-                  {
-                    label:
-                      "The state/territory is amending one existing benefit package for the population defined in section 1.",
-                    value: "benchmark_amending",
-                  },
-                  {
-                    label:
-                      "The state/territory is creating a single new benefit package for the population defined in section 1.",
-                    value: "benchmark_creating",
-                  },
-                ],
-              },
-            },
-            {
-              rhf: "Input",
-              name: "benefit_package_name",
-              label: "Benefit package name",
-              rules: { required: "* Required" },
-              dependency: {
-                conditions: [
-                  {
-                    name: "benefit_package_details",
-                    type: "expectedValue",
-                    expectedValue: "benchmark_creating",
-                  },
-                ],
-                effect: { type: "show" },
-              },
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Selection of Section 1937 coverage option",
+      title: "Benefit alignment and requirements",
       form: [
         {
           description:
-            "The state/territory selects as its Section 1937 coverage option the following type of benchmark benefit package or benchmark-equivalent benefit package under this Alternative Benefit Plan:",
-          slots: [
-            {
-              rhf: "Radio",
-              name: "section_1937_coverage_option",
-              rules: { required: "* Required" },
-              props: {
-                options: [
-                  {
-                    label: "Benchmark benefit package",
-                    value: "benchmark_benefit_package",
-                    form: [
-                      {
-                        description:
-                          "The state/territory will provide the following benchmark benefit package:",
-                        slots: [
-                          {
-                            rhf: "Radio",
-                            name: "Benchmark_benefit_packag_options",
-                            rules: { required: "* Required" },
-                            props: {
-                              options: [
-                                {
-                                  label:
-                                    "The standard Blue Cross Blue Shield preferred provider option offered through the Federal Employee Health Benefit Program (FEHBP)",
-                                  value: "blue_cross_blue_shield",
-                                },
-                                {
-                                  label:
-                                    "State employee coverage that is offered and generally available to state employees (state employee coverage)",
-                                  value: "state_employee_coverage",
-                                  form: [
-                                    {
-                                      slots: [
-                                        {
-                                          rhf: "Input",
-                                          label: "Plan name",
-                                          name: "state_employee_coverage_plan_name",
-                                          rules: { required: "* Required" },
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                                {
-                                  label:
-                                    "A commercial HMO with the largest insured commercial, non-Medicaid enrollment in the state/territory (commercial HMO)",
-                                  value: "commercial_hmo",
-                                  form: [
-                                    {
-                                      slots: [
-                                        {
-                                          rhf: "Input",
-                                          label: "Plan name",
-                                          name: "commercial_hmo_plan_name",
-                                          rules: { required: "* Required" },
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                                {
-                                  label: "Secretary-approved coverage",
-                                  value: "secretary_approved_coverage",
-                                  form: [
-                                    {
-                                      slots: [
-                                        {
-                                          rhf: "Radio",
-                                          name: "secretary_approved_coverage_options",
-                                          rules: { required: "* Required" },
-                                          props: {
-                                            options: [
-                                              {
-                                                label:
-                                                  "The state/territory offers benefits based on the approved state plan.",
-                                                value: "approved_state_plan",
-                                                form: [
-                                                  {
-                                                    slots: [
-                                                      {
-                                                        rhf: "Radio",
-                                                        name: "approved_state_plan_options",
-                                                        rules: {
-                                                          required:
-                                                            "* Required",
-                                                        },
-                                                        props: {
-                                                          options: [
-                                                            {
-                                                              label:
-                                                                "The state/territory offers the benefits provided in the approved state plan.",
-                                                              value:
-                                                                "approved_state_plan",
-                                                            },
-                                                            {
-                                                              label:
-                                                                "Benefits include all those provided in the approved state plan plus additional benefits.",
-                                                              value:
-                                                                "additional_benefits",
-                                                            },
-                                                            {
-                                                              label:
-                                                                "Benefits are the same as provided in the approved state plan but in a different amount, duration, and/or scope.",
-                                                              value:
-                                                                "different_amount_duration_scope",
-                                                            },
-                                                            {
-                                                              label:
-                                                                "The state/territory offers only a partial list of benefits provided in the approved state plan.",
-                                                              value:
-                                                                "partial_list_of_benefits",
-                                                            },
-                                                            {
-                                                              label:
-                                                                "The state/territory offers a partial list of benefits provided in the approved state plan plus additional benefits.",
-                                                              value:
-                                                                "partial_list_of_benefits_plus_additional_benefits",
-                                                            },
-                                                          ],
-                                                        },
-                                                      },
-                                                    ],
-                                                  },
-                                                ],
-                                              },
-                                              {
-                                                label:
-                                                  "The state/territory offers an array of benefits from the Section 1937 coverage option and/or base benchmark plan benefit packages, the approved state plan, or a combination of these benefit packages.",
-                                                value: "array_of_benefits",
-                                              },
-                                            ],
-                                          },
-                                        },
-                                        {
-                                          rhf: "Textarea",
-                                          name: "benefits_and_limitations",
-                                          rules: { required: "* Required" },
-                                          label:
-                                            "Briefly identify the benefits, the source of benefits, and any limitations.",
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                  {
-                    label: "Benchmark-equivalent benefit package",
-                    value: "benchmark_equivalent_benefit_package",
-                    form: [
-                      {
-                        description:
-                          "The state/territory will provide the following benchmark-equivalent benefit package:",
-                        slots: [
-                          {
-                            rhf: "Radio",
-                            name: "benchmark_equivalent",
-                            rules: { required: "* Required" },
-                            props: {
-                              options: [
-                                {
-                                  label:
-                                    "The standard Blue Cross Blue Shield preferred provider option offered through the Federal Employee Health Benefit Program (FEHBP)",
-                                  value: "blue_cross_blue_shield",
-                                },
-                                {
-                                  label:
-                                    "State employee coverage that is offered and generally available to state employees (state employee coverage)",
-                                  value: "state_employee_coverage",
-                                  form: [
-                                    {
-                                      slots: [
-                                        {
-                                          rhf: "Input",
-                                          name: "state_employee_coverage_plan_name",
-                                          label: "Plan name",
-                                          rules: { required: "* Required" },
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                                {
-                                  label:
-                                    "A commercial HMO with the largest insured commercial, non-Medicaid enrollment in the state/territory (commercial HMO)",
-                                  value: "commercial_hmo",
-                                  form: [
-                                    {
-                                      slots: [
-                                        {
-                                          rhf: "Input",
-                                          name: "commercial_hmo_plan_name",
-                                          label: "Plan name",
-                                          rules: { required: "* Required" },
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                                {
-                                  label: "Secretary-approved coverage",
-                                  value: "secretary_approved_coverage",
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Selection of base benchmark plan",
-      form: [
-        {
-          description:
-            "The state/territory must select a base benchmark plan as the basis for providing essential health benefits in its benchmark or benchmark-equivalent package.",
+            "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
           slots: [
             {
               rhf: "Select",
-              label:
-                "Is the base benchmark plan the same as the Section 1937 coverage option?",
-              name: "base_benchmark_plan_same_as_section_1937",
-              rules: { required: "* Required" },
+              name: "is_state_territory_aligned_ABP",
+              description:
+                "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
+              descriptionAbove: true,
+              descriptionStyling: "bold",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 className: "w-[150px]",
                 options: [
@@ -298,41 +29,89 @@ export const v202401: FormSchema = {
                 ],
               },
             },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Assurances",
+      form: [
+        {
+          description:
+            "These assurances must be made by the state/territory if the Adult eligibility group is included in the ABP population.",
+          slots: [
             {
-              rhf: "Radio",
-              label:
-                "Indicate which benchmark plan described at 45 CFR 156.100(a) the state/territory will use as its base benchmark plan.",
-              name: "base_benchmark_plan",
+              rhf: "Checkbox",
+              name: "assurances",
               rules: { required: "* Required" },
               props: {
                 options: [
                   {
                     label:
-                      "The largest plan by enrollment of the three largest small group insurance products in the state's small group market",
-                    value: "largest_plan_by_enrollment",
+                      "The state/territory shall enroll all participants in the Individuals at or below 133% FPL age 19 through 64 (Section 1902(a)(10)(A)(i)(VIII)) eligibility group in the ABP specified in this state plan amendment, except as follows: A beneficiary in the eligibility group at Section 1902(a)(10)(A)(i)(VIII) who is determined to meet one of the exemption criteria at 45 CFR 440.315 will receive a choice of a benefit package that is either an ABP that includes essential health benefits and is subject to all Section 1937 requirements or an ABP that is the state/territory’s approved Medicaid state plan not subject to Section 1937 requirements. The state/territory’s approved Medicaid state plan includes all approved state plan programs based on any state plan authority and approved Section 1915(c) waivers, if the state has amended them to include the eligibility group at Section 1902(a)(10)(A)(i)(VIII).",
+                    value: "at_or_bellow_133_age_19_through_64",
                   },
                   {
                     label:
-                      "Any of the largest three state employee health benefit plans by enrollment",
-                    value: "any_of_largest_three_state",
+                      "The state/territory must have a process in place to identify individuals that meet the exemption criteria, and the state/territory must comply with requirements related to providing the option of enrollment in an ABP defined using Section 1937 requirements or an ABP defined as the state/territory's approved Medicaid state plan not subject to Section 1937 requirements.",
+                    value:
+                      "state_territory_must_have_a_process_that_meets_exemption_criteria",
                   },
                   {
                     label:
-                      "Any of the largest three national FEHBP plan options open to federal employees in all geographies by enrollment",
-                    value: "any_of_largest_three_national_fehbp_plan_options",
+                      "Once an individual is identified, the state/territory assures it will effectively inform the individual of the following: A. That enrollment in the specified ABP is voluntary B. That the individual may disenroll from the ABP defined subject to Section 1937 requirements at any time and instead receive an ABP defined as the approved state/territory Medicaid state plan not subject to Section 1937 requirements. C. What the process is for transferring to the state plan-based ABP",
+                    value: "individual_identified_must_inform_the_individual",
                   },
                   {
-                    label: "The largest insured commercial non-Medicaid HMO",
-                    value: "largest_insured_commercial_hmo",
+                    label:
+                      "The state/territory assures it will inform the individual of the following: A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits",
+                    value:
+                      "state_territory_assures_it_will_inform_the_individual",
                   },
                 ],
               },
             },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Delivery of information",
+      form: [
+        {
+          description:
+            "The state/territory must select a base benchmark plan as the basis for providing essential health benefits in its benchmark or benchmark-equivalent package.",
+          slots: [
             {
-              rhf: "Input",
-              label: "Plan name",
-              name: "base_benchmark_plan_name",
+              rhf: "Checkbox",
+              name: "assurances",
               rules: { required: "* Required" },
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state/territory shall enroll all participants in the Individuals at or below 133% FPL age 19 through 64 (Section 1902(a)(10)(A)(i)(VIII)) eligibility group in the ABP specified in this state plan amendment, except as follows: A beneficiary in the eligibility group at Section 1902(a)(10)(A)(i)(VIII) who is determined to meet one of the exemption criteria at 45 CFR 440.315 will receive a choice of a benefit package that is either an ABP that includes essential health benefits and is subject to all Section 1937 requirements or an ABP that is the state/territory’s approved Medicaid state plan not subject to Section 1937 requirements. The state/territory’s approved Medicaid state plan includes all approved state plan programs based on any state plan authority and approved Section 1915(c) waivers, if the state has amended them to include the eligibility group at Section 1902(a)(10)(A)(i)(VIII).",
+                    value: "at_or_bellow_133_age_19_through_64",
+                  },
+                  {
+                    label:
+                      "The state/territory must have a process in place to identify individuals that meet the exemption criteria, and the state/territory must comply with requirements related to providing the option of enrollment in an ABP defined using Section 1937 requirements or an ABP defined as the state/territory's approved Medicaid state plan not subject to Section 1937 requirements.",
+                    value:
+                      "state_territory_must_have_a_process_that_meets_exemption_criteria",
+                  },
+                  {
+                    label:
+                      "Once an individual is identified, the state/territory assures it will effectively inform the individual of the following: A. That enrollment in the specified ABP is voluntary B. That the individual may disenroll from the ABP defined subject to Section 1937 requirements at any time and instead receive an ABP defined as the approved state/territory Medicaid state plan not subject to Section 1937 requirements. C. What the process is for transferring to the state plan-based ABP",
+                    value: "individual_identified_must_inform_the_individual",
+                  },
+                  {
+                    label:
+                      "The state/territory assures it will inform the individual of the following: A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits",
+                    value:
+                      "state_territory_assures_it_will_inform_the_individual",
+                  },
+                ],
+              },
             },
           ],
         },
