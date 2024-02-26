@@ -52,8 +52,6 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       // Skip legacy events
       if (record?.origin !== "micro") continue;
 
-      const id: string = decode(key);
-
       if (record?.actionType === Action.REMOVE_APPK_CHILD) {
         docs.push({
           ...record,
@@ -62,17 +60,17 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
           id: `${record.appkParentId}-${offset}`,
           packageId: record.appkParentId,
         });
-        continue;
+      } else {
+        const id: string = decode(key);
+        // Handle everything else
+        docs.push({
+          ...record,
+          ...(!record?.actionType && { actionType: "new-submission" }), // new-submission custom actionType
+          timestamp,
+          id: `${id}-${offset}`,
+          packageId: id,
+        });
       }
-
-      // Handle everything else
-      docs.push({
-        ...record,
-        ...(!record?.actionType && { actionType: "new-submission" }), // new-submission custom actionType
-        timestamp,
-        id: `${id}-${offset}`,
-        packageId: id,
-      });
     } catch (error) {
       logError({
         type: ErrorType.BADPARSE,
