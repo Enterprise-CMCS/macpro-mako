@@ -20,6 +20,7 @@ import { Link } from "@/components/Routing";
 import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
 import { Route } from "@/components/Routing/types";
+import { useLocation } from "react-router-dom";
 
 const DetailCardWrapper = ({
   title,
@@ -82,6 +83,7 @@ const PackageActionsCard = ({
   id: string;
   authority: Authority;
 }) => {
+  const location = useLocation();
   const { data, isLoading } = useGetPackageActions(id, { retry: false });
   if (isLoading) return <LoadingSpinner />;
 
@@ -98,6 +100,7 @@ const PackageActionsCard = ({
               if (authority === Authority["1915b"]) {
                 return (
                   <Link
+                    state={{ from: `${location.pathname}${location.search}` }}
                     path="/action/:authority/:id/:type"
                     key={`${idx}-${type}`}
                     params={{ id, type, authority }}

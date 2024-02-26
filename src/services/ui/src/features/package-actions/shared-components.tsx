@@ -19,6 +19,7 @@ import {
   ActionFunctionArgs,
   Link,
   useActionData,
+  useLocation,
   useNavigate,
   useNavigation,
   useParams,
@@ -237,6 +238,7 @@ export const FormLoadingSpinner = () => {
 export const useSubmitForm = () => {
   const methods = useFormContext();
   const submit = useSubmit();
+  const location = useLocation();
 
   const validSubmission: SubmitHandler<any> = (data, e) => {
     const formData = new FormData();
@@ -260,6 +262,7 @@ export const useSubmitForm = () => {
     submit(formData, {
       method: "post",
       encType: "multipart/form-data",
+      state: location.state,
     });
   };
 
@@ -273,6 +276,7 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
   const alert = useAlertContext();
   const data = useActionData() as ActionFunctionReturnType;
   const navigate = useNavigate();
+  const location = useLocation();
 
   return useEffect(() => {
     if (data && data.submitted) {
@@ -281,8 +285,8 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
         body,
       });
       alert.setBannerShow(true);
-      alert.setBannerDisplayOn("/dashboard");
-      navigate("/dashboard");
+      alert.setBannerDisplayOn(location.state.from.split("?")[0]);
+      navigate(location.state.from);
     }
   }, [data]);
 };

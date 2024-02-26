@@ -48,11 +48,10 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
           <POP.PopoverContent>
             <div className="flex flex-col">
               {actions.map((action, idx) => {
-                console.log(data.authority, Authority.WAIVER);
                 if (data.authority === Authority["1915b"]) {
-                  console.log("hello");
                   return (
                     <TypedLink
+                      state={{ from: `${location.pathname}${location.search}` }}
                       path="/action/:authority/:id/:type"
                       key={`${idx}-${action}`}
                       params={{
