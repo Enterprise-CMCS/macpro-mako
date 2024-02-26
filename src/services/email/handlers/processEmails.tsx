@@ -89,7 +89,7 @@ function formatProposedEffectiveDate(emailBundle) {
 function buildAddressList(addressList, data) {
   const newList: any[] = [];
   console.log("address list and data in: ", addressList, data);
-  for (const address in addressList) {
+  addressList.forEach( (address) => {
     let mappedAddress = address;
     if (address === "submitterEmail")
       if (data.submitterEmail === "george@example.com")
@@ -103,11 +103,11 @@ function buildAddressList(addressList, data) {
 
     console.log("mapped address: ", mappedAddress);
     const extraAddresses = mappedAddress.split(';');
-    extraAddresses.forEach((address) => {
-      console.log("the individual address: ", address);
-      newList.push(address);
+    extraAddresses.forEach((oneaddress) => {
+      console.log("the individual address: ", oneaddress);
+      newList.push(oneaddress);
     })
-  }
+  });
   console.log("address list: ", newList );
   return newList;
 }
