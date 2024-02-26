@@ -20,7 +20,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
         case undefined:
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
-        case "aws.seatool.cmcs.dbo.SPA_Type":
+        case "aws.seatool.debezium.cdc.SEA.dbo.SPA_Type":
           docs.push(
             ...(await types(event.records[topicPartition], topicPartition))
           );
