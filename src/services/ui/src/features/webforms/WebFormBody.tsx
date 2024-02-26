@@ -1,7 +1,7 @@
 import { Button, Form } from "@/components";
 import { WebformFooter } from "./WebformFooter";
 import { FormSchema } from "shared-types";
-import { documentValidator, RHFDocument } from "../RHF";
+import { documentValidator, RHFDocument } from "../../components/RHF";
 import { useWebform } from "./useWebform";
 
 interface WebformBodyProps {

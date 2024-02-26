@@ -1,7 +1,7 @@
 import { useGetAllForms } from "@/api";
 import { Link } from "@/components";
-import { SubNavHeader } from "../Layout";
-import { LoadingSpinner } from "../LoadingSpinner";
+import { SubNavHeader } from "../../components/Layout";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 export const WebformsList = () => {
   const { data, isLoading } = useGetAllForms();

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { FormSchema } from "shared-types";
-import { documentInitializer } from "../RHF";
+import { documentInitializer } from "../../components/RHF";
 
 interface UseWebformParams {
   values: any;
