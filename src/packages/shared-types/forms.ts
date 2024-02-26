@@ -6,6 +6,7 @@ import {
 } from "react-hook-form";
 import {
   CalendarProps,
+  CheckboxProps,
   InputProps,
   RadioProps,
   SelectProps,
@@ -29,6 +30,7 @@ export type RHFSlotProps = {
   descriptionStyling?: string;
   dependency?: DependencyRule;
   rules?: RegisterOptions;
+  sectionHeader?: boolean;
 } & {
   [K in keyof RHFComponentMap]: {
     rhf: K;
@@ -48,6 +50,7 @@ export type RHFOption = {
   dependency?: DependencyRule;
   form?: FormGroup[];
   slots?: RHFSlotProps[];
+  sectionHeader?: boolean;
 };
 
 export type RHFComponentMap = {
@@ -62,7 +65,7 @@ export type RHFComponentMap = {
     options: RHFOption[];
   };
   DatePicker: CalendarProps;
-  Checkbox: {
+  Checkbox: CheckboxProps & {
     options: RHFOption[];
   };
   Upload: {

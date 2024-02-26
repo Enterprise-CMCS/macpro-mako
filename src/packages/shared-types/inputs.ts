@@ -1,4 +1,5 @@
 import { DayPicker } from "react-day-picker";
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import * as SelectPrimitive from "@radix-ui/react-select";
@@ -7,6 +8,13 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   className?: string;
   classNames?: any;
   showOutsideDays?: boolean;
+};
+
+export type CheckboxProps = React.ComponentPropsWithoutRef<
+  typeof CheckboxPrimitive.Root
+> & {
+  className?: string;
+  sectionHeader?: boolean;
 };
 
 export type DatePickerProps = {
