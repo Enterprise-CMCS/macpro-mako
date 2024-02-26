@@ -9,6 +9,7 @@ export type OneMacUser = { isCms?: boolean, user: CognitoUserAttributes | null }
 export const getUser = async (): Promise<OneMacUser> => {
   try {
     const authenticatedUser = await Auth.currentAuthenticatedUser();
+    console.log("what is this url?", authenticatedUser.signInUserSession.idToken.payload.iss);
     const attributes = await Auth.userAttributes(authenticatedUser);
     const user = attributes.reduce((obj: { [key: string]: string }, item) => {
       obj[item.Name] = item.Value;
