@@ -145,10 +145,11 @@ const getCpocEmailAndSrtList = async (id) => {
 };
 
 const buildTemplateData = (dataList,data) => {
-  let returnObject;
+  const returnObject = {...dataList};
   if (!dataList || !Array.isArray(dataList) || dataList.length === 0) 
     return { error: "init statement fail", dataList, data};
 
+  console.log("got datalist and data: ", dataList, data);
   dataList.forEach((dataType) => {
     switch (dataType) {
       case 'territory':
@@ -167,7 +168,7 @@ const buildTemplateData = (dataList,data) => {
       returnObject.textFileList = formatAttachments("text", data.attachments);
     default:
       if (!!data[dataType]) 
-      returnObject[dataType] = data[dataType];
+        returnObject[dataType] = data[dataType];
     }});
   console.log("returnObject: ", returnObject);
   return returnObject;
