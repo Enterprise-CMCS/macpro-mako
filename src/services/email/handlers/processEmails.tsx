@@ -169,10 +169,10 @@ const buildTemplateData = (dataList,data) => {
       returnObject['proposedEffectiveDateNice'] = formatProposedEffectiveDate(data);
       break;
     case 'applicationEndpoint':
-      returnObject['applicationEndoint'] = process.env.applicationEndpoint;
+      returnObject['applicationEndpoint'] = process.env.applicationEndpoint;
       break;
     case 'formattedFileList':
-      returnObject['fomattedFileList'] = formatAttachments("html", data.attachments);
+      returnObject['formattedFileList'] = formatAttachments("html", data.attachments);
       break;
     case 'textFileList':
       returnObject['textFileList'] = formatAttachments("text", data.attachments);
