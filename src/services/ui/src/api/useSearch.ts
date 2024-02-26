@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   aggQueryBuilder,
   filterQueryBuilder,
@@ -6,26 +7,23 @@ import {
 } from "@/components/Opensearch/utils";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import type {
-  OsQueryState,
-  ReactQueryApiError,
-  OsFilterable,
-  OsAggQuery,
-  OsMainSearchResponse,
-  OsMainSourceItem,
-} from "shared-types";
+import type { ReactQueryApiError, opensearch } from "shared-types";
 
-type QueryProps = {
-  filters: OsQueryState["filters"];
-  sort?: OsQueryState["sort"];
-  pagination: OsQueryState["pagination"];
-  aggs?: OsAggQuery[];
+type QueryProps<T> = {
+  index: opensearch.Index;
+  filters: opensearch.QueryState<T>["filters"];
+  sort?: opensearch.QueryState<T>["sort"];
+  pagination: opensearch.QueryState<T>["pagination"];
+  aggs?: opensearch.AggQuery<T>[];
 };
 
-export const getSearchData = async (
-  props: QueryProps
-): Promise<OsMainSearchResponse> => {
-  const searchData = await API.post("os", "/search", {
+export const getOsData = async <
+  TProps,
+  TResponse extends opensearch.Response<any>
+>(
+  props: QueryProps<TProps>
+): Promise<TResponse> => {
+  const searchData = await API.post("os", `/search/${props.index}`, {
     body: {
       ...filterQueryBuilder(props.filters),
       ...paginationQueryBuilder(props.pagination),
@@ -38,17 +36,19 @@ export const getSearchData = async (
   return searchData;
 };
 
-export const getAllSearchData = async (filters?: OsFilterable[]) => {
+export const getMainExportData = async (
+  filters?: opensearch.main.Filterable[]
+) => {
   if (!filters) return [];
 
   const recursiveSearch = async (
     startPage: number
-  ): Promise<OsMainSourceItem[]> => {
+  ): Promise<opensearch.main.Document[]> => {
     if (startPage * 1000 >= 10000) {
       return [];
     }
 
-    const searchData = await API.post("os", "/search", {
+    const searchData = await API.post("os", "/search/main", {
       body: {
         ...filterQueryBuilder(filters),
         ...paginationQueryBuilder({ number: startPage, size: 1000 }),
@@ -69,15 +69,30 @@ export const getAllSearchData = async (filters?: OsFilterable[]) => {
   return await recursiveSearch(0);
 };
 
-export const useOsSearch = (
+export const useOsSearch = <TProps, TResponse>(
   options?: UseMutationOptions<
-    OsMainSearchResponse,
+    TResponse,
     ReactQueryApiError,
-    QueryProps
+    QueryProps<TProps>
   >
 ) => {
-  return useMutation<OsMainSearchResponse, ReactQueryApiError, QueryProps>(
-    (props) => getSearchData(props),
+  //@ts-ignore
+  return useMutation<TResponse, ReactQueryApiError, QueryProps<TProps>>(
+    (props) => getOsData(props),
     options
   );
+};
+
+export const useChangelogSearch = (
+  options?: UseMutationOptions<
+    opensearch.changelog.Response,
+    ReactQueryApiError,
+    QueryProps<opensearch.changelog.Field>
+  >
+) => {
+  return useMutation<
+    opensearch.changelog.Response,
+    ReactQueryApiError,
+    QueryProps<opensearch.changelog.Field>
+  >((props) => getOsData(props), options);
 };

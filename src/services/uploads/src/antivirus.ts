@@ -88,7 +88,11 @@ const scanAndTagS3Object = async (
       s3ObjectBucket
     );
     utils.generateSystemMessage("Set virusScanStatus");
-    virusScanStatus = scanLocalFile(fileLoc);
+    const metadata = await s3Client.send(new HeadObjectCommand({
+      Bucket: s3ObjectBucket,
+      Key: s3ObjectKey,
+    }));
+    virusScanStatus = await scanLocalFile(fileLoc, metadata.ContentType);
     utils.generateSystemMessage(`virusScanStatus=${virusScanStatus}`);
   }
 

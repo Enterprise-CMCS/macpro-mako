@@ -1,0 +1,171 @@
+service: ${self:custom.project}-email
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-s3-security-helper"
+  - "@stratiformdigital/serverless-iam-helper"
+  - serverless-plugin-scripts
+  - serverless-esbuild
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  iam:
+    role:
+      path: /delegatedadmin/developer/
+      permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+      statements:
+        - Effect: Allow
+          Action:
+            - sts:AssumeRole
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - ses:ListIdentities
+            - ses:ListConfigurationSets
+            - ses:SendEmail
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - sns:Subscribe
+            - sns:Publish
+          Resource: "*"
+
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+
+custom:
+  project: ${env:PROJECT}
+  emailEventTopicName: ${self:service}-${sls:stage}-email-events
+  serverlessTerminationProtection:
+    stages: # Apply CloudFormation termination protection for these stages
+      - master
+      - val
+      - production
+
+functions:
+  processEmails:
+    handler: handlers/processEmails.main
+    environment:
+      region: ${self:provider.region}
+      emailConfigSet: ${self:service}-${sls:stage}-configuration
+    maximumRetryAttempts: 0
+    timeout: 60
+    memorySize: 1024
+  processEmailEvents:
+    handler: handlers/processEmailEvents.main
+    events:
+      - sns:
+          arn: !Ref EmailEventTopic
+          topicName: ${self:custom.emailEventTopicName}
+
+resources:
+  Resources:
+    EmailEventTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${self:custom.emailEventTopicName}
+        DisplayName: Monitoring the sending of emails
+        KmsMasterKeyId: !Ref KmsKeyForEmails
+
+    KmsKeyForEmails:
+      Type: AWS::KMS::Key
+      Properties:
+        EnableKeyRotation: "true"
+        KeyPolicy:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: Allow access for Root User
+              Effect: Allow
+              Principal:
+                AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+              Action: "kms:*"
+              Resource: "*"
+            - Sid: Allow access for Key User (SNS Service Principal)
+              Effect: Allow
+              Principal:
+                Service: "sns.amazonaws.com"
+              Action:
+                - "kms:GenerateDataKey"
+                - "kms:Decrypt"
+              Resource: "*"
+            - Sid: Allow CloudWatch events to use the key
+              Effect: Allow
+              Principal:
+                Service: events.amazonaws.com
+              Action:
+                - "kms:Decrypt"
+                - "kms:GenerateDataKey"
+              Resource: "*"
+            - Sid: Allow CloudWatch for CMK
+              Effect: Allow
+              Principal:
+                Service:
+                  - cloudwatch.amazonaws.com
+              Action:
+                - "kms:Decrypt"
+                - "kms:GenerateDataKey*"
+              Resource: "*"
+            - Sid: Allow SES events to use the key
+              Effect: Allow
+              Principal:
+                Service:
+                  - ses.amazonaws.com
+              Action:
+                - "kms:Decrypt"
+                - "kms:GenerateDataKey*"
+              Resource: "*"
+
+    EmailEventTopicPolicy:
+      Type: AWS::SNS::TopicPolicy
+      Properties:
+        PolicyDocument:
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+                  - ses.amazonaws.com
+              Action:
+                - sns:Subscribe
+                - sns:Publish
+              Resource: !Ref EmailEventTopic
+        Topics:
+          - !Ref EmailEventTopic
+
+    EmailEventSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        TopicArn: !Ref EmailEventTopic
+        Endpoint: !GetAtt ProcessEmailEventsLambdaFunction.Arn
+        Protocol: lambda
+
+    EmailEventConfigurationSet:
+      Type: AWS::SES::ConfigurationSet
+      Properties:
+        Name: "${self:service}-${sls:stage}-configuration"
+
+    EmailEventConfigurationSetEventDestination:
+      Type: AWS::SES::ConfigurationSetEventDestination
+      Properties:
+        ConfigurationSetName: !Ref EmailEventConfigurationSet
+        EventDestination:
+          Enabled: true
+          Name: "${self:service}-${sls:stage}-destination"
+          MatchingEventTypes:
+            - "send"
+            - "reject"
+            - "bounce"
+            - "complaint"
+            - "delivery"
+            - "open"
+            - "click"
+            - "renderingFailure"
+            - "deliveryDelay"
+            - "subscription"
+          SnsDestination:
+            TopicARN: !Ref EmailEventTopic

@@ -14,6 +14,8 @@ provider:
   stackTags:
     PROJECT: ${self:custom.project}
     SERVICE: ${self:service}
+  environment:
+    region: ${self:provider.region}
   iam:
     role:
       path: /delegatedadmin/developer/
@@ -29,33 +31,28 @@ provider:
             - s3:PutObjectVersionTagging
             - s3:DeleteObject
             - s3:ListBucket
+            - s3:GetBucketPolicy
+            - s3:PutBucketPolicy
+            - s3:ListBucketVersions
+            - s3:DeleteObjectVersion
+            - s3:HeadObject
           Resource:
-            - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}/*
-            - !Sub arn:aws:s3:::${self:service}-${sls:stage}-avscan-${AWS::AccountId}/*
-        - Effect: "Allow"
-          Action:
-            - s3:ListBucket
-          Resource:
-            - !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}
-            - !Sub arn:aws:s3:::${self:service}-${sls:stage}-avscan-${AWS::AccountId}
+            - arn:aws:s3:::${self:custom.attachmentsBucketName}/*
+            - arn:aws:s3:::${self:custom.clamDefsBucketName}/*
+            - arn:aws:s3:::${self:custom.attachmentsBucketName}
+            - arn:aws:s3:::${self:custom.clamDefsBucketName}
         - Effect: "Allow"
           Action:
             - lambda:InvokeFunction
           Resource:
-            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-avDownloadDefinitions
-        - Effect: "Allow"
-          Action:
-            - "s3:GetBucketPolicy"
-            - "s3:PutBucketPolicy"
-          Resource:
-            - !Sub "arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}"
-            - !Sub "arn:aws:s3:::${self:service}-${sls:stage}-avscan-${AWS::AccountId}"
+            - arn:aws:lambda:${self:provider.region}:${aws:accountId}:function:${self:service}-${sls:stage}-avDownloadDefinitions
 
 custom:
   project: ${env:PROJECT}
-  accountId: !Sub "${AWS::AccountId}"
   stage: ${opt:stage, self:provider.stage}
   forceApplyBucketPolicies: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/forceApplyBucketPolicies, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/forceApplyBucketPolicies, "blank"}
+  clamDefsBucketName: ${self:service}-${sls:stage}-avscan-${aws:accountId}
+  attachmentsBucketName: ${self:service}-${sls:stage}-attachments-${aws:accountId}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
@@ -88,8 +85,6 @@ functions:
       PATH_TO_AV_DEFINITIONS: "lambda/s3-antivirus/av-definitions"
   avDownloadDefinitions:
     handler: src/download-definitions.lambdaHandleEvent
-    events:
-      - schedule: cron(0 10 */1 * ? *)
     timeout: 300 # 300 seconds = 5 minutes
     memorySize: 1024
     layers:
@@ -105,12 +100,15 @@ functions:
     handler: src/applyPolicy.handler
     timeout: 300
     memorySize: 1024
+  emptyBuckets:
+    handler: src/emptyBuckets.handler
+    timeout: 900
 resources:
   Resources:
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: !Sub ${self:service}-${sls:stage}-attachments-${AWS::AccountId}
+        BucketName: ${self:custom.attachmentsBucketName}
         # Set the CORS policy
         CorsConfiguration:
           CorsRules:
@@ -167,12 +165,22 @@ resources:
         FunctionName: !GetAtt AvScanLambdaFunction.Arn
         Action: lambda:InvokeFunction
         Principal: s3.amazonaws.com
-        SourceAccount: !Sub ${AWS::AccountId}
-        SourceArn: !Sub arn:aws:s3:::${self:service}-${sls:stage}-attachments-${AWS::AccountId}
+        SourceAccount: ${aws:accountId}
+        SourceArn: arn:aws:s3:::${self:service}-${sls:stage}-attachments-${aws:accountId}
+    AvDownloadDefinitionsEventsRuleSchedule1:
+      Type: AWS::Events::Rule
+      Properties:
+        ScheduleExpression: cron(0 10 */1 * ? *)
+        State: ENABLED
+        Targets:
+          - Arn: arn:aws:lambda:${self:provider.region}:${aws:accountId}:function:${self:custom.project}-${self:service}-avDownloadDefinitions
+            Id: avDownloadDefinitionsSchedule
+      DependsOn:
+        - EmptyBuckets
     ClamDefsBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: !Sub ${self:service}-${sls:stage}-avscan-${AWS::AccountId}
+        BucketName: ${self:custom.clamDefsBucketName}
         AccessControl: Private
         BucketEncryption:
           ServerSideEncryptionConfiguration:
@@ -201,6 +209,12 @@ resources:
       Properties:
         ServiceToken: !GetAtt TriggerInitialDownloadLambdaFunction.Arn
         FunctionName: !GetAtt AvDownloadDefinitionsLambdaFunction.Arn
+    EmptyBuckets:
+      Type: Custom::EmptyBuckets
+      Properties:
+        ServiceToken: !GetAtt EmptyBucketsLambdaFunction.Arn
+        Buckets:
+          - !Ref ClamDefsBucket
   Outputs:
     AttachmentsBucketName:
       Value:

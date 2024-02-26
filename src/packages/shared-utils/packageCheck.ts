@@ -1,5 +1,4 @@
-import { OsMainSourceItem, PlanType, SEATOOL_STATUS } from "../shared-types";
-import { getLatestRai } from "./rai-helper";
+import { opensearch, Authority, SEATOOL_STATUS } from "../shared-types";
 
 const secondClockStatuses = [
   SEATOOL_STATUS.PENDING,
@@ -7,10 +6,10 @@ const secondClockStatuses = [
   SEATOOL_STATUS.PENDING_CONCURRENCE,
 ];
 
-const checkPlan = (planType: PlanType | null, validPlanTypes: PlanType[]) =>
-  !planType
+const checkAuthority = (authority: Authority | null, validAuthorities: Authority[]) =>
+  !authority
     ? false
-    : validPlanTypes.includes(planType.toLowerCase() as PlanType);
+    : validAuthorities.includes(authority.toLowerCase() as Authority);
 
 const checkStatus = (seatoolStatus: string, authorized: string | string[]) =>
   typeof authorized === "string"
@@ -21,17 +20,18 @@ const checkStatus = (seatoolStatus: string, authorized: string | string[]) =>
  * for business logic. */
 export const PackageCheck = ({
   seatoolStatus,
-  rais,
+  raiRequestedDate,
+  raiReceivedDate,
+  raiWithdrawnDate,
   raiWithdrawEnabled,
-  planType,
-}: OsMainSourceItem) => {
-  const latestRai = getLatestRai(rais);
+  authority,
+}: opensearch.main.Document) => {
   const planChecks = {
-    isSpa: checkPlan(planType, [PlanType.MED_SPA, PlanType.CHIP_SPA]),
-    isWaiver: checkPlan(planType, []),
+    isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
+    isWaiver: checkAuthority(authority, [Authority["1915b"]]),
     /** Keep excess methods to a minimum with `is` **/
-    planTypeIs: (validPlanTypes: PlanType[]) =>
-      checkPlan(planType, validPlanTypes),
+    authorityIs: (validAuthorities: Authority[]) =>
+      checkAuthority(authority, validAuthorities),
   };
   const statusChecks = {
     /** Is in any of our pending statuses, sans Pending-RAI **/
@@ -41,9 +41,9 @@ export const PackageCheck = ({
     ]),
     /** Is in a second clock status and RAI has been received **/
     isInSecondClock:
-      !planChecks.planTypeIs([PlanType.CHIP_SPA]) &&
+      !planChecks.authorityIs([Authority.CHIP_SPA]) &&
       checkStatus(seatoolStatus, secondClockStatuses) &&
-      latestRai?.status === "received",
+      raiRequestedDate && raiReceivedDate && !raiWithdrawnDate,
     /** Is in any status except Package Withdrawn **/
     isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),
     /** Added for elasticity, but common checks should always bubble up as
@@ -52,12 +52,14 @@ export const PackageCheck = ({
       checkStatus(seatoolStatus, authorizedStatuses),
   };
   const raiChecks = {
-    /** Latest RAI is requested and status is Pending-RAI **/
-    hasRequestedRai: latestRai?.status === "requested",
-    /** Latest RAI is not null **/
-    hasLatestRai: latestRai !== null,
-    /** Latest RAI has been responded to **/
-    hasRaiResponse: latestRai?.status === "received",
+    /** There is an RAI and it does not have a response **/
+    hasRequestedRai: !!raiRequestedDate && !raiReceivedDate,
+    /** There is an RAI **/
+    hasLatestRai: !!raiRequestedDate,
+    /** There is an RAI, it has a response, and it has not been withdrawn **/
+    hasRaiResponse: !!raiRequestedDate && !!raiReceivedDate && !raiWithdrawnDate,
+    /** Latest RAI has a response and/or has been withdrawn **/
+    hasCompletedRai: !!raiRequestedDate && !!raiReceivedDate,
     /** RAI Withdraw has been enabled **/
     hasEnabledRaiWithdraw: raiWithdrawEnabled,
   };

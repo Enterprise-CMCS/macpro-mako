@@ -8,11 +8,13 @@ import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
-import { FAQ_TARGET } from "@/routes";
 import { useUserContext } from "../Context/userContext";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
 import { useNavigate } from "../Routing";
+import { FAQ_TAB } from "../Routing/consts";
+import { ModalProvider } from "@/components/Context/modalContext";
+import { AlertProvider } from "@/components/Context/alertContext";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
   const isProd = window && window.location.hostname === "mako.cms.gov";
@@ -57,7 +59,7 @@ const UserDropdownMenu = () => {
         asChild
         className="hover:text-white/70 p-4 data-[state=open]:bg-white data-[state=open]:text-primary"
       >
-        <div className="flex flex-row gap-4 items-center cursor-pointer">
+        <button className="flex flex-row gap-4 items-center cursor-pointer">
           <p className="flex">My Account</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +75,7 @@ const UserDropdownMenu = () => {
               d="M19.5 8.25l-7.5 7.5-7.5-7.5"
             />
           </svg>
-        </div>
+        </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
@@ -106,35 +108,39 @@ export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   return (
-    <div className="min-h-full flex flex-col">
-      <UsaBanner />
-      <div className="bg-primary">
-        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
-          <div className="h-[70px] flex gap-12 items-center text-white">
-            <Link to="/">
-              <img
-                className="h-10 w-28 min-w-[112px] resize-none"
-                src={oneMacLogo}
-                alt="One Mac Site Logo"
-              />
-            </Link>
-            <ResponsiveNav isDesktop={isDesktop} />
+    <ModalProvider>
+      <div className="min-h-full flex flex-col">
+        <UsaBanner />
+        <nav className="bg-primary">
+          <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
+            <div className="h-[70px] flex gap-12 items-center text-white">
+              <Link to="/">
+                <img
+                  className="h-10 w-28 min-w-[112px] resize-none"
+                  src={oneMacLogo}
+                  alt="onemac site logo"
+                />
+              </Link>
+              <ResponsiveNav isDesktop={isDesktop} />
+            </div>
           </div>
-        </div>
+        </nav>
+        <main className="flex-1">
+          <AlertProvider>
+            <Outlet />
+          </AlertProvider>
+        </main>
+        <Footer
+          email="OneMAC_Helpdesk@cms.hhs.gov"
+          address={{
+            city: "Baltimore",
+            state: "MD",
+            street: "7500 Security Boulevard",
+            zip: 21244,
+          }}
+        />
       </div>
-      <main className="flex-1">
-        <Outlet />
-      </main>
-      <Footer
-        email="OneMAC_Helpdesk@cms.hhs.gov"
-        address={{
-          city: "Baltimore",
-          state: "MD",
-          street: "7500 Security Boulevard",
-          zip: 21244,
-        }}
-      />
-    </div>
+    </ModalProvider>
   );
 };
 
@@ -182,7 +188,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
         {getLinks(!!data.user, role).map((link) => (
           <NavLink
             to={link.link}
-            target={link.link === "/faq" ? FAQ_TARGET : undefined}
+            target={link.link === "/faq" ? FAQ_TAB : "_self"}
             key={link.name}
             className={setClassBasedOnNav}
           >
@@ -227,7 +233,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 <Link
                   className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
-                  target={link.link === "/faq" ? FAQ_TARGET : undefined}
+                  target={link.link === "/faq" ? FAQ_TAB : "_self"}
                 >
                   {link.name}
                 </Link>

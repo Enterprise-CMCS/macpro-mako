@@ -4,7 +4,6 @@ import IDMInstructionsforOneMACUsers from "../../../assets/onboarding/IDMInstruc
 import OneMACIDMGuide from "../../../assets/onboarding/OneMACIDMGuide.pdf";
 import OneMACStateUserGuide from "../../../assets/onboarding/OneMACStateUserGuide.pdf";
 import OneMACCMSUserGuide from "../../../assets/onboarding/OneMACCMSUserGuide.pdf";
-import { FAQ_SECTION } from "@/routes";
 import { FILE_TYPES } from "shared-types/uploads";
 
 type QuestionAnswer = {
@@ -31,7 +30,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "system",
         question: "Which system should I use for my state’s submission?",
         answerJSX: (
-          <section id={FAQ_SECTION.SYSTEM}>
+          <section id={"system"}>
             <p>
               Check which system to submit your state plan in with this
               crosswalk training document.

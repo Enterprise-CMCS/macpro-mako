@@ -39,14 +39,22 @@ contact_email: bpaige@gswell.com
 
 team:
   members: # This list automatically populates the Team Introduction page.  Add/Edit as appropriate.
-    - role: Product Owner
+    - role: Product
       description: Responsible for project scope, direction, and delivery.
-      name: Anna Hawk
-      email: ahawk@gswell.com
+      name: Hannah Morris
+      email: hmorris@gswell.com
+    - role: Product
+      description: Responsible for project scope, direction, and delivery.
+      name: Erika Durant
+      email: edurant@fearless.tech
     - role: Tech Lead
-      description: Leads tooling, tech, and arch discussions and decisions.
+      description: Tooling, tech, and arch discussions and decisions.
       name: Ben Paige
       email: bpaige@gswell.com
+    - role: Tech Lead
+      description: Tooling, tech, and arch discussions and decisions.
+      name: Michael Dial
+      email: mdial@gswell.com
   core_hours: 10:00am - 3:00pm ET
 
 meetings:

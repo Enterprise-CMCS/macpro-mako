@@ -63,6 +63,7 @@ export const Pagination: FC<Props> = (props) => {
                 viewBox="0 0 20 20"
                 fill="currentColor"
                 aria-hidden="true"
+                display="none"
               >
                 <path
                   fillRule="evenodd"
@@ -75,7 +76,7 @@ export const Pagination: FC<Props> = (props) => {
             {state.pageRange.map((PAGE) => {
               if (Array.isArray(PAGE))
                 return (
-                  <button
+                  <div
                     key={`PAGE-${PAGE}`}
                     className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 cursor-pointer"
                     id="morePagesButton"
@@ -97,7 +98,7 @@ export const Pagination: FC<Props> = (props) => {
                         </option>
                       ))}
                     </select>
-                  </button>
+                  </div>
                 );
 
               const isActive = props.pageNumber === PAGE - 1;
@@ -132,6 +133,7 @@ export const Pagination: FC<Props> = (props) => {
                 viewBox="0 0 20 20"
                 fill="currentColor"
                 aria-hidden="true"
+                display="none"
               >
                 <path
                   fillRule="evenodd"

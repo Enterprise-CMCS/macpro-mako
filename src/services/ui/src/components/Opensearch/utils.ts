@@ -1,21 +1,33 @@
-import { OsAggQuery, OsFilterable, OsQueryState } from "shared-types";
-import { OsUrlState } from "./useOpensearch";
+import { opensearch } from "shared-types";
 
 const filterMapQueryReducer = (
-  state: Record<OsFilterable["prefix"], any[]>,
-  filter: OsFilterable
+  state: Record<opensearch.Filterable<any>["prefix"], any[]>,
+  filter: opensearch.Filterable<any>
 ) => {
-  if (!filter.value) return state;
-
+  // this was hoisted up since false is a valid "match" value
   if (filter.type === "match") {
     state[filter.prefix].push({
       match: { [filter.field]: filter.value },
     });
   }
 
+  if (!filter.value) return state;
+
   if (filter.type === "terms") {
     state[filter.prefix].push({
       terms: { [filter.field]: filter.value },
+    });
+  }
+
+  if (filter.type === "term") {
+    state[filter.prefix].push({
+      term: { [filter.field]: filter.value },
+    });
+  }
+
+  if (filter.type === "exists") {
+    state[filter.prefix].push({
+      exists: { field: filter.field },
     });
   }
 
@@ -35,12 +47,13 @@ const filterMapQueryReducer = (
         },
       });
     }
+    return state;
   }
 
   return state;
 };
 
-export const filterQueryBuilder = (filters: OsFilterable[]) => {
+export const filterQueryBuilder = (filters: opensearch.Filterable<any>[]) => {
   if (!filters?.length) return {};
 
   return {
@@ -56,7 +69,7 @@ export const filterQueryBuilder = (filters: OsFilterable[]) => {
 };
 
 export const paginationQueryBuilder = (
-  pagination: OsQueryState["pagination"]
+  pagination: opensearch.QueryState<any>["pagination"]
 ) => {
   const from = (() => {
     if (!pagination.number) return 0;
@@ -69,11 +82,11 @@ export const paginationQueryBuilder = (
   };
 };
 
-export const sortQueryBuilder = (sort: OsQueryState["sort"]) => {
+export const sortQueryBuilder = (sort: opensearch.QueryState<any>["sort"]) => {
   return { sort: [{ [sort.field]: sort.order }] };
 };
 
-export const aggQueryBuilder = (aggs: OsAggQuery[]) => {
+export const aggQueryBuilder = (aggs: opensearch.AggQuery<any>[]) => {
   return {
     aggs: aggs.reduce((STATE, AGG) => {
       STATE[AGG.name] = {
@@ -96,24 +109,14 @@ export const createSearchFilterable = (value?: string) => {
       field: "",
       value,
       prefix: "must",
-    } as unknown as OsFilterable,
+    } as unknown as opensearch.Filterable<any>,
   ];
 };
 
-export const resetFilters = (
-  onSet: (
-    arg: (arg: OsUrlState) => OsUrlState,
-    shouldIsolate?: boolean | undefined
-  ) => void
+export const checkMultiFilter = (
+  filters: opensearch.Filterable<any>[],
+  val: number
 ) => {
-  onSet((s) => ({
-    ...s,
-    filters: [],
-    pagination: { ...s.pagination, number: 0 },
-  }));
-};
-
-export const checkMultiFilter = (filters: OsFilterable[], val: number) => {
   return (
     filters.length >= val ||
     filters.some(

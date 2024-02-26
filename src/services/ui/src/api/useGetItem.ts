@@ -1,24 +1,26 @@
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ItemResult, ReactQueryApiError } from "shared-types";
+import { opensearch, ReactQueryApiError, SEATOOL_STATUS } from "shared-types";
 
-export const getItem = async (id: string): Promise<ItemResult> =>
+export const getItem = async (
+  id: string
+): Promise<opensearch.main.ItemResult> =>
   await API.post("os", "/item", { body: { id } });
 
-export const idIsUnique = async (id: string) => {
+export const idIsApproved = async (id: string) => {
   try {
-    await getItem(id);
-    return false;
+    const record = await getItem(id);
+    return record._source.seatoolStatus == SEATOOL_STATUS.APPROVED;
   } catch (e) {
-    return true;
+    return false;
   }
 };
 
 export const useGetItem = (
   id: string,
-  options?: UseQueryOptions<ItemResult, ReactQueryApiError>
+  options?: UseQueryOptions<opensearch.main.ItemResult, ReactQueryApiError>
 ) => {
-  return useQuery<ItemResult, ReactQueryApiError>(
+  return useQuery<opensearch.main.ItemResult, ReactQueryApiError>(
     ["record", id],
     () => getItem(id),
     options

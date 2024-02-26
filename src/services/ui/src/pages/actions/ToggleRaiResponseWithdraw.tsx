@@ -1,38 +1,66 @@
 import { Navigate, useNavigate, useParams } from "@/components/Routing";
 import { Alert, LoadingSpinner } from "@/components";
-import { Action, PlanType, ItemResult } from "shared-types";
+import { Action, Authority, opensearch } from "shared-types";
 import { Button } from "@/components/Inputs";
-import { useEffect, useMemo, useState } from "react";
-import { PackageActionForm } from "@/pages/actions/PackageActionForm";
-import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
+import { useCallback, useEffect, useMemo } from "react";
 import { useSubmissionService } from "@/api/submissionService";
 import { buildActionUrl } from "@/lib";
 import { useGetUser } from "@/api/useGetUser";
 import { ActionFormIntro, PackageInfo } from "@/pages/actions/common";
+import { useModalContext } from "@/components/Context/modalContext";
+import { useAlertContext } from "@/components/Context/alertContext";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { useQuery as useQueryString } from "@/hooks";
 
-const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
+export const ToggleRaiResponseWithdraw = ({
+  item,
+}: {
+  item?: opensearch.main.ItemResult;
+}) => {
   const navigate = useNavigate();
+  const urlQuery = useQueryString();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
-  const authority = item?._source.authority as PlanType;
-  const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
-  const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
-
+  const modal = useModalContext();
+  const alert = useAlertContext();
+  const originPath = useOriginPath();
+  const acceptAction = useCallback(() => {
+    modal.setModalOpen(false);
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+  }, []);
   const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
     id: string;
   }>({
     data: { id: id! },
     endpoint: buildActionUrl(type!),
     user,
-    authority,
+    authority: item?._source.authority as Authority,
   });
+
   const ACTION_WORD = useMemo(
     () => (type === Action.ENABLE_RAI_WITHDRAW ? "Enable" : "Disable"),
     [type]
   );
 
   useEffect(() => {
-    if (isSuccess) setSuccessModalOpen(true);
+    if (isSuccess) {
+      alert.setContent({
+        header: `RAI response withdrawal ${ACTION_WORD.toLowerCase()}d`,
+        body:
+          ACTION_WORD === "Enable"
+            ? "The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied."
+            : "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
+      });
+      alert.setBannerShow(true);
+      alert.setBannerDisplayOn(
+        // This uses the originRoute map because this value doesn't work
+        // when any queries are added, such as the case of /details?id=...
+        urlQuery.get(ORIGIN)
+          ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+          : "/dashboard"
+      );
+      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+    }
   }, [isSuccess]);
 
   if (!item) return <Navigate path={"/dashboard"} />; // Prevents optional chains below
@@ -61,50 +89,22 @@ const ToggleRaiResponseWithdrawForm = ({ item }: { item?: ItemResult }) => {
       )}
       <div className="flex gap-2">
         <Button onClick={() => mutate()}>Submit</Button>
-        <Button onClick={() => setCancelModalOpen(true)} variant="outline">
+        <Button
+          onClick={() => {
+            modal.setContent({
+              header: "Stop form submission?",
+              body: "All information you've entered on this form will be lost if you leave this page.",
+              acceptButtonText: "Yes, leave form",
+              cancelButtonText: "Return to form",
+            });
+            modal.setOnAccept(() => acceptAction);
+            modal.setModalOpen(true);
+          }}
+          variant="outline"
+        >
           Cancel
         </Button>
       </div>
-      {/* Success Modal */}
-      <ConfirmationModal
-        open={successModalOpen}
-        onAccept={() => {
-          setSuccessModalOpen(false);
-          navigate({ path: "/details", query: { id } });
-        }}
-        onCancel={() => setSuccessModalOpen(false)} // Should be made optional
-        cancelButtonVisible={false} // Should be made optional
-        title={`Formal RAI Response Withdraw Successfully ${ACTION_WORD}d`}
-        body={
-          <p>
-            Please be aware that it may take up to a minute for changes to show
-            up on the Dashboard and Details pages.
-          </p>
-        }
-        acceptButtonText="Go to Package Details"
-      />
-
-      {/* Cancel Modal */}
-      <ConfirmationModal
-        open={cancelModalOpen}
-        onAccept={() => {
-          setCancelModalOpen(false);
-          navigate({ path: "/details", query: { id } });
-        }}
-        onCancel={() => setCancelModalOpen(false)}
-        cancelButtonText="Return to Form"
-        acceptButtonText="Leave Page"
-        title="Are you sure you want to cancel?"
-        body={
-          <p>If you leave this page you will lose your progress on this form</p>
-        }
-      />
     </>
   );
 };
-
-export const ToggleRaiResponseWithdraw = () => (
-  <PackageActionForm>
-    <ToggleRaiResponseWithdrawForm />
-  </PackageActionForm>
-);

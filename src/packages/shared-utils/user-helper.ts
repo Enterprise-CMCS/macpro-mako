@@ -1,4 +1,10 @@
-import { CMS_ROLES, CMS_WRITE_ROLES, CMS_READ_ONLY_ROLES, CognitoUserAttributes, STATE_ROLES } from "../shared-types";
+import {
+  CMS_ROLES,
+  CMS_WRITE_ROLES,
+  CMS_READ_ONLY_ROLES,
+  CognitoUserAttributes,
+  STATE_ROLES,
+} from "../shared-types";
 
 export const isCmsUser = (user: CognitoUserAttributes) => {
   const userRoles = user["custom:cms-roles"];
@@ -31,16 +37,19 @@ export const isCmsReadonlyUser = (user: CognitoUserAttributes) => {
     }
   }
   return false;
-}
+};
 
-export const isStateUser = (user: CognitoUserAttributes) => {
-  const userRoles = user["custom:cms-roles"];
+export const isStateUser = (user: CognitoUserAttributes | null) => {
+  if (!user) {
+    return false;
+  } else {
+    const userRoles = user["custom:cms-roles"];
 
-  for (const role of STATE_ROLES) {
-    if (userRoles.includes(role)) {
-      return true;
+    for (const role of STATE_ROLES) {
+      if (userRoles.includes(role)) {
+        return true;
+      }
     }
+    return false;
   }
-  return false;
-
-}
+};

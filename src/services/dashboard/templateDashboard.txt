@@ -3,7 +3,7 @@
         {
             "height": 3,
             "width": 6,
-            "y": 86,
+            "y": 102,
             "x": 6,
             "type": "custom",
             "properties": {
@@ -18,7 +18,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 60,
+            "y": 76,
             "x": 0,
             "type": "text",
             "properties": {
@@ -29,7 +29,7 @@
         {
             "height": 3,
             "width": 6,
-            "y": 86,
+            "y": 102,
             "x": 0,
             "type": "text",
             "properties": {
@@ -40,7 +40,7 @@
         {
             "height": 8,
             "width": 8,
-            "y": 78,
+            "y": 94,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -69,15 +69,14 @@
             "properties": {
                 "title": "Alarms",
                 "alarms": [
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkSeatoolErrorsCount",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-SEATOOL-validation-error"
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkMain-errors"
                 ]
             }
         },
         {
             "height": 1,
             "width": 24,
-            "y": 77,
+            "y": 93,
             "x": 0,
             "type": "text",
             "properties": {
@@ -88,7 +87,7 @@
         {
             "height": 2,
             "width": 12,
-            "y": 18,
+            "y": 34,
             "x": 0,
             "type": "alarm",
             "properties": {
@@ -102,7 +101,7 @@
         {
             "height": 16,
             "width": 24,
-            "y": 20,
+            "y": 36,
             "x": 0,
             "type": "explorer",
             "properties": {
@@ -152,7 +151,7 @@
         {
             "height": 16,
             "width": 24,
-            "y": 61,
+            "y": 77,
             "x": 0,
             "type": "explorer",
             "properties": {
@@ -222,7 +221,7 @@
                         "AWS/Lambda",
                         "Invocations",
                         "FunctionName",
-                        "om-data-${sls:stage}-sinkSeatool",
+                        "om-data-${sls:stage}-sinkMain",
                         {
                             "region": "${env:REGION_A}"
                         }
@@ -262,7 +261,7 @@
             "x": 11,
             "type": "log",
             "properties": {
-                "query": "SOURCE '/aws/lambda/om-data-${sls:stage}-sinkSeatool' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
+                "query": "SOURCE '/aws/lambda/om-data-${sls:stage}-sinkMain' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
                 "region": "${env:REGION_A}",
                 "stacked": false,
                 "title": "Logs",
@@ -272,7 +271,7 @@
         {
             "height": 7,
             "width": 6,
-            "y": 10,
+            "y": 18,
             "x": 5,
             "type": "metric",
             "properties": {
@@ -281,7 +280,7 @@
                         "AWS/Lambda",
                         "Invocations",
                         "FunctionName",
-                        "om-data-${sls:stage}-sinkOnemac",
+                        "om-data-${sls:stage}-sinkTypes",
                         {
                             "region": "${env:REGION_A}"
                         }
@@ -317,11 +316,11 @@
         {
             "height": 7,
             "width": 13,
-            "y": 10,
+            "y": 18,
             "x": 11,
             "type": "log",
             "properties": {
-                "query": "SOURCE '/aws/lambda/om-data-${sls:stage}-sinkOnemac' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
+                "query": "SOURCE '/aws/lambda/om-data-${sls:stage}-sinkTypes' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
                 "region": "${env:REGION_A}",
                 "stacked": false,
                 "title": "Logs",
@@ -331,14 +330,13 @@
         {
             "height": 3,
             "width": 5,
-            "y": 10,
+            "y": 18,
             "x": 0,
             "type": "alarm",
             "properties": {
                 "title": "Alarms",
                 "alarms": [
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkOnemacErrorCount",
-                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-ONEMAC-validation-error"
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkTypes-errors"
                 ]
             }
         },
@@ -354,7 +352,7 @@
                         "AWS/Lambda",
                         "OffsetLag",
                         "FunctionName",
-                        "om-data-${sls:stage}-sinkSeatool",
+                        "om-data-${sls:stage}-sinkMain",
                         {
                             "region": "${env:REGION_A}"
                         }
@@ -370,7 +368,7 @@
         {
             "height": 4,
             "width": 5,
-            "y": 13,
+            "y": 21,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -379,7 +377,10 @@
                         "AWS/Lambda",
                         "OffsetLag",
                         "FunctionName",
-                        "om-data-${sls:stage}-sinkOnemac"
+                        "om-data-${sls:stage}-sinkTypes",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
                     ]
                 ],
                 "sparkline": true,
@@ -396,18 +397,7 @@
             "x": 0,
             "type": "text",
             "properties": {
-                "markdown": "## seatool sink",
-                "background": "transparent"
-            }
-        },
-        {
-            "height": 1,
-            "width": 24,
-            "y": 9,
-            "x": 0,
-            "type": "text",
-            "properties": {
-                "markdown": "## onemac sink",
+                "markdown": "## main sink",
                 "background": "transparent"
             }
         },
@@ -418,6 +408,17 @@
             "x": 0,
             "type": "text",
             "properties": {
+                "markdown": "## types sink",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 1,
+            "width": 24,
+            "y": 33,
+            "x": 0,
+            "type": "text",
+            "properties": {
                 "markdown": "# api",
                 "background": "transparent"
             }
@@ -425,7 +426,7 @@
         {
             "height": 7,
             "width": 6,
-            "y": 37,
+            "y": 53,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -470,7 +471,7 @@
         {
             "height": 7,
             "width": 18,
-            "y": 37,
+            "y": 53,
             "x": 6,
             "type": "log",
             "properties": {
@@ -484,7 +485,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 36,
+            "y": 52,
             "x": 0,
             "type": "text",
             "properties": {
@@ -495,7 +496,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 44,
+            "y": 60,
             "x": 0,
             "type": "text",
             "properties": {
@@ -506,7 +507,7 @@
         {
             "height": 7,
             "width": 6,
-            "y": 45,
+            "y": 61,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -544,11 +545,11 @@
         {
             "height": 7,
             "width": 18,
-            "y": 45,
+            "y": 61,
             "x": 6,
             "type": "log",
             "properties": {
-                "query": "SOURCE '/aws/lambda/om-data-${sls:stage}-bootstrapKibanaUsers' | SOURCE '/aws/lambda/om-api-${sls:stage}-item' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
+                "query": "SOURCE '/aws/lambda/om-api-${sls:stage}-item' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
                 "region": "${env:REGION_A}",
                 "stacked": false,
                 "title": "Logs",
@@ -558,7 +559,7 @@
         {
             "height": 1,
             "width": 24,
-            "y": 52,
+            "y": 68,
             "x": 0,
             "type": "text",
             "properties": {
@@ -569,7 +570,7 @@
         {
             "height": 7,
             "width": 6,
-            "y": 53,
+            "y": 69,
             "x": 0,
             "type": "metric",
             "properties": {
@@ -607,11 +608,227 @@
         {
             "height": 7,
             "width": 18,
-            "y": 53,
+            "y": 69,
             "x": 6,
             "type": "log",
             "properties": {
                 "query": "SOURCE '/aws/lambda/om-api-${sls:stage}-getAttachmentUrl' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
+                "region": "${env:REGION_A}",
+                "stacked": false,
+                "title": "Logs",
+                "view": "table"
+            }
+        },
+        {
+            "height": 1,
+            "width": 24,
+            "y": 25,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## subtypes sink",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 3,
+            "width": 5,
+            "y": 26,
+            "x": 0,
+            "type": "alarm",
+            "properties": {
+                "title": "Alarms",
+                "alarms": [
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkSubtypes-errors"
+                ]
+            }
+        },
+        {
+            "height": 4,
+            "width": 5,
+            "y": 29,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [
+                        "AWS/Lambda",
+                        "OffsetLag",
+                        "FunctionName",
+                        "om-data-${sls:stage}-sinkSubtypes",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ]
+                ],
+                "sparkline": true,
+                "view": "singleValue",
+                "region": "${env:REGION_A}",
+                "period": 60,
+                "stat": "Maximum"
+            }
+        },
+        {
+            "height": 7,
+            "width": 6,
+            "y": 26,
+            "x": 5,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [
+                        "AWS/Lambda",
+                        "Invocations",
+                        "FunctionName",
+                        "om-data-${sls:stage}-sinkSubtypes",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ],
+                    [
+                        ".",
+                        "Throttles",
+                        ".",
+                        ".",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ],
+                    [
+                        ".",
+                        "Errors",
+                        ".",
+                        ".",
+                        {
+                            "region": "${env:REGION_A}",
+                            "color": "#d62728"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "${env:REGION_A}",
+                "title": "Lambda",
+                "period": 60,
+                "stat": "Sum"
+            }
+        },
+        {
+            "height": 7,
+            "width": 13,
+            "y": 26,
+            "x": 11,
+            "type": "log",
+            "properties": {
+                "query": "SOURCE '/aws/lambda/om-data-${sls:stage}-sinkSubtypes' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
+                "region": "${env:REGION_A}",
+                "stacked": false,
+                "title": "Logs",
+                "view": "table"
+            }
+        },
+        {
+            "height": 1,
+            "width": 24,
+            "y": 9,
+            "x": 0,
+            "type": "text",
+            "properties": {
+                "markdown": "## changelog sink",
+                "background": "transparent"
+            }
+        },
+        {
+            "height": 3,
+            "width": 5,
+            "y": 10,
+            "x": 0,
+            "type": "alarm",
+            "properties": {
+                "title": "Alarms",
+                "alarms": [
+                    "arn:aws:cloudwatch:${env:REGION_A}:${aws:accountId}:alarm:om-data-${sls:stage}-sinkChangelog-errors"
+                ]
+            }
+        },
+        {
+            "height": 4,
+            "width": 5,
+            "y": 13,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [
+                        "AWS/Lambda",
+                        "OffsetLag",
+                        "FunctionName",
+                        "om-data-${sls:stage}-sinkChangelog",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ]
+                ],
+                "sparkline": true,
+                "view": "singleValue",
+                "region": "${env:REGION_A}",
+                "period": 60,
+                "stat": "Maximum"
+            }
+        },
+        {
+            "height": 7,
+            "width": 6,
+            "y": 10,
+            "x": 5,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [
+                        "AWS/Lambda",
+                        "Invocations",
+                        "FunctionName",
+                        "om-data-${sls:stage}-sinkChangelog",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ],
+                    [
+                        ".",
+                        "Throttles",
+                        ".",
+                        ".",
+                        {
+                            "region": "${env:REGION_A}"
+                        }
+                    ],
+                    [
+                        ".",
+                        "Errors",
+                        ".",
+                        ".",
+                        {
+                            "region": "${env:REGION_A}",
+                            "color": "#d62728"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "${env:REGION_A}",
+                "title": "Lambda",
+                "period": 60,
+                "stat": "Sum"
+            }
+        },
+        {
+            "height": 7,
+            "width": 13,
+            "y": 10,
+            "x": 11,
+            "type": "log",
+            "properties": {
+                "query": "SOURCE '/aws/lambda/om-data-${sls:stage}-sinkChangelog' | fields @timestamp, @message\n| sort @timestamp desc\n| limit 50",
                 "region": "${env:REGION_A}",
                 "stacked": false,
                 "title": "Logs",

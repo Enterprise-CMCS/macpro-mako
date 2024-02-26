@@ -2,7 +2,7 @@ import { Action } from "shared-types";
 import { BreadCrumbConfig } from "@/components";
 import { actionCrumb, dashboardCrumb, detailsCrumb } from "@/utils/crumbs";
 
-export const DETAILS_AND_ACTIONS_CRUMBS = ({
+export const detailsAndActionsCrumbs = ({
   id,
   action,
 }: {

@@ -1,245 +1,223 @@
-import { Navigate, useNavigate, useParams } from "@/components/Routing";
-import { Button } from "@/components/Inputs";
-import { ConfirmationModal } from "@/components/Modal/ConfirmationModal";
-import { useState } from "react";
-import { PlanType, ItemResult } from "shared-types";
-import { PackageActionForm } from "./PackageActionForm";
-import { ActionFormIntro, PackageInfo } from "./common";
+import { Authority, opensearch } from "shared-types";
 import { z } from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as I from "@/components/Inputs";
-import { LoadingSpinner } from "@/components";
-import { AttachmentRecipe, buildActionUrl } from "@/lib";
-import { useGetUser } from "@/api/useGetUser";
-import { submit } from "@/api/submissionService";
+import { FormSetup } from "@/pages/actions/setups";
+import { SetupOptions } from "@/pages";
+import { ReactElement, useCallback, useState } from "react";
+import {
+  Button,
+  Form,
+  FormField,
+  FormMessage,
+  RequiredIndicator,
+} from "@/components/Inputs";
+import { Alert, LoadingSpinner } from "@/components";
+import { ActionFormIntro, PackageInfo } from "@/pages/actions/common";
 import { AttachmentsSizeTypesDesc } from "@/pages/form/content";
+import {
+  SlotAdditionalInfo,
+  SlotAttachments,
+} from "@/pages/actions/renderSlots";
+import { Info } from "lucide-react";
+import { submit } from "@/api/submissionService";
+import { buildActionUrl } from "@/lib";
+import { useNavigate, useParams } from "@/components/Routing";
+import { useGetUser } from "@/api/useGetUser";
+import { useModalContext } from "@/components/Context/modalContext";
+import { useAlertContext } from "@/components/Context/alertContext";
+import { useQuery as useQueryString } from "@/hooks";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 
-// Temporary, will be refactored to an extendable schema with Brian/Mike's back-end
-// work.
-const withdrawPackageFormSchema = z.object({
-  additionalInformation: z
-    .string()
-    .max(4000, "This field may only be up to 4000 characters.")
-    .optional(),
-  attachments: z.object({
-    supportingDocumentation: z.array(z.instanceof(File)).optional(),
-  }),
-});
-type WithdrawPackageFormSchema = z.infer<typeof withdrawPackageFormSchema>;
-const attachments: AttachmentRecipe<WithdrawPackageFormSchema>[] = [
-  {
-    name: "supportingDocumentation",
-    label: "Supporting Documentation",
-    required: false,
-  } as const,
-];
-
-const WithdrawPackageForm: React.FC = ({ item }: { item?: ItemResult }) => {
-  const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
-  const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
-  const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
-  const navigate = useNavigate();
-  const { id, type } = useParams("/action/:id/:type");
-  const { data: user } = useGetUser();
-  const authority = item?._source.authority as PlanType;
-  const form = useForm<WithdrawPackageFormSchema>({
-    resolver: zodResolver(withdrawPackageFormSchema),
-  });
-
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const handleSubmit: SubmitHandler<WithdrawPackageFormSchema> = async (
-    data
-  ) => {
-    try {
-      if (!cancelModalIsOpen) {
-        if (
-          !data.attachments.supportingDocumentation &&
-          !data.additionalInformation
-        ) {
-          setErrorMessage(
-            "An Attachment or Additional Information is required."
-          );
-        } else {
-          await submit<WithdrawPackageFormSchema & { id: string }>({
-            data: {
-              ...data,
-              id: id!, // Declared here because it's not part of the form data.
-            },
-            endpoint: buildActionUrl(type!),
-            user,
-            authority,
-          });
-          setSuccessModalIsOpen(true);
-        }
-      }
-    } catch (err) {
-      console.log(err);
-      setErrorModalIsOpen(true);
-    }
-  };
-
-  if (!item) return <Navigate path={"/"} />; // Prevents optional chains below
-  return (
-    <>
-      {form.formState.isSubmitting && <LoadingSpinner />}
-      <div>
-        <div className="px-14  py-5 ">
-          <ActionFormIntro title="Withdraw Medicaid SPA Package">
-            <p>
-              Complete this form to withdraw a package. Once complete, you will
-              not be able to resubmit this package. CMS will be notified and
-              will use this content to review your request. If CMS needs any
-              additional information, they will follow up by email.
-            </p>
-          </ActionFormIntro>
-          <PackageInfo item={item} />
-          <I.Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)}>
-              {/* Change faqLink once we know the anchor */}
-              <AttachmentsSizeTypesDesc faqLink={"/faq"} />
-              {attachments.map(({ name, label, required }) => (
-                <I.FormField
-                  key={name}
-                  control={form.control}
-                  name={`attachments.${name}`}
-                  render={({ field }) => (
-                    <I.FormItem className="mt-8">
-                      <I.FormLabel>
-                        {label}
-                        {required ? <I.RequiredIndicator /> : ""}
-                      </I.FormLabel>
-                      <I.Upload
-                        files={field?.value ?? []}
-                        setFiles={field.onChange}
-                      />
-                      <I.FormMessage />
-                    </I.FormItem>
-                  )}
-                />
-              ))}
-              <I.FormField
-                control={form.control}
-                name="additionalInformation"
-                render={({ field }) => (
-                  <I.FormItem className="mt-8">
-                    <h3 className="font-bold text-2xl font-sans">
-                      Additional Information
-                    </h3>
-                    <I.FormLabel className="font-normal">
-                      Explain your need for withdrawal or upload supporting
-                      documentation.
-                      <br />
-                      <p>
-                        <em className="italic">
-                          Once you submit this form, a confirmation email is
-                          sent to you and to CMS. CMS will use this content to
-                          review your package. If CMS needs any additional
-                          information, they will follow up by email.
-                        </em>{" "}
-                      </p>
-                      <br />
-                    </I.FormLabel>
-                    <I.Textarea {...field} className="h-[200px] resize-none" />
-                    <I.FormDescription>
-                      4,000 characters allowed
-                    </I.FormDescription>
-                  </I.FormItem>
-                )}
-              />
-              {errorMessage && (
-                <div className="text-red-500 mt-4">{errorMessage}</div>
-              )}
-              <div className="flex gap-2 my-8">
-                <Button type="submit">Submit</Button>
-                <Button
-                  onClick={() => setCancelModalIsOpen(true)}
-                  variant="outline"
-                >
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </I.Form>
-        </div>
-        {/* Success Modal */}
-        <ConfirmationModal
-          open={successModalIsOpen}
-          onAccept={() => {
-            setSuccessModalIsOpen(false);
-            navigate({ path: "/details", query: { id } });
-          }}
-          onCancel={() => setSuccessModalIsOpen(false)} // Should be made optional
-          title="Withdraw Successful"
-          body={
-            <p>
-              Please be aware that it may take up to a minute for your status to
-              change on the Dashboard and Details pages.
-            </p>
-          }
-          cancelButtonVisible={false}
-          acceptButtonText="Go to Package Details"
-        />
-        {/* Error Modal */}
-        <ConfirmationModal
-          open={errorModalIsOpen}
-          onAccept={() => {
-            setErrorModalIsOpen(false);
-            navigate({ path: "/details", query: { id } });
-          }}
-          onCancel={() => setErrorModalIsOpen(false)}
-          title="Submission Error"
-          body={
-            <p>
-              An error occurred during issue.
-              <br />
-              You may close this window and try again, however, this likely
-              requires support.
-              <br />
-              <br />
-              Please contact the{" "}
-              <a
-                href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
-                className="text-blue-500"
-              >
-                helpdesk
-              </a>{" "}
-              . You may include the following in your support request: <br />
-              <br />
-              <ul>
-                <li>SPA ID: {id}</li>
-                <li>Timestamp: {Date.now()}</li>
-              </ul>
-            </p>
-          }
-          cancelButtonVisible={true}
-          cancelButtonText="Return to Form"
-          acceptButtonText="Exit to Package Details"
-        />
-        {/* Cancel Modal */}
-        <ConfirmationModal
-          open={cancelModalIsOpen}
-          onAccept={() => {
-            setCancelModalIsOpen(false);
-            navigate({ path: "/details", query: { id } });
-          }}
-          onCancel={() => setCancelModalIsOpen(false)}
-          cancelButtonText="Return to Form"
-          acceptButtonText="Leave Page"
-          title="Are you sure you want to cancel?"
-          body={
-            <p>
-              If you leave this page you will lose your progress on this form
-            </p>
-          }
-        />
-      </div>
-    </>
-  );
+const attachmentInstructions: Record<SetupOptions, ReactElement> = {
+  "Medicaid SPA": (
+    <p>
+      Upload your supporting documentation for withdrawal or explain your need
+      for withdrawal in the Additional Information section.
+    </p>
+  ),
+  "CHIP SPA": (
+    <p className="font-normal mb-4">
+      Official withdrawal letters are required and must be on state letterhead
+      signed by the State Medicaid Director or CHIP Director.
+    </p>
+  ),
 };
 
-export const WithdrawPackage = () => (
-  <PackageActionForm>
-    <WithdrawPackageForm />
-  </PackageActionForm>
-);
+const addlInfoInstructions: Record<SetupOptions, ReactElement> = {
+  "Medicaid SPA": (
+    <p>
+      Explain your need for withdrawal, or upload supporting documentation. .
+    </p>
+  ),
+  "CHIP SPA": <p>Explain your need for withdrawal.</p>,
+};
+
+export const WithdrawPackage = ({
+  item,
+  schema,
+  attachments,
+}: FormSetup & {
+  item: opensearch.main.ItemResult;
+}) => {
+  const navigate = useNavigate();
+  const urlQuery = useQueryString();
+  const { id, type } = useParams("/action/:id/:type");
+  const { data: user } = useGetUser();
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+  });
+  const modal = useModalContext();
+  const alert = useAlertContext();
+  const originPath = useOriginPath();
+  const cancelOnAccept = useCallback(() => {
+    modal.setModalOpen(false);
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+  }, []);
+  const confirmOnAccept = useCallback(() => {
+    modal.setModalOpen(false);
+    form.handleSubmit(async (data) => {
+      try {
+        await submit({
+          data: { ...data, id: id! },
+          endpoint: buildActionUrl(type!),
+          user,
+          authority: item?._source.authority as Authority,
+        });
+        alert.setContent({
+          header: "Package withdrawn",
+          body: `The package ${item._source.id} has been withdrawn.`,
+        });
+        alert.setBannerShow(true);
+        alert.setBannerDisplayOn(
+          // This uses the originRoute map because this value doesn't work
+          // when any queries are added, such as the case of /details?id=...
+          urlQuery.get(ORIGIN)
+            ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+            : "/dashboard"
+        );
+        navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, []);
+  return (
+    <Form {...form}>
+      <form>
+        {form.formState.isSubmitting && <LoadingSpinner />}
+        {/* Intro */}
+        <ActionFormIntro title={`Withdraw ${item._source.authority} Package`}>
+          <RequiredIndicator /> Indicates a required field
+          <p>
+            Complete this form to withdraw a package. Once complete, you will
+            not be able to resubmit this package. CMS will be notified and will
+            use this content to review your request. If CMS needs any additional
+            information, they will follow up by email.
+          </p>
+        </ActionFormIntro>
+        {/* Package ID and type info */}
+        <PackageInfo item={item} />
+        {/* Attachments */}
+        <h3 className="font-bold text-2xl font-sans">Attachments</h3>
+        {
+          attachmentInstructions[
+            item!._source.authority as string as SetupOptions
+          ]
+        }
+        <AttachmentsSizeTypesDesc faqLink={"/faq"} />
+        {attachments.map(({ name, label, required }) => (
+          <FormField
+            key={String(name)}
+            control={form.control}
+            name={`attachments.${String(name)}` as Path<typeof schema>}
+            render={SlotAttachments({
+              label: (
+                <>
+                  {label}
+                  {required ? <RequiredIndicator /> : ""}
+                </>
+              ),
+              message: <FormMessage />,
+              className: "my-4",
+            })}
+          />
+        ))}
+        {/* Additional Info */}
+        <FormField
+          control={form.control}
+          name={"additionalInformation" as Path<typeof schema>}
+          render={SlotAdditionalInfo({
+            label:
+              addlInfoInstructions[
+                item!._source.authority as string as SetupOptions
+              ],
+            description: "4,000 characters allowed",
+            className: "pt-6",
+            required: false,
+          })}
+        />
+        {/* Error banner */}
+        {Object.keys(form.formState.errors).length !== 0 && (
+          <Alert className="my-6" variant="destructive">
+            Input validation error(s)
+            <ul className="list-disc">
+              {Object.values(form.formState.errors).map(
+                (err, idx) =>
+                  err?.message && (
+                    <li className="ml-8 my-2" key={idx}>
+                      {err.message as string}
+                    </li>
+                  )
+              )}
+            </ul>
+          </Alert>
+        )}
+        {/* Pre-submit message banner */}
+        <Alert variant={"infoBlock"} className="my-2 w-full flex-row text-sm">
+          <Info />
+          <p className="ml-2">
+            Once complete, you will not be able to resubmit this package. CMS
+            will be notified and will use this content to review your request.
+            If CMS needs any additional information, they will follow up by
+            email.
+          </p>
+        </Alert>
+        {/* Buttons */}
+        <div className="flex gap-2 my-8">
+          <Button
+            type={"button"}
+            onClick={() => {
+              modal.setContent({
+                header: "Withdraw package?",
+                body: `The package ${item._source.id} will be withdrawn.`,
+                acceptButtonText: "Yes, withdraw package",
+                cancelButtonText: "Cancel",
+              });
+              modal.setOnAccept(() => confirmOnAccept);
+              modal.setModalOpen(true);
+            }}
+          >
+            Submit
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              modal.setContent({
+                header: "Stop form submission?",
+                body: "All information you've entered on this form will be lost if you leave this page.",
+                acceptButtonText: "Yes, leave form",
+                cancelButtonText: "Return to form",
+              });
+              modal.setOnAccept(() => cancelOnAccept);
+              modal.setModalOpen(true);
+            }}
+          >
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+};

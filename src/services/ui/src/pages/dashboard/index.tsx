@@ -10,8 +10,7 @@ import {
   useOsData,
   FilterChips,
   FilterDrawerProvider,
-} from "@/components/Opensearch";
-import { Button } from "@/components/Inputs";
+} from "@/components/Opensearch/main";
 import { useUserContext } from "@/components/Context/userContext";
 import { useMemo } from "react";
 

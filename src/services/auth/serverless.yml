@@ -85,13 +85,9 @@ resources:
             - ${self:custom.idmInfo.oidc_issuer, ""}
     BackWithCognito:
       Fn::Not:
-        - Fn::Or:
-            - Fn::Equals:
-                - ${sls:stage}
-                - production
-            - Fn::Equals:
-                - ${sls:stage}
-                - val
+        - Fn::Equals:
+            - ${sls:stage}
+            - production
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
@@ -271,5 +267,3 @@ resources:
       Value: !Ref CognitoIdentityPool
     Region:
       Value: !Sub ${AWS::Region}
-    BootstrapUsersPassword:
-      Value: ${self:custom.bootstrapUsersPassword}

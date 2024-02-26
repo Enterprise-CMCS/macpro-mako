@@ -1,310 +1,185 @@
-import {
-  ConfirmationModal,
-  LoadingSpinner,
-  SimplePageContainer,
-} from "@/components";
-import * as I from "@/components/Inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { z } from "zod";
-import { Link, useNavigate, useParams } from "@/components/Routing";
-import { PlanType } from "shared-types";
-import { useGetItem } from "@/api/useGetItem";
-import { useGetUser } from "@/api/useGetUser";
-import { PackageActionForm } from "./PackageActionForm";
+import { opensearch, Authority } from "shared-types";
+import { FormSetup } from "@/pages/actions/setups";
+import {
+  Button,
+  Form,
+  FormField,
+  FormMessage,
+  RequiredIndicator,
+} from "@/components/Inputs";
+import { Alert, LoadingSpinner } from "@/components";
+import { ActionFormIntro, PackageInfo } from "@/pages/actions/common";
+import { AttachmentsSizeTypesDesc } from "@/pages/form/content";
+import {
+  SlotAdditionalInfo,
+  SlotAttachments,
+} from "@/pages/actions/renderSlots";
+import { Info } from "lucide-react";
+import { useModalContext } from "@/components/Context/modalContext";
 import { submit } from "@/api/submissionService";
-import { useState } from "react";
-import { FAQ_TARGET } from "@/routes";
+import { buildActionUrl } from "@/lib";
+import { useNavigate, useParams } from "@/components/Routing";
+import { useGetUser } from "@/api/useGetUser";
+import { useCallback } from "react";
+import { useAlertContext } from "@/components/Context/alertContext";
+import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
+import { useQuery as useQueryString } from "@/hooks";
 
-const formSchema = z.object({
-  additionalInformation: z.string().max(4000),
-  attachments: z.object({
-    supportingDocumentation: z.array(z.instanceof(File)).nullish(),
-  }),
-});
-
-type FormSchema = z.infer<typeof formSchema>;
-
-const attachmentList = [
-  {
-    name: "supportingDocumentation",
-    label: "Supporting Documentation",
-    required: false,
-  },
-] as const;
-
-export const WithdrawRaiForm = () => {
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
-  });
-  const [successModalIsOpen, setSuccessModalIsOpen] = useState(false);
-  const [areYouSureModalIsOpen, setAreYouSureModalIsOpen] = useState(false);
-  const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
-  const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
-
-  const { id } = useParams("/action/:id/:type");
-
+export const WithdrawRai = ({
+  item,
+  schema,
+  attachments,
+}: FormSetup & { item: opensearch.main.ItemResult }) => {
   const navigate = useNavigate();
-
-  const { data: item } = useGetItem(id!);
-  const authority = item?._source.authority as PlanType;
-  const user = useGetUser();
-
-  const handleSubmit: SubmitHandler<FormSchema> = async (data) => {
-    try {
-      console.log(data);
-      await submit({
-        data: { ...data, id },
-        endpoint: "/action/withdraw-rai",
-        user: user.data,
-        authority: authority,
-      });
-
-      setSuccessModalIsOpen(true);
-    } catch (err: unknown) {
-      if (err) {
-        console.log("There was an error", err);
-        setErrorModalIsOpen(true);
+  const urlQuery = useQueryString();
+  const { id, type } = useParams("/action/:id/:type");
+  const { data: user } = useGetUser();
+  const form = useForm({
+    resolver: zodResolver(schema),
+  });
+  const modal = useModalContext();
+  const alert = useAlertContext();
+  const originPath = useOriginPath();
+  const cancelOnAccept = useCallback(() => {
+    modal.setModalOpen(false);
+    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+  }, []);
+  const confirmOnAccept = useCallback(() => {
+    modal.setModalOpen(false);
+    form.handleSubmit(async (data) => {
+      try {
+        await submit({
+          data: { ...data, id: id! },
+          endpoint: buildActionUrl(type!),
+          user,
+          authority: item?._source.authority as Authority,
+        });
+        alert.setContent({
+          header: "RAI response withdrawn",
+          body: `The RAI response for ${item._source.id} has been withdrawn. CMS may follow up if additional information is needed.`,
+        });
+        alert.setBannerShow(true);
+        alert.setBannerDisplayOn(
+          // This uses the originRoute map because this value doesn't work
+          // when any queries are added, such as the case of /details?id=...
+          urlQuery.get(ORIGIN)
+            ? originRoute[urlQuery.get(ORIGIN)! as Origin]
+            : "/dashboard"
+        );
+        navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+      } catch (e) {
+        console.error(e);
       }
-    }
-  };
-
+    })();
+  }, []);
   return (
-    <SimplePageContainer>
-      <I.Form {...form}>
-        <form
-          className="my-6 space-y-8 mx-auto"
-          onSubmit={form.handleSubmit(handleSubmit)}
-        >
-          <section>
-            <h1 className="font-bold text-2xl mb-2">
-              Withdraw Formal RAI Response Details
-            </h1>
-            <p className="my-1">
-              <I.RequiredIndicator /> Indicates a required field
-            </p>
-            <p className="font-light mb-6 max-w-4xl">
-              Complete this form to withdraw the Formal RAI response. Once
-              complete, you and CMS will receive an email confirmation.
-            </p>
-          </section>
-          <section className="grid grid-cols-2">
-            <h3 className="text-2xl font-bold font-sans col-span-2">
-              Package Details
-            </h3>
-            <div className="flex flex-col my-8">
-              <label>SPA ID</label>
-              <span className="text-xl" aria-labelledby="package-id-label">
-                {id}
-              </span>
-            </div>
-            <div className="flex flex-col my-8">
-              <label>Type</label>
-              <span className="text-xl" aria-labelledby="package-id-label">
-                {item?._source.planType}
-              </span>
-            </div>
-          </section>
-          <h3 className="font-bold text-2xl font-sans">Attachments</h3>
-          <p>
-            Maximum file size of 80 MB per attachment.{" "}
-            <strong>You can add multiple files per attachment type.</strong>{" "}
-            Read the description for each of the attachment types on the{" "}
-            {
-              <Link
-                path="/faq"
-                hash="medicaid-spa-rai-attachments"
-                target={FAQ_TARGET}
-                rel="noopener noreferrer"
-                className="text-blue-700 hover:underline"
-              >
-                FAQ Page
-              </Link>
-            }
-            .
+    <Form {...form}>
+      <form>
+        {form.formState.isSubmitting && <LoadingSpinner />}
+        {/* Intro */}
+        <ActionFormIntro title={"Withdraw Formal RAI Response Details"}>
+          <RequiredIndicator /> Indicates a required field
+          <p className="font-light mb-6 max-w-4xl">
+            Complete this form to withdraw the Formal RAI response. Once
+            complete, you and CMS will receive an email confirmation.
           </p>
-          <p>
-            We accept the following file formats:{" "}
-            <strong className="bold">.docx, .jpg, .png, .pdf, .xlsx,</strong>{" "}
-            and a few others. See the full list on the{" "}
-            {
-              <Link
-                path="/faq"
-                hash="acceptable-file-formats"
-                target={FAQ_TARGET}
-                rel="noopener noreferrer"
-                className="text-blue-700 hover:underline"
-              >
-                FAQ Page
-              </Link>
-            }
-            .
-          </p>
-          {attachmentList.map(({ name, label, required }) => (
-            <I.FormField
-              key={name}
-              control={form.control}
-              name={`attachments.${name}`}
-              render={({ field }) => (
-                <I.FormItem>
-                  <I.FormLabel>
-                    {label}
-                    {required ? <I.RequiredIndicator /> : ""}
-                  </I.FormLabel>
-                  <I.Upload
-                    files={field?.value ?? []}
-                    setFiles={field.onChange}
-                  />
-                  <I.FormMessage />
-                </I.FormItem>
-              )}
-            />
-          ))}
-          <I.FormField
+        </ActionFormIntro>
+        {/* Package ID and type info */}
+        <PackageInfo item={item} />
+        {/* Attachments */}
+        <h3 className="font-bold text-2xl font-sans">Attachments</h3>
+        <AttachmentsSizeTypesDesc
+          faqLink={"/faq/#medicaid-spa-rai-attachments"}
+        />
+        {attachments.map(({ name, label, required }) => (
+          <FormField
+            key={String(name)}
             control={form.control}
-            name="additionalInformation"
-            render={({ field }) => {
-              return (
-                <I.FormItem>
-                  <h3 className="font-bold text-2xl font-sans">
-                    Additional Information
-                    <I.RequiredIndicator />
-                  </h3>
-                  <I.FormLabel className="font-normal">
-                    Explain your need for withdrawal.
-                  </I.FormLabel>
-                  <I.Textarea
-                    {...field}
-                    value={field.value || ""}
-                    className="h-[200px] resize-none"
-                  />
-                  <I.FormDescription>
-                    4,000 characters allowed
-                  </I.FormDescription>
-                </I.FormItem>
-              );
-            }}
+            name={`attachments.${String(name)}` as Path<typeof schema>}
+            render={SlotAttachments({
+              label: (
+                <>
+                  {label}
+                  {required ? <RequiredIndicator /> : ""}
+                </>
+              ),
+              message: <FormMessage />,
+              className: "my-4",
+            })}
           />
-          {form.formState.isSubmitting && (
-            <div className="p-4">
-              <LoadingSpinner />
-            </div>
-          )}
-          <div className="flex gap-2">
-            <I.Button
-              disabled={form.formState.isSubmitting}
-              type="button"
-              onClick={async () => {
-                await form.trigger();
-
-                if (form.formState.isValid) {
-                  setAreYouSureModalIsOpen(true);
-                }
-              }}
-              className="px-12"
-            >
-              Submit
-            </I.Button>
-            <I.Button
-              type="button"
-              variant="outline"
-              onClick={() => setCancelModalIsOpen(true)}
-              className="px-12"
-            >
-              Cancel
-            </I.Button>
-          </div>
-        </form>
-      </I.Form>
-      {/* Are you sure modal */}
-      <ConfirmationModal
-        open={areYouSureModalIsOpen}
-        onAccept={() => {
-          setAreYouSureModalIsOpen(false);
-          form.handleSubmit(handleSubmit)();
-        }}
-        onCancel={() => {
-          setAreYouSureModalIsOpen(false);
-        }}
-        title="Withdraw Formal RAI Response?"
-        body={`You are about to withdraw the Formal RAI Response for ${id}. CMS will be notified.`}
-        acceptButtonText="Yes, withdraw response"
-        cancelButtonText="Cancel"
-      />
-
-      <ConfirmationModal
-        open={successModalIsOpen}
-        onAccept={() => {
-          setSuccessModalIsOpen(false);
-          // navigate(`/details?id=${id}`);
-          navigate({ path: "/details", query: { id } });
-        }}
-        onCancel={() => setSuccessModalIsOpen(false)}
-        title="Withdraw Formal RAI Response request has been submitted."
-        body={
-          <p>
-            Your Formal RAI Response has been withdrawn successfully. If CMS
-            needs any additional information, they will follow up by email.
-          </p>
-        }
-        cancelButtonVisible={false}
-        acceptButtonText="Exit to Package Details"
-      />
-      <ConfirmationModal
-        open={errorModalIsOpen}
-        onAccept={() => {
-          setErrorModalIsOpen(false);
-          navigate({ path: "/details", query: { id } });
-        }}
-        onCancel={() => setErrorModalIsOpen(false)}
-        title="Submission Error"
-        body={
-          <p>
-            An error occurred during Formal RAI Response Withdraw.
-            <br />
-            You may close this window and try again, however, this likely
-            requires support.
-            <br />
-            <br />
-            Please contact the{" "}
-            <a
-              href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
-              className="text-blue-500"
-            >
-              helpdesk
-            </a>{" "}
-            . You may include the following in your support request: <br />
-            <br />
-            <ul>
-              <li>SPA ID: {id}</li>
-              <li>Timestamp: {Date.now()}</li>
+        ))}
+        {/* Additional Info */}
+        <FormField
+          control={form.control}
+          name={"additionalInformation" as Path<typeof schema>}
+          render={SlotAdditionalInfo({
+            label: <p>Explain your need for withdrawal.</p>,
+            description: "4,000 characters allowed",
+            className: "pt-6",
+            required: true,
+          })}
+        />
+        {/* Error banner */}
+        {Object.keys(form.formState.errors).length !== 0 && (
+          <Alert className="my-6" variant="destructive">
+            Input validation error(s)
+            <ul className="list-disc">
+              {Object.values(form.formState.errors).map(
+                (err, idx) =>
+                  err?.message && (
+                    <li className="ml-8 my-2" key={idx}>
+                      {err.message as string}
+                    </li>
+                  )
+              )}
             </ul>
+          </Alert>
+        )}
+        {/* Pre-submit message banner */}
+        <Alert variant={"infoBlock"} className="my-2 w-full flex-row text-sm">
+          <Info />
+          <p className="ml-2">
+            Once complete, you and CMS will receive an email confirmation.
           </p>
-        }
-        cancelButtonVisible={true}
-        cancelButtonText="Return to Form"
-        acceptButtonText="Exit to Package Details"
-      />
-      <ConfirmationModal
-        open={cancelModalIsOpen}
-        onAccept={() => {
-          setCancelModalIsOpen(false);
-          navigate({ path: "/details", query: { id } });
-        }}
-        onCancel={() => setCancelModalIsOpen(false)}
-        cancelButtonText="Return to Form"
-        acceptButtonText="Yes"
-        title="Are you sure you want to cancel?"
-        body={
-          <p>If you leave this page you will lose your progress on this form</p>
-        }
-      />
-    </SimplePageContainer>
+        </Alert>
+        {/* Buttons */}
+        <div className="flex gap-2 my-8">
+          <Button
+            type={"button"}
+            onClick={() => {
+              modal.setContent({
+                header: "Withdraw RAI response?",
+                body: `The RAI response for ${item._source.id} will be withdrawn, and CMS will be notified.`,
+                acceptButtonText: "Yes, withdraw response",
+                cancelButtonText: "Cancel",
+              });
+              modal.setOnAccept(() => confirmOnAccept);
+              modal.setModalOpen(true);
+            }}
+          >
+            Submit
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              modal.setContent({
+                header: "Stop form submission?",
+                body: "All information you've entered on this form will be lost if you leave this page.",
+                acceptButtonText: "Yes, leave form",
+                cancelButtonText: "Return to form",
+              });
+              modal.setOnAccept(() => cancelOnAccept);
+              modal.setModalOpen(true);
+            }}
+          >
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 };
-
-export const WithdrawRai = () => (
-  <PackageActionForm>
-    <WithdrawRaiForm />
-  </PackageActionForm>
-);

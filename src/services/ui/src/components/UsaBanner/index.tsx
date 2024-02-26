@@ -26,7 +26,7 @@ export const UsaBanner = () => {
   const { error } = useLoaderData() as { error: string };
   return (
     <>
-      <div className="bg-[#f0f0f0]">
+      <div className="bg-[#f0f0f0]" role="banner">
         {/* Display for Desktop */}
         {isDesktop && (
           <>
@@ -39,8 +39,6 @@ export const UsaBanner = () => {
               <p>An official website of the United States government</p>
               <button
                 className="flex"
-                aria-expanded={isOpen}
-                aria-controls="gov-banner-default-default"
                 onClick={() => setIsOpen((value) => !value)}
               >
                 <span className="underline text-[#005ea2]">
@@ -65,7 +63,7 @@ export const UsaBanner = () => {
             />
             <div>
               <p>An official website of the United States government</p>
-              <div className="flex" aria-expanded={isOpen}>
+              <div className="flex">
                 <span className="underline text-[#005ea2] block">
                   Here&apos;s how you know
                 </span>
@@ -115,7 +113,6 @@ export const MiniLock = () => {
       viewBox="0 0 52 64"
       className="inline w-[10px] h-[10px]"
       role="img"
-      aria-labelledby="banner-lock-title-default banner-lock-description-default"
       focusable="false"
     >
       <title id="banner-lock-title-default">Lock</title>

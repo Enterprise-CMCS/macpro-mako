@@ -39,6 +39,9 @@ export const slotInitializer = (ACC: GL, SLOT: T.RHFSlotProps): GL => {
     case "FieldGroup":
       ACC[SLOT.name] = [SLOT.fields?.reduce(fieldInitializer, {})];
       break;
+    case "Upload":
+      ACC[SLOT.name] = [];
+      break;
     case "Input":
     case "Select":
     case "Textarea":

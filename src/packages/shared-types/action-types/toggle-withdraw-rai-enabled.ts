@@ -11,13 +11,3 @@ export const toggleWithdrawRaiEnabledSchema = z.object({
 export type ToggleWithdrawRaiEnabled = z.infer<
   typeof toggleWithdrawRaiEnabledSchema
 >;
-
-export const transformToggleWithdrawRaiEnabled = (id: string) => {
-  return toggleWithdrawRaiEnabledSchema.transform((data) => ({
-    id,
-    raiWithdrawEnabled: data.raiWithdrawEnabled,
-  }));
-};
-export type ToggleWithdrawRaiEnabledTransform = z.infer<
-  ReturnType<typeof transformToggleWithdrawRaiEnabled>
->;

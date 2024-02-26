@@ -5,7 +5,7 @@ import {
   OsFiltering,
   useOsContext,
   useOsUrl,
-} from "@/components/Opensearch";
+} from "@/components/Opensearch/main";
 import { useWaiverTableColumns } from "./consts";
 
 export const WaiversList = () => {
@@ -16,7 +16,7 @@ export const WaiversList = () => {
   if (context.error) return <ErrorAlert error={context.error} />;
 
   return (
-    <section className="flex flex-col h-[calc(100vh-230px)]">
+    <section className="flex flex-col h-[100vh]">
       <OsFiltering />
       <OsTable columns={columns} />
       <Pagination

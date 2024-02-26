@@ -10,10 +10,23 @@ provider:
   stackTags:
     PROJECT: ${self:custom.project}
     SERVICE: ${self:service}
+  environment:
+    region: ${self:provider.region}
   iam:
     role:
       path: /delegatedadmin/developer/
       permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+      statements:
+        - Effect: "Allow"
+          Action:
+            - s3:ListBucketVersions
+            - s3:DeleteObject
+            - s3:DeleteObjectVersion
+          Resource:
+            - !Sub "${LoggingBucket.Arn}"
+            - !Sub "${LoggingBucket.Arn}/*"
+            - !Sub "${WaflogsUploadBucket.Arn}"
+            - !Sub "${WaflogsUploadBucket.Arn}/*"
 
 plugins:
   - serverless-plugin-scripts
@@ -21,6 +34,7 @@ plugins:
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
   - "@enterprise-cmcs/serverless-waf-plugin"
+  - serverless-esbuild
 
 custom:
   project: ${env:PROJECT}
@@ -41,6 +55,7 @@ custom:
     skipPolicyCreation:
       - S3Bucket
       - LoggingBucket
+  # loggingBucketName: !Sub ${self:service}-${sls:stage}-cloudfront-logs-${AWS::AccountId}
   scripts:
     hooks:
       # Associate the WAF ACL with the Firehose Delivery Stream
@@ -50,7 +65,10 @@ custom:
         aws wafv2 put-logging-configuration \
           --logging-configuration ResourceArn=$wafAclArn,LogDestinationConfigs=$firehoseStreamArn \
           --region ${self:provider.region}
-
+functions:
+  emptyBuckets:
+    handler: handlers/emptyBuckets.handler
+    timeout: 900
 resources:
   Conditions:
     CreateCustomCloudFrontDomain:
@@ -99,6 +117,7 @@ resources:
     LoggingBucket:
       Type: "AWS::S3::Bucket"
       Properties:
+        # BucketName: ${self:custom.loggingBucketName}
         BucketName: !Sub ${self:service}-${sls:stage}-cloudfront-logs-${AWS::AccountId}
         PublicAccessBlockConfiguration:
           BlockPublicAcls: true
@@ -187,6 +206,8 @@ resources:
           Logging:
             Bucket: !Sub "${LoggingBucket}.s3.amazonaws.com"
             Prefix: AWSLogs/CLOUDFRONT/${sls:stage}/
+      DependsOn:
+        - EmptyBuckets
     HstsCloudfrontFunction:
       Type: AWS::CloudFront::Function
       Properties:
@@ -223,6 +244,8 @@ resources:
             IntervalInSeconds: 300
             SizeInMBs: 5
           CompressionFormat: UNCOMPRESSED
+      DependsOn:
+        - EmptyBuckets
     DeliveryRole:
       Type: AWS::IAM::Role
       Properties:
@@ -273,6 +296,13 @@ resources:
                       - CloudFrontDistribution
                       - DomainName
                   - "/"
+    EmptyBuckets:
+      Type: Custom::EmptyBuckets
+      Properties:
+        ServiceToken: !GetAtt EmptyBucketsLambdaFunction.Arn
+        Buckets:
+          - !Ref LoggingBucket
+          - !Ref WaflogsUploadBucket
   Outputs:
     S3BucketName:
       Value: !Ref S3Bucket

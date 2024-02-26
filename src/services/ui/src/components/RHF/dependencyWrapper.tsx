@@ -26,10 +26,27 @@ const checkTriggeringValue = (
   });
 };
 
-export const DependencyWrapper = ({
+export const DependencyWrapper = (
+  props: PropsWithChildren<DependencyWrapperProps>
+) => {
+  // Check for dependencies which won't exist outside of forms
+  if (
+    !props.dependency ||
+    !props.dependency.conditions ||
+    !props.dependency.effect
+  ) {
+    return <>{props.children}</>;
+  }
+
+  return <DependencyWrapperHandler {...props} />;
+};
+
+const DependencyWrapperHandler = ({
   name,
   dependency,
   children,
+  parentValue,
+  changeMethod,
 }: PropsWithChildren<DependencyWrapperProps>) => {
   const { watch, setValue } = useFormContext();
   const [wasSetLast, setWasSetLast] = useState(false);
@@ -51,7 +68,22 @@ export const DependencyWrapper = ({
     } else if (!isTriggered && wasSetLast) {
       setWasSetLast(false);
     }
-  }, [dependentValues]);
+
+    // This logic is to give the ability for checkboxes (and eventually radio groups) the ability to have show/hide logic based on UI form logic
+    // We are grabbing the parent value (checkbox group array) and remove the value of the child being hidden and filtering it out
+    if (
+      isTriggered &&
+      dependency?.effect.type === "hide" &&
+      name &&
+      parentValue?.includes(name) &&
+      changeMethod
+    ) {
+      const filteredArray = parentValue.filter((value) => {
+        return value !== name;
+      });
+      changeMethod(filteredArray);
+    }
+  }, [dependentValues, parentValue, changeMethod, dependency]);
 
   switch (dependency?.effect.type) {
     case "hide":

@@ -123,6 +123,7 @@ export const isAuthorizedToGetPackageActions = async (
   );
 };
 
+// originally intended for /_search
 export const getStateFilter = async (event: APIGatewayEvent) => {
   // Retrieve authentication details of the user
   const authDetails = getAuthDetails(event);
@@ -137,11 +138,14 @@ export const getStateFilter = async (event: APIGatewayEvent) => {
     if (userAttributes["custom:state"]) {
       const filter = {
         terms: {
+          //NOTE: this could instead be
+          // "state.keyword": userAttributes["custom:state"],
           state: userAttributes["custom:state"]
             .split(",")
             .map((state) => state.toLocaleLowerCase()),
         },
       };
+
       return filter;
     } else {
       throw "State user detected, but no associated states.  Cannot continue";
