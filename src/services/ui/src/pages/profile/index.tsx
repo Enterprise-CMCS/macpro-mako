@@ -7,6 +7,7 @@ import config from "@/config";
 
 export const Profile = () => {
   const { data } = useGetUser();
+  console.log({ data });
   const stateAbbreviations = data?.user?.["custom:state"];
   const fullStateNames = convertStateAbbreviations(stateAbbreviations);
 
