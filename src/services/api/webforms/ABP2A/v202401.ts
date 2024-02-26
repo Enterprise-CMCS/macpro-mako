@@ -2,22 +2,20 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header:
-    "ABP 2A : Voluntary benefit package selection assurances - Eligibility group under Section 1902(a)(10)(A)(i)(VIII) of the Act ",
+    "ABP 2a: Voluntary benefit package selection assurances - Eligibility group under Section 1902(a)(10)(A)(i)(VIII) of the Act ",
   sections: [
     {
       title: "Benefit alignment and requirements",
       form: [
         {
-          description:
-            "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
           slots: [
             {
               rhf: "Select",
               name: "is_state_territory_aligned_ABP",
               description:
-                "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
+                "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan. Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
               descriptionAbove: true,
-              descriptionStyling: "font-bold",
+              descriptionStyling: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -27,6 +25,28 @@ export const v202401: FormSchema = {
                   { label: "Yes", value: "yes" },
                   { label: "No", value: "no" },
                 ],
+              },
+            },
+
+            {
+              rhf: "Textarea",
+              name: "explain_how_state_territory_aligned_ABP",
+              description:
+                "Explain how the state has fully aligned its benefits.",
+              descriptionAbove: true,
+              descriptionStyling: "font-bold text-black",
+              rules: {
+                required: "* Required",
+              },
+              dependency: {
+                conditions: [
+                  {
+                    name: "is_state_territory_aligned_ABP",
+                    type: "expectedValue",
+                    expectedValue: "yes",
+                  },
+                ],
+                effect: { type: "show" },
               },
             },
           ],
@@ -136,7 +156,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "describe_process_in_section1902",
+              name: "state_territory_assures_it_will_document_exempt_individuals",
               props: {
                 options: [
                   {
@@ -211,7 +231,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "describe_process_in_section1902",
+              name: "state_territory_assures_maintain_data",
               props: {
                 options: [
                   {
