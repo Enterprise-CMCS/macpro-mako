@@ -144,6 +144,34 @@ const getCpocEmailAndSrtList = async (id) => {
   }
 };
 
+const buildTemplateData = (dataList,data) => {
+  let returnObject;
+  if (!dataList || !Array.isArray(dataList) || dataList.length === 0) 
+    return { error: "init statement fail", dataList, data};
+
+  dataList.forEach((dataType) => {
+    switch (dataType) {
+      case 'territory':
+        returnObject.territory = data.id.toString().substring(0, 2);
+        break;
+    case 'proposedEffectiveDateNice':
+      returnObject.proposedEffectiveDateNice = formatProposedEffectiveDate(data);
+      break;
+    case 'applicationEndpoint':
+      returnObject.applicationEndoint = process.env.applicationEndpoint;
+      break;
+    case 'fomattedFileList':
+      returnObject.fomattedFileList = formatAttachments("html", data.attachments);
+      break;
+    case 'textFileList':
+      returnObject.textFileList = formatAttachments("text", data.attachments);
+    default:
+      if (!!data[dataType]) 
+      returnObject[dataType] = data[dataType];
+    }});
+  console.log("returnObject: ", returnObject);
+  return returnObject;
+};
 
 export const main = async (event: KafkaEvent) => {
   console.log("Received event (stringified):", JSON.stringify(event, null, 4));
@@ -195,28 +223,16 @@ export const main = async (event: KafkaEvent) => {
     if (lookupResult.status !== "fulfilled") return;
     const emailBundle = lookupResult.value;
 
-    if (emailBundle.TemplateDataList && Array.isArray(emailBundle.TemplateDataList) && emailBundle.TemplateDataList.length !== 0) {
-      emailBundle.TemplateData = emailBundle.TemplateDataList.map((dataType) => {
-        if (dataType === 'territory') return { "territory": emailBundle.id.toString().substring(0, 2) };
-        if (dataType === 'proposedEffectiveDateNice') return { "proposedEffectiveDateNice": formatProposedEffectiveDate(emailBundle) }
-        if (dataType === 'applicationEndpoint') return { "applicationEndoint": process.env.applicationEndpoint };
-        if (dataType === 'fomattedFileList') return { "fomattedFileList": formatAttachments("html", emailBundle.attachments) };
-        if (dataType === 'textFileList') return { "textFileList": formatAttachments("text", emailBundle.attachments) };
+    emailBundle.TemplateData = buildTemplateData(emailBundle.TemplateDataList, emailBundle);
 
-        if (!!emailBundle[dataType]) return { [dataType]: emailBundle[dataType] };
-        return { [dataType]: "not sure about this one" };
-      });
-      console.log("TemplateDataList: ", emailBundle.TemplateDataList);
-    }
 
     // data is at bundle level, but needs to be available for each command
-    const templateDataString = emailBundle?.TemplateData ? JSON.stringify(emailBundle.TemplateData) : [{ "here": "is dummy data" }];
-    console.log("templateData is: ", templateDataString);
     emailBundle.emailCommands.forEach((command) => {
-      console.log("the command being built is: ", command);
-      command.TemplateData = templateDataString;
+      console.log("the command to start is: ", command);
+      command.TemplateData = JSON.stringify(emailBundle.TemplateData);
       command.Destination = { ToAddresses: buildAddressList(command.ToAddresses, emailBundle) };
       if (command?.CcAddresses) command.Destination.CcAddresses = buildAddressList(command.CcAddresses, emailBundle);
+      console.log("the command being built is: ", command);
       const sendTemplatedEmailCommand = createSendTemplatedEmailCommandInput(command);
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
 
