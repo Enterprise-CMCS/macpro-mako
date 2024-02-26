@@ -106,6 +106,7 @@ function buildAddressList(addressList, data) {
       newList.push(address);
     })
   }
+  console.log("address list: ", newList );
   return newList;
 }
 
