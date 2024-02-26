@@ -45,7 +45,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
             ...(await onemac(event.records[topicPartition], topicPartition))
           );
           break;
-        case "aws.ksqldb.seatool.agg.State_Plan":
+        case "aws.seatool.ksql.onemac.agg.State_Plan":
           docs.push(
             ...(await ksql(event.records[topicPartition], topicPartition))
           );
