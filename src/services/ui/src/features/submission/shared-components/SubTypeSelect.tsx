@@ -1,4 +1,4 @@
-import { useGetSeaTypes } from "@/api";
+import { useSeaTypes } from "@/api";
 import * as Inputs from "@/components/Inputs";
 import { Control, FieldValues, Path } from "react-hook-form";
 import { opensearch } from "shared-types";
@@ -16,7 +16,7 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
   name,
   authorityId,
 }: SubTypeSelectFormFieldProps<TFieldValues>) {
-  const { data } = useGetSeaTypes<opensearch.subtypes.Document>(
+  const { data } = useSeaTypes<opensearch.subtypes.Document>(
     authorityId,
     typeId
   );
@@ -27,7 +27,7 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
       name={name}
       render={({ field }) => (
         <Inputs.FormItem className="max-w-sm">
-          <Inputs.FormLabel className="text-lg font-bold block">
+          <Inputs.FormLabel className="font-semibold block">
             Sub Type <Inputs.RequiredIndicator />
           </Inputs.FormLabel>
           <Inputs.Select

@@ -149,7 +149,7 @@ export const Capitated1915BWaiverInitialPage = () => {
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold mr-1">
+                    <Inputs.FormLabel className="text-lg font-semibold mr-1">
                       Initial Waiver Number <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
@@ -184,7 +184,7 @@ export const Capitated1915BWaiverInitialPage = () => {
               name="proposedEffectiveDate"
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-lg">
-                  <Inputs.FormLabel className="text-lg font-bold block">
+                  <Inputs.FormLabel className="text-lg font-semibold block">
                     Proposed Effective Date of 1915(b) Initial Waiver{" "}
                     <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>

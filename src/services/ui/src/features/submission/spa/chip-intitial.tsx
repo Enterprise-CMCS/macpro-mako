@@ -139,7 +139,7 @@ export const ChipSpaFormPage = () => {
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold">
+                    <Inputs.FormLabel className="font-semibold">
                       SPA ID <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
@@ -171,7 +171,7 @@ export const ChipSpaFormPage = () => {
               name="proposedEffectiveDate"
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-sm">
-                  <Inputs.FormLabel className="text-lg font-bold block">
+                  <Inputs.FormLabel className="text-lg font-semibold block">
                     Proposed Effective Date of CHIP SPA{" "}
                     <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>

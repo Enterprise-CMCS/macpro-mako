@@ -30,4 +30,4 @@ export * from "./Sheet";
 export * from "./Table";
 export * from "./Tabs";
 export * from "./UsaBanner";
-export * from "./Webform";
+export * from "./Webforms";

@@ -146,7 +146,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
               name="waiverNumber"
               render={({ field }) => (
                 <Inputs.FormItem>
-                  <Inputs.FormLabel className="text-lg font-bold">
+                  <Inputs.FormLabel className="font-semibold">
                     Existing Waiver Number to Amend <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
                   <p className="text-gray-500 font-light">
@@ -174,7 +174,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold">
+                    <Inputs.FormLabel className="font-semibold">
                       1915(b) Waiver Amendment Number{" "}
                       <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
@@ -211,7 +211,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
               name="proposedEffectiveDate"
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-lg">
-                  <Inputs.FormLabel className="text-lg font-bold block">
+                  <Inputs.FormLabel className="text-lg font-semibold block">
                     Proposed Effective Date of 1915(b) Waiver Amendment{" "}
                     <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>

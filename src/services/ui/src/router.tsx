@@ -90,7 +90,7 @@ export const router = createBrowserRouter([
       { path: "/new-submission/spa/medicaid/create", element: <F.MedicaidSpaFormPage /> },
       { path: "/new-submission/spa/chip/create", element: <F.ChipSpaFormPage /> },
       { path: "/action/:id/:type", element: <F.ActionFormIndex /> },
-      { path: "/webforms", element: <C.Webforms /> },
+      { path: "/webforms", element: <C.WebformsList /> },
       { path: "/webform/:id/:version", element: <C.Webform /> },
       { path: "/profile", element: <F.Profile /> },
       { path: "/guides/abp", element: <F.ABPGuide /> },

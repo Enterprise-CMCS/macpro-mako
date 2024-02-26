@@ -1,4 +1,4 @@
-import { useGetSeaTypes } from "@/api";
+import { useSeaTypes } from "@/api";
 import * as Inputs from "@/components/Inputs";
 import { Control, FieldValues, Path } from "react-hook-form";
 import { opensearch } from "shared-types";
@@ -14,7 +14,7 @@ export function TypeSelect<TFieldValues extends FieldValues>({
   name,
   authorityId,
 }: TypeSelectFormFieldProps<TFieldValues>) {
-  const { data } = useGetSeaTypes<opensearch.types.Document>(authorityId);
+  const { data } = useSeaTypes<opensearch.types.Document>(authorityId);
 
   return (
     <Inputs.FormField
@@ -22,7 +22,7 @@ export function TypeSelect<TFieldValues extends FieldValues>({
       name={name}
       render={({ field }) => (
         <Inputs.FormItem className="max-w-sm">
-          <Inputs.FormLabel className="text-lg font-bold block">
+          <Inputs.FormLabel className="font-semibold block">
             Type <Inputs.RequiredIndicator />
           </Inputs.FormLabel>
           <Inputs.Select

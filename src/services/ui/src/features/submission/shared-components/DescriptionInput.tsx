@@ -16,7 +16,7 @@ export function DescriptionInput<TFieldValues extends FieldValues>({
       name={name}
       render={({ field }) => (
         <Inputs.FormItem className="max-w-xl">
-          <Inputs.FormLabel className="text-lg font-bold block">
+          <Inputs.FormLabel className="font-semibold block">
             Description <Inputs.RequiredIndicator />
           </Inputs.FormLabel>
           <Inputs.Textarea {...field} className="h-[100px] resize-none" />

@@ -178,7 +178,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold">
+                    <Inputs.FormLabel className="font-semibold">
                       Existing Waiver Number to Renew{" "}
                       <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
@@ -208,7 +208,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold">
+                    <Inputs.FormLabel className="font-semibold">
                       1915(b) Waiver Renewal Number <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
@@ -244,7 +244,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
               name="proposedEffectiveDate"
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-lg">
-                  <Inputs.FormLabel className="text-lg font-bold block">
+                  <Inputs.FormLabel className="font-semibold block">
                     Proposed Effective Date of 1915(b) Waiver Renewal{" "}
                     <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>

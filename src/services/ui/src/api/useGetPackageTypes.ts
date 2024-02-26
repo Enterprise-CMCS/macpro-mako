@@ -1,39 +1,37 @@
-import { ReactQueryApiError } from "shared-types";
-import { types, subtypes } from "shared-types/opensearch";
 import { API } from "aws-amplify";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { ReactQueryApiError } from "shared-types";
+import { types, subtypes } from "shared-types/opensearch";
 
-// Types //
-const getSeaTypesCombined = async <T>(
+async function fetchSeaTypes<T>(
   authorityId: number,
   typeId?: string
-): Promise<T[]> => {
+): Promise<T[]> {
   const endpoint = "/getSeaTypes";
-  const body = typeId ? { authorityId, typeId } : { authorityId };
+  const body = { authorityId, ...(typeId && { typeId }) };
 
-  const response = await API.post("os", endpoint, {
-    body,
-  });
+  try {
+    const response = await API.post("os", endpoint, { body });
+    const key = typeId ? "seaSubTypes" : "seaTypes";
+    const hits = response[key]?.hits?.hits || [];
 
-  const results = typeId ? response.seaSubTypes : response.seaTypes;
+    return hits.map(
+      (hit: types.ItemResult | subtypes.ItemResult) => hit._source
+    );
+  } catch (error) {
+    console.error("Error fetching types:", error);
+    throw new Error("Failed to fetch types");
+  }
+}
 
-  return (
-    results.hits?.hits.map(
-      (h: types.ItemResult | subtypes.ItemResult) => h._source
-    ) || []
-  );
-};
-
-export const useGetSeaTypes = <T>(
+export function useSeaTypes<T>(
   authorityId: number,
   typeId?: string,
   options?: UseQueryOptions<T[], ReactQueryApiError>
-) => {
+) {
   return useQuery<T[], ReactQueryApiError>(
-    ["types-subtypes", authorityId, typeId],
-    () => getSeaTypesCombined(authorityId, typeId),
-    {
-      ...options,
-    }
+    ["package-types", authorityId, typeId],
+    () => fetchSeaTypes<T>(authorityId, typeId),
+    options
   );
-};
+}

@@ -142,7 +142,7 @@ export const MedicaidSpaFormPage = () => {
               render={({ field }) => (
                 <Inputs.FormItem>
                   <div className="flex gap-4">
-                    <Inputs.FormLabel className="text-lg font-bold">
+                    <Inputs.FormLabel className="font-semibold">
                       SPA ID <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
@@ -174,7 +174,7 @@ export const MedicaidSpaFormPage = () => {
               name="proposedEffectiveDate"
               render={({ field }) => (
                 <Inputs.FormItem className="max-w-md">
-                  <Inputs.FormLabel className="text-lg font-bold block">
+                  <Inputs.FormLabel className="text-lg font-semibold block">
                     Proposed Effective Date of Medicaid SPA{" "}
                     <Inputs.RequiredIndicator />
                   </Inputs.FormLabel>
