@@ -101,8 +101,10 @@ function buildAddressList(addressList, data) {
     if (address === "cpocEmailAndSrtList")
       mappedAddress = data?.cpocEmailAndSrtList ? data.cpocEmailAndSrtList : "'CPOC Substitute in mapaddress' <k.grue.cmsapprover@gmail.com>;'SRT 1 Substitute in mapaddress' <k.grue.cmsapprover@gmail.com>;'SRT 2 Substitute in mapaddress' <k.grue.stateadmn@gmail.com>";
 
+    console.log("mapped address: ", mappedAddress);
     const extraAddresses = mappedAddress.split(';');
     extraAddresses.forEach((address) => {
+      console.log("the individual address: ", address);
       newList.push(address);
     })
   }
