@@ -5,7 +5,6 @@ plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
-  - serverless-scriptable-plugin
   - serverless-plugin-scripts
 
 provider:
@@ -64,11 +63,7 @@ custom:
   dbInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/seatool/dbInfo, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/seatool/dbInfo}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
   launchdarklySDKKey: ${ssm:/${self:service}/${sls:stage}/launchdarklySDKKey, ssm:/${self:service}/default/launchdarklySDKKey}
-  scriptable:
-    hooks:
-      package:compileEvents:
-        - yarn compileRepack
-        - ./repack/repack.js
+
 params:
   master:
     formsProvisionedConcurrency: 2
@@ -185,6 +180,24 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:itemProvisionedConcurrency}
+  itemExists:
+    handler: handlers/itemExists.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /itemExists
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:itemProvisionedConcurrency}
   submit:
     handler: handlers/submit.handler
     maximumRetryAttempts: 0
@@ -266,6 +279,30 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
+  appkNewSubmission:
+    handler: handlers/appkNewSubmission.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      dbIp: ${self:custom.dbInfo.ip}
+      dbPort: ${self:custom.dbInfo.port}
+      dbUser: ${self:custom.dbInfo.user}
+      dbPassword: ${self:custom.dbInfo.password}
+      topicName: ${param:topicName}
+      brokerString: ${self:custom.brokerString}
+    events:
+      - http:
+          path: /appk
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:submitProvisionedConcurrency}
+
 resources:
   Resources:
     ApiGateway400ErrorCount:

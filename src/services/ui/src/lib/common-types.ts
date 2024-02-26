@@ -1,7 +1,7 @@
 import { Action } from "shared-types";
 
 export type PackageActionEndpoint = `/action/${Action}`;
-export type FormSubmissionEndpoint = "/submit";
+export type FormSubmissionEndpoint = "/submit" | "/appk";
 export type SubmissionServiceEndpoint =
   | PackageActionEndpoint
   | FormSubmissionEndpoint;

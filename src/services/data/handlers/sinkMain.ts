@@ -169,9 +169,18 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
             return opensearch.main.withdrawPackage
               .transform(id)
               .safeParse(record);
+          case Action.REMOVE_APPK_CHILD:
+            return opensearch.main.removeAppkChild
+              .transform(id)
+              .safeParse(record);
         }
       })();
-
+      if (result === undefined) {
+        console.log(
+          `no action to take for ${id} action ${record.actionType}.  Continuing...`
+        );
+        continue;
+      }
       if (!result?.success) {
         logError({
           type: ErrorType.VALIDATION,

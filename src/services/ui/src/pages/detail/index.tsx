@@ -1,25 +1,20 @@
-import {
-  CardWithTopBorder,
-  DetailItemsGrid,
-  DetailsSection,
-  ErrorAlert,
-  LoadingSpinner,
-} from "@/components";
+import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import { opensearch, UserRoles } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
+import { Outlet } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { PropsWithChildren } from "react";
 import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
 import { getStatus } from "shared-types/statusHelper";
-import { spaDetails, submissionDetails } from "@/pages/detail/setup/spa";
 import { Link } from "@/components/Routing";
 import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
-import { Route } from "@/components/Routing/types";
+
+import { PackageDetails } from "./package-details";
 
 const DetailCardWrapper = ({
   title,
@@ -57,6 +52,7 @@ const StatusCard = (data: opensearch.main.Document) => {
               </p>
             </div>
           )}
+
           {user?.isCms && data.secondClock && (
             <div className="flex flex-row gap-1">
               <p className="text-xs font-bold opacity-80">·</p>
@@ -145,13 +141,7 @@ export const DetailsContent = ({
           <PackageActionsCard id={data._id} />
         </section>
         <div className="flex flex-col gap-3">
-          <DetailsSection
-            id="package-details"
-            title={`${data._source.authority} Package Details`}
-          >
-            <DetailItemsGrid displayItems={spaDetails(data._source)} />
-            <DetailItemsGrid displayItems={submissionDetails(data._source)} />
-          </DetailsSection>
+          <PackageDetails {...data._source} />
           <PackageActivities {...data._source} />
           <AdminChanges {...data._source} />
         </div>
@@ -165,12 +155,9 @@ export const Details = () => {
   const id = query.get("id") as string;
   const { data, isLoading, error } = useGetItem(id);
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-  if (error) {
-    return <ErrorAlert error={error} />;
-  }
+  if (isLoading) return <LoadingSpinner />;
+  if (!data?._source) return <LoadingSpinner />;
+  if (error) return <ErrorAlert error={error} />;
 
   return (
     <>
@@ -179,5 +166,13 @@ export const Details = () => {
         <DetailsContent data={data} />
       </div>
     </>
+  );
+};
+
+export const PackageDetailsWrapper = () => {
+  return (
+    <main>
+      <Outlet />
+    </main>
   );
 };
