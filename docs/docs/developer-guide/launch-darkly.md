@@ -35,3 +35,5 @@ To get to the AWS Console:
 
 #### Notes
 - Once you have access to LaunchDarkly you can switch on feature flags which should show/hide various features.
+- Access codes for UI, API, and mobile all live in AWS System Parameter Store. They were ddistrubted by Keith Littlejohn. We do not have access to the environment's api keys. If we need to rotate them please reach out to him.
+- There is three environments in LaunchDarkly for Mako: Dev, IMPL, and Production which point to our three environments. Dev is used for our ephemeral environments.
