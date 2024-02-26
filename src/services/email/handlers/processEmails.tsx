@@ -88,7 +88,7 @@ function formatProposedEffectiveDate(emailBundle) {
 }
 function buildAddressList(addressList, data) {
   const newList: any[] = [];
-
+  console.log("address list and data in: ", addressList, data);
   for (const address in addressList) {
     let mappedAddress = address;
     if (address === "submitterEmail")
@@ -134,6 +134,9 @@ const getCpocEmailAndSrtList = async (id) => {
       id
     );
     console.log("The OpenSearch Item index Insights for %s is: ", id, JSON.stringify(osInsightsItem, null, 4));
+    const cpoc = osInsightsItem?._source?.LEAD_ANALYST ? osInsightsItem._source.LEAD_ANALYST : "LEAD_ANALYST IS null?";
+    const srt = osInsightsItem?._source?.ACTION_OFFICERS ? osInsightsItem._source.ACTION_OFFICERS : "ACTION_OFFICERS IS null?";
+    console.log("CPOC and SRT are: ", cpoc, srt);
     if (osInsightsItem) return "'CPOC Insights' <k.grue.cmsapprover@gmail.com>;'SRT Insights' <k.grue.stateadmn@gmail.com>";
     return "'CPOC Substitute' <k.grue.cmsapprover@gmail.com>;'SRT 1' <k.grue.stateadmn@gmail.com>";
   } catch (error) {
@@ -210,6 +213,7 @@ export const main = async (event: KafkaEvent) => {
     const templateDataString = emailBundle?.TemplateData ? JSON.stringify(emailBundle.TemplateData) : [{ "here": "is dummy data" }];
     console.log("templateData is: ", templateDataString);
     emailBundle.emailCommands.forEach((command) => {
+      console.log("the command being built is: ", command);
       command.TemplateData = templateDataString;
       command.Destination = { ToAddresses: buildAddressList(command.ToAddresses, emailBundle) };
       if (command?.CcAddresses) command.Destination.CcAddresses = buildAddressList(command.CcAddresses, emailBundle);
