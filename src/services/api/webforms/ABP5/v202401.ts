@@ -274,7 +274,7 @@ function subsection({
   };
 }
 
-const ABP5: FormSchema = {
+export const v202401: FormSchema = {
   header: "ABP 5: Benefits description",
   sections: [
     {
@@ -667,5 +667,3 @@ const ABP5: FormSchema = {
     },
   ],
 };
-
-export const form = ABP5;
