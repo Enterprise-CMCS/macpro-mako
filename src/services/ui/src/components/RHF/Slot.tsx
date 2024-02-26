@@ -20,6 +20,7 @@ import {
   Calendar,
   FormField,
   Checkbox,
+  Upload,
 } from "../Inputs";
 import { RHFFormGroup } from "./FormGroup";
 import { CalendarIcon } from "lucide-react";
@@ -295,6 +296,13 @@ export const RHFSlot = <
                     </PopoverContent>
                   </Popover>
                 );
+              })()}
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "Upload" &&
+              (() => {
+                const hops = props as RHFComponentMap["Upload"];
+
+                return <Upload {...field} {...hops} />;
               })()}
 
             {/* ----------------------------------------------------------------------------- */}

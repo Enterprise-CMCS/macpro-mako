@@ -65,6 +65,10 @@ export type RHFComponentMap = {
   Checkbox: {
     options: RHFOption[];
   };
+  Upload: {
+    maxFiles?: number;
+    maxSize?: number;
+  };
   FieldArray: {
     appendText?: string;
   };

@@ -3,39 +3,13 @@ import { APIGatewayEvent } from "aws-lambda";
 import * as sql from "mssql";
 import { isAuthorized } from "../libs/auth/user";
 
-const user = process.env.dbUser;
-const password = process.env.dbPassword;
-const server = process.env.dbIp;
-const port = parseInt(process.env.dbPort as string);
-const config = {
-  user: user,
-  password: password,
-  server: server,
-  port: port,
-  database: "SEA",
-} as sql.config;
-
-import { Kafka, Message } from "kafkajs";
 import { Authority, onemacSchema } from "shared-types";
 import {
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
 } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
-
-const kafka = new Kafka({
-  clientId: "submit",
-  brokers: process.env.brokerString?.split(",") as string[],
-  retry: {
-    initialRetryTime: 300,
-    retries: 8,
-  },
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
-const producer = kafka.producer();
+import { produceMessage } from "../libs/kafka";
 
 export const submit = async (event: APIGatewayEvent) => {
   try {
@@ -75,7 +49,13 @@ export const submit = async (event: APIGatewayEvent) => {
       "Initial Submission Date determined to be: " +
         new Date(submissionDate).toISOString()
     );
-    const pool = await sql.connect(config);
+    const pool = await sql.connect({
+      user: process.env.dbUser,
+      password: process.env.dbPassword,
+      server: process.env.dbIp as string,
+      port: parseInt(process.env.dbPort as string),
+      database: "SEA",
+    });
     console.log(body);
     const query = `
       Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
@@ -92,7 +72,7 @@ export const submit = async (event: APIGatewayEvent) => {
 
     const result = await sql.query(query);
     console.log(result);
-    if (body.authority == Authority["1915b"]) {
+    if ([Authority["1915b"], Authority.CHIP_SPA].includes(body.authority)) {
       const actionTypeQuery = `
         UPDATE SEA.dbo.State_Plan
         SET Action_Type = (
@@ -119,26 +99,26 @@ export const submit = async (event: APIGatewayEvent) => {
     await pool.close();
 
     const eventBody = onemacSchema.safeParse(body);
-    if (eventBody.success === false) {
-      console.log(
+    if (!eventBody.success) {
+      return console.log(
         "MAKO Validation Error. The following record failed to parse: ",
         JSON.stringify(eventBody),
         "Because of the following Reason(s): ",
         eventBody.error.message
       );
-    } else {
-      console.log(eventBody);
-      await produceMessage(
-        process.env.topicName as string,
-        body.id,
-        JSON.stringify(eventBody.data)
-      );
-
-      return response({
-        statusCode: 200,
-        body: { message: "success" },
-      });
     }
+
+    console.log(eventBody);
+    await produceMessage(
+      process.env.topicName as string,
+      body.id,
+      JSON.stringify(eventBody.data)
+    );
+
+    return response({
+      statusCode: 200,
+      body: { message: "success" },
+    });
   } catch (error) {
     console.error({ error });
     return response({
@@ -147,31 +127,5 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 };
-
-async function produceMessage(topic: string, key: string, value: string) {
-  console.log("about to connect");
-  await producer.connect();
-  console.log("connected");
-
-  const message: Message = {
-    key: key,
-    value: value,
-    partition: 0,
-    headers: { source: "micro" },
-  };
-  console.log(message);
-
-  try {
-    await producer.send({
-      topic,
-      messages: [message],
-    });
-    console.log("Message sent successfully");
-  } catch (error) {
-    console.error("Error sending message:", error);
-  } finally {
-    await producer.disconnect();
-  }
-}
 
 export const handler = submit;
