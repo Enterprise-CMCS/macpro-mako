@@ -8,7 +8,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components";
-import { Button } from "@/components";
 import * as Table from "@/components";
 import { BLANK_VALUE } from "@/consts";
 import { usePackageActivities, useAttachmentService } from "./hook";
@@ -39,7 +38,7 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
                   <Table.TableRow key={`${props.id}-${ATC.key}`}>
                     <Table.TableCell>{ATC.title}</Table.TableCell>
                     <Table.TableCell>
-                      <Button
+                      <Table.Button
                         className="ml-[-15px]"
                         variant="link"
                         onClick={() => {
@@ -47,7 +46,7 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
                         }}
                       >
                         {ATC.filename}
-                      </Button>
+                      </Table.Button>
                     </Table.TableCell>
                   </Table.TableRow>
                 );
@@ -58,7 +57,7 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
       </div>
 
       {props.attachments && props.attachments?.length > 1 && (
-        <Button
+        <Table.Button
           variant="outline"
           className="w-max"
           disabled={!props.attachments?.length}
@@ -69,7 +68,7 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
           }}
         >
           Download documents
-        </Button>
+        </Table.Button>
       )}
 
       <div>
@@ -106,7 +105,7 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
                   <Table.TableRow key={`${props.id}-${ATC.key}`}>
                     <Table.TableCell>{ATC.title}</Table.TableCell>
                     <Table.TableCell>
-                      <Button
+                      <Table.Button
                         className="ml-[-15px]"
                         variant="link"
                         onClick={() => {
@@ -114,7 +113,7 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
                         }}
                       >
                         {ATC.filename}
-                      </Button>
+                      </Table.Button>
                     </Table.TableCell>
                   </Table.TableRow>
                 );
@@ -125,7 +124,7 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
       </div>
 
       {props.attachments && props.attachments?.length > 1 && (
-        <Button
+        <Table.Button
           variant="outline"
           className="w-max"
           disabled={!props.attachments?.length}
@@ -136,7 +135,7 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
           }}
         >
           Download documents
-        </Button>
+        </Table.Button>
       )}
 
       <div>
@@ -173,7 +172,7 @@ export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
                   <Table.TableRow key={`${props.id}-${ATC.key}`}>
                     <Table.TableCell>{ATC.title}</Table.TableCell>
                     <Table.TableCell>
-                      <Button
+                      <Table.Button
                         className="ml-[-15px]"
                         variant="link"
                         onClick={() => {
@@ -181,7 +180,7 @@ export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
                         }}
                       >
                         {ATC.filename}
-                      </Button>
+                      </Table.Button>
                     </Table.TableCell>
                   </Table.TableRow>
                 );
@@ -192,7 +191,7 @@ export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
       </div>
 
       {props.attachments && props.attachments?.length > 1 && (
-        <Button
+        <Table.Button
           variant="outline"
           className="w-max"
           disabled={!props.attachments?.length}
@@ -203,7 +202,7 @@ export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
           }}
         >
           Download documents
-        </Button>
+        </Table.Button>
       )}
 
       <div>
@@ -238,7 +237,7 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
                   <Table.TableRow key={`${props.id}-${ATC.key}`}>
                     <Table.TableCell>{ATC.title}</Table.TableCell>
                     <Table.TableCell>
-                      <Button
+                      <Table.Button
                         className="ml-[-15px]"
                         variant="link"
                         onClick={() => {
@@ -246,7 +245,7 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
                         }}
                       >
                         {ATC.filename}
-                      </Button>
+                      </Table.Button>
                     </Table.TableCell>
                   </Table.TableRow>
                 );
@@ -257,7 +256,7 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
       </div>
 
       {props.attachments && props.attachments?.length > 1 && (
-        <Button
+        <Table.Button
           variant="outline"
           className="w-max"
           disabled={!props.attachments?.length}
@@ -268,7 +267,7 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
           }}
         >
           Download documents
-        </Button>
+        </Table.Button>
       )}
 
       <div>
@@ -325,13 +324,13 @@ export const PackageActivities = (props: opensearch.main.Document) => {
         <div className="flex justify-between">
           {`Package Activity (${hook.data?.length})`}
           {!!hook.data?.length && (
-            <Button
+            <Table.Button
               loading={hook.loading}
               onClick={hook.onDownloadAll}
               variant="outline"
             >
               Download all documents
-            </Button>
+            </Table.Button>
           )}
         </div>
       }
