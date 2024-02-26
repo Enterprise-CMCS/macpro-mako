@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import { KafkaRecord } from "shared-types";
+import { Action, KafkaRecord } from "shared-types";
 import { KafkaEvent } from "shared-types";
 import { ErrorType, getTopic, logError } from "../libs/sink-lib";
 const osDomain = process.env.osDomain;
@@ -53,6 +53,17 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       if (record?.origin !== "micro") continue;
 
       const id: string = decode(key);
+
+      if (record?.actionType === Action.REMOVE_APPK_CHILD) {
+        docs.push({
+          ...record,
+          appkChildId: record.id,
+          timestamp,
+          id: `${record.appkParentId}-${offset}`,
+          packageId: record.appkParentId,
+        });
+        continue;
+      }
 
       // Handle everything else
       docs.push({
