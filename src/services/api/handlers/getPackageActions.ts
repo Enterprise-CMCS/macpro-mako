@@ -45,7 +45,11 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
     return response({
       statusCode: 200,
       body: {
-        actions: getAvailableActions(userAttr, result._source),
+        actions: getAvailableActions(
+          userAttr,
+          result._source,
+          (process.env.VITE_IS_IDM as string).length > 0
+        ),
       },
     });
   } catch (err) {

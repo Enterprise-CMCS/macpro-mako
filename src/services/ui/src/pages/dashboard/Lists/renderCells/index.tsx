@@ -27,7 +27,11 @@ export const renderCellIdLink = (pathResolver: (id: string) => string) =>
 export const renderCellActions = (user: CognitoUserAttributes | null) =>
   function Cell(data: opensearch.main.Document) {
     if (!user) return <></>;
-    const actions = getAvailableActions(user, data);
+    const actions = getAvailableActions(
+      user,
+      data,
+      (import.meta.env.VITE_IS_IDM as string).length > 0
+    );
     return (
       <>
         <POP.Popover>

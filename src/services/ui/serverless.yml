@@ -46,6 +46,7 @@ custom:
         VITE_COGNITO_USER_POOL_CLIENT_DOMAIN=${param:CognitoUserPoolClientDomain}
         VITE_COGNITO_REDIRECT_SIGNIN=${param:ApplicationEndpointUrl}
         VITE_COGNITO_REDIRECT_SIGNOUT=${param:ApplicationEndpointUrl}
+        VITE_IS_IDM=${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/idmInfo, ""}
         VITE_IDM_HOME_URL=${self:custom.idmInfo.home_url, "https://test.home.idm.cms.gov"}
         VITE_GOOGLE_ANALYTICS_GTAG=${self:custom.googleAnalytics.gtag}
         VITE_GOOGLE_ANALYTICS_DISABLE=${self:custom.googleAnalytics.disable, "false"}
