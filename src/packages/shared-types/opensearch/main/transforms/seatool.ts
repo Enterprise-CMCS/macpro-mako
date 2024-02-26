@@ -5,6 +5,7 @@ import {
   finalDispositionStatuses,
   SeaTool,
   SeatoolOfficer,
+  SEATOOL_SPW_STATUS,
 } from "../../..";
 
 import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
@@ -120,10 +121,7 @@ const isInSecondClock = (
   return false; // otherwise, we're not
 };
 
-const getAuthority = (
-  authorityId: number | undefined,
-  id: string | undefined
-) => {
+const getAuthority = (authorityId: number | null, id: string) => {
   try {
     if (!authorityId) return null;
     return SEATOOL_AUTHORITIES[authorityId];
@@ -139,12 +137,11 @@ export const transform = (id: string) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
       getRaiDate(data);
-    const seatoolStatus =
-      data.SPW_STATUS?.find(
-        (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
-      )?.SPW_STATUS_DESC || "Unknown";
+    const seatoolStatus = data.STATE_PLAN.SPW_STATUS_ID
+      ? SEATOOL_SPW_STATUS[data.STATE_PLAN.SPW_STATUS_ID]
+      : "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    const authorityId = data.PLAN_TYPES?.[0].PLAN_TYPE_ID;
+    const authorityId = data.STATE_PLAN?.PLAN_TYPE;
     const typeId = data.STATE_PLAN_SERVICETYPES?.[0]?.SERVICE_TYPE_ID;
     const subTypeId = data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.SERVICE_SUBTYPE_ID;
     const resp = {
