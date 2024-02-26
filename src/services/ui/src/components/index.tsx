@@ -11,7 +11,6 @@ export * from "./ErrorAlert";
 export * from "./HowItWorks";
 export * from "./Layout";
 export * from "./LoadingSpinner";
-export * from "./PackageDetails";
 export * from "./SearchForm";
 export * from "./Modal";
 export * from "./Dialog";

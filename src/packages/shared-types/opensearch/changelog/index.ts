@@ -24,6 +24,7 @@ export type Document = OneMac &
     actionType: string;
     timestamp: string;
     packageId: string;
+    appkChildId: string;
   };
 
 export type Response = Res<Document>;
