@@ -91,12 +91,12 @@ params:
     getAttachmentUrlProvisionedConcurrency: 5
     submitProvisionedConcurrency: 5
   default:
-    formsProvisionedConcurrency: 0
+    formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
-    searchProvisionedConcurrency: 0
-    itemProvisionedConcurrency: 0
-    getAttachmentUrlProvisionedConcurrency: 0
-    submitProvisionedConcurrency: 0
+    searchProvisionedConcurrency: 4
+    itemProvisionedConcurrency: 2
+    getAttachmentUrlProvisionedConcurrency: 2
+    submitProvisionedConcurrency: 2
 
 functions:
   search:
