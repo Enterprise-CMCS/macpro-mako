@@ -119,7 +119,6 @@ functions:
       region: ${self:provider.region}
       osDomain: ${param:osDomain}
       onemacLegacyS3AccessRoleArn: ${self:custom.onemacLegacyS3AccessRoleArn}
-      isIdm: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/idmInfo, ""}
     events:
       - http:
           path: /getPackageActions

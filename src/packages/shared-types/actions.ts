@@ -16,7 +16,6 @@ export type ActionRule = {
   check: (
     checker: IPackageCheck,
     user: CognitoUserAttributes,
-    isIdm: boolean,
     /** Keep excess parameters to a minimum **/
     ...any: any[]
   ) => boolean;
