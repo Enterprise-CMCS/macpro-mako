@@ -11,7 +11,7 @@ import { OneMacUser } from "@/api/useGetUser";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 
-type SubmissionServiceParameters<T> = {
+export type SubmissionServiceParameters<T> = {
   data: T;
   endpoint: SubmissionServiceEndpoint;
   user: OneMacUser | undefined;
@@ -35,7 +35,8 @@ type UploadRecipe = PreSignedURL & {
 
 /** Pass in an array of UploadRecipes and get a back-end compatible object
  * to store attachment data */
-const buildAttachmentObject = (recipes: UploadRecipe[]): Attachment[] => {
+export const buildAttachmentObject = (recipes?: UploadRecipe[]) => {
+  if (!recipes) return null;
   return recipes
     .map(
       (r) =>
@@ -45,14 +46,14 @@ const buildAttachmentObject = (recipes: UploadRecipe[]): Attachment[] => {
           title: r.title,
           bucket: r.bucket,
           uploadDate: Date.now(),
-        } as Attachment)
+        }) as Attachment
     )
     .flat();
 };
 
 /** Builds the payload for submission based on which variant a developer has
  * configured the {@link submit} function with */
-const buildSubmissionPayload = <T extends Record<string, unknown>>(
+export const buildSubmissionPayload = <T extends Record<string, unknown>>(
   data: T,
   user: OneMacUser | undefined,
   endpoint: SubmissionServiceEndpoint,
@@ -78,13 +79,32 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         attachments: attachments ? buildAttachmentObject(attachments) : null,
         state: (data.id as string).split("-")[0],
       };
+    case "/appk":
+      return {
+        ...data,
+        ...userDetails,
+        authority: Authority["1915c"],
+        origin: "micro",
+        proposedEffectiveDate: seaToolFriendlyTimestamp(
+          data.proposedEffectiveDate as Date
+        ),
+        attachments: buildAttachmentObject(attachments),
+      };
+    case buildActionUrl(Action.REMOVE_APPK_CHILD):
+      return {
+        ...data,
+        ...userDetails,
+        authority: Authority["1915c"],
+        origin: "micro",
+      };
+
     case buildActionUrl(Action.WITHDRAW_RAI):
       return {
         authority: authority,
         origin: "micro",
         ...data,
         ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        attachments: buildAttachmentObject(attachments),
       };
     case buildActionUrl(Action.ISSUE_RAI):
       return {
@@ -92,7 +112,7 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        attachments: buildAttachmentObject(attachments),
       };
     case buildActionUrl(Action.RESPOND_TO_RAI):
       return {
@@ -100,7 +120,7 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        attachments: buildAttachmentObject(attachments),
       };
     case buildActionUrl(Action.WITHDRAW_PACKAGE):
       return {
@@ -108,7 +128,7 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        attachments: buildAttachmentObject(attachments),
       };
     case buildActionUrl(Action.ENABLE_RAI_WITHDRAW):
     case buildActionUrl(Action.DISABLE_RAI_WITHDRAW):
@@ -118,7 +138,7 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
         origin: "micro",
         ...data,
         ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        attachments: buildAttachmentObject(attachments),
       };
   }
 };

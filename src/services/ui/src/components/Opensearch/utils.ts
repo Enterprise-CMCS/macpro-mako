@@ -19,6 +19,18 @@ const filterMapQueryReducer = (
     });
   }
 
+  if (filter.type === "term") {
+    state[filter.prefix].push({
+      term: { [filter.field]: filter.value },
+    });
+  }
+
+  if (filter.type === "exists") {
+    state[filter.prefix].push({
+      exists: { field: filter.field },
+    });
+  }
+
   if (filter.type === "range") {
     state[filter.prefix].push({
       range: { [filter.field]: filter.value },
@@ -35,6 +47,7 @@ const filterMapQueryReducer = (
         },
       });
     }
+    return state;
   }
 
   return state;

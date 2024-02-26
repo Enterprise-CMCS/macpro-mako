@@ -60,6 +60,7 @@ export const usePackageActivities = (props: opensearch.main.Document) => {
       "withdraw-package",
       "issue-rai",
       "respond-to-rai",
+      "remove-appk-child",
     ].includes(CL._source.actionType)
   );
 

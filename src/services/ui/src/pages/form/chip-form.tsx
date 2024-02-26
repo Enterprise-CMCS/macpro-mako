@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
 import { useForm } from "react-hook-form";
 import { submit } from "@/api/submissionService";
@@ -19,7 +19,7 @@ import {
   zSpaIdSchema,
 } from "@/pages/form/zod";
 import * as Content from "@/pages/form/content";
-import { formCrumbsFromPath } from "@/pages/form/form-breadcrumbs";
+import { useLocationCrumbs } from "@/pages/form/form-breadcrumbs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { useModalContext } from "@/components/Context/modalContext";
 import { useNavigate } from "@/components/Routing";
@@ -70,7 +70,7 @@ const attachmentList = [
 ] as const;
 
 export const ChipSpaFormPage = () => {
-  const location = useLocation();
+  const crumbs = useLocationCrumbs();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
   const urlQuery = useQueryString();
@@ -112,7 +112,7 @@ export const ChipSpaFormPage = () => {
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
+      <BreadCrumbs options={crumbs} />
       <Inputs.Form {...form}>
         <form
           onSubmit={handleSubmit}
