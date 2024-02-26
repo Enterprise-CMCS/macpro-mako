@@ -1,9 +1,11 @@
-import { DateTime } from "luxon";
-import { decode } from "base-64";
 import { SESClient, SendTemplatedEmailCommand } from "@aws-sdk/client-ses";
+import { DateTime } from "luxon";
 
-import { KafkaEvent } from "shared-types";
-import * as os from "../../../libs/opensearch-lib";
+import { KafkaRecord } from "shared-types";
+
+import handler from "../libs/handler-lib";
+import { getOsInsightData } from "../libs/os-lib";
+import { getCognitoData } from "../libs/cognito-lib";
 
 const SES = new SESClient({ region: process.env.region });
 
@@ -21,8 +23,8 @@ const eventToEmailsMapping = {
     ]
   },
   "respond-to-rai-medicaid-spa": {
-    "lookupList": ["cpocEmailAndSrtList", "ninetyDaysDateNice"],
-    "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
+    "lookupList": ["cpocEmailAndSrtList", "ninetyDaysLookup"],
+    "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysLookupNice", "additionalInformation", "formattedFileList", "textFileList"],
     "emailCommands": [{
       "Template": `respond-to-rai-medicaid-spa-cms_${process.env.stage}`,
       "ToAddresses": ["osgEmail", "cpocEmailAndSrtList"],
@@ -75,11 +77,6 @@ const createSendTemplatedEmailCommandInput = (data) =>
     ConfigurationSetName: process.env.emailConfigSet,
   });
 
-const decodeRecord = (encodedRecord) => {
-  if (!encodedRecord.value) return;
-  return { id: decode(encodedRecord.key), ...JSON.parse(decode(encodedRecord.value)) };
-};
-
 function formatProposedEffectiveDate(emailBundle) {
   if (!emailBundle?.notificationMetadata?.proposedEffectiveDate) return "Pending";
   return DateTime.fromMillis(emailBundle.notificationMetadata.proposedEffectiveDate)
@@ -121,37 +118,15 @@ function buildAddressList(addressList, data) {
   return newList;
 }
 
-const buildKeyFromEventData = (data) => {
-  if (data?.origin !== "micro" || !data?.authority) return;
+const buildKeyFromRecord = (record) => {
+  if (record?.origin !== "micro" || !record?.authority) return;
 
-  const actionType = data?.actionType ? data.actionType : "new-submission";
+  const actionType = record?.actionType ? record.actionType : "new-submission";
 
-  const authority = data.authority.toLowerCase().replace(/\s+/g, "-");
+  const authority = record.authority.toLowerCase().replace(/\s+/g, "-");
 
   return `${actionType}-${authority}`;
 }
-
-const getCpocEmailAndSrtList = async (id) => {
-  try {
-    if (!process.env.osDomain) {
-      throw new Error("process.env.osDomain must be defined");
-    }
-
-    const osInsightsItem = await os.getItem(
-      process.env.osDomain,
-      "insights",
-      id
-    );
-    console.log("The OpenSearch Item index Insights for %s is: ", id, JSON.stringify(osInsightsItem, null, 4));
-    const cpoc = osInsightsItem?._source?.LEAD_ANALYST ? osInsightsItem._source.LEAD_ANALYST : "LEAD_ANALYST IS null?";
-    const srt = osInsightsItem?._source?.ACTION_OFFICERS ? osInsightsItem._source.ACTION_OFFICERS : "ACTION_OFFICERS IS null?";
-    console.log("CPOC and SRT are: ", cpoc, srt);
-    if (osInsightsItem) return "'CPOC Insights' <k.grue.cmsapprover@gmail.com>;'SRT Insights' <k.grue.stateadmn@gmail.com>";
-    return "'CPOC Substitute' <k.grue.cmsapprover@gmail.com>;'SRT 1' <k.grue.stateadmn@gmail.com>";
-  } catch (error) {
-    console.log("OpenSearch error is: ", error);
-  }
-};
 
 const buildTemplateData = (dataList,data) => {
   const returnObject = {};
@@ -185,86 +160,56 @@ const buildTemplateData = (dataList,data) => {
   return returnObject;
 };
 
-export const main = async (event: KafkaEvent) => {
-  console.log("Received event (stringified):", JSON.stringify(event, null, 4));
+export const main = handler( async (record: KafkaRecord) => {
+  console.log("record: ", record);
+  // const emailQueue: any[] = [];
 
-  const bundleQueue: any[] = [];
-  const emailQueue: any[] = [];
+  const configKey = buildKeyFromRecord(record);
+  if (!configKey) return "error, no configKey found, no email sent";
 
-  // create emailQueue out of emailable events paired with configs
-  Object.values(event.records).forEach((source) =>
-    source.forEach((record) => {
-      const eventData = decodeRecord(record);
-      console.log("eventData: ", eventData);
-      if (!eventData) return;
+  const emailBundle = eventToEmailsMapping[configKey];
+  console.log("emailBundle: ", JSON.stringify(emailBundle, null, 4));
+  if (!emailBundle) return "no eventToEmailMapping found, no email sent";
 
-      const configKey = buildKeyFromEventData(eventData);
-      console.log("configKey: ", configKey);
-      if (!configKey) return;
-
-      const emailBundle = eventToEmailsMapping[configKey];
-      console.log("emailBundle: ", emailBundle);
-      if (!emailBundle) return;
-      bundleQueue.push({ ...eventData, ...emailBundle });
-    })
-  );
-
-  console.log("bundleQueue: ", JSON.stringify(bundleQueue, null, 4));
-  // don't bother continuing if there are no emails to send
-  if (bundleQueue.length === 0) return;
-
-  // every bundle has the potential to have lookups, async lookups must complete before we
-  // can build the emails
-  const bundlePromises = await Promise.allSettled(bundleQueue.map(async (bundle) => {
-    if (!bundle?.lookupList || !Array.isArray(bundle.lookupList) || bundle.lookupList.length === 0) return bundle;
-
-    if (bundle.lookupList.includes("cpocEmailAndSrtList")) {
-      bundle.cpocEmailAndSrtList = await getCpocEmailAndSrtList(bundle.id);
-    }
-
-    if (bundle.lookupList.includes("allStateSubmitters")) {
-      bundle.allStateSubmitters = "'State 1' <k.grue.stateuser@gmail.com>;'State 2' <k.grue.stateadmn@gmail.com>";
-    }
-    return bundle;
-  }))
-  console.log("bundlePromises: ", bundlePromises);
-  // if any events need a user list from Cognito
-
-  // build the email command structures
-  bundlePromises.forEach((lookupResult) => {
-    if (lookupResult.status !== "fulfilled") return;
-    const emailBundle = lookupResult.value;
-
+  if (emailBundle?.lookupList && !Array.isArray(emailBundle.lookupList) && emailBundle.lookupList.length > 0) {
+    const lookupPromises = await Promise.allSettled(emailBundle.lookupList.map( async (lookupType) => {
+      switch (lookupType) {
+        case "osInsights":
+          return await getOsInsightData(emailBundle.id);
+        case "allStateSubmitters":
+          return await getCognitoData(emailBundle.id);
+        default:
+          return await Promise.resolve(`Don't have function for ${lookupType}`);
+      }
+    }))
+    console.log("lookupPromises: ", lookupPromises);
+  }
     emailBundle.TemplateData = buildTemplateData(emailBundle.TemplateDataList, emailBundle);
 
-
-    // data is at bundle level, but needs to be available for each command
-    emailBundle.emailCommands.forEach((command) => {
-      console.log("the command to start is: ", command);
-      command.TemplateData = JSON.stringify(emailBundle.TemplateData);
-      command.Destination = { ToAddresses: buildAddressList(command.ToAddresses, emailBundle) };
-      if (command?.CcAddresses) command.Destination.CcAddresses = buildAddressList(command.CcAddresses, emailBundle);
-      console.log("the command being built is: ", command);
-      const sendTemplatedEmailCommand = createSendTemplatedEmailCommandInput(command);
-      console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
-
-      emailQueue.push({ ...sendTemplatedEmailCommand });
-    })
+    // lookupPromises.forEach((lookupResult) => {
+    //   if (lookupResult.status !== "fulfilled") return;
+    //   for (const lookupValuePair in lookupResult.value) {
+    //     emailBundle[lookupValuePair.key] = lookupValuePair.value;
+    //   };
+  
+    const sendResults = await Promise.all(emailBundle.emailCommands.map(async (command) => {
+      try {
+        console.log("the command to start is: ", command);
+        command.TemplateData = JSON.stringify(emailBundle.TemplateData);
+        command.Destination = { ToAddresses: buildAddressList(command.ToAddresses, emailBundle) };
+        if (command?.CcAddresses) command.Destination.CcAddresses = buildAddressList(command.CcAddresses, emailBundle);
+        console.log("the command being built is: ", command);
+        const sendTemplatedEmailCommand = createSendTemplatedEmailCommandInput(command);
+        console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
+  
+        const TemplatedEmailCommand = new SendTemplatedEmailCommand(sendTemplatedEmailCommand);
+        console.log("TemplatedEmailCommand: ", TemplatedEmailCommand);
+        return await SES.send(TemplatedEmailCommand);
+      } catch (err) {
+        console.log("Failed to process theEmail.", err, JSON.stringify(command, null, 4));
+        return Promise.resolve(err);
+      }
+    }));
+    console.log("the sendResults are: ", sendResults);
+    return sendResults;  
   });
-  console.log("email queue: ", emailQueue);
-
-  // send the emails
-  const sendResults = await Promise.all(emailQueue.map(async (email) => {
-    try {
-      const TemplatedEmailCommand = new SendTemplatedEmailCommand(email);
-      console.log("TemplatedEmailCommand: ", TemplatedEmailCommand);
-      return await SES.send(TemplatedEmailCommand);
-    } catch (err) {
-      console.log("Failed to process theEmail.", err, JSON.stringify(email, null, 4));
-      return Promise.resolve(err);
-    }
-  }));
-
-  console.log("the sendResults are: ", sendResults);
-  return sendResults;
-}
