@@ -184,7 +184,7 @@ export const main = handler(async (record: KafkaRecord) => {
     }))
     console.log("lookupPromises: ", lookupPromises);
   }
-  emailBundle.TemplateData = buildTemplateData(emailBundle.TemplateDataList, emailBundle);
+  emailBundle.TemplateData = buildTemplateData(emailBundle.TemplateDataList, record);
 
   const sendResults = await Promise.all(emailBundle.emailCommands.map(async (command) => {
     try {
