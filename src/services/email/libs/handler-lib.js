@@ -9,6 +9,7 @@ export default function handler(lambda) {
     return async function (event) {
         console.log("Received event (stringified):", JSON.stringify(event, null, 4));
 
+        let eventQueue = [];
         let sendResults = [];
       const response = {
         statusCode: 200,
@@ -22,8 +23,12 @@ export default function handler(lambda) {
       // If this invokation is a prewarm, do nothing and return.
       if (event.eventSource != "serverless-plugin-warmup") {
         try {
-          sendResults = await Promise.allSettled(Object.values(event.records).forEach(async (source) =>
-          source.forEach(async (record) => {
+          // flatten the records so they are iterable
+          Object.values(event.records).forEach((source) =>
+          source.forEach((record) => {
+            eventQueue.push({...record})
+          }));
+          sendResults = await Promise.allSettled(eventQueue.map(async (record) => {
             try {
             const eventData = decodeRecord(record);
             console.log("eventData: ", eventData);
@@ -35,7 +40,7 @@ export default function handler(lambda) {
             return { eventData, error: e.message };
           }
   
-          })))
+          }));
         response.body = JSON.stringify(sendResults);
       } catch (e) {
         response.body = e.message;
