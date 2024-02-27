@@ -58,7 +58,7 @@ export async function issueRai(body: RaiIssue) {
           SEATOOL_STATUS.PENDING_RAI
         }'),
         Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
-        ${buildStatusMemoQuery(body.id, "RAI Issued")}
+        Status_Memo = ${buildStatusMemoQuery(body.id, "RAI Issued")}
       WHERE ID_Number = '${body.id}'
     `;
     const result2 = await transaction.request().query(query2);
@@ -153,7 +153,7 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
                 SEATOOL_STATUS.PENDING
               }'),
               Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
-              ${buildStatusMemoQuery(
+              Status_Memo = ${buildStatusMemoQuery(
                 result.data.id,
                 `RAI Response Withdrawn.  Response was received ${formatSeatoolDate(
                   document.raiReceivedDate
@@ -230,7 +230,10 @@ export async function respondToRai(body: RaiResponse, document: any) {
             SEATOOL_STATUS.PENDING
           }'),
           Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
-          ${buildStatusMemoQuery(body.id, "RAI Response Received")}
+          Status_Memo = ${buildStatusMemoQuery(
+            body.id,
+            "RAI Response Received"
+          )}
         WHERE ID_Number = '${body.id}'
     `;
     const result2 = await transaction.request().query(query2);
@@ -302,7 +305,10 @@ export async function withdrawPackage(body: WithdrawPackage) {
           SEATOOL_STATUS.WITHDRAWN
         }'),
         Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
-        ${buildStatusMemoQuery(result.data.id, "Package Withdrawn")}
+        Status_Memo = ${buildStatusMemoQuery(
+          result.data.id,
+          "Package Withdrawn"
+        )}
       WHERE ID_Number = '${body.id}'
   `;
 

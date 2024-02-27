@@ -93,9 +93,10 @@ export const submit = async (event: APIGatewayEvent) => {
             body.proposedEffectiveDate
           }, 10)), cast('19700101' as datetime))
           ,(Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = 'Pending')
-          ,0,
-          ${buildStatusMemoQuery(body.id, "Package Submitted")})
+          ,0
+          ,${buildStatusMemoQuery(body.id, "Package Submitted", "insert")})
     `;
+    console.log(query);
 
     const result = await sql.query(query);
     console.log(result);
