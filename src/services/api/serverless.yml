@@ -62,6 +62,7 @@ custom:
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
   dbInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/seatool/dbInfo, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/seatool/dbInfo}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
+  launchdarklySDKKey: ${ssm:/${self:service}/${sls:stage}/launchdarklySDKKey, ssm:/${self:service}/default/launchdarklySDKKey}
 
 params:
   master:

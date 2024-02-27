@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import { Button, Form } from "@/components/Inputs";
 import { RHFDocument } from "@/components/RHF";
@@ -8,8 +9,11 @@ import { LoadingSpinner } from "@/components";
 import { Footer } from "./footer";
 import { Link, useParams } from "../Routing";
 import { useReadOnlyUser } from "./useReadOnlyUser";
+import { useLDClient } from "launchdarkly-react-client-sdk";
+import { featureFlags } from "shared-utils";
 import { useState } from "react";
 import { FormSchema } from "shared-types";
+import { MaintenanceBanner } from "@/components/MaintenanceBanner";
 
 export const Webforms = () => {
   return (
@@ -19,6 +23,7 @@ export const Webforms = () => {
       </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1 space-x-5">
+          <MaintenanceBanner />
           <Link
             path="/webform/:id/:version"
             params={{ id: "abp1", version: 202401 }}
@@ -126,14 +131,7 @@ function WebformBody({
                   <Button type="button" onClick={onSave} variant="ghost">
                     Save draft
                   </Button>
-                  <Button
-                    type="button"
-                    onClick={reset}
-                    variant="outline"
-                    className="mx-2"
-                  >
-                    Clear Data
-                  </Button>
+                  <ClearDataButton reset={reset} />
                 </div>
                 <Button type="submit">Submit</Button>
               </div>
@@ -174,3 +172,20 @@ export function Webform() {
     />
   );
 }
+
+const ClearDataButton: React.FC<{ reset: () => void }> = ({ reset }) => {
+  const ldClient = useLDClient();
+  const clearDataButton: string = ldClient?.variation(
+    featureFlags.CLEAR_DATA_BUTTON.flag,
+    featureFlags.CLEAR_DATA_BUTTON.defaultValue
+  );
+
+  if (clearDataButton) {
+    return (
+      <Button type="button" onClick={reset} variant="outline" className="mx-2">
+        Clear Data
+      </Button>
+    );
+  }
+  return null;
+};
