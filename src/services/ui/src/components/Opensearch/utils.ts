@@ -38,16 +38,21 @@ const filterMapQueryReducer = (
   }
 
   if (filter.type === "global_search") {
-    if (filter.value) {
-      state[filter.prefix].push({
-        multi_match: {
-          type: "best_fields",
-          query: filter.value,
-          fields: ["id", "submitterName", "leadAnalystName"],
-        },
-      });
-    }
-    return state;
+    if (!filter.value) return state;
+    state[filter.prefix].push({
+      dis_max: {
+        tie_breaker: 0.7,
+        boost: 1.2,
+        queries: ["id", "submitterName", "leadAnalystName"].map((FIELD) => ({
+          wildcard: {
+            [`${FIELD}.keyword`]: {
+              value: `*${filter.value}*`,
+              case_insensitive: true,
+            },
+          },
+        })),
+      },
+    });
   }
 
   return state;
