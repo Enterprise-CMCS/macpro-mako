@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
         element: <F.Dashboard />,
         loader: F.dashboardLoader(queryClient),
       },
-      { path: "/details", element: <F.PackageDetails /> },
+      { path: "/details", element: <F.Details /> },
       { path: "/faq", element: <F.Faq /> },
       {
         path: "/new-submission",
@@ -94,6 +94,8 @@ export const router = createBrowserRouter([
       { path: "/webform/:id/:version", element: <F.Webform /> },
       { path: "/profile", element: <F.Profile /> },
       { path: "/guides/abp", element: <F.ABPGuide /> },
+      { path: "/new-submission/app-k", element: <F.AppKSubmissionForm /> },
+      { path: "/new-submission/app-k", element: <F.AppKSubmissionForm /> },
     ],
     loader: F.loader(queryClient),
   },

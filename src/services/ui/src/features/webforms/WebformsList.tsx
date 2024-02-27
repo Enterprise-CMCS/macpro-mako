@@ -2,6 +2,7 @@ import { useGetAllForms } from "@/api";
 import { Link } from "@/components";
 import { SubNavHeader } from "../../components/Layout";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { MaintenanceBanner } from "@/components/MaintenanceBanner";
 
 export const WebformsList = () => {
   const { data, isLoading } = useGetAllForms();
@@ -16,6 +17,7 @@ export const WebformsList = () => {
       </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div>
+          <MaintenanceBanner />
           <table className="table-auto">
             <thead>
               <tr>

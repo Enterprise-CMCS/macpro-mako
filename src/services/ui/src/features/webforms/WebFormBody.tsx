@@ -1,8 +1,10 @@
 import { Button, Form } from "@/components";
-import { WebformFooter } from "./WebformFooter";
+import { WebformFooter } from "../webforms/WebformFooter";
 import { FormSchema } from "shared-types";
 import { documentValidator, RHFDocument } from "../../components/RHF";
-import { useWebform } from "./useWebform";
+import { useWebform } from "../webforms";
+import { useLDClient } from "launchdarkly-react-client-sdk";
+import { featureFlags } from "shared-utils";
 
 interface WebformBodyProps {
   id: string;
@@ -56,14 +58,7 @@ export function WebformBody({
                   <Button type="button" onClick={onSave} variant="ghost">
                     Save draft
                   </Button>
-                  <Button
-                    type="button"
-                    onClick={reset}
-                    variant="outline"
-                    className="mx-2"
-                  >
-                    Clear Data
-                  </Button>
+                  <ClearDataButton reset={reset} />
                 </div>
                 <Button type="submit">Submit</Button>
               </div>
@@ -76,3 +71,20 @@ export function WebformBody({
     </div>
   );
 }
+
+const ClearDataButton: React.FC<{ reset: () => void }> = ({ reset }) => {
+  const ldClient = useLDClient();
+  const clearDataButton: string = ldClient?.variation(
+    featureFlags.CLEAR_DATA_BUTTON.flag,
+    featureFlags.CLEAR_DATA_BUTTON.defaultValue
+  );
+
+  if (clearDataButton) {
+    return (
+      <Button type="button" onClick={reset} variant="outline" className="mx-2">
+        Clear Data
+      </Button>
+    );
+  }
+  return null;
+};

@@ -11,18 +11,14 @@ const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
   check: (checker, user) =>
     checker.isInActivePendingStatus &&
-    (
-      // Doesn't have any RAIs
-      !checker.hasLatestRai || 
-      (
-        // The latest RAI is complete
-        checker.hasCompletedRai && 
+    // Doesn't have any RAIs
+    (!checker.hasLatestRai ||
+      // The latest RAI is complete
+      (checker.hasCompletedRai &&
         // The package is not a medicaid spa (med spas only get 1 rai)
-        !checker.authorityIs([Authority.MED_SPA]) && 
+        !checker.authorityIs([Authority.MED_SPA]) &&
         // The package does not have RAI Response Withdraw enabled
-        !checker.hasEnabledRaiWithdraw
-      )
-    ) &&
+        !checker.hasEnabledRaiWithdraw)) &&
     isCmsWriteUser(user),
 };
 
@@ -65,6 +61,8 @@ const arWithdrawPackage: ActionRule = {
   check: (checker, user) =>
     !checker.hasStatus(finalDispositionStatuses) && isStateUser(user),
 };
+
+// TODO: Add rule for remove-appk-child
 
 export default [
   arIssueRai,

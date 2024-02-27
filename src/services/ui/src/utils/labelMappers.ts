@@ -17,6 +17,8 @@ export const mapActionLabel = (a: Action) => {
       return "Withdraw Formal RAI Response";
     case Action.RESPOND_TO_RAI:
       return "Respond to Formal RAI";
+    case Action.REMOVE_APPK_CHILD:
+      return "";
   }
 };
 

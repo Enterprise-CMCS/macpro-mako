@@ -1,6 +1,7 @@
 // Specific to the path of each Options page
 import { submissionFormCrumb, dashboardCrumb } from "@/utils";
 import { BreadCrumbConfig, Route } from "@/components";
+import { useLocation } from "react-router-dom";
 
 type Keys =
   | "new-submission"
@@ -68,4 +69,10 @@ export const formCrumbsFromPath = (path: string) => {
     ...previousOptionsCrumbs,
     submissionFormCrumb(path as Route, previousOptionsCrumbs.length),
   ];
+};
+
+export const useLocationCrumbs = () => {
+  const location = useLocation();
+
+  return formCrumbsFromPath(location.pathname);
 };

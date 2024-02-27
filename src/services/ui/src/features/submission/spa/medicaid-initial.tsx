@@ -2,7 +2,9 @@ import { useCallback } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useLocation } from "react-router-dom";
+import * as Inputs from "@/components/Inputs";
+import { Link } from "react-router-dom";
+import { useGetUser } from "@/api/useGetUser";
 import {
   Alert,
   BreadCrumbs,
@@ -10,14 +12,13 @@ import {
   SectionCard,
   SimplePageContainer,
   useModalContext,
-  formCrumbsFromPath,
   FAQ_TAB,
   useAlertContext,
   useNavigate,
+  useLocationCrumbs,
 } from "@/components";
-import * as Inputs from "@/components/Inputs";
 import * as Content from "@/components";
-import { useGetUser, submit } from "@/api";
+import { submit } from "@/api";
 import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
@@ -87,7 +88,7 @@ const attachmentList = [
 
 export const MedicaidSpaFormPage = () => {
   const { data: user } = useGetUser();
-  const location = useLocation();
+  const crumbs = useLocationCrumbs();
   const navigate = useNavigate();
   const urlQuery = useQueryString();
   const modal = useModalContext();
@@ -128,7 +129,7 @@ export const MedicaidSpaFormPage = () => {
   };
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
+      <BreadCrumbs options={crumbs} />
       <Inputs.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}

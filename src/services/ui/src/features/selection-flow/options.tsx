@@ -73,7 +73,7 @@ export const WAIVER_OPTIONS: OptionData[] = [
   {
     title: "1915(c) Appendix K Amendment",
     description: "Create a 1915(c) Appendix K Amendment",
-    linkTo: "/",
+    linkTo: "/new-submission/app-k",
   },
 ];
 
