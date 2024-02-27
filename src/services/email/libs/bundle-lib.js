@@ -28,9 +28,9 @@ const getBundleFromEvent = (configKey, stage) => {
                 }],
             };
         default:
-            return `no bundle defined for configKey ${configKey}`;
+            return { message: `no bundle defined for configKey ${configKey}`};
     }
-};
+s};
 
 
 // "new-submission-chip-spa": [{
@@ -57,7 +57,7 @@ export const getBundle = (record, stage) => {
     if (!configKey) return "no configKey found, no email sent";
     console.log("configKey is: ", configKey);
 
-    const emailBundle = getBundleFromEvent[configKey, stage];
+    const emailBundle = getBundleFromEvent(configKey, stage);
     console.log("emailBundle being returned is: ", JSON.stringify(emailBundle, null, 4));
 
     return emailBundle;
