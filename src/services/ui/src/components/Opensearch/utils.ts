@@ -46,7 +46,7 @@ const filterMapQueryReducer = (
         queries: [
           "id.keyword",
           "submitterName.keyword",
-          "leadAnalystNamekeyword",
+          "leadAnalystName.keyword",
         ].map((FIELD) => ({
           wildcard: {
             [FIELD]: {
