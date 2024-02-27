@@ -39,26 +39,33 @@ forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p
 <p>Thank you!</p>`,
     text: `
 The OneMAC Submission Portal received a Medicaid SPA Submission:
-\n\nThe submission can be accessed in the OneMAC application, which you can 
-find at {{applicationEndpoint}}.\n\n
+
+The submission can be accessed in the OneMAC application, which you can 
+find at {{applicationEndpoint}}.
+
 If you are not already logged in, please click the "Login" link at the top 
 of the page and log in using your Enterprise User Administration (EUA) 
-credentials.\n\n
+credentials.
+
 After you have logged in, you will be taken to the OneMAC application. 
 The submission will be listed on the dashboard page, and you can view its 
-details by clicking on its ID number.\n\n
-State or territory: {{territory}}\n
-Name: {{submitterName}}\n
-Email: {{submitterEmail}}\n
-Medicaid SPA ID: {{id}}\n
-Proposed Effective Date: {{proposedEffectiveDateNice}}\n
-\n\n
-Summary:\n
-{{additionalInformation}}\n\n
-Files:\n
-{{textFileList}}\n\n
+details by clicking on its ID number.
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email: {{submitterEmail}}
+Medicaid SPA ID: {{id}}
+Proposed Effective Date: {{proposedEffectiveDateNice}}
+
+Summary:
+{{additionalInformation}}
+
+Files:
+{{textFileList}}
+
 If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to SPAM@cms.hhs.gov.\n\n
+forward this email to SPAM@cms.hhs.gov.
+
 Thank you!`,
 },
 {
@@ -88,25 +95,30 @@ Any other correspondence will be disregarded.</p>
 <a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
     text: `
-This response confirms that you submitted a Medicaid SPA to CMS for review:\n\n
-State or territory: {{territory}}\n
-Name: {{submitterName}}\n
-Email Address: {{submitterEmail}}\n
-Medicaid SPA ID: {{id}}\n
-Proposed Effective Date:  {{proposedEffectiveDateNice}}\n
-90th Day Deadline: {{ninetyDaysDateNice}} not sure where we are getting this from\n
-\n
-Summary:\n
-{{additionalInformation}}\n\n
+This response confirms that you submitted a Medicaid SPA to CMS for review:
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
+Medicaid SPA ID: {{id}}
+Proposed Effective Date:  {{proposedEffectiveDateNice}}
+90th Day Deadline: {{ninetyDaysDateNice}}
+
+Summary:
+{{additionalInformation}}
+
 This response confirms the receipt of your Medicaid State Plan Amendment 
 (SPA or your response to a SPA Request for Additional Information (RAI)). 
 You can expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysDateNice}}.\n\n
+before {{ninetyDaysDateNice}}.
+
 This mailbox is for the submittal of State Plan Amendments and non-web-based
 responses to Requests for Additional Information (RAI) on submitted SPAs only.
-Any other correspondence will be disregarded.\n\n
+Any other correspondence will be disregarded.
+
 If you have questions or did not expect this email, please contact 
-SPA@cms.hhs.gov.\n\n
+SPA@cms.hhs.gov.
+
 Thank you!`,
 },
 {
@@ -142,25 +154,32 @@ forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p
 <p>Thank you!</p>`,
     text: `
 The OneMAC Submission Portal received a Medicaid SPA RAI Response Submission:
-\n\nThe submission can be accessed in the OneMAC application, which you can 
-find at {{applicationEndpoint}}.\n\n
+
+The submission can be accessed in the OneMAC application, which you can 
+find at {{applicationEndpoint}}.
+
 If you are not already logged in, please click the "Login" link at the top 
 of the page and log in using your Enterprise User Administration (EUA) 
-credentials.\n\n
+credentials.
+
 After you have logged in, you will be taken to the OneMAC application. 
 The submission will be listed on the dashboard page, and you can view its 
-details by clicking on its ID number.\n\n
-State or territory: {{territory}}\n
-Name: {{submitterName}}\n
-Email: {{submitterEmail}}\n
-Medicaid SPA Package ID: {{id}}\n
-\n\n
-Summary:\n
-{{additionalInformation}}\n\n
-Files:\n
-{{textFileList}}\n\n
+details by clicking on its ID number.
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email: {{submitterEmail}}
+Medicaid SPA Package ID: {{id}}
+
+Summary:
+{{additionalInformation}}
+
+Files:
+{{textFileList}}
+
 If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to SPAM@cms.hhs.gov.\n\n
+forward this email to SPAM@cms.hhs.gov.
+
 Thank you!`,
 },
 {
@@ -189,23 +208,28 @@ SPAs only. Any other correspondence will be disregarded.</p>
 <a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
     text: `
-This response confirms you submitted a Medicaid SPA RAI Response to CMS for review:\n\n
-State or territory: {{territory}}\n
-Name: {{submitterName}}\n
-Email Address: {{submitterEmail}}\n
-Medicaid SPA ID: {{id}}\n
-90th Day Deadline: {{ninetyDaysDateNice}}\n
-\n
-Summary:\n
-{{additionalInformation}}\n\n
+This response confirms you submitted a Medicaid SPA RAI Response to CMS for review:
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
+Medicaid SPA ID: {{id}}
+90th Day Deadline: {{ninetyDaysDateNice}}
+
+Summary:
+{{additionalInformation}}
+
 This response confirms receipt of your Medicaid State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysDateNice}}.\n\n
+before {{ninetyDaysDateNice}}.
+
 This mailbox is for the submittal of State Plan Amendments and non-web 
 based responses to Requests for Additional Information (RAI) on submitted 
-SPAs only. Any other correspondence will be disregarded.\n\n
-If you have questions, please contact SPA@cms.hhs.gov.\n\n
+SPAs only. Any other correspondence will be disregarded.
+
+If you have questions, please contact SPA@cms.hhs.gov.
+
 Thank you!`,
 },
 // CHIP SPA email template group
@@ -242,25 +266,31 @@ Summary:
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
     text: `
-The OneMAC Submission Portal received a CHIP State Plan Amendment:\n\n
-\t- The submission can be accessed in the OneMAC Micro application, which you can 
-\t  find at {{applicationEndpoint}}.
-\t- If you are not already logged in, please click the "Login" link at the 
-\t  top of the page and log in using your Enterprise User Administration (EUA) 
-\t  credentials.
-\t- After you have logged in, you will be taken to the OneMAC Micro 
-\t  application. The submission will be listed on the dashboard page, and you 
-\t  can view its details by clicking on its ID number.\n\n\n
+The OneMAC Submission Portal received a CHIP State Plan Amendment:
+
+- The submission can be accessed in the OneMAC Micro application, which you can 
+  find at {{applicationEndpoint}}.
+- If you are not already logged in, please click the "Login" link at the 
+  top of the page and log in using your Enterprise User Administration (EUA) 
+  credentials.
+- After you have logged in, you will be taken to the OneMAC Micro 
+  application. The submission will be listed on the dashboard page, and you 
+  can view its details by clicking on its ID number.
+
 State or territory: {{territory}}
 Name: {{submitterName}}
 Email: {{submitterEmail}}
-CHIP SPA Package ID: {{id}}\n\n
-Summary:\n
-{{additionalInformation}}\n\n
+CHIP SPA Package ID: {{id}}
+
+Summary:
+{{additionalInformation}}
+
 Files:
-{{formattedFileList}}\n
+{{formattedFileList}}
+
 If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to SPAM@cms.hhs.gov.\n\n
+forward this email to SPAM@cms.hhs.gov.
+
 Thank you!`,
 },
 {
@@ -287,18 +317,23 @@ at a later date.
 <p>Thank you!</p>`,
     text: `
 This is confirmation that you submitted a CHIP State Plan Amendment 
-to CMS for review:\n\n
+to CMS for review:
+
 State or territory: {{territory}}
 Name: {{submitterName}}
 Email Address: {{submitterEmail}}
-CHIP SPA Package ID: {{id}}\n\n
+CHIP SPA Package ID: {{id}}
+
 Summary:
-{{additionalInformation}}\n\n
+{{additionalInformation}}
+
 This response confirms the receipt of your CHIP State Plan Amendment 
 (CHIP SPA). You can expect a formal response to your submittal from CMS 
 at a later date.
+
 If you have questions or did not expect this email, please contact 
-CHIPSPASubmissionMailBox@CMS.HHS.gov.\n\n
+CHIPSPASubmissionMailBox@CMS.HHS.gov.
+
 Thank you!`,
 },
 {
@@ -334,25 +369,30 @@ forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p
 <p>Thank you!</p>`,
     text: `
 The OneMAC Submission Portal received a CHIP SPA RAI Response Submission:
-\n\nThe submission can be accessed in the OneMAC application, which you can 
-find at {{applicationEndpoint}}.\n\n
-If you are not already logged in, please click the "Login" link at the top 
-of the page and log in using your Enterprise User Administration (EUA) 
-credentials.\n\n
-After you have logged in, you will be taken to the OneMAC application. 
-The submission will be listed on the dashboard page, and you can view its 
-details by clicking on its ID number.\n\n
-State or territory: {{territory}}\n
-Name: {{submitterName}}\n
-Email Address: {{submitterEmail}}\n
-CHIP SPA Package ID: {{id}}\n
-\n\n
-Summary:\n
-{{additionalInformation}}\n\n
-Files:\n
-{{textFileList}}\n\n
+
+- The submission can be accessed in the OneMAC application, which you can 
+  find at {{applicationEndpoint}}.
+- If you are not already logged in, please click the "Login" link at the top 
+  of the page and log in using your Enterprise User Administration (EUA) 
+  credentials.
+- After you have logged in, you will be taken to the OneMAC application. 
+  The submission will be listed on the dashboard page, and you can view its 
+  details by clicking on its ID number.
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
+CHIP SPA Package ID: {{id}}
+
+Summary:
+{{additionalInformation}}
+
+Files:
+{{textFileList}}
+
 If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to SPAM@cms.hhs.gov.\n\n
+forward this email to SPAM@cms.hhs.gov.
+
 Thank you!`,
 },
 {
@@ -379,20 +419,24 @@ before {{ninetyDaysDateNice}}.</p>
 or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
-This response confirms you submitted a CHIP SPA RAI Response to CMS for review:\n\n
-State or territory: {{territory}}\n
-Name: {{submitterName}}\n
-Email Address: {{submitterEmail}}\n
-CHIP SPA Package ID: {{id}}\n
-90th Day Deadline: {{ninetyDaysDateNice}}\n
-\n
-Summary:\n
-{{additionalInformation}}\n\n
+This response confirms you submitted a CHIP SPA RAI Response to CMS for review:
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
+CHIP SPA Package ID: {{id}}
+90th Day Deadline: {{ninetyDaysDateNice}}
+
+Summary:
+{{additionalInformation}}
+
 This response confirms receipt of your CHIP State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysDateNice}}.\n\n
+before {{ninetyDaysDateNice}}.
+
 If you have questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov
-or your state lead.\n\n
+or your state lead.
+
 Thank you!`,
 }];

@@ -127,7 +127,7 @@ export const main = handler(async (record: KafkaRecord) => {
   console.log("emailBundle: ", JSON.stringify(emailBundle, null, 4));
   if (!emailBundle || !!emailBundle?.message || !emailBundle?.emailCommands) return "no eventToEmailMapping found, no email sent";
 
-  if (emailBundle?.lookupList && !Array.isArray(emailBundle.lookupList) && emailBundle.lookupList.length > 0) {
+  if (emailBundle?.lookupList && Array.isArray(emailBundle.lookupList) && emailBundle.lookupList.length > 0) {
     const lookupPromises = await Promise.allSettled(emailBundle.lookupList.map(async (lookupType: string) => {
       switch (lookupType) {
         case "osInsights":
