@@ -13,18 +13,22 @@ export const seatoolSchema = z.object({
   LEAD_ANALYST: z.array(seatoolOfficerSchema).nullable(),
   STATE_PLAN_SERVICETYPES: z
     .array(
-      z.object({
-        SPA_TYPE_ID: z.number(),
-        SPA_TYPE_NAME: z.string(),
-      })
+      z
+        .object({
+          SPA_TYPE_ID: z.number(),
+          SPA_TYPE_NAME: z.string(),
+        })
+        .nullable()
     )
     .nullable(),
   STATE_PLAN_SERVICE_SUBTYPES: z
     .array(
-      z.object({
-        TYPE_ID: z.number(),
-        TYPE_NAME: z.string(),
-      })
+      z
+        .object({
+          TYPE_ID: z.number(),
+          TYPE_NAME: z.string(),
+        })
+        .nullable()
     )
     .nullable(),
   STATE_PLAN: z.object({
