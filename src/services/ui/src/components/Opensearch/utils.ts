@@ -43,13 +43,9 @@ const filterMapQueryReducer = (
       dis_max: {
         tie_breaker: 0.7,
         boost: 1.2,
-        queries: [
-          "id.keyword",
-          "submitterName.keyword",
-          "leadAnalystName.keyword",
-        ].map((FIELD) => ({
+        queries: ["id", "submitterName", "leadAnalystName"].map((FIELD) => ({
           wildcard: {
-            [FIELD]: {
+            [`${FIELD}.keyword`]: {
               value: `*${filter.value}*`,
               case_insensitive: true,
             },
