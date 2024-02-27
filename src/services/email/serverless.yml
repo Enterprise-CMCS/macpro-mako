@@ -90,7 +90,8 @@ functions:
       osDomain: ${param:osDomain}
       emailSource: ${self:custom.emailAddressLookup.sourceEmail}
       osgEmail: ${self:custom.emailAddressLookup.osgEmail}
-      chipToEmail: ${self:custom.emailAddressLookup.chipToEmail}
+      chipInbox: ${self:custom.emailAddressLookup.chipInbox}
+      chipCcList: ${self:custom.emailAddressLookup.chipCcList}
       emailConfigSet: ${self:service}-${sls:stage}-configuration
       applicationEndpoint: ${param:ApplicationEndpointUrl}
     maximumRetryAttempts: 0

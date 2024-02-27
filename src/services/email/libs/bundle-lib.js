@@ -27,10 +27,39 @@ const getBundleFromEvent = (configKey, stage) => {
                     "ToAddresses": ["submitterEmail"],
                 }],
             };
+        case "new-submission-chip-spa":
+            return {
+                "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
+                "emailCommands": [{
+                    "Template": `new-submission-chip-spa-cms_${stage}`,
+                    "ToAddresses": ["osgEmail", "chipInbox"],
+                    "CcAddresses": ["chipCcList"]
+                },
+                {
+                    "Template": `new-submission-chip-spa-state_${stage}`,
+                    "ToAddresses": ["submitterEmail"],
+                },
+                ]
+            };
+        case "respond-to-rai-chip-spa":
+            return {
+                "lookupList": ["osInsights"],
+                "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
+                "emailCommands": [{
+                    "Template": `respond-to-rai-chip-spa-cms_${stage}`,
+                    "ToAddresses": ["osgEmail", "chipInbox"],
+                    "CcAddresses": ["chipCcList"]
+                },
+                {
+                    "Template": `respond-to-rai-chip-spa-state_${stage}`,
+                    "ToAddresses": ["submitterEmail"],
+                },
+                ]
+            };
         default:
             return { message: `no bundle defined for configKey ${configKey}`};
     }
-s};
+};
 
 
 // "new-submission-chip-spa": [{
