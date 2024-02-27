@@ -8,7 +8,7 @@ describe("seatool has valid data", () => {
       ...seaToolRecords[0],
       CHANGED_DATE: 1708695001,
     });
-    expect(parsedRecord.PLAN_TYPES?.[0].PLAN_TYPE_NAME).toBeDefined();
+    expect(parsedRecord.STATE_PLAN.PLAN_TYPE).toBeDefined();
   });
 
   it("can be transformed into a new object", () => {
