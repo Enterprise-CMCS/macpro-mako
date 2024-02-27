@@ -4,45 +4,11 @@ import { DateTime } from "luxon";
 import { KafkaRecord } from "shared-types";
 
 import handler from "../libs/handler-lib";
+import { getBundle } from "../libs/bundle-lib";
 import { getOsInsightData } from "../libs/os-lib";
 import { getCognitoData } from "../libs/cognito-lib";
 
 const SES = new SESClient({ region: process.env.region });
-
-const eventToEmailsMapping = {
-  "new-submission-medicaid-spa": {
-    "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
-    "emailCommands": [{
-      "Template": `new-submission-medicaid-spa-cms_${process.env.stage}`,
-      "ToAddresses": ["osgEmail"],
-    },
-    {
-      "Template": `new-submission-medicaid-spa-state_${process.env.stage}`,
-      "ToAddresses": ["submitterEmail"],
-    },
-    ]
-  },
-  "respond-to-rai-medicaid-spa": {
-    "lookupList": ["osInsights"],
-    "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysLookupNice", "additionalInformation", "formattedFileList", "textFileList"],
-    "emailCommands": [{
-      "Template": `respond-to-rai-medicaid-spa-cms_${process.env.stage}`,
-      "ToAddresses": ["osgEmail", "cpocEmailAndSrtList"],
-    },
-    {
-      "Template": `respond-to-rai-medicaid-spa-state_${process.env.stage}`,
-      "ToAddresses": ["submitterEmail"],
-    }],
-  },
-  // "new-submission-chip-spa": [{
-  //   "templateBase": "new-submission-chip-spa-cms",
-  //   "sendTo": ["chipToEmail"],
-  //   "ccList": ["chipCcList"]
-  // }, {
-  //   "templateBase": "new-submission-chip-spa-state",
-  //   "sendTo": ["submitterEmail"],
-  // }],
-};
 
 const formatAttachments = (formatType, attachmentList) => {
   console.log("got attachments for format: ", attachmentList, formatType);
@@ -118,16 +84,6 @@ function buildAddressList(addressList, data) {
   return newList;
 }
 
-const buildKeyFromRecord : (any) => string | undefined = (record) => {
-  if (record?.origin !== "micro" || !record?.authority) return;
-
-  const actionType = record?.actionType ? record.actionType : "new-submission";
-
-  const authority = record.authority.toLowerCase().replace(/\s+/g, "-");
-
-  return `${actionType}-${authority}`;
-}
-
 const buildTemplateData = (dataList : string[] | undefined , data) => {
   const returnObject = {};
 
@@ -164,10 +120,7 @@ const buildTemplateData = (dataList : string[] | undefined , data) => {
 export const main = handler(async (record: KafkaRecord) => {
   console.log("record: ", record);
 
-  const configKey : string | undefined = buildKeyFromRecord(record);
-  if (!configKey) return "no configKey found, no email sent";
-
-  const emailBundle = eventToEmailsMapping[configKey];
+  const emailBundle = getBundle(record, process.env.stage);
   console.log("emailBundle: ", JSON.stringify(emailBundle, null, 4));
   if (!emailBundle) return "no eventToEmailMapping found, no email sent";
 
