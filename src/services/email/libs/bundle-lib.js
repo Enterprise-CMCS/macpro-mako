@@ -54,7 +54,7 @@ const buildKeyFromRecord = (record) => {
 
 export const getBundle = (record, stage) => {
     const configKey = buildKeyFromRecord(record);
-    if (!configKey) return "no configKey found, no email sent";
+    if (!configKey) return { message: "no configKey found, no email sent"};
     console.log("configKey is: ", configKey);
 
     const emailBundle = getBundleFromEvent(configKey, stage);

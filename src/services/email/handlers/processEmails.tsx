@@ -107,10 +107,13 @@ const buildTemplateData = (dataList : string[] | undefined , data) => {
         break;
       case 'textFileList':
         returnObject['textFileList'] = formatAttachments("text", data.attachments);
+        break;
       case 'ninetyDaysDateNice':
         returnObject['ninetyDaysDateNice'] = formatNinetyDaysDate(data);
+        break;
       default:
         returnObject[dataType] = !!data[dataType] ? data[dataType] : "missing data";
+        break;
     }
   });
   console.log("returnObject: ", returnObject);
@@ -122,7 +125,7 @@ export const main = handler(async (record: KafkaRecord) => {
 
   const emailBundle = getBundle(record, process.env.stage);
   console.log("emailBundle: ", JSON.stringify(emailBundle, null, 4));
-  if (!emailBundle) return "no eventToEmailMapping found, no email sent";
+  if (!emailBundle || !!emailBundle?.message || !emailBundle?.emailCommands) return "no eventToEmailMapping found, no email sent";
 
   if (emailBundle?.lookupList && !Array.isArray(emailBundle.lookupList) && emailBundle.lookupList.length > 0) {
     const lookupPromises = await Promise.allSettled(emailBundle.lookupList.map(async (lookupType: string) => {
@@ -143,8 +146,8 @@ export const main = handler(async (record: KafkaRecord) => {
     try {
       console.log("the command to start is: ", command);
       command.TemplateData = JSON.stringify(emailBundle.TemplateData);
-      command.Destination = { ToAddresses: buildAddressList(command.ToAddresses, emailBundle) };
-      if (command?.CcAddresses) command.Destination.CcAddresses = buildAddressList(command.CcAddresses, emailBundle);
+      command.Destination = { ToAddresses: buildAddressList(command.ToAddresses, emailBundle.TemplateData) };
+      if (command?.CcAddresses) command.Destination.CcAddresses = buildAddressList(command.CcAddresses, emailBundle.TemplateData);
       console.log("the command being built is: ", command);
       const sendTemplatedEmailCommand = createSendTemplatedEmailCommandInput(command);
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
