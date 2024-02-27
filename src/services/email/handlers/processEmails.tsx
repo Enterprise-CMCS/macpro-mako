@@ -23,7 +23,7 @@ const eventToEmailsMapping = {
     ]
   },
   "respond-to-rai-medicaid-spa": {
-    "lookupList": ["cpocEmailAndSrtList", "ninetyDaysLookup"],
+    "lookupList": ["osInsights"],
     "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysLookupNice", "additionalInformation", "formattedFileList", "textFileList"],
     "emailCommands": [{
       "Template": `respond-to-rai-medicaid-spa-cms_${process.env.stage}`,
@@ -69,13 +69,13 @@ const formatAttachments = (formatType, attachmentList) => {
     return `${format.begin}${attachmentList.map(a => `${a.title}: ${a.filename}`).join(format.joiner)}${format.end}`;
 }
 const createSendTemplatedEmailCommandInput = (data) =>
-  ({
-    Source: process.env.emailSource ?? "kgrue@fearless.tech",
-    Destination: data.Destination,
-    TemplateData: data.TemplateData,
-    Template: data.Template,
-    ConfigurationSetName: process.env.emailConfigSet,
-  });
+({
+  Source: process.env.emailSource ?? "kgrue@fearless.tech",
+  Destination: data.Destination,
+  TemplateData: data.TemplateData,
+  Template: data.Template,
+  ConfigurationSetName: process.env.emailConfigSet,
+});
 
 function formatProposedEffectiveDate(emailBundle) {
   if (!emailBundle?.notificationMetadata?.proposedEffectiveDate) return "Pending";
@@ -95,7 +95,7 @@ function formatNinetyDaysDate(emailBundle) {
 function buildAddressList(addressList, data) {
   const newList: any[] = [];
   console.log("address list and data in: ", addressList, data);
-  addressList.forEach( (address) => {
+  addressList.forEach((address) => {
     let mappedAddress = address;
     if (address === "submitterEmail")
       if (data.submitterEmail === "george@example.com")
@@ -114,11 +114,11 @@ function buildAddressList(addressList, data) {
       newList.push(oneaddress);
     })
   });
-  console.log("address list: ", newList );
+  console.log("address list: ", newList);
   return newList;
 }
 
-const buildKeyFromRecord = (record) => {
+const buildKeyFromRecord : (any) => string | undefined = (record) => {
   if (record?.origin !== "micro" || !record?.authority) return;
 
   const actionType = record?.actionType ? record.actionType : "new-submission";
@@ -128,11 +128,11 @@ const buildKeyFromRecord = (record) => {
   return `${actionType}-${authority}`;
 }
 
-const buildTemplateData = (dataList,data) => {
+const buildTemplateData = (dataList : string[] | undefined , data) => {
   const returnObject = {};
 
-  if (!dataList || !Array.isArray(dataList) || dataList.length === 0) 
-    return { error: "init statement fail", dataList, data};
+  if (!dataList || !Array.isArray(dataList) || dataList.length === 0)
+    return { error: "init statement fail", dataList, data };
 
   console.log("got datalist and data: ", dataList, data);
   dataList.forEach((dataType) => {
@@ -140,39 +140,39 @@ const buildTemplateData = (dataList,data) => {
       case 'territory':
         returnObject['territory'] = data.id.toString().substring(0, 2);
         break;
-    case 'proposedEffectiveDateNice':
-      returnObject['proposedEffectiveDateNice'] = formatProposedEffectiveDate(data);
-      break;
-    case 'applicationEndpoint':
-      returnObject['applicationEndpoint'] = process.env.applicationEndpoint;
-      break;
-    case 'formattedFileList':
-      returnObject['formattedFileList'] = formatAttachments("html", data.attachments);
-      break;
-    case 'textFileList':
-      returnObject['textFileList'] = formatAttachments("text", data.attachments);
-    case 'ninetyDaysDateNice':
-      returnObject['ninetyDaysDateNice'] = formatNinetyDaysDate(data);
-    default:
-      returnObject[dataType] = !!data[dataType] ? data[dataType] : "missing data";
-    }});
+      case 'proposedEffectiveDateNice':
+        returnObject['proposedEffectiveDateNice'] = formatProposedEffectiveDate(data);
+        break;
+      case 'applicationEndpoint':
+        returnObject['applicationEndpoint'] = process.env.applicationEndpoint;
+        break;
+      case 'formattedFileList':
+        returnObject['formattedFileList'] = formatAttachments("html", data.attachments);
+        break;
+      case 'textFileList':
+        returnObject['textFileList'] = formatAttachments("text", data.attachments);
+      case 'ninetyDaysDateNice':
+        returnObject['ninetyDaysDateNice'] = formatNinetyDaysDate(data);
+      default:
+        returnObject[dataType] = !!data[dataType] ? data[dataType] : "missing data";
+    }
+  });
   console.log("returnObject: ", returnObject);
   return returnObject;
 };
 
-export const main = handler( async (record: KafkaRecord) => {
+export const main = handler(async (record: KafkaRecord) => {
   console.log("record: ", record);
-  // const emailQueue: any[] = [];
 
-  const configKey = buildKeyFromRecord(record);
-  if (!configKey) return "error, no configKey found, no email sent";
+  const configKey : string | undefined = buildKeyFromRecord(record);
+  if (!configKey) return "no configKey found, no email sent";
 
   const emailBundle = eventToEmailsMapping[configKey];
   console.log("emailBundle: ", JSON.stringify(emailBundle, null, 4));
   if (!emailBundle) return "no eventToEmailMapping found, no email sent";
 
   if (emailBundle?.lookupList && !Array.isArray(emailBundle.lookupList) && emailBundle.lookupList.length > 0) {
-    const lookupPromises = await Promise.allSettled(emailBundle.lookupList.map( async (lookupType) => {
+    const lookupPromises = await Promise.allSettled(emailBundle.lookupList.map(async (lookupType: string) => {
       switch (lookupType) {
         case "osInsights":
           return await getOsInsightData(emailBundle.id);
@@ -184,32 +184,26 @@ export const main = handler( async (record: KafkaRecord) => {
     }))
     console.log("lookupPromises: ", lookupPromises);
   }
-    emailBundle.TemplateData = buildTemplateData(emailBundle.TemplateDataList, emailBundle);
+  emailBundle.TemplateData = buildTemplateData(emailBundle.TemplateDataList, emailBundle);
 
-    // lookupPromises.forEach((lookupResult) => {
-    //   if (lookupResult.status !== "fulfilled") return;
-    //   for (const lookupValuePair in lookupResult.value) {
-    //     emailBundle[lookupValuePair.key] = lookupValuePair.value;
-    //   };
-  
-    const sendResults = await Promise.all(emailBundle.emailCommands.map(async (command) => {
-      try {
-        console.log("the command to start is: ", command);
-        command.TemplateData = JSON.stringify(emailBundle.TemplateData);
-        command.Destination = { ToAddresses: buildAddressList(command.ToAddresses, emailBundle) };
-        if (command?.CcAddresses) command.Destination.CcAddresses = buildAddressList(command.CcAddresses, emailBundle);
-        console.log("the command being built is: ", command);
-        const sendTemplatedEmailCommand = createSendTemplatedEmailCommandInput(command);
-        console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
-  
-        const TemplatedEmailCommand = new SendTemplatedEmailCommand(sendTemplatedEmailCommand);
-        console.log("TemplatedEmailCommand: ", TemplatedEmailCommand);
-        return await SES.send(TemplatedEmailCommand);
-      } catch (err) {
-        console.log("Failed to process theEmail.", err, JSON.stringify(command, null, 4));
-        return Promise.resolve(err);
-      }
-    }));
-    console.log("the sendResults are: ", sendResults);
-    return sendResults;  
-  });
+  const sendResults = await Promise.all(emailBundle.emailCommands.map(async (command) => {
+    try {
+      console.log("the command to start is: ", command);
+      command.TemplateData = JSON.stringify(emailBundle.TemplateData);
+      command.Destination = { ToAddresses: buildAddressList(command.ToAddresses, emailBundle) };
+      if (command?.CcAddresses) command.Destination.CcAddresses = buildAddressList(command.CcAddresses, emailBundle);
+      console.log("the command being built is: ", command);
+      const sendTemplatedEmailCommand = createSendTemplatedEmailCommandInput(command);
+      console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
+
+      const TemplatedEmailCommand = new SendTemplatedEmailCommand(sendTemplatedEmailCommand);
+      console.log("TemplatedEmailCommand: ", TemplatedEmailCommand);
+      return await SES.send(TemplatedEmailCommand);
+    } catch (err) {
+      console.log("Failed to process theEmail.", err, JSON.stringify(command, null, 4));
+      return Promise.resolve(err);
+    }
+  }));
+  console.log("the sendResults are: ", sendResults);
+  return sendResults;
+});
