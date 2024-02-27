@@ -142,7 +142,7 @@ export const main = handler(async (record: KafkaRecord) => {
   }
   emailBundle.TemplateData = buildTemplateData(emailBundle.TemplateDataList, record);
 
-  const sendResults = await Promise.all(emailBundle.emailCommands.map(async (command) => {
+  const sendResults = await Promise.allSettled(emailBundle.emailCommands.map(async (command) => {
     try {
       console.log("the command to start is: ", command);
       command.TemplateData = JSON.stringify(emailBundle.TemplateData);
@@ -153,13 +153,13 @@ export const main = handler(async (record: KafkaRecord) => {
       console.log("the sendTemplatedEmailCommand is: ", JSON.stringify(sendTemplatedEmailCommand, null, 4));
 
       const TemplatedEmailCommand = new SendTemplatedEmailCommand(sendTemplatedEmailCommand);
-      console.log("TemplatedEmailCommand: ", TemplatedEmailCommand);
+      console.log("TemplatedEmailCommand: ", JSON.stringify(TemplatedEmailCommand, null, 4));
       return await SES.send(TemplatedEmailCommand);
     } catch (err) {
       console.log("Failed to process theEmail.", err, JSON.stringify(command, null, 4));
       return Promise.resolve(err);
     }
   }));
-  console.log("the sendResults are: ", sendResults);
+  console.log("the sendResults are: ", JSON.stringify(sendResults, null, 4));
   return sendResults;
 });
