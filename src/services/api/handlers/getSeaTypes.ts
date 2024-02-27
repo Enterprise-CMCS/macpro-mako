@@ -7,10 +7,7 @@ type GetSeaTypesBoby = {
   typeId?: string;
 };
 
-export const getAllSeaTypesCombined = async (
-  authorityId: string,
-  typeId?: string
-) => {
+export const querySeaTypes = async (authorityId: string, typeId?: string) => {
   if (!process.env.osDomain) {
     throw new Error("process.env.osDomain must be defined");
   }
@@ -50,7 +47,7 @@ export const getAllSeaTypesCombined = async (
   return await os.search(process.env.osDomain, index, query);
 };
 
-export const getSeaTypesCombined = async (event: APIGatewayEvent) => {
+export const getSeaTypes = async (event: APIGatewayEvent) => {
   if (!event.body) {
     return response({
       statusCode: 400,
@@ -59,7 +56,7 @@ export const getSeaTypesCombined = async (event: APIGatewayEvent) => {
   }
   const body = JSON.parse(event.body) as GetSeaTypesBoby;
   try {
-    const result = await getAllSeaTypesCombined(body.authorityId, body.typeId);
+    const result = await querySeaTypes(body.authorityId, body.typeId);
 
     if (!result)
       return response({
@@ -80,4 +77,4 @@ export const getSeaTypesCombined = async (event: APIGatewayEvent) => {
   }
 };
 
-export const handler = getSeaTypesCombined;
+export const handler = getSeaTypes;

@@ -95,7 +95,6 @@ export const router = createBrowserRouter([
       { path: "/profile", element: <F.Profile /> },
       { path: "/guides/abp", element: <F.ABPGuide /> },
       { path: "/new-submission/app-k", element: <F.AppKSubmissionForm /> },
-      { path: "/new-submission/app-k", element: <F.AppKSubmissionForm /> },
     ],
     loader: F.loader(queryClient),
   },
