@@ -70,7 +70,6 @@ export const AppKSubmissionForm = () => {
               <I.FormField
                 control={form.control}
                 name="state"
-                rules={{ required: true }}
                 render={SlotStateSelect({ label: "State" })}
               />
               <div className="px-4 border-l-2">

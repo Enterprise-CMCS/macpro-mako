@@ -41,10 +41,11 @@ import {
 const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
-  subject: z.string(),
-  description: z.string(),
-  typeId: z.string(),
-  subTypeId: z.string(),
+  // TODO: FFF
+  // subject: z.string(),
+  // description: z.string(),
+  // typeId: z.string(),
+  // subTypeId: z.string(),
   attachments: z.object({
     currentStatePlan: zAttachmentRequired({ min: 1 }),
     amendedLanguage: zAttachmentRequired({ min: 1 }),
@@ -186,7 +187,8 @@ export const ChipSpaFormPage = () => {
                 </Inputs.FormItem>
               )}
             />
-            <TypeSelect
+            {/* TODO: FFF */}
+            {/* <TypeSelect
               control={form.control}
               name="typeId"
               authorityId={124} // chip authority
@@ -199,7 +201,7 @@ export const ChipSpaFormPage = () => {
             />
 
             <SubjectInput control={form.control} name="subject" />
-            <DescriptionInput control={form.control} name="description" />
+            <DescriptionInput control={form.control} name="description" /> */}
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/#chip-spa-attachments" />

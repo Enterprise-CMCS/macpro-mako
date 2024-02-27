@@ -45,8 +45,6 @@ export const spaDetails = (
     label: "Waiver Authority",
     value: data.authority,
     canView: () => {
-      console.log(data.authority);
-      console.log(Authority.WAIVER);
       return data.authority?.toLowerCase() == Authority.WAIVER;
     },
   },

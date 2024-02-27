@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { Button, Form } from "@/components";
 import { WebformFooter } from "../webforms/WebformFooter";
 import { FormSchema } from "shared-types";
@@ -72,7 +73,7 @@ export function WebformBody({
   );
 }
 
-const ClearDataButton: React.FC<{ reset: () => void }> = ({ reset }) => {
+const ClearDataButton: FC<{ reset: () => void }> = ({ reset }) => {
   const ldClient = useLDClient();
   const clearDataButton: string = ldClient?.variation(
     featureFlags.CLEAR_DATA_BUTTON.flag,

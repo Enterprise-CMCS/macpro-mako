@@ -41,10 +41,11 @@ import {
 const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
-  subject: z.string(),
-  description: z.string(),
-  typeId: z.string(),
-  subTypeId: z.string(),
+  // TODO: FFF
+  // subject: z.string(),
+  // description: z.string(),
+  // typeId: z.string(),
+  // subTypeId: z.string(),
   attachments: z.object({
     cmsForm179: zAttachmentRequired({
       min: 1,
@@ -189,8 +190,8 @@ export const MedicaidSpaFormPage = () => {
                 </Inputs.FormItem>
               )}
             />
-
-            <TypeSelect
+            {/* TODO: FFF */}
+            {/* <TypeSelect
               control={form.control}
               name="typeId"
               authorityId={125} // medicaid authority
@@ -203,7 +204,7 @@ export const MedicaidSpaFormPage = () => {
             />
 
             <SubjectInput control={form.control} name="subject" />
-            <DescriptionInput control={form.control} name="description" />
+            <DescriptionInput control={form.control} name="description" /> */}
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc

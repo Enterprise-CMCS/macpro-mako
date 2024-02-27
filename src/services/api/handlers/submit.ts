@@ -77,15 +77,17 @@ export const submit = async (event: APIGatewayEvent) => {
       -- Main insert into State_Plan
       INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
       VALUES ('${body.id}', '${body.state}', '${body.subject}', '${body.description}', @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0);
-      
-      -- Insert into State_Plan_Service_SubTypes
-      INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID)
-      VALUES ('${body.id}', TRY_CAST('${body.subTypeId}' AS INT));
-  
-      -- Insert into State_Plan_Service_Types
-      INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID)
-      VALUES ('${body.id}', TRY_CAST('${body.typeId}' AS INT));
-    `;
+      `;
+
+    // TODO: FFF
+    //   -- Insert into State_Plan_Service_SubTypes
+    //   INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID)
+    //   VALUES ('${body.id}', TRY_CAST('${body.subTypeId}' AS INT));
+
+    //   -- Insert into State_Plan_Service_Types
+    //   INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID)
+    //   VALUES ('${body.id}', TRY_CAST('${body.typeId}' AS INT));
+    // `;
 
     const result = await sql.query(query);
     console.log(result);
