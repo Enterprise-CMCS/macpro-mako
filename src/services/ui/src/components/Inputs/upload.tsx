@@ -1,7 +1,7 @@
-import { cn } from "@/lib";
+import { cn } from "@/utils";
 import { useCallback, useState, forwardRef } from "react";
 import { useDropzone, FileRejection, Accept } from "react-dropzone";
-import * as I from "@/components/Inputs";
+import * as I from "@/components";
 import { X } from "lucide-react";
 import { FILE_TYPES } from "shared-types/uploads";
 

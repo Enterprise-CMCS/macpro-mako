@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
+import { useLoaderData } from "react-router-dom";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useMediaQuery } from "@/hooks";
+import { useUserContext } from "@/components";
+import config from "@/config";
 import { LockIcon } from "../LockIcon";
 import { GovernmentBuildingIcon } from "../GovernmentBuildingIcon";
 import UsFlag from "@/assets/us_flag_small.png";
-import { useMediaQuery } from "@/hooks";
-import { useUserContext } from "../Context/userContext";
-import { useLoaderData } from "react-router-dom";
-import config from "@/config";
 
 export const UsaBanner = () => {
   const [isOpen, setIsOpen] = useState(false);

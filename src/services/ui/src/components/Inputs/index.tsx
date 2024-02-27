@@ -1,6 +1,7 @@
 export * from "./button";
 export * from "./calendar";
 export * from "./checkbox";
+export * from "./date-picker";
 export * from "./form";
 export * from "./upload";
 export * from "./input";
@@ -10,5 +11,4 @@ export * from "./select";
 export * from "./switch";
 export * from "./textarea";
 export * from "./toggle";
-export * from "./date-picker";
 export * from "./requiredIndicator";
