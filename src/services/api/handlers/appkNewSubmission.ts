@@ -11,37 +11,71 @@ import {
 import { produceMessage } from "../libs/kafka";
 
 export const submit = async (event: APIGatewayEvent) => {
-  try {
-    if (!event.body) {
-      return response({
-        statusCode: 400,
-        body: "Event body required",
-      });
-    }
-    const body = JSON.parse(event.body);
+  if (!event.body) {
+    return response({
+      statusCode: 400,
+      body: "Event body required",
+    });
+  }
+  const body = JSON.parse(event.body);
 
-    if (!(await isAuthorized(event, body.state))) {
-      return response({
-        statusCode: 403,
-        body: { message: "Unauthorized" },
-      });
-    }
+  if (!(await isAuthorized(event, body.state))) {
+    return response({
+      statusCode: 403,
+      body: { message: "Unauthorized" },
+    });
+  }
+
+  // TODO: zod parse oneMac schema
+
+  // const kafkaWaivers = waiverIds.map(async (WID, index) => {
+  //   const data = {
+  //     ...body,
+  //     ...(!!index && { appkParentId: `${body.state}-${waiverIds[0]}` }),
+  //   };
+
+  //   const eventBody = onemacSchema.safeParse(data);
+  //   if (!eventBody.success) {
+  //     throw console.error(
+  //       "MAKO Validation Error. The following record failed to parse: ",
+  //       JSON.stringify(eventBody),
+  //       "Because of the following Reason(s): ",
+  //       eventBody.error.message
+  //     );
+  //   }
+
+  //   return await produceMessage(
+  //     process.env.topicName as string,
+  //     `${body.state}-${WID}`,
+  //     JSON.stringify(eventBody.data)
+  //   );
+  // });
+
+  const pool = await sql.connect({
+    user: process.env.dbUser,
+    password: process.env.dbPassword,
+    server: process.env.dbIp as string,
+    port: parseInt(process.env.dbPort as string),
+    database: "SEA",
+  });
+  const transaction = new sql.Transaction(pool);
+
+  try {
+    await transaction.begin();
 
     const today = seaToolFriendlyTimestamp();
     const submissionDate = getNextBusinessDayTimestamp();
-    const pool = await sql.connect({
-      user: process.env.dbUser,
-      password: process.env.dbPassword,
-      server: process.env.dbIp as string,
-      port: parseInt(process.env.dbPort as string),
-      database: "SEA",
-    });
 
     // APP_K
     const waiverIds = body.waiverIds as string[];
 
+    // for await const insert to seatool
+    for (const waiverId of body.waiverIds) {
+      waiverId;
+    }
+
     const seatoolWaivers = body.waiverIds.map(async (WID: string) => {
-      await sql.query(`
+      await transaction.request().query(`
         Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Action_Type, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
           values (
             '${`${body.state}-${WID}`}'
@@ -70,10 +104,11 @@ export const submit = async (event: APIGatewayEvent) => {
           )
       `);
     });
+    const responses = await Promise.allSettled(seatoolWaivers);
 
-    await Promise.all(seatoolWaivers);
+    await transaction.commit();
 
-    await pool.close();
+    // for await const kafka events
     const kafkaWaivers = waiverIds.map(async (WID, index) => {
       const data = {
         ...body,
@@ -82,7 +117,7 @@ export const submit = async (event: APIGatewayEvent) => {
 
       const eventBody = onemacSchema.safeParse(data);
       if (!eventBody.success) {
-        return console.log(
+        throw console.error(
           "MAKO Validation Error. The following record failed to parse: ",
           JSON.stringify(eventBody),
           "Because of the following Reason(s): ",
@@ -105,10 +140,13 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   } catch (error) {
     console.error({ error });
+    await transaction.rollback();
     return response({
       statusCode: 500,
       body: { message: "Internal server error" },
     });
+  } finally {
+    await pool.close();
   }
 };
 

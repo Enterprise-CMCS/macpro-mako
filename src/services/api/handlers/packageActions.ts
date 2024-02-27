@@ -71,7 +71,7 @@ export async function issueRai(body: RaiIssue) {
     // write to kafka here
     const result = raiIssueSchema.safeParse({ ...body, requestedDate: today });
     if (result.success === false) {
-      console.log(
+      throw console.log(
         "RAI Validation Error. The following record failed to parse: ",
         JSON.stringify(body),
         "Because of the following Reason(s):",
