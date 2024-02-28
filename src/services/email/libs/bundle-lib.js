@@ -6,11 +6,11 @@ const getBundleFromEvent = (configKey, stage) => {
                 "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `new-submission-medicaid-spa-cms_${stage}`,
-                    "ToAddresses": ["osgEmail"],
+                    "ToAddresses": ["osg"],
                 },
                 {
                     "Template": `new-submission-medicaid-spa-state_${stage}`,
-                    "ToAddresses": ["submitterEmail"],
+                    "ToAddresses": ["submitter"],
                 },
                 ]
             };
@@ -20,11 +20,25 @@ const getBundleFromEvent = (configKey, stage) => {
                 "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysLookupNice", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `respond-to-rai-medicaid-spa-cms_${stage}`,
-                    "ToAddresses": ["osgEmail", "cpocEmailAndSrtList"],
+                    "ToAddresses": ["osg", "cpoc","srt"],
                 },
                 {
                     "Template": `respond-to-rai-medicaid-spa-state_${stage}`,
-                    "ToAddresses": ["submitterEmail"],
+                    "ToAddresses": ["submitter"],
+                }],
+            };
+        case "withdraw-package-medicaid-spa":
+            return {
+                "lookupList": ["cognito"],
+                "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysLookupNice", "additionalInformation", "formattedFileList", "textFileList"],
+                "emailCommands": [{
+                    "Template": `withdraw-package-medicaid-spa-cms_${stage}`,
+                    "ToAddresses": ["osg"],
+                    "CcAddresses": ["dpo"]
+                },
+                {
+                    "Template": `withdraw-package-medicaid-spa-state_${stage}`,
+                    "ToAddresses": ["allState"],
                 }],
             };
         case "new-submission-chip-spa":
@@ -32,12 +46,12 @@ const getBundleFromEvent = (configKey, stage) => {
                 "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `new-submission-chip-spa-cms_${stage}`,
-                    "ToAddresses": ["osgEmail", "chipInbox"],
-                    "CcAddresses": ["chipCcList"]
+                    "ToAddresses": ["osg", "chip"],
+                    "CcAddresses": ["chipCc"]
                 },
                 {
                     "Template": `new-submission-chip-spa-state_${stage}`,
-                    "ToAddresses": ["submitterEmail"],
+                    "ToAddresses": ["submitter"],
                 },
                 ]
             };
@@ -47,12 +61,12 @@ const getBundleFromEvent = (configKey, stage) => {
                 "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `respond-to-rai-chip-spa-cms_${stage}`,
-                    "ToAddresses": ["osgEmail", "chipInbox"],
-                    "CcAddresses": ["chipCcList"]
+                    "ToAddresses": ["osg", "chip"],
+                    "CcAddresses": ["chipCc"]
                 },
                 {
                     "Template": `respond-to-rai-chip-spa-state_${stage}`,
-                    "ToAddresses": ["submitterEmail"],
+                    "ToAddresses": ["submitter"],
                 },
                 ]
             };
@@ -60,16 +74,6 @@ const getBundleFromEvent = (configKey, stage) => {
             return { message: `no bundle defined for configKey ${configKey}`};
     }
 };
-
-
-// "new-submission-chip-spa": [{
-//   "templateBase": "new-submission-chip-spa-cms",
-//   "sendTo": ["chipToEmail"],
-//   "ccList": ["chipCcList"]
-// }, {
-//   "templateBase": "new-submission-chip-spa-state",
-//   "sendTo": ["submitterEmail"],
-// }],
 
 const buildKeyFromRecord = (record) => {
     if (record?.origin !== "micro" || !record?.authority) return;

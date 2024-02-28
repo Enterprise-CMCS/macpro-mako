@@ -232,6 +232,75 @@ If you have questions, please contact SPA@cms.hhs.gov.
 
 Thank you!`,
 },
+{
+    name: "withdraw-package-medicaid-spa-cms",
+    subject:  "SPA Package {{id}} Withdraw Request",
+    html: `
+<p>The OneMAC Submission Portal received a request to withdraw the package below. 
+The package will no longer be considered for CMS review:</p>
+<p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email:</b> {{submitterEmail}}
+<br><b>Medicaid SPA Package ID:</b> {{id}}
+</p>
+Summary:
+<br>{{additionalInformation}}
+<p>If the contents of this email seem suspicious, do not open them, and instead 
+forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+<p>Thank you!</p>`,
+    text: `
+The OneMAC Submission Portal received a request to withdraw the package below. 
+The package will no longer be considered for CMS review:
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email: {{submitterEmail}}
+Medicaid SPA Package ID: {{id}}
+
+Summary:
+{{additionalInformation}}
+
+If the contents of this email seem suspicious, do not open them, and instead 
+forward this email to SPAM@cms.hhs.gov.
+
+Thank you!`,
+},
+{
+    name: "withdraw-package-medicaid-spa-state",
+    subject:  "SPA Package {{id}} Withdraw Request",
+    html: `
+<p>This is confirmation that you have requested to withdraw the package below. 
+The package will no longer be considered for CMS review:</p>
+<p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email Address:</b> {{submitterEmail}}
+<br><b>Medicaid SPA ID:</b> {{id}}
+</p>
+Summary:
+<br>{{additionalInformation}}
+<p>If you have questions or did not expect this email, please contact 
+OSG Inbox.</p>
+<p>Thank you!</p>`,
+    text: `
+This is confirmation that you have requested to withdraw the package below. 
+The package will no longer be considered for CMS review:
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
+Medicaid SPA ID: {{id}}
+
+Summary:
+{{additionalInformation}}
+
+If you have questions or did not expect this email, please contact 
+OSG Inbox.
+
+Thank you!`,
+},
+
 // CHIP SPA email template group
 {
     name: "new-submission-chip-spa-cms",
