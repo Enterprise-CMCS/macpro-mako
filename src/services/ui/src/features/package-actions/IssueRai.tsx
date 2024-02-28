@@ -6,7 +6,7 @@ import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { unflatten } from "flat";
-import { zAttachmentOptional, zAttachmentRequired } from "@/pages/form/zod";
+import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
 import { submit } from "@/api/submissionService";
 
 type Attachments = keyof z.infer<typeof issueRaiSchema>["attachments"];

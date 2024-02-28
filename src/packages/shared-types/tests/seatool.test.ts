@@ -15,7 +15,6 @@ describe("seatool has valid data", () => {
         .transform("randomid")
         .parse(record);
       expect(transformedRecord.id).toEqual("randomid");
-      // expect(transformedRecord.planType).toEqual("Medicaid_SPA");
     }
   });
 });

@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodSchema } from "zod";
 import { BreadCrumbs, SimplePageContainer } from "@/components";
-import { detailsAndActionsCrumbs } from "@/pages/actions/actions-breadcrumbs";
+import { detailsAndActionsCrumbs } from "@/features";
 import { Action } from "shared-types";
 import { issueRaiSchema } from "./IssueRai";
 import { withdrawRaiSchema } from "./WithdrawRai";

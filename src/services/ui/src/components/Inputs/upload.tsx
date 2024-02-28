@@ -1,4 +1,4 @@
-import { cn } from "@/lib";
+import { cn } from "@/utils";
 import { useCallback, useState } from "react";
 import { useDropzone, FileRejection, Accept } from "react-dropzone";
 import * as I from "@/components/Inputs";

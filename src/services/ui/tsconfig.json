@@ -17,9 +17,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/selectors": ["e2e/selectors/index"],
-      "@/components": ["src/components/index"],
-      "@/pages": ["src/pages/index"],
+      "@/selectors": ["e2e/selectors"],
       "@/*": ["src/*"]
     }
   },

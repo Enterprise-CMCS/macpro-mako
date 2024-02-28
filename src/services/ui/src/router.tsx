@@ -1,13 +1,9 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
-import * as P from "@/pages";
-import * as F from "@/pages/form";
-import { loader as rootLoader } from "@/pages/welcome";
-import { dashboardLoader } from "@/pages/dashboard";
-import "@/api/amplifyConfig";
+import * as F from "@/features";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
 import { type Route } from "./components/Routing/types";
-import { ActionWrapper, packageActionRoutes } from "@/features/package-actions";
+import { packageActionRoutes } from "@/features/package-actions";
 export const queryClient = new QueryClient();
 
 export const router = createBrowserRouter([
@@ -15,57 +11,57 @@ export const router = createBrowserRouter([
     path: "/",
     element: <C.Layout />,
     children: [
-      { path: "/", index: true, element: <P.Welcome /> },
+      { path: "/", index: true, element: <F.Welcome /> },
       {
         path: "/dashboard",
-        element: <P.Dashboard />,
-        loader: dashboardLoader(queryClient),
+        element: <F.Dashboard />,
+        loader: F.dashboardLoader(queryClient),
       },
-      { path: "/details", element: <P.Details /> },
-      { path: "/faq", element: <P.Faq /> },
+      { path: "/details", element: <F.Details /> },
+      { path: "/faq", element: <F.Faq /> },
       {
         path: "/new-submission",
-        element: <P.NewSubmissionInitialOptions />,
+        element: <F.NewSubmissionInitialOptions />,
       },
       {
         path: "/new-submission/spa",
-        element: <P.SPASubmissionOptions />,
+        element: <F.SPASubmissionOptions />,
       },
       {
         path: "/new-submission/waiver",
-        element: <P.WaiverSubmissionOptions />,
+        element: <F.WaiverSubmissionOptions />,
       },
       {
         path: "/new-submission/waiver/b",
-        element: <P.BWaiverSubmissionOptions />,
+        element: <F.BWaiverSubmissionOptions />,
       },
       {
         path: "/new-submission/waiver/b/b4",
-        element: <P.B4WaiverSubmissionOptions />,
+        element: <F.B4WaiverSubmissionOptions />,
       },
       {
         path: "/new-submission/waiver/b/capitated",
-        element: <P.BCapWaiverSubmissionOptions />,
+        element: <F.BCapWaiverSubmissionOptions />,
       },
       {
         path: "/new-submission/spa/medicaid",
-        element: <P.MedicaidSPASubmissionOptions />,
+        element: <F.MedicaidSPASubmissionOptions />,
       },
       {
         path: "/new-submission/spa/chip",
-        element: <P.ChipSPASubmissionOptions />,
+        element: <F.ChipSPASubmissionOptions />,
       },
       {
         path: "/new-submission/spa/medicaid/landing/medicaid-abp",
-        element: <P.MedicaidABPLandingPage />,
+        element: <F.MedicaidABPLandingPage />,
       },
       {
         path: "/new-submission/spa/medicaid/landing/medicaid-eligibility",
-        element: <P.MedicaidEligibilityLandingPage />,
+        element: <F.MedicaidEligibilityLandingPage />,
       },
       {
         path: "/new-submission/spa/chip/landing/chip-eligibility",
-        element: <P.CHIPEligibilityLandingPage />,
+        element: <F.CHIPEligibilityLandingPage />,
       },
       // {
       //   path: "/new-submission/waiver/b/create",
@@ -73,52 +69,47 @@ export const router = createBrowserRouter([
       // },
       {
         path: "/new-submission/spa/medicaid/create",
-        element: <P.MedicaidSpaFormPage />,
+        element: <F.MedicaidSpaFormPage />,
       },
       {
         path: "/new-submission/spa/chip/create",
-        element: <P.ChipSpaFormPage />,
+        element: <F.ChipSpaFormPage />,
       },
       {
         path: "/new-submission/waiver/b/capitated/amendment/create",
-        element: <P.Capitated1915BWaiverAmendmentPage />,
+        element: <F.Capitated1915BWaiverAmendmentPage />,
       },
       {
         path: "/new-submission/waiver/b/capitated/initial/create",
-        element: <P.Capitated1915BWaiverInitialPage />,
+        element: <F.Capitated1915BWaiverInitialPage />,
       },
       {
         path: "/new-submission/waiver/b/capitated/renewal/create",
-        element: <P.Capitated1915BWaiverRenewalPage />,
+        element: <F.Capitated1915BWaiverRenewalPage />,
       },
       {
         path: "/new-submission/waiver/b/b4/renewal/create",
-        element: <P.Contracting1915BWaiverRenewalPage />,
+        element: <F.Contracting1915BWaiverRenewalPage />,
       },
       {
         path: "/new-submission/waiver/b/b4/initial/create",
-        element: <P.Contracting1915BWaiverInitialPage />,
+        element: <F.Contracting1915BWaiverInitialPage />,
       },
       {
         path: "/new-submission/waiver/b/b4/amendment/create",
-        element: <P.Contracting1915BWaiverAmendmentPage />,
+        element: <F.Contracting1915BWaiverAmendmentPage />,
       },
-      {
-        path: "/new-submission/spa/medicaid/create",
-        element: <P.MedicaidSpaFormPage />,
-      },
-      {
-        path: "/new-submission/spa/chip/create",
-        element: <P.ChipSpaFormPage />,
-      },
-      { path: "/action/:id/:type", element: <P.ActionFormIndex /> },
-      { path: "/webforms", element: <C.Webforms /> },
-      { path: "/webform/:id/:version", element: <C.Webform /> },
-      { path: "/profile", element: <P.Profile /> },
-      { path: "/guides/abp", element: <P.ABPGuide /> },
+      { path: "/new-submission/spa/medicaid/create", element: <F.MedicaidSpaFormPage /> },
+      { path: "/new-submission/spa/chip/create", element: <F.ChipSpaFormPage /> },
+      { path: "/action/:id/:type", element: <F.ActionFormIndex /> },
+      { path: "/webforms", element: <F.WebformsList /> },
+      { path: "/webform/:id/:version", element: <F.Webform /> },
+      { path: "/profile", element: <F.Profile /> },
+      { path: "/guides/abp", element: <F.ABPGuide /> },
+      { path: "/new-submission/app-k", element: <F.AppKSubmissionForm /> },
       packageActionRoutes,
     ],
-    loader: rootLoader(queryClient),
+    loader: F.loader(queryClient),
   },
 ] satisfies TypedRouteObject[]);
 

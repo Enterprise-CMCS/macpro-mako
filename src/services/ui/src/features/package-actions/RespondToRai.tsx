@@ -1,12 +1,12 @@
 import { Alert } from "@/components";
-import * as SC from "@/features/package-actions/shared-components";
 import { useParams } from "react-router-dom";
+import * as SC from "@/features/package-actions/shared-components";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { unflatten } from "flat";
-import { zAttachmentOptional, zAttachmentRequired } from "@/pages/form/zod";
+import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
 import { submit } from "@/api/submissionService";
 
 const title: Record<Authority, string> = {

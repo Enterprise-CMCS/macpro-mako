@@ -1,6 +1,4 @@
-import { Alert, LoadingSpinner } from "@/components";
-import { useAlertContext } from "@/components/Context/alertContext";
-import { useModalContext } from "@/components/Context/modalContext";
+import { Alert, LoadingSpinner, useAlertContext, useModalContext } from "@/components";
 import {
   Button,
   FormDescription,

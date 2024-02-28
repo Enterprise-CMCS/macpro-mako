@@ -1,14 +1,12 @@
-import { submit } from "@/api/submissionService";
-import { getUser } from "@/api/useGetUser";
-import { Alert } from "@/components";
+import { submit, getUser } from "@/api";
+import { useParams } from "react-router-dom";
+import { Alert, useModalContext } from "@/components";
 import { Info } from "lucide-react";
 import * as SC from "@/features/package-actions/shared-components";
-import { zAttachmentOptional } from "@/pages/form/zod";
+import { zAttachmentOptional } from "@/utils";
 import { unflatten } from "flat";
-import { useParams } from "react-router-dom";
 import { Authority } from "shared-types";
 import { z } from "zod";
-import { useModalContext } from "@/components/Context/modalContext";
 
 const title: Record<Authority, string> = {
   "1915(b)": "1915(b) Withdraw Formal RAI Response Details",
