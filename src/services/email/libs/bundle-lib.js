@@ -29,7 +29,7 @@ const getBundleFromEvent = (configKey, stage) => {
             };
         case "withdraw-package-medicaid-spa":
             return {
-                "lookupList": ["cognito"],
+                "lookupList": ["osInsights","cognito"],
                 "TemplateDataList": ["id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysLookupNice", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `withdraw-package-medicaid-spa-cms_${stage}`,
