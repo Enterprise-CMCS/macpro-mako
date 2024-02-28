@@ -1,6 +1,6 @@
 import { FormSchema } from "shared-types";
 
-const ABPT: FormSchema = {
+export const v202401: FormSchema = {
   header: "ABP Test Form",
   sections: [
     {
@@ -108,5 +108,3 @@ const ABPT: FormSchema = {
     },
   ],
 };
-
-export const form = ABPT;
