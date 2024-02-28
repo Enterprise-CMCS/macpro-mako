@@ -1,5 +1,7 @@
 import { DateTime } from "luxon";
 
+import { getLookupValues } from "./lookup-lib";
+
 const formatAttachments = (formatType, attachmentList) => {
     console.log("got attachments for format: ", attachmentList, formatType);
     const formatChoices = {
@@ -40,14 +42,19 @@ const formatAttachments = (formatType, attachmentList) => {
   
   }
   
-export const buildTemplateData = (dataList, data) => {
+export const buildEmailData = async (bundle, data) => {
     const returnObject = {};
+    console.log("got bundle and data: ", JSON.stringify(bundle, null,4), data);
   
-    if (!dataList || !Array.isArray(dataList) || dataList.length === 0)
-      return { error: "init statement fail", dataList, data };
+    const lookupValues = await getLookupValues(bundle.lookupList, record.id);
+    console.log("lookupValues: ", lookupValues);
+    data = {...data, ...lookupValues};
   
-    console.log("got datalist and data: ", dataList, data);
-    dataList.forEach((dataType) => {
+    if (!bundle.TemplateDataList || !Array.isArray(bundle.TemplateDataList) || bundle.TemplateDataList.length === 0)
+      return { error: "init statement fail", bundle, data };
+  
+    console.log("got datalist and data: ", bundle.TemplateDataList, data);
+    bundle.TemplateDataList.forEach((dataType) => {
       switch (dataType) {
         case 'territory':
           returnObject['territory'] = data.id.toString().substring(0, 2);
