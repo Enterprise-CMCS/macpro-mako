@@ -6,7 +6,7 @@ import "./index.css"; // this one second
 import { queryClient, router } from "./router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { UserContextProvider } from "./components/Context/userContext";
+import { UserContextProvider } from "@/components";
 import config from "@/config";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 
