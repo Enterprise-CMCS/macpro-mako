@@ -3,8 +3,10 @@ import { getCognitoData } from "../libs/cognito-lib";
 
 export const getLookupValues = async (lookupList, lookupId) => {
     let returnData = {};
+    console.log("missing a parameter?? ", lookupList, lookupId);
 
     if (lookupId && lookupList && Array.isArray(emailBundle.lookupList) && lookupList.length > 0) {
+        console.log("have lookups");
     const lookupPromises = await Promise.allSettled(lookupList.map(async (lookupType) => {
       switch (lookupType) {
         case "osInsights":

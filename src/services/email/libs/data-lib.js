@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 
-import { getLookupValues } from "./lookup-lib";
+// import { getLookupValues } from "./lookup-lib";
 
 const formatAttachments = (formatType, attachmentList) => {
     console.log("got attachments for format: ", attachmentList, formatType);
@@ -42,13 +42,13 @@ const formatAttachments = (formatType, attachmentList) => {
   
   }
   
-export const buildEmailData = async (bundle, data) => {
+export const buildEmailData = (bundle, data) => {
     const returnObject = {};
     console.log("got bundle and data: ", JSON.stringify(bundle, null,4), data);
   
-    const lookupValues = await getLookupValues(bundle.lookupList, record.id);
-    console.log("lookupValues: ", lookupValues);
-    data = {...data, ...lookupValues};
+    // const lookupValues = await getLookupValues(bundle.lookupList, record.id);
+    // console.log("lookupValues: ", lookupValues);
+    // data = {...data, ...lookupValues};
   
     if (!bundle.TemplateDataList || !Array.isArray(bundle.TemplateDataList) || bundle.TemplateDataList.length === 0)
       return { error: "init statement fail", bundle, data };

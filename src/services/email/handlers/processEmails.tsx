@@ -4,6 +4,7 @@ import handler from "../libs/handler-lib";
 import { getBundle } from "../libs/bundle-lib";
 import { buildAddressList } from "../libs/address-lib";
 import { buildEmailData } from "../libs/data-lib";
+import { getLookupValues } from "../libs/lookup-lib";
 
 const SES = new SESClient({ region: process.env.region });
 
@@ -28,7 +29,8 @@ export const main = handler(async (record) => {
 
   console.log("have emails to process");
   // data is at bundle level since often identical between emails and saves on lookups
-  const emailData = await buildEmailData(emailBundle, record);
+  const lookupData = {...record, ...await getLookupValues(emailBundle.lookupList, record.id)};
+  const emailData = buildEmailData(emailBundle, lookupData);
   console.log("emailData is: ", emailData);
 
   const sendResults = await Promise.allSettled(emailBundle.emailCommands.map(async (command) => {
