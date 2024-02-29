@@ -24,8 +24,8 @@ describe("getAllForms", () => {
     const expectedResponse = {
       statusCode: 200,
       body: {
-        ABP1: ["v202401", "v202402"],
-        ABP3: ["v202401"],
+        ABP1: ["202401", "202402"],
+        ABP3: ["202401"],
       },
     };
 

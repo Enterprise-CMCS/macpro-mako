@@ -5,6 +5,7 @@ export const transform = (id: string) => {
     const transformedData = {
       id,
       attachments: data.attachments,
+      appkParentId: data.appkParentId,
       raiWithdrawEnabled: data.raiWithdrawEnabled,
       additionalInformation: data.additionalInformation,
       submitterEmail: data.submitterEmail,
