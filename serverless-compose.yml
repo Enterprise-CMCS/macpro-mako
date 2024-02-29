@@ -48,3 +48,4 @@ services:
       ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
       osDomainArn: ${data.OpenSearchDomainArn}
       osDomain: ${data.OpenSearchDomainEndpoint}
+      CognitoUserPoolId: ${auth.UserPoolId}

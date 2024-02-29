@@ -51,7 +51,10 @@ provider:
           Action:
             - es:ESHttpGet
           Resource: ${param:osDomainArn}/*
-
+        - Effect: "Allow"
+          Action:
+            - cognito-idp:ListUsers
+          Resource: "*"
 
   stackTags:
     PROJECT: ${self:custom.project}
@@ -88,6 +91,7 @@ functions:
       region: ${self:provider.region}
       stage: ${sls:stage}
       osDomain: ${param:osDomain}
+      cognitoPoolId: ${param:CognitoUserPoolId}
       emailSource: ${self:custom.emailAddressLookup.sourceEmail}
       osgEmail: ${self:custom.emailAddressLookup.osgEmail}
       chipInbox: ${self:custom.emailAddressLookup.chipInbox}
