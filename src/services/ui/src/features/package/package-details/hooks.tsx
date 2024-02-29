@@ -8,6 +8,7 @@ import { OneMacUser } from "@/api/useGetUser";
 import { formatSeatoolDate } from "shared-utils";
 import { useMemo, useState } from "react";
 
+// we dont use this anywhere. we could use it to show the reviewers but as of yet there is no use
 export const ReviewTeamList: FC<opensearch.main.Document> = (props) => {
   const [expanded, setExpanded] = useState(false);
   const displayTeam = useMemo(
@@ -63,12 +64,12 @@ export const spaDetails = (
   },
   {
     label: "Type",
-    value: data.type ?? BLANK_VALUE,
+    value: data.typeName ?? BLANK_VALUE,
     canView: () => true,
   },
   {
     label: "Sub Type",
-    value: data.subType ?? BLANK_VALUE,
+    value: data.subTypeName ?? BLANK_VALUE,
     canView: () => true,
   },
   {
@@ -146,9 +147,9 @@ export const submissionDetails = (
     value: <p className="text-lg">{data?.leadAnalystName || BLANK_VALUE}</p>,
     canView: () => true,
   },
-  {
-    label: "CPOC email",
-    value: <ReviewTeamList {...data} />,
-    canView: () => true,
-  },
+  // {
+  //   label: "CPOC email",
+  //   value: <ReviewTeamList {...data} />,
+  //   canView: () => true,
+  // },
 ];
