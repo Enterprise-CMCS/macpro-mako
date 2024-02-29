@@ -18,7 +18,6 @@ const createSendTemplatedEmailCommand = (data) =>
 }));
 
 export const main = handler(async (record) => {
-  console.log("record: ", record);
 
   // get the bundle of emails associated with this action
   const emailBundle = getBundle(record, process.env.stage);
@@ -27,7 +26,6 @@ export const main = handler(async (record) => {
   // not every event has a bundle, and that's ok!
   if (!emailBundle || !!emailBundle?.message || !emailBundle?.emailCommands) return { message: "no eventToEmailMapping found, no email sent"};
 
-  console.log("have emails to process");
   // data is at bundle level since often identical between emails and saves on lookups
   // const lookupData = {...record, ...await getLookupValues(emailBundle.lookupList, record.id)};
   const emailData = await buildEmailData(emailBundle, record);
