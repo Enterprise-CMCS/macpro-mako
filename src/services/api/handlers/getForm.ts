@@ -25,21 +25,19 @@ export const getForm = async (event: APIGatewayEvent) => {
     }
 
     const id = body.formId.toUpperCase();
-    console.log(id, webformVersions, webformVersions[id]);
+
     if (!webformVersions[id]) {
       return response({
         statusCode: 400,
         body: { error: "Form ID not found" },
       });
     }
-    console.log("1");
+
     let version = "v";
     if (body.formVersion) {
       version += body.formVersion;
-      console.log("2", version);
     } else {
       version += getMaxVersion(id);
-      console.log("3", version);
     }
 
     if (id && version) {
