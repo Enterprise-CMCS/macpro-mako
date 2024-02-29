@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
 import {
   Accordion,
@@ -13,10 +13,12 @@ import { useParams } from "react-router-dom";
 export const Faq = () => {
   const { anchorId } = useParams();
 
+  const [openItems, setOpenItems] = useState<string[]>([]);
   useEffect(() => {
     if (anchorId) {
       const element = document.getElementById(anchorId);
       if (element) {
+        setOpenItems(["spa-id-format"]);
         window.scrollTo({
           top: element.offsetTop,
           behavior: "smooth",
@@ -31,15 +33,20 @@ export const Faq = () => {
       </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1">
-          {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
+          {oneMACFAQContent.map(({ sectionTitle }) => (
             <article key={sectionTitle} className="mb-8">
               <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
-              <Accordion type="multiple">
-                {qanda.map(({ anchorText, answerJSX, question }) => (
-                  <AccordionItem id={anchorText} key={anchorText} value={question}>
-                    <AccordionTrigger>{question}</AccordionTrigger>
-                    <AccordionContent>{answerJSX}</AccordionContent>
-                  </AccordionItem>
+              <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
+                {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
+                  <article key={sectionTitle} className="mb-8">
+                    <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
+                    {qanda.map(({ anchorText, answerJSX, question }) => (
+                      <AccordionItem value={anchorText} id={anchorText} key={anchorText}>
+                        <AccordionTrigger>{question}</AccordionTrigger>
+                        <AccordionContent>{answerJSX}</AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </article>
                 ))}
               </Accordion>
             </article>
