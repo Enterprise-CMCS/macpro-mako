@@ -5,16 +5,17 @@ import {
   finalDispositionStatuses,
   SeaTool,
   SeatoolOfficer,
+  SEATOOL_SPW_STATUS,
 } from "../../..";
 
-import { PlanType } from "../../../planType";
+import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
 
-type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
+type Flavor = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
-const authorityLookup = (val: number | null): null | string => {
+const flavorLookup = (val: number | null): null | string => {
   if (!val) return null;
 
-  const lookup: Record<number, AuthorityType> = {
+  const lookup: Record<number, Flavor> = {
     122: "WAIVER",
     123: "WAIVER",
     124: "CHIP",
@@ -120,33 +121,48 @@ const isInSecondClock = (
   return false; // otherwise, we're not
 };
 
+const getAuthority = (authorityId: number | null, id: string) => {
+  try {
+    if (!authorityId) return null;
+    return SEATOOL_AUTHORITIES[authorityId];
+  } catch (error) {
+    console.log(`SEATOOL AUTHORITY LOOKUP ERROR: ${id} ${authorityId}`);
+    console.log(error);
+    return null;
+  }
+};
+
 export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
       getRaiDate(data);
-    const seatoolStatus =
-      data.SPW_STATUS?.find(
-        (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
-      )?.SPW_STATUS_DESC || "Unknown";
+    const seatoolStatus = data.STATE_PLAN.SPW_STATUS_ID
+      ? SEATOOL_SPW_STATUS[data.STATE_PLAN.SPW_STATUS_ID]
+      : "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    return {
+    const authorityId = data.STATE_PLAN?.PLAN_TYPE;
+    const resp = {
       id,
+      flavor: flavorLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
       actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE
       ),
-      authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
-      changedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.CHANGED_DATE),
+      changedDate: getDateStringOrNullFromEpoc(data.CHANGED_DATE),
       description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
       initialIntakeNeeded:
         !leadAnalystName && seatoolStatus !== SEATOOL_STATUS.WITHDRAWN,
       leadAnalystName,
-      planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME as PlanType | null,
-      planTypeId: data.STATE_PLAN.PLAN_TYPE,
+      authorityId: authorityId || null,
+      authority: getAuthority(authorityId, id) as Authority | null,
+      typeId: data.STATE_PLAN_SERVICETYPES?.[0]?.SPA_TYPE_ID || null,
+      typeName: data.STATE_PLAN_SERVICETYPES?.[0]?.SPA_TYPE_NAME || null,
+      subTypeId: data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.TYPE_ID || null,
+      subTypeName: data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.TYPE_NAME || null,
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
@@ -165,9 +181,45 @@ export const transform = (id: string) => {
         raiReceivedDate,
         raiWithdrawnDate,
         seatoolStatus,
-        authorityLookup(data.STATE_PLAN.PLAN_TYPE)
+        flavorLookup(data.STATE_PLAN.PLAN_TYPE)
       ),
+      raiWithdrawEnabled: !finalDispositionStatuses.includes(cmsStatus)
+        ? undefined
+        : true,
     };
+    return resp;
   });
 };
 export type Schema = ReturnType<typeof transform>;
+export const tombstone = (id: string) => {
+  return {
+    id,
+    flavor: null,
+    actionType: null,
+    actionTypeId: null,
+    approvedEffectiveDate: null,
+    changedDate: null,
+    description: null,
+    finalDispositionDate: null,
+    leadAnalystName: null,
+    leadAnalystOfficerId: null,
+    authority: null,
+    authorityId: null,
+    proposedDate: null,
+    raiReceivedDate: null,
+    raiRequestedDate: null,
+    raiWithdrawnDate: null,
+    reviewTeam: null,
+    state: null,
+    cmsStatus: null,
+    stateStatus: null,
+    seatoolStatus: null,
+    statusDate: null,
+    submissionDate: null,
+    subject: null,
+    typeId: null,
+    typeName: null,
+    subTypeId: null,
+    subTypeName: null,
+  };
+};

@@ -17,6 +17,7 @@
     "@aws-sdk/client-s3": "^3.383.0",
     "@aws-sdk/client-sts": "^3.382.0",
     "@aws-sdk/s3-request-presigner": "^3.383.0",
+    "@launchdarkly/node-server-sdk": "^9.0.6",
     "@opensearch-project/opensearch": "^2.3.0",
     "libs": "*",
     "mssql": "^10.0.0",
@@ -29,7 +30,6 @@
   "version": "0.0.0",
   "scripts": {
     "build": "tsc",
-    "buildLayers": "tsc -p layers",
     "lint": "eslint '**/*.{ts,js}'",
     "compileRepack": "tsc -p repack",
     "test": "vitest",

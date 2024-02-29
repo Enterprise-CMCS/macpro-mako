@@ -16,3 +16,13 @@ export const transform = (id: string) => {
 };
 
 export type Schema = ReturnType<typeof transform>;
+export const tombstone = (id:string) => {
+  return {
+    id,
+    additionalInformation: null,
+    raiWithdrawEnabled: null,
+    attachments: null,
+    submitterEmail: null,
+    submitterName: null,
+  };
+};

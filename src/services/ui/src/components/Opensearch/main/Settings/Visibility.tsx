@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import * as UI from "@/components/Popover";
+import * as UI from "@/components";
 
 type Item = { label: string; field?: string; hidden: boolean };
 

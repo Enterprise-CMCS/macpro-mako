@@ -1,8 +1,7 @@
-import { useDebounce } from "@/hooks";
-import { XIcon } from "lucide-react";
-import { motion } from "framer-motion";
-import { Loader } from "lucide-react";
 import { FC, useEffect, useState } from "react";
+import { useDebounce } from "@/hooks";
+import { XIcon, Loader } from "lucide-react";
+import { motion } from "framer-motion";
 
 export const SearchForm: FC<{
   handleSearch: (s: string) => void;

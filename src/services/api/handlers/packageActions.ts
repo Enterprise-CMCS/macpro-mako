@@ -24,6 +24,9 @@ import {
   WithdrawPackage,
   toggleWithdrawRaiEnabledSchema,
   ToggleWithdrawRaiEnabled,
+  Authority,
+  removeAppkChildSchema,
+  opensearch,
 } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
@@ -53,17 +56,15 @@ export async function issueRai(body: RaiIssue) {
     const query2 = `
       UPDATE SEA.dbo.State_Plan
       SET 
-        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}'),
-        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
+        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${
+          SEATOOL_STATUS.PENDING_RAI
+        }'),
+        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+        Status_Memo = ${buildStatusMemoQuery(body.id, "RAI Issued")}
       WHERE ID_Number = '${body.id}'
     `;
     const result2 = await transaction.request().query(query2);
     console.log(result2);
-
-    const statusMemoUpdate = await transaction
-      .request()
-      .query(buildStatusMemoQuery(body.id, "RAI Issued"));
-    console.log(statusMemoUpdate);
 
     // write to kafka here
     const result = raiIssueSchema.safeParse({ ...body, requestedDate: today });
@@ -121,7 +122,7 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
       await transaction.begin();
       // How we withdraw an RAI Response varies based on authority or not
       // Medicaid is handled differently from the rest.
-      if (body.authority == "MEDICAID") {
+      if (body.authority.toLowerCase() == Authority.MED_SPA) {
         // Set Received Date to null
         await transaction.request().query(`
           UPDATE SEA.dbo.RAI
@@ -150,27 +151,24 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
         await transaction.request().query(`
           UPDATE SEA.dbo.State_Plan
             SET 
-              SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}'),
-              Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
+              SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${
+                SEATOOL_STATUS.PENDING
+              }'),
+              Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+              Status_Memo = ${buildStatusMemoQuery(
+                result.data.id,
+                `RAI Response Withdrawn.  Response was received ${formatSeatoolDate(
+                  document.raiReceivedDate
+                )} and withdrawn ${new Date().toLocaleString("en-US", {
+                  timeZone: "America/New_York",
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                })}`
+              )}
             WHERE ID_Number = '${result.data.id}'
         `);
       }
-
-      // Set a detailed message in the Status Memo
-      const statusMemoUpdate = await transaction.request().query(
-        buildStatusMemoQuery(
-          result.data.id,
-          `RAI Response Withdrawn.  Response was received ${formatSeatoolDate(
-            document.raiReceivedDate
-          )} and withdrawn ${new Date().toLocaleString("en-US", {
-            timeZone: "America/New_York",
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-          })}`
-        )
-      );
-      console.log(statusMemoUpdate);
 
       // write to kafka here
       await produceMessage(
@@ -230,17 +228,18 @@ export async function respondToRai(body: RaiResponse, document: any) {
     const query2 = `
       UPDATE SEA.dbo.State_Plan
         SET 
-          SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}'),
-          Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
+          SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${
+            SEATOOL_STATUS.PENDING
+          }'),
+          Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+          Status_Memo = ${buildStatusMemoQuery(
+            body.id,
+            "RAI Response Received"
+          )}
         WHERE ID_Number = '${body.id}'
     `;
     const result2 = await transaction.request().query(query2);
     console.log(result2);
-
-    const statusMemoUpdate = await transaction
-      .request()
-      .query(buildStatusMemoQuery(body.id, "RAI Response Received"));
-    console.log(statusMemoUpdate);
 
     //   // write to kafka here
     const result = raiResponseSchema.safeParse({
@@ -304,8 +303,14 @@ export async function withdrawPackage(body: WithdrawPackage) {
   const query = `
     UPDATE SEA.dbo.State_Plan
       SET 
-        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}'),
-        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
+        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${
+          SEATOOL_STATUS.WITHDRAWN
+        }'),
+        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+        Status_Memo = ${buildStatusMemoQuery(
+          result.data.id,
+          "Package Withdrawn"
+        )}
       WHERE ID_Number = '${body.id}'
   `;
 
@@ -313,10 +318,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
     await transaction.begin();
     const txnResult = await transaction.request().query(query);
     console.log(txnResult);
-    const statusMemoUpdate = await transaction
-      .request()
-      .query(buildStatusMemoQuery(result.data.id, "Package Withdrawn"));
-    console.log(statusMemoUpdate);
+
     await produceMessage(
       TOPIC_NAME,
       body.id,
@@ -384,5 +386,58 @@ export async function toggleRaiResponseWithdraw(
     return response({
       statusCode: 500,
     });
+  }
+}
+
+export async function removeAppkChild(doc: opensearch.main.Document) {
+  const result = removeAppkChildSchema.safeParse(doc);
+
+  if (!result.success) {
+    return response({
+      statusCode: 400,
+      body: {
+        message: "Remove Appk Child event validation error",
+      },
+    });
+  }
+
+  const today = seaToolFriendlyTimestamp();
+  const pool = await sql.connect(config);
+  const transaction = new sql.Transaction(pool);
+  const query = `
+    UPDATE SEA.dbo.State_Plan
+      SET 
+        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}'),
+        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
+      WHERE ID_Number = '${doc.id}'
+  `;
+
+  try {
+    await transaction.begin();
+
+    await transaction.request().query(query);
+    await transaction
+      .request()
+      .query(buildStatusMemoQuery(result.data.id, "Package Withdrawn"));
+    await produceMessage(
+      TOPIC_NAME,
+      doc.id,
+      JSON.stringify({
+        actionType: Action.REMOVE_APPK_CHILD,
+        ...result.data,
+      })
+    );
+    await transaction.commit();
+  } catch (err) {
+    // Rollback and log
+    await transaction.rollback();
+    console.error("Error executing query:", err);
+    return response({
+      statusCode: 500,
+      body: err instanceof Error ? { message: err.message } : err,
+    });
+  } finally {
+    // Close pool
+    await pool.close();
   }
 }

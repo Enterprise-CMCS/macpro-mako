@@ -1,11 +1,9 @@
-import { useGetUser } from "@/api/useGetUser";
-import { UserRoles } from "shared-types";
-import { DEFAULT_FILTERS, useOsUrl } from "../../useOpensearch";
-import { opensearch } from "shared-types";
-import { LABELS } from "@/lib/labels";
-import { BLANK_VALUE } from "@/consts";
+import { UserRoles, opensearch } from "shared-types";
 import { formatSeatoolDate } from "shared-utils";
-import { getMainExportData } from "@/api";
+import { useGetUser, getMainExportData } from "@/api";
+import { LABELS } from "@/utils";
+import { BLANK_VALUE } from "@/consts";
+import { DEFAULT_FILTERS, useOsUrl } from "../../useOpensearch";
 
 export const useFilterExportGroups = () => {
   const { data: user } = useGetUser();
@@ -31,7 +29,7 @@ export const useFilterExportGroups = () => {
     },
     {
       name: "Type",
-      transform: (data) => data.planType ?? BLANK_VALUE,
+      transform: (data) => data.authority ?? BLANK_VALUE,
     },
     ...((): opensearch.main.ExportHeader[] => {
       if (url.state.tab !== "waivers") return [];

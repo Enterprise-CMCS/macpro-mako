@@ -1,28 +1,27 @@
 import { API } from "aws-amplify";
 import {
   Attachment,
-  PlanType,
+  Authority,
   ReactQueryApiError,
   Action,
   attachmentTitleMap,
 } from "shared-types";
-import { buildActionUrl, SubmissionServiceEndpoint } from "@/lib";
-import { OneMacUser } from "@/api/useGetUser";
+import { buildActionUrl, SubmissionServiceEndpoint } from "@/utils";
+import { OneMacUser } from "@/api";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 
-type SubmissionServiceParameters<T> = {
+export type SubmissionServiceParameters<T> = {
   data: T;
   endpoint: SubmissionServiceEndpoint;
   user: OneMacUser | undefined;
-  authority?: PlanType;
+  authority?: Authority;
 };
 type SubmissionServiceResponse = {
   body: {
     message: string;
   };
 };
-type AttachmentKeyValue = { attachmentKey: string; file: File };
 type PreSignedURL = {
   url: string;
   key: string;
@@ -33,6 +32,7 @@ export type UploadRecipe = PreSignedURL & {
   title: string;
   name: string;
 };
+type AttachmentKeyValue = { attachmentKey: string; file: File };
 
 /** Pass in an array of UploadRecipes and get a back-end compatible object
  * to store attachment data */
@@ -73,16 +73,34 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
   };
 
   switch (endpoint) {
-    case "/submit":
+    case "/appk":
       return {
-        ...baseProperties,
-        ...userDetails,
         ...data,
+        ...userDetails,
+        ...baseProperties,
+        authority: Authority["1915c"],
         proposedEffectiveDate: seaToolFriendlyTimestamp(
           data.proposedEffectiveDate as Date
         ),
-        state: (data.id as string).split("-")[0],
         attachments: attachments ? buildAttachmentObject(attachments) : null,
+      };
+    case buildActionUrl(Action.REMOVE_APPK_CHILD):
+      return {
+        ...data,
+        ...userDetails,
+        authority: Authority["1915c"],
+        origin: "micro",
+      };
+    case "/submit":
+      return {
+        ...data,
+        ...baseProperties,
+        ...userDetails,
+        proposedEffectiveDate: seaToolFriendlyTimestamp(
+          data.proposedEffectiveDate as Date
+        ),
+        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        state: (data.id as string).split("-")[0],
       };
     case buildActionUrl(Action.ISSUE_RAI):
     case buildActionUrl(Action.RESPOND_TO_RAI):
@@ -95,6 +113,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...baseProperties,
         ...userDetails,
         ...data,
+        ...userDetails,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
   }

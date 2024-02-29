@@ -45,12 +45,6 @@ describe("zod schema helpers", () => {
   afterEach(() => mockItem.server.resetHandlers());
   afterAll(() => mockItem.server.close());
 
-  describe("idIsUnique", () => {
-    it("confirms no matching record is returned", async () => {
-      expect(await unit.idIsUnique("existing")).toBe(false);
-    });
-  });
-
   describe("idIsApproved", () => {
     it("returns false if no getItem fails", async () => {
       expect(await unit.idIsApproved("not-found")).toBe(false);

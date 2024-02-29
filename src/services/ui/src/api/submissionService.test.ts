@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import * as unit from "./submissionService";
-import { SubmissionServiceEndpoint } from "@/lib";
 import { OneMacUser } from "@/api/useGetUser";
+import { SubmissionServiceEndpoint } from "@/utils";
 
 const mockFormData = {
   test: "data",
@@ -92,13 +92,14 @@ describe("helpers", () => {
 
   describe("buildSubmissionPayload", () => {
     it("builds Action payloads", () => {
-      const payload = unit.buildSubmissionPayload(
-        { test: "data" },
-        mockGeorge,
-        "/default" as SubmissionServiceEndpoint,
-        "MEDICAID",
-        mockUploadRecipes(3)
-      );
+      const payload: ReturnType<typeof unit.buildSubmissionPayload> =
+        unit.buildSubmissionPayload(
+          { test: "data" },
+          mockGeorge,
+          "/default" as SubmissionServiceEndpoint,
+          "MEDICAID",
+          mockUploadRecipes(3)
+        );
       expect(payload.authority).toEqual("MEDICAID");
       expect(payload.origin).toEqual("micro");
       expect(payload.attachments).toHaveLength(3);
