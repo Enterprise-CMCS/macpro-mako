@@ -74,7 +74,7 @@ export const AppK = (props: opensearch.main.Document) => {
   if (!data.length) return <></>;
 
   return (
-    <>
+    <div className="my-2">
       <T.Table>
         <T.TableHeader>
           <T.TableRow>
@@ -117,6 +117,6 @@ export const AppK = (props: opensearch.main.Document) => {
           </>
         }
       />
-    </>
+    </div>
   );
 };

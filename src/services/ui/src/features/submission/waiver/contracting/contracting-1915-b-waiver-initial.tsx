@@ -40,11 +40,10 @@ import {
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
   proposedEffectiveDate: z.date(),
-  // TODO: FFF
-  // subject: z.string(),
-  // description: z.string(),
-  // typeId: z.string().default("111"),
-  // subTypeId: z.string(),
+  subject: z.string(),
+  description: z.string(),
+  typeId: z.string().default("111"),
+  subTypeId: z.string(),
   attachments: z.object({
     b4WaiverApplication: zAttachmentRequired({ min: 1 }),
     tribalConsultation: zAttachmentOptional,
@@ -194,8 +193,7 @@ export const Contracting1915BWaiverInitialPage = () => {
                 </Inputs.FormItem>
               )}
             />
-            {/* // TODO: FFF */}
-            {/* <SubTypeSelect
+            <SubTypeSelect
               control={form.control}
               typeId={"111"}
               name="subTypeId"
@@ -203,7 +201,7 @@ export const Contracting1915BWaiverInitialPage = () => {
             />
 
             <SubjectInput control={form.control} name="subject" />
-            <DescriptionInput control={form.control} name="description" /> */}
+            <DescriptionInput control={form.control} name="description" />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
