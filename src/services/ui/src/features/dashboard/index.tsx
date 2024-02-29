@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api";
 import { WaiversList } from "./Lists/waivers";
@@ -52,7 +52,9 @@ export const Dashboard = () => {
   if (!role) {
     return <Navigate path={"/"} />;
   }
-
+  useEffect(() => {
+      window.scrollTo(0, 0);
+  }, []);
   return (
     <OsProvider
       value={{
