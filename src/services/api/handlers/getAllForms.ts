@@ -17,6 +17,7 @@ export const mapWebformsKeys = (
 export const getAllForms = async () => {
   try {
     const formsWithVersions = mapWebformsKeys(webformVersions);
+
     if (formsWithVersions) {
       return response({
         statusCode: 200,

@@ -41,7 +41,6 @@ export const getForm = async (event: APIGatewayEvent) => {
     }
 
     if (id && version) {
-      console.log("4", id, version, webformVersions);
       const formObj = webformVersions[id][version];
       const cleanedForm = convertRegexToString(formObj);
       return response({
