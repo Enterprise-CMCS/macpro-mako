@@ -3,10 +3,10 @@ const getBundleFromEvent = (configKey, stage) => {
     switch (configKey) {
         case "new-submission-medicaid-spa":
             return {
-                "dataList": ["osg", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
+                "dataList": ["osgEmail", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `new-submission-medicaid-spa-cms_${stage}`,
-                    "ToAddresses": ["osg"],
+                    "ToAddresses": ["osgEmail"],
                 },
                 {
                     "Template": `new-submission-medicaid-spa-state_${stage}`,
@@ -17,10 +17,10 @@ const getBundleFromEvent = (configKey, stage) => {
         case "respond-to-rai-medicaid-spa":
             return {
                 "lookupList": ["osInsights"],
-                "dataList": ["osg", "cpoc", "srt", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysLookupNice", "additionalInformation", "formattedFileList", "textFileList"],
+                "dataList": ["osgEmail", "cpoc", "srt", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysLookupNice", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `respond-to-rai-medicaid-spa-cms_${stage}`,
-                    "ToAddresses": ["osg", "cpoc", "srt"],
+                    "ToAddresses": ["osgEmail", "cpoc", "srt"],
                 },
                 {
                     "Template": `respond-to-rai-medicaid-spa-state_${stage}`,
@@ -30,11 +30,11 @@ const getBundleFromEvent = (configKey, stage) => {
         case "withdraw-package-medicaid-spa":
             return {
                 "lookupList": ["osInsights","cognito"],
-                "dataList": ["osg", "dpo", "allState", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysLookupNice", "additionalInformation", "formattedFileList", "textFileList"],
+                "dataList": ["osgEmail", "dpoEmail", "allState", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysLookupNice", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `withdraw-package-medicaid-spa-cms_${stage}`,
-                    "ToAddresses": ["osg"],
-                    "CcAddresses": ["dpo"]
+                    "ToAddresses": ["osgEmail"],
+                    "CcAddresses": ["dpoEmail"]
                 },
                 {
                     "Template": `withdraw-package-medicaid-spa-state_${stage}`,
@@ -43,11 +43,11 @@ const getBundleFromEvent = (configKey, stage) => {
             };
         case "new-submission-chip-spa":
             return {
-                "dataList": ["osg", "chip", "chipCc", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
+                "dataList": ["osgEmail", "chipInbox", "chipCcList", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `new-submission-chip-spa-cms_${stage}`,
-                    "ToAddresses": ["osg", "chip"],
-                    "CcAddresses": ["chipCc"]
+                    "ToAddresses": ["osgEmail", "chipInbox"],
+                    "CcAddresses": ["chipCcList"]
                 },
                 {
                     "Template": `new-submission-chip-spa-state_${stage}`,
@@ -58,11 +58,11 @@ const getBundleFromEvent = (configKey, stage) => {
         case "respond-to-rai-chip-spa":
             return {
                 "lookupList": ["osInsights"],
-                "dataList": ["osg", "chip", "chipCc", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
+                "dataList": ["osgEmail", "chipInbox", "chipCcList", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `respond-to-rai-chip-spa-cms_${stage}`,
-                    "ToAddresses": ["osg", "chip"],
-                    "CcAddresses": ["chipCc"]
+                    "ToAddresses": ["osgEmail", "chipInbox"],
+                    "CcAddresses": ["chipCcList"]
                 },
                 {
                     "Template": `respond-to-rai-chip-spa-state_${stage}`,
