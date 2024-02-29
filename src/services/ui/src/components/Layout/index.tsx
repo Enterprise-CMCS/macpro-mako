@@ -114,13 +114,27 @@ export const Layout = () => {
         <nav className="bg-primary">
           <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
             <div className="h-[70px] flex gap-12 items-center text-white">
-              <Link to="/">
-                <img
-                  className="h-10 w-28 min-w-[112px] resize-none"
-                  src={oneMacLogo}
-                  alt="onemac site logo"
-                />
-              </Link>
+              {
+                !(window && window.location.pathname.startsWith("/faq")) ? (
+                  // This is the original Link component
+                  <Link to="/">
+                    <img
+                      className="h-10 w-28 min-w-[112px] resize-none"
+                      src={oneMacLogo}
+                      alt="onemac site logo"
+                    />
+                  </Link>
+                ) : (
+                  // This is a non-clickable element that looks the same
+                  <div>
+                    <img
+                      className="h-10 w-28 min-w-[112px] resize-none"
+                      src={oneMacLogo}
+                      alt="onemac site logo"
+                    />
+                  </div>
+                )
+              }
               <ResponsiveNav isDesktop={isDesktop} />
             </div>
           </div>
