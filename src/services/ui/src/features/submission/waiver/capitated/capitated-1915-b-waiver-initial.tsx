@@ -223,7 +223,7 @@ export const Capitated1915BWaiverInitialPage = () => {
                       {label}
                       {required ? <Inputs.RequiredIndicator /> : null}
                     </Inputs.FormLabel>
-                    <Inputs.Upload {...field} />
+                    <Inputs.Upload files={field?.value ?? []} setFiles={field.onChange}  />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}
