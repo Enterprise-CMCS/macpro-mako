@@ -1,5 +1,4 @@
 const getBundleFromEvent = (configKey, stage) => {
-    console.log("configKey and stage coming in: ", configKey, stage);
     switch (configKey) {
         case "new-submission-medicaid-spa":
             return {
@@ -87,7 +86,6 @@ const buildKeyFromRecord = (record) => {
 
 export const getBundle = (record, stage) => {
     const configKey = buildKeyFromRecord(record);
-    if (!configKey) return { message: "no configKey found, no email sent"};
 
     return getBundleFromEvent(configKey, stage);
 }

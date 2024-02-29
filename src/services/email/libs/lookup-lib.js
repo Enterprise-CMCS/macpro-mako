@@ -15,7 +15,6 @@ export const getLookupValues = async (lookupList, lookupId) => {
                     return await Promise.resolve(`Don't have function for ${lookupType}`);
             }
         }))
-        console.log("lookupPromises: ", lookupPromises);
         lookupPromises.forEach((promise) => {
             if (promise.status === "fulfilled") returnData = { ...returnData, ...promise.value };
         })

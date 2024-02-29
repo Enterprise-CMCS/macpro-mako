@@ -17,7 +17,6 @@ export const getCognitoData = async (id) => {
       UserPoolId: process.env.cognitoPoolId,
     });
     const listUsersResponse = await Cognito.send(commandListUsers);
-    console.log("listUsers response: ", listUsersResponse);
     const userList = listUsersResponse.Users.map((user) => {
       let oneUser = {};
       user.Attributes.forEach((attribute) => {
@@ -27,10 +26,10 @@ export const getCognitoData = async (id) => {
         oneUser["custom:state"].includes(lookupState))
         return `"${oneUser.family_name}, ${oneUser.given_name}" <${oneUser.email}>`;
     }).filter(Boolean);
-    console.log("userList is: ", JSON.stringify(userList, null, 4));
 
     return { "allState": userList.join(';') };
   } catch (error) {
     console.log("Cognito error is: ", error);
+    return {"message": error.message };
   }
 };

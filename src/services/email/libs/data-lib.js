@@ -3,7 +3,6 @@ import { DateTime } from "luxon";
 import { getLookupValues } from "./lookup-lib";
 
 const formatAttachments = (formatType, attachmentList) => {
-    console.log("got attachments for format: ", attachmentList, formatType);
     const formatChoices = {
         "text": {
             begin: "\n\n",
@@ -44,16 +43,13 @@ function formatNinetyDaysDate(emailBundle) {
 
 export const buildEmailData = async (bundle, data) => {
     const returnObject = {};
-    console.log("got bundle and data: ", JSON.stringify(bundle, null, 4), data);
 
     const lookupValues = await getLookupValues(bundle.lookupList, data.id);
-    console.log("lookupValues: ", lookupValues);
     data = { ...data, ...lookupValues };
 
     if (!bundle.dataList || !Array.isArray(bundle.dataList) || bundle.dataList.length === 0)
         return { error: "init statement fail", bundle, data };
 
-    console.log("got datalist and data: ", bundle.dataList, data);
     bundle.dataList.forEach((dataType) => {
         switch (dataType) {
             case 'territory':
@@ -89,6 +85,5 @@ export const buildEmailData = async (bundle, data) => {
                 break;
         }
     });
-    console.log("returnObject: ", returnObject);
     return returnObject;
 };
