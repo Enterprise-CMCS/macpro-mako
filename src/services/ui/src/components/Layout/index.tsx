@@ -222,21 +222,23 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             // When the user is signed in
             <UserDropdownMenu />
           ) : (
-            // When the user is not signed in
-            <>
-              <button
-                className="text-white hover:text-white/70"
-                onClick={handleLogin}
-              >
-                Sign In
-              </button>
-              <button
-                className="text-white hover:text-white/70"
-                onClick={handleRegister}
-              >
-                Register
-              </button>
-            </>
+            !isFaqPage && (
+              // When the user is not signed in
+              <>
+                <button
+                  className="text-white hover:text-white/70"
+                  onClick={handleLogin}
+                >
+                  Sign In
+                </button>
+                <button
+                  className="text-white hover:text-white/70"
+                  onClick={handleRegister}
+                >
+                  Register
+                </button>
+              </>
+            )
           )}
         </>
       </>
@@ -265,21 +267,23 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 // When the user is signed in
                 <UserDropdownMenu />
               ) : (
-                // When the user is not signed in
-                <>
-                  <button
-                    className="text-left block py-2 pl-3 pr-4 text-white rounded"
-                    onClick={handleLogin}
-                  >
-                    Sign In
-                  </button>
-                  <button
-                    className="text-white hover:text-white/70"
-                    onClick={handleRegister}
-                  >
-                    Register
-                  </button>
-                </>
+                !isFaqPage && (
+                  // When the user is not signed in
+                  <>
+                    <button
+                      className="text-left block py-2 pl-3 pr-4 text-white rounded"
+                      onClick={handleLogin}
+                    >
+                      Sign In
+                    </button>
+                    <button
+                      className="text-white hover:text-white/70"
+                      onClick={handleRegister}
+                    >
+                      Register
+                    </button>
+                  </>
+                )
               )}
             </>
           </ul>
