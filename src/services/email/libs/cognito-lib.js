@@ -10,20 +10,27 @@ const Cognito = new CognitoIdentityProviderClient({
 
 // have to get all users, as custom attributes (like state and role) are not searchable
 export const getCognitoData = async (id) => {
-    try {
+  const lookupState = id.toString().substring(0, 2);
+  try {
 
-      const commandListUsers = new ListUsersCommand({
-        UserPoolId: process.env.cognitoPoolId,
+    const commandListUsers = new ListUsersCommand({
+      UserPoolId: process.env.cognitoPoolId,
     });
     const listUsersResponse = await Cognito.send(commandListUsers);
-        console.log("listUsers response: ", listUsersResponse);
-        const userAttributesList = listUsersResponse.Users.map((response) => {
-          return response.Attributes;
-        })
-        console.log("listUsers Attributes: ", JSON.stringify(userAttributesList, null, 4));
+    console.log("listUsers response: ", listUsersResponse);
+    const userList = listUsersResponse.Users.map((user) => {
+      let oneUser = {};
+      user.Attributes.forEach((attribute) => {
+        oneUser[attribute.Name] = attribute.Value;
+      });
+      if (oneUser["custom:cms-roles"] === "onemac-micro-statesubmitter" &&
+        oneUser["custom:state"].includes(lookupState))
+        return `"${oneUser.family_name}, ${oneUser.given_name}" <${oneUser.email}>`;
+    })
+    console.log("userList is: ", JSON.stringify(userList, null, 4));
 
-      return { "allState": `'${id} State 1' <k.grue.stateuser@gmail.com>;'${id} State 2' <k.grue.stateadmn@gmail.com>`};
-    } catch (error) {
-      console.log("Cognito error is: ", error);
-    }
-  };
+    return { "allState": userList.join(';') };
+  } catch (error) {
+    console.log("Cognito error is: ", error);
+  }
+};
