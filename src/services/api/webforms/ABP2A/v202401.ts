@@ -125,9 +125,12 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Input",
-                        name: "describe_other",
+                        name: "assurances_describe_other",
                         label: "Describe",
                         labelStyling: "font-bold",
+                        rules: {
+                          required: "* Required",
+                        },
                       },
                     ],
                   },
@@ -141,6 +144,9 @@ export const v202401: FormSchema = {
                 "Provide a copy of the letter, email, or other communication.",
               descriptionAbove: true,
               descriptionStyling: "font-bold text-black",
+              rules: {
+                required: "* Required",
+              },
               props: { maxFiles: 3 },
             },
             {
@@ -149,6 +155,9 @@ export const v202401: FormSchema = {
               descriptionAbove: true,
               description:
                 "When did/will the state/territory inform the individuals?",
+              rules: {
+                required: "* Required",
+              },
               descriptionStyling: "font-bold text-black",
             },
             {
@@ -158,6 +167,9 @@ export const v202401: FormSchema = {
               description:
                 "Describe the state/territory's process for allowing individuals in the Section 1902(a)(10)(A)(i)(VIII) eligibility group who meet exemption criteria to disenroll from the ABP using Section 1937 requirements and enroll in the ABP that is the state/territory's approved Medicaid state plan.",
               descriptionStyling: "font-bold text-black",
+              rules: {
+                required: "* Required",
+              },
             },
             {
               rhf: "Checkbox",
@@ -167,7 +179,7 @@ export const v202401: FormSchema = {
                 options: [
                   {
                     label:
-                      "The state/territory assures it will inform the individual of the following: A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements<br><br> B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits",
+                      "The state/territory assures it will inform the individual of the following: A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits",
                     value:
                       "state_territory_will_document_exempt_individuals_eligibility",
                   },
@@ -180,6 +192,9 @@ export const v202401: FormSchema = {
               descriptionAbove: true,
               descriptionStyling: "font-bold text-black",
               description: "Where will the information be documented?",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -196,9 +211,12 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Input",
-                        name: "describe_other",
+                        name: "where_will_information_be_documented_describe_other",
                         label: "Describe",
                         labelStyling: "font-bold",
+                        rules: {
+                          required: "* Required",
+                        },
                       },
                     ],
                   },
@@ -213,6 +231,9 @@ export const v202401: FormSchema = {
               description:
                 "What documentation will be maintained in the eligibility file?",
               formItemStyling: "border-b-4",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -227,13 +248,17 @@ export const v202401: FormSchema = {
                   },
                   {
                     label: "Other",
-                    value: "other",
+                    value:
+                      "what_documentation_will_be_maintained_in_the_eligibility_file_other",
                     slots: [
                       {
                         rhf: "Input",
                         name: "describe_other",
                         label: "Describe",
                         labelStyling: "font-bold",
+                        rules: {
+                          required: "* Required",
+                        },
                       },
                     ],
                   },
