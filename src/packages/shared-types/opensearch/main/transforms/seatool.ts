@@ -183,9 +183,9 @@ export const transform = (id: string) => {
         seatoolStatus,
         flavorLookup(data.STATE_PLAN.PLAN_TYPE)
       ),
-      raiWithdrawEnabled: !finalDispositionStatuses.includes(cmsStatus)
-        ? undefined
-        : true,
+      raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus)
+        ? false
+        : undefined,
     };
     return resp;
   });
