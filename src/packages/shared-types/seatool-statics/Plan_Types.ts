@@ -1,4 +1,14 @@
-// seatool authorities and authority id
+//
+//
+//
+//
+// Be advised:  This plan_types file holds the authorities; the authroity id and its corresponding name.
+// Be advised:  The seatool table is called Plan_Types, hence this file's name.
+//
+//
+//
+//
+
 export const SEATOOL_AUTHORITIES: { [key: string]: string } = {
   "121": "1115",
   "122": "1915(b)",

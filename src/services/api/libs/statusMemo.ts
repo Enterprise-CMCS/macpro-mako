@@ -1,11 +1,16 @@
-export function buildStatusMemoQuery(id: string, msg: string) {
+export function buildStatusMemoQuery(
+  id: string,
+  msg: string,
+  operation: "insert" | "update" = "update"
+) {
   const printable = new Date().toLocaleString("en-US", {
     timeZone: "America/New_York",
   });
-  return `
-    UPDATE SEA.dbo.State_Plan
-    SET 
-        Status_Memo =  '- OneMAC Activity: ${printable} - ${msg} \r' + CAST(ISNULL(Status_Memo, '') AS VARCHAR(MAX))
-    WHERE ID_Number = '${id}'
-  `;
+  const newEntry = `'- OneMAC Activity: ${printable} - ${msg} \\r'`;
+  const existingValue = " + CAST(ISNULL(Status_Memo, '') AS VARCHAR(MAX))";
+  if (operation === "update") {
+    return newEntry + existingValue;
+  } else {
+    return newEntry;
+  }
 }

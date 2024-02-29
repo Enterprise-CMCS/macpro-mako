@@ -99,11 +99,12 @@ export const OPTIONS_STATE = [
   { label: "Wyoming", value: "WY" },
 ];
 
-export const zWaiverId = z.string().regex(
-  // /\d{4,5}\.R\d{2}\.\d{2}$/,
-  /\d{4,5}.R\d{2}.\d{2}$/,
-  "ID doesn't match format ####.R##.## or #####.R##.##"
-);
+export const zWaiverId = z
+  .string()
+  .regex(
+    /\d{4,5}\.R\d{2}\.\d{2}$/,
+    "ID doesn't match format ####.R##.## or #####.R##.##"
+  );
 
 export const FORM = z.object({
   waiverIds: z.array(zWaiverId),

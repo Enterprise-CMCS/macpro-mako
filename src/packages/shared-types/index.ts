@@ -11,7 +11,7 @@ export * from "./lambda-events";
 export * as opensearch from "./opensearch";
 export * from "./states";
 export * from "./statusHelper";
-export * from "./seatool-authorities";
+export * from "./seatool-statics";
 export * from "./seatool-tables";
 export * from "./uploads";
 export * from "./user";
