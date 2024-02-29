@@ -18,7 +18,7 @@ const getLinks = (isAuthenticated: boolean, role?: boolean) => {
   const isProd =
     (window && window.location.hostname === "mako.cms.gov") ||
     window.location.hostname === "onemac.cms.gov";
-  return [
+  return window && window.location.pathname.startsWith("/faq") ? [] : [
     {
       name: "Home",
       link: "/",
@@ -53,7 +53,7 @@ const UserDropdownMenu = () => {
     await Auth.signOut();
   };
 
-  return (
+  return window && window.location.pathname.startsWith("/faq") ? <></> : (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         asChild
