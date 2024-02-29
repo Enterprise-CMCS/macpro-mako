@@ -7,25 +7,25 @@ import {
   AccordionContent,
   AccordionTrigger,
   SubNavHeader,
+  useParams,
 } from "@/components";
-import { useParams } from "react-router-dom";
 
 export const Faq = () => {
-  const { anchorId } = useParams();
+  const { id } = useParams("/faq/:id");
 
   const [openItems, setOpenItems] = useState<string[]>([]);
   useEffect(() => {
-    if (anchorId) {
-      const element = document.getElementById(anchorId);
+    if (id) {
+      const element = document.getElementById(id);
       if (element) {
-        setOpenItems(["spa-id-format"]);
+        setOpenItems([id]);
         window.scrollTo({
           top: element.offsetTop,
           behavior: "smooth",
         });
       }
     }
-  }, [anchorId]);
+  }, [id]);
   return (
     <>
       <SubNavHeader>
@@ -35,12 +35,22 @@ export const Faq = () => {
         <div className="flex-1">
           {oneMACFAQContent.map(({ sectionTitle }) => (
             <article key={sectionTitle} className="mb-8">
-              <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
+              <Accordion
+                type="multiple"
+                value={openItems}
+                onValueChange={setOpenItems}
+              >
                 {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
                   <article key={sectionTitle} className="mb-8">
-                    <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
+                    <h2 className="text-2xl mb-4 text-primary">
+                      {sectionTitle}
+                    </h2>
                     {qanda.map(({ anchorText, answerJSX, question }) => (
-                      <AccordionItem value={anchorText} id={anchorText} key={anchorText}>
+                      <AccordionItem
+                        value={anchorText}
+                        id={anchorText}
+                        key={anchorText}
+                      >
                         <AccordionTrigger>{question}</AccordionTrigger>
                         <AccordionContent>{answerJSX}</AccordionContent>
                       </AccordionItem>
@@ -49,7 +59,7 @@ export const Faq = () => {
                 ))}
               </Accordion>
             </article>
-          ))} 
+          ))}
         </div>
         <div>
           <CardWithTopBorder>

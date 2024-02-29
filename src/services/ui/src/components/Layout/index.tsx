@@ -11,36 +11,48 @@ import { UsaBanner } from "../UsaBanner";
 import { useUserContext } from "../Context";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
-import { useNavigate, FAQ_TAB } from "../Routing";
+import { useNavigate } from "../Routing";
 import { ModalProvider, AlertProvider } from "@/components";
+import { isFaqPage, isProd } from "@/utils";
 
-const getLinks = (isAuthenticated: boolean, role?: boolean) => {
-  const isProd =
-    (window && window.location.hostname === "mako.cms.gov") ||
-    window.location.hostname === "onemac.cms.gov";
-  return window && window.location.pathname.startsWith("/faq") ? [] : [
-    {
-      name: "Home",
-      link: "/",
-      condition: true,
-    },
-    {
-      name: "Dashboard",
-      link: "/dashboard",
-      condition: isAuthenticated && role,
-    },
-    {
-      name: "FAQ",
-      link: "/faq",
-      condition: true,
-    },
-    {
-      name: "Webforms",
-      link: "/webforms",
-      condition: isAuthenticated && !isProd,
-    },
-  ].filter((l) => l.condition);
+const useGetLinks = () => {
+  const { isLoading, data } = useGetUser();
+  const userContext = useUserContext();
+
+  const role = useMemo(() => {
+    return userContext?.user?.["custom:cms-roles"] ? true : false;
+  }, []);
+
+  const links =
+    isLoading || isFaqPage
+      ? []
+      : [
+          {
+            name: "Home",
+            link: "/",
+            condition: true,
+          },
+          {
+            name: "Dashboard",
+            link: "/dashboard",
+            condition: !!data?.user && role,
+          },
+          {
+            name: "FAQ",
+            link: "/faq",
+            condition: true,
+          },
+          {
+            name: "Webforms",
+            link: "/webforms",
+            condition: !!data?.user && !isProd,
+          },
+        ].filter((l) => l.condition);
+
+  return { links, isFaqPage };
 };
+
+export default useGetLinks;
 
 const UserDropdownMenu = () => {
   const navigate = useNavigate();
@@ -53,7 +65,9 @@ const UserDropdownMenu = () => {
     await Auth.signOut();
   };
 
-  return window && window.location.pathname.startsWith("/faq") ? <></> : (
+  return window && window.location.pathname.startsWith("/faq") ? (
+    <></>
+  ) : (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         asChild
@@ -114,27 +128,25 @@ export const Layout = () => {
         <nav className="bg-primary">
           <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
             <div className="h-[70px] flex gap-12 items-center text-white">
-              {
-                !(window && window.location.pathname.startsWith("/faq")) ? (
-                  // This is the original Link component
-                  <Link to="/">
-                    <img
-                      className="h-10 w-28 min-w-[112px] resize-none"
-                      src={oneMacLogo}
-                      alt="onemac site logo"
-                    />
-                  </Link>
-                ) : (
-                  // This is a non-clickable element that looks the same
-                  <div>
-                    <img
-                      className="h-10 w-28 min-w-[112px] resize-none"
-                      src={oneMacLogo}
-                      alt="onemac site logo"
-                    />
-                  </div>
-                )
-              }
+              {!isFaqPage ? (
+                // This is the original Link component
+                <Link to="/">
+                  <img
+                    className="h-10 w-28 min-w-[112px] resize-none"
+                    src={oneMacLogo}
+                    alt="onemac site logo"
+                  />
+                </Link>
+              ) : (
+                // This is a non-clickable element that looks the same
+                <div>
+                  <img
+                    className="h-10 w-28 min-w-[112px] resize-none"
+                    src={oneMacLogo}
+                    alt="onemac site logo"
+                  />
+                </div>
+              )}
               <ResponsiveNav isDesktop={isDesktop} />
             </div>
           </div>
@@ -162,14 +174,11 @@ type ResponsiveNavProps = {
   isDesktop: boolean;
 };
 
-const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
+export const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const [prevMediaQuery, setPrevMediaQuery] = useState(isDesktop);
   const [isOpen, setIsOpen] = useState(false);
+  const { links } = useGetLinks();
   const { isLoading, isError, data } = useGetUser();
-  const userContext = useUserContext();
-  const role = useMemo(() => {
-    return userContext?.user?.["custom:cms-roles"] ? true : false;
-  }, []);
 
   const handleLogin = () => {
     const authConfig = Auth.configure();
@@ -199,10 +208,10 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   if (isDesktop) {
     return (
       <>
-        {getLinks(!!data.user, role).map((link) => (
+        {links.map((link) => (
           <NavLink
             to={link.link}
-            target={link.link === "/faq" ? FAQ_TAB : "_self"}
+            target={link.link === "/faq" ? "_blank" : "_self"}
             key={link.name}
             className={setClassBasedOnNav}
           >
@@ -242,12 +251,12 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       {isOpen && (
         <div className="w-full fixed top-[100px] left-0 z-50">
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-2 gap-4 rounded-lg bg-accent">
-            {getLinks(!!data.user, role).map((link) => (
+            {links.map((link) => (
               <li key={link.link}>
                 <Link
                   className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
-                  target={link.link === "/faq" ? FAQ_TAB : "_self"}
+                  target={link.link === "/faq" ? "_blank" : "_self"}
                 >
                   {link.name}
                 </Link>
