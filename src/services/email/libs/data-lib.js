@@ -38,7 +38,7 @@ function formatNinetyDaysDate(emailBundle) {
     if (!emailBundle?.notificationMetadata?.submissionDate) return "Pending";
     return DateTime.fromMillis(emailBundle.notificationMetadata.submissionDate)
         .plus({ days: 90 })
-        .toFormat("DDDD '@ 11:59pm' ET");
+        .toFormat("DDDD '@ 11:59pm ET'");
 
 }
 

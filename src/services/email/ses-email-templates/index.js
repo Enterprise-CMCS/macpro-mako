@@ -281,7 +281,7 @@ The package will no longer be considered for CMS review:</p>
 Summary:
 <br>{{additionalInformation}}
 <p>If you have questions or did not expect this email, please contact 
-OSG Inbox.</p>
+<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
     text: `
 This is confirmation that you have requested to withdraw the package below. 
@@ -296,7 +296,7 @@ Summary:
 {{additionalInformation}}
 
 If you have questions or did not expect this email, please contact 
-OSG Inbox.
+spa@cms.hhs.gov.
 
 Thank you!`,
 },

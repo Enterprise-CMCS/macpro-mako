@@ -58,7 +58,7 @@ const getBundleFromEvent = (configKey, stage) => {
         case "respond-to-rai-chip-spa":
             return {
                 "lookupList": ["osInsights"],
-                "dataList": ["osgEmail", "chipInbox", "chipCcList", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
+                "dataList": ["osgEmail", "chipInbox", "chipCcList", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "proposedEffectiveDateNice", "ninetyDaysLookupNice", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `respond-to-rai-chip-spa-cms_${stage}`,
                     "ToAddresses": ["osgEmail", "chipInbox"],
