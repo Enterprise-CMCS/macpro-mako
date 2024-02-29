@@ -17,7 +17,7 @@ export const getCognitoData = async (id) => {
     });
     const listUsersResponse = await Cognito.send(commandListUsers);
         console.log("listUsers response: ", listUsersResponse);
-        const userAttributesList = listUsersResponse.map((response) => {
+        const userAttributesList = listUsersResponse.Users.map((response) => {
           return response.Attributes;
         })
         console.log("listUsers Attributes: ", JSON.stringify(userAttributesList, null, 4));
