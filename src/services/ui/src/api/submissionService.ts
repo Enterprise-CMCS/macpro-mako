@@ -27,7 +27,7 @@ type PreSignedURL = {
   key: string;
   bucket: string;
 };
-type UploadRecipe = PreSignedURL & {
+export type UploadRecipe = PreSignedURL & {
   data: File;
   title: string;
   name: string;
@@ -35,7 +35,9 @@ type UploadRecipe = PreSignedURL & {
 
 /** Pass in an array of UploadRecipes and get a back-end compatible object
  * to store attachment data */
-const buildAttachmentObject = (recipes: UploadRecipe[]): Attachment[] => {
+export const buildAttachmentObject = (
+  recipes: UploadRecipe[]
+): Attachment[] => {
   return recipes
     .map(
       (r) =>
@@ -52,7 +54,7 @@ const buildAttachmentObject = (recipes: UploadRecipe[]): Attachment[] => {
 
 /** Builds the payload for submission based on which variant a developer has
  * configured the {@link submit} function with */
-const buildSubmissionPayload = <T extends Record<string, unknown>>(
+export const buildSubmissionPayload = <T extends Record<string, unknown>>(
   data: T,
   user: OneMacUser | undefined,
   endpoint: SubmissionServiceEndpoint,
@@ -64,60 +66,34 @@ const buildSubmissionPayload = <T extends Record<string, unknown>>(
     submitterName:
       `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
   };
+  const baseProperties = {
+    authority: authority,
+    origin: "micro",
+  };
 
   switch (endpoint) {
     case "/submit":
       return {
-        authority: authority,
-        origin: "micro",
-        ...data,
+        ...baseProperties,
         ...userDetails,
+        ...data,
         proposedEffectiveDate: seaToolFriendlyTimestamp(
           data.proposedEffectiveDate as Date
         ),
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
         state: (data.id as string).split("-")[0],
-      };
-    case buildActionUrl(Action.WITHDRAW_RAI):
-      return {
-        authority: authority,
-        origin: "micro",
-        ...data,
-        ...userDetails,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
     case buildActionUrl(Action.ISSUE_RAI):
-      return {
-        authority: authority,
-        origin: "micro",
-        ...data,
-        ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
-      };
     case buildActionUrl(Action.RESPOND_TO_RAI):
-      return {
-        authority: authority,
-        origin: "micro",
-        ...data,
-        ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
-      };
-    case buildActionUrl(Action.WITHDRAW_PACKAGE):
-      return {
-        authority: authority,
-        origin: "micro",
-        ...data,
-        ...userDetails,
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
-      };
     case buildActionUrl(Action.ENABLE_RAI_WITHDRAW):
     case buildActionUrl(Action.DISABLE_RAI_WITHDRAW):
+    case buildActionUrl(Action.WITHDRAW_RAI):
+    case buildActionUrl(Action.WITHDRAW_PACKAGE):
     default:
       return {
-        authority: authority,
-        origin: "micro",
-        ...data,
+        ...baseProperties,
         ...userDetails,
+        ...data,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
   }
@@ -141,6 +117,7 @@ export const submit = async <T extends Record<string, unknown>>({
         }));
       })
       .flat();
+    console.debug("attachments: ", attachments);
     // Generate a presigned url for each attachment
     const preSignedURLs: PreSignedURL[] = await Promise.all(
       attachments.map(() =>
@@ -149,6 +126,7 @@ export const submit = async <T extends Record<string, unknown>>({
         })
       )
     );
+    console.debug("preSignedURLs: ", preSignedURLs);
     // For each attachment, add name, title, and a presigned url... and push to uploadRecipes
     const uploadRecipes: UploadRecipe[] = preSignedURLs.map((obj, idx) => ({
       ...obj, // Spreading the presigned url
@@ -160,6 +138,7 @@ export const submit = async <T extends Record<string, unknown>>({
         attachments[idx].attachmentKey,
       name: attachments[idx].file.name,
     }));
+    console.debug("uploadRecipes: ", uploadRecipes);
     // Upload attachments
     await Promise.all(
       uploadRecipes.map(async ({ url, data }) => {
@@ -189,7 +168,7 @@ export const submit = async <T extends Record<string, unknown>>({
 
 /** A useful interface for using react-query with our submission service. If you
  * are using react-hook-form's `form.handleSubmit()` pattern, bypass this and just
- * use {@link submit} (see {@link MedicaidForm} for an example). */
+ * use {@link submit}. */
 export const useSubmissionService = <T extends Record<string, unknown>>(
   config: SubmissionServiceParameters<T>,
   options?: UseMutationOptions<SubmissionServiceResponse, ReactQueryApiError>
