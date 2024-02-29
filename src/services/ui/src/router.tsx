@@ -19,6 +19,7 @@ export const router = createBrowserRouter([
       },
       { path: "/details", element: <F.Details /> },
       { path: "/faq", element: <F.Faq /> },
+      { path: "/faq/:anchorId?", element:  <F.Faq />},
       {
         path: "/new-submission",
         element: <F.NewSubmissionInitialOptions />,

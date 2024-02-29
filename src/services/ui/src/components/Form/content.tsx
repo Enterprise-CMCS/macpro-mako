@@ -63,7 +63,7 @@ export const AttachmentsSizeTypesDesc = ({
       full list on the{" "}
       {
         <Link
-          to="/faq/#acceptable-file-formats"
+          to="/faq/acceptable-file-formats"
           target={FAQ_TAB}
           rel="noopener noreferrer"
           className="text-blue-700 hover:underline"

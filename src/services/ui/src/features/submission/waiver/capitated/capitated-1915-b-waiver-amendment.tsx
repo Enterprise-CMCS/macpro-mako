@@ -184,7 +184,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
                       <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
-                      to="/faq/#waiver-amendment-id-format"
+                      to="/faq/waiver-amendment-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"
@@ -242,7 +242,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
             <DescriptionInput control={form.control} name="description" /> */}
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/medicaid-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}

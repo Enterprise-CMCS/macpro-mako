@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
 import {
   Accordion,
@@ -7,8 +8,22 @@ import {
   AccordionTrigger,
   SubNavHeader,
 } from "@/components";
+import { useParams } from "react-router-dom";
 
 export const Faq = () => {
+  const { anchorId } = useParams();
+
+  useEffect(() => {
+    if (anchorId) {
+      const element = document.getElementById(anchorId);
+      if (element) {
+        window.scrollTo({
+          top: element.offsetTop,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [anchorId]);
   return (
     <>
       <SubNavHeader>
@@ -21,14 +36,14 @@ export const Faq = () => {
               <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
               <Accordion type="multiple">
                 {qanda.map(({ anchorText, answerJSX, question }) => (
-                  <AccordionItem key={anchorText} value={question}>
+                  <AccordionItem id={anchorText} key={anchorText} value={question}>
                     <AccordionTrigger>{question}</AccordionTrigger>
                     <AccordionContent>{answerJSX}</AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
             </article>
-          ))}
+          ))} 
         </div>
         <div>
           <CardWithTopBorder>
