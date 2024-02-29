@@ -52,8 +52,6 @@ const useGetLinks = () => {
   return { links, isFaqPage };
 };
 
-export default useGetLinks;
-
 const UserDropdownMenu = () => {
   const navigate = useNavigate();
 
@@ -174,7 +172,7 @@ type ResponsiveNavProps = {
   isDesktop: boolean;
 };
 
-export const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
+const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const [prevMediaQuery, setPrevMediaQuery] = useState(isDesktop);
   const [isOpen, setIsOpen] = useState(false);
   const { links } = useGetLinks();

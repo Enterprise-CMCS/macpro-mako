@@ -53,8 +53,9 @@ export const Dashboard = () => {
   if (!role) {
     return <Navigate path={"/"} />;
   }
-    useScrollToTop();
-    
+  useScrollToTop();
+
+  return (
     <OsProvider
       value={{
         data: osData.data,
