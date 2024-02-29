@@ -22,6 +22,7 @@ type SubmissionServiceResponse = {
     message: string;
   };
 };
+type AttachmentKeyValue = { attachmentKey: string; file: File };
 type PreSignedURL = {
   url: string;
   key: string;
@@ -99,6 +100,34 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
   }
 };
 
+export const buildAttachmentKeyValueArr = (
+  attachments: Record<string, File[]>
+): AttachmentKeyValue[] =>
+  Object.entries(attachments)
+    .filter(([, val]) => val !== undefined && (val as File[]).length)
+    .map(([key, value]) => {
+      return (value as File[]).map((file) => ({
+        attachmentKey: key,
+        file: file,
+      }));
+    })
+    .flat();
+
+export const urlsToRecipes = (
+  urls: PreSignedURL[],
+  attachments: AttachmentKeyValue[]
+): UploadRecipe[] =>
+  urls.map((obj, idx) => ({
+    ...obj, // Spreading the presigned url
+    data: attachments[idx].file, // The attachment file object
+    // Add your attachments object key and file label value to the attachmentTitleMap
+    // for this transform to work. Else the title will just be the object key.
+    title:
+      attachmentTitleMap?.[attachments[idx].attachmentKey] ||
+      attachments[idx].attachmentKey,
+    name: attachments[idx].file.name,
+  }));
+
 /** A useful interface for submitting form data to our submission service */
 export const submit = async <T extends Record<string, unknown>>({
   data,
@@ -108,16 +137,9 @@ export const submit = async <T extends Record<string, unknown>>({
 }: SubmissionServiceParameters<T>): Promise<SubmissionServiceResponse> => {
   if (data?.attachments) {
     // Drop nulls and non arrays
-    const attachments = Object.entries(data.attachments)
-      .filter(([, val]) => val !== undefined && (val as File[]).length)
-      .map(([key, value]) => {
-        return (value as File[]).map((file) => ({
-          attachmentKey: key,
-          file: file,
-        }));
-      })
-      .flat();
-    console.debug("attachments: ", attachments);
+    const attachments = buildAttachmentKeyValueArr(
+      data.attachments as Record<string, File[]>
+    );
     // Generate a presigned url for each attachment
     const preSignedURLs: PreSignedURL[] = await Promise.all(
       attachments.map(() =>
@@ -126,19 +148,11 @@ export const submit = async <T extends Record<string, unknown>>({
         })
       )
     );
-    console.debug("preSignedURLs: ", preSignedURLs);
     // For each attachment, add name, title, and a presigned url... and push to uploadRecipes
-    const uploadRecipes: UploadRecipe[] = preSignedURLs.map((obj, idx) => ({
-      ...obj, // Spreading the presigned url
-      data: attachments[idx].file, // The attachment file object
-      // Add your attachments object key and file label value to the attachmentTitleMap
-      // for this transform to work. Else the title will just be the object key.
-      title:
-        attachmentTitleMap?.[attachments[idx].attachmentKey] ||
-        attachments[idx].attachmentKey,
-      name: attachments[idx].file.name,
-    }));
-    console.debug("uploadRecipes: ", uploadRecipes);
+    const uploadRecipes: UploadRecipe[] = urlsToRecipes(
+      preSignedURLs,
+      attachments
+    );
     // Upload attachments
     await Promise.all(
       uploadRecipes.map(async ({ url, data }) => {

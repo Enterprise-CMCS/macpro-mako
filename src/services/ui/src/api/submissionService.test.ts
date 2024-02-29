@@ -1,34 +1,7 @@
-import {
-  afterAll,
-  afterEach,
-  beforeAll,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
-import { API } from "aws-amplify";
+import { describe, expect, it } from "vitest";
 import * as unit from "./submissionService";
-import { PlanType } from "shared-types";
 import { SubmissionServiceEndpoint } from "@/lib";
 import { OneMacUser } from "@/api/useGetUser";
-import { mockSubmit } from "./mocks";
-
-// const mockPost = vi.fn(async (apiName, path, init) => {
-//   switch (path) {
-//     case "/getUploadUrl":
-//       console.debug("/getUploadUrl intercepted");
-//       return await fetch(path, {
-//         method: "POST",
-//       });
-//     case "/upload":
-//       return await fetch(path, init);
-//     case "/test":
-//     default:
-//       console.debug("form submission intercepted: ", init.body);
-//       return await fetch(path, init);
-//   }
-// });
 
 const mockFormData = {
   test: "data",
@@ -68,24 +41,43 @@ const mockGeorge: OneMacUser = {
   },
 };
 
-// describe("submit", () => {
-//   beforeAll(() => mockSubmit.server.listen());
-//   afterEach(() => mockSubmit.server.resetHandlers());
-//   afterAll(() => mockSubmit.server.close());
-//   it("processes and submits form data", async () => {
-//     API.post = mockPost;
-//     const res = await unit.submit({
-//       data: mockFormData,
-//       endpoint: "/test" as SubmissionServiceEndpoint,
-//       user: mockGeorge,
-//       authority: PlanType.MED_SPA,
-//     });
-//     console.log(res);
-//     expect(res.body.message).toEqual("pass");
-//   });
-// });
-
 describe("helpers", () => {
+  describe("convertFormAttachments", () => {
+    it("converts a record of file attachments to an array of key/value pairings", () => {
+      const testFile = new File([""], "test.pdf");
+      const preTransformed: Record<string, File[]> = {
+        test: [testFile],
+        testAgain: [testFile, testFile],
+      };
+      const transformed = unit.buildAttachmentKeyValueArr(preTransformed);
+      expect(transformed).toStrictEqual([
+        { attachmentKey: "test", file: testFile },
+        { attachmentKey: "testAgain", file: testFile },
+        { attachmentKey: "testAgain", file: testFile },
+      ]);
+    });
+  });
+
+  describe("urlsToRecipes", () => {
+    it("takes pre-signed URLs and attachment key/value pairs and returns the upload recipes array", () => {
+      const testFile = new File([""], "test.pdf");
+      const res = unit.urlsToRecipes(
+        [{ url: "/test", key: "test", bucket: "test-bucket" }],
+        [{ attachmentKey: "test", file: testFile }]
+      );
+      expect(res).toStrictEqual([
+        {
+          url: "/test",
+          key: "test",
+          bucket: "test-bucket",
+          data: testFile,
+          title: "test",
+          name: "test.pdf",
+        },
+      ]);
+    });
+  });
+
   describe("buildAttachmentObject", () => {
     it("takes UploadRecipe[] and returns Attachment[]", () => {
       const attachments = unit.buildAttachmentObject(mockUploadRecipes(3));
