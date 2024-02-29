@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { zAttachmentRequired } from "@/utils";
-
+import { zAmendmentAppkWaiverNumberSchema } from "@/utils";
 export const OPTIONS_STATE = [
   { label: "Alabama", value: "AL" },
   { label: "Alaska", value: "AK" },
@@ -99,15 +99,8 @@ export const OPTIONS_STATE = [
   { label: "Wyoming", value: "WY" },
 ];
 
-export const zWaiverId = z
-  .string()
-  .regex(
-    /\d{4,5}\.R\d{2}\.\d{2}$/,
-    "ID doesn't match format ####.R##.## or #####.R##.##"
-  );
-
 export const FORM = z.object({
-  waiverIds: z.array(zWaiverId),
+  waiverIds: z.array(zAmendmentAppkWaiverNumberSchema),
   state: z.string(),
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({

@@ -11,6 +11,7 @@ import {
 import { produceMessage } from "../libs/kafka";
 
 export const submit = async (event: APIGatewayEvent) => {
+  // reject no body
   if (!event.body) {
     return response({
       statusCode: 400,
@@ -19,37 +20,44 @@ export const submit = async (event: APIGatewayEvent) => {
   }
   const body = JSON.parse(event.body);
 
+  // reject not authorized
   if (!(await isAuthorized(event, body.state))) {
     return response({
       statusCode: 403,
       body: { message: "Unauthorized" },
     });
   }
+  const waiverIds = body.waiverIds as string[];
 
-  // TODO: zod parse oneMac schema
+  const parentWaiver = waiverIds[0];
+  const schemas = [];
+  for (const WINDEX in waiverIds) {
+    const ID = waiverIds[WINDEX];
+    const validID = /\d{4,5}\.R\d{2}\.\d{2}$/.test(ID);
+    // Reject invalid ID
+    if (!validID) {
+      throw console.error(
+        "MAKO Validation Error. The following waiver id format is incorrect: ",
+        ID
+      );
+    }
 
-  // const kafkaWaivers = waiverIds.map(async (WID, index) => {
-  //   const data = {
-  //     ...body,
-  //     ...(!!index && { appkParentId: `${body.state}-${waiverIds[0]}` }),
-  //   };
+    const validParse = onemacSchema.safeParse({
+      ...body,
+      ...(!!WINDEX && { appkParentId: `${body.state}-${parentWaiver}` }),
+    });
+    // reject invalid parse
+    if (!validParse.success) {
+      throw console.error(
+        "MAKO Validation Error. The following record failed to parse: ",
+        JSON.stringify(validParse),
+        "Because of the following Reason(s): ",
+        validParse.error.message
+      );
+    }
 
-  //   const eventBody = onemacSchema.safeParse(data);
-  //   if (!eventBody.success) {
-  //     throw console.error(
-  //       "MAKO Validation Error. The following record failed to parse: ",
-  //       JSON.stringify(eventBody),
-  //       "Because of the following Reason(s): ",
-  //       eventBody.error.message
-  //     );
-  //   }
-
-  //   return await produceMessage(
-  //     process.env.topicName as string,
-  //     `${body.state}-${WID}`,
-  //     JSON.stringify(eventBody.data)
-  //   );
-  // });
+    schemas.push({ data: validParse.data, id: ID });
+  }
 
   const pool = await sql.connect({
     user: process.env.dbUser,
@@ -63,81 +71,74 @@ export const submit = async (event: APIGatewayEvent) => {
   try {
     await transaction.begin();
 
-    const today = seaToolFriendlyTimestamp();
-    const submissionDate = getNextBusinessDayTimestamp();
+    const dates = {
+      status: seaToolFriendlyTimestamp(),
+      submission: getNextBusinessDayTimestamp(),
+      effectiveDate: body.proposedEffectiveDate,
+    };
 
-    // APP_K
-    const waiverIds = body.waiverIds as string[];
-
-    // for await const insert to seatool
-    for (const waiverId of body.waiverIds) {
-      waiverId;
-    }
-
-    const seatoolWaivers = body.waiverIds.map(async (WID: string) => {
+    for (const WINDEX in waiverIds) {
       await transaction.request().query(`
-        Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Action_Type, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
-          values (
-            '${`${body.state}-${WID}`}'
-            ,'${body.state}'
-            ,(SELECT Action_ID
-              FROM SEA.dbo.Action_Types
-              WHERE Action_Name = '${body.seaActionType}'
-              AND Plan_Type_ID = (
-                SELECT Plan_Type_ID
-                FROM SEA.dbo.Plan_Types
-                WHERE Plan_Type_Name = '${body.authority}'
-              ))
-            ,(Select Region_ID from SEA.dbo.States where State_Code = '${
-              body.state
-            }')
-            ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${
-              body.authority
-            }')
-            ,dateadd(s, convert(int, left(${submissionDate}, 10)), cast('19700101' as datetime))
-            ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
-            ,dateadd(s, convert(int, left(${
-              body.proposedEffectiveDate
-            }, 10)), cast('19700101' as datetime))
-            ,(Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = 'Pending')
-            ,0
-          )
+      Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Action_Type, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
+        values (
+          '${`${body.state}-${waiverIds[WINDEX]}`}'
+          ,'${body.state}'
+          ,(SELECT Action_ID
+            FROM SEA.dbo.Action_Types
+            WHERE Action_Name = '${body.seaActionType}'
+            AND Plan_Type_ID = (
+              SELECT Plan_Type_ID
+              FROM SEA.dbo.Plan_Types
+              WHERE Plan_Type_Name = '${body.authority}'
+            ))
+          ,(Select Region_ID from SEA.dbo.States where State_Code = '${
+            body.state
+          }')
+          ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${
+            body.authority
+          }')
+          ,dateadd(s, convert(int, left(${
+            dates.submission
+          }, 10)), cast('19700101' as datetime))
+          ,dateadd(s, convert(int, left(${
+            dates.status
+          }, 10)), cast('19700101' as datetime))
+          ,dateadd(s, convert(int, left(${
+            dates.effectiveDate
+          }, 10)), cast('19700101' as datetime))
+          ,(Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = 'Pending')
+          ,0
+        )
       `);
-    });
-    const responses = await Promise.allSettled(seatoolWaivers);
+    }
 
     await transaction.commit();
 
     // for await const kafka events
-    const kafkaWaivers = waiverIds.map(async (WID, index) => {
-      const data = {
-        ...body,
-        ...(!!index && { appkParentId: `${body.state}-${waiverIds[0]}` }),
-      };
-
-      const eventBody = onemacSchema.safeParse(data);
-      if (!eventBody.success) {
-        throw console.error(
-          "MAKO Validation Error. The following record failed to parse: ",
-          JSON.stringify(eventBody),
-          "Because of the following Reason(s): ",
-          eventBody.error.message
-        );
-      }
-
-      return await produceMessage(
+    for (const WINDEX in schemas) {
+      const SCHEMA = schemas[WINDEX];
+      await produceMessage(
         process.env.topicName as string,
-        `${body.state}-${WID}`,
-        JSON.stringify(eventBody.data)
+        `${body.state}-${SCHEMA.id}`,
+        JSON.stringify(SCHEMA.data)
       );
-    });
+    }
 
-    await Promise.all(kafkaWaivers);
+    // const kafkaWaivers = schemas.map(async (SCHEMA) => {
+    //   return await produceMessage(
+    //     process.env.topicName as string,
+    //     `${body.state}-${SCHEMA.id}`,
+    //     JSON.stringify(SCHEMA.data)
+    //   );
+    // });
 
-    return response({
-      statusCode: 200,
-      body: { message: "success" },
-    });
+    // const kafkaResponses = await Promise.allSettled(kafkaWaivers);
+    // for (const RESPONSE of kafkaResponses) {
+    //   if (RESPONSE.status === "fulfilled") continue;
+    //   throw new Error(RESPONSE.reason);
+    // }
+
+    return response({ statusCode: 200, body: { message: "success" } });
   } catch (error) {
     console.error({ error });
     await transaction.rollback();

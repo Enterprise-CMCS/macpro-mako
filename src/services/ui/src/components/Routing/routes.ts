@@ -38,4 +38,4 @@ export const WEBFORMS = "/webforms";
 export const WEBFORM = "/webform/:id/:version";
 export const GUIDES = "/guides";
 export const ABPGUIDE = "/guides/abp";
-export const APPK_SUBMISSION = "/new-submission/app-k";
+export const APPK_SUBMISSION = "/new-submission/waiver/app-k";

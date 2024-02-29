@@ -18,7 +18,7 @@ import { Grip, Plus, XIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
 import { cn } from "@/utils";
-import { zWaiverId } from "./consts";
+import { zAmendmentAppkWaiverNumberSchema } from "@/utils";
 import { DragNDrop } from "./DragNDrop";
 
 export const SlotStateSelect = <
@@ -87,7 +87,7 @@ export const SlotWaiverId = <
       const preExitConditions = !state || !value;
       if (preExitConditions) return;
 
-      const parsed = zWaiverId.safeParse(String(value));
+      const parsed = zAmendmentAppkWaiverNumberSchema.safeParse(String(value));
       if (!parsed.success) return setStatus("invalid");
 
       const existsInList = onIncludes(parsed.data);
