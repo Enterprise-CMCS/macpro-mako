@@ -1,10 +1,3 @@
-import { ReactElement, ReactNode } from "react";
-import {
-  ControllerProps,
-  ControllerRenderProps,
-  FieldPath,
-  FieldValues,
-} from "react-hook-form";
 import {
   FormDescription,
   FormItem,
@@ -12,7 +5,14 @@ import {
   RequiredIndicator,
   Textarea,
   Upload,
-} from "@/components";
+} from "@/components/Inputs";
+import {
+  ControllerProps,
+  ControllerRenderProps,
+  FieldPath,
+  FieldValues,
+} from "react-hook-form";
+import { ReactElement, ReactNode } from "react";
 
 export const SlotAttachments = <
   TFieldValues extends FieldValues = FieldValues,
@@ -34,7 +34,7 @@ export const SlotAttachments = <
     return (
       <FormItem {...props}>
         <FormLabel>{label}</FormLabel>
-        <Upload {...field} />
+        <Upload files={field?.value ?? []} setFiles={field.onChange} />
         {message}
       </FormItem>
     );

@@ -1,6 +1,6 @@
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { opensearch, UserRoles } from "shared-types";
+import { Authority, opensearch, UserRoles } from "shared-types";
 import { useQuery } from "@/hooks";
 import { useGetItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
@@ -13,6 +13,7 @@ import { getStatus } from "shared-types/statusHelper";
 import { Link } from "@/components/Routing";
 import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
+import { useLocation } from "react-router-dom";
 
 import { PackageDetails } from "./package-details";
 import { detailsAndActionsCrumbs } from "../actions";
@@ -72,9 +73,17 @@ const StatusCard = (data: opensearch.main.Document) => {
     </DetailCardWrapper>
   );
 };
-const PackageActionsCard = ({ id }: { id: string }) => {
+const PackageActionsCard = ({
+  id,
+  authority,
+}: {
+  id: string;
+  authority: Authority;
+}) => {
+  const location = useLocation();
   const { data, isLoading } = useGetPackageActions(id, { retry: false });
   if (isLoading) return <LoadingSpinner />;
+
   return (
     <DetailCardWrapper title={"Actions"}>
       <div>
@@ -85,19 +94,30 @@ const PackageActionsCard = ({ id }: { id: string }) => {
         ) : (
           <ul>
             {data.actions.map((type, idx) => {
-              return (
-                <Link
-                  key={`${idx}-${type}`}
-                  path={"/action/:id/:type"}
-                  query={{
-                    origin: "actionsDetails",
-                  }}
-                  params={{ id, type }}
-                  className="text-sky-700 underline"
-                >
-                  <li>{mapActionLabel(type)}</li>
-                </Link>
-              );
+              if (authority === Authority["1915b"]) {
+                return (
+                  <Link
+                    state={{ from: `${location.pathname}${location.search}` }}
+                    path="/action/:authority/:id/:type"
+                    key={`${idx}-${type}`}
+                    params={{ id, type, authority }}
+                    className="text-sky-700 underline"
+                  >
+                    <li>{mapActionLabel(type)}</li>
+                  </Link>
+                );
+              } else {
+                return (
+                  <Link
+                    key={`${idx}-${type}`}
+                    path="/action/:id/:type"
+                    params={{ id, type }}
+                    className="text-sky-700 underline"
+                  >
+                    <li>{mapActionLabel(type)}</li>
+                  </Link>
+                );
+              }
             })}
           </ul>
         )}
@@ -139,7 +159,10 @@ export const DetailsContent = ({
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
         >
           <StatusCard {...data._source} />
-          <PackageActionsCard id={data._id} />
+          <PackageActionsCard
+            id={data._id}
+            authority={data._source.authority!}
+          />
         </section>
         <div className="flex flex-col gap-3">
           <PackageDetails {...data._source} />
