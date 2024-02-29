@@ -35,7 +35,6 @@ export const Faq = () => {
         <div className="flex-1">
           {oneMACFAQContent.map(({ sectionTitle }) => (
             <article key={sectionTitle} className="mb-8">
-              <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
               <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
                 {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
                   <article key={sectionTitle} className="mb-8">
