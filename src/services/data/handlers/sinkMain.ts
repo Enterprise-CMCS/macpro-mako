@@ -10,26 +10,6 @@ if (!osDomain) {
 }
 const index = "main";
 
-const subtypeCache: { [key: number]: string | null } = {};
-const getSubtype = async (id: number) => {
-  if (!id) return null;
-  if (!subtypeCache[id]) {
-    const item = await os.getItem(osDomain, "subtypes", id.toString());
-    subtypeCache[id] = item?._source.name;
-  }
-  return subtypeCache[id];
-};
-
-const typeCache: { [key: number]: string | null } = {};
-const getType = async (id: number) => {
-  if (!id) return null;
-  if (!typeCache[id]) {
-    const item = await os.getItem(osDomain, "types", id.toString());
-    typeCache[id] = item?._source.name;
-  }
-  return typeCache[id];
-};
-
 export const handler: Handler<KafkaEvent> = async (event) => {
   const loggableEvent = { ...event, records: "too large to display" };
   const docs: any[] = [];
@@ -45,7 +25,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
             ...(await onemac(event.records[topicPartition], topicPartition))
           );
           break;
-        case "aws.ksqldb.seatool.agg.State_Plan":
+        case "aws.seatool.ksql.onemac.agg.State_Plan":
           docs.push(
             ...(await ksql(event.records[topicPartition], topicPartition))
           );
@@ -67,7 +47,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
-    const { key, value } = kafkaRecord;
+    const { key, value, timestamp } = kafkaRecord;
     try {
       const id: string = JSON.parse(decode(key));
 
@@ -78,7 +58,11 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       }
 
       // Handle everything else and continue
-      const record = { id, ...JSON.parse(decode(value)) };
+      const record = {
+        id,
+        CHANGED_DATE: timestamp,
+        ...JSON.parse(decode(value)),
+      };
       const result = opensearch.main.seatool.transform(id).safeParse(record);
       if (!result.success) {
         logError({
@@ -95,13 +79,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         typeof result.data.seatoolStatus === "string" &&
         result.data.seatoolStatus != "Unknown"
       ) {
-        const type = result.data.typeId
-          ? await getType(result.data.typeId)
-          : null;
-        const subType = result.data.subTypeId
-          ? await getSubtype(result.data.subTypeId)
-          : null;
-        docs.push({ ...result.data, type, subType });
+        docs.push({ ...result.data });
       }
     } catch (error) {
       logError({
