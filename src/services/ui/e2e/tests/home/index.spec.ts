@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test("has title", async ({ page }) => {
   await page.goto("/");
-  await expect(page).toHaveTitle(/CMS MAKO/);
+  await expect(page).toHaveTitle(/OneMAC/);
 });
 
 test("see frequently asked questions header when in faq page", async ({

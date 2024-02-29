@@ -1,7 +1,7 @@
 import { Action } from "shared-types";
 
 import { BLANK_VALUE } from "@/consts";
-import { Route } from "@/components/Routing/types";
+import { Route } from "@/components";
 
 export const mapActionLabel = (a: Action) => {
   switch (a) {
@@ -17,6 +17,8 @@ export const mapActionLabel = (a: Action) => {
       return "Withdraw Formal RAI Response";
     case Action.RESPOND_TO_RAI:
       return "Respond to Formal RAI";
+    case Action.REMOVE_APPK_CHILD:
+      return "";
   }
 };
 

@@ -1,5 +1,4 @@
 import { Handler } from "aws-lambda";
-import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
 import { KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
@@ -47,7 +46,8 @@ const subtypes = async (
   for (const kafkaRecord of kafkaRecords) {
     const { value } = kafkaRecord;
     try {
-      const record = JSON.parse(decode(value)).payload.after;
+      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
+      const record = JSON.parse(decodedValue).payload.after;
       if (!record) {
         continue;
       }
