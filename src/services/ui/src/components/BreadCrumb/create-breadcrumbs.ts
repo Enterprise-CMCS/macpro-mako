@@ -14,8 +14,8 @@ type Keys =
   | "waiver"
   | "b"
   | "b4"
-  | "capitated"
-  | "app-k";
+  | "capitated";
+
 // Display text mapper
 const newSubmissionPageTitleMapper: Record<Keys, string> = {
   "new-submission": "Submission Type",
@@ -31,7 +31,6 @@ const newSubmissionPageTitleMapper: Record<Keys, string> = {
   b: "1915(b) Waiver Type",
   b4: "1915(b)(4) FFS Selective Contracting Waiver Types",
   capitated: "1915(b) Comprehensive (Capitated) Waiver Authority Types",
-  "app-k": "1915(c) APPENDIX K Amendment",
 };
 // Route mapper
 const newSubmissionPageRouteMapper: Record<Keys, Route> = {
@@ -47,7 +46,6 @@ const newSubmissionPageRouteMapper: Record<Keys, Route> = {
   b: "/new-submission/waiver/b",
   b4: "/new-submission/waiver/b/b4",
   capitated: "/new-submission/waiver/b/capitated",
-  "app-k": "/new-submission/waiver/app-k",
 };
 
 export const optionCrumbsFromPath = (path: string): BreadCrumbConfig[] => [

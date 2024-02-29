@@ -14,13 +14,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FORM, SchemaForm } from "./consts";
 import { SlotStateSelect, WaiverIdFieldArray } from "./slots";
-import { ModalProvider } from "@/components/Context/modalContext";
 import { SubmissionServiceParameters, submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
 import { useState } from "react";
+import * as Content from "@/components";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
@@ -65,7 +65,14 @@ export const AppKSubmissionForm = () => {
       <BreadCrumbs options={crumbs} />
       <I.Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
-          <SectionCard title="Appendix K Details">
+          <SectionCard title="1915(c) APPENDIX K Amendment Details">
+            <Content.FormIntroText />
+            <div className="flex flex-col">
+              <I.FormLabel className="font-semibold">
+                Waiver Authority
+              </I.FormLabel>
+              <span className="text-lg font-thin">1915(c)</span>
+            </div>
             <I.FormField
               control={form.control}
               name="state"
@@ -137,11 +144,7 @@ export const AppKSubmissionForm = () => {
           <C.PreSubmissionMessage />
           <div className="flex gap-2 p-4 ml-auto">
             <I.Button type="submit">Submit</I.Button>
-            <I.Button
-              type="button"
-              // onClick={() => setCancelModalOpen(true)}
-              variant="outline"
-            >
+            <I.Button type="button" variant="outline">
               Cancel
             </I.Button>
           </div>

@@ -30,13 +30,7 @@ import {
 } from "@/utils";
 
 import { useQuery as useQueryString } from "@/hooks";
-import {
-  DescriptionInput,
-  SubTypeSelect,
-  SubjectInput,
-  TypeSelect,
-  AdditionalInfoInput,
-} from "../shared-components";
+import { AdditionalInfoInput } from "../shared-components";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
