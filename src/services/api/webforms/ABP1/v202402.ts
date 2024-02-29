@@ -8,7 +8,7 @@ export const v202402: FormSchema = {
       form: [
         {
           description:
-            "Identify and define the population that will participate in the Alternative Benefit Plan.",
+            "Define the population that will participate in this Alternative Benefit Plan (ABP).",
           slots: [
             {
               rhf: "Input",
@@ -407,7 +407,7 @@ export const v202402: FormSchema = {
                                                 },
                                                 name: "federal_poverty_level_percentage",
                                                 label:
-                                                  "Enter the federal poverty level percentage",
+                                                  "Percentage of federal poverty level",
                                               },
                                             ],
                                           },

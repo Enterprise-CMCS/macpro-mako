@@ -32,17 +32,8 @@ export const v202401: FormSchema = {
               rhf: "Input",
               name: "benefit_package_name",
               label: "Benefit package name",
+              labelStyling: "font-bold",
               rules: { required: "* Required" },
-              // dependency: {
-              //   conditions: [
-              //     {
-              //       name: "benefit_package_details",
-              //       type: "expectedValue",
-              //       expectedValue: "benchmark_creating",
-              //     },
-              //   ],
-              //   effect: { type: "show" },
-              // },
             },
           ],
         },
@@ -189,6 +180,7 @@ export const v202401: FormSchema = {
                                           rhf: "Textarea",
                                           name: "benefits_and_limitations",
                                           rules: { required: "* Required" },
+                                          labelStyling: "font-bold",
                                           label:
                                             "Describe the benefits, source of benefits, and any limitations.",
                                         },
