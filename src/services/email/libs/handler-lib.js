@@ -47,6 +47,7 @@ export default function handler(lambda) {
         console.log ("error: ", e);
       }
       // Return HTTP response
+      console.log("Response is: ", response);
       return response;
     };
   }}
