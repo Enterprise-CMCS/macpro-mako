@@ -70,6 +70,11 @@ export const submit = async (event: APIGatewayEvent) => {
       DECLARE @SummaryMemo NVARCHAR(MAX) = ${
         body.description ? `'${body.description.replace("'", "''")}'` : "NULL"
       };
+      DECLARE @StatusMemo NVARCHAR(MAX) = ${buildStatusMemoQuery(
+        body.id,
+        "Package Submitted",
+        "insert"
+      )}
       
       -- Set your variables
       SELECT @RegionID = Region_ID FROM SEA.dbo.States WHERE State_Code = '${
@@ -85,13 +90,14 @@ export const submit = async (event: APIGatewayEvent) => {
       SET @ProposedDate = DATEADD(s, CONVERT(INT, LEFT(${
         body.proposedEffectiveDate
       }, 10)), CAST('19700101' as DATETIME));
-      
+
       -- Main insert into State_Plan
-      INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
+      INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo)
       VALUES ('${body.id}', '${
       body.state
-    }', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0);
+    }', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo);
     `;
+    console.log(query);
 
     // TODO: FFF
     //   -- Insert into State_Plan_Service_SubTypes
@@ -122,11 +128,6 @@ export const submit = async (event: APIGatewayEvent) => {
       const actionTypeQueryResult = await sql.query(actionTypeQuery);
       console.log(actionTypeQueryResult);
     }
-
-    const statusMemoUpdate = await sql.query(
-      buildStatusMemoQuery(body.id, "Package Submitted")
-    );
-    console.log(statusMemoUpdate);
 
     await pool.close();
 
