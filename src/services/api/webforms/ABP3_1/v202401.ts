@@ -8,7 +8,8 @@ export const v202401: FormSchema = {
       title: "Benefit package details",
       form: [
         {
-          description: "Select the following:",
+          description:
+            "For the population defined in Section 1, the state/territory wants to:",
           slots: [
             {
               rhf: "Radio",
@@ -19,13 +20,11 @@ export const v202401: FormSchema = {
               props: {
                 options: [
                   {
-                    label:
-                      "The state or territory is amending one existing benefit package for the population defined in Section 1.",
+                    label: "Amend one existing benefit package",
                     value: "existing_package",
                   },
                   {
-                    label:
-                      "The state or territory is creating a single new benefit package for the population defined in Section 1.",
+                    label: "Create a single new benefit package",
                     value: "new_package",
                   },
                 ],
@@ -67,8 +66,6 @@ export const v202401: FormSchema = {
                     value: "benefit_package",
                     form: [
                       {
-                        description:
-                          "The state/territory will provide the following benchmark benefit package:",
                         slots: [
                           {
                             name: "state_territory_benchmark",
@@ -129,7 +126,7 @@ export const v202401: FormSchema = {
                                             options: [
                                               {
                                                 label:
-                                                  "The state/territory offers benefits based on the approved state plan.",
+                                                  "The state/territory offers the following benefits based on the approved state plan:",
                                                 value: "state_plan",
                                                 form: [
                                                   {
@@ -141,31 +138,31 @@ export const v202401: FormSchema = {
                                                           options: [
                                                             {
                                                               label:
-                                                                "The state/territory offers the benefits provided in the approved state plan.",
+                                                                "Benefits provided in the approved state plan",
                                                               value:
                                                                 "provided_in_approved_state_plan",
                                                             },
                                                             {
                                                               label:
-                                                                "Benefits include all those provided in the approved state plan plus additional benefits.",
+                                                                "Benefits provided in the approved state plan plus additional benefits",
                                                               value:
                                                                 "additional_benefits",
                                                             },
                                                             {
                                                               label:
-                                                                "Benefits are the same as provided in the approved state plan but in a different amount, duration, and/or scope.",
+                                                                "Benefits provided in the approved state plan but in a different amount, duration, and/or scope",
                                                               value:
                                                                 "different_amount_duration_scope",
                                                             },
                                                             {
                                                               label:
-                                                                "The state/territory offers only a partial list of benefits provided in the approved state plan.",
+                                                                "A partial list of benefits provided in the approved state plan",
                                                               value:
                                                                 "partial_list",
                                                             },
                                                             {
                                                               label:
-                                                                "The state/territory offers a partial list of benefits provided in the approved state plan plus additional benefits.",
+                                                                "A partial list of benefits provided in the approved state plan plus additional benefits",
                                                               value:
                                                                 "partial_list_plus_additional_benefits",
                                                             },
@@ -192,7 +189,7 @@ export const v202401: FormSchema = {
                                           rhf: "Textarea",
                                           name: "benefits__description",
                                           label:
-                                            "Briefly identify the benefits, the source of benefits, and any limitations.",
+                                            "Describe the benefits, source of benefits, and any limitations.",
                                           labelStyling: "font-bold",
                                           rules: {
                                             required: "* Required",
@@ -317,7 +314,7 @@ export const v202401: FormSchema = {
 
             {
               label:
-                "Indicate the EHB-benchmark option as described at 45 CFR 156.111(b)(2)(B) the state or territory will use as its EHB-benchmark plan.",
+                "The state/territory will use the following as its EHB-benchmark option as described at 45 CFR 156.111(b)(2)(B), in compliance with the individual insurance market under 45 CFR 156.100 through 156.125:",
               labelStyling: "font-bold",
               name: "EHB_benchmark_option",
               rhf: "Radio",
@@ -332,18 +329,18 @@ export const v202401: FormSchema = {
                 options: [
                   {
                     label:
-                      "State/territory is selecting the EHB-benchmark plan used by the state/territory for the 2017 plan year.",
+                      "The EHB-benchmark plan used by the state/territory for the 2017 plan year",
                     value: "EHB_benchmark_2017_plan_year",
                   },
                   {
                     label:
-                      "State/territory is selecting one of the EHB-benchmark plans used for the 2017 plan year by another state/territory.",
+                      "One of the EHB-benchmark plans used for the 2017 plan year by another state/territory",
                     value: "another_state_EHB_benchmark_plan_year",
                     slots: [
                       {
                         rhf: "Select",
                         name: "is_geographic_area",
-                        label: "Identify the state/territory",
+                        label: "State/territory",
                         labelStyling: "p-3",
                         formItemStyling: "flex-row",
                         props: {
@@ -469,12 +466,12 @@ export const v202401: FormSchema = {
                             },
                             {
                               label:
-                                "Any of the largest three national FEHBP plan options open to Federal employees in all geographies by enrollment",
+                                "Any of the largest three national Federal Employee Health Benefit Program (FEHBP) plan options open to federal employees in all geographies by enrollment",
                               value: "largest_three_state_FEHBP_plans",
                             },
                             {
                               label:
-                                "The largest insured commercial non-Medicaid HMO",
+                                "The largest insured commercial, non-Medicaid HMO",
                               value: "larged_insured_commercial",
                             },
                           ],
@@ -487,7 +484,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     label:
-                      "State/territory selects the following EHB-benchmark plan used for the 2017 plan year but will replace coverage of one or more of the categories of EHB with coverage of the same category from the 2017 EHB-benchmark plan of one or more other states.",
+                      "The following EHB-benchmark plan used for the 2017 plan year but replacing coverage of one or more EHB categories with coverage of the same category from the 2017 EHB-benchmark plan of one or more other states",
                     value: "EHB_benchmark_2017_plan_year_but_replace_coverage",
                     form: [
                       {
@@ -513,12 +510,12 @@ export const v202401: FormSchema = {
                                 },
                                 {
                                   label:
-                                    "Any of the largest three national FEHBP plan options open to Federal employees in all geographies by enrollment",
+                                    "Any of the largest three national Federal Employee Health Benefit Program (FEHBP) plan options open to federal employees in all geographies by enrollment",
                                   value: "largest_three_state_FEHBP_plans",
                                 },
                                 {
                                   label:
-                                    "The largest insured commercial non-Medicaid HMO",
+                                    "The largest insured commercial, non-Medicaid HMO",
                                   value: "larged_insured_commercial",
                                 },
                               ],
@@ -1706,7 +1703,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     label:
-                      "Select a set of benefits consistent with the 10 EHB categories to become the new EHB-benchmark plan. (Complete and submit the ABP 5: Benefits Description form to describe the set of benefits.)",
+                      "A set of benefits consistent with the 10 EHB categories to become the new EHB-benchmark plan (Submit ABP 5: Benefits description)",
                     value: "10_EHB_categories_new_EHB_benchmark",
                   },
                 ],
@@ -1773,7 +1770,7 @@ export const v202401: FormSchema = {
       form: [
         {
           description:
-            "Other information related to selection of the Section 1937 coverage option and the EHB-benchmark plan (optional)",
+            "Other information about selection of the Section 1937 coverage option and the EHB-benchmark plan (optional)",
           slots: [
             {
               name: "additional_information",
