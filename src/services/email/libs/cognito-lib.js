@@ -26,7 +26,7 @@ export const getCognitoData = async (id) => {
       if (oneUser["custom:cms-roles"] === "onemac-micro-statesubmitter" &&
         oneUser["custom:state"].includes(lookupState))
         return `"${oneUser.family_name}, ${oneUser.given_name}" <${oneUser.email}>`;
-    })
+    }).filter(Boolean);
     console.log("userList is: ", JSON.stringify(userList, null, 4));
 
     return { "allState": userList.join(';') };
