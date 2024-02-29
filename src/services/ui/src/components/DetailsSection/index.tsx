@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useScrollToTop } from "@/hooks";
 
 interface DetailsSectionProps {
   children: React.ReactNode;
@@ -13,9 +13,7 @@ export const DetailsSection: React.FC<DetailsSectionProps> = ({
   description,
   id,
 }: DetailsSectionProps) => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  useScrollToTop();
   return (
     <div id={id} className="mb-8 border-[1px] p-4">
       <h2 className="text-xl font-semibold mb-2">{title}</h2>

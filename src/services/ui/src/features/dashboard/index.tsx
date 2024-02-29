@@ -18,6 +18,7 @@ import {
   Navigate,
   redirect,
 } from "@/components";
+import { useScrollToTop } from "@/hooks";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -52,10 +53,8 @@ export const Dashboard = () => {
   if (!role) {
     return <Navigate path={"/"} />;
   }
-  useEffect(() => {
-      window.scrollTo(0, 0);
-  }, []);
-  return (
+    useScrollToTop();
+    
     <OsProvider
       value={{
         data: osData.data,

@@ -65,9 +65,9 @@ const UserDropdownMenu = () => {
     await Auth.signOut();
   };
 
-  return window && window.location.pathname.startsWith("/faq") ? (
-    <></>
-  ) : (
+  if (isFaqPage) return null;
+
+  return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         asChild
