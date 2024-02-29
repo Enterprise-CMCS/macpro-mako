@@ -12,8 +12,11 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               name: "is_state_territory_aligned_ABP",
+              label:
+                "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
+              labelStyling: "font-bold text-[0.8rem]",
               description:
-                "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan. Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
+                "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
               descriptionAbove: true,
               descriptionStyling: "font-bold text-black",
               rules: {
@@ -123,6 +126,8 @@ export const v202401: FormSchema = {
                       {
                         rhf: "Input",
                         name: "describe_other",
+                        label: "Describe",
+                        labelStyling: "font-bold",
                       },
                     ],
                   },
@@ -132,10 +137,10 @@ export const v202401: FormSchema = {
             {
               rhf: "Upload",
               name: "provide_copy_of_letter_email_other",
-              labelStyling: "font-bold",
               description:
                 "Provide a copy of the letter, email, or other communication.",
               descriptionAbove: true,
+              descriptionStyling: "font-bold text-black",
               props: { maxFiles: 3 },
             },
             {
@@ -144,7 +149,7 @@ export const v202401: FormSchema = {
               descriptionAbove: true,
               description:
                 "When did/will the state/territory inform the individuals?",
-              descriptionStyling: "font-bold",
+              descriptionStyling: "font-bold text-black",
             },
             {
               rhf: "Textarea",
@@ -152,16 +157,17 @@ export const v202401: FormSchema = {
               descriptionAbove: true,
               description:
                 "Describe the state/territory's process for allowing individuals in the Section 1902(a)(10)(A)(i)(VIII) eligibility group who meet exemption criteria to disenroll from the ABP using Section 1937 requirements and enroll in the ABP that is the state/territory's approved Medicaid state plan.",
-              descriptionStyling: "font-bold",
+              descriptionStyling: "font-bold text-black",
             },
             {
               rhf: "Checkbox",
               name: "state_territory_assures_it_will_document_exempt_individuals",
+              formItemStyling: "whitespace-pre-wrap",
               props: {
                 options: [
                   {
                     label:
-                      "The state/territory assures it will document in the exempt individual's eligibility file that the individual: A. Was informed in accordance with this section prior to enrollment B. Was given ample time to arrive at an informed choice B. Was given ample time to arrive at an informed choice",
+                      "The state/territory assures it will inform the individual of the following: A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements<br><br> B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits",
                     value:
                       "state_territory_will_document_exempt_individuals_eligibility",
                   },
@@ -172,7 +178,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "where_will_information_be_documented",
               descriptionAbove: true,
-              descriptionStyling: "font-bold",
+              descriptionStyling: "font-bold text-black",
               description: "Where will the information be documented?",
               props: {
                 options: [
@@ -191,6 +197,8 @@ export const v202401: FormSchema = {
                       {
                         rhf: "Input",
                         name: "describe_other",
+                        label: "Describe",
+                        labelStyling: "font-bold",
                       },
                     ],
                   },
@@ -199,11 +207,12 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "what_documentation_will_be_maintained_in_the_eligibility_file?",
+              name: "what_documentation_will_be_maintained_in_the_eligibility_file",
               descriptionAbove: true,
-              descriptionStyling: "font-bold",
+              descriptionStyling: "font-bold text-black",
               description:
                 "What documentation will be maintained in the eligibility file?",
+              formItemStyling: "border-b-4",
               props: {
                 options: [
                   {
@@ -223,6 +232,8 @@ export const v202401: FormSchema = {
                       {
                         rhf: "Input",
                         name: "describe_other",
+                        label: "Describe",
+                        labelStyling: "font-bold",
                       },
                     ],
                   },
@@ -251,7 +262,7 @@ export const v202401: FormSchema = {
       form: [
         {
           description:
-            "Other information related to selection of the Section 1937 coverage option and the base benchmark plan (optional)",
+            "Other information about benefit package selection assurances for exempt participants (optional)",
           slots: [
             {
               rhf: "Textarea",
