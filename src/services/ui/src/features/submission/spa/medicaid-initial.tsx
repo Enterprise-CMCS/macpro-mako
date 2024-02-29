@@ -229,7 +229,7 @@ export const MedicaidSpaFormPage = () => {
                           : ""}
                       </Inputs.FormDescription>
                     }
-                    <Inputs.Upload {...field} />
+                    <Inputs.Upload files={field?.value ?? []} setFiles={field.onChange}  />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}

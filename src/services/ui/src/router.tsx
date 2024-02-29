@@ -3,7 +3,7 @@ import * as F from "@/features";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
 import { type Route } from "./components/Routing/types";
-
+import { packageActionRoutes } from "@/features/package-actions";
 export const queryClient = new QueryClient();
 
 export const router = createBrowserRouter([
@@ -63,6 +63,18 @@ export const router = createBrowserRouter([
         path: "/new-submission/spa/chip/landing/chip-eligibility",
         element: <F.CHIPEligibilityLandingPage />,
       },
+      // {
+      //   path: "/new-submission/waiver/b/create",
+      //   element: <P.Waiver1915BFormPage />,
+      // },
+      {
+        path: "/new-submission/spa/medicaid/create",
+        element: <F.MedicaidSpaFormPage />,
+      },
+      {
+        path: "/new-submission/spa/chip/create",
+        element: <F.ChipSpaFormPage />,
+      },
       {
         path: "/new-submission/waiver/b/capitated/amendment/create",
         element: <F.Capitated1915BWaiverAmendmentPage />,
@@ -95,6 +107,7 @@ export const router = createBrowserRouter([
       { path: "/profile", element: <F.Profile /> },
       { path: "/guides/abp", element: <F.ABPGuide /> },
       { path: "/new-submission/app-k", element: <F.AppKSubmissionForm /> },
+      packageActionRoutes,
     ],
     loader: F.loader(queryClient),
   },

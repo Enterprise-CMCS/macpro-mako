@@ -1,6 +1,7 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { CognitoUserAttributes, opensearch } from "shared-types";
+import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
 import { getAvailableActions, formatSeatoolDate } from "shared-utils";
+import { Link as TypedLink } from "@/components";
 import { Link } from "react-router-dom";
 import * as POP from "@/components";
 import { cn, mapActionLabel } from "@/utils";
@@ -45,6 +46,26 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
           <POP.PopoverContent>
             <div className="flex flex-col">
               {actions.map((action, idx) => {
+                if (data.authority === Authority["1915b"]) {
+                  return (
+                    <TypedLink
+                      state={{ from: `${location.pathname}${location.search}` }}
+                      path="/action/:authority/:id/:type"
+                      key={`${idx}-${action}`}
+                      params={{
+                        id: data.id,
+                        type: action,
+                        authority: data.authority,
+                      }}
+                      className={cn(
+                        "text-blue-500",
+                        "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                      )}
+                    >
+                      {mapActionLabel(action)}
+                    </TypedLink>
+                  );
+                }
                 return (
                   <Link
                     className={cn(
