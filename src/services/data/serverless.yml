@@ -161,11 +161,11 @@ stepFunctions:
                 - Function: !Ref SinkTypesLambdaFunction
                   BatchSize: 10000
                   Topics:
-                    - aws.seatool.cmcs.dbo.SPA_Type
+                    - aws.seatool.debezium.cdc.SEA.dbo.SPA_Type
                 - Function: !Ref SinkSubtypesLambdaFunction
                   BatchSize: 10000
                   Topics:
-                    - aws.seatool.cmcs.dbo.Type
+                    - aws.seatool.debezium.cdc.SEA.dbo.Type
             Next: CheckReferenceDataProgress
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -179,11 +179,11 @@ stepFunctions:
                 - Function: !Ref SinkTypesLambdaFunction
                   BatchSize: 10000
                   Topics:
-                    - aws.seatool.cmcs.dbo.SPA_Type
+                    - aws.seatool.debezium.cdc.SEA.dbo.SPA_Type
                 - Function: !Ref SinkSubtypesLambdaFunction
                   BatchSize: 10000
                   Topics:
-                    - aws.seatool.cmcs.dbo.Type
+                    - aws.seatool.debezium.cdc.SEA.dbo.Type
               BrokerString: ${self:custom.brokerString}
             Next: IsReferenceDataReady
             Catch:
@@ -218,7 +218,7 @@ stepFunctions:
               Triggers:
                 - Function: !Ref SinkMainLambdaFunction
                   Topics:
-                    - aws.ksqldb.seatool.agg.State_Plan
+                    - aws.seatool.ksql.onemac.agg.State_Plan
                     - aws.onemac.migration.cdc
                     - ${param:topicNamespace}aws.onemac.migration.cdc
                 - Function: !Ref SinkChangelogLambdaFunction
@@ -237,7 +237,7 @@ stepFunctions:
               Triggers:
                 - Function: !Ref SinkMainLambdaFunction
                   Topics:
-                    - aws.ksqldb.seatool.agg.State_Plan
+                    - aws.seatool.ksql.onemac.agg.State_Plan
                     - aws.onemac.migration.cdc
                     - ${param:topicNamespace}aws.onemac.migration.cdc
                 - Function: !Ref SinkChangelogLambdaFunction
@@ -278,7 +278,7 @@ stepFunctions:
               Triggers:
                 - Function: !Ref SinkInsightsLambdaFunction
                   Topics:
-                    - aws.ksqldb.seatool.agg.State_Plan
+                    - aws.seatool.ksql.onemac.agg.State_Plan
             Next: NotifyOfSuccess
             Catch:
               - ErrorEquals: ["States.ALL"]

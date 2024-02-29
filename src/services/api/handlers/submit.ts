@@ -58,33 +58,52 @@ export const submit = async (event: APIGatewayEvent) => {
     });
     console.log(body);
     const query = `
-      DECLARE @RegionID INT;
-      DECLARE @PlanTypeID INT;
-      DECLARE @SPWStatusID INT;
-      DECLARE @SubmissionDate DATETIME;
-      DECLARE @StatusDate DATETIME;
-      DECLARE @ProposedDate DATETIME;
-      
-      -- Set your variables
-      SELECT @RegionID = Region_ID FROM SEA.dbo.States WHERE State_Code = '${body.state}';
-      SELECT @PlanTypeID = Plan_Type_ID FROM SEA.dbo.Plan_Types WHERE Plan_Type_Name = '${body.authority}';
-      SELECT @SPWStatusID = SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = 'Pending';
-      
-      SET @SubmissionDate = DATEADD(s, CONVERT(INT, LEFT(${submissionDate}, 10)), CAST('19700101' as DATETIME));
-      SET @StatusDate = DATEADD(s, CONVERT(INT, LEFT(${today}, 10)), CAST('19700101' as DATETIME));
-      SET @ProposedDate = DATEADD(s, CONVERT(INT, LEFT(${body.proposedEffectiveDate}, 10)), CAST('19700101' as DATETIME));
-      
-      -- Main insert into State_Plan
-      INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
-      VALUES ('${body.id}', '${body.state}', '${body.subject}', '${body.description}', @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0);
+    DECLARE @RegionID INT;
+    DECLARE @PlanTypeID INT;
+    DECLARE @SPWStatusID INT;
+    DECLARE @SubmissionDate DATETIME;
+    DECLARE @StatusDate DATETIME;
+    DECLARE @ProposedDate DATETIME;
+    DECLARE @TitleName NVARCHAR(MAX) = ${
+      body.subject ? `'${body.subject.replace("'", "''")}'` : "NULL"
+    };
+    DECLARE @SummaryMemo NVARCHAR(MAX) = ${
+      body.description ? `'${body.description.replace("'", "''")}'` : "NULL"
+    };
+    DECLARE @StatusMemo NVARCHAR(MAX) = ${buildStatusMemoQuery(
+      body.id,
+      "Package Submitted",
+      "insert"
+    )}
+    
+    -- Set your variables
+    SELECT @RegionID = Region_ID FROM SEA.dbo.States WHERE State_Code = '${
+      body.state
+    }';
+    SELECT @PlanTypeID = Plan_Type_ID FROM SEA.dbo.Plan_Types WHERE Plan_Type_Name = '${
+      body.authority
+    }';
+    SELECT @SPWStatusID = SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = 'Pending';
+    
+    SET @SubmissionDate = DATEADD(s, CONVERT(INT, LEFT(${submissionDate}, 10)), CAST('19700101' as DATETIME));
+    SET @StatusDate = DATEADD(s, CONVERT(INT, LEFT(${today}, 10)), CAST('19700101' as DATETIME));
+    SET @ProposedDate = DATEADD(s, CONVERT(INT, LEFT(${
+      body.proposedEffectiveDate
+    }, 10)), CAST('19700101' as DATETIME));
 
-      -- Insert into State_Plan_Service_SubTypes
-      INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID)
-      VALUES ('${body.id}', TRY_CAST('${body.subTypeId}' AS INT));
+    -- Main insert into State_Plan
+    INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo)
+    VALUES ('${body.id}', '${
+      body.state
+    }', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo);
 
-      -- Insert into State_Plan_Service_Types
-      INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID)
-      VALUES ('${body.id}', TRY_CAST('${body.typeId}' AS INT));
+    -- Insert into State_Plan_Service_SubTypes
+    INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID)
+    VALUES ('${body.id}', TRY_CAST('${body.subTypeId}' AS INT));
+
+    -- Insert into State_Plan_Service_Types
+    INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID)
+    VALUES ('${body.id}', TRY_CAST('${body.typeId}' AS INT));
     `;
 
     const result = await sql.query(query);
@@ -106,11 +125,6 @@ export const submit = async (event: APIGatewayEvent) => {
       const actionTypeQueryResult = await sql.query(actionTypeQuery);
       console.log(actionTypeQueryResult);
     }
-
-    const statusMemoUpdate = await sql.query(
-      buildStatusMemoQuery(body.id, "Package Submitted")
-    );
-    console.log(statusMemoUpdate);
 
     await pool.close();
 
