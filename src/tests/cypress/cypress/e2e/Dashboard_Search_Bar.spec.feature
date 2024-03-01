@@ -39,15 +39,15 @@ Feature: OY2-11149 Submission Dashboard - Search bar
         Then click on 1915b Waiver Actions
         Then click on 1915b 4 FFS Selective Contracting waivers
         Then click on 1915b 4 FFS Selective Contracting New Initial Waiver
-        Then type the generated Initial Waiver Number into the ID Input box
+        Then type the generated "Initial Waiver" Number 1 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Initial Waiver" to 3 months from today
         Then attach "picture.jpg" file to attachment 1
         Then into "Additional Information" type "This is just a test."
         Then Click on Submit Button
         Then verify package submitted message in the alert bar
         Then click on the Waivers tab
-        Then search for the generated Waiver Number 1
-        Then verify the id number in the first row matches the generated Initial Waiver Number
+        Then search for the generated "Initial Waiver" Number 1
+        Then verify the id number in the first row matches the generated "Initial Waiver" Number 1
         Then clear search bar
         Then search for "George Harrison"
         Then verify user exists with id number searched

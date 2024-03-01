@@ -1,7 +1,7 @@
 const submitBTN = "button[type='submit']";
 const cancelBTN = "//button[text()='Cancel']";
 const idElement = "[name='id']";
-const parentIdElement = "#parent-componentId";
+const parentIdElement = "[name='waiverNumber']";
 const packageFormPt2ErrorMsg = "#componentIdStatusMsg1";
 const typeHeader = "//h3[text()='Type']";
 
@@ -19,7 +19,7 @@ const errorMessageID = "p[id*='form-item-message']";
 const errorMessageLine2ID = "#componentIdStatusMsg1";
 const parentIDInputBox = "#parent-componentId";
 const errorMessageParentID = "#parent-componentIdStatusMsg0";
-const waiverAuthorityLabel = "//h3[text()='Waiver Authority']";
+const waiverAuthorityLabel = "//label[text()='Waiver Authority']";
 const amendmentTitleField = "#title";
 const tempExtensionTypeHeader =
   "//h3[contains(text(),'Temporary Extension Type')]";
@@ -43,18 +43,21 @@ const elementFromLabel = {
 const errorMessageLine1FromLabel = {
   "SPA ID": "#componentIdStatusMsg0",
   "Temporary Extension Request Number": "#componentIdStatusMsg0",
-  "Initial Waiver Number": "#componentIdStatusMsg0",
-  "1915(b) Waiver Renewal Number": "#componentIdStatusMsg0",
-  "1915(b) Waiver Amendment Number": "#componentIdStatusMsg0",
-  "Existing Waiver Number to Renew": "#parent-componentIdStatusMsg0",
-  "Existing Waiver Number to Amend": "#parent-componentIdStatusMsg0",
+  "Initial Waiver Number": idElement,
+  "1915(b) Waiver Renewal Number": idElement,
+  "1915(b) Waiver Amendment Number": idElement,
+  "Existing Waiver Number to Renew": parentIdElement,
+  "Existing Waiver Number to Amend": parentIdElement,
+  "first attachment": ".space-y-2:nth-of-type(1) input[type='file']",
+  "second attachment": ".space-y-2:nth-of-type(2) input[type='file']",
+  "Proposed Effective Date": "form [class*='space-y-2'] button svg"
 };
 const errorMessageLine2FromLabel = {
   "SPA ID": "#componentIdStatusMsg1",
   "Temporary Extension Request Number": "#componentIdStatusMsg1",
   "Initial Waiver Number": "#componentIdStatusMsg1",
   "1915(b) Waiver Renewal Number": "#componentIdStatusMsg1",
-  "1915(b) Waiver Amendment Number": "#componentIdStatusMsg1",
+  "1915(b) Waiver Amendment Number": idElement,
 };
 const hintTextFromLabel = {
   "SPA ID": "#fieldHint0",
@@ -69,13 +72,13 @@ const dateElementsFromLabel = {
   "Proposed Effective Date of Medicaid SPA": "//button//*[text()='Pick a date']",
   "Proposed Effective Date of CHIP SPA": "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(b) Initial Waiver":
-    "//button//*[text()='Pick a date']",
+  "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(b) Waiver Renewal":
-    "//button//*[text()='Pick a date']",
+  "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(b) Waiver Amendment":
-    "//button//*[text()='Pick a date']",
+  "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(c) Appendix K Amendment":
-    "//button//*[text()='Pick a date']",
+  "//button//*[text()='Pick a date']",
 };
 const nextMonthDatePickerBtn = "button[name='next-month']";
 const lastMonthDatePickerBtn = "button[name='previous-month']";
@@ -104,7 +107,7 @@ export class oneMacFormPage {
     cy.get(elementFromLabel[whereTo]).clear();
   }
   inputInto(whereTo, newValue) {
-    cy.get(elementFromLabel[whereTo]).type(newValue);
+    cy.get(elementFromLabel[whereTo]).type(newValue, {delay: 100});
   }
   verifyPrefill(whereTo) {
     cy.xpath(`//h3[text()='${whereTo}']`)
@@ -112,14 +115,13 @@ export class oneMacFormPage {
       .contains(/^(?!\s*$).+/);
   }
   verifyErrorMessagesAreNotThere(whichLabel) {
-    cy.get(errorMessageLine1FromLabel[whichLabel]).should("not.exist");
-    cy.get(errorMessageLine2FromLabel[whichLabel]).should("not.exist");
+    cy.get(errorMessageLine1FromLabel[whichLabel]).parent().next(errorMessageID).should("not.exist");
   }
   verifyErrorMessageContains(whichLabel, whichLine, errorMessage) {
     const errorMessageElement =
       whichLine === "2"
-        ? cy.get(errorMessageLine2FromLabel[whichLabel])
-        : cy.get(errorMessageLine1FromLabel[whichLabel]);
+        ? cy.get(errorMessageLine2FromLabel[whichLabel]).parent().next(errorMessageID).should("be.visible")
+        : cy.get(errorMessageLine1FromLabel[whichLabel]).parent().next(errorMessageID).should("be.visible");
 
     errorMessageElement.should("be.visible").contains(errorMessage);
   }
@@ -143,7 +145,7 @@ export class oneMacFormPage {
       .contains(linkLabel).invoke('removeAttr', 'target').click();
   }
   inputID(anId) {
-    cy.get(IDInputBox).type(anId);
+    cy.get(IDInputBox).type(anId, {delay:200});
   }
   clearIDInputBox() {
     cy.get(IDInputBox).clear();
@@ -179,7 +181,7 @@ export class oneMacFormPage {
     cy.get(withdrawLabel).should("have.text", "Type").next().contains(s);
   }
   verifyWaiverAuthorityContains(whatAuthority) {
-    cy.xpath(waiverAuthorityLabel).next("div").contains(whatAuthority);
+    cy.xpath(waiverAuthorityLabel).next().contains(whatAuthority);
   }
   addMonthsTo(whichDate, numMonths) {
     cy.xpath(dateElementsFromLabel[whichDate]).then(($datePicker) =>

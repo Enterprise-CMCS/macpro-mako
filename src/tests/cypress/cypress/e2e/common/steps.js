@@ -107,17 +107,20 @@ Then("click form cancel button", () => {
 Then("click modal cancel button", () => {
   OneMacFormPage.clickModalCancelBtn();
 });
-Then("click Leave Anyway form button", () => {
-  OneMacFormPage.clickButtonLabelled("Leave Anyway");
+Then("click Yes leave form button", () => {
+  OneMacFormPage.clickButtonLabelled("Yes, leave form");
 });
-Then("click Stay on Page", () => {
-  OneMacFormPage.clickButtonLabelled("Stay on Page");
+Then("click Return to form", () => {
+  OneMacFormPage.clickButtonLabelled("Return to form");
 });
 Then("verify the success message is {string}", (s) => {
   OneMacDashboardPage.verifySuccessMessageIs(s);
 });
 Then("verify package submitted message in the alert bar", () => {
   OneMacDashboardPage.verifyPackageSubmittedIsDisplayed();
+});
+Then("verify the message in the alert bar is {string}", (s) => {
+  OneMacDashboardPage.verifyAlertMessageIs(s);
 });
 Then("verify submission successful message in the alert bar", () => {
   OneMacDashboardPage.verifySuccessMessage1IsDisplayed();
@@ -299,21 +302,11 @@ Then("click on 1915b Waiver Actions", () => {
 Then("click on 1915b 4 FFS Selective Contracting waivers", () => {
   OneMacSubmissionTypePage.clickFssSelectiveAuthority();
 });
-Then("click on 1915b Comprehensive Capitated Waiver Authority", () => {
-  OneMacSubmissionTypePage.click1915bComprehensiveCapitatedWaiverAuthority();
-});
-
 Then("click on 1915b 4 FFS Selective Contracting New Initial Waiver", () => {
   OneMacSubmissionTypePage.clickInitialWaiver();
 });
-Then("click on 1915b Comprehensive Capitated New Initial Waiver", () => {
-  OneMacSubmissionTypePage.clickComprehensiveInitialWaiver();
-});
 Then("1915b 4 FFS Selective Contracting Renewal Waiver", () => {
   OneMacSubmissionTypePage.click1915b4WaiverRenewal();
-});
-Then("click on 1915b Comprehensive Capitated Renewal Waiver", () => {
-  OneMacSubmissionTypePage.clickComprehensiveRenewalWaiver();
 });
 Then("click on 1915b 4 FFS Selective Contracting Waiver Amendment", () => {
   OneMacSubmissionTypePage.clickWaiverAmendment1915b4();
@@ -326,12 +319,6 @@ Then(
   "verify 1915b 4 FFS Selective Contracting New Initial Waiver is a clickable option",
   () => {
     OneMacSubmissionTypePage.verifyFFSNewInitialWaiverIsClickable();
-  }
-);
-Then(
-  "verify 1915b Comprehensive Capitated New Initial Waiver is a clickable option",
-  () => {
-    OneMacSubmissionTypePage.verifyComprehensiveNewInitialWaiverIsClickable();
   }
 );
 Then("verify Appendix K is a clickable option", () => {
@@ -391,7 +378,6 @@ Then("Click on Appendix K Amendment", () => {
   OneMacSubmissionTypePage.clickAppendixKAmendment();
 });
 
-//this is for oy2_4807
 Then("verify Waiver Authority contains {string}", (whatAuthority) => {
   OneMacFormPage.verifyWaiverAuthorityContains(whatAuthority);
 });
@@ -1423,7 +1409,7 @@ Then("click on cancel", () => {
 Then("verify the cancel button is clickable", () => {
   OneMacRequestARoleChangePage.verifyCancelBtnIsEnabled();
 });
-Then("click stay on page in the modal", () => {
+Then("click Return to form in the modal", () => {
   OneMacRequestARoleChangePage.clickStayOnPageBtn();
 });
 
@@ -1647,6 +1633,9 @@ Then("click the actions button in row one", () => {
   OneMacDashboardPage.clickPackageRowOneActionsBtn();
 });
 Then("click the Respond to RAI button", () => {
+  OneMacDashboardPage.clickRespondToRAIBtn();
+});
+Then("click the Issue Formal RAI button", () => {
   OneMacDashboardPage.clickRespondToRAIBtn();
 });
 Then("click the Request Temporary Extension button", () => {
@@ -2065,18 +2054,44 @@ Then("search for the generated SPA ID {int}", (count) => {
   });
   cy.wait(1000);
 });
-Then("type the generated Initial Waiver Number {int} into the ID Input box using the state {string}", (count, state) => {
-  let waiverID = util.generateInitialWaiverNumberWith4Digits(state || 'MD');
-  OneMacFormPage.inputID(waiverID);
+Then("type the generated {string} Number {int} into the ID Input box using the state {string}", (type, count, state = "MD") => {
   cy.fixture("generatedIDs.json").then((obj) => {
-    obj["generatedWaiverID" + count] = spaID;
-    // write the merged object
-    cy.writeFile("./fixtures/generatedIDs.json", obj)
-  })
+    cy.fixture("generatedIDPartialCounter.json").then((data) => {
+      let waiverID = state + "-";
+      switch (type) {
+        case "Initial Waiver":
+          data["lastInitialWaiverPart"] = util.firstpartCounter(data["lastInitialWaiverPart"]);
+          waiverID += data["lastInitialWaiverPart"] + ".R00.00";
+          break;
+        case "Renewal Waiver":
+          if (parseInt(data["lastRenewalSecondPart"]) === 99) {
+            data["lastRenewalFirstPart"] = util.firstpartCounter(data["lastRenewalFirstPart"]);
+          }
+          data["lastRenewalSecondPart"] = util.doubleDigitCounter(data["lastRenewalSecondPart"]);
+          waiverID += data["lastRenewalFirstPart"] + ".R" + data["lastRenewalSecondPart"] + ".00";
+          break;
+        case "Waiver Amendment":
+          if (parseInt(data["lastAmendmentSecondPart"]) === 99) {
+            data["lastAmendmentFirstPart"] = util.firstpartCounter(data["lastAmendmentFirstPart"]);
+          }
+          data["lastAmendmentSecondPart"] = util.doubleDigitCounter(data["lastAmendmentSecondPart"]);
+          waiverID += data["lastAmendmentFirstPart"] + ".R00." + data["lastAmendmentSecondPart"];
+          break;
+        default:
+          cy.log("type is invalid or not covered in cases");
+          break;
+      }
+      obj["generated" + type.replace(/\s/g, '') + "ID" + count] = waiverID;
+      OneMacFormPage.inputID(waiverID);
+      // write the merged object
+      cy.writeFile("./fixtures/generatedIDs.json", obj);
+      cy.writeFile("./fixtures/generatedIDPartialCounter.json", data);
+    })
+  });
 });
-Then("search for the generated Waiver Number {int}", (count) => {
+Then("search for the generated {string} Number {int}", (type, count) => {
   cy.fixture("generatedIDs.json").then((data) => {
-    OneMacDashboardPage.searchFor(data["generatedWaiverID" + count]);
+    OneMacDashboardPage.searchFor(data["generated" + type.replace(/\s/g, '') + "ID" + count]);
   });
   cy.wait(1000);
 });
@@ -2089,9 +2104,9 @@ Then(
   }
 );
 Then(
-  "verify the id number in the first row matches the generated Waiver ID {int}", (count) => {
+  "verify the id number in the first row matches the generated {string} Number {int}", (type, count) => {
     cy.fixture("generatedIDs.json").then((data) => {
-      OneMacDashboardPage.verifyIDNumberInFirstRowIs(data["generatedWaiverID" + count]);
+      OneMacDashboardPage.verifyIDNumberInFirstRowIs(data["generated" + type.replace(/\s/g, '') + "ID" + count]);
     });
   }
 );

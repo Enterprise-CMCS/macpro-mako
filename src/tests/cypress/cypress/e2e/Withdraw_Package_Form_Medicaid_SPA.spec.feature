@@ -23,9 +23,9 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the submit button is disabled
         Then verify form cancel button exists
         Then click form cancel button
-        Then click Stay on Page
+        Then click Return to form
         Then click form cancel button
-        Then click Leave Anyway form button
+        Then click Yes leave form button
         Then Click on My Account
         Then click the sign out button
 
@@ -42,9 +42,9 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the submit button is disabled
         Then verify form cancel button exists
         Then click form cancel button
-        Then click Stay on Page
+        Then click Return to form
         Then click form cancel button
-        Then click Leave Anyway form button
+        Then click Yes leave form button
         Then Click on My Account
         Then click the sign out button
 

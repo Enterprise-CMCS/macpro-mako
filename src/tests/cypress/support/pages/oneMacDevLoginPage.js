@@ -2,7 +2,7 @@ const EmailInput = "#signInFormUsername";
 const PasswordInput = "#signInFormPassword";
 const LoginBtn = "form[name='cognitoSignInForm'] > input[name='signInSubmitButton']";
 
-const DEFAULT_DEV_WORD = "bigTUNA1!";
+const DEFAULT_DEV_WORD = "MakoIsVeryPrivate1!";
 const LOGIN_FIXTURE = `user-logins.json`;
 
 export class oneMacDevLoginPage {

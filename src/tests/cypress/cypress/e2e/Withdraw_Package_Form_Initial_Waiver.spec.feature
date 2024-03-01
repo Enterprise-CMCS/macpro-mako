@@ -4,67 +4,136 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
         Then click the main Dashboard Button
-        Then click on the Waivers tab
-        Then Click on Filter Button
-        Then click on Status
-
-        Then click Under Review checkbox
-        Then click on Type
-
-        Then click on Action Type
-        Then click the Initial check box
+        Then click on New Submission
+        Then Click on Waiver Action
+        Then click on 1915b Waiver Actions
 
     Scenario: Screen Enhance - Validate Initial Waiver Withdrawal Page from dashboard
+        Then click on "1915(b) Comprehensive (Capitated) Waiver Authority" choice
+        Then click on "1915(b) Comprehensive (Capitated) New Initial Waiver" choice
+        Then type the generated "Initial Waiver" Number 5 into the ID Input box using the state "MD"
+        Then set "Proposed Effective Date of 1915(b) Initial Waiver" to 3 months from today
+        Then attach "file.docx" file to attachment 1
+        Then attach "excel.xlsx" file to attachment 2
+        Then into "Additional Information" type "This Initial Waiver package was created by the test automation."
+        Then Click on Submit Button
+        Then verify package submitted message in the alert bar
+        Then click on the Waivers tab
+        Then search for the generated "Initial Waiver" Number 5
+        Then verify the id number in the first row matches the generated "Initial Waiver" Number 5
         Then click the actions button in row one
         Then click withdraw package button
-        Then verify the form title is "Withdraw Waiver"
-        Then verify Form Intro Text is "Complete this action to withdraw this 1915(b) Initial Waiver package. Once completed, you will not be able to resubmit the 1915(b) Initial Waiver package or undo this action."
-        Then verify ID Label is "Initial Waiver Number"
-        Then verify Type is "1915(b) Initial Waiver"
+        Then verify the form is titled "Withdraw Waiver"
+        Then verify Form Intro Text is "Complete this form to withdraw"
+        Then verify ID Label is "Waiver Number"
+        Then verify Type is "1915(b) Waiver"
         Then verify "Upload Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
-        Then verify the submit button is disabled
         Then verify form cancel button exists
         Then click form cancel button
-        Then click Stay on Page
-        Then click form cancel button
-        Then click Leave Anyway form button
-        Then Click on My Account
-        Then click the sign out button
-
+        Then click Return to form
+        Then Click the Submit Button without waiting
+        Then click yes, withdraw package button
+        Then verify the message in the alert bar is "An Attachment or Additional Information is required."
+        Then into "Additional Information" type "This Initial Waiver package was withdrawn by the test automation."
+        Then Click the Submit Button without waiting
+        Then click yes, withdraw package button
+        Then verify the message in the alert bar is "Package withdrawn"
 
     Scenario: Screen Enhance - Validate Initial Waiver Withdrawal Page from details page
+        Then click on "1915(b) Comprehensive (Capitated) Waiver Authority" choice
+        Then click on "1915(b) Comprehensive (Capitated) New Initial Waiver" choice
+        Then type the generated "Initial Waiver" Number 6 into the ID Input box using the state "MD"
+        Then set "Proposed Effective Date of 1915(b) Initial Waiver" to 3 months from today
+        Then attach "file.docx" file to attachment 1
+        Then attach "excel.xlsx" file to attachment 2
+        Then into "Additional Information" type "This Initial Waiver package was created by the test automation."
+        Then Click on Submit Button
+        Then verify package submitted message in the alert bar
+        Then click on the Waivers tab
+        Then search for the generated "Initial Waiver" Number 6
+        Then verify the id number in the first row matches the generated "Initial Waiver" Number 6
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
         Then click withdraw button
-        Then verify the form title is "Withdraw Waiver"
-        Then verify Form Intro Text is "Complete this action to withdraw this 1915(b) Initial Waiver package. Once completed, you will not be able to resubmit the 1915(b) Initial Waiver package or undo this action."
-        Then verify ID Label is "Initial Waiver Number"
-        Then verify Type is "1915(b) Initial Waiver"
+        Then verify the form is titled "Withdraw Waiver"
+        Then verify Form Intro Text is "Complete this form to withdraw"
+        Then verify ID Label is "Waiver Number"
+        Then verify Type is "1915(b) Waiver"
         Then verify "Upload Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
-        Then verify the submit button is disabled
         Then verify form cancel button exists
         Then click form cancel button
-        Then click Stay on Page
-        Then click form cancel button
-        Then click Leave Anyway form button
-        Then Click on My Account
-        Then click the sign out button
+        Then click Return to form
+        Then Click the Submit Button without waiting
+        Then click yes, withdraw package button
+        Then verify the message in the alert bar is "An Attachment or Additional Information is required."
+        Then attach "adobe.pdf" file to attachment 1
+        Then Click the Submit Button without waiting
+        Then click yes, withdraw package button
+        Then verify the message in the alert bar is "Package withdrawn"
 
-    Scenario: Screen Enhance - Validate Form logic
+    Scenario: Screen Enhance - Validate Initial Waiver Withdrawal Page from dashboard
+        Then click on "1915(b)(4) FFS Selective Contracting Waivers" choice
+        Then click on "1915(b)(4) FFS Selective Contracting New Initial Waiver" choice
+        Then type the generated "Initial Waiver" Number 7 into the ID Input box using the state "MD"
+        Then set "Proposed Effective Date of 1915(b) Initial Waiver" to 3 months from today
+        Then attach "file.docx" file to attachment 1
+        Then attach "excel.xlsx" file to attachment 2
+        Then into "Additional Information" type "This Initial Waiver package was created by the test automation."
+        Then Click on Submit Button
+        Then verify package submitted message in the alert bar
+        Then click on the Waivers tab
+        Then search for the generated "Initial Waiver" Number 7
+        Then verify the id number in the first row matches the generated "Initial Waiver" Number 7
         Then click the actions button in row one
         Then click withdraw package button
-        Then verify the submit button is disabled
-        Then into "Additional Information" type "Withdrawal test."
-        Then verify the submit button is not disabled
-        Then         attach "adobe.pdf" file to attachment 1
-
-        Then verify the submit button is not disabled
-        Then clear "Additional Information" input field
-        Then verify the submit button is not disabled
+        Then verify the form is titled "Withdraw Waiver"
+        Then verify Form Intro Text is "Complete this form to withdraw"
+        Then verify ID Label is "Waiver Number"
+        Then verify Type is "1915(b) Waiver"
+        Then verify "Upload Supporting Documentation" is an Attachment Type
+        Then verify label "Additional Information" exists on page
+        Then verify form cancel button exists
+        Then click form cancel button
+        Then click Return to form
         Then Click the Submit Button without waiting
-        Then verify yes, withdraw package button exists
-        Then click modal cancel button
-        Then Click on My Account
-        Then click the sign out button
+        Then click yes, withdraw package button
+        Then verify the message in the alert bar is "An Attachment or Additional Information is required."
+        Then attach "adobe.pdf" file to attachment 1
+        Then Click the Submit Button without waiting
+        Then click yes, withdraw package button
+        Then verify the message in the alert bar is "Package withdrawn"
+
+    Scenario: Screen Enhance - Validate Initial Waiver Withdrawal Page from details page
+        Then click on "1915(b)(4) FFS Selective Contracting Waivers" choice
+        Then click on "1915(b)(4) FFS Selective Contracting New Initial Waiver" choice
+        Then type the generated "Initial Waiver" Number 8 into the ID Input box using the state "MD"
+        Then set "Proposed Effective Date of 1915(b) Initial Waiver" to 3 months from today
+        Then attach "file.docx" file to attachment 1
+        Then attach "excel.xlsx" file to attachment 2
+        Then into "Additional Information" type "This Initial Waiver package was created by the test automation."
+        Then Click on Submit Button
+        Then verify package submitted message in the alert bar
+        Then click on the Waivers tab
+        Then search for the generated "Initial Waiver" Number 8
+        Then verify the id number in the first row matches the generated "Initial Waiver" Number 8
+        Then click the Waiver Number link in the first row
+        Then verify the package details page is visible
+        Then click withdraw button
+        Then verify the form is titled "Withdraw Waiver"
+        Then verify Form Intro Text is "Complete this form to withdraw"
+        Then verify ID Label is "Waiver Number"
+        Then verify Type is "1915(b) Waiver"
+        Then verify "Upload Supporting Documentation" is an Attachment Type
+        Then verify label "Additional Information" exists on page
+        Then verify form cancel button exists
+        Then click form cancel button
+        Then click Return to form
+        Then Click the Submit Button without waiting
+        Then click yes, withdraw package button
+        Then verify the message in the alert bar is "An Attachment or Additional Information is required."
+        Then into "Additional Information" type "This Initial Waiver package was withdrawn by the test automation."
+        Then Click the Submit Button without waiting
+        Then click yes, withdraw package button
+        Then verify the message in the alert bar is "Package withdrawn"

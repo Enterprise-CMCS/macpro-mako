@@ -23,9 +23,9 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the submit button is disabled
         Then verify form cancel button exists
         Then click form cancel button
-        Then click Stay on Page
+        Then click Return to form
         Then click form cancel button
-        Then click Leave Anyway form button
+        Then click Yes leave form button
 
     Scenario: Screen Enhance - Validate CHIP Withdrawal Page from the details page
         Then click the SPA ID link in the first row
@@ -40,9 +40,9 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the submit button is disabled
         Then verify form cancel button exists
         Then click form cancel button
-        Then click Stay on Page
+        Then click Return to form
         Then click form cancel button
-        Then click Leave Anyway form button
+        Then click Yes leave form button
 
     Scenario: Screen Enhance - Validate Form logic
         Then click the actions button in row one
@@ -53,7 +53,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the submit button is not disabled
         Then clear "Additional Information" input field
         Then verify the submit button is not disabled
-        #Then Click the Submit Button without waiting
+#Then Click the Submit Button without waiting
 
 # Scenario: Demonstrate withdraw package for CHIP SPA in Under Review Status
 #     Then         attach "adobe.pdf" file to attachment 1

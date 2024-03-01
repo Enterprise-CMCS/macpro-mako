@@ -6,56 +6,40 @@ export class utilities {
     //takes last 2 digits of current year
     let year = new Date().getFullYear().toString().slice(-2);
     //picks a number between 0000 and 9999
-    let number = ('0000' + Math.floor( + Math.random() * 9999)).slice(-4);
+    let number = ('0000' + Math.floor(+ Math.random() * 9999)).slice(-4);
     // SS-YY-NNNN
     let spaID = state + "-" + year + "-" + number + "-" + "VM";
     return spaID;
   }
 
-  waitForSpinnders() {
-    cy.waitForSpinners();
+  firstpartCounter(lastfirstPartCounter = 1000) {
+    cy.log("type " + typeof(lastfirstPartCounter) + "and object " + lastfirstPartCounter)
+    if(lastfirstPartCounter < 1000){
+      return 1000;
+    } else if(lastfirstPartCounter === 2999){
+      return 10000;
+    } else {
+      return lastfirstPartCounter += 1;
+    }
   }
 
-    //probably could be deprecated?
-  generateWaiverNumberWith5Characters(state) {
-    let num1 = Math.floor(Math.random() * Math.floor(80)) + 10;
-    let num2 = Math.floor(Math.random() * Math.floor(80)) + 10;
-    let num3 = Math.floor(Math.random());
-    // SS.#####
-    let waiverNumber = state + "." + num1 + "" + num2 + "" + num3;
-    return waiverNumber;
-  }
-
-  generateInitialWaiverNumberWith5Digits(state) {
-    //picks a number between 00000 and 99999
-    let number = ('00000' + Math.floor( + Math.random() * 99999)).slice(-5);
-    // SS-#####.R00.00
-    let waiverNumber = state + "-" + number + ".R00.00";
-    return waiverNumber;
-  }
-
-  generateInitialWaiverNumberWith4Digits(state) {
-    //picks a number between 00000 and 99999
-    let number = ('0000' + Math.floor( + Math.random() * 9999)).slice(-4);
-    // SS-####.R00.00
-    let waiverNumber = state + "-" + number + ".R00.00";
-    return waiverNumber;
-  }
-
-  generateRenewalWaiverNumberWith5Digits(state) {
-    //picks a number between 00000 and 99999
-    let number = ('00000' + Math.floor( + Math.random() * 99999)).slice(-5);
-    // SS-#####.R01.00
-    let waiverNumber = state + "-" + number + ".R01.00";
-    return waiverNumber;
-  }
-
-  generateRenewalWaiverNumberWith4Digits(state) {
-    //picks a number between 0000 and 9999
-    let number = ('0000' + Math.floor( + Math.random() * 9999)).slice(-4);
-    // SS-####.R01.00
-    let waiverNumber = state + "-" + number + ".R01.00";
-    return waiverNumber;
+  //for amendment and renewal waiver number generation 01-99
+  doubleDigitCounter(twoDigitCount) {
+    twoDigitCount = parseInt(twoDigitCount);
+    if (twoDigitCount === (99 || "99" || "00" | 0)) {
+      //digits are 99 so we reset them.
+      return "01";
+    } else {
+     //digits are not 99 so we count up by 1
+      twoDigitCount += 1;
+      if (twoDigitCount < 10) {
+        //when the number is a single digit, pad the number with 0 to fit ID format
+        return "0" + twoDigitCount;
+      } else {
+        //return
+        return twoDigitCount;
+      }
+    }
   }
 }
 

@@ -44,7 +44,6 @@ Feature: Package Dashboard - Filter
         Then verify CHIP SPA Exists
         Then verify Medicaid SPA Exists
         Then click on Status
-        #Then verify Submitted - Intake Needed status checkbox exists
         Then verify Package Withdrawn status checkbox exists
         Then verify Pending - RAI status checkbox exists
         Then verify Approved checkbox exists
@@ -67,7 +66,6 @@ Feature: Package Dashboard - Filter
         #Then verify the Temporary Extension type action filter exists
         Then click on Action Type
         Then click on Status
-        #Then verify Submitted - Intake Needed status checkbox exists
         Then verify Package Withdrawn status checkbox exists
         Then verify Pending - RAI status checkbox exists
         Then verify Approved checkbox exists

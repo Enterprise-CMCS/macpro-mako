@@ -50,22 +50,21 @@ const comprehensiveWaiverAmendment =
 //Element is Xpath use cy.xpath instead of cy.get
 const renewalWaiver1915b4 =
   ':contains("1915(b)(4) FFS Selective Contracting Renewal Waiver")';
-const comprehensiveRenewalWaiver =
-  ':contains("1915(b) Comprehensive (Capitated) Renewal Waiver")';
-const cardLink = "[data-testid='card-inner-wrapper'] h2";
+const comprehensiveRenewalWaiver =':contains("1915(b) Comprehensive (Capitated) Renewal Waiver")';
+const cardLink = "[data-testid='card-inner-wrapper']";
 
 export class oneMacSubmissionTypePage {
   clickStatePlanAmendmentSPA() {
     cy.xpath(statePlanAmendmentSPA).click();
   }
   verifyNewInitialWaiverPage() {
-    cy.url().should("include", "/initial-waiver");
+    cy.url().should("include", "/initial/create");
   }
   verifyNewWaiverRenewalPage() {
-    cy.url().should("include", "/waiver-renewal");
+    cy.url().should("include", "/renewal/create");
   }
   verifyNewWaiverAmendmentPage() {
-    cy.url().should("include", "/waiver-amendment");
+    cy.url().should("include", "/amendment/create");
   }
   verifyNewAppendixKPage() {
     cy.url().should("include", "/appendix-k-amendment");
@@ -78,9 +77,6 @@ export class oneMacSubmissionTypePage {
   }
   clickFssSelectiveAuthority() {
     cy.get(cardLink).filter(ffsSelectiveAuthority).click();
-  }
-  click1915bComprehensiveCapitatedWaiverAuthority() {
-    cy.get(cardLink).filter(comprehensiveCapitatedWaiverAuthority).click();
   }
   clickMedicaidSPA() {
     cy.get(cardLink).filter(medicaidSPA).click();
@@ -103,14 +99,8 @@ export class oneMacSubmissionTypePage {
   clickInitialWaiver() {
     cy.get(cardLink).filter(initialWaiver1915b4).click();
   }
-  clickComprehensiveInitialWaiver() {
-    cy.get(cardLink).filter(comprehensiveInitialWaiver).click();
-  }
   click1915b4WaiverRenewal() {
     cy.get(cardLink).filter(renewalWaiver1915b4).click();
-  }
-  clickComprehensiveRenewalWaiver() {
-    cy.get(cardLink).filter(comprehensiveRenewalWaiver).click();
   }
   clickWaiverAmendment1915b4() {
     cy.get(cardLink).filter(amendment1915b4).click();
@@ -122,11 +112,6 @@ export class oneMacSubmissionTypePage {
     cy.get(cardLink)
       .filter(initialWaiver1915b4)
       .should("have.attr", "href", "/initial-waiver-b-4");
-  }
-  verifyComprehensiveNewInitialWaiverIsClickable() {
-    cy.get(cardLink)
-      .filter(comprehensiveInitialWaiver)
-      .should("have.attr", "href", "/initial-waiver-b-other");
   }
   verifyAppendixKIsClickable() {
     cy.get(cardLink)

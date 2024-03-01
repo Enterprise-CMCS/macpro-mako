@@ -7,37 +7,12 @@ Feature: Waiver Package Details View: Waiver Renewal for a CMS User
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-        Then click the Renewal check box
+        Then click the 1915b check box
         Then click on Type
+        Then click on Action Type
+        Then click the Renewal check box
+        Then click on Action Type
         Then click on Status
-
-
-    Scenario: Screen Enhance: Waiver Renewal Details View - Submitted - Intake Needed
-        Then click Submitted - Intake Needed checkbox
-        Then Click on the close Filter Button
-        Then click the Waiver Number link in the first row
-        Then verify the package details page is visible
-        Then verify the status on the card is "Submitted - Intake Needed"
-        Then verify there are no package actions available
-        Then verify the details section exists
-        Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Renewal" exists for the Type
-        Then verify there is a State header in the details section
-        Then verify a state exists for the State
-        Then verify there is an Initial Submission Date header in the details section
-        Then verify a date exists for the Initial Submission Date
-        Then verify there is a Proposed Effective Date header in the details section
-        Then verify there is a Subject header in the details section
-        Then verify there is a description header in the details section
-        Then verify there is a CPOC header in the details section
-        Then verify the CPOC has a value displayed in the details section
-        Then verify there is a Review Team SRT header in the details section
-        Then verify the Review Team SRT has a value displayed in the details section
-        Then verify there is a Final Disposition Date header in the details section
-        Then verify there is an Approved Effective Date in the details section
-        Then verify the Initial Submission caret button exists
-        Then expand the Initial Submission caret
-        Then verify the download all button exists
 
     Scenario: Screen Enhance: Waiver Renewal Details View - Pending
         Then click the Pending checkbox
@@ -48,7 +23,7 @@ Feature: Waiver Package Details View: Waiver Renewal for a CMS User
         #Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Renewal" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -77,7 +52,7 @@ Feature: Waiver Package Details View: Waiver Renewal for a CMS User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Renewal" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -106,7 +81,7 @@ Feature: Waiver Package Details View: Waiver Renewal for a CMS User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Renewal" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -135,7 +110,7 @@ Feature: Waiver Package Details View: Waiver Renewal for a CMS User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Renewal" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -165,7 +140,7 @@ Feature: Waiver Package Details View: Waiver Renewal for a CMS User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Renewal" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -194,7 +169,7 @@ Feature: Waiver Package Details View: Waiver Renewal for a CMS User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Renewal" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -223,7 +198,7 @@ Feature: Waiver Package Details View: Waiver Renewal for a CMS User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Renewal" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -252,7 +227,7 @@ Feature: Waiver Package Details View: Waiver Renewal for a CMS User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Renewal" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section

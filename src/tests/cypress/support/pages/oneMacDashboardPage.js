@@ -229,6 +229,7 @@ const packageRowOneActionsBtn = "//button[@aria-label='Available actions']";
 const packageRowOneCPOC = "#cpocName-0";
 const respondToRAIBtn =
   "//a[text()= 'Respond to Formal RAI']";
+const issueRAIBtn = "//a[text()= 'Issue Formal RAI']";
 const RequestTempExtensionBtn = "//a[text()='Request Temporary Extension']";
 const addAmendmentBtn = "//a[text()='Add Amendment']";
 const waiverNumLink = (n) => `//a[text()="${n}"]`;
@@ -251,6 +252,9 @@ export class oneMacDashboardPage {
   }
   verifyPackageSubmittedIsDisplayed() {
     cy.xpath(packageSubmittedMsg).contains("Package submitted");
+  }
+  verifyAlertMessageIs(s) {
+    cy.xpath(packageSubmittedMsg).contains(s);
   }
   verifyIDNumber(s) {
     cy.xpath(IDNUMBER(s)).first().should("exist");
@@ -893,6 +897,9 @@ export class oneMacDashboardPage {
   }
   clickRespondToRAIBtn() {
     cy.xpath(respondToRAIBtn).click({ force: true });
+  }
+  clickIssueRAIBtn() {
+    cy.xpath(issueRAIBtn).click({ force: true });
   }
   verifyRespondToRAIBtnExists() {
     cy.xpath(respondToRAIBtn)

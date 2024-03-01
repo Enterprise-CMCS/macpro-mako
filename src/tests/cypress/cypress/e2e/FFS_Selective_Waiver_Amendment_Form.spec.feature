@@ -3,80 +3,42 @@ Feature: Create a waiver Amendment
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
-
-    Scenario: Screen Enhance - Amendment
+        Then click the main Dashboard Button
         Then click on New Submission
         Then Click on Waiver Action
         Then click on 1915b Waiver Actions
-        Then click on 1915b 4 FFS Selective Contracting waivers
-        Then verify 1915b 4 FFS Selective Contracting Waiver Amendment is a clickable option
-        Then click on 1915b 4 FFS Selective Contracting Waiver Amendment
+        Then click on "1915(b)(4) FFS Selective Contracting Waivers" choice
+
+    Scenario: Screen Enhance - 1915(b)(4) FFS Selective Contracting Waiver Amendment
+        Then verify "1915(b)(4) FFS Selective Contracting Waiver Amendment" choice goes to "/new-submission/waiver/b/b4/initial/create"
+        Then click on "1915(b)(4) FFS Selective Contracting Waiver Amendment" choice
         Then verify user is on new waiver amendment page
         Then verify the attachment info descriptiion
         Then verify the attachment info link is for "1915b Waiver"
-    @focus
-    Scenario: Existing Waiver Number to Amend Input Field format
-        Then click on New Submission
-        Then Click on Waiver Action
-        Then click on 1915b Waiver Actions
-        Then click on 1915b 4 FFS Selective Contracting waivers
-        Then click on 1915b 4 FFS Selective Contracting Waiver Amendment
-        Then verify Waiver Authority contains "1915(b)(4) FFS Selective Contracting waivers"
-        Then into "Existing Waiver Number to Amend" type "MD"
-        Then into "1915(b) Waiver Amendment Number" type "MD-5533.R00.02"
-        Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
-        Then attach "picture.jpg" file to attachment 1
-        Then verify the "Existing Waiver Number to Amend" error message is "The waiver number entered does not appear to match our records. Please enter an approved initial or renewal waiver number, using a dash after the two character state abbreviation."
-        Then verify the submit button is disabled
-        Then clear "Existing Waiver Number to Amend" input field
-        Then into "Existing Waiver Number to Amend" type "MD-2200.R00.00"
-        Then verify "Existing Waiver Number to Amend" has no error messages
-        Then verify the submit button is not disabled
-        Then clear "Existing Waiver Number to Amend" input field
-        Then into "Existing Waiver Number to Amend" type "MD"
-        Then verify the "Existing Waiver Number to Amend" error message is "The waiver number entered does not appear to match our records. Please enter an approved initial or renewal waiver number, using a dash after the two character state abbreviation."
-        Then verify the submit button is disabled
-        Then clear "Existing Waiver Number to Amend" input field
 
-    Scenario: 1915b Waiver Amendment Number Input Field format
-        Then click on New Submission
-        Then Click on Waiver Action
-        Then click on 1915b Waiver Actions
-        Then click on 1915b 4 FFS Selective Contracting waivers
-        Then click on 1915b 4 FFS Selective Contracting Waiver Amendment
-        Then verify Waiver Authority contains "1915(b)(4) FFS Selective Contracting waivers"
-        Then into "Existing Waiver Number to Amend" type "MD-2200.R00.00"
-        Then into "1915(b) Waiver Amendment Number" type "MD"
+    Scenario: Verify 1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print is required
+        Then click on "1915(b)(4) FFS Selective Contracting Waiver Amendment" choice
+        Then verify Waiver Authority contains "1915(b)"
+        Then type the generated "Waiver Amendment" Number 2 into the ID Input box using the state "MD"
+        Then Click the Submit Button without waiting
+        Then verify the "Proposed Effective Date" error message is "Required"
+        Then verify the "first attachment" error message is "Required"
         Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
-        Then attach "picture.jpg" file to attachment 1
-        Then verify the "1915(b) Waiver Amendment Number" error message is "The 1915(b) Waiver Amendment Number must be in the format of SS-####.R##.## or SS-#####.R##.##"
-        Then verify the "1915(b) Waiver Amendment Number" error message line 2 is "For amendments, the last two digits start with ‘01’ and ascends."
-        Then verify the submit button is disabled
-        Then clear "1915(b) Waiver Amendment Number" input field
-        Then into "1915(b) Waiver Amendment Number" type "MD-5533.R00.02"
-        Then verify "1915(b) Waiver Amendment Number" has no error messages
-        Then verify the submit button is not disabled
-        Then clear "1915(b) Waiver Amendment Number" input field
-        Then into "1915(b) Waiver Amendment Number" type "MD"
-        Then verify the "1915(b) Waiver Amendment Number" error message is "The 1915(b) Waiver Amendment Number must be in the format of SS-####.R##.## or SS-#####.R##.##"
-        Then verify the "1915(b) Waiver Amendment Number" error message line 2 is "For amendments, the last two digits start with ‘01’ and ascends."
-        Then verify the submit button is disabled
-        Then clear "1915(b) Waiver Amendment Number" input field
+        Then Click the Submit Button without waiting
+        Then verify "Proposed Effective Date" has no error messages
+        Then attach "excel.xlsx" file to attachment 1
+        Then clear the ID Input box
+        Then Click the Submit Button without waiting
+        Then verify "first attachment" has no error messages
 
-    Scenario: create waiver amendment from package dashboard and search it
-        Then click on New Submission
-        Then Click on Waiver Action
-        Then click on 1915b Waiver Actions
-        Then click on 1915b 4 FFS Selective Contracting waivers
-        Then click on 1915b 4 FFS Selective Contracting Waiver Amendment
-        Then verify Waiver Authority contains "1915(b)(4) FFS Selective Contracting waivers"
-        Then into "Existing Waiver Number to Amend" type "MD-2200.R00.00"
-        Then into "1915(b) Waiver Amendment Number" type "MD-5533.R00.03"
+    Scenario: create Waiver Amendment from package dashboard and search it
+        Then click on "1915(b)(4) FFS Selective Contracting Waiver Amendment" choice
+        Then type the generated "Waiver Amendment" Number 2 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
         Then attach "picture.jpg" file to attachment 1
-        Then into "Additional Information" type "This is just a test."
+        Then into "Additional Information" type "This Waiver Amendment package was created by the test automation."
         Then Click on Submit Button
-        Then verify submission successful message in the alert bar
-        Then verify the Waivers tab is selected
-        Then search for "MD-5533.R00.03"
-        Then verify id number in the first row matches new waiver amendment number "3"
+        Then verify package submitted message in the alert bar
+        Then click on the Waivers tab
+        Then search for the generated "Waiver Amendment" Number 2
+        Then verify the id number in the first row matches the generated "Waiver Amendment" Number 2

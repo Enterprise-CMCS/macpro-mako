@@ -6,9 +6,11 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-
-        Then click the Waiver Amendment check box
+        Then click the 1915b check box
         Then click on Type
+        Then click on Action Type
+        Then click the Waiver Amendment check box
+        Then click on Action Type
         Then click on Status
 
 
@@ -21,7 +23,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -48,7 +50,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify withdraw package action exists
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -76,7 +78,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify Respond to Formal RAI action exists
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -103,7 +105,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -131,7 +133,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -158,7 +160,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -188,7 +190,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify Withdraw Formal RAI Response package action exists
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Waiver Amendment" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Type
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section

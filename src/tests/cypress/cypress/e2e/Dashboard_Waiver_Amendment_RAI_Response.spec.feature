@@ -7,11 +7,12 @@ Feature: RAI Response for 1915B Waiver Amendment - Package View
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Type
-
-        Then click the Waiver Amendment check box
+        Then click the 1915b check box
         Then click on Type
+        Then click on Action Type
+        Then click the Waiver Amendment check box
+        Then click on Action Type
         Then click on Status
-
         Then click RAI Issued checkbox
 
     Scenario: Respond to RAI from package dashboard
@@ -22,11 +23,6 @@ Feature: RAI Response for 1915B Waiver Amendment - Package View
         Then verify the attachment info link is for "Waiver RAI"
         Then attach "adobe.pdf" file to attachment 1
         Then Click the Submit Button without waiting
-        Then verify the modal pop-up is visible
-        Then verify the title of the modal pop-up is Do you want to submit your official formal RAI response
-        Then verify the detailed text in the modal contains you are submitting your official formal RAI Response to start the 90 day clock review process
-        Then click modal cancel button
-        Then verify the modal pop-up is not visible
 
     Scenario: Respond to RAI from package details page
         Then click the Waiver Number link in the first row
@@ -34,8 +30,3 @@ Feature: RAI Response for 1915B Waiver Amendment - Package View
         Then verify "Waiver Number" is prefilled
         Then attach "adobe.pdf" file to attachment 1
         Then Click the Submit Button without waiting
-        Then verify the modal pop-up is visible
-        Then verify the title of the modal pop-up is Do you want to submit your official formal RAI response
-        Then verify the detailed text in the modal contains you are submitting your official formal RAI Response to start the 90 day clock review process
-        Then click modal cancel button
-        Then verify the modal pop-up is not visible

@@ -1,107 +1,55 @@
-Feature: Create a waiver Amendment
-
+Feature: 1915b Comprehensive Capitated Waiver Amendment
     Background: Reoccurring steps
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
-
-    Scenario: Screen Enhance - Amendment
+        Then click the main Dashboard Button
         Then click on New Submission
         Then Click on Waiver Action
         Then click on 1915b Waiver Actions
-        Then click on 1915b Comprehensive Capitated Waiver Authority
-        Then verify 1915b Comprehensive Capitated Waiver Amendment is a clickable option
-        Then click on 1915b Comprehensive Capitated Waiver Amendment
+        Then click on "1915(b) Comprehensive (Capitated) Waiver Authority" choice
+
+    Scenario: Screen Enhance - Amendment
+        Then verify "1915(b) Comprehensive (Capitated) Waiver Amendment" choice goes to "/new-submission/waiver/b/capitated/amendment/create"
+        Then click on "1915(b) Comprehensive (Capitated) Waiver Amendment" choice
         Then verify user is on new waiver amendment page
         Then verify the attachment info descriptiion
         Then verify the attachment info link is for "1915b Waiver"
 
-    Scenario: Existing Waiver Number to Amend Input Field format
-        Then click on New Submission
-        Then Click on Waiver Action
-        Then click on 1915b Waiver Actions
-        Then click on 1915b Comprehensive Capitated Waiver Authority
-        Then click on 1915b Comprehensive Capitated Waiver Amendment
-        Then verify Waiver Authority contains "All other 1915(b) Waivers"
-        Then into "Existing Waiver Number to Amend" type "MD"
-        Then into "1915(b) Waiver Amendment Number" type "MD-5533.R00.02"
-        Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
-        Then attach "excel.xlsx" file to attachment 1
-        Then attach "excel.xlsx" file to attachment 2
-        Then verify the "Existing Waiver Number to Amend" error message is "The waiver number entered does not appear to match our records. Please enter an approved initial or renewal waiver number, using a dash after the two character state abbreviation."
-        Then verify the submit button is disabled
-        Then clear "Existing Waiver Number to Amend" input field
-        Then into "Existing Waiver Number to Amend" type "MD-2200.R00.00"
-        Then verify Parent ID error message is not present
-        Then verify the submit button is not disabled
-        Then clear "Existing Waiver Number to Amend" input field
-        Then into "Existing Waiver Number to Amend" type "MD-11"
-        Then verify the "Existing Waiver Number to Amend" error message is "The waiver number entered does not appear to match our records. Please enter an approved initial or renewal waiver number, using a dash after the two character state abbreviation."
-        Then verify the submit button is disabled
-        Then clear "Existing Waiver Number to Amend" input field
-
-    Scenario: 1915b Waiver Amendment Number Input Field format
-        Then click on New Submission
-        Then Click on Waiver Action
-        Then click on 1915b Waiver Actions
-        Then click on 1915b Comprehensive Capitated Waiver Authority
-        Then click on 1915b Comprehensive Capitated Waiver Amendment
-        Then verify Waiver Authority contains "All other 1915(b) Waivers"
-        Then into "Existing Waiver Number to Amend" type "MD-2200.R00.00"
-
-        Then into "1915(b) Waiver Amendment Number" type "MD"
-        Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
-        Then attach "excel.xlsx" file to attachment 1
-        Then attach "excel.xlsx" file to attachment 2
-        Then verify the "1915(b) Waiver Amendment Number" error message is "The 1915(b) Waiver Amendment Number must be in the format of SS-####.R##.## or SS-#####.R##.##"
-        Then verify the "1915(b) Waiver Amendment Number" error message line 2 is "For amendments, the last two digits start with ‘01’ and ascends."
-        Then verify the submit button is disabled
-        Then clear "1915(b) Waiver Amendment Number" input field
-        Then into "1915(b) Waiver Amendment Number" type "MD-5533.R00.02"
-        Then verify ID error message is not present
-        Then verify the submit button is not disabled
-        Then clear "1915(b) Waiver Amendment Number" input field
-        Then into "1915(b) Waiver Amendment Number" type "MD"
-        Then verify the "1915(b) Waiver Amendment Number" error message is "The 1915(b) Waiver Amendment Number must be in the format of SS-####.R##.## or SS-#####.R##.##"
-        Then verify the "1915(b) Waiver Amendment Number" error message line 2 is "For amendments, the last two digits start with ‘01’ and ascends."
-        Then verify the submit button is disabled
-        Then clear "1915(b) Waiver Amendment Number" input field
-
     Scenario: Verify pre-print and spreadsheet are both required
-        Then click on New Submission
-        Then Click on Waiver Action
-        Then click on 1915b Waiver Actions
-        Then click on 1915b Comprehensive Capitated Waiver Authority
-        Then click on 1915b Comprehensive Capitated Waiver Amendment
-        Then verify Waiver Authority contains "All other 1915(b) Waivers"
+        Then click on "1915(b) Comprehensive (Capitated) Waiver Amendment" choice
         Then into "Existing Waiver Number to Amend" type "MD-2200.R00.00"
-        Then into "1915(b) Waiver Amendment Number" type "MD-5533.R00.02"
+        Then type the generated "Waiver Amendment" Number 1 into the ID Input box using the state "MD"
+        Then Click the Submit Button without waiting
+        Then verify the "Proposed Effective Date" error message is "Required"
+        Then verify the "first attachment" error message is "Required"
+        Then verify the "second attachment" error message is "Required"
         Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
+        Then Click the Submit Button without waiting
+        Then verify "Proposed Effective Date" has no error messages
         Then attach "excel.xlsx" file to attachment 2
-        Then verify the submit button is disabled
+        Then Click the Submit Button without waiting
+        Then verify "second attachment" has no error messages
         Then attach "excel.xlsx" file to attachment 1
-        Then verify the submit button is not disabled
+        Then clear the ID Input box
+        Then Click the Submit Button without waiting
+        Then verify "first attachment" has no error messages
 
     Scenario: create waiver amendment from package dashboard and search it
-        Then click on New Submission
-        Then Click on Waiver Action
-        Then click on 1915b Waiver Actions
-        Then click on 1915b Comprehensive Capitated Waiver Authority
-        Then click on 1915b Comprehensive Capitated Waiver Amendment
-        Then verify Waiver Authority contains "All other 1915(b) Waivers"
+        Then click on "1915(b) Comprehensive (Capitated) Waiver Amendment" choice
         Then into "Existing Waiver Number to Amend" type "MD-2200.R00.00"
-        Then into "1915(b) Waiver Amendment Number" type "MD-5533.R00.01"
+        Then type the generated "Waiver Amendment" Number 1 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
-        Then attach "excel.xlsx" file to attachment 1
+        Then attach "file.docx" file to attachment 1
         Then attach "excel.xlsx" file to attachment 2
-        Then into "Additional Information" type "This is just a test."
+        Then into "Additional Information" type "This 1915(b) Waiver Amendment package was created by the test automation."
         Then Click on Submit Button
-        Then verify submission successful message in the alert bar
-        Then verify the Waivers tab is selected
-        Then search for "MD-5533.R00.01"
-        Then verify id number in the first row matches new waiver amendment number "1"
+        Then verify package submitted message in the alert bar
+        Then click on the Waivers tab
+        Then search for the generated "Waiver Amendment" Number 1
+        Then verify the id number in the first row matches the generated "Waiver Amendment" Number 1
 
-#need more time to consider hwo to test with different authority parent
+#TODO: it's currently not possible to create an amendment from an approved initial or renewal waiver in MAKO
 # Scenario: Verify user can create an amendment from the package details Mini-Dashboard
 #     Then click on the Waivers tab
 #     Then search for approved Initial Waiver Number 1
