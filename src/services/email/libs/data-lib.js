@@ -85,5 +85,6 @@ export const buildEmailData = async (bundle, data) => {
                 break;
         }
     });
+    console.log("buildEmailData returnObject: ", JSON.stringify(returnObject,null,4));
     return returnObject;
 };

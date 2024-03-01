@@ -7,8 +7,6 @@ const decodeRecord = (encodedRecord) => {
 
 export default function handler(lambda) {
     return async function (event) {
-        console.log("Received event (stringified):", JSON.stringify(event, null, 4));
-
         let eventQueue = [];
         let sendResults = [];
       const response = {
