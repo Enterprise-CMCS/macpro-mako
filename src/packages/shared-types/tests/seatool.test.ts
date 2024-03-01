@@ -18,7 +18,6 @@ describe("seatool has valid data", () => {
         .transform("randomid")
         .parse(rec);
       expect(transformedRecord.id).toEqual("randomid");
-      // expect(transformedRecord.authority).toEqual("Medicaid_SPA");
     }
   });
 });

@@ -66,6 +66,8 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
       `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
   };
 
+  console.log(endpoint);
+
   switch (endpoint) {
     case "/submit":
       return {
@@ -176,7 +178,7 @@ export const submit = async <T extends Record<string, unknown>>({
       // Add your attachments object key and file label value to the attachmentTitleMap
       // for this transform to work. Else the title will just be the object key.
       title:
-        attachmentTitleMap?.[attachments[idx].attachmentKey] ||
+        attachmentTitleMap(authority!)?.[attachments[idx].attachmentKey] ||
         attachments[idx].attachmentKey,
       name: attachments[idx].file.name,
     }));
@@ -189,6 +191,7 @@ export const submit = async <T extends Record<string, unknown>>({
         });
       })
     );
+
     // Submit form data
     return await API.post("os", endpoint, {
       body: buildSubmissionPayload(

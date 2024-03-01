@@ -52,6 +52,7 @@
     "date-fns": "^2.30.0",
     "export-to-csv": "^0.2.1",
     "file-saver": "^2.0.5",
+    "flat": "^6.0.1",
     "framer-motion": "^10.16.1",
     "jszip": "^3.10.1",
     "launchdarkly-react-client-sdk": "^3.0.10",
