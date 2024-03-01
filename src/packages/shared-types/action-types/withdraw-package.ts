@@ -11,7 +11,7 @@ export const withdrawPackageSchema = z.object({
     .string()
     .max(4000, "This field may only be up to 4000 characters.")
     .optional(),
-  attachments: z.array(attachmentSchema),
+  attachments: z.array(attachmentSchema).nullish(),
   submitterName: z.string(),
   submitterEmail: z.string(),
 });

@@ -6,3 +6,4 @@ export * from "./withdraw-package";
 export * from "./new-submission";
 export * from "./legacy-submission";
 export * from "./seatool";
+export * from "./remove-appk-child";

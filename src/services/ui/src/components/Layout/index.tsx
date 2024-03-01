@@ -3,21 +3,21 @@ import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useMemo, useState } from "react";
-import { useGetUser } from "@/api/useGetUser";
+import { useGetUser } from "@/api";
 import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
-import { useUserContext } from "../Context/userContext";
+import { useUserContext } from "../Context";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
-import { useNavigate } from "../Routing";
-import { FAQ_TAB } from "../Routing/consts";
-import { ModalProvider } from "@/components/Context/modalContext";
-import { AlertProvider } from "@/components/Context/alertContext";
+import { useNavigate, FAQ_TAB } from "../Routing";
+import { ModalProvider, AlertProvider } from "@/components";
 
 const getLinks = (isAuthenticated: boolean, role?: boolean) => {
-  const isProd = window && window.location.hostname === "mako.cms.gov";
+  const isProd =
+    (window && window.location.hostname === "mako.cms.gov") ||
+    window.location.hostname === "onemac.cms.gov";
   return [
     {
       name: "Home",

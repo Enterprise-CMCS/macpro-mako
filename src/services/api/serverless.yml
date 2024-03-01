@@ -5,7 +5,6 @@ plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
-  - serverless-scriptable-plugin
   - serverless-plugin-scripts
 
 provider:
@@ -63,15 +62,13 @@ custom:
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
   dbInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/seatool/dbInfo, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/seatool/dbInfo}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
-  scriptable:
-    hooks:
-      package:compileEvents:
-        - yarn compileRepack
-        - ./repack/repack.js
+  launchdarklySDKKey: ${ssm:/${self:service}/${sls:stage}/launchdarklySDKKey, ssm:/${self:service}/default/launchdarklySDKKey}
+
 params:
   master:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
+    getSeaTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
@@ -79,6 +76,7 @@ params:
   val:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
+    getSeaTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
@@ -86,6 +84,7 @@ params:
   production:
     formsProvisionedConcurrency: 5
     getAllFormsProvisionedConcurrency: 1
+    getSeaTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 10
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
@@ -93,6 +92,7 @@ params:
   default:
     formsProvisionedConcurrency: 0
     getAllFormsProvisionedConcurrency: 1
+    getSeaTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 0
     itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
@@ -183,7 +183,25 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:itemProvisionedConcurrency}
+
+  getSeaTypes:
+    handler: handlers/getSeaTypes.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /getSeaTypes
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:getSeaTypesProvisionedConcurrency}
   itemExists:
     handler: handlers/itemExists.handler
     maximumRetryAttempts: 0
@@ -283,6 +301,30 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
+  appkNewSubmission:
+    handler: handlers/appkNewSubmission.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      dbIp: ${self:custom.dbInfo.ip}
+      dbPort: ${self:custom.dbInfo.port}
+      dbUser: ${self:custom.dbInfo.user}
+      dbPassword: ${self:custom.dbInfo.password}
+      topicName: ${param:topicName}
+      brokerString: ${self:custom.brokerString}
+    events:
+      - http:
+          path: /appk
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:submitProvisionedConcurrency}
+
 resources:
   Resources:
     ApiGateway400ErrorCount:
