@@ -15,6 +15,7 @@ import {
   withdrawRai,
   toggleWithdrawEnabled,
   seatool,
+  changedDate,
 } from "./transforms";
 
 export type Document = z.infer<newSubmission.Schema> &
@@ -23,11 +24,7 @@ export type Document = z.infer<newSubmission.Schema> &
   z.infer<withdrawPackage.Schema> &
   z.infer<toggleWithdrawEnabled.Schema> &
   z.infer<seatool.Schema> &
-  {
-    type: string | null, // added by the sink
-    subType: string | null, // added by the sink
-  } &
-  {
+  z.infer<changedDate.Schema> & {
     changelog?: Changelog[];
   };
 

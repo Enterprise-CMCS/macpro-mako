@@ -54,7 +54,7 @@ const attachmentInstructions: Record<SetupOptions, ReactElement> = {
 const addlInfoInstructions: Record<SetupOptions, ReactElement> = {
   "Medicaid SPA": (
     <p>
-      Explain your need for withdrawal, or upload supporting documentation. .
+      Explain your need for withdrawal, or upload supporting documentation.
     </p>
   ),
   "CHIP SPA": <p>Explain your need for withdrawal.</p>,

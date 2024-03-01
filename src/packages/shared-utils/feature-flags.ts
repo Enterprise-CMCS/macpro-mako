@@ -1,8 +1,6 @@
 /**
  * Source of truth for feature flags in application.
  * Ensures some type safety around flag names when we're enabling/disabling features in our code.
- *
- *
  */
 
 export const featureFlags = {
