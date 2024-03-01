@@ -11,6 +11,10 @@ import { isCmsWriteUser, isCmsUser } from "shared-utils";
 export function getAuthDetails(event: APIGatewayEvent) {
   const authProvider =
     event.requestContext.identity.cognitoAuthenticationProvider;
+  const testing = event.requestContext.authorizer?.claims;
+
+  console.log("claims object", JSON.stringify(testing));
+
   if (!authProvider) {
     throw new Error("No auth provider!");
   }
