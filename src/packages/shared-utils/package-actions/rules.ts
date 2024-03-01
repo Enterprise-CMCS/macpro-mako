@@ -58,8 +58,10 @@ const arWithdrawRaiResponse: ActionRule = {
 };
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
-  check: (checker, user) =>
-    !checker.hasStatus(finalDispositionStatuses) && isStateUser(user),
+  check: (checker, user) => {
+    console.log("here is the user object: ", JSON.stringify(user));
+    return !checker.hasStatus(finalDispositionStatuses) && isStateUser(user);
+  },
 };
 
 // TODO: Add rule for remove-appk-child
