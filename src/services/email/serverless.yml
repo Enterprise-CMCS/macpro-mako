@@ -8,6 +8,7 @@ plugins:
   - "@stratiformdigital/serverless-iam-helper"
   - serverless-plugin-scripts
   - serverless-esbuild
+  - "@haftahave/serverless-ses-template"
 
 provider:
   name: aws
@@ -26,12 +27,33 @@ provider:
           Action:
             - ses:ListIdentities
             - ses:ListConfigurationSets
-            - ses:SendEmail
+            - ses:SendTemplatedEmail
           Resource: "*"
         - Effect: Allow
           Action:
             - sns:Subscribe
             - sns:Publish
+          Resource: "*"
+       - Effect: Allow
+          Action:
+            - ssm:GetParameter
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - ec2:CreateNetworkInterface
+            - ec2:DescribeNetworkInterfaces
+            - ec2:DescribeVpcs
+            - ec2:DeleteNetworkInterface
+            - ec2:DescribeSubnets
+            - ec2:DescribeSecurityGroups
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - es:ESHttpGet
+          Resource: ${param:osDomainArn}/*
+        - Effect: "Allow"
+          Action:
+            - cognito-idp:ListUsers
           Resource: "*"
 
   stackTags:
@@ -41,21 +63,50 @@ provider:
 custom:
   project: ${env:PROJECT}
   emailEventTopicName: ${self:service}-${sls:stage}-email-events
+  vpc: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/vpc, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/vpc}
+  brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
+  emailAddressLookup: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/emailAddressLookup, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/emailAddressLookup}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
       - val
       - production
+  sesTemplates:
+    addStage: true
+
+params:
+  master:
+    topicNamespace: ""
+  val:
+    topicNamespace: ""
+  production:
+    topicNamespace: ""
+  default:
+    topicNamespace: --${self:custom.project}--${sls:stage}--
 
 functions:
   processEmails:
     handler: handlers/processEmails.main
     environment:
       region: ${self:provider.region}
+      stage: ${sls:stage}
+      osDomain: ${param:osDomain}
+      cognitoPoolId: ${param:CognitoUserPoolId}
+      emailSource: ${self:custom.emailAddressLookup.sourceEmail}
+      osgEmail: ${self:custom.emailAddressLookup.osgEmail}
+      chipInbox: ${self:custom.emailAddressLookup.chipInbox}
+      chipCcList: ${self:custom.emailAddressLookup.chipCcList}
       emailConfigSet: ${self:service}-${sls:stage}-configuration
+      applicationEndpoint: ${param:ApplicationEndpointUrl}
     maximumRetryAttempts: 0
     timeout: 60
     memorySize: 1024
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+
   processEmailEvents:
     handler: handlers/processEmailEvents.main
     events:
@@ -169,3 +220,45 @@ resources:
             - "subscription"
           SnsDestination:
             TopicARN: !Ref EmailEventTopic
+
+
+    SinkEmailTrigger:
+      Type: AWS::Lambda::EventSourceMapping
+      Properties:
+        BatchSize: 1000
+        Enabled: true
+        FunctionName: !GetAtt ProcessEmailsLambdaFunction.Arn
+        SelfManagedEventSource:
+          Endpoints:
+            KafkaBootstrapServers:
+              Fn::Split:
+                - ","
+                - ${self:custom.brokerString}
+        SourceAccessConfigurations:
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.0}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.1}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.2}
+          - Type: VPC_SECURITY_GROUP
+            URI: !Sub security_group:${SecurityGroup}
+        StartingPosition: LATEST
+        Topics:
+          - ${param:topicNamespace}aws.onemac.migration.cdc
+
+    SecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
+      Properties:
+        GroupDescription: Security group for Sink Lambda Function.
+        VpcId: ${self:custom.vpc.id}
+        SecurityGroupEgress:
+          - IpProtocol: tcp
+            CidrIp: 0.0.0.0/0
+            FromPort: 443
+            ToPort: 443
+          - IpProtocol: tcp
+            CidrIp: 10.0.0.0/8
+            FromPort: 9094
+            ToPort: 9094

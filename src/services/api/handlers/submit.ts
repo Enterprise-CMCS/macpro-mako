@@ -109,6 +109,12 @@ export const submit = async (event: APIGatewayEvent) => {
     //   VALUES ('${body.id}', TRY_CAST('${body.typeId}' AS INT));
     // `;
 
+    // data for emails
+    body.notificationMetadata = {
+      submissionDate,
+      proposedEffectiveDate: body.proposedEffectiveDate,
+    };
+
     const result = await sql.query(query);
     console.log(result);
     if ([Authority["1915b"], Authority.CHIP_SPA].includes(body.authority)) {
