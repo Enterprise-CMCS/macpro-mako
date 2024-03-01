@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import * as unit from "./submissionService";
 import { OneMacUser } from "@/api/useGetUser";
 import { SubmissionServiceEndpoint } from "@/utils";
+import { Authority } from "shared-types";
 
 const mockFormData = {
   test: "data",
@@ -63,7 +64,8 @@ describe("helpers", () => {
       const testFile = new File([""], "test.pdf");
       const res = unit.urlsToRecipes(
         [{ url: "/test", key: "test", bucket: "test-bucket" }],
-        [{ attachmentKey: "test", file: testFile }]
+        [{ attachmentKey: "test", file: testFile }],
+        Authority.MED_SPA
       );
       expect(res).toStrictEqual([
         {
@@ -81,12 +83,13 @@ describe("helpers", () => {
   describe("buildAttachmentObject", () => {
     it("takes UploadRecipe[] and returns Attachment[]", () => {
       const attachments = unit.buildAttachmentObject(mockUploadRecipes(3));
+      expect(attachments).not.toBeNull();
       expect(attachments).toHaveLength(3);
-      expect(attachments[0].key).toEqual("test-3");
-      expect(attachments[0].filename).toEqual("name-3");
-      expect(attachments[0].title).toEqual("title-3");
-      expect(attachments[0].bucket).toEqual("bucket-3");
-      expect(attachments[0].uploadDate).not.toBeUndefined();
+      expect(attachments![0].key).toEqual("test-3");
+      expect(attachments![0].filename).toEqual("name-3");
+      expect(attachments![0].title).toEqual("title-3");
+      expect(attachments![0].bucket).toEqual("bucket-3");
+      expect(attachments![0].uploadDate).not.toBeUndefined();
     });
   });
 

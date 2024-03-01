@@ -299,7 +299,7 @@ export const RHFSlot = <
               (() => {
                 const hops = props as RHFComponentMap["Upload"];
 
-                return <Upload {...field} {...hops} />;
+                return <Upload {...hops} files={field?.value ?? []} setFiles={field.onChange}  />;
               })()}
 
             {/* ----------------------------------------------------------------------------- */}

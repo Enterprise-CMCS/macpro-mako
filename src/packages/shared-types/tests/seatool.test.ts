@@ -4,21 +4,16 @@ import { seatoolSchema, opensearch } from "shared-types";
 
 describe("seatool has valid data", () => {
   it("can be validated against schema", () => {
-    const parsedRecord = seatoolSchema.parse({
-      ...seaToolRecords[0],
-      CHANGED_DATE: 1708695001,
-    });
+    const parsedRecord = seatoolSchema.parse(seaToolRecords[0]);
     expect(parsedRecord.STATE_PLAN.PLAN_TYPE).toBeDefined();
   });
 
   it("can be transformed into a new object", () => {
     for (const record of seaToolRecords) {
-      const rec = { ...record, CHANGED_DATE: 1708695001 };
       const transformedRecord = opensearch.main.seatool
         .transform("randomid")
-        .parse(rec);
+        .parse(record);
       expect(transformedRecord.id).toEqual("randomid");
-      // expect(transformedRecord.authority).toEqual("Medicaid_SPA");
     }
   });
 });

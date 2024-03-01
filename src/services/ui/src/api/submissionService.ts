@@ -36,9 +36,8 @@ type AttachmentKeyValue = { attachmentKey: string; file: File };
 
 /** Pass in an array of UploadRecipes and get a back-end compatible object
  * to store attachment data */
-export const buildAttachmentObject = (
-  recipes: UploadRecipe[]
-): Attachment[] => {
+export const buildAttachmentObject = (recipes?: UploadRecipe[]) => {
+  if (!recipes) return null;
   return recipes
     .map(
       (r) =>
@@ -134,7 +133,8 @@ export const buildAttachmentKeyValueArr = (
 
 export const urlsToRecipes = (
   urls: PreSignedURL[],
-  attachments: AttachmentKeyValue[]
+  attachments: AttachmentKeyValue[],
+  authority: Authority
 ): UploadRecipe[] =>
   urls.map((obj, idx) => ({
     ...obj, // Spreading the presigned url
@@ -142,7 +142,7 @@ export const urlsToRecipes = (
     // Add your attachments object key and file label value to the attachmentTitleMap
     // for this transform to work. Else the title will just be the object key.
     title:
-      attachmentTitleMap?.[attachments[idx].attachmentKey] ||
+      attachmentTitleMap(authority)?.[attachments[idx].attachmentKey] ||
       attachments[idx].attachmentKey,
     name: attachments[idx].file.name,
   }));
@@ -170,7 +170,8 @@ export const submit = async <T extends Record<string, unknown>>({
     // For each attachment, add name, title, and a presigned url... and push to uploadRecipes
     const uploadRecipes: UploadRecipe[] = urlsToRecipes(
       preSignedURLs,
-      attachments
+      attachments,
+      authority!
     );
     // Upload attachments
     await Promise.all(
