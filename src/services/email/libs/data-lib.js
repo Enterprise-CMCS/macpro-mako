@@ -26,6 +26,13 @@ const formatAttachments = (formatType, attachmentList) => {
         return `${format.begin}${attachmentList.map(a => `${a.title}: ${a.filename}`).join(format.joiner)}${format.end}`;
 }
 
+const formatDateFromTimestamp = (timestamp) => {
+    if (!timestamp || timestamp <= 0) return "Pending";
+    return DateTime.fromMillis(timestamp)
+        .toFormat('DDDD');
+
+}
+
 function formatProposedEffectiveDate(emailBundle) {
     if (!emailBundle?.notificationMetadata?.proposedEffectiveDate) return "Pending";
     return DateTime.fromMillis(emailBundle.notificationMetadata.proposedEffectiveDate)
@@ -56,7 +63,10 @@ export const buildEmailData = async (bundle, data) => {
                 returnObject['territory'] = data.id.toString().substring(0, 2);
                 break;
             case 'proposedEffectiveDateNice':
-                returnObject['proposedEffectiveDateNice'] = formatProposedEffectiveDate(data);
+                returnObject['proposedEffectiveDateNice'] = formatDateFromTimestamp(data?.notificationMetadata?.proposedEffectiveDate);
+                break;
+            case 'ninetyDaysLookup':
+                returnObject['ninetyDaysDateNice'] = formatDateFromTimestamp(data?.ninetyDaysDateLookup);
                 break;
             case 'applicationEndpoint':
                 returnObject['applicationEndpoint'] = process.env.applicationEndpoint;
