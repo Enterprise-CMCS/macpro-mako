@@ -19,6 +19,7 @@ export const getOsInsightData = async (id) => {
       "insights",
       id
     );
+    console.log("Insights Item: ", osInsightsItem);
     returnData.cpoc = osInsightsItem?._source?.LEAD_ANALYST ? buildEmailsToSend(osInsightsItem?._source?.LEAD_ANALYST, osInsightsItem?._source?.STATE_PLAN.LEAD_ANALYST_ID) : "'CPOC Substitute' <k.grue.cmsapprover@gmail.com>";
     returnData.srt = osInsightsItem?._source?.ACTION_OFFICERS ? buildEmailsToSend(osInsightsItem?._source?.ACTION_OFFICERS) : "'SRT Substitute' <k.grue.stateadmn@gmail.com>";
     returnData.ninetyDaysLookup = osInsightsItem?._source?.STATE_PLAN.ALERT_90_DAYS_DATE;
@@ -26,5 +27,6 @@ export const getOsInsightData = async (id) => {
   } catch (error) {
     console.log("OpenSearch error is: ", error);
   }
+  console.log("OS Lookup ReturnData: ", returnData);
   return returnData;
 };
