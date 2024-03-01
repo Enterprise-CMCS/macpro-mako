@@ -34,7 +34,7 @@ provider:
             - sns:Subscribe
             - sns:Publish
           Resource: "*"
-       - Effect: Allow
+        - Effect: Allow
           Action:
             - ssm:GetParameter
           Resource: "*"
