@@ -32,7 +32,7 @@ export function TypeSelect<TFieldValues extends FieldValues>({
       name={name}
       render={({ field }) => {
         return (
-          <Inputs.FormItem className="max-w-sm">
+          <Inputs.FormItem className="max-w-xs">
             <Inputs.FormLabel className="font-semibold block">
               Types <Inputs.RequiredIndicator />
             </Inputs.FormLabel>

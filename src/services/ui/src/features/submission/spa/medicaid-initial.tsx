@@ -156,8 +156,9 @@ export const MedicaidSpaFormPage = () => {
                     </Link>
                   </div>
                   <Content.SpaIdFormattingDesc />
-                  <Inputs.FormControl className="max-w-sm">
+                  <Inputs.FormControl>
                     <Inputs.Input
+                      className="max-w-sm"
                       {...field}
                       onInput={(e) => {
                         if (e.target instanceof HTMLInputElement) {
@@ -189,6 +190,16 @@ export const MedicaidSpaFormPage = () => {
                 </Inputs.FormItem>
               )}
             />
+            <SubjectInput
+              control={form.control}
+              name="subject"
+              helperText="The title or purpose of the SPA"
+            />
+            <DescriptionInput
+              control={form.control}
+              name="description"
+              helperText="A summary of the SPA. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
+            />
             <TypeSelect
               control={form.control}
               name="typeIds"
@@ -196,13 +207,10 @@ export const MedicaidSpaFormPage = () => {
             />
             <SubTypeSelect
               control={form.control}
-              typeIds={form.watch("subTypeIds")}
+              typeIds={form.watch("typeIds")}
               name="subTypeIds"
               authorityId={125} // medicaid authority
             />
-
-            <SubjectInput control={form.control} name="subject" />
-            <DescriptionInput control={form.control} name="description" />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc

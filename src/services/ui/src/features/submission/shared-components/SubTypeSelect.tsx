@@ -21,13 +21,9 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
   authorityId,
   typeIds = [],
 }: SubTypeSelectFormFieldProps<TFieldValues>) {
-  const { data } = useGetSubTypes(
-    authorityId,
-    typeIds,
-    {
-      enabled: typeIds.length > 0,
-    }
-  );
+  const { data } = useGetSubTypes(authorityId, typeIds, {
+    enabled: typeIds.length > 0,
+  });
 
   const options = data?.map((item) => ({
     value: item.id,
@@ -40,7 +36,7 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
       name={name}
       render={({ field }) => {
         return (
-          <Inputs.FormItem className="max-w-sm">
+          <Inputs.FormItem className="max-w-xs">
             <Inputs.FormLabel className="font-semibold block">
               Sub Types <Inputs.RequiredIndicator />
             </Inputs.FormLabel>

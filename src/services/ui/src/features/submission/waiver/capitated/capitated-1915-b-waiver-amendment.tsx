@@ -230,6 +230,16 @@ export const Capitated1915BWaiverAmendmentPage = () => {
                 </Inputs.FormItem>
               )}
             />
+            <SubjectInput
+              control={form.control}
+              name="subject"
+              helperText="The title or purpose of the Waiver"
+            />
+            <DescriptionInput
+              control={form.control}
+              name="description"
+              helperText="A summary of the Waiver. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
+            />
             <TypeSelect
               control={form.control}
               name="typeIds"
@@ -241,9 +251,6 @@ export const Capitated1915BWaiverAmendmentPage = () => {
               name="subTypeId"
               authorityId={122} // waivers authority
             />
-
-            <SubjectInput control={form.control} name="subject" />
-            <DescriptionInput control={form.control} name="description" />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/#medicaid-spa-attachments" />

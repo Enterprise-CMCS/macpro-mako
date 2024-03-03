@@ -43,7 +43,7 @@ const types = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   for (const kafkaRecord of kafkaRecords) {
     const { value } = kafkaRecord;
     try {
-      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
+      const decodedValue = Buffer.from(value, "base64").toString("ascii");
       const record = JSON.parse(decodedValue).payload.after;
       if (!record) {
         continue;
