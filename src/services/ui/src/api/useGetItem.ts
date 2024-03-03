@@ -12,6 +12,7 @@ export const idIsApproved = async (id: string) => {
     const record = await getItem(id);
     return record._source.seatoolStatus == SEATOOL_STATUS.APPROVED;
   } catch (e) {
+    console.error(e);
     return false;
   }
 };

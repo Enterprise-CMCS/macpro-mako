@@ -61,6 +61,5 @@ export const seatoolSchema = z.object({
       })
     )
     .nullable(),
-  CHANGED_DATE: z.number().nullable(),
 });
 export type SeaTool = z.infer<typeof seatoolSchema>;

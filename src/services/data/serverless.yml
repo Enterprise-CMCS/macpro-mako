@@ -221,6 +221,7 @@ stepFunctions:
                     - aws.seatool.ksql.onemac.agg.State_Plan
                     - aws.onemac.migration.cdc
                     - ${param:topicNamespace}aws.onemac.migration.cdc
+                    - aws.seatool.debezium.changed_date.SEA.dbo.State_Plan
                 - Function: !Ref SinkChangelogLambdaFunction
                   Topics:
                     - aws.onemac.migration.cdc
@@ -240,6 +241,7 @@ stepFunctions:
                     - aws.seatool.ksql.onemac.agg.State_Plan
                     - aws.onemac.migration.cdc
                     - ${param:topicNamespace}aws.onemac.migration.cdc
+                    - aws.seatool.debezium.changed_date.SEA.dbo.State_Plan
                 - Function: !Ref SinkChangelogLambdaFunction
                   Topics:
                     - aws.onemac.migration.cdc
