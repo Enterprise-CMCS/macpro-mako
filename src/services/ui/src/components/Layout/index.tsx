@@ -125,7 +125,7 @@ export const Layout = () => {
             </div>
           </div>
         </nav>
-        <main className="flex-1">
+        <main>
           <AlertProvider>
             <Outlet />
           </AlertProvider>

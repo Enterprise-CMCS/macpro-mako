@@ -22,7 +22,7 @@ export const DetailItemsGrid: FC<{
   return (
     <div
       className={cn(
-        `${props.fullWidth ? "w-full" : "grid grid-cols-2 gap-4"}`,
+        `${props.fullWidth ? "max-w-xl" : "grid grid-cols-2 gap-4"}`,
         props.containerStyle
       )}
     >
@@ -30,9 +30,9 @@ export const DetailItemsGrid: FC<{
         return !canView(user) ? null : (
           <div key={label}>
             <h3 style={{ fontWeight: 700 }}>{label}</h3>
-            <p style={{ fontWeight: 400 }} className="py-2">
+            <div style={{ fontWeight: 400 }} className="py-2">
               {value}
-            </p>
+            </div>
           </div>
         );
       })}
@@ -41,7 +41,6 @@ export const DetailItemsGrid: FC<{
 };
 
 export const PackageDetails: FC<opensearch.main.Document> = (props) => {
-  console.log({ props });
   return (
     <DetailsSection
       id="package-details"
@@ -53,7 +52,7 @@ export const PackageDetails: FC<opensearch.main.Document> = (props) => {
           displayItems={approvedAndAEffectiveDetails(props)}
           containerStyle="py-4"
         />
-        <DetailItemsGrid displayItems={descriptionDetails(props)} />
+        <DetailItemsGrid displayItems={descriptionDetails(props)} fullWidth />
         <hr className="my-4" />
         <DetailItemsGrid displayItems={submissionDetails(props)} />
         <AppK {...props} />

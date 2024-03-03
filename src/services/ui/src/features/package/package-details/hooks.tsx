@@ -37,7 +37,6 @@ export type DetailSectionItem = {
   label: string;
   value: ReactNode;
   canView: (u: OneMacUser | undefined) => boolean;
-  fullWidth?: boolean;
 };
 export const recordDetails = (
   data: opensearch.main.Document

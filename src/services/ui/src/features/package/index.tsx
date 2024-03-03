@@ -24,27 +24,77 @@ const DetailCardWrapper = ({
 }: PropsWithChildren<{
   title: string;
 }>) => (
-  <CardWithTopBorder className="max-w-[18rem]">
-    <div className="p-4">
+  <CardWithTopBorder>
+    <div className="p-4 min-w-80 min-h-36">
       <h2>{title}</h2>
       {children}
     </div>
   </CardWithTopBorder>
 );
 
-const StatusCard = (data: opensearch.main.Document) => {
-  const transformedStatuses = getStatus(data.seatoolStatus);
-  const { data: user } = useGetUser();
+const PackageActionsCard = ({
+  id,
+  authority,
+}: {
+  id: string;
+  authority: Authority;
+}) => {
+  const location = useLocation();
+  const { data, isLoading } = useGetPackageActions(id, { retry: false });
+  if (isLoading) return <LoadingSpinner />;
 
   return (
-    <DetailCardWrapper title={"Status"}>
+    <DetailCardWrapper title={"Package Actions"}>
       <div>
-        <h2 className="text-xl font-semibold">
-          {user?.isCms &&
-          !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
-            ? transformedStatuses.cmsStatus
-            : transformedStatuses.stateStatus}
-        </h2>
+        {!data || !data.actions.length ? (
+          <em className="text-gray-400 my-4">
+            No actions are currently available for this submission.
+          </em>
+        ) : (
+          <ul className="my-4">
+            {data.actions.map((type, idx) => {
+              if (authority === Authority["1915b"]) {
+                return (
+                  <Link
+                    state={{ from: `${location.pathname}${location.search}` }}
+                    path="/action/:authority/:id/:type"
+                    key={`${idx}-${type}`}
+                    params={{ id, type, authority }}
+                    className="text-sky-700 font-semibold"
+                  >
+                    <li>{mapActionLabel(type)}</li>
+                  </Link>
+                );
+              } else {
+                return (
+                  <Link
+                    key={`${idx}-${type}`}
+                    path="/action/:id/:type"
+                    params={{ id, type }}
+                    className="text-sky-700 font-semibold"
+                  >
+                    <li>{mapActionLabel(type)}</li>
+                  </Link>
+                );
+              }
+            })}
+          </ul>
+        )}
+      </div>
+    </DetailCardWrapper>
+  );
+};
+
+const PackageStatusCard = (data: opensearch.main.Document) => {
+  const transformedStatuses = getStatus(data.seatoolStatus);
+  const { data: user } = useGetUser();
+  return (
+    <DetailCardWrapper title={"Package Status"}>
+      <div className="block md:flex my-3 max-w-2xl font-bold text-xl">
+        {user?.isCms &&
+        !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+          ? transformedStatuses.cmsStatus
+          : transformedStatuses.stateStatus}
         <div className="flex mt-1 flex-col gap-1 items-start">
           {data.raiWithdrawEnabled && (
             <div className="flex flex-row gap-1">
@@ -73,58 +123,6 @@ const StatusCard = (data: opensearch.main.Document) => {
     </DetailCardWrapper>
   );
 };
-const PackageActionsCard = ({
-  id,
-  authority,
-}: {
-  id: string;
-  authority: Authority;
-}) => {
-  const location = useLocation();
-  const { data, isLoading } = useGetPackageActions(id, { retry: false });
-  if (isLoading) return <LoadingSpinner />;
-
-  return (
-    <DetailCardWrapper title={"Actions"}>
-      <div>
-        {!data || !data.actions.length ? (
-          <em className="text-gray-400">
-            No actions are currently available for this submission.
-          </em>
-        ) : (
-          <ul>
-            {data.actions.map((type, idx) => {
-              if (authority === Authority["1915b"]) {
-                return (
-                  <Link
-                    state={{ from: `${location.pathname}${location.search}` }}
-                    path="/action/:authority/:id/:type"
-                    key={`${idx}-${type}`}
-                    params={{ id, type, authority }}
-                    className="text-sky-700 underline"
-                  >
-                    <li>{mapActionLabel(type)}</li>
-                  </Link>
-                );
-              } else {
-                return (
-                  <Link
-                    key={`${idx}-${type}`}
-                    path="/action/:id/:type"
-                    params={{ id, type }}
-                    className="text-sky-700 underline"
-                  >
-                    <li>{mapActionLabel(type)}</li>
-                  </Link>
-                );
-              }
-            })}
-          </ul>
-        )}
-      </div>
-    </DetailCardWrapper>
-  );
-};
 
 export const DetailsContent = ({
   data,
@@ -133,44 +131,44 @@ export const DetailsContent = ({
 }) => {
   if (!data?._source) return <LoadingSpinner />;
   return (
-    <div className="block md:flex">
-      <aside className="flex-none font-bold hidden md:block pr-8">
-        {[
-          "Package Overview",
-          "Package Details",
-          "Package Activity",
-          "Change History",
-        ].map((val) => (
-          <a
-            className="block mb-4 text-primary"
-            key={val}
-            href={`?id=${encodeURIComponent(data._id)}#${val
-              .toLowerCase()
-              .split(" ")
-              .join("-")}`}
-          >
-            {val}
-          </a>
-        ))}
-      </aside>
-      <div className="flex-1">
-        <section
-          id="package-overview"
-          className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
-        >
-          <StatusCard {...data._source} />
-          <PackageActionsCard
-            id={data._id}
-            authority={data._source.authority!}
-          />
-        </section>
-        <div className="flex flex-col gap-3">
-          <PackageDetails {...data._source} />
-          <PackageActivities {...data._source} />
-          <AdminChanges {...data._source} />
-        </div>
+    <div className="w-full py-1 px-4 lg:px-8">
+      <section
+        id="package-overview"
+        className="block md:flex space-x-0 md:space-x-8"
+      >
+        <PackageStatusCard {...data._source} />
+        <PackageActionsCard id={data._id} authority={data._source.authority!} />
+      </section>
+      <div className="flex flex-col gap-3 ">
+        <PackageDetails {...data._source} />
+        <PackageActivities {...data._source} />
+        <AdminChanges {...data._source} />
       </div>
     </div>
+  );
+};
+
+const DetailsSidebar = ({ data }: { data: opensearch.main.ItemResult }) => {
+  return (
+    <aside className="min-w-56 flex-none font-semibold m-4 mt-6 pr-8">
+      {[
+        "Package Overview",
+        "Package Details",
+        "Package Activity",
+        "Change History",
+      ].map((val) => (
+        <a
+          className="block mb-2 text-blue-900"
+          key={val}
+          href={`?id=${encodeURIComponent(data._id)}#${val
+            .toLowerCase()
+            .split(" ")
+            .join("-")}`}
+        >
+          {val}
+        </a>
+      ))}
+    </aside>
   );
 };
 
@@ -184,12 +182,13 @@ export const Details = () => {
   if (error) return <ErrorAlert error={error} />;
 
   return (
-    <>
-      <div className="max-w-screen-xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
+    <div className="max-w-screen-xl mx-auto flex px-4 lg:px-8">
+      <div className="hidden lg:block">
         <BreadCrumbs options={detailsAndActionsCrumbs({ id })} />
-        <DetailsContent data={data} />
+        <DetailsSidebar data={data} />
       </div>
-    </>
+      <DetailsContent data={data} />
+    </div>
   );
 };
 
