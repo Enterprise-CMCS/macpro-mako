@@ -35,6 +35,7 @@ import {
   DescriptionInput,
   SubTypeSelect,
   SubjectInput,
+  TypeSelect,
 } from "@/features";
 
 const formSchema = z.object({
@@ -42,8 +43,8 @@ const formSchema = z.object({
   proposedEffectiveDate: z.date(),
   subject: z.string(),
   description: z.string(),
-  typeId: z.string().default("111"),
-  subTypeId: z.string(),
+  typeIds: z.array(z.number()),
+  subTypeIds: z.array(z.string()),
   attachments: z.object({
     b4WaiverApplication: zAttachmentRequired({ min: 1 }),
     tribalConsultation: zAttachmentOptional,
@@ -193,10 +194,15 @@ export const Contracting1915BWaiverInitialPage = () => {
                 </Inputs.FormItem>
               )}
             />
+            <TypeSelect
+              control={form.control}
+              name="typeIds"
+              authorityId={122}
+            />
             <SubTypeSelect
               control={form.control}
-              typeId={"111"}
-              name="subTypeId"
+              typeIds={form.watch("typeIds")}
+              name="subTypeIds"
               authorityId={122} // waivers authority
             />
 
@@ -215,7 +221,10 @@ export const Contracting1915BWaiverInitialPage = () => {
                     <Inputs.FormLabel>
                       {label} {required ? <Inputs.RequiredIndicator /> : null}
                     </Inputs.FormLabel>
-                    <Inputs.Upload files={field?.value ?? []} setFiles={field.onChange}  />
+                    <Inputs.Upload
+                      files={field?.value ?? []}
+                      setFiles={field.onChange}
+                    />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}

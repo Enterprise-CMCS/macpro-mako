@@ -43,8 +43,8 @@ const formSchema = z.object({
   additionalInformation: z.string().max(4000).optional(),
   subject: z.string(),
   description: z.string(),
-  typeId: z.string(),
-  subTypeId: z.string(),
+  typeIds: z.array(z.number()),
+  subTypeIds: z.array(z.number()),
   attachments: z.object({
     cmsForm179: zAttachmentRequired({
       min: 1,
@@ -191,13 +191,13 @@ export const MedicaidSpaFormPage = () => {
             />
             <TypeSelect
               control={form.control}
-              name="typeId"
+              name="typeIds"
               authorityId={125} // medicaid authority
             />
             <SubTypeSelect
               control={form.control}
-              typeId={form.watch("typeId")}
-              name="subTypeId"
+              typeIds={form.watch("subTypeIds")}
+              name="subTypeIds"
               authorityId={125} // medicaid authority
             />
 
@@ -229,7 +229,10 @@ export const MedicaidSpaFormPage = () => {
                           : ""}
                       </Inputs.FormDescription>
                     }
-                    <Inputs.Upload files={field?.value ?? []} setFiles={field.onChange}  />
+                    <Inputs.Upload
+                      files={field?.value ?? []}
+                      setFiles={field.onChange}
+                    />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}

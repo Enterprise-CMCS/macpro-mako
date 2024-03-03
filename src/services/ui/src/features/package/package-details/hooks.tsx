@@ -39,7 +39,7 @@ export type DetailSectionItem = {
   canView: (u: OneMacUser | undefined) => boolean;
   fullWidth?: boolean;
 };
-export const spaDetails = (
+export const recordDetails = (
   data: opensearch.main.Document
 ): DetailSectionItem[] => [
   {
@@ -63,13 +63,17 @@ export const spaDetails = (
     canView: () => true,
   },
   {
-    label: "Type",
-    value: data.typeName ?? BLANK_VALUE,
+    label: "Types",
+    value: data.types
+      ? data.types.map((T) => <p key={T?.SPA_TYPE_ID}>{T?.SPA_TYPE_NAME}</p>)
+      : BLANK_VALUE,
     canView: () => true,
   },
   {
-    label: "Sub Type",
-    value: data.subTypeName ?? BLANK_VALUE,
+    label: "Sub Types",
+    value: data.subTypes
+      ? data.subTypes.map((T) => <p key={T?.TYPE_ID}>{T?.TYPE_NAME}</p>)
+      : BLANK_VALUE,
     canView: () => true,
   },
   {

@@ -19,6 +19,8 @@ export const submit = async (event: APIGatewayEvent) => {
         body: "Event body required",
       });
     }
+
+    // TODO: We should really type this, is would be hard, but not impossible
     const body = JSON.parse(event.body);
     console.log(body);
 
@@ -56,55 +58,54 @@ export const submit = async (event: APIGatewayEvent) => {
       port: parseInt(process.env.dbPort as string),
       database: "SEA",
     });
-    console.log(body);
+
+    // Escape single quotes for SQL
+    const escapeSqlString = (str: string) => str.replace(/'/g, "''");
+
+    // Generate INSERT statements for typeIds
+    const typeIdsInserts = body.typeIds
+      .map(
+        (typeId: number) =>
+          `INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID) VALUES ('${body.id}', '${typeId}');`
+      )
+      .join("\n");
+
+    // Generate INSERT statements for subTypeIds
+    const subTypeIdsInserts = body.subTypeIds
+      .map(
+        (subTypeId: number) =>
+          `INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID) VALUES ('${body.id}', '${subTypeId}');`
+      )
+      .join("\n");
+
     const query = `
-    DECLARE @RegionID INT;
-    DECLARE @PlanTypeID INT;
-    DECLARE @SPWStatusID INT;
-    DECLARE @SubmissionDate DATETIME;
-    DECLARE @StatusDate DATETIME;
-    DECLARE @ProposedDate DATETIME;
-    DECLARE @TitleName NVARCHAR(MAX) = ${
-      body.subject ? `'${body.subject.replace("'", "''")}'` : "NULL"
-    };
-    DECLARE @SummaryMemo NVARCHAR(MAX) = ${
-      body.description ? `'${body.description.replace("'", "''")}'` : "NULL"
-    };
-    DECLARE @StatusMemo NVARCHAR(MAX) = ${buildStatusMemoQuery(
-      body.id,
-      "Package Submitted",
-      "insert"
-    )}
-    
-    -- Set your variables
-    SELECT @RegionID = Region_ID FROM SEA.dbo.States WHERE State_Code = '${
-      body.state
-    }';
-    SELECT @PlanTypeID = Plan_Type_ID FROM SEA.dbo.Plan_Types WHERE Plan_Type_Name = '${
-      body.authority
-    }';
-    SELECT @SPWStatusID = SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = 'Pending';
-    
-    SET @SubmissionDate = DATEADD(s, CONVERT(INT, LEFT(${submissionDate}, 10)), CAST('19700101' as DATETIME));
-    SET @StatusDate = DATEADD(s, CONVERT(INT, LEFT(${today}, 10)), CAST('19700101' as DATETIME));
-    SET @ProposedDate = DATEADD(s, CONVERT(INT, LEFT(${
-      body.proposedEffectiveDate
-    }, 10)), CAST('19700101' as DATETIME));
+  DECLARE @RegionID INT;
+  DECLARE @PlanTypeID INT;
+  DECLARE @SPWStatusID INT;
+  DECLARE @SubmissionDate DATETIME;
+  DECLARE @StatusDate DATETIME;
+  DECLARE @ProposedDate DATETIME;
+  DECLARE @TitleName NVARCHAR(MAX) = ${body.subject ? `'${escapeSqlString(body.subject)}'` : "NULL"};
+  DECLARE @SummaryMemo NVARCHAR(MAX) = ${body.description ? `'${escapeSqlString(body.description)}'` : "NULL"};
+  DECLARE @StatusMemo NVARCHAR(MAX) = ${escapeSqlString(buildStatusMemoQuery(body.id, "Package Submitted", "insert"))};
+  
+  -- Set your variables
+  SELECT @RegionID = Region_ID FROM SEA.dbo.States WHERE State_Code = '${body.state}';
+  SELECT @PlanTypeID = Plan_Type_ID FROM SEA.dbo.Plan_Types WHERE Plan_Type_Name = '${body.authority}';
+  SELECT @SPWStatusID = SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = 'Pending';
+  
+  SET @SubmissionDate = DATEADD(s, CONVERT(INT, LEFT('${submissionDate}', 10)), CAST('19700101' as DATETIME));
+  SET @StatusDate = DATEADD(s, CONVERT(INT, LEFT('${today}', 10)), CAST('19700101' as DATETIME));
+  SET @ProposedDate = DATEADD(s, CONVERT(INT, LEFT('${body.proposedEffectiveDate}', 10)), CAST('19700101' as DATETIME));
 
-    -- Main insert into State_Plan
-    INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo)
-    VALUES ('${body.id}', '${
-      body.state
-    }', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo);
+  -- Main insert into State_Plan
+  INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo)
+  VALUES ('${body.id}', '${body.state}', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo);
 
-    -- Insert into State_Plan_Service_SubTypes
-    INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID)
-    VALUES ('${body.id}', TRY_CAST('${body.subTypeId}' AS INT));
+  ${typeIdsInserts}
 
-    -- Insert into State_Plan_Service_Types
-    INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID)
-    VALUES ('${body.id}', TRY_CAST('${body.typeId}' AS INT));
-    `;
+  ${subTypeIdsInserts}
+  `;
 
     const result = await sql.query(query);
     console.log(result);

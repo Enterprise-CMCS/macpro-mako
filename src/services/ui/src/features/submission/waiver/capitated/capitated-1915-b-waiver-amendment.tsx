@@ -36,6 +36,7 @@ import {
   DescriptionInput,
   SubTypeSelect,
   SubjectInput,
+  TypeSelect,
 } from "@/features/submission/shared-components";
 
 const formSchema = z.object({
@@ -44,7 +45,7 @@ const formSchema = z.object({
   proposedEffectiveDate: z.date(),
   subject: z.string(),
   description: z.string(),
-  typeId: z.string().default("111"),
+  typeIds: z.array(z.number()),
   subTypeId: z.string(),
   attachments: z.object({
     bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
@@ -229,9 +230,14 @@ export const Capitated1915BWaiverAmendmentPage = () => {
                 </Inputs.FormItem>
               )}
             />
+            <TypeSelect
+              control={form.control}
+              name="typeIds"
+              authorityId={122}
+            />
             <SubTypeSelect
               control={form.control}
-              typeId={"111"}
+              typeIds={form.watch("typeIds")}
               name="subTypeId"
               authorityId={122} // waivers authority
             />
@@ -252,7 +258,10 @@ export const Capitated1915BWaiverAmendmentPage = () => {
                       {label}
                       {required ? <Inputs.RequiredIndicator /> : null}
                     </Inputs.FormLabel>
-                    <Inputs.Upload files={field?.value ?? []} setFiles={field.onChange}  />
+                    <Inputs.Upload
+                      files={field?.value ?? []}
+                      setFiles={field.onChange}
+                    />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}

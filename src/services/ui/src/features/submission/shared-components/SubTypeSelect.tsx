@@ -1,57 +1,68 @@
-import { useSeaTypes } from "@/api";
+import { useGetSubTypes } from "@/api";
 import * as Inputs from "@/components/Inputs";
 import { Control, FieldValues, Path } from "react-hook-form";
-import { opensearch } from "shared-types";
+import Select from "react-select";
 
 type SubTypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
   name: Path<TFieldValues>;
   authorityId: number;
-  typeId: string;
+  typeIds?: number[];
+};
+
+type SelectOption = {
+  value: string;
+  label: string;
 };
 
 export function SubTypeSelect<TFieldValues extends FieldValues>({
   control,
-  typeId,
   name,
   authorityId,
+  typeIds = [],
 }: SubTypeSelectFormFieldProps<TFieldValues>) {
-  const { data } = useSeaTypes<opensearch.subtypes.Document>(
+  const { data } = useGetSubTypes(
     authorityId,
-    typeId
+    typeIds,
+    {
+      enabled: typeIds.length > 0,
+    }
   );
+
+  const options = data?.map((item) => ({
+    value: item.id,
+    label: item.name,
+  }));
 
   return (
     <Inputs.FormField
       control={control}
       name={name}
-      render={({ field }) => (
-        <Inputs.FormItem className="max-w-sm">
-          <Inputs.FormLabel className="font-semibold block">
-            Sub Type <Inputs.RequiredIndicator />
-          </Inputs.FormLabel>
-          <Inputs.Select
-            onValueChange={field.onChange}
-            defaultValue={field.value}
-            disabled={!typeId}
-          >
-            <Inputs.FormControl>
-              <Inputs.SelectTrigger>
-                <Inputs.SelectValue placeholder="Select a sub type" />
-              </Inputs.SelectTrigger>
-            </Inputs.FormControl>
-            <Inputs.SelectContent>
-              {data &&
-                data.map((T) => (
-                  <Inputs.SelectItem key={T.id} value={String(T.id)}>
-                    {T.name}
-                  </Inputs.SelectItem>
-                ))}
-            </Inputs.SelectContent>
-          </Inputs.Select>
-          <Inputs.FormMessage />
-        </Inputs.FormItem>
-      )}
+      render={({ field }) => {
+        return (
+          <Inputs.FormItem className="max-w-sm">
+            <Inputs.FormLabel className="font-semibold block">
+              Sub Types <Inputs.RequiredIndicator />
+            </Inputs.FormLabel>
+            <Select
+              isMulti
+              value={
+                field.value
+                  ? field.value.map((id: number) =>
+                      options?.find((O) => O.value === id)
+                    )
+                  : []
+              }
+              onChange={(val) =>
+                field.onChange(val.map((v: SelectOption) => v.value))
+              }
+              options={options}
+              closeMenuOnSelect={false}
+              className="border border-black shadow-sm rounded-sm"
+            />
+          </Inputs.FormItem>
+        );
+      }}
     />
   );
 }

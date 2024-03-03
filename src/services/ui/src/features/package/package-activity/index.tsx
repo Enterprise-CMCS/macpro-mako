@@ -338,7 +338,7 @@ export const PackageActivities = (props: opensearch.main.Document) => {
 
   return (
     <DetailsSection
-      id="package-activities"
+      id="package-activity"
       title={
         // needed to do this for the download all button
         <div className="flex justify-between">

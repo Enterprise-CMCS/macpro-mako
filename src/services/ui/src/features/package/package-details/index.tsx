@@ -2,7 +2,7 @@ import { DetailsSection } from "@/components";
 import {
   approvedAndAEffectiveDetails,
   descriptionDetails,
-  spaDetails,
+  recordDetails,
   submissionDetails,
 } from "./hooks";
 import { opensearch } from "shared-types";
@@ -41,13 +41,14 @@ export const DetailItemsGrid: FC<{
 };
 
 export const PackageDetails: FC<opensearch.main.Document> = (props) => {
+  console.log({ props });
   return (
     <DetailsSection
       id="package-details"
       title={`${props.authority} Package Details`}
     >
       <div className="flex-col gap-4">
-        <DetailItemsGrid displayItems={spaDetails(props)} />
+        <DetailItemsGrid displayItems={recordDetails(props)} />
         <DetailItemsGrid
           displayItems={approvedAndAEffectiveDetails(props)}
           containerStyle="py-4"

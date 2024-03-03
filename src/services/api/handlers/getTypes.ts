@@ -1,19 +1,17 @@
 import { APIGatewayEvent } from "aws-lambda";
-import * as os from "../../../libs/opensearch-lib";
+import * as os from "libs/opensearch-lib";
 import { response } from "../libs/handler";
 
-type GetSeaTypesBoby = {
+type GetTypesBoby = {
   authorityId: string;
-  typeId?: string;
 };
 
-export const querySeaTypes = async (authorityId: string, typeId?: string) => {
+export const queryTypes = async (authorityId: string) => {
   if (!process.env.osDomain) {
     throw new Error("process.env.osDomain must be defined");
   }
 
-  const index = typeId ? "subtypes" : "types";
-  const query: any = {
+  const query = {
     query: {
       bool: {
         must: [
@@ -36,27 +34,19 @@ export const querySeaTypes = async (authorityId: string, typeId?: string) => {
     },
   };
 
-  if (typeId) {
-    query.query.bool.must.push({
-      match: {
-        typeId: typeId,
-      },
-    });
-  }
-
-  return await os.search(process.env.osDomain, index, query);
+  return await os.search(process.env.osDomain, "types", query);
 };
 
-export const getSeaTypes = async (event: APIGatewayEvent) => {
+export const getTypes = async (event: APIGatewayEvent) => {
   if (!event.body) {
     return response({
       statusCode: 400,
       body: { message: "Event body required" },
     });
   }
-  const body = JSON.parse(event.body) as GetSeaTypesBoby;
+  const body = JSON.parse(event.body) as GetTypesBoby;
   try {
-    const result = await querySeaTypes(body.authorityId, body.typeId);
+    const result = await queryTypes(body.authorityId);
 
     if (!result)
       return response({
@@ -66,7 +56,7 @@ export const getSeaTypes = async (event: APIGatewayEvent) => {
 
     return response({
       statusCode: 200,
-      body: body.typeId ? { seaSubTypes: result } : { seaTypes: result },
+      body: result
     });
   } catch (err) {
     console.error({ err });
@@ -77,4 +67,4 @@ export const getSeaTypes = async (event: APIGatewayEvent) => {
   }
 };
 
-export const handler = getSeaTypes;
+export const handler = getTypes;

@@ -32,9 +32,9 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import {
   DescriptionInput,
-  SubTypeSelect,
   SubjectInput,
   TypeSelect,
+  SubTypeSelect,
   AdditionalInfoInput,
 } from "../shared-components";
 
@@ -43,8 +43,8 @@ const formSchema = z.object({
   additionalInformation: z.string().max(4000).optional(),
   subject: z.string(),
   description: z.string(),
-  typeId: z.string(),
-  subTypeId: z.string(),
+  typeIds: z.array(z.number()),
+  subTypeIds: z.array(z.number()),
   attachments: z.object({
     currentStatePlan: zAttachmentRequired({ min: 1 }),
     amendedLanguage: zAttachmentRequired({ min: 1 }),
@@ -57,6 +57,7 @@ const formSchema = z.object({
   proposedEffectiveDate: z.date(),
   seaActionType: z.string().default("Amend"),
 });
+
 type ChipFormSchema = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
@@ -188,13 +189,13 @@ export const ChipSpaFormPage = () => {
             />
             <TypeSelect
               control={form.control}
-              name="typeId"
+              name="typeIds"
               authorityId={124} // chip authority
             />
             <SubTypeSelect
               control={form.control}
-              typeId={form.watch("typeId")}
-              name="subTypeId"
+              typeIds={form.watch("typeIds")}
+              name="subTypeIds"
               authorityId={124} // chip authority
             />
 
@@ -218,7 +219,10 @@ export const ChipSpaFormPage = () => {
                         At least one attachment is required
                       </Inputs.FormDescription>
                     )}
-                    <Inputs.Upload files={field?.value ?? []} setFiles={field.onChange}  />
+                    <Inputs.Upload
+                      files={field?.value ?? []}
+                      setFiles={field.onChange}
+                    />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}

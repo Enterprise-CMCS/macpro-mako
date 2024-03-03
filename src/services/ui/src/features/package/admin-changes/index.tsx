@@ -83,7 +83,7 @@ export const AdminChanges: FC<opensearch.main.Document> = (props) => {
 
   return (
     <DetailsSection
-      id="admin-updates"
+      id="change-history"
       title={`Administrative Package Changes (${data?.length})`}
       description="Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC."
     >

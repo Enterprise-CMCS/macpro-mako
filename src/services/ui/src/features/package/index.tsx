@@ -138,8 +138,8 @@ export const DetailsContent = ({
         {[
           "Package Overview",
           "Package Details",
-          "Attachments",
-          "Additional Info",
+          "Package Activity",
+          "Change History",
         ].map((val) => (
           <a
             className="block mb-4 text-primary"
