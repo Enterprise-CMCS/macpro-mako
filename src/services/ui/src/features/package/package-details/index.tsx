@@ -43,7 +43,7 @@ export const DetailItemsGrid: FC<{
 export const PackageDetails: FC<opensearch.main.Document> = (props) => {
   return (
     <DetailsSection
-      id="package-details"
+      id="package_details"
       title={`${props.authority} Package Details`}
     >
       <div className="flex-col gap-4">

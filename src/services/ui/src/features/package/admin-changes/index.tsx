@@ -83,7 +83,7 @@ export const AdminChanges: FC<opensearch.main.Document> = (props) => {
 
   return (
     <DetailsSection
-      id="change-history"
+      id="change_history"
       title={`Administrative Package Changes (${data?.length})`}
       description="Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC."
     >
@@ -92,9 +92,7 @@ export const AdminChanges: FC<opensearch.main.Document> = (props) => {
         defaultValue={[data?.[0]._source.id as string]}
         className="flex flex-col mt-6 gap-2"
       >
-        {data?.map((CL) => (
-          <AdminChange {...CL._source} key={CL._source.id} />
-        ))}
+        {data?.map((CL) => <AdminChange {...CL._source} key={CL._source.id} />)}
       </Accordion>
     </DetailsSection>
   );
