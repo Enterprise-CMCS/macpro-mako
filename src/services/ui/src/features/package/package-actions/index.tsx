@@ -17,7 +17,7 @@ export const PackageActionsCard = ({
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <DetailCardWrapper title={"Actions"}>
+    <DetailCardWrapper title={"Package Actions"}>
       <div className="my-3">
         {!data || !data.actions.length ? (
           <em className="text-gray-400 my-3">

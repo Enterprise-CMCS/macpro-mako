@@ -6,7 +6,7 @@ export const PackageStatusCard = (data: opensearch.main.Document) => {
   const transformedStatuses = getStatus(data.seatoolStatus);
   const { data: user } = useGetUser();
   return (
-    <DetailCardWrapper title={"Package Status"}>
+    <DetailCardWrapper title={"Status"}>
       <div className="my-3 max-w-2xl font-bold text-xl">
         <div>
           {user?.isCms &&
