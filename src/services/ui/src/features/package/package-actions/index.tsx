@@ -17,14 +17,14 @@ export const PackageActionsCard = ({
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <DetailCardWrapper title={"package_actions"}>
-      <div>
+    <DetailCardWrapper title={"Actions"}>
+      <div className="my-3">
         {!data || !data.actions.length ? (
-          <em className="text-gray-400 my-4">
+          <em className="text-gray-400 my-3">
             No actions are currently available for this submission.
           </em>
         ) : (
-          <ul className="my-4">
+          <ul className="my-3">
             {data.actions.map((type, idx) => {
               if (authority === Authority["1915b"]) {
                 return (
@@ -44,7 +44,7 @@ export const PackageActionsCard = ({
                     key={`${idx}-${type}`}
                     path="/action/:id/:type"
                     params={{ id, type }}
-                    className="text-sky-700 font-semibold"
+                    className="text-sky-700 font-semibold text-lg"
                   >
                     <li>{mapActionLabel(type)}</li>
                   </Link>

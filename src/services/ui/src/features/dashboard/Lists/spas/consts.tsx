@@ -31,7 +31,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     },
     {
       field: "authority.keyword",
-      label: "Type",
+      label: "Authority",
       cell: (data) =>
         data?.authority
           ? removeUnderscoresAndCapitalize(data.authority)

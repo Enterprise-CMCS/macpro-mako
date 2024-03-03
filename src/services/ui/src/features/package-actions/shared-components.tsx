@@ -1,4 +1,9 @@
-import { Alert, LoadingSpinner, useAlertContext, useModalContext } from "@/components";
+import {
+  Alert,
+  LoadingSpinner,
+  useAlertContext,
+  useModalContext,
+} from "@/components";
 import {
   Button,
   FormDescription,
@@ -159,7 +164,7 @@ export const PackageSection = () => {
         <p className="text-xl">{id}</p>
       </div>
       <div>
-        <p>Type</p>
+        <p>Authority</p>
         <p className="text-xl">
           {authority === Authority["1915b"] && "1915(b) Waiver"}
           {authority === Authority["CHIP_SPA"] && "CHIP SPA"}

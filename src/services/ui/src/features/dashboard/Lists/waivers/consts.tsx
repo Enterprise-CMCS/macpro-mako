@@ -30,7 +30,7 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
     },
     {
       field: "authority.keyword",
-      label: "Type",
+      label: "Authority",
       cell: (data) =>
         data?.authority
           ? removeUnderscoresAndCapitalize(data.authority)

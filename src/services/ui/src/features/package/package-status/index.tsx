@@ -6,12 +6,14 @@ export const PackageStatusCard = (data: opensearch.main.Document) => {
   const transformedStatuses = getStatus(data.seatoolStatus);
   const { data: user } = useGetUser();
   return (
-    <DetailCardWrapper title={"package_status"}>
-      <div className="block md:flex my-3 max-w-2xl font-bold text-xl">
-        {user?.isCms &&
-        !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
-          ? transformedStatuses.cmsStatus
-          : transformedStatuses.stateStatus}
+    <DetailCardWrapper title={"Package Status"}>
+      <div className="my-3 max-w-2xl font-bold text-xl">
+        <div>
+          {user?.isCms &&
+          !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+            ? transformedStatuses.cmsStatus
+            : transformedStatuses.stateStatus}
+        </div>
         <div className="flex mt-1 flex-col gap-1 items-start">
           {data.raiWithdrawEnabled && (
             <div className="flex flex-row gap-1">

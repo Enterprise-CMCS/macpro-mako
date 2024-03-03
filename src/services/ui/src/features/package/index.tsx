@@ -21,7 +21,7 @@ export const DetailCardWrapper = ({
   title: string;
 }>) => (
   <CardWithTopBorder>
-    <div className="p-4 min-w-80 min-h-36">
+    <div className="p-4 py-1 w-80 min-h-36">
       <h2>{title}</h2>
       {children}
     </div>
@@ -43,7 +43,7 @@ export const DetailsContent = ({
         <PackageStatusCard {...data._source} />
         <PackageActionsCard id={data._id} authority={data._source.authority!} />
       </section>
-      <div className="flex flex-col gap-3 ">
+      <div className="flex flex-col gap-3 mr-0 sm:mr-4 md:mr-10">
         <PackageDetails {...data._source} />
         <PackageActivities {...data._source} />
         <AdminChanges {...data._source} />
