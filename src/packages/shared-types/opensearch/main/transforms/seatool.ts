@@ -5,6 +5,7 @@ import {
   finalDispositionStatuses,
   SeaTool,
   SeatoolOfficer,
+  SEATOOL_SPW_STATUS,
 } from "../../..";
 
 import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
@@ -120,10 +121,7 @@ const isInSecondClock = (
   return false; // otherwise, we're not
 };
 
-const getAuthority = (
-  authorityId: number | undefined,
-  id: string | undefined
-) => {
+const getAuthority = (authorityId: number | null, id: string) => {
   try {
     if (!authorityId) return null;
     return SEATOOL_AUTHORITIES[authorityId];
@@ -139,14 +137,11 @@ export const transform = (id: string) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
       getRaiDate(data);
-    const seatoolStatus =
-      data.SPW_STATUS?.find(
-        (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
-      )?.SPW_STATUS_DESC || "Unknown";
+    const seatoolStatus = data.STATE_PLAN.SPW_STATUS_ID
+      ? SEATOOL_SPW_STATUS[data.STATE_PLAN.SPW_STATUS_ID]
+      : "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    const authorityId = data.PLAN_TYPES?.[0].PLAN_TYPE_ID;
-    const typeId = data.STATE_PLAN_SERVICETYPES?.[0]?.SERVICE_TYPE_ID;
-    const subTypeId = data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.SERVICE_SUBTYPE_ID;
+    const authorityId = data.STATE_PLAN?.PLAN_TYPE;
     const resp = {
       id,
       flavor: flavorLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
@@ -155,7 +150,6 @@ export const transform = (id: string) => {
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE
       ),
-      changedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.CHANGED_DATE),
       description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
@@ -164,8 +158,10 @@ export const transform = (id: string) => {
       leadAnalystName,
       authorityId: authorityId || null,
       authority: getAuthority(authorityId, id) as Authority | null,
-      typeId: typeId || null,
-      subTypeId: subTypeId || null,
+      typeId: data.STATE_PLAN_SERVICETYPES?.[0]?.SPA_TYPE_ID || null,
+      typeName: data.STATE_PLAN_SERVICETYPES?.[0]?.SPA_TYPE_NAME || null,
+      subTypeId: data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.TYPE_ID || null,
+      subTypeName: data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.TYPE_NAME || null,
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
@@ -220,5 +216,9 @@ export const tombstone = (id: string) => {
     statusDate: null,
     submissionDate: null,
     subject: null,
+    typeId: null,
+    typeName: null,
+    subTypeId: null,
+    subTypeName: null,
   };
 };

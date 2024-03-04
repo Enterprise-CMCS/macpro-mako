@@ -1,4 +1,4 @@
-import { Button, CheckboxGroup } from "@/components/Inputs";
+import { Button, CheckboxGroup } from "@/components";
 
 type Props = {
   value: string[];
