@@ -1,9 +1,6 @@
-import {
-  CognitoUserAttributes,
-  opensearch,
-} from "../../shared-types";
+import { CognitoUserAttributes, opensearch } from "../../shared-types";
 import rules from "./rules";
-import { PackageCheck } from "../packageCheck";
+import { PackageCheck } from "../package-check";
 
 export const getAvailableActions = (
   user: CognitoUserAttributes,
@@ -11,7 +8,7 @@ export const getAvailableActions = (
 ) => {
   const checks = PackageCheck(result);
   return [
-    ...((checks.isWaiver || checks.isSpa)
+    ...(checks.isWaiver || checks.isSpa
       ? rules.filter((r) => r.check(checks, user)).map((r) => r.action)
       : []),
   ];
