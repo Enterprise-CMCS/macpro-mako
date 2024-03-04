@@ -10,55 +10,74 @@ import {
 } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
 import { produceMessage } from "../libs/kafka";
+const user = process.env.dbUser;
+const password = process.env.dbPassword;
+const server = process.env.dbIp;
+const port = parseInt(process.env.dbPort as string);
+const config = {
+  user: user,
+  password: password,
+  server: server,
+  port: port,
+  database: "SEA",
+} as sql.config;
 
 export const submit = async (event: APIGatewayEvent) => {
-  try {
-    if (!event.body) {
-      return response({
-        statusCode: 400,
-        body: "Event body required",
-      });
-    }
-
-    // TODO: We should really type this, is would be hard, but not impossible
-    const body = JSON.parse(event.body);
-    console.log(body);
-
-    if (!(await isAuthorized(event, body.state))) {
-      return response({
-        statusCode: 403,
-        body: { message: "Unauthorized" },
-      });
-    }
-
-    const activeSubmissionTypes = [
-      Authority.CHIP_SPA,
-      Authority.MED_SPA,
-      Authority["1915b"],
-    ];
-    if (!activeSubmissionTypes.includes(body.authority)) {
-      return response({
-        statusCode: 400,
-        body: {
-          message: `OneMAC (micro) Submissions API does not support the following authority: ${body.authority}`,
-        },
-      });
-    }
-
-    const today = seaToolFriendlyTimestamp();
-    const submissionDate = getNextBusinessDayTimestamp();
-    console.log(
-      "Initial Submission Date determined to be: " +
-        new Date(submissionDate).toISOString()
-    );
-    const pool = await sql.connect({
-      user: process.env.dbUser,
-      password: process.env.dbPassword,
-      server: process.env.dbIp as string,
-      port: parseInt(process.env.dbPort as string),
-      database: "SEA",
+  if (!event.body) {
+    return response({
+      statusCode: 400,
+      body: "Event body required",
     });
+  }
 
+  // TODO: We should really type this, is would be hard, but not impossible
+  const body = JSON.parse(event.body);
+  console.log(body);
+
+  if (!(await isAuthorized(event, body.state))) {
+    return response({
+      statusCode: 403,
+      body: { message: "Unauthorized" },
+    });
+  }
+
+  const activeSubmissionTypes = [
+    Authority.CHIP_SPA,
+    Authority.MED_SPA,
+    Authority["1915b"],
+  ];
+  if (!activeSubmissionTypes.includes(body.authority)) {
+    return response({
+      statusCode: 400,
+      body: {
+        message: `OneMAC (micro) Submissions API does not support the following authority: ${body.authority}`,
+      },
+    });
+  }
+
+  const today = seaToolFriendlyTimestamp();
+  const submissionDate = getNextBusinessDayTimestamp();
+  console.log(
+    "Initial Submission Date determined to be: " +
+      new Date(submissionDate).toISOString()
+  );
+
+  // Open the connection pool and transaction outside of the try/catch/finally
+  const pool = await sql.connect(config);
+  const transaction = new sql.Transaction(pool);
+
+  // Begin writes
+  try {
+    // We first parse the event; if it's malformed, this will throw an error before we touch seatool or kafka
+    const eventBody = onemacSchema.safeParse(body);
+    if (!eventBody.success) {
+      return console.log(
+        "MAKO Validation Error. The following record failed to parse: ",
+        JSON.stringify(eventBody),
+        "Because of the following Reason(s): ",
+        eventBody.error.message
+      );
+    }
 
     // Generate INSERT statements for typeIds
     const typeIdsInserts = body.typeIds
@@ -119,7 +138,7 @@ export const submit = async (event: APIGatewayEvent) => {
       ${subTypeIdsInserts}
   `;
 
-    const result = await sql.query(query);
+    const result = await transaction.request().query(query);
     console.log(result);
     if ([Authority["1915b"], Authority.CHIP_SPA].includes(body.authority)) {
       const actionTypeQuery = `
@@ -135,39 +154,40 @@ export const submit = async (event: APIGatewayEvent) => {
       AND sp.ID_Number = '${body.id}';
       
       `;
-      const actionTypeQueryResult = await sql.query(actionTypeQuery);
+      const actionTypeQueryResult = await transaction
+        .request()
+        .query(actionTypeQuery);
       console.log(actionTypeQueryResult);
     }
 
-    await pool.close();
+    // await pool.close();
 
-    const eventBody = onemacSchema.safeParse(body);
-    if (!eventBody.success) {
-      return console.log(
-        "MAKO Validation Error. The following record failed to parse: ",
-        JSON.stringify(eventBody),
-        "Because of the following Reason(s): ",
-        eventBody.error.message
-      );
-    }
-
-    console.log(eventBody);
+    // Write to kafka, before we commit our seatool transaction.
+    // This way, if we have an error making the kafka write, the seatool changes are rolled back.
     await produceMessage(
       process.env.topicName as string,
       body.id,
       JSON.stringify(eventBody.data)
     );
 
+    // Commit transaction if we've made it this far
+    await transaction.commit();
+
     return response({
       statusCode: 200,
       body: { message: "success" },
     });
-  } catch (error) {
-    console.error({ error });
+  } catch (err) {
+    // Rollback and log
+    await transaction.rollback();
+    console.error("Error when interacting with seatool or kafka:", err);
     return response({
       statusCode: 500,
       body: { message: "Internal server error" },
     });
+  } finally {
+    // Close pool
+    await pool.close();
   }
 };
 
