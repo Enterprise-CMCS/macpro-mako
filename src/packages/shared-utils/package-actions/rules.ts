@@ -5,21 +5,29 @@ import {
   SEATOOL_STATUS,
   finalDispositionStatuses,
 } from "../../shared-types";
+import { isIDM } from "../is-idm";
 import { isStateUser, isCmsWriteUser } from "../user-helper";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
-  check: (checker, user) =>
-    checker.isInActivePendingStatus &&
-    // Doesn't have any RAIs
-    (!checker.hasLatestRai ||
-      // The latest RAI is complete
-      (checker.hasCompletedRai &&
-        // The package is not a medicaid spa (med spas only get 1 rai)
-        !checker.authorityIs([Authority.MED_SPA]) &&
-        // The package does not have RAI Response Withdraw enabled
-        !checker.hasEnabledRaiWithdraw)) &&
-    isCmsWriteUser(user),
+  check: (checker, user) => {
+    if (isIDM(user.identities)) {
+      return false;
+    }
+
+    return (
+      checker.isInActivePendingStatus &&
+      // Doesn't have any RAIs
+      (!checker.hasLatestRai ||
+        // The latest RAI is complete
+        (checker.hasCompletedRai &&
+          // The package is not a medicaid spa (med spas only get 1 rai)
+          !checker.authorityIs([Authority.MED_SPA]) &&
+          // The package does not have RAI Response Withdraw enabled
+          !checker.hasEnabledRaiWithdraw)) &&
+      isCmsWriteUser(user)
+    );
+  },
 };
 
 const arRespondToRai: ActionRule = {
@@ -59,7 +67,6 @@ const arWithdrawRaiResponse: ActionRule = {
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) => {
-    console.log("here is the user object: ", JSON.stringify(user));
     return !checker.hasStatus(finalDispositionStatuses) && isStateUser(user);
   },
 };
