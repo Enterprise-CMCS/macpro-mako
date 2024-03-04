@@ -80,20 +80,22 @@ export const submit = async (event: APIGatewayEvent) => {
     }
 
     // Generate INSERT statements for typeIds
-    const typeIdsInserts = body.typeIds
-      .map(
-        (typeId: number) =>
-          `INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID) VALUES ('${body.id}', '${typeId}');`
-      )
-      .join("\n");
+    const typeIdsValues = body.typeIds
+      .map((typeId: number) => `('${body.id}', '${typeId}')`)
+      .join(",\n");
+
+    const typeIdsInsert = typeIdsValues
+      ? `INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID) VALUES ${typeIdsValues};`
+      : "";
 
     // Generate INSERT statements for subTypeIds
-    const subTypeIdsInserts = body.subTypeIds
-      .map(
-        (subTypeId: number) =>
-          `INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID) VALUES ('${body.id}', '${subTypeId}');`
-      )
-      .join("\n");
+    const subTypeIdsValues = body.subTypeIds
+      .map((subTypeId: number) => `('${body.id}', '${subTypeId}')`)
+      .join(",\n");
+
+    const subTypeIdsInsert = subTypeIdsValues
+      ? `INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID) VALUES ${subTypeIdsValues};`
+      : "";
 
     const query = `
       DECLARE @RegionID INT;
@@ -133,9 +135,11 @@ export const submit = async (event: APIGatewayEvent) => {
       INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo)
       VALUES ('${body.id}', '${body.state}', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo);
 
-      ${typeIdsInserts}
+      -- Insert all types into State_Plan_Service_Types
+      ${typeIdsInsert}
 
-      ${subTypeIdsInserts}
+      -- Insert all types into State_Plan_Service_SubTypes
+      ${subTypeIdsInsert}
   `;
 
     const result = await transaction.request().query(query);
