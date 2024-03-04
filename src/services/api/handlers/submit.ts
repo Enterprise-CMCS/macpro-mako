@@ -79,6 +79,17 @@ export const submit = async (event: APIGatewayEvent) => {
       );
     }
 
+    // Resolve the actionTypeID, if applicable
+    const actionTypeSelect = [Authority["1915b"], Authority.CHIP_SPA].includes(
+      body.authority
+    )
+      ? `
+        SELECT @ActionTypeID = Action_ID FROM SEA.dbo.Action_Types
+        WHERE Plan_Type_Name = '${body.authority}'
+        AND Action_Name = '${body.seaActionType}';
+      `
+      : "SET @ActionTypeID = NULL;";
+
     // Generate INSERT statements for typeIds
     const typeIdsValues = body.typeIds
       .map((typeId: number) => `('${body.id}', '${typeId}')`)
@@ -97,27 +108,11 @@ export const submit = async (event: APIGatewayEvent) => {
       ? `INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID) VALUES ${subTypeIdsValues};`
       : "";
 
-    // Generate an UPDATE for actionType, if applicable
-    const actionTypeUpdate = [Authority["1915b"], Authority.CHIP_SPA].includes(
-      body.authority
-    )
-      ? `
-          UPDATE sp
-          SET sp.Action_Type = at.Action_ID
-          FROM SEA.dbo.State_Plan sp
-          INNER JOIN SEA.dbo.Action_Types at ON at.Plan_Type_ID = (
-              SELECT pt.Plan_Type_ID
-              FROM SEA.dbo.Plan_Types pt
-              WHERE pt.Plan_Type_Name = '${body.authority}'
-          )
-          WHERE at.Action_Name = '${body.seaActionType}'
-          AND sp.ID_Number = '${body.id}';
-        `
-      : "";
     const query = `
       DECLARE @RegionID INT;
       DECLARE @PlanTypeID INT;
       DECLARE @SPWStatusID INT;
+      DECLARE @ActionTypeID INT;
       DECLARE @SubmissionDate DATETIME;
       DECLARE @StatusDate DATETIME;
       DECLARE @ProposedDate DATETIME;
@@ -141,7 +136,9 @@ export const submit = async (event: APIGatewayEvent) => {
         body.authority
       }';
       SELECT @SPWStatusID = SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = 'Pending';
-      
+      -- Set ActionTypeID if applicale, using the conditionally set statement generated previously
+      ${actionTypeSelect}
+
       SET @SubmissionDate = DATEADD(s, CONVERT(INT, LEFT(${submissionDate}, 10)), CAST('19700101' as DATETIME));
       SET @StatusDate = DATEADD(s, CONVERT(INT, LEFT(${today}, 10)), CAST('19700101' as DATETIME));
       SET @ProposedDate = DATEADD(s, CONVERT(INT, LEFT(${
@@ -149,17 +146,14 @@ export const submit = async (event: APIGatewayEvent) => {
       }, 10)), CAST('19700101' as DATETIME));
 
       -- Main insert into State_Plan
-      INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo)
-      VALUES ('${body.id}', '${body.state}', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo);
+      INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo, Action_Type)
+      VALUES ('${body.id}', '${body.state}', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo, @ActionTypeID);
 
       -- Insert all types into State_Plan_Service_Types
       ${typeIdsInsert}
 
       -- Insert all types into State_Plan_Service_SubTypes
       ${subTypeIdsInsert}
-
-      -- Update the action type, if applicable
-      ${actionTypeUpdate}
   `;
 
     const result = await transaction.request().query(query);
