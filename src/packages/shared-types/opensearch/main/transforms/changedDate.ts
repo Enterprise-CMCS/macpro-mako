@@ -14,3 +14,10 @@ export const transform = () => {
 };
 
 export type Schema = ReturnType<typeof transform>;
+
+export const tombstone = (id: string) => {
+  return {
+    id,
+    changedDate: null,
+  };
+};

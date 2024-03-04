@@ -200,13 +200,27 @@ const changed_date = async (
 ) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
-    const { value } = kafkaRecord;
+    const { key, value } = kafkaRecord;
     try {
-      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
-      const record = JSON.parse(decodedValue).payload.after;
-      if (!record) {
+      // Set id
+      const id: string = JSON.parse(decode(key)).payload.ID_Number;
+
+      // Handle delete events and continue
+      if (value === undefined) {
         continue;
       }
+
+      // Parse record
+      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
+      const record = JSON.parse(decodedValue).payload.after;
+
+      // Handle tombstone events and continue
+      if (!record) {
+        console.log(`Seatool Delete event detected for ${id}.`);
+        docs.push(opensearch.main.changedDate.tombstone(id));
+        continue;
+      }
+
       const result = opensearch.main.changedDate.transform().safeParse(record);
       if (!result.success) {
         logError({
