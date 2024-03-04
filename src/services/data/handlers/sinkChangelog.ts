@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import { Action, KafkaRecord } from "shared-types";
+import { Action, KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
 import { ErrorType, getTopic, logError } from "../libs/sink-lib";
 const osDomain = process.env.osDomain;
@@ -47,28 +47,62 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       // Skip delete events
       if (!value) continue;
 
+      // Set id
+      const id: string = decode(key);
+
+      // Parse event data
       const record = JSON.parse(decode(value));
 
-      // Skip legacy events
-      if (record?.origin !== "micro") continue;
+      // Process legacy events
+      if (record?.origin !== "micro") {
+        // Skip if it's not a submission event with a good GSIpk
+        if (
+          !(
+            record?.sk !== "Package" &&
+            record.GSI1pk?.startsWith("OneMAC#submit")
+          )
+        ) {
+          continue;
+        }
+        const result = opensearch.changelog.legacyEvent
+          .transform(id, offset)
+          .safeParse(record);
 
-      if (record?.actionType === Action.REMOVE_APPK_CHILD) {
+        // Log Error and skip if transform had an error
+        if (!result?.success) {
+          logError({
+            type: ErrorType.VALIDATION,
+            error: result?.error,
+            metadata: { topicPartition, kafkaRecord, record },
+          });
+          continue;
+        }
+
+        // Skip if the transform had a nominal return of undefined
+        if (result.data === undefined) continue;
+
+        // If we made it this far, we push the document to the docs array so it gets indexed
+        docs.push(result.data);
+      }
+
+      // Process micro events
+      if (record?.origin === "micro") {
+        // Resolve actionType
+        const actionType = record.actionType || "new-submission";
+
+        // Push to docs so it can be indexed, with some differences if app k
         docs.push({
           ...record,
-          appkChildId: record.id,
+          id:
+            actionType === Action.REMOVE_APPK_CHILD
+              ? `${record.appkParentId}-${offset}`
+              : `${id}-${offset}`,
+          packageId:
+            actionType === Action.REMOVE_APPK_CHILD ? record.appkParentId : id,
+          appkChildId:
+            actionType === Action.REMOVE_APPK_CHILD ? record.id : undefined,
           timestamp,
-          id: `${record.appkParentId}-${offset}`,
-          packageId: record.appkParentId,
-        });
-      } else {
-        const id: string = decode(key);
-        // Handle everything else
-        docs.push({
-          ...record,
-          ...(!record?.actionType && { actionType: "new-submission" }), // new-submission custom actionType
-          timestamp,
-          id: `${id}-${offset}`,
-          packageId: id,
+          actionType,
         });
       }
     } catch (error) {

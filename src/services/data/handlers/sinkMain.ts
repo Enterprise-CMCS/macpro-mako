@@ -79,10 +79,8 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         });
         continue;
       }
-      const validAuthorityIds = [122, 123, 124, 125];
       if (
         result.data.authorityId &&
-        validAuthorityIds.includes(result.data.authorityId) &&
         typeof result.data.seatoolStatus === "string" &&
         result.data.seatoolStatus != "Unknown"
       ) {
@@ -112,17 +110,19 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         continue;
       }
       const record = JSON.parse(decode(value));
-      // Handle legacy and continue
+      // Process legacy events
       if (record?.origin !== "micro") {
+        // Skip if it's not a submission event with a good GSIpk
         if (
-          record?.sk === "Package" && // Is a Package View
-          record?.submitterName && // Is originally from Legacy
-          record?.submitterName !== "-- --" // Is originally from Legacy
+          record?.sk !== "Package" &&
+          record.GSI1pk?.startsWith("OneMAC#submit")
         ) {
           const result = opensearch.main.legacySubmission
             .transform(id)
             .safeParse(record);
-          if (!result.success) {
+
+          // Log Error and skip if transform had an error
+          if (!result?.success) {
             logError({
               type: ErrorType.VALIDATION,
               error: result?.error,
@@ -131,50 +131,58 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
             continue;
           }
 
+          // Skip if the transform had a nominal return of undefined
+          if (result.data === undefined) continue;
+
+          // If we made it this far, we push the document to the docs array so it gets indexed
           docs.push(result.data);
         }
-        continue;
       }
 
       // Handle everything else
-      const result = (() => {
-        switch (record?.actionType) {
-          case undefined:
-            return opensearch.main.newSubmission
-              .transform(id)
-              .safeParse(record);
-          case Action.DISABLE_RAI_WITHDRAW:
-          case Action.ENABLE_RAI_WITHDRAW:
-            return opensearch.main.toggleWithdrawEnabled
-              .transform(id)
-              .safeParse(record);
-          case Action.WITHDRAW_RAI:
-            return opensearch.main.withdrawRai.transform(id).safeParse(record);
-          case Action.WITHDRAW_PACKAGE:
-            return opensearch.main.withdrawPackage
-              .transform(id)
-              .safeParse(record);
-          case Action.REMOVE_APPK_CHILD:
-            return opensearch.main.removeAppkChild
-              .transform(id)
-              .safeParse(record);
+      if (record.origin === "micro") {
+        const result = (() => {
+          switch (record?.actionType) {
+            case undefined:
+              return opensearch.main.newSubmission
+                .transform(id)
+                .safeParse(record);
+            case Action.DISABLE_RAI_WITHDRAW:
+            case Action.ENABLE_RAI_WITHDRAW:
+              return opensearch.main.toggleWithdrawEnabled
+                .transform(id)
+                .safeParse(record);
+            case Action.WITHDRAW_RAI:
+              return opensearch.main.withdrawRai
+                .transform(id)
+                .safeParse(record);
+            case Action.WITHDRAW_PACKAGE:
+              return opensearch.main.withdrawPackage
+                .transform(id)
+                .safeParse(record);
+            case Action.REMOVE_APPK_CHILD:
+              return opensearch.main.removeAppkChild
+                .transform(id)
+                .safeParse(record);
+          }
+        })();
+        if (result === undefined) {
+          console.log(
+            `no action to take for ${id} action ${record.actionType}.  Continuing...`
+          );
+          continue;
         }
-      })();
-      if (result === undefined) {
-        console.log(
-          `no action to take for ${id} action ${record.actionType}.  Continuing...`
-        );
+        if (!result?.success) {
+          logError({
+            type: ErrorType.VALIDATION,
+            error: result?.error,
+            metadata: { topicPartition, kafkaRecord, record },
+          });
+          continue;
+        }
+        docs.push(result.data);
         continue;
       }
-      if (!result?.success) {
-        logError({
-          type: ErrorType.VALIDATION,
-          error: result?.error,
-          metadata: { topicPartition, kafkaRecord, record },
-        });
-        continue;
-      }
-      docs.push(result.data);
     } catch (error) {
       logError({
         type: ErrorType.BADPARSE,

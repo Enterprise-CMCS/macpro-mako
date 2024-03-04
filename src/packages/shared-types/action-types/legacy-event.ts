@@ -7,6 +7,8 @@ export const onemacLegacySchema = z.object({
   submitterName: z.string(),
   submitterEmail: z.string(),
   attachments: z.array(legacyAttachmentSchema).nullish(),
-  raiWithdrawEnabled: z.boolean().default(false),
+  // todo.. are there any nulls?  can the frontend package activity handle a null timestamp?
+  eventTimestamp: z.number().nullish(),
+  GSI1pk: z.string(),
 });
 export type OnemacLegacy = z.infer<typeof onemacLegacySchema>;

@@ -4,6 +4,6 @@ export * from "./respond-to-rai";
 export * from "./withdraw-rai";
 export * from "./withdraw-package";
 export * from "./new-submission";
-export * from "./legacy-submission";
+export * from "./legacy-event";
 export * from "./seatool";
 export * from "./remove-appk-child";

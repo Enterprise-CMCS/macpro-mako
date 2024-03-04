@@ -4,13 +4,11 @@ export const transform = (id: string) => {
   return onemacSchema.transform((data) => {
     const transformedData = {
       id,
-      attachments: data.attachments,
       appkParentId: data.appkParentId,
       raiWithdrawEnabled: data.raiWithdrawEnabled,
-      additionalInformation: data.additionalInformation,
       submitterEmail: data.submitterEmail,
-      submitterName: data.submitterName === "-- --" ? null : data.submitterName,
-      origin: "OneMAC",
+      submitterName: data.submitterName,
+      origin: "OneMAC", // Marks this as having originated from *either* legacy or micro
     };
     return transformedData;
   });

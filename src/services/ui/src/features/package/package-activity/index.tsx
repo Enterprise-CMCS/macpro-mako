@@ -323,7 +323,7 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
         <p className="flex flex-row gap-2 text-gray-600">
           <strong>{LABEL as string}</strong>
           {" - "}
-          {format(new Date(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a")}
+          {props.timestamp ?  format(new Date(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a") : "Unknown"}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">

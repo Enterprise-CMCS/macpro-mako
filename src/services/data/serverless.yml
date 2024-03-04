@@ -141,68 +141,10 @@ stepFunctions:
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-setupIndex"
             Parameters:
               Context.$: $$
-            Next: StartIndexingReferenceData
+            Next: StartIndexingData
             Catch:
               - ErrorEquals: ["States.ALL"]
                 Next: NotifyOfFailure
-          StartIndexingReferenceData:
-            Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-createTriggers"
-            Parameters:
-              Context.$: $$
-              BrokerString: ${self:custom.brokerString}
-              SecurityGroup: !Sub security_group:${SecurityGroup}
-              ConsumerGroupPrefix: ${self:custom.consumerGroupPrefix}
-              Subnets:
-                - ${self:custom.vpc.privateSubnets.0}
-                - ${self:custom.vpc.privateSubnets.1}
-                - ${self:custom.vpc.privateSubnets.2}
-              Triggers:
-                - Function: !Ref SinkTypesLambdaFunction
-                  BatchSize: 10000
-                  Topics:
-                    - aws.seatool.debezium.cdc.SEA.dbo.SPA_Type
-                - Function: !Ref SinkSubtypesLambdaFunction
-                  BatchSize: 10000
-                  Topics:
-                    - aws.seatool.debezium.cdc.SEA.dbo.Type
-            Next: CheckReferenceDataProgress
-            Catch:
-              - ErrorEquals: ["States.ALL"]
-                Next: NotifyOfFailure
-          CheckReferenceDataProgress:
-            Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-checkConsumerLag"
-            Parameters:
-              Context.$: $$
-              Triggers:
-                - Function: !Ref SinkTypesLambdaFunction
-                  BatchSize: 10000
-                  Topics:
-                    - aws.seatool.debezium.cdc.SEA.dbo.SPA_Type
-                - Function: !Ref SinkSubtypesLambdaFunction
-                  BatchSize: 10000
-                  Topics:
-                    - aws.seatool.debezium.cdc.SEA.dbo.Type
-              BrokerString: ${self:custom.brokerString}
-            Next: IsReferenceDataReady
-            Catch:
-              - ErrorEquals: ["States.ALL"]
-                Next: NotifyOfFailure
-          IsReferenceDataReady:
-            Type: Choice
-            Choices:
-              - Variable: $.ready
-                BooleanEquals: true
-                Next: StartIndexingData
-              - Variable: $.ready
-                BooleanEquals: false
-                Next: WaitForReferenceData
-            Default: WaitForReferenceData
-          WaitForReferenceData:
-            Type: Wait
-            Seconds: 10
-            Next: CheckReferenceDataProgress
           StartIndexingData:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-createTriggers"
@@ -226,6 +168,14 @@ stepFunctions:
                   Topics:
                     - aws.onemac.migration.cdc
                     - ${param:topicNamespace}aws.onemac.migration.cdc
+                - Function: !Ref SinkTypesLambdaFunction
+                  BatchSize: 10000
+                  Topics:
+                    - aws.seatool.debezium.cdc.SEA.dbo.SPA_Type
+                - Function: !Ref SinkSubtypesLambdaFunction
+                  BatchSize: 10000
+                  Topics:
+                    - aws.seatool.debezium.cdc.SEA.dbo.Type
             Next: CheckDataProgress
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -246,6 +196,14 @@ stepFunctions:
                   Topics:
                     - aws.onemac.migration.cdc
                     - ${param:topicNamespace}aws.onemac.migration.cdc
+                - Function: !Ref SinkTypesLambdaFunction
+                  BatchSize: 10000
+                  Topics:
+                    - aws.seatool.debezium.cdc.SEA.dbo.SPA_Type
+                - Function: !Ref SinkSubtypesLambdaFunction
+                  BatchSize: 10000
+                  Topics:
+                    - aws.seatool.debezium.cdc.SEA.dbo.Type
               BrokerString: ${self:custom.brokerString}
             Next: IsDataReady
             Catch:
@@ -263,7 +221,7 @@ stepFunctions:
             Default: WaitForData
           WaitForData:
             Type: Wait
-            Seconds: 10
+            Seconds: 3
             Next: CheckDataProgress
           StartIndexingInsights:
             Type: Task
@@ -323,6 +281,9 @@ params:
     bootstrapKibanaUsers: "true"
     topicNamespace: --${self:custom.project}--${sls:stage}--
     sinkProvisionedConcurrency: 0
+
+package:
+  individually: true
 
 functions:
   bootstrapUsers:
