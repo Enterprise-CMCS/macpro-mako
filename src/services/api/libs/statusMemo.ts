@@ -6,7 +6,7 @@ export function buildStatusMemoQuery(
   const printable = new Date().toLocaleString("en-US", {
     timeZone: "America/New_York",
   });
-  const newEntry = `'- OneMAC Activity: ${printable} - ${msg} \\r'`;
+  const newEntry = `'- OneMAC Activity: ${printable} - ${msg} \r'`;
   const existingValue = " + CAST(ISNULL(Status_Memo, '') AS VARCHAR(MAX))";
   if (operation === "update") {
     return newEntry + existingValue;

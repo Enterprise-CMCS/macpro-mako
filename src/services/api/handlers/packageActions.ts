@@ -122,7 +122,11 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
       await transaction.begin();
       // How we withdraw an RAI Response varies based on authority or not
       // Medicaid is handled differently from the rest.
-      if (body.authority.toLowerCase() == Authority.MED_SPA) {
+      if (
+        [Authority.MED_SPA, Authority["1915b"], Authority["1915c"]].includes(
+          body.authority.toLowerCase() as Authority
+        )
+      ) {
         // Set Received Date to null
         await transaction.request().query(`
           UPDATE SEA.dbo.RAI
@@ -136,7 +140,11 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
           UPDATE SEA.dbo.State_Plan
             SET 
               SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}'),
-              Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
+              Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+              Status_Memo = ${buildStatusMemoQuery(
+                body.id,
+                "RAI Response Withdrawn"
+              )}
             WHERE ID_Number = '${result.data.id}'
         `);
       } else {

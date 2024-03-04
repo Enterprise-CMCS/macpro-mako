@@ -27,11 +27,12 @@ type PreSignedURL = {
   key: string;
   bucket: string;
 };
-type UploadRecipe = PreSignedURL & {
+export type UploadRecipe = PreSignedURL & {
   data: File;
   title: string;
   name: string;
 };
+type AttachmentKeyValue = { attachmentKey: string; file: File };
 
 /** Pass in an array of UploadRecipes and get a back-end compatible object
  * to store attachment data */
@@ -46,7 +47,7 @@ export const buildAttachmentObject = (recipes?: UploadRecipe[]) => {
           title: r.title,
           bucket: r.bucket,
           uploadDate: Date.now(),
-        }) as Attachment
+        } as Attachment)
     )
     .flat();
 };
@@ -65,30 +66,22 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
     submitterName:
       `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
   };
+  const baseProperties = {
+    authority: authority,
+    origin: "micro",
+  };
 
   switch (endpoint) {
-    case "/submit":
-      return {
-        authority: authority,
-        origin: "micro",
-        ...data,
-        ...userDetails,
-        proposedEffectiveDate: seaToolFriendlyTimestamp(
-          data.proposedEffectiveDate as Date
-        ),
-        attachments: attachments ? buildAttachmentObject(attachments) : null,
-        state: (data.id as string).split("-")[0],
-      };
     case "/appk":
       return {
         ...data,
         ...userDetails,
+        ...baseProperties,
         authority: Authority["1915c"],
-        origin: "micro",
         proposedEffectiveDate: seaToolFriendlyTimestamp(
           data.proposedEffectiveDate as Date
         ),
-        attachments: buildAttachmentObject(attachments),
+        attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
     case buildActionUrl(Action.REMOVE_APPK_CHILD):
       return {
@@ -97,51 +90,62 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         authority: Authority["1915c"],
         origin: "micro",
       };
-
-    case buildActionUrl(Action.WITHDRAW_RAI):
+    case "/submit":
       return {
-        authority: authority,
-        origin: "micro",
         ...data,
+        ...baseProperties,
         ...userDetails,
-        attachments: buildAttachmentObject(attachments),
+        proposedEffectiveDate: seaToolFriendlyTimestamp(
+          data.proposedEffectiveDate as Date
+        ),
+        attachments: attachments ? buildAttachmentObject(attachments) : null,
+        state: (data.id as string).split("-")[0],
       };
     case buildActionUrl(Action.ISSUE_RAI):
-      return {
-        authority: authority,
-        origin: "micro",
-        ...data,
-        ...userDetails,
-        attachments: buildAttachmentObject(attachments),
-      };
     case buildActionUrl(Action.RESPOND_TO_RAI):
-      return {
-        authority: authority,
-        origin: "micro",
-        ...data,
-        ...userDetails,
-        attachments: buildAttachmentObject(attachments),
-      };
-    case buildActionUrl(Action.WITHDRAW_PACKAGE):
-      return {
-        authority: authority,
-        origin: "micro",
-        ...data,
-        ...userDetails,
-        attachments: buildAttachmentObject(attachments),
-      };
     case buildActionUrl(Action.ENABLE_RAI_WITHDRAW):
     case buildActionUrl(Action.DISABLE_RAI_WITHDRAW):
+    case buildActionUrl(Action.WITHDRAW_RAI):
+    case buildActionUrl(Action.WITHDRAW_PACKAGE):
     default:
       return {
-        authority: authority,
-        origin: "micro",
+        ...baseProperties,
+        ...userDetails,
         ...data,
         ...userDetails,
-        attachments: buildAttachmentObject(attachments),
+        attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
   }
 };
+
+export const buildAttachmentKeyValueArr = (
+  attachments: Record<string, File[]>
+): AttachmentKeyValue[] =>
+  Object.entries(attachments)
+    .filter(([, val]) => val !== undefined && (val as File[]).length)
+    .map(([key, value]) => {
+      return (value as File[]).map((file) => ({
+        attachmentKey: key,
+        file: file,
+      }));
+    })
+    .flat();
+
+export const urlsToRecipes = (
+  urls: PreSignedURL[],
+  attachments: AttachmentKeyValue[],
+  authority: Authority
+): UploadRecipe[] =>
+  urls.map((obj, idx) => ({
+    ...obj, // Spreading the presigned url
+    data: attachments[idx].file, // The attachment file object
+    // Add your attachments object key and file label value to the attachmentTitleMap
+    // for this transform to work. Else the title will just be the object key.
+    title:
+      attachmentTitleMap(authority)?.[attachments[idx].attachmentKey] ||
+      attachments[idx].attachmentKey,
+    name: attachments[idx].file.name,
+  }));
 
 /** A useful interface for submitting form data to our submission service */
 export const submit = async <T extends Record<string, unknown>>({
@@ -152,15 +156,9 @@ export const submit = async <T extends Record<string, unknown>>({
 }: SubmissionServiceParameters<T>): Promise<SubmissionServiceResponse> => {
   if (data?.attachments) {
     // Drop nulls and non arrays
-    const attachments = Object.entries(data.attachments)
-      .filter(([, val]) => val !== undefined && (val as File[]).length)
-      .map(([key, value]) => {
-        return (value as File[]).map((file) => ({
-          attachmentKey: key,
-          file: file,
-        }));
-      })
-      .flat();
+    const attachments = buildAttachmentKeyValueArr(
+      data.attachments as Record<string, File[]>
+    );
     // Generate a presigned url for each attachment
     const preSignedURLs: PreSignedURL[] = await Promise.all(
       attachments.map(() =>
@@ -170,16 +168,11 @@ export const submit = async <T extends Record<string, unknown>>({
       )
     );
     // For each attachment, add name, title, and a presigned url... and push to uploadRecipes
-    const uploadRecipes: UploadRecipe[] = preSignedURLs.map((obj, idx) => ({
-      ...obj, // Spreading the presigned url
-      data: attachments[idx].file, // The attachment file object
-      // Add your attachments object key and file label value to the attachmentTitleMap
-      // for this transform to work. Else the title will just be the object key.
-      title:
-        attachmentTitleMap?.[attachments[idx].attachmentKey] ||
-        attachments[idx].attachmentKey,
-      name: attachments[idx].file.name,
-    }));
+    const uploadRecipes: UploadRecipe[] = urlsToRecipes(
+      preSignedURLs,
+      attachments,
+      authority!
+    );
     // Upload attachments
     await Promise.all(
       uploadRecipes.map(async ({ url, data }) => {
@@ -209,7 +202,7 @@ export const submit = async <T extends Record<string, unknown>>({
 
 /** A useful interface for using react-query with our submission service. If you
  * are using react-hook-form's `form.handleSubmit()` pattern, bypass this and just
- * use {@link submit} (see {@link MedicaidForm} for an example). */
+ * use {@link submit}. */
 export const useSubmissionService = <T extends Record<string, unknown>>(
   config: SubmissionServiceParameters<T>,
   options?: UseMutationOptions<SubmissionServiceResponse, ReactQueryApiError>

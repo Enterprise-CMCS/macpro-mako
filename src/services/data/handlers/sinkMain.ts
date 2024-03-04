@@ -30,6 +30,14 @@ export const handler: Handler<KafkaEvent> = async (event) => {
             ...(await ksql(event.records[topicPartition], topicPartition))
           );
           break;
+        case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
+          docs.push(
+            ...(await changed_date(
+              event.records[topicPartition],
+              topicPartition
+            ))
+          );
+          break;
       }
     }
     try {
@@ -47,7 +55,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
-    const { key, value, timestamp } = kafkaRecord;
+    const { key, value } = kafkaRecord;
     try {
       const id: string = JSON.parse(decode(key));
 
@@ -60,7 +68,6 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       // Handle everything else and continue
       const record = {
         id,
-        CHANGED_DATE: timestamp,
         ...JSON.parse(decode(value)),
       };
       const result = opensearch.main.seatool.transform(id).safeParse(record);
@@ -160,6 +167,40 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         continue;
       }
       if (!result?.success) {
+        logError({
+          type: ErrorType.VALIDATION,
+          error: result?.error,
+          metadata: { topicPartition, kafkaRecord, record },
+        });
+        continue;
+      }
+      docs.push(result.data);
+    } catch (error) {
+      logError({
+        type: ErrorType.BADPARSE,
+        error,
+        metadata: { topicPartition, kafkaRecord },
+      });
+    }
+  }
+  return docs;
+};
+
+const changed_date = async (
+  kafkaRecords: KafkaRecord[],
+  topicPartition: string
+) => {
+  const docs: any[] = [];
+  for (const kafkaRecord of kafkaRecords) {
+    const { value } = kafkaRecord;
+    try {
+      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
+      const record = JSON.parse(decodedValue).payload.after;
+      if (!record) {
+        continue;
+      }
+      const result = opensearch.main.changedDate.transform().safeParse(record);
+      if (!result.success) {
         logError({
           type: ErrorType.VALIDATION,
           error: result?.error,
