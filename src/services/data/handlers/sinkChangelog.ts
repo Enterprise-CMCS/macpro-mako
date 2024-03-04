@@ -82,7 +82,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         if (result.data === undefined) continue;
 
         // If we made it this far, we push the document to the docs array so it gets indexed
-        docs.push(result.data);
+        docs.push({ ...result.data, devOrigin: "legacy" });
       }
 
       // Process micro events
@@ -103,6 +103,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
             actionType === Action.REMOVE_APPK_CHILD ? record.id : undefined,
           timestamp,
           actionType,
+          devOrigin: "micro",
         });
       }
     } catch (error) {

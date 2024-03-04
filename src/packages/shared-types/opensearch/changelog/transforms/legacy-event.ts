@@ -50,7 +50,6 @@ export const transform = (id: string, offset: number) => {
       additionalInformation: data.additionalInformation,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
-      legacyEvent: true, // Not in use, but helpful for developers browsing OpenSearch
     };
     return transformedData;
   });

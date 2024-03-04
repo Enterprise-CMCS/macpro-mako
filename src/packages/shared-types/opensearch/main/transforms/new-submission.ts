@@ -9,6 +9,7 @@ export const transform = (id: string) => {
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       origin: "OneMAC", // Marks this as having originated from *either* legacy or micro
+      devOrigin: "micro",
     };
     return transformedData;
   });

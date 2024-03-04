@@ -16,7 +16,7 @@ export const transform = (id: string) => {
           submitterEmail: data.submitterEmail,
           submitterName: data.submitterName,
           origin: "OneMAC", // Marks this as having originated from *either* legacy or micro
-          legacyEvent: true, // Not in use, but helpful for developers browsing OpenSearch
+          devOrigin: "legacy", // Not in use, but helpful for developers browsing OpenSearch
         };
       default:
         console.log(
