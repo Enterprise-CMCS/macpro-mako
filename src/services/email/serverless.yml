@@ -94,6 +94,9 @@ functions:
       cognitoPoolId: ${param:CognitoUserPoolId}
       emailSource: ${self:custom.emailAddressLookup.sourceEmail}
       osgEmail: ${self:custom.emailAddressLookup.osgEmail}
+      dpoEmail: ${self:custom.emailAddressLookup.dpoEmail}
+      dmcoEmail: ${self:custom.emailAddressLookup.dmcoEmail}
+      dhcbsooEmail: ${self:custom.emailAddressLookup.dhcbsooEmail}
       chipInbox: ${self:custom.emailAddressLookup.chipInbox}
       chipCcList: ${self:custom.emailAddressLookup.chipCcList}
       emailConfigSet: ${self:service}-${sls:stage}-configuration
