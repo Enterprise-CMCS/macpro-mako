@@ -8,7 +8,7 @@ export const mapWebformsKeys = (
   const result: Record<string, string[]> = {};
 
   Object.entries(webforms).forEach(([key, value]) => {
-    result[key] = Object.keys(value);
+    result[key] = Object.keys(value).map((v) => v.replace("v", ""));
   });
 
   return result;

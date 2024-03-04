@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Control, FieldValues } from "react-hook-form";
-import { FormLabel } from "../Inputs";
-import { DependencyWrapper } from "./dependencyWrapper";
 import { Section } from "shared-types";
-import { RHFFormGroup } from "./FormGroup";
+import { FormLabel } from "../Inputs";
+import { DependencyWrapper, RHFFormGroup } from ".";
 
 export const RHFSection = <TFieldValues extends FieldValues>(props: {
   section: Section;

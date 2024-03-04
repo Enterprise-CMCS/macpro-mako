@@ -19,7 +19,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
         case undefined:
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
-        case "aws.ksqldb.seatool.agg.State_Plan":
+        case "aws.seatool.ksql.onemac.agg.State_Plan":
           docs.push(
             ...(await ksql(event.records[topicPartition], topicPartition))
           );

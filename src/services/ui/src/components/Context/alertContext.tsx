@@ -1,9 +1,8 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import { Check, X } from "lucide-react";
 import { createContextProvider } from "@/utils";
-import { Alert, SimplePageContainer } from "@/components";
+import { Alert, SimplePageContainer, Route } from "@/components";
 import { useLocation } from "react-router-dom";
-import { Route } from "@/components/Routing/types";
 
 type BannerContent = {
   header: string;

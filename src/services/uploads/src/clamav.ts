@@ -21,7 +21,7 @@ export async function listBucketFiles(bucketName: string): Promise<string[]> {
       new ListObjectsV2Command({ Bucket: bucketName })
     );
     if (listFilesResult.Contents) {
-      const keys: string[] = listFilesResult.Contents.map((c) => c.Key);
+      const keys = listFilesResult.Contents.map((c) => c.Key) as string[];
       return keys;
     } else {
       return [];

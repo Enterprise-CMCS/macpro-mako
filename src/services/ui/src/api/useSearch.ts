@@ -4,7 +4,7 @@ import {
   filterQueryBuilder,
   paginationQueryBuilder,
   sortQueryBuilder,
-} from "@/components/Opensearch/utils";
+} from "@/components";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import type { ReactQueryApiError, opensearch } from "shared-types";

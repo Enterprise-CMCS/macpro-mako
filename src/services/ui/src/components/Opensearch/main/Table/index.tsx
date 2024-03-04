@@ -1,9 +1,8 @@
-import * as UI from "@/components/Table";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
+import * as UI from "@/components";
 import { FC, useState } from "react";
 import { OsTableColumn } from "./types";
 import { useOsContext } from "../Provider";
-import { useOsUrl } from "@/components/Opensearch/main";
+import { useOsUrl, LoadingSpinner } from "@/components";
 import { VisibilityPopover } from "../Settings";
 import { BLANK_VALUE } from "@/consts";
 import { opensearch } from "shared-types";
