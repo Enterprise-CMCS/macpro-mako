@@ -7,6 +7,7 @@ export const getAvailableActions = (
   result: opensearch.main.Document
 ) => {
   console.log("here is the user object: ", JSON.stringify(user));
+  console.log("the sub is: ", user.sub);
 
   const checks = PackageCheck(result);
   return [
