@@ -90,6 +90,11 @@ export const recordDetails = (
     canView: () => true,
   },
   {
+    label: "Formal RAI Received",
+    value: data.raiReceivedDate,
+    canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
+  },
+  {
     label: "Status Date",
     value: data.statusDate ? formatSeatoolDate(data.statusDate) : BLANK_VALUE,
     canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
