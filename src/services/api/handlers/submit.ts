@@ -3,7 +3,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import * as sql from "mssql";
 import { isAuthorized } from "../libs/auth/user";
 
-import { Authority, onemacSchema } from "shared-types";
+import { Authority, SEATOOL_AUTHORITIES, onemacSchema } from "shared-types";
 import {
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
@@ -68,6 +68,7 @@ export const submit = async (event: APIGatewayEvent) => {
 
   // Begin writes
   try {
+    await transaction.begin();
     // We first parse the event; if it's malformed, this will throw an error before we touch seatool or kafka
     const eventBody = onemacSchema.safeParse(body);
     if (!eventBody.success) {
@@ -79,13 +80,15 @@ export const submit = async (event: APIGatewayEvent) => {
       );
     }
 
+    // Resolve the the Plan_Type_ID
+    const authorityId = findAuthorityIdByName(body.authority);
     // Resolve the actionTypeID, if applicable
     const actionTypeSelect = [Authority["1915b"], Authority.CHIP_SPA].includes(
       body.authority
     )
       ? `
         SELECT @ActionTypeID = Action_ID FROM SEA.dbo.Action_Types
-        WHERE Plan_Type_Name = '${body.authority}'
+        WHERE Plan_Type_ID = '${authorityId}'
         AND Action_Name = '${body.seaActionType}';
       `
       : "SET @ActionTypeID = NULL;";
@@ -110,7 +113,6 @@ export const submit = async (event: APIGatewayEvent) => {
 
     const query = `
       DECLARE @RegionID INT;
-      DECLARE @PlanTypeID INT;
       DECLARE @SPWStatusID INT;
       DECLARE @ActionTypeID INT;
       DECLARE @SubmissionDate DATETIME;
@@ -127,13 +129,11 @@ export const submit = async (event: APIGatewayEvent) => {
         "Package Submitted",
         "insert"
       )}
+      DECLARE @PlanTypeID INT = ${authorityId}
       
       -- Set your variables
       SELECT @RegionID = Region_ID FROM SEA.dbo.States WHERE State_Code = '${
         body.state
-      }';
-      SELECT @PlanTypeID = Plan_Type_ID FROM SEA.dbo.Plan_Types WHERE Plan_Type_Name = '${
-        body.authority
       }';
       SELECT @SPWStatusID = SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = 'Pending';
       -- Set ActionTypeID if applicale, using the conditionally set statement generated previously
@@ -158,27 +158,6 @@ export const submit = async (event: APIGatewayEvent) => {
 
     const result = await transaction.request().query(query);
     console.log(result);
-    if ([Authority["1915b"], Authority.CHIP_SPA].includes(body.authority)) {
-      const actionTypeQuery = `
-      UPDATE sp
-      SET sp.Action_Type = at.Action_ID
-      FROM SEA.dbo.State_Plan sp
-      INNER JOIN SEA.dbo.Action_Types at ON at.Plan_Type_ID = (
-          SELECT pt.Plan_Type_ID
-          FROM SEA.dbo.Plan_Types pt
-          WHERE pt.Plan_Type_Name = '${body.authority}'
-      )
-      WHERE at.Action_Name = '${body.seaActionType}'
-      AND sp.ID_Number = '${body.id}';
-      
-      `;
-      const actionTypeQueryResult = await transaction
-        .request()
-        .query(actionTypeQuery);
-      console.log(actionTypeQueryResult);
-    }
-
-    // await pool.close();
 
     // Write to kafka, before we commit our seatool transaction.
     // This way, if we have an error making the kafka write, the seatool changes are rolled back.
@@ -208,5 +187,16 @@ export const submit = async (event: APIGatewayEvent) => {
     await pool.close();
   }
 };
+
+function findAuthorityIdByName(authority: string): string | undefined {
+  const entries = Object.entries(SEATOOL_AUTHORITIES);
+  for (const [key, value] of entries) {
+    if (value.toLowerCase() === authority.toLowerCase()) {
+      return key;
+    }
+  }
+  // Return undefined if no match is found
+  return undefined;
+}
 
 export const handler = submit;
