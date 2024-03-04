@@ -4,21 +4,18 @@ import { OPTIONS_STATE } from "./consts";
 import * as I from "@/components/Inputs";
 import {
   ControllerProps,
-  ControllerRenderProps,
   FieldPath,
   FieldValues,
   useFieldArray,
+  useFormContext,
 } from "react-hook-form";
 import { ReactNode, useEffect, useState } from "react";
-import { useOsSearch } from "@/api";
-import { opensearch } from "shared-types";
-import { DEFAULT_FILTERS } from "@/components/Opensearch/main";
 import { useDebounce } from "@/hooks";
 import { Grip, Plus, XIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
 import { cn } from "@/utils";
-import { zAmendmentAppkWaiverNumberSchema } from "@/utils";
+import { zAppkWaiverNumberSchema } from "@/utils";
 import { DragNDrop } from "./DragNDrop";
 
 export const SlotStateSelect = <
@@ -31,11 +28,7 @@ export const SlotStateSelect = <
   label: ReactNode;
   className?: string;
 }): ControllerProps<TFieldValues, TName>["render"] =>
-  function Render({
-    field,
-  }: {
-    field: ControllerRenderProps<TFieldValues, TName>;
-  }) {
+  function Render({ field }) {
     const { data: user } = useGetUser();
     const stateAccess = user?.user?.["custom:state"]?.split(",");
     return (
@@ -73,54 +66,40 @@ export const SlotWaiverId = <
   onIncludes: (val: string) => boolean;
   className?: string;
 }): ControllerProps<TFieldValues, TName>["render"] =>
-  function Render({ field }) {
+  function Render({ field, fieldState }) {
     const debounced = useDebounce(field.value, 750);
-    const [status, setStatus] = useState<
-      "loading" | "valid" | "invalid" | "init"
-    >("init");
-    const search = useOsSearch<
-      opensearch.main.Field,
-      opensearch.main.Response
-    >();
+    const [loading, setLoading] = useState<boolean>(false);
+    const context = useFormContext();
 
     const onValidate = async (value: string) => {
       const preExitConditions = !state || !value;
       if (preExitConditions) return;
+      setLoading(true);
 
-      const parsed = zAmendmentAppkWaiverNumberSchema.safeParse(String(value));
-      if (!parsed.success) return setStatus("invalid");
+      const existsInList = onIncludes(String(value));
+      if (existsInList) {
+        return context.setError(field.name, {
+          message: "Waiver id already exists",
+        });
+      }
 
-      const existsInList = onIncludes(parsed.data);
-      if (existsInList) return setStatus("invalid");
+      const draft = `${state}-${String(value)}`;
+      const parsed = await zAppkWaiverNumberSchema.safeParseAsync(draft);
 
-      const searchResult = await search.mutateAsync({
-        index: "main",
-        pagination: { number: 0, size: 100 },
-        filters: [
-          ...DEFAULT_FILTERS.waivers.filters!,
-          {
-            field: "id.keyword",
-            prefix: "must",
-            value: `${state}-${parsed.data}`,
-            type: "match",
-          },
-        ],
-      });
-      const entryExists = searchResult.hits.total.value;
-      setStatus(entryExists ? "invalid" : "valid");
+      if (!parsed.success) {
+        const [err] = parsed.error.errors;
+        return context.setError(field.name, err);
+      }
+
+      context.clearErrors(field.name);
     };
 
     useEffect(
       function onDebounceValidate() {
-        onValidate(debounced);
+        onValidate(debounced).then(() => setLoading(false));
       },
       [debounced]
     );
-
-    useEffect(() => {
-      if (!search.isLoading) return;
-      setStatus("loading");
-    }, [search.isLoading]);
 
     return (
       <I.FormItem {...props}>
@@ -136,14 +115,14 @@ export const SlotWaiverId = <
             <I.Input
               className={cn({
                 "w-[223px]": true,
-                "border-red-500": status === "invalid",
-                "border-green-500": status === "valid",
+                "border-red-500": !!fieldState.error?.message,
+                "border-green-500": !!field.value && !fieldState.error?.message,
               })}
               autoFocus
               onChange={field.onChange}
               value={field.value}
             />
-            {status === "loading" && (
+            {loading && (
               <motion.div
                 className="absolute right-[10px] inset-y-0 w-6 h-6 my-auto origin-center flex items-center justify-center"
                 animate={{ rotate: "360deg" }}
@@ -160,6 +139,7 @@ export const SlotWaiverId = <
             className={cn("cursor-pointer", { "opacity-0": !index })}
           />
         </div>
+        <I.FormMessage />
       </I.FormItem>
     );
   };

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { zAttachmentRequired } from "@/utils";
-import { zAmendmentAppkWaiverNumberSchema } from "@/utils";
+import { zAppkWaiverNumberSchema } from "@/utils";
 export const OPTIONS_STATE = [
   { label: "Alabama", value: "AL" },
   { label: "Alaska", value: "AK" },
@@ -100,7 +100,7 @@ export const OPTIONS_STATE = [
 ];
 
 export const FORM = z.object({
-  waiverIds: z.array(zAmendmentAppkWaiverNumberSchema),
+  waiverIds: z.array(zAppkWaiverNumberSchema),
   state: z.string(),
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
