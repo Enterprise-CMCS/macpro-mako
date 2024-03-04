@@ -4,9 +4,7 @@ import { Action, Authority, SEATOOL_STATUS } from "shared-types";
 import { baseNewSubmissionObj, testCmsUser, testStateUser } from "./testData";
 import { PackageCheck } from "../package-check";
 
-// Build Mock CMS user
-// Build Mock State user
-// Build Mock Package data for:
+// Build Mock Package data:
 //   - make it basic, like a new submission
 //   - then override properties as needed
 // ex: { ...baseNewSubmissionObj._source, raiWithdrawEnabled: true }

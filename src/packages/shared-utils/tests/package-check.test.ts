@@ -3,10 +3,10 @@ import { baseNewSubmissionObj, testCmsUser } from "./testData";
 import { PackageCheck } from "../package-check";
 import { Authority, SEATOOL_STATUS } from "shared-types";
 
-// Build Mock Package data for:
+// Build Mock Package data:
 //   - make it basic, like a new submission
 //   - then override properties as needed
-// ex: { ...basePackageObj._source, raiWithdrawEnabled: true }
+// ex: { ...baseNewSubmissionObj._source, raiWithdrawEnabled: true }
 
 describe("PackageCheck", () => {
   describe("Plan Checks", () => {
