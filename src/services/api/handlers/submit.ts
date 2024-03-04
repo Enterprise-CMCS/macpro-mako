@@ -97,6 +97,23 @@ export const submit = async (event: APIGatewayEvent) => {
       ? `INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID) VALUES ${subTypeIdsValues};`
       : "";
 
+    // Generate an UPDATE for actionType, if applicable
+    const actionTypeUpdate = [Authority["1915b"], Authority.CHIP_SPA].includes(
+      body.authority
+    )
+      ? `
+          UPDATE sp
+          SET sp.Action_Type = at.Action_ID
+          FROM SEA.dbo.State_Plan sp
+          INNER JOIN SEA.dbo.Action_Types at ON at.Plan_Type_ID = (
+              SELECT pt.Plan_Type_ID
+              FROM SEA.dbo.Plan_Types pt
+              WHERE pt.Plan_Type_Name = '${body.authority}'
+          )
+          WHERE at.Action_Name = '${body.seaActionType}'
+          AND sp.ID_Number = '${body.id}';
+        `
+      : "";
     const query = `
       DECLARE @RegionID INT;
       DECLARE @PlanTypeID INT;
@@ -140,6 +157,9 @@ export const submit = async (event: APIGatewayEvent) => {
 
       -- Insert all types into State_Plan_Service_SubTypes
       ${subTypeIdsInsert}
+
+      -- Update the action type, if applicable
+      ${actionTypeUpdate}
   `;
 
     const result = await transaction.request().query(query);
