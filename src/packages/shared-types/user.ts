@@ -9,19 +9,6 @@ export enum UserRoles {
 
 export type UserRolesString = `${UserRoles}${"," | ""}` | "";
 
-export const indentitiesSchema = z.array(
-  z.object({
-    dateCreated: z.string(),
-    issuer: z.string().nullable(),
-    primary: z
-      .string()
-      .transform((primary) => primary.toLowerCase() === "true"),
-    providerName: z.string(),
-    providerType: z.string(),
-    userId: z.string(),
-  })
-);
-
 export type CognitoUserAttributes = {
   sub: string;
   "custom:cms-roles": UserRolesString; // comma-separated list of UserRoles ex. "onemac-micro-reviewer,onemac-micro-helpdesk" or "onemac-micro-statesubmitter"
@@ -30,7 +17,7 @@ export type CognitoUserAttributes = {
   given_name: string;
   family_name: string;
   email: string;
-  identities?: z.infer<typeof indentitiesSchema>;
+  identities?: string;
 };
 
 export const CMS_ROLES = [

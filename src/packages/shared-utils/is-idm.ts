@@ -1,17 +1,39 @@
-import { CognitoUserAttributes, indentitiesSchema } from "shared-types";
+import { CognitoUserAttributes } from "shared-types";
+import { z } from "zod";
+
+export const indentitiesSchema = z.array(
+  z.object({
+    dateCreated: z.string(),
+    issuer: z.string().nullable(),
+    primary: z
+      .string()
+      .transform((primary) => primary.toLowerCase() === "true"),
+    providerName: z.string(),
+    providerType: z.string(),
+    userId: z.string(),
+  })
+);
 
 export const isIDM = (identities: CognitoUserAttributes["identities"]) => {
-  const result = indentitiesSchema.safeParse(identities);
+  if (!identities) return false;
+
+  let parsedIdentities: unknown;
+
+  try {
+    parsedIdentities = JSON.parse(identities ?? "");
+  } catch (err: unknown) {
+    return false;
+  }
+
+  const result = indentitiesSchema.safeParse(parsedIdentities);
 
   if (result.success === true) {
-    // do more work to determine if isIdm
     const foundIdm = result.data.some(
       (identity) => identity.providerName === "IDM"
     );
 
     return foundIdm;
   } else {
-    // if identities don't exist it can't be IDM
     return false;
   }
 };
