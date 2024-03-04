@@ -1,8 +1,4 @@
-import {
-  CognitoUserAttributes,
-  indentitiesSchema,
-  opensearch,
-} from "../../shared-types";
+import { CognitoUserAttributes, opensearch } from "../../shared-types";
 import rules from "./rules";
 import { PackageCheck } from "../packageCheck";
 import { isIDM } from "../is-idm";
