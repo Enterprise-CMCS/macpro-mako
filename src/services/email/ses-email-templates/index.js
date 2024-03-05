@@ -191,7 +191,7 @@ Thank you!`,
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
 <br><b>Medicaid SPA ID:</b> {{id}}
-<br><b>90th Day Deadline:</b> {{ninetyDaysDateNice}}
+<br><b>90th Day Deadline:</b> {{ninetyDaysLookupNice}}
 </p>
 Summary:
 <br>{{additionalInformation}}
@@ -199,7 +199,7 @@ Summary:
 <p>This response confirms receipt of your Medicaid State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysDateNice}}.</p>
+before {{ninetyDaysLookupNice}}.</p>
 <p>This mailbox is for the submittal of State Plan Amendments and non-web 
 based responses to Requests for Additional Information (RAI) on submitted 
 SPAs only. Any other correspondence will be disregarded.</p>
@@ -213,7 +213,7 @@ State or territory: {{territory}}
 Name: {{submitterName}}
 Email Address: {{submitterEmail}}
 Medicaid SPA ID: {{id}}
-90th Day Deadline: {{ninetyDaysDateNice}}
+90th Day Deadline: {{ninetyDaysLookupNice}}
 
 Summary:
 {{additionalInformation}}
@@ -221,7 +221,7 @@ Summary:
 This response confirms receipt of your Medicaid State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysDateNice}}.
+before {{ninetyDaysLookupNice}}.
 
 This mailbox is for the submittal of State Plan Amendments and non-web 
 based responses to Requests for Additional Information (RAI) on submitted 
@@ -473,7 +473,7 @@ Thank you!`,
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
 <br><b>CHIP SPA Package ID:</b> {{id}}
-<br><b>90th Day Deadline:</b> {{ninetyDaysDateNice}}
+<br><b>90th Day Deadline:</b> {{ninetyDaysLookupNice}}
 </p>
 Summary:
 <br>{{additionalInformation}}
@@ -481,7 +481,7 @@ Summary:
 <p>This response confirms receipt of your CHIP State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysDateNice}}.</p>
+before {{ninetyDaysLookupNice}}.</p>
 <p>If you have questions, please contact 
 <a href='mailto:CHIPSPASubmissionMailbox@cms.hhs.gov'>CHIPSPASubmissionMailbox@cms.hhs.gov</a>
 or your state lead.</p>
@@ -493,7 +493,7 @@ State or territory: {{territory}}
 Name: {{submitterName}}
 Email Address: {{submitterEmail}}
 CHIP SPA Package ID: {{id}}
-90th Day Deadline: {{ninetyDaysDateNice}}
+90th Day Deadline: {{ninetyDaysLookupNice}}
 
 Summary:
 {{additionalInformation}}
@@ -501,7 +501,7 @@ Summary:
 This response confirms receipt of your CHIP State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysDateNice}}.
+before {{ninetyDaysLookupNice}}.
 
 If you have questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov
 or your state lead.

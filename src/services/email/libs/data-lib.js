@@ -33,13 +33,6 @@ const formatDateFromTimestamp = (timestamp) => {
 
 };
 
-function formatProposedEffectiveDate(emailBundle) {
-    if (!emailBundle?.notificationMetadata?.proposedEffectiveDate) return "Pending";
-    return DateTime.fromMillis(emailBundle.notificationMetadata.proposedEffectiveDate)
-        .toFormat('DDDD');
-
-}
-
 function formatNinetyDaysDate(emailBundle) {
     if (!emailBundle?.notificationMetadata?.submissionDate) return "Pending";
     return DateTime.fromMillis(emailBundle.notificationMetadata.submissionDate)
@@ -87,6 +80,8 @@ export const buildEmailData = async (bundle, data) => {
             case "chipInbox":
             case "chipCcList":
             case "dpoEmail":
+            case "dmcoEmail":
+            case "dhcbsooEmail":
                 returnObject[dataType] = process?.env[dataType] ? process.env[dataType] : `'${dataType} Substitute' <k.grue@theta-llc.com>`;
                 break;
 
