@@ -125,14 +125,6 @@ export const zRenewalOriginalWaiverNumberSchema = z
 export const zAppkWaiverNumberSchema = z
   .string()
   .regex(
-    /^[A-Z]{2}-\d{4,5}\.R\d{2}\.\d{2}$/,
+    /^\d{4,5}\.R\d{2}\.\d{2}$/,
     "The 1915(c) Waiver Amendment Number must be in the format of ####.R##.## or #####.R##.##. For amendments, the last two digits start with '01' and ascends."
-  )
-  .refine((value) => isAuthorizedState(value), {
-    message:
-      "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
-  })
-  .refine(async (value) => !(await itemExists(value)), {
-    message:
-      "According to our records, this 1915(c) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
-  });
+  );

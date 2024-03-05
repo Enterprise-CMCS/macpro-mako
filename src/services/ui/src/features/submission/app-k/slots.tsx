@@ -17,6 +17,7 @@ import { Loader } from "lucide-react";
 import { cn } from "@/utils";
 import { zAppkWaiverNumberSchema } from "@/utils";
 import { DragNDrop } from "./DragNDrop";
+import { itemExists } from "@/api";
 
 export const SlotStateSelect = <
   TFieldValues extends FieldValues = FieldValues,
@@ -73,7 +74,7 @@ export const SlotWaiverId = <
 
     const onValidate = async (value: string) => {
       const preExitConditions = !state || !value;
-      if (preExitConditions) return;
+      if (preExitConditions) return context.clearErrors(field.name);
       setLoading(true);
 
       const existsInList = onIncludes(String(value));
@@ -83,12 +84,20 @@ export const SlotWaiverId = <
         });
       }
 
-      const draft = `${state}-${String(value)}`;
-      const parsed = await zAppkWaiverNumberSchema.safeParseAsync(draft);
+      const parsed = await zAppkWaiverNumberSchema.safeParseAsync(value);
 
       if (!parsed.success) {
         const [err] = parsed.error.errors;
         return context.setError(field.name, err);
+      }
+
+      const exists = await itemExists(`${state}-${value}`);
+
+      if (exists) {
+        return context.setError(field.name, {
+          message:
+            "According to our records, this 1915(c) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
+        });
       }
 
       context.clearErrors(field.name);
@@ -116,7 +125,7 @@ export const SlotWaiverId = <
               className={cn({
                 "w-[223px]": true,
                 "border-red-500": !!fieldState.error?.message,
-                "border-green-500": !!field.value && !fieldState.error?.message,
+                "border-green-500": !!debounced && !fieldState.error?.message,
               })}
               autoFocus
               onChange={field.onChange}

@@ -9,6 +9,7 @@ import {
   seaToolFriendlyTimestamp,
 } from "shared-utils";
 import { produceMessage } from "../libs/kafka";
+import { search } from "../../../libs/opensearch-lib";
 
 export const submit = async (event: APIGatewayEvent) => {
   // reject no body
@@ -27,17 +28,19 @@ export const submit = async (event: APIGatewayEvent) => {
       body: { message: "Unauthorized" },
     });
   }
-  const waiverIds = body.waiverIds as string[];
 
+  const waiverIds = body.waiverIds as string[];
   const parentWaiver = waiverIds[0];
+
   const schemas = [];
+
   for (const WINDEX in waiverIds) {
-    const ID = waiverIds[WINDEX];
-    const validID = /^[A-Z]{2}-\d{4,5}\.R\d{2}\.\d{2}$/.test(ID);
+    const ID = waiverIds[WINDEX].trim();
+    const validID = /^\d{4,5}\.R\d{2}\.\d{2}$/.test(ID);
     // Reject invalid ID
     if (!validID) {
       throw console.error(
-        "MAKO Validation Error. The following waiver id format is incorrect: ",
+        "MAKO Validation Error. The following APP-K Id format is incorrect: ",
         ID
       );
     }
@@ -46,13 +49,24 @@ export const submit = async (event: APIGatewayEvent) => {
       ...body,
       ...(!!WINDEX && { appkParentId: `${body.state}-${parentWaiver}` }),
     });
-    // reject invalid parse
+
     if (!validParse.success) {
       throw console.error(
         "MAKO Validation Error. The following record failed to parse: ",
         JSON.stringify(validParse),
         "Because of the following Reason(s): ",
         validParse.error.message
+      );
+    }
+
+    const packageResult = await search(process.env.osDomain!, "main", {
+      query: { match_phrase: { id: { query: `${body.state}-${ID}` } } },
+    });
+    const exists = packageResult?.hits.total.value !== 0;
+    if (exists) {
+      throw console.error(
+        "MAKO Validation Error. The following APP-K Id already exists ",
+        `${body.state}-${ID}`
       );
     }
 
