@@ -36,6 +36,7 @@ export const seatoolSchema = z.object({
     PLAN_TYPE: z.number().nullable(),
     LEAD_ANALYST_ID: z.number().nullable(),
     APPROVED_EFFECTIVE_DATE: z.number().nullable(),
+    ACTUAL_EFFECTIVE_DATE: z.number().nullable(), // This is only set for waivers
     PROPOSED_DATE: z.number().nullable(),
     SPW_STATUS_ID: z.number().nullable(),
     STATE_CODE: z.string().nullish(),

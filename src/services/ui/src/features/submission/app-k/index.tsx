@@ -99,7 +99,7 @@ export const AppKSubmissionForm = () => {
               />
             </SectionCard>
             <SectionCard title="Attachments">
-              <C.AttachmentsSizeTypesDesc faqLink="/faq/#chip-spa-attachments" />
+              <C.AttachmentsSizeTypesDesc faqLink="/faq/chip-spa-attachments" />
 
               <I.FormField
                 control={form.control}
