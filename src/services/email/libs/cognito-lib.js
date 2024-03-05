@@ -27,7 +27,7 @@ import {
           return `"${oneUser.family_name}, ${oneUser.given_name}" <${oneUser.email}>`;
       }).filter(Boolean);
   
-      return { "allState": userList.join(';') };
+      return { "allState": userList.join(";") };
     } catch (error) {
       console.log("Cognito error is: ", error);
       return {"message": error.message };

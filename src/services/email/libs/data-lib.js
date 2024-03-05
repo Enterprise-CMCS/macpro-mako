@@ -24,14 +24,14 @@ const formatAttachments = (formatType, attachmentList) => {
         return "no attachments";
     else
         return `${format.begin}${attachmentList.map(a => `${a.title}: ${a.filename}`).join(format.joiner)}${format.end}`;
-}
+};
 
 const formatDateFromTimestamp = (timestamp) => {
     if (!timestamp || timestamp <= 0) return "Pending";
     return DateTime.fromMillis(timestamp)
-        .toFormat('DDDD');
+        .toFormat("DDDD");
 
-}
+};
 
 function formatProposedEffectiveDate(emailBundle) {
     if (!emailBundle?.notificationMetadata?.proposedEffectiveDate) return "Pending";

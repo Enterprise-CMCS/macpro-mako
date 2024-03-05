@@ -82,10 +82,10 @@ const buildKeyFromRecord = (record) => {
     const authority = record.authority.toLowerCase().replace(/\s+/g, "-");
 
     return `${actionType}-${authority}`;
-}
+};
 
 export const getBundle = (record, stage) => {
     const configKey = buildKeyFromRecord(record);
 
     return getBundleFromEvent(configKey, stage);
-}
+};
