@@ -12,7 +12,12 @@ describe("offsetToUtc", () => {
     const originalDate = new Date("January 1, 2000 12:00:00");
     const timezoneOffset = originalDate.getTimezoneOffset() * 60000; // in milliseconds
     const expectedDate = new Date(originalDate.getTime() - timezoneOffset);
-    console.debug("expectedDate: ", expectedDate);
+    console.debug(
+      "originalDate: ",
+      originalDate,
+      "expectedDate: ",
+      expectedDate,
+    );
     expect(offsetToUtc(originalDate)).toEqual(expectedDate);
   });
 });
@@ -22,7 +27,12 @@ describe("offsetFromUtc", () => {
     const originalDate = new Date("2000-01-01T12:00:00.000Z");
     const timezoneOffset = originalDate.getTimezoneOffset() * 60000; // in milliseconds
     const expectedDate = new Date(originalDate.getTime() + timezoneOffset);
-    console.debug("expectedDate: ", expectedDate);
+    console.debug(
+      "originalDate: ",
+      originalDate,
+      "expectedDate: ",
+      expectedDate,
+    );
     expect(offsetFromUtc(originalDate)).toEqual(expectedDate);
   });
 });
