@@ -54,6 +54,16 @@ export const isIDM = (identities: CognitoUserAttributes["identities"]) => {
     );
     return parsedIdentities.some((identity) => identity.providerName === "IDM");
   } catch (err: unknown) {
+    let message;
+    let issues;
+    if (err instanceof z.ZodError) {
+      issues = err.issues;
+      message = `Encountered Zod parse issues(${issues.length}): `;
+    } else if (err instanceof SyntaxError) {
+      issues = err.message;
+      message = `Encountered JSON parsing issue: `;
+    }
+    console.error(message, issues);
     return false;
   }
 };

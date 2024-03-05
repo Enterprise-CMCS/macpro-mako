@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, vi, expect } from "vitest";
 import {
   isCmsReadonlyUser,
   isCmsUser,
@@ -84,6 +84,7 @@ describe("isStateUser", () => {
 });
 
 describe("isIDM", () => {
+  const consoleErrorSpy = vi.spyOn(console, "error");
   it("returns false if a user has no Cognito identities", () => {
     expect(isIDM(testStateCognitoUser.user.identities)).toBe(false);
     expect(isIDM(testCMSCognitoUser.user.identities)).toBe(false);
@@ -103,15 +104,42 @@ describe("isIDM", () => {
     };
     expect(isIDM(rogueIdentityUser.user.identities)).toBe(false);
   });
-  it("returns false if a user has a malformed identities string", () => {
+  it("returns false if a user has a malformed identities string (Zod assertion)", () => {
     const rogueIdentityUser: OneMacUser = {
       isCms: testCMSCognitoUser.isCms,
       user: {
         ...testCMSCognitoUser.user,
         identities:
-          '[{"someThing":"1709308952587","someOne":"abc123","someWhere":"NOT-IDM","someHow":"OIDC"}]',
+          '[{"userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
       },
     };
     expect(isIDM(rogueIdentityUser.user.identities)).toBe(false);
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Encountered Zod parse issues(1): ",
+      [
+        {
+          code: "invalid_type",
+          expected: "string",
+          message: "Required",
+          path: [0, "dateCreated"],
+          received: "undefined",
+        },
+      ],
+    );
+  });
+  it("returns false if a user has a malformed identities string (JSON assertion)", () => {
+    const rogueIdentityUser: OneMacUser = {
+      isCms: testCMSCognitoUser.isCms,
+      user: {
+        ...testCMSCognitoUser.user,
+        identities:
+          '["dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
+      },
+    };
+    expect(isIDM(rogueIdentityUser.user.identities)).toBe(false);
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Encountered JSON parsing issue: ",
+      "Unexpected token : in JSON at position 14",
+    );
   });
 });
