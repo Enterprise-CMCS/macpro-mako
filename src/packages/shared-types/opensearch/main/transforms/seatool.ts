@@ -148,7 +148,8 @@ export const transform = (id: string) => {
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
       actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
-        data.STATE_PLAN.APPROVED_EFFECTIVE_DATE
+        data.STATE_PLAN.APPROVED_EFFECTIVE_DATE ||
+          data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE
       ),
       description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
@@ -182,9 +183,9 @@ export const transform = (id: string) => {
         seatoolStatus,
         flavorLookup(data.STATE_PLAN.PLAN_TYPE)
       ),
-      raiWithdrawEnabled: !finalDispositionStatuses.includes(cmsStatus)
-        ? undefined
-        : true,
+      raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus)
+        ? false
+        : undefined,
     };
     return resp;
   });

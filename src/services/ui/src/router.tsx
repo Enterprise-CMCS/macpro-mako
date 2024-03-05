@@ -12,13 +12,14 @@ export const router = createBrowserRouter([
     element: <C.Layout />,
     children: [
       { path: "/", index: true, element: <F.Welcome /> },
+      { path: "/faq", element: <F.Faq /> },
+      { path: "/faq/:id", element:  <F.Faq />},
       {
         path: "/dashboard",
         element: <F.Dashboard />,
         loader: F.dashboardLoader(queryClient),
       },
       { path: "/details", element: <F.Details /> },
-      { path: "/faq", element: <F.Faq /> },
       {
         path: "/new-submission",
         element: <F.NewSubmissionInitialOptions />,
