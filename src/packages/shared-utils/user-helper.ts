@@ -44,7 +44,8 @@ const cognitoIdentitiesSchema = z.array(
     userId: z.string(),
   }),
 );
-
+/** Takes the nullable string from CognitoUserAttributes.identities and parses is
+ * to determine if a user is an IDM user or not. */
 export const isIDM = (identities: CognitoUserAttributes["identities"]) => {
   if (!identities) return false;
   try {
