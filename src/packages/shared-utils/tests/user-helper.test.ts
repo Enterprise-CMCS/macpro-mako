@@ -103,7 +103,6 @@ describe("isIDM", () => {
     };
     expect(isIDM(rogueIdentityUser.user.identities)).toBe(false);
   });
-
   it("returns false if a user has a malformed identities string", () => {
     const rogueIdentityUser: OneMacUser = {
       isCms: testCMSCognitoUser.isCms,

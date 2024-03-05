@@ -2,34 +2,41 @@ import { it, describe, expect } from "vitest";
 import {
   formatSeatoolDate,
   getNextBusinessDayTimestamp,
+  offsetFromUtc,
   offsetToUtc,
   seaToolFriendlyTimestamp,
 } from "../seatool-date-helper";
 
-// describe("offsetToUtc", () => {
-//   it("offsets given date to UTC", () => {
-//     const originalDate = new Date("2000-01-01T12:00:00-06:00");
-//     expect(offsetToUtc(originalDate).toISOString()).toEqual(
-//       "2000-01-01T18:00:00.000Z"
-//     );
-//   });
-// });
-//
-// describe("offsetFromUtc", () => {
-//   it("offsets UTC date to user's timezone", () => {
-//     const originalDate = new Date("2000-01-01T12:00:00.000Z");
-//     expect(offsetToUtc(originalDate).toISOString()).toEqual(
-//       "2000-01-01T06:00:00-06:00"
-//     );
-//   });
-// });
-//
-// describe("seaToolFriendlyTimestamp", () => {
-//   it("converts given date to a time string representing the given date", () => {
-//     const originalDate = new Date("2000-01-01T12:00:00.000Z");
-//     expect(seaToolFriendlyTimestamp(originalDate)).toEqual(946710000000);
-//   });
-// });
+describe("offsetToUtc", () => {
+  it("offsets given date to UTC", () => {
+    const originalDate = new Date("January 1, 2000 12:00:00");
+    const timezoneOffset = originalDate.getTimezoneOffset() * 60000; // in milliseconds
+    const expectedDate = new Date(originalDate.getTime() - timezoneOffset);
+    console.debug("expectedDate: ", expectedDate);
+    expect(offsetToUtc(originalDate)).toEqual(expectedDate);
+  });
+});
+
+describe("offsetFromUtc", () => {
+  it("offsets UTC date to user's timezone", () => {
+    const originalDate = new Date("2000-01-01T12:00:00.000Z");
+    const timezoneOffset = originalDate.getTimezoneOffset() * 60000; // in milliseconds
+    const expectedDate = new Date(originalDate.getTime() + timezoneOffset);
+    console.debug("expectedDate: ", expectedDate);
+    expect(offsetFromUtc(originalDate)).toEqual(expectedDate);
+  });
+});
+
+describe("seaToolFriendlyTimestamp", () => {
+  it("converts given date to a time string representing the given date", () => {
+    const originalDate = new Date("January 1, 2000 12:00:00");
+    const timezoneOffset = originalDate.getTimezoneOffset() * 60000; // in milliseconds
+    const expectedDate = new Date(originalDate.getTime() - timezoneOffset);
+    expect(seaToolFriendlyTimestamp(originalDate)).toEqual(
+      expectedDate.getTime(),
+    );
+  });
+});
 
 describe("formatSeatoolDate", () => {
   it("formats a SEATool date to a user-friendly format", () => {
