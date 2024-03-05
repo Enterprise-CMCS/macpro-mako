@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
 import {
   Accordion,
@@ -6,9 +7,25 @@ import {
   AccordionContent,
   AccordionTrigger,
   SubNavHeader,
+  useParams,
 } from "@/components";
 
 export const Faq = () => {
+  const { id } = useParams("/faq/:id");
+
+  const [openItems, setOpenItems] = useState<string[]>([]);
+  useEffect(() => {
+    if (id) {
+      const element = document.getElementById(id);
+      if (element) {
+        setOpenItems([id]);
+        window.scrollTo({
+          top: element.offsetTop,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [id]);
   return (
     <>
       <SubNavHeader>
@@ -16,19 +33,31 @@ export const Faq = () => {
       </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1">
-          {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
-            <article key={sectionTitle} className="mb-8">
-              <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
-              <Accordion type="multiple">
-                {qanda.map(({ anchorText, answerJSX, question }) => (
-                  <AccordionItem key={anchorText} value={question}>
-                    <AccordionTrigger>{question}</AccordionTrigger>
-                    <AccordionContent>{answerJSX}</AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </article>
-          ))}
+          <article key={"Asdf"} className="mb-8">
+            <Accordion
+              type="multiple"
+              value={openItems}
+              onValueChange={setOpenItems}
+            >
+              {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
+                <article key={sectionTitle} className="mb-8">
+                  <h2 className="text-2xl mb-4 text-primary">
+                    {sectionTitle}
+                  </h2>
+                  {qanda.map(({ anchorText, answerJSX, question }) => (
+                    <AccordionItem
+                      value={anchorText}
+                      id={anchorText}
+                      key={anchorText}
+                    >
+                      <AccordionTrigger>{question}</AccordionTrigger>
+                      <AccordionContent>{answerJSX}</AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </article>
+              ))}
+            </Accordion>
+          </article>
         </div>
         <div>
           <CardWithTopBorder>

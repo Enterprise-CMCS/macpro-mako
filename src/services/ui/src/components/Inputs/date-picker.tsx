@@ -15,7 +15,7 @@ import {
 
 export const DatePicker = ({ date, onChange }: DatePickerProps) => {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState<boolean>(false);
-
+  const [selected, setSelected] = React.useState<Date>();
   return (
     <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
       <PopoverTrigger asChild>
@@ -33,13 +33,15 @@ export const DatePicker = ({ date, onChange }: DatePickerProps) => {
       <PopoverContent className="w-auto p-0">
         <Calendar
           mode="single"
-          selected={date}
+          selected={selected}
+          defaultMonth={selected}
           onSelect={(date) => {
+            setSelected(date);
             onChange(date);
             setIsCalendarOpen(false);
           }}
           initialFocus
-        />
+        />  
       </PopoverContent>
     </Popover>
   );
