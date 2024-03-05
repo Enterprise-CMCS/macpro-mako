@@ -4,4 +4,5 @@ export * from "./package-check";
 export * from "./regex";
 export * from "./s3-url-parser";
 export * from "./seatool-date-helper";
+export * from "./is-idm";
 export * from "./user-helper";
