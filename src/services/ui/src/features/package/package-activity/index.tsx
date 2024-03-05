@@ -305,7 +305,7 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
       case "withdraw-rai":
         return ["RAI response withdrawn", PA_ResponseWithdrawn];
       case "withdraw-package":
-        return ["RAI package withdrawn", PA_ResponseWithdrawn];
+        return ["Package withdrawn", PA_ResponseWithdrawn];
       case "issue-rai":
         return ["RAI issued", PA_RaiIssued];
       case "respond-to-rai":

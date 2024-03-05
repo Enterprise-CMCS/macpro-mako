@@ -145,7 +145,7 @@ export const ChipSpaFormPage = () => {
                       SPA ID <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
-                      to="/faq/#spa-id-format"
+                      to="/faq/spa-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"
@@ -211,7 +211,7 @@ export const ChipSpaFormPage = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc faqLink="/faq/#chip-spa-attachments" />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/chip-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
