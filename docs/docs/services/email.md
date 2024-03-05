@@ -17,11 +17,19 @@ AWS SES is an account-wide service for basic sending and receiving of email.  By
 The workflow will not successfully deploy unless the emailAddressLookup object is defined:
 
 Named {project}/default/emailAddressLookup or {project}/{stage}/emailAddressLookup
-    {
-        "sourceEmail":"\"Verified Sender\" <spa-reply@cms.hhs.gov>","osgEmail":"\"OSG\" <mako.cms.osg@gmail.com>","chipInbox":"\"CHIP Inbox\" <mako.cms.chip@gmail.com>","chipCcList":"\"CHIP CC 1\" <k.grue@theta-llc.com>;\"CHIP CC 2\" <k.grue.stateadmn@gmail.com>"
+    {   
+        "sourceEmail":"\"CMS MACPro no-reply\" <spa-reply@cms.hhs.gov>",
+        "osgEmail":"\"OSG\" <mako.cms.osg@gmail.com>",
+        "chipInbox":"\"CHIP Inbox\" <mako.cms.osg@gmail.com>",
+        "chipCcList":"\"CHIP CC 1\" <k.grue@theta-llc.com>;\"CHIP CC 2\" <k.grue.stateadmn@gmail.com>",
+        "dpoEmail":"\"DPO Action\" <mako.cms.osg@gmail.com>",
+        "dmcoEmail":"\"DMCO Action\" <mako.cms.osg@gmail.com>",
+        "dhcbsooEmail":"\"DHCBSOO Action\" <mako.cms.osg@gmail.com>"
     }
 
 These values are set during deployment as environment variables on the lambda.  You can edit these values in the AWS Console on the Lambda configuration tab.
+
+LAUCH NOTE!!! The defined email addresses have been stored as om/default/emailAddressLookup in the production account, with om/production/emailAddressLookup overwriting those email addresses with the test email addresses.  Delete the om/production/emailAddressLookup before the real launch deploy (you can also edit the environment variables after the lambda is built). 
 
 ### Test accounts
 There are gmail accounts created to facilitate email testing.  Please contact a MACPro team member for access to these inboxes.
