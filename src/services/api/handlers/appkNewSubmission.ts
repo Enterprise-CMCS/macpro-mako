@@ -33,7 +33,7 @@ export const submit = async (event: APIGatewayEvent) => {
   const schemas = [];
   for (const WINDEX in waiverIds) {
     const ID = waiverIds[WINDEX];
-    const validID = /\d{4,5}\.R\d{2}\.\d{2}$/.test(ID);
+    const validID = /^[A-Z]{2}-\d{4,5}\.R\d{2}\.\d{2}$/.test(ID);
     // Reject invalid ID
     if (!validID) {
       throw console.error(
