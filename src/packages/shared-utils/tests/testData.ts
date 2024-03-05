@@ -1,31 +1,47 @@
 import { OneMacUser } from "ui/src/api";
 import { Authority, opensearch } from "../../shared-types";
 
-export const testStateUser: OneMacUser = {
+export const testStateCognitoUser: OneMacUser = {
   isCms: false,
   user: {
     sub: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
     "custom:cms-roles": "onemac-micro-statesubmitter",
-    email_verified: true,
-    given_name: "George",
-    family_name: "Harrison",
     "custom:state": "VA,OH,SC,CO,GA,MD",
-    email: "george@example.com",
+    email_verified: true,
+    given_name: "State",
+    family_name: "Person",
+    email: "stateperson@example.com",
   },
 };
-export const testCmsUser: OneMacUser = {
+export const testStateIDMUser: OneMacUser = {
+  isCms: testStateCognitoUser.isCms,
+  user: {
+    ...testStateCognitoUser.user,
+    identities:
+      '[{"dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
+  },
+};
+export const testCMSCognitoUser: OneMacUser = {
   isCms: true,
   user: {
     sub: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
     "custom:cms-roles": "onemac-micro-reviewer",
+    "custom:state": "VA,OH,SC,CO,GA,MD",
     email_verified: true,
     given_name: "CMS",
     family_name: "Person",
-    "custom:state": "VA,OH,SC,CO,GA,MD",
-    email: "george@example.com",
+    email: "cmsperson@example.com",
   },
 };
-export const baseNewSubmissionObj: opensearch.main.ItemResult = {
+export const testCMSIDMUser: OneMacUser = {
+  isCms: testCMSCognitoUser.isCms,
+  user: {
+    ...testCMSCognitoUser.user,
+    identities:
+      '[{"dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
+  },
+};
+export const testItemResult: opensearch.main.ItemResult = {
   _index: "main",
   _id: "MD-12-3456",
   _version: 4,

@@ -3,24 +3,30 @@ import {
   isCmsReadonlyUser,
   isCmsUser,
   isCmsWriteUser,
+  isIDM,
   isStateUser,
 } from "../user-helper";
-import { testCmsUser, testStateUser } from "./testData";
+import {
+  testCMSCognitoUser,
+  testCMSIDMUser,
+  testStateCognitoUser,
+  testStateIDMUser,
+} from "./testData";
 import { CognitoUserAttributes } from "shared-types";
 
 const cmsHelpDeskUser: CognitoUserAttributes = {
-  ...testCmsUser.user,
+  ...testCMSCognitoUser.user,
   "custom:cms-roles": "onemac-micro-helpdesk",
 };
 const cmsReadOnlyUser: CognitoUserAttributes = {
-  ...testCmsUser.user,
+  ...testCMSCognitoUser.user,
   "custom:cms-roles": "onemac-micro-readonly",
 };
 const cmsReviewerUser: CognitoUserAttributes = {
-  ...testCmsUser.user,
+  ...testCMSCognitoUser.user,
   "custom:cms-roles": "onemac-micro-reviewer",
 };
-const stateSubmitterUser: CognitoUserAttributes = testStateUser.user;
+const stateSubmitterUser: CognitoUserAttributes = testStateCognitoUser.user;
 
 describe("isCmsUser", () => {
   it("returns true for CMS users", () => {
@@ -29,7 +35,7 @@ describe("isCmsUser", () => {
     expect(isCmsUser(cmsReviewerUser)).toEqual(true);
   });
   it("returns false for State users", () => {
-    expect(isCmsUser(testStateUser.user)).toEqual(false);
+    expect(isCmsUser(stateSubmitterUser)).toEqual(false);
   });
 });
 
@@ -69,5 +75,16 @@ describe("isStateUser", () => {
   });
   it("returns false for State users", () => {
     expect(isStateUser(stateSubmitterUser)).toEqual(true);
+  });
+});
+
+describe("isIDM", () => {
+  it("returns false if a user has no Cognito identities", () => {
+    expect(isIDM(testStateCognitoUser.user.identities)).toBe(false);
+    expect(isIDM(testCMSCognitoUser.user.identities)).toBe(false);
+  });
+  it("returns true if a user has the IDM Cognito identity attribute", () => {
+    expect(isIDM(testStateIDMUser.user.identities)).toBe(true);
+    expect(isIDM(testCMSIDMUser.user.identities)).toBe(true);
   });
 });
