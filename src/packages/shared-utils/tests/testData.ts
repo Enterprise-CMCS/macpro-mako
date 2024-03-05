@@ -27,27 +27,27 @@ export const testCmsUser: OneMacUser = {
 };
 export const baseNewSubmissionObj: opensearch.main.ItemResult = {
   _index: "main",
-  _id: "MD-74-0036",
+  _id: "MD-12-3456",
   _version: 4,
   _seq_no: 14206,
   _primary_term: 1,
   found: true,
   _source: {
-    id: "MD-74-0036",
+    id: "MD-12-3456",
     attachments: [
       {
         filename:
           "CMS179 TRANSMITTAL FORM - Home and Community-Based Services, Psychosocial Rehabilitation Services.docx",
         title: "CMS Form 179",
-        bucket: "om-uploads-master-attachments-635052997545",
-        key: "a4bc64d1-46a8-4305-bfee-209e1a3ebb40",
+        bucket: "test-bucket",
+        key: "test-key",
         uploadDate: 1709319909222,
       },
       {
         filename: "10-20-17 MT 1915(b)(4) Big Sky Waiver app revised (6).docx",
         title: "SPA Pages",
-        bucket: "om-uploads-master-attachments-635052997545",
-        key: "22ad64f1-1e33-4dc0-a071-a587df644cbe",
+        bucket: "test-bucket",
+        key: "test-key",
         uploadDate: 1709319909222,
       },
     ],
