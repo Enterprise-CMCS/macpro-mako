@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api";
 import { WaiversList } from "./Lists/waivers";
@@ -18,6 +18,7 @@ import {
   Navigate,
   redirect,
 } from "@/components";
+import { useScrollToTop } from "@/hooks";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -52,6 +53,7 @@ export const Dashboard = () => {
   if (!role) {
     return <Navigate path={"/"} />;
   }
+  useScrollToTop();
 
   return (
     <OsProvider
