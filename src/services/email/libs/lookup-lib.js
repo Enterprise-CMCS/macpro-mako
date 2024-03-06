@@ -14,10 +14,10 @@ export const getLookupValues = async (lookupList, lookupId) => {
                 default:
                     return await Promise.resolve(`Don't have function for ${lookupType}`);
             }
-        }))
+        }));
         lookupPromises.forEach((promise) => {
             if (promise.status === "fulfilled") returnData = { ...returnData, ...promise.value };
-        })
+        });
     }
 
     return returnData;

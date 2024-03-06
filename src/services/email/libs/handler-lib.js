@@ -24,7 +24,7 @@ export default function handler(lambda) {
           // flatten the records so they are iterable
           Object.values(event.records).forEach((source) =>
           source.forEach((record) => {
-            eventQueue.push({...record})
+            eventQueue.push({...record});
           }));
           sendResults = await Promise.allSettled(eventQueue.map(async (record) => {
             try {
@@ -33,8 +33,7 @@ export default function handler(lambda) {
 
             return await lambda(eventData);
         } catch (e) {
-            console.log ("event failure: ", eventData);
-            return { eventData, error: e.message };
+            return { error: e.message };
           }
 
           }));
@@ -47,4 +46,5 @@ export default function handler(lambda) {
       console.log("Response: ", JSON.stringify(response, null, 4));
       return response;
     };
-  }}
+  };
+};

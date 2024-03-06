@@ -52,29 +52,29 @@ export const buildEmailData = async (bundle, data) => {
 
     bundle.dataList.forEach((dataType) => {
         switch (dataType) {
-            case 'territory':
-                returnObject['territory'] = data.id.toString().substring(0, 2);
+            case "territory":
+                returnObject["territory"] = data.id.toString().substring(0, 2);
                 break;
-            case 'proposedEffectiveDateNice':
-                returnObject['proposedEffectiveDateNice'] = formatDateFromTimestamp(data?.notificationMetadata?.proposedEffectiveDate);
+            case "proposedEffectiveDateNice":
+                returnObject["proposedEffectiveDateNice"] = formatDateFromTimestamp(data?.notificationMetadata?.proposedEffectiveDate);
                 break;
-            case 'ninetyDaysLookup':
-                returnObject['ninetyDaysDateNice'] = formatDateFromTimestamp(data?.ninetyDaysDateLookup);
+            case "ninetyDaysLookup":
+                returnObject["ninetyDaysDateNice"] = formatDateFromTimestamp(data?.ninetyDaysDateLookup);
                 break;
-            case 'applicationEndpoint':
-                returnObject['applicationEndpoint'] = process.env.applicationEndpoint;
+            case "applicationEndpoint":
+                returnObject["applicationEndpoint"] = process.env.applicationEndpoint;
                 break;
-            case 'formattedFileList':
-                returnObject['formattedFileList'] = formatAttachments("html", data.attachments);
+            case "formattedFileList":
+                returnObject["formattedFileList"] = formatAttachments("html", data.attachments);
                 break;
-            case 'textFileList':
-                returnObject['textFileList'] = formatAttachments("text", data.attachments);
+            case "textFileList":
+                returnObject["textFileList"] = formatAttachments("text", data.attachments);
                 break;
-            case 'ninetyDaysDateNice':
-                returnObject['ninetyDaysDateNice'] = formatNinetyDaysDate(data);
+            case "ninetyDaysDateNice":
+                returnObject["ninetyDaysDateNice"] = formatNinetyDaysDate(data);
                 break;
             case "submitter":
-                returnObject['submitter'] = (data.submitterEmail === "george@example.com") ? `"George's Substitute" <k.grue.stateuser@gmail.com>` : `"${data.submitterName}" <${data.submitterEmail}>`;
+                returnObject["submitter"] = (data.submitterEmail === "george@example.com") ? `"George's Substitute" <k.grue.stateuser@gmail.com>` : `"${data.submitterName}" <${data.submitterEmail}>`;
                 break;
             case "osgEmail":
             case "chipInbox":
@@ -86,7 +86,7 @@ export const buildEmailData = async (bundle, data) => {
                 break;
 
             default:
-                returnObject[dataType] = !!data[dataType] ? data[dataType] : "missing data";
+                returnObject[dataType] = data[dataType] ? data[dataType] : "missing data";
                 break;
         }
     });

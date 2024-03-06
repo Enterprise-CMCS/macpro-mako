@@ -5,7 +5,7 @@ const buildEmailsToSend = (officerList, officerId) =>
     if (officerId && officer.OFFICER_ID !== officerId) return;
     if (!officer.EMAIL) return;
     return `"${officer.LAST_NAME}, ${officer.FIRST_NAME}" <${officer.EMAIL}>`;
-  }).filter(Boolean).join(';');
+  }).filter(Boolean).join(";");
 
 export const getOsInsightData = async (id) => {
   let returnData = {};
