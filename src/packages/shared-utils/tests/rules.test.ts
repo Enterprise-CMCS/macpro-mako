@@ -5,6 +5,8 @@ import {
   testItemResult,
   testCMSCognitoUser,
   testStateCognitoUser,
+  testStateIDMUser,
+  testCMSIDMUser,
 } from "./testData";
 import { PackageCheck } from "../package-check";
 
@@ -25,6 +27,10 @@ describe("Action Rules", () => {
     const { check } = rule[0];
     it("only has one associated rule", () => {
       expect(rule).toHaveLength(1);
+    });
+    it("is UNAVAILABLE for IDM users", () => {
+      const packageChecker = PackageCheck(testItemResult._source);
+      expect(check(packageChecker, testCMSIDMUser.user)).toBe(false);
     });
     it("only available for CMS users", () => {
       const packageChecker = PackageCheck(testItemResult._source);
