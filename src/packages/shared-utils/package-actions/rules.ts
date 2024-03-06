@@ -10,6 +10,8 @@ import { isStateUser, isCmsWriteUser } from "../user-helper";
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
   check: (checker, user) =>
+    // User is not an IDM user
+    !user.username.startsWith("IDM_") &&
     checker.isInActivePendingStatus &&
     // Doesn't have any RAIs
     (!checker.hasLatestRai ||
