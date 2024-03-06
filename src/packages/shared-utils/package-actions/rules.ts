@@ -10,6 +10,8 @@ import { isStateUser, isCmsWriteUser } from "../user-helper";
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
   check: (checker, user) =>
+    // User is not an IDM user
+    !user.username.startsWith("IDM_") &&
     checker.isInActivePendingStatus &&
     // Doesn't have any RAIs
     (!checker.hasLatestRai ||
@@ -36,7 +38,8 @@ const arEnableWithdrawRaiResponse: ActionRule = {
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     !checker.hasEnabledRaiWithdraw &&
-    isCmsWriteUser(user),
+    isCmsWriteUser(user) &&
+    !checker.hasStatus(finalDispositionStatuses),
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
@@ -45,7 +48,8 @@ const arDisableWithdrawRaiResponse: ActionRule = {
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
-    isCmsWriteUser(user),
+    isCmsWriteUser(user) &&
+    !checker.hasStatus(finalDispositionStatuses),
 };
 
 const arWithdrawRaiResponse: ActionRule = {

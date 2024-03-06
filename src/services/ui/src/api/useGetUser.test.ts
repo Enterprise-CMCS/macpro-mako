@@ -48,9 +48,26 @@ const mockUserAttr = ({ isCms, error }: { isCms?: boolean; error?: boolean }) =>
     );
   });
 
+const mockCurrentAuthenticatedUser = vi.fn((options = {}) => {
+  return new Promise((resolve, reject) => {
+    // You can decide how to use the options object, if needed, for your tests.
+    // If you want to simulate an error, you could set a flag on `options` and check it here.
+    if (options.error) {
+      reject(
+        new Error(
+          "useGetUser > mockCurrentAuthenticatedUser: Expected error thrown by test."
+        )
+      );
+    } else {
+      resolve({ username: "051ee598-f107-417b-af00-1dfe8bb6484c" });
+    }
+  });
+});
+
 describe("getUser", () => {
   beforeAll(() => {
     Auth.currentAuthenticatedUser = mockCognito;
+    Auth.currentAuthenticatedUser = mockCurrentAuthenticatedUser;
   });
   it("distinguishes CMS users with `isCms` property", async () => {
     // Auth.userAttributes doesn't like mockUserAttr, and the necessary
@@ -79,6 +96,7 @@ describe("getUser", () => {
       family_name: "Harrison",
       "custom:state": "VA,OH,SC,CO,GA,MD",
       email: "george@example.com",
+      username: "051ee598-f107-417b-af00-1dfe8bb6484c",
     });
   });
   it("handles and logs errors", async () => {
