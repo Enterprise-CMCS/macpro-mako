@@ -39,6 +39,7 @@ const mockGeorge: OneMacUser = {
     family_name: "Harrison",
     "custom:state": "VA,OH,SC,CO,GA,MD",
     email: "george@example.com",
+    username: "IDM_a853eb41-f5fc-48af-911d-4f478e4da3a2 ",
   },
 };
 
