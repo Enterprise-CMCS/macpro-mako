@@ -20,7 +20,7 @@ const arIssueRai: ActionRule = {
         // The package does not have RAI Response Withdraw enabled
         !checker.hasEnabledRaiWithdraw)) &&
     isCmsWriteUser(user) &&
-    !isIDM(user.identities),
+    !isIDM(user),
 };
 
 const arRespondToRai: ActionRule = {
