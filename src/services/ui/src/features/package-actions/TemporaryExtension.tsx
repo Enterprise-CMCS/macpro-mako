@@ -24,12 +24,15 @@ import { useFormContext } from "react-hook-form";
 
 type Attachments = keyof z.infer<typeof tempExtensionSchema>["attachments"];
 export const tempExtensionSchema = z.object({
+  id: z.string(),
+  teType: z.string(),
+  originalWaiverNumber: z.string(),
+  teRequestNumber: z.string(),
   additionalInformation: z.string(),
   attachments: z.object({
     waiverExtensionRequest: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,
   }),
-  teRequestNumber: z.string(),
 });
 
 export const onValidSubmission: SC.ActionFunction = async ({
@@ -84,7 +87,7 @@ export const TemporaryExtension = () => {
         </strong>
       </SC.ActionDescription>
       <form onSubmit={handleSubmit}>
-        <TEPackageSection teType="1915(b)" id={id!} />
+        <TEPackageSection teType="1915(b)" id={id} />
         <SC.AttachmentsSection<Attachments>
           attachments={[
             {
@@ -169,27 +172,41 @@ const TEPackageSection = ({
   id,
 }: {
   teType: "1915(b)" | "1915(c)";
-  id: string;
+  id: string | undefined;
 }) => {
-  const type = id.split(".")[1]!.includes("00") ? "Initial" : "Renewal";
+  const type = id?.split(".")[1]?.includes("00") ? "Initial" : "Renewal";
+  const { setValue } = useFormContext<z.infer<typeof tempExtensionSchema>>();
+
+  if (id) {
+    setValue("originalWaiverNumber", id);
+    setValue("teType", teType);
+  }
 
   return (
     <section className="flex flex-col my-8 space-y-8">
-      <div>
-        <p>Temporary Extension Type</p>
-        <p className="text-xl">{teType}</p>
-      </div>
-      <div>
-        <p>Approved Initial or Renewal Waiver Number</p>
-        <p className="text-xl">{id}</p>
-      </div>
-      <TERequestNumberInput />
-      <div>
-        <p>Type</p>
-        <p className="text-xl">
-          {teType} Waiver {type}
-        </p>
-      </div>
+      {/* If ID exists show these */}
+      {id && (
+        <>
+          <div>
+            <p>Temporary Extension Type</p>
+            <p className="text-xl">{teType}</p>
+          </div>
+
+          <div>
+            <p>Approved Initial or Renewal Waiver Number</p>
+            <p className="text-xl">{id}</p>
+          </div>
+          <TERequestNumberInput />
+          <div>
+            <p>Type</p>
+            <p className="text-xl">
+              {teType} Waiver {type}
+            </p>
+          </div>
+        </>
+      )}
+      {/* Otherwise collect the following fields */}
+      {/* Set the fields that are required by default when they don't need to be collected */}
     </section>
   );
 };
