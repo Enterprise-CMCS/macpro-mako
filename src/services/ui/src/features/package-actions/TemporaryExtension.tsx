@@ -18,7 +18,7 @@ export const tempExtensionSchema = z.object({
   }),
 });
 
-export const tempExtensionDefaultAction: SC.ActionFunction = async ({
+export const onValidSubmission: SC.ActionFunction = async ({
   request,
   params,
 }) => {
