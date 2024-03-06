@@ -31,20 +31,6 @@ export const isCmsReadonlyUser = (user: CognitoUserAttributes) =>
 /** Confirms user is a State user */
 export const isStateUser = (user: CognitoUserAttributes | null) =>
   userHasAuthorizedRole(user, STATE_ROLES);
-
-const cognitoIdentitiesSchema = z.array(
-  z.object({
-    dateCreated: z.string(),
-    issuer: z.string().nullable(),
-    primary: z
-      .string()
-      .transform((primary) => primary.toLowerCase() === "true"),
-    providerName: z.string(),
-    providerType: z.string(),
-    userId: z.string(),
-  }),
-);
-/** Takes the nullable string from CognitoUserAttributes.identities and parses is
- * to determine if a user is an IDM user or not. */
+/** Confirms user is an IDM user */
 export const isIDM = (user: CognitoUserAttributes | null) =>
   user?.username.startsWith("IDM_");
