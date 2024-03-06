@@ -86,60 +86,11 @@ describe("isStateUser", () => {
 describe("isIDM", () => {
   const consoleErrorSpy = vi.spyOn(console, "error");
   it("returns false if a user has no Cognito identities", () => {
-    expect(isIDM(testStateCognitoUser.user.identities)).toBe(false);
-    expect(isIDM(testCMSCognitoUser.user.identities)).toBe(false);
+    expect(isIDM(testStateCognitoUser.user)).toBe(false);
+    expect(isIDM(testCMSCognitoUser.user)).toBe(false);
   });
   it("returns true if a user has the IDM Cognito identity attribute", () => {
-    expect(isIDM(testStateIDMUser.user.identities)).toBe(true);
-    expect(isIDM(testCMSIDMUser.user.identities)).toBe(true);
-  });
-  it("returns false if a user has the Cognito identity attribute but it is not 'IDM'", () => {
-    const rogueIdentityUser: OneMacUser = {
-      isCms: testCMSCognitoUser.isCms,
-      user: {
-        ...testCMSCognitoUser.user,
-        identities:
-          '[{"dateCreated":"1709308952587","userId":"abc123","providerName":"NOT-IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
-      },
-    };
-    expect(isIDM(rogueIdentityUser.user.identities)).toBe(false);
-  });
-  it("returns false if a user has a malformed identities string (Zod assertion)", () => {
-    const rogueIdentityUser: OneMacUser = {
-      isCms: testCMSCognitoUser.isCms,
-      user: {
-        ...testCMSCognitoUser.user,
-        identities:
-          '[{"userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
-      },
-    };
-    expect(isIDM(rogueIdentityUser.user.identities)).toBe(false);
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      "Encountered Zod parse issues(1): ",
-      [
-        {
-          code: "invalid_type",
-          expected: "string",
-          message: "Required",
-          path: [0, "dateCreated"],
-          received: "undefined",
-        },
-      ],
-    );
-  });
-  it("returns false if a user has a malformed identities string (JSON assertion)", () => {
-    const rogueIdentityUser: OneMacUser = {
-      isCms: testCMSCognitoUser.isCms,
-      user: {
-        ...testCMSCognitoUser.user,
-        identities:
-          '["dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
-      },
-    };
-    expect(isIDM(rogueIdentityUser.user.identities)).toBe(false);
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      "Encountered JSON parsing issue: ",
-      "Unexpected token : in JSON at position 14",
-    );
+    expect(isIDM(testStateIDMUser.user)).toBe(true);
+    expect(isIDM(testCMSIDMUser.user)).toBe(true);
   });
 });

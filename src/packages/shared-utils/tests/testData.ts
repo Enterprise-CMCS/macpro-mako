@@ -10,6 +10,7 @@ export const testStateCognitoUser: OneMacUser = {
     email_verified: true,
     given_name: "State",
     family_name: "Person",
+    username: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
     email: "stateperson@example.com",
   },
 };
@@ -17,6 +18,7 @@ export const testStateIDMUser: OneMacUser = {
   isCms: testStateCognitoUser.isCms,
   user: {
     ...testStateCognitoUser.user,
+    username: "IDM_0000aaaa-0000-00aa-0a0a-aaaaaa000000",
     identities:
       '[{"dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
   },
@@ -30,6 +32,7 @@ export const testCMSCognitoUser: OneMacUser = {
     email_verified: true,
     given_name: "CMS",
     family_name: "Person",
+    username: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
     email: "cmsperson@example.com",
   },
 };
@@ -37,6 +40,7 @@ export const testCMSIDMUser: OneMacUser = {
   isCms: testCMSCognitoUser.isCms,
   user: {
     ...testCMSCognitoUser.user,
+    username: "IDM_0000aaaa-0000-00aa-0a0a-aaaaaa000000",
     identities:
       '[{"dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
   },
