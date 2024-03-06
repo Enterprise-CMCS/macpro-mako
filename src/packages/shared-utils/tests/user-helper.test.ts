@@ -3,6 +3,7 @@ import {
   isCmsReadonlyUser,
   isCmsUser,
   isCmsWriteUser,
+  isIDM,
   isStateUser,
 } from "../user-helper";
 import {
@@ -79,5 +80,17 @@ describe("isStateUser", () => {
   // Maybe we should refactor to eliminate this
   it("returns false for null args", () => {
     expect(isStateUser(null)).toBe(false);
+  });
+});
+
+describe("isIDM", () => {
+  const consoleErrorSpy = vi.spyOn(console, "error");
+  it("returns false if a user has no Cognito identities", () => {
+    expect(isIDM(testStateCognitoUser.user)).toBe(false);
+    expect(isIDM(testCMSCognitoUser.user)).toBe(false);
+  });
+  it("returns true if a user has the IDM Cognito identity attribute", () => {
+    expect(isIDM(testStateIDMUser.user)).toBe(true);
+    expect(isIDM(testCMSIDMUser.user)).toBe(true);
   });
 });

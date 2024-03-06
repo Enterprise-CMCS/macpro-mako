@@ -5,13 +5,11 @@ import {
   SEATOOL_STATUS,
   finalDispositionStatuses,
 } from "shared-types";
-import { isStateUser, isCmsWriteUser } from "../user-helper";
+import { isStateUser, isCmsWriteUser, isIDM } from "../user-helper";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
   check: (checker, user) =>
-    // User is not an IDM user
-    !user.username.startsWith("IDM_") &&
     checker.isInActivePendingStatus &&
     // Doesn't have any RAIs
     (!checker.hasLatestRai ||
@@ -21,7 +19,8 @@ const arIssueRai: ActionRule = {
         !checker.authorityIs([Authority.MED_SPA]) &&
         // The package does not have RAI Response Withdraw enabled
         !checker.hasEnabledRaiWithdraw)) &&
-    isCmsWriteUser(user),
+    isCmsWriteUser(user) &&
+    !isIDM(user),
 };
 
 const arRespondToRai: ActionRule = {

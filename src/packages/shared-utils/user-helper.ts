@@ -12,7 +12,7 @@ import { z } from "zod";
  * and will confirm the user has one or more authorized UserRoles */
 const userHasAuthorizedRole = (
   user: CognitoUserAttributes | null,
-  authorized: UserRoles[]
+  authorized: UserRoles[],
 ) => {
   if (!user) return false;
   const userRoles = user["custom:cms-roles"].split(",") as UserRoles[];
@@ -42,5 +42,9 @@ const cognitoIdentitiesSchema = z.array(
     providerName: z.string(),
     providerType: z.string(),
     userId: z.string(),
-  })
+  }),
 );
+/** Takes the nullable string from CognitoUserAttributes.identities and parses is
+ * to determine if a user is an IDM user or not. */
+export const isIDM = (user: CognitoUserAttributes | null) =>
+  user?.username.startsWith("IDM_");
