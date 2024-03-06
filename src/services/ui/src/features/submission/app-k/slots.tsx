@@ -56,12 +56,10 @@ export const SlotWaiverId = <
 >({
   state,
   onRemove,
-  onIncludes,
   ...props
 }: {
   state: string;
   onRemove?: () => void;
-  onIncludes: (val: string) => boolean;
   className?: string;
 }): ControllerProps<TFieldValues, TName>["render"] =>
   function Render({ field, fieldState }) {
@@ -92,7 +90,7 @@ export const SlotWaiverId = <
         const parentWaiver = context.getValues("parentWaiver");
         console.log({ childWaivers, value, index });
         const existsInList = childWaivers
-          .filter((_, I) => I != index)
+          .filter((_: any, I: number) => I != Number(index))
           .concat(parentWaiver)
           .includes(value);
 
@@ -102,16 +100,6 @@ export const SlotWaiverId = <
           });
         }
       }
-      // if(field.name === )
-      // (() => {
-
-      //   const existsInList = onIncludes(String(value));
-      //   if (existsInList) {
-      //     return context.setError(field.name, {
-      //       message: "Waiver id already exists",
-      //     });
-      //   }
-      // })();
 
       const parsed = await zAppkWaiverNumberSchema.safeParseAsync(value);
 
@@ -202,8 +190,6 @@ export const WaiverIdFieldArray = (props: any) => {
 
         <div className="flex flex-col py-4 gap-4">
           {fieldArr.fields.map((FLD, index) => {
-            const inputIds = props.control._getFieldArray(props.name);
-
             return (
               <div key={FLD.id} style={{ width: "max-content" }}>
                 <I.FormField
@@ -213,11 +199,6 @@ export const WaiverIdFieldArray = (props: any) => {
                   // @ts-ignore
                   render={SlotWaiverId({
                     onRemove: () => fieldArr.remove(index),
-                    onIncludes: (val: string) => {
-                      return inputIds
-                        .filter((_: any, I: number) => I !== index)
-                        .includes(val);
-                    },
                     state: props.state,
                   })}
                 />

@@ -8,13 +8,15 @@ import { Undo2 } from "lucide-react";
 
 import { useGetUser } from "@/api/useGetUser";
 import { SubmissionServiceParameters, submit } from "@/api/submissionService";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const AppK = (props: opensearch.main.Document) => {
   const [removeChild, setRemoveChild] = useState("");
   const { data: user } = useGetUser();
   const [autoDelay, setAutoDelay] = useState(false); // delay for opensearch record to be ready
-
+  const detailsCache = useQuery(["record", props.id], {
+    refetchOnWindowFocus: false,
+  });
   const submission = useMutation({
     mutationFn: (config: SubmissionServiceParameters<any>) => submit(config),
   });
@@ -60,6 +62,7 @@ export const AppK = (props: opensearch.main.Document) => {
           setRemoveChild("");
           setAutoDelay(true);
           setTimeout(() => {
+            detailsCache.refetch();
             initializeChildren();
             setAutoDelay(false);
           }, 5000);

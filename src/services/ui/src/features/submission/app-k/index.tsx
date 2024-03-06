@@ -93,14 +93,7 @@ export const AppKSubmissionForm = () => {
                 <I.FormField
                   control={form.control}
                   name="parentWaiver"
-                  render={SlotWaiverId({
-                    state,
-                    onIncludes: (val) => {
-                      return form.control
-                        ._getFieldArray("childWaivers")
-                        .includes(val);
-                    },
-                  })}
+                  render={SlotWaiverId({ state })}
                 />
               </div>
             )}
