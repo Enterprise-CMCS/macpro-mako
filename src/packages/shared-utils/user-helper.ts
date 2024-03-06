@@ -12,7 +12,7 @@ import { z } from "zod";
  * and will confirm the user has one or more authorized UserRoles */
 const userHasAuthorizedRole = (
   user: CognitoUserAttributes | null,
-  authorized: UserRoles[],
+  authorized: UserRoles[]
 ) => {
   if (!user) return false;
   const userRoles = user["custom:cms-roles"].split(",") as UserRoles[];
@@ -42,28 +42,5 @@ const cognitoIdentitiesSchema = z.array(
     providerName: z.string(),
     providerType: z.string(),
     userId: z.string(),
-  }),
+  })
 );
-/** Takes the nullable string from CognitoUserAttributes.identities and parses is
- * to determine if a user is an IDM user or not. */
-export const isIDM = (identities: CognitoUserAttributes["identities"]) => {
-  if (!identities) return false;
-  try {
-    const parsedIdentities = cognitoIdentitiesSchema.parse(
-      JSON.parse(identities),
-    );
-    return parsedIdentities.some((identity) => identity.providerName === "IDM");
-  } catch (err: unknown) {
-    let message;
-    let issues;
-    if (err instanceof z.ZodError) {
-      issues = err.issues;
-      message = `Encountered Zod parse issues(${issues.length}): `;
-    } else if (err instanceof SyntaxError) {
-      issues = err.message;
-      message = `Encountered JSON parsing issue: `;
-    }
-    console.error(message, issues);
-    return false;
-  }
-};

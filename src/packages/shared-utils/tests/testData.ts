@@ -11,14 +11,14 @@ export const testStateCognitoUser: OneMacUser = {
     given_name: "State",
     family_name: "Person",
     email: "stateperson@example.com",
+    username: "0eec337f-bc7e-4b12-b4ce-c3c063c4bcbe",
   },
 };
 export const testStateIDMUser: OneMacUser = {
   isCms: testStateCognitoUser.isCms,
   user: {
     ...testStateCognitoUser.user,
-    identities:
-      '[{"dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
+    username: "IDM_85ad7765-b661-426a-9202-fa22c3908f1c",
   },
 };
 export const testCMSCognitoUser: OneMacUser = {
@@ -31,14 +31,14 @@ export const testCMSCognitoUser: OneMacUser = {
     given_name: "CMS",
     family_name: "Person",
     email: "cmsperson@example.com",
+    username: "429be080-a1a8-4cfd-b311-0342e3042646",
   },
 };
 export const testCMSIDMUser: OneMacUser = {
   isCms: testCMSCognitoUser.isCms,
   user: {
     ...testCMSCognitoUser.user,
-    identities:
-      '[{"dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
+    username: "IDM_04056568-a9c0-4157-b8a5-6371081d3d83",
   },
 };
 export const testItemResult: opensearch.main.ItemResult = {
