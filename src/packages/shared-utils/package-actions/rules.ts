@@ -4,30 +4,23 @@ import {
   Authority,
   SEATOOL_STATUS,
   finalDispositionStatuses,
-} from "../../shared-types";
-import { isIDM } from "../is-idm";
-import { isStateUser, isCmsWriteUser } from "../user-helper";
+} from "shared-types";
+import { isStateUser, isCmsWriteUser, isIDM } from "../user-helper";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
-  check: (checker, user) => {
-    if (isIDM(user.identities)) {
-      return false;
-    }
-
-    return (
-      checker.isInActivePendingStatus &&
-      // Doesn't have any RAIs
-      (!checker.hasLatestRai ||
-        // The latest RAI is complete
-        (checker.hasCompletedRai &&
-          // The package is not a medicaid spa (med spas only get 1 rai)
-          !checker.authorityIs([Authority.MED_SPA]) &&
-          // The package does not have RAI Response Withdraw enabled
-          !checker.hasEnabledRaiWithdraw)) &&
-      isCmsWriteUser(user)
-    );
-  },
+  check: (checker, user) =>
+    checker.isInActivePendingStatus &&
+    // Doesn't have any RAIs
+    (!checker.hasLatestRai ||
+      // The latest RAI is complete
+      (checker.hasCompletedRai &&
+        // The package is not a medicaid spa (med spas only get 1 rai)
+        !checker.authorityIs([Authority.MED_SPA]) &&
+        // The package does not have RAI Response Withdraw enabled
+        !checker.hasEnabledRaiWithdraw)) &&
+    isCmsWriteUser(user) &&
+    !isIDM(user),
 };
 
 const arRespondToRai: ActionRule = {
@@ -68,9 +61,8 @@ const arWithdrawRaiResponse: ActionRule = {
 };
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
-  check: (checker, user) => {
-    return !checker.hasStatus(finalDispositionStatuses) && isStateUser(user);
-  },
+  check: (checker, user) =>
+    !checker.hasStatus(finalDispositionStatuses) && isStateUser(user),
 };
 
 // TODO: Add rule for remove-appk-child

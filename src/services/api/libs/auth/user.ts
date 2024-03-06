@@ -11,7 +11,6 @@ import { isCmsWriteUser, isCmsUser } from "shared-utils";
 export function getAuthDetails(event: APIGatewayEvent) {
   const authProvider =
     event.requestContext.identity.cognitoAuthenticationProvider;
-
   if (!authProvider) {
     throw new Error("No auth provider!");
   }
@@ -34,6 +33,7 @@ function userAttrDict(cognitoUser: CognitoUserType): CognitoUserAttributes {
       }
     });
   }
+  attributes["username"] = cognitoUser.Username;
 
   return attributes as CognitoUserAttributes;
 }
