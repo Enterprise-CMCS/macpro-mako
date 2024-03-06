@@ -15,7 +15,7 @@ export type CognitoUserAttributes = {
   given_name: string;
   family_name: string;
   email: string;
-  identities?: string;
+  username: string;
 };
 
 export const CMS_ROLES = [

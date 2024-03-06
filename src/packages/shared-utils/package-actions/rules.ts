@@ -5,11 +5,13 @@ import {
   SEATOOL_STATUS,
   finalDispositionStatuses,
 } from "shared-types";
-import { isStateUser, isCmsWriteUser, isIDM } from "../user-helper";
+import { isStateUser, isCmsWriteUser } from "../user-helper";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
   check: (checker, user) =>
+    // User is not an IDM user
+    !user.username.startsWith("IDM_") &&
     checker.isInActivePendingStatus &&
     // Doesn't have any RAIs
     (!checker.hasLatestRai ||
@@ -19,8 +21,7 @@ const arIssueRai: ActionRule = {
         !checker.authorityIs([Authority.MED_SPA]) &&
         // The package does not have RAI Response Withdraw enabled
         !checker.hasEnabledRaiWithdraw)) &&
-    isCmsWriteUser(user) &&
-    !isIDM(user.identities),
+    isCmsWriteUser(user),
 };
 
 const arRespondToRai: ActionRule = {
@@ -61,9 +62,8 @@ const arWithdrawRaiResponse: ActionRule = {
 };
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
-  check: (checker, user) => {
-    return !checker.hasStatus(finalDispositionStatuses) && isStateUser(user);
-  },
+  check: (checker, user) =>
+    !checker.hasStatus(finalDispositionStatuses) && isStateUser(user),
 };
 
 // TODO: Add rule for remove-appk-child
