@@ -1,4 +1,4 @@
-import { ConfirmationModal, LoadingSpinner } from "@/components";
+import { ConfirmationModal, Link, LoadingSpinner } from "@/components";
 import { Authority, opensearch } from "shared-types";
 import { useOsSearch } from "@/api";
 import { useEffect, useState } from "react";
@@ -86,7 +86,15 @@ export const AppK = (props: opensearch.main.Document) => {
           {data?.map((CHILD) => {
             return (
               <T.TableRow key={`${CHILD._id}`}>
-                <T.TableCell className="font-medium">{CHILD._id}</T.TableCell>
+                <T.TableCell className="font-medium">
+                  <Link
+                    path="/details"
+                    query={{ id: CHILD._id }}
+                    className="hover:underline font-semibold text-blue-600"
+                  >
+                    {CHILD._id}
+                  </Link>
+                </T.TableCell>
                 <T.TableCell>
                   <Button
                     size="sm"

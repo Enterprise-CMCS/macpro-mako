@@ -29,48 +29,48 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 
-  const waiverIds = body.waiverIds as string[];
-  const parentWaiver = waiverIds[0];
-
+  const waiverIds = [body.parentWaiver, ...body.childWaivers] as string[];
   const schemas = [];
 
   for (const WINDEX in waiverIds) {
     const ID = waiverIds[WINDEX].trim();
-    const validID = /^\d{4,5}\.R\d{2}\.\d{2}$/.test(ID);
+    const validateRegex = /^\d{4,5}\.R\d{2}\.\d{2}$/.test(ID);
     // Reject invalid ID
-    if (!validID) {
+    if (!validateRegex) {
       throw console.error(
         "MAKO Validation Error. The following APP-K Id format is incorrect: ",
         ID
       );
     }
 
-    const validParse = onemacSchema.safeParse({
+    const validateZod = onemacSchema.safeParse({
       ...body,
-      ...(!!WINDEX && { appkParentId: `${body.state}-${parentWaiver}` }),
+      ...(!!Number(WINDEX) && {
+        appkParentId: `${body.state}-${body.parentWaiver}`,
+      }),
     });
 
-    if (!validParse.success) {
+    if (!validateZod.success) {
       throw console.error(
         "MAKO Validation Error. The following record failed to parse: ",
-        JSON.stringify(validParse),
+        JSON.stringify(validateZod),
         "Because of the following Reason(s): ",
-        validParse.error.message
+        validateZod.error.message
       );
     }
 
-    const packageResult = await search(process.env.osDomain!, "main", {
+    const validateOpensearch = await search(process.env.osDomain!, "main", {
       query: { match_phrase: { id: { query: `${body.state}-${ID}` } } },
     });
-    const exists = packageResult?.hits.total.value !== 0;
-    if (exists) {
+    const existsInOpensearch = validateOpensearch?.hits.total.value !== 0;
+    if (existsInOpensearch) {
       throw console.error(
         "MAKO Validation Error. The following APP-K Id already exists ",
         `${body.state}-${ID}`
       );
     }
 
-    schemas.push({ data: validParse.data, id: ID });
+    schemas.push({ data: validateZod.data, id: `${body.state}-${ID}` });
   }
 
   const pool = await sql.connect({
@@ -130,27 +130,13 @@ export const submit = async (event: APIGatewayEvent) => {
 
     // for await const kafka events
     for (const WINDEX in schemas) {
-      const SCHEMA = schemas[WINDEX];
+      const SCHEMA = schemas[Number(WINDEX)];
       await produceMessage(
         process.env.topicName as string,
-        `${body.state}-${SCHEMA.id}`,
+        SCHEMA.id,
         JSON.stringify(SCHEMA.data)
       );
     }
-
-    // const kafkaWaivers = schemas.map(async (SCHEMA) => {
-    //   return await produceMessage(
-    //     process.env.topicName as string,
-    //     `${body.state}-${SCHEMA.id}`,
-    //     JSON.stringify(SCHEMA.data)
-    //   );
-    // });
-
-    // const kafkaResponses = await Promise.allSettled(kafkaWaivers);
-    // for (const RESPONSE of kafkaResponses) {
-    //   if (RESPONSE.status === "fulfilled") continue;
-    //   throw new Error(RESPONSE.reason);
-    // }
 
     return response({ statusCode: 200, body: { message: "success" } });
   } catch (error) {

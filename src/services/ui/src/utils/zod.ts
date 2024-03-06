@@ -127,4 +127,5 @@ export const zAppkWaiverNumberSchema = z
   .regex(
     /^\d{4,5}\.R\d{2}\.\d{2}$/,
     "The 1915(c) Waiver Amendment Number must be in the format of ####.R##.## or #####.R##.##. For amendments, the last two digits start with '01' and ascends."
-  );
+  )
+  .default("");

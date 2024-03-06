@@ -13,7 +13,7 @@ import * as C from "@/components";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FORM, SchemaForm } from "./consts";
-import { SlotStateSelect, WaiverIdFieldArray } from "./slots";
+import { SlotStateSelect, SlotWaiverId, WaiverIdFieldArray } from "./slots";
 import { SubmissionServiceParameters, submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
@@ -21,12 +21,13 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
 import { useState } from "react";
 import * as Content from "@/components";
+import { zAppkWaiverNumberSchema } from "@/utils";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
   const crumbs = useLocationCrumbs();
   const { data: user } = useGetUser();
-  const [isNavigating, setIsNavigating] = useState(false); // delay for opensearch record to be ready
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const form = useForm<SchemaForm>({
     resolver: zodResolver(FORM),
@@ -50,7 +51,7 @@ export const AppKSubmissionForm = () => {
           setTimeout(() => {
             nav({
               path: "/details",
-              query: { id: `${draft.state}-${draft.waiverIds[0]}` },
+              query: { id: `${draft.state}-${draft.parentWaiver}` },
             });
           }, 5000); // delay for opensearch record to be ready
         },
@@ -58,6 +59,13 @@ export const AppKSubmissionForm = () => {
       }
     );
   });
+
+  const state = form.watch("state");
+  const parentWaiver = {
+    value: zAppkWaiverNumberSchema.safeParse(form.watch("parentWaiver"))
+      .success,
+    state: form.getFieldState("parentWaiver"),
+  };
 
   return (
     <SimplePageContainer>
@@ -78,13 +86,29 @@ export const AppKSubmissionForm = () => {
               name="state"
               render={SlotStateSelect({ label: "State" })}
             />
-            <div className="px-4 border-l-2">
-              <WaiverIdFieldArray
-                {...form}
-                state={form.watch("state")}
-                name="waiverIds"
-              />
-            </div>
+
+            {state && (
+              <div className="flex flex-col gap-2">
+                <I.FormLabel className="font-bold">Appendix K ID</I.FormLabel>
+                <I.FormField
+                  control={form.control}
+                  name="parentWaiver"
+                  render={SlotWaiverId({
+                    state,
+                    onIncludes: (val) => {
+                      return form.control
+                        ._getFieldArray("childWaivers")
+                        .includes(val);
+                    },
+                  })}
+                />
+              </div>
+            )}
+
+            {!parentWaiver.state.error && parentWaiver.value && (
+              <WaiverIdFieldArray state={state} {...form} name="childWaivers" />
+            )}
+
             <I.FormField
               control={form.control}
               name="proposedEffectiveDate"
