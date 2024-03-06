@@ -1,4 +1,16 @@
-import { Alert } from "@/components";
+import {
+  Alert,
+  FAQ_TAB,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  Link,
+  RequiredIndicator,
+} from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { useParams } from "react-router-dom";
 import { z } from "zod";
@@ -8,14 +20,16 @@ import { Authority } from "shared-types";
 import { unflatten } from "flat";
 import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
 import { submit } from "@/api/submissionService";
+import { useFormContext } from "react-hook-form";
 
 type Attachments = keyof z.infer<typeof tempExtensionSchema>["attachments"];
 export const tempExtensionSchema = z.object({
   additionalInformation: z.string(),
   attachments: z.object({
-    formalRaiLetter: zAttachmentRequired({ min: 1 }),
+    waiverExtensionRequest: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,
   }),
+  teRequestNumber: z.string(),
 });
 
 export const onValidSubmission: SC.ActionFunction = async ({
@@ -58,32 +72,34 @@ export const TemporaryExtension = () => {
 
   return (
     <>
-      <SC.Heading title="1915(b) Waiver Formal RAI Details" />
+      <SC.Heading title="Temporary Extension Request Details" />
       <SC.RequiredFieldDescription />
       <SC.ActionDescription>
-        Issuance of a Formal RAI in OneMAC will create a Formal RAI email sent
-        to the State. This will also create a section in the package details
-        summary for you and the State to have record. Please attach the Formal
-        RAI Letter along with any additional information or comments in the
-        provided text box. Once you submit this form, a confirmation email is
-        sent to you and to the State.{" "}
-        <strong>
+        Once you submit this form, a confirmation email is sent to you and to
+        CMS. CMS will use this content to review your package, and you will not
+        be able to edit this form. If CMS needs any additional information, they
+        will follow up by email.{" "}
+        <strong className="font-bold">
           If you leave this page, you will lose your progress on this form.
         </strong>
       </SC.ActionDescription>
-      <SC.PackageSection />
       <form onSubmit={handleSubmit}>
+        <TEPackageSection teType="1915(b)" id={id!} />
         <SC.AttachmentsSection<Attachments>
           attachments={[
             {
-              name: "Formal RAI Letter",
+              registerName: "waiverExtensionRequest",
+              name: "Waiver Extension Request",
               required: true,
-              registerName: "formalRaiLetter",
             },
-            { name: "Other", required: false, registerName: "other" },
+            {
+              registerName: "other",
+              name: "Other",
+              required: true,
+            },
           ]}
         />
-        <SC.AdditionalInformation />
+        <SC.AdditionalInformation helperText="Add anything else that you would like to share with CMS" />
         <AdditionalFormInformation />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
@@ -103,8 +119,77 @@ const AdditionalFormInformation = () => {
       <Info />
       <p>
         Once you submit this form, a confirmation email is sent to you and to
-        the State.
+        CMS. CMS will use this content to review your package, and you will not
+        be able to edit this form. If CMS needs any additional information, they
+        will follow up by email. If you leave this page, you will lose your
+        progress on this form.
       </p>
     </Alert>
+  );
+};
+
+const TERequestNumberInput = () => {
+  const form = useFormContext();
+
+  return (
+    <FormField
+      control={form.control}
+      name="teRequestNumber"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>
+            <strong className="font-bold">
+              Temporary Extension Request Number
+              <RequiredIndicator />
+            </strong>
+            <Link
+              className="text-blue-600 cursor-pointer hover:underline px-4"
+              path="/faq"
+              target={FAQ_TAB}
+            >
+              What is my Temporary Extension Request Number
+            </Link>
+          </FormLabel>
+          <FormDescription className="max-w-md">
+            Must be a waiver extension request number with the format
+            SS-####.R##.TE## or SS-#####.R##.TE##
+          </FormDescription>
+          <FormControl>
+            <Input {...field} className="max-w-md" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
+
+const TEPackageSection = ({
+  teType,
+  id,
+}: {
+  teType: "1915(b)" | "1915(c)";
+  id: string;
+}) => {
+  const type = id.split(".")[1]!.includes("00") ? "Initial" : "Renewal";
+
+  return (
+    <section className="flex flex-col my-8 space-y-8">
+      <div>
+        <p>Temporary Extension Type</p>
+        <p className="text-xl">{teType}</p>
+      </div>
+      <div>
+        <p>Approved Initial or Renewal Waiver Number</p>
+        <p className="text-xl">{id}</p>
+      </div>
+      <TERequestNumberInput />
+      <div>
+        <p>Type</p>
+        <p className="text-xl">
+          {teType} Waiver {type}
+        </p>
+      </div>
+    </section>
   );
 };
