@@ -1,7 +1,61 @@
 import { it, describe, expect } from "vitest";
-import { getNextBusinessDayTimestamp } from "../seatool-date-helper";
+import {
+  formatSeatoolDate,
+  getNextBusinessDayTimestamp,
+  offsetFromUtc,
+  offsetToUtc,
+  seaToolFriendlyTimestamp,
+} from "../seatool-date-helper";
 
-describe("The getNextBusinessDayTimestamp function", () => {
+describe("offsetToUtc", () => {
+  it("offsets given date to UTC", () => {
+    const originalDate = new Date("January 1, 2000 12:00:00");
+    const timezoneOffset = originalDate.getTimezoneOffset() * 60000; // in milliseconds
+    const expectedDate = new Date(originalDate.getTime() - timezoneOffset);
+    console.debug(
+      "originalDate: ",
+      originalDate,
+      "expectedDate: ",
+      expectedDate,
+    );
+    expect(offsetToUtc(originalDate)).toEqual(expectedDate);
+  });
+});
+
+describe("offsetFromUtc", () => {
+  it("offsets UTC date to user's timezone", () => {
+    const originalDate = new Date("2000-01-01T12:00:00.000Z");
+    const timezoneOffset = originalDate.getTimezoneOffset() * 60000; // in milliseconds
+    const expectedDate = new Date(originalDate.getTime() + timezoneOffset);
+    console.debug(
+      "originalDate: ",
+      originalDate,
+      "expectedDate: ",
+      expectedDate,
+    );
+    expect(offsetFromUtc(originalDate)).toEqual(expectedDate);
+  });
+});
+
+describe("seaToolFriendlyTimestamp", () => {
+  it("converts given date to a time string representing the given date", () => {
+    const originalDate = new Date("January 1, 2000 12:00:00");
+    const timezoneOffset = originalDate.getTimezoneOffset() * 60000; // in milliseconds
+    const expectedDate = new Date(originalDate.getTime() - timezoneOffset);
+    expect(seaToolFriendlyTimestamp(originalDate)).toEqual(
+      expectedDate.getTime(),
+    );
+  });
+});
+
+describe("formatSeatoolDate", () => {
+  it("formats a SEATool date to a user-friendly format", () => {
+    const originalDate = new Date("2000-01-01T00:00:00.000Z");
+    expect(formatSeatoolDate(originalDate.toISOString())).toEqual("01/01/2000");
+  });
+});
+
+describe("getNextBusinessDayTimestamp", () => {
   it("identifies weekenends", () => {
     let testDate = new Date(2024, 0, 27, 12, 0, 0); // Saturday, noon, utc
     let nextDate = getNextBusinessDayTimestamp(testDate);
@@ -38,5 +92,4 @@ describe("The getNextBusinessDayTimestamp function", () => {
     let nextDate = getNextBusinessDayTimestamp(testDate);
     expect(nextDate).toEqual(Date.UTC(2024, 0, 9)); // Tuesday, midnight utc
   });
-  
 });
