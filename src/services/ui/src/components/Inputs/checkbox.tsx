@@ -12,9 +12,15 @@ const Checkbox = React.forwardRef<
       label: string;
       value?: string;
       description?: string;
+      sectionHeader?: boolean;
     }
 >(({ className, ...props }, ref) => {
   const { changeMethod, parentValue, ...rest } = props;
+
+  // If the checkboxes use the header style, we apply it here
+  const labelStyle = props.sectionHeader
+    ? "text-2xl font-semibold p-4 bg-slate-300"
+    : "text-md font-medium leading-normal";
 
   return (
     <DependencyWrapper
@@ -43,7 +49,7 @@ const Checkbox = React.forwardRef<
           {!!props.label && (
             <label
               htmlFor={props.label}
-              className="text-md font-medium leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              className={cn("peer-disabled:cursor-not-allowed peer-disabled:opacity-70", labelStyle)}
             >
               {props.label}
             </label>
