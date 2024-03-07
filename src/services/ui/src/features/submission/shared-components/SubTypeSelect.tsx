@@ -38,8 +38,11 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
         return (
           <Inputs.FormItem className="max-w-xs">
             <Inputs.FormLabel className="font-semibold block">
-              Sub Types <Inputs.RequiredIndicator />
+              Sub Type <Inputs.RequiredIndicator />
             </Inputs.FormLabel>
+            <p className="text-gray-500 max-w-3xl">
+              You may select more than one
+            </p>
             <Select
               isMulti
               value={
@@ -55,6 +58,7 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
               options={options}
               closeMenuOnSelect={false}
               className="border border-black shadow-sm rounded-sm"
+              placeholder="Select a type to see options"
             />
           </Inputs.FormItem>
         );

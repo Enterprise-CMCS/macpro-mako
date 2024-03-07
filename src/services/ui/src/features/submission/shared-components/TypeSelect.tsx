@@ -34,8 +34,11 @@ export function TypeSelect<TFieldValues extends FieldValues>({
         return (
           <Inputs.FormItem className="max-w-xs">
             <Inputs.FormLabel className="font-semibold block">
-              Types <Inputs.RequiredIndicator />
+              Type <Inputs.RequiredIndicator />
             </Inputs.FormLabel>
+            <p className="text-gray-500 max-w-3xl">
+              You may select more than one
+            </p>
             <Select
               isMulti
               value={
@@ -51,6 +54,7 @@ export function TypeSelect<TFieldValues extends FieldValues>({
               options={options}
               closeMenuOnSelect={false}
               className="border border-black shadow-sm rounded-sm"
+              placeholder="- Select -"
             />
           </Inputs.FormItem>
         );

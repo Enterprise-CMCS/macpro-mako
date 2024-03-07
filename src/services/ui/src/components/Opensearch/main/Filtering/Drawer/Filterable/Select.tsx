@@ -21,6 +21,7 @@ export const FilterableSelect: FC<{
       onChange={(val) => props.onChange(val.map((s: any) => s.value))}
       options={props.options}
       closeMenuOnSelect={false}
+      placeholder
     />
   );
 };
