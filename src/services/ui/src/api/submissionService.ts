@@ -107,6 +107,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
     case buildActionUrl(Action.DISABLE_RAI_WITHDRAW):
     case buildActionUrl(Action.WITHDRAW_RAI):
     case buildActionUrl(Action.WITHDRAW_PACKAGE):
+    case buildActionUrl(Action.TEMP_EXTENSION):
     default:
       return {
         ...baseProperties,
