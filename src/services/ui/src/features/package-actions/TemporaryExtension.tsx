@@ -24,11 +24,10 @@ import { useFormContext } from "react-hook-form";
 
 type Attachments = keyof z.infer<typeof tempExtensionSchema>["attachments"];
 export const tempExtensionSchema = z.object({
-  id: z.string(),
   teType: z.string(),
   originalWaiverNumber: z.string(),
   teRequestNumber: z.string(),
-  additionalInformation: z.string(),
+  additionalInformation: z.string().optional(),
   attachments: z.object({
     waiverExtensionRequest: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,
