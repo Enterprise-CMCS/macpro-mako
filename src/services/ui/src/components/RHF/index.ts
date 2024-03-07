@@ -3,6 +3,7 @@ export * from "./FormGroup";
 export * from "./Section";
 export * from "./Slot";
 export * from "./utils";
+export * from "./TableGroup";
 export * from "./FieldArray";
 export * from "./FieldGroup";
 export * from "./dependencyWrapper";
