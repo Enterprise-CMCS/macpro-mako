@@ -326,14 +326,14 @@ export const v202401: FormSchema = {
       ],
     },
     {
-      title: "Benefits included in Alternative Benefit Plan",
+      title: "Benefits included",
       form: [
         {
           slots: [
             {
               rhf: "Input",
               label:
-                "Enter the specific name of the base benchmark plan selected.",
+                "Name of selected base benchmark plan",
               labelStyling: "font-bold",
               name: "base_benchmark_plan_name",
               rules: { required: "* Required" },
@@ -341,7 +341,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Input",
               label:
-                "Enter the specific name of the Section 1937 coverage option selected, if other than Secretary-approved. Otherwise, enter “Secretary-approved.”",
+                "Name of selected Section 1937 coverage option if other than Secretary-approved. Otherwise, enter “Secretary-approved.”",
               labelStyling: "font-bold",
               name: "section_1937_coverage_option_name",
               rules: { required: "* Required" },
@@ -485,7 +485,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Input",
-              label: "Coverage that exceeds the minimum requirements or other",
+              label: "Coverage that exceeds the minimum requirements or other information",
               labelStyling: "font-bold",
               name: "prescription_drug_other_information",
             },
@@ -623,7 +623,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Textarea",
                                 label:
-                                  "Explain why the state or territory chose not to include this benefit.",
+                                  "Why did the state or territory choose to exclude this benefit?",
                                 labelStyling: "font-bold",
                                 rules: { required: "* Required" },
                                 name: "explanation",
@@ -636,7 +636,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     label:
-                      "13. Additional covered benefits (this category of benefits is not applicable to the Adult group under Section 1902(a)(10)(A)(i)(VIII) of the Act)",
+                      "13. Additional covered benefits (not applicable to “adult” group under Section 1902(a)(10)(A)(i)(VIII) of the Act)",
                     value: "additional_covered_benefits",
                     form: [
                       {
