@@ -210,6 +210,7 @@ export const MedicaidSpaFormPage = () => {
               typeIds={form.watch("typeIds")}
               name="subTypeIds"
               authorityId={125} // medicaid authority
+              disabled={!form.watch("typeIds")?.length}
             />
           </SectionCard>
           <SectionCard title="Attachments">

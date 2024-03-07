@@ -208,6 +208,7 @@ export const ChipSpaFormPage = () => {
               typeIds={form.watch("typeIds")}
               name="subTypeIds"
               authorityId={124} // chip authority
+              disabled={!form.watch("typeIds")?.length}
             />
           </SectionCard>
           <SectionCard title="Attachments">

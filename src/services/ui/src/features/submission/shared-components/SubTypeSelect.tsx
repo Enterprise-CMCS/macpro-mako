@@ -2,12 +2,14 @@ import { useGetSubTypes } from "@/api";
 import * as Inputs from "@/components/Inputs";
 import { Control, FieldValues, Path } from "react-hook-form";
 import Select from "react-select";
+import { uniqBy } from "lodash";
 
 type SubTypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
   name: Path<TFieldValues>;
   authorityId: number;
   typeIds?: number[];
+  disabled?: boolean;
 };
 
 type SelectOption = {
@@ -20,12 +22,13 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
   name,
   authorityId,
   typeIds = [],
+  disabled = false,
 }: SubTypeSelectFormFieldProps<TFieldValues>) {
   const { data } = useGetSubTypes(authorityId, typeIds, {
     enabled: typeIds.length > 0,
   });
 
-  const options = data?.map((item) => ({
+  const options = uniqBy(data, "name").map((item) => ({
     value: item.id,
     label: item.name,
   }));
@@ -45,6 +48,7 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
             </p>
             <Select
               isMulti
+              isDisabled={disabled}
               value={
                 field.value
                   ? field.value.map((id: number) =>

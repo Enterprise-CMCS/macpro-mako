@@ -250,6 +250,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
               typeIds={form.watch("typeIds")}
               name="subTypeId"
               authorityId={122} // waivers authority
+              disabled={!form.watch("typeIds")?.length}
             />
           </SectionCard>
           <SectionCard title="Attachments">
