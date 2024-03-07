@@ -38,6 +38,15 @@ const arRespondToRai: ActionRule = {
     isStateUser(user),
 };
 
+const arTempExtension: ActionRule = {
+  action: Action.TEMP_EXTENSION,
+  check: (checker, user) =>
+    checker.hasStatus(SEATOOL_STATUS.APPROVED) &&
+    checker.isWaiver &&
+    checker.isInitialOrRenewal &&
+    isStateUser(user),
+};
+
 const arEnableWithdrawRaiResponse: ActionRule = {
   action: Action.ENABLE_RAI_WITHDRAW,
   check: (checker, user) =>
@@ -82,4 +91,5 @@ export default [
   arDisableWithdrawRaiResponse,
   arWithdrawRaiResponse,
   arWithdrawPackage,
+  arTempExtension,
 ];

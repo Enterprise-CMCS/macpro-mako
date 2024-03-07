@@ -48,9 +48,11 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
     const user = await getUser();
     const authority = Authority["1915b"];
+
+    console.log("data", data);
     await submit({
       data: { ...data, id: params.id },
-      endpoint: "/action/issue-rai",
+      endpoint: "/action/temporary-extension",
       user,
       authority,
     });

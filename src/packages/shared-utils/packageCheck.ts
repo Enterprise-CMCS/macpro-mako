@@ -28,6 +28,7 @@ export const PackageCheck = ({
   raiWithdrawnDate,
   raiWithdrawEnabled,
   authority,
+  actionType,
 }: opensearch.main.Document) => {
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
@@ -69,10 +70,16 @@ export const PackageCheck = ({
     /** RAI Withdraw has been enabled **/
     hasEnabledRaiWithdraw: raiWithdrawEnabled,
   };
+
+  const actionTypeChecks = {
+    isInitialOrRenewal: actionType === "New" || actionType === "Renew",
+  };
+
   return {
     ...planChecks,
     ...statusChecks,
     ...raiChecks,
+    ...actionTypeChecks,
   };
 };
 
