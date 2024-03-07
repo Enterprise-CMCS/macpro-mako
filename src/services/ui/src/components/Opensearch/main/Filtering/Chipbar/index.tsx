@@ -1,10 +1,8 @@
 import { type FC, useCallback } from "react";
 
-import { Chip } from "@/components/Chip";
-import { useOsUrl } from "@/components/Opensearch/main";
+import { Chip, useOsUrl, checkMultiFilter } from "@/components";
 import { opensearch } from "shared-types";
 import { useFilterDrawerContext } from "../FilterProvider";
-import { checkMultiFilter } from "@/components/Opensearch";
 import { useLabelMapping } from "@/hooks";
 
 export interface RenderProp {

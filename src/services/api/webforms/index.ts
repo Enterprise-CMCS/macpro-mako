@@ -1,5 +1,6 @@
 import * as ABP1 from "./ABP1";
 import * as ABP10 from "./ABP10";
+import * as ABP11 from "./ABP11";
 import * as ABP3 from "./ABP3";
 import * as ABP3_1 from "./ABP3_1";
 import * as ABPT from "./ABPT";
@@ -21,5 +22,8 @@ export const webformVersions: Record<string, Record<string, FormSchema>> = {
   },
   ABPT: {
     v202401: ABPT.v202401,
+  },
+  ABP11: {
+    v202401: ABP11.v202401,
   },
 };

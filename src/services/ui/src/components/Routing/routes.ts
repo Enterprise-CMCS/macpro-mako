@@ -3,6 +3,7 @@ export const HOME = "/";
 export const DASHBOARD = "/dashboard";
 export const DETAILS = "/details";
 export const FAQ = "/faq";
+export const FAQ_ID = "/faq/:id";
 export const PROFILE = "/profile";
 // New Submission Routes
 // Can stand to be reduced with dynamic segments (KH)
@@ -36,5 +37,7 @@ export const MEDICAID_NEW = "/new-submission/spa/medicaid/create";
 export const CHIP_NEW = "/new-submission/spa/chip/create";
 export const WEBFORMS = "/webforms";
 export const WEBFORM = "/webform/:id/:version";
+export const WAIVER_ACTIONS = "/action/:authority/:id/:type";
 export const GUIDES = "/guides";
 export const ABPGUIDE = "/guides/abp";
+export const APPK_SUBMISSION = "/new-submission/app-k";
