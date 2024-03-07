@@ -36,10 +36,6 @@ provider:
           Resource: "*"
         - Effect: Allow
           Action:
-            - ssm:GetParameter
-          Resource: "*"
-        - Effect: Allow
-          Action:
             - ec2:CreateNetworkInterface
             - ec2:DescribeNetworkInterfaces
             - ec2:DescribeVpcs
@@ -228,7 +224,7 @@ resources:
     SinkEmailTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties:
-        BatchSize: 1000
+        BatchSize: 10
         Enabled: true
         FunctionName: !GetAtt ProcessEmailsLambdaFunction.Arn
         SelfManagedEventSource:

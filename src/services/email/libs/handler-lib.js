@@ -29,7 +29,8 @@ export default function handler(lambda) {
           sendResults = await Promise.allSettled(eventQueue.map(async (record) => {
             try {
             const eventData = decodeRecord(record);
-            if (!eventData) return { message: "no eventData?"};
+            if (!eventData) return { error: "no eventData?"};
+            console.log("eventData: ", eventData);
 
             return await lambda(eventData);
         } catch (e) {
@@ -44,7 +45,7 @@ export default function handler(lambda) {
       }
       // Return HTTP response
       console.log("Response: ", JSON.stringify(response, null, 4));
-      return response;
+      return response
     };
-  };
+  }
 };

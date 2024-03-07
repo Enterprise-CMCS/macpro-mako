@@ -45,10 +45,9 @@ export const buildEmailData = async (bundle, data) => {
     const returnObject = {};
 
     const lookupValues = await getLookupValues(bundle.lookupList, data.id);
-    data = { ...data, ...lookupValues };
 
     if (!bundle.dataList || !Array.isArray(bundle.dataList) || bundle.dataList.length === 0)
-        return { error: "init statement fail", bundle, data };
+        return { error: "init statement fail", bundle, data, lookupValues };
 
     bundle.dataList.forEach((dataType) => {
         switch (dataType) {
@@ -59,7 +58,7 @@ export const buildEmailData = async (bundle, data) => {
                 returnObject["proposedEffectiveDateNice"] = formatDateFromTimestamp(data?.notificationMetadata?.proposedEffectiveDate);
                 break;
             case "ninetyDaysLookup":
-                returnObject["ninetyDaysDateNice"] = formatDateFromTimestamp(data?.ninetyDaysDateLookup);
+                returnObject["ninetyDaysDateNice"] = formatDateFromTimestamp(lookupValues?.ninetyDaysDateLookup);
                 break;
             case "applicationEndpoint":
                 returnObject["applicationEndpoint"] = process.env.applicationEndpoint;
@@ -74,7 +73,7 @@ export const buildEmailData = async (bundle, data) => {
                 returnObject["ninetyDaysDateNice"] = formatNinetyDaysDate(data);
                 break;
             case "submitter":
-                returnObject["submitter"] = (data.submitterEmail === "george@example.com") ? `"George's Substitute" <k.grue.stateuser@gmail.com>` : `"${data.submitterName}" <${data.submitterEmail}>`;
+                returnObject["submitter"] = (data.submitterEmail === "george@example.com") ? "\"George's Substitute\" <k.grue.stateuser@gmail.com>" : `"${data.submitterName}" <${data.submitterEmail}>`;
                 break;
             case "osgEmail":
             case "chipInbox":
@@ -86,7 +85,7 @@ export const buildEmailData = async (bundle, data) => {
                 break;
 
             default:
-                returnObject[dataType] = data[dataType] ? data[dataType] : "missing data";
+                returnObject[dataType] = data[dataType] ? data[dataType] : (lookupValues[dataType] ? lookupValues[dataType] : "missing data");
                 break;
         }
     });
