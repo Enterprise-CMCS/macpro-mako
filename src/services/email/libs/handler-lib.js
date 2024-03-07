@@ -45,7 +45,7 @@ export default function handler(lambda) {
       }
       // Return HTTP response
       console.log("Response: ", JSON.stringify(response, null, 4));
-      return response
-    };
-  }
-};
+      return response;
+    }
+  };
+}
