@@ -1,7 +1,6 @@
 import { CognitoUserAttributes, opensearch } from "../../shared-types";
 import rules from "./rules";
-import { PackageCheck } from "../packageCheck";
-import { isIDM } from "../is-idm";
+import { PackageCheck } from "../package-check";
 
 export const getAvailableActions = (
   user: CognitoUserAttributes,
