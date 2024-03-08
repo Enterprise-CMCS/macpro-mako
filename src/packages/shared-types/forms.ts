@@ -20,13 +20,13 @@ export interface FormSchema {
 
 export type RHFSlotProps = {
   name: string;
-  label?: string;
+  label?: RHFTextField;
   labelStyling?: string;
   tbColumnStyle?: string;
   formItemStyling?: string;
   groupNamePrefix?: string;
   removeFormDecoration?: boolean;
-  description?: string;
+  description?: RHFTextField;
   descriptionAbove?: boolean;
   descriptionStyling?: string;
   dependency?: DependencyRule;
@@ -35,24 +35,37 @@ export type RHFSlotProps = {
   [K in keyof RHFComponentMap]: {
     rhf: K;
     props?: RHFComponentMap[K];
-    text?: K extends "TextDisplay" ? string : never;
+    text?: K extends "TextDisplay" ? RHFTextField : never;
     fields?: K extends "FieldArray"
       ? RHFSlotProps[]
       : K extends "FieldGroup"
-      ? RHFSlotProps[]
-      : K extends "TableGroup"
-      ? RHFSlotProps[]
-      : never;
+        ? RHFSlotProps[]
+        : K extends "TableGroup"
+          ? RHFSlotProps[]
+          : never;
   };
 }[keyof RHFComponentMap];
 
 export type RHFOption = {
   label: string;
+  styledLabel?: RHFTextField;
   value: string;
   dependency?: DependencyRule;
   form?: FormGroup[];
   slots?: RHFSlotProps[];
 };
+
+export type RHFTextField =
+  | Array<
+      | {
+          text: string;
+          type?: "br" | "brWrap" | "link" | "bold" | "italic";
+          link?: string;
+          classname?: string;
+        }
+      | string
+    >
+  | string;
 
 export type RHFComponentMap = {
   Input: InputProps & {
@@ -108,7 +121,7 @@ export interface Document {
 
 export type FieldArrayProps<
   T extends FieldValues,
-  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
+  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>,
 > = {
   control: Control<T, unknown>;
   name: TFieldArrayName;
@@ -119,7 +132,7 @@ export type FieldArrayProps<
 
 export type FieldGroupProps<
   T extends FieldValues,
-  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
+  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>,
 > = {
   control: Control<T, unknown>;
   name: TFieldArrayName;
@@ -131,7 +144,7 @@ export type FieldGroupProps<
 
 export type TableGroupProps<
   T extends FieldValues,
-  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
+  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>,
 > = {
   control: Control<T, unknown>;
   name: TFieldArrayName;

@@ -14,7 +14,8 @@ import {
 } from "../Table";
 import { slotInitializer } from "./utils";
 import { RHFSlot } from "./Slot";
-import { cn } from "@/lib";
+import { cn } from "@/utils";
+import { RHFTextDisplay } from "./";
 
 const FieldRow = <TFields extends FieldValues>(
   props: { onTrashClick: () => void } & TableGroupProps<TFields>
@@ -107,10 +108,9 @@ export const TableGroup = <TFields extends FieldValues>({
   useEffect(() => {
     if (fieldArr.fields.length) return;
 
-    const initArray = [];
-    do {
-      initArray.push(props.fields.reduce(slotInitializer, {}));
-    } while (initArray.length < initNumRows);
+    const initArray = [...Array(initNumRows)].map(() =>
+      props.fields.reduce(slotInitializer, {})
+    );
 
     fieldArr.append(initArray as never);
   }, [fieldArr]);
@@ -122,10 +122,11 @@ export const TableGroup = <TFields extends FieldValues>({
           <TableRow>
             {props.fields.map((v) => {
               return (
-                <TableHead key={`tableHeader.${v.label}`}>
-                  <div className={cn("max-w-xs", v.tbColumnStyle)}>
-                    {v.label}
-                  </div>
+                <TableHead
+                  key={`tableHeader.${v.label}`}
+                  className={cn("max-w-xs", v.tbColumnStyle)}
+                >
+                  <RHFTextDisplay text={v.label ?? ""} />
                 </TableHead>
               );
             })}

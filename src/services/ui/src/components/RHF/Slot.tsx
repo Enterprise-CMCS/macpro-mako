@@ -29,10 +29,11 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components";
 import { cn } from "@/utils";
 import { RHFFieldArray, FieldGroup, RHFFormGroup, TableGroup } from ".";
+import { RHFTextDisplay } from "./TextDisplay";
 
 export const RHFSlot = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   control,
   label,
@@ -67,11 +68,13 @@ export const RHFSlot = <
         }`}
       >
         {!removeFormDecoration && label && (
-          <FormLabel className={labelStyling}>{label}</FormLabel>
+          <FormLabel className={labelStyling}>
+            <RHFTextDisplay text={label} />
+          </FormLabel>
         )}
-        {!removeFormDecoration && descriptionAbove && (
+        {!removeFormDecoration && descriptionAbove && description && (
           <FormDescription className={descriptionStyling}>
-            {description}
+            <RHFTextDisplay text={description} />
           </FormDescription>
         )}
         <FormControl>
@@ -158,7 +161,9 @@ export const RHFSlot = <
                                 className="font-normal"
                                 htmlFor={OPT.value}
                               >
-                                {OPT.label}
+                                <RHFTextDisplay
+                                  text={OPT.styledLabel ?? OPT.label}
+                                />
                               </FormLabel>
                             }
                           </div>
@@ -210,6 +215,11 @@ export const RHFSlot = <
                       <div key={`CHECK-${OPT.value}`}>
                         <Checkbox
                           label={OPT.label}
+                          styledLabel={
+                            <RHFTextDisplay
+                              text={OPT.styledLabel ?? OPT.label}
+                            />
+                          }
                           value={OPT.value}
                           checked={field.value?.includes(OPT.value)}
                           onCheckedChange={(c) => {
@@ -346,12 +356,16 @@ export const RHFSlot = <
 
             {/* ----------------------------------------------------------------------------- */}
             {rhf === "TextDisplay" && (
-              <p {...(props as RHFComponentMap["TextDisplay"])}>{text}</p>
+              <p {...(props as RHFComponentMap["TextDisplay"])}>
+                <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} />
+              </p>
             )}
           </>
         </FormControl>
         {!removeFormDecoration && description && !descriptionAbove && (
-          <FormDescription>{description}</FormDescription>
+          <FormDescription className={descriptionStyling}>
+            <RHFTextDisplay text={description} />
+          </FormDescription>
         )}
         {!removeFormDecoration && <FormMessage />}
       </FormItem>

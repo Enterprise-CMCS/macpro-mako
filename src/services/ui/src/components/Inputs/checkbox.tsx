@@ -10,6 +10,7 @@ const Checkbox = React.forwardRef<
     DependencyWrapperProps & {
       className?: string;
       label: string;
+      styledLabel?: React.ReactNode;
       value?: string;
       description?: string;
     }
@@ -45,7 +46,7 @@ const Checkbox = React.forwardRef<
               htmlFor={props.label}
               className="text-md font-medium leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              {props.label}
+              {props.styledLabel ?? props.label}
             </label>
           )}
           {!!props.description && (

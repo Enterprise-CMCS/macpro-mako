@@ -9,10 +9,107 @@ export const v202401: FormSchema = {
         {
           slots: [
             {
+              rhf: "TextDisplay",
+              name: "sampleStyleBlock",
+              text: [
+                "This is an example styled text field.",
+                { text: "Here we showcase bolding, ", type: "bold" },
+                {
+                  text: "a link (dashboard), ",
+                  type: "link",
+                  link: "/dashboard",
+                },
+                {
+                  text: "full custom styling, ",
+                  classname: "text-xs text-red-400",
+                },
+                { text: "italic sections, ", type: "italic" },
+                { text: "as well as:" },
+                { text: "text with line breaks 1", type: "br" },
+                { text: "text with line breaks 2", type: "br" },
+                { text: "text with line breaks 3", type: "brWrap" },
+                "Final chunk to ensure long text continues after all of these styles; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+              ],
+            },
+            {
+              rhf: "Checkbox",
+              name: "sampleCheckboxField",
+              props: {
+                options: [
+                  {
+                    label: "sampleStyledCheckboxLabel",
+                    value: "Samp1",
+                    styledLabel: [
+                      "This is an example styled text field, but using a checkbox field to determine label interaction with new comp.",
+                      { text: "Here we showcase bolding, ", type: "bold" },
+                      {
+                        text: "a link (dashboard), ",
+                        type: "link",
+                        link: "/dashboard",
+                      },
+                      {
+                        text: "full custom styling, ",
+                        classname: "text-xs text-red-400",
+                      },
+                      { text: "italic sections, ", type: "italic" },
+                      { text: "as well as:" },
+                      { text: "text with line breaks 1", type: "br" },
+                      { text: "text with line breaks 2", type: "br" },
+                      { text: "text with line breaks 3", type: "brWrap" },
+                      "Final chunk to ensure long text continues after all of these styles; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    ],
+                  },
+                  {
+                    label: "Simple Label Followup To Check Styling",
+                    value: "Samp2",
+                  },
+                ],
+              },
+            },
+            {
+              rhf: "Radio",
+              name: "sampleRadioField",
+              props: {
+                options: [
+                  {
+                    label: "sampleStyledRadioLabel",
+                    value: "Samp1",
+                    styledLabel: [
+                      "This is an example styled text field, but using a radio button field to determine label interaction with new comp.",
+                      { text: "Here we showcase bolding, ", type: "bold" },
+                      {
+                        text: "a link (dashboard), ",
+                        type: "link",
+                        link: "/dashboard",
+                      },
+                      {
+                        text: "full custom styling, ",
+                        classname: "text-xs text-red-400",
+                      },
+                      { text: "italic sections, ", type: "italic" },
+                      { text: "as well as:" },
+                      { text: "text with line breaks 1", type: "br" },
+                      { text: "text with line breaks 2", type: "br" },
+                      { text: "text with line breaks 3", type: "brWrap" },
+                      "Final chunk to ensure long text continues after all of these styles; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    ],
+                  },
+                  {
+                    label: "Simple Label Followup To Check Styling",
+                    value: "Samp2",
+                  },
+                ],
+              },
+            },
+            {
               name: "test2",
               rhf: "TableGroup",
               label: "Test Table scalable",
-              description: "Test Table with an actual scalable state",
+              labelStyling: "font-bold",
+              description: [
+                "Test Table with an actual scalable state, with an example ",
+                { type: "link", text: "link (dashboard)", link: "/dashboard" },
+              ],
               descriptionAbove: true,
               fields: [
                 {
@@ -39,6 +136,7 @@ export const v202401: FormSchema = {
               name: "test",
               rhf: "TableGroup",
               label: "Test Table",
+              labelStyling: "font-bold",
               description: "Test Table Component description",
               props: {
                 scalable: false,
