@@ -159,8 +159,14 @@ export const transform = (id: string) => {
       leadAnalystName,
       authorityId: authorityId || null,
       authority: getAuthority(authorityId, id) as Authority | null,
-      types: data.STATE_PLAN_SERVICETYPES || null,
-      subTypes: data.STATE_PLAN_SERVICE_SUBTYPES || null,
+      types: data.STATE_PLAN_SERVICETYPES ? data.STATE_PLAN_SERVICETYPES.map((type) => {
+        const fixedStr = type.SPA_TYPE_NAME.replace(/â|â/g, "-");
+        return {SPA_TYPE_ID: type.SPA_TYPE_ID, SPA_TYPE_NAME: fixedStr};
+      }) : undefined,
+      subTypes: data.STATE_PLAN_SERVICE_SUBTYPES ? data.STATE_PLAN_SERVICE_SUBTYPES.map((subType) => {
+        const fixedStr = subType.TYPE_NAME.replace(/â|â/g, "-");
+        return {TYPE_ID: subType.TYPE_ID, TYPE_NAME: subType.TYPE_NAME};
+      }) : undefined,
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
