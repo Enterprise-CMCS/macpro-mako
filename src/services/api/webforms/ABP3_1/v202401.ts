@@ -318,8 +318,6 @@ export const v202401: FormSchema = {
               labelStyling: "font-bold",
               name: "EHB_benchmark_option",
               rhf: "Radio",
-              description:
-                "State or territory is selecting one of the below options to design an EHB package that complies with the requirements for the individual insurance market under 45 CFR 156.100 through 156.125.",
               descriptionAbove: true,
               descriptionStyling: "text-base text-black",
               rules: {
@@ -450,7 +448,7 @@ export const v202401: FormSchema = {
                       {
                         rhf: "Radio",
                         name: "indicate_EHB_bencmark_plan",
-                        label: "Indicate the type of EHB-benchmark plan.",
+                        label: "Type of EHB-benchmark plan",
                         labelStyling: "font-bold",
                         props: {
                           options: [
@@ -488,7 +486,7 @@ export const v202401: FormSchema = {
                     value: "EHB_benchmark_2017_plan_year_but_replace_coverage",
                     form: [
                       {
-                        description: "Indicate the type of EHB-benchmark plan.",
+                        description: "Type of EHB-benchmark plan",
                         slots: [
                           {
                             rhf: "Radio",
