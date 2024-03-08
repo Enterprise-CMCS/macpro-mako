@@ -126,6 +126,7 @@ fi
 
 # Install kion-cli, a go package used to authenticate to Kion and access AWS
 go install github.com/kionsoftware/kion-cli@latest
+touch ~/.kion.yml
 
 touch $macprorcfile
 echo """
