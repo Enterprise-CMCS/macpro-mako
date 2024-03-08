@@ -115,22 +115,31 @@ export const TableGroup = <TFields extends FieldValues>({
     fieldArr.append(initArray as never);
   }, [fieldArr]);
 
+  const headers = props.fields.map((v) => {
+    return (
+      <TableHead
+        key={`tableHeader.${v.label}`}
+        className={cn("max-w-xs", v.tbColumnStyle)}
+      >
+        <RHFTextDisplay text={v.label ?? ""} />
+      </TableHead>
+    );
+  });
+
+  // if undefined via conditional rendering it leaves space regardless so added separately
+  if (scalable)
+    headers.push(
+      <TableHead
+        key="tableHeader.deleteColumn"
+        className="w-2.5rem py-0 pr-[0.5rem] pl-0"
+      />
+    );
+
   return (
     <>
       <Table className={cn("table-auto", tableStyle)}>
         <TableHeader>
-          <TableRow>
-            {props.fields.map((v) => {
-              return (
-                <TableHead
-                  key={`tableHeader.${v.label}`}
-                  className={cn("max-w-xs", v.tbColumnStyle)}
-                >
-                  <RHFTextDisplay text={v.label ?? ""} />
-                </TableHead>
-              );
-            })}
-          </TableRow>
+          <TableRow>{...headers}</TableRow>
         </TableHeader>
         <TableBody>
           {fieldArr.fields.map((v, i) => {
