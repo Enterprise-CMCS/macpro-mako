@@ -62,7 +62,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-          REPO_NAME: macpro-om-template
+          REPO_NAME: OneMAC
           BRANCHES_TO_GENERATE: master,val,production
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1

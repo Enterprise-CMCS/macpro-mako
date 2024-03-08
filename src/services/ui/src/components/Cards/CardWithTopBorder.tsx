@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import { cn } from "@/lib";
+import { cn } from "@/utils";
 
 interface CardWithTopBorderProps {
   children: ReactNode;

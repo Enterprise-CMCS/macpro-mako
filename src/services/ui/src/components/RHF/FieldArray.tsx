@@ -1,11 +1,10 @@
+import { useEffect } from "react";
 import { FieldValues, useFieldArray } from "react-hook-form";
+import { FieldArrayProps } from "shared-types";
 import { Plus, Trash2 } from "lucide-react";
-
 import { RHFSlot } from "./Slot";
 import { Button, FormField } from "../Inputs";
-import { FieldArrayProps } from "shared-types";
 import { slotInitializer } from "./utils";
-import { useEffect } from "react";
 
 export const RHFFieldArray = <TFields extends FieldValues>(
   props: FieldArrayProps<TFields>

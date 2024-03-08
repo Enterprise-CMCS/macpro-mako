@@ -15,6 +15,9 @@ const config = {
   idm: {
     home_url: import.meta.env.VITE_IDM_HOME_URL,
   },
+  launchDarkly: {
+    CLIENT_ID: import.meta.env.VITE_LAUNCHDARKLY_CLIENT_ID,
+  },
 };
 
 export default config;

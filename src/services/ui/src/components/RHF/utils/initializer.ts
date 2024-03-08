@@ -1,5 +1,4 @@
 import * as T from "shared-types";
-import { FormSchema } from "shared-types";
 
 type GL = Record<string, unknown>;
 
@@ -53,7 +52,7 @@ export const slotInitializer = (ACC: GL, SLOT: T.RHFSlotProps): GL => {
   return ACC;
 };
 
-export const documentInitializer = (document: FormSchema) => {
+export const documentInitializer = (document: T.FormSchema) => {
   return document.sections.reduce((ACC, SEC) => {
     SEC.form.reduce(formGroupInitializer, ACC);
     return ACC;

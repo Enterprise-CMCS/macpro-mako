@@ -2,18 +2,16 @@ import { FilterIcon } from "lucide-react";
 import { opensearch } from "shared-types";
 
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTrigger,
-} from "@/components/Sheet";
-import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/Accordion";
-import { Button } from "@/components/Inputs";
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTrigger,
+  Button,
+} from "@/components";
 
 import * as F from "./Filterable";
 import { useFilterDrawer } from "./hooks";
@@ -96,3 +94,6 @@ export const OsFilterDrawer = () => {
     </Sheet>
   );
 };
+
+export * from "./consts";
+export * from "./hooks";

@@ -1,11 +1,10 @@
+import { useEffect } from "react";
 import { FieldValues, useFieldArray } from "react-hook-form";
+import { FieldGroupProps } from "shared-types";
 import { Plus } from "lucide-react";
-
 import { RHFSlot } from "./Slot";
 import { Button, FormField } from "../Inputs";
-import { FieldGroupProps } from "shared-types";
 import { slotInitializer } from "./utils";
-import { useEffect } from "react";
 
 export const FieldGroup = <TFields extends FieldValues>(
   props: FieldGroupProps<TFields>

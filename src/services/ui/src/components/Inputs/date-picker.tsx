@@ -4,14 +4,18 @@ import * as React from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DatePickerProps } from "shared-types";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/Inputs/button";
-import { Calendar } from "@/components/Inputs/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
+import { cn } from "@/utils";
+import {
+  Button,
+  Calendar,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components";
 
 export const DatePicker = ({ date, onChange }: DatePickerProps) => {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState<boolean>(false);
-
+  const [selected, setSelected] = React.useState<Date>();
   return (
     <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
       <PopoverTrigger asChild>
@@ -29,13 +33,15 @@ export const DatePicker = ({ date, onChange }: DatePickerProps) => {
       <PopoverContent className="w-auto p-0">
         <Calendar
           mode="single"
-          selected={date}
+          selected={selected}
+          defaultMonth={selected}
           onSelect={(date) => {
+            setSelected(date);
             onChange(date);
             setIsCalendarOpen(false);
           }}
           initialFocus
-        />
+        />  
       </PopoverContent>
     </Popover>
   );

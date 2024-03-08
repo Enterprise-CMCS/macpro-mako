@@ -1,7 +1,6 @@
-import { Route } from "@/components/Routing/types";
 import { useMemo } from "react";
+import { Route, useParams } from "@/components";
 import { useQuery as useQueryString } from "@/hooks";
-import { useParams } from "@/components/Routing";
 
 /** Type for defining possible origin values for routing. */
 export type Origin = "actionsDashboard" | "actionsDetails" | "options";

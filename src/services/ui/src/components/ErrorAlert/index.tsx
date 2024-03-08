@@ -1,4 +1,4 @@
-import * as UI from "@/components/Alert";
+import * as UI from "@/components";
 import { XCircleIcon } from "lucide-react";
 import { ReactQueryApiError } from "shared-types";
 

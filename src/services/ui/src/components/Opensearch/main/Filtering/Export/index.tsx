@@ -1,4 +1,4 @@
-import { ExportButton } from "@/components/ExportButton";
+import { ExportButton } from "@/components";
 import { useFilterExportGroups } from "./hooks";
 
 export const OsFilterExport = () => {
@@ -6,3 +6,5 @@ export const OsFilterExport = () => {
 
   return <ExportButton data={hook.onExport} headers={hook.headers} />;
 };
+
+export * from "./hooks";

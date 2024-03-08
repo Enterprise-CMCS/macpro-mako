@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { type ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
-import { Route } from "../Routing/types";
 
 type BreadCrumbsProps = {
   options: BreadCrumbConfig[];

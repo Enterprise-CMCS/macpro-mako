@@ -1,13 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
-import { useGetUser } from "@/api/useGetUser";
-import { UserRoles } from "shared-types";
+import { useGetUser } from "@/api";
+import { UserRoles, opensearch } from "shared-types";
 
 import * as C from "./consts";
-import { useOsAggregate, useOsUrl } from "../../useOpensearch";
-import { opensearch } from "shared-types";
 import { useLabelMapping } from "@/hooks";
 import { useFilterDrawerContext } from "../FilterProvider";
-import { checkMultiFilter } from "@/components/Opensearch";
+import { checkMultiFilter, useOsAggregate, useOsUrl } from "@/components";
 
 type FilterGroup = Partial<
   Record<opensearch.main.Field, C.DrawerFilterableGroup>

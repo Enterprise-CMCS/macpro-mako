@@ -4,6 +4,13 @@ import LabeledProcessRunner from "./runner.js";
 import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
 import { ServerlessRunningStages } from "@enterprise-cmcs/macpro-serverless-running-stages";
 import { SecurityHubJiraSync } from "@enterprise-cmcs/macpro-security-hub-sync";
+import {
+  CloudFormationClient,
+  DescribeStacksCommand,
+} from "@aws-sdk/client-cloudformation";
+import open from "open";
+
+// import open from "open";
 
 // load .env
 dotenv.config();
@@ -296,6 +303,68 @@ yargs(process.argv.slice(2))
       }).sync();
     }
   )
+  .command(
+    ["open-kibana", "open-os"],
+    "Open the Kibana dashboard, the frontend for OpenSearch.",
+    {
+      stage: { type: "string", demandOption: true },
+    },
+    async (options) => {
+      let url = await getCloudFormationOutputValue(
+        "data",
+        options.stage,
+        "OpenSearchDashboardEndpoint"
+      );
+      open(url);
+    }
+  )
+  .command(
+    ["open-app"],
+    "Open the Kibana dashboard, the frontend for OpenSearch.",
+    {
+      stage: { type: "string", demandOption: true },
+    },
+    async (options) => {
+      let url = await getCloudFormationOutputValue(
+        "ui-infra",
+        options.stage,
+        "ApplicationEndpointUrl"
+      );
+      open(url);
+    }
+  )
   .strict() // This errors and prints help if you pass an unknown command
   .scriptName("run") // This modifies the displayed help menu to show 'run' isntead of 'dev.js'
   .demandCommand(1, "").argv; // this prints out the help if you don't call a subcommand
+
+async function getCloudFormationOutputValue(
+  service: string,
+  stage: string,
+  outputKey: string,
+  region: string = ""
+): Promise<string> {
+  const cliRegion = region !== "" ? region : process.env.REGION_A;
+  const client = new CloudFormationClient({ region: cliRegion });
+  const stackName = `${process.env.PROJECT}-${service}-${stage}`;
+  const command = new DescribeStacksCommand({
+    StackName: stackName,
+  });
+
+  try {
+    const response = await client.send(command);
+    const stack = response.Stacks?.[0];
+    const outputValue = stack?.Outputs?.find(
+      (output) => output.OutputKey === outputKey
+    )?.OutputValue;
+    if (outputValue === undefined || outputValue.trim() === "") {
+      throw new Error("Output not found");
+    }
+    return outputValue;
+  } catch (error) {
+    console.error(
+      `Failed to retrieve output [${outputKey}] from stack [${stackName}]:`,
+      error
+    );
+    throw error; // Rethrow or handle as needed
+  }
+}

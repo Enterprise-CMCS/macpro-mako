@@ -1,4 +1,4 @@
-import { OneMacUser, useGetUser } from "@/api/useGetUser";
+import { OneMacUser, useGetUser } from "@/api";
 import { PropsWithChildren, createContext, useContext } from "react";
 
 const initialState = { user: null };

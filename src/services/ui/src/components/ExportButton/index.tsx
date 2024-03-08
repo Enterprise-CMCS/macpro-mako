@@ -1,10 +1,9 @@
 import { ExportToCsv } from "export-to-csv";
-import { Button } from "@/components/Inputs";
+import { Button, useOsUrl } from "@/components";
 import { Download, Loader } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
-import { useOsUrl } from "@/components/Opensearch/main";
 import { opensearch } from "shared-types";
 
 type Props<TData extends Record<string, any>> = {
