@@ -174,21 +174,9 @@ Then("Status text is not displayed", () => {
 Then("Actual Status is Displayed with Access Granted", () => {
   OneMacMyProfilePage.verifyAccessStatus();
 });
-
-// // this uis for 8616
-// When("Login with an Active CMS System Admin user", () => {
-//   OneMacDevLoginPage.loginAsCMSSystemAdmin();
-// });
 Then("Click on User Management Tab", () => {
   OneMacDashboardPage.clickUserManagementTab();
 });
-// this is for oy2_10093
-// When("Login with cms Help Desk User", () => {
-//   OneMacDevLoginPage.loginAsHelpDeskUser();
-// });
-// When("Login as a State System Admin", () => {
-//   OneMacDevLoginPage.loginAsStateSystemAdmin();
-// });
 Then("i am on Dashboard Page", () => {
   OneMacDashboardPage.verifyWeAreOnDashboardPage();
 });

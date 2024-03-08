@@ -48,7 +48,7 @@ module.exports = defineConfig({
     // You may want to clean this up later by importing these.
     setupNodeEvents,
     baseUrl: "https://mako-dev.cms.gov/",
-    specPattern: ["cypress/e2e/**/*.feature", "cypress/e2e/**/*.spec.js"],
+    specPattern: ["cypress/e2e/**/*.feature", "cypress/e2e/**/*.spec.js", "cypress/a11y/**/*.spec.js"],
     supportFile: "support/index.js",
     stepDefinitions: ["cypress/e2e/common/steps.js"],
     experimentalRunAllSpecs: true,
