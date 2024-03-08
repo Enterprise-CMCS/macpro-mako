@@ -67,6 +67,8 @@ if ! which brew > /dev/null ; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
+export PATH="$homebrewprefix:$PATH"
+
 # Install the AWS CLI, used to interact with any/all AWS services
 if ! which aws > /dev/null ; then
 	brew install awscli session-manager-plugin
@@ -136,6 +138,7 @@ export NVM_DIR="$HOME/.nvm"
 export PATH=/usr/local/go/bin:\$PATH
 export PATH=\$PATH:$(go env GOPATH)/bin
 
+export PATH="$homebrewprefix/bin:\$PATH"
 eval \"\$($homebrewprefix/bin/brew shellenv)\"
 
 eval \"\$(direnv hook $shell)\"
