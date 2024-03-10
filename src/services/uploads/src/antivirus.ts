@@ -50,7 +50,7 @@ async function downloadFileFromS3(
     fs.mkdirSync(constants.TMP_DOWNLOAD_PATH);
   }
 
-  const localPath: string = `${constants.TMP_DOWNLOAD_PATH}${randomUUID()}.tmp`;
+  const localPath: string = `${constants.TMP_DOWNLOAD_PATH}${randomUUID()}--${s3ObjectKey}`;
   const writeStream: fs.WriteStream = fs.createWriteStream(localPath);
 
   utils.generateSystemMessage(
@@ -99,11 +99,7 @@ const scanAndTagS3Object = async (
       s3ObjectBucket
     );
     utils.generateSystemMessage("Set virusScanStatus");
-    const metadata = await s3Client.send(new HeadObjectCommand({
-      Bucket: s3ObjectBucket,
-      Key: s3ObjectKey,
-    }));
-    virusScanStatus = await scanLocalFile(fileLoc, metadata.ContentType);
+    virusScanStatus = await scanLocalFile(fileLoc);
     utils.generateSystemMessage(`virusScanStatus=${virusScanStatus}`);
   }
 
