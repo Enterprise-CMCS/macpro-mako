@@ -3,6 +3,7 @@ import {
   HeadObjectCommand,
   GetObjectCommand,
   PutObjectTaggingCommand,
+  HeadObjectCommandOutput,
 } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
 import fs from "fs";
@@ -22,12 +23,22 @@ export async function isS3FileTooBig(
     const res: HeadObjectCommandOutput = await s3Client.send(
       new HeadObjectCommand({ Key: key, Bucket: bucket })
     );
-    return res.ContentLength > constants.MAX_FILE_SIZE;
+    if (
+      res.ContentLength === undefined ||
+      res.ContentLength === null ||
+      typeof res.ContentLength !== 'number'
+    ) {
+      utils.generateSystemMessage(
+        `ContentLength is invalid for S3 Object: s3://${bucket}/${key}`
+      );
+      return false; // Or handle accordingly
+    }
+    return res.ContentLength > parseInt(constants.MAX_FILE_SIZE);
   } catch (e) {
     utils.generateSystemMessage(
       `Error finding size of S3 Object: s3://${bucket}/${key}`
     );
-    return false;
+    return true;
   }
 }
 
