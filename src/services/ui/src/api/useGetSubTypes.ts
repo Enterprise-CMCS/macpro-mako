@@ -3,9 +3,9 @@ import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { opensearch, ReactQueryApiError } from "shared-types";
 import { subtypes } from "shared-types/opensearch";
 
-async function fetchSubTypes(
+export async function fetchSubTypes(
   authorityId: number,
-  typeIds: number[]
+  typeIds: number[],
 ): Promise<opensearch.subtypes.Document[]> {
   const endpoint = "/getSubTypes";
   const body = { authorityId, typeIds };
@@ -24,11 +24,11 @@ async function fetchSubTypes(
 export function useGetSubTypes(
   authorityId: number,
   typeIds: number[],
-  options?: UseQueryOptions<opensearch.subtypes.Document[], ReactQueryApiError>
+  options?: UseQueryOptions<opensearch.subtypes.Document[], ReactQueryApiError>,
 ) {
   return useQuery<opensearch.subtypes.Document[], ReactQueryApiError>(
     ["package-subtypes", authorityId, typeIds],
     () => fetchSubTypes(authorityId, typeIds),
-    options
+    options,
   );
 }
