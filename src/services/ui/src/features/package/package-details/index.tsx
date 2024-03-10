@@ -22,8 +22,8 @@ export const DetailItemsGrid: FC<{
   return (
     <div
       className={cn(
-        `${props.fullWidth ? "max-w-xl" : "grid grid-cols-2 gap-4"}`,
-        props.containerStyle
+        `${props.fullWidth ? "max-w-xl" : "grid grid-cols-2 gap-6"}`,
+        props.containerStyle,
       )}
     >
       {props.displayItems.map(({ label, value, canView }) => {
@@ -46,7 +46,7 @@ export const PackageDetails: FC<opensearch.main.Document> = (props) => {
       id="package_details"
       title={`${props.authority} Package Details`}
     >
-      <div className="flex-col gap-4">
+      <div className="flex-col gap-4 max-w-2xl">
         <DetailItemsGrid displayItems={recordDetails(props)} />
         <DetailItemsGrid
           displayItems={approvedAndAEffectiveDetails(props)}

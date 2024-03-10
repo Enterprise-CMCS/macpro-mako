@@ -43,7 +43,7 @@ export const DetailsContent = ({
         <PackageStatusCard {...data._source} />
         <PackageActionsCard id={data._id} authority={data._source.authority!} />
       </section>
-      <div className="flex flex-col gap-3 mr-0 sm:mr-3 md:mr-10">
+      <div className="flex flex-col gap-3">
         <PackageDetails {...data._source} />
         <PackageActivities {...data._source} />
         <AdminChanges {...data._source} />

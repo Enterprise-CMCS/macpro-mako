@@ -8,7 +8,7 @@ import {
   describe,
 } from "vitest";
 import { API } from "aws-amplify";
-import { mockTypes, mockSubTypes } from "./mocks";
+import { mockTypes } from "./mocks";
 import { fetchData } from "./useGetTypes";
 
 const mockFetchData = vi.fn(async (apiName, path, init) => {
@@ -25,16 +25,13 @@ const mockFetchData = vi.fn(async (apiName, path, init) => {
 describe("fetchData", () => {
   beforeAll(() => {
     mockTypes.server.listen();
-    mockSubTypes.server.listen();
     API.post = vi.fn(mockFetchData);
   });
   afterEach(() => {
     mockTypes.server.resetHandlers();
-    mockSubTypes.server.resetHandlers();
   });
   afterAll(() => {
     mockTypes.server.close();
-    mockSubTypes.server.close();
   });
 
   describe("fetchTypes", () => {

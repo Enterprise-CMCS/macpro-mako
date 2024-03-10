@@ -117,7 +117,7 @@ export const ChipSpaFormPage = () => {
         // when any queries are added, such as the case of /details?id=...
         urlQuery.get(ORIGIN)
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard"
+          : "/dashboard",
       );
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
