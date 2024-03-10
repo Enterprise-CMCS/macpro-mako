@@ -27,11 +27,6 @@ export const FILE_TYPES: FileTypeInfo[] = [
     mime: "image/gif",
   },
   {
-    extension: ".jpg",
-    description: "Joint Photographic Experts Group",
-    mime: "image/jpeg"
-  },
-  {
     extension: ".jpeg",
     description: "Joint Photographic Experts Group",
     mime: "image/jpeg",

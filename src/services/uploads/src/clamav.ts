@@ -247,22 +247,19 @@ async function looksLikeCsv(filePath: string, delimiter: string = ',', maxLinesT
 export const scanLocalFile = async (
   pathToFile: string,
 ): Promise<string | null> => {
-  try {
-    // Get the extension from the file's name, which is driven by the s3 object's key
-    let extension = path.extname(pathToFile)
-
-    // Error out if the extension is not allowed
-    if (!isAllowedExtension(extension)) {
-      utils.generateSystemMessage("FAILURE - EXTENSION IS NOT OF AN ALLOWED TYPE");
-      return constants.STATUS_UNKNOWN_EXTENSION;
-    }
-    
+  try {    
     // Calculate the mime type based off the extension.
-    let mimeTypeFromExtension = mimeTypes.lookup(extension);
+    let mimeTypeFromExtension = mimeTypes.lookup(path.extname(pathToFile));
+    
     // Error out if mimeTypes couldn't figure out the mime type.
     if (!mimeTypeFromExtension) {
-      utils.generateSystemMessage("FAILURE - EXTENSION UNKNOWN");
       utils.generateSystemMessage("FAILURE - CANNOT DETERMINE MIMETYPE FROM EXTENSION");
+      return constants.STATUS_UNKNOWN_EXTENSION;
+    }
+
+    // Error out if the extension is not allowed
+    if (!isAllowedMime(mimeTypeFromExtension)) {
+      utils.generateSystemMessage("FAILURE - EXTENSION IS NOT OF AN ALLOWED TYPE");
       return constants.STATUS_UNKNOWN_EXTENSION;
     }
 
@@ -316,8 +313,8 @@ export const scanLocalFile = async (
   }
 };
 
-function isAllowedExtension(ext: string): boolean {
-  return FILE_TYPES.some((fileType) => fileType.extension === ext);
+function isAllowedMime(mime: string): boolean {
+  return FILE_TYPES.some((fileType) => fileType.mime ===  mime);
 }
 
 async function getFileTypeFromContents(
