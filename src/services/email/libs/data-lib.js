@@ -73,7 +73,7 @@ export const buildEmailData = async (bundle, data) => {
                 returnObject["ninetyDaysDateNice"] = formatNinetyDaysDate(data);
                 break;
             case "submitter":
-                returnObject["submitter"] = (data.submitterEmail === "george@example.com") ? "\"George's Substitute\" <k.grue.stateuser@gmail.com>" : `"${data.submitterName}" <${data.submitterEmail}>`;
+                returnObject["submitter"] = (data.submitterEmail === "george@example.com") ? "\"George's Substitute\" <mako.stateuser@gmail.com>" : `"${data.submitterName}" <${data.submitterEmail}>`;
                 break;
             case "osgEmail":
             case "chipInbox":
@@ -81,7 +81,7 @@ export const buildEmailData = async (bundle, data) => {
             case "dpoEmail":
             case "dmcoEmail":
             case "dhcbsooEmail":
-                returnObject[dataType] = process?.env[dataType] ? process.env[dataType] : `'${dataType} Substitute' <k.grue@theta-llc.com>`;
+                returnObject[dataType] = process?.env[dataType] ? process.env[dataType] : `'${dataType} Substitute' <mako.stateuser@gmail.com>`;
                 break;
 
             default:
@@ -89,6 +89,6 @@ export const buildEmailData = async (bundle, data) => {
                 break;
         }
     });
-    console.log("buildEmailData returnObject: ", JSON.stringify(returnObject,null,4));
+    console.log("buildEmailData returnObject: ", JSON.stringify(returnObject, null, 4));
     return returnObject;
 };

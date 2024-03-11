@@ -20,8 +20,8 @@ export const getOsInsightData = async (id) => {
       id
     );
     console.log("Insights Item: ", osInsightsItem);
-    returnData.cpoc = osInsightsItem?._source?.LEAD_ANALYST ? buildEmailsToSend(osInsightsItem?._source?.LEAD_ANALYST, osInsightsItem?._source?.STATE_PLAN.LEAD_ANALYST_ID) : "'CPOC Substitute' <k.grue.cmsapprover@gmail.com>";
-    returnData.srt = osInsightsItem?._source?.ACTION_OFFICERS ? buildEmailsToSend(osInsightsItem?._source?.ACTION_OFFICERS) : "'SRT Substitute' <k.grue.stateadmn@gmail.com>";
+    returnData.cpoc = osInsightsItem?._source?.LEAD_ANALYST ? buildEmailsToSend(osInsightsItem?._source?.LEAD_ANALYST, osInsightsItem?._source?.STATE_PLAN.LEAD_ANALYST_ID) : "'CPOC Substitute' <mako.stateuser@gmail.com>";
+    returnData.srt = osInsightsItem?._source?.ACTION_OFFICERS ? buildEmailsToSend(osInsightsItem?._source?.ACTION_OFFICERS) : "'SRT Substitute' <mako.stateuser@gmail.com>";
     returnData.ninetyDaysLookup = osInsightsItem?._source?.STATE_PLAN.ALERT_90_DAYS_DATE;
     return returnData;
   } catch (error) {

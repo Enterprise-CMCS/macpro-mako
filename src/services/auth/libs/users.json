@@ -338,34 +338,5 @@
         "Value": "onemac-micro-statesubmitter"
       }
     ]
-  },
-  {
-    "username": "mako.cmsuser@gmail.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "mako.cmsuser@gmail.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "Cmsuser"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Tester"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:state",
-        "Value": ""
-      },
-      {
-        "Name": "custom:cms-roles",
-        "Value": "onemac-micro-reviewer"
-      }
-    ]
   }
 ]
