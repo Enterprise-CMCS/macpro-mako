@@ -68,24 +68,20 @@ const arWithdrawPackage: ActionRule = {
 
 // TODO: Add rule for remove-appk-child
 
-const arRenewBCAPWaiver: ActionRule = {
-  action: Action.RENEW_1915B_CAP,
-  check: (checker, user) => checker.isWaiver,
-};
-
 const arAmendBCAPWaiver: ActionRule = {
   action: Action.AMEND_1915B_CAP,
-  check: (checker, user) => checker.isWaiver,
-};
-
-const arRenewBCONTWaiver: ActionRule = {
-  action: Action.RENEW_1915B_CONT,
-  check: (checker, user) => checker.isWaiver,
+  check: (checker, user) =>
+    checker.isWaiver &&
+    (checker.isRenewal || checker.isInitial) &&
+    checker.hasStatus("Approved"),
 };
 
 const arAmendBCONTWaiver: ActionRule = {
   action: Action.AMEND_1915B_CONT,
-  check: (checker, user) => checker.isWaiver,
+  check: (checker, user) =>
+    checker.isWaiver &&
+    (checker.isRenewal || checker.isInitial) &&
+    checker.hasStatus("Approved"),
 };
 
 export default [
@@ -96,8 +92,6 @@ export default [
   arWithdrawRaiResponse,
   arWithdrawPackage,
   // for waivers only
-  arRenewBCONTWaiver,
-  arRenewBCAPWaiver,
   arAmendBCONTWaiver,
   arAmendBCAPWaiver,
 ];

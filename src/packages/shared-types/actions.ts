@@ -10,9 +10,7 @@ export enum Action {
   WITHDRAW_PACKAGE = "withdraw-package",
   REMOVE_APPK_CHILD = "remove-appk-child",
   // waiver-only
-  RENEW_1915B_CAP = "1915b-capitated-renewal",
   AMEND_1915B_CAP = "1915b-capitated-amendment",
-  RENEW_1915B_CONT = "1915b-contracting-renewal",
   AMEND_1915B_CONT = "1915b-contracting-amendment",
 }
 

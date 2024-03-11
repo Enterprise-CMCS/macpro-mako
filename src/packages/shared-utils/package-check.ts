@@ -8,7 +8,7 @@ const secondClockStatuses = [
 
 const checkAuthority = (
   authority: Authority | null,
-  validAuthorities: Authority[]
+  validAuthorities: Authority[],
 ) =>
   !authority
     ? false
@@ -28,10 +28,14 @@ export const PackageCheck = ({
   raiWithdrawnDate,
   raiWithdrawEnabled,
   authority,
+  actionType,
 }: opensearch.main.Document) => {
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
     isWaiver: checkAuthority(authority, [Authority["1915b"]]),
+    isAmendment: actionType === "Amend",
+    isRenewal: actionType === "Renew",
+    isInitial: actionType === "New",
     /** Keep excess methods to a minimum with `is` **/
     authorityIs: (validAuthorities: Authority[]) =>
       checkAuthority(authority, validAuthorities),
