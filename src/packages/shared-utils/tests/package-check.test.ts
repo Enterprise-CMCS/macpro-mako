@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { testItemResult, testCMSCognitoUser } from "./testData";
 import { PackageCheck } from "../package-check";
 import { Authority, SEATOOL_STATUS } from "shared-types";
+import { pack } from "serverless-esbuild/dist/pack";
 
 // Build Mock Package data:
 //   - make it basic, like a new submission
@@ -38,6 +39,26 @@ describe("PackageCheck", () => {
         authority: Authority.CHIP_SPA,
       });
       expect(packageCheck.isWaiver).toBe(false);
+    });
+    it("checks waiver type", () => {
+      let packageCheck = PackageCheck({
+        ...testItemResult._source,
+        authority: Authority["1915b"],
+        actionType: "New",
+      });
+      expect(packageCheck.isInitial).toBe(true);
+      packageCheck = PackageCheck({
+        ...testItemResult._source,
+        authority: Authority["1915b"],
+        actionType: "Renew",
+      });
+      expect(packageCheck.isRenewal).toBe(true);
+      packageCheck = PackageCheck({
+        ...testItemResult._source,
+        authority: Authority["1915b"],
+        actionType: "Amend",
+      });
+      expect(packageCheck.isAmendment).toBe(true);
     });
     it("checks against input", () => {
       let packageCheck = PackageCheck({
