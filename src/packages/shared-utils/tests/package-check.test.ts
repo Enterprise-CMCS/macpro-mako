@@ -60,6 +60,40 @@ describe("PackageCheck", () => {
       });
       expect(packageCheck.isAmendment).toBe(true);
     });
+    it("identifies B Waiver variants", () => {
+      let packageCheck = PackageCheck({
+        ...testItemResult._source,
+        authority: Authority["1915b"],
+        attachments: [
+          {
+            title:
+              "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
+            bucket: "abc123",
+            uploadDate: Date.now(),
+            key: "123abc",
+            filename: "test.pdf",
+          },
+        ],
+      });
+      expect(packageCheck.isContractingBWaiver).toBe(true);
+      expect(packageCheck.isCapitatedBWaiver).toBe(false);
+      packageCheck = PackageCheck({
+        ...testItemResult._source,
+        authority: Authority["1915b"],
+        attachments: [
+          {
+            title:
+              "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+            bucket: "abc123",
+            uploadDate: Date.now(),
+            key: "123abc",
+            filename: "test.pdf",
+          },
+        ],
+      });
+      expect(packageCheck.isContractingBWaiver).toBe(false);
+      expect(packageCheck.isCapitatedBWaiver).toBe(true);
+    });
     it("checks against input", () => {
       let packageCheck = PackageCheck({
         ...testItemResult._source,

@@ -73,6 +73,7 @@ const arAmendBCAPWaiver: ActionRule = {
   check: (checker, user) =>
     checker.isWaiver &&
     (checker.isRenewal || checker.isInitial) &&
+    checker.isCapitatedBWaiver &&
     checker.hasStatus("Approved"),
 };
 
@@ -81,6 +82,7 @@ const arAmendBCONTWaiver: ActionRule = {
   check: (checker, user) =>
     checker.isWaiver &&
     (checker.isRenewal || checker.isInitial) &&
+    checker.isContractingBWaiver &&
     checker.hasStatus("Approved"),
 };
 

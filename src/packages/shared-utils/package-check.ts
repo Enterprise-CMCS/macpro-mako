@@ -29,13 +29,26 @@ export const PackageCheck = ({
   raiWithdrawEnabled,
   authority,
   actionType,
+  attachments,
 }: opensearch.main.Document) => {
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
     isWaiver: checkAuthority(authority, [Authority["1915b"]]),
+    // Checks waiver's sub type of Initial, Renewal, and Amendment
     isAmendment: actionType === "Amend",
     isRenewal: actionType === "Renew",
     isInitial: actionType === "New",
+    // Checks B Waiver's variant (Capitated and Contracting)
+    isCapitatedBWaiver:
+      attachments
+        ?.map((a) => a.title)
+        .some((t) => t.includes("Comprehensive (Capitated) Waiver")) || false,
+    isContractingBWaiver:
+      attachments
+        ?.map((a) => a.title)
+        .some((t) =>
+          t.includes("Selective Contracting (Streamlined) Waiver"),
+        ) || false,
     /** Keep excess methods to a minimum with `is` **/
     authorityIs: (validAuthorities: Authority[]) =>
       checkAuthority(authority, validAuthorities),
