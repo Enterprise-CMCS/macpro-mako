@@ -10,6 +10,11 @@ import {
   Input,
   Link,
   RequiredIndicator,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { useParams } from "react-router-dom";
@@ -114,9 +119,59 @@ export const TemporaryExtension = () => {
 };
 
 /**
-Private Components for IssueRai
+Private Components for Temporary Extension
 **/
 
+const TEPackageSection = ({
+  teType,
+  id,
+}: {
+  teType?: "1915(b)" | "1915(c)";
+  id?: string;
+}) => {
+  const type = id?.split(".")[1]?.includes("00") ? "Initial" : "Renewal";
+  const { setValue } = useFormContext<z.infer<typeof tempExtensionSchema>>();
+
+  if (id && teType) {
+    setValue("originalWaiverNumber", id);
+    setValue("teType", teType);
+  }
+
+  return (
+    <section className="flex flex-col my-8 space-y-8">
+      {/* If ID exists show these */}
+      {id && (
+        <>
+          <div>
+            <p>Temporary Extension Type</p>
+            <p className="text-xl">{teType}</p>
+          </div>
+
+          <div>
+            <p>Approved Initial or Renewal Waiver Number</p>
+            <p className="text-xl">{id}</p>
+          </div>
+          <TERequestNumberInput />
+          <div>
+            <p>Type</p>
+            <p className="text-xl">
+              {teType} Waiver {type}
+            </p>
+          </div>
+        </>
+      )}
+      {/* Otherwise collect the following fields */}
+      {/* Set the fields that are required by default when they don't need to be collected */}
+      {!id && (
+        <>
+          <TempExtensionTypeDropDown />
+          <TempExtensionApproveOrRenewNumber />
+          <TERequestNumberInput />
+        </>
+      )}
+    </section>
+  );
+};
 const AdditionalFormInformation = () => {
   return (
     <Alert variant={"infoBlock"} className="space-x-2 mb-8">
@@ -168,46 +223,57 @@ const TERequestNumberInput = () => {
   );
 };
 
-const TEPackageSection = ({
-  teType,
-  id,
-}: {
-  teType: "1915(b)" | "1915(c)";
-  id: string | undefined;
-}) => {
-  const type = id?.split(".")[1]?.includes("00") ? "Initial" : "Renewal";
-  const { setValue } = useFormContext<z.infer<typeof tempExtensionSchema>>();
-
-  if (id) {
-    setValue("originalWaiverNumber", id);
-    setValue("teType", teType);
-  }
+const TempExtensionTypeDropDown = () => {
+  const { control } = useFormContext<z.infer<typeof tempExtensionSchema>>();
 
   return (
-    <section className="flex flex-col my-8 space-y-8">
-      {/* If ID exists show these */}
-      {id && (
-        <>
-          <div>
-            <p>Temporary Extension Type</p>
-            <p className="text-xl">{teType}</p>
-          </div>
-
-          <div>
-            <p>Approved Initial or Renewal Waiver Number</p>
-            <p className="text-xl">{id}</p>
-          </div>
-          <TERequestNumberInput />
-          <div>
-            <p>Type</p>
-            <p className="text-xl">
-              {teType} Waiver {type}
-            </p>
-          </div>
-        </>
+    <FormField
+      name="teType"
+      control={control}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>
+            Temporary Extension Type <RequiredIndicator />
+          </FormLabel>
+          <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <FormControl>
+              <SelectTrigger>
+                <SelectValue placeholder="-- select a temporary extension type --" />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent>
+              <SelectItem value="1915(b)">1915(b)</SelectItem>
+              <SelectItem value="1915(c)">1915(c)</SelectItem>
+            </SelectContent>
+          </Select>
+          <FormMessage />
+        </FormItem>
       )}
-      {/* Otherwise collect the following fields */}
-      {/* Set the fields that are required by default when they don't need to be collected */}
-    </section>
+    />
+  );
+};
+
+const TempExtensionApproveOrRenewNumber = () => {
+  const { control } = useFormContext<z.infer<typeof tempExtensionSchema>>();
+
+  return (
+    <FormField
+      name="originalWaiverNumber"
+      control={control}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>
+            Approved Initial or Renewal Waiver Number <RequiredIndicator />
+          </FormLabel>
+          <FormDescription>
+            Enter the existing waiver number in the format it was approved,
+            using a dash after the two character state abbreviation.
+          </FormDescription>
+          <FormControl>
+            <Input {...field} />
+          </FormControl>
+        </FormItem>
+      )}
+    />
   );
 };
