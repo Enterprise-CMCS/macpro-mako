@@ -12,7 +12,7 @@ export const ReviewTeamList: FC<opensearch.main.Document> = (props) => {
   const [expanded, setExpanded] = useState(false);
   const displayTeam = useMemo(
     () => (expanded ? props.reviewTeam : props.reviewTeam?.slice(0, 3)),
-    [expanded, props.reviewTeam]
+    [expanded, props.reviewTeam],
   );
   return !displayTeam || !displayTeam.length ? (
     BLANK_VALUE
@@ -38,7 +38,7 @@ export type DetailSectionItem = {
   canView: (u: OneMacUser | undefined) => boolean;
 };
 export const recordDetails = (
-  data: opensearch.main.Document
+  data: opensearch.main.Document,
 ): DetailSectionItem[] => [
   {
     label: "Submission ID",
@@ -68,7 +68,7 @@ export const recordDetails = (
     canView: () => true,
   },
   {
-    label: "Sub Type",
+    label: "Subtype",
     value: data.subTypes
       ? data.subTypes.map((T) => <p key={T?.TYPE_ID}>{T?.TYPE_NAME}</p>)
       : BLANK_VALUE,
@@ -101,7 +101,7 @@ export const recordDetails = (
 ];
 
 export const approvedAndAEffectiveDetails = (
-  data: opensearch.main.Document
+  data: opensearch.main.Document,
 ): DetailSectionItem[] => [
   {
     label: "Final disposition date",
@@ -120,7 +120,7 @@ export const approvedAndAEffectiveDetails = (
 ];
 
 export const descriptionDetails = (
-  data: opensearch.main.Document
+  data: opensearch.main.Document,
 ): DetailSectionItem[] => [
   {
     label: "Description",
@@ -130,7 +130,7 @@ export const descriptionDetails = (
 ];
 
 export const submissionDetails = (
-  data: opensearch.main.Document
+  data: opensearch.main.Document,
 ): DetailSectionItem[] => [
   {
     label: "Submitted by",

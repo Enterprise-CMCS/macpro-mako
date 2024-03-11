@@ -41,7 +41,7 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
         return (
           <Inputs.FormItem className="max-w-lg">
             <Inputs.FormLabel className="font-semibold block">
-              Sub Type <Inputs.RequiredIndicator />
+              Subtype <Inputs.RequiredIndicator />
             </Inputs.FormLabel>
             <p className="text-gray-500 max-w-3xl">
               You may select more than one
