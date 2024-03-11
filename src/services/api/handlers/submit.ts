@@ -33,6 +33,7 @@ export const submit = async (event: APIGatewayEvent) => {
       Authority.CHIP_SPA,
       Authority.MED_SPA,
       Authority["1915b"],
+      Authority.te,
     ];
     if (!activeSubmissionTypes.includes(body.authority)) {
       return response({
@@ -40,6 +41,15 @@ export const submit = async (event: APIGatewayEvent) => {
         body: {
           message: `OneMAC (micro) Submissions API does not support the following authority: ${body.authority}`,
         },
+      });
+    }
+
+    if(body.authority == Authority.te) { 
+      console.log("Received new temporary extension sumbissions");
+      console.log("currently doing nothing and will return");
+      return response({
+        statusCode: 403,
+        body: { message: "DEV RETURN..." },
       });
     }
 

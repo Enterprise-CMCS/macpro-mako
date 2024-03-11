@@ -4,4 +4,5 @@ export enum Authority {
   WAIVER = "waiver",
   "1915b" = "1915(b)",
   "1915c" = "1915(c)",
+  "te"  = "temporary extension",
 }

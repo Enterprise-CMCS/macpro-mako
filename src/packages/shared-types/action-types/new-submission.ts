@@ -7,6 +7,7 @@ export const onemacSchema = z.object({
   seaActionType: z.string().optional(), // Used by waivers and chip spas
   origin: z.string(),
   appkParentId: z.string().nullable().default(null),
+  originalWaiverId: z.string().nullable().default(null),
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),

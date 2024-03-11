@@ -24,9 +24,9 @@ import { useFormContext } from "react-hook-form";
 
 type Attachments = keyof z.infer<typeof tempExtensionSchema>["attachments"];
 export const tempExtensionSchema = z.object({
+  id: z.string(),
   teType: z.string(),
   originalWaiverNumber: z.string(),
-  teRequestNumber: z.string(),
   additionalInformation: z.string().optional(),
   attachments: z.object({
     waiverExtensionRequest: zAttachmentRequired({ min: 1 }),
@@ -46,12 +46,12 @@ export const onValidSubmission: SC.ActionFunction = async ({
     const data = tempExtensionSchema.parse(unflattenedFormData);
 
     const user = await getUser();
-    const authority = Authority["1915b"];
+    const authority = Authority["te"];
 
     console.log("data", data);
     await submit({
       data: { ...data, id: params.id },
-      endpoint: "/action/temporary-extension",
+      endpoint: "/submit",
       user,
       authority,
     });
@@ -68,7 +68,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 export const TemporaryExtension = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const { id } = useParams();
-
+  const originalWaiverNumber = id;
   SC.useDisplaySubmissionAlert(
     "Temporary Extension issued",
     `The Extension for ${id} has been submitted. An email confirmation will be sent to you and the state.`
@@ -88,7 +88,7 @@ export const TemporaryExtension = () => {
         </strong>
       </SC.ActionDescription>
       <form onSubmit={handleSubmit}>
-        <TEPackageSection teType="1915(b)" id={id} />
+        <TEPackageSection teType="1915(b)" originalWaiverNumber={originalWaiverNumber} />
         <SC.AttachmentsSection<Attachments>
           attachments={[
             {
@@ -132,13 +132,13 @@ const AdditionalFormInformation = () => {
   );
 };
 
-const TERequestNumberInput = () => {
+const IdInput = () => {
   const form = useFormContext();
 
   return (
     <FormField
       control={form.control}
-      name="teRequestNumber"
+      name="id"
       render={({ field }) => (
         <FormItem>
           <FormLabel>
@@ -170,23 +170,23 @@ const TERequestNumberInput = () => {
 
 const TEPackageSection = ({
   teType,
-  id,
+  originalWaiverNumber,
 }: {
   teType: "1915(b)" | "1915(c)";
-  id: string | undefined;
+  originalWaiverNumber: string | undefined;
 }) => {
-  const type = id?.split(".")[1]?.includes("00") ? "Initial" : "Renewal";
+  const type = originalWaiverNumber?.split(".")[1]?.includes("00") ? "Initial" : "Renewal";
   const { setValue } = useFormContext<z.infer<typeof tempExtensionSchema>>();
 
-  if (id) {
-    setValue("originalWaiverNumber", id);
+  if (originalWaiverNumber) {
+    setValue("originalWaiverNumber", originalWaiverNumber);
     setValue("teType", teType);
   }
 
   return (
     <section className="flex flex-col my-8 space-y-8">
       {/* If ID exists show these */}
-      {id && (
+      {originalWaiverNumber && (
         <>
           <div>
             <p>Temporary Extension Type</p>
@@ -195,9 +195,9 @@ const TEPackageSection = ({
 
           <div>
             <p>Approved Initial or Renewal Waiver Number</p>
-            <p className="text-xl">{id}</p>
+            <p className="text-xl">{originalWaiverNumber}</p>
           </div>
-          <TERequestNumberInput />
+          <IdInput />
           <div>
             <p>Type</p>
             <p className="text-xl">
