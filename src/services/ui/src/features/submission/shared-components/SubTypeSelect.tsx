@@ -39,7 +39,7 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
       name={name}
       render={({ field }) => {
         return (
-          <Inputs.FormItem className="max-w-xs">
+          <Inputs.FormItem className="max-w-lg">
             <Inputs.FormLabel className="font-semibold block">
               Sub Type <Inputs.RequiredIndicator />
             </Inputs.FormLabel>
@@ -52,7 +52,7 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
               value={
                 field.value
                   ? field.value.map((id: number) =>
-                      options?.find((O) => O.value === id)
+                      options?.find((O) => O.value === id),
                     )
                   : []
               }
