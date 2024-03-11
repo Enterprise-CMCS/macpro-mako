@@ -85,10 +85,8 @@ export const SlotWaiverId = <
 
       if (field.name.includes("childWaivers")) {
         const [_, index] = field.name.split(".");
-
         const childWaivers = context.getValues("childWaivers") || [];
         const parentWaiver = context.getValues("parentWaiver");
-        console.log({ childWaivers, value, index });
         const existsInList = childWaivers
           .filter((_: any, I: number) => I != Number(index))
           .concat(parentWaiver)
@@ -128,13 +126,10 @@ export const SlotWaiverId = <
       <I.FormItem {...props}>
         <div className="relative flex gap-1 items-center">
           <div className="relative flex gap-2 items-center">
-            <p className="absolute text-sm top-[9px] left-3 text-gray-500">
-              {state} -
-            </p>
+            <p className="text-sm font-semibold">{state} -</p>
             <I.Input
               className={cn({
-                "pl-[45px]": true,
-                "w-[280px]": true,
+                "w-[250px]": true,
                 "border-red-500": !!fieldState.error?.message,
                 "border-green-500": !!debounced && !fieldState.error?.message,
               })}
@@ -169,26 +164,19 @@ export const WaiverIdFieldArray = (props: any) => {
     shouldUnregister: true,
   });
 
-  useEffect(() => {
-    if (!props.state) return;
-    fieldArr.remove();
-  }, [props.state]);
-
   return (
     <div>
-      <div className="flex flex-col justify-start">
-        <div className="flex flex-row gap-2 items-center">
-          <div className="flex flex-col">
-            <I.FormLabel className="font-bold">
-              Control Numbers (optional)
-            </I.FormLabel>
-            <I.FormLabel>
-              Other waiver IDs that will be associated with the APP-K
-            </I.FormLabel>
-          </div>
+      <div className="flex flex-col gap-2 justify-start">
+        <div className="flex flex-col gap-1">
+          <I.FormLabel className="font-bold">
+            Control Numbers (optional)
+          </I.FormLabel>
+          <I.FormLabel>
+            Other waiver IDs that will be associated with the APP-K
+          </I.FormLabel>
         </div>
 
-        <div className="flex flex-col py-4 gap-4">
+        <div className="flex flex-col py-2 gap-4">
           {fieldArr.fields.map((FLD, index) => {
             return (
               <div key={FLD.id} style={{ width: "max-content" }}>

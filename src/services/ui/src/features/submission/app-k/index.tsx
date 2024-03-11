@@ -19,7 +19,7 @@ import { useGetUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Content from "@/components";
 import { zAppkWaiverNumberSchema } from "@/utils";
 
@@ -66,6 +66,12 @@ export const AppKSubmissionForm = () => {
       .success,
     state: form.getFieldState("parentWaiver"),
   };
+
+  useEffect(() => {
+    if (!state) return;
+    form.setValue("childWaivers", []);
+    form.setValue("parentWaiver", "");
+  }, [state]);
 
   return (
     <SimplePageContainer>
