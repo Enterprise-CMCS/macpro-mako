@@ -107,7 +107,7 @@ export const router = createBrowserRouter([
       { path: "/webform/:id/:version", element: <F.Webform /> },
       { path: "/profile", element: <F.Profile /> },
       { path: "/guides/abp", element: <F.ABPGuide /> },
-      { path: "/new-submission/app-k", element: <F.AppKSubmissionForm /> },
+      { path: "/new-submission/waiver/app-k", element: <F.AppKSubmissionForm /> },
       packageActionRoutes,
     ],
     loader: F.loader(queryClient),

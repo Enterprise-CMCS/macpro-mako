@@ -1,11 +1,12 @@
 import { DetailsSection } from "@/components";
 import { spaDetails, submissionDetails } from "./hooks";
-import { opensearch } from "shared-types";
+
 import { FC } from "react";
 
 import { DetailSectionItem } from "./hooks";
 import { useGetUser } from "@/api/useGetUser";
 import { AppK } from "./appk";
+import { usePackageDetailsCache } from "..";
 
 export const DetailItemsGrid: FC<{ displayItems: DetailSectionItem[] }> = (
   props
@@ -28,15 +29,16 @@ export const DetailItemsGrid: FC<{ displayItems: DetailSectionItem[] }> = (
   );
 };
 
-export const PackageDetails: FC<opensearch.main.Document> = (props) => {
+export const PackageDetails = () => {
+  const { data } = usePackageDetailsCache();
   return (
     <DetailsSection
       id="package-details"
-      title={`${props.authority} Package Details`}
+      title={`${data.authority} Package Details`}
     >
-      <DetailItemsGrid displayItems={spaDetails(props)} />
-      <DetailItemsGrid displayItems={submissionDetails(props)} />
-      <AppK {...props} />
+      <DetailItemsGrid displayItems={spaDetails(data)} />
+      <DetailItemsGrid displayItems={submissionDetails(data)} />
+      <AppK />
     </DetailsSection>
   );
 };

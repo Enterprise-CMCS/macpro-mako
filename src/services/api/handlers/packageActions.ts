@@ -69,7 +69,7 @@ export async function issueRai(body: RaiIssue) {
     // write to kafka here
     const result = raiIssueSchema.safeParse({ ...body, requestedDate: today });
     if (result.success === false) {
-      console.log(
+      throw console.log(
         "RAI Validation Error. The following record failed to parse: ",
         JSON.stringify(body),
         "Because of the following Reason(s):",
@@ -409,24 +409,24 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
     });
   }
 
-  const today = seaToolFriendlyTimestamp();
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
-  const query = `
-    UPDATE SEA.dbo.State_Plan
-      SET 
-        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}'),
-        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime))
-      WHERE ID_Number = '${doc.id}'
-  `;
+  const today = seaToolFriendlyTimestamp();
 
   try {
     await transaction.begin();
 
-    await transaction.request().query(query);
-    await transaction
-      .request()
-      .query(buildStatusMemoQuery(result.data.id, "Package Withdrawn"));
+    await transaction.request().query(`
+      UPDATE SEA.dbo.State_Plan
+        SET 
+          SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.WITHDRAWN}'),
+          Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+          Status_Memo = ${buildStatusMemoQuery(
+            result.data.id,
+            "Package Withdrawn"
+          )}
+        WHERE ID_Number = '${doc.id}'
+    `);
     await produceMessage(
       TOPIC_NAME,
       doc.id,
