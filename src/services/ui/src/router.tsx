@@ -120,7 +120,7 @@ export const router = createBrowserRouter([
       { path: "/guides/abp", element: <F.ABPGuide /> },
       { path: "/new-submission/app-k", element: <F.AppKSubmissionForm /> },
       {
-        path: "/new-submission/waiver/temporary-extension",
+        path: "/new-submission/waiver/temporary-extensions",
         element: <TempExtensionWrapper />,
         action: tempExtensionAction,
       },
