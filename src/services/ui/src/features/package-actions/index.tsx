@@ -17,6 +17,11 @@ import {
   onValidSubmission as respondToRaiSubmission,
 } from "./RespondToRai";
 import { ActionWrapper } from "./ActionWrapper";
+import {
+  Capitated1915BWaiverAmendmentPage,
+  Contracting1915BWaiverAmendmentPage,
+  Contracting1915BWaiverRenewalPage,
+} from "@/features";
 
 export const packageActionRoutes: RouteObject = {
   path: "/action/:authority/:id",
@@ -51,6 +56,22 @@ export const packageActionRoutes: RouteObject = {
       path: "respond-to-rai",
       element: <RespondToRai />,
       action: respondToRaiSubmission,
+    },
+    {
+      path: "1915b-capitated-renewal",
+      element: <Capitated1915BWaiverAmendmentPage />,
+    },
+    {
+      path: "1915b-capitated-amendment",
+      element: <Capitated1915BWaiverAmendmentPage />,
+    },
+    {
+      path: "1915b-contracting-renewal",
+      element: <Contracting1915BWaiverRenewalPage />,
+    },
+    {
+      path: "1915b-contracting-amendment",
+      element: <Contracting1915BWaiverAmendmentPage />,
     },
     {
       path: "*",

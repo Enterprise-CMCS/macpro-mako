@@ -14,6 +14,7 @@ import {
   useNavigate,
   useAlertContext,
   formCrumbsFromPath,
+  useParams,
 } from "@/components";
 import * as Content from "@/components/Form/content";
 import * as Inputs from "@/components/Inputs";
@@ -81,6 +82,7 @@ const attachmentList = [
 
 export const Contracting1915BWaiverAmendmentPage = () => {
   const location = useLocation();
+  const { id } = useParams("/action/:authority/:id/:type");
   const { data: user } = useGetUser();
   const navigate = useNavigate();
   const urlQuery = useQueryString();
@@ -92,7 +94,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
     navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const handleSubmit: SubmitHandler<Waiver1915BContractingAmendment> = async (
-    formData
+    formData,
   ) => {
     try {
       await submit<Waiver1915BContractingAmendment>({
@@ -111,7 +113,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
         // when any queries are added, such as the case of /details?id=...
         urlQuery.get(ORIGIN)
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard"
+          : "/dashboard",
       );
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
@@ -125,7 +127,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
+      {!id && <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />}
       <Inputs.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -158,6 +160,8 @@ export const Contracting1915BWaiverAmendmentPage = () => {
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
                       {...field}
+                      value={id || ""}
+                      disabled={!!id}
                       onInput={(e) => {
                         if (e.target instanceof HTMLInputElement) {
                           e.target.value = e.target.value.toUpperCase();
@@ -250,7 +254,10 @@ export const Contracting1915BWaiverAmendmentPage = () => {
                       {label}
                       {required ? <Inputs.RequiredIndicator /> : null}
                     </Inputs.FormLabel>
-                    <Inputs.Upload files={field?.value ?? []} setFiles={field.onChange}  />
+                    <Inputs.Upload
+                      files={field?.value ?? []}
+                      setFiles={field.onChange}
+                    />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}
