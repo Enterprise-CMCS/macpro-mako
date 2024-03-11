@@ -8,16 +8,15 @@ export type DetailsSidebarLink = {
 };
 
 export const useDetailsSidebarLinks = (
-  dataId?: string
+  dataId?: string,
 ): DetailsSidebarLink[] => {
   const [sideBarLinks, setSideBarLinks] = useState<DetailsSidebarLink[]>([]);
 
   useEffect(() => {
     const ids = [
-      "package_overview",
       "package_details",
       "package_activity",
-      "change_history",
+      "administrative_package_changes",
       "appendix_k",
     ];
 

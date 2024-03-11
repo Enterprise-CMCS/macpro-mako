@@ -11,26 +11,28 @@ import {
 import { BLANK_VALUE } from "@/consts";
 
 export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
-  props
+  props,
 ) => {
   return (
     <div className="flex flex-col gap-2">
       <p className="font-bold">Change made</p>
       <p>
-        {props.submitterName} has enabled State package action to withdraw formal RAI response
+        {props.submitterName} has enabled State package action to withdraw
+        formal RAI response
       </p>
     </div>
   );
 };
 
 export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
-  props
+  props,
 ) => {
   return (
     <div className="flex flex-col gap-2">
       <p className="font-bold">Change made</p>
       <p>
-        {props.submitterName} has disabled State package action to withdraw formal RAI response
+        {props.submitterName} has disabled State package action to withdraw
+        formal RAI response
       </p>
     </div>
   );
@@ -73,15 +75,15 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
 export const AdminChanges: FC<opensearch.main.Document> = (props) => {
   const data = props.changelog?.filter((CL) =>
     ["disable-rai-withdraw", "enable-rai-withdraw"].includes(
-      CL._source.actionType
-    )
+      CL._source.actionType,
+    ),
   );
 
   if (!data?.length) return <></>;
 
   return (
     <DetailsSection
-      id="change_history"
+      id="administrative_package_changes"
       title={`Administrative Package Changes (${data?.length})`}
       description="Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC."
     >
