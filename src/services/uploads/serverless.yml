@@ -92,6 +92,8 @@ functions:
     environment:
       CLAMAV_BUCKET_NAME: !Ref ClamDefsBucket
       PATH_TO_AV_DEFINITIONS: "lambda/s3-antivirus/av-definitions"
+    events:
+      - schedule: "cron(0 10 */1 * ? *)"
   triggerInitialDownload:
     handler: src/triggerInitialDownload.handler
     timeout: 300 # 300 seconds = 5 minutes
@@ -167,16 +169,6 @@ resources:
         Principal: s3.amazonaws.com
         SourceAccount: ${aws:accountId}
         SourceArn: arn:aws:s3:::${self:service}-${sls:stage}-attachments-${aws:accountId}
-    AvDownloadDefinitionsEventsRuleSchedule1:
-      Type: AWS::Events::Rule
-      Properties:
-        ScheduleExpression: cron(0 10 */1 * ? *)
-        State: ENABLED
-        Targets:
-          - Arn: arn:aws:lambda:${self:provider.region}:${aws:accountId}:function:${self:custom.project}-${self:service}-avDownloadDefinitions
-            Id: avDownloadDefinitionsSchedule
-      DependsOn:
-        - EmptyBuckets
     ClamDefsBucket:
       Type: AWS::S3::Bucket
       Properties:
