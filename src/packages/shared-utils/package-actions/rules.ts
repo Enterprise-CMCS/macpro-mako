@@ -2,10 +2,10 @@ import {
   Action,
   ActionRule,
   Authority,
-  SEATOOL_STATUS,
   finalDispositionStatuses,
+  SEATOOL_STATUS,
 } from "shared-types";
-import { isStateUser, isCmsWriteUser, isIDM } from "../user-helper";
+import { isCmsWriteUser, isIDM, isStateUser } from "../user-helper";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
@@ -59,6 +59,7 @@ const arWithdrawRaiResponse: ActionRule = {
     checker.hasEnabledRaiWithdraw &&
     isStateUser(user),
 };
+
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
@@ -67,6 +68,26 @@ const arWithdrawPackage: ActionRule = {
 
 // TODO: Add rule for remove-appk-child
 
+const arRenewBCAPWaiver: ActionRule = {
+  action: Action.RENEW_1915B_CAP,
+  check: (checker, user) => checker.isWaiver,
+};
+
+const arAmendBCAPWaiver: ActionRule = {
+  action: Action.AMEND_1915B_CAP,
+  check: (checker, user) => checker.isWaiver,
+};
+
+const arRenewBCONTWaiver: ActionRule = {
+  action: Action.RENEW_1915B_CONT,
+  check: (checker, user) => checker.isWaiver,
+};
+
+const arAmendBCONTWaiver: ActionRule = {
+  action: Action.AMEND_1915B_CONT,
+  check: (checker, user) => checker.isWaiver,
+};
+
 export default [
   arIssueRai,
   arRespondToRai,
@@ -74,4 +95,9 @@ export default [
   arDisableWithdrawRaiResponse,
   arWithdrawRaiResponse,
   arWithdrawPackage,
+  // for waivers only
+  arRenewBCONTWaiver,
+  arRenewBCAPWaiver,
+  arAmendBCONTWaiver,
+  arAmendBCAPWaiver,
 ];

@@ -17,6 +17,12 @@ export const mapActionLabel = (a: Action) => {
       return "Withdraw Formal RAI Response";
     case Action.RESPOND_TO_RAI:
       return "Respond to Formal RAI";
+    case Action.AMEND_1915B_CAP:
+    case Action.AMEND_1915B_CONT:
+      return "Add Amendment";
+    case Action.RENEW_1915B_CAP:
+    case Action.RENEW_1915B_CONT:
+      return "Add Renewal";
     case Action.REMOVE_APPK_CHILD:
       return "";
   }
