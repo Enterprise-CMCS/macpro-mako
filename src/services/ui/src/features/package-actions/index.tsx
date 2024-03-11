@@ -58,16 +58,8 @@ export const packageActionRoutes: RouteObject = {
       action: respondToRaiSubmission,
     },
     {
-      path: "1915b-capitated-renewal",
-      element: <Capitated1915BWaiverAmendmentPage />,
-    },
-    {
       path: "1915b-capitated-amendment",
       element: <Capitated1915BWaiverAmendmentPage />,
-    },
-    {
-      path: "1915b-contracting-renewal",
-      element: <Contracting1915BWaiverRenewalPage />,
     },
     {
       path: "1915b-contracting-amendment",
