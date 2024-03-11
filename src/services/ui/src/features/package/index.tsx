@@ -2,7 +2,7 @@ import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import { Authority, opensearch, UserRoles } from "shared-types";
 import { useQuery } from "@/hooks";
-import { useGetItem } from "@/api";
+import { useGetItem, useGetItemCache } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
 import { Outlet } from "react-router-dom";
@@ -157,9 +157,9 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
           <PackageActionsCard {...data._source} />
         </section>
         <div className="flex flex-col gap-3">
-          <PackageDetails {...data._source} />
-          <PackageActivities {...data._source} />
-          <AdminChanges {...data._source} />
+          <PackageDetails />
+          <PackageActivities />
+          <AdminChanges />
         </div>
       </div>
     </div>
@@ -186,4 +186,10 @@ export const PackageDetailsWrapper = () => {
       <Outlet />
     </main>
   );
+};
+
+export const usePackageDetailsCache = () => {
+  const query = useQuery();
+  const id = query.get("id") as string;
+  return useGetItemCache(id);
 };

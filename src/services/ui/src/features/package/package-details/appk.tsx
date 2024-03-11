@@ -1,70 +1,36 @@
 import { ConfirmationModal, Link, LoadingSpinner } from "@/components";
-import { Authority, opensearch } from "shared-types";
-import { useOsSearch } from "@/api";
-import { useEffect, useState } from "react";
+import { Authority } from "shared-types";
+import { useState } from "react";
 import * as T from "@/components/Table";
 import { Button } from "@/components/Inputs";
 import { Undo2 } from "lucide-react";
 
 import { useGetUser } from "@/api/useGetUser";
 import { SubmissionServiceParameters, submit } from "@/api/submissionService";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { usePackageDetailsCache } from "..";
 
-export const AppK = (props: opensearch.main.Document) => {
+export const AppK = () => {
   const [removeChild, setRemoveChild] = useState("");
   const { data: user } = useGetUser();
-  const [autoDelay, setAutoDelay] = useState(false); // delay for opensearch record to be ready
-  const detailsCache = useQuery(["record", props.id], {
-    refetchOnWindowFocus: false,
-  });
+  const cache = usePackageDetailsCache();
   const submission = useMutation({
     mutationFn: (config: SubmissionServiceParameters<any>) => submit(config),
   });
-  const search = useOsSearch<opensearch.main.Field, opensearch.main.Response>();
-  const [data, setData] = useState<opensearch.main.Response["hits"]["hits"]>(
-    []
-  );
-
-  const initializeChildren = async () => {
-    await search.mutateAsync(
-      {
-        index: "main",
-        pagination: { size: 100, number: 0 },
-        filters: [
-          {
-            field: "appkParentId.keyword",
-            type: "term",
-            value: props.id,
-            prefix: "must",
-          },
-        ],
-      },
-      {
-        onSuccess: (res) => setData(res.hits.hits),
-      }
-    );
-  };
-
-  useEffect(() => {
-    initializeChildren();
-  }, [props.id]);
 
   const onChildRemove = async (id: string) => {
     await submission.mutate(
       {
-        data: { id, appkParentId: props.id },
+        data: { id, appkParentId: cache.data.id },
         user,
-        authority: props.authority as Authority,
+        authority: cache.data.authority as Authority,
         endpoint: "/action/remove-appk-child",
       },
       {
         onSuccess: async () => {
-          setRemoveChild("");
-          setAutoDelay(true);
           setTimeout(() => {
-            detailsCache.refetch();
-            initializeChildren();
-            setAutoDelay(false);
+            setRemoveChild("");
+            cache.refetch();
           }, 5000);
         },
         onError: (err) => {
@@ -74,7 +40,7 @@ export const AppK = (props: opensearch.main.Document) => {
     );
   };
 
-  if (!data.length) return <></>;
+  if (!cache.data.appkChildren) return <></>;
 
   return (
     <>
@@ -86,7 +52,7 @@ export const AppK = (props: opensearch.main.Document) => {
           </T.TableRow>
         </T.TableHeader>
         <T.TableBody>
-          {data?.map((CHILD) => {
+          {cache.data.appkChildren?.map((CHILD) => {
             return (
               <T.TableRow key={`${CHILD._id}`}>
                 <T.TableCell className="font-medium">
@@ -113,7 +79,7 @@ export const AppK = (props: opensearch.main.Document) => {
           })}
         </T.TableBody>
       </T.Table>
-      {(submission.isLoading || autoDelay) && <LoadingSpinner />}
+      {submission.isLoading && <LoadingSpinner />}
       <ConfirmationModal
         open={!!removeChild}
         onAccept={() => onChildRemove(removeChild)}
