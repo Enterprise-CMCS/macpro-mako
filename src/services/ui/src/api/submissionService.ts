@@ -162,9 +162,11 @@ export const submit = async <T extends Record<string, unknown>>({
     );
     // Generate a presigned url for each attachment
     const preSignedURLs: PreSignedURL[] = await Promise.all(
-      attachments.map(() =>
+      attachments.map((attachment) =>
         API.post("os", "/getUploadUrl", {
-          body: {},
+          body: {
+            fileName: attachment.file.name,
+          },
         })
       )
     );

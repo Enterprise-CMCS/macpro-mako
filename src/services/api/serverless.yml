@@ -73,6 +73,7 @@ params:
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
     submitProvisionedConcurrency: 2
+    appkNewSubmissionConcurrency: 2
   val:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
@@ -81,6 +82,7 @@ params:
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
     submitProvisionedConcurrency: 2
+    appkNewSubmissionConcurrency: 2
   production:
     formsProvisionedConcurrency: 5
     getAllFormsProvisionedConcurrency: 1
@@ -89,6 +91,7 @@ params:
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
     submitProvisionedConcurrency: 5
+    appkNewSubmissionConcurrency: 5
   default:
     formsProvisionedConcurrency: 0
     getAllFormsProvisionedConcurrency: 1
@@ -97,6 +100,7 @@ params:
     itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
     submitProvisionedConcurrency: 0
+    appkNewSubmissionConcurrency: 0
 
 functions:
   search:
@@ -312,6 +316,7 @@ functions:
       dbPassword: ${self:custom.dbInfo.password}
       topicName: ${param:topicName}
       brokerString: ${self:custom.brokerString}
+      osDomain: ${param:osDomain}
     events:
       - http:
           path: /appk
@@ -323,7 +328,7 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:submitProvisionedConcurrency}
+    provisionedConcurrency: ${param:appkNewSubmissionConcurrency}
 
 resources:
   Resources:
