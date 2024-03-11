@@ -100,7 +100,6 @@ const attachmentList = [
 
 export const Contracting1915BWaiverRenewalPage = () => {
   const location = useLocation();
-  const { id } = useParams("/action/:authority/:id/:type");
   const { data: user } = useGetUser();
   const navigate = useNavigate();
   const urlQuery = useQueryString();
@@ -146,7 +145,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
 
   return (
     <SimplePageContainer>
-      {!id && <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />}
+      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Inputs.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -182,8 +181,6 @@ export const Contracting1915BWaiverRenewalPage = () => {
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
                       {...field}
-                      value={id || ""}
-                      disabled={!!id}
                       onInput={(e) => {
                         if (e.target instanceof HTMLInputElement) {
                           e.target.value = e.target.value.toUpperCase();
