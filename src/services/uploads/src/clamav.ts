@@ -8,10 +8,13 @@ import {
 import { spawnSync, SpawnSyncReturns } from "child_process";
 import path from "path";
 import fs from "fs";
+import readline from 'readline';
 import asyncfs from "fs/promises";
 import * as constants from "./constants";
 import * as utils from "./utils";
 import { FileExtension, MimeType, fileTypeFromFile } from "file-type";
+import mimeTypes from 'mime-types';
+import {FILE_TYPES} from "shared-types"
 
 const s3Client: S3Client = new S3Client();
 
@@ -196,6 +199,40 @@ export const uploadAVDefinitions = async (): Promise<void[]> => {
   return await Promise.all(uploadPromises);
 };
 
+async function looksLikeCsv(filePath: string, delimiter: string = ',', maxLinesToCheck: number = 10): Promise<boolean> {
+  const fileStream = fs.createReadStream(filePath);
+
+  const rl = readline.createInterface({
+    input: fileStream,
+    crlfDelay: Infinity
+  });
+
+  let lineNumber = 0;
+  let previousNumberOfFields = 0;
+
+  for await (const line of rl) {
+    lineNumber++;
+
+    // Skip empty lines
+    if (line.trim() === '') continue;
+
+    const fields = line.split(delimiter);
+
+    // Check if the number of fields is consistent across rows
+    if (lineNumber > 1 && fields.length !== previousNumberOfFields) {
+      return false;
+    }
+
+    previousNumberOfFields = fields.length;
+
+    if (lineNumber >= maxLinesToCheck) {
+      break;
+    }
+  }
+
+  return true;
+}
+
 /**
  * Function to scan the given file. This function requires ClamAV and the definitions to be available.
  * This function does not download the file so the file should also be accessible.
@@ -209,24 +246,43 @@ export const uploadAVDefinitions = async (): Promise<void[]> => {
  */
 export const scanLocalFile = async (
   pathToFile: string,
-  contentType: string | undefined
 ): Promise<string | null> => {
-  try {
-    if (!contentType) {
-      utils.generateSystemMessage("FAILURE - EXTENSION UNKNOWN");
+  try {    
+    // Calculate the mime type based off the extension.
+    let mimeTypeFromExtension = mimeTypes.lookup(path.extname(pathToFile));
+    
+    // Error out if mimeTypes couldn't figure out the mime type.
+    if (!mimeTypeFromExtension) {
+      utils.generateSystemMessage("FAILURE - CANNOT DETERMINE MIMETYPE FROM EXTENSION");
       return constants.STATUS_UNKNOWN_EXTENSION;
     }
-    let detectedContentType = await getFileTypeFromContents(pathToFile);
-    if (detectedContentType) {
-      console.log(`File declared extension:  ${contentType}`);
-      console.log(`File detected extension:  ${detectedContentType}`);
-      let same = areMimeTypesEquivalent(contentType, detectedContentType);
-      if (!same) {
-        utils.generateSystemMessage(
-          `FAILURE - FILE EXTENSION DOES NOT MATCH FILE CONTENTS`
-        );
-        return constants.STATUS_EXTENSION_MISMATCH_FILE;
-      }
+
+    // Error out if the extension is not allowed
+    if (!isAllowedMime(mimeTypeFromExtension)) {
+      utils.generateSystemMessage("FAILURE - EXTENSION IS NOT OF AN ALLOWED TYPE");
+      return constants.STATUS_UNKNOWN_EXTENSION;
+    }
+
+    // Caclulate the mime type based off the file's contents.
+    let mimeTypeFromContents = await getFileTypeFromContents(pathToFile);
+    // Error out if file-type couldn't determine the mime type.
+    if(!mimeTypeFromContents) {
+      utils.generateSystemMessage("FAILURE - CANNOT DETERMINE MIMETYPE FROM CONTENTS");
+      return constants.STATUS_UNKNOWN_EXTENSION;
+    }
+
+    // Log
+    console.log(`File mimetype from extension:  ${mimeTypeFromExtension}`);
+    console.log(`File mimetype from contents:   ${mimeTypeFromContents}`);
+
+    // Check if the mimes are equivalent
+    let same = areMimeTypesEquivalent(mimeTypeFromExtension, mimeTypeFromContents);
+    // Error out if we can't determine equivalence
+    if (!same) {
+      utils.generateSystemMessage(
+        `FAILURE - MIMETYPE CALCULATED FROM EXTENSION DOES NOT MATCH MIMETYPE CALCULATED FROM CONTENTS`
+      );
+      return constants.STATUS_EXTENSION_MISMATCH_FILE;
     }
 
     const avResult: SpawnSyncReturns<Buffer> = spawnSync(
@@ -257,9 +313,13 @@ export const scanLocalFile = async (
   }
 };
 
+function isAllowedMime(mime: string): boolean {
+  return FILE_TYPES.some((fileType) => fileType.mime ===  mime);
+}
+
 async function getFileTypeFromContents(
   filePath: string
-): Promise<MimeType | null> {
+): Promise<MimeType | false> {
   try {
     const fileBuffer = await fs.promises.readFile(filePath);
 
@@ -267,14 +327,19 @@ async function getFileTypeFromContents(
     const type = await fileTypeFromFile(filePath);
 
     if (!type) {
+      if(path.extname(filePath) == ".csv") {
+        if((await looksLikeCsv(filePath, ",", 100))) {
+          return mimeTypes.lookup(".csv")
+        }
+      }
       console.log("Could not determine file type.");
-      return null;
+      return false;
     }
-    console.log(`File type is ${type.mime} with extension ${type.ext}`);
+    console.log(`getFileTypeFromContents:  File determined to be mime:${type.mime} ext:${type.ext}`);
     return type.mime;
   } catch (error) {
     console.error("Error reading file:", error);
-    return null;
+    return false;
   }
 }
 
@@ -291,6 +356,7 @@ function areMimeTypesEquivalent(mime1: string, mime2: string): boolean {
     return true;
   }
   for (const baseType in equivalentTypes) {
+    console.log("Mime types not identical... checking AKAs for equivalence...")
     const equivalents = equivalentTypes[baseType];
     if (
       (mime1 === baseType && equivalents.has(mime2)) ||
