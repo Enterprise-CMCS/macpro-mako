@@ -25,7 +25,8 @@ import { Authority } from "shared-types";
 import { unflatten } from "flat";
 import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
 import { submit } from "@/api/submissionService";
-import { useFormContext } from "react-hook-form";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type Attachments = keyof z.infer<typeof tempExtensionSchema>["attachments"];
 export const tempExtensionSchema = z.object({
@@ -71,6 +72,9 @@ export const onValidSubmission: SC.ActionFunction = async ({
 };
 
 export const TemporaryExtension = () => {
+  const methods = useForm({
+    resolver: zodResolver(tempExtensionSchema),
+  });
   const { handleSubmit } = SC.useSubmitForm();
   const { id } = useParams();
 
@@ -80,7 +84,7 @@ export const TemporaryExtension = () => {
   );
 
   return (
-    <>
+    <FormProvider {...methods}>
       <SC.Heading title="Temporary Extension Request Details" />
       <SC.RequiredFieldDescription />
       <SC.ActionDescription>
@@ -114,7 +118,7 @@ export const TemporaryExtension = () => {
         <SC.ErrorBanner />
         <SC.SubmissionButtons />
       </form>
-    </>
+    </FormProvider>
   );
 };
 
