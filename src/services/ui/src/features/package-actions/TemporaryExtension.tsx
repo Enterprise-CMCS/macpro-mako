@@ -15,9 +15,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SimplePageContainer,
 } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { useParams } from "react-router-dom";
+import { type ReactNode } from "react";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
@@ -71,10 +73,19 @@ export const onValidSubmission: SC.ActionFunction = async ({
   }
 };
 
-export const TemporaryExtension = () => {
+export const TempExtensionWrapper = () => {
   const methods = useForm({
     resolver: zodResolver(tempExtensionSchema),
   });
+
+  return (
+    <FormProvider {...methods}>
+      <TemporaryExtension />
+    </FormProvider>
+  );
+};
+
+export const TemporaryExtension = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const { id } = useParams();
 
@@ -84,7 +95,7 @@ export const TemporaryExtension = () => {
   );
 
   return (
-    <FormProvider {...methods}>
+    <SimplePageContainer>
       <SC.Heading title="Temporary Extension Request Details" />
       <SC.RequiredFieldDescription />
       <SC.ActionDescription>
@@ -118,7 +129,7 @@ export const TemporaryExtension = () => {
         <SC.ErrorBanner />
         <SC.SubmissionButtons />
       </form>
-    </FormProvider>
+    </SimplePageContainer>
   );
 };
 
@@ -235,9 +246,10 @@ const TempExtensionTypeDropDown = () => {
       name="teType"
       control={control}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="max-w-xs">
           <FormLabel>
-            Temporary Extension Type <RequiredIndicator />
+            <strong className="font-bold">Temporary Extension Type</strong>{" "}
+            <RequiredIndicator />
           </FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
@@ -265,9 +277,12 @@ const TempExtensionApproveOrRenewNumber = () => {
       name="originalWaiverNumber"
       control={control}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="max-w-md">
           <FormLabel>
-            Approved Initial or Renewal Waiver Number <RequiredIndicator />
+            <strong className="font-bold">
+              Approved Initial or Renewal Waiver Number
+            </strong>{" "}
+            <RequiredIndicator />
           </FormLabel>
           <FormDescription>
             Enter the existing waiver number in the format it was approved,
