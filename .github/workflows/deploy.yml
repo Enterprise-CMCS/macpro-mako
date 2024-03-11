@@ -220,6 +220,240 @@ jobs:
           name: aws-resources-${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
           path: resources/aws-resources.json
 
+  cypress-e2e:
+    name: Cypress Tests
+    needs: deploy
+    if: ${{ github.ref != 'refs/heads/production'}}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers:
+          [
+            CMS_Read_Only_View.spec.feature,
+            Chip_SPA_Form.spec.feature,
+            Dashboard_CHIP_SPA_RAI_Response.spec.feature,
+            Dashboard_Filter.spec.feature,
+            Dashboard_Filter_By_State.spec.feature,
+            Dashboard_Filter_CMS.spec.feature,
+            Dashboard_Filter_options_that_include_Dates.spec.feature,
+            Dashboard_Filter_options_that_include_Dates_CMS.spec.feature,
+            Dashboard_Medicaid_SPA_RAI_Response.spec.feature,
+            Dashboard_No_Action_Packages.spec.feature,
+            Dashboard_RAI_Issued_Actions.spec.feature,
+            Dashboard_Search_Bar.spec.feature,
+            Dashboard_Tabs.spec.feature,
+            Dashboard_Column_Picker_SPA_CMS.spec.feature,
+            Dashboard_Column_Picker_SPA_State.spec.feature,
+            Dashboard_Column_Picker_Waiver_CMS.spec.feature,
+            Dashboard_Column_Picker_Waiver_State.spec.feature,
+            Dashboard_Under_Review_Actions.spec.feature,
+            FAQ_Page.spec.feature,
+            Home_Page.spec.feature,
+            Medicaid_SPA_Form.spec.feature,
+            Package_Details_2nd_Clock.spec.feature,
+            Package_Details_Admin_Package_Changes.spec.feature,
+            Package_Details_CHIP_SPA_CMS_User.spec.feature,
+            Package_Details_CHIP_SPA_State_User.spec.feature,
+            Package_Details_Medicaid_SPA_CMS_User.spec.feature,
+            Package_Details_Medicaid_SPA_State_User.spec.feature,
+            Profile_View_CMS_System_Admin.spec.feature,
+            Profile_View_Helpdesk_User.spec.feature,
+            SPA_Form_Logic.spec.feature,
+            Comprehensive_Capitated_1915b_Initial_Waiver_Form.spec.feature,
+            Comprehensive_Capitated_1915b_Waiver_Amendment_Form.spec.feature,
+            Comprehensive_Capitated_1915b_Waiver_Form_Logic.spec.feature,
+            Comprehensive_Capitated_1915b_Waiver_Renewal_Form.spec.feature,
+            Dashboard_Approved_Actions.spec.feature,
+            Dashboard_Initial_Waiver_RAI_Response.spec.feature,
+            Dashboard_Waiver_Amendment_RAI_Response.spec.feature,
+            Dashboard_Waiver_Renewal_RAI_Response.spec.feature,
+            FFS_Selective_Initial_Waiver_Form.spec.feature,
+            FFS_Selective_Waiver_Amendment_Form.spec.feature,
+            FFS_Selective_Waiver_Form_Logic.spec.feature,
+            FFS_Selective_Waiver_Renewal_Form.spec.feature,
+            Package_Details_Waiver_Amendment_State_User.spec.feature,
+            Package_Details_Waiver_Amendment_CMS_User.spec.feature,
+            Package_Details_Renewal_Waiver_State_User.spec.feature,
+            Package_Details_Renewal_Waiver_CMS_User.spec.feature,
+            Package_Details_Initial_Waiver_State_User.spec.feature,
+            Package_Details_Initial_Waiver_CMS_User.spec.feature,
+            Withdraw_Package_Form_Initial_Waiver.spec.feature,
+            Withdraw_Package_Form_Waiver_Amendment.spec.feature,
+            Withdraw_Package_Form_Waiver_Renewal.spec.feature
+          ]
+    steps:
+      - name: set branch_name
+        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+      - uses: actions/checkout@v1
+      - name: set branch specific variable names
+        run: ./.github/build_vars.sh set_names
+      - name: set variable values
+        run: ./.github/build_vars.sh set_values
+        env:
+          AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+          INFRASTRUCTURE_TYPE: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_INFRASTRUCTURE_TYPE] || secrets.INFRASTRUCTURE_TYPE || 'development' }}
+          STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
+          COGNITO_TEST_USERS_PASSWORD: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_COGNITO_TEST_USERS_PASSWORD] || secrets.COGNITO_TEST_USERS_PASSWORD }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - name: Combine package-lock.json files to single file
+        run: find services -maxdepth 3 -name package-lock.json | xargs cat package-lock.json > combined-package-lock.txt
+      - name: cache service dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            services/uploads/node_modules
+            services/app-api/node_modules
+            services/stream-functions/node_modules
+            services/ui/node_modules
+            services/ui-auth/node_modules
+            services/ui-src/node_modules
+            node_modules
+          key: ${{ runner.os }}-${{ hashFiles('combined-package-lock.txt') }}
+      - name: Install dependencies
+        run: npm ci
+      - name: set path
+        run: |
+          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: Endpoint
+        run: |
+          pushd services
+          export APPLICATION_ENDPOINT=`./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name`
+          echo "APPLICATION_ENDPOINT=$APPLICATION_ENDPOINT" >> $GITHUB_ENV
+          echo "Application endpoint: $APPLICATION_ENDPOINT"
+          popd         
+      - name: Run Cypress Tests
+        uses: cypress-io/github-action@v2.11.7
+        with:
+          working-directory: tests/cypress
+          spec: cypress/e2e/${{ matrix.containers }}
+          browser: chrome
+          headless: true
+          config: baseUrl=${{ env.APPLICATION_ENDPOINT }}
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: tests/cypress/screenshots/
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        if: env.SLACK_WEBHOOK_URL != '' && contains(fromJson('["develop", "master", "production"]'), env.branch_name) && failure ()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_USERNAME: ${{env.branch_name}} Deploy Failure
+          SLACK_ICON_EMOJI: ":bell:"
+          SLACK_COLOR: ${{job.status}}
+          SLACK_FOOTER: ""
+          MSG_MINIMAL: actions url,commit,ref
+
+  a11y-tests:
+    name: A11y Tests
+    needs: deploy
+    if: ${{ github.ref != 'refs/heads/production' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: 
+          [
+            1915b4ffsSelectingContractingWaivers.spec.js,
+            1915b4ffsSelectiveContractingNewInitialWaiverPage.spec.js,
+            1915b4ffsSelectiveContractingRenewalWaiver.spec.js,
+            1915b4ffsSelectiveContractingWaiverAmendment.spec.js,
+            1915bComprehensiveCapitatedNewInitialWaiver.spec.js,
+            1915bComprehensiveCapitatedRenewalWaiver.spec.js,
+            1915bComprehensiveCapitatedwaiverAmendment.spec.js,
+            1915bComprehensiveCapitatedWaiverAuthority.spec.js,
+            1915bWaiverActions.spec.js,
+            1915cAppendixKAmmendment.spec.js,
+            allOtherChipSpaSubmissions.spec.js,
+            allOtherMedicaidSpasSubmissions.spec.js,
+            chipEligibality.spec.js,
+            chipSpaPage.spec.js,
+            dashboardFirstEntry.spec.js,
+            dashboardPage.spec.js,
+            dashboardWaiversPage.spec.js,
+            dashoboardNewsubmission.spec.js,
+            faqPage.spec.js,
+            homePage.spec.js,
+            MedicaidAlternateBenefitsPlanABPAndMedicaidPremiumsAndCostSharingPage.spec.js,
+            medicaidSPA.spec.js,
+            requestTemporaryExtension.spec.js,
+            statePlanAmendmentSPA.spec.js,
+            viewProfilePage.spec.js,
+            waiverActions.spec.js,
+            webformsPage.spec.js
+          ]
+    steps:
+      - name: set branch_name
+        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+      - uses: actions/checkout@v1
+      - name: set branch specific variable names
+        run: ./.github/build_vars.sh set_names
+      - name: set variable values
+        run: ./.github/build_vars.sh set_values
+        env:
+          AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+          INFRASTRUCTURE_TYPE: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_INFRASTRUCTURE_TYPE] || secrets.INFRASTRUCTURE_TYPE || 'development' }}
+          STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
+          COGNITO_TEST_USERS_PASSWORD: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_COGNITO_TEST_USERS_PASSWORD] || secrets.COGNITO_TEST_USERS_PASSWORD }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - name: Combine package-lock.json files to single file
+        run: find services -maxdepth 3 -name package-lock.json | xargs cat package-lock.json > combined-package-lock.txt
+      - name: cache service dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            services/app-api/node_modules
+            services/uploads/node_modules
+            services/stream-functions/node_modules
+            services/ui/node_modules
+            services/ui-auth/node_modules
+            services/ui-src/node_modules
+            node_modules
+          key: ${{ runner.os }}-${{ hashFiles('combined-package-lock.txt') }}
+      - name: Install dependencies
+        run: npm install --frozen-lockfile
+      - name: set path
+        run: |
+          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: Endpoint
+        run: |
+          pushd services
+          export APPLICATION_ENDPOINT=`./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name`
+          echo "APPLICATION_ENDPOINT=$APPLICATION_ENDPOINT" >> $GITHUB_ENV
+          echo "Application endpoint: $APPLICATION_ENDPOINT"
+          popd
+      - name: Check Project A11y
+        uses: cypress-io/github-action@v2.11.7
+        with:
+          working-directory: tests/cypress
+          spec: cypress/a11y/${{ matrix.containers }}.spec.js
+          browser: chrome
+          headless: true
+          config: baseUrl=${{ env.APPLICATION_ENDPOINT }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
   release:
     runs-on: ubuntu-20.04
     needs:
