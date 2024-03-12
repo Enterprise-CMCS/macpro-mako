@@ -32,7 +32,7 @@ export const transform = (id: string) => {
       const transformedData = {
         id,
         flavor: "WAIVER",
-        actionType: Action.TEMP_EXTENSION,
+        actionType: data.seaActionType,
         // actionTypeId: 999999, // There isnt an action type id.. do we want this set or not set at all?
         approvedEffectiveDate: null,
         description: null, // This will be avilable when 4 fields come in.
