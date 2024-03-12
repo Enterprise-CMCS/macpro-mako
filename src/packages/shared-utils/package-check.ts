@@ -30,6 +30,7 @@ export const PackageCheck = ({
   authority,
   actionType,
   attachments,
+  appkParentId,
 }: opensearch.main.Document) => {
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
@@ -49,6 +50,7 @@ export const PackageCheck = ({
         .some((t) =>
           t.includes("Selective Contracting (Streamlined) Waiver"),
         ) || false,
+    isAppk: checkAuthority(authority, [Authority["1915c"]]) && !appkParentId,
     /** Keep excess methods to a minimum with `is` **/
     authorityIs: (validAuthorities: Authority[]) =>
       checkAuthority(authority, validAuthorities),
