@@ -25,7 +25,8 @@ import { useFormContext } from "react-hook-form";
 type Attachments = keyof z.infer<typeof tempExtensionSchema>["attachments"];
 export const tempExtensionSchema = z.object({
   id: z.string(),
-  teType: z.string(),
+  authority: z.string(), //aka tetype
+  seaActionType: z.string().default("Extend"),
   originalWaiverNumber: z.string(),
   additionalInformation: z.string().optional(),
   attachments: z.object({
@@ -36,24 +37,22 @@ export const tempExtensionSchema = z.object({
 
 export const onValidSubmission: SC.ActionFunction = async ({
   request,
-  params,
 }) => {
   try {
     const formData = Object.fromEntries(await request.formData());
-
+    console.log(formData);
     const unflattenedFormData = unflatten(formData);
 
     const data = tempExtensionSchema.parse(unflattenedFormData);
 
     const user = await getUser();
-    const authority = Authority["te"];
 
     console.log("data", data);
     await submit({
-      data: { ...data, id: params.id },
+      data,
       endpoint: "/submit",
       user,
-      authority,
+      authority: data.authority as Authority,
     });
 
     return {
@@ -88,7 +87,7 @@ export const TemporaryExtension = () => {
         </strong>
       </SC.ActionDescription>
       <form onSubmit={handleSubmit}>
-        <TEPackageSection teType="1915(b)" originalWaiverNumber={originalWaiverNumber} />
+        <TEPackageSection authority="1915(b)" originalWaiverNumber={originalWaiverNumber} />
         <SC.AttachmentsSection<Attachments>
           attachments={[
             {
@@ -169,10 +168,10 @@ const IdInput = () => {
 };
 
 const TEPackageSection = ({
-  teType,
+  authority,
   originalWaiverNumber,
 }: {
-  teType: "1915(b)" | "1915(c)";
+  authority: "1915(b)" | "1915(c)";
   originalWaiverNumber: string | undefined;
 }) => {
   const type = originalWaiverNumber?.split(".")[1]?.includes("00") ? "Initial" : "Renewal";
@@ -180,7 +179,7 @@ const TEPackageSection = ({
 
   if (originalWaiverNumber) {
     setValue("originalWaiverNumber", originalWaiverNumber);
-    setValue("teType", teType);
+    setValue("authority", authority);
   }
 
   return (
@@ -190,7 +189,7 @@ const TEPackageSection = ({
         <>
           <div>
             <p>Temporary Extension Type</p>
-            <p className="text-xl">{teType}</p>
+            <p className="text-xl">{authority}</p>
           </div>
 
           <div>
@@ -201,7 +200,7 @@ const TEPackageSection = ({
           <div>
             <p>Type</p>
             <p className="text-xl">
-              {teType} Waiver {type}
+              {authority} Waiver {type}
             </p>
           </div>
         </>

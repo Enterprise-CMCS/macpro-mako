@@ -33,7 +33,7 @@ export const submit = async (event: APIGatewayEvent) => {
       Authority.CHIP_SPA,
       Authority.MED_SPA,
       Authority["1915b"],
-      Authority.te,
+      Authority["1915c"], // We accept amendments, renewals, and extensions for Cs
     ];
     if (!activeSubmissionTypes.includes(body.authority)) {
       return response({
@@ -44,7 +44,9 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
-    if(body.authority == Authority.te) { 
+    // I think we need to break this file up.  A switch maybe
+    if(body.seaActionType == "Extend") { 
+  //  if([Authority["1915b"], Authority["1915c"]].includes(body.authority) && body.seaActionType == "Extend") { 
       console.log("Received new temporary extension sumbissions");
       console.log("currently doing nothing and will return");
       return response({
