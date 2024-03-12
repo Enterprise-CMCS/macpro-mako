@@ -16,6 +16,7 @@ import {
   toggleWithdrawEnabled,
   seatool,
   changedDate,
+  newSubmissionTempExtension,
 } from "./transforms";
 
 export type Document = z.infer<newSubmission.Schema> &
@@ -27,7 +28,8 @@ export type Document = z.infer<newSubmission.Schema> &
   z.infer<changedDate.Schema> & {
     changelog?: Changelog[];
     appkChildren?: ItemResult[];
-  };
+  } & 
+  z.infer<newSubmissionTempExtension.Schema>;
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {

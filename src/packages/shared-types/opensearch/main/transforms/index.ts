@@ -6,3 +6,4 @@ export * as withdrawRai from "./withdraw-rai-response";
 export * as seatool from "./seatool";
 export * as removeAppkChild from "./remove-appk-child";
 export * as changedDate from "./changedDate";
+export * as newSubmissionTempExtension from "./new-submission-temp-extension";
