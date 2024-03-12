@@ -95,9 +95,6 @@ export const handler = async (event: APIGatewayEvent) => {
       case Action.WITHDRAW_RAI:
         await withdrawRai(body, result._source);
         break;
-      case Action.TEMP_EXTENSION:
-        console.log("temp extension called");
-        break;
       default:
         throw `No ${actionType} action available`;
     }
