@@ -1,7 +1,12 @@
 import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
 import { getStateFilter } from "../libs/auth/user";
-import { getPackage, getPackageChangelog } from "../libs/package";
+import {
+  getAppkChildren,
+  getPackage,
+  getPackageChangelog,
+} from "../libs/package";
+import { Authority } from "shared-types";
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
@@ -17,6 +22,13 @@ export const getItemData = async (event: APIGatewayEvent) => {
     const body = JSON.parse(event.body);
     const stateFilter = await getStateFilter(event);
     const packageResult = await getPackage(body.id);
+
+    let appkChildren: any[] = [];
+    if (packageResult._source.authority === Authority["1915c"]) {
+      const children = await getAppkChildren(body.id);
+      appkChildren = children.hits.hits;
+    }
+
     const changelog = await getPackageChangelog(body.id);
     if (
       stateFilter &&
@@ -42,7 +54,11 @@ export const getItemData = async (event: APIGatewayEvent) => {
       statusCode: 200,
       body: {
         ...packageResult,
-        _source: { ...packageResult._source, changelog: changelog.hits.hits },
+        _source: {
+          ...packageResult._source,
+          ...(!!appkChildren.length && { appkChildren }),
+          changelog: changelog.hits.hits,
+        },
       },
     });
   } catch (error) {
