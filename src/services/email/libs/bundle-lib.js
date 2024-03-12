@@ -71,7 +71,7 @@ const getBundleFromEvent = (configKey, stage) => {
             };
         case "withdraw-rai-chip-spa":
             return {
-                "lookupList": ["osInsights"],
+                "lookupList": ["osInsights", "cognito"],
                 "dataList": [ "chipInbox", "cpoc", "srt", "chipCcList", "allState", "submitter", "id", "territory", "submitterName", "submitterEmail", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `withdraw-rai-chip-spa-cms_${stage}`,
