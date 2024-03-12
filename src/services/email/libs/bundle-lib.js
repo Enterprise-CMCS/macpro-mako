@@ -29,7 +29,7 @@ const getBundleFromEvent = (configKey, stage) => {
         case "withdraw-rai-medicaid-spa":
             return {
                 "lookupList": ["osInsights", "cognito", "osMain"],
-                "dataList": [ "cpoc", "srt", "allState", "id", "territory", "submitterName", "submitterEmail", "additionalInformation", "formattedFileList", "textFileList", "initialSubmitterName", "initialSubmitterEmail"],
+                "dataList": [ "cpoc", "srt", "dpoEmail", "osgEmail", "allState", "id", "territory", "submitterName", "submitterEmail", "additionalInformation", "formattedFileList", "textFileList", "initialSubmitterName", "initialSubmitterEmail"],
                 "emailCommands": [{
                     "Template": `withdraw-rai-medicaid-spa-cms_${stage}`,
                     "ToAddresses": ["cpoc", "srt", "dpoEmail", "osgEmail"],
