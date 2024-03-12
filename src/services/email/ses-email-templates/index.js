@@ -507,4 +507,94 @@ If you have questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov
 or your state lead.
 
 Thank you!`,
-}];
+},
+{
+    name: "withdraw-rai-chip-spa-cms",
+    subject:  "Withdraw Formal RAI Response for CHIP SPA Package {{id}}",
+    html: `
+<p>The OneMAC Submission Portal received a request to withdraw the Formal 
+RAI Response. You are receiving this email notification as the Formal RAI 
+for {{id}} was withdrawn by 
+<insert Withdrawing State Submitter Full Name> 
+<insert Withdrawing State Submitter email>.</p>
+<p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email Address:</b> {{submitterEmail}}
+<br><b>CHIP SPA Package ID:</b> {{id}}
+</p>
+Summary:
+<br>{{additionalInformation}}
+<br>
+<br><b>Files</b>:
+<br>{{formattedFileList}}
+<p>If the contents of this email seem suspicious, do not open them, and 
+instead forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.
+</p>
+<p>Thank you!</p>`,
+    text: `
+The OneMAC Submission Portal received a request to withdraw the Formal 
+RAI Response. You are receiving this email notification as the Formal RAI 
+for {{id}} was withdrawn by 
+<insert Withdrawing State Submitter Full Name> 
+<insert Withdrawing State Submitter email>.
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
+CHIP SPA Package ID: {{id}}
+
+Summary:
+{{additionalInformation}}
+
+Files:
+{{formattedFileList}}
+
+If the contents of this email seem suspicious, do not open them, and 
+instead forward this email to SPAM@cms.hhs.gov.
+
+Thank you!`,
+},
+{
+    name: "withdraw-rai-chip-spa-state",
+    subject:  "Withdraw Formal RAI Response for CHIP SPA Package {{id}}",
+    html: `
+<p>The OneMAC Submission Portal received a request to withdraw the Formal 
+RAI Response. You are receiving this email notification as the Formal RAI 
+for {{id}} was withdrawn by 
+<insert Withdrawing State Submitter Full Name> 
+<insert Withdrawing State Submitter email>.</p>
+<p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email Address:</b> {{submitterEmail}}
+<br><b>CHIP SPA Package ID:</b> {{id}}
+</p>
+Summary:
+<br>{{additionalInformation}}
+<br>
+<p>If you have any questions, please contact 
+<a href='mailto:CHIPSPASubmissionMailbox@cms.hhs.gov'>CHIPSPASubmissionMailbox@cms.hhs.gov</a>
+or your state lead.</p>
+<p>Thank you!</p>`,
+    text: `
+The OneMAC Submission Portal received a request to withdraw the Formal 
+RAI Response. You are receiving this email notification as the Formal RAI 
+for {{id}} was withdrawn by 
+<insert Withdrawing State Submitter Full Name> 
+<insert Withdrawing State Submitter email>.
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
+CHIP SPA Package ID: {{id}}
+
+Summary:
+{{additionalInformation}}
+
+If you have any questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov
+or your state lead.
+
+Thank you!`,
+}
+];
