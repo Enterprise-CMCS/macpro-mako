@@ -30,7 +30,7 @@ export const getOsInsightData = async (id) => {
       sort: [{ timestamp: "desc" }],
       query: {
         bool: {
-          must: [{ term: { "packageId.keyword": id } }].concat(filter),
+          must: [{ term: { "packageId.keyword": id } }],
         },
       },
     });
@@ -79,6 +79,6 @@ export const getOsMainData = async (id) => {
   } catch (error) {
     console.log("OpenSearch error is: ", error);
   }
-  console.log("OS Lookup ReturnData: ", returnData);
+  console.log("OS Main Lookup ReturnData: ", returnData);
   return returnData;
 };

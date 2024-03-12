@@ -1,4 +1,4 @@
-import { getOsInsightData } from "../libs/os-lib";
+import { getOsInsightData, getOsMainData } from "../libs/os-lib";
 import { getCognitoData } from "../libs/cognito-lib";
 
 export const getLookupValues = async (lookupList, lookupId) => {
