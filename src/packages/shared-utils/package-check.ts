@@ -1,4 +1,4 @@
-import { opensearch, Authority, SEATOOL_STATUS } from "../shared-types";
+import { opensearch, Authority, SEATOOL_STATUS } from "shared-types";
 
 const secondClockStatuses = [
   SEATOOL_STATUS.PENDING,
