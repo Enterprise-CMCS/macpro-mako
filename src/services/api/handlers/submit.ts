@@ -45,7 +45,10 @@ export const submit = async (event: APIGatewayEvent) => {
     }
 
     // I think we need to break this file up.  A switch maybe
-    if([Authority["1915b"], Authority["1915c"]].includes(body.authority) && body.seaActionType == "Extend") { 
+    if (
+      [Authority["1915b"], Authority["1915c"]].includes(body.authority) &&
+      body.seaActionType === "Extend"
+    ) {
       console.log("Received a new temporary extension sumbission");
 
       // Safe parse the body
@@ -60,21 +63,29 @@ export const submit = async (event: APIGatewayEvent) => {
           eventBody.error.message
         );
       }
-      console.log("Safe parsed event body" + JSON.stringify(eventBody.data, null, 2));
+      console.log(
+        "Safe parsed event body" + JSON.stringify(eventBody.data, null, 2)
+      );
 
       // TODO... call availableActions on the original waiver id, to make sure tis a candidate for this.
       // This occurred on the frontend, but we should do it here too probably
-      console.log(eventBody);
+      const submissionDate = getNextBusinessDayTimestamp();
+      const statusDate = seaToolFriendlyTimestamp();
+      const changedDate = Date.now();
       await produceMessage(
         process.env.topicName as string,
         body.id,
-        JSON.stringify(eventBody.data)
+        JSON.stringify({
+          ...eventBody.data,
+          submissionDate,
+          statusDate,
+          changedDate,
+        })
       );
 
-      console.log("Not doing much, and returning.")
       return response({
-        statusCode: 403,
-        body: { message: "This is just a return to help development, ignore" },
+        statusCode: 200,
+        body: { message: "success" },
       });
     }
 
@@ -129,8 +140,8 @@ export const submit = async (event: APIGatewayEvent) => {
       -- Main insert into State_Plan
       INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo)
       VALUES ('${body.id}', '${
-      body.state
-    }', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo);
+        body.state
+      }', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo);
     `;
     console.log(query);
 

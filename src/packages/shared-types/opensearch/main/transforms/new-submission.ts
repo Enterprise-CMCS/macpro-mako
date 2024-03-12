@@ -1,8 +1,4 @@
 import {
-  getNextBusinessDayTimestamp,
-  seaToolFriendlyTimestamp,
-} from "shared-utils";
-import {
   Action,
   SEATOOL_AUTHORITIES,
   SEATOOL_STATUS,
@@ -27,7 +23,7 @@ const getIdByAuthorityName = (authorityName: string) => {
 export const transform = (id: string) => {
   console.log("hello");
   return onemacSchema.transform((data) => {
-    if (data.seaActionType == Action.TEMP_EXTENSION) {
+    if (data.seaActionType === "Extend") {
       const seatoolStatus = SEATOOL_STATUS.PENDING;
       // to do.  these should be seaparate transforms.  and as is, super verbose.  make it work first, cleanup later
       const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
@@ -60,8 +56,6 @@ export const transform = (id: string) => {
         stateStatus,
         cmsStatus,
         seatoolStatus,
-        statusDate: seaToolFriendlyTimestamp(),
-        submissionDate: getNextBusinessDayTimestamp(),
         subject: null,
         secondClock: null,
         raiWithdrawEnabled: null,
@@ -72,6 +66,9 @@ export const transform = (id: string) => {
         submitterName:
           data.submitterName === "-- --" ? null : data.submitterName,
         origin: "OneMAC",
+        statusDate: data.statusDate,
+        submissionDate: data.submissionDate,
+        changedDate: data.changedDate,
       };
       return transformedData;
     }
