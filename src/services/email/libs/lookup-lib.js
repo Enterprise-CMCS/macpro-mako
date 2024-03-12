@@ -9,6 +9,8 @@ export const getLookupValues = async (lookupList, lookupId) => {
             switch (lookupType) {
                 case "osInsights":
                     return await getOsInsightData(lookupId);
+                case "osMain":
+                    return await getOsMainData(lookupId);
                 case "cognito":
                     return await getCognitoData(lookupId);
                 default:

@@ -514,13 +514,11 @@ Thank you!`,
     html: `
 <p>The OneMAC Submission Portal received a request to withdraw the Formal 
 RAI Response. You are receiving this email notification as the Formal RAI 
-for {{id}} was withdrawn by 
-<insert Withdrawing State Submitter Full Name> 
-<insert Withdrawing State Submitter email>.</p>
+for {{id}} was withdrawn by {{submitterName}} {{submitterEmail}}.</p>
 <p>
 <br><b>State or territory:</b> {{territory}}
-<br><b>Name:</b> {{submitterName}}
-<br><b>Email Address:</b> {{submitterEmail}}
+<br><b>Name:</b> {{initialSubmitterName}}
+<br><b>Email Address:</b> {{initialSubmitterEmail}}
 <br><b>CHIP SPA Package ID:</b> {{id}}
 </p>
 Summary:
@@ -535,13 +533,11 @@ instead forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov
     text: `
 The OneMAC Submission Portal received a request to withdraw the Formal 
 RAI Response. You are receiving this email notification as the Formal RAI 
-for {{id}} was withdrawn by 
-<insert Withdrawing State Submitter Full Name> 
-<insert Withdrawing State Submitter email>.
+for {{id}} was withdrawn by {{submitterName}} {{submitterEmail}}.
 
 State or territory: {{territory}}
-Name: {{submitterName}}
-Email Address: {{submitterEmail}}
+Name: {{initialSubmitterName}}
+Email Address: {{initialSubmitterEmail}}
 CHIP SPA Package ID: {{id}}
 
 Summary:
@@ -561,13 +557,11 @@ Thank you!`,
     html: `
 <p>The OneMAC Submission Portal received a request to withdraw the Formal 
 RAI Response. You are receiving this email notification as the Formal RAI 
-for {{id}} was withdrawn by 
-<insert Withdrawing State Submitter Full Name> 
-<insert Withdrawing State Submitter email>.</p>
+for {{id}} was withdrawn by {{submitterName}} {{submitterEmail}}.</p>
 <p>
 <br><b>State or territory:</b> {{territory}}
-<br><b>Name:</b> {{submitterName}}
-<br><b>Email Address:</b> {{submitterEmail}}
+<br><b>Name:</b> {{initialSubmitterName}}
+<br><b>Email Address:</b> {{initialSubmitterEmail}}
 <br><b>CHIP SPA Package ID:</b> {{id}}
 </p>
 Summary:
@@ -580,13 +574,11 @@ or your state lead.</p>
     text: `
 The OneMAC Submission Portal received a request to withdraw the Formal 
 RAI Response. You are receiving this email notification as the Formal RAI 
-for {{id}} was withdrawn by 
-<insert Withdrawing State Submitter Full Name> 
-<insert Withdrawing State Submitter email>.
+for {{id}} was withdrawn by {{submitterName}} {{submitterEmail}}.
 
 State or territory: {{territory}}
-Name: {{submitterName}}
-Email Address: {{submitterEmail}}
+Name: {{initialSubmitterName}}
+Email Address: {{initialSubmitterEmail}}
 CHIP SPA Package ID: {{id}}
 
 Summary:
