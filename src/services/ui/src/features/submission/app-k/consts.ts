@@ -106,6 +106,7 @@ export const FORM = z.object({
   additionalInformation: z.string().max(4000).optional(),
   attachments: z.object({
     appk: zAttachmentRequired({ min: 1 }),
+    other: zAttachmentRequired({min: 1})
   }),
   proposedEffectiveDate: z.date(),
   seaActionType: z.string().default("Amend"),
