@@ -6,7 +6,7 @@ import {
   SectionCard,
   SimplePageContainer,
   useLocationCrumbs,
-  FAQ_TAB
+  FAQ_TAB,
 } from "@/components";
 import { SlotAttachments } from "@/features/actions";
 import * as I from "@/components/Inputs";
@@ -24,7 +24,6 @@ import { useEffect, useState } from "react";
 import * as Content from "@/components";
 import { zAppkWaiverNumberSchema } from "@/utils";
 import { Link } from "react-router-dom";
-
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
@@ -98,18 +97,18 @@ export const AppKSubmissionForm = () => {
             {state && (
               <div className="flex flex-col gap-2">
                 <div className="flex gap-4">
-                <I.FormLabel className="font-bold">
-                  Appendix K ID
-                  <I.RequiredIndicator />
-                </I.FormLabel>
-                <Link
-                  to="/faq/waiver-c-id"
-                  target={FAQ_TAB}
-                  rel="noopener noreferrer"
-                  className="text-blue-700 hover:underline"
-                >
-                  What is my Appendix K ID?
-                </Link>
+                  <I.FormLabel className="font-bold">
+                    Appendix K ID
+                    <I.RequiredIndicator />
+                  </I.FormLabel>
+                  <Link
+                    to="/faq/waiver-c-id"
+                    target={FAQ_TAB}
+                    rel="noopener noreferrer"
+                    className="text-blue-700 hover:underline"
+                  >
+                    What is my Appendix K ID?
+                  </Link>
                 </div>
                 <I.FormField
                   control={form.control}
@@ -165,9 +164,7 @@ export const AppKSubmissionForm = () => {
               name={"attachments.other"}
               render={SlotAttachments({
                 label: (
-                  <I.FormLabel className="font-semibold">
-                    Other
-                  </I.FormLabel>
+                  <I.FormLabel className="font-semibold">Other</I.FormLabel>
                 ),
                 message: <I.FormMessage />,
                 className: "my-4",
