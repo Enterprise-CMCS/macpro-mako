@@ -1,4 +1,9 @@
-import { Alert, LoadingSpinner, useAlertContext, useModalContext } from "@/components";
+import {
+  Alert,
+  LoadingSpinner,
+  useAlertContext,
+  useModalContext,
+} from "@/components";
 import {
   Button,
   FormDescription,
@@ -237,6 +242,8 @@ export const useSubmitForm = () => {
   const methods = useFormContext();
   const submit = useSubmit();
   const location = useLocation();
+
+  console.log(methods);
 
   const validSubmission: SubmitHandler<any> = (data, e) => {
     const formData = new FormData();
