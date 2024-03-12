@@ -45,13 +45,36 @@ export const submit = async (event: APIGatewayEvent) => {
     }
 
     // I think we need to break this file up.  A switch maybe
-    if(body.seaActionType == "Extend") { 
-  //  if([Authority["1915b"], Authority["1915c"]].includes(body.authority) && body.seaActionType == "Extend") { 
-      console.log("Received new temporary extension sumbissions");
-      console.log("currently doing nothing and will return");
+    if([Authority["1915b"], Authority["1915c"]].includes(body.authority) && body.seaActionType == "Extend") { 
+      console.log("Received a new temporary extension sumbission");
+
+      // Safe parse the body
+      // Right now we have one new submission schema.  We should split this file up or use a switch, and have separate schemas where needed.
+      // App K and TE are two things tha could benefit from having a separate schema
+      const eventBody = onemacSchema.safeParse(body);
+      if (!eventBody.success) {
+        return console.log(
+          "MAKO Validation Error. The following record failed to parse: ",
+          JSON.stringify(eventBody),
+          "Because of the following Reason(s): ",
+          eventBody.error.message
+        );
+      }
+      console.log("Safe parsed event body" + JSON.stringify(eventBody.data, null, 2));
+
+      // TODO... call availableActions on the original waiver id, to make sure tis a candidate for this.
+      // This occurred on the frontend, but we should do it here too probably
+      console.log(eventBody);
+      await produceMessage(
+        process.env.topicName as string,
+        body.id,
+        JSON.stringify(eventBody.data)
+      );
+
+      console.log("Not doing much, and returning.")
       return response({
         statusCode: 403,
-        body: { message: "DEV RETURN..." },
+        body: { message: "This is just a return to help development, ignore" },
       });
     }
 
