@@ -1,5 +1,6 @@
 import {
   Alert,
+  BreadCrumbs,
   FAQ_TAB,
   FormControl,
   FormDescription,
@@ -16,10 +17,10 @@ import {
   SelectTrigger,
   SelectValue,
   SimplePageContainer,
+  useLocationCrumbs,
 } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { useParams } from "react-router-dom";
-import { type ReactNode } from "react";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
@@ -77,9 +78,13 @@ export const TempExtensionWrapper = () => {
   const methods = useForm({
     resolver: zodResolver(tempExtensionSchema),
   });
+  const crumbs = useLocationCrumbs();
 
   return (
     <FormProvider {...methods}>
+      <SimplePageContainer>
+        <BreadCrumbs options={crumbs} />
+      </SimplePageContainer>
       <TemporaryExtension />
     </FormProvider>
   );
@@ -119,11 +124,14 @@ export const TemporaryExtension = () => {
             {
               registerName: "other",
               name: "Other",
-              required: true,
+              required: false,
             },
           ]}
         />
-        <SC.AdditionalInformation helperText="Add anything else that you would like to share with CMS" />
+        <SC.AdditionalInformation
+          required={false}
+          helperText="Add anything else that you would like to share with CMS"
+        />
         <AdditionalFormInformation />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
