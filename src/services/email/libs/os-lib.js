@@ -23,6 +23,35 @@ export const getOsInsightData = async (id) => {
     returnData.cpoc = osInsightsItem?._source?.LEAD_ANALYST ? buildEmailsToSend(osInsightsItem?._source?.LEAD_ANALYST, osInsightsItem?._source?.STATE_PLAN.LEAD_ANALYST_ID) : "'CPOC Substitute' <mako.stateuser@gmail.com>";
     returnData.srt = osInsightsItem?._source?.ACTION_OFFICERS ? buildEmailsToSend(osInsightsItem?._source?.ACTION_OFFICERS) : "'SRT Substitute' <mako.stateuser@gmail.com>";
     returnData.ninetyDaysLookup = osInsightsItem?._source?.STATE_PLAN.ALERT_90_DAYS_DATE;
+
+    const osMainItem = await os.getItem(
+      process.env.osDomain,
+      "main",
+      id
+    );
+    console.log("Main Item: ", osMainItem);
+
+    const osChangeLogItem = await os.getItem(
+      process.env.osDomain,
+      "changelog",
+      id
+    );
+    console.log("ChangeLog Item: ", osChangeLogItem);
+
+    const osTypesItem = await os.getItem(
+      process.env.osDomain,
+      "types",
+      id
+    );
+    console.log("osTypesItem Item: ", osTypesItem);
+
+    const osSubTypesItem = await os.getItem(
+      process.env.osDomain,
+      "subtypes",
+      id
+    );
+    console.log("osSubTypesItem Item: ", osSubTypesItem);
+    
     return returnData;
   } catch (error) {
     console.log("OpenSearch error is: ", error);
