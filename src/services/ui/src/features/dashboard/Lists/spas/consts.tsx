@@ -9,6 +9,7 @@ import {
 } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
 import { formatSeatoolDate } from "shared-utils";
+import { LABELS } from "@/utils";
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -21,17 +22,19 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       field: "id.keyword",
       label: "SPA ID",
       locked: true,
+      transform: (data) => data.id,
       cell: renderCellIdLink((id) => `/details?id=${encodeURIComponent(id)}`),
     },
     {
       field: "state.keyword",
       label: "State",
-      visible: true,
+      transform: (data) => data.state ?? BLANK_VALUE,
       cell: (data) => data.state,
     },
     {
       field: "authority.keyword",
       label: "Type",
+      transform: (data) => data.authority ?? BLANK_VALUE,
       cell: (data) =>
         data?.authority
           ? removeUnderscoresAndCapitalize(data.authority)
@@ -40,6 +43,15 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
       label: "Status",
+      transform: (data) => {
+        if (data.actionType === undefined) {
+          return BLANK_VALUE;
+        }
+
+        return (
+          LABELS[data.actionType as keyof typeof LABELS] || data.actionType
+        );
+      },
       cell: (data) => {
         const status = (() => {
           if (!props?.isCms) return data.stateStatus;
@@ -66,12 +78,16 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: "submissionDate",
       label: "Initial Submission",
+      transform: (data) =>
+        data?.submissionDate
+          ? formatSeatoolDate(data.submissionDate)
+          : BLANK_VALUE,
       cell: renderCellDate("submissionDate"),
     },
     {
       field: "origin",
       label: "Submission Source",
-      visible: false,
+      hidden: true,
       cell: (data) => {
         return data.origin;
       },
@@ -79,12 +95,17 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: "raiRequestedDate",
       label: "Formal RAI Requested",
-      visible: false,
+      hidden: true,
       cell: renderCellDate("raiRequestedDate"),
     },
     {
       field: "raiReceivedDate",
       label: "Formal RAI Response",
+      transform: (data) => {
+        return data.raiReceivedDate && !data.raiWithdrawnDate
+          ? formatSeatoolDate(data.raiReceivedDate)
+          : BLANK_VALUE;
+      },
       cell: (data) => {
         if (!data.raiReceivedDate || data.raiWithdrawnDate) return null;
         return formatSeatoolDate(data.raiReceivedDate);
@@ -93,12 +114,14 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: "leadAnalystName.keyword",
       label: "CPOC Name",
-      visible: false,
+      hidden: true,
+      transform: (data) => data.leadAnalystName ?? BLANK_VALUE,
       cell: (data) => data.leadAnalystName,
     },
     {
       field: "submitterName.keyword",
       label: "Submitted By",
+      transform: (data) => data.submitterName ?? BLANK_VALUE,
       cell: (data) => data.submitterName,
     },
     // hide actions column for: readonly,help desk
