@@ -1,9 +1,9 @@
-import { opensearch, Authority, SEATOOL_STATUS } from "shared-types";
+import { opensearch, Authority, SEATOOL_STATUS_VALUES } from "shared-types";
 
-const secondClockStatuses = [
-  SEATOOL_STATUS.PENDING,
-  SEATOOL_STATUS.PENDING_APPROVAL,
-  SEATOOL_STATUS.PENDING_CONCURRENCE,
+const secondClockStatuses: SEATOOL_STATUS_VALUES[] = [
+  "Pending",
+  "Pending-Approval",
+  "Pending-Concurrence",
 ];
 
 const checkAuthority = (
@@ -43,8 +43,8 @@ export const PackageCheck = ({
     /** Is in any of our pending statuses, sans Pending-RAI **/
     isInActivePendingStatus: checkStatus(seatoolStatus, [
       ...secondClockStatuses,
-      SEATOOL_STATUS.PENDING_OFF_THE_CLOCK,
-    ]),
+      "Pending-Off the Clock",
+    ] as SEATOOL_STATUS_VALUES[]),
     /** Is in a second clock status and RAI has been received **/
     isInSecondClock:
       !planChecks.authorityIs([Authority.CHIP_SPA]) &&
@@ -53,7 +53,10 @@ export const PackageCheck = ({
       raiReceivedDate &&
       !raiWithdrawnDate,
     /** Is in any status except Package Withdrawn **/
-    isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),
+    isNotWithdrawn: !checkStatus(
+      seatoolStatus,
+      "Withdrawn" as SEATOOL_STATUS_VALUES
+    ),
     /** Added for elasticity, but common checks should always bubble up as
      * object attributes! **/
     hasStatus: (authorizedStatuses: string | string[]) =>

@@ -10,7 +10,10 @@ export const SEATOOL_STATUS = {
   PENDING_APPROVAL: "Pending-Approval",
   UNKNOWN: "Unknown",
   PENDING_OFF_THE_CLOCK: "Pending-Off the Clock",
-};
+} as const;
+
+export type SEATOOL_STATUS_VALUES =
+  (typeof SEATOOL_STATUS)[keyof typeof SEATOOL_STATUS];
 
 const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.PENDING]: "Under Review",
