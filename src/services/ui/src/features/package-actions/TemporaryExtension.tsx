@@ -243,7 +243,7 @@ const IdInput = () => {
               target={FAQ_TAB}
               rel="noopener noreferrer"
             >
-              What is my Temporary Extension Request Number
+              What is my Temporary Extension Request Number?
             </Link>
           </FormLabel>
           <FormDescription className="max-w-md">
