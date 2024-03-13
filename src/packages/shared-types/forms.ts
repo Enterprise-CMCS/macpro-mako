@@ -48,6 +48,7 @@ export type RHFOption = {
   dependency?: DependencyRule;
   form?: FormGroup[];
   slots?: RHFSlotProps[];
+  optionLabelStyling?: string;
 };
 
 export type RHFComponentMap = {

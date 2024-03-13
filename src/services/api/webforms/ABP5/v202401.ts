@@ -559,12 +559,12 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "optional_items",
-              labelStyling: "text-2xl font-semibold p-4 bg-slate-300",
               props: {
                 options: [
                   {
                     label:
                       "11. Other covered benefits that are not essential health benefits",
+                    optionLabelStyling: "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
                     value: "other_covered_benefits_benefit",
                     form: [
                       {
@@ -587,6 +587,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     label: "12. Other base benchmark benefits not covered",
+                    optionLabelStyling: "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
                     value: "other_base_benchmark_benefits_not_covered",
                     form: [
                       {
@@ -637,6 +638,7 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "13. Additional covered benefits (not applicable to “adult” group under Section 1902(a)(10)(A)(i)(VIII) of the Act)",
+                    optionLabelStyling: "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
                     value: "additional_covered_benefits",
                     form: [
                       {
