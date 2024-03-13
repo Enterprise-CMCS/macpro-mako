@@ -24,7 +24,7 @@ export const transform = (id: string) => {
       // We should have a separate transform for TE new submission... todo
       const seatoolStatus = SEATOOL_STATUS.PENDING;
       const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-      const transformedData = {
+      return {
         id,
         flavor: "WAIVER",
         actionType: data.seaActionType,
@@ -65,20 +65,19 @@ export const transform = (id: string) => {
         submissionDate: data.submissionDate,
         changedDate: data.changedDate,
       };
-      return transformedData;
+    } else {
+      return {
+        id,
+        attachments: data.attachments,
+        appkParentId: data.appkParentId,
+        raiWithdrawEnabled: data.raiWithdrawEnabled,
+        additionalInformation: data.additionalInformation,
+        submitterEmail: data.submitterEmail,
+        submitterName:
+          data.submitterName === "-- --" ? null : data.submitterName,
+        origin: "OneMAC",
+      };
     }
-
-    const transformedData = {
-      id,
-      attachments: data.attachments,
-      appkParentId: data.appkParentId,
-      raiWithdrawEnabled: data.raiWithdrawEnabled,
-      additionalInformation: data.additionalInformation,
-      submitterEmail: data.submitterEmail,
-      submitterName: data.submitterName === "-- --" ? null : data.submitterName,
-      origin: "OneMAC",
-    };
-    return transformedData;
   });
 };
 
