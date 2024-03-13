@@ -67,6 +67,8 @@ if ! which brew > /dev/null ; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
+export PATH="$homebrewprefix:$PATH"
+
 # Install the AWS CLI, used to interact with any/all AWS services
 if ! which aws > /dev/null ; then
 	brew install awscli session-manager-plugin
@@ -124,6 +126,7 @@ fi
 
 # Install kion-cli, a go package used to authenticate to Kion and access AWS
 go install github.com/kionsoftware/kion-cli@latest
+touch ~/.kion.yml
 
 touch $macprorcfile
 echo """
@@ -136,6 +139,7 @@ export NVM_DIR="$HOME/.nvm"
 export PATH=/usr/local/go/bin:\$PATH
 export PATH=\$PATH:$(go env GOPATH)/bin
 
+export PATH="$homebrewprefix/bin:\$PATH"
 eval \"\$($homebrewprefix/bin/brew shellenv)\"
 
 eval \"\$(direnv hook $shell)\"
