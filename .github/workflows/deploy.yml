@@ -299,7 +299,6 @@ jobs:
           working-directory: tests/cypress
           spec: cypress/e2e/${{ matrix.containers }}
           browser: chrome
-          headless: true
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
       - name: Upload screenshots
         uses: actions/upload-artifact@v3
@@ -361,7 +360,6 @@ jobs:
           working-directory: tests/cypress
           spec: cypress/a11y/${{ matrix.containers }}.spec.js
           browser: chrome
-          headless: true
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
 
   release:
