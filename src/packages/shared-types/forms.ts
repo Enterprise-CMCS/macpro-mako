@@ -20,11 +20,13 @@ export interface FormSchema {
 
 export type RHFSlotProps = {
   name: string;
-  label?: string;
+  label?: RHFTextField;
   labelStyling?: string;
+  tbColumnStyle?: string;
   formItemStyling?: string;
   groupNamePrefix?: string;
-  description?: string;
+  removeFormDecoration?: boolean;
+  description?: RHFTextField;
   descriptionAbove?: boolean;
   descriptionStyling?: string;
   dependency?: DependencyRule;
@@ -33,21 +35,37 @@ export type RHFSlotProps = {
   [K in keyof RHFComponentMap]: {
     rhf: K;
     props?: RHFComponentMap[K];
+    text?: K extends "TextDisplay" ? RHFTextField : never;
     fields?: K extends "FieldArray"
       ? RHFSlotProps[]
       : K extends "FieldGroup"
-      ? RHFSlotProps[]
-      : never;
+        ? RHFSlotProps[]
+        : K extends "TableGroup"
+          ? RHFSlotProps[]
+          : never;
   };
 }[keyof RHFComponentMap];
 
 export type RHFOption = {
   label: string;
+  styledLabel?: RHFTextField;
   value: string;
   dependency?: DependencyRule;
   form?: FormGroup[];
   slots?: RHFSlotProps[];
 };
+
+export type RHFTextField =
+  | Array<
+      | {
+          text: string;
+          type?: "br" | "brWrap" | "link" | "bold" | "italic";
+          link?: string;
+          classname?: string;
+        }
+      | string
+    >
+  | string;
 
 export type RHFComponentMap = {
   Input: InputProps & {
@@ -75,6 +93,12 @@ export type RHFComponentMap = {
     appendText?: string;
     removeText?: string;
   };
+  TableGroup: {
+    initNumRows?: number;
+    scalable?: boolean;
+    tableStyle?: string;
+  };
+  TextDisplay: { className?: string };
 };
 
 export type FormGroup = {
@@ -97,7 +121,7 @@ export interface Document {
 
 export type FieldArrayProps<
   T extends FieldValues,
-  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
+  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>,
 > = {
   control: Control<T, unknown>;
   name: TFieldArrayName;
@@ -108,7 +132,7 @@ export type FieldArrayProps<
 
 export type FieldGroupProps<
   T extends FieldValues,
-  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>
+  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>,
 > = {
   control: Control<T, unknown>;
   name: TFieldArrayName;
@@ -116,6 +140,18 @@ export type FieldGroupProps<
   appendText?: string;
   removeText?: string;
   groupNamePrefix?: string;
+};
+
+export type TableGroupProps<
+  T extends FieldValues,
+  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>,
+> = {
+  control: Control<T, unknown>;
+  name: TFieldArrayName;
+  fields: RHFSlotProps[];
+  initNumRows?: number;
+  scalable?: boolean;
+  tableStyle?: string;
 };
 
 type ConditionRules =

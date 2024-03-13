@@ -41,6 +41,7 @@ export const slotInitializer = (ACC: GL, SLOT: T.RHFSlotProps): GL => {
     case "Upload":
       ACC[SLOT.name] = [];
       break;
+    case "TextDisplay":
     case "Input":
     case "Select":
     case "Textarea":

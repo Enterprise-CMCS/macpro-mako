@@ -28,24 +28,27 @@ import {
 } from "../Inputs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components";
 import { cn } from "@/utils";
-import { RHFFieldArray, FieldGroup, RHFFormGroup } from ".";
+import { RHFFieldArray, FieldGroup, RHFFormGroup, TableGroup } from ".";
+import { RHFTextDisplay } from "./TextDisplay";
 
 export const RHFSlot = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   control,
-  rhf,
   label,
   description,
   descriptionAbove,
   descriptionStyling,
-  name,
-  props,
   labelStyling,
   formItemStyling,
+  removeFormDecoration,
+  rhf,
+  name,
+  fields,
   groupNamePrefix,
-  ...rest
+  props,
+  text,
 }: RHFSlotProps & { control: any }): ControllerProps<
   TFieldValues,
   TName
@@ -64,10 +67,14 @@ export const RHFSlot = <
           formItemStyling ? ` ${formItemStyling}` : ""
         }`}
       >
-        {label && <FormLabel className={labelStyling}>{label}</FormLabel>}
-        {descriptionAbove && (
+        {!removeFormDecoration && label && (
+          <FormLabel className={labelStyling}>
+            <RHFTextDisplay text={label} />
+          </FormLabel>
+        )}
+        {!removeFormDecoration && descriptionAbove && description && (
           <FormDescription className={descriptionStyling}>
-            {description}
+            <RHFTextDisplay text={description} />
           </FormDescription>
         )}
         <FormControl>
@@ -113,7 +120,7 @@ export const RHFSlot = <
                 return (
                   <Select
                     {...hops}
-                    onValueChange={field.onChange}
+                    onValueChange={field?.onChange}
                     defaultValue={field.value}
                   >
                     <SelectTrigger {...hops} aria-label={field.name}>
@@ -154,7 +161,9 @@ export const RHFSlot = <
                                 className="font-normal"
                                 htmlFor={OPT.value}
                               >
-                                {OPT.label}
+                                <RHFTextDisplay
+                                  text={OPT.styledLabel ?? OPT.label}
+                                />
                               </FormLabel>
                             }
                           </div>
@@ -206,6 +215,11 @@ export const RHFSlot = <
                       <div key={`CHECK-${OPT.value}`}>
                         <Checkbox
                           label={OPT.label}
+                          styledLabel={
+                            <RHFTextDisplay
+                              text={OPT.styledLabel ?? OPT.label}
+                            />
+                          }
                           value={OPT.value}
                           checked={field.value?.includes(OPT.value)}
                           onCheckedChange={(c) => {
@@ -299,7 +313,13 @@ export const RHFSlot = <
               (() => {
                 const hops = props as RHFComponentMap["Upload"];
 
-                return <Upload {...hops} files={field?.value ?? []} setFiles={field.onChange}  />;
+                return (
+                  <Upload
+                    {...hops}
+                    files={field?.value ?? []}
+                    setFiles={field.onChange}
+                  />
+                );
               })()}
 
             {/* ----------------------------------------------------------------------------- */}
@@ -307,7 +327,7 @@ export const RHFSlot = <
               <RHFFieldArray
                 control={control}
                 name={name}
-                fields={rest.fields ?? []}
+                fields={fields ?? []}
                 groupNamePrefix={groupNamePrefix}
                 {...(props as RHFComponentMap["FieldArray"])}
               />
@@ -318,17 +338,36 @@ export const RHFSlot = <
               <FieldGroup
                 control={control}
                 name={name}
-                fields={rest.fields ?? []}
+                fields={fields ?? []}
                 groupNamePrefix={groupNamePrefix}
                 {...(props as RHFComponentMap["FieldGroup"])}
               />
             )}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "TableGroup" && (
+              <TableGroup
+                control={control}
+                name={name}
+                fields={fields ?? []}
+                {...(props as RHFComponentMap["TableGroup"])}
+              />
+            )}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "TextDisplay" && (
+              <p {...(props as RHFComponentMap["TextDisplay"])}>
+                <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} />
+              </p>
+            )}
           </>
         </FormControl>
-        {description && !descriptionAbove && (
-          <FormDescription>{description}</FormDescription>
+        {!removeFormDecoration && description && !descriptionAbove && (
+          <FormDescription className={descriptionStyling}>
+            <RHFTextDisplay text={description} />
+          </FormDescription>
         )}
-        <FormMessage />
+        {!removeFormDecoration && <FormMessage />}
       </FormItem>
     );
   };
