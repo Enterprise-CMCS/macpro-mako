@@ -221,7 +221,7 @@ export const RHFSlot = <
                           parentValue={field.value}
                           changeMethod={field.onChange}
                           aria-label={field.name}
-                          sectionHeader={hops.sectionHeader}
+                          labelStyling={labelStyling}
                         />
                         {field.value?.includes(OPT.value) &&
                           !!OPT.slots &&

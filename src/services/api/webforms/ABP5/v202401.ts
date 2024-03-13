@@ -559,8 +559,8 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "optional_items",
+              labelStyling: "text-2xl font-semibold p-4 bg-slate-300",
               props: {
-                sectionHeader: true,
                 options: [
                   {
                     label:

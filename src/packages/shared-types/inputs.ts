@@ -15,7 +15,6 @@ export type CheckboxProps = React.ComponentPropsWithoutRef<
   typeof CheckboxPrimitive.Root
 > & {
   className?: string;
-  sectionHeader?: boolean;
 };
 
 export type DatePickerProps = {
