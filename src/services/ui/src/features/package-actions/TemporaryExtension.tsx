@@ -41,7 +41,7 @@ export const tempExtensionSchema = z.object({
   authority: z.string(), //aka tetype
   seaActionType: z.string().default("Extend"),
   originalWaiverNumber: zExtensionOriginalWaiverNumberSchema,
-  additionalInformation: z.string().optional(),
+  additionalInformation: z.string().optional().default(""),
   attachments: z.object({
     waiverExtensionRequest: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,
