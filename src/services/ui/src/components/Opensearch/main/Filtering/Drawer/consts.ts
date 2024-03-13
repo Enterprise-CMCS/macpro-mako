@@ -60,6 +60,15 @@ export const BOOL_INITIALINTAKENEEDED: DrawerFilterableGroup = {
   value: null,
 };
 
+export const BOOL_RAIWITHDRAWENABLED: DrawerFilterableGroup = {
+  label: "RAI Withdraw Enabled",
+  field: "raiWithdrawEnabled",
+  component: "boolean",
+  prefix: "must",
+  type: "match",
+  value: null,
+};
+
 export const CHECK_ACTIONTYPE: DrawerFilterableGroup = {
   label: "Action Type",
   field: "actionType.keyword",
