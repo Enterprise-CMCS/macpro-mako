@@ -71,7 +71,7 @@ export const AttachmentsSection = <T extends string>({
         the description for each of the attachment types on the{" "}
         <Link
           className="text-blue-700 hover:underline"
-          to={"/faq/medicaid-spa-rai-attachments"}
+          to={"/faq/medicaid-spa-attachments"} // arbitrary default, covered by a bug to be fixed soon
           target={FAQ_TAB}
         >
           {" "}
@@ -84,7 +84,7 @@ export const AttachmentsSection = <T extends string>({
         See the full list on the{" "}
         <Link
           className="text-blue-700 hover:underline"
-          to={"/faq/medicaid-spa-rai-attachments"}
+          to={"/faq/acceptable-file-formats"}
           target={FAQ_TAB}
         >
           {" "}
