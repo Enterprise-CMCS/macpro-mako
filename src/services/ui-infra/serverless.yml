@@ -12,6 +12,7 @@ provider:
     SERVICE: ${self:service}
   environment:
     region: ${self:provider.region}
+    stage: ${sls:stage}
   iam:
     role:
       path: /delegatedadmin/developer/

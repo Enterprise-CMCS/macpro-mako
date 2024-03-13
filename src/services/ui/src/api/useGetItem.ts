@@ -1,4 +1,8 @@
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import {
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { opensearch, ReactQueryApiError, SEATOOL_STATUS } from "shared-types";
 
@@ -26,4 +30,19 @@ export const useGetItem = (
     () => getItem(id),
     options
   );
+};
+
+export const useGetItemCache = (id: string) => {
+  const queryClient = useQueryClient();
+  const data = (() => {
+    const data = queryClient.getQueryCache().find(["record", id])?.state
+      .data as opensearch.main.ItemResult;
+    return data._source;
+  })();
+
+  const refetch = () => {
+    queryClient.refetchQueries(["record", id]);
+  };
+
+  return { data, refetch };
 };
