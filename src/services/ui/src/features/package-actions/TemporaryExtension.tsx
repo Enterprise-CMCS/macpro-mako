@@ -94,7 +94,7 @@ export const TemporaryExtension = () => {
   const { id } = useParams();
   SC.useDisplaySubmissionAlert(
     "Temporary Extension issued",
-    `The Extension for ${id} has been submitted. An email confirmation will be sent to you and the state.`
+    `The Temporary Extension Request for ${id} has been submitted.`
   );
 
   return (
@@ -201,8 +201,7 @@ const AdditionalFormInformation = () => {
         Once you submit this form, a confirmation email is sent to you and to
         CMS. CMS will use this content to review your package, and you will not
         be able to edit this form. If CMS needs any additional information, they
-        will follow up by email. If you leave this page, you will lose your
-        progress on this form.
+        will follow up by email.
       </p>
     </Alert>
   );
@@ -232,7 +231,7 @@ const IdInput = () => {
             </Link>
           </FormLabel>
           <FormDescription className="max-w-md">
-            Must be a waiver extension request number with the format
+            Must use a waiver extension request number with the format
             SS-####.R##.TE## or SS-#####.R##.TE##
           </FormDescription>
           <FormControl>

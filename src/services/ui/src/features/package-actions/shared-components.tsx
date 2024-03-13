@@ -71,7 +71,7 @@ export const AttachmentsSection = <T extends string>({
         the description for each of the attachment types on the{" "}
         <Link
           className="text-blue-700 hover:underline"
-          to={"/faq/#medicaid-spa-rai-attachments"}
+          to={"/faq/medicaid-spa-rai-attachments"}
           target={FAQ_TAB}
         >
           {" "}
@@ -79,12 +79,12 @@ export const AttachmentsSection = <T extends string>({
         </Link>
       </p>
       <p>
-        We accept the following file formats:{" "}
-        <strong>.docx, .jpg, .png, .pdf, .xlsx,</strong>
-        and a few others. See the full list on the{" "}
+        We accept the following file formats:{"  "}
+        <strong>.docx, .jpg, .pdf, .png, .xlsx. </strong>
+        See the full list on the{" "}
         <Link
           className="text-blue-700 hover:underline"
-          to={"/faq/#medicaid-spa-rai-attachments"}
+          to={"/faq/medicaid-spa-rai-attachments"}
           target={FAQ_TAB}
         >
           {" "}
@@ -288,7 +288,9 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
         body,
       });
       alert.setBannerShow(true);
-      alert.setBannerDisplayOn(location.state?.from?.split("?")[0] ?? "/dashboard");
+      alert.setBannerDisplayOn(
+        location.state?.from?.split("?")[0] ?? "/dashboard"
+      );
       navigate(location.state?.from ?? "/dashboard");
     }
   }, [data]);
