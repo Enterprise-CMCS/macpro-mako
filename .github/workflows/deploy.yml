@@ -287,8 +287,7 @@ jobs:
     steps:
       - name: set branch_name
         run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -300,7 +299,7 @@ jobs:
           node-version: 18
           cache: 'npm'
           cache-dependency-path: '**/tests/cypress/package-lock.json'
-      - run: npm i
+      - run: npm ci --prefix src/tests/cypress
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
@@ -356,8 +355,7 @@ jobs:
     steps:
       - name: set branch_name
         run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -369,7 +367,7 @@ jobs:
           node-version: 18
           cache: 'npm'
           cache-dependency-path: '**/tests/cypress/package-lock.json'
-      - run: npm install --frozen-lockfile
+      - run: npm install --frozen-lockfile --prefix src/tests/cypress
       - name: Check Project A11y
         uses: cypress-io/github-action@v6
         with:
