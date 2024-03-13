@@ -21,7 +21,6 @@ const getIdByAuthorityName = (authorityName: string) => {
 };
 
 export const transform = (id: string) => {
-  console.log("hello");
   return onemacSchema.transform((data) => {
     if (data.seaActionType === "Extend") {
       const seatoolStatus = SEATOOL_STATUS.PENDING;
