@@ -65,6 +65,7 @@ export const submit = async (event: APIGatewayEvent) => {
 
       // Check that this action can be performed on the original waiver
       const originalWaiver = await getPackage(body.originalWaiverNumber);
+      console.log(originalWaiver);
       const originalWaiverAvailableActions: Action[] = getAvailableActions(
         userAttr,
         originalWaiver._source
@@ -72,6 +73,9 @@ export const submit = async (event: APIGatewayEvent) => {
       if (!originalWaiverAvailableActions.includes(Action.TEMP_EXTENSION)) {
         const actionType = Action.TEMP_EXTENSION;
         const id = body.originalWaiverNumber;
+        console.log(
+          `Package ${body.originalWaiverNumber} is not a candidate to receive a Temporary Extension`
+        );
         return response({
           statusCode: 401,
           body: {
