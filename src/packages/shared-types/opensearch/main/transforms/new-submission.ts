@@ -1,5 +1,4 @@
 import {
-  Action,
   SEATOOL_AUTHORITIES,
   SEATOOL_STATUS,
   getStatus,
@@ -8,11 +7,10 @@ import {
 
 const getIdByAuthorityName = (authorityName: string) => {
   try {
-    // Assuming SEATOOL_AUTHORITIES is an object where keys are IDs and values are authority names
     const authorityId = Object.keys(SEATOOL_AUTHORITIES).find(
       (key) => SEATOOL_AUTHORITIES[key] === authorityName
     );
-    return authorityId ? parseInt(authorityId, 10) : null; // Convert the key to an integer ID, or return null if not found
+    return authorityId ? parseInt(authorityId, 10) : null;
   } catch (error) {
     console.error(`SEATOOL AUTHORITY ID LOOKUP ERROR: ${authorityName}`);
     console.error(error);
@@ -23,11 +21,9 @@ const getIdByAuthorityName = (authorityName: string) => {
 export const transform = (id: string) => {
   return onemacSchema.transform((data) => {
     if (data.seaActionType === "Extend") {
+      // We should have a separate transform for TE new submission... todo
       const seatoolStatus = SEATOOL_STATUS.PENDING;
-      // to do.  these should be seaparate transforms.  and as is, super verbose.  make it work first, cleanup later
       const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-      console.log("brian");
-      console.log(seatoolStatus, cmsStatus, stateStatus);
       const transformedData = {
         id,
         flavor: "WAIVER",
