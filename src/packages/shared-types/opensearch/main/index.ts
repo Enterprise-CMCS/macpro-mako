@@ -27,7 +27,7 @@ export type Document = z.infer<newSubmission.Schema> &
   z.infer<changedDate.Schema> & {
     changelog?: Changelog[];
     appkChildren?: ItemResult[];
-  }
+  };
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
