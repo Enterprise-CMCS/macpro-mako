@@ -299,12 +299,12 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-          cache-dependency-path: tests/cypress/package-lock.json
+          cache-dependency-path: '**/tests/cypress/package-lock.json'
       - run: npm ci
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
-          working-directory: tests/cypress
+          working-directory: src/tests/cypress
           spec: cypress/e2e/${{ matrix.containers }}
           browser: chrome
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
@@ -313,7 +313,7 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots
-          path: tests/cypress/screenshots/
+          path: src/tests/cypress/screenshots/
 
   a11y-tests:
     name: A11y Tests
@@ -368,12 +368,12 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-          cache-dependency-path: tests/cypress/package-lock.json
+          cache-dependency-path: '**/tests/cypress/package-lock.json'
       - run: npm install --frozen-lockfile
       - name: Check Project A11y
         uses: cypress-io/github-action@v6
         with:
-          working-directory: tests/cypress
+          working-directory: src/tests/cypress
           spec: cypress/a11y/${{ matrix.containers }}.spec.js
           browser: chrome
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
