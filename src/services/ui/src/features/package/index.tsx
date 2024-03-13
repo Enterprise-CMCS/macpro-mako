@@ -1,7 +1,7 @@
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 import { opensearch } from "shared-types";
 import { useQuery } from "@/hooks";
-import { useGetItem } from "@/api";
+import { useGetItemCache } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { PropsWithChildren } from "react";
 
@@ -34,6 +34,8 @@ export const DetailsContent = ({
   data?: opensearch.main.ItemResult;
 }) => {
   if (!data?._source) return <LoadingSpinner />;
+  if (error) return <ErrorAlert error={error} />;
+
   return (
     <div className="w-full py-1 px-4 lg:px-8">
       <section
@@ -44,9 +46,9 @@ export const DetailsContent = ({
         <PackageActionsCard id={data._id} authority={data._source.authority!} />
       </section>
       <div className="flex flex-col gap-3">
-        <PackageDetails {...data._source} />
-        <PackageActivities {...data._source} />
-        <AdminChanges {...data._source} />
+        <PackageDetails />
+        <PackageActivities  />
+        <AdminChanges />
       </div>
     </div>
   );
@@ -55,11 +57,6 @@ export const DetailsContent = ({
 export const Details = () => {
   const query = useQuery();
   const id = query.get("id") as string;
-  const { data, isLoading, error } = useGetItem(id);
-
-  if (isLoading) return <LoadingSpinner />;
-  if (!data?._source) return <LoadingSpinner />;
-  if (error) return <ErrorAlert error={error} />;
 
   return (
     <div className="max-w-screen-xl mx-auto flex px-4 lg:px-8">
@@ -84,4 +81,10 @@ const DetailsSidebar = ({ data }: { data: opensearch.main.ItemResult }) => {
       ))}
     </aside>
   );
+};
+
+export const usePackageDetailsCache = () => {
+  const query = useQuery();
+  const id = query.get("id") as string;
+  return useGetItemCache(id);
 };

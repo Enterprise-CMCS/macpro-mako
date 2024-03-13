@@ -9,6 +9,7 @@ import {
   DetailsSection,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { usePackageDetailsCache } from "..";
 
 export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
   props,
@@ -72,8 +73,9 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
   );
 };
 
-export const AdminChanges: FC<opensearch.main.Document> = (props) => {
-  const data = props.changelog?.filter((CL) =>
+export const AdminChanges = () => {
+  const cache = usePackageDetailsCache();
+  const data = cache.data.changelog?.filter((CL) =>
     ["disable-rai-withdraw", "enable-rai-withdraw"].includes(
       CL._source.actionType,
     ),

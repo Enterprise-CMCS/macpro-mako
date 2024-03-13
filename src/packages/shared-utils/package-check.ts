@@ -28,10 +28,12 @@ export const PackageCheck = ({
   raiWithdrawnDate,
   raiWithdrawEnabled,
   authority,
+  appkParentId,
 }: opensearch.main.Document) => {
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
     isWaiver: checkAuthority(authority, [Authority["1915b"]]),
+    isAppk: checkAuthority(authority, [Authority["1915c"]]) && !appkParentId,
     /** Keep excess methods to a minimum with `is` **/
     authorityIs: (validAuthorities: Authority[]) =>
       checkAuthority(authority, validAuthorities),

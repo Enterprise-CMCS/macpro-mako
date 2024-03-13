@@ -327,12 +327,26 @@ async function getFileTypeFromContents(
     const type = await fileTypeFromFile(filePath);
 
     if (!type) {
-      if(path.extname(filePath) == ".csv") {
-        if((await looksLikeCsv(filePath, ",", 100))) {
-          return mimeTypes.lookup(".csv")
-        }
+      switch (path.extname(filePath)) {
+        case ".csv":
+          console.log("Checking csv another way...");
+          if (await looksLikeCsv(filePath, ",", 100)) {
+            return mimeTypes.lookup(".csv");
+          }
+          break;
+        case ".txt":
+          console.log("Checking txt another way...")
+          if (await looksLikeTxt(fileBuffer)) {
+            return mimeTypes.lookup(".txt");
+          }
+          break;
+        default:
+          console.log("Could not determine file type.");
+          return false;
       }
-      console.log("Could not determine file type.");
+    }
+    if (!type?.mime) {
+      console.log(`getFileTypeFromContents: File determined to be mime:${type?.mime}`);
       return false;
     }
     console.log(`getFileTypeFromContents:  File determined to be mime:${type.mime} ext:${type.ext}`);
@@ -366,4 +380,14 @@ function areMimeTypesEquivalent(mime1: string, mime2: string): boolean {
     }
   }
   return false;
+}
+
+function looksLikeTxt(buffer: Buffer): boolean {
+  return !buffer.some(byte => {
+    return (
+      byte < 0x09 ||
+      (byte > 0x0D && byte < 0x20) || // Control characters excluding tab, newline, and carriage return
+      byte > 0x7E // Beyond ASCII printable characters
+    );
+  });
 }

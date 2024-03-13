@@ -333,8 +333,8 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
   );
 };
 
-export const PackageActivities = (props: opensearch.main.Document) => {
-  const hook = usePackageActivities(props);
+export const PackageActivities = () => {
+  const hook = usePackageActivities();
 
   return (
     <DetailsSection

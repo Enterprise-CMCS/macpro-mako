@@ -5,13 +5,14 @@ import {
   recordDetails,
   submissionDetails,
 } from "./hooks";
-import { opensearch } from "shared-types";
+
 import { FC } from "react";
 
 import { DetailSectionItem } from "./hooks";
 import { useGetUser } from "@/api/useGetUser";
 import { AppK } from "./appk";
 import { cn } from "@/utils";
+import { usePackageDetailsCache } from "..";
 
 export const DetailItemsGrid: FC<{
   displayItems: DetailSectionItem[];
@@ -40,22 +41,23 @@ export const DetailItemsGrid: FC<{
   );
 };
 
-export const PackageDetails: FC<opensearch.main.Document> = (props) => {
+export const PackageDetails = () => {
+  const { data } = usePackageDetailsCache();
   return (
     <DetailsSection
       id="package_details"
-      title={`${props.authority} Package Details`}
+      title={`${data.authority} Package Details`}
     >
       <div className="flex-col gap-4 max-w-2xl">
-        <DetailItemsGrid displayItems={recordDetails(props)} />
+        <DetailItemsGrid displayItems={recordDetails(data)} />
         <DetailItemsGrid
-          displayItems={approvedAndAEffectiveDetails(props)}
+          displayItems={approvedAndAEffectiveDetails(data)}
           containerStyle="py-4"
         />
-        <DetailItemsGrid displayItems={descriptionDetails(props)} fullWidth />
+        <DetailItemsGrid displayItems={descriptionDetails(data)} fullWidth />
         <hr className="my-4" />
-        <DetailItemsGrid displayItems={submissionDetails(props)} />
-        <AppK {...props} />
+        <DetailItemsGrid displayItems={submissionDetails(data)} />
+        <AppK />
       </div>
     </DetailsSection>
   );
