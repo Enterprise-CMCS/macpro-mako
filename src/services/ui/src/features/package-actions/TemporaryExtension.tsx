@@ -56,7 +56,6 @@ export const onValidSubmission: SC.ActionFunction = async ({ request }) => {
 
     const user = await getUser();
 
-    console.log("data", data);
     await submit({
       data,
       endpoint: "/submit",

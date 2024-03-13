@@ -235,10 +235,7 @@ export const FormLoadingSpinner = () => {
   const { state } = useNavigation();
   const { formState } = useFormContext();
   return (
-    (state === "submitting" ||
-      formState.isLoading ||
-      formState.isSubmitting ||
-      formState.isValidating) && <LoadingSpinner />
+    (state === "submitting" || formState.isSubmitting) && <LoadingSpinner />
   );
 };
 
