@@ -290,8 +290,8 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
         body,
       });
       alert.setBannerShow(true);
-      alert.setBannerDisplayOn(location.state.from.split("?")[0]);
-      navigate(location.state.from);
+      alert.setBannerDisplayOn(location.state?.from?.split("?")[0] ?? "/dashboard");
+      navigate(location.state?.from ?? "/dashboard");
     }
   }, [data]);
 };
