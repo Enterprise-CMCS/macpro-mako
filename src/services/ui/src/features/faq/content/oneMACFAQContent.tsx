@@ -870,7 +870,7 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "waiver-extension-id-format",
         question:
-          "What format is used to enter a 1915(b) and 1915(c) Temporary Extension number?",
+          "What format is used to enter a 1915(b) or 1915(c) Temporary Extension number?",
         answerJSX: (
           <>
             <p>

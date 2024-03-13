@@ -9,7 +9,6 @@ import {
   FormLabel,
   FormMessage,
   Input,
-  Link,
   RequiredIndicator,
   Select,
   SelectContent,
@@ -20,7 +19,7 @@ import {
   useLocationCrumbs,
 } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
@@ -225,8 +224,9 @@ const IdInput = () => {
             </strong>
             <Link
               className="text-blue-600 cursor-pointer hover:underline px-4"
-              path="/faq"
+              to={"/faq/waiver-extension-id-format"}
               target={FAQ_TAB}
+              rel="noopener noreferrer"
             >
               What is my Temporary Extension Request Number
             </Link>
