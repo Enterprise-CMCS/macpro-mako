@@ -294,6 +294,13 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: tests/cypress/package-lock.json
+          run: npm ci
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
@@ -356,6 +363,13 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: tests/cypress/package-lock.json
+          run: npm install --frozen-lockfile
       - name: Check Project A11y
         uses: cypress-io/github-action@v6
         with:
