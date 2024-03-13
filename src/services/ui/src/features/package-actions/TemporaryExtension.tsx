@@ -34,19 +34,31 @@ import {
 import { submit } from "@/api/submissionService";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { getItem } from "@/api";
 
 type Attachments = keyof z.infer<typeof tempExtensionSchema>["attachments"];
-export const tempExtensionSchema = z.object({
-  id: zExtensionWaiverNumberSchema,
-  authority: z.string(), //aka tetype
-  seaActionType: z.string().default("Extend"),
-  originalWaiverNumber: zExtensionOriginalWaiverNumberSchema,
-  additionalInformation: z.string().optional().default(""),
-  attachments: z.object({
-    waiverExtensionRequest: zAttachmentRequired({ min: 1 }),
-    other: zAttachmentOptional,
-  }),
-});
+export const tempExtensionSchema = z
+  .object({
+    id: zExtensionWaiverNumberSchema,
+    authority: z.string(),
+    seaActionType: z.string().default("Extend"),
+    originalWaiverNumber: zExtensionOriginalWaiverNumberSchema,
+    additionalInformation: z.string().optional().default(""),
+    attachments: z.object({
+      waiverExtensionRequest: zAttachmentRequired({ min: 1 }),
+      other: zAttachmentOptional,
+    }),
+  })
+  .refine(
+    async (value) => {
+      const originalWaiverData = await getItem(value.originalWaiverNumber);
+      return originalWaiverData._source.authority === value.authority;
+    },
+    {
+      message:
+        "The selected Temporary Extension Type does not match the Approved Initial or Renewal Waiver's type.",
+    }
+  );
 
 export const onValidSubmission: SC.ActionFunction = async ({ request }) => {
   try {
