@@ -6,7 +6,6 @@ import {
 } from "react-hook-form";
 import {
   CalendarProps,
-  CheckboxProps,
   InputProps,
   RadioProps,
   SelectProps,
@@ -63,7 +62,7 @@ export type RHFComponentMap = {
     options: RHFOption[];
   };
   DatePicker: CalendarProps;
-  Checkbox: CheckboxProps & {
+  Checkbox: {
     options: RHFOption[];
   };
   Upload: {

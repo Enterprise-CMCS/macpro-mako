@@ -11,12 +11,6 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   defaultMonth?: Date;
 };
 
-export type CheckboxProps = React.ComponentPropsWithoutRef<
-  typeof CheckboxPrimitive.Root
-> & {
-  className?: string;
-};
-
 export type DatePickerProps = {
   date: Date | undefined;
   onChange: (date: Date | undefined) => void;
