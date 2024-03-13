@@ -238,6 +238,7 @@ functions:
       dbPassword: ${self:custom.dbInfo.password}
       topicName: ${param:topicName}
       brokerString: ${self:custom.brokerString}
+      osDomain: ${param:osDomain}
     events:
       - http:
           path: /submit

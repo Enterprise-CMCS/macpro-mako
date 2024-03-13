@@ -1,15 +1,21 @@
 import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
 import * as sql from "mssql";
-import { isAuthorized } from "../libs/auth/user";
-
-import { Authority, onemacSchema } from "shared-types";
 import {
+  getAuthDetails,
+  isAuthorized,
+  lookupUserAttributes,
+} from "../libs/auth/user";
+
+import { Action, Authority, onemacSchema } from "shared-types";
+import {
+  getAvailableActions,
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
 } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
 import { produceMessage } from "../libs/kafka";
+import { getPackage } from "../libs/package";
 
 export const submit = async (event: APIGatewayEvent) => {
   try {
@@ -44,6 +50,12 @@ export const submit = async (event: APIGatewayEvent) => {
       });
     }
 
+    const authDetails = getAuthDetails(event);
+    const userAttr = await lookupUserAttributes(
+      authDetails.userId,
+      authDetails.poolId
+    );
+
     // I think we need to break this file up.  A switch maybe
     if (
       [Authority["1915b"], Authority["1915c"]].includes(body.authority) &&
@@ -51,9 +63,24 @@ export const submit = async (event: APIGatewayEvent) => {
     ) {
       console.log("Received a new temporary extension sumbission");
 
+      // Check that this action can be performed on the original waiver
+      const originalWaiver = await getPackage(body.originalWaiverNumber);
+      const originalWaiverAvailableActions: Action[] = getAvailableActions(
+        userAttr,
+        originalWaiver._source
+      );
+      if (!originalWaiverAvailableActions.includes(Action.TEMP_EXTENSION)) {
+        const actionType = Action.TEMP_EXTENSION;
+        const id = body.originalWaiverNumber;
+        return response({
+          statusCode: 401,
+          body: {
+            message: `You are not authorized to perform ${actionType} on ${id}`,
+          },
+        });
+      }
+
       // Safe parse the body
-      // Right now we have one new submission schema.  We should split this file up or use a switch, and have separate schemas where needed.
-      // App K and TE are two things tha could benefit from having a separate schema
       const eventBody = onemacSchema.safeParse(body);
       if (!eventBody.success) {
         return console.log(
@@ -67,19 +94,14 @@ export const submit = async (event: APIGatewayEvent) => {
         "Safe parsed event body" + JSON.stringify(eventBody.data, null, 2)
       );
 
-      // TODO... call availableActions on the original waiver id, to make sure tis a candidate for this.
-      // This occurred on the frontend, but we should do it here too probably
-      const submissionDate = getNextBusinessDayTimestamp();
-      const statusDate = seaToolFriendlyTimestamp();
-      const changedDate = Date.now();
       await produceMessage(
         process.env.topicName as string,
         body.id,
         JSON.stringify({
           ...eventBody.data,
-          submissionDate,
-          statusDate,
-          changedDate,
+          submissionDate: getNextBusinessDayTimestamp(),
+          statusDate: seaToolFriendlyTimestamp(),
+          changedDate: Date.now(),
         })
       );
 
