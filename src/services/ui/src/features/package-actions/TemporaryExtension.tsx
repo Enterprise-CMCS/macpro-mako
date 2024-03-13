@@ -52,10 +52,8 @@ export const tempExtensionSchema = z.object({
 export const onValidSubmission: SC.ActionFunction = async ({ request }) => {
   try {
     const formData = Object.fromEntries(await request.formData());
-    console.log(formData);
     const unflattenedFormData = unflatten(formData);
-
-    const data = tempExtensionSchema.parse(unflattenedFormData);
+    const data = await tempExtensionSchema.parseAsync(unflattenedFormData);
 
     const user = await getUser();
 
