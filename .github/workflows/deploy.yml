@@ -226,7 +226,7 @@ jobs:
     if: ${{ github.ref != 'refs/heads/production'}}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         containers:
           [
@@ -320,7 +320,7 @@ jobs:
     if: ${{ github.ref != 'refs/heads/production' }}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         containers: 
           [
@@ -372,7 +372,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: src/tests/cypress
-          spec: cypress/a11y/${{ matrix.containers }}.spec.js
+          spec: cypress/a11y/${{ matrix.containers }}
           browser: chrome
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
 
