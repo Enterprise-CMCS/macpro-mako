@@ -239,7 +239,15 @@ const IdInput = () => {
             SS-####.R##.TE## or SS-#####.R##.TE##
           </FormDescription>
           <FormControl>
-            <Input {...field} className="max-w-md" />
+            <Input
+              {...field}
+              className="max-w-md"
+              onInput={(e) => {
+                if (e.target instanceof HTMLInputElement) {
+                  e.target.value = e.target.value.toUpperCase();
+                }
+              }}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -299,7 +307,14 @@ const TempExtensionApproveOrRenewNumber = () => {
             using a dash after the two character state abbreviation.
           </FormDescription>
           <FormControl>
-            <Input {...field} />
+            <Input
+              {...field}
+              onInput={(e) => {
+                if (e.target instanceof HTMLInputElement) {
+                  e.target.value = e.target.value.toUpperCase();
+                }
+              }}
+            />
           </FormControl>
         </FormItem>
       )}
