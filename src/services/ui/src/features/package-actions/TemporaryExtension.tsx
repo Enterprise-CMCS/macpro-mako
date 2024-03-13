@@ -26,17 +26,22 @@ import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { unflatten } from "flat";
-import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
+import {
+  zAttachmentOptional,
+  zAttachmentRequired,
+  zExtensionOriginalWaiverNumberSchema,
+  zExtensionWaiverNumberSchema,
+} from "@/utils";
 import { submit } from "@/api/submissionService";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 type Attachments = keyof z.infer<typeof tempExtensionSchema>["attachments"];
 export const tempExtensionSchema = z.object({
-  id: z.string(),
+  id: zExtensionWaiverNumberSchema,
   authority: z.string(), //aka tetype
   seaActionType: z.string().default("Extend"),
-  originalWaiverNumber: z.string(),
+  originalWaiverNumber: zExtensionOriginalWaiverNumberSchema,
   additionalInformation: z.string().optional(),
   attachments: z.object({
     waiverExtensionRequest: zAttachmentRequired({ min: 1 }),
