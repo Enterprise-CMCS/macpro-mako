@@ -243,8 +243,6 @@ export const useSubmitForm = () => {
   const submit = useSubmit();
   const location = useLocation();
 
-  console.log(methods);
-
   const validSubmission: SubmitHandler<any> = (data, e) => {
     const formData = new FormData();
 
