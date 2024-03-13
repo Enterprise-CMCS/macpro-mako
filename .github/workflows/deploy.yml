@@ -300,7 +300,7 @@ jobs:
           node-version: 18
           cache: 'npm'
           cache-dependency-path: tests/cypress/package-lock.json
-          run: npm ci
+      - run: npm ci
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
@@ -369,7 +369,7 @@ jobs:
           node-version: 18
           cache: 'npm'
           cache-dependency-path: tests/cypress/package-lock.json
-          run: npm install --frozen-lockfile
+      - run: npm install --frozen-lockfile
       - name: Check Project A11y
         uses: cypress-io/github-action@v6
         with:
