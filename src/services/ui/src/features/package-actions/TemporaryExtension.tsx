@@ -52,11 +52,12 @@ export const onValidSubmission: SC.ActionFunction = async ({ request }) => {
   try {
     const formData = Object.fromEntries(await request.formData());
     const unflattenedFormData = unflatten(formData);
-    const data = await tempExtensionSchema.parseAsync(unflattenedFormData);
+    const data = await tempExtensionSchema.parseAsync(unflattenedFormData, {
+      async: false,
+    });
 
     const user = await getUser();
 
-    console.log("data", data);
     await submit({
       data,
       endpoint: "/submit",
