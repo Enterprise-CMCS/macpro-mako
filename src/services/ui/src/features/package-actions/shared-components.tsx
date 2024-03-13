@@ -233,7 +233,13 @@ export const ErrorBanner = () => {
 
 export const FormLoadingSpinner = () => {
   const { state } = useNavigation();
-  return state === "submitting" && <LoadingSpinner />;
+  const { formState } = useFormContext();
+  return (
+    (state === "submitting" ||
+      formState.isLoading ||
+      formState.isSubmitting ||
+      formState.isValidating) && <LoadingSpinner />
+  );
 };
 
 // Hooks
