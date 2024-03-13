@@ -226,7 +226,7 @@ jobs:
     if: ${{ github.ref != 'refs/heads/production'}}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         containers:
           [
@@ -300,7 +300,7 @@ jobs:
           node-version: 18
           cache: 'npm'
           cache-dependency-path: '**/tests/cypress/package-lock.json'
-      - run: npm ci
+      - run: npm i
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
@@ -321,7 +321,7 @@ jobs:
     if: ${{ github.ref != 'refs/heads/production' }}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         containers: 
           [
