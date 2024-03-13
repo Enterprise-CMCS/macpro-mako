@@ -9,7 +9,6 @@ import { Outlet } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
 import { FC, PropsWithChildren } from "react";
 
-import { getStatus } from "shared-types/statusHelper";
 import { Link } from "@/components/Routing";
 import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
@@ -33,17 +32,15 @@ const DetailCardWrapper = ({
 );
 
 const StatusCard = (data: opensearch.main.Document) => {
-  const transformedStatuses = getStatus(data.seatoolStatus);
   const { data: user } = useGetUser();
-
   return (
     <DetailCardWrapper title={"Status"}>
       <div>
         <h2 className="text-xl font-semibold">
           {user?.isCms &&
           !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
-            ? transformedStatuses.cmsStatus
-            : transformedStatuses.stateStatus}
+            ? data.cmsStatus
+            : data.stateStatus}
         </h2>
         <div className="flex mt-1 flex-col gap-1 items-start">
           {data.raiWithdrawEnabled && (
