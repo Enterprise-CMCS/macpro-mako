@@ -75,6 +75,7 @@ export const PackageCheck = ({
 
   const actionTypeChecks = {
     isInitialOrRenewal: actionType === "New" || actionType === "Renew",
+    isTempExtension: actionType === "Extend",
   };
 
   return {
