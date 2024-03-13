@@ -296,20 +296,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "18.x"
-      - name: Combine package-lock.json files to single file
-        run: find services -maxdepth 3 -name package-lock.json | xargs cat package-lock.json > combined-package-lock.txt
-      - name: cache service dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            services/uploads/node_modules
-            services/app-api/node_modules
-            services/stream-functions/node_modules
-            services/ui/node_modules
-            services/ui-auth/node_modules
-            services/ui-src/node_modules
-            node_modules
-          key: ${{ runner.os }}-${{ hashFiles('combined-package-lock.txt') }}
       - name: Install dependencies
         run: npm ci
       - name: set path
@@ -380,20 +366,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "18.x"
-      - name: Combine package-lock.json files to single file
-        run: find services -maxdepth 3 -name package-lock.json | xargs cat package-lock.json > combined-package-lock.txt
-      - name: cache service dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            services/app-api/node_modules
-            services/uploads/node_modules
-            services/stream-functions/node_modules
-            services/ui/node_modules
-            services/ui-auth/node_modules
-            services/ui-src/node_modules
-            node_modules
-          key: ${{ runner.os }}-${{ hashFiles('combined-package-lock.txt') }}
       - name: Install dependencies
         run: npm install --frozen-lockfile
       - name: set path
