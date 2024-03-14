@@ -41,7 +41,9 @@ import {
 const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
-  subject: z.string(),
+  subject: z
+    .string()
+    .max(120, { message: "Subject should be under 120 characters" }),
   description: z.string(),
   typeIds: z.array(z.number()),
   subTypeIds: z.array(z.number()),

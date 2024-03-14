@@ -41,7 +41,9 @@ import {
 const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
-  subject: z.string(),
+  subject: z
+    .string()
+    .max(120, { message: "Subject should be under 120 characters" }),
   description: z.string(),
   typeIds: z.array(z.number()),
   subTypeIds: z.array(z.number()),
@@ -120,7 +122,7 @@ export const MedicaidSpaFormPage = () => {
         // when any queries are added, such as the case of /details?id=...
         urlQuery.get(ORIGIN)
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard"
+          : "/dashboard",
       );
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {

@@ -11,7 +11,7 @@ export const useFilterExportGroups = () => {
 
   const onExport = () =>
     getMainExportData(
-      url.state.filters.concat(DEFAULT_FILTERS[url.state.tab]?.filters ?? [])
+      url.state.filters.concat(DEFAULT_FILTERS[url.state.tab]?.filters ?? []),
     );
 
   const headers: opensearch.main.ExportHeader[] = [
@@ -28,7 +28,7 @@ export const useFilterExportGroups = () => {
       transform: (data) => data.state ?? BLANK_VALUE,
     },
     {
-      name: "Type",
+      name: "Authority",
       transform: (data) => data.authority ?? BLANK_VALUE,
     },
     ...((): opensearch.main.ExportHeader[] => {
