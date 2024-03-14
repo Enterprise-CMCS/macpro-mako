@@ -81,13 +81,20 @@ export const v202401: FormSchema = {
                       "state_territory_must_have_a_process_that_meets_exemption_criteria",
                   },
                   {
-                    label:
-                      "Once an individual is identified, the state/territory assures it will effectively inform the individual of the following: A. That enrollment in the specified ABP is voluntary B. That the individual may disenroll from the ABP defined subject to Section 1937 requirements at any time and instead receive an ABP defined as the approved state/territory Medicaid state plan not subject to Section 1937 requirements. C. What the process is for transferring to the state plan-based ABP",
+                    styledLabel: [
+                      { text: "Once an individual is identified, the state/territory assures it will effectively inform the individual of the following:", type: "br" },
+                      { text: "A. That enrollment in the specified ABP is voluntary", type: "br" },
+                      { text: "B. That the individual may disenroll from the ABP defined subject to Section 1937 requirements at any time and instead receive an ABP defined as the approved state/territory Medicaid state plan not subject to Section 1937 requirements.", type: "br" },
+                      { text: "C. What the process is for transferring to the state plan-based ABP", type: "br" }],
                     value: "individual_identified_must_inform_the_individual",
                   },
                   {
+                    styledLabel: [  { text: "The state/territory assures it will inform the individual of the following:", type: "br" },
+                    { text: "A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements", type: "br" },
+                    { text: "B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits", type: "br" },
+                  ],
                     label:
-                      "The state/territory assures it will inform the individual of the following: A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits",
+                      "  ",
                     value:
                       "state_territory_assures_it_will_inform_the_individual",
                   },
@@ -178,8 +185,10 @@ export const v202401: FormSchema = {
               props: {
                 options: [
                   {
-                    label:
-                      "The state/territory assures it will inform the individual of the following: A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits",
+                    styledLabel: [  { text: "The state/territory assures it will inform the individual of the following:", type: "br" },
+                    { text: "A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements", type: "br" },
+                    { text: "B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits", type: "br" },
+                  ],
                     value:
                       "state_territory_will_document_exempt_individuals_eligibility",
                   },

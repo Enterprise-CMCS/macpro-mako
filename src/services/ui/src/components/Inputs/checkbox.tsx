@@ -41,9 +41,9 @@ const Checkbox = React.forwardRef<
           </CheckboxPrimitive.Indicator>
         </CheckboxPrimitive.Root>
         <div className="grid gap-1.5 leading-none">
-          {!!props.label && (
+          {!!(props.label || props.styledLabel) && (
             <label
-              htmlFor={props.label}
+              htmlFor={props.label ?? props.styledLabel}
               className="text-md font-medium leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
               {props.styledLabel ?? props.label}
