@@ -338,5 +338,34 @@
         "Value": "onemac-micro-statesubmitter"
       }
     ]
+  },
+  {
+    "username": "mako.cmsuser@outlook.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "mako.cmsuser@outlook.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "CMS Reviewer"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Cypress"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-micro-reviewer"
+      }
+    ]
   }
 ]
