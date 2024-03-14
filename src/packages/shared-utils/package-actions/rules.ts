@@ -4,8 +4,8 @@ import {
   Authority,
   SEATOOL_STATUS,
   finalDispositionStatuses,
-} from "../../shared-types";
-import { isStateUser, isCmsWriteUser } from "../user-helper";
+} from "shared-types";
+import { isStateUser, isCmsWriteUser, isIDM } from "../user-helper";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
@@ -19,7 +19,8 @@ const arIssueRai: ActionRule = {
         !checker.authorityIs([Authority.MED_SPA]) &&
         // The package does not have RAI Response Withdraw enabled
         !checker.hasEnabledRaiWithdraw)) &&
-    isCmsWriteUser(user),
+    isCmsWriteUser(user) &&
+    !isIDM(user),
 };
 
 const arRespondToRai: ActionRule = {
@@ -36,7 +37,8 @@ const arEnableWithdrawRaiResponse: ActionRule = {
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     !checker.hasEnabledRaiWithdraw &&
-    isCmsWriteUser(user),
+    isCmsWriteUser(user) &&
+    !checker.hasStatus(finalDispositionStatuses),
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
@@ -45,7 +47,8 @@ const arDisableWithdrawRaiResponse: ActionRule = {
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
-    isCmsWriteUser(user),
+    isCmsWriteUser(user) &&
+    !checker.hasStatus(finalDispositionStatuses),
 };
 
 const arWithdrawRaiResponse: ActionRule = {

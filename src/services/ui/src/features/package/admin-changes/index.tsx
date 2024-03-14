@@ -9,6 +9,7 @@ import {
   DetailsSection,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { usePackageDetailsCache } from "..";
 
 export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
   props
@@ -17,8 +18,8 @@ export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
     <div className="flex flex-col gap-2">
       <p className="font-bold">Change made</p>
       <p>
-        {props.submitterName} has enabled package action to withdraw formal RAI
-        response
+        {props.submitterName} has enabled State package action to withdraw
+        formal RAI response
       </p>
     </div>
   );
@@ -31,8 +32,8 @@ export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
     <div className="flex flex-col gap-2">
       <p className="font-bold">Change made</p>
       <p>
-        {props.submitterName} has disabled package action to withdraw formal RAI
-        response
+        {props.submitterName} has disabled State package action to withdraw
+        formal RAI response
       </p>
     </div>
   );
@@ -72,8 +73,9 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
   );
 };
 
-export const AdminChanges: FC<opensearch.main.Document> = (props) => {
-  const data = props.changelog?.filter((CL) =>
+export const AdminChanges = () => {
+  const cache = usePackageDetailsCache();
+  const data = cache.data.changelog?.filter((CL) =>
     ["disable-rai-withdraw", "enable-rai-withdraw"].includes(
       CL._source.actionType
     )
@@ -92,9 +94,7 @@ export const AdminChanges: FC<opensearch.main.Document> = (props) => {
         defaultValue={[data?.[0]._source.id as string]}
         className="flex flex-col mt-6 gap-2"
       >
-        {data?.map((CL) => (
-          <AdminChange {...CL._source} key={CL._source.id} />
-        ))}
+        {data?.map((CL) => <AdminChange {...CL._source} key={CL._source.id} />)}
       </Accordion>
     </DetailsSection>
   );

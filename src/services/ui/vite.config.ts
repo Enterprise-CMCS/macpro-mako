@@ -28,10 +28,6 @@ export default defineConfig(({ mode }) => {
     test: {
       environment: "jsdom",
       setupFiles: "./testing/setup.ts",
-      coverage: {
-        provider: "istanbul",
-        reporter: "json",
-      },
       exclude: ["**/e2e/**", "**/node_modules/**"],
     },
     resolve: {

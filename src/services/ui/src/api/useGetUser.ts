@@ -3,23 +3,37 @@ import { Auth } from "aws-amplify";
 import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser } from "shared-utils";
 
-export type OneMacUser = { isCms?: boolean, user: CognitoUserAttributes | null }
+export type OneMacUser = {
+  isCms?: boolean;
+  user: CognitoUserAttributes | null;
+};
 
 export const getUser = async (): Promise<OneMacUser> => {
   try {
-    const authenticatedUser = await Auth.currentAuthenticatedUser();
-    const attributes = await Auth.userAttributes(authenticatedUser);
-    const user = attributes.reduce((obj: { [key: string]: string }, item) => {
-      obj[item.Name] = item.Value;
-      return obj;
-    }, {}) as unknown as CognitoUserAttributes;
-    if (user["custom:cms-roles"]) {
-      const isCms = isCmsUser(user);
-      return { user, isCms } satisfies OneMacUser;
-    } else {
-      user["custom:cms-roles"] = "";
-      return { user, isCms: false } satisfies OneMacUser;
-    }
+    const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
+    const userAttributesArray = await Auth.userAttributes(
+      currentAuthenticatedUser,
+    );
+    // Set object up with key/values from attributes array
+    const userAttributesObj = userAttributesArray.reduce(
+      (obj, item) =>
+        item?.Name && item?.Value
+          ? {
+              ...obj,
+              [item.Name]: item.Value,
+            }
+          : obj,
+      {} as CognitoUserAttributes,
+    );
+    // Manual additions and normalizations
+    userAttributesObj["custom:cms-roles"] =
+      userAttributesObj?.["custom:cms-roles"] || "";
+    userAttributesObj.username = currentAuthenticatedUser?.username || "";
+
+    return {
+      user: userAttributesObj,
+      isCms: isCmsUser(userAttributesObj),
+    } satisfies OneMacUser;
   } catch (e) {
     console.log({ e });
     return { user: null } satisfies OneMacUser;

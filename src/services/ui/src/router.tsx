@@ -12,13 +12,14 @@ export const router = createBrowserRouter([
     element: <C.Layout />,
     children: [
       { path: "/", index: true, element: <F.Welcome /> },
+      { path: "/faq", element: <F.Faq /> },
+      { path: "/faq/:id", element:  <F.Faq />},
       {
         path: "/dashboard",
         element: <F.Dashboard />,
         loader: F.dashboardLoader(queryClient),
       },
       { path: "/details", element: <F.Details /> },
-      { path: "/faq", element: <F.Faq /> },
       {
         path: "/new-submission",
         element: <F.NewSubmissionInitialOptions />,
@@ -106,7 +107,7 @@ export const router = createBrowserRouter([
       { path: "/webform/:id/:version", element: <F.Webform /> },
       { path: "/profile", element: <F.Profile /> },
       { path: "/guides/abp", element: <F.ABPGuide /> },
-      { path: "/new-submission/app-k", element: <F.AppKSubmissionForm /> },
+      { path: "/new-submission/waiver/app-k", element: <F.AppKSubmissionForm /> },
       packageActionRoutes,
     ],
     loader: F.loader(queryClient),

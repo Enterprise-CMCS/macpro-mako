@@ -111,7 +111,7 @@ export const RespondToRai = ({
         {/* Attachments */}
         <h3 className="font-bold text-2xl font-sans">Attachments</h3>
         <AttachmentsSizeTypesDesc
-          faqLink={"/faq/#medicaid-spa-rai-attachments"}
+          faqLink={"/faq/medicaid-spa-rai-attachments"}
         />
         {attachments.map(({ name, label, required }) => (
           <FormField
