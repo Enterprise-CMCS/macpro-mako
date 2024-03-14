@@ -65,6 +65,7 @@ export const FORM = z.object({
   parentWaiver: zAppkWaiverNumberSchema,
   childWaivers: z.array(zAppkWaiverNumberSchema),
   additionalInformation: z.string().max(4000).optional(),
+  title: z.string(),
   attachments: z.object({
     appk: zAttachmentRequired({ min: 1 }),
     other: zAttachmentRequired({ min: 1 }),

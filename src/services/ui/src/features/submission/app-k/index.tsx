@@ -83,12 +83,25 @@ export const AppKSubmissionForm = () => {
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
           <SectionCard title="1915(c) APPENDIX K Amendment Request Details">
             <Content.FormIntroText />
+            <I.FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <I.FormItem className="w-[280px]">
+                  <I.FormLabel className="font-bold">
+                    Amendment Title <I.RequiredIndicator />
+                  </I.FormLabel>
+                  <I.Textarea {...field} className="h-[80px]" />
+                </I.FormItem>
+              )}
+            />
             <div className="flex flex-col">
               <I.FormLabel className="font-semibold">
                 Waiver Authority
               </I.FormLabel>
               <span className="text-lg font-thin">1915(c)</span>
             </div>
+
             <I.FormField
               control={form.control}
               name="state"
@@ -98,8 +111,7 @@ export const AppKSubmissionForm = () => {
               <div className="flex flex-col gap-2">
                 <div className="flex gap-4">
                   <I.FormLabel className="font-bold">
-                    Appendix K ID
-                    <I.RequiredIndicator />
+                    Appendix K ID <I.RequiredIndicator />
                   </I.FormLabel>
                   <Link
                     to="/faq/waiver-c-id"
