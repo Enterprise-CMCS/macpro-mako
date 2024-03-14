@@ -1,9 +1,9 @@
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
-import { opensearch } from "shared-types";
+
 import { useQuery } from "@/hooks";
-import { useGetItemCache } from "@/api";
+import { useGetItem, useGetItemCache } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
-import { PropsWithChildren } from "react";
+import { FC, PropsWithChildren } from "react";
 
 import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
@@ -28,26 +28,24 @@ export const DetailCardWrapper = ({
   </CardWithTopBorder>
 );
 
-export const DetailsContent = ({
-  data,
-}: {
-  data?: opensearch.main.ItemResult;
-}) => {
+export const DetailsContent: FC<{ id: string }> = ({ id }) => {
+  const { data, isLoading, error } = useGetItem(id);
+
+  if (isLoading) return <LoadingSpinner />;
   if (!data?._source) return <LoadingSpinner />;
   if (error) return <ErrorAlert error={error} />;
-
   return (
     <div className="w-full py-1 px-4 lg:px-8">
       <section
         id="package_overview"
         className="block md:flex space-x-0 md:space-x-8"
       >
-        <PackageStatusCard {...data._source} />
-        <PackageActionsCard id={data._id} authority={data._source.authority!} />
+        <PackageStatusCard id={id} />
+        <PackageActionsCard id={id} />
       </section>
       <div className="flex flex-col gap-3">
         <PackageDetails />
-        <PackageActivities  />
+        <PackageActivities />
         <AdminChanges />
       </div>
     </div>
@@ -62,15 +60,15 @@ export const Details = () => {
     <div className="max-w-screen-xl mx-auto flex px-4 lg:px-8">
       <div className="hidden lg:block">
         <BreadCrumbs options={detailsAndActionsCrumbs({ id })} />
-        <DetailsSidebar data={data} />
+        <DetailsSidebar id={id} />
       </div>
-      <DetailsContent data={data} />
+      <DetailsContent id={id} />
     </div>
   );
 };
 
-const DetailsSidebar = ({ data }: { data: opensearch.main.ItemResult }) => {
-  const links = useDetailsSidebarLinks(data._id);
+const DetailsSidebar: FC<{ id: string }> = ({ id }) => {
+  const links = useDetailsSidebarLinks(id);
 
   return (
     <aside className="min-w-56 flex-none font-semibold m-4 mt-6 pr-8">

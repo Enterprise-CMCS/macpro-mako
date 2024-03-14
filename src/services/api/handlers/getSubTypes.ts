@@ -25,7 +25,7 @@ export const querySubTypes = async (authorityId: string, typeIds: string[]) => {
             terms: {
               typeId: typeIds,
             },
-          }
+          },
         ],
         must_not: [
           {
@@ -38,6 +38,13 @@ export const querySubTypes = async (authorityId: string, typeIds: string[]) => {
         ],
       },
     },
+    sort: [
+      {
+        "name.keyword": {
+          order: "asc",
+        },
+      },
+    ],
   };
 
   return await os.search(process.env.osDomain, "subtypes", query);
@@ -62,7 +69,7 @@ export const getSubTypes = async (event: APIGatewayEvent) => {
 
     return response({
       statusCode: 200,
-      body: result
+      body: result,
     });
   } catch (err) {
     console.error({ err });

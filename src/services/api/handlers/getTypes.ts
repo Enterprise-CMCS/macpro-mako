@@ -32,8 +32,14 @@ export const queryTypes = async (authorityId: string) => {
         ],
       },
     },
+    sort: [
+      {
+        "name.keyword": {
+          order: "asc",
+        },
+      },
+    ],
   };
-
   return await os.search(process.env.osDomain, "types", query);
 };
 
@@ -47,7 +53,6 @@ export const getTypes = async (event: APIGatewayEvent) => {
   const body = JSON.parse(event.body) as GetTypesBoby;
   try {
     const result = await queryTypes(body.authorityId);
-
     if (!result)
       return response({
         statusCode: 400,
@@ -56,7 +61,7 @@ export const getTypes = async (event: APIGatewayEvent) => {
 
     return response({
       statusCode: 200,
-      body: result
+      body: result,
     });
   } catch (err) {
     console.error({ err });

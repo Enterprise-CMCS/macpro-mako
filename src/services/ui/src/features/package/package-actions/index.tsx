@@ -1,21 +1,19 @@
-import { useGetPackageActions } from "@/api";
+import { useGetItem, useGetPackageActions } from "@/api";
 import { LoadingSpinner, Link } from "@/components";
 import { mapActionLabel } from "@/utils";
-import { useLocation } from "react-router-dom";
 import { Authority } from "shared-types";
 import { DetailCardWrapper } from "..";
+import { FC } from "react";
 
-export const PackageActionsCard = ({
-  id,
-  authority,
-}: {
-  id: string;
-  authority: Authority;
-}) => {
-  const location = useLocation();
-  const { data, isLoading } = useGetPackageActions(id, { retry: false });
+export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
+  const item = useGetItem(id);
+
+  const { data, isLoading } = useGetPackageActions(id, {
+    retry: false,
+  });
   if (isLoading) return <LoadingSpinner />;
 
+  const authority = item.data?._source.authority;
   return (
     <DetailCardWrapper title={"Package Actions"}>
       <div className="my-3">
