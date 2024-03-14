@@ -160,7 +160,7 @@ export const RHFSlot = <
                                 htmlFor={OPT.value}
                               >
                                 <RHFTextDisplay
-                                  text={OPT.styledLabel ?? OPT.label}
+                                  text={OPT.styledLabel ?? OPT.label ?? ""}
                                 />
                               </FormLabel>
                             }
@@ -212,12 +212,12 @@ export const RHFSlot = <
                     {hops.options.map((OPT) => (
                       <div key={`CHECK-${OPT.value}`}>
                         <Checkbox
-                          label={OPT.label}
+                          label={OPT.label ?? ""}
                           value={OPT.value}
                           checked={field.value?.includes(OPT.value)}
                           styledLabel={
                             <RHFTextDisplay
-                              text={OPT.styledLabel ?? OPT.label}
+                              text={OPT.styledLabel ?? OPT.label ?? ""}
                             />
                           }
                           onCheckedChange={(c) => {
