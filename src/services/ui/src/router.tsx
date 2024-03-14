@@ -4,6 +4,11 @@ import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
 import { type Route } from "./components/Routing/types";
 import { packageActionRoutes } from "@/features/package-actions";
+import {
+  TempExtensionWrapper,
+  TemporaryExtension,
+  onValidSubmission as tempExtensionAction,
+} from "@/features/package-actions/TemporaryExtension";
 export const queryClient = new QueryClient();
 
 export const router = createBrowserRouter([
@@ -13,7 +18,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", index: true, element: <F.Welcome /> },
       { path: "/faq", element: <F.Faq /> },
-      { path: "/faq/:id", element:  <F.Faq />},
+      { path: "/faq/:id", element: <F.Faq /> },
       {
         path: "/dashboard",
         element: <F.Dashboard />,
@@ -100,14 +105,28 @@ export const router = createBrowserRouter([
         path: "/new-submission/waiver/b/b4/amendment/create",
         element: <F.Contracting1915BWaiverAmendmentPage />,
       },
-      { path: "/new-submission/spa/medicaid/create", element: <F.MedicaidSpaFormPage /> },
-      { path: "/new-submission/spa/chip/create", element: <F.ChipSpaFormPage /> },
+      {
+        path: "/new-submission/spa/medicaid/create",
+        element: <F.MedicaidSpaFormPage />,
+      },
+      {
+        path: "/new-submission/spa/chip/create",
+        element: <F.ChipSpaFormPage />,
+      },
       { path: "/action/:id/:type", element: <F.ActionFormIndex /> },
       { path: "/webforms", element: <F.WebformsList /> },
       { path: "/webform/:id/:version", element: <F.Webform /> },
       { path: "/profile", element: <F.Profile /> },
       { path: "/guides/abp", element: <F.ABPGuide /> },
-      { path: "/new-submission/app-k", element: <F.AppKSubmissionForm /> },
+      {
+        path: "/new-submission/waiver/app-k",
+        element: <F.AppKSubmissionForm />,
+      },
+      {
+        path: "/new-submission/waiver/temporary-extensions",
+        element: <TempExtensionWrapper />,
+        action: tempExtensionAction,
+      },
       packageActionRoutes,
     ],
     loader: F.loader(queryClient),

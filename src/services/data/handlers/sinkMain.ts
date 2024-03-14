@@ -143,6 +143,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       if (record.origin === "micro") {
         const result = (() => {
           switch (record?.actionType) {
+            case "new-submission":
             case undefined:
               return opensearch.main.newSubmission
                 .transform(id)

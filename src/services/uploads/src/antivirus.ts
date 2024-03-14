@@ -3,6 +3,7 @@ import {
   HeadObjectCommand,
   GetObjectCommand,
   PutObjectTaggingCommand,
+  HeadObjectCommandOutput,
 } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
 import fs from "fs";
@@ -22,12 +23,22 @@ export async function isS3FileTooBig(
     const res: HeadObjectCommandOutput = await s3Client.send(
       new HeadObjectCommand({ Key: key, Bucket: bucket })
     );
-    return res.ContentLength > constants.MAX_FILE_SIZE;
+    if (
+      res.ContentLength === undefined ||
+      res.ContentLength === null ||
+      typeof res.ContentLength !== 'number'
+    ) {
+      utils.generateSystemMessage(
+        `ContentLength is invalid for S3 Object: s3://${bucket}/${key}`
+      );
+      return false; // Or handle accordingly
+    }
+    return res.ContentLength > parseInt(constants.MAX_FILE_SIZE);
   } catch (e) {
     utils.generateSystemMessage(
       `Error finding size of S3 Object: s3://${bucket}/${key}`
     );
-    return false;
+    return true;
   }
 }
 
@@ -39,7 +50,7 @@ async function downloadFileFromS3(
     fs.mkdirSync(constants.TMP_DOWNLOAD_PATH);
   }
 
-  const localPath: string = `${constants.TMP_DOWNLOAD_PATH}${randomUUID()}.tmp`;
+  const localPath: string = `${constants.TMP_DOWNLOAD_PATH}${randomUUID()}--${s3ObjectKey}`;
   const writeStream: fs.WriteStream = fs.createWriteStream(localPath);
 
   utils.generateSystemMessage(
@@ -88,11 +99,7 @@ const scanAndTagS3Object = async (
       s3ObjectBucket
     );
     utils.generateSystemMessage("Set virusScanStatus");
-    const metadata = await s3Client.send(new HeadObjectCommand({
-      Bucket: s3ObjectBucket,
-      Key: s3ObjectKey,
-    }));
-    virusScanStatus = await scanLocalFile(fileLoc, metadata.ContentType);
+    virusScanStatus = await scanLocalFile(fileLoc);
     utils.generateSystemMessage(`virusScanStatus=${virusScanStatus}`);
   }
 

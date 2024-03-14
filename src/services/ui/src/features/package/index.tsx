@@ -2,14 +2,13 @@ import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import { Authority, opensearch, UserRoles } from "shared-types";
 import { useQuery } from "@/hooks";
-import { useGetItem } from "@/api";
+import { useGetItem, useGetItemCache } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { mapActionLabel } from "@/utils";
 import { Outlet } from "react-router-dom";
 import { useGetPackageActions } from "@/api/useGetPackageActions";
-import { PropsWithChildren } from "react";
+import { FC, PropsWithChildren } from "react";
 
-import { getStatus } from "shared-types/statusHelper";
 import { Link } from "@/components/Routing";
 import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
@@ -33,17 +32,15 @@ const DetailCardWrapper = ({
 );
 
 const StatusCard = (data: opensearch.main.Document) => {
-  const transformedStatuses = getStatus(data.seatoolStatus);
   const { data: user } = useGetUser();
-
   return (
     <DetailCardWrapper title={"Status"}>
       <div>
         <h2 className="text-xl font-semibold">
           {user?.isCms &&
           !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
-            ? transformedStatuses.cmsStatus
-            : transformedStatuses.stateStatus}
+            ? data.cmsStatus
+            : data.stateStatus}
         </h2>
         <div className="flex mt-1 flex-col gap-1 items-start">
           {data.raiWithdrawEnabled && (
@@ -73,15 +70,9 @@ const StatusCard = (data: opensearch.main.Document) => {
     </DetailCardWrapper>
   );
 };
-const PackageActionsCard = ({
-  id,
-  authority,
-}: {
-  id: string;
-  authority: Authority;
-}) => {
+const PackageActionsCard: FC<opensearch.main.Document> = (props) => {
   const location = useLocation();
-  const { data, isLoading } = useGetPackageActions(id, { retry: false });
+  const { data, isLoading } = useGetPackageActions(props.id, { retry: false });
   if (isLoading) return <LoadingSpinner />;
 
   return (
@@ -94,13 +85,13 @@ const PackageActionsCard = ({
         ) : (
           <ul>
             {data.actions.map((type, idx) => {
-              if (authority === Authority["1915b"]) {
+              if (props.authority === Authority["1915b"]) {
                 return (
                   <Link
                     state={{ from: `${location.pathname}${location.search}` }}
                     path="/action/:authority/:id/:type"
                     key={`${idx}-${type}`}
-                    params={{ id, type, authority }}
+                    params={{ id: props.id, type, authority: props.authority }}
                     className="text-sky-700 underline"
                   >
                     <li>{mapActionLabel(type)}</li>
@@ -111,7 +102,7 @@ const PackageActionsCard = ({
                   <Link
                     key={`${idx}-${type}`}
                     path="/action/:id/:type"
-                    params={{ id, type }}
+                    params={{ id: props.id, type }}
                     className="text-sky-700 underline"
                   >
                     <li>{mapActionLabel(type)}</li>
@@ -126,12 +117,13 @@ const PackageActionsCard = ({
   );
 };
 
-export const DetailsContent = ({
-  data,
-}: {
-  data?: opensearch.main.ItemResult;
-}) => {
+export const DetailsContent: FC<{ id: string }> = ({ id }) => {
+  const { data, isLoading, error } = useGetItem(id);
+
+  if (isLoading) return <LoadingSpinner />;
   if (!data?._source) return <LoadingSpinner />;
+  if (error) return <ErrorAlert error={error} />;
+
   return (
     <div className="block md:flex">
       <aside className="flex-none font-bold hidden md:block pr-8">
@@ -159,15 +151,12 @@ export const DetailsContent = ({
           className="sm:flex lg:grid lg:grid-cols-2 gap-4 my-6"
         >
           <StatusCard {...data._source} />
-          <PackageActionsCard
-            id={data._id}
-            authority={data._source.authority!}
-          />
+          <PackageActionsCard {...data._source} />
         </section>
         <div className="flex flex-col gap-3">
-          <PackageDetails {...data._source} />
-          <PackageActivities {...data._source} />
-          <AdminChanges {...data._source} />
+          <PackageDetails />
+          <PackageActivities />
+          <AdminChanges />
         </div>
       </div>
     </div>
@@ -177,17 +166,12 @@ export const DetailsContent = ({
 export const Details = () => {
   const query = useQuery();
   const id = query.get("id") as string;
-  const { data, isLoading, error } = useGetItem(id);
-
-  if (isLoading) return <LoadingSpinner />;
-  if (!data?._source) return <LoadingSpinner />;
-  if (error) return <ErrorAlert error={error} />;
 
   return (
     <>
       <div className="max-w-screen-xl mx-auto py-1 px-4 lg:px-8 flex flex-col gap-4">
         <BreadCrumbs options={detailsAndActionsCrumbs({ id })} />
-        <DetailsContent data={data} />
+        <DetailsContent id={id} />
       </div>
     </>
   );
@@ -199,4 +183,10 @@ export const PackageDetailsWrapper = () => {
       <Outlet />
     </main>
   );
+};
+
+export const usePackageDetailsCache = () => {
+  const query = useQuery();
+  const id = query.get("id") as string;
+  return useGetItemCache(id);
 };

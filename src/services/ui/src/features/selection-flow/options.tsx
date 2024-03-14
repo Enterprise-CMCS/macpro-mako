@@ -63,7 +63,7 @@ export const WAIVER_OPTIONS: OptionData[] = [
   {
     title: "Request Temporary Extension",
     description: "Submit for 1915(b) or 1915(c)",
-    linkTo: "/",
+    linkTo: "/new-submission/waiver/temporary-extensions",
   },
   {
     title: "1915(b) Waiver Actions",
@@ -73,7 +73,7 @@ export const WAIVER_OPTIONS: OptionData[] = [
   {
     title: "1915(c) Appendix K Amendment",
     description: "Create a 1915(c) Appendix K Amendment",
-    linkTo: "/new-submission/app-k",
+    linkTo: "/new-submission/waiver/app-k",
   },
 ];
 

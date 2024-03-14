@@ -1,9 +1,9 @@
 import { getAttachmentUrl } from "@/api";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
-
 import { opensearch } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
+import { usePackageDetailsCache } from "..";
 
 type Attachments = NonNullable<opensearch.changelog.Document["attachments"]>;
 
@@ -51,9 +51,10 @@ export const useAttachmentService = (
   return { loading: isLoading, error, onUrl: mutateAsync, onZip };
 };
 
-export const usePackageActivities = (props: opensearch.main.Document) => {
-  const service = useAttachmentService({ packageId: props.id });
-  const data = props.changelog?.filter((CL) =>
+export const usePackageActivities = () => {
+  const cache = usePackageDetailsCache();
+  const service = useAttachmentService({ packageId: cache.data.id });
+  const data = cache.data.changelog?.filter((CL) =>
     [
       "new-submission",
       "withdraw-rai",
@@ -65,8 +66,7 @@ export const usePackageActivities = (props: opensearch.main.Document) => {
   );
 
   const onDownloadAll = () => {
-    // gathering all attachments across each changelog
-    const attachmentsAggregate = props.changelog?.reduce((ACC, ATT) => {
+    const attachmentsAggregate = cache.data.changelog?.reduce((ACC, ATT) => {
       if (!ATT._source.attachments) return ACC;
       return ACC.concat(ATT._source.attachments);
     }, [] as any);
