@@ -1,5 +1,6 @@
+import { useGetItem } from "@/api";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 export type DetailsSidebarLink = {
   id: string;
@@ -8,11 +9,12 @@ export type DetailsSidebarLink = {
 };
 
 export const useDetailsSidebarLinks = (
-  dataId?: string,
+  dataId: string,
 ): DetailsSidebarLink[] => {
+  const { data } = useGetItem(dataId);
   const [sideBarLinks, setSideBarLinks] = useState<DetailsSidebarLink[]>([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ids = [
       "package_details",
       "package_activity",
@@ -21,9 +23,9 @@ export const useDetailsSidebarLinks = (
     ];
 
     // Check if dataId is not undefined before proceeding
-    if (dataId) {
+    if (data?._id) {
       const links = ids
-        .filter((id) => document.getElementById(id) !== null)
+        .filter((id) => document.getElementById(id) != null)
         .map((id) => ({
           id,
           href: `?id=${encodeURIComponent(dataId)}#${id}`,
@@ -34,7 +36,7 @@ export const useDetailsSidebarLinks = (
     } else {
       setSideBarLinks([]);
     }
-  }, [dataId]);
+  }, [dataId, data]);
 
   return sideBarLinks;
 };
