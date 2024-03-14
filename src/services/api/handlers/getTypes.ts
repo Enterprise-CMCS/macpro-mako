@@ -12,6 +12,7 @@ export const queryTypes = async (authorityId: string) => {
   }
 
   const query = {
+    size: 200,
     query: {
       bool: {
         must: [

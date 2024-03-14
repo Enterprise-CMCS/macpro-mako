@@ -13,6 +13,7 @@ export const querySubTypes = async (authorityId: string, typeIds: string[]) => {
   }
 
   const query = {
+    size: 200,
     query: {
       bool: {
         must: [

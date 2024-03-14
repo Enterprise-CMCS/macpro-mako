@@ -98,8 +98,8 @@ params:
   default:
     formsProvisionedConcurrency: 0
     getAllFormsProvisionedConcurrency: 1
-    getTypesProvisionedConcurrency: 2
-    getSubTypesProvisionedConcurrency: 2
+    getTypesProvisionedConcurrency: 1
+    getSubTypesProvisionedConcurrency: 1
     searchProvisionedConcurrency: 0
     itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
