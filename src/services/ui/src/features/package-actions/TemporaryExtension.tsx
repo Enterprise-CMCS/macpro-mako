@@ -82,11 +82,6 @@ export const tempExtensionSchema = z
     return z.never;
   });
 
-function getContentBeforeLastPeriod(input: string): string {
-  const lastIndex = input.lastIndexOf(".");
-  return lastIndex === -1 ? input : input.substring(0, lastIndex);
-}
-
 export const onValidSubmission: SC.ActionFunction = async ({ request }) => {
   try {
     const formData = Object.fromEntries(await request.formData());
