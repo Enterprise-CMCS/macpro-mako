@@ -144,7 +144,7 @@ export const TemporaryExtension = () => {
         />
         <SC.AdditionalInformation
           required={false}
-          helperText="Add anything else that you would like to share with CMS"
+          helperText="Add anything else that you would like to share with CMS."
         />
         <AdditionalFormInformation />
         <SC.FormLoadingSpinner />
