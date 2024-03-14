@@ -8,12 +8,12 @@ export const v202402: FormSchema = {
       form: [
         {
           description:
-            "Identify and define the population that will participate in the Alternative Benefit Plan.",
+            "Define the population that will participate in this Alternative Benefit Plan (ABP).",
           slots: [
             {
               rhf: "Input",
-              name: "alt_benefit_plan_population_name",
-              label: "Alternative Benefit Plan population name",
+              name: "abp_package_name",
+              label: "ABP package name",
               rules: {
                 required: "* Required",
               },
@@ -22,8 +22,7 @@ export const v202402: FormSchema = {
           ],
         },
         {
-          description:
-            "Identify eligibility groups that are included in the Alternative Benefit Plan's population and that may contain individuals that meet any targeting criteria used to further define the population.",
+          description: "Identify eligibility groups that are included.",
           slots: [
             {
               rhf: "FieldArray",
@@ -267,7 +266,7 @@ export const v202402: FormSchema = {
                 {
                   rhf: "Select",
                   name: "mandatory_voluntary",
-                  label: "Mandatory or Voluntary",
+                  label: "Mandatory or voluntary",
                   rules: {
                     required: "* Required",
                   },
@@ -408,7 +407,7 @@ export const v202402: FormSchema = {
                                                 },
                                                 name: "federal_poverty_level_percentage",
                                                 label:
-                                                  "Enter the federal poverty level percentage",
+                                                  "Percentage of federal poverty level",
                                               },
                                             ],
                                           },
@@ -420,7 +419,7 @@ export const v202402: FormSchema = {
                                                 rhf: "Input",
                                                 name: "ssi_federal_benefit_percentage",
                                                 label:
-                                                  "Enter the SSI Federal Benefit Rate percentage",
+                                                  "Percentage of SSI federal benefit",
                                                 props: {
                                                   icon: "%",
                                                 },
@@ -442,8 +441,7 @@ export const v202402: FormSchema = {
                                               {
                                                 rhf: "Input",
                                                 name: "other_percentage",
-                                                label:
-                                                  "Enter the other percentage",
+                                                label: "Other percentage",
                                                 props: {
                                                   icon: "%",
                                                 },
@@ -602,6 +600,8 @@ export const v202402: FormSchema = {
                                                         rhf: "Input",
                                                         name: "name_of_region",
                                                         label: "Region Name",
+                                                        labelStyling:
+                                                          "font-bold",
                                                         rules: {
                                                           required:
                                                             "* Required",
@@ -1101,7 +1101,7 @@ export const v202402: FormSchema = {
       form: [
         {
           description:
-            "Will the Alternative Benefit Plan population include individuals from the entire state/territory?",
+            "Will this benefit package be available to the entire state/territory?",
           slots: [
             {
               rhf: "Select",
