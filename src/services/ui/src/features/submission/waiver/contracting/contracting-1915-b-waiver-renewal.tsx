@@ -47,7 +47,7 @@ const formSchema = z
     subject: z.string(),
     description: z.string(),
     typeIds: z.array(z.number()),
-    subTypeIds: z.array(z.string()),
+    subTypeIds: z.array(z.number()),
     attachments: z.object({
       b4WaiverApplication: zAttachmentRequired({ min: 1 }),
       b4IndependentAssessment: zAttachmentOptional,
@@ -115,7 +115,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
     navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const handleSubmit: SubmitHandler<Waiver1915BContractingRenewal> = async (
-    formData
+    formData,
   ) => {
     try {
       // AK-0260.R04.02
@@ -135,7 +135,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
         // when any queries are added, such as the case of /details?id=...
         urlQuery.get(ORIGIN)
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard"
+          : "/dashboard",
       );
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {

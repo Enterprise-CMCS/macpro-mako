@@ -18,7 +18,7 @@ export const useDetailsSidebarLinks = (
     const ids = [
       "package_details",
       "package_activity",
-      "administrative_package_changes",
+      "administrative_package_changess",
       "appendix_k",
     ];
 

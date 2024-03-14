@@ -46,7 +46,7 @@ const formSchema = z.object({
   subject: z.string(),
   description: z.string(),
   typeIds: z.array(z.number()),
-  subTypeId: z.string(),
+  subTypeIds: z.array(z.number()),
   attachments: z.object({
     bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
     bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
@@ -96,7 +96,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
   }, []);
 
   const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmendment> = async (
-    formData
+    formData,
   ) => {
     try {
       await submit<Waiver1915BCapitatedAmendment>({
@@ -115,7 +115,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
         // when any queries are added, such as the case of /details?id=...
         urlQuery.get(ORIGIN)
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard"
+          : "/dashboard",
       );
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
@@ -126,6 +126,8 @@ export const Capitated1915BWaiverAmendmentPage = () => {
   const form = useForm<Waiver1915BCapitatedAmendment>({
     resolver: zodResolver(formSchema),
   });
+
+  console.log(form.formState);
 
   return (
     <SimplePageContainer>
@@ -248,7 +250,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
             <SubTypeSelect
               control={form.control}
               typeIds={form.watch("typeIds")}
-              name="subTypeId"
+              name="subTypeIds"
               authorityId={122} // waivers authority
               disabled={!form.watch("typeIds")?.length}
             />

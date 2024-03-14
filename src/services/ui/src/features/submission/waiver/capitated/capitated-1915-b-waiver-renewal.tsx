@@ -47,7 +47,7 @@ const formSchema = z
     subject: z.string(),
     description: z.string(),
     typeIds: z.array(z.number()),
-    subTypeIds: z.array(z.string()),
+    subTypeIds: z.array(z.number()),
     attachments: z.object({
       bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
       bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
@@ -122,7 +122,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
     navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const handleSubmit: SubmitHandler<Waiver1915BCapitatedRenewal> = async (
-    formData
+    formData,
   ) => {
     try {
       // AK-0260.R04.02
@@ -142,7 +142,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
         // when any queries are added, such as the case of /details?id=...
         urlQuery.get(ORIGIN)
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard"
+          : "/dashboard",
       );
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {

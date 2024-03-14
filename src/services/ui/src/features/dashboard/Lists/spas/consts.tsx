@@ -84,7 +84,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     },
     {
       field: "raiReceivedDate",
-      label: "Formal RAI Response",
+      label: "Formal RAI Received",
       cell: (data) => {
         if (!data.raiReceivedDate || data.raiWithdrawnDate) return null;
         return formatSeatoolDate(data.raiReceivedDate);

@@ -91,7 +91,7 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
     },
     {
       field: "raiReceivedDate",
-      label: "Formal RAI Response",
+      label: "Formal RAI Received",
       cell: renderCellDate("raiReceivedDate"),
     },
     {
@@ -107,7 +107,7 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
     },
     // hide actions column for: readonly,help desk
     ...(!CMS_READ_ONLY_ROLES.some((UR) =>
-      props.user?.["custom:cms-roles"].includes(UR)
+      props.user?.["custom:cms-roles"].includes(UR),
     )
       ? [
           {

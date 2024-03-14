@@ -44,7 +44,7 @@ const formSchema = z.object({
   subject: z.string(),
   description: z.string(),
   typeIds: z.array(z.number()),
-  subTypeIds: z.array(z.string()),
+  subTypeIds: z.array(z.number()),
   attachments: z.object({
     b4WaiverApplication: zAttachmentRequired({ min: 1 }),
     tribalConsultation: zAttachmentOptional,
@@ -89,7 +89,7 @@ export const Contracting1915BWaiverInitialPage = () => {
     navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const handleSubmit: SubmitHandler<Waiver1915BContractingInitial> = async (
-    formData
+    formData,
   ) => {
     try {
       await submit<Waiver1915BContractingInitial>({
@@ -108,7 +108,7 @@ export const Contracting1915BWaiverInitialPage = () => {
         // when any queries are added, such as the case of /details?id=...
         urlQuery.get(ORIGIN)
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard"
+          : "/dashboard",
       );
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
