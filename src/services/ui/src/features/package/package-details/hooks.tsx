@@ -77,14 +77,18 @@ export const spaDetails = (
     value: data.proposedDate
       ? formatSeatoolDate(data.proposedDate)
       : BLANK_VALUE,
-    canView: () => true,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
   },
   {
     label: "Approved Effective Date",
     value: data.approvedEffectiveDate
       ? formatSeatoolDate(data.approvedEffectiveDate)
       : BLANK_VALUE,
-    canView: () => true,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
   },
   {
     label: "Status Date",
@@ -96,7 +100,9 @@ export const spaDetails = (
     value: data.finalDispositionDate
       ? formatSeatoolDate(data.finalDispositionDate)
       : BLANK_VALUE,
-    canView: () => true,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
   },
 ];
 
@@ -126,7 +132,9 @@ export const submissionDetails = (
   {
     label: "CPOC",
     value: <p className="text-lg">{data?.leadAnalystName || BLANK_VALUE}</p>,
-    canView: () => true,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
   },
   {
     label: "Review Team (SRT)",
