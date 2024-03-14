@@ -1,11 +1,10 @@
 import { useGetItem, useGetUser } from "@/api";
-import { getStatus, UserRoles } from "shared-types";
+import { UserRoles } from "shared-types";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
 
 export const PackageStatusCard: FC<{ id: string }> = ({ id }) => {
   const { data } = useGetItem(id);
-  const transformedStatuses = getStatus(data?._source.seatoolStatus);
   const { data: user } = useGetUser();
 
   if (!data) return null;
@@ -16,8 +15,8 @@ export const PackageStatusCard: FC<{ id: string }> = ({ id }) => {
         <div>
           {user?.isCms &&
           !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
-            ? transformedStatuses.cmsStatus
-            : transformedStatuses.stateStatus}
+            ? data?._source.cmsStatus
+            : data?._source.stateStatus}
         </div>
         <div className="flex mt-1 flex-col gap-1 items-start">
           {data._source.raiWithdrawEnabled && (

@@ -7,6 +7,9 @@ plugins:
   - "@stratiformdigital/serverless-s3-security-helper"
   - serverless-plugin-scripts
 
+package:
+  individually: true
+
 provider:
   name: aws
   runtime: nodejs18.x
@@ -257,6 +260,7 @@ functions:
       dbPassword: ${self:custom.dbInfo.password}
       topicName: ${param:topicName}
       brokerString: ${self:custom.brokerString}
+      osDomain: ${param:osDomain}
     events:
       - http:
           path: /submit

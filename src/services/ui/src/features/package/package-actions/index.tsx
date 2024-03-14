@@ -4,8 +4,10 @@ import { mapActionLabel } from "@/utils";
 import { Authority } from "shared-types";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
+import { useLocation } from "react-router-dom";
 
 export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
+  const location = useLocation();
   const item = useGetItem(id);
 
   const { data, isLoading } = useGetPackageActions(id, {

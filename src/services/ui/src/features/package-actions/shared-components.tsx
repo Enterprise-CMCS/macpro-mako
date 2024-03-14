@@ -71,7 +71,7 @@ export const AttachmentsSection = <T extends string>({
         the description for each of the attachment types on the{" "}
         <Link
           className="text-blue-700 hover:underline"
-          to={"/faq/#medicaid-spa-rai-attachments"}
+          to={"/faq/medicaid-spa-attachments"} // arbitrary default, covered by a bug to be fixed soon
           target={FAQ_TAB}
         >
           {" "}
@@ -79,12 +79,12 @@ export const AttachmentsSection = <T extends string>({
         </Link>
       </p>
       <p>
-        We accept the following file formats:{" "}
-        <strong>.docx, .jpg, .png, .pdf, .xlsx,</strong>
-        and a few others. See the full list on the{" "}
+        We accept the following file formats:{"  "}
+        <strong>.docx, .jpg, .pdf, .png, .xlsx. </strong>
+        See the full list on the{" "}
         <Link
           className="text-blue-700 hover:underline"
-          to={"/faq/#medicaid-spa-rai-attachments"}
+          to={"/faq/acceptable-file-formats"}
           target={FAQ_TAB}
         >
           {" "}
@@ -100,6 +100,7 @@ export const AttachmentsSection = <T extends string>({
             <FormItem key={name} className="my-4 space-y-2">
               <FormLabel>{name}</FormLabel> {required && <RequiredIndicator />}
               <Upload files={field?.value ?? []} setFiles={field.onChange} />
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -233,7 +234,10 @@ export const ErrorBanner = () => {
 
 export const FormLoadingSpinner = () => {
   const { state } = useNavigation();
-  return state === "submitting" && <LoadingSpinner />;
+  const { formState } = useFormContext();
+  return (
+    (state === "submitting" || formState.isSubmitting) && <LoadingSpinner />
+  );
 };
 
 // Hooks
@@ -288,8 +292,10 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
         body,
       });
       alert.setBannerShow(true);
-      alert.setBannerDisplayOn(location.state.from.split("?")[0]);
-      navigate(location.state.from);
+      alert.setBannerDisplayOn(
+        location.state?.from?.split("?")[0] ?? "/dashboard"
+      );
+      navigate(location.state?.from ?? "/dashboard");
     }
   }, [data]);
 };
