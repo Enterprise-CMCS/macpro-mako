@@ -100,6 +100,7 @@ export const AttachmentsSection = <T extends string>({
             <FormItem key={name} className="my-4 space-y-2">
               <FormLabel>{name}</FormLabel> {required && <RequiredIndicator />}
               <Upload files={field?.value ?? []} setFiles={field.onChange} />
+              <FormMessage />
             </FormItem>
           )}
         />
