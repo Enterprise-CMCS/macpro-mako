@@ -14,6 +14,7 @@ export const handler: Handler = async (_, __, callback) => {
       "insights",
       "types",
       "subtypes",
+      "legacyinsights",
     ] as const;
     for (const index of indices) {
       await manageIndexResource({ index: index });

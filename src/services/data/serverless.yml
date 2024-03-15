@@ -123,6 +123,7 @@ stepFunctions:
                 - !Ref SinkTypesLambdaFunction
                 - !Ref SinkSubtypesLambdaFunction
                 - !Ref SinkInsightsLambdaFunction
+                - !Ref SinkLegacyInsightsLambdaFunction
             Next: DeleteIndex
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -239,6 +240,10 @@ stepFunctions:
                 - Function: !Ref SinkInsightsLambdaFunction
                   Topics:
                     - aws.seatool.ksql.onemac.agg.State_Plan
+                - Function: !Ref SinkLegacyInsightsLambdaFunction
+                  Topics:
+                    - aws.onemac.migration.cdc
+                    - ${param:topicNamespace}aws.onemac.migration.cdc
             Next: NotifyOfSuccess
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -364,6 +369,14 @@ functions:
     provisionedConcurrency: ${param:sinkProvisionedConcurrency}
   sinkInsights:
     handler: handlers/sinkInsights.handler
+    maximumRetryAttempts: 0
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  sinkLegacyInsights:
+    handler: handlers/sinkLegacyInsights.handler
     maximumRetryAttempts: 0
     vpc:
       securityGroupIds:
@@ -744,6 +757,7 @@ resources:
           - !Ref SinkTypesLambdaFunction
           - !Ref SinkSubtypesLambdaFunction
           - !Ref SinkInsightsLambdaFunction
+          - !Ref SinkLegacyInsightsLambdaFunction
   Outputs:
     OpenSearchDomainArn:
       Value: !GetAtt OpenSearch.Arn
