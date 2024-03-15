@@ -40,28 +40,50 @@ export async function updateData(host: string, indexObject: any) {
 export async function bulkUpdateData(
   host: string,
   index: opensearch.Index,
-  arrayOfDocuments: any
+  arrayOfDocuments: any,
+  maxRetries = 5, // Maximum number of retries
+  retryDelay = 1000 // Initial delay in milliseconds
 ) {
-  // Skip if no documents have been supplied
   if (arrayOfDocuments.length === 0) {
     console.log("No documents to update. Skipping bulk update operation.");
     return;
   }
+
   client = client || (await getClient(host));
-  var response = await client.helpers.bulk({
-    datasource: arrayOfDocuments,
-    onDocument(doc: any) {
-      // The update operation always requires a tuple to be returned, with the
-      // first element being the action and the second being the update options.
-      return [
-        {
-          update: { _index: index, _id: doc.id },
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const response = await client.helpers.bulk({
+        datasource: arrayOfDocuments,
+        onDocument(doc: any) {
+          return [
+            { update: { _index: index, _id: doc.id } },
+            { doc_as_upsert: true },
+          ];
         },
-        { doc_as_upsert: true },
-      ];
-    },
-  });
-  console.log(response);
+      });
+      console.log(response);
+      break; // Break the loop if the request was successful
+    } catch (error) {
+      if (
+        error instanceof OpensearchErrors.ResponseError &&
+        error.statusCode === 429
+      ) {
+        // Handle the 429 error
+        console.log(
+          `Received 429 error, attempt ${attempt} of ${maxRetries}. Retrying after ${retryDelay}ms...`
+        );
+        // Wait for the specified delay before retrying
+        await new Promise((resolve) => setTimeout(resolve, retryDelay));
+        // Increase the delay for the next retry (exponential backoff)
+        retryDelay *= 2;
+      } else {
+        // Throw if the error is not a 429 or if we've reached the maximum number of retries
+        console.error("Error updating documents:", error);
+        throw error;
+      }
+    }
+  }
 }
 
 export async function deleteIndex(host: string, index: opensearch.Index) {
