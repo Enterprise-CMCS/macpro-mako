@@ -71,7 +71,8 @@ params:
   master:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
-    getSeaTypesProvisionedConcurrency: 2
+    getTypesProvisionedConcurrency: 2
+    getSubTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
@@ -80,7 +81,8 @@ params:
   val:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
-    getSeaTypesProvisionedConcurrency: 2
+    getTypesProvisionedConcurrency: 2
+    getSubTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
@@ -89,7 +91,8 @@ params:
   production:
     formsProvisionedConcurrency: 5
     getAllFormsProvisionedConcurrency: 1
-    getSeaTypesProvisionedConcurrency: 2
+    getTypesProvisionedConcurrency: 2
+    getSubTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 10
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
@@ -98,7 +101,8 @@ params:
   default:
     formsProvisionedConcurrency: 0
     getAllFormsProvisionedConcurrency: 1
-    getSeaTypesProvisionedConcurrency: 2
+    getTypesProvisionedConcurrency: 1
+    getSubTypesProvisionedConcurrency: 1
     searchProvisionedConcurrency: 0
     itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
@@ -191,15 +195,15 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
 
-  getSeaTypes:
-    handler: handlers/getSeaTypes.handler
+  getTypes:
+    handler: handlers/getTypes.handler
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
       osDomain: ${param:osDomain}
     events:
       - http:
-          path: /getSeaTypes
+          path: /getTypes
           method: post
           cors: true
           authorizer: aws_iam
@@ -208,7 +212,25 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:getSeaTypesProvisionedConcurrency}
+    provisionedConcurrency: ${param:getTypesProvisionedConcurrency}
+  getSubTypes:
+    handler: handlers/getSubTypes.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /getSubTypes
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:getSubTypesProvisionedConcurrency}
   itemExists:
     handler: handlers/itemExists.handler
     maximumRetryAttempts: 0
