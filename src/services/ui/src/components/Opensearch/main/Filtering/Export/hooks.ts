@@ -80,7 +80,7 @@ export const useFilterExportGroups = () => {
           : BLANK_VALUE,
     },
     {
-      name: "Formal RAI Response",
+      name: "Formal RAI Received",
       transform: (data) => {
         return data.raiReceivedDate && !data.raiWithdrawnDate
           ? formatSeatoolDate(data.raiReceivedDate)

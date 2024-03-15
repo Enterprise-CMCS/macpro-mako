@@ -46,10 +46,12 @@ const formSchema = z
     proposedEffectiveDate: z.date(),
     subject: z
       .string()
+      .trim()
       .min(1, { message: "This field is required" })
       .max(120, { message: "Subject should be under 120 characters" }),
     description: z
       .string()
+      .trim()
       .min(1, { message: "This field is required" })
       .max(4000, { message: "Description should be under 4000 characters" }),
     typeIds: z
@@ -278,11 +280,8 @@ export const Contracting1915BWaiverRenewalPage = () => {
               authorityId={122}
             />
             <SubTypeSelect
-              control={form.control}
-              typeIds={form.watch("typeIds")}
               name="subTypeIds"
               authorityId={122} // waivers authority
-              disabled={!form.watch("typeIds")?.length}
             />
           </SectionCard>
           <SectionCard title="Attachments">

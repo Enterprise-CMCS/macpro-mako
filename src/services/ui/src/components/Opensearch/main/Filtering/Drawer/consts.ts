@@ -79,7 +79,7 @@ export const DATE_SUBMISSION: DrawerFilterableGroup = {
 };
 
 export const DATE_RAIRECEIVED: DrawerFilterableGroup = {
-  label: "Formal RAI Response",
+  label: "Formal RAI Received",
   field: "raiReceivedDate",
   component: "dateRange",
   prefix: "must",
