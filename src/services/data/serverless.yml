@@ -101,17 +101,8 @@ stepFunctions:
           - !GetAtt StateMachineLogGroup.Arn
       definition:
         Comment: "A state machine to reindex the OpenSearch index."
-        StartAt: MapRole
+        StartAt: DeleteAllTriggers
         States:
-          MapRole:
-            Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-mapRole"
-            Parameters:
-              Context.$: $$
-            Next: DeleteAllTriggers
-            Catch:
-              - ErrorEquals: ["States.ALL"]
-                Next: NotifyOfFailure
           DeleteAllTriggers:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteTriggers"
@@ -339,10 +330,6 @@ functions:
     handler: handlers/deleteTriggers.handler
     timeout: 900
   mapRole:
-    environment:
-      iamRoleName: !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
-      masterRoleToAssume: !GetAtt OpenSearchMasterRole.Arn
-      osRoleName: all_access
     handler: handlers/mapRole.handler
     vpc:
       securityGroupIds:
@@ -426,6 +413,14 @@ resources:
       Properties:
         ServiceToken: !GetAtt RunReindexLambdaFunction.Arn
         StateMachine: !Ref ReindexDataStateMachine
+    MapRole:
+      Type: Custom::MapRole
+      Properties:
+        ServiceToken: !GetAtt MapRoleLambdaFunction.Arn
+        OsDomain: !Sub https://${OpenSearch.DomainEndpoint}
+        IamRoleName: !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
+        MasterRoleToAssume: !GetAtt OpenSearchMasterRole.Arn
+        OsRoleName: all_access
     MetricFilterSinkMain:
       Type: "AWS::Logs::MetricFilter"
       Properties:
