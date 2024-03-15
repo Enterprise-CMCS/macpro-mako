@@ -44,13 +44,25 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
       label: "Status",
       transform: (data) => {
-        if (data.actionType === undefined) {
-          return BLANK_VALUE;
-        }
+        const status = (() => {
+          if (!props?.isCms) return data.stateStatus;
+          if (props?.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)) {
+            return data.stateStatus;
+          }
+          return data.cmsStatus;
+        })();
 
-        return (
-          LABELS[data.actionType as keyof typeof LABELS] || data.actionType
-        );
+        const subStatusRAI = data.raiWithdrawEnabled
+          ? " (Withdraw Formal RAI Response - Enabled)"
+          : "";
+
+        const subStatusInitialIntake = (() => {
+          if (!props?.isCms) return "";
+          if (!data.initialIntakeNeeded) return "";
+          return " (Initial Intake Needed)";
+        })();
+
+        return `${status}${subStatusRAI}${subStatusInitialIntake}`;
       },
       cell: (data) => {
         const status = (() => {
