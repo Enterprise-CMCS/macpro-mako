@@ -11,7 +11,10 @@ export const handler: Handler = async (_, __, callback) => {
     await manageIndexResource({
       index: "main",
       update: {
+        approvedEffectiveDate: { type: "date" },
         changedDate: { type: "date" },
+        finalDispositionDate: { type: "date" },
+        proposedDate: { type: "date" },
         statusDate: { type: "date" },
         submissionDate: { type: "date" },
       },
