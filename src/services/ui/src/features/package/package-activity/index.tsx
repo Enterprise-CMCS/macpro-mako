@@ -338,7 +338,7 @@ export const PackageActivities = () => {
 
   return (
     <DetailsSection
-      id="package-activities"
+      id="package_activity"
       title={
         // needed to do this for the download all button
         <div className="flex justify-between">
