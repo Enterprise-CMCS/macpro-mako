@@ -256,8 +256,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
               authorityId={122}
             />
             <SubTypeSelect
-              name="subTypeIds"
-              authorityId={122} // waivers authority
+              authorityId={122}
             />
           </SectionCard>
           <SectionCard title="Attachments">

@@ -218,7 +218,6 @@ export const Contracting1915BWaiverInitialPage = () => {
               authorityId={122}
             />
             <SubTypeSelect
-              name="subTypeIds"
               authorityId={122} // waivers authority
             />
           </SectionCard>

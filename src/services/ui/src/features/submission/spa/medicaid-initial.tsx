@@ -214,8 +214,7 @@ export const MedicaidSpaFormPage = () => {
               authorityId={125} // medicaid authority
             />
             <SubTypeSelect
-              name="subTypeIds"
-              authorityId={125} // medicaid authority
+              authorityId={125} 
             />
           </SectionCard>
           <SectionCard title="Attachments">

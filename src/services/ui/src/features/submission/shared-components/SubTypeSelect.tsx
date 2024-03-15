@@ -1,12 +1,11 @@
 import { useEffect, useMemo } from "react";
 import { useGetSubTypes } from "@/api";
 import * as Inputs from "@/components/Inputs";
-import { FieldValues, Path, useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import Select from "react-select";
 import { uniqBy } from "lodash";
 
-type SubTypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
-  name: Path<TFieldValues>;
+type SubTypeSelectFormFieldProps = {
   authorityId: number;
 };
 type SelectOption = {
@@ -14,15 +13,15 @@ type SelectOption = {
   label: string;
 };
 
-export function SubTypeSelect<TFieldValues extends FieldValues>({
-  name,
-  authorityId,
-}: SubTypeSelectFormFieldProps<TFieldValues>) {
-  const { control, setValue, watch } = useFormContext();
-  const currentValue = watch("typeIds", []);
-  const { data } = useGetSubTypes(authorityId, currentValue, {
-    enabled: currentValue.length > 0,
+export function SubTypeSelect({ authorityId }: SubTypeSelectFormFieldProps) {
+  const { control, setValue } = useFormContext();
+  const typeIds = useWatch({ name: "typeIds", defaultValue: [] });
+  const subTypeIds = useWatch({
+    name: "subTypeIds",
+    defaultValue: [],
   });
+
+  const { data } = useGetSubTypes(authorityId, typeIds);
 
   const options = useMemo(
     () =>
@@ -34,19 +33,23 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
   );
 
   useEffect(() => {
-    const validValues = currentValue?.filter((val: number) =>
+    const validValues = typeIds?.filter((val: number) =>
       options.find((option) => option.value === val),
     );
+
     if (validValues.length > 0) {
-      setValue(name, validValues, { shouldValidate: true });
+      setValue("subTypeIds", validValues, { shouldValidate: true });
     }
-  }, [data, currentValue, setValue]);
+    if (typeIds.length === 0) {
+      setValue("subTypeIds", []);
+    }
+  }, [options, typeIds, data]);
 
   return (
     <Inputs.FormField
       control={control}
-      name={name}
-      render={({ field }) => (
+      name={"subTypeIds"}
+      render={() => (
         <Inputs.FormItem className="max-w-lg">
           <Inputs.FormLabel className="font-semibold block">
             Subtype <Inputs.RequiredIndicator />
@@ -56,13 +59,18 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
           </p>
           <Select
             isMulti
-            isDisabled={!currentValue.length}
+            isDisabled={!typeIds.length}
             value={options.filter((option) =>
-              field.value?.includes(option.value),
+              subTypeIds?.includes(option.value),
             )}
-            onChange={(val) =>
-              field.onChange(val.map((v: SelectOption) => v.value))
-            }
+            onChange={(val) => {
+              if (val.length === 0) {
+                setValue("subTypeIds", [], { shouldValidate: true });
+                return;
+              }
+              const v = val.map((v: SelectOption) => v.value);
+              setValue("subTypeIds", v, { shouldValidate: true });
+            }}
             options={options}
             closeMenuOnSelect={false}
             className="border border-black shadow-sm rounded-sm"

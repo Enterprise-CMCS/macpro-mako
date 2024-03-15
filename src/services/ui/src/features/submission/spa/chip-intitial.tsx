@@ -211,10 +211,7 @@ export const ChipSpaFormPage = () => {
               name="typeIds"
               authorityId={124} // chip authority
             />
-            <SubTypeSelect
-              name="subTypeIds"
-              authorityId={124} // chip authority
-            />
+            <SubTypeSelect authorityId={124} />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/chip-spa-attachments" />

@@ -250,7 +250,6 @@ export const Contracting1915BWaiverAmendmentPage = () => {
               authorityId={122}
             />
             <SubTypeSelect
-              name="subTypeIds"
               authorityId={122} // waivers authority
             />
           </SectionCard>
