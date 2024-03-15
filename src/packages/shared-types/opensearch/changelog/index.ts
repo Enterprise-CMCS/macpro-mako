@@ -4,7 +4,6 @@ import {
   Filterable as FIL,
   QueryState,
   AggQuery,
-  ExportHeaderOptions,
 } from "./../_";
 import {
   OneMac,
@@ -36,4 +35,3 @@ export type Field = keyof Document | `${keyof Document}.keyword`;
 export type Filterable = FIL<Field>;
 export type State = QueryState<Field>;
 export type Aggs = AggQuery<Field>;
-export type ExportHeader = ExportHeaderOptions<Document>;
