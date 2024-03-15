@@ -8,17 +8,22 @@ export const handler: Handler = async (_, __, callback) => {
   };
   let errorResponse = null;
   try {
-    const indices = [
-      "main",
-      "changelog",
-      "insights",
-      "types",
-      "subtypes",
-      "legacyinsights",
-    ] as const;
-    for (const index of indices) {
-      await manageIndexResource({ index: index });
-    }
+    await manageIndexResource({
+      index: "main",
+      update: {
+        approvedEffectiveDate: { type: "date" },
+        changedDate: { type: "date" },
+        finalDispositionDate: { type: "date" },
+        proposedDate: { type: "date" },
+        statusDate: { type: "date" },
+        submissionDate: { type: "date" },
+      },
+    });
+    await manageIndexResource({ index: "changelog" });
+    await manageIndexResource({ index: "insights" });
+    await manageIndexResource({ index: "legacyinsights" });
+    await manageIndexResource({ index: "types" });
+    await manageIndexResource({ index: "subtypes" });
   } catch (error: any) {
     response.statusCode = 500;
     errorResponse = error;
@@ -37,7 +42,7 @@ const manageIndexResource = async (resource: {
 
   const createIndex = await os.createIndex(
     process.env.osDomain,
-    resource.index
+    resource.index,
   );
   console.log(createIndex);
 
@@ -46,7 +51,7 @@ const manageIndexResource = async (resource: {
   const updateFieldMapping = await os.updateFieldMapping(
     process.env.osDomain,
     resource.index,
-    resource.update
+    resource.update,
   );
   console.log(updateFieldMapping);
 };

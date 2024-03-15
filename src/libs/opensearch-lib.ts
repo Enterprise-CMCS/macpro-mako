@@ -37,13 +37,20 @@ export async function updateData(host: string, indexObject: any) {
   var response = await client.update(indexObject);
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+interface Document {
+  id: string;
+  [key: string]: any;
+}
+
 export async function bulkUpdateData(
   host: string,
-  index: opensearch.Index,
-  arrayOfDocuments: any,
-  maxRetries = 5, // Maximum number of retries
-  retryDelay = 1000 // Initial delay in milliseconds
-) {
+  index: string,
+  arrayOfDocuments: Document[],
+): Promise<void> {
   if (arrayOfDocuments.length === 0) {
     console.log("No documents to update. Skipping bulk update operation.");
     return;
@@ -51,39 +58,63 @@ export async function bulkUpdateData(
 
   client = client || (await getClient(host));
 
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+  const lastEntries = arrayOfDocuments.reduce(
+    (acc: { [id: string]: Document }, doc: Document) => {
+      acc[doc.id] = doc; // This will overwrite any previous entry with the same ID
+      return acc;
+    },
+    {},
+  );
+  const filteredDocuments = Object.values(lastEntries);
+
+  const body: any[] = filteredDocuments.flatMap((doc) => [
+    { update: { _index: index, _id: doc.id } }, // Action and metadata
+    { doc: doc, doc_as_upsert: true }, // Document to update or upsert
+  ]);
+
+  async function attemptBulkUpdate(
+    retries: number = 5,
+    delay: number = 1000,
+  ): Promise<void> {
     try {
-      const response = await client.helpers.bulk({
-        datasource: arrayOfDocuments,
-        onDocument(doc: any) {
-          return [
-            { update: { _index: index, _id: doc.id } },
-            { doc_as_upsert: true },
-          ];
-        },
-      });
-      console.log(response);
-      break; // Break the loop if the request was successful
-    } catch (error) {
-      if (
-        error instanceof OpensearchErrors.ResponseError &&
-        error.statusCode === 429
-      ) {
-        // Handle the 429 error
-        console.log(
-          `Received 429 error, attempt ${attempt} of ${maxRetries}. Retrying after ${retryDelay}ms...`
+      const response = await client.bulk({ refresh: true, body: body });
+      if (response.body.errors) {
+        // Check for 429 status within response errors
+        const hasRateLimitErrors = response.body.items.some(
+          (item: any) => item.update.status === 429,
         );
-        // Wait for the specified delay before retrying
-        await new Promise((resolve) => setTimeout(resolve, retryDelay));
-        // Increase the delay for the next retry (exponential backoff)
-        retryDelay *= 2;
+
+        if (hasRateLimitErrors && retries > 0) {
+          console.log(`Rate limit exceeded, retrying in ${delay}ms...`);
+          await sleep(delay);
+          return attemptBulkUpdate(retries - 1, delay * 2); // Exponential backoff
+        } else if (!hasRateLimitErrors) {
+          // Handle or throw other errors normally
+          console.error(
+            "Bulk update errors:",
+            JSON.stringify(response.body.items, null, 2),
+          );
+          throw "ERROR:  Bulk update had an error that was not rate related.";
+        }
       } else {
-        // Throw if the error is not a 429 or if we've reached the maximum number of retries
-        console.error("Error updating documents:", error);
+        console.log("Bulk update successful.");
+      }
+    } catch (error: any) {
+      if (error.statusCode === 429 && retries > 0) {
+        console.log(
+          `Rate limit exceeded, retrying in ${delay}ms...`,
+          error.message,
+        );
+        await sleep(delay);
+        return attemptBulkUpdate(retries - 1, delay * 2); // Exponential backoff
+      } else {
+        console.error("An error occurred:", error);
         throw error;
       }
     }
   }
+
+  await attemptBulkUpdate();
 }
 
 export async function deleteIndex(host: string, index: opensearch.Index) {
@@ -106,7 +137,7 @@ export async function mapRole(
   host: string,
   masterRoleToAssume: string,
   osRoleName: string,
-  iamRoleName: string
+  iamRoleName: string,
 ) {
   try {
     const sts = new STSClient({
@@ -117,7 +148,7 @@ export async function mapRole(
         RoleArn: masterRoleToAssume,
         RoleSessionName: "RoleMappingSession",
         ExternalId: "foo",
-      })
+      }),
     );
     const interceptor = aws4Interceptor({
       options: {
@@ -139,7 +170,7 @@ export async function mapRole(
           path: "/and_backend_roles",
           value: [iamRoleName],
         },
-      ]
+      ],
     );
     return patchResponse.data;
   } catch (error) {
@@ -151,7 +182,7 @@ export async function mapRole(
 export async function search(
   host: string,
   index: opensearch.Index,
-  query: any
+  query: any,
 ) {
   client = client || (await getClient(host));
   try {
@@ -168,7 +199,7 @@ export async function search(
 export async function getItem(
   host: string,
   index: opensearch.Index,
-  id: string
+  id: string,
 ) {
   client = client || (await getClient(host));
   try {
@@ -196,7 +227,7 @@ export async function createIndex(host: string, index: opensearch.Index) {
 export async function updateFieldMapping(
   host: string,
   index: opensearch.Index,
-  properties: object
+  properties: object,
 ) {
   client = client || (await getClient(host));
   try {

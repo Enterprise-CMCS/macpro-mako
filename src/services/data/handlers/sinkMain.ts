@@ -22,20 +22,20 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           throw new Error();
         case "aws.onemac.migration.cdc":
           docs.push(
-            ...(await onemac(event.records[topicPartition], topicPartition))
+            ...(await onemac(event.records[topicPartition], topicPartition)),
           );
           break;
         case "aws.seatool.ksql.onemac.agg.State_Plan":
           docs.push(
-            ...(await ksql(event.records[topicPartition], topicPartition))
+            ...(await ksql(event.records[topicPartition], topicPartition)),
           );
           break;
         case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
           docs.push(
             ...(await changed_date(
               event.records[topicPartition],
-              topicPartition
-            ))
+              topicPartition,
+            )),
           );
           break;
       }
@@ -172,7 +172,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         })();
         if (result === undefined) {
           console.log(
-            `no action to take for ${id} action ${record.actionType}.  Continuing...`
+            `no action to take for ${id} action ${record.actionType}.  Continuing...`,
           );
           continue;
         }
@@ -200,7 +200,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
 
 const changed_date = async (
   kafkaRecords: KafkaRecord[],
-  topicPartition: string
+  topicPartition: string,
 ) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
@@ -219,11 +219,7 @@ const changed_date = async (
       const record = JSON.parse(decodedValue).payload.after;
 
       // Handle tombstone events and continue
-      if (!record) {
-        console.log(`Seatool Delete event detected for ${id}.`);
-        docs.push(opensearch.main.changedDate.tombstone(id));
-        continue;
-      }
+      if (!record) continue;
 
       const result = opensearch.main.changedDate.transform().safeParse(record);
       if (!result.success) {

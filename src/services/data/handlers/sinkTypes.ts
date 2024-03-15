@@ -21,7 +21,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           throw new Error();
         case "aws.seatool.debezium.cdc.SEA.dbo.SPA_Type":
           docs.push(
-            ...(await types(event.records[topicPartition], topicPartition))
+            ...(await types(event.records[topicPartition], topicPartition)),
           );
           break;
       }

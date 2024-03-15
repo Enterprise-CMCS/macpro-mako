@@ -6,6 +6,7 @@ import {
   SectionCard,
   SimplePageContainer,
   useLocationCrumbs,
+  FAQ_TAB,
 } from "@/components";
 import { SlotAttachments } from "@/features/actions";
 import * as I from "@/components/Inputs";
@@ -22,6 +23,7 @@ import { useNavigate } from "@/components/Routing";
 import { useEffect, useState } from "react";
 import * as Content from "@/components";
 import { zAppkWaiverNumberSchema } from "@/utils";
+import { Link } from "react-router-dom";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
@@ -79,23 +81,47 @@ export const AppKSubmissionForm = () => {
       <BreadCrumbs options={crumbs} />
       <I.Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
-          <SectionCard title="1915(c) APPENDIX K Amendment Details">
+          <SectionCard title="1915(c) APPENDIX K Amendment Request Details">
             <Content.FormIntroText />
+            <I.FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <I.FormItem className="w-[280px]">
+                  <I.FormLabel className="font-bold">
+                    Amendment Title <I.RequiredIndicator />
+                  </I.FormLabel>
+                  <I.Textarea {...field} className="h-[80px]" />
+                </I.FormItem>
+              )}
+            />
             <div className="flex flex-col">
               <I.FormLabel className="font-semibold">
                 Waiver Authority
               </I.FormLabel>
               <span className="text-lg font-thin">1915(c)</span>
             </div>
+
             <I.FormField
               control={form.control}
               name="state"
               render={SlotStateSelect({ label: "State" })}
             />
-
             {state && (
               <div className="flex flex-col gap-2">
-                <I.FormLabel className="font-bold">Appendix K ID</I.FormLabel>
+                <div className="flex gap-4">
+                  <I.FormLabel className="font-bold">
+                    Appendix K ID <I.RequiredIndicator />
+                  </I.FormLabel>
+                  <Link
+                    to="/faq/waiver-c-id"
+                    target={FAQ_TAB}
+                    rel="noopener noreferrer"
+                    className="text-blue-700 hover:underline"
+                  >
+                    What is my Appendix K ID?
+                  </Link>
+                </div>
                 <I.FormField
                   control={form.control}
                   name="parentWaiver"
@@ -139,6 +165,18 @@ export const AppKSubmissionForm = () => {
                     {"1915(c) Appendix K Amendment Waiver Template"}
                     <I.RequiredIndicator />
                   </I.FormLabel>
+                ),
+                message: <I.FormMessage />,
+                className: "my-4",
+              })}
+            />
+
+            <I.FormField
+              control={form.control}
+              name={"attachments.other"}
+              render={SlotAttachments({
+                label: (
+                  <I.FormLabel className="font-semibold">Other</I.FormLabel>
                 ),
                 message: <I.FormMessage />,
                 className: "my-4",
