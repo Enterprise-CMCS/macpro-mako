@@ -58,7 +58,10 @@ export const recordDetails = (
   {
     label: "Subject",
     value: <p>{data?.subject || BLANK_VALUE}</p>,
-    canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
+    canView: (u) =>
+      !u || !u.user
+        ? false
+        : isCmsUser(u.user) && !(data.actionType === "Extend"),
   },
   {
     label: "Type",
@@ -123,7 +126,9 @@ export const approvedAndAEffectiveDetails = (
     value: data.approvedEffectiveDate
       ? formatSeatoolDate(data.approvedEffectiveDate)
       : BLANK_VALUE,
-    canView: () => true,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
   },
 ];
 
@@ -133,7 +138,10 @@ export const descriptionDetails = (
   {
     label: "Description",
     value: data.description ?? BLANK_VALUE,
-    canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
+    canView: (u) =>
+      !u || !u.user
+        ? false
+        : isCmsUser(u.user) && !(data.actionType === "Extend"),
   },
 ];
 
@@ -160,6 +168,9 @@ export const submissionDetails = (
   {
     label: "Review Team (SRT)",
     value: <ReviewTeamList {...data} />,
-    canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
+    canView: (u) =>
+      !u || !u.user
+        ? false
+        : isCmsUser(u.user) && !(data.actionType === "Extend"),
   },
 ];
