@@ -40,6 +40,7 @@ export const attachmentTitleMap = (
     "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
   b4IndependentAssessment:
     "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
+  waiverExtensionRequest: "Waiver Extension Request",
 });
 export type AttachmentKey = keyof typeof attachmentTitleMap;
 export type AttachmentTitle = (typeof attachmentTitleMap)[AttachmentKey];

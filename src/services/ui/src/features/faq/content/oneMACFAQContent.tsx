@@ -870,7 +870,7 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "waiver-extension-id-format",
         question:
-          "What format is used to enter a 1915(b) and 1915(c) Temporary Extension number?",
+          "What format is used to enter a 1915(b) or 1915(c) Temporary Extension number?",
         answerJSX: (
           <>
             <p>
@@ -916,7 +916,7 @@ export const oneMACFAQContent: FAQContent[] = [
         ),
       },
       {
-        anchorText: "waiverb-extension-attachments",
+        anchorText: "1915(b)-waiver-extension-attachments",
         question:
           "What are the attachments for a 1915(b) Waiver - Request for Temporary Extension?",
         answerJSX: (
@@ -957,7 +957,7 @@ export const oneMACFAQContent: FAQContent[] = [
         ),
       },
       {
-        anchorText: "waiverc-extension-attachments",
+        anchorText: "1915(c)-waiver-extension-attachments",
         question:
           "What are the attachments for a 1915(c) Waiver - Request for Temporary Extension",
         answerJSX: (

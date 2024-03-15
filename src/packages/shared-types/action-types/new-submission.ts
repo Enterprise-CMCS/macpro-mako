@@ -7,6 +7,7 @@ export const onemacSchema = z.object({
   seaActionType: z.string().optional(), // Used by waivers and chip spas
   origin: z.string(),
   appkParentId: z.string().nullable().default(null),
+  originalWaiverNumber: z.string().nullable().default(null),
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),
@@ -18,6 +19,10 @@ export const onemacSchema = z.object({
       submissionDate: z.number().nullish(),
     })
     .nullish(),
+  // these are specific to TEs... should be broken into its own schema
+  statusDate: z.number().optional(),
+  submissionDate: z.number().optional(),
+  changedDate: z.number().optional(),
 });
 
 export type OneMac = z.infer<typeof onemacSchema>;

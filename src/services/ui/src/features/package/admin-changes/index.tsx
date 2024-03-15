@@ -12,7 +12,7 @@ import { BLANK_VALUE } from "@/consts";
 import { usePackageDetailsCache } from "..";
 
 export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
-  props
+  props,
 ) => {
   return (
     <div className="flex flex-col gap-2">
@@ -26,7 +26,7 @@ export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
 };
 
 export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
-  props
+  props,
 ) => {
   return (
     <div className="flex flex-col gap-2">
@@ -77,15 +77,15 @@ export const AdminChanges = () => {
   const cache = usePackageDetailsCache();
   const data = cache.data.changelog?.filter((CL) =>
     ["disable-rai-withdraw", "enable-rai-withdraw"].includes(
-      CL._source.actionType
-    )
+      CL._source.actionType,
+    ),
   );
 
   if (!data?.length) return <></>;
 
   return (
     <DetailsSection
-      id="admin-updates"
+      id="administrative_package_changess"
       title={`Administrative Package Changes (${data?.length})`}
       description="Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC."
     >
