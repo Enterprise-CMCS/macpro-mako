@@ -139,7 +139,8 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       // Handle everything else
       const result = (() => {
         switch (record?.actionType) {
-          case undefined:
+          case "new-submission":
+          case undefined: 
             return opensearch.main.newSubmission
               .transform(id)
               .safeParse(record);

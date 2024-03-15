@@ -1,15 +1,21 @@
 import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
 import * as sql from "mssql";
-import { isAuthorized } from "../libs/auth/user";
-
-import { Authority, onemacSchema } from "shared-types";
 import {
+  getAuthDetails,
+  isAuthorized,
+  lookupUserAttributes,
+} from "../libs/auth/user";
+
+import { Action, Authority, onemacSchema } from "shared-types";
+import {
+  getAvailableActions,
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
 } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
 import { produceMessage } from "../libs/kafka";
+import { getPackage } from "../libs/package";
 
 export const submit = async (event: APIGatewayEvent) => {
   try {
@@ -33,6 +39,7 @@ export const submit = async (event: APIGatewayEvent) => {
       Authority.CHIP_SPA,
       Authority.MED_SPA,
       Authority["1915b"],
+      Authority["1915c"], // We accept amendments, renewals, and extensions for Cs
     ];
     if (!activeSubmissionTypes.includes(body.authority)) {
       return response({
@@ -40,6 +47,71 @@ export const submit = async (event: APIGatewayEvent) => {
         body: {
           message: `OneMAC (micro) Submissions API does not support the following authority: ${body.authority}`,
         },
+      });
+    }
+
+    const authDetails = getAuthDetails(event);
+    const userAttr = await lookupUserAttributes(
+      authDetails.userId,
+      authDetails.poolId
+    );
+
+    // I think we need to break this file up.  A switch maybe
+    if (
+      [Authority["1915b"], Authority["1915c"]].includes(body.authority) &&
+      body.seaActionType === "Extend"
+    ) {
+      console.log("Received a new temporary extension sumbission");
+
+      // Check that this action can be performed on the original waiver
+      const originalWaiver = await getPackage(body.originalWaiverNumber);
+      console.log(originalWaiver);
+      const originalWaiverAvailableActions: Action[] = getAvailableActions(
+        userAttr,
+        originalWaiver._source
+      );
+      if (!originalWaiverAvailableActions.includes(Action.TEMP_EXTENSION)) {
+        const actionType = Action.TEMP_EXTENSION;
+        const id = body.originalWaiverNumber;
+        console.log(
+          `Package ${body.originalWaiverNumber} is not a candidate to receive a Temporary Extension`
+        );
+        return response({
+          statusCode: 401,
+          body: {
+            message: `You are not authorized to perform ${actionType} on ${id}`,
+          },
+        });
+      }
+
+      // Safe parse the body
+      const eventBody = onemacSchema.safeParse(body);
+      if (!eventBody.success) {
+        return console.log(
+          "MAKO Validation Error. The following record failed to parse: ",
+          JSON.stringify(eventBody),
+          "Because of the following Reason(s): ",
+          eventBody.error.message
+        );
+      }
+      console.log(
+        "Safe parsed event body" + JSON.stringify(eventBody.data, null, 2)
+      );
+
+      await produceMessage(
+        process.env.topicName as string,
+        body.id,
+        JSON.stringify({
+          ...eventBody.data,
+          submissionDate: getNextBusinessDayTimestamp(),
+          statusDate: seaToolFriendlyTimestamp(),
+          changedDate: Date.now(),
+        })
+      );
+
+      return response({
+        statusCode: 200,
+        body: { message: "success" },
       });
     }
 
@@ -94,8 +166,8 @@ export const submit = async (event: APIGatewayEvent) => {
       -- Main insert into State_Plan
       INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo)
       VALUES ('${body.id}', '${
-      body.state
-    }', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo);
+        body.state
+      }', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo);
     `;
     console.log(query);
 
