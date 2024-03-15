@@ -159,10 +159,24 @@ export const transform = (id: string) => {
       leadAnalystName,
       authorityId: authorityId || null,
       authority: getAuthority(authorityId, id) as Authority | null,
-      typeId: data.STATE_PLAN_SERVICETYPES?.[0]?.SPA_TYPE_ID || null,
-      typeName: data.STATE_PLAN_SERVICETYPES?.[0]?.SPA_TYPE_NAME || null,
-      subTypeId: data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.TYPE_ID || null,
-      subTypeName: data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.TYPE_NAME || null,
+      types:
+        data.STATE_PLAN_SERVICETYPES?.filter(
+          (type): type is NonNullable<typeof type> => type != null
+        ).map((type) => {
+          return {
+            SPA_TYPE_ID: type.SPA_TYPE_ID,
+            SPA_TYPE_NAME: type.SPA_TYPE_NAME.replace(/â|â/g, "-"),
+          };
+        }) || null,
+      subTypes:
+        data.STATE_PLAN_SERVICE_SUBTYPES?.filter(
+          (subType): subType is NonNullable<typeof subType> => subType != null
+        ).map((subType) => {
+          return {
+            TYPE_ID: subType.TYPE_ID,
+            TYPE_NAME: subType.TYPE_NAME.replace(/â|â/g, "-"),
+          };
+        }) || null,
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
@@ -217,9 +231,7 @@ export const tombstone = (id: string) => {
     statusDate: null,
     submissionDate: null,
     subject: null,
-    typeId: null,
-    typeName: null,
-    subTypeId: null,
-    subTypeName: null,
+    types: null,
+    subTypes: null,
   };
 };

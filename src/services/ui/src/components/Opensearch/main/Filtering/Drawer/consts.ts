@@ -25,7 +25,7 @@ export const SELECT_STATE: DrawerFilterableGroup = {
 };
 
 export const CHECK_AUTHORITY: DrawerFilterableGroup = {
-  label: "Type",
+  label: "Authority",
   field: "authority.keyword",
   component: "multiCheck",
   prefix: "must",
@@ -88,7 +88,7 @@ export const DATE_SUBMISSION: DrawerFilterableGroup = {
 };
 
 export const DATE_RAIRECEIVED: DrawerFilterableGroup = {
-  label: "Formal RAI Response",
+  label: "Formal RAI Received",
   field: "raiReceivedDate",
   component: "dateRange",
   prefix: "must",

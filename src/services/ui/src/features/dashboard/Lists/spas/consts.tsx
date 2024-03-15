@@ -33,7 +33,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     },
     {
       field: "authority.keyword",
-      label: "Type",
+      label: "Authority",
       transform: (data) => data.authority ?? BLANK_VALUE,
       cell: (data) =>
         data?.authority
@@ -112,7 +112,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     },
     {
       field: "raiReceivedDate",
-      label: "Formal RAI Response",
+      label: "Formal RAI Received",
       transform: (data) => {
         return data.raiReceivedDate && !data.raiWithdrawnDate
           ? formatSeatoolDate(data.raiReceivedDate)
@@ -138,7 +138,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     },
     // hide actions column for: readonly,help desk
     ...(!CMS_READ_ONLY_ROLES.some((UR) =>
-      props.user?.["custom:cms-roles"].includes(UR)
+      props.user?.["custom:cms-roles"].includes(UR),
     )
       ? [
           {

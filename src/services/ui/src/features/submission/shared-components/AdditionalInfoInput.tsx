@@ -18,9 +18,8 @@ export function AdditionalInfoInput<TFieldValues extends FieldValues>({
         name={name}
         render={({ field }) => (
           <Inputs.FormItem>
-            <Inputs.FormLabel className="font-normal">
-              Add anything else you would like to share with CMS, limited to
-              4000 characters
+            <Inputs.FormLabel className="text-gray-700 font-light">
+              Add anything else you would like to share with CMS
             </Inputs.FormLabel>
             <Inputs.Textarea {...field} className="h-[200px] resize-none" />
             <Inputs.FormDescription>
