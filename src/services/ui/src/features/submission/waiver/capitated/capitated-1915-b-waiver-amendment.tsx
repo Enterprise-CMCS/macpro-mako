@@ -53,12 +53,8 @@ const formSchema = z.object({
     .trim()
     .min(1, { message: "This field is required" })
     .max(4000, { message: "Description should be under 4000 characters" }),
-  typeIds: z
-    .array(z.number())
-    .min(1, { message: "At least one type is required" }),
-  subTypeIds: z
-    .array(z.number())
-    .min(1, { message: "At least one subtype is required" }),
+  typeIds: z.array(z.number()).min(1, { message: "Required" }),
+  subTypeIds: z.array(z.number()).min(1, { message: "Required" }),
   attachments: z.object({
     bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
     bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),

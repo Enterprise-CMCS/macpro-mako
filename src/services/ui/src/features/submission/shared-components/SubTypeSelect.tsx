@@ -68,6 +68,7 @@ export function SubTypeSelect<TFieldValues extends FieldValues>({
             className="border border-black shadow-sm rounded-sm"
             placeholder="Select a type to see options"
           />
+          <Inputs.FormMessage />
         </Inputs.FormItem>
       )}
     />

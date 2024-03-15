@@ -56,6 +56,7 @@ export function TypeSelect<TFieldValues extends FieldValues>({
               className="border border-black shadow-sm rounded-sm"
               placeholder="- Select -"
             />
+            <Inputs.FormMessage />
           </Inputs.FormItem>
         );
       }}
