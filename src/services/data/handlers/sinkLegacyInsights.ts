@@ -21,7 +21,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           throw new Error();
         case "aws.onemac.migration.cdc":
           docs.push(
-            ...(await onemac(event.records[topicPartition], topicPartition))
+            ...(await onemac(event.records[topicPartition], topicPartition)),
           );
           break;
       }
@@ -44,13 +44,23 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
-    const { key, value } = kafkaRecord;
+    const { value, offset } = kafkaRecord;
     try {
       if (!value) continue;
-
-      const id: string = decode(key);
+      // const id: string = decode(key);
       const record = JSON.parse(decode(value));
-      docs.push({ ...record, id });
+      if (value.sk === "Package") continue;
+      docs.push({
+        ...record,
+        id: offset,
+        approvedEffectiveDate: null,
+        changedDate: null,
+        finalDispositionDate: null,
+        proposedDate: null,
+        proposedEffectiveDate: null,
+        statusDate: null,
+        submissionDate: null,
+      });
     } catch (error) {
       logError({
         type: ErrorType.BADPARSE,
