@@ -13,6 +13,7 @@ import { detailsAndActionsCrumbs } from "../actions";
 import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
+import { Authority } from "shared-types";
 
 export const DetailCardWrapper = ({
   title,
@@ -34,6 +35,22 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
   if (isLoading) return <LoadingSpinner />;
   if (!data?._source) return <LoadingSpinner />;
   if (error) return <ErrorAlert error={error} />;
+  const title =
+    (() => {
+      switch (data._source.authority) {
+        case Authority["1915b"]:
+        case Authority["1915c"]:
+          switch (data._source.actionType) {
+            case "Extend":
+              return "Temporary Extension Request Details";
+            default:
+              return undefined;
+          }
+        default:
+          return undefined;
+      }
+    })() || `${data._source.authority} Package Details`;
+
   return (
     <div className="w-full py-1 px-4 lg:px-8">
       <section
@@ -44,7 +61,7 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
         <PackageActionsCard id={id} />
       </section>
       <div className="flex flex-col gap-3">
-        <PackageDetails />
+        <PackageDetails title={title} />
         <PackageActivities />
         <AdminChanges />
       </div>

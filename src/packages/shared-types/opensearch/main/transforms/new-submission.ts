@@ -37,6 +37,7 @@ export const transform = (id: string) => {
           data.submitterName === "-- --" ? null : data.submitterName,
         origin: "OneMAC",
         devOrigin: "micro",
+        originalWaiverNumber: data.originalWaiverNumber,
         // ----------
         // The fields below are usually set by way of seatool and the ksql output, but must be set here for TEs.
         flavor: "WAIVER",
