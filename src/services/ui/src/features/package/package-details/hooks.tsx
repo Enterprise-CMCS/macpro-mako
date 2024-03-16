@@ -68,14 +68,18 @@ export const recordDetails = (
     value: data.types
       ? data.types.map((T) => <p key={T?.SPA_TYPE_ID}>{T?.SPA_TYPE_NAME}</p>)
       : BLANK_VALUE,
-    canView: () => true,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
   },
   {
     label: "Subtype",
     value: data.subTypes
       ? data.subTypes.map((T) => <p key={T?.TYPE_ID}>{T?.TYPE_NAME}</p>)
       : BLANK_VALUE,
-    canView: () => true,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
   },
   {
     label: "Initial submission date",
@@ -83,6 +87,13 @@ export const recordDetails = (
       ? formatSeatoolDate(data.submissionDate)
       : BLANK_VALUE,
     canView: () => true,
+  },
+  {
+    label: "Approved Initial or Renewal Number",
+    value: data.originalWaiverNumber,
+    canView: () => {
+      return data.actionType === "Extend";
+    },
   },
   {
     label: "Proposed effective date",
