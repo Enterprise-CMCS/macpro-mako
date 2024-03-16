@@ -12,6 +12,9 @@ export const transform = (id: string, offset: number) => {
         case "waiverappk":
         case "waiveramendment":
         case "waiverrenewal":
+        case "waiverextension":
+        case "waiverextensionb":
+        case "waiverextensionc":
           return "new-submission";
         case "medicaidsparai":
         case "chipsparai":
@@ -26,12 +29,9 @@ export const transform = (id: string, offset: number) => {
         case "waiverappkwithdraw":
         case "waivernewwithdraw":
           return Action.WITHDRAW_PACKAGE;
-        case "waiverextension": // Will be handled in near future
-        case "waiverextensionb": // Will be handled in near future
-        case "waiverextensionc": // Will be handled in near future
         default:
           console.log(
-            `Unhandled event type for ${id}:  ${eventType}.  Doing nothing and continuing.`
+            `Unhandled event type for ${id}:  ${eventType}.  Doing nothing and continuing.`,
           );
           return undefined;
       }
@@ -42,7 +42,7 @@ export const transform = (id: string, offset: number) => {
 
     // If we're still here, go ahead and transform the data
     const transformedData = {
-      id: `${id}-${offset}`, // Append only changelog, so we add the offset to make the document id unique
+      id: `${data.componentId}-${offset}`, // Append only changelog, so we add the offset to make the document id unique
       packageId: id,
       timestamp: data.eventTimestamp,
       actionType,

@@ -52,13 +52,8 @@ export const transform = (id: string) => {
         statusDate: getDateStringOrNullFromEpoc(data.statusDate),
         submissionDate: getDateStringOrNullFromEpoc(data.submissionDate),
         changedDate: getDateStringOrNullFromEpoc(data.changedDate),
-        // type, subtype, subject, description will soon be collected and available in data; this will need updating then.
         subject: null,
         description: null,
-        typeId: null,
-        typeName: null,
-        subTypeId: null,
-        subTypeName: null,
         // ----------
       };
     } else {
