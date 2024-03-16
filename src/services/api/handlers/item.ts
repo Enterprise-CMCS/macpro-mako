@@ -28,13 +28,25 @@ export const getItemData = async (event: APIGatewayEvent) => {
       const children = await getAppkChildren(body.id);
       appkChildren = children.hits.hits;
     }
+    const filter =
+      packageResult._source.submissionDate !== null
+        ? [
+            {
+              range: {
+                timestamp: {
+                  gte: new Date(packageResult._source.submissionDate).getTime(),
+                },
+              },
+            },
+          ]
+        : [];
 
-    const changelog = await getPackageChangelog(body.id);
+    const changelog = await getPackageChangelog(body.id, filter);
     if (
       stateFilter &&
       (!packageResult._source.state ||
         !stateFilter.terms.state.includes(
-          packageResult._source.state.toLocaleLowerCase()
+          packageResult._source.state.toLocaleLowerCase(),
         ))
     ) {
       return response({

@@ -3,7 +3,7 @@ import { opensearch } from "shared-types";
 
 export const getPackageChangelog = async (
   packageId: string,
-  filter: any[] = []
+  filter: any[] = [],
 ) => {
   if (!process.env.osDomain) {
     throw new Error("process.env.osDomain must be defined");

@@ -22,7 +22,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           throw new Error();
         case "aws.onemac.migration.cdc":
           docs.push(
-            ...(await onemac(event.records[topicPartition], topicPartition))
+            ...(await onemac(event.records[topicPartition], topicPartition)),
           );
           break;
       }
@@ -47,11 +47,21 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   for (const kafkaRecord of kafkaRecords) {
     const { key, value, offset, timestamp } = kafkaRecord;
     try {
-      // Skip delete events
-      if (!value) continue;
-
       // Set id
       const id: string = decode(key);
+
+      // Handle hard deletes
+      // These only come from onemac legacy, except for possible malformed micro development records
+      if (!value) {
+        console.log(`Hard delete detected for: ${id}`);
+        docs.push({
+          id: `${id}-${offset}`,
+          packageId: id,
+          timestamp,
+          actionType: "hard-delete",
+        });
+        continue;
+      }
 
       // Parse event data
       const record = JSON.parse(decode(value));
