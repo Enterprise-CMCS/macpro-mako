@@ -3,31 +3,32 @@ import { onemacLegacySchema, handleLegacyAttachment, Action } from "../../..";
 export const transform = (id: string, offset: number) => {
   return onemacLegacySchema.transform((data) => {
     // Resolve the action type based on the GSI1pk
-    const eventType = data.GSI1pk.split("OneMAC#submit")[1];
+    const eventType = data.GSI1pk.split("OneMAC#")[1];
     const actionType = (() => {
       switch (eventType) {
-        case "waivernew":
-        case "medicaidspa":
-        case "chipspa":
-        case "waiverappk":
-        case "waiveramendment":
-        case "waiverrenewal":
-        case "waiverextension":
-        case "waiverextensionb":
-        case "waiverextensionc":
+        case "submitwaivernew":
+        case "submitmedicaidspa":
+        case "submitchipspa":
+        case "submitwaiverappk":
+        case "submitwaiveramendment":
+        case "submitwaiverrenewal":
+        case "submitwaiverextension":
+        case "submitwaiverextensionb":
+        case "submitwaiverextensionc":
           return "new-submission";
-        case "medicaidsparai":
-        case "chipsparai":
-        case "waiverrai":
-        case "waiverappkrai":
+        case "submitmedicaidsparai":
+        case "submitchipsparai":
+        case "submitwaiverrai":
+        case "submitwaiverappkrai":
           return Action.RESPOND_TO_RAI;
-        case "rairesponsewithdraw":
+        case "submitrairesponsewithdraw":
           return Action.WITHDRAW_RAI;
-        case "medicaidspawithdraw":
-        case "waiveramendmentwithdraw":
-        case "chipspawithdraw":
-        case "waiverappkwithdraw":
-        case "waivernewwithdraw":
+        case "submitmedicaidspawithdraw":
+        case "submitwaiveramendmentwithdraw":
+        case "submitchipspawithdraw":
+        case "submitwaiverappkwithdraw":
+        case "submitwaivernewwithdraw":
+        case "submitwaiverrenewalwithdraw":
           return Action.WITHDRAW_PACKAGE;
         default:
           console.log(

@@ -116,10 +116,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       // Process legacy events
       if (record?.origin !== "micro") {
         // Skip if it's not a submission event with a good GSIpk
-        if (
-          record?.sk !== "Package" &&
-          record.GSI1pk?.startsWith("OneMAC#submit")
-        ) {
+        if (record?.sk !== "Package" && record.GSI1pk?.startsWith("OneMAC#")) {
           const result = opensearch.main.legacySubmission
             .transform(id)
             .safeParse(record);

@@ -25,14 +25,14 @@ const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
 export const transform = (id: string) => {
   return onemacLegacySchema.transform((data) => {
     // Resolve the action type based on the GSI1pk
-    const eventType = data.GSI1pk.split("OneMAC#submit")[1];
+    const eventType = data.GSI1pk.split("OneMAC#")[1];
     switch (eventType) {
-      case "waivernew":
-      case "medicaidspa":
-      case "chipspa":
-      case "waiverappk":
-      case "waiveramendment":
-      case "waiverrenewal":
+      case "submitwaivernew":
+      case "submitmedicaidspa":
+      case "submitchipspa":
+      case "submitwaiverappk":
+      case "submitwaiveramendment":
+      case "submitwaiverrenewal":
         return {
           id: data.componentId,
           submitterEmail: data.submitterEmail,
@@ -40,9 +40,9 @@ export const transform = (id: string) => {
           origin: "OneMAC", // Marks this as having originated from *either* legacy or micro
           devOrigin: "legacy", // Not in use, but helpful for developers browsing OpenSearch
         };
-      case "waiverextension":
-      case "waiverextensionb":
-      case "waiverextensionc":
+      case "submitwaiverextension":
+      case "submitwaiverextensionb":
+      case "submitwaiverextensionc":
         if (!data.temporaryExtensionType) return undefined;
         return {
           id: data.componentId,
@@ -67,6 +67,17 @@ export const transform = (id: string) => {
           changedDate: getDateStringOrNullFromEpoc(data.eventTimestamp),
           subject: null,
           description: null,
+        };
+      case "submitmedicaidspawithdraw":
+      case "submitrairesponsewithdraw":
+      case "submitwaiveramendmentwithdraw":
+      case "submitwaivernewwithdraw":
+      case "submitchipspawithdraw":
+      case "submitwaiverappkwithdraw":
+      case "submitwaiverrenewalwithdraw":
+        return {
+          id: data.componentId,
+          raiWithdrawEnabled: false,
         };
       default:
         console.log(

@@ -60,10 +60,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       if (record?.origin !== "micro") {
         // Skip if it's not a submission event with a good GSIpk
         if (
-          !(
-            record?.sk !== "Package" &&
-            record.GSI1pk?.startsWith("OneMAC#submit")
-          )
+          !(record?.sk !== "Package" && record.GSI1pk?.startsWith("OneMAC#"))
         ) {
           continue;
         }
