@@ -83,5 +83,7 @@ export const tombstone = (id: string) => {
     id,
     submitterEmail: null,
     submitterName: null,
+    origin: null,
+    devOrigin: null,
   };
 };
