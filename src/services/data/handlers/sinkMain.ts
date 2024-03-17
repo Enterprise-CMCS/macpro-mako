@@ -109,20 +109,21 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
 
       // Handle deletes and continue
       if (!value) {
-        docs.push(opensearch.main.legacySubmission.tombstone(id));
+        docs.push(opensearch.main.legacyPackageView.tombstone(id));
         continue;
       }
       const record = JSON.parse(decode(value));
       // Process legacy events
       if (record?.origin !== "micro") {
-        // Skip if it's not a submission event with a good GSIpk
-        if (record?.sk !== "Package" && record.GSI1pk?.startsWith("OneMAC#")) {
-          const result = opensearch.main.legacySubmission
+        if (
+          record?.sk === "Package" && // Is a Package View
+          record?.submitterName && // Is originally from Legacy
+          record?.submitterName !== "-- --" // Is originally from Legacy
+        ) {
+          const result = opensearch.main.legacyPackageView
             .transform(id)
             .safeParse(record);
-
-          // Log Error and skip if transform had an error
-          if (!result?.success) {
+          if (!result.success) {
             logError({
               type: ErrorType.VALIDATION,
               error: result?.error,
@@ -131,12 +132,9 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
             continue;
           }
 
-          // Skip if the transform had a nominal return of undefined
-          if (result.data === undefined) continue;
-
-          // If we made it this far, we push the document to the docs array so it gets indexed
           docs.push(result.data);
         }
+        continue;
       }
 
       // Handle everything else

@@ -1,4 +1,4 @@
-export * as legacySubmission from "./legacy-event";
+export * as legacyPackageView from "./legacy-package-view";
 export * as newSubmission from "./new-submission";
 export * as toggleWithdrawEnabled from "./toggle-withdraw-enabled";
 export * as withdrawPackage from "./withdraw-package";

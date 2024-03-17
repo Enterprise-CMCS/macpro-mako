@@ -1,0 +1,29 @@
+import { legacyPackageViewSchema, handleLegacyAttachment } from "../../..";
+
+export const transform = (id: string) => {
+  return legacyPackageViewSchema.transform((data) => {
+    const transformedData = {
+      id,
+      attachments: data.attachments?.map(handleLegacyAttachment) ?? null,
+      raiWithdrawEnabled: data.raiWithdrawEnabled,
+      additionalInformation: data.additionalInformation,
+      submitterEmail: data.submitterEmail,
+      submitterName: data.submitterName === "-- --" ? null : data.submitterName,
+      origin: "OneMAC",
+    };
+    return transformedData;
+  });
+};
+
+export type Schema = ReturnType<typeof transform>;
+export const tombstone = (id: string) => {
+  return {
+    id,
+    additionalInformation: null,
+    raiWithdrawEnabled: null,
+    attachments: null,
+    submitterEmail: null,
+    submitterName: null,
+    origin: null,
+  };
+};
