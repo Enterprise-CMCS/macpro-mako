@@ -12,7 +12,7 @@ export const legacyPackageViewSchema = z.object({
   submissionTimestamp: z.number().nullish(),
   GSI1pk: z.string(),
   parentId: z.string().nullable().optional(),
-  temporaryExtensionType: z.string().nullable().optional(),
+  temporaryExtensionType: z.string().nullish(),
   state: z.string().nullable().optional(),
 });
 export type LegacyPackageAction = z.infer<typeof legacyPackageViewSchema>;
