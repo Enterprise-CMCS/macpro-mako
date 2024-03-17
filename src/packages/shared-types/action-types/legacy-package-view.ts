@@ -8,5 +8,11 @@ export const legacyPackageViewSchema = z.object({
   submitterEmail: z.string(),
   attachments: z.array(legacyAttachmentSchema).nullish(),
   raiWithdrawEnabled: z.boolean().default(false),
+
+  submissionTimestamp: z.number().nullish(),
+  GSI1pk: z.string(),
+  parentId: z.string().nullable().optional(),
+  temporaryExtensionType: z.string().nullable().optional(),
+  state: z.string().nullable().optional(),
 });
 export type LegacyPackageAction = z.infer<typeof legacyPackageViewSchema>;

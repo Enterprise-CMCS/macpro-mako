@@ -60,7 +60,13 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       if (record?.origin !== "micro") {
         // Skip if it's not a submission event with a good GSIpk
         if (
-          !(record?.sk !== "Package" && record.GSI1pk?.startsWith("OneMAC#"))
+          !(
+            (
+              record?.sk !== "Package" &&
+              (record.GSI1pk?.startsWith("OneMAC#submit") ||
+                record.GSI1pk?.startsWith("OneMAC#enable"))
+            ) // i think the transforms switch should be brought here to avoid this stuff
+          )
         ) {
           continue;
         }
