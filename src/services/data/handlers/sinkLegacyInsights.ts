@@ -49,7 +49,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       if (!value) continue;
       // const id: string = decode(key);
       const record = JSON.parse(decode(value));
-      if (value.sk === "Package") continue;
+      if (!record.sk || !record.sk.startsWith("OneMAC#")) continue;
       docs.push({
         ...record,
         id: offset,
