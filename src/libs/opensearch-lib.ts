@@ -58,16 +58,7 @@ export async function bulkUpdateData(
 
   client = client || (await getClient(host));
 
-  const lastEntries = arrayOfDocuments.reduce(
-    (acc: { [id: string]: Document }, doc: Document) => {
-      acc[doc.id] = doc; // This will overwrite any previous entry with the same ID
-      return acc;
-    },
-    {},
-  );
-  const filteredDocuments = Object.values(lastEntries);
-
-  const body: any[] = filteredDocuments.flatMap((doc) => [
+  const body: any[] = arrayOfDocuments.flatMap((doc) => [
     { update: { _index: index, _id: doc.id } }, // Action and metadata
     { doc: doc, doc_as_upsert: true }, // Document to update or upsert
   ]);
