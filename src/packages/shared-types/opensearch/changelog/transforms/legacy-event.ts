@@ -15,7 +15,8 @@ export const transform = (id: string, offset: number) => {
       //   console.log(
       //     `NOSO event ${eventType} detected.  This event is not yet supported.  Doing nothing...`,
       //   );
-      //   return undefined;
+      //   actionType =  undefined;
+      //   break;
       case "enableRAIResponseWithdraw":
         actionType = Action.ENABLE_RAI_WITHDRAW;
         break;
@@ -60,7 +61,8 @@ export const transform = (id: string, offset: number) => {
       //   console.log(
       //     `Deprecated action ${eventType} detected.  Doing nothing...`,
       //   );
-      //   return undefined;
+      //   actionType = undefined;
+      //   break;
       default:
         console.log(
           `Unhandled event type for ${id}:  ${eventType}.  Doing nothing and continuing.`,
