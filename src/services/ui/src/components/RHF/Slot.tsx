@@ -342,13 +342,6 @@ export const RHFSlot = <
                 {...(props as RHFComponentMap["FieldGroup"])}
               />
             )}
-
-            {/* ----------------------------------------------------------------------------- */}
-            {rhf === "TextDisplay" && (
-              <p {...(props as RHFComponentMap["TextDisplay"])}>
-                <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} />
-              </p>
-            )}
           </>
         </FormControl>
         {description && !descriptionAbove && (
