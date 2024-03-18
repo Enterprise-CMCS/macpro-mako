@@ -5,8 +5,6 @@ import { opensearch } from "..";
 describe("onemac has valid data", () => {
   it("has valid data", () => {
     for (const record of onemacRecords) {
-      console.log(record);
-      console.log(record);
       // Note:  what do we do here?
       // In our sink, we filter our "-- --" records, as it indicates a non-onemac originating record.
       // But here we're parsing un filtered records, and our zod schema is rightly failing.
