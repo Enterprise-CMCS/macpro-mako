@@ -1,16 +1,12 @@
-import { useCallback } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useLocation } from "react-router-dom";
 import {
-  Alert,
   BreadCrumbs,
-  LoadingSpinner,
   SimplePageContainer,
   SectionCard,
   FAQ_TAB,
-  useModalContext,
   useNavigate,
   useAlertContext,
   formCrumbsFromPath,
@@ -38,6 +34,7 @@ import {
   SubjectInput,
   TypeSelect,
 } from "@/features";
+import { SubmitAndCancelBtnSection } from "../shared-components";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,
@@ -93,12 +90,8 @@ export const Contracting1915BWaiverAmendmentPage = () => {
   const navigate = useNavigate();
   const urlQuery = useQueryString();
   const alert = useAlertContext();
-  const modal = useModalContext();
   const originPath = useOriginPath();
-  const cancelOnAccept = useCallback(() => {
-    modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
-  }, []);
+
   const handleSubmit: SubmitHandler<Waiver1915BContractingAmendment> = async (
     formData,
   ) => {
@@ -281,41 +274,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
             name="additionalInformation"
           />
           <Content.PreSubmissionMessage />
-          {Object.keys(form.formState.errors).length !== 0 ? (
-            <Alert className="mb-6 " variant="destructive">
-              Missing or malformed information. Please see errors above.
-            </Alert>
-          ) : null}
-          {form.formState.isSubmitting ? (
-            <div className="p-4">
-              <LoadingSpinner />
-            </div>
-          ) : null}
-          <div className="flex gap-2 justify-end ">
-            <Inputs.Button
-              disabled={form.formState.isSubmitting}
-              type="submit"
-              className="px-12"
-            >
-              Submit
-            </Inputs.Button>
-            <Inputs.Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                modal.setContent({
-                  header: "Stop form submission?",
-                  body: "All information you've entered on this form will be lost if you leave this page.",
-                  acceptButtonText: "Yes, leave form",
-                  cancelButtonText: "Return to form",
-                });
-                modal.setOnAccept(() => cancelOnAccept);
-                modal.setModalOpen(true);
-              }}
-            >
-              Cancel
-            </Inputs.Button>
-          </div>
+          <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
     </SimplePageContainer>

@@ -6,9 +6,7 @@ import * as Content from "../../../../components/Form/content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api";
 import {
-  Alert,
   BreadCrumbs,
-  LoadingSpinner,
   SimplePageContainer,
   SectionCard,
   formCrumbsFromPath,
@@ -23,9 +21,7 @@ import {
   zInitialWaiverNumberSchema,
 } from "@/utils";
 import { FAQ_TAB } from "@/components/Routing/consts";
-import { useModalContext } from "@/components/Context/modalContext";
 import { useAlertContext } from "@/components/Context/alertContext";
-import { useCallback } from "react";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
 import {
@@ -35,6 +31,7 @@ import {
   SubjectInput,
   TypeSelect,
 } from "@/features/submission/shared-components";
+import { SubmitAndCancelBtnSection } from "../shared-components";
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
@@ -60,7 +57,7 @@ const formSchema = z.object({
   additionalInformation: zAdditionalInfo.optional(),
   seaActionType: z.string().default("New"),
 });
-type Waiver1915BCapitatedAmendment = z.infer<typeof formSchema>;
+export type Waiver1915BCapitatedAmendment = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
@@ -94,12 +91,8 @@ export const Capitated1915BWaiverInitialPage = () => {
   const navigate = useNavigate();
   const urlQuery = useQueryString();
   const alert = useAlertContext();
-  const modal = useModalContext();
   const originPath = useOriginPath();
-  const cancelOnAccept = useCallback(() => {
-    modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
-  }, []);
+
   const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmendment> = async (
     formData,
   ) => {
@@ -254,41 +247,7 @@ export const Capitated1915BWaiverInitialPage = () => {
             name="additionalInformation"
           />
           <Content.PreSubmissionMessage />
-          {Object.keys(form.formState.errors).length !== 0 ? (
-            <Alert className="mb-6" variant="destructive">
-              Missing or malformed information. Please see errors above.
-            </Alert>
-          ) : null}
-          {form.formState.isSubmitting ? (
-            <div className="p-4">
-              <LoadingSpinner />
-            </div>
-          ) : null}
-          <div className="flex gap-2 justify-end">
-            <Inputs.Button
-              disabled={form.formState.isSubmitting}
-              type="submit"
-              className="px-12"
-            >
-              Submit
-            </Inputs.Button>
-            <Inputs.Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                modal.setContent({
-                  header: "Stop form submission?",
-                  body: "All information you've entered on this form will be lost if you leave this page.",
-                  acceptButtonText: "Yes, leave form",
-                  cancelButtonText: "Return to form",
-                });
-                modal.setOnAccept(() => cancelOnAccept);
-                modal.setModalOpen(true);
-              }}
-            >
-              Cancel
-            </Inputs.Button>
-          </div>
+          <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
     </SimplePageContainer>
