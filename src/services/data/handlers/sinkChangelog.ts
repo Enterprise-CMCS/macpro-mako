@@ -94,7 +94,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       // Process micro events
       if (record?.origin === "micro") {
         // Resolve actionType
-        const actionType = record.actionType || "new-submission";
+        const actionType = record.actionType || Action.NEW_SUBMISSION;
 
         // Push to docs so it can be indexed, with some differences if app k
         docs.push({

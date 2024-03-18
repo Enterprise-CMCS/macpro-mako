@@ -29,7 +29,7 @@ export const transform = (id: string, offset: number) => {
       case "submitwaiverextensionc":
       case "submitwaivernew":
       case "submitwaiverrenewal":
-        actionType = "new-submission";
+        actionType = Action.NEW_SUBMISSION;
         break;
       case "submitchipsparai":
       case "submitmedicaidsparai":

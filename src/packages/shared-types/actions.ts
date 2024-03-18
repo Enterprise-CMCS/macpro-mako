@@ -10,6 +10,7 @@ export enum Action {
   WITHDRAW_PACKAGE = "withdraw-package",
   REMOVE_APPK_CHILD = "remove-appk-child",
   TEMP_EXTENSION = "temporary-extension",
+  NEW_SUBMISSION = "new-submission",
 }
 
 export type ActionRule = {

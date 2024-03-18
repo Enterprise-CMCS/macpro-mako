@@ -50,8 +50,6 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         return ["Disable formal RAI response withdraw", AC_WithdrawDisabled];
       case "enable-rai-withdraw":
         return ["Enable formal RAI response withdraw", AC_WithdrawEnabled];
-      case "update":
-        return ["SPA ID update", AC_Update];
       default:
         return [BLANK_VALUE, AC_Update];
     }
