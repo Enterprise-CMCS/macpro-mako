@@ -98,6 +98,20 @@ const getBundleFromEvent = (configKey, stage) => {
                 },
                 ]
             };
+        case "withdraw-package-chip-spa":
+                return {
+                "lookupList": ["osInsights","cognito"],
+                "dataList": ["chipInbox", "cpoc", "srt", "chipCcList", "allState", "id", "territory", "submitterName", "submitterEmail", "additionalInformation"],
+                "emailCommands": [{
+                    "Template": `withdraw-package-chip-spa-cms_${stage}`,
+                    "ToAddresses": ["chipInbox", "cpoc", "srt"],
+                    "CcAddresses": ["chipCcList"]
+                },
+                {
+                    "Template": `withdraw-package-chip-spa-state_${stage}`,
+                    "ToAddresses": ["allState"],
+                }],
+            };
         default:
             return { message: `no bundle defined for configKey ${configKey}`};
     }

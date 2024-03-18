@@ -668,5 +668,75 @@ If you have any questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov
 or your state lead.
 
 Thank you!`,
+},
+{
+    name: "withdraw-package-chip-spa-cms",
+    subject:  "CHIP SPA Package {{id}} Withdraw Request",
+    html: `
+<p>The OneMAC Submission Portal received a request to withdraw the package below.
+The package will no longer be considered for CMS review:</p>
+<p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email Address:</b> {{submitterEmail}}
+<br><b>CHIP SPA Package ID:</b> {{id}}
+</p>
+Summary:
+<br>{{additionalInformation}}
+<br>
+<p>If the contents of this email seem suspicious, do not open them, and instead forward this email to 
+<a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>
+</p>
+<p>Thank you!</p>`,
+    text: `
+The OneMAC Submission Portal received a request to withdraw the package below.
+The package will no longer be considered for CMS review:
+
+State or territory: {{territory}}
+Name: {{initialSubmitterName}}
+Email Address: {{initialSubmitterEmail}}
+CHIP SPA Package ID: {{id}}
+
+Summary:
+{{additionalInformation}}
+
+If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@cms.hhs.gov'
+
+Thank you!`,
+},
+{
+    name: "withdraw-package-chip-spa-state",
+    subject:  "CHIP SPA Package {{id}} Withdraw Request",
+    html: `
+<p>This is confirmation that you have requested to withdraw the package below.
+The package will no longer be considered for CMS review:</p>
+<p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email Address:</b> {{submitterEmail}}
+<br><b>CHIP SPA Package ID:</b> {{id}}
+</p>
+Summary:
+<br>{{additionalInformation}}
+<br>
+<p>If you have any questions, please contact 
+<a href='mailto:CHIPSPASubmissionMailbox@cms.hhs.gov'>CHIPSPASubmissionMailbox@cms.hhs.gov</a>
+or your state lead.</p>
+<p>Thank you!</p>`,
+    text: `
+This is confirmation that you have requested to withdraw the package below.
+The package will no longer be considered for CMS review:
+
+State or territory: {{territory}}
+Name: {{initialSubmitterName}}
+Email Address: {{initialSubmitterEmail}}
+CHIP SPA Package ID: {{id}}
+
+Summary:
+{{additionalInformation}}
+
+If you have any questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov or your state lead.
+
+Thank you!`,
 }
 ];
