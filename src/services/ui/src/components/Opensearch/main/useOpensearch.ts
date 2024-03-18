@@ -144,7 +144,7 @@ export const useOsUrl = () => {
       search: "",
       tab: "spas",
       pagination: { number: 0, size: 25 },
-      sort: { field: "finalDispositionDate", order: "desc" },
+      sort: { field: "submissionDate", order: "desc" },
     },
   });
 };
