@@ -14,7 +14,6 @@ export const renderCellDate = (key: keyof opensearch.main.Document) =>
 
 export const renderCellIdLink = (pathResolver: (id: string) => string) =>
   function Cell(data: opensearch.main.Document) {
-    console.log(data);
     // if (!data.authority) return <></>; // why?  im commenting it out, but ya idk
     const path = pathResolver(encodeURIComponent(data.id));
     return (
