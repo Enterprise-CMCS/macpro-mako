@@ -113,6 +113,7 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       field: "origin",
       label: "Submission Source",
       hidden: true,
+      transform: (data) => data.origin,
       cell: (data) => {
         return data.origin;
       },
@@ -121,6 +122,11 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       field: "raiRequestedDate",
       label: "Formal RAI Requested",
       hidden: true,
+      transform: (data) => {
+        return data.raiRequestedDate
+          ? formatSeatoolDate(data.raiRequestedDate)
+          : BLANK_VALUE;
+      },
       cell: renderCellDate("raiRequestedDate"),
     },
     {
