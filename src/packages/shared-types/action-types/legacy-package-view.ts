@@ -1,19 +1,14 @@
 import { z } from "zod";
-import { legacyAttachmentSchema } from "../attachments";
+import { legacySharedSchema } from "./legacy-shared";
 
 // Event schema for legacy package actions
-export const legacyPackageViewSchema = z.object({
-  additionalInformation: z.string().nullable().default(null),
-  submitterName: z.string(),
-  submitterEmail: z.string(),
-  attachments: z.array(legacyAttachmentSchema).nullish(),
-  raiWithdrawEnabled: z.boolean().default(false),
-
-  componentType: z.string().nullish(),
-  submissionTimestamp: z.number().nullish(),
-  GSI1pk: z.string(),
-  parentId: z.string().nullable().optional(),
-  temporaryExtensionType: z.string().nullish(),
-  state: z.string().nullable().optional(),
-});
+export const legacyPackageViewSchema = legacySharedSchema.merge(
+  z.object({
+    submissionTimestamp: z.number().nullish(),
+    componentType: z.string().nullish(),
+    raiWithdrawEnabled: z.boolean().default(false),
+    parentId: z.string().nullish(),
+    temporaryExtensionType: z.string().nullish(),
+  }),
+);
 export type LegacyPackageAction = z.infer<typeof legacyPackageViewSchema>;
