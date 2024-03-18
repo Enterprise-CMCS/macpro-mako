@@ -232,7 +232,6 @@ export const RHFSlot = <
                           parentValue={field.value}
                           changeMethod={field.onChange}
                           aria-label={field.name}
-                          optionLabelStyling={OPT.optionLabelStyling}
                         />
                         {field.value?.includes(OPT.value) &&
                           !!OPT.slots &&
@@ -341,6 +340,13 @@ export const RHFSlot = <
                 groupNamePrefix={groupNamePrefix}
                 {...(props as RHFComponentMap["FieldGroup"])}
               />
+            )}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "TextDisplay" && (
+              <p {...(props as RHFComponentMap["TextDisplay"])}>
+                <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} />
+              </p>
             )}
           </>
         </FormControl>
