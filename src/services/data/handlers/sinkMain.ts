@@ -22,20 +22,20 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           throw new Error();
         case "aws.onemac.migration.cdc":
           docs.push(
-            ...(await onemac(event.records[topicPartition], topicPartition))
+            ...(await onemac(event.records[topicPartition], topicPartition)),
           );
           break;
         case "aws.seatool.ksql.onemac.agg.State_Plan":
           docs.push(
-            ...(await ksql(event.records[topicPartition], topicPartition))
+            ...(await ksql(event.records[topicPartition], topicPartition)),
           );
           break;
         case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
           docs.push(
             ...(await changed_date(
               event.records[topicPartition],
-              topicPartition
-            ))
+              topicPartition,
+            )),
           );
           break;
       }
@@ -139,6 +139,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       // Handle everything else
       const result = (() => {
         switch (record?.actionType) {
+          case "new-submission":
           case undefined:
             return opensearch.main.newSubmission
               .transform(id)
@@ -162,7 +163,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       })();
       if (result === undefined) {
         console.log(
-          `no action to take for ${id} action ${record.actionType}.  Continuing...`
+          `no action to take for ${id} action ${record.actionType}.  Continuing...`,
         );
         continue;
       }
@@ -188,17 +189,27 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
 
 const changed_date = async (
   kafkaRecords: KafkaRecord[],
-  topicPartition: string
+  topicPartition: string,
 ) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
-    const { value } = kafkaRecord;
+    const { key, value } = kafkaRecord;
     try {
-      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
-      const record = JSON.parse(decodedValue).payload.after;
-      if (!record) {
+      // Set id
+      const id: string = JSON.parse(decode(key)).payload.ID_Number;
+
+      // Handle delete events and continue
+      if (value === undefined) {
         continue;
       }
+
+      // Parse record
+      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
+      const record = JSON.parse(decodedValue).payload.after;
+
+      // Handle tombstone events and continue
+      if (!record) continue;
+
       const result = opensearch.main.changedDate.transform().safeParse(record);
       if (!result.success) {
         logError({
@@ -217,5 +228,6 @@ const changed_date = async (
       });
     }
   }
+  console.log(JSON.stringify(docs, null, 2));
   return docs;
 };

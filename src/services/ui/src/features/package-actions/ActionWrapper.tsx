@@ -11,6 +11,7 @@ import { toggleRaiResponseWithdrawSchema } from "./ToggleRaiResponseWithdraw";
 import { withdrawPackageSchema } from "./WithdrawPackage";
 import { respondToRaiSchema } from "./RespondToRai";
 import { useParams } from "@/components/Routing";
+import { tempExtensionSchema } from "./TemporaryExtension";
 
 const schemas = {
   "issue-rai": issueRaiSchema,
@@ -18,6 +19,7 @@ const schemas = {
   "enable-rai-withdraw": toggleRaiResponseWithdrawSchema,
   "disable-rai-withdraw": toggleRaiResponseWithdrawSchema,
   "withdraw-package": withdrawPackageSchema,
+  "temporary-extension": tempExtensionSchema,
   "respond-to-rai": respondToRaiSchema,
 } satisfies Record<string, ZodSchema<any>>;
 type SchemaKeys = keyof typeof schemas;
@@ -27,6 +29,7 @@ const actions: Record<SchemaKeys, Action> = {
   "disable-rai-withdraw": Action.DISABLE_RAI_WITHDRAW,
   "enable-rai-withdraw": Action.ENABLE_RAI_WITHDRAW,
   "respond-to-rai": Action.RESPOND_TO_RAI,
+  "temporary-extension": Action.TEMP_EXTENSION,
   "withdraw-package": Action.WITHDRAW_PACKAGE,
   "withdraw-rai": Action.WITHDRAW_RAI,
 };

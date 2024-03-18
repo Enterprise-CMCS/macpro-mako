@@ -41,3 +41,4 @@ export const WAIVER_ACTIONS = "/action/:authority/:id/:type";
 export const GUIDES = "/guides";
 export const ABPGUIDE = "/guides/abp";
 export const APPK_SUBMISSION = "/new-submission/waiver/app-k";
+export const TE_CARD_ROUTE = "/new-submission/waiver/temporary-extensions";

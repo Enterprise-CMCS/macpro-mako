@@ -30,16 +30,29 @@ import {
 } from "@/utils";
 
 import { useQuery as useQueryString } from "@/hooks";
-import { AdditionalInfoInput } from "../shared-components";
+import {
+  DescriptionInput,
+  SubjectInput,
+  TypeSelect,
+  SubTypeSelect,
+  AdditionalInfoInput,
+} from "../shared-components";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
-  // TODO: FFF
-  // subject: z.string(),
-  // description: z.string(),
-  // typeId: z.string(),
-  // subTypeId: z.string(),
+  subject: z
+    .string()
+    .trim()
+    .min(1, { message: "This field is required" })
+    .max(120, { message: "Subject should be under 120 characters" }),
+  description: z
+    .string()
+    .trim()
+    .min(1, { message: "This field is required" })
+    .max(4000, { message: "Description should be under 4000 characters" }),
+  typeIds: z.array(z.number()).min(1, { message: "Required" }),
+  subTypeIds: z.array(z.number()).min(1, { message: "Required" }),
   attachments: z.object({
     currentStatePlan: zAttachmentRequired({ min: 1 }),
     amendedLanguage: zAttachmentRequired({ min: 1 }),
@@ -52,6 +65,7 @@ const formSchema = z.object({
   proposedEffectiveDate: z.date(),
   seaActionType: z.string().default("Amend"),
 });
+
 type ChipFormSchema = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
@@ -111,7 +125,7 @@ export const ChipSpaFormPage = () => {
         // when any queries are added, such as the case of /details?id=...
         urlQuery.get(ORIGIN)
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard"
+          : "/dashboard",
       );
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
@@ -148,8 +162,9 @@ export const ChipSpaFormPage = () => {
                     </Link>
                   </div>
                   <Content.SpaIdFormattingDesc />
-                  <Inputs.FormControl className="max-w-sm">
+                  <Inputs.FormControl>
                     <Inputs.Input
+                      className="max-w-sm"
                       {...field}
                       onInput={(e) => {
                         if (e.target instanceof HTMLInputElement) {
@@ -181,21 +196,22 @@ export const ChipSpaFormPage = () => {
                 </Inputs.FormItem>
               )}
             />
-            {/* TODO: FFF */}
-            {/* <TypeSelect
+            <SubjectInput
               control={form.control}
-              name="typeId"
+              name="subject"
+              helperText="The title or purpose of the SPA"
+            />
+            <DescriptionInput
+              control={form.control}
+              name="description"
+              helperText="A summary of the SPA. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
+            />
+            <TypeSelect
+              control={form.control}
+              name="typeIds"
               authorityId={124} // chip authority
             />
-            <SubTypeSelect
-              control={form.control}
-              typeId={form.watch("typeId")}
-              name="subTypeId"
-              authorityId={124} // chip authority
-            />
-
-            <SubjectInput control={form.control} name="subject" />
-            <DescriptionInput control={form.control} name="description" /> */}
+            <SubTypeSelect authorityId={124} />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/chip-spa-attachments" />
@@ -214,7 +230,10 @@ export const ChipSpaFormPage = () => {
                         At least one attachment is required
                       </Inputs.FormDescription>
                     )}
-                    <Inputs.Upload files={field?.value ?? []} setFiles={field.onChange}  />
+                    <Inputs.Upload
+                      files={field?.value ?? []}
+                      setFiles={field.onChange}
+                    />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}

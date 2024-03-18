@@ -36,6 +36,7 @@ import {
   DescriptionInput,
   SubTypeSelect,
   SubjectInput,
+  TypeSelect,
 } from "@/features/submission/shared-components";
 
 const formSchema = z
@@ -43,11 +44,18 @@ const formSchema = z
     waiverNumber: zRenewalOriginalWaiverNumberSchema,
     id: zRenewalWaiverNumberSchema,
     proposedEffectiveDate: z.date(),
-    // TODO: FFF
-    // subject: z.string(),
-    // description: z.string(),
-    // typeId: z.string().default("111"),
-    // subTypeId: z.string(),
+    subject: z
+      .string()
+      .trim()
+      .min(1, { message: "This field is required" })
+      .max(120, { message: "Subject should be under 120 characters" }),
+    description: z
+      .string()
+      .trim()
+      .min(1, { message: "This field is required" })
+      .max(4000, { message: "Description should be under 4000 characters" }),
+    typeIds: z.array(z.number()).min(1, { message: "Required" }),
+    subTypeIds: z.array(z.number()).min(1, { message: "Required" }),
     attachments: z.object({
       bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
       bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
@@ -122,7 +130,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
     navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const handleSubmit: SubmitHandler<Waiver1915BCapitatedRenewal> = async (
-    formData
+    formData,
   ) => {
     try {
       // AK-0260.R04.02
@@ -142,7 +150,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
         // when any queries are added, such as the case of /details?id=...
         urlQuery.get(ORIGIN)
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard"
+          : "/dashboard",
       );
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
@@ -259,16 +267,24 @@ export const Capitated1915BWaiverRenewalPage = () => {
                 </Inputs.FormItem>
               )}
             />
-            {/* // TODO: FFF */}
-            {/* <SubTypeSelect
+            <SubjectInput
               control={form.control}
-              typeId={"111"}
-              name="subTypeId"
+              name="subject"
+              helperText="The title or purpose of the Waiver"
+            />
+            <DescriptionInput
+              control={form.control}
+              name="description"
+              helperText="A summary of the Waiver. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
+            />
+            <TypeSelect
+              control={form.control}
+              name="typeIds"
+              authorityId={122}
+            />
+            <SubTypeSelect
               authorityId={122} // waivers authority
             />
-
-            <SubjectInput control={form.control} name="subject" />
-            <DescriptionInput control={form.control} name="description" /> */}
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/medicaid-spa-attachments" />
@@ -283,7 +299,10 @@ export const Capitated1915BWaiverRenewalPage = () => {
                       {label}
                       {required ? <Inputs.RequiredIndicator /> : null}
                     </Inputs.FormLabel>
-                    <Inputs.Upload files={field?.value ?? []} setFiles={field.onChange}  />
+                    <Inputs.Upload
+                      files={field?.value ?? []}
+                      setFiles={field.onChange}
+                    />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}
