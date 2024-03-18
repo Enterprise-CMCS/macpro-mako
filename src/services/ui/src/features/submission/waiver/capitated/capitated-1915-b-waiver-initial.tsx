@@ -27,9 +27,7 @@ import { useQuery as useQueryString } from "@/hooks";
 import {
   AdditionalInfoInput,
   DescriptionInput,
-  SubTypeSelect,
   SubjectInput,
-  TypeSelect,
 } from "@/features/submission/shared-components";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 
@@ -46,8 +44,6 @@ const formSchema = z.object({
     .trim()
     .min(1, { message: "This field is required" })
     .max(4000, { message: "Description should be under 4000 characters" }),
-  typeIds: z.array(z.number()).min(1, { message: "Required" }),
-  subTypeIds: z.array(z.number()).min(1, { message: "Required" }),
   attachments: z.object({
     bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
     bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
@@ -209,14 +205,6 @@ export const Capitated1915BWaiverInitialPage = () => {
               control={form.control}
               name="description"
               helperText="A summary of the Waiver. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
-            />
-            <TypeSelect
-              control={form.control}
-              name="typeIds"
-              authorityId={122}
-            />
-            <SubTypeSelect
-              authorityId={122} // waivers authority
             />
           </SectionCard>
           <SectionCard title="Attachments">
