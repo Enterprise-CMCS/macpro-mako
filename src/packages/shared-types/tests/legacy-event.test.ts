@@ -24,7 +24,9 @@ describe("onemac has valid data", () => {
       expect(transformedData).toHaveProperty("timestamp");
       expect(transformedData).toHaveProperty("actionType");
       expect(
-        Object.values(Action).includes(transformedData.actionType as Action),
+        [...Object.values(Action), "new-submission"].includes(
+          transformedData.actionType,
+        ),
       ).toBe(true);
     }
   });

@@ -141,7 +141,7 @@ export const onemac_changelog = async (event: KafkaEvent) => {
         const packageId = decode(REC.key);
         ACC.push({
           ...record,
-          ...(!record?.actionType && { actionType: Action.NEW_SUBMISSION }), // new-submission custom actionType
+          ...(!record?.actionType && { actionType: "new-submission" }), // new-submission custom actionType
           timestamp: REC.timestamp,
           id: `${packageId}-${REC.offset}`,
           packageId,
