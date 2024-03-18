@@ -46,7 +46,6 @@ export const RHFSlot = <
   labelStyling,
   formItemStyling,
   groupNamePrefix,
-  text,
   ...rest
 }: RHFSlotProps & { control: any }): ControllerProps<
   TFieldValues,
