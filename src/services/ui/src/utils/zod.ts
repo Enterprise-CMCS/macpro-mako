@@ -129,3 +129,38 @@ export const zAppkWaiverNumberSchema = z
     "The 1915(c) Waiver Amendment Number must be in the format of ####.R##.## or #####.R##.##. For amendments, the last two digits start with '01' and ascends.",
   )
   .default("");
+
+export const zExtensionWaiverNumberSchema = z
+  .string()
+  .regex(
+    /^[A-Z]{2}-\d{4,5}\.R\d{2}\.TE\d{2}$/,
+    "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##"
+  )
+  .refine((value) => isAuthorizedState(value), {
+    message:
+      "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+  })
+  .refine(async (value) => !(await itemExists(value)), {
+    message:
+      "According to our records, this Temporary Extension Request Number already exists. Please check the Temporary Extension Request Number and try entering it again.",
+  });
+
+export const zExtensionOriginalWaiverNumberSchema = z
+  .string()
+  .regex(
+    /^[A-Z]{2}-\d{4,5}\.R\d{2}\.00$/,
+    "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00."
+  )
+  .refine((value) => isAuthorizedState(value), {
+    message:
+      "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+  })
+  // This should already exist
+  .refine(async (value) => await itemExists(value), {
+    message:
+      "According to our records, this Approved Initial or Renewal Waiver Number does not yet exist. Please check the Approved Initial or Renewal Waiver Number and try entering it again.",
+  })
+  .refine(async (value) => idIsApproved(value), {
+    message:
+      "According to our records, this Approved Initial or Renewal Waiver Number is not approved. You must supply an approved Initial or Renewal Waiver Number.",
+  });

@@ -43,7 +43,7 @@ export const AppK = () => {
   if (!cache.data.appkChildren) return <></>;
 
   return (
-    <>
+    <div className="my-2" id="appendix_k">
       <T.Table>
         <T.TableHeader>
           <T.TableRow>
@@ -94,6 +94,6 @@ export const AppK = () => {
           </>
         }
       />
-    </>
+    </div>
   );
 };

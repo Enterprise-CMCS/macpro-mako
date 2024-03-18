@@ -25,7 +25,7 @@ export const SELECT_STATE: DrawerFilterableGroup = {
 };
 
 export const CHECK_AUTHORITY: DrawerFilterableGroup = {
-  label: "Type",
+  label: "Authority",
   field: "authority.keyword",
   component: "multiCheck",
   prefix: "must",
@@ -60,6 +60,15 @@ export const BOOL_INITIALINTAKENEEDED: DrawerFilterableGroup = {
   value: null,
 };
 
+export const BOOL_RAIWITHDRAWENABLED: DrawerFilterableGroup = {
+  label: "RAI Withdraw Enabled",
+  field: "raiWithdrawEnabled",
+  component: "boolean",
+  prefix: "must",
+  type: "match",
+  value: null,
+};
+
 export const CHECK_ACTIONTYPE: DrawerFilterableGroup = {
   label: "Action Type",
   field: "actionType.keyword",
@@ -79,7 +88,7 @@ export const DATE_SUBMISSION: DrawerFilterableGroup = {
 };
 
 export const DATE_RAIRECEIVED: DrawerFilterableGroup = {
-  label: "Formal RAI Response",
+  label: "Formal RAI Received",
   field: "raiReceivedDate",
   component: "dateRange",
   prefix: "must",
