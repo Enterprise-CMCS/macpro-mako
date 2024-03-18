@@ -7,12 +7,9 @@ import {
 
 export const transform = (id: string) => {
   return legacyPackageViewSchema.transform((data) => {
-    if (!data.temporaryExtensionType) {
+    if (!data.componentType?.startsWith("waiverextension")) {
       return {
         id,
-        attachments: data.attachments?.map(handleLegacyAttachment) ?? null,
-        raiWithdrawEnabled: data.raiWithdrawEnabled,
-        additionalInformation: data.additionalInformation,
         submitterEmail: data.submitterEmail,
         submitterName:
           data.submitterName === "-- --" ? null : data.submitterName,

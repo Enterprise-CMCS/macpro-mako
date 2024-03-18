@@ -9,6 +9,7 @@ export const legacyPackageViewSchema = z.object({
   attachments: z.array(legacyAttachmentSchema).nullish(),
   raiWithdrawEnabled: z.boolean().default(false),
 
+  componentType: z.string().nullish(),
   submissionTimestamp: z.number().nullish(),
   GSI1pk: z.string(),
   parentId: z.string().nullable().optional(),

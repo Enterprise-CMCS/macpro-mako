@@ -44,15 +44,20 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
-    const { value, offset } = kafkaRecord;
+    const { key, value, offset } = kafkaRecord;
     try {
-      if (!value) continue;
-      // const id: string = decode(key);
+      const id: string = decode(key);
+      if (!value) {
+        docs.push({
+          id,
+          hardDeletedFromLegacy: true,
+        });
+      }
       const record = JSON.parse(decode(value));
-      if (!record.sk || !record.sk.startsWith("OneMAC#")) continue;
+      if (!record.sk) continue;
       docs.push({
         ...record,
-        id: offset,
+        id: record.sk === "Package" ? id : offset.toString(),
         approvedEffectiveDate: null,
         changedDate: null,
         finalDispositionDate: null,
