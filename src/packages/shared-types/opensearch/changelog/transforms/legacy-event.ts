@@ -6,6 +6,7 @@ export const transform = (id: string, offset: number) => {
     const eventType = data.GSI1pk.split("OneMAC#")[1];
     const actionType = (() => {
       switch (eventType) {
+        // These are the NOSO events.  I want to leave this here to make it easier to pick up in a bit.
         // case "createchipspa":
         // case "createmedicaidspa":
         // case "createwaiveramendment":
@@ -40,6 +41,9 @@ export const transform = (id: string, offset: number) => {
           return Action.WITHDRAW_PACKAGE;
         case "submitrairesponsewithdraw":
           return Action.WITHDRAW_RAI; // This should be a separate action thats just a request
+        // These are seemingly deprecated event types.  They are not show in the legacy app.
+        // They each have a new event couterpart, so we can ignore them
+        // I'd like to leave this commented out for a bit, in case we need to make changes.
         // case "withdrawchipspa":
         // case "withdrawmedicaidspa":
         // case "withdrawwaiveramendment":
