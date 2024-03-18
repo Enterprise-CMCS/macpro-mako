@@ -52,6 +52,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
           id,
           hardDeletedFromLegacy: true,
         });
+        continue;
       }
       const record = JSON.parse(decode(value));
       if (!record.sk) continue;
@@ -65,6 +66,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         proposedEffectiveDate: null,
         statusDate: null,
         submissionDate: null,
+        hardDeletedFromLegacy: null,
       });
     } catch (error) {
       logError({
