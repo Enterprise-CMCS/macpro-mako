@@ -98,6 +98,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: "finalDispositionDate",
       label: "Final Disposition",
+      hidden: true,
       transform: (data) =>
         data?.finalDispositionDate
           ? formatSeatoolDate(data.finalDispositionDate)
