@@ -97,6 +97,15 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       cell: renderCellDate("submissionDate"),
     },
     {
+      field: "finalDispositionDate",
+      label: "Final Disposition",
+      transform: (data) =>
+        data?.finalDispositionDate
+          ? formatSeatoolDate(data.finalDispositionDate)
+          : BLANK_VALUE,
+      cell: renderCellDate("finalDispositionDate"),
+    },
+    {
       field: "origin",
       label: "Submission Source",
       hidden: true,
