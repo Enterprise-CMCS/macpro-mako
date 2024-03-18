@@ -103,6 +103,7 @@ export type RHFComponentMap = {
     appendText?: string;
     removeText?: string;
   };
+  TextDisplay: { className?: string };
 };
 
 export type FormGroup = {
