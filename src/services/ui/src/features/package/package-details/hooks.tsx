@@ -58,21 +58,28 @@ export const recordDetails = (
   {
     label: "Subject",
     value: <p>{data?.subject || BLANK_VALUE}</p>,
-    canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
+    canView: (u) =>
+      !u || !u.user
+        ? false
+        : isCmsUser(u.user) && !(data.actionType === "Extend"),
   },
   {
     label: "Type",
     value: data.types
       ? data.types.map((T) => <p key={T?.SPA_TYPE_ID}>{T?.SPA_TYPE_NAME}</p>)
       : BLANK_VALUE,
-    canView: () => true,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
   },
   {
     label: "Subtype",
     value: data.subTypes
       ? data.subTypes.map((T) => <p key={T?.TYPE_ID}>{T?.TYPE_NAME}</p>)
       : BLANK_VALUE,
-    canView: () => true,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
   },
   {
     label: "Initial submission date",
@@ -80,6 +87,13 @@ export const recordDetails = (
       ? formatSeatoolDate(data.submissionDate)
       : BLANK_VALUE,
     canView: () => true,
+  },
+  {
+    label: "Approved Initial or Renewal Number",
+    value: data.originalWaiverNumber,
+    canView: () => {
+      return data.actionType === "Extend";
+    },
   },
   {
     label: "Proposed effective date",
@@ -123,7 +137,9 @@ export const approvedAndAEffectiveDetails = (
     value: data.approvedEffectiveDate
       ? formatSeatoolDate(data.approvedEffectiveDate)
       : BLANK_VALUE,
-    canView: () => true,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
   },
 ];
 
@@ -133,7 +149,10 @@ export const descriptionDetails = (
   {
     label: "Description",
     value: data.description ?? BLANK_VALUE,
-    canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
+    canView: (u) =>
+      !u || !u.user
+        ? false
+        : isCmsUser(u.user) && !(data.actionType === "Extend"),
   },
 ];
 
@@ -160,6 +179,9 @@ export const submissionDetails = (
   {
     label: "Review Team (SRT)",
     value: <ReviewTeamList {...data} />,
-    canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
+    canView: (u) =>
+      !u || !u.user
+        ? false
+        : isCmsUser(u.user) && !(data.actionType === "Extend"),
   },
 ];

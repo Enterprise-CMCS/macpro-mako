@@ -60,6 +60,15 @@ export const BOOL_INITIALINTAKENEEDED: DrawerFilterableGroup = {
   value: null,
 };
 
+export const BOOL_RAIWITHDRAWENABLED: DrawerFilterableGroup = {
+  label: "RAI Withdraw Enabled",
+  field: "raiWithdrawEnabled",
+  component: "boolean",
+  prefix: "must",
+  type: "match",
+  value: null,
+};
+
 export const CHECK_ACTIONTYPE: DrawerFilterableGroup = {
   label: "Action Type",
   field: "actionType.keyword",
@@ -69,9 +78,18 @@ export const CHECK_ACTIONTYPE: DrawerFilterableGroup = {
   value: [],
 };
 
-export const DATE_SUBMISSION: DrawerFilterableGroup = {
+export const DATE_INITIALSUBMISSION: DrawerFilterableGroup = {
   label: "Initial Submission",
   field: "submissionDate",
+  component: "dateRange",
+  prefix: "must",
+  type: "range",
+  value: { gte: undefined, lte: undefined },
+};
+
+export const DATE_FINALDISPOSITION: DrawerFilterableGroup = {
+  label: "Final Disposition",
+  field: "finalDispositionDate",
   component: "dateRange",
   prefix: "must",
   type: "range",

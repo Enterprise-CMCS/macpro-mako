@@ -41,13 +41,13 @@ export const DetailItemsGrid: FC<{
   );
 };
 
-export const PackageDetails = () => {
+export const PackageDetails: FC<{
+  title: string;
+}> = (props) => {
   const { data } = usePackageDetailsCache();
+  // const title = props.title || `${data.authority} Package Details`;
   return (
-    <DetailsSection
-      id="package_details"
-      title={`${data.authority} Package Details`}
-    >
+    <DetailsSection id="package_details" title={props.title}>
       <div className="flex-col gap-4 max-w-2xl">
         <DetailItemsGrid displayItems={recordDetails(data)} />
         <DetailItemsGrid

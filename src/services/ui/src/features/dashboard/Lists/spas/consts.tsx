@@ -21,17 +21,19 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       field: "id.keyword",
       label: "SPA ID",
       locked: true,
+      transform: (data) => data.id,
       cell: renderCellIdLink((id) => `/details?id=${encodeURIComponent(id)}`),
     },
     {
       field: "state.keyword",
       label: "State",
-      visible: true,
+      transform: (data) => data.state ?? BLANK_VALUE,
       cell: (data) => data.state,
     },
     {
       field: "authority.keyword",
       label: "Authority",
+      transform: (data) => data.authority ?? BLANK_VALUE,
       cell: (data) =>
         data?.authority
           ? removeUnderscoresAndCapitalize(data.authority)
@@ -40,6 +42,27 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
       label: "Status",
+      transform: (data) => {
+        const status = (() => {
+          if (!props?.isCms) return data.stateStatus;
+          if (props?.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)) {
+            return data.stateStatus;
+          }
+          return data.cmsStatus;
+        })();
+
+        const subStatusRAI = data.raiWithdrawEnabled
+          ? " (Withdraw Formal RAI Response - Enabled)"
+          : "";
+
+        const subStatusInitialIntake = (() => {
+          if (!props?.isCms) return "";
+          if (!data.initialIntakeNeeded) return "";
+          return " (Initial Intake Needed)";
+        })();
+
+        return `${status}${subStatusRAI}${subStatusInitialIntake}`;
+      },
       cell: (data) => {
         const status = (() => {
           if (!props?.isCms) return data.stateStatus;
@@ -66,25 +89,47 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: "submissionDate",
       label: "Initial Submission",
+      transform: (data) =>
+        data?.submissionDate
+          ? formatSeatoolDate(data.submissionDate)
+          : BLANK_VALUE,
       cell: renderCellDate("submissionDate"),
+    },
+    {
+      field: "finalDispositionDate",
+      label: "Final Disposition",
+      transform: (data) =>
+        data?.finalDispositionDate
+          ? formatSeatoolDate(data.finalDispositionDate)
+          : BLANK_VALUE,
+      cell: renderCellDate("finalDispositionDate"),
     },
     {
       field: "origin",
       label: "Submission Source",
-      visible: false,
-      cell: (data) => {
-        return data.origin;
-      },
+      hidden: true,
+      transform: (data) => data.origin,
+      cell: (data) => data.origin,
     },
     {
       field: "raiRequestedDate",
       label: "Formal RAI Requested",
-      visible: false,
+      hidden: true,
+      transform: (data) => {
+        return data.raiRequestedDate
+          ? formatSeatoolDate(data.raiRequestedDate)
+          : BLANK_VALUE;
+      },
       cell: renderCellDate("raiRequestedDate"),
     },
     {
       field: "raiReceivedDate",
       label: "Formal RAI Received",
+      transform: (data) => {
+        return data.raiReceivedDate && !data.raiWithdrawnDate
+          ? formatSeatoolDate(data.raiReceivedDate)
+          : BLANK_VALUE;
+      },
       cell: (data) => {
         if (!data.raiReceivedDate || data.raiWithdrawnDate) return null;
         return formatSeatoolDate(data.raiReceivedDate);
@@ -93,17 +138,19 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: "leadAnalystName.keyword",
       label: "CPOC Name",
-      visible: false,
+      hidden: true,
+      transform: (data) => data.leadAnalystName ?? BLANK_VALUE,
       cell: (data) => data.leadAnalystName,
     },
     {
       field: "submitterName.keyword",
       label: "Submitted By",
+      transform: (data) => data.submitterName ?? BLANK_VALUE,
       cell: (data) => data.submitterName,
     },
     // hide actions column for: readonly,help desk
     ...(!CMS_READ_ONLY_ROLES.some((UR) =>
-      props.user?.["custom:cms-roles"].includes(UR)
+      props.user?.["custom:cms-roles"].includes(UR),
     )
       ? [
           {

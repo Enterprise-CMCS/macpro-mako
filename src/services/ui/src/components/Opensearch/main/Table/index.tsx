@@ -1,5 +1,5 @@
 import * as UI from "@/components";
-import { FC, useState } from "react";
+import type { FC } from "react";
 import { OsTableColumn } from "./types";
 import { useOsContext } from "../Provider";
 import { useOsUrl, LoadingSpinner } from "@/components";
@@ -9,27 +9,10 @@ import { opensearch } from "shared-types";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];
+  onToggle: (field: string) => void;
 }> = (props) => {
   const context = useOsContext();
-
   const url = useOsUrl();
-
-  const [osColumns, setOsColumns] = useState(
-    props.columns.map((COL) => ({
-      ...COL,
-      hidden: !(COL?.visible ?? true),
-      locked: COL?.locked ?? false,
-    }))
-  );
-
-  const onToggle = (field: string) => {
-    setOsColumns((state) => {
-      return state?.map((S) => {
-        if (S.field !== field) return S;
-        return { ...S, hidden: !S.hidden };
-      });
-    });
-  };
 
   return (
     <UI.Table className="flex-1">
@@ -39,12 +22,12 @@ export const OsTable: FC<{
             className="w-[10px]"
             icon={
               <VisibilityPopover
-                list={osColumns.filter((COL) => !COL.locked || COL.field)}
-                onItemClick={onToggle}
+                list={props.columns.filter((COL) => !COL.locked || COL.field)}
+                onItemClick={props.onToggle}
               />
             }
           />
-          {osColumns.map((TH) => {
+          {props.columns.map((TH) => {
             if (TH.hidden) return null;
             return (
               <UI.TableHead
@@ -88,17 +71,17 @@ export const OsTable: FC<{
               <div className="absolute right-[50%] translate-x-[50%] translate-y-[50%] font-medium text-lg text-gray-500">
                 No Results Found
                 <p className="absolute right-[50%] translate-x-[50%] translate-y-[50%] text-sm whitespace-nowrap h-[20px]">
-                  Adjust your search and filter to find what you are looking for.
+                  Adjust your search and filter to find what you are looking
+                  for.
                 </p>
               </div>
-
             </UI.TableCell>
           </UI.TableRow>
         )}
         {context.data?.hits.map((DAT) => (
           <UI.TableRow className="max-h-1" key={DAT._source.id}>
             <UI.TableCell className="fixed" />
-            {osColumns.map((COL) => {
+            {props.columns.map((COL) => {
               if (COL.hidden) return null;
               return (
                 <UI.TableCell
