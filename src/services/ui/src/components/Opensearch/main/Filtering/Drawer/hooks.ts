@@ -33,7 +33,8 @@ export const useFilterState = () => {
           [C.BOOL_INITIALINTAKENEEDED.field]: C.BOOL_INITIALINTAKENEEDED,
         }),
         [C.BOOL_RAIWITHDRAWENABLED.field]: C.BOOL_RAIWITHDRAWENABLED,
-        [C.DATE_SUBMISSION.field]: C.DATE_SUBMISSION,
+        [C.DATE_INITIALSUBMISSION.field]: C.DATE_INITIALSUBMISSION,
+        [C.DATE_FINALDISPOSITION.field]: C.DATE_FINALDISPOSITION,
         [C.DATE_RAIRECEIVED.field]: C.DATE_RAIRECEIVED,
         [C.SELECT_CPOC.field]: C.SELECT_CPOC,
         [C.SELECT_ORIGIN.field]: C.SELECT_ORIGIN,
@@ -54,7 +55,8 @@ export const useFilterState = () => {
           [C.BOOL_INITIALINTAKENEEDED.field]: C.BOOL_INITIALINTAKENEEDED,
         }),
         [C.BOOL_RAIWITHDRAWENABLED.field]: C.BOOL_RAIWITHDRAWENABLED,
-        [C.DATE_SUBMISSION.field]: C.DATE_SUBMISSION,
+        [C.DATE_INITIALSUBMISSION.field]: C.DATE_INITIALSUBMISSION,
+        [C.DATE_FINALDISPOSITION.field]: C.DATE_FINALDISPOSITION,
         [C.DATE_RAIRECEIVED.field]: C.DATE_RAIRECEIVED,
         [C.SELECT_CPOC.field]: C.SELECT_CPOC,
         [C.SELECT_ORIGIN.field]: C.SELECT_ORIGIN,
@@ -159,7 +161,7 @@ export const useFilterDrawer = () => {
           })),
         };
       },
-      {} as Record<opensearch.main.Field, { label: string; value: string }[]>
+      {} as Record<opensearch.main.Field, { label: string; value: string }[]>,
     );
   }, [_aggs]);
 
