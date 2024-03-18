@@ -9,8 +9,6 @@ services:
     path: src/services/data
     params:
       ECSFailureTopicArn: ${alerts.ECSFailureTopicArn}
-  email:
-    path: src/services/email
   uploads:
     path: src/services/uploads
   ui-infra:
@@ -44,3 +42,10 @@ services:
       CognitoUserPoolId: ${auth.UserPoolId}
       CognitoUserPoolClientId: ${auth.UserPoolClientId}
       CognitoUserPoolClientDomain: ${auth.UserPoolClientDomain}
+  email:
+    path: src/services/email
+    params:
+      ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
+      osDomainArn: ${data.OpenSearchDomainArn}
+      osDomain: ${data.OpenSearchDomainEndpoint}
+      CognitoUserPoolId: ${auth.UserPoolId}

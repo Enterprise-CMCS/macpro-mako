@@ -229,6 +229,12 @@ export const submit = async (event: APIGatewayEvent) => {
       ${subTypeIdsInsert}
   `;
 
+    // data for emails
+    body.notificationMetadata = {
+      submissionDate,
+      proposedEffectiveDate: body.proposedEffectiveDate,
+    };
+
     const result = await transaction.request().query(query);
     console.log(result);
 
