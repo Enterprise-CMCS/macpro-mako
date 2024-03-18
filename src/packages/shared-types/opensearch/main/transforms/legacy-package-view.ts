@@ -1,6 +1,5 @@
 import {
   legacyPackageViewSchema,
-  handleLegacyAttachment,
   SEATOOL_AUTHORITIES,
   SEATOOL_STATUS,
 } from "../../..";
@@ -15,32 +14,31 @@ export const transform = (id: string) => {
           data.submitterName === "-- --" ? null : data.submitterName,
         origin: "OneMAC",
       };
-    } else {
-      return {
-        id,
-        submitterEmail: data.submitterEmail,
-        submitterName: data.submitterName,
-        origin: "OneMAC", // Marks this as having originated from *either* legacy or micro
-        devOrigin: "legacy", // Not in use, but helpful for developers browsing OpenSearch
-        originalWaiverNumber: data.parentId,
-        flavor: "WAIVER",
-        state: id.slice(0, 2),
-        actionType: "Extend",
-        actionTypeId: 9999,
-        authorityId: data.temporaryExtensionType
-          ? getIdByAuthorityName(data.temporaryExtensionType)
-          : null,
-        authority: data.temporaryExtensionType,
-        stateStatus: "Submitted",
-        cmsStatus: "Requested",
-        seatoolStatus: SEATOOL_STATUS.PENDING,
-        statusDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
-        submissionDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
-        changedDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
-        subject: null,
-        description: null,
-      };
     }
+    return {
+      id,
+      submitterEmail: data.submitterEmail,
+      submitterName: data.submitterName,
+      origin: "OneMAC", // Marks this as having originated from *either* legacy or micro
+      devOrigin: "legacy", // Not in use, but helpful for developers browsing OpenSearch
+      originalWaiverNumber: data.parentId,
+      flavor: "WAIVER",
+      state: id.slice(0, 2),
+      actionType: "Extend",
+      actionTypeId: 9999,
+      authorityId: data.temporaryExtensionType
+        ? getIdByAuthorityName(data.temporaryExtensionType)
+        : null,
+      authority: data.temporaryExtensionType,
+      stateStatus: "Submitted",
+      cmsStatus: "Requested",
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      statusDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
+      submissionDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
+      changedDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
+      subject: null,
+      description: null,
+    };
   });
 };
 
