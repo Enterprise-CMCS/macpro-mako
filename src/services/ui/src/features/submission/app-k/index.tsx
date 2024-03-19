@@ -20,20 +20,21 @@ import { useGetUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import * as Content from "@/components";
-import { zAppkWaiverNumberSchema } from "@/utils";
+import { useOriginPath, zAppkWaiverNumberSchema } from "@/utils";
 import { Link } from "react-router-dom";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
   const crumbs = useLocationCrumbs();
   const { data: user } = useGetUser();
-  const [isNavigating, setIsNavigating] = useState(false);
-
+  const modal = C.useModalContext();
+  const originPath = useOriginPath();
   const form = useForm<SchemaForm>({
     resolver: zodResolver(FORM),
   });
+  const alert = C.useAlertContext();
 
   const submission = useMutation({
     mutationFn: (config: SubmissionServiceParameters<any>) => submit(config),
@@ -49,16 +50,16 @@ export const AppKSubmissionForm = () => {
       },
       {
         onSuccess: () => {
-          setIsNavigating(true);
-          setTimeout(() => {
-            nav({
-              path: "/details",
-              query: { id: `${draft.state}-${draft.parentWaiver}` },
-            });
-          }, 5000); // delay for opensearch record to be ready
+          alert.setContent({
+            header: "Package submitted",
+            body: "Your submission has been received.",
+          });
+          alert.setBannerShow(true);
+          alert.setBannerDisplayOn("/dashboard");
+          nav(originPath ? { path: originPath } : { path: "/dashboard" });
         },
         onError: (err) => console.error(err),
-      }
+      },
     );
   });
 
@@ -77,7 +78,7 @@ export const AppKSubmissionForm = () => {
 
   return (
     <SimplePageContainer>
-      {(submission.isLoading || isNavigating) && <LoadingSpinner />}
+      {submission.isLoading && <LoadingSpinner />}
       <BreadCrumbs options={crumbs} />
       <I.Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
@@ -191,8 +192,7 @@ export const AppKSubmissionForm = () => {
               render={({ field }) => (
                 <I.FormItem>
                   <I.FormLabel className="font-normal">
-                    Add anything else you would like to share with CMS, limited
-                    to 4000 characters
+                    Add anything else you would like to share with CMS.
                   </I.FormLabel>
                   <I.Textarea {...field} className="h-[200px] resize-none" />
                   <I.FormDescription>
@@ -204,8 +204,28 @@ export const AppKSubmissionForm = () => {
           </SectionCard>
           <C.PreSubmissionMessage />
           <div className="flex gap-2 p-4 ml-auto">
-            <I.Button type="submit">Submit</I.Button>
-            <I.Button type="button" variant="outline">
+            <I.Button type="submit" disabled={form.formState.isSubmitting}>
+              Submit
+            </I.Button>
+            <I.Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                modal.setContent({
+                  header: "Stop form submission?",
+                  body: "All information you've entered on this form will be lost if you leave this page.",
+                  acceptButtonText: "Yes, leave form",
+                  cancelButtonText: "Return to form",
+                });
+                modal.setOnAccept(() => () => {
+                  modal.setModalOpen(false);
+                  nav(
+                    originPath ? { path: originPath } : { path: "/dashboard" },
+                  );
+                });
+                modal.setModalOpen(true);
+              }}
+            >
               Cancel
             </I.Button>
           </div>

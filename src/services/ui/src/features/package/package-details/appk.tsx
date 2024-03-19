@@ -36,7 +36,7 @@ export const AppK = () => {
         onError: (err) => {
           console.error(err);
         },
-      }
+      },
     );
   };
 
