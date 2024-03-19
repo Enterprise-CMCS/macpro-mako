@@ -6,6 +6,10 @@ import {
 
 export const transform = (id: string) => {
   return legacyPackageViewSchema.transform((data) => {
+    // This is used to handle legacy hard deletes
+    const legacySubmissionTimestamp = getDateStringOrNullFromEpoc(
+      data.submissionTimestamp,
+    );
     if (!data.componentType?.startsWith("waiverextension")) {
       return {
         id,
@@ -13,6 +17,7 @@ export const transform = (id: string) => {
         submitterName:
           data.submitterName === "-- --" ? null : data.submitterName,
         origin: "OneMAC",
+        legacySubmissionTimestamp,
       };
     }
     return {
@@ -38,6 +43,7 @@ export const transform = (id: string) => {
       changedDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
       subject: null,
       description: null,
+      legacySubmissionTimestamp,
     };
   });
 };

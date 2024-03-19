@@ -28,20 +28,24 @@ export const getItemData = async (event: APIGatewayEvent) => {
       const children = await getAppkChildren(body.id);
       appkChildren = children.hits.hits;
     }
-    const filter =
-      packageResult._source.submissionDate !== null
-        ? [
-            {
-              range: {
-                timestamp: {
-                  gte: new Date(packageResult._source.submissionDate).getTime(),
-                },
-              },
-            },
-          ]
-        : [];
+    const filter = [];
+    // This is to handle hard deletes in legacy
+    if (packageResult._source.legacySubmissionTimestamp !== null) {
+      filter.push({
+        range: {
+          timestamp: {
+            gte: new Date(
+              packageResult._source.legacySubmissionTimestamp,
+            ).getTime(),
+          },
+        },
+      });
+    }
 
-    const changelog = await getPackageChangelog(body.id, filter);
+    const changelog = await getPackageChangelog(
+      body.id,
+      legacySubmissionTimestampFitler,
+    );
     if (
       stateFilter &&
       (!packageResult._source.state ||
