@@ -33,8 +33,6 @@ import { useQuery as useQueryString } from "@/hooks";
 import {
   DescriptionInput,
   SubjectInput,
-  TypeSelect,
-  SubTypeSelect,
   AdditionalInfoInput,
 } from "../shared-components";
 
@@ -51,8 +49,6 @@ const formSchema = z.object({
     .trim()
     .min(1, { message: "This field is required" })
     .max(4000, { message: "Description should be under 4000 characters" }),
-  typeIds: z.array(z.number()).min(1, { message: "Required" }),
-  subTypeIds: z.array(z.number()).min(1, { message: "Required" }),
   attachments: z.object({
     currentStatePlan: zAttachmentRequired({ min: 1 }),
     amendedLanguage: zAttachmentRequired({ min: 1 }),
@@ -206,12 +202,6 @@ export const ChipSpaFormPage = () => {
               name="description"
               helperText="A summary of the SPA. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
             />
-            <TypeSelect
-              control={form.control}
-              name="typeIds"
-              authorityId={124} // chip authority
-            />
-            <SubTypeSelect authorityId={124} />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/chip-spa-attachments" />
