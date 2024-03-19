@@ -38,7 +38,7 @@ module.exports = defineConfig({
   videosFolder: "videos",
   video: false,
   downloadsFolder: "downloads",
-  defaultCommandTimeout: 30001,
+  defaultCommandTimeout: 40001,
   viewportWidth: 1440,
   viewportHeight: 900,
   experimentalStudio: true,
@@ -47,7 +47,7 @@ module.exports = defineConfig({
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     setupNodeEvents,
-    baseUrl: "https://mako-dev.cms.gov/",
+    baseUrl: "https://d2iainsf03w0ir.cloudfront.net/",
     specPattern: ["cypress/e2e/**/*.feature", "cypress/e2e/**/*.spec.js", "cypress/a11y/**/*.spec.js"],
     supportFile: "support/index.js",
     stepDefinitions: ["cypress/e2e/common/steps.js"],

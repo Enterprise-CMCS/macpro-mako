@@ -7,7 +7,6 @@ import oneMacSubmissionTypePage from "../../../support/pages/oneMacSubmissionTyp
 import oneMacUserManagmentPage from "../../../support/pages/oneMacUserManagmentPage";
 import oneMacMyProfilePage from "../../../support/pages/oneMacMyProfilePage";
 import oneMacFAQPage from "../../../support/pages/oneMacFAQPage";
-import oneMacRequestARoleChangePage from "../../../support/pages/oneMacRequestARoleChangePage";
 import oneMacPackageDetailsPage from "../../../support/pages/oneMacPackageDetailsPage";
 import utilities from "../../../support/utilities/utilities";
 
@@ -19,7 +18,6 @@ const OneMacSubmissionTypePage = new oneMacSubmissionTypePage();
 const OneMacUserManagmentPage = new oneMacUserManagmentPage();
 const OneMacMyProfilePage = new oneMacMyProfilePage();
 const OneMacFAQPage = new oneMacFAQPage();
-const OneMacRequestARoleChangePage = new oneMacRequestARoleChangePage();
 const OneMacPackageDetailsPage = new oneMacPackageDetailsPage();
 const util = new utilities();
 
@@ -111,7 +109,7 @@ Then("click Yes leave form button", () => {
   OneMacFormPage.clickButtonLabelled("Yes, leave form");
 });
 Then("click Return to form", () => {
-  OneMacFormPage.clickButtonLabelled("Return to form");
+  OneMacFormPage.clickReturnToFormBtn();
 });
 Then("verify the success message is {string}", (s) => {
   OneMacDashboardPage.verifySuccessMessageIs(s);
@@ -1353,86 +1351,6 @@ Then("verify that Request a Role Change button exists", () => {
 Then("click on Request a Role Change button", () => {
   OneMacUserManagmentPage.clickRequestARoleChangeBtn();
 });
-
-Then("verify Select the role for which you are registering is visible", () => {
-  OneMacRequestARoleChangePage.verifySelectTheRoleTextExists();
-});
-
-Then("verify SSA is the role available", () => {
-  OneMacRequestARoleChangePage.verifySSARoleBtnExists();
-});
-
-Then("click on the SSA role", () => {
-  OneMacRequestARoleChangePage.clickSSARoleBtn();
-});
-
-Then("verify the user role is {string}", (string) => {
-  OneMacRequestARoleChangePage.verifyUserRoleHeaderIs(string);
-});
-
-Then("verify the error message says {string}", (string) => {
-  OneMacRequestARoleChangePage.verifyErrorMessageTextIs(string);
-});
-
-Then("verify the submit button is disabled on request a role page", () => {
-  OneMacRequestARoleChangePage.verifySubmitBtnIsDisabled();
-});
-Then("verify the submit button is disabled via class", () => {
-  OneMacRequestARoleChangePage.verifySubmitBtnIsDisabledViaClass();
-});
-Then("select {string} for state access", (state) => {
-  OneMacRequestARoleChangePage.clickStateForStateAccess(state);
-});
-
-Then("verify the submit button is enabled", () => {
-  OneMacRequestARoleChangePage.verifySubmitBtnIsEnabled();
-});
-
-Then("verify there is no error message", () => {
-  OneMacRequestARoleChangePage.verifyErrorMsgDoesNotExist();
-});
-Then("click on cancel", () => {
-  OneMacRequestARoleChangePage.clickCancelBtn();
-});
-Then("verify the cancel button is clickable", () => {
-  OneMacRequestARoleChangePage.verifyCancelBtnIsEnabled();
-});
-Then("click Return to form in the modal", () => {
-  OneMacRequestARoleChangePage.clickStayOnPageBtn();
-});
-
-Then("click confirm in the modal", () => {
-  OneMacRequestARoleChangePage.clickConfirmBtn();
-});
-
-Then("verify State Submitter is the role available", () => {
-  OneMacRequestARoleChangePage.verifyStateSubmitterRoleBtnExists();
-});
-
-Then("click on the State Submitter role", () => {
-  OneMacRequestARoleChangePage.clickStateSubmitterRoleBtn();
-});
-
-Then("verify the CMS Reviewer role is available", () => {
-  OneMacRequestARoleChangePage.verifyCMSReviewerRoleBtnExists();
-});
-
-Then("click on the CMS Reviewer role", () => {
-  OneMacRequestARoleChangePage.clickCMSReviewerRoleBtn();
-});
-
-Then("verify the group dropdown exists", () => {
-  OneMacRequestARoleChangePage.verifyGroupDropdownExists();
-});
-
-Then("verify the CMS Role Approver role is available", () => {
-  OneMacRequestARoleChangePage.verifyCMSRoleApproverBtnExists();
-});
-
-Then("click on the CMS Role Approver role", () => {
-  OneMacRequestARoleChangePage.clickCMSRoleApproverBtn();
-});
-
 Then("verify that Request a Role Change button does not exist", () => {
   OneMacUserManagmentPage.verifyRequestARoleChangeBtnDoesNotExist();
 });
@@ -1447,6 +1365,9 @@ Then("click withdraw package button", () => {
 });
 Then("click yes, withdraw package button", () => {
   OneMacDashboardPage.clickConfirmWithdrawPackageBtn();
+});
+Then("click yes, withdraw package button without waiting", () => {
+  OneMacDashboardPage.clickConfirmWithdrawPackageBtnWithoutWaiting();
 });
 Then("verify yes, withdraw package button exists", () => {
   OneMacDashboardPage.verifyConfirmWithdrawPackageBtnExists();
@@ -1747,22 +1668,6 @@ Then(
     cy.wait(1000);
   }
 );
-Then("reset EUA CMS Read Only User state if needed", () => {
-  cy.wait(1000)
-    .then(() => {
-      OneMacUserManagmentPage.isActionBtnPending();
-    })
-    .then((bool) => {
-      if (bool) {
-        OneMacUserManagmentPage.clickPendingUserActionBtn();
-        OneMacUserManagmentPage.clickDenyAccessBtn();
-        OneMacRequestARoleChangePage.clickConfirmBtn();
-        OneMacDashboardPage.verifySuccessMessageIsDisplayedForRoleChange();
-      } else {
-        //no reset is needed so do nothing
-      }
-    });
-});
 Then("verify the actions button is disabled in the package dashboard", () => {
   OneMacDashboardPage.verifyActionsBtnDisabledOnFirstRow();
 });
@@ -2045,32 +1950,38 @@ Then("search for the generated SPA ID {int}", (count) => {
 Then("type the generated {string} Number {int} into the ID Input box using the state {string}", (type, count, state = "MD") => {
   cy.fixture("generatedIDs.json").then((obj) => {
     cy.fixture("generatedIDPartialCounter.json").then((data) => {
-      let waiverID = state + "-";
+      let newID = state + "-";
       switch (type) {
         case "Initial Waiver":
           data["lastInitialWaiverPart"] = util.firstpartCounter(data["lastInitialWaiverPart"]);
-          waiverID += data["lastInitialWaiverPart"] + ".R00.00";
+          newID += data["lastInitialWaiverPart"] + ".R00.00";
           break;
         case "Renewal Waiver":
           if (parseInt(data["lastRenewalSecondPart"]) === 99) {
             data["lastRenewalFirstPart"] = util.firstpartCounter(data["lastRenewalFirstPart"]);
           }
           data["lastRenewalSecondPart"] = util.doubleDigitCounter(data["lastRenewalSecondPart"]);
-          waiverID += data["lastRenewalFirstPart"] + ".R" + data["lastRenewalSecondPart"] + ".00";
+          newID += data["lastRenewalFirstPart"] + ".R" + data["lastRenewalSecondPart"] + ".00";
           break;
         case "Waiver Amendment":
           if (parseInt(data["lastAmendmentSecondPart"]) === 99) {
             data["lastAmendmentFirstPart"] = util.firstpartCounter(data["lastAmendmentFirstPart"]);
           }
           data["lastAmendmentSecondPart"] = util.doubleDigitCounter(data["lastAmendmentSecondPart"]);
-          waiverID += data["lastAmendmentFirstPart"] + ".R00." + data["lastAmendmentSecondPart"];
+          newID += data["lastAmendmentFirstPart"] + ".R00." + data["lastAmendmentSecondPart"];
+          break;
+        case "Medicaid SPA":
+        case "CHIP SPA":
+          data["lastSpaID"] = util.spaIDCounter(data["lastSpaID"]);
+          let year = new Date().getFullYear().toString().slice(-2);
+          newID += year + "-" + data["lastSpaID"] + "-CYPS";
           break;
         default:
           cy.log("type is invalid or not covered in cases");
           break;
       }
-      obj["generated" + type.replace(/\s/g, '') + "ID" + count] = waiverID;
-      OneMacFormPage.inputID(waiverID);
+      obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
+      OneMacFormPage.inputID(newID);
       // write the merged object
       cy.writeFile("./fixtures/generatedIDs.json", obj);
       cy.writeFile("./fixtures/generatedIDPartialCounter.json", data);

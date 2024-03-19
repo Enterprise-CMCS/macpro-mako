@@ -8,7 +8,7 @@ Feature: Verify user can withdraw a 1915(b) Waiver Amendment in Under Review Sta
         Then Click on Waiver Action
         Then click on 1915b Waiver Actions
 
-     Scenario: Screen Enhance - Validate Waiver Amendment Withdrawal Page from dashboard
+    Scenario: Screen Enhance - Validate Waiver Amendment Withdrawal Page from dashboard
         Then click on "1915(b) Comprehensive (Capitated) Waiver Authority" choice
         Then click on "1915(b) Comprehensive (Capitated) Waiver Amendment" choice
         Then type the generated "Waiver Amendment" Number 3 into the ID Input box using the state "MD"
@@ -27,7 +27,7 @@ Feature: Verify user can withdraw a 1915(b) Waiver Amendment in Under Review Sta
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
         Then verify Type is "1915(b) Waiver"
-        Then verify "Upload Supporting Documentation" is an Attachment Type
+        Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
         Then click form cancel button
@@ -60,7 +60,7 @@ Feature: Verify user can withdraw a 1915(b) Waiver Amendment in Under Review Sta
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
         Then verify Type is "1915(b) Waiver"
-        Then verify "Upload Supporting Documentation" is an Attachment Type
+        Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
         Then click form cancel button
@@ -92,7 +92,7 @@ Feature: Verify user can withdraw a 1915(b) Waiver Amendment in Under Review Sta
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
         Then verify Type is "1915(b) Waiver"
-        Then verify "Upload Supporting Documentation" is an Attachment Type
+        Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
         Then click form cancel button
@@ -125,7 +125,7 @@ Feature: Verify user can withdraw a 1915(b) Waiver Amendment in Under Review Sta
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
         Then verify Type is "1915(b) Waiver"
-        Then verify "Upload Supporting Documentation" is an Attachment Type
+        Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
         Then click form cancel button

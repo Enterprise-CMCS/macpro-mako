@@ -875,6 +875,10 @@ export class oneMacDashboardPage {
   }
   clickConfirmWithdrawPackageBtn() {
     cy.xpath(withdrawPackageConfirmBtn).click();
+    cy.wait(8000);
+  }
+  clickConfirmWithdrawPackageBtnWithoutWaiting() {
+    cy.xpath(withdrawPackageConfirmBtn).click();
   }
   verifyConfirmWithdrawPackageBtnExists() {
     cy.xpath(withdrawPackageConfirmBtn).should("be.visible");

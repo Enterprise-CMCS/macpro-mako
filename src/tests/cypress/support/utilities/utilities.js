@@ -2,18 +2,18 @@
 //We can also move these files to Common package under integration. Both are considered best practices.
 
 export class utilities {
-  generateSPAID(state) {
-    //takes last 2 digits of current year
-    let year = new Date().getFullYear().toString().slice(-2);
-    //picks a number between 0000 and 9999
-    let number = ('0000' + Math.floor(+ Math.random() * 9999)).slice(-4);
-    // SS-YY-NNNN
-    let spaID = state + "-" + year + "-" + number + "-" + "VM";
-    return spaID;
+  spaIDCounter(lastSPAID = 0) {
+    let number = parseInt(lastSPAID);
+    if(number < 1000){
+     return ('0000' + (number + 1)).slice(-4);
+    } else if(number === 9999){
+      return '0000'; //resets the number
+    } else {
+      return number += 1;
+    }
   }
 
   firstpartCounter(lastfirstPartCounter = 1000) {
-    cy.log("type " + typeof(lastfirstPartCounter) + "and object " + lastfirstPartCounter)
     if(lastfirstPartCounter < 1000){
       return 1000;
     } else if(lastfirstPartCounter === 2999){

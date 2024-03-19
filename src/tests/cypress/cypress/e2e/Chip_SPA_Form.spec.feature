@@ -15,12 +15,11 @@ Feature: Package Dashboard: CHIP SPA Initial Submission
         Then verify the page header is "CHIP Eligibility SPAs"
         Then verify Enter the MMDL System button is visible and clickable
 
-
     Scenario: Create CHIP SPA Initial Submission in OneMAC using the All Other CHIP SPA Submissions choice
         Then verify "All Other CHIP SPA Submissions" choice goes to "/new-submission/spa/chip/create"
         Then click on "All Other CHIP SPA Submissions" choice
         Then verify the form title is "CHIP SPA Details"
-        Then type the generated SPA ID 1 into the ID Input box using the state "MD"
+        Then type the generated "CHIP SPA" Number 1 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of CHIP SPA" to 3 months from today
         Then verify the attachment info descriptiion
         Then verify the attachment info link is for "CHIP SPA"
@@ -32,5 +31,5 @@ Feature: Package Dashboard: CHIP SPA Initial Submission
         Then verify package submitted message in the alert bar
         Then click the Go to Dashboard button
         Then verify the SPAs tab is selected
-        Then search for the generated SPA ID 1
-        Then verify the id number in the first row matches the generated SPA ID 1
+        Then search for the generated "CHIP SPA" Number 1
+        Then verify the id number in the first row matches the generated "CHIP SPA" Number 1

@@ -1,63 +1,71 @@
-Feature: Verify user can withdraw a package in Under Review Status in the package dashboard
+Feature: Verify user can withdraw a CHIP SPA package in Under Review Status in the package dashboard
     Background: Reoccurring steps
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
         Then click the main Dashboard Button
-        Then Click on Filter Button
-        Then click on Status
-        Then click Under Review checkbox
-        Then click on Type
-        Then click CHIP SPA check box
-        Then Click on the close Filter Button
+        Then click on New Submission
+        Then click on "State Plan Amendment (SPA)" choice
+        Then click on "CHIP SPA" choice
+        Then click on "All Other CHIP SPA Submissions" choice
 
-    Scenario: Screen Enhance - Validate CHIP Withdrawal Page from the dashboard
+    Scenario: Validate CHIP SPA Withdrawal Page from dashboard
+        Then type the generated "CHIP SPA" Number 2 into the ID Input box using the state "MD"
+        Then set "Proposed Effective Date of CHIP SPA" to 3 months from today
+        Then attach "file.docx" file to attachment 1
+        Then attach "excel.xlsx" file to attachment 2
+        Then into "Additional Information" type "This CHIP SPA package was created by the test automation."
+        Then Click on Submit Button
+        Then verify package submitted message in the alert bar
+        Then verify the SPAs tab is selected
+        Then search for the generated "CHIP SPA" Number 2
+        Then verify the id number in the first row matches the generated "CHIP SPA" Number 2
         Then click the actions button in row one
         Then click withdraw package button
-        Then verify the form title is "Withdraw CHIP SPA Package"
-        Then verify Form Intro Text is "Complete this action to withdraw this CHIP SPA package. Once completed, you will not be able to resubmit the CHIP SPA package or undo this action."
+        Then verify the form is titled "Withdraw CHIP SPA Package"
+        Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Package ID"
         Then verify Type is "CHIP SPA"
-        Then verify "Upload Supporting Documentation" is an Attachment Type
+        Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
-        Then verify the submit button is disabled
         Then verify form cancel button exists
         Then click form cancel button
         Then click Return to form
-        Then click form cancel button
-        Then click Yes leave form button
+        Then Click the Submit Button without waiting
+        Then click yes, withdraw package button without waiting
+        Then verify the message in the alert bar is "An Attachment or Additional Information is required."
+        Then into "Additional Information" type "This CHIP SPA package was withdrawn by the test automation."
+        Then Click the Submit Button without waiting
+        Then click yes, withdraw package button
+        Then verify the message in the alert bar is "Package withdrawn"
 
-    Scenario: Screen Enhance - Validate CHIP Withdrawal Page from the details page
-        Then click the SPA ID link in the first row
+    Scenario: Validate CHIP SPA Withdrawal Page from details page
+        Then type the generated "CHIP SPA" Number 3 into the ID Input box using the state "MD"
+        Then set "Proposed Effective Date of CHIP SPA" to 3 months from today
+        Then attach "file.docx" file to attachment 1
+        Then attach "excel.xlsx" file to attachment 2
+        Then into "Additional Information" type "This CHIP SPA package was created by the test automation."
+        Then Click on Submit Button
+        Then verify package submitted message in the alert bar
+        Then verify the SPAs tab is selected
+        Then search for the generated "CHIP SPA" Number 3
+        Then verify the id number in the first row matches the generated "CHIP SPA" Number 3
+        Then click the Waiver Number link in the first row
         Then verify the package details page is visible
         Then click withdraw button
-        Then verify the form title is "Withdraw CHIP SPA Package"
-        Then verify Form Intro Text is "Complete this form to withdraw a package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
-        Then verify ID Label is "Package ID"
+        Then verify the form is titled "Withdraw Waiver"
+        Then verify Form Intro Text is "Complete this form to withdraw"
+        Then verify ID Label is "Waiver Number"
         Then verify Type is "CHIP SPA"
-        Then verify "Upload Supporting Documentation" is an Attachment Type
+        Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
-        Then verify the submit button is disabled
         Then verify form cancel button exists
         Then click form cancel button
         Then click Return to form
-        Then click form cancel button
-        Then click Yes leave form button
-
-    Scenario: Screen Enhance - Validate Form logic
-        Then click the actions button in row one
-        Then click withdraw package button
-        Then into "Additional Information" type "Withdrawal test."
-        Then verify the submit button is disabled
+        Then Click the Submit Button without waiting
+        Then click yes, withdraw package button without waiting
+        Then verify the message in the alert bar is "An Attachment or Additional Information is required."
         Then attach "adobe.pdf" file to attachment 1
-        Then verify the submit button is not disabled
-        Then clear "Additional Information" input field
-        Then verify the submit button is not disabled
-#Then Click the Submit Button without waiting
-
-# Scenario: Demonstrate withdraw package for CHIP SPA in Under Review Status
-#     Then         attach "adobe.pdf" file to attachment 1
-
-#     Then verify the submit button is not disabled
-#     Then Click the Submit Button without waiting
-#     Then click yes, withdraw package button
+        Then Click the Submit Button without waiting
+        Then click yes, withdraw package button
+        Then verify the message in the alert bar is "Package withdrawn"

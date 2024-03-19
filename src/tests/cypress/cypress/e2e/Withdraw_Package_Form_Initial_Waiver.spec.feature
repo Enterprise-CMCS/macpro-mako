@@ -8,7 +8,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then Click on Waiver Action
         Then click on 1915b Waiver Actions
 
-    Scenario: Screen Enhance - Validate Initial Waiver Withdrawal Page from dashboard
+    Scenario: Validate Initial Waiver Withdrawal Page from dashboard
         Then click on "1915(b) Comprehensive (Capitated) Waiver Authority" choice
         Then click on "1915(b) Comprehensive (Capitated) New Initial Waiver" choice
         Then type the generated "Initial Waiver" Number 5 into the ID Input box using the state "MD"
@@ -27,7 +27,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
         Then verify Type is "1915(b) Waiver"
-        Then verify "Upload Supporting Documentation" is an Attachment Type
+        Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
         Then click form cancel button
@@ -40,7 +40,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click yes, withdraw package button
         Then verify the message in the alert bar is "Package withdrawn"
 
-    Scenario: Screen Enhance - Validate Initial Waiver Withdrawal Page from details page
+    Scenario: Validate Initial Waiver Withdrawal Page from details page
         Then click on "1915(b) Comprehensive (Capitated) Waiver Authority" choice
         Then click on "1915(b) Comprehensive (Capitated) New Initial Waiver" choice
         Then type the generated "Initial Waiver" Number 6 into the ID Input box using the state "MD"
@@ -60,7 +60,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
         Then verify Type is "1915(b) Waiver"
-        Then verify "Upload Supporting Documentation" is an Attachment Type
+        Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
         Then click form cancel button
@@ -73,7 +73,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click yes, withdraw package button
         Then verify the message in the alert bar is "Package withdrawn"
 
-    Scenario: Screen Enhance - Validate Initial Waiver Withdrawal Page from dashboard
+    Scenario: Validate Initial Waiver Withdrawal Page from dashboard
         Then click on "1915(b)(4) FFS Selective Contracting Waivers" choice
         Then click on "1915(b)(4) FFS Selective Contracting New Initial Waiver" choice
         Then type the generated "Initial Waiver" Number 7 into the ID Input box using the state "MD"
@@ -92,7 +92,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
         Then verify Type is "1915(b) Waiver"
-        Then verify "Upload Supporting Documentation" is an Attachment Type
+        Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
         Then click form cancel button
@@ -105,7 +105,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click yes, withdraw package button
         Then verify the message in the alert bar is "Package withdrawn"
 
-    Scenario: Screen Enhance - Validate Initial Waiver Withdrawal Page from details page
+    Scenario: Validate Initial Waiver Withdrawal Page from details page
         Then click on "1915(b)(4) FFS Selective Contracting Waivers" choice
         Then click on "1915(b)(4) FFS Selective Contracting New Initial Waiver" choice
         Then type the generated "Initial Waiver" Number 8 into the ID Input box using the state "MD"
@@ -125,7 +125,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
         Then verify Type is "1915(b) Waiver"
-        Then verify "Upload Supporting Documentation" is an Attachment Type
+        Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
         Then click form cancel button

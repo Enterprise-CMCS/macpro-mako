@@ -1,9 +1,9 @@
-const submitBTN = "button[type='submit']";
+const submitBTN = "//button[text()='Submit']";
 const cancelBTN = "//button[text()='Cancel']";
 const idElement = "[name='id']";
 const parentIdElement = "[name='waiverNumber']";
 const packageFormPt2ErrorMsg = "#componentIdStatusMsg1";
-const typeHeader = "//h3[text()='Type']";
+const typeHeader = "//label[text()='Type']";
 
 const modalContainer = "#react-aria-modal-dialog";
 const modalTitle = "#dialog-title";
@@ -25,9 +25,9 @@ const tempExtensionTypeHeader =
   "//h3[contains(text(),'Temporary Extension Type')]";
 const tempExtensionTypeBtn = "#temp-ext-type";
 const formIntroElement = "form p:first-of-type";
-
+const returnToFormBtn = "//*[@role='dialog']//button[text()='Return to form']";
 const labelElementFromLabel = {
-  "Additional Information": "#additional-information-label",
+  "Additional Information": "//h3[contains(text(),'Additional Information')]",
 };
 const elementFromLabel = {
   // Different forms may have different labels for the ID field
@@ -99,7 +99,7 @@ function caculateMonthsInFuture(numMonths) {
 
 export class oneMacFormPage {
   verifyInputHeaderIs(inputHeader) {
-    cy.get(labelElementFromLabel[inputHeader])
+    cy.xpath(labelElementFromLabel[inputHeader])
       .should("be.visible")
       .contains(inputHeader);
   }
@@ -178,7 +178,7 @@ export class oneMacFormPage {
     cy.get(errorMessageParentID).contains(errorMessage);
   }
   verifyTypeIs(s) {
-    cy.get(withdrawLabel).should("have.text", "Type").next().contains(s);
+    cy.xpath(typeHeader).next().contains(s);
   }
   verifyWaiverAuthorityContains(whatAuthority) {
     cy.xpath(waiverAuthorityLabel).next().contains(whatAuthority);
@@ -215,17 +215,17 @@ export class oneMacFormPage {
     cy.xpath(closeBTNXPath).click();
   }
   clicksubmitBTN() {
-    cy.get(submitBTN).click();
+    cy.xpath(submitBTN).click();
     cy.wait(8000);
   }
   clicksubmitBTNWithoutWait() {
-    cy.get(submitBTN).click();
+    cy.xpath(submitBTN).click();
   }
   verifySubmitBtnIsNotDisabled() {
-    cy.get(submitBTN).should("not.be.disabled");
+    cy.xpath(submitBTN).should("not.be.disabled");
   }
   verifySubmitBtnIsDisabled() {
-    cy.get(submitBTN).should("be.disabled");
+    cy.xpath(submitBTN).should("be.disabled");
   }
   verifyCancelBtnExists() {
     cy.xpath(cancelBTN).scrollIntoView().should("be.visible");
@@ -235,6 +235,9 @@ export class oneMacFormPage {
   }
   clickModalCancelBtn() {
     cy.xpath(modalCancelBTN).click();
+  }
+  clickReturnToFormBtn(){
+    cy.xpath(returnToFormBtn).click({force: true});
   }
   verifyErrorMsgContains(s) {
     cy.get(packageFormPt2ErrorMsg).contains(s);
@@ -249,22 +252,22 @@ export class oneMacFormPage {
       case "Medicaid SPA":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/#medicaid-spa-attachments");
+          .should("have.attr", "href", "/faq/medicaid-spa-attachments");
         break;
       case "Medicaid RAI":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/#medicaid-spa-rai-attachments");
+          .should("have.attr", "href", "/faq/medicaid-spa-rai-attachments");
         break;
       case "CHIP SPA":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/#chip-spa-attachments");
+          .should("have.attr", "href", "/faq/chip-spa-attachments");
         break;
       case "CHIP RAI":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/#chip-spa-rai-attachments");
+          .should("have.attr", "href", "/faq/chip-spa-rai-attachments");
         break;
       case "1915b Waiver":
         cy.xpath(attachmentInfoDescription)
@@ -328,7 +331,7 @@ export class oneMacFormPage {
     cy.get(formIntroElement).first().should("be.visible").contains(introText);
   }
   verifyAttachmentType(attachmentType) {
-    cy.xpath(`//h3[text()='${attachmentType}']`).should("be.visible");
+    cy.xpath(`//label[text()='${attachmentType}']`).should("be.visible");
   }
   verifySuccessMessageIsDisplayedInModal() {
     cy.get(submissionModal).contains("Submission Successful");

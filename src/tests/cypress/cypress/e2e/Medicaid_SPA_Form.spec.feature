@@ -25,7 +25,7 @@ Feature: Package Dashboard: Medicaid SPA Form
         Then verify "All Other Medicaid SPA Submissions" choice goes to "/new-submission/spa/medicaid/create"
         Then click on "All Other Medicaid SPA Submissions" choice
         Then verify the form title is "Medicaid SPA Details"
-        Then type the generated SPA ID 2 into the ID Input box using the state "MD"
+        Then type the generated "Medicaid SPA" Number 1 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of Medicaid SPA" to 3 months from today
         Then verify the attachment info descriptiion
         Then verify the attachment info link is for "Medicaid SPA"
@@ -35,5 +35,5 @@ Feature: Package Dashboard: Medicaid SPA Form
         Then Click on Submit Button
         Then verify package submitted message in the alert bar
         Then verify the SPAs tab is selected
-        Then search for the generated SPA ID 2
-        Then verify the id number in the first row matches the generated SPA ID 2
+        Then search for the generated "Medicaid SPA" Number 1
+        Then verify the id number in the first row matches the generated "Medicaid SPA" Number 1
