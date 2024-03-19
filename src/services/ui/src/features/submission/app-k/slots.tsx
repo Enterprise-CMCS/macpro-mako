@@ -16,7 +16,8 @@ import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
 import { cn } from "@/utils";
 import { zAppkWaiverNumberSchema } from "@/utils";
-import { itemExists } from "@/api";
+import { getItem, idIsApproved, itemExists } from "@/api";
+import { Authority } from "shared-types";
 
 export const SlotStateSelect = <
   TFieldValues extends FieldValues = FieldValues,
@@ -105,13 +106,44 @@ export const SlotWaiverId = <
         const [err] = parsed.error.errors;
         return context.setError(field.name, err);
       }
-
-      const exists = await itemExists(`${state}-${value}`);
+      const id = `${state}-${value}`;
+      const exists = await itemExists(id);
 
       if (exists) {
         return context.setError(field.name, {
           message:
             "According to our records, this 1915(c) Waiver Amendment Number already exists. Please check the 1915(c) Waiver Amendment Number and try entering it again.",
+        });
+      }
+
+      // lets verify the original initial or renewal waiver
+
+      // Determine the initial or renewal waiver number from the provided amendment id
+      const parts = id.split(".");
+      parts.pop();
+      const initialOrRenewal = `${parts.join(".")}.00`;
+      console.log("ASDFASDF");
+      console.log(initialOrRenewal);
+
+      // Check that the parent exists
+      if (!(await itemExists(initialOrRenewal))) {
+        return context.setError(field.name, {
+          message: `According to our records, there is no 1915(c) Initial or Renewal Waiver for this amendment.  Given this amenment number, we would expect ${initialOrRenewal} to exist.`,
+        });
+      }
+
+      // Check that the parent is in approved status
+      if (!(await idIsApproved(initialOrRenewal))) {
+        return context.setError(field.name, {
+          message: `According to our records, the 1915(c) Initial or Renewal Waiver for this amendment is not in Approved status.  Given this amenment number, we would expect ${initialOrRenewal} to be in Approved status`,
+        });
+      }
+
+      //Check that the parent is of type 1915(c)
+      const initialOrRenewalData = await getItem(initialOrRenewal);
+      if (initialOrRenewalData._source.authority !== Authority["1915c"]) {
+        return context.setError(field.name, {
+          message: `The Initial or Renewal Waiver for this amendment is not of authority 1915(c).  Given this amenment number, we would expect ${initialOrRenewal} to be of authority 1915(c)`,
         });
       }
 
