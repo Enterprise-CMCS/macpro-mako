@@ -110,6 +110,16 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       cell: renderCellDate("submissionDate"),
     },
     {
+      field: "finalDispositionDate",
+      label: "Final Disposition",
+      hidden: true,
+      transform: (data) =>
+        data?.finalDispositionDate
+          ? formatSeatoolDate(data.finalDispositionDate)
+          : BLANK_VALUE,
+      cell: renderCellDate("finalDispositionDate"),
+    },
+    {
       field: "origin",
       label: "Submission Source",
       hidden: true,
