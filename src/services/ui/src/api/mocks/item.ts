@@ -13,7 +13,7 @@ type IdParamKey = keyof opensearch.main.Document;
 // Because getItem(id: string) doesn't allow for easy object mocking,
 // to make tests easier, you can add params to the ids your tests use
 // and mock specific attributes.
-// e.x. existing-approved-at=New
+// e.x. existing-approved-actionType=New
 const getIdParam = (id: string, key: IdParamKey) =>
   id
     .split(ID_SEPARATOR)
