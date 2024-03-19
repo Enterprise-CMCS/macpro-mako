@@ -42,10 +42,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
       });
     }
 
-    const changelog = await getPackageChangelog(
-      body.id,
-      legacySubmissionTimestampFitler,
-    );
+    const changelog = await getPackageChangelog(body.id, filter);
     if (
       stateFilter &&
       (!packageResult._source.state ||
