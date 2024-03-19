@@ -27,6 +27,7 @@ export type Document = OneMac &
     timestamp: string;
     packageId: string;
     appkChildId: string;
+    devOrigin: string;
   } & z.infer<legacyEvent.Schema>;
 
 export type Response = Res<Document>;

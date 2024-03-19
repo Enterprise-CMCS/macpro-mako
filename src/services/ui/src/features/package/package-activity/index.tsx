@@ -14,7 +14,7 @@ import { usePackageActivities, useAttachmentService } from "./hook";
 import { Link } from "@/components/Routing";
 
 export const PA_RemoveAppkChild: FC<opensearch.changelog.Document> = (
-  props
+  props,
 ) => {
   return (
     <div className="flex gap-1">
@@ -31,7 +31,7 @@ export const PA_RemoveAppkChild: FC<opensearch.changelog.Document> = (
 };
 
 export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
-  props
+  props,
 ) => {
   const hook = useAttachmentService(props);
 
@@ -98,7 +98,7 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
 };
 
 export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
-  props
+  props,
 ) => {
   const hook = useAttachmentService(props);
 
@@ -165,7 +165,7 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
 };
 
 export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
-  props
+  props,
 ) => {
   const hook = useAttachmentService(props);
 
@@ -303,7 +303,12 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
       case "new-submission":
         return ["Initial package submitted", PA_InitialSubmission];
       case "withdraw-rai":
-        return ["RAI response withdrawn", PA_ResponseWithdrawn];
+        return [
+          props.devOrigin === "micro"
+            ? "RAI response withdrawn"
+            : "RAI response withdraw requested",
+          PA_ResponseWithdrawn,
+        ];
       case "withdraw-package":
         return ["Package withdrawn", PA_ResponseWithdrawn];
       case "issue-rai":
@@ -323,7 +328,9 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
         <p className="flex flex-row gap-2 text-gray-600">
           <strong>{LABEL as string}</strong>
           {" - "}
-          {props.timestamp ?  format(new Date(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a") : "Unknown"}
+          {props.timestamp
+            ? format(new Date(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a")
+            : "Unknown"}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">
