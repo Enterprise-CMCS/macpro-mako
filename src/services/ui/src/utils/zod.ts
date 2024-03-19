@@ -125,7 +125,7 @@ export const zRenewalOriginalWaiverNumberSchema = z
 export const zAppkWaiverNumberSchema = z
   .string()
   .regex(
-    /^\d{4,5}\.R\d{2}\.\d{2}$/,
+    /^\d{4,5}\.R\d{2}\.(0[1-9]|[1-9][0-9])$/,
     "The 1915(c) Waiver Amendment Number must be in the format of ####.R##.## or #####.R##.##. For amendments, the last two digits start with '01' and ascends.",
   )
   .default("");
@@ -134,7 +134,7 @@ export const zExtensionWaiverNumberSchema = z
   .string()
   .regex(
     /^[A-Z]{2}-\d{4,5}\.R\d{2}\.TE\d{2}$/,
-    "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##"
+    "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##",
   )
   .refine((value) => isAuthorizedState(value), {
     message:
@@ -149,7 +149,7 @@ export const zExtensionOriginalWaiverNumberSchema = z
   .string()
   .regex(
     /^[A-Z]{2}-\d{4,5}\.R\d{2}\.00$/,
-    "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00."
+    "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00.",
   )
   .refine((value) => isAuthorizedState(value), {
     message:
