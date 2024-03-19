@@ -33,19 +33,22 @@ import { useQuery as useQueryString } from "@/hooks";
 import {
   AdditionalInfoInput,
   DescriptionInput,
-  SubTypeSelect,
   SubjectInput,
-  TypeSelect,
 } from "../shared-components";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
-  // TODO: FFF
-  // subject: z.string(),
-  // description: z.string(),
-  // typeId: z.string(),
-  // subTypeId: z.string(),
+  subject: z
+    .string()
+    .trim()
+    .min(1, { message: "This field is required" })
+    .max(120, { message: "Subject should be under 120 characters" }),
+  description: z
+    .string()
+    .trim()
+    .min(1, { message: "This field is required" })
+    .max(4000, { message: "Description should be under 4000 characters" }),
   attachments: z.object({
     cmsForm179: zAttachmentRequired({
       min: 1,
@@ -121,7 +124,7 @@ export const MedicaidSpaFormPage = () => {
         // when any queries are added, such as the case of /details?id=...
         urlQuery.get(ORIGIN)
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard"
+          : "/dashboard",
       );
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
@@ -157,8 +160,9 @@ export const MedicaidSpaFormPage = () => {
                     </Link>
                   </div>
                   <Content.SpaIdFormattingDesc />
-                  <Inputs.FormControl className="max-w-sm">
+                  <Inputs.FormControl>
                     <Inputs.Input
+                      className="max-w-sm"
                       {...field}
                       onInput={(e) => {
                         if (e.target instanceof HTMLInputElement) {
@@ -190,21 +194,16 @@ export const MedicaidSpaFormPage = () => {
                 </Inputs.FormItem>
               )}
             />
-            {/* TODO: FFF */}
-            {/* <TypeSelect
+            <SubjectInput
               control={form.control}
-              name="typeId"
-              authorityId={125} // medicaid authority
+              name="subject"
+              helperText="The title or purpose of the SPA"
             />
-            <SubTypeSelect
+            <DescriptionInput
               control={form.control}
-              typeId={form.watch("typeId")}
-              name="subTypeId"
-              authorityId={125} // medicaid authority
+              name="description"
+              helperText="A summary of the SPA. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
             />
-
-            <SubjectInput control={form.control} name="subject" />
-            <DescriptionInput control={form.control} name="description" /> */}
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc
@@ -231,7 +230,10 @@ export const MedicaidSpaFormPage = () => {
                           : ""}
                       </Inputs.FormDescription>
                     }
-                    <Inputs.Upload files={field?.value ?? []} setFiles={field.onChange}  />
+                    <Inputs.Upload
+                      files={field?.value ?? []}
+                      setFiles={field.onChange}
+                    />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}

@@ -32,7 +32,9 @@ export const useFilterState = () => {
         ...(!!user?.isCms && {
           [C.BOOL_INITIALINTAKENEEDED.field]: C.BOOL_INITIALINTAKENEEDED,
         }),
-        [C.DATE_SUBMISSION.field]: C.DATE_SUBMISSION,
+        [C.BOOL_RAIWITHDRAWENABLED.field]: C.BOOL_RAIWITHDRAWENABLED,
+        [C.DATE_INITIALSUBMISSION.field]: C.DATE_INITIALSUBMISSION,
+        [C.DATE_FINALDISPOSITION.field]: C.DATE_FINALDISPOSITION,
         [C.DATE_RAIRECEIVED.field]: C.DATE_RAIRECEIVED,
         [C.SELECT_CPOC.field]: C.SELECT_CPOC,
         [C.SELECT_ORIGIN.field]: C.SELECT_ORIGIN,
@@ -52,7 +54,9 @@ export const useFilterState = () => {
         ...(!!user?.isCms && {
           [C.BOOL_INITIALINTAKENEEDED.field]: C.BOOL_INITIALINTAKENEEDED,
         }),
-        [C.DATE_SUBMISSION.field]: C.DATE_SUBMISSION,
+        [C.BOOL_RAIWITHDRAWENABLED.field]: C.BOOL_RAIWITHDRAWENABLED,
+        [C.DATE_INITIALSUBMISSION.field]: C.DATE_INITIALSUBMISSION,
+        [C.DATE_FINALDISPOSITION.field]: C.DATE_FINALDISPOSITION,
         [C.DATE_RAIRECEIVED.field]: C.DATE_RAIRECEIVED,
         [C.SELECT_CPOC.field]: C.SELECT_CPOC,
         [C.SELECT_ORIGIN.field]: C.SELECT_ORIGIN,
@@ -147,15 +151,18 @@ export const useFilterDrawer = () => {
   }, [url.state.filters, drawer.drawerOpen]);
 
   const aggs = useMemo(() => {
-    return Object.entries(_aggs || {}).reduce((STATE, [KEY, AGG]) => {
-      return {
-        ...STATE,
-        [KEY]: AGG.buckets.map((BUCK) => ({
-          label: `${labelMap[BUCK.key] || BUCK.key}`,
-          value: BUCK.key,
-        })),
-      };
-    }, {} as Record<opensearch.main.Field, { label: string; value: string }[]>);
+    return Object.entries(_aggs || {}).reduce(
+      (STATE, [KEY, AGG]) => {
+        return {
+          ...STATE,
+          [KEY]: AGG.buckets.map((BUCK) => ({
+            label: `${labelMap[BUCK.key] || BUCK.key}`,
+            value: BUCK.key,
+          })),
+        };
+      },
+      {} as Record<opensearch.main.Field, { label: string; value: string }[]>,
+    );
   }, [_aggs]);
 
   return {

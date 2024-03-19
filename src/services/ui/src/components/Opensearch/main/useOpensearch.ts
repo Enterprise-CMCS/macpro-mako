@@ -62,7 +62,7 @@ export const useOsData = () => {
             ...(DEFAULT_FILTERS[params.state.tab].filters || []),
           ],
         },
-        { ...options, onSuccess: (res) => setData(res.hits) }
+        { ...options, onSuccess: (res) => setData(res.hits) },
       );
     } catch (error) {
       console.error("Error occurred during search:", error);
@@ -144,7 +144,7 @@ export const useOsUrl = () => {
       search: "",
       tab: "spas",
       pagination: { number: 0, size: 25 },
-      sort: { field: "changedDate", order: "desc" },
+      sort: { field: "submissionDate", order: "desc" },
     },
   });
 };

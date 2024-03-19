@@ -87,6 +87,7 @@ describe("getNextBusinessDayTimestamp", () => {
     expect(nextDate).toEqual(Date.UTC(2024, 0, 16)); // Tuesday, midnight utc
   });
 
+  // TODO: I dont know if its my time zone but this always fails for me in the MST
   it("identifies valid business days", () => {
     let testDate = new Date(2024, 0, 9, 15, 0, 0); // Tuesday 3pm utc, Tuesday 8am eastern
     let nextDate = getNextBusinessDayTimestamp(testDate);
