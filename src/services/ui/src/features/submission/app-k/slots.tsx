@@ -119,11 +119,11 @@ export const SlotWaiverId = <
       // lets verify the original initial or renewal waiver
 
       // Determine the initial or renewal waiver number from the provided amendment id
-      const parts = id.split(".");
-      parts.pop();
-      const initialOrRenewal = `${parts.join(".")}.00`;
-      console.log("ASDFASDF");
-      console.log(initialOrRenewal);
+
+      // const parts = id.split(".");
+      // parts.pop();
+      // const initialOrRenewal = `${parts.join(".")}.00`;
+      const initialOrRenewal = id.replace(/(\.[^.]+)$/, ".00");
 
       // Check that the parent exists
       if (!(await itemExists(initialOrRenewal))) {
