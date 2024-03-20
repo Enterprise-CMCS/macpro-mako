@@ -21,7 +21,7 @@ export const useSyncStatus = ({
     queryKey: ["record", id],
     queryFn: () => getItem(id),
     refetchInterval: (data, query) => {
-      // don't want to hammer it if nothing is happening (likely something is wrong at this point)
+      // don't want to hammer it if nothing is happening likely something is wrong at this point)
       if (query.state.dataUpdateCount > 10) {
         navigate({ path });
         return false;

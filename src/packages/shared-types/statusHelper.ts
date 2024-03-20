@@ -10,7 +10,7 @@ export const SEATOOL_STATUS = {
   PENDING_APPROVAL: "Pending-Approval",
   UNKNOWN: "Unknown",
   PENDING_OFF_THE_CLOCK: "Pending-Off the Clock",
-};
+} as const;
 
 const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.PENDING]: "Under Review",
