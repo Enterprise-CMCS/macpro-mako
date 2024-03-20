@@ -410,7 +410,9 @@ export const v202401: FormSchema = {
               rhf: "TextDisplay",
               name: "prescription_drug_benefit_provided",
               text: "Benefit provided",
-              labelStyling: "font-bold",
+              props: {
+                className: "font-bold",
+              },
             },
             {
               rhf: "TextDisplay",
@@ -611,15 +613,12 @@ export const v202401: FormSchema = {
                                 name: "base_benchmark_benefit_substituted",
                               },
                               {
+                                rhf: "TextDisplay",
+                                text: [
+                                  { text: "Benchmark provided:", type: "bold" },
+                                  { text: "Base benchmark", type: "br" },
+                                ],
                                 name: "benchmark_provided",
-                                rhf: "TextDisplay",
-                                labelStyling: "font-bold",
-                                text: "Benchmark provided",
-                              },
-                              {
-                                name: "base_benchmark",
-                                rhf: "TextDisplay",
-                                text: "Base benchmark",
                               },
                               {
                                 rhf: "Textarea",
