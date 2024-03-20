@@ -76,7 +76,9 @@ export const transform = (id: string, offset: number) => {
 
     // If we're still here, go ahead and transform the data
     const transformedData = {
-      id: `${data.componentId}-${offset}`, // Append only changelog, so we add the offset to make the document id unique
+      // Append only changelog, so we add the offset to make the document id unique
+      // Legacy emits can emit multiple events for the same business event, so we key off the timestamp, not the offset, to prevent duplciates
+      id: `${data.componentId}-legacy-${data.eventTimestamp}`,
       packageId: id,
       timestamp: data.eventTimestamp,
       actionType,
