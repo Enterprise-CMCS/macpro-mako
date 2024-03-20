@@ -332,8 +332,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Input",
-              label:
-                "Name of selected base benchmark plan",
+              label: "Name of selected base benchmark plan",
               labelStyling: "font-bold",
               name: "base_benchmark_plan_name",
               rules: { required: "* Required" },
@@ -487,7 +486,8 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Input",
-              label: "Coverage that exceeds the minimum requirements or other information",
+              label:
+                "Coverage that exceeds the minimum requirements or other information",
               labelStyling: "font-bold",
               name: "prescription_drug_other_information",
             },
@@ -566,7 +566,8 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "11. Other covered benefits that are not essential health benefits",
-                    optionLabelStyling: "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
+                    optionLabelStyling:
+                      "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
                     value: "other_covered_benefits_benefit",
                     form: [
                       {
@@ -589,7 +590,8 @@ export const v202401: FormSchema = {
                   },
                   {
                     label: "12. Other base benchmark benefits not covered",
-                    optionLabelStyling: "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
+                    optionLabelStyling:
+                      "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
                     value: "other_base_benchmark_benefits_not_covered",
                     form: [
                       {
@@ -637,7 +639,8 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "13. Additional covered benefits (not applicable to “adult” group under Section 1902(a)(10)(A)(i)(VIII) of the Act)",
-                    optionLabelStyling: "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
+                    optionLabelStyling:
+                      "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
                     value: "additional_covered_benefits",
                     form: [
                       {
@@ -652,7 +655,7 @@ export const v202401: FormSchema = {
                             },
                             fields: [
                               ...subsectionFormFields(
-                                "additional_covered_benefits"
+                                "additional_covered_benefits",
                               ),
                             ],
                           },
