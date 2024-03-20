@@ -121,7 +121,7 @@ SPA@cms.hhs.gov.
 Thank you!`,
 },
 {
-    name: "new-submission-1915(b)-cms",
+    name: "new-submission-1915b-cms",
     subject:  "{{authority}} {{id}} Submitted",
     html: `
 <p>The OneMAC Submission Portal received a 1915(b) initial waiver submission:</p>
@@ -187,7 +187,7 @@ forward this email to SPAM@cms.hhs.gov.
 Thank you!`,
 },
 {
-    name: "new-submission-1915(b)-state",
+    name: "new-submission-1915b-state",
     subject:  "Your {{authority}} {{id}} has been submitted to CMS",
     html: `
 <p>This response confirms the submission of your Initial Waiver to CMS for review:</p>

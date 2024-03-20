@@ -13,15 +13,15 @@ const getBundleFromEvent = (configKey, stage) => {
                 },
                 ]
             };
-        case "new-submission-1915(b)":
+        case "new-submission-1915b":
             return {
                 "dataList": ["osgEmail", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "authority", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
-                    "Template": `new-submission-1915(b)-cms_${stage}`,
+                    "Template": `new-submission-1915b-cms_${stage}`,
                     "ToAddresses": ["osgEmail"],
                 },
                 {
-                    "Template": `new-submission-1915(b)-state_${stage}`,
+                    "Template": `new-submission-1915b-state_${stage}`,
                     "ToAddresses": ["submitter"],
                 },
                 ]
@@ -135,7 +135,8 @@ const buildKeyFromRecord = (record) => {
 
     const actionType = record?.actionType ?? "new-submission";
 
-    const authority = record.authority.toLowerCase().replace(/\s+/g, "-");
+    //replace spaces from authority with hyphens and remove parentheses
+    const authority = record.authority.toLowerCase().replace(/\s+/g, "-").replace(/[()]/g, "");
 
     return `${actionType}-${authority}`;
 };
