@@ -14,17 +14,12 @@ export const transform = (id: string) => {
     const transformedData = {
       // Append only changelog, so we add the offset to make the document id unique
       // Legacy emits can emit multiple events for the same business event, so we key off the timestamp, not the offset, to prevent duplciates
-      // Also:  nee these blank strings to not get a type error in the admin changes ui section
       // This (and all legacy events) should truly be its own index, this data is different and should be isolated.
-      id: `${id}-legacy-admin-change${data.changeTimestamp}`,
+      id: `${id}-legacy-admin-change-${data.changeTimestamp}`,
       packageId: id,
       timestamp: data.changeTimestamp,
       actionType: Action.LEGACY_MANUAL_UPDATE,
-      attachments: "",
       changeMade: data.changeMade,
-      additionalInformation: "",
-      submitterEmail: "",
-      submitterName: "",
     };
     return transformedData;
   });

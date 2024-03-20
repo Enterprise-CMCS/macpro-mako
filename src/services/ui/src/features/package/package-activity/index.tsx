@@ -299,7 +299,7 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
 // Control Map
 export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
   const [LABEL, CONTENT] = useMemo(() => {
-    switch (props.actionType) {
+    switch (props.actionType as string) {
       case "new-submission":
         return ["Initial package submitted", PA_InitialSubmission];
       case "withdraw-rai":
