@@ -39,17 +39,33 @@ export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
   );
 };
 
+export const AC_LegacyManualUpdate: FC<opensearch.changelog.Document> = (
+  props,
+) => {
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h2 className="font-bold text-lg mb-2">Change Made</h2>
+        <p>{props.changeMade || "No information submitted"}</p>
+      </div>
+    </div>
+  );
+};
+
 export const AC_Update: FC<opensearch.changelog.Document> = () => {
   return <p>Coming Soon</p>;
 };
 
 export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
+  console.log(props.actionType);
   const [label, Content] = useMemo(() => {
     switch (props.actionType) {
       case "disable-rai-withdraw":
         return ["Disable formal RAI response withdraw", AC_WithdrawDisabled];
       case "enable-rai-withdraw":
         return ["Enable formal RAI response withdraw", AC_WithdrawEnabled];
+      case "legacy-manual-update":
+        return ["Manual Update", AC_LegacyManualUpdate];
       default:
         return [BLANK_VALUE, AC_Update];
     }
@@ -74,9 +90,11 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
 export const AdminChanges = () => {
   const cache = usePackageDetailsCache();
   const data = cache.data.changelog?.filter((CL) =>
-    ["disable-rai-withdraw", "enable-rai-withdraw"].includes(
-      CL._source.actionType,
-    ),
+    [
+      "disable-rai-withdraw",
+      "enable-rai-withdraw",
+      "legacy-manual-update",
+    ].includes(CL._source.actionType),
   );
 
   if (!data?.length) return <></>;

@@ -19,7 +19,10 @@ export const mapActionLabel = (a: Action) => {
       return "Respond to Formal RAI";
     case Action.TEMP_EXTENSION:
       return "Request Temporary Extension";
+    // Should we just use default?
     case Action.REMOVE_APPK_CHILD:
+      return "";
+    case Action.LEGACY_MANUAL_UPDATE:
       return "";
   }
 };

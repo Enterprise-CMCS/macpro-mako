@@ -15,7 +15,7 @@ import {
   WithdrawPackage,
   ToggleWithdrawRaiEnabled,
 } from "../../action-types";
-import { legacyEvent } from "./transforms";
+import { legacyAdminChange, legacyEvent } from "./transforms";
 
 export type Document = OneMac &
   WithdrawPackage &
@@ -28,7 +28,8 @@ export type Document = OneMac &
     packageId: string;
     appkChildId: string;
     devOrigin: string;
-  } & z.infer<legacyEvent.Schema>;
+  } & z.infer<legacyEvent.Schema> &
+  z.infer<legacyAdminChange.Schema>;
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
