@@ -1,7 +1,7 @@
-import { legacyAdminChange, Action } from "../../..";
+import { legacyAdminChangeSchema, Action } from "../../..";
 
 export const transform = (id: string) => {
-  return legacyAdminChange.transform((data) => {
+  return legacyAdminChangeSchema.transform((data) => {
     // If we're still here, go ahead and transform the data
     if (
       data.changeMade.includes("Package not originally submitted in OneMAC")

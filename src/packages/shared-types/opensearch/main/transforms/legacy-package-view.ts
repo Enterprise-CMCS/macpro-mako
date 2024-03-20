@@ -18,6 +18,7 @@ export const transform = (id: string) => {
           data.submitterName === "-- --" ? null : data.submitterName,
         origin: "OneMAC",
         legacySubmissionTimestamp,
+        noso: 
       };
     }
     return {
@@ -78,3 +79,10 @@ const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined
     ? new Date(epocDate).toISOString()
     : null;
+
+function hasSpecificAdminChange(record: Record): boolean {
+  return record.adminChanges.some(adminChange =>
+    adminChange.changeType === "Package Added" ||
+    (adminChange.changeReason?.toLowerCase().includes("noso"))
+  );
+}
