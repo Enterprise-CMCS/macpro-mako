@@ -6,6 +6,8 @@ import {
 
 export const transform = (id: string) => {
   return legacyPackageViewSchema.transform((data) => {
+    const noso = isLegacyNoso(data);
+    if (data.submitterName === "-- --" && !noso) return undefined;
     // This is used to handle legacy hard deletes
     const legacySubmissionTimestamp = getDateStringOrNullFromEpoc(
       data.submissionTimestamp,
@@ -16,16 +18,15 @@ export const transform = (id: string) => {
         submitterEmail: data.submitterEmail,
         submitterName:
           data.submitterName === "-- --" ? null : data.submitterName,
-        origin: "OneMAC",
+        origin: isLegacyNoso(data) ? "SEATool" : "OneMAC",
         legacySubmissionTimestamp,
-        noso: 
       };
     }
     return {
       id,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
-      origin: "OneMAC", // Marks this as having originated from *either* legacy or micro
+      origin: "OneMAC",
       devOrigin: "legacy", // Not in use, but helpful for developers browsing OpenSearch
       originalWaiverNumber: data.parentId,
       flavor: "WAIVER",
@@ -80,9 +81,12 @@ const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
     ? new Date(epocDate).toISOString()
     : null;
 
-function hasSpecificAdminChange(record: Record): boolean {
-  return record.adminChanges.some(adminChange =>
-    adminChange.changeType === "Package Added" ||
-    (adminChange.changeReason?.toLowerCase().includes("noso"))
+function isLegacyNoso(record: any): boolean {
+  return (
+    record.adminChanges?.some(
+      (adminChange: any) =>
+        adminChange.changeType === "Package Added" ||
+        adminChange.changeReason?.toLowerCase().includes("noso"),
+    ) || false
   );
 }

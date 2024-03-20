@@ -115,14 +115,12 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       const record = JSON.parse(decode(value));
       // Process legacy events
       if (record?.origin !== "micro") {
-        if (
-          record?.sk === "Package" && // Is a Package View
-          record?.submitterName && // Is originally from Legacy
-          record?.submitterName !== "-- --" // Is originally from Legacy
-        ) {
+        // Is a Package View from legacy onemac
+        if (record?.sk === "Package" && record.submitterName) {
           const result = opensearch.main.legacyPackageView
             .transform(id)
             .safeParse(record);
+          if (result.success && result.data === undefined) continue;
           if (!result.success) {
             logError({
               type: ErrorType.VALIDATION,
@@ -131,7 +129,6 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
             });
             continue;
           }
-
           docs.push(result.data);
         }
         continue;
