@@ -7,7 +7,12 @@ import {
   lookupUserAttributes,
 } from "../libs/auth/user";
 
-import { Action, Authority, SEATOOL_AUTHORITIES, onemacSchema } from "shared-types";
+import {
+  Action,
+  Authority,
+  SEATOOL_AUTHORITIES,
+  onemacSchema,
+} from "shared-types";
 import {
   getAvailableActions,
   getNextBusinessDayTimestamp,
@@ -52,7 +57,7 @@ export const submit = async (event: APIGatewayEvent) => {
     Authority.CHIP_SPA,
     Authority.MED_SPA,
     Authority["1915b"],
-      Authority["1915c"], // We accept amendments, renewals, and extensions for Cs
+    Authority["1915c"], // We accept amendments, renewals, and extensions for Cs
   ];
   if (!activeSubmissionTypes.includes(body.authority)) {
     return response({
@@ -63,76 +68,76 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 
-    const authDetails = getAuthDetails(event);
-    const userAttr = await lookupUserAttributes(
-      authDetails.userId,
-      authDetails.poolId
+  const authDetails = getAuthDetails(event);
+  const userAttr = await lookupUserAttributes(
+    authDetails.userId,
+    authDetails.poolId,
+  );
+
+  // I think we need to break this file up.  A switch maybe
+  if (
+    [Authority["1915b"], Authority["1915c"]].includes(body.authority) &&
+    body.seaActionType === "Extend"
+  ) {
+    console.log("Received a new temporary extension sumbission");
+
+    // Check that this action can be performed on the original waiver
+    const originalWaiver = await getPackage(body.originalWaiverNumber);
+    console.log(originalWaiver);
+    const originalWaiverAvailableActions: Action[] = getAvailableActions(
+      userAttr,
+      originalWaiver._source,
     );
-
-    // I think we need to break this file up.  A switch maybe
-    if (
-      [Authority["1915b"], Authority["1915c"]].includes(body.authority) &&
-      body.seaActionType === "Extend"
-    ) {
-      console.log("Received a new temporary extension sumbission");
-
-      // Check that this action can be performed on the original waiver
-      const originalWaiver = await getPackage(body.originalWaiverNumber);
-      console.log(originalWaiver);
-      const originalWaiverAvailableActions: Action[] = getAvailableActions(
-        userAttr,
-        originalWaiver._source
-      );
-      if (!originalWaiverAvailableActions.includes(Action.TEMP_EXTENSION)) {
-        const actionType = Action.TEMP_EXTENSION;
-        const id = body.originalWaiverNumber;
-        console.log(
-          `Package ${body.originalWaiverNumber} is not a candidate to receive a Temporary Extension`
-        );
-        return response({
-          statusCode: 401,
-          body: {
-            message: `You are not authorized to perform ${actionType} on ${id}`,
-          },
-        });
-      }
-
-      // Safe parse the body
-      const eventBody = onemacSchema.safeParse(body);
-      if (!eventBody.success) {
-        return console.log(
-          "MAKO Validation Error. The following record failed to parse: ",
-          JSON.stringify(eventBody),
-          "Because of the following Reason(s): ",
-          eventBody.error.message
-        );
-      }
+    if (!originalWaiverAvailableActions.includes(Action.TEMP_EXTENSION)) {
+      const actionType = Action.TEMP_EXTENSION;
+      const id = body.originalWaiverNumber;
       console.log(
-        "Safe parsed event body" + JSON.stringify(eventBody.data, null, 2)
+        `Package ${body.originalWaiverNumber} is not a candidate to receive a Temporary Extension`,
       );
-
-      await produceMessage(
-        process.env.topicName as string,
-        body.id,
-        JSON.stringify({
-          ...eventBody.data,
-          submissionDate: getNextBusinessDayTimestamp(),
-          statusDate: seaToolFriendlyTimestamp(),
-          changedDate: Date.now(),
-        })
-      );
-
       return response({
-        statusCode: 200,
-        body: { message: "success" },
+        statusCode: 401,
+        body: {
+          message: `You are not authorized to perform ${actionType} on ${id}`,
+        },
       });
     }
+
+    // Safe parse the body
+    const eventBody = onemacSchema.safeParse(body);
+    if (!eventBody.success) {
+      return console.log(
+        "MAKO Validation Error. The following record failed to parse: ",
+        JSON.stringify(eventBody),
+        "Because of the following Reason(s): ",
+        eventBody.error.message,
+      );
+    }
+    console.log(
+      "Safe parsed event body" + JSON.stringify(eventBody.data, null, 2),
+    );
+
+    await produceMessage(
+      process.env.topicName as string,
+      body.id,
+      JSON.stringify({
+        ...eventBody.data,
+        submissionDate: getNextBusinessDayTimestamp(),
+        statusDate: seaToolFriendlyTimestamp(),
+        changedDate: Date.now(),
+      }),
+    );
+
+    return response({
+      statusCode: 200,
+      body: { message: "success" },
+    });
+  }
 
   const today = seaToolFriendlyTimestamp();
   const submissionDate = getNextBusinessDayTimestamp();
   console.log(
     "Initial Submission Date determined to be: " +
-      new Date(submissionDate).toISOString()
+      new Date(submissionDate).toISOString(),
   );
 
   // Open the connection pool and transaction outside of the try/catch/finally
@@ -149,7 +154,7 @@ export const submit = async (event: APIGatewayEvent) => {
         "MAKO Validation Error. The following record failed to parse: ",
         JSON.stringify(eventBody),
         "Because of the following Reason(s): ",
-        eventBody.error.message
+        eventBody.error.message,
       );
     }
 
@@ -157,7 +162,7 @@ export const submit = async (event: APIGatewayEvent) => {
     const authorityId = findAuthorityIdByName(body.authority);
     // Resolve the actionTypeID, if applicable
     const actionTypeSelect = [Authority["1915b"], Authority.CHIP_SPA].includes(
-      body.authority
+      body.authority,
     )
       ? `
         SELECT @ActionTypeID = Action_ID FROM SEA.dbo.Action_Types
@@ -166,23 +171,25 @@ export const submit = async (event: APIGatewayEvent) => {
       `
       : "SET @ActionTypeID = NULL;";
 
-    // Generate INSERT statements for typeIds
-    const typeIdsValues = body.typeIds
-      .map((typeId: number) => `('${body.id}', '${typeId}')`)
-      .join(",\n");
+    // perhaps someday... but for now... it is but a memory.
 
-    const typeIdsInsert = typeIdsValues
-      ? `INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID) VALUES ${typeIdsValues};`
-      : "";
+    // // Generate INSERT statements for typeIds
+    // const typeIdsValues = body.typeIds
+    //   .map((typeId: number) => `('${body.id}', '${typeId}')`)
+    //   .join(",\n");
 
-    // Generate INSERT statements for subTypeIds
-    const subTypeIdsValues = body.subTypeIds
-      .map((subTypeId: number) => `('${body.id}', '${subTypeId}')`)
-      .join(",\n");
+    // const typeIdsInsert = typeIdsValues
+    //   ? `INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID) VALUES ${typeIdsValues};`
+    //   : "";
 
-    const subTypeIdsInsert = subTypeIdsValues
-      ? `INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID) VALUES ${subTypeIdsValues};`
-      : "";
+    // // Generate INSERT statements for subTypeIds
+    // const subTypeIdsValues = body.subTypeIds
+    //   .map((subTypeId: number) => `('${body.id}', '${subTypeId}')`)
+    //   .join(",\n");
+
+    // const subTypeIdsInsert = subTypeIdsValues
+    //   ? `INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID) VALUES ${subTypeIdsValues};`
+    //   : "";
 
     const query = `
       DECLARE @RegionID INT;
@@ -200,7 +207,7 @@ export const submit = async (event: APIGatewayEvent) => {
       DECLARE @StatusMemo NVARCHAR(MAX) = ${buildStatusMemoQuery(
         body.id,
         "Package Submitted",
-        "insert"
+        "insert",
       )}
       DECLARE @PlanTypeID INT = ${authorityId}
       
@@ -221,13 +228,13 @@ export const submit = async (event: APIGatewayEvent) => {
       -- Main insert into State_Plan
       INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo, Action_Type)
       VALUES ('${body.id}', '${body.state}', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo, @ActionTypeID);
+      `;
 
-      -- Insert all types into State_Plan_Service_Types
-      ${typeIdsInsert}
+    // -- Insert all types into State_Plan_Service_Types
+    // ${typeIdsInsert}
 
-      -- Insert all types into State_Plan_Service_SubTypes
-      ${subTypeIdsInsert}
-  `;
+    // -- Insert all types into State_Plan_Service_SubTypes
+    // ${subTypeIdsInsert}
 
     // data for emails
     body.notificationMetadata = {
@@ -243,7 +250,7 @@ export const submit = async (event: APIGatewayEvent) => {
     await produceMessage(
       process.env.topicName as string,
       body.id,
-      JSON.stringify(eventBody.data)
+      JSON.stringify(eventBody.data),
     );
 
     // Commit transaction if we've made it this far

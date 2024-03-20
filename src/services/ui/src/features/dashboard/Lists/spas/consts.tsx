@@ -9,7 +9,6 @@ import {
 } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
 import { formatSeatoolDate } from "shared-utils";
-import { LABELS } from "@/utils";
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -97,17 +96,31 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       cell: renderCellDate("submissionDate"),
     },
     {
+      field: "finalDispositionDate",
+      label: "Final Disposition",
+      hidden: true,
+      transform: (data) =>
+        data?.finalDispositionDate
+          ? formatSeatoolDate(data.finalDispositionDate)
+          : BLANK_VALUE,
+      cell: renderCellDate("finalDispositionDate"),
+    },
+    {
       field: "origin",
       label: "Submission Source",
       hidden: true,
-      cell: (data) => {
-        return data.origin;
-      },
+      transform: (data) => data.origin,
+      cell: (data) => data.origin,
     },
     {
       field: "raiRequestedDate",
       label: "Formal RAI Requested",
       hidden: true,
+      transform: (data) => {
+        return data.raiRequestedDate
+          ? formatSeatoolDate(data.raiRequestedDate)
+          : BLANK_VALUE;
+      },
       cell: renderCellDate("raiRequestedDate"),
     },
     {
