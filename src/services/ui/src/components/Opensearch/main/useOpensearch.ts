@@ -55,7 +55,7 @@ export const useOsData = () => {
         {
           index: "main",
           pagination: query.pagination,
-          ...(!query.search && { sort: query.sort }),
+          sort: query.sort,
           filters: [
             ...query.filters,
             ...createSearchFilterable(query.search || ""),
