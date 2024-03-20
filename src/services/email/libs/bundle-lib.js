@@ -13,6 +13,19 @@ const getBundleFromEvent = (configKey, stage) => {
                 },
                 ]
             };
+        case "new-submission-1915(b)":
+            return {
+                "dataList": ["osgEmail", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "authority", "proposedEffectiveDateNice", "ninetyDaysDateNice", "additionalInformation", "formattedFileList", "textFileList"],
+                "emailCommands": [{
+                    "Template": `new-submission-1915(b)-cms_${stage}`,
+                    "ToAddresses": ["osgEmail"],
+                },
+                {
+                    "Template": `new-submission-1915(b)-state_${stage}`,
+                    "ToAddresses": ["submitter"],
+                },
+                ]
+            };
         case "respond-to-rai-medicaid-spa":
             return {
                 "lookupList": ["osInsights"],
@@ -120,7 +133,7 @@ const getBundleFromEvent = (configKey, stage) => {
 const buildKeyFromRecord = (record) => {
     if (record?.origin !== "micro" || !record?.authority) return;
 
-    const actionType = record?.actionType ? record.actionType : "new-submission";
+    const actionType = record?.actionType ?? "new-submission";
 
     const authority = record.authority.toLowerCase().replace(/\s+/g, "-");
 
