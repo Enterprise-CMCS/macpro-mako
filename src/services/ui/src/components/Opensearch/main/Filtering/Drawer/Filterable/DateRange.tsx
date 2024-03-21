@@ -43,8 +43,8 @@ type Props = Omit<
 export function FilterableDateRange({ value, onChange, ...props }: Props) {
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<DateRange | undefined>({
-    from: value?.gte ? offsetToUtc(new Date(value?.gte)) : undefined,
-    to: value?.lte ? offsetToUtc(new Date(value?.lte)) : undefined,
+    from: value?.gte ? new Date(value?.gte) : undefined,
+    to: value?.lte ? new Date(value?.lte) : undefined,
   });
   const [fromValue, setFromValue] = useState<string>(
     value?.gte ? format(new Date(value?.gte), "MM/dd/yyyy") : "",
