@@ -127,8 +127,8 @@ const getBundleFromEvent = (configKey, stage) => {
             };
         case "withdraw-package-chip-spa":
                 return {
-                "lookupList": ["osInsights","cognito"],
-                "dataList": ["chipInbox", "cpoc", "srt", "chipCcList", "allState", "id", "territory", "submitterName", "submitterEmail", "additionalInformation"],
+                "lookupList": ["osInsights","cognito","osMain"],
+                "dataList": ["chipInbox", "cpoc", "srt", "chipCcList", "allState", "id", "territory", "submitterName", "submitterEmail", "additionalInformation", "initialSubmitterName", "initialSubmitterEmail"],
                 "emailCommands": [{
                     "Template": `withdraw-package-chip-spa-cms_${stage}`,
                     "ToAddresses": ["chipInbox", "cpoc", "srt"],

@@ -798,8 +798,8 @@ Thank you!`,
 The package will no longer be considered for CMS review:</p>
 <p>
 <br><b>State or territory:</b> {{territory}}
-<br><b>Name:</b> {{submitterName}}
-<br><b>Email Address:</b> {{submitterEmail}}
+<br><b>Name:</b> {{initialSubmitterName}}
+<br><b>Email Address:</b> {{initialSubmitterEmail}}
 <br><b>CHIP SPA Package ID:</b> {{id}}
 </p>
 Summary:
@@ -833,8 +833,8 @@ Thank you!`,
 The package will no longer be considered for CMS review:</p>
 <p>
 <br><b>State or territory:</b> {{territory}}
-<br><b>Name:</b> {{submitterName}}
-<br><b>Email Address:</b> {{submitterEmail}}
+<br><b>Name:</b> {{initialSubmitterName}}
+<br><b>Email Address:</b> {{initialSubmitterEmail}}
 <br><b>CHIP SPA Package ID:</b> {{id}}
 </p>
 Summary:
@@ -887,7 +887,6 @@ Summary:
 <p>
 <br>Files:
 <br>{{formattedFileList}}
-<br>
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,

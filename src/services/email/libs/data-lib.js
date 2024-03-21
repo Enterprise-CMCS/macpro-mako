@@ -57,7 +57,7 @@ export const buildEmailData = async (bundle, data) => {
             case "proposedEffectiveDateNice":
                 returnObject["proposedEffectiveDateNice"] = formatDateFromTimestamp(data?.notificationMetadata?.proposedEffectiveDate);
                 break;
-            case "ninetyDaysLookup":
+            case "ninetyDaysLookupNice":
                 returnObject["ninetyDaysDateNice"] = formatDateFromTimestamp(lookupValues?.ninetyDaysDateLookup);
                 break;
             case "applicationEndpoint":
