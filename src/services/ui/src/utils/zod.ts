@@ -164,7 +164,7 @@ export const zExtensionOriginalWaiverNumberSchema = z
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
   // This should already exist
-  .refine(async (value) => await itemExists(value), {
+  .refine(async (value) => itemExists(value), {
     message:
       "According to our records, this Approved Initial or Renewal Waiver Number does not yet exist. Please check the Approved Initial or Renewal Waiver Number and try entering it again.",
   })
