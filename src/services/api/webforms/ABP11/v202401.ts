@@ -26,7 +26,7 @@ export const v202401: FormSchema = {
               rhf: "Upload",
               name: "state_plan_attchmnt_alt_payment_method",
               label: "State plan amendment attachment",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               description:
                 "Only required if not using the payment methodology in the approved state plan",
               descriptionAbove: true,

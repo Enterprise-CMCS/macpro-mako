@@ -27,7 +27,7 @@ export const v202401: FormSchema = {
               name: "economy_and_efficeiency_same_approach_as_medicaid_state_plan",
               label:
                 "Will economy and efficiency be achieved using the same approach as used for Medicaid state plan services?",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               rules: { required: "* Required" },
               props: {
                 className: "w-[150px]",
@@ -43,9 +43,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               label: "Describe the approach",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "describe_approach",
-              formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
               rules: { required: "* Required" },
               dependency: {
                 conditions: [

@@ -39,12 +39,12 @@ export const RHFSlot = <
   label,
   description,
   descriptionAbove,
-  descriptionStyling,
+  descriptionClassName,
   name,
   props,
   text,
-  labelStyling,
-  formItemStyling,
+  labelClassName,
+  formItemClassName,
   groupNamePrefix,
   ...rest
 }: RHFSlotProps & { control: any }): ControllerProps<
@@ -62,16 +62,16 @@ export const RHFSlot = <
     return (
       <FormItem
         className={`flex flex-col gap-1 py-2${
-          formItemStyling ? ` ${formItemStyling}` : ""
+          formItemClassName ? ` ${formItemClassName}` : ""
         }`}
       >
         {label && (
-          <FormLabel className={labelStyling}>
+          <FormLabel className={labelClassName}>
             <RHFTextDisplay text={label} />
           </FormLabel>
         )}
         {descriptionAbove && description && (
-          <FormDescription className={descriptionStyling}>
+          <FormDescription className={descriptionClassName}>
             <RHFTextDisplay text={description} />
           </FormDescription>
         )}
@@ -232,7 +232,7 @@ export const RHFSlot = <
                           parentValue={field.value}
                           changeMethod={field.onChange}
                           aria-label={field.name}
-                          optionLabelStyling={OPT.optionLabelStyling}
+                          optionlabelClassName={OPT.optionlabelClassName}
                         />
                         {field.value?.includes(OPT.value) &&
                           !!OPT.slots &&

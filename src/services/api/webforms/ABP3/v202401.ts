@@ -32,7 +32,7 @@ export const v202401: FormSchema = {
               rhf: "Input",
               name: "benefit_package_name",
               label: "Benefit package name",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               rules: { required: "* Required" },
             },
           ],
@@ -180,7 +180,7 @@ export const v202401: FormSchema = {
                                           rhf: "Textarea",
                                           name: "benefits_and_limitations",
                                           rules: { required: "* Required" },
-                                          labelStyling: "font-bold",
+                                          labelClassName: "font-bold",
                                           label:
                                             "Describe the benefits, source of benefits, and any limitations.",
                                         },
@@ -291,7 +291,7 @@ export const v202401: FormSchema = {
               rhf: "Radio",
               label:
                 "The state/territory will use the following as its base benchmark plan as described at 45 CFR 156.100(a):",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "base_benchmark_plan",
               rules: { required: "* Required" },
               props: {

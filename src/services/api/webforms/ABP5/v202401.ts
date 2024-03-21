@@ -61,7 +61,7 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
     {
       rhf: "Input",
       label: "Benefit provided",
-      labelStyling: "font-bold",
+      labelClassName: "font-bold",
       name: `${namePrefix}_benefit_provided`,
       rules: { required: "* Required" },
       props: {
@@ -71,7 +71,7 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
     {
       rhf: "Select",
       label: "Source",
-      labelStyling: "font-bold",
+      labelClassName: "font-bold",
       name: `${namePrefix}_source`,
       rules: { required: "* Required" },
       props: {
@@ -83,9 +83,9 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
       rhf: "Input",
       label:
         "Other information regarding this benefit source, including the name of the source plan",
-      labelStyling: "font-bold",
+      labelClassName: "font-bold",
       name: `${namePrefix}_state_plan_other_information`,
-      formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
       rules: { required: "* Required" },
       dependency: {
         conditions: [
@@ -102,9 +102,9 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
       rhf: "Input",
       label:
         "Other information regarding this benefit source, including the name of the source plan",
-      labelStyling: "font-bold",
+      labelClassName: "font-bold",
       name: `${namePrefix}_secretary_approved_other_information`,
-      formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
       rules: { required: "* Required" },
       dependency: {
         conditions: [
@@ -120,7 +120,7 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
     {
       rhf: "Input",
       label: "Authorization",
-      labelStyling: "font-bold",
+      labelClassName: "font-bold",
       name: `${namePrefix}_authorization`,
       rules: { required: "* Required" },
       props: {
@@ -130,7 +130,7 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
     {
       rhf: "Select",
       label: "Provider qualifications",
-      labelStyling: "font-bold",
+      labelClassName: "font-bold",
       name: `${namePrefix}_provider_qualifications`,
       rules: { required: "* Required" },
       props: {
@@ -141,9 +141,9 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
     {
       rhf: "Input",
       label: "Other information regarding provider qualifications",
-      labelStyling: "font-bold",
+      labelClassName: "font-bold",
       name: `${namePrefix}_provider_qualifications_other_information`,
-      formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
       rules: { required: "* Required" },
       dependency: {
         conditions: [
@@ -159,7 +159,7 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
     {
       rhf: "Input",
       label: "Amount limit",
-      labelStyling: "font-bold",
+      labelClassName: "font-bold",
       name: `${namePrefix}_amount_limit`,
       rules: { required: "* Required" },
       props: {
@@ -169,7 +169,7 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
     {
       rhf: "Input",
       label: "Duration limit",
-      labelStyling: "font-bold",
+      labelClassName: "font-bold",
       name: `${namePrefix}_duration_limit`,
       rules: { required: "* Required" },
       props: {
@@ -179,7 +179,7 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
     {
       rhf: "Input",
       label: "Scope limit",
-      labelStyling: "font-bold",
+      labelClassName: "font-bold",
       name: `${namePrefix}_scope_limit`,
       rules: { required: "* Required" },
       props: {
@@ -202,7 +202,7 @@ function subsection({
     form: [
       {
         description: description,
-        descriptionStyling: "font-normal",
+        descriptionClassName: "font-normal",
         slots: [
           {
             rhf: "FieldGroup",
@@ -221,7 +221,7 @@ function subsection({
                       rhf: "Radio",
                       label:
                         "Is there an EHB benchmark benefit duplicated or substituted?",
-                      labelStyling: "font-bold",
+                      labelClassName: "font-bold",
                       name: `${namePrefix}_benchmark_benefit_duplicated_or_substituted`,
                       rules: { required: "* Required" },
                       props: {
@@ -235,7 +235,7 @@ function subsection({
                                   {
                                     rhf: "Input",
                                     label: "Benefit duplicated",
-                                    labelStyling: "font-bold",
+                                    labelClassName: "font-bold",
                                     name: "benefit_duplicated",
                                     rules: { required: "* Required" },
                                   },
@@ -252,7 +252,7 @@ function subsection({
                                   {
                                     rhf: "Input",
                                     label: "Benefit substituted",
-                                    labelStyling: "font-bold",
+                                    labelClassName: "font-bold",
                                     name: "benefit_substituted",
                                     rules: { required: "* Required" },
                                   },
@@ -286,7 +286,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Does this description of benefits align with the traditional state plan?",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "benefits_align_with_traditional_state_plan",
               rules: { required: "* Required" },
               props: {
@@ -310,7 +310,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Does the state/territory propose a benchmark-equivalent benefit package?",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "benchmark_equivalent_benefit_package",
               rules: { required: "* Required" },
               props: {
@@ -333,7 +333,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Input",
               label: "Name of selected base benchmark plan",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "base_benchmark_plan_name",
               rules: { required: "* Required" },
             },
@@ -341,7 +341,7 @@ export const v202401: FormSchema = {
               rhf: "Input",
               label:
                 "Name of selected Section 1937 coverage option if other than Secretary-approved. Otherwise, enter “Secretary-approved.”",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "section_1937_coverage_option_name",
               rules: { required: "* Required" },
             },
@@ -421,7 +421,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Radio",
               label: "Prescription drug limits",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "prescription_drug_limits",
               props: {
                 options: [
@@ -451,7 +451,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               label: "Authorization",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "prescription_drug_authorization",
               rules: { required: "* Required" },
               props: {
@@ -471,7 +471,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               label: "Provider qualifications",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "prescription_drug_provider_qualifications",
               rules: { required: "* Required" },
               props: {
@@ -488,14 +488,14 @@ export const v202401: FormSchema = {
               rhf: "Input",
               label:
                 "Coverage that exceeds the minimum requirements or other information",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "prescription_drug_other_information",
             },
             {
               rhf: "Radio",
               label:
                 "Is there an EHB benchmark benefit duplicated or substituted?",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "prescription_drug_benchmark_benefit_duplicated_or_substituted",
               rules: { required: "* Required" },
               props: {
@@ -566,7 +566,7 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "11. Other covered benefits that are not essential health benefits",
-                    optionLabelStyling:
+                    optionlabelClassName:
                       "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
                     value: "other_covered_benefits_benefit",
                     form: [
@@ -590,7 +590,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     label: "12. Other base benchmark benefits not covered",
-                    optionLabelStyling:
+                    optionlabelClassName:
                       "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
                     value: "other_base_benchmark_benefits_not_covered",
                     form: [
@@ -610,7 +610,7 @@ export const v202401: FormSchema = {
                                 rhf: "Input",
                                 label:
                                   "Base benchmark benefit that was substituted",
-                                labelStyling: "font-bold",
+                                labelClassName: "font-bold",
                                 rules: { required: "* Required" },
                                 name: "base_benchmark_benefit_substituted",
                               },
@@ -626,7 +626,7 @@ export const v202401: FormSchema = {
                                 rhf: "Textarea",
                                 label:
                                   "Why did the state or territory choose to exclude this benefit?",
-                                labelStyling: "font-bold",
+                                labelClassName: "font-bold",
                                 rules: { required: "* Required" },
                                 name: "explanation",
                               },
@@ -639,7 +639,7 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "13. Additional covered benefits (not applicable to “adult” group under Section 1902(a)(10)(A)(i)(VIII) of the Act)",
-                    optionLabelStyling:
+                    optionlabelClassName:
                       "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
                     value: "additional_covered_benefits",
                     form: [

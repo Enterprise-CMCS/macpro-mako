@@ -14,12 +14,14 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
       <div className="py-4">
         {props.form.description && (
           <div className="mb-2">
-            <FormLabel className={props.form.descriptionStyling || "font-bold"}>
+            <FormLabel
+              className={props.form.descriptionClassName || "font-bold"}
+            >
               {props.form.description}
             </FormLabel>
           </div>
         )}
-        <div className={props.form.wrapperStyling}>
+        <div className={props.form.wrapperClassName}>
           {props.form.slots.map((SLOT) => (
             <DependencyWrapper key={SLOT.name} {...SLOT}>
               <FormField

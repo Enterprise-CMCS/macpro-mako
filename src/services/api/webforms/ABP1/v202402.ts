@@ -600,7 +600,7 @@ export const v202402: FormSchema = {
                                                         rhf: "Input",
                                                         name: "name_of_region",
                                                         label: "Region Name",
-                                                        labelStyling:
+                                                        labelClassName:
                                                           "font-bold",
                                                         rules: {
                                                           required:
@@ -1240,7 +1240,7 @@ export const v202402: FormSchema = {
     //   form: [
     //     {
     //       description: "A test of horizontal layouts with no slot styles",
-    //       wrapperStyling: "flex flex-wrap gap-6",
+    //       wrapperClassName: "flex flex-wrap gap-6",
     //       slots: [
     //         {
     //           name: "example1_1",
@@ -1261,7 +1261,7 @@ export const v202402: FormSchema = {
     //     },
     //     {
     //       description: "A test of horizontal layouts with slot styles",
-    //       wrapperStyling: "flex flex-wrap gap-6",
+    //       wrapperClassName: "flex flex-wrap gap-6",
     //       slots: [
     //         {
     //           name: "example2_1",

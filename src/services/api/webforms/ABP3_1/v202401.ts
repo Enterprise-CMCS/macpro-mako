@@ -190,7 +190,7 @@ export const v202401: FormSchema = {
                                           name: "benefits__description",
                                           label:
                                             "Describe the benefits, source of benefits, and any limitations.",
-                                          labelStyling: "font-bold",
+                                          labelClassName: "font-bold",
                                           rules: {
                                             required: "* Required",
                                           },
@@ -288,7 +288,7 @@ export const v202401: FormSchema = {
               name: "EHB_benchmark_name",
               rhf: "Input",
               label: "EHB-benchmark plan name",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               rules: {
                 required: "* Required",
               },
@@ -299,7 +299,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Is the EHB-benchmark plan the same as the Section 1937 coverage option?",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               rules: {
                 required: "* Required",
               },
@@ -315,11 +315,11 @@ export const v202401: FormSchema = {
             {
               label:
                 "The state/territory will use the following as its EHB-benchmark option as described at 45 CFR 156.111(b)(2)(B), in compliance with the individual insurance market under 45 CFR 156.100 through 156.125:",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "EHB_benchmark_option",
               rhf: "Radio",
               descriptionAbove: true,
-              descriptionStyling: "text-base text-black",
+              descriptionClassName: "text-base text-black",
               rules: {
                 required: "* Required",
               },
@@ -339,8 +339,8 @@ export const v202401: FormSchema = {
                         rhf: "Select",
                         name: "is_geographic_area",
                         label: "State/territory",
-                        labelStyling: "p-3",
-                        formItemStyling: "flex-row",
+                        labelClassName: "p-3",
+                        formItemClassName: "flex-row",
                         props: {
                           className: "w-[150px]",
                           options: [
@@ -449,7 +449,7 @@ export const v202401: FormSchema = {
                         rhf: "Radio",
                         name: "indicate_EHB_bencmark_plan",
                         label: "Type of EHB-benchmark plan",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         props: {
                           options: [
                             {
@@ -523,7 +523,7 @@ export const v202401: FormSchema = {
                             rhf: "Checkbox",
                             name: "one_or_more_EHBs_other_states",
                             label: "Select one or more EHBs from other states.",
-                            labelStyling: "font-bold",
+                            labelClassName: "font-bold",
                             rules: { required: "* Required" },
                             props: {
                               options: [
@@ -535,8 +535,8 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "ambulatory_patient_services_state_territory",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
-                                      formItemStyling: "flex-row",
+                                      labelClassName: "p-3",
+                                      formItemClassName: "flex-row",
                                       props: {
                                         className: "w-[150px]",
                                         options: [
@@ -648,8 +648,8 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "emergency_services_state_territory",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
-                                      formItemStyling: "flex-row",
+                                      labelClassName: "p-3",
+                                      formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
@@ -764,8 +764,8 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "hospitalization_state_territory",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
-                                      formItemStyling: "flex-row",
+                                      labelClassName: "p-3",
+                                      formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
@@ -880,8 +880,8 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "maternity_and_newborn_care_state_territory",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
-                                      formItemStyling: "flex-row",
+                                      labelClassName: "p-3",
+                                      formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
@@ -998,8 +998,8 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "mental_health_and_substance_use_disorders_state_territory",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
-                                      formItemStyling: "flex-row",
+                                      labelClassName: "p-3",
+                                      formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
@@ -1114,8 +1114,8 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "prescription_drugs_state_territory",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
-                                      formItemStyling: "flex-row",
+                                      labelClassName: "p-3",
+                                      formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
@@ -1232,8 +1232,8 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "rehabilitative_and_habilitative_services_and_devices_state_territory",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
-                                      formItemStyling: "flex-row",
+                                      labelClassName: "p-3",
+                                      formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
@@ -1348,8 +1348,8 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "laboratory_services_state_territory",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
-                                      formItemStyling: "flex-row",
+                                      labelClassName: "p-3",
+                                      formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
@@ -1466,8 +1466,8 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "preventive_and_wellness_services_and_chronic_disease_management_state_territory",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
-                                      formItemStyling: "flex-row",
+                                      labelClassName: "p-3",
+                                      formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
@@ -1584,8 +1584,8 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "ediatric_services_including_oral_and_vision_care_state_territory",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
-                                      formItemStyling: "flex-row",
+                                      labelClassName: "p-3",
+                                      formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },

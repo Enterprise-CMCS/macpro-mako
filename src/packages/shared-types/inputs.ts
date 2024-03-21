@@ -42,6 +42,6 @@ export type SwitchProps = React.ComponentPropsWithoutRef<
 
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  charcount?: "simple" | "limited";
-  charcountstyling?: string;
+  charCount?: "simple" | "limited";
+  charCountClassName?: string;
 }
