@@ -12,7 +12,7 @@ export const v202402: FormSchema = {
           slots: [
             {
               rhf: "Input",
-              name: "abp_package_name",
+              name: "abp1_pop-id_abp-pop-name_text",
               label: "ABP package name",
               rules: {
                 required: "* Required",
@@ -26,14 +26,14 @@ export const v202402: FormSchema = {
           slots: [
             {
               rhf: "FieldArray",
-              name: "eligibility_groups",
+              name: "abp1_pop-id_eligibility-groups_field",
               props: {
                 appendText: "Add group",
               },
               fields: [
                 {
                   rhf: "Select",
-                  name: "eligibility_group",
+                  name: "abp1_pop-id_eligibility-group_select",
                   rules: {
                     required: "* Required",
                   },
@@ -265,7 +265,7 @@ export const v202402: FormSchema = {
                 },
                 {
                   rhf: "Select",
-                  name: "mandatory_voluntary",
+                  name: "abp1_pop-id_mandatory-voluntary_select",
                   label: "Mandatory or voluntary",
                   rules: {
                     required: "* Required",
@@ -294,7 +294,7 @@ export const v202402: FormSchema = {
           slots: [
             {
               rhf: "Select",
-              name: "is_enrollment_available",
+              name: "abp1_pop-id_is-enroll-avail_select",
               rules: {
                 required: "* Required",
               },
@@ -313,10 +313,9 @@ export const v202402: FormSchema = {
     {
       title: "Targeting criteria",
       dependency: {
-        // example of conditionally hidden section
         conditions: [
           {
-            name: "is_enrollment_available",
+            name: "abp1_pop-id_is-enroll-avail_select",
             type: "expectedValue",
             expectedValue: "no",
           },
@@ -329,7 +328,7 @@ export const v202402: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "target_criteria",
+              name: "abp1_target-criteria_target-criteria_check",
               rules: {
                 required: "* Required",
               },
@@ -344,7 +343,7 @@ export const v202402: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "income_target",
+                            name: "abp1_target-criteria_income-target_radio",
                             rules: {
                               required: "* Required",
                             },
@@ -370,7 +369,7 @@ export const v202402: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "income_definition",
+                            name: "abp1_target-criteria_income-def_radio",
                             rules: {
                               required: "* Required",
                             },
@@ -382,7 +381,7 @@ export const v202402: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Radio",
-                                      name: "income_definition_percentage",
+                                      name: "abp1_target-criteria_income-def-percent_radio",
                                       rules: {
                                         required: "* Required",
                                       },
@@ -405,7 +404,7 @@ export const v202402: FormSchema = {
                                                   },
                                                   required: "* Required",
                                                 },
-                                                name: "federal_poverty_level_percentage",
+                                                name: "abp1_target-criteria_fed-poverty-level-percent_input",
                                                 label:
                                                   "Percentage of federal poverty level",
                                               },
@@ -417,7 +416,7 @@ export const v202402: FormSchema = {
                                             slots: [
                                               {
                                                 rhf: "Input",
-                                                name: "ssi_federal_benefit_percentage",
+                                                name: "abp1_target-criteria_ssi-fed-benefit-percentage_input",
                                                 label:
                                                   "Percentage of SSI federal benefit",
                                                 props: {
@@ -440,7 +439,7 @@ export const v202402: FormSchema = {
                                             slots: [
                                               {
                                                 rhf: "Input",
-                                                name: "other_percentage",
+                                                name: "abp1_target-criteria_other-percentage_input",
                                                 label: "Other percentage",
                                                 props: {
                                                   icon: "%",
@@ -456,7 +455,7 @@ export const v202402: FormSchema = {
                                               },
                                               {
                                                 rhf: "Textarea",
-                                                name: "other_describe",
+                                                name: "abp1_target-criteria_other-describe_input",
                                                 label: "Describe:",
                                                 rules: {
                                                   required: "* Required",
@@ -475,7 +474,7 @@ export const v202402: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Radio",
-                                      name: "income_definition_specific",
+                                      name: "abp1_target-criteria_income-def-specific_radio",
                                       rules: {
                                         required: "* Required",
                                       },
@@ -489,12 +488,12 @@ export const v202402: FormSchema = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldArray",
-                                                    name: "income_definition_specific_statewide",
+                                                    name: "abp1_target-criteria_income-def-specific-state_field",
                                                     fields: [
                                                       {
                                                         rhf: "Input",
                                                         label: "Household Size",
-                                                        name: "household_size",
+                                                        name: "abp1_target-criteria_house-size_input",
                                                         props: {
                                                           placeholder:
                                                             "enter size",
@@ -513,7 +512,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "Input",
-                                                        name: "standard",
+                                                        name: "abp1_target-criteria_standard_input",
                                                         label: "Standard ($)",
                                                         props: {
                                                           className:
@@ -541,7 +540,7 @@ export const v202402: FormSchema = {
                                                 slots: [
                                                   {
                                                     rhf: "Checkbox",
-                                                    name: "is_incremental_amount_statewide_std",
+                                                    name: "abp1_target-criteria_is-increment-amount_check",
                                                     props: {
                                                       options: [
                                                         {
@@ -555,7 +554,7 @@ export const v202402: FormSchema = {
                                                                   rhf: "Input",
                                                                   label:
                                                                     "Incremental amount ($)",
-                                                                  name: "dollar_incremental_amount_statewide_std",
+                                                                  name: "abp1_target-criteria_increment-amount_input",
                                                                   props: {
                                                                     icon: "$",
                                                                   },
@@ -589,7 +588,7 @@ export const v202402: FormSchema = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "income_definition_specific_statewide_group_region",
+                                                    name: "abp1_target-criteria_income-def-specific-statewide-group-region_field",
                                                     props: {
                                                       appendText: "Add Region",
                                                       removeText:
@@ -598,7 +597,7 @@ export const v202402: FormSchema = {
                                                     fields: [
                                                       {
                                                         rhf: "Input",
-                                                        name: "name_of_region",
+                                                        name: "abp1_target-criteria_name-of-region_input",
                                                         label: "Region Name",
                                                         labelStyling:
                                                           "font-bold",
@@ -609,7 +608,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "Textarea",
-                                                        name: "region_description",
+                                                        name: "abp1_target-criteria_region-descript_textarea",
                                                         label: "Description",
                                                         rules: {
                                                           required:
@@ -618,7 +617,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "FieldArray",
-                                                        name: "income_definition_region_statewide_arr",
+                                                        name: "abp1_target-criteria_add-house-size_field",
                                                         props: {
                                                           appendText:
                                                             "Add household size",
@@ -628,7 +627,7 @@ export const v202402: FormSchema = {
                                                             rhf: "Input",
                                                             label:
                                                               "Household Size",
-                                                            name: "household_size",
+                                                            name: "abp1_target-criteria_house-size_input",
                                                             props: {
                                                               placeholder:
                                                                 "enter size",
@@ -648,7 +647,7 @@ export const v202402: FormSchema = {
                                                           },
                                                           {
                                                             rhf: "Input",
-                                                            name: "standard",
+                                                            name: "abp1_target-criteria_standard_input",
                                                             label:
                                                               "Standard ($)",
                                                             props: {
@@ -673,7 +672,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "Checkbox",
-                                                        name: "is_incremental_amount",
+                                                        name: "abp1_target-criteria_is-increment-amount_check",
                                                         props: {
                                                           options: [
                                                             {
@@ -687,7 +686,7 @@ export const v202402: FormSchema = {
                                                                       rhf: "Input",
                                                                       label:
                                                                         "Incremental amount ($)",
-                                                                      name: "dollar_incremental_amount",
+                                                                      name: "abp1_target-criteria_increment-amount_input",
                                                                       props: {
                                                                         icon: "$",
                                                                       },
@@ -726,7 +725,7 @@ export const v202402: FormSchema = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "income_definition_specific_statewide_group_liv_arrange",
+                                                    name: "abp1_target-criteria_liv-arrange_field",
                                                     props: {
                                                       appendText:
                                                         "Add Living Arrangement",
@@ -736,7 +735,7 @@ export const v202402: FormSchema = {
                                                     fields: [
                                                       {
                                                         rhf: "Input",
-                                                        name: "name_of_living_arrangement",
+                                                        name: "abp1_target-criteria_name-of-liv-arrange_input",
                                                         label:
                                                           "Name of living arrangement",
                                                         rules: {
@@ -746,7 +745,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "Textarea",
-                                                        name: "living_arrangement_description",
+                                                        name: "abp1_target-criteria_liv-arrange-descript_textarea",
                                                         label: "Description",
                                                         rules: {
                                                           required:
@@ -755,7 +754,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "FieldArray",
-                                                        name: "income_definition_specific_statewide_arr",
+                                                        name: "abp1_target-criteria_add-house-size_field",
                                                         props: {
                                                           appendText:
                                                             "Add household size",
@@ -765,7 +764,7 @@ export const v202402: FormSchema = {
                                                             rhf: "Input",
                                                             label:
                                                               "Household Size",
-                                                            name: "household_size",
+                                                            name: "abp1_target-criteria_house-size_input",
                                                             props: {
                                                               placeholder:
                                                                 "enter size",
@@ -785,7 +784,7 @@ export const v202402: FormSchema = {
                                                           },
                                                           {
                                                             rhf: "Input",
-                                                            name: "standard",
+                                                            name: "abp1_target-criteria_standard_input",
                                                             label:
                                                               "Standard ($)",
                                                             props: {
@@ -810,7 +809,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "Checkbox",
-                                                        name: "is_incremental_amount",
+                                                        name: "abp1_target-criteria_is-increment-amount_check",
                                                         props: {
                                                           options: [
                                                             {
@@ -824,7 +823,7 @@ export const v202402: FormSchema = {
                                                                       rhf: "Input",
                                                                       label:
                                                                         "Incremental amount ($)",
-                                                                      name: "dollar_incremental_amount",
+                                                                      name: "abp1_target-criteria_incremental_amount_input",
                                                                       props: {
                                                                         icon: "$",
                                                                       },
@@ -863,7 +862,7 @@ export const v202402: FormSchema = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "income_definition_specific_statewide_group_other",
+                                                    name: "abp1_target-criteria_add-some-other-way_field",
                                                     props: {
                                                       appendText:
                                                         "Add some other way",
@@ -873,7 +872,7 @@ export const v202402: FormSchema = {
                                                     fields: [
                                                       {
                                                         rhf: "Input",
-                                                        name: "name_of_group",
+                                                        name: "abp1_target-criteria_name-of-group_input",
                                                         label: "Name",
                                                         rules: {
                                                           required:
@@ -882,7 +881,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "Textarea",
-                                                        name: "group_description",
+                                                        name: "abp1_target-criteria_group-descript_textarea",
                                                         label: "Description",
                                                         rules: {
                                                           required:
@@ -891,7 +890,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "FieldArray",
-                                                        name: "income_definition_specific_statewide_arr",
+                                                        name: "abp1_target-criteria_add-house-size_field",
                                                         props: {
                                                           appendText:
                                                             "Add household size",
@@ -901,7 +900,7 @@ export const v202402: FormSchema = {
                                                             rhf: "Input",
                                                             label:
                                                               "Household Size",
-                                                            name: "household_size",
+                                                            name: "abp1_target-criteria_house-size_input",
                                                             props: {
                                                               placeholder:
                                                                 "enter size",
@@ -921,7 +920,7 @@ export const v202402: FormSchema = {
                                                           },
                                                           {
                                                             rhf: "Input",
-                                                            name: "standard",
+                                                            name: "abp1_target-criteria_standard_input",
                                                             label:
                                                               "Standard ($)",
                                                             props: {
@@ -946,7 +945,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "Checkbox",
-                                                        name: "is_incremental_amount",
+                                                        name: "abp1_target-criteria_is-increment-amount_check",
                                                         props: {
                                                           options: [
                                                             {
@@ -960,7 +959,7 @@ export const v202402: FormSchema = {
                                                                       rhf: "Input",
                                                                       label:
                                                                         "Incremental amount ($)",
-                                                                      name: "dollar_incremental_amount",
+                                                                      name: "abp1_target-criteria_increment-amount_input",
                                                                       props: {
                                                                         icon: "$",
                                                                       },
@@ -1008,7 +1007,7 @@ export const v202402: FormSchema = {
                     slots: [
                       {
                         rhf: "Checkbox",
-                        name: "health_conditions",
+                        name: "abp1_target-criteria_health-conditions_check",
                         rules: {
                           required: "* Required",
                         },
@@ -1062,7 +1061,7 @@ export const v202402: FormSchema = {
                               slots: [
                                 {
                                   rhf: "Textarea",
-                                  name: "other_description",
+                                  name: "abp1_target-criteria_other_descript_textarea",
                                   label: "Describe",
                                   rules: {
                                     required: "* Required",
@@ -1081,7 +1080,7 @@ export const v202402: FormSchema = {
                     slots: [
                       {
                         rhf: "Textarea",
-                        name: "other_targeting_criteria_description",
+                        name: "abp1_target-criteria_other_target_criteria_descript_textarea",
                         label: "Describe",
                         rules: {
                           required: "* Required",
@@ -1105,7 +1104,7 @@ export const v202402: FormSchema = {
           slots: [
             {
               rhf: "Select",
-              name: "is_geographic_area",
+              name: "abp1_geo-area_is_geo_area_select",
               props: {
                 className: "w-[150px]",
                 options: [
@@ -1124,7 +1123,7 @@ export const v202402: FormSchema = {
           dependency: {
             conditions: [
               {
-                name: "is_geographic_area",
+                name: "abp1_geo-area_is_geo_area_select",
                 type: "expectedValue",
                 expectedValue: "no",
               },
@@ -1134,7 +1133,7 @@ export const v202402: FormSchema = {
           slots: [
             {
               rhf: "Radio",
-              name: "geographic_variation",
+              name: "abp1_geo-area_geo-variation_radio",
               rules: {
                 required: "* Required",
               },
@@ -1148,7 +1147,7 @@ export const v202402: FormSchema = {
                         description: "Specify counties",
                         slots: [
                           {
-                            name: "specify_counties",
+                            name: "abp1_geo-area_specify-counties_textarea",
                             rhf: "Textarea",
                             rules: {
                               required: "* Required",
@@ -1166,7 +1165,7 @@ export const v202402: FormSchema = {
                         description: "Specify regions",
                         slots: [
                           {
-                            name: "specify_regions",
+                            name: "abp1_geo-area_specify-regions_textarea",
                             rhf: "Textarea",
                             rules: {
                               required: "* Required",
@@ -1184,7 +1183,7 @@ export const v202402: FormSchema = {
                         description: "Specify cities or towns",
                         slots: [
                           {
-                            name: "specify_cities_towns",
+                            name: "abp1_geo-area_specific-cities-towns_textarea",
                             rhf: "Textarea",
                             rules: {
                               required: "* Required",
@@ -1202,7 +1201,7 @@ export const v202402: FormSchema = {
                         description: "Specify other geographic area",
                         slots: [
                           {
-                            name: "specify_other",
+                            name: "abp1_geo-area_specify-other_textarea",
                             rhf: "Textarea",
                             rules: {
                               required: "* Required",
@@ -1225,71 +1224,14 @@ export const v202402: FormSchema = {
         {
           description:
             "Any other information the state/territory wishes to provide about the population (optional)",
-          // "Other information related to selection of the Section 1937 coverage option and the base benchmark plan (optional)",
           slots: [
             {
-              name: "additional_information",
+              name: "abp1_additional_info_textarea",
               rhf: "Textarea",
             },
           ],
         },
       ],
     },
-    // {
-    //   title: "Testing Alt Layouts",
-    //   form: [
-    //     {
-    //       description: "A test of horizontal layouts with no slot styles",
-    //       wrapperStyling: "flex flex-wrap gap-6",
-    //       slots: [
-    //         {
-    //           name: "example1_1",
-    //           label: "Example 1.1",
-    //           rhf: "Input",
-    //         },
-    //         {
-    //           name: "example1_2",
-    //           label: "Example 1.2",
-    //           rhf: "Input",
-    //         },
-    //         {
-    //           name: "example1_3",
-    //           label: "Example 1.3",
-    //           rhf: "Input",
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       description: "A test of horizontal layouts with slot styles",
-    //       wrapperStyling: "flex flex-wrap gap-6",
-    //       slots: [
-    //         {
-    //           name: "example2_1",
-    //           label: "Example 2.1",
-    //           rhf: "Input",
-    //           props: {
-    //             className: "w-80",
-    //           },
-    //         },
-    //         {
-    //           name: "example2_2",
-    //           label: "Example 2.2",
-    //           rhf: "Input",
-    //           props: {
-    //             className: "w-30",
-    //           },
-    //         },
-    //         {
-    //           name: "example2_3",
-    //           label: "Example 2.3",
-    //           rhf: "Input",
-    //           props: {
-    //             className: "w-120",
-    //           },
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
   ],
 };
