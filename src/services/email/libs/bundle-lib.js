@@ -26,6 +26,20 @@ const getBundleFromEvent = (configKey, stage) => {
                 },
                 ]
             };
+        case "respond-to-rai-1915b":
+            return {
+                "lookupList": ["osInsights"],
+                "dataList": ["osgEmail", "cpoc", "srt", "dmcoEmail", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "authority", "ninetyDaysLookupNice", "additionalInformation", "formattedFileList", "textFileList"],
+                "emailCommands": [{
+                    "Template": `respond-to-rai-1915b-cms_${stage}`,
+                    "ToAddresses": ["osgEmail", "cpoc", "srt", "dmcoEmail"]
+                },
+                {
+                    "Template": `respond-to-rai-1915b-state_${stage}`,
+                    "ToAddresses": ["submitter"],
+                },
+                ]
+            };
         case "respond-to-rai-medicaid-spa":
             return {
                 "lookupList": ["osInsights"],
