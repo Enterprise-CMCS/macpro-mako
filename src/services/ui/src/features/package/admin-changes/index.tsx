@@ -57,7 +57,6 @@ export const AC_Update: FC<opensearch.changelog.Document> = () => {
 };
 
 export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
-  console.log(props.actionType);
   const [label, Content] = useMemo(() => {
     switch (props.actionType) {
       case "disable-rai-withdraw":
