@@ -148,12 +148,9 @@ const legacyAdminChanges = async (
         // Skip if it's not a package view from onemac with adminChanges
         if (
           !(
-            (
-              record?.sk === "Package" &&
-              record.submitterName &&
-              record.adminChanges &&
-              record.adminChanges.length > 0
-            ) // i think the transforms switch should be brought here to avoid this stuff
+            record?.sk === "Package" &&
+            record.submitterName &&
+            record.adminChanges
           )
         ) {
           continue;
