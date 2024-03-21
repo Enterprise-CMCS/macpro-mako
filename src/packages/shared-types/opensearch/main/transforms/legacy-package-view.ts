@@ -1,11 +1,11 @@
 import {
+  getStatus,
   LegacyAdminChange,
   LegacyPackageAction,
   legacyPackageViewSchema,
   SEATOOL_AUTHORITIES,
   SEATOOL_STATUS,
 } from "../../..";
-import { legacyAdminChange } from "../../changelog";
 
 export const transform = (id: string) => {
   return legacyPackageViewSchema.transform((data) => {
@@ -25,6 +25,8 @@ export const transform = (id: string) => {
         legacySubmissionTimestamp,
       };
     }
+    const seatoolStatus = SEATOOL_STATUS.TE_PENDING;
+    const {stateStatus, cmsStatus} = getStatus(SEATOOL_STATUS.TE_PENDING)
     return {
       id,
       submitterEmail: data.submitterEmail,
@@ -39,9 +41,9 @@ export const transform = (id: string) => {
         ? getIdByAuthorityName(data.temporaryExtensionType)
         : null,
       authority: data.temporaryExtensionType,
-      stateStatus: "Submitted",
-      cmsStatus: "Requested",
-      seatoolStatus: SEATOOL_STATUS.PENDING,
+      stateStatus,
+      cmsStatus,
+      seatoolStatus,
       statusDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
       submissionDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
       changedDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),

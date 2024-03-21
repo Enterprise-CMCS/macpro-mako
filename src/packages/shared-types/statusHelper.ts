@@ -10,6 +10,7 @@ export const SEATOOL_STATUS = {
   PENDING_APPROVAL: "Pending-Approval",
   UNKNOWN: "Unknown",
   PENDING_OFF_THE_CLOCK: "Pending-Off the Clock",
+  TE_PENDING: "Pending",
 };
 
 const statusToDisplayToStateUser = {
@@ -23,6 +24,7 @@ const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.UNSUBMITTED]: "Unsubmitted",
   [SEATOOL_STATUS.PENDING_APPROVAL]: "Under Review",
   [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
+  [SEATOOL_STATUS.TE_PENDING]: "Submitted",
 };
 
 const statusToDisplayToCmsUser = {
@@ -36,6 +38,7 @@ const statusToDisplayToCmsUser = {
   [SEATOOL_STATUS.UNSUBMITTED]: "Unsubmitted",
   [SEATOOL_STATUS.PENDING_APPROVAL]: "Pending - Approval",
   [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
+  [SEATOOL_STATUS.TE_PENDING]: "Requested",
 };
 
 export const finalDispositionStatuses = [
