@@ -16,6 +16,7 @@ import {
   Upload,
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
+import { SeaStatus, useSyncStatus } from "@/hooks/useSyncStatus";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import {
@@ -223,7 +224,7 @@ export const ErrorBanner = () => {
                   <li className="ml-8 my-2" key={idx}>
                     {err.message as string}
                   </li>
-                )
+                ),
             )}
           </ul>
         </Alert>
@@ -279,11 +280,19 @@ export const useSubmitForm = () => {
   };
 };
 
-export const useDisplaySubmissionAlert = (header: string, body: string) => {
+export const useDisplaySubmissionAlert = (
+  header: string,
+  body: string,
+  expectedStatus: SeaStatus,
+  id: string,
+) => {
   const alert = useAlertContext();
   const data = useActionData() as ActionFunctionReturnType;
-  const navigate = useNavigate();
   const location = useLocation();
+  const syncData = useSyncStatus({
+    path: location.state?.from ?? "/dashboard",
+    expectedStatus,
+  });
 
   return useEffect(() => {
     if (data && data.submitted) {
@@ -293,9 +302,9 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
       });
       alert.setBannerShow(true);
       alert.setBannerDisplayOn(
-        location.state?.from?.split("?")[0] ?? "/dashboard"
+        location.state?.from?.split("?")[0] ?? "/dashboard",
       );
-      navigate(location.state?.from ?? "/dashboard");
+      syncData(id);
     }
   }, [data]);
 };
@@ -304,7 +313,7 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
 const filterUndefinedValues = (obj: Record<any, any>) => {
   if (obj) {
     return Object.fromEntries(
-      Object.entries(obj).filter(([key, value]) => value !== undefined)
+      Object.entries(obj).filter(([key, value]) => value !== undefined),
     );
   }
   return {};
@@ -312,6 +321,6 @@ const filterUndefinedValues = (obj: Record<any, any>) => {
 
 // Types
 export type ActionFunction = (
-  args: ActionFunctionArgs
+  args: ActionFunctionArgs,
 ) => Promise<{ submitted: boolean }>;
 export type ActionFunctionReturnType = Awaited<ReturnType<ActionFunction>>;

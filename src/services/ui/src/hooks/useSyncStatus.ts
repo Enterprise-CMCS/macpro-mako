@@ -1,17 +1,18 @@
 import { getItem } from "@/api";
-import { Route, useNavigate } from "@/components/Routing";
+import { Route } from "@/components/Routing";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { type SEATOOL_STATUS } from "shared-types";
 
-type SeaStatus = (typeof SEATOOL_STATUS)[keyof typeof SEATOOL_STATUS];
+export type SeaStatus = (typeof SEATOOL_STATUS)[keyof typeof SEATOOL_STATUS];
 
 export const useSyncStatus = ({
   expectedStatus,
   path,
 }: {
   expectedStatus: SeaStatus;
-  path: Route;
+  path: Route | "..";
 }) => {
   const navigate = useNavigate();
   const [runQuery, setRunQuery] = useState(false);
@@ -23,7 +24,7 @@ export const useSyncStatus = ({
     refetchInterval: (data, query) => {
       // don't want to hammer it if nothing is happening likely something is wrong at this point)
       if (query.state.dataUpdateCount > 10) {
-        navigate({ path });
+        navigate(path);
         return false;
       }
 
@@ -33,7 +34,7 @@ export const useSyncStatus = ({
       // return to dashboard when the status has successfuly updated
       if (data && data._source.seatoolStatus === expectedStatus) {
         console.log("it got here");
-        navigate({ path });
+        navigate(path);
         return false;
       }
 

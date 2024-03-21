@@ -64,7 +64,9 @@ export const WithdrawRai = () => {
   const { id, authority } = useParams() as { id: string; authority: Authority };
   SC.useDisplaySubmissionAlert(
     "RAI response withdrawn",
-    `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`
+    `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`,
+    "Pending-RAI",
+    id,
   );
 
   return (
