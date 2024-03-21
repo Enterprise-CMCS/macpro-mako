@@ -39,7 +39,7 @@ export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
   );
 };
 
-export const AC_LegacyManualUpdate: FC<opensearch.changelog.Document> = (
+export const AC_LegacyAdminChange: FC<opensearch.changelog.Document> = (
   props,
 ) => {
   return (
@@ -64,8 +64,8 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         return ["Disable formal RAI response withdraw", AC_WithdrawDisabled];
       case "enable-rai-withdraw":
         return ["Enable formal RAI response withdraw", AC_WithdrawEnabled];
-      case "legacy-manual-update":
-        return ["Manual Update", AC_LegacyManualUpdate];
+      case "legacy-admin-change":
+        return [props.changeType || "Manual Update", AC_LegacyAdminChange];
       default:
         return [BLANK_VALUE, AC_Update];
     }
@@ -93,7 +93,7 @@ export const AdminChanges = () => {
     [
       "disable-rai-withdraw",
       "enable-rai-withdraw",
-      "legacy-manual-update",
+      "legacy-admin-change",
     ].includes(CL._source.actionType),
   );
 

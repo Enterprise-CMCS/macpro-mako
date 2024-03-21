@@ -75,8 +75,10 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
           continue;
         }
         const result = opensearch.changelog.legacyEvent
-          .transform(id, offset)
+          .transform(id)
           .safeParse(record);
+
+        if (result.success && result.data === undefined) continue;
 
         // Log Error and skip if transform had an error
         if (!result?.success) {
@@ -87,9 +89,6 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
           });
           continue;
         }
-
-        // Skip if the transform had a nominal return of undefined
-        if (result.data === undefined) continue;
 
         // If we made it this far, we push the document to the docs array so it gets indexed
         docs.push({ ...result.data, devOrigin: "legacy" });
@@ -146,13 +145,12 @@ const legacyAdminChanges = async (
 
       // Process legacy events
       if (record?.origin !== "micro") {
-        // Skip if it's not a submission event with a good GSIpk and admin changes
+        // Skip if it's not a package view from onemac with adminChanges
         if (
           !(
             (
-              record?.sk !== "Package" &&
-              (record.GSI1pk?.startsWith("OneMAC#submit") ||
-                record.GSI1pk?.startsWith("OneMAC#enable")) &&
+              record?.sk === "Package" &&
+              record.submitterName &&
               record.adminChanges &&
               record.adminChanges.length > 0
             ) // i think the transforms switch should be brought here to avoid this stuff
@@ -165,8 +163,7 @@ const legacyAdminChanges = async (
             .transform(id)
             .safeParse(adminChange);
 
-          // Skip if the transform had a nominal return of undefined
-          if (result === undefined) continue;
+          if (result.success && result.data === undefined) continue;
 
           // Log Error and skip if transform had an error
           if (!result?.success) {
@@ -190,33 +187,5 @@ const legacyAdminChanges = async (
       });
     }
   }
-  // // Since adminChanges are a materialized view within an event record, we deduplicate to avoid overloading the opensearch bulk update
-  // return filterAndMapDocuments(docs);
   return docs;
 };
-
-// function filterAndMapDocuments(documents: Document[]): any[] {
-//   // Reduce the array to an object where each key is a document ID and the value is the document itself.
-//   // This will ensure each ID is unique and only the last document with the same ID is kept.
-//   const lastEntries = documents.reduce<{ [id: string]: Document }>(
-//     (acc, doc) => {
-//       acc[doc.id] = doc; // This will overwrite any previous entry with the same ID
-//       return acc;
-//     },
-//     {},
-//   );
-
-//   // Convert the object back into an array of documents
-//   const filteredDocuments = Object.values(lastEntries);
-
-//   // Assuming you want to perform some mapping on the filtered documents,
-//   // but since it's not specified what the mapping should do, I'm leaving the flatMap part with a comment.
-//   // Please adjust it to your needs.
-//   const body = filteredDocuments.flatMap((doc) => [
-//     // Perform your mapping here. For example, return the document itself or transform it as needed.
-//     doc,
-//     // More transformations or additional items related to 'doc' can be added here.
-//   ]);
-
-//   return body;
-// }
