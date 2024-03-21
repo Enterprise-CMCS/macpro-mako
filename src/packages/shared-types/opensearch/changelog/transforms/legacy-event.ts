@@ -3,38 +3,38 @@ import { legacyEventSchema, handleLegacyAttachment, Action } from "../../..";
 export const transform = (id: string) => {
   return legacyEventSchema.transform((data) => {
     // Resolve the action type based on the GSI1pk
-    const eventType = data.GSI1pk.split("OneMAC#")[1];
+    const eventType = data.GSI1pk.split("OneMAC#submit")[1];
 
     let actionType;
 
     switch (eventType) {
-      case "submitchipspa":
-      case "submitmedicaidspa":
-      case "submitwaiveramendment":
-      case "submitwaiverappk":
-      case "submitwaiverextension":
-      case "submitwaiverextensionb":
-      case "submitwaiverextensionc":
-      case "submitwaivernew":
-      case "submitwaiverrenewal":
+      case "chipspa":
+      case "medicaidspa":
+      case "waiveramendment":
+      case "waiverappk":
+      case "waiverextension":
+      case "waiverextensionb":
+      case "waiverextensionc":
+      case "waivernew":
+      case "waiverrenewal":
         actionType = "new-submission";
         break;
-      case "submitchipsparai":
-      case "submitmedicaidsparai":
-      case "submitwaiveramendmentrai":
-      case "submitwaiverappkrai":
-      case "submitwaiverrai":
+      case "chipsparai":
+      case "medicaidsparai":
+      case "waiveramendmentrai":
+      case "waiverappkrai":
+      case "waiverrai":
         actionType = Action.RESPOND_TO_RAI;
         break;
-      case "submitchipspawithdraw":
-      case "submitmedicaidspawithdraw":
-      case "submitwaiveramendmentwithdraw":
-      case "submitwaiverappkwithdraw":
-      case "submitwaivernewwithdraw":
-      case "submitwaiverrenewalwithdraw":
+      case "chipspawithdraw":
+      case "medicaidspawithdraw":
+      case "waiveramendmentwithdraw":
+      case "waiverappkwithdraw":
+      case "waivernewwithdraw":
+      case "waiverrenewalwithdraw":
         actionType = Action.WITHDRAW_PACKAGE;
         break;
-      case "submitrairesponsewithdraw":
+      case "rairesponsewithdraw":
         actionType = Action.WITHDRAW_RAI; // This should be a separate action thats just a request
         break;
       default:
