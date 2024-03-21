@@ -8,9 +8,6 @@ export const transform = (id: string) => {
     let actionType;
 
     switch (eventType) {
-      case "enableRAIResponseWithdraw":
-        actionType = Action.ENABLE_RAI_WITHDRAW;
-        break;
       case "submitchipspa":
       case "submitmedicaidspa":
       case "submitwaiveramendment":
