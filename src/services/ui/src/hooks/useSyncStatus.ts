@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { type SEATOOL_STATUS } from "shared-types";
+import { queryClient } from "@/router";
 
 export type SeaStatus = (typeof SEATOOL_STATUS)[keyof typeof SEATOOL_STATUS];
 
@@ -17,6 +18,7 @@ export const useSyncStatus = ({
   const navigate = useNavigate();
   const [runQuery, setRunQuery] = useState(false);
   const [id, setId] = useState("");
+  console.log("do we get here");
 
   useQuery({
     queryKey: ["record", id],
@@ -24,16 +26,20 @@ export const useSyncStatus = ({
     refetchInterval: (data, query) => {
       // don't want to hammer it if nothing is happening likely something is wrong at this point)
       if (query.state.dataUpdateCount > 10) {
+        queryClient.invalidateQueries(["actions", id]);
         navigate(path);
         return false;
       }
 
       console.log("status in seatool is: ", data?._source.seatoolStatus);
       console.log("status expected is: ", expectedStatus);
-
+      console.log(
+        "what is this",
+        expectedStatus === data?._source.seatoolStatus,
+      );
       // return to dashboard when the status has successfuly updated
       if (data && data._source.seatoolStatus === expectedStatus) {
-        console.log("it got here");
+        queryClient.invalidateQueries(["actions", id]);
         navigate(path);
         return false;
       }

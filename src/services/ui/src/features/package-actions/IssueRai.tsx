@@ -49,11 +49,13 @@ export const issueRaiDefaultAction: SC.ActionFunction = async ({
 
 export const IssueRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
 
   SC.useDisplaySubmissionAlert(
     "RAI issued",
-    `The RAI for ${id} has been submitted. An email confirmation will be sent to you and the state.`
+    `The RAI for ${id} has been submitted. An email confirmation will be sent to you and the state.`,
+    "Pending",
+    id,
   );
 
   return (

@@ -47,7 +47,7 @@ export const transform = (id: string) => {
         authority: data.authority,
         stateStatus: "Submitted",
         cmsStatus: "Requested",
-        seatoolStatus: SEATOOL_STATUS.PENDING,
+        seatoolStatus: SEATOOL_STATUS.PENDING as string,
         statusDate: getDateStringOrNullFromEpoc(data.statusDate),
         submissionDate: getDateStringOrNullFromEpoc(data.submissionDate),
         changedDate: getDateStringOrNullFromEpoc(data.changedDate),

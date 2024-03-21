@@ -139,6 +139,8 @@ export const TemporaryExtension = () => {
   SC.useDisplaySubmissionAlert(
     "Temporary Extension issued",
     `The Temporary Extension Request for ${parentId} has been submitted.`,
+    "Pending",
+    parentId,
   );
 
   return (

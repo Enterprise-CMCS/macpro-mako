@@ -70,7 +70,9 @@ export const RespondToRai = () => {
 
   SC.useDisplaySubmissionAlert(
     "RAI response submitted",
-    `The RAI response for ${id} has been submitted.`
+    `The RAI response for ${id} has been submitted.`,
+    "Pending-RAI",
+    id,
   );
 
   return (

@@ -17,6 +17,7 @@ import {
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { SeaStatus, useSyncStatus } from "@/hooks/useSyncStatus";
+import { queryClient } from "@/router";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import {
