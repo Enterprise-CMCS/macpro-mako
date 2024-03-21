@@ -7,3 +7,5 @@ export const legacyAdminChangeSchema = z.object({
   changeMade: z.string(),
   changeReason: z.string().optional().default(""),
 });
+
+export type LegacyAdminChange = z.infer<typeof legacyAdminChangeSchema>;

@@ -1,8 +1,11 @@
 import {
+  LegacyAdminChange,
+  LegacyPackageAction,
   legacyPackageViewSchema,
   SEATOOL_AUTHORITIES,
   SEATOOL_STATUS,
 } from "../../..";
+import { legacyAdminChange } from "../../changelog";
 
 export const transform = (id: string) => {
   return legacyPackageViewSchema.transform((data) => {
@@ -81,10 +84,10 @@ const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
     ? new Date(epocDate).toISOString()
     : null;
 
-function isLegacyNoso(record: any): boolean {
+function isLegacyNoso(record: LegacyPackageAction): boolean {
   return (
     record.adminChanges?.some(
-      (adminChange: any) =>
+      (adminChange: LegacyAdminChange) =>
         adminChange.changeType === "Package Added" ||
         adminChange.changeReason?.toLowerCase().includes("noso"),
     ) || false
