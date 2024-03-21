@@ -25,7 +25,11 @@ import {
   Input,
 } from "@/components";
 import { opensearch } from "shared-types";
-import { getNextBusinessDayTimestamp, offsetFromUtc } from "shared-utils";
+import {
+  getNextBusinessDayTimestamp,
+  offsetFromUtc,
+  offsetToUtc,
+} from "shared-utils";
 
 type Props = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -39,14 +43,14 @@ type Props = Omit<
 export function FilterableDateRange({ value, onChange, ...props }: Props) {
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<DateRange | undefined>({
-    from: value?.gte ? new Date(value?.gte) : undefined,
-    to: value?.lte ? new Date(value?.lte) : undefined,
+    from: value?.gte ? offsetToUtc(new Date(value?.gte)) : undefined,
+    to: value?.lte ? offsetToUtc(new Date(value?.lte)) : undefined,
   });
   const [fromValue, setFromValue] = useState<string>(
-    value?.gte ? format(new Date(value?.gte), "MM/dd/yyyy") : ""
+    value?.gte ? format(new Date(value?.gte), "MM/dd/yyyy") : "",
   );
   const [toValue, setToValue] = useState<string>(
-    value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : ""
+    value?.lte ? format(new Date(value?.lte), "MM/dd/yyyy") : "",
   );
 
   const handleClose = (updateOpen: boolean) => {
@@ -55,7 +59,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
 
   const checkSingleDateSelection = (
     from: Date | undefined,
-    to: Date | undefined
+    to: Date | undefined,
   ) => {
     if (from && !to) {
       const rangeObject = getDateRange(from, endOfDay(from));
@@ -63,6 +67,11 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
       setFromValue(format(from, "MM/dd/yyyy"));
     }
   };
+
+  const offsetRangeToUtc = (val: opensearch.RangeValue) => ({
+    gte: val.gte ? offsetToUtc(new Date(val.gte)).toISOString() : undefined,
+    lte: val.lte ? offsetToUtc(new Date(val.lte)).toISOString() : undefined,
+  });
 
   const onFromInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const minValidYear = 1960;
@@ -83,10 +92,12 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
         setToValue("");
       } else {
         setSelectedDate({ from: date, to: selectedDate?.to });
-        onChange({
-          gte: date.toISOString(),
-          lte: selectedDate?.to?.toISOString() || "",
-        });
+        onChange(
+          offsetRangeToUtc({
+            gte: date.toISOString(),
+            lte: selectedDate?.to?.toISOString() || "",
+          }),
+        );
       }
     }
   };
@@ -112,17 +123,19 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
         setFromValue("");
       } else {
         setSelectedDate({ from: selectedDate?.from, to: date });
-        onChange({
-          gte: selectedDate?.from?.toISOString() || "",
-          lte: endOfDay(date).toISOString(),
-        });
+        onChange(
+          offsetRangeToUtc({
+            gte: selectedDate?.from?.toISOString() || "",
+            lte: endOfDay(date).toISOString(),
+          }),
+        );
       }
     }
   };
 
   const getDateRange = (
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ): opensearch.RangeValue => {
     return {
       gte: startDate.toISOString(),
@@ -167,7 +180,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             id="date"
             className={cn(
               "flex items-center w-[270px] border-[1px] border-black p-2 justify-start text-left font-normal",
-              !value && "text-muted-foreground"
+              !value && "text-muted-foreground",
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -181,7 +194,9 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
           sideOffset={1}
         >
           <Calendar
-            disabled={[{ after: offsetFromUtc(new Date(getNextBusinessDayTimestamp())) }]}
+            disabled={[
+              { after: offsetFromUtc(new Date(getNextBusinessDayTimestamp())) },
+            ]}
             initialFocus
             mode="range"
             defaultMonth={selectedDate?.from}
@@ -191,17 +206,21 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             onSelect={(d) => {
               setSelectedDate(d);
               if (!!d?.from && !!d.to) {
-                onChange({
-                  gte: d.from.toISOString(),
-                  lte: endOfDay(d.to).toISOString(),
-                });
+                onChange(
+                  offsetRangeToUtc({
+                    gte: d.from.toISOString(),
+                    lte: endOfDay(d.to).toISOString(),
+                  }),
+                );
                 setFromValue(format(d.from, "MM/dd/yyyy"));
                 setToValue(format(d.to, "MM/dd/yyyy"));
               } else if (!d?.from && !d?.to) {
-                onChange({
-                  gte: "",
-                  lte: "",
-                });
+                onChange(
+                  offsetRangeToUtc({
+                    gte: "",
+                    lte: "",
+                  }),
+                );
                 setFromValue("");
                 setToValue("");
               } else {
@@ -241,7 +260,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
         className="text-white"
         onClick={() => {
           setSelectedDate({ from: undefined, to: undefined });
-          onChange({ gte: undefined, lte: undefined });
+          onChange(offsetRangeToUtc({ gte: undefined, lte: undefined }));
           setToValue("");
           setFromValue("");
         }}
