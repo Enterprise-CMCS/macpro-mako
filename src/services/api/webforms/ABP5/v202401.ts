@@ -478,7 +478,7 @@ export const v202401: FormSchema = {
                 className: "w-[300px]",
                 options: [
                   {
-                    label: "State licensed",
+                    label: "State-licensed",
                     value: "state_licensed",
                   },
                 ],
@@ -529,7 +529,7 @@ export const v202401: FormSchema = {
             options: [
               {
                 label:
-                  "The state/territory assures that it does not apply any financial requirement or treatment limitation to mental health or substance use disorder benefits in any classification that is more restrictive than the predominant financial requirement or treatment limitation of that type applied to substantially all medical/surgical benefits in the same classification.",
+                  "The state/territory assures it's not imposing limits on habilitative services and devices that are more stringent than limits on rehabilitative services (45 CFR 156.115(a)(5)(ii)). The state/territory also understands that separate coverage limits must be established for rehabilitative and habilitative services and devices. Combined rehabilitative and habilitative limits are allowed if these limits can be exceeded based on medical necessity.",
                 value: "yes",
               },
             ],
@@ -617,7 +617,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "TextDisplay",
                                 text: [
-                                  { text: "Benchmark provided:", type: "bold" },
+                                  { text: "Benefit provided", type: "bold" },
                                   { text: "Base benchmark", type: "br" },
                                 ],
                                 name: "benchmark_provided",
