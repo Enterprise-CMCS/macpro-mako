@@ -303,12 +303,7 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
       case "new-submission":
         return ["Initial package submitted", PA_InitialSubmission];
       case "withdraw-rai":
-        return [
-          props.devOrigin === "micro"
-            ? "RAI response withdrawn"
-            : "RAI response withdraw requested",
-          PA_ResponseWithdrawn,
-        ];
+        return ["RAI response withdrawn", PA_ResponseWithdrawn];
       case "withdraw-package":
         return ["Package withdrawn", PA_ResponseWithdrawn];
       case "issue-rai":
@@ -317,6 +312,8 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
         return ["RAI response submitted", PA_ResponseSubmitted];
       case "remove-appk-child":
         return [`Waiver withdrawn : ${props.appkChildId}`, PA_RemoveAppkChild];
+      case "legacy-withdraw-rai-request":
+          return ["RAI response withdrawn requested", PA_ResponseWithdrawn]
 
       default:
         return [BLANK_VALUE, PA_ResponseSubmitted];

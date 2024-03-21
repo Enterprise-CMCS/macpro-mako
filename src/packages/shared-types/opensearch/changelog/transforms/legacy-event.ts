@@ -35,7 +35,7 @@ export const transform = (id: string) => {
         actionType = Action.WITHDRAW_PACKAGE;
         break;
       case "rairesponsewithdraw":
-        actionType = Action.WITHDRAW_RAI; // This should be a separate action thats just a request
+        actionType = Action.LEGACY_WITHDRAW_RAI_REQUEST;
         break;
       default:
         console.log(

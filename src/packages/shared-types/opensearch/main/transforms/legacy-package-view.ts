@@ -30,7 +30,6 @@ export const transform = (id: string) => {
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       origin: "OneMAC",
-      devOrigin: "legacy", // Not in use, but helpful for developers browsing OpenSearch
       originalWaiverNumber: data.parentId,
       flavor: "WAIVER",
       state: id.slice(0, 2),
