@@ -78,7 +78,7 @@ Thank you!`,
 <br><b>Email Address:</b> {{submitterEmail}}
 <br><b>Medicaid SPA ID: {{id}}</b>
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
-<br><b>90th Day Deadline:</b> {{ninetyDaysDateNice}}
+<br><b>90th Day Deadline:</b> {{ninetyDaysDate}}
 </p>
 <b>Summary:</b>
 <br>{{additionalInformation}}
@@ -86,7 +86,7 @@ Thank you!`,
 <p>This response confirms the receipt of your Medicaid State Plan Amendment 
 (SPA or your response to a SPA Request for Additional Information (RAI)). 
 You can expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysDateNice}}.</p>
+before {{ninetyDaysDate}}.</p>
 <p>This mailbox is for the submittal of State Plan Amendments and non-web-based
 responses to Requests for Additional Information (RAI) on submitted SPAs only.
 Any other correspondence will be disregarded.</p>
@@ -101,7 +101,7 @@ Name: {{submitterName}}
 Email Address: {{submitterEmail}}
 Medicaid SPA ID: {{id}}
 Proposed Effective Date:  {{proposedEffectiveDateNice}}
-90th Day Deadline: {{ninetyDaysDateNice}}
+90th Day Deadline: {{ninetyDaysDate}}
 
 Summary:
 {{additionalInformation}}
@@ -109,7 +109,7 @@ Summary:
 This response confirms the receipt of your Medicaid State Plan Amendment 
 (SPA or your response to a SPA Request for Additional Information (RAI)). 
 You can expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysDateNice}}.
+before {{ninetyDaysDate}}.
 
 This mailbox is for the submittal of State Plan Amendments and non-web-based
 responses to Requests for Additional Information (RAI) on submitted SPAs only.
@@ -198,7 +198,7 @@ Thank you!`,
 <br><b>Initial Waiver Number:</b> {{id}}</b>
 <br><b>Waiver Authority:</b> {{authority}}
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
-<br><b>90th Day Deadline:</b> {{ninetyDaysDateNice}}
+<br><b>90th Day Deadline:</b> {{ninetyDaysDate}}
 </p>
 <b>Summary:</b>
 <br>{{additionalInformation}}
@@ -206,7 +206,7 @@ Thank you!`,
 <p>This response confirms the receipt of your Waiver request or your response
 to a Waiver Request for Additional Information (RAI). You can expect a formal
 response to your submittal to be issued within 90 days,
-before {{ninetyDaysDateNice}}.</p>
+before {{ninetyDaysDate}}.</p>
 <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
 responses to Requests for Additional Information (RAI) on Waivers,
 and extension requests on Waivers only. Any other correspondence will be disregarded</p>
@@ -222,7 +222,7 @@ Email Address: {{submitterEmail}}
 Initial Waiver Number: {{id}}</b>
 Waiver Authority: {{authority}}
 Proposed Effective Date: {{proposedEffectiveDateNice}}
-90th Day Deadline: {{ninetyDaysDateNice}}
+90th Day Deadline: {{ninetyDaysDate}}
 
 Summary:
 {{additionalInformation}}
@@ -230,7 +230,7 @@ Summary:
 This response confirms the receipt of your Waiver request or your response
 to a Waiver Request for Additional Information (RAI). You can expect a formal
 response to your submittal to be issued within 90 days,
-before {{ninetyDaysDateNice}}.
+before {{ninetyDaysDate}}.
 
 This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
 responses to Requests for Additional Information (RAI) on Waivers,
@@ -798,8 +798,8 @@ Thank you!`,
 The package will no longer be considered for CMS review:</p>
 <p>
 <br><b>State or territory:</b> {{territory}}
-<br><b>Name:</b> {{initialSubmitterName}}
-<br><b>Email Address:</b> {{initialSubmitterEmail}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email Address:</b> {{submitterEmail}}
 <br><b>CHIP SPA Package ID:</b> {{id}}
 </p>
 Summary:
@@ -814,8 +814,8 @@ The OneMAC Submission Portal received a request to withdraw the package below.
 The package will no longer be considered for CMS review:
 
 State or territory: {{territory}}
-Name: {{initialSubmitterName}}
-Email Address: {{initialSubmitterEmail}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
 CHIP SPA Package ID: {{id}}
 
 Summary:
@@ -833,8 +833,8 @@ Thank you!`,
 The package will no longer be considered for CMS review:</p>
 <p>
 <br><b>State or territory:</b> {{territory}}
-<br><b>Name:</b> {{initialSubmitterName}}
-<br><b>Email Address:</b> {{initialSubmitterEmail}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email Address:</b> {{submitterEmail}}
 <br><b>CHIP SPA Package ID:</b> {{id}}
 </p>
 Summary:
@@ -849,8 +849,8 @@ This is confirmation that you have requested to withdraw the package below.
 The package will no longer be considered for CMS review:
 
 State or territory: {{territory}}
-Name: {{initialSubmitterName}}
-Email Address: {{initialSubmitterEmail}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
 CHIP SPA Package ID: {{id}}
 
 Summary:

@@ -33,7 +33,9 @@ const formatDateFromTimestamp = (timestamp) => {
 
 };
 
-function formatNinetyDaysDate(emailBundle) {
+function formatNinetyDaysDate(emailBundle, lookupValues) {
+    if (lookupValues?.ninetyDaysDate)
+        return formatDateFromTimestamp(lookupValues?.ninetyDaysDate);
     if (!emailBundle?.notificationMetadata?.submissionDate) return "Pending";
     return DateTime.fromMillis(emailBundle.notificationMetadata.submissionDate)
         .plus({ days: 90 })
@@ -57,9 +59,6 @@ export const buildEmailData = async (bundle, data) => {
             case "proposedEffectiveDateNice":
                 returnObject["proposedEffectiveDateNice"] = formatDateFromTimestamp(data?.notificationMetadata?.proposedEffectiveDate);
                 break;
-            case "ninetyDaysLookupNice":
-                returnObject["ninetyDaysDateNice"] = formatDateFromTimestamp(lookupValues?.ninetyDaysDateLookup);
-                break;
             case "applicationEndpoint":
                 returnObject["applicationEndpoint"] = process.env.applicationEndpoint;
                 break;
@@ -69,8 +68,8 @@ export const buildEmailData = async (bundle, data) => {
             case "textFileList":
                 returnObject["textFileList"] = formatAttachments("text", data.attachments);
                 break;
-            case "ninetyDaysDateNice":
-                returnObject["ninetyDaysDateNice"] = formatNinetyDaysDate(data);
+            case "ninetyDaysDate":
+                returnObject["ninetyDaysDate"] = formatNinetyDaysDate(data, lookupValues);
                 break;
             case "submitter":
                 returnObject["submitter"] = (data.submitterEmail === "george@example.com") ? "\"George's Substitute\" <mako.stateuser@gmail.com>" : `"${data.submitterName}" <${data.submitterEmail}>`;
