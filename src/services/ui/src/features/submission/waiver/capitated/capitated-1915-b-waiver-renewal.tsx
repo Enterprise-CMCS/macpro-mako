@@ -1,18 +1,14 @@
-import { useCallback } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useLocation } from "react-router-dom";
 import {
-  Alert,
   BreadCrumbs,
-  LoadingSpinner,
   SimplePageContainer,
   SectionCard,
   formCrumbsFromPath,
   FAQ_TAB,
   useAlertContext,
-  useModalContext,
   useNavigate,
 } from "@/components";
 import * as Content from "@/components/Form/content";
@@ -34,10 +30,9 @@ import { useQuery as useQueryString } from "@/hooks";
 import {
   AdditionalInfoInput,
   DescriptionInput,
-  SubTypeSelect,
   SubjectInput,
-  TypeSelect,
 } from "@/features/submission/shared-components";
+import { SubmitAndCancelBtnSection } from "../shared-components";
 
 const formSchema = z
   .object({
@@ -54,8 +49,6 @@ const formSchema = z
       .trim()
       .min(1, { message: "This field is required" })
       .max(4000, { message: "Description should be under 4000 characters" }),
-    typeIds: z.array(z.number()).min(1, { message: "Required" }),
-    subTypeIds: z.array(z.number()).min(1, { message: "Required" }),
     attachments: z.object({
       bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
       bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
@@ -123,12 +116,8 @@ export const Capitated1915BWaiverRenewalPage = () => {
   const navigate = useNavigate();
   const urlQuery = useQueryString();
   const alert = useAlertContext();
-  const modal = useModalContext();
   const originPath = useOriginPath();
-  const cancelOnAccept = useCallback(() => {
-    modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
-  }, []);
+
   const handleSubmit: SubmitHandler<Waiver1915BCapitatedRenewal> = async (
     formData,
   ) => {
@@ -277,14 +266,6 @@ export const Capitated1915BWaiverRenewalPage = () => {
               name="description"
               helperText="A summary of the Waiver. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
             />
-            <TypeSelect
-              control={form.control}
-              name="typeIds"
-              authorityId={122}
-            />
-            <SubTypeSelect
-              authorityId={122} // waivers authority
-            />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/medicaid-spa-attachments" />
@@ -314,41 +295,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
             name="additionalInformation"
           />
           <Content.PreSubmissionMessage />
-          {Object.keys(form.formState.errors).length !== 0 ? (
-            <Alert className="mb-6 " variant="destructive">
-              Missing or malformed information. Please see errors above.
-            </Alert>
-          ) : null}
-          {form.formState.isSubmitting ? (
-            <div className="p-4">
-              <LoadingSpinner />
-            </div>
-          ) : null}
-          <div className="flex gap-2 justify-end ">
-            <Inputs.Button
-              disabled={form.formState.isSubmitting}
-              type="submit"
-              className="px-12"
-            >
-              Submit
-            </Inputs.Button>
-            <Inputs.Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                modal.setContent({
-                  header: "Stop form submission?",
-                  body: "All information you've entered on this form will be lost if you leave this page.",
-                  acceptButtonText: "Yes, leave form",
-                  cancelButtonText: "Return to form",
-                });
-                modal.setOnAccept(() => cancelOnAccept);
-                modal.setModalOpen(true);
-              }}
-            >
-              Cancel
-            </Inputs.Button>
-          </div>
+          <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
     </SimplePageContainer>

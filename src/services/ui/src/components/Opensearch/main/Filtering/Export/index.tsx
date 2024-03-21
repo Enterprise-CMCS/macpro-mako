@@ -20,7 +20,7 @@ export const OsExportData: FC<{
 
     const exportData: Record<any, any>[] = [];
     const resolvedData = await getMainExportData(
-      url.state.filters.concat(DEFAULT_FILTERS[url.state.tab]?.filters ?? [])
+      url.state.filters.concat(DEFAULT_FILTERS[url.state.tab]?.filters ?? []),
     );
 
     for (const item of resolvedData) {
@@ -39,21 +39,39 @@ export const OsExportData: FC<{
     return exportData;
   };
 
-  const handleExport = (data: Record<any, any>) => {
+  const handleExport = async () => {
+    setLoading(true);
+
+    const exportData: Record<any, any>[] = [];
+    const resolvedData = await getMainExportData(
+      url.state.filters.concat(DEFAULT_FILTERS[url.state.tab]?.filters ?? []),
+    );
+
+    for (const item of resolvedData) {
+      const column: Record<any, any> = {};
+
+      for (const header of columns) {
+        if (!header.transform) continue;
+        if (header.hidden) continue;
+        column[header.label] = header.transform(item);
+      }
+      exportData.push(column);
+    }
+
     const csvExporter = new ExportToCsv({
       useKeysAsHeaders: true,
       filename: `${url.state.tab}-export-${format(new Date(), "MM/dd/yyyy")}`,
     });
 
-    csvExporter.generateCsv(data);
+    csvExporter.generateCsv(exportData);
+
+    setLoading(false);
   };
 
   return (
     <Button
       variant="outline"
-      onClick={async () => {
-        handleExport(await generateExport());
-      }}
+      onClick={handleExport}
       disabled={loading}
       className="hover:bg-transparent self-center h-10 flex gap-2"
     >
