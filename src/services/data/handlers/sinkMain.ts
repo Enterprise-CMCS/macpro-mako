@@ -228,6 +228,5 @@ const changed_date = async (
       });
     }
   }
-  console.log(JSON.stringify(docs, null, 2));
   return docs;
 };

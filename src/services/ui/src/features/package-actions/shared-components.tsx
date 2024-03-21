@@ -250,7 +250,6 @@ export const useSubmitForm = () => {
 
   const validSubmission: SubmitHandler<any> = (data, e) => {
     const formData = new FormData();
-
     // Append all other data
     for (const key in data) {
       if (key !== "attachments") {

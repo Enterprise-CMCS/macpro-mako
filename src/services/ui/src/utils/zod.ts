@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { isAuthorizedState } from "@/utils";
-import { idIsApproved, itemExists } from "@/api";
+import { canBeRenewedOrAmended, idIsApproved, itemExists } from "@/api";
 
 export const zSpaIdSchema = z
   .string()
@@ -98,6 +98,10 @@ export const zAmendmentOriginalWaiverNumberSchema = z
     message:
       "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Initial or Renewal Waiver Number and try entering it again.",
   })
+  .refine(async (value) => canBeRenewedOrAmended(value), {
+    message:
+      "The 1915(b) Waiver Number entered does not seem to match our records. Please enter an approved 1915(b) Initial or Renewal Waiver Number, using a dash after the two character state abbreviation.",
+  })
   .refine(async (value) => idIsApproved(value), {
     message:
       "According to our records, this 1915(b) Waiver Number is not approved. You must supply an approved 1915(b) Initial or Renewal Waiver Number.",
@@ -117,6 +121,10 @@ export const zRenewalOriginalWaiverNumberSchema = z
     message:
       "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Initial or Renewal Waiver Number and try entering it again.",
   })
+  .refine(async (value) => canBeRenewedOrAmended(value), {
+    message:
+      "The 1915(b) Waiver Number entered does not seem to match our records. Please enter an approved 1915(b) Initial or Renewal Waiver Number, using a dash after the two character state abbreviation.",
+  })
   .refine(async (value) => idIsApproved(value), {
     message:
       "According to our records, this 1915(b) Waiver Number is not approved. You must supply an approved 1915(b) Initial or Renewal Waiver Number.",
@@ -134,7 +142,7 @@ export const zExtensionWaiverNumberSchema = z
   .string()
   .regex(
     /^[A-Z]{2}-\d{4,5}\.R\d{2}\.TE\d{2}$/,
-    "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##"
+    "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##",
   )
   .refine((value) => isAuthorizedState(value), {
     message:
@@ -149,14 +157,14 @@ export const zExtensionOriginalWaiverNumberSchema = z
   .string()
   .regex(
     /^[A-Z]{2}-\d{4,5}\.R\d{2}\.00$/,
-    "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00."
+    "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00.",
   )
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
   // This should already exist
-  .refine(async (value) => await itemExists(value), {
+  .refine(async (value) => itemExists(value), {
     message:
       "According to our records, this Approved Initial or Renewal Waiver Number does not yet exist. Please check the Approved Initial or Renewal Waiver Number and try entering it again.",
   })
