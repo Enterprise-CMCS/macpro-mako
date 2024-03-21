@@ -11,7 +11,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Select",
-              name: "is_state_territory_aligned_ABP",
+              name: "abp-2a_benefit-align-and-require_is-state-territory-aligned_select",
               label:
                 "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
               labelStyling: "font-bold text-[0.8rem]",
@@ -33,7 +33,7 @@ export const v202401: FormSchema = {
 
             {
               rhf: "Textarea",
-              name: "explain_how_state_territory_aligned_ABP",
+              name: "abp-2a_benefit-align-and-require_explain-how-state-territory-aligned_textarea",
               description:
                 "Explain how the state has fully aligned its benefits.",
               descriptionAbove: true,
@@ -44,7 +44,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "is_state_territory_aligned_ABP",
+                    name: "abp-2a_benefit-align-and-require_is-state-territory-aligned_select",
                     type: "expectedValue",
                     expectedValue: "yes",
                   },
@@ -65,7 +65,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "assurances",
+              name: "abp-2a_assurances_check",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -82,19 +82,41 @@ export const v202401: FormSchema = {
                   },
                   {
                     styledLabel: [
-                      { text: "Once an individual is identified, the state/territory assures it will effectively inform the individual of the following:", type: "br" },
-                      { text: "A. That enrollment in the specified ABP is voluntary", type: "br" },
-                      { text: "B. That the individual may disenroll from the ABP defined subject to Section 1937 requirements at any time and instead receive an ABP defined as the approved state/territory Medicaid state plan not subject to Section 1937 requirements.", type: "br" },
-                      { text: "C. What the process is for transferring to the state plan-based ABP", type: "br" }],
+                      {
+                        text: "Once an individual is identified, the state/territory assures it will effectively inform the individual of the following:",
+                        type: "br",
+                      },
+                      {
+                        text: "A. That enrollment in the specified ABP is voluntary",
+                        type: "br",
+                      },
+                      {
+                        text: "B. That the individual may disenroll from the ABP defined subject to Section 1937 requirements at any time and instead receive an ABP defined as the approved state/territory Medicaid state plan not subject to Section 1937 requirements.",
+                        type: "br",
+                      },
+                      {
+                        text: "C. What the process is for transferring to the state plan-based ABP",
+                        type: "br",
+                      },
+                    ],
                     value: "individual_identified_must_inform_the_individual",
                   },
                   {
-                    styledLabel: [  { text: "The state/territory assures it will inform the individual of the following:", type: "br" },
-                    { text: "A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements", type: "br" },
-                    { text: "B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits", type: "br" },
-                  ],
-                    label:
-                      "  ",
+                    styledLabel: [
+                      {
+                        text: "The state/territory assures it will inform the individual of the following:",
+                        type: "br",
+                      },
+                      {
+                        text: "A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements",
+                        type: "br",
+                      },
+                      {
+                        text: "B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits",
+                        type: "br",
+                      },
+                    ],
+                    label: "  ",
                     value:
                       "state_territory_assures_it_will_inform_the_individual",
                   },
@@ -114,7 +136,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "assurances",
+              name: "abp-2a_delivery-of-info_assurances_check",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -132,7 +154,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Input",
-                        name: "assurances_describe_other",
+                        name: "abp-2a_delivery-of-info_describe-other-input",
                         label: "Describe",
                         labelStyling: "font-bold",
                         rules: {
@@ -146,7 +168,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Upload",
-              name: "provide_copy_of_letter_email_other",
+              name: "abp-2a_delivery-of-info_provide-copy_upload",
               description:
                 "Provide a copy of the letter, email, or other communication.",
               descriptionAbove: true,
@@ -158,7 +180,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Input",
-              name: "when_to_inform",
+              name: "abp-2a_delivery-of-info_when-to-inform_input",
               descriptionAbove: true,
               description:
                 "When did/will the state/territory inform the individuals?",
@@ -169,7 +191,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Textarea",
-              name: "describe_process_in_section1902",
+              name: "abp-2a_delivery-of-info_describe-process-in-section1902_textarea",
               descriptionAbove: true,
               description:
                 "Describe the state/territory's process for allowing individuals in the Section 1902(a)(10)(A)(i)(VIII) eligibility group who meet exemption criteria to disenroll from the ABP using Section 1937 requirements and enroll in the ABP that is the state/territory's approved Medicaid state plan.",
@@ -180,15 +202,25 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "state_territory_assures_it_will_document_exempt_individuals",
+              name: "abp-2a_delivery-of-info_state-territory-assures-it-will-document-exempt-individuals_check",
               formItemStyling: "whitespace-pre-wrap",
               props: {
                 options: [
                   {
-                    styledLabel: [  { text: "The state/territory assures it will inform the individual of the following:", type: "br" },
-                    { text: "A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements", type: "br" },
-                    { text: "B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits", type: "br" },
-                  ],
+                    styledLabel: [
+                      {
+                        text: "The state/territory assures it will inform the individual of the following:",
+                        type: "br",
+                      },
+                      {
+                        text: "A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements",
+                        type: "br",
+                      },
+                      {
+                        text: "B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits",
+                        type: "br",
+                      },
+                    ],
                     value:
                       "state_territory_will_document_exempt_individuals_eligibility",
                   },
@@ -197,7 +229,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "where_will_information_be_documented",
+              name: "abp-2a_delivery-of-info_where-will-info-be-doc_check",
               descriptionAbove: true,
               descriptionStyling: "font-bold text-black",
               description: "Where will the information be documented?",
@@ -220,7 +252,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Input",
-                        name: "where_will_information_be_documented_describe_other",
+                        name: "abp-2a_delivery-of-info_where-will-info-be-doc-describe-other_input",
                         label: "Describe",
                         labelStyling: "font-bold",
                         rules: {
@@ -234,7 +266,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "what_documentation_will_be_maintained_in_the_eligibility_file",
+              name: "abp-2a_delivery-of-info_what-docu-will-be-maintained_check",
               descriptionAbove: true,
               descriptionStyling: "font-bold text-black",
               description:
@@ -262,7 +294,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Input",
-                        name: "describe_other",
+                        name: "abp-2a_delivery-of-info_describe-other_input",
                         label: "Describe",
                         labelStyling: "font-bold",
                         rules: {
@@ -276,7 +308,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "state_territory_assures_maintain_data",
+              name: "abp-2a_delivery-of-info_state-territory-assures-maintain-data_check",
               props: {
                 options: [
                   {
@@ -300,7 +332,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Textarea",
-              name: "additional_information",
+              name: "abp-2a_additional_information_textarea",
             },
           ],
         },
