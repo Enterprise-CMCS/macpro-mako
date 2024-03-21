@@ -15,40 +15,40 @@ export const transform = (id: string) => {
     const legacySubmissionTimestamp = getDateStringOrNullFromEpoc(
       data.submissionTimestamp,
     );
-    if (!data.componentType?.startsWith("waiverextension")) {
+    if (data.componentType?.startsWith("waiverextension")) {
+      const seatoolStatus = SEATOOL_STATUS.TE_PENDING;
+      const {stateStatus, cmsStatus} = getStatus(SEATOOL_STATUS.TE_PENDING)
       return {
         id,
         submitterEmail: data.submitterEmail,
-        submitterName:
-          data.submitterName === "-- --" ? null : data.submitterName,
-        origin: isLegacyNoso(data) ? "SEATool" : "OneMAC",
+        submitterName: data.submitterName,
+        origin: "OneMAC",
+        originalWaiverNumber: data.parentId,
+        flavor: "WAIVER",
+        state: id.slice(0, 2),
+        actionType: "Extend",
+        actionTypeId: 9999,
+        authorityId: data.temporaryExtensionType
+          ? getIdByAuthorityName(data.temporaryExtensionType)
+          : null,
+        authority: data.temporaryExtensionType,
+        stateStatus,
+        cmsStatus,
+        seatoolStatus,
+        statusDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
+        submissionDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
+        changedDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
+        subject: null,
+        description: null,
         legacySubmissionTimestamp,
       };
     }
-    const seatoolStatus = SEATOOL_STATUS.TE_PENDING;
-    const {stateStatus, cmsStatus} = getStatus(SEATOOL_STATUS.TE_PENDING)
     return {
       id,
       submitterEmail: data.submitterEmail,
-      submitterName: data.submitterName,
-      origin: "OneMAC",
-      originalWaiverNumber: data.parentId,
-      flavor: "WAIVER",
-      state: id.slice(0, 2),
-      actionType: "Extend",
-      actionTypeId: 9999,
-      authorityId: data.temporaryExtensionType
-        ? getIdByAuthorityName(data.temporaryExtensionType)
-        : null,
-      authority: data.temporaryExtensionType,
-      stateStatus,
-      cmsStatus,
-      seatoolStatus,
-      statusDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
-      submissionDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
-      changedDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
-      subject: null,
-      description: null,
+      submitterName:
+        data.submitterName === "-- --" ? null : data.submitterName,
+      origin: isLegacyNoso(data) ? "SEATool" : "OneMAC",
       legacySubmissionTimestamp,
     };
   });
