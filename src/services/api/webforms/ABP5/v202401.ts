@@ -2,47 +2,47 @@ import { FormSchema, RHFSlotProps, Section } from "shared-types";
 
 const benefitSourceOptions = [
   {
-    label: "Base Benchmark Small Group",
+    label: "Base benchmark small group",
     value: "base_benchmark_small_group",
   },
   {
-    label: "Base Benchmark Federal Employees",
+    label: "Base benchmark federal employees",
     value: "base_benchmark_federal_employees",
   },
   {
-    label: "Base Benchmark State Employees",
+    label: "Base benchmark state employees",
     value: "base_benchmark_state_employees",
   },
   {
-    label: "Base Benchmark Commercial HMO",
+    label: "Base benchmark commercial HMO",
     value: "base_benchmark_commercial_hmo",
   },
-  { label: "1937 Federal BC/BS", value: "1937_federal_bc_bs" },
+  { label: "1937 federal BC/BS", value: "1937_federal_bc_bs" },
   {
-    label: "1937 State Employees",
+    label: "1937 state employees",
     value: "1937_state_employees",
   },
   {
-    label: "1937 Commercial HMO",
+    label: "1937 commercial HMO",
     value: "1937_commercial_hmo",
   },
-  { label: "State Plan 1905(a)", value: "state_plan_1905_a" },
-  { label: "State Plan 1915(i)", value: "state_plan_1915_i" },
-  { label: "State Plan 1915(j)", value: "state_plan_1915_j" },
-  { label: "State Plan 1915(k)", value: "state_plan_1915_k" },
-  { label: "State Plan 1945", value: "state_plan_1945" },
-  { label: "State Plan Other", value: "state_plan_other" },
-  { label: "Secretary-Approved Other", value: "secretary_approved_other" },
+  { label: "State plan 1915(i)", value: "state_plan_1915_i" },
+  { label: "State plan 1905(a)", value: "state_plan_1905_a" },
+  { label: "State plan 1915(j)", value: "state_plan_1915_j" },
+  { label: "State plan 1915(k)", value: "state_plan_1915_k" },
+  { label: "State plan 1945", value: "state_plan_1945" },
+  { label: "State plan other", value: "state_plan_other" },
+  { label: "Secretary-approved other", value: "secretary_approved_other" },
 ];
 
 const providerQualificationsOptions = [
-  { label: "Medicaid State Plan", value: "medicaid_state_plan" },
+  { label: "Medicaid state plan", value: "medicaid_state_plan" },
   {
-    label: "Selected Public Employee/Commercial Plan",
+    label: "Selected public employee/commercial plan",
     value: "selected_public_employee_commercial_plan",
   },
   {
-    label: "State Plan & Public Employee/Commercial Plan",
+    label: "State plan and public employee/commercial plan",
     value: "state_plan_public_employee_commercial_plan",
   },
   { label: "Other", value: "other" },
@@ -220,7 +220,7 @@ function subsection({
                     {
                       rhf: "Radio",
                       label:
-                        "Is there an EHB benchmark benefit duplicated or substituted?",
+                        "Is there an EHB-benchmark benefit duplicated or substituted?",
                       labelClassName: "font-bold",
                       name: `${namePrefix}_benchmark_benefit_duplicated_or_substituted`,
                       rules: { required: "* Required" },
@@ -494,7 +494,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Radio",
               label:
-                "Is there an EHB benchmark benefit duplicated or substituted?",
+                "Is there an EHB-benchmark benefit duplicated or substituted?",
               labelClassName: "font-bold",
               name: "prescription_drug_benchmark_benefit_duplicated_or_substituted",
               rules: { required: "* Required" },
