@@ -468,37 +468,19 @@ Thank you!`,
 },
 {
     name: "withdraw-package-medicaid-spa-state",
-    subject:  "SPA Package {{id}} Withdraw Request",
+    subject:  "Medicaid SPA Package {{id}} Withdrawal Confirmation",
     html: `
-<p>This is confirmation that you have requested to withdraw the package below. 
-The package will no longer be considered for CMS review:</p>
-<p>
-<br><b>State or territory:</b> {{territory}}
-<br><b>Name:</b> {{submitterName}}
-<br><b>Email Address:</b> {{submitterEmail}}
-<br><b>Medicaid SPA ID:</b> {{id}}
-</p>
-Summary:
-<br>{{additionalInformation}}
+<p>This email is to confirm Medicaid SPA {{id}} was withdrawn
+by {{submitterName}}. The review of Medicaid SPA {{id}} has concluded.</p>
 <p>If you have questions or did not expect this email, please contact 
 <a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
     text: `
-This is confirmation that you have requested to withdraw the package below. 
-The package will no longer be considered for CMS review:
-
-State or territory: {{territory}}
-Name: {{submitterName}}
-Email Address: {{submitterEmail}}
-Medicaid SPA ID: {{id}}
-
-Summary:
-{{additionalInformation}}
-
-If you have questions or did not expect this email, please contact 
-spa@cms.hhs.gov.
-
-Thank you!`,
+This email is to confirm Medicaid SPA {{id}} was withdrawn
+by {{submitterName}}. The review of Medicaid SPA {{id}} has concluded.</p>
+<p>If you have questions or did not expect this email, please contact 
+<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
+<p>Thank you!</p>`,
 },
 
 // CHIP SPA email template group
@@ -827,34 +809,17 @@ Thank you!`,
 },
 {
     name: "withdraw-package-chip-spa-state",
-    subject:  "CHIP SPA Package {{id}} Withdraw Request",
+    subject:  "CHIP SPA Package {{id}} Withdrawal Confirmation",
     html: `
-<p>This is confirmation that you have requested to withdraw the package below.
-The package will no longer be considered for CMS review:</p>
-<p>
-<br><b>State or territory:</b> {{territory}}
-<br><b>Name:</b> {{submitterName}}
-<br><b>Email Address:</b> {{submitterEmail}}
-<br><b>CHIP SPA Package ID:</b> {{id}}
-</p>
-Summary:
-<br>{{additionalInformation}}
-<br>
+<p>This email is to confirm CHIP SPA {{id}} was withdrawn
+by {{submitterName}}. The review of CHIP SPA {{id}} has concluded.</p>
 <p>If you have any questions, please contact 
 <a href='mailto:CHIPSPASubmissionMailbox@cms.hhs.gov'>CHIPSPASubmissionMailbox@cms.hhs.gov</a>
 or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
-This is confirmation that you have requested to withdraw the package below.
-The package will no longer be considered for CMS review:
-
-State or territory: {{territory}}
-Name: {{submitterName}}
-Email Address: {{submitterEmail}}
-CHIP SPA Package ID: {{id}}
-
-Summary:
-{{additionalInformation}}
+This email is to confirm CHIP SPA {{id}} was withdrawn
+by {{submitterName}}. The review of CHIP SPA {{id}} has concluded.
 
 If you have any questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov or your state lead.
 
