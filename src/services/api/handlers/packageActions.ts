@@ -132,14 +132,7 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
             Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
             Status_Memo = ${buildStatusMemoQuery(
               result.data.id,
-              `RAI Response Withdrawn.  Response was received ${formatSeatoolDate(
-                document.raiReceivedDate,
-              )} and withdrawn ${new Date().toLocaleString("en-US", {
-                timeZone: "America/New_York",
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-              })}`,
+              `RAI Response Withdrawn.  This withdrawal is for the RAI requested on ${formatSeatoolDate(document.raiRequestedDate)} and received on ${formatSeatoolDate(document.raiReceivedDate)}`,
             )}
           WHERE ID_Number = '${result.data.id}'
       `);
@@ -165,67 +158,68 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
       // Close pool
       await pool.close();
     }
-
-    console.log(body);
   } else {
-    console.log("An error occured with withdraw payload: ", result.error);
-    throw "An error occured with withdraw payload.";
+    console.log("An error occured safe parsing the payload: ", result.error);
+    throw "An error occured safe parsing the payload.";
   }
 }
 
 export async function respondToRai(body: RaiResponse, document: any) {
-  console.log("State responding to RAI");
   if (!document.raiRequestedDate) throw "No RAI available for response";
   const raiToRespondTo = new Date(document.raiRequestedDate).getTime();
-  console.log("LATEST RAI KEY: " + raiToRespondTo);
-  const pool = await sql.connect(config);
-  const transaction = new sql.Transaction(pool);
-  console.log(body);
   const today = seaToolFriendlyTimestamp();
-  try {
-    await transaction.begin();
-    // Issue RAI
-    const query1 = `
-      UPDATE SEA.dbo.RAI
-        SET 
-          RAI_RECEIVED_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME)),
-          RAI_WITHDRAWN_DATE = NULL
-        WHERE ID_Number = '${body.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToRespondTo}', 10)), CAST('19700101' AS DATETIME))
-    `;
-    const result1 = await transaction.request().query(query1);
-    console.log(result1);
+  const result = raiResponseSchema.safeParse({
+    ...body,
+    responseDate: today,
+    requestedDate: raiToRespondTo,
+  });
+  if (result.success === true) {
+    console.log("State responding to RAI");
+    console.log(".");
+    const pool = await sql.connect(config);
+    const transaction = new sql.Transaction(pool);
+    let statusMemoUpdate: string;
 
-    // Update Status
-    const query2 = `
-      UPDATE SEA.dbo.State_Plan
-        SET 
-          SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${
-            SEATOOL_STATUS.PENDING
-          }'),
-          Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
-          Status_Memo = ${buildStatusMemoQuery(
-            body.id,
-            "RAI Response Received"
-          )}
-        WHERE ID_Number = '${body.id}'
-    `;
-    const result2 = await transaction.request().query(query2);
-    console.log(result2);
-
-    //   // write to kafka here
-    const result = raiResponseSchema.safeParse({
-      ...body,
-      responseDate: today,
-      requestedDate: raiToRespondTo,
-    });
-    if (result.success === false) {
-      console.log(
-        "RAI Validation Error. The following record failed to parse: ",
-        JSON.stringify(body),
-        "Because of the following Reason(s):",
-        result.error.message
+    // Potentially overwriting data... will be as verbose as possible.
+    if (document.raiReceivedDate && document.raiWithdrawnDate) {
+      statusMemoUpdate = buildStatusMemoQuery(
+        result.data.id,
+        `RAI Response Received.  This overwrites the previous response received on ${formatSeatoolDate(document.raiReceivedDate)} and withdrawn on ${formatSeatoolDate(document.raiWithdrawnDate)}`,
+      );
+    } else if (document.raiWithdrawnDate) {
+      statusMemoUpdate = buildStatusMemoQuery(
+        result.data.id,
+        `RAI Response Received.  This overwrites a previous response withdrawn on ${formatSeatoolDate(document.raiWithdrawnDate)}`,
       );
     } else {
+      statusMemoUpdate = buildStatusMemoQuery(body.id, "RAI Response Received");
+    }
+    try {
+      await transaction.begin();
+      // Issue RAI
+      const query1 = `
+        UPDATE SEA.dbo.RAI
+          SET 
+            RAI_RECEIVED_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME)),
+            RAI_WITHDRAWN_DATE = NULL
+          WHERE ID_Number = '${body.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToRespondTo}', 10)), CAST('19700101' AS DATETIME))
+      `;
+      const result1 = await transaction.request().query(query1);
+      console.log(result1);
+
+      // Update Status
+      const query2 = `
+        UPDATE SEA.dbo.State_Plan
+          SET 
+            SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}'),
+            Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+            Status_Memo = ${statusMemoUpdate}
+          WHERE ID_Number = '${body.id}'
+      `;
+      const result2 = await transaction.request().query(query2);
+      console.log(result2);
+
+      // Write to kafka here
       console.log(JSON.stringify(result, null, 2));
       await produceMessage(
         TOPIC_NAME,
@@ -234,20 +228,23 @@ export async function respondToRai(body: RaiResponse, document: any) {
           ...result.data,
           responseDate: today,
           actionType: Action.RESPOND_TO_RAI,
-        })
+        }),
       );
-    }
 
-    // Commit transaction
-    await transaction.commit();
-  } catch (err) {
-    // Rollback and log
-    await transaction.rollback();
-    console.error("Error executing one or both queries:", err);
-    throw err;
-  } finally {
-    // Close pool
-    await pool.close();
+      // Commit transaction
+      await transaction.commit();
+    } catch (err) {
+      // Rollback and log
+      await transaction.rollback();
+      console.error("Error executing one or both queries:", err);
+      throw err;
+    } finally {
+      // Close pool
+      await pool.close();
+    }
+  } else {
+    console.log("An error occured safe parsing the payload: ", result.error);
+    throw "An error occured safe parsing the payload.";
   }
 }
 
