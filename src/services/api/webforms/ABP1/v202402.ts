@@ -12,7 +12,7 @@ export const v202402: FormSchema = {
           slots: [
             {
               rhf: "Input",
-              name: "abp1_pop-id_abp-pop-name_text",
+              name: "abp1_pop-id_abp-pop-name_input",
               label: "ABP package name",
               rules: {
                 required: "* Required",
