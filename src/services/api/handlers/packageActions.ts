@@ -24,7 +24,6 @@ import {
   WithdrawPackage,
   toggleWithdrawRaiEnabledSchema,
   ToggleWithdrawRaiEnabled,
-  Authority,
   removeAppkChildSchema,
   opensearch,
 } from "shared-types";
@@ -100,11 +99,8 @@ export async function issueRai(body: RaiIssue) {
 }
 
 export async function withdrawRai(body: RaiWithdraw, document: any) {
-  const raiToWithdraw =
-    !!document.raiRequestedDate && !!document.raiReceivedDate
-      ? new Date(document.raiRequestedDate).getTime()
-      : null;
-  if (!raiToWithdraw) throw "No RAI available for response";
+  if (!document.raiRequestedDate) throw "No RAI available for response";
+  const raiToWithdraw = new Date(document.raiRequestedDate).getTime();
   const today = seaToolFriendlyTimestamp();
   const result = raiWithdrawSchema.safeParse({
     ...body,
@@ -120,63 +116,33 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
     const transaction = new sql.Transaction(pool);
     try {
       await transaction.begin();
-      // How we withdraw an RAI Response varies based on authority or not
-      // Medicaid is handled differently from the rest.
-      if (
-        [Authority.MED_SPA, Authority["1915b"], Authority["1915c"]].includes(
-          body.authority.toLowerCase() as Authority
-        )
-      ) {
-        // Set Received Date to null
-        await transaction.request().query(`
-          UPDATE SEA.dbo.RAI
-            SET 
-              RAI_RECEIVED_DATE = NULL,
-              RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
-          WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
-        `);
-        // Set Status to Pending - RAI
-        await transaction.request().query(`
-          UPDATE SEA.dbo.State_Plan
-            SET 
-              SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}'),
-              Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
-              Status_Memo = ${buildStatusMemoQuery(
-                body.id,
-                "RAI Response Withdrawn"
-              )}
-            WHERE ID_Number = '${result.data.id}'
-        `);
-      } else {
-        // Set Withdrawn_Date on the existing RAI
-        await transaction.request().query(`
-          UPDATE SEA.dbo.RAI
-            SET 
-              RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
-            WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
-        `);
-        // Set Status to Pending
-        await transaction.request().query(`
-          UPDATE SEA.dbo.State_Plan
-            SET 
-              SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${
-                SEATOOL_STATUS.PENDING
-              }'),
-              Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
-              Status_Memo = ${buildStatusMemoQuery(
-                result.data.id,
-                `RAI Response Withdrawn.  Response was received ${formatSeatoolDate(
-                  document.raiReceivedDate
-                )} and withdrawn ${new Date().toLocaleString("en-US", {
-                  timeZone: "America/New_York",
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                })}`
-              )}
-            WHERE ID_Number = '${result.data.id}'
-        `);
-      }
+
+      // Set Received Date
+      await transaction.request().query(`
+        UPDATE SEA.dbo.RAI
+          SET 
+            RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
+        WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
+      `);
+      // Set Status to Pending - RAI
+      await transaction.request().query(`
+        UPDATE SEA.dbo.State_Plan
+          SET 
+            SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}'),
+            Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+            Status_Memo = ${buildStatusMemoQuery(
+              result.data.id,
+              `RAI Response Withdrawn.  Response was received ${formatSeatoolDate(
+                document.raiReceivedDate,
+              )} and withdrawn ${new Date().toLocaleString("en-US", {
+                timeZone: "America/New_York",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}`,
+            )}
+          WHERE ID_Number = '${result.data.id}'
+      `);
 
       // write to kafka here
       await produceMessage(
@@ -209,11 +175,8 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
 
 export async function respondToRai(body: RaiResponse, document: any) {
   console.log("State responding to RAI");
-  const raiToRespondTo =
-    !!document.raiRequestedDate && !document.raiReceivedDate
-      ? new Date(document.raiRequestedDate).getTime()
-      : null;
-  if (!raiToRespondTo) throw "No RAI available for response";
+  if (!document.raiRequestedDate) throw "No RAI available for response";
+  const raiToRespondTo = new Date(document.raiRequestedDate).getTime();
   console.log("LATEST RAI KEY: " + raiToRespondTo);
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
