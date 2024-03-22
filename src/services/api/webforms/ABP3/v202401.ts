@@ -48,7 +48,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Radio",
-              name: "abp3_select-of-sect-1937-cov-opt_radiogroup",
+              name: "abp3_select-of-sect-1937-cov-opt_type_radiogroup",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -60,7 +60,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "abp3_select-of-sect-1937-cov-opt_benchmark-benefit_package_options_radiogroup",
+                            name: "abp3_select-of-sect-1937-cov-opt_benchmark-benefit-package-options_radiogroup",
                             rules: { required: "* Required" },
                             props: {
                               options: [
@@ -205,7 +205,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "abp3_select-of-sect-1937-cov-opt_benchmark-equivalent_radiogroup",
+                            name: "abp3_select-of-sect-1937-cov-opt_bench-equivalent_radiogroup",
                             rules: { required: "* Required" },
                             props: {
                               options: [

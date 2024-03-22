@@ -10,7 +10,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp11_ABP-pay-method_checkgroup",
+              name: "abp11_abp-pay-method_assurance-method-in-plan_checkgroup",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -24,7 +24,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Upload",
-              name: "abp11_ABP-pay-method_state_plan_attchmnt_alt_payment_method_upload",
+              name: "abp11_abp-pay-method_state-plan-attchmnt-alt-payment-method_upload",
               label: "State plan amendment attachment",
               labelStyling: "font-bold",
               description:
