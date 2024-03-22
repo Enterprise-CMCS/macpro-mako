@@ -240,6 +240,23 @@ If you have questions or did not expect this email, please contact
 SPA@cms.hhs.gov or your state lead.
 
 Thank you!`,
+    },
+{
+    name: "withdraw-package-1915b-state",
+    subject:  "1915(b) Waiver {{id}} Withdrawal Confirmation",
+    html: `
+<p>This email is to confirm 1915(b) Waiver {{id}} was withdrawn
+by {{submitterName}}. The review of 1915(b) Waiver {{id}} has concluded.</p>
+<p>If you have questions, please contact 
+<a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
+<p>Thank you!</p>`,
+    text: `
+This email is to confirm 1915(b) Waiver {{id}} was withdrawn by {{submitterName}}.
+The review of 1915(b) Waiver {{id}} has concluded.
+
+If you have questions, please contact spa@cms.hhs.gov or your state lead.
+
+Thank you!`,
 },
 {
     name: "respond-to-rai-medicaid-spa-cms",

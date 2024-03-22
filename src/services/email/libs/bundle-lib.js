@@ -40,6 +40,16 @@ const getBundleFromEvent = (configKey, stage) => {
                 },
                 ]
             };
+        case "withdraw-package-1915b":
+            return {
+                "lookupList": ["osInsights","cognito"],
+                "dataList": ["allState", "id", "submitterName"],
+                "emailCommands": [
+                {
+                    "Template": `withdraw-package-1915b-state_${stage}`,
+                    "ToAddresses": ["allState"],
+                }],
+            };
         case "respond-to-rai-medicaid-spa":
             return {
                 "lookupList": ["osInsights"],
