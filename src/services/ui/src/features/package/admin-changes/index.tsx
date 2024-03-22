@@ -48,6 +48,12 @@ export const AC_LegacyAdminChange: FC<opensearch.changelog.Document> = (
         <h2 className="font-bold text-lg mb-2">Change Made</h2>
         <p>{props.changeMade || "No information submitted"}</p>
       </div>
+      {props.changeReason && (
+        <div>
+          <h2 className="font-bold text-lg mb-2">Change Reason</h2>
+          <p>{props.changeReason}</p>
+        </div>
+      )}
     </div>
   );
 };
