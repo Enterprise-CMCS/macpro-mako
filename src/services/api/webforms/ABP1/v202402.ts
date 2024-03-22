@@ -26,7 +26,7 @@ export const v202402: FormSchema = {
           slots: [
             {
               rhf: "FieldArray",
-              name: "abp1_pop-id_eligibility-groups_field",
+              name: "abp1_pop-id_eligibility-groups_array",
               props: {
                 appendText: "Add group",
               },
@@ -328,7 +328,7 @@ export const v202402: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp1_target-criteria_target-criteria_check",
+              name: "abp1_target-criteria_target-criteria_checkgroup",
               rules: {
                 required: "* Required",
               },
@@ -488,7 +488,7 @@ export const v202402: FormSchema = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldArray",
-                                                    name: "abp1_target-criteria_income-def-specific-state_field",
+                                                    name: "abp1_target-criteria_income-def-specific-state_array",
                                                     fields: [
                                                       {
                                                         rhf: "Input",
@@ -540,7 +540,7 @@ export const v202402: FormSchema = {
                                                 slots: [
                                                   {
                                                     rhf: "Checkbox",
-                                                    name: "abp1_target-criteria_is-increment-amount_check",
+                                                    name: "abp1_target-criteria_is-increment-amount_checkgroup",
                                                     props: {
                                                       options: [
                                                         {
@@ -588,7 +588,7 @@ export const v202402: FormSchema = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "abp1_target-criteria_income-def-specific-statewide-group-region_field",
+                                                    name: "abp1_target-criteria_income-def-specific-statewide-group-region_array",
                                                     props: {
                                                       appendText: "Add Region",
                                                       removeText:
@@ -617,7 +617,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "FieldArray",
-                                                        name: "abp1_target-criteria_add-house-size_field",
+                                                        name: "abp1_target-criteria_add-house-size_array",
                                                         props: {
                                                           appendText:
                                                             "Add household size",
@@ -672,7 +672,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "Checkbox",
-                                                        name: "abp1_target-criteria_is-increment-amount_check",
+                                                        name: "abp1_target-criteria_is-increment-amount_checkgroup",
                                                         props: {
                                                           options: [
                                                             {
@@ -725,7 +725,7 @@ export const v202402: FormSchema = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "abp1_target-criteria_liv-arrange_field",
+                                                    name: "abp1_target-criteria_liv-arrange_array",
                                                     props: {
                                                       appendText:
                                                         "Add Living Arrangement",
@@ -754,7 +754,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "FieldArray",
-                                                        name: "abp1_target-criteria_add-house-size_field",
+                                                        name: "abp1_target-criteria_add-house-size_array",
                                                         props: {
                                                           appendText:
                                                             "Add household size",
@@ -809,7 +809,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "Checkbox",
-                                                        name: "abp1_target-criteria_is-increment-amount_check",
+                                                        name: "abp1_target-criteria_is-increment-amount_checkgroup",
                                                         props: {
                                                           options: [
                                                             {
@@ -862,7 +862,7 @@ export const v202402: FormSchema = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "abp1_target-criteria_add-some-other-way_field",
+                                                    name: "abp1_target-criteria_add-some-other-way_array",
                                                     props: {
                                                       appendText:
                                                         "Add some other way",
@@ -890,7 +890,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "FieldArray",
-                                                        name: "abp1_target-criteria_add-house-size_field",
+                                                        name: "abp1_target-criteria_add-house-size_array",
                                                         props: {
                                                           appendText:
                                                             "Add household size",
@@ -945,7 +945,7 @@ export const v202402: FormSchema = {
                                                       },
                                                       {
                                                         rhf: "Checkbox",
-                                                        name: "abp1_target-criteria_is-increment-amount_check",
+                                                        name: "abp1_target-criteria_is-increment-amount_checkgroup",
                                                         props: {
                                                           options: [
                                                             {
@@ -1007,7 +1007,7 @@ export const v202402: FormSchema = {
                     slots: [
                       {
                         rhf: "Checkbox",
-                        name: "abp1_target-criteria_health-conditions_check",
+                        name: "abp1_target-criteria_health-conditions_checkgroup",
                         rules: {
                           required: "* Required",
                         },

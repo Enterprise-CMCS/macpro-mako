@@ -10,7 +10,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp10_economy-and-efficiency-of-plans_check",
+              name: "abp10_economy-and-efficiency-of-plans_checkgroup",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -69,7 +69,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp10_compliance-with-the-law_check",
+              name: "abp10_compliance-with-the-law_checkgroup",
               rules: { required: "* Required" },
               props: {
                 options: [

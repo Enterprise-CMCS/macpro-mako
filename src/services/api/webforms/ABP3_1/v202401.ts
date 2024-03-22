@@ -521,7 +521,7 @@ export const v202401: FormSchema = {
                           },
                           {
                             rhf: "Checkbox",
-                            name: "abp3-1_select-of-EHB-bench-plan_one-or-more-EHBs-other-states_check",
+                            name: "abp3-1_select-of-EHB-bench-plan_one-or-more-EHBs-other-states_checkgroup",
                             label: "Select one or more EHBs from other states.",
                             labelStyling: "font-bold",
                             rules: { required: "* Required" },
@@ -1718,7 +1718,7 @@ export const v202401: FormSchema = {
         {
           slots: [
             {
-              name: "abp3-1_assurances_meets-scope_check",
+              name: "abp3-1_assurances_meets-scope_checkgroup",
               rhf: "Checkbox",
               rules: {
                 required: "* Required",
