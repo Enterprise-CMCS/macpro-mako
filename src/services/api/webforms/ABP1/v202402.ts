@@ -1226,7 +1226,7 @@ export const v202402: FormSchema = {
             "Any other information the state/territory wishes to provide about the population (optional)",
           slots: [
             {
-              name: "abp1_additional_info_textarea",
+              name: "abp1_additional_info_description_textarea",
               rhf: "Textarea",
             },
           ],

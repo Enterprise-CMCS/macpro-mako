@@ -337,7 +337,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Textarea",
-              name: "abp3_additional_information_textarea",
+              name: "abp3_additional_info_description_textarea",
             },
           ],
         },
