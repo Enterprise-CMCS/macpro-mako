@@ -343,7 +343,7 @@ export const v202402: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "abp1_target-criteria_income-target_radio",
+                            name: "abp1_target-criteria_income-target_radiogroup",
                             rules: {
                               required: "* Required",
                             },
@@ -369,7 +369,7 @@ export const v202402: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "abp1_target-criteria_income-def_radio",
+                            name: "abp1_target-criteria_income-def_radiogroup",
                             rules: {
                               required: "* Required",
                             },
@@ -381,7 +381,7 @@ export const v202402: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Radio",
-                                      name: "abp1_target-criteria_income-def-percent_radio",
+                                      name: "abp1_target-criteria_income-def-percent_radiogroup",
                                       rules: {
                                         required: "* Required",
                                       },
@@ -474,7 +474,7 @@ export const v202402: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Radio",
-                                      name: "abp1_target-criteria_income-def-specific_radio",
+                                      name: "abp1_target-criteria_income-def-specific_radiogroup",
                                       rules: {
                                         required: "* Required",
                                       },
@@ -1133,7 +1133,7 @@ export const v202402: FormSchema = {
           slots: [
             {
               rhf: "Radio",
-              name: "abp1_geo-area_geo-variation_radio",
+              name: "abp1_geo-area_geo-variation_radiogroup",
               rules: {
                 required: "* Required",
               },

@@ -13,7 +13,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Radio",
-              name: "abp3_benefit-package_details_radio",
+              name: "abp3_benefit-package_details_radiogroup",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -48,7 +48,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Radio",
-              name: "abp3_select-of-sect-1937-cov-opt_radio",
+              name: "abp3_select-of-sect-1937-cov-opt_radiogroup",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -60,7 +60,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "abp3_select-of-sect-1937-cov-opt_benchmark-benefit_package_options_radio",
+                            name: "abp3_select-of-sect-1937-cov-opt_benchmark-benefit_package_options_radiogroup",
                             rules: { required: "* Required" },
                             props: {
                               options: [
@@ -111,7 +111,7 @@ export const v202401: FormSchema = {
                                       slots: [
                                         {
                                           rhf: "Radio",
-                                          name: "abp3_select-of-sect-1937-cov-opt_secretary-approved_radio",
+                                          name: "abp3_select-of-sect-1937-cov-opt_secretary-approved_radiogroup",
                                           rules: { required: "* Required" },
                                           props: {
                                             options: [
@@ -124,7 +124,7 @@ export const v202401: FormSchema = {
                                                     slots: [
                                                       {
                                                         rhf: "Radio",
-                                                        name: "abp3_select-of-sect-1937-cov-opt_approved-state-plan-opts_radio",
+                                                        name: "abp3_select-of-sect-1937-cov-opt_approved-state-plan-opts_radiogroup",
                                                         rules: {
                                                           required:
                                                             "* Required",
@@ -205,7 +205,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "abp3_select-of-sect-1937-cov-opt_benchmark-equivalent_radio",
+                            name: "abp3_select-of-sect-1937-cov-opt_benchmark-equivalent_radiogroup",
                             rules: { required: "* Required" },
                             props: {
                               options: [
@@ -292,7 +292,7 @@ export const v202401: FormSchema = {
               label:
                 "The state/territory will use the following as its base benchmark plan as described at 45 CFR 156.100(a):",
               labelStyling: "font-bold",
-              name: "abp3_select-of-base-bench-plan_base-benchmark-plan_radio",
+              name: "abp3_select-of-base-bench-plan_base-benchmark-plan_radiogroup",
               rules: { required: "* Required" },
               props: {
                 options: [

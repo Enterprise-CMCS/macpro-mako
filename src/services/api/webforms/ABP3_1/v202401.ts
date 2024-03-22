@@ -13,7 +13,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Radio",
-              name: "abp3-1_benefit-package-details_amending-benefit_radio",
+              name: "abp3-1_benefit-package-details_amending-benefit_radiogroup",
               rules: {
                 required: "* Required",
               },
@@ -54,7 +54,7 @@ export const v202401: FormSchema = {
             "The state/territory selects as its Section 1937 coverage option the following type of benchmark benefit package or benchmark-equivalent benefit package under this Alternative Benefit Plan:",
           slots: [
             {
-              name: "abp3-1_select-of-sect-1937-coverage-opt_benchmark_radio",
+              name: "abp3-1_select-of-sect-1937-coverage-opt_benchmark_radiogroup",
               rhf: "Radio",
               rules: {
                 required: "* Required",
@@ -68,7 +68,7 @@ export const v202401: FormSchema = {
                       {
                         slots: [
                           {
-                            name: "abp3-1_select-of-sect-1937-coverage-opt_state-territory-bench_radio",
+                            name: "abp3-1_select-of-sect-1937-coverage-opt_state-territory-bench_radiogroup",
                             rhf: "Radio",
                             rules: {
                               required: "* Required",
@@ -117,7 +117,7 @@ export const v202401: FormSchema = {
                                     {
                                       slots: [
                                         {
-                                          name: "abp3-1_select-of-sect-1937-coverage-opt_benefits-based-on_radio",
+                                          name: "abp3-1_select-of-sect-1937-coverage-opt_benefits-based-on_radiogroup",
                                           rhf: "Radio",
                                           rules: {
                                             required: "* Required",
@@ -133,7 +133,7 @@ export const v202401: FormSchema = {
                                                     slots: [
                                                       {
                                                         rhf: "Radio",
-                                                        name: "abp3-1_select-of-sect-1937-coverage-opt_state-plan-benefits_radio",
+                                                        name: "abp3-1_select-of-sect-1937-coverage-opt_state-plan-benefits_radiogroup",
                                                         props: {
                                                           options: [
                                                             {
@@ -216,7 +216,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "abp3-1_select-of-sect-1937-coverage-opt_geographic-variation_radio",
+                            name: "abp3-1_select-of-sect-1937-coverage-opt_geographic-variation_radiogroup",
                             rules: {
                               required: "* Required",
                             },
@@ -316,7 +316,7 @@ export const v202401: FormSchema = {
               label:
                 "The state/territory will use the following as its EHB-benchmark option as described at 45 CFR 156.111(b)(2)(B), in compliance with the individual insurance market under 45 CFR 156.100 through 156.125:",
               labelStyling: "font-bold",
-              name: "abp3-1_select-of-EHB-bench-plan_option_radio",
+              name: "abp3-1_select-of-EHB-bench-plan_option_radiogroup",
               rhf: "Radio",
               descriptionAbove: true,
               descriptionStyling: "text-base text-black",
@@ -447,7 +447,7 @@ export const v202401: FormSchema = {
                       },
                       {
                         rhf: "Radio",
-                        name: "abp3-1_select-of-EHB-bench-plan_indicate-EHB-bench-plan_radio",
+                        name: "abp3-1_select-of-EHB-bench-plan_indicate-EHB-bench-plan_radiogroup",
                         label: "Type of EHB-benchmark plan",
                         labelStyling: "font-bold",
                         props: {
@@ -490,7 +490,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "abp3-1_select-of-EHB-bench-plan_EHB-bench-plan_radio",
+                            name: "abp3-1_select-of-EHB-bench-plan_EHB-bench-plan_radiogroup",
                             rules: {
                               required: "* Required",
                             },
@@ -1737,7 +1737,7 @@ export const v202401: FormSchema = {
                     dependency: {
                       conditions: [
                         {
-                          name: "abp3-1_select-of-EHB-bench-plan_option_radio",
+                          name: "abp3-1_select-of-EHB-bench-plan_option_radiogroup",
                           type: "expectedValue",
                           expectedValue: "EHB_benchmark_2017_plan_year",
                         },
