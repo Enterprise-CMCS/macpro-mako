@@ -1,7 +1,6 @@
 import {
   SEATOOL_AUTHORITIES,
   SEATOOL_STATUS,
-  getStatus,
   onemacSchema,
 } from "shared-types";
 
@@ -27,8 +26,6 @@ export const transform = (id: string) => {
   return onemacSchema.transform((data) => {
     if (data.seaActionType === "Extend") {
       // We should have a separate transform for TE new submission, and possibly for each new-submission that's unique (appk)... todo
-      const seatoolStatus = SEATOOL_STATUS.TE_PENDING;
-      const {stateStatus, cmsStatus} = getStatus(SEATOOL_STATUS.TE_PENDING);
       return {
         id,
         attachments: data.attachments,
@@ -48,9 +45,9 @@ export const transform = (id: string) => {
         actionTypeId: 9999,
         authorityId: getIdByAuthorityName(data.authority),
         authority: data.authority,
-        stateStatus: stateStatus,
-        cmsStatus: cmsStatus,
-        seatoolStatus: seatoolStatus,
+        stateStatus: "Submitted",
+        cmsStatus: "Requested",
+        seatoolStatus: SEATOOL_STATUS.PENDING,
         statusDate: getDateStringOrNullFromEpoc(data.statusDate),
         submissionDate: getDateStringOrNullFromEpoc(data.submissionDate),
         changedDate: getDateStringOrNullFromEpoc(data.changedDate),

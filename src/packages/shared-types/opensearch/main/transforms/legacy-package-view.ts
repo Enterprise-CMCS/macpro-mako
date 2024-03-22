@@ -1,5 +1,4 @@
 import {
-  getStatus,
   LegacyAdminChange,
   LegacyPackageAction,
   legacyPackageViewSchema,
@@ -16,8 +15,6 @@ export const transform = (id: string) => {
       data.submissionTimestamp,
     );
     if (data.componentType?.startsWith("waiverextension")) {
-      const seatoolStatus = SEATOOL_STATUS.TE_PENDING;
-      const {stateStatus, cmsStatus} = getStatus(SEATOOL_STATUS.TE_PENDING)
       return {
         id,
         submitterEmail: data.submitterEmail,
@@ -32,9 +29,9 @@ export const transform = (id: string) => {
           ? getIdByAuthorityName(data.temporaryExtensionType)
           : null,
         authority: data.temporaryExtensionType,
-        stateStatus,
-        cmsStatus,
-        seatoolStatus,
+        stateStatus: "Submitted",
+        cmsStatus: "Requested",
+        seatoolStatus: SEATOOL_STATUS.PENDING,
         statusDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
         submissionDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
         changedDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
@@ -46,8 +43,7 @@ export const transform = (id: string) => {
     return {
       id,
       submitterEmail: data.submitterEmail,
-      submitterName:
-        data.submitterName === "-- --" ? null : data.submitterName,
+      submitterName: data.submitterName === "-- --" ? null : data.submitterName,
       origin: isLegacyNoso(data) ? "SEATool" : "OneMAC",
       legacySubmissionTimestamp,
     };
