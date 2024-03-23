@@ -1,5 +1,4 @@
 import { Navigate, RouteObject } from "react-router-dom";
-import { IssueRai, issueRaiDefaultAction } from "./IssueRai";
 import {
   ToggleRaiResponseWithdraw,
   onValidSubmission as toggleRaiWithdrawSubmission,
@@ -26,11 +25,6 @@ export const packageActionRoutes: RouteObject = {
   path: "/action/:authority/:id",
   element: <ActionWrapper />,
   children: [
-    {
-      path: "issue-rai",
-      element: <IssueRai />,
-      action: issueRaiDefaultAction,
-    },
     {
       path: "withdraw-rai",
       element: <WithdrawRai />,

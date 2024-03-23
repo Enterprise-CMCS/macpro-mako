@@ -5,7 +5,6 @@ import { ZodSchema } from "zod";
 import { BreadCrumbs, SimplePageContainer } from "@/components";
 import { detailsAndActionsCrumbs } from "@/features";
 import { Action } from "shared-types";
-import { issueRaiSchema } from "./IssueRai";
 import { withdrawRaiSchema } from "./WithdrawRai";
 import { toggleRaiResponseWithdrawSchema } from "./ToggleRaiResponseWithdraw";
 import { withdrawPackageSchema } from "./WithdrawPackage";
@@ -14,7 +13,6 @@ import { useParams } from "@/components/Routing";
 import { tempExtensionSchema } from "./TemporaryExtension";
 
 const schemas = {
-  "issue-rai": issueRaiSchema,
   "withdraw-rai": withdrawRaiSchema,
   "enable-rai-withdraw": toggleRaiResponseWithdrawSchema,
   "disable-rai-withdraw": toggleRaiResponseWithdrawSchema,
@@ -25,7 +23,6 @@ const schemas = {
 type SchemaKeys = keyof typeof schemas;
 
 const actions: Record<SchemaKeys, Action> = {
-  "issue-rai": Action.ISSUE_RAI,
   "disable-rai-withdraw": Action.DISABLE_RAI_WITHDRAW,
   "enable-rai-withdraw": Action.ENABLE_RAI_WITHDRAW,
   "respond-to-rai": Action.RESPOND_TO_RAI,
