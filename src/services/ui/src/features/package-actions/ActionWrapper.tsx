@@ -5,24 +5,16 @@ import { ZodSchema } from "zod";
 import { BreadCrumbs, SimplePageContainer } from "@/components";
 import { detailsAndActionsCrumbs } from "@/features";
 import { Action } from "shared-types";
-import { toggleRaiResponseWithdrawSchema } from "./ToggleRaiResponseWithdraw";
-import { withdrawPackageSchema } from "./WithdrawPackage";
 import { useParams } from "@/components/Routing";
 import { tempExtensionSchema } from "./TemporaryExtension";
 
 const schemas = {
-  "enable-rai-withdraw": toggleRaiResponseWithdrawSchema,
-  "disable-rai-withdraw": toggleRaiResponseWithdrawSchema,
-  "withdraw-package": withdrawPackageSchema,
   "temporary-extension": tempExtensionSchema,
 } satisfies Record<string, ZodSchema<any>>;
 type SchemaKeys = keyof typeof schemas;
 
 const actions: Record<SchemaKeys, Action> = {
-  "disable-rai-withdraw": Action.DISABLE_RAI_WITHDRAW,
-  "enable-rai-withdraw": Action.ENABLE_RAI_WITHDRAW,
   "temporary-extension": Action.TEMP_EXTENSION,
-  "withdraw-package": Action.WITHDRAW_PACKAGE,
 };
 
 export const ActionWrapper = () => {
