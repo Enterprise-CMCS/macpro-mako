@@ -6,19 +6,12 @@ import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { unflatten } from "flat";
-import { zAttachmentOptional } from "@/utils";
 import { submit } from "@/api/submissionService";
 import * as Inputs from "@/components/Inputs";
-import { useForm } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
-type Attachments = keyof z.infer<typeof updateIdSchema>["attachments"];
 export const updateIdSchema = z.object({
   additionalInformation: z.string(),
-  attachments: z
-    .object({
-      other: zAttachmentOptional,
-    })
-    .default({}),
   newId: z.string(),
 });
 
@@ -55,7 +48,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 export const UpdateId = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const { id } = useParams() as { id: string; authority: Authority };
-  const form = useForm();
+  const form = useFormContext();
   SC.useDisplaySubmissionAlert(
     "ID Update submitted",
     `The ID Update for ${id} has been submitted.`,
@@ -101,11 +94,6 @@ export const UpdateId = () => {
               <Inputs.FormMessage />
             </Inputs.FormItem>
           )}
-        />
-        <SC.AttachmentsSection<Attachments>
-          attachments={[
-            { name: "Other", registerName: "other", required: false },
-          ]}
         />
         <SC.AdditionalInformation
           helperText="Please explain the reason for updating this ID."
