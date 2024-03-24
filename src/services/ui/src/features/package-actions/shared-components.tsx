@@ -153,23 +153,28 @@ export const SubmissionButtons = ({ onSubmit }: { onSubmit?: () => void }) => {
 
 export const PackageSection = () => {
   const { authority, id } = useParams() as { authority: Authority; id: string };
-
+  const lcAuthority = authority.toLowerCase();
+  // We should pass in the already lowercased Authority, right?  todo
   return (
     <section className="flex flex-col my-8 space-y-8">
       <div>
         <p>
-          {authority === Authority["1915b"] && "Waiver Number"}
-          {authority === Authority["CHIP_SPA"] && "Package ID"}
-          {authority === Authority["MED_SPA"] && "Package ID"}
+          {[Authority.CHIP_SPA, Authority.MED_SPA].includes(
+            authority.toLowerCase() as Authority,
+          ) && "Package ID"}
+          {[Authority["1915b"], Authority["1915c"]].includes(
+            authority.toLowerCase() as Authority,
+          ) && "Waiver Number"}
         </p>
         <p className="text-xl">{id}</p>
       </div>
       <div>
         <p>Authority</p>
         <p className="text-xl">
-          {authority === Authority["1915b"] && "1915(b) Waiver"}
-          {authority === Authority["CHIP_SPA"] && "CHIP SPA"}
-          {authority === Authority["MED_SPA"] && "Medicaid SPA"}
+          {lcAuthority === Authority["1915b"] && "1915(b) Waiver"}
+          {lcAuthority === Authority["1915c"] && "1915(c) Waiver"}
+          {lcAuthority === Authority["CHIP_SPA"] && "CHIP SPA"}
+          {lcAuthority === Authority["MED_SPA"] && "Medicaid SPA"}
         </p>
       </div>
     </section>
@@ -223,7 +228,7 @@ export const ErrorBanner = () => {
                   <li className="ml-8 my-2" key={idx}>
                     {err.message as string}
                   </li>
-                )
+                ),
             )}
           </ul>
         </Alert>
@@ -293,7 +298,7 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
       });
       alert.setBannerShow(true);
       alert.setBannerDisplayOn(
-        location.state?.from?.split("?")[0] ?? "/dashboard"
+        location.state?.from?.split("?")[0] ?? "/dashboard",
       );
       navigate(location.state?.from ?? "/dashboard");
     }
@@ -304,7 +309,7 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
 const filterUndefinedValues = (obj: Record<any, any>) => {
   if (obj) {
     return Object.fromEntries(
-      Object.entries(obj).filter(([key, value]) => value !== undefined)
+      Object.entries(obj).filter(([key, value]) => value !== undefined),
     );
   }
   return {};
@@ -312,6 +317,6 @@ const filterUndefinedValues = (obj: Record<any, any>) => {
 
 // Types
 export type ActionFunction = (
-  args: ActionFunctionArgs
+  args: ActionFunctionArgs,
 ) => Promise<{ submitted: boolean }>;
 export type ActionFunctionReturnType = Awaited<ReturnType<ActionFunction>>;
