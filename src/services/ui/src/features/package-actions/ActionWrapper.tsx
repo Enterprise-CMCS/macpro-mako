@@ -7,14 +7,17 @@ import { detailsAndActionsCrumbs } from "@/features";
 import { Action } from "shared-types";
 import { useParams } from "@/components/Routing";
 import { tempExtensionSchema } from "./TemporaryExtension";
+import { updateIdSchema } from "./UpdateId";
 
 const schemas = {
   "temporary-extension": tempExtensionSchema,
+  "update-id": updateIdSchema,
 } satisfies Record<string, ZodSchema<any>>;
 type SchemaKeys = keyof typeof schemas;
 
 const actions: Record<SchemaKeys, Action> = {
   "temporary-extension": Action.TEMP_EXTENSION,
+  "update-id": Action.UPDATE_ID,
 };
 
 export const ActionWrapper = () => {
