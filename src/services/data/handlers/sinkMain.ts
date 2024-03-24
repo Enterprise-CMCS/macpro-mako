@@ -31,15 +31,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           break;
       }
     }
-    try {
-      await os.bulkUpdateData(osDomain, index, docs);
-    } catch (error: any) {
-      logError({
-        type: ErrorType.BULKUPDATE,
-        metadata: { event: loggableEvent },
-      });
-      throw error;
-    }
   } catch (error) {
     logError({ type: ErrorType.UNKNOWN, metadata: { event: loggableEvent } });
     throw error;
