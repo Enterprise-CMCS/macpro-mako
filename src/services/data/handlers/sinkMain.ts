@@ -151,12 +151,30 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
               return opensearch.main.removeAppkChild
                 .transform(id)
                 .safeParse(record);
-            case Action.UPDATE_ID:
+            case Action.UPDATE_ID: {
               console.log("UPDATE_ID detected...");
               await bulkUpdateDataWrapper(docs);
               docs = [];
-              console.log("yay");
-            // get the main index for the id, push it to docs
+              const item = await os.getItem(osDomain, index, id);
+              if (item === undefined) {
+                return {
+                  error: "An error occured parsing the event.",
+                };
+              }
+              // TODO:  tombstone the old, or pop off the origin
+              return {
+                data: {
+                  id: record.newId,
+                  appkParentId: item._source.appkParentId,
+                  origin: item._source.origin,
+                  raiWithdrawEnabled: item._source.raiWithdrawEnabled,
+                  submitterName: item._source.submitterName,
+                  submitterEmail: item._source.submitterEmail,
+                },
+                success: true,
+                error: undefined,
+              };
+            }
           }
         })();
         if (result === undefined) {
