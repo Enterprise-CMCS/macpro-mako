@@ -13,6 +13,7 @@ import {
   removeAppkChild,
   respondToRai,
   toggleRaiResponseWithdraw,
+  updateId,
   withdrawPackage,
   withdrawRai,
 } from "./packageActions";
@@ -53,7 +54,7 @@ export const handler = async (event: APIGatewayEvent) => {
     const authDetails = getAuthDetails(event);
     const userAttr = await lookupUserAttributes(
       authDetails.userId,
-      authDetails.poolId
+      authDetails.poolId,
     );
 
     if (actionType === Action.REMOVE_APPK_CHILD) {
@@ -94,6 +95,9 @@ export const handler = async (event: APIGatewayEvent) => {
         break;
       case Action.WITHDRAW_RAI:
         await withdrawRai(body, result._source);
+        break;
+      case Action.UPDATE_ID:
+        await updateId(body);
         break;
       default:
         throw `No ${actionType} action available`;

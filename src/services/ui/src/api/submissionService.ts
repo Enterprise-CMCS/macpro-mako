@@ -156,8 +156,6 @@ export const submit = async <T extends Record<string, unknown>>({
   user,
   authority,
 }: SubmissionServiceParameters<T>): Promise<SubmissionServiceResponse> => {
-  console.log("GO HERE.. about to throw");
-  throw "f";
   if (data?.attachments) {
     // Drop nulls and non arrays
     const attachments = buildAttachmentKeyValueArr(

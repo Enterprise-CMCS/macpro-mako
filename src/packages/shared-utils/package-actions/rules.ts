@@ -82,10 +82,7 @@ const arWithdrawPackage: ActionRule = {
 };
 const arUpdateId: ActionRule = {
   action: Action.UPDATE_ID,
-  check: (checker, user) =>
-    !checker.isTempExtension &&
-    !checker.hasStatus(finalDispositionStatuses) &&
-    isCmsWriteUser(user),
+  check: (checker, user) => !checker.isTempExtension && isCmsWriteUser(user),
 };
 
 // TODO: Add rule for remove-appk-child

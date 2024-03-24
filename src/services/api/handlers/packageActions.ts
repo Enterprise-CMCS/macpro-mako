@@ -73,7 +73,7 @@ export async function issueRai(body: RaiIssue) {
         "RAI Validation Error. The following record failed to parse: ",
         JSON.stringify(body),
         "Because of the following Reason(s):",
-        result.error.message
+        result.error.message,
       );
     } else {
       await produceMessage(
@@ -82,7 +82,7 @@ export async function issueRai(body: RaiIssue) {
         JSON.stringify({
           ...result.data,
           actionType: Action.ISSUE_RAI,
-        })
+        }),
       );
     }
 
@@ -124,7 +124,7 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
       // Medicaid is handled differently from the rest.
       if (
         [Authority.MED_SPA, Authority["1915b"], Authority["1915c"]].includes(
-          body.authority.toLowerCase() as Authority
+          body.authority.toLowerCase() as Authority,
         )
       ) {
         // Set Received Date to null
@@ -143,7 +143,7 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
               Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
               Status_Memo = ${buildStatusMemoQuery(
                 body.id,
-                "RAI Response Withdrawn"
+                "RAI Response Withdrawn",
               )}
             WHERE ID_Number = '${result.data.id}'
         `);
@@ -166,13 +166,13 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
               Status_Memo = ${buildStatusMemoQuery(
                 result.data.id,
                 `RAI Response Withdrawn.  Response was received ${formatSeatoolDate(
-                  document.raiReceivedDate
+                  document.raiReceivedDate,
                 )} and withdrawn ${new Date().toLocaleString("en-US", {
                   timeZone: "America/New_York",
                   year: "numeric",
                   month: "2-digit",
                   day: "2-digit",
-                })}`
+                })}`,
               )}
             WHERE ID_Number = '${result.data.id}'
         `);
@@ -185,7 +185,7 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
         JSON.stringify({
           ...result.data,
           actionType: Action.WITHDRAW_RAI,
-        })
+        }),
       );
 
       // Commit transaction
@@ -242,7 +242,7 @@ export async function respondToRai(body: RaiResponse, document: any) {
           Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
           Status_Memo = ${buildStatusMemoQuery(
             body.id,
-            "RAI Response Received"
+            "RAI Response Received",
           )}
         WHERE ID_Number = '${body.id}'
     `;
@@ -260,7 +260,7 @@ export async function respondToRai(body: RaiResponse, document: any) {
         "RAI Validation Error. The following record failed to parse: ",
         JSON.stringify(body),
         "Because of the following Reason(s):",
-        result.error.message
+        result.error.message,
       );
     } else {
       console.log(JSON.stringify(result, null, 2));
@@ -271,7 +271,7 @@ export async function respondToRai(body: RaiResponse, document: any) {
           ...result.data,
           responseDate: today,
           actionType: Action.RESPOND_TO_RAI,
-        })
+        }),
       );
     }
 
@@ -297,7 +297,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
       "Withdraw Package event validation error. The following record failed to parse: ",
       JSON.stringify(body),
       "Because of the following Reason(s):",
-      result.error.message
+      result.error.message,
     );
     return response({
       statusCode: 400,
@@ -317,7 +317,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
         Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
         Status_Memo = ${buildStatusMemoQuery(
           result.data.id,
-          "Package Withdrawn"
+          "Package Withdrawn",
         )}
       WHERE ID_Number = '${body.id}'
   `;
@@ -330,7 +330,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
     await produceMessage(
       TOPIC_NAME,
       body.id,
-      JSON.stringify({ ...result.data, actionType: Action.WITHDRAW_PACKAGE })
+      JSON.stringify({ ...result.data, actionType: Action.WITHDRAW_PACKAGE }),
     );
     // Commit transaction
     await transaction.commit();
@@ -350,7 +350,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
 
 export async function toggleRaiResponseWithdraw(
   body: ToggleWithdrawRaiEnabled,
-  toggle: boolean
+  toggle: boolean,
 ) {
   const result = toggleWithdrawRaiEnabledSchema.safeParse({
     ...body,
@@ -361,7 +361,7 @@ export async function toggleRaiResponseWithdraw(
       "Toggle Rai Response Withdraw Enable event validation error. The following record failed to parse: ",
       JSON.stringify(body),
       "Because of the following Reason(s):",
-      result.error.message
+      result.error.message,
     );
     return response({
       statusCode: 400,
@@ -379,7 +379,7 @@ export async function toggleRaiResponseWithdraw(
           ? Action.ENABLE_RAI_WITHDRAW
           : Action.DISABLE_RAI_WITHDRAW,
         ...result.data,
-      })
+      }),
     );
 
     return response({
@@ -423,7 +423,7 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
           Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
           Status_Memo = ${buildStatusMemoQuery(
             result.data.id,
-            "Package Withdrawn"
+            "Package Withdrawn",
           )}
         WHERE ID_Number = '${doc.id}'
     `);
@@ -433,7 +433,7 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
       JSON.stringify({
         actionType: Action.REMOVE_APPK_CHILD,
         ...result.data,
-      })
+      }),
     );
     await transaction.commit();
   } catch (err) {
@@ -448,4 +448,14 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
     // Close pool
     await pool.close();
   }
+}
+
+export async function updateId(body: any) {
+  console.log("CMS updating the ID of a package.");
+  return response({
+    statusCode: 200,
+    body: {
+      message: "record successfully submitted",
+    },
+  });
 }
