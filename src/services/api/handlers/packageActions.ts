@@ -479,7 +479,7 @@ export async function updateId(body: any) {
   try {
     await transaction.begin();
 
-    // Copy the record to a new ID_Number, dropping UUID and replica_id
+    // Copy State_Plan row, dropping UUID and replica_id
     await transaction.request().query(`
       DECLARE @columns NVARCHAR(MAX), @sql NVARCHAR(MAX), @newId NVARCHAR(50), @originalId NVARCHAR(50);
 
@@ -493,6 +493,14 @@ export async function updateId(body: any) {
       
       SET @sql = 'INSERT INTO SEA.dbo.State_Plan (ID_Number, ' + @columns + ') SELECT ''' + @newId + ''' as ID_Number, ' + @columns + ' FROM SEA.dbo.State_Plan WHERE ID_Number = ''' + @originalId + '''';
       EXEC sp_executesql @sql;
+    `);
+
+    // Copy RAI rows
+    await transaction.request().query(`
+      INSERT INTO RAI (ID_Number, RAI_REQUESTED_DATE, RAI_RECEIVED_DATE, RAI_WITHDRAWN_DATE)
+        SELECT '${result.data.newId}', RAI_REQUESTED_DATE, RAI_RECEIVED_DATE, RAI_WITHDRAWN_DATE
+        FROM RAI
+        WHERE ID_Number = '${body.id}';
     `);
     await produceMessage(
       TOPIC_NAME,
