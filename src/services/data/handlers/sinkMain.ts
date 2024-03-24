@@ -21,22 +21,13 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
         case "aws.onemac.migration.cdc":
-          docs.push(
-            ...(await onemac(event.records[topicPartition], topicPartition)),
-          );
+          await onemac(event.records[topicPartition], topicPartition);
           break;
         case "aws.seatool.ksql.onemac.agg.State_Plan":
-          docs.push(
-            ...(await ksql(event.records[topicPartition], topicPartition)),
-          );
+          await ksql(event.records[topicPartition], topicPartition);
           break;
         case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
-          docs.push(
-            ...(await changed_date(
-              event.records[topicPartition],
-              topicPartition,
-            )),
-          );
+          await changed_date(event.records[topicPartition], topicPartition);
           break;
       }
     }
@@ -97,11 +88,11 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       });
     }
   }
-  return docs;
+  await bulkUpdateDataWrapper(docs);
 };
 
 const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
-  const docs: any[] = [];
+  let docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
     try {
@@ -136,7 +127,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
 
       // Handle everything else
       if (record.origin === "micro") {
-        const result = (() => {
+        const result = await (async () => {
           switch (record?.actionType) {
             case "new-submission":
             case undefined:
@@ -160,6 +151,12 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
               return opensearch.main.removeAppkChild
                 .transform(id)
                 .safeParse(record);
+            case Action.UPDATE_ID:
+              console.log("UPDATE_ID detected...");
+              await bulkUpdateDataWrapper(docs);
+              docs = [];
+              console.log("yay");
+            // get the main index for the id, push it to docs
           }
         })();
         if (result === undefined) {
@@ -187,7 +184,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       });
     }
   }
-  return docs;
+  await bulkUpdateDataWrapper(docs);
 };
 
 const changed_date = async (
@@ -231,5 +228,16 @@ const changed_date = async (
       });
     }
   }
-  return docs;
+  await bulkUpdateDataWrapper(docs);
 };
+
+async function bulkUpdateDataWrapper(docs: any[]) {
+  try {
+    await os.bulkUpdateData(process.env.osDomain!, index, docs);
+  } catch (error: any) {
+    logError({
+      type: ErrorType.BULKUPDATE,
+    });
+    throw error;
+  }
+}
