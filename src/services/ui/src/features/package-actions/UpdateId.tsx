@@ -1,4 +1,4 @@
-import { Alert, FAQ_TAB } from "@/components";
+import { Alert } from "@/components";
 import { useParams } from "react-router-dom";
 import * as SC from "@/features/package-actions/shared-components";
 import { z } from "zod";
@@ -9,8 +9,6 @@ import { unflatten } from "flat";
 import { zAttachmentOptional } from "@/utils";
 import { submit } from "@/api/submissionService";
 import * as Inputs from "@/components/Inputs";
-import { Link } from "react-router-dom";
-import * as Content from "@/components";
 import { useForm } from "react-hook-form";
 
 type Attachments = keyof z.infer<typeof updateIdSchema>["attachments"];
@@ -75,7 +73,10 @@ export const UpdateId = () => {
         </strong>
       </SC.ActionDescription>
       <SC.PackageSection />
-      <form onSubmit={handleSubmit}>
+      <form
+        className="my-6 space-y-8 mx-auto justify-center flex flex-col"
+        onSubmit={handleSubmit}
+      >
         <Inputs.FormField
           control={form.control}
           name="newId"
