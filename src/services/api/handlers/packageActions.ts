@@ -27,12 +27,14 @@ import {
   Authority,
   removeAppkChildSchema,
   opensearch,
+  updateIdSchema,
 } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
 import { formatSeatoolDate, seaToolFriendlyTimestamp } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
+import { getPackageChangelog } from "../libs/package";
 
 const TOPIC_NAME = process.env.topicName as string;
 
@@ -452,6 +454,71 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
 
 export async function updateId(body: any) {
   console.log("CMS updating the ID of a package.");
+
+  const result = updateIdSchema.safeParse(body);
+  if (!result.success) {
+    console.error(
+      "validation error:  The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message,
+    );
+    return response({
+      statusCode: 400,
+      body: {
+        message: "Event validation error",
+      },
+    });
+  }
+  console.log(JSON.stringify(result.data, null, 2));
+
+  const now = new Date().getTime();
+  const pool = await sql.connect(config);
+  const transaction = new sql.Transaction(pool);
+
+  try {
+    await transaction.begin();
+
+    // Copy the record to a new ID_Number, dropping UUID and replica_id
+    await transaction.request().query(`
+      DECLARE @columns NVARCHAR(MAX), @sql NVARCHAR(MAX), @newId NVARCHAR(50), @originalId NVARCHAR(50);
+
+      SET @newId = '${result.data.newId}';
+      SET @originalId = '${body.id}';
+      
+      SELECT @columns = COALESCE(@columns + ', ', '') + QUOTENAME(column_name)
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE table_name = 'State_Plan' AND column_name != 'ID_Number' AND column_name != 'UUID' AND column_name != 'replica_id' AND table_schema = 'dbo'
+        ORDER BY ordinal_position;
+      
+      SET @sql = 'INSERT INTO SEA.dbo.State_Plan (ID_Number, ' + @columns + ') SELECT ''' + @newId + ''' as ID_Number, ' + @columns + ' FROM SEA.dbo.State_Plan WHERE ID_Number = ''' + @originalId + '''';
+      EXEC sp_executesql @sql;
+    `);
+    await produceMessage(
+      TOPIC_NAME,
+      body.id,
+      JSON.stringify({
+        actionType: Action.UPDATE_ID,
+        timestamp: now,
+        ...result.data,
+      }),
+    );
+    await transaction.commit();
+  } catch (err) {
+    // Rollback and log
+    await transaction.rollback();
+    console.error("Error executing query:", err);
+    return response({
+      statusCode: 500,
+      body: err instanceof Error ? { message: err.message } : err,
+    });
+  } finally {
+    // Close pool
+    await pool.close();
+  }
+
+  throw "NOMINAL STOP";
+
   return response({
     statusCode: 200,
     body: {
