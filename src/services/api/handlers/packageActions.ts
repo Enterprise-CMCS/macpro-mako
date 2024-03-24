@@ -525,8 +525,6 @@ export async function updateId(body: any) {
     await pool.close();
   }
 
-  throw "NOMINAL STOP";
-
   return response({
     statusCode: 200,
     body: {
