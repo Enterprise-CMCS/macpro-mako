@@ -144,16 +144,6 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
         effect: { type: "show" },
       },
     },
-    // {
-    //   rhf: "Input",
-    //   label: "Authorization",
-    //   labelClassName: "font-bold",
-    //   name: `${namePrefix}_authorization`,
-    //   rules: { required: "* Required" },
-    //   props: {
-    //     className: "w-[300px]",
-    //   },
-    // },
     {
       rhf: "Select",
       label: "Authorization",
