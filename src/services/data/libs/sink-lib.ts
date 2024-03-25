@@ -1,6 +1,8 @@
 import pino from "pino";
 const logger = pino();
 
+import * as os from "./../../../libs/opensearch-lib";
+
 export function getTopic(topicPartition: string) {
   return topicPartition.split("--").pop()?.split("-").slice(0, -1)[0];
 }
@@ -45,7 +47,7 @@ export const logError = ({
         metadata,
       }),
     },
-    ErrorMessages[type]
+    ErrorMessages[type],
   );
 };
 
@@ -79,3 +81,18 @@ const prettyPrintJsonInObject = (obj: any): any => {
   traverseAndPrettyPrint(obj);
   return obj;
 };
+
+export async function bulkUpdateDataWrapper(
+  domain: string,
+  index: string,
+  docs: any[],
+) {
+  try {
+    await os.bulkUpdateData(process.env.osDomain!, index, docs);
+  } catch (error: any) {
+    logError({
+      type: ErrorType.BULKUPDATE,
+    });
+    throw error;
+  }
+}

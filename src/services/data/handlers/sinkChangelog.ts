@@ -3,7 +3,12 @@ import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
 import { Action, KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
-import { ErrorType, getTopic, logError } from "../libs/sink-lib";
+import {
+  ErrorType,
+  bulkUpdateDataWrapper,
+  getTopic,
+  logError,
+} from "../libs/sink-lib";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
@@ -30,7 +35,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
       }
     }
     try {
-      await os.bulkUpdateData(osDomain, index, docs);
+      await bulkUpdateDataWrapper(osDomain, index, docs);
     } catch (error: any) {
       logError({
         type: ErrorType.BULKUPDATE,
@@ -95,7 +100,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         // Push to docs so it can be indexed, with some differences if app k
         if (actionType === Action.UPDATE_ID) {
           console.log("UPDATE_ID detected...");
-          await bulkUpdateDataWrapper(docs);
+          await bulkUpdateDataWrapper(osDomain, index, docs);
           docs = [];
           const items = await os.search(osDomain, index, {
             from: 0,
@@ -158,7 +163,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       });
     }
   }
-  await bulkUpdateDataWrapper(docs);
+  await bulkUpdateDataWrapper(osDomain, index, docs);
 };
 
 const legacyAdminChanges = async (
@@ -221,14 +226,3 @@ const legacyAdminChanges = async (
   }
   return docs;
 };
-
-async function bulkUpdateDataWrapper(docs: any[]) {
-  try {
-    await os.bulkUpdateData(process.env.osDomain!, index, docs);
-  } catch (error: any) {
-    logError({
-      type: ErrorType.BULKUPDATE,
-    });
-    throw error;
-  }
-}
