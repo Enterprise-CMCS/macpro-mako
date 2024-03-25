@@ -17,7 +17,6 @@ const index = "changelog";
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   const loggableEvent = { ...event, records: "too large to display" };
-  const docs: any[] = [];
   try {
     for (const topicPartition of Object.keys(event.records)) {
       const topic = getTopic(topicPartition);
@@ -33,15 +32,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           await onemac(event.records[topicPartition], topicPartition);
           break;
       }
-    }
-    try {
-      await bulkUpdateDataWrapper(osDomain, index, docs);
-    } catch (error: any) {
-      logError({
-        type: ErrorType.BULKUPDATE,
-        metadata: { event: loggableEvent },
-      });
-      throw error;
     }
   } catch (error) {
     logError({ type: ErrorType.UNKNOWN, metadata: { event: loggableEvent } });
@@ -224,5 +214,5 @@ const legacyAdminChanges = async (
       });
     }
   }
-  return docs;
+  await bulkUpdateDataWrapper(osDomain, index, docs);
 };
