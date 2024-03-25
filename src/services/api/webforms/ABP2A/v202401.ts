@@ -81,6 +81,7 @@ export const v202401: FormSchema = {
                       "state_territory_must_have_a_process_that_meets_exemption_criteria",
                   },
                   {
+                    label: "",
                     styledLabel: [
                       {
                         text: "Once an individual is identified, the state/territory assures it will effectively inform the individual of the following:",
@@ -207,6 +208,7 @@ export const v202401: FormSchema = {
               props: {
                 options: [
                   {
+                    label: "",
                     styledLabel: [
                       {
                         text: "The state/territory assures it will inform the individual of the following:",

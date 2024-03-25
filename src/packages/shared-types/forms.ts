@@ -68,7 +68,7 @@ export type RHFTextListItem = {
 type RHFTextItemType = "br" | "brWrap" | "link" | "bold" | "italic" | "list";
 
 export type RHFOption = {
-  label?: string;
+  label: string;
   value: string;
   styledLabel?: RHFTextField;
   dependency?: DependencyRule;
