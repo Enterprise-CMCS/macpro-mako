@@ -34,7 +34,6 @@ import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
 import { formatSeatoolDate, seaToolFriendlyTimestamp } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
-import { getPackageChangelog } from "../libs/package";
 
 const TOPIC_NAME = process.env.topicName as string;
 
@@ -473,9 +472,9 @@ export async function updateId(body: any) {
   console.log(JSON.stringify(result.data, null, 2));
 
   const now = new Date().getTime();
+  const today = seaToolFriendlyTimestamp();
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
-
   try {
     await transaction.begin();
 
@@ -502,6 +501,27 @@ export async function updateId(body: any) {
         FROM RAI
         WHERE ID_Number = '${body.id}';
     `);
+
+    // Put Status Memo notes in the old package
+    await transaction.request().query(`
+      UPDATE SEA.dbo.State_Plan
+      SET 
+        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${
+          SEATOOL_STATUS.TERMINATED
+        }'),
+        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+        Status_Memo = ${buildStatusMemoQuery(body.id, `Package Terminated via ID Update: this package was copied to ${result.data.newId} and then terminated.`)}
+      WHERE ID_Number = '${body.id}'
+    `);
+
+    // Put Status Memo notes in the new package; this could be combined into the insert above, for speed.
+    await transaction.request().query(`
+    UPDATE SEA.dbo.State_Plan
+      SET 
+        Status_Memo = ${buildStatusMemoQuery(body.id, `Package Created via ID Update: this package was copied from ${body.id}.`)}
+      WHERE ID_Number = '${result.data.newId}'
+    `);
+
     await produceMessage(
       TOPIC_NAME,
       body.id,
