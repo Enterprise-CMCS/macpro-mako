@@ -151,7 +151,10 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
                   error: "An error occured parsing the event.",
                 };
               }
-              // TODO:  tombstone the old, or pop off the origin
+              docs.push({
+                id,
+                origin: null,
+              });
               return {
                 data: {
                   id: record.newId,
