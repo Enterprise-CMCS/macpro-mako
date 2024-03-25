@@ -61,7 +61,7 @@ export const v202401: FormSchema = {
       form: [
         {
           description:
-            "These assurances must be made by the state/territory if the Adult eligibility group is included in the ABP population.",
+            "These assurances must be made by the state/territory if the ''adult'' eligibility group is included in the ABP population.",
           slots: [
             {
               rhf: "Checkbox",
@@ -71,7 +71,7 @@ export const v202401: FormSchema = {
                 options: [
                   {
                     label:
-                      "The state/territory shall enroll all participants in the Individuals at or below 133% FPL age 19 through 64 (Section 1902(a)(10)(A)(i)(VIII)) eligibility group in the ABP specified in this state plan amendment, except as follows: A beneficiary in the eligibility group at Section 1902(a)(10)(A)(i)(VIII) who is determined to meet one of the exemption criteria at 45 CFR 440.315 will receive a choice of a benefit package that is either an ABP that includes essential health benefits and is subject to all Section 1937 requirements or an ABP that is the state/territory’s approved Medicaid state plan not subject to Section 1937 requirements. The state/territory’s approved Medicaid state plan includes all approved state plan programs based on any state plan authority and approved Section 1915(c) waivers, if the state has amended them to include the eligibility group at Section 1902(a)(10)(A)(i)(VIII).",
+                      "The state/territory shall enroll all participants in the “individuals age 19 or older and under age 65 at or below 133% FPL” (Section 1902(a)(10)(A)(i)(VIII)) eligibility group in the ABP specified in this state plan amendment, except as follows: A beneficiary in the eligibility group at Section 1902(a)(10)(A)(i)(VIII) who is determined to meet one of the exemption criteria at 45 CFR 440.315 will receive a choice of a benefit package that is either an ABP that includes essential health benefits and is subject to all Section 1937 requirements or an ABP that is the state/territory’s approved Medicaid state plan not subject to Section 1937 requirements. The state/territory’s approved Medicaid state plan includes all approved state plan programs based on any state plan authority and approved Section 1915(c) waivers, if the state has amended them to include the eligibility group at Section 1902(a)(10)(A)(i)(VIII).",
                     value: "at_or_bellow_133_age_19_through_64",
                   },
                   {
@@ -133,7 +133,7 @@ export const v202401: FormSchema = {
       form: [
         {
           description:
-            "The state/territory must select a base benchmark plan as the basis for providing essential health benefits in its benchmark or benchmark-equivalent package.",
+            "How will the state/territory inform individuals about their options for enrollment?",
           slots: [
             {
               rhf: "Checkbox",
@@ -211,15 +211,19 @@ export const v202401: FormSchema = {
                     label: "",
                     styledLabel: [
                       {
-                        text: "The state/territory assures it will inform the individual of the following:",
+                        text: "The state/territory assures it will document in the exempt individual's eligibility file that the individual:",
                         type: "br",
                       },
                       {
-                        text: "A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements",
+                        text: "A. Was informed in accordance with this section prior to enrollment",
                         type: "br",
                       },
                       {
-                        text: "B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits",
+                        text: "B. Was given ample time to arrive at an informed choice",
+                        type: "br",
+                      },
+                      {
+                        text: " C. Chose to enroll in ABP coverage subject to Section 1937 requirements or defined as the state/territory's approved Medicaid state plan not subject to Section 1937 requirements",
                         type: "br",
                       },
                     ],
