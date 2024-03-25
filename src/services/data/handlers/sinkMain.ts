@@ -143,20 +143,20 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
                 .safeParse(record);
             case Action.UPDATE_ID: {
               console.log("UPDATE_ID detected...");
+              // Immediately index all prior documents
               await bulkUpdateDataWrapper(docs);
+              // Reset docs back to empty
               docs = [];
               const item = await os.getItem(osDomain, index, id);
               if (item === undefined) {
                 return {
                   error: "An error occured parsing the event.",
+                  success: null,
                 };
               }
-              docs.push({
-                id,
-                origin: null,
-              });
-              return {
-                data: {
+              docs.push(
+                // Copy of record with new id
+                {
                   id: record.newId,
                   appkParentId: item._source.appkParentId,
                   origin: item._source.origin,
@@ -164,16 +164,17 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
                   submitterName: item._source.submitterName,
                   submitterEmail: item._source.submitterEmail,
                 },
-                success: true,
-                error: undefined,
-              };
+                // This removes the old record from the app
+                {
+                  id,
+                  origin: null,
+                },
+              );
+              return undefined;
             }
           }
         })();
         if (result === undefined) {
-          console.log(
-            `no action to take for ${id} action ${record.actionType}.  Continuing...`,
-          );
           continue;
         }
         if (!result?.success) {
