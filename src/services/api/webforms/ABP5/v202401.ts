@@ -48,6 +48,33 @@ const providerQualificationsOptions = [
   { label: "Other", value: "other" },
 ];
 
+const authorizationOptions = [
+  {
+    label: "None",
+    value: "none",
+  },
+  {
+    label: "Prior authorization",
+    value: "prior_authorization",
+  },
+  {
+    label: "Authorization required in excess of limitation",
+    value: "excess_of_limitation",
+  },
+  {
+    label: "Concurrent authorization",
+    value: "concurrent_authorization",
+  },
+  {
+    label: "Retroactive authorization",
+    value: "retroactive_authorization",
+  },
+  {
+    label: "Other",
+    value: "other",
+  },
+];
+
 interface SubsectionData {
   title: string;
   namePrefix: string;
@@ -117,14 +144,25 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
         effect: { type: "show" },
       },
     },
+    // {
+    //   rhf: "Input",
+    //   label: "Authorization",
+    //   labelClassName: "font-bold",
+    //   name: `${namePrefix}_authorization`,
+    //   rules: { required: "* Required" },
+    //   props: {
+    //     className: "w-[300px]",
+    //   },
+    // },
     {
-      rhf: "Input",
+      rhf: "Select",
       label: "Authorization",
       labelClassName: "font-bold",
       name: `${namePrefix}_authorization`,
       rules: { required: "* Required" },
       props: {
         className: "w-[300px]",
+        options: authorizationOptions,
       },
     },
     {
