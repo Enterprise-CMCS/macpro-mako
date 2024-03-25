@@ -63,7 +63,7 @@ export const ToggleRaiResponseWithdraw = ({ isEnabled }: Props) => {
     raiTypeText === "Enable"
       ? "The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied."
       : "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
-    "Pending",
+    (data) => false,
     id,
   );
 

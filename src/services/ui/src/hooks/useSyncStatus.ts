@@ -5,15 +5,16 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { type SEATOOL_STATUS } from "shared-types";
 import { queryClient } from "@/router";
+import { ItemResult } from "shared-types/opensearch/main";
 
 export type SeaStatus = (typeof SEATOOL_STATUS)[keyof typeof SEATOOL_STATUS];
 
 export const useSyncStatus = ({
-  expectedStatus,
   path,
+  isCorrectStatus,
 }: {
-  expectedStatus: SeaStatus;
   path: Route | "..";
+  isCorrectStatus: (data: ItemResult) => boolean;
 }) => {
   const navigate = useNavigate();
   const [runQuery, setRunQuery] = useState(false);
@@ -24,6 +25,7 @@ export const useSyncStatus = ({
     queryKey: ["record", id],
     queryFn: () => getItem(id),
     refetchInterval: (data, query) => {
+      // const hasStatusChanged = (data: ItemResult) => functionFromUseSyncStatus(data);
       // don't want to hammer it if nothing is happening likely something is wrong at this point)
       if (query.state.dataUpdateCount > 10) {
         queryClient.invalidateQueries(["actions", id]);
@@ -31,14 +33,8 @@ export const useSyncStatus = ({
         return false;
       }
 
-      console.log("status in seatool is: ", data?._source.seatoolStatus);
-      console.log("status expected is: ", expectedStatus);
-      console.log(
-        "what is this",
-        expectedStatus === data?._source.seatoolStatus,
-      );
       // return to dashboard when the status has successfuly updated
-      if (data && data._source.seatoolStatus === expectedStatus) {
+      if (data && isCorrectStatus(data)) {
         queryClient.invalidateQueries(["actions", id]);
         navigate(path);
         return false;

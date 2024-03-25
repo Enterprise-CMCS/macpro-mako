@@ -87,7 +87,7 @@ export const WithdrawPackage = () => {
   SC.useDisplaySubmissionAlert(
     "Package withdrawn",
     `The package ${id} has been withdrawn.`,
-    "Withdrawn",
+    (data) => false,
     id,
   );
 

@@ -31,6 +31,7 @@ import {
   useSubmit,
 } from "react-router-dom";
 import { Authority } from "shared-types";
+import { ItemResult } from "shared-types/opensearch/main";
 
 // Components
 
@@ -283,7 +284,7 @@ export const useSubmitForm = () => {
 export const useDisplaySubmissionAlert = (
   header: string,
   body: string,
-  expectedStatus: SeaStatus,
+  isCorrectStatus: (data: ItemResult) => boolean,
   id: string,
 ) => {
   const alert = useAlertContext();
@@ -291,7 +292,7 @@ export const useDisplaySubmissionAlert = (
   const location = useLocation();
   const syncData = useSyncStatus({
     path: location.state?.from ?? "/dashboard",
-    expectedStatus,
+    isCorrectStatus,
   });
 
   return useEffect(() => {

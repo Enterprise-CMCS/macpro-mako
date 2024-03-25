@@ -65,7 +65,7 @@ export const WithdrawRai = () => {
   SC.useDisplaySubmissionAlert(
     "RAI response withdrawn",
     `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`,
-    "Pending-RAI",
+    (data) => false,
     id,
   );
 
