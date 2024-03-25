@@ -21,13 +21,11 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
         case "aws.onemac.migration.cdc":
-          docs.push(
-            ...(await onemac(event.records[topicPartition], topicPartition)),
-            ...(await legacyAdminChanges(
-              event.records[topicPartition],
-              topicPartition,
-            )),
+          await legacyAdminChanges(
+            event.records[topicPartition],
+            topicPartition,
           );
+          await onemac(event.records[topicPartition], topicPartition);
           break;
       }
     }
@@ -47,7 +45,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
-  const docs: any[] = [];
+  let docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
     const { key, value, offset, timestamp } = kafkaRecord;
     try {
@@ -95,16 +93,59 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         const actionType = record.actionType || "new-submission";
 
         // Push to docs so it can be indexed, with some differences if app k
+        if (actionType === Action.UPDATE_ID) {
+          console.log("UPDATE_ID detected...");
+          await bulkUpdateDataWrapper(docs);
+          docs = [];
+          const items = await os.search(osDomain, index, {
+            from: 0,
+            size: 200,
+            query: {
+              bool: {
+                must: [{ term: { "packageId.keyword": id } }],
+              },
+            },
+          });
+          if (items === undefined || items.hits.hits === undefined) {
+            continue;
+          }
+          const modifiedHits: opensearch.changelog.Document[] =
+            items.hits.hits.map(
+              (hit: { _source: opensearch.changelog.Document }) => {
+                return {
+                  ...hit._source,
+                  id: `${record.newId}-${hit._source.id.split("-").pop()}`,
+                  packageId: record.newId,
+                };
+              },
+            );
+          docs.push(...modifiedHits);
+          docs.push({
+            ...record,
+            id: `${record.newId}-${offset}`,
+            packageId: record.newId,
+            oldPackageId: id,
+            newPackageId: record.newId,
+            timestamp,
+            actionType,
+          });
+          continue;
+        }
+        if (actionType === Action.REMOVE_APPK_CHILD) {
+          docs.push({
+            ...record,
+            id: `${record.appkParentId}-${offset}`,
+            packageId: record.appkParentId,
+            appkChildId: record.id,
+            timestamp,
+            actionType,
+          });
+          continue;
+        }
         docs.push({
           ...record,
-          id:
-            actionType === Action.REMOVE_APPK_CHILD
-              ? `${record.appkParentId}-${offset}`
-              : `${id}-${offset}`,
-          packageId:
-            actionType === Action.REMOVE_APPK_CHILD ? record.appkParentId : id,
-          appkChildId:
-            actionType === Action.REMOVE_APPK_CHILD ? record.id : undefined,
+          id: `${id}-${offset}`,
+          packageId: id,
           timestamp,
           actionType,
         });
@@ -117,7 +158,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       });
     }
   }
-  return docs;
+  await bulkUpdateDataWrapper(docs);
 };
 
 const legacyAdminChanges = async (
@@ -180,3 +221,14 @@ const legacyAdminChanges = async (
   }
   return docs;
 };
+
+async function bulkUpdateDataWrapper(docs: any[]) {
+  try {
+    await os.bulkUpdateData(process.env.osDomain!, index, docs);
+  } catch (error: any) {
+    logError({
+      type: ErrorType.BULKUPDATE,
+    });
+    throw error;
+  }
+}

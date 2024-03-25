@@ -14,6 +14,7 @@ import {
   RaiWithdraw,
   WithdrawPackage,
   ToggleWithdrawRaiEnabled,
+  UpdateId,
 } from "../../action-types";
 import { legacyAdminChange, legacyEvent } from "./transforms";
 
@@ -22,11 +23,14 @@ export type Document = OneMac &
   RaiResponse &
   RaiIssue &
   RaiWithdraw &
-  ToggleWithdrawRaiEnabled & {
+  ToggleWithdrawRaiEnabled &
+  UpdateId & {
     actionType: string;
     timestamp: string;
     packageId: string;
     appkChildId: string;
+    oldPackageId: string;
+    newPackageId: string;
   } & z.infer<legacyEvent.Schema> &
   z.infer<legacyAdminChange.Schema>;
 
