@@ -19,19 +19,23 @@ export const useSyncStatus = ({
   const navigate = useNavigate();
   const [runQuery, setRunQuery] = useState(false);
   const [id, setId] = useState("");
-  console.log("do we get here");
 
   useQuery({
     queryKey: ["record", id],
-    queryFn: () => getItem(id),
-    refetchInterval: (data, query) => {
-      // const hasStatusChanged = (data: ItemResult) => functionFromUseSyncStatus(data);
-      // don't want to hammer it if nothing is happening likely something is wrong at this point)
-      if (query.state.dataUpdateCount > 10) {
-        queryClient.invalidateQueries(["actions", id]);
-        navigate(path);
-        return false;
+    queryFn: async () => {
+      try {
+        return await getItem(id);
+      } catch (err: unknown) {
+        return null;
       }
+    },
+    refetchInterval: (data, query) => {
+      if (data)
+        if (query.state.dataUpdateCount > 10) {
+          queryClient.invalidateQueries(["actions", id]);
+          navigate(path);
+          return false;
+        }
 
       // return to dashboard when the status has successfuly updated
       if (data && isCorrectStatus(data)) {
@@ -41,12 +45,11 @@ export const useSyncStatus = ({
       }
 
       // otherwise try again in one second
-      return 1000; //aka 1 second
+      return 500; //aka 1 second
     },
     enabled: runQuery,
   });
 
-  // return a callback function that the user executes to kick the above function off and start polling
   return (id: string) => {
     setRunQuery(true);
     setId(id);

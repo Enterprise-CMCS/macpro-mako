@@ -238,8 +238,12 @@ export const ErrorBanner = () => {
 export const FormLoadingSpinner = () => {
   const { state } = useNavigation();
   const { formState } = useFormContext();
+  const data = useActionData() as ActionFunctionReturnType;
+
   return (
-    (state === "submitting" || formState.isSubmitting) && <LoadingSpinner />
+    (!!data?.submitted || state === "submitting" || formState.isSubmitting) && (
+      <LoadingSpinner />
+    )
   );
 };
 
@@ -295,7 +299,7 @@ export const useDisplaySubmissionAlert = (
     isCorrectStatus,
   });
 
-  return useEffect(() => {
+  useEffect(() => {
     if (data && data.submitted) {
       alert.setContent({
         header,
