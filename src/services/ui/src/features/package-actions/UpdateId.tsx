@@ -9,10 +9,19 @@ import { unflatten } from "flat";
 import { submit } from "@/api/submissionService";
 import * as Inputs from "@/components/Inputs";
 import { useFormContext } from "react-hook-form";
+import {
+  zAmendmentWaiverNumberSchema,
+  zInitialWaiverNumberSchema,
+  zRenewalWaiverNumberSchema,
+  zSpaIdSchema,
+} from "@/utils/zod";
 
 export const updateIdSchema = z.object({
   additionalInformation: z.string(),
-  newId: z.string(),
+  newId: zSpaIdSchema
+    .or(zInitialWaiverNumberSchema)
+    .or(zRenewalWaiverNumberSchema)
+    .or(zAmendmentWaiverNumberSchema),
 });
 
 export const onValidSubmission: SC.ActionFunction = async ({
