@@ -21,7 +21,6 @@ export const useSyncStatus = ({
   const [id, setId] = useState("");
 
   useQuery({
-    queryKey: ["record", id],
     queryFn: async () => {
       try {
         return await getItem(id);
@@ -30,12 +29,11 @@ export const useSyncStatus = ({
       }
     },
     refetchInterval: (data, query) => {
-      if (data)
-        if (query.state.dataUpdateCount > 10) {
-          queryClient.invalidateQueries(["actions", id]);
-          navigate(path);
-          return false;
-        }
+      if (query.state.dataUpdateCount > 10) {
+        queryClient.invalidateQueries(["actions", id]);
+        navigate(path);
+        return false;
+      }
 
       // return to dashboard when the status has successfuly updated
       if (data && isCorrectStatus(data)) {
