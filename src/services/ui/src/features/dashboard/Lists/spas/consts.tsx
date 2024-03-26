@@ -127,14 +127,11 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       field: "raiReceivedDate",
       label: "Formal RAI Received",
       transform: (data) => {
-        return data.raiReceivedDate && !data.raiWithdrawnDate
+        return data.raiReceivedDate
           ? formatSeatoolDate(data.raiReceivedDate)
           : BLANK_VALUE;
       },
-      cell: (data) => {
-        if (!data.raiReceivedDate || data.raiWithdrawnDate) return null;
-        return formatSeatoolDate(data.raiReceivedDate);
-      },
+      cell: renderCellDate("raiReceivedDate"),
     },
     {
       field: "leadAnalystName.keyword",

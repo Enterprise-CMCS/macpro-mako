@@ -28,10 +28,10 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       query.query.bool.must.push(stateFilter);
     }
 
-    // Only return records originating from OneMAC
+    // Return OneMAC records and NOSOs (denoted with SEATool origin)
     query.query.bool.must.push({
       terms: {
-        "origin.keyword": ["OneMAC"],
+        "origin.keyword": ["OneMAC", "SEATool"],
       },
     });
 
@@ -51,7 +51,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     const results = await os.search(
       process.env.osDomain,
       event.pathParameters.index as any,
-      query
+      query,
     );
     return response<unknown>({
       statusCode: 200,
