@@ -2,7 +2,7 @@ import { getItem } from "@/api";
 import { Route } from "@/components/Routing";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { createRef, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { type SEATOOL_STATUS } from "shared-types";
 import { queryClient } from "@/router";
 import { ItemResult } from "shared-types/opensearch/main";
@@ -37,14 +37,12 @@ export const useSyncStatus = ({
         return false;
       }
 
-      // return to dashboard when the status has successfuly updated
       if (data && isCorrectStatus(data)) {
         queryClient.invalidateQueries(["actions", id]);
         navigate(path);
         return false;
       }
 
-      // otherwise try again in one second
       return 1000; //aka 1 second
     },
     enabled: runQuery,

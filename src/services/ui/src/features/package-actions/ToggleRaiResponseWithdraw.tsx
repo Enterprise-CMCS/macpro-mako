@@ -53,7 +53,6 @@ export const ToggleRaiResponseWithdraw = ({ isEnabled }: Props) => {
     : "Once you submit this form, you will disable the previous Formal RAI Response Withdraw - Enabled action. The State will not be able to withdraw the Formal RAI Response. ";
 
   if (!formMethods.getValues("raiWithdrawEnabled")) {
-    console.log("testing", isEnabled);
     formMethods.setValue("raiWithdrawEnabled", isEnabled);
   }
 
