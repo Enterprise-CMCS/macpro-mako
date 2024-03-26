@@ -329,7 +329,7 @@ Thank you!`,
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
 <br><b>Medicaid SPA ID:</b> {{id}}
-<br><b>90th Day Deadline:</b> {{ninetyDaysLookupNice}}
+<br><b>90th Day Deadline:</b> {{ninetyDaysDate}}
 </p>
 Summary:
 <br>{{additionalInformation}}
@@ -337,7 +337,7 @@ Summary:
 <p>This response confirms receipt of your Medicaid State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysLookupNice}}.</p>
+before {{ninetyDaysDate}}.</p>
 <p>This mailbox is for the submittal of State Plan Amendments and non-web 
 based responses to Requests for Additional Information (RAI) on submitted 
 SPAs only. Any other correspondence will be disregarded.</p>
@@ -351,7 +351,7 @@ State or territory: {{territory}}
 Name: {{submitterName}}
 Email Address: {{submitterEmail}}
 Medicaid SPA ID: {{id}}
-90th Day Deadline: {{ninetyDaysLookupNice}}
+90th Day Deadline: {{ninetyDaysDate}}
 
 Summary:
 {{additionalInformation}}
@@ -359,7 +359,7 @@ Summary:
 This response confirms receipt of your Medicaid State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysLookupNice}}.
+before {{ninetyDaysDate}}.
 
 This mailbox is for the submittal of State Plan Amendments and non-web 
 based responses to Requests for Additional Information (RAI) on submitted 
@@ -673,7 +673,7 @@ Thank you!`,
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
 <br><b>CHIP SPA Package ID:</b> {{id}}
-<br><b>90th Day Deadline:</b> {{ninetyDaysLookupNice}}
+<br><b>90th Day Deadline:</b> {{ninetyDaysDate}}
 </p>
 Summary:
 <br>{{additionalInformation}}
@@ -681,7 +681,7 @@ Summary:
 <p>This response confirms receipt of your CHIP State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysLookupNice}}.</p>
+before {{ninetyDaysDate}}.</p>
 <p>If you have questions, please contact 
 <a href='mailto:CHIPSPASubmissionMailbox@cms.hhs.gov'>CHIPSPASubmissionMailbox@cms.hhs.gov</a>
 or your state lead.</p>
@@ -693,7 +693,7 @@ State or territory: {{territory}}
 Name: {{submitterName}}
 Email Address: {{submitterEmail}}
 CHIP SPA Package ID: {{id}}
-90th Day Deadline: {{ninetyDaysLookupNice}}
+90th Day Deadline: {{ninetyDaysDate}}
 
 Summary:
 {{additionalInformation}}
@@ -701,7 +701,7 @@ Summary:
 This response confirms receipt of your CHIP State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
-before {{ninetyDaysLookupNice}}.
+before {{ninetyDaysDate}}.
 
 If you have questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov
 or your state lead.
@@ -911,7 +911,7 @@ Thank you!`,
 <br><b>Email Address:</b> {{submitterEmail}}
 <br><b>Initial Waiver Number:</b> {{id}}
 <br><b>Waiver Authority:</b> {{authority}}
-<br><b>90th Day Deadline:</b> {{ninetyDaysLookupNice}}
+<br><b>90th Day Deadline:</b> {{ninetyDaysDate}}
 </p>
 Summary:
 <br>{{additionalInformation}}
@@ -919,7 +919,7 @@ Summary:
 <p>This response confirms the receipt of your Waiver request or your
 response to a Waiver Request for Additional Information (RAI).
 You can expect a formal response to your submittal to be issued within 90 days,
-before {{ninetyDaysLookupNice}}.</p>
+before {{ninetyDaysDate}}.</p>
 <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
 responses to Requests for Additional Information (RAI) on Waivers, and extension
 requests on Waivers only.  Any other correspondence will be disregarded.
@@ -936,7 +936,7 @@ Name: {{submitterName}}
 Email Address: {{submitterEmail}}
 Initial Waiver Number: {{id}}
 Waiver Authority: {{authority}}
-90th Day Deadline: {{ninetyDaysLookupNice}}
+90th Day Deadline: {{ninetyDaysDate}}
 
 Summary:
 {{additionalInformation}}
@@ -944,7 +944,7 @@ Summary:
 This response confirms the receipt of your Waiver request or your
 response to a Waiver Request for Additional Information (RAI).
 You can expect a formal response to your submittal to be issued within 90 days,
-before {{ninetyDaysLookupNice}}.
+before {{ninetyDaysDate}}.
 
 This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
 responses to Requests for Additional Information (RAI) on Waivers, and extension
