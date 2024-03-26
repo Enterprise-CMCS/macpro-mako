@@ -3,7 +3,7 @@ import { Path, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
-import { opensearch, Authority } from "shared-types";
+import { opensearch, Authority, SEATOOL_STATUS } from "shared-types";
 
 import {
   Button,
@@ -35,6 +35,7 @@ import {
   useOriginPath,
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 export const RaiIssue = ({
   item,
@@ -51,10 +52,20 @@ export const RaiIssue = ({
   const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      return (
+        data._source.seatoolStatus === SEATOOL_STATUS.PENDING_RAI &&
+        !!data._source.raiRequestedDate
+      );
+    },
+  });
   const acceptAction = useCallback(() => {
     modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+    syncRecord(id);
   }, [originPath]);
+
   return (
     <Form {...form}>
       <form
@@ -76,10 +87,10 @@ export const RaiIssue = ({
               // when any queries are added, such as the case of /details?id=...
               urlQuery.get(ORIGIN)
                 ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-                : "/dashboard"
+                : "/dashboard",
             );
             navigate(
-              originPath ? { path: originPath } : { path: "/dashboard" }
+              originPath ? { path: originPath } : { path: "/dashboard" },
             );
           } catch (e) {
             console.error(e);
@@ -152,7 +163,7 @@ export const RaiIssue = ({
                     <li className="ml-8 my-2" key={idx}>
                       {err.message as string}
                     </li>
-                  )
+                  ),
               )}
             </ul>
           </Alert>

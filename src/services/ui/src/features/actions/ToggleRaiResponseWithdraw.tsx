@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { Action, Authority, opensearch } from "shared-types";
+import { Action, Authority, SEATOOL_STATUS, opensearch } from "shared-types";
 import {
   Navigate,
   useNavigate,
@@ -20,6 +20,7 @@ import {
 } from "@/utils";
 import { ActionFormIntro, PackageInfo } from "@/features";
 import { useQuery as useQueryString } from "@/hooks";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 export const ToggleRaiResponseWithdraw = ({
   item,
@@ -33,9 +34,18 @@ export const ToggleRaiResponseWithdraw = ({
   const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      return (
+        data._source.seatoolStatus === SEATOOL_STATUS.PENDING &&
+        !!data._source.raiReceivedDate
+      );
+    },
+  });
   const acceptAction = useCallback(() => {
     modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+    syncRecord(id);
   }, []);
   const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
     id: string;
@@ -48,7 +58,7 @@ export const ToggleRaiResponseWithdraw = ({
 
   const ACTION_WORD = useMemo(
     () => (type === Action.ENABLE_RAI_WITHDRAW ? "Enable" : "Disable"),
-    [type]
+    [type],
   );
 
   useEffect(() => {
@@ -66,7 +76,7 @@ export const ToggleRaiResponseWithdraw = ({
         // when any queries are added, such as the case of /details?id=...
         urlQuery.get(ORIGIN)
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard"
+          : "/dashboard",
       );
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     }
