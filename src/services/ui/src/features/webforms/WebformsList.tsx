@@ -31,7 +31,7 @@ export const WebformsList = () => {
                   versions.map((version) => (
                     <tr key={`${key}-${version}`}>
                       <td>{key}</td>
-                      <td>{version}</td>
+                      <td>{version.toLowerCase() as string}</td>
                       <td>
                         <Link
                           className="cursor-pointer text-blue-600"
@@ -42,7 +42,7 @@ export const WebformsList = () => {
                         </Link>
                       </td>
                     </tr>
-                  ))
+                  )),
                 )}
             </tbody>
           </table>
