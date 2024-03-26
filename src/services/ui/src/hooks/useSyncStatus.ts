@@ -2,7 +2,7 @@ import { getItem } from "@/api";
 import { Route } from "@/components/Routing";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { createRef, useRef, useState } from "react";
 import { type SEATOOL_STATUS } from "shared-types";
 import { queryClient } from "@/router";
 import { ItemResult } from "shared-types/opensearch/main";
@@ -19,8 +19,10 @@ export const useSyncStatus = ({
   const navigate = useNavigate();
   const [runQuery, setRunQuery] = useState(false);
   const [id, setId] = useState("");
+  const uniqueQueryId = useRef(Math.random());
 
   useQuery({
+    queryKey: ["polling", id, uniqueQueryId],
     queryFn: async () => {
       try {
         return await getItem(id);
@@ -43,7 +45,7 @@ export const useSyncStatus = ({
       }
 
       // otherwise try again in one second
-      return 500; //aka 1 second
+      return 1000; //aka 1 second
     },
     enabled: runQuery,
   });
