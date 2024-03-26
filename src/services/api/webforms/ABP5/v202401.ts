@@ -667,7 +667,7 @@ export const v202401: FormSchema = {
                                   { text: "Benefit provided", type: "bold" },
                                   { text: "Base benchmark", type: "br" },
                                 ],
-                                name: "benchmark_provided",
+                                name: "benefit_provided",
                               },
                               {
                                 rhf: "Textarea",
