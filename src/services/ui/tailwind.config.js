@@ -6,8 +6,19 @@ export default {
     fontFamily: {
       serif: ["Merriweather", "serif"],
     },
+    // We need 3xl to be 1.75 rem/28 px per HCD feedback, so it is modified
+    // here to be consistent across the app. Tailwind requires all sizes be
+    // defined, so we've included the default sizes for anything other
+    // than 3xl:
     fontSize: {
-      "3xl": "1.75rem",
+      xs: "0.75rem",
+      sm: "0.875rem",
+      lg: "1.125rem",
+      xl: "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.75rem", // Modified per HCD feedback
+      "4xl": "2.25rem",
+      "5xl": "3rem",
     },
     container: {
       center: true,

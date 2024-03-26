@@ -611,7 +611,7 @@ export const v202401: FormSchema = {
                     label:
                       "11. Other covered benefits that are not essential health benefits",
                     optionlabelClassName:
-                      "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
+                      "text-2xl font-bold p-4 bg-gray-300 py-4 px-8 w-full",
                     value: "other_covered_benefits_benefit",
                     form: [
                       {
@@ -638,7 +638,7 @@ export const v202401: FormSchema = {
                   {
                     label: "12. Other base benchmark benefits not covered",
                     optionlabelClassName:
-                      "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
+                      "text-2xl font-bold p-4 bg-gray-300 py-4 px-8 w-full",
                     value: "other_base_benchmark_benefits_not_covered",
                     form: [
                       {
@@ -687,7 +687,7 @@ export const v202401: FormSchema = {
                     label:
                       "13. Additional covered benefits (not applicable to “adult” group under Section 1902(a)(10)(A)(i)(VIII) of the Act)",
                     optionlabelClassName:
-                      "text-2xl font-semibold p-4 bg-gray-300 py-4 px-8 w-full",
+                      "text-2xl font-bold p-4 bg-gray-300 py-4 px-8 w-full",
                     value: "additional_covered_benefits",
                     form: [
                       {

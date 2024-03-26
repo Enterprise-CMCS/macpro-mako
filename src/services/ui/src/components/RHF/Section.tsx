@@ -16,13 +16,11 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
             className={
               "py-4 px-8 w-full " +
               (props.section.subsection
-                ? "bg-gray-300"
-                : "bg-primary text-white")
+                ? "bg-gray-300 text-2xl"
+                : "bg-primary text-white text-3xl")
             }
           >
-            <FormLabel className="text-3xl font-bold">
-              {props.section.title}
-            </FormLabel>
+            <FormLabel className="font-bold">{props.section.title}</FormLabel>
           </div>
         )}
         <div className="px-8">
