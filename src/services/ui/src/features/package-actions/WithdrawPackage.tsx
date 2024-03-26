@@ -6,7 +6,7 @@ import { zAttachmentOptional } from "@/utils";
 import { unflatten } from "flat";
 import { Info } from "lucide-react";
 import { useActionData, useParams } from "react-router-dom";
-import { Authority } from "shared-types";
+import { Authority, SEATOOL_STATUS } from "shared-types";
 import { z } from "zod";
 
 const title: Record<Authority, string> = {
@@ -87,7 +87,9 @@ export const WithdrawPackage = () => {
   SC.useDisplaySubmissionAlert(
     "Package withdrawn",
     `The package ${id} has been withdrawn.`,
-    (data) => false,
+    (data) => {
+      return data._source.seatoolStatus === SEATOOL_STATUS.WITHDRAWN;
+    },
     id,
   );
 
