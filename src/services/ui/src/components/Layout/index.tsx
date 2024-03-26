@@ -3,43 +3,53 @@ import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useMemo, useState } from "react";
-import { useGetUser } from "@/api/useGetUser";
+import { useGetUser } from "@/api";
 import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
-import { useUserContext } from "../Context/userContext";
+import { useUserContext } from "../Context";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
 import { useNavigate } from "../Routing";
-import { FAQ_TAB } from "../Routing/consts";
-import { ModalProvider } from "@/components/Context/modalContext";
-import { AlertProvider } from "@/components/Context/alertContext";
+import { ModalProvider, AlertProvider } from "@/components";
+import { isFaqPage, isProd } from "@/utils";
 
-const getLinks = (isAuthenticated: boolean, role?: boolean) => {
-  const isProd = window && window.location.hostname === "mako.cms.gov";
-  return [
-    {
-      name: "Home",
-      link: "/",
-      condition: true,
-    },
-    {
-      name: "Dashboard",
-      link: "/dashboard",
-      condition: isAuthenticated && role,
-    },
-    {
-      name: "FAQ",
-      link: "/faq",
-      condition: true,
-    },
-    {
-      name: "Webforms",
-      link: "/webforms",
-      condition: isAuthenticated && !isProd,
-    },
-  ].filter((l) => l.condition);
+const useGetLinks = () => {
+  const { isLoading, data } = useGetUser();
+  const userContext = useUserContext();
+
+  const role = useMemo(() => {
+    return userContext?.user?.["custom:cms-roles"] ? true : false;
+  }, []);
+
+  const links =
+    isLoading || isFaqPage
+      ? []
+      : [
+          {
+            name: "Home",
+            link: "/",
+            condition: true,
+          },
+          {
+            name: "Dashboard",
+            link: "/dashboard",
+            condition: !!data?.user && role,
+          },
+          {
+            name: "FAQ",
+            link: "/faq",
+            condition: true,
+          },
+          {
+            name: "Webforms",
+            link: "/webforms",
+            condition: !!data?.user && !isProd,
+          },
+        ].filter((l) => l.condition);
+
+  return { links, isFaqPage };
 };
 
 const UserDropdownMenu = () => {
@@ -52,6 +62,8 @@ const UserDropdownMenu = () => {
   const handleLogout = async () => {
     await Auth.signOut();
   };
+
+  if (isFaqPage) return null;
 
   return (
     <DropdownMenu.Root>
@@ -114,13 +126,25 @@ export const Layout = () => {
         <nav className="bg-primary">
           <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
             <div className="h-[70px] flex gap-12 items-center text-white">
-              <Link to="/">
-                <img
-                  className="h-10 w-28 min-w-[112px] resize-none"
-                  src={oneMacLogo}
-                  alt="onemac site logo"
-                />
-              </Link>
+              {!isFaqPage ? (
+                // This is the original Link component
+                <Link to="/">
+                  <img
+                    className="h-10 w-28 min-w-[112px] resize-none"
+                    src={oneMacLogo}
+                    alt="onemac site logo"
+                  />
+                </Link>
+              ) : (
+                // This is a non-clickable element that looks the same
+                <div>
+                  <img
+                    className="h-10 w-28 min-w-[112px] resize-none"
+                    src={oneMacLogo}
+                    alt="onemac site logo"
+                  />
+                </div>
+              )}
               <ResponsiveNav isDesktop={isDesktop} />
             </div>
           </div>
@@ -151,11 +175,8 @@ type ResponsiveNavProps = {
 const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const [prevMediaQuery, setPrevMediaQuery] = useState(isDesktop);
   const [isOpen, setIsOpen] = useState(false);
+  const { links } = useGetLinks();
   const { isLoading, isError, data } = useGetUser();
-  const userContext = useUserContext();
-  const role = useMemo(() => {
-    return userContext?.user?.["custom:cms-roles"] ? true : false;
-  }, []);
 
   const handleLogin = () => {
     const authConfig = Auth.configure();
@@ -185,10 +206,10 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   if (isDesktop) {
     return (
       <>
-        {getLinks(!!data.user, role).map((link) => (
+        {links.map((link) => (
           <NavLink
             to={link.link}
-            target={link.link === "/faq" ? FAQ_TAB : "_self"}
+            target={link.link === "/faq" ? "_blank" : "_self"}
             key={link.name}
             className={setClassBasedOnNav}
           >
@@ -201,21 +222,23 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             // When the user is signed in
             <UserDropdownMenu />
           ) : (
-            // When the user is not signed in
-            <>
-              <button
-                className="text-white hover:text-white/70"
-                onClick={handleLogin}
-              >
-                Sign In
-              </button>
-              <button
-                className="text-white hover:text-white/70"
-                onClick={handleRegister}
-              >
-                Register
-              </button>
-            </>
+            !isFaqPage && (
+              // When the user is not signed in
+              <>
+                <button
+                  className="text-white hover:text-white/70"
+                  onClick={handleLogin}
+                >
+                  Sign In
+                </button>
+                <button
+                  className="text-white hover:text-white/70"
+                  onClick={handleRegister}
+                >
+                  Register
+                </button>
+              </>
+            )
           )}
         </>
       </>
@@ -228,12 +251,12 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       {isOpen && (
         <div className="w-full fixed top-[100px] left-0 z-50">
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-2 gap-4 rounded-lg bg-accent">
-            {getLinks(!!data.user, role).map((link) => (
+            {links.map((link) => (
               <li key={link.link}>
                 <Link
                   className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
-                  target={link.link === "/faq" ? FAQ_TAB : "_self"}
+                  target={link.link === "/faq" ? "_blank" : "_self"}
                 >
                   {link.name}
                 </Link>
@@ -244,21 +267,23 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 // When the user is signed in
                 <UserDropdownMenu />
               ) : (
-                // When the user is not signed in
-                <>
-                  <button
-                    className="text-left block py-2 pl-3 pr-4 text-white rounded"
-                    onClick={handleLogin}
-                  >
-                    Sign In
-                  </button>
-                  <button
-                    className="text-white hover:text-white/70"
-                    onClick={handleRegister}
-                  >
-                    Register
-                  </button>
-                </>
+                !isFaqPage && (
+                  // When the user is not signed in
+                  <>
+                    <button
+                      className="text-left block py-2 pl-3 pr-4 text-white rounded"
+                      onClick={handleLogin}
+                    >
+                      Sign In
+                    </button>
+                    <button
+                      className="text-white hover:text-white/70"
+                      onClick={handleRegister}
+                    >
+                      Register
+                    </button>
+                  </>
+                )
               )}
             </>
           </ul>

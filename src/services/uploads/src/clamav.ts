@@ -8,9 +8,13 @@ import {
 import { spawnSync, SpawnSyncReturns } from "child_process";
 import path from "path";
 import fs from "fs";
+import readline from 'readline';
 import asyncfs from "fs/promises";
 import * as constants from "./constants";
 import * as utils from "./utils";
+import { FileExtension, MimeType, fileTypeFromFile } from "file-type";
+import mimeTypes from 'mime-types';
+import {FILE_TYPES} from "shared-types"
 
 const s3Client: S3Client = new S3Client();
 
@@ -20,7 +24,7 @@ export async function listBucketFiles(bucketName: string): Promise<string[]> {
       new ListObjectsV2Command({ Bucket: bucketName })
     );
     if (listFilesResult.Contents) {
-      const keys: string[] = listFilesResult.Contents.map((c) => c.Key);
+      const keys = listFilesResult.Contents.map((c) => c.Key) as string[];
       return keys;
     } else {
       return [];
@@ -195,6 +199,40 @@ export const uploadAVDefinitions = async (): Promise<void[]> => {
   return await Promise.all(uploadPromises);
 };
 
+async function looksLikeCsv(filePath: string, delimiter: string = ',', maxLinesToCheck: number = 10): Promise<boolean> {
+  const fileStream = fs.createReadStream(filePath);
+
+  const rl = readline.createInterface({
+    input: fileStream,
+    crlfDelay: Infinity
+  });
+
+  let lineNumber = 0;
+  let previousNumberOfFields = 0;
+
+  for await (const line of rl) {
+    lineNumber++;
+
+    // Skip empty lines
+    if (line.trim() === '') continue;
+
+    const fields = line.split(delimiter);
+
+    // Check if the number of fields is consistent across rows
+    if (lineNumber > 1 && fields.length !== previousNumberOfFields) {
+      return false;
+    }
+
+    previousNumberOfFields = fields.length;
+
+    if (lineNumber >= maxLinesToCheck) {
+      break;
+    }
+  }
+
+  return true;
+}
+
 /**
  * Function to scan the given file. This function requires ClamAV and the definitions to be available.
  * This function does not download the file so the file should also be accessible.
@@ -206,18 +244,50 @@ export const uploadAVDefinitions = async (): Promise<void[]> => {
  *
  * @param pathToFile Path in the filesystem where the file is stored.
  */
-export const scanLocalFile = (pathToFile: string): string | null => {
-  try {
+export const scanLocalFile = async (
+  pathToFile: string,
+): Promise<string | null> => {
+  try {    
+    // Calculate the mime type based off the extension.
+    let mimeTypeFromExtension = mimeTypes.lookup(path.extname(pathToFile));
+    
+    // Error out if mimeTypes couldn't figure out the mime type.
+    if (!mimeTypeFromExtension) {
+      utils.generateSystemMessage("FAILURE - CANNOT DETERMINE MIMETYPE FROM EXTENSION");
+      return constants.STATUS_UNKNOWN_EXTENSION;
+    }
+
+    // Error out if the extension is not allowed
+    if (!isAllowedMime(mimeTypeFromExtension)) {
+      utils.generateSystemMessage("FAILURE - EXTENSION IS NOT OF AN ALLOWED TYPE");
+      return constants.STATUS_UNKNOWN_EXTENSION;
+    }
+
+    // Caclulate the mime type based off the file's contents.
+    let mimeTypeFromContents = await getFileTypeFromContents(pathToFile);
+    // Error out if file-type couldn't determine the mime type.
+    if(!mimeTypeFromContents) {
+      utils.generateSystemMessage("FAILURE - CANNOT DETERMINE MIMETYPE FROM CONTENTS");
+      return constants.STATUS_UNKNOWN_EXTENSION;
+    }
+
+    // Log
+    console.log(`File mimetype from extension:  ${mimeTypeFromExtension}`);
+    console.log(`File mimetype from contents:   ${mimeTypeFromContents}`);
+
+    // Check if the mimes are equivalent
+    let same = areMimeTypesEquivalent(mimeTypeFromExtension, mimeTypeFromContents);
+    // Error out if we can't determine equivalence
+    if (!same) {
+      utils.generateSystemMessage(
+        `FAILURE - MIMETYPE CALCULATED FROM EXTENSION DOES NOT MATCH MIMETYPE CALCULATED FROM CONTENTS`
+      );
+      return constants.STATUS_EXTENSION_MISMATCH_FILE;
+    }
+
     const avResult: SpawnSyncReturns<Buffer> = spawnSync(
       constants.PATH_TO_CLAMAV,
-      [
-        "--stdout",
-        "-v",
-        "-a",
-        "-d",
-        constants.FRESHCLAM_WORK_DIR,
-        pathToFile,
-      ]
+      ["--stdout", "-v", "-a", "-d", constants.FRESHCLAM_WORK_DIR, pathToFile]
     );
 
     // status 1 means that the file is infected.
@@ -242,3 +312,82 @@ export const scanLocalFile = (pathToFile: string): string | null => {
     return constants.STATUS_ERROR_PROCESSING_FILE;
   }
 };
+
+function isAllowedMime(mime: string): boolean {
+  return FILE_TYPES.some((fileType) => fileType.mime ===  mime);
+}
+
+async function getFileTypeFromContents(
+  filePath: string
+): Promise<MimeType | false> {
+  try {
+    const fileBuffer = await fs.promises.readFile(filePath);
+
+    // Get the file type from its contents
+    const type = await fileTypeFromFile(filePath);
+
+    if (!type) {
+      switch (path.extname(filePath)) {
+        case ".csv":
+          console.log("Checking csv another way...");
+          if (await looksLikeCsv(filePath, ",", 100)) {
+            return mimeTypes.lookup(".csv");
+          }
+          break;
+        case ".txt":
+          console.log("Checking txt another way...")
+          if (await looksLikeTxt(fileBuffer)) {
+            return mimeTypes.lookup(".txt");
+          }
+          break;
+        default:
+          console.log("Could not determine file type.");
+          return false;
+      }
+    }
+    if (!type?.mime) {
+      console.log(`getFileTypeFromContents: File determined to be mime:${type?.mime}`);
+      return false;
+    }
+    console.log(`getFileTypeFromContents:  File determined to be mime:${type.mime} ext:${type.ext}`);
+    return type.mime;
+  } catch (error) {
+    console.error("Error reading file:", error);
+    return false;
+  }
+}
+
+function areMimeTypesEquivalent(mime1: string, mime2: string): boolean {
+  const equivalentTypes: { [key: string]: Set<string> } = {
+    "application/rtf": new Set(["text/rtf"]),
+    "application/vnd.ms-excel": new Set(["application/x-cfb"]),
+    "application/vnd.ms-powerpoint": new Set(["application/x-cfb"]),
+    "application/msword": new Set(["application/x-cfb", "application/rtf"]),
+  };
+  mime1 = mime1.toLowerCase();
+  mime2 = mime2.toLowerCase();
+  if (mime1 === mime2) {
+    return true;
+  }
+  for (const baseType in equivalentTypes) {
+    console.log("Mime types not identical... checking AKAs for equivalence...")
+    const equivalents = equivalentTypes[baseType];
+    if (
+      (mime1 === baseType && equivalents.has(mime2)) ||
+      (mime2 === baseType && equivalents.has(mime1))
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function looksLikeTxt(buffer: Buffer): boolean {
+  return !buffer.some(byte => {
+    return (
+      byte < 0x09 ||
+      (byte > 0x0D && byte < 0x20) || // Control characters excluding tab, newline, and carriage return
+      byte > 0x7E // Beyond ASCII printable characters
+    );
+  });
+}

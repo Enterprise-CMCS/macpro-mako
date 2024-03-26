@@ -50,7 +50,7 @@ export const onemac_main = async (event: KafkaEvent) => {
                 "LEGACY Validation Error. The following record failed to parse: ",
                 JSON.stringify(record),
                 "Because of the following Reason(s):",
-                result.error.message
+                result.error.message,
               );
             }
 
@@ -66,6 +66,7 @@ export const onemac_main = async (event: KafkaEvent) => {
               return opensearch.main.newSubmission
                 .transform(id)
                 .safeParse(record);
+
             case Action.DISABLE_RAI_WITHDRAW:
             case Action.ENABLE_RAI_WITHDRAW:
               return opensearch.main.toggleWithdrawEnabled
@@ -79,17 +80,20 @@ export const onemac_main = async (event: KafkaEvent) => {
               return opensearch.main.withdrawPackage
                 .transform(id)
                 .safeParse(record);
+            case Action.REMOVE_APPK_CHILD:
+              return opensearch.main.removeAppkChild
+                .transform(id)
+                .safeParse(record);
           }
         })();
 
         if (!result) return;
-
         if (!result?.success) {
           return console.log(
             "ONEMAC Validation Error. The following record failed to parse: ",
             JSON.stringify(record),
             "Because of the following Reason(s):",
-            result?.error.message
+            result?.error.message,
           );
         }
 
@@ -121,6 +125,17 @@ export const onemac_changelog = async (event: KafkaEvent) => {
 
         // Handle legacy and return
         if (record?.origin !== "micro") return;
+
+        // TODO: remove-appk-child Event??
+        if (record?.actionType === Action.REMOVE_APPK_CHILD) {
+          return ACC.push({
+            ...record,
+            appkChildId: record.id,
+            timestamp: REC.timestamp,
+            id: `${record.appkParentId}-${REC.offset}`,
+            packageId: record.appkParentId,
+          });
+        }
 
         // Handle everything else
         const packageId = decode(REC.key);

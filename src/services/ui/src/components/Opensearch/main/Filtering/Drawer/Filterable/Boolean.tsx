@@ -1,4 +1,4 @@
-import { Checkbox } from "@/components/Inputs";
+import { Checkbox } from "@/components";
 import { FC } from "react";
 
 export const FilterableBoolean: FC<{

@@ -5,16 +5,17 @@ import {
   finalDispositionStatuses,
   SeaTool,
   SeatoolOfficer,
+  SEATOOL_SPW_STATUS,
 } from "../../..";
 
-import { PlanType } from "../../../planType";
+import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
 
-type AuthorityType = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
+type Flavor = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
-const authorityLookup = (val: number | null): null | string => {
+const flavorLookup = (val: number | null): null | string => {
   if (!val) return null;
 
-  const lookup: Record<number, AuthorityType> = {
+  const lookup: Record<number, Flavor> = {
     122: "WAIVER",
     123: "WAIVER",
     124: "CHIP",
@@ -34,7 +35,7 @@ function getLeadAnalyst(eventData: SeaTool) {
     eventData.STATE_PLAN.LEAD_ANALYST_ID
   ) {
     const leadAnalyst = eventData.LEAD_ANALYST.find(
-      (analyst) => analyst.OFFICER_ID === eventData.STATE_PLAN.LEAD_ANALYST_ID
+      (analyst) => analyst.OFFICER_ID === eventData.STATE_PLAN.LEAD_ANALYST_ID,
     );
 
     if (leadAnalyst) {
@@ -89,7 +90,7 @@ const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
     : null;
 
 const compileSrtList = (
-  officers: SeatoolOfficer[] | null | undefined
+  officers: SeatoolOfficer[] | null | undefined,
 ): string[] =>
   officers?.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
 
@@ -103,7 +104,7 @@ const isInSecondClock = (
   raiReceivedDate: any,
   raiWithdrawnDate: any,
   seatoolStatus: any,
-  authority: any
+  authority: any,
 ) => {
   if (
     authority != "CHIP" && // if it's not a chip
@@ -120,33 +121,62 @@ const isInSecondClock = (
   return false; // otherwise, we're not
 };
 
+const getAuthority = (authorityId: number | null, id: string) => {
+  try {
+    if (!authorityId) return null;
+    return SEATOOL_AUTHORITIES[authorityId];
+  } catch (error) {
+    console.log(`SEATOOL AUTHORITY LOOKUP ERROR: ${id} ${authorityId}`);
+    console.log(error);
+    return null;
+  }
+};
+
 export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
       getRaiDate(data);
-    const seatoolStatus =
-      data.SPW_STATUS?.find(
-        (item) => item.SPW_STATUS_ID === data.STATE_PLAN.SPW_STATUS_ID
-      )?.SPW_STATUS_DESC || "Unknown";
+    const seatoolStatus = data.STATE_PLAN.SPW_STATUS_ID
+      ? SEATOOL_SPW_STATUS[data.STATE_PLAN.SPW_STATUS_ID]
+      : "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    return {
+    const authorityId = data.STATE_PLAN?.PLAN_TYPE;
+    const resp = {
       id,
+      flavor: flavorLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
       actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
-        data.STATE_PLAN.APPROVED_EFFECTIVE_DATE
+        data.STATE_PLAN.APPROVED_EFFECTIVE_DATE ||
+          data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE,
       ),
-      authority: authorityLookup(data.STATE_PLAN.PLAN_TYPE),
-      changedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.CHANGED_DATE),
       description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
       initialIntakeNeeded:
-        !leadAnalystName && seatoolStatus !== SEATOOL_STATUS.WITHDRAWN,
+        !leadAnalystName && !finalDispositionStatuses.includes(seatoolStatus),
       leadAnalystName,
-      planType: data.PLAN_TYPES?.[0].PLAN_TYPE_NAME as PlanType | null,
-      planTypeId: data.STATE_PLAN.PLAN_TYPE,
+      authorityId: authorityId || null,
+      authority: getAuthority(authorityId, id) as Authority | null,
+      types:
+        data.STATE_PLAN_SERVICETYPES?.filter(
+          (type): type is NonNullable<typeof type> => type != null,
+        ).map((type) => {
+          return {
+            SPA_TYPE_ID: type.SPA_TYPE_ID,
+            SPA_TYPE_NAME: type.SPA_TYPE_NAME.replace(/â|â/g, "-"),
+          };
+        }) || null,
+      subTypes:
+        data.STATE_PLAN_SERVICE_SUBTYPES?.filter(
+          (subType): subType is NonNullable<typeof subType> => subType != null,
+        ).map((subType) => {
+          return {
+            TYPE_ID: subType.TYPE_ID,
+            TYPE_NAME: subType.TYPE_NAME.replace(/â|â/g, "-"),
+          };
+        }) || null,
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
@@ -158,16 +188,50 @@ export const transform = (id: string) => {
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       seatoolStatus,
       submissionDate: getDateStringOrNullFromEpoc(
-        data.STATE_PLAN.SUBMISSION_DATE
+        data.STATE_PLAN.SUBMISSION_DATE,
       ),
       subject: data.STATE_PLAN.TITLE_NAME,
       secondClock: isInSecondClock(
         raiReceivedDate,
         raiWithdrawnDate,
         seatoolStatus,
-        authorityLookup(data.STATE_PLAN.PLAN_TYPE)
+        flavorLookup(data.STATE_PLAN.PLAN_TYPE),
       ),
+      raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus)
+        ? false
+        : undefined,
     };
+    return resp;
   });
 };
 export type Schema = ReturnType<typeof transform>;
+export const tombstone = (id: string) => {
+  return {
+    id,
+    flavor: null,
+    actionType: null,
+    actionTypeId: null,
+    approvedEffectiveDate: null,
+    changedDate: null,
+    description: null,
+    finalDispositionDate: null,
+    leadAnalystName: null,
+    leadAnalystOfficerId: null,
+    authority: null,
+    authorityId: null,
+    proposedDate: null,
+    raiReceivedDate: null,
+    raiRequestedDate: null,
+    raiWithdrawnDate: null,
+    reviewTeam: null,
+    state: null,
+    cmsStatus: null,
+    stateStatus: null,
+    seatoolStatus: null,
+    statusDate: null,
+    submissionDate: null,
+    subject: null,
+    types: null,
+    subTypes: null,
+  };
+};

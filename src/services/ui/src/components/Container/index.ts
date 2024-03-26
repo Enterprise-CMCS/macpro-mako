@@ -1,1 +1,2 @@
-export { SimplePageContainer } from "./SimplePageContainer";
+export * from "./SimplePageContainer";
+export * from "./Accordion";

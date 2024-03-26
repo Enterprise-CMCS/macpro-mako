@@ -5,8 +5,7 @@ import { seatoolSchema, opensearch } from "shared-types";
 describe("seatool has valid data", () => {
   it("can be validated against schema", () => {
     const parsedRecord = seatoolSchema.parse(seaToolRecords[0]);
-
-    expect(parsedRecord.PLAN_TYPES?.[0].PLAN_TYPE_NAME).toBeDefined();
+    expect(parsedRecord.STATE_PLAN.PLAN_TYPE).toBeDefined();
   });
 
   it("can be transformed into a new object", () => {
@@ -15,7 +14,6 @@ describe("seatool has valid data", () => {
         .transform("randomid")
         .parse(record);
       expect(transformedRecord.id).toEqual("randomid");
-      // expect(transformedRecord.planType).toEqual("Medicaid_SPA");
     }
   });
 });

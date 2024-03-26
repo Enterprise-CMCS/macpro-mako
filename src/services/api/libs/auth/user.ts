@@ -33,6 +33,7 @@ function userAttrDict(cognitoUser: CognitoUserType): CognitoUserAttributes {
       }
     });
   }
+  attributes["username"] = cognitoUser.Username;
 
   return attributes as CognitoUserAttributes;
 }

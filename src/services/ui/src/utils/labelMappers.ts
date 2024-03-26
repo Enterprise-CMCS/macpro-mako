@@ -1,7 +1,7 @@
 import { Action } from "shared-types";
 
 import { BLANK_VALUE } from "@/consts";
-import { Route } from "@/components/Routing/types";
+import { Route } from "@/components";
 
 export const mapActionLabel = (a: Action) => {
   switch (a) {
@@ -17,6 +17,10 @@ export const mapActionLabel = (a: Action) => {
       return "Withdraw Formal RAI Response";
     case Action.RESPOND_TO_RAI:
       return "Respond to Formal RAI";
+    case Action.TEMP_EXTENSION:
+      return "Request Temporary Extension";
+    default:
+      return "";
   }
 };
 
@@ -38,6 +42,10 @@ export const mapSubmissionCrumb = (path: Route) => {
       return "1915(b)(4) FFS Selective Contracting Renewal Waiver";
     case "/new-submission/waiver/b/b4/amendment/create":
       return "1915(b)(4) FFS Selective Contracting Waiver Amendment";
+    case "/new-submission/waiver/app-k":
+      return "1915(c) APPENDIX K Amendment";
+    case "/new-submission/waiver/temporary-extensions":
+      return "Request 1915(b) or 1915(c) Temporary Extension";
     default:
       return BLANK_VALUE;
   }

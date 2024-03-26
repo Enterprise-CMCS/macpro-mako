@@ -5,34 +5,24 @@ import * as os from "./../../../libs/opensearch-lib";
 
 export const handler: Handler = async (event, context) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
-  const responseData = {};
+  const responseData: any = {};
   let responseStatus: ResponseStatus = SUCCESS;
   try {
     if (event.RequestType == "Create" || event.RequestType == "Update") {
-      if (!event.ResourceProperties.MasterRoleToAssume) {
-        throw "ERROR:  Property MasterRoleToAssume is required, but was not supplied.";
-      }
-      if (!event.ResourceProperties.OSRoleName) {
-        throw "ERROR:  Property OSRoleName is required, but was not supplied.";
-      }
-      if (!event.ResourceProperties.IAMRoleName) {
-        throw "ERROR:  Property IAMRoleName is required, but was not supplied.";
-      }
-      if (!process.env.osDomain) {
-        throw "ERROR:  process.env.osDomain must be defined";
-      }
-      await os.mapRole(
-        process.env.osDomain,
+      const reply = await os.mapRole(
+        event.ResourceProperties.OsDomain,
         event.ResourceProperties.MasterRoleToAssume,
-        event.ResourceProperties.OSRoleName,
-        event.ResourceProperties.IAMRoleName
+        event.ResourceProperties.OsRoleName,
+        event.ResourceProperties.IamRoleName
       );
+      console.log(reply);
+    } else if (event.RequestType == "Delete") {
+      console.log("This resource does nothing on delete");
     }
   } catch (error) {
     console.log(error);
     responseStatus = FAILED;
   } finally {
-    console.log("finally");
-    await send(event, context, responseStatus, responseData);
+    await send(event, context, responseStatus, responseData, "static");
   }
 };

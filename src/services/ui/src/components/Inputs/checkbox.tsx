@@ -2,7 +2,7 @@ import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { Check } from "lucide-react";
 import { DependencyWrapper } from "../RHF/dependencyWrapper";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils";
 import { DependencyWrapperProps } from "shared-types";
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
@@ -11,6 +11,7 @@ const Checkbox = React.forwardRef<
       className?: string;
       label: string;
       value?: string;
+      styledLabel?: React.ReactNode;
       description?: string;
     }
 >(({ className, ...props }, ref) => {
@@ -45,7 +46,7 @@ const Checkbox = React.forwardRef<
               htmlFor={props.label}
               className="text-md font-medium leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              {props.label}
+              {props.styledLabel ?? props.label}
             </label>
           )}
           {!!props.description && (

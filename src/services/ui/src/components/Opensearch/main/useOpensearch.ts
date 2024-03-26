@@ -1,17 +1,16 @@
-import { getOsData, useOsSearch } from "@/api";
-import { useLzUrl } from "@/hooks/useParams";
 import { useEffect, useState } from "react";
-import { UserRoles, opensearch } from "shared-types";
-import { createSearchFilterable } from "../utils";
 import { useQuery } from "@tanstack/react-query";
-import { useGetUser } from "@/api/useGetUser";
+import { UserRoles, opensearch } from "shared-types";
+import { getOsData, useOsSearch, useGetUser } from "@/api";
+import { useLzUrl } from "@/hooks";
 import { OsTab } from "./types";
+import { createSearchFilterable } from "../utils";
 
 export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
   spas: {
     filters: [
       {
-        field: "authority.keyword",
+        field: "flavor.keyword",
         type: "terms",
         value: ["CHIP", "MEDICAID"],
         prefix: "must",
@@ -21,10 +20,16 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
   waivers: {
     filters: [
       {
-        field: "authority.keyword",
+        field: "flavor.keyword",
         type: "terms",
         value: ["WAIVER"],
         prefix: "must",
+      },
+      {
+        field: "appkParentId",
+        type: "exists",
+        value: true,
+        prefix: "must_not",
       },
     ],
   },
@@ -50,14 +55,14 @@ export const useOsData = () => {
         {
           index: "main",
           pagination: query.pagination,
-          ...(!query.search && { sort: query.sort }),
+          sort: query.sort,
           filters: [
             ...query.filters,
             ...createSearchFilterable(query.search || ""),
             ...(DEFAULT_FILTERS[params.state.tab].filters || []),
           ],
         },
-        { ...options, onSuccess: (res) => setData(res.hits) }
+        { ...options, onSuccess: (res) => setData(res.hits) },
       );
     } catch (error) {
       console.error("Error occurred during search:", error);
@@ -85,9 +90,9 @@ export const useOsAggregate = () => {
             size: 60,
           },
           {
-            field: "planType.keyword",
+            field: "authority.keyword",
             type: "terms",
-            name: "planType.keyword",
+            name: "authority.keyword",
             size: 10,
           },
           {
@@ -139,7 +144,7 @@ export const useOsUrl = () => {
       search: "",
       tab: "spas",
       pagination: { number: 0, size: 25 },
-      sort: { field: "changedDate", order: "desc" },
+      sort: { field: "submissionDate", order: "desc" },
     },
   });
 };

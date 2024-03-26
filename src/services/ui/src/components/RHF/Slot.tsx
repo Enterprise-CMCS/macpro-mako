@@ -1,5 +1,9 @@
 /* eslint-disable react/prop-types */
+import { useEffect, useMemo } from "react";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
+import type { RHFSlotProps, RHFComponentMap, FormGroup } from "shared-types";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
 import {
   Button,
   FormControl,
@@ -20,20 +24,15 @@ import {
   Calendar,
   FormField,
   Checkbox,
+  Upload,
 } from "../Inputs";
-import { RHFFormGroup } from "./FormGroup";
-import { CalendarIcon } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
-import { cn } from "@/lib";
-import { format } from "date-fns";
-import { RHFFieldArray } from "./FieldArray";
-import { FieldGroup } from "./FieldGroup";
-import type { RHFSlotProps, RHFComponentMap, FormGroup } from "shared-types";
-import { useEffect, useMemo } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components";
+import { cn } from "@/utils";
+import { RHFFieldArray, FieldGroup, RHFFormGroup, RHFTextDisplay } from ".";
 
 export const RHFSlot = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   control,
   rhf,
@@ -43,6 +42,7 @@ export const RHFSlot = <
   descriptionStyling,
   name,
   props,
+  text,
   labelStyling,
   formItemStyling,
   groupNamePrefix,
@@ -65,10 +65,14 @@ export const RHFSlot = <
           formItemStyling ? ` ${formItemStyling}` : ""
         }`}
       >
-        {label && <FormLabel className={labelStyling}>{label}</FormLabel>}
-        {descriptionAbove && (
+        {label && (
+          <FormLabel className={labelStyling}>
+            <RHFTextDisplay text={label} />
+          </FormLabel>
+        )}
+        {descriptionAbove && description && (
           <FormDescription className={descriptionStyling}>
-            {description}
+            <RHFTextDisplay text={description} />
           </FormDescription>
         )}
         <FormControl>
@@ -155,7 +159,9 @@ export const RHFSlot = <
                                 className="font-normal"
                                 htmlFor={OPT.value}
                               >
-                                {OPT.label}
+                                <RHFTextDisplay
+                                  text={OPT.styledLabel ?? OPT.label}
+                                />
                               </FormLabel>
                             }
                           </div>
@@ -209,6 +215,11 @@ export const RHFSlot = <
                           label={OPT.label}
                           value={OPT.value}
                           checked={field.value?.includes(OPT.value)}
+                          styledLabel={
+                            <RHFTextDisplay
+                              text={OPT.styledLabel ?? OPT.label}
+                            />
+                          }
                           onCheckedChange={(c) => {
                             const filtered =
                               field.value?.filter(
@@ -295,6 +306,19 @@ export const RHFSlot = <
                   </Popover>
                 );
               })()}
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "Upload" &&
+              (() => {
+                const hops = props as RHFComponentMap["Upload"];
+
+                return (
+                  <Upload
+                    {...hops}
+                    files={field?.value ?? []}
+                    setFiles={field.onChange}
+                  />
+                );
+              })()}
 
             {/* ----------------------------------------------------------------------------- */}
             {rhf === "FieldArray" && (
@@ -317,10 +341,17 @@ export const RHFSlot = <
                 {...(props as RHFComponentMap["FieldGroup"])}
               />
             )}
+
+            {/* ----------------------------------------------------------------------------- */}
+            {rhf === "TextDisplay" && (
+              <p {...(props as RHFComponentMap["TextDisplay"])}>
+                <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} />
+              </p>
+            )}
           </>
         </FormControl>
         {description && !descriptionAbove && (
-          <FormDescription>{description}</FormDescription>
+          <RHFTextDisplay text={description} />
         )}
         <FormMessage />
       </FormItem>

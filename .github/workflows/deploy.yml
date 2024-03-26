@@ -58,7 +58,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
@@ -112,7 +112,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
@@ -126,6 +126,8 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - deploy
+    environment:
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     env:
       baseurl: ${{ needs.deploy.outputs.app-url }}
     if: ${{ github.ref != 'refs/heads/production' }}
@@ -135,7 +137,7 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
@@ -162,7 +164,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
@@ -194,7 +196,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1

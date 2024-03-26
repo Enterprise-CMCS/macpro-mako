@@ -6,10 +6,12 @@
   },
   "private": true,
   "dependencies": {
+    "@aws-sdk/client-cloudformation": "^3.526.0",
     "@enterprise-cmcs/macpro-security-hub-sync": "^1.6.2",
     "@enterprise-cmcs/macpro-serverless-running-stages": "^1.0.6",
     "@stratiformdigital/serverless-stage-destroyer": "^2.1.0",
     "dotenv": "^16.0.3",
+    "open": "^10.0.4",
     "yargs": "^17.7.1"
   },
   "devDependencies": {

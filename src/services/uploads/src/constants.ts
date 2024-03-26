@@ -39,6 +39,10 @@ export const STATUS_ERROR_PROCESSING_FILE: string =
   process.env.STATUS_ERROR_PROCESSING_FILE || "ERROR";
 export const STATUS_SKIPPED_FILE: string =
   process.env.STATUS_SKIPPED_FILE || "SKIPPED";
+export const STATUS_EXTENSION_MISMATCH_FILE: string = 
+  process.env.STATUS_EXTENSION_MISMATCH_FILE || "EXTMISMATCH"
+export const STATUS_UNKNOWN_EXTENSION: string = 
+  process.env.STATUS_UNKNOWN_EXTENSION || "UKNOWNEXT"
 export const VIRUS_SCAN_STATUS_KEY: string =
   process.env.VIRUS_SCAN_STATUS_KEY || "virusScanStatus";
 export const VIRUS_SCAN_TIMESTAMP_KEY: string =

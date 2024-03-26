@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import { cn } from "@/lib";
+import { cn } from "@/utils";
 
 interface CardWithTopBorderProps {
   children: ReactNode;
@@ -10,7 +10,7 @@ export const CardWithTopBorder: FC<CardWithTopBorderProps> = ({
   className,
 }: CardWithTopBorderProps) => {
   return (
-    <div className={cn("mb-4 sticky top-12", className)}>
+    <div className={cn("my-6 sticky top-12", className)}>
       <div
         style={{
           background: "linear-gradient(90.11deg,#0071bc 49.91%,#02bfe7 66.06%)",

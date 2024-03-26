@@ -85,4 +85,10 @@ export type ExportHeaderOptions<TData> = {
   name: string;
 };
 
-export type Index = "main" | "seatool" | "changelog";
+export type Index =
+  | "main"
+  | "insights"
+  | "changelog"
+  | "types"
+  | "subtypes"
+  | "legacyinsights";

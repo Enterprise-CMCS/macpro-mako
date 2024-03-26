@@ -5,8 +5,10 @@ plugins:
   - serverless-stack-termination-protection
   - "@stratiformdigital/serverless-iam-helper"
   - "@stratiformdigital/serverless-s3-security-helper"
-  - serverless-scriptable-plugin
   - serverless-plugin-scripts
+
+package:
+  individually: true
 
 provider:
   name: aws
@@ -63,44 +65,49 @@ custom:
   onemacLegacyS3AccessRoleArn: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/onemacLegacyS3AccessRoleArn, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/onemacLegacyS3AccessRoleArn}
   dbInfo: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/seatool/dbInfo, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/seatool/dbInfo}
   brokerString: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/brokerString, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/brokerString}
-  scriptable:
-    hooks:
-      package:compileEvents:
-        - yarn compileRepack
-        - ./repack/repack.js
-  scripts:
-    hooks:
-      package:initialize: |
-        yarn buildLayers
+  launchdarklySDKKey: ${ssm:/${self:service}/${sls:stage}/launchdarklySDKKey, ssm:/${self:service}/default/launchdarklySDKKey}
+
 params:
   master:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
+    getTypesProvisionedConcurrency: 2
+    getSubTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
     submitProvisionedConcurrency: 2
+    appkNewSubmissionConcurrency: 2
   val:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
+    getTypesProvisionedConcurrency: 2
+    getSubTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
     submitProvisionedConcurrency: 2
+    appkNewSubmissionConcurrency: 2
   production:
     formsProvisionedConcurrency: 5
     getAllFormsProvisionedConcurrency: 1
+    getTypesProvisionedConcurrency: 2
+    getSubTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 10
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
     submitProvisionedConcurrency: 5
+    appkNewSubmissionConcurrency: 5
   default:
     formsProvisionedConcurrency: 0
     getAllFormsProvisionedConcurrency: 1
+    getTypesProvisionedConcurrency: 1
+    getSubTypesProvisionedConcurrency: 1
     searchProvisionedConcurrency: 0
     itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
     submitProvisionedConcurrency: 0
+    appkNewSubmissionConcurrency: 0
 
 functions:
   search:
@@ -187,6 +194,60 @@ functions:
         - Ref: SecurityGroup
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
+
+  getTypes:
+    handler: handlers/getTypes.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /getTypes
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:getTypesProvisionedConcurrency}
+  getSubTypes:
+    handler: handlers/getSubTypes.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /getSubTypes
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:getSubTypesProvisionedConcurrency}
+  itemExists:
+    handler: handlers/itemExists.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /itemExists
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:itemProvisionedConcurrency}
   submit:
     handler: handlers/submit.handler
@@ -199,6 +260,7 @@ functions:
       dbPassword: ${self:custom.dbInfo.password}
       topicName: ${param:topicName}
       brokerString: ${self:custom.brokerString}
+      osDomain: ${param:osDomain}
     events:
       - http:
           path: /submit
@@ -236,9 +298,7 @@ functions:
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
   forms:
-    handler: handlers/forms.handler
-    layers:
-      - !Ref FormsLambdaLayer
+    handler: handlers/getForm.handler
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
@@ -246,7 +306,7 @@ functions:
     events:
       - http:
           path: /forms
-          method: get
+          method: post
           cors: true
     vpc:
       securityGroupIds:
@@ -256,8 +316,6 @@ functions:
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
   getAllForms:
     handler: handlers/getAllForms.handler
-    layers:
-      - !Ref FormsLambdaLayer
     maximumRetryAttempts: 0
     environment:
       region: ${self:provider.region}
@@ -273,10 +331,31 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
-layers:
-  forms:
-    path: layers
-    description: Lambda Layer for forms function
+  appkNewSubmission:
+    handler: handlers/appkNewSubmission.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      dbIp: ${self:custom.dbInfo.ip}
+      dbPort: ${self:custom.dbInfo.port}
+      dbUser: ${self:custom.dbInfo.user}
+      dbPassword: ${self:custom.dbInfo.password}
+      topicName: ${param:topicName}
+      brokerString: ${self:custom.brokerString}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /appk
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:appkNewSubmissionConcurrency}
+
 resources:
   Resources:
     ApiGateway400ErrorCount:

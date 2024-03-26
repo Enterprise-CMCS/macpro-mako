@@ -15,10 +15,17 @@ import {
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
-import { cn } from "@/lib/utils";
-import { Button, Calendar, Input } from "@/components/Inputs";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/Popover";
+import { cn } from "@/utils";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Button,
+  Calendar,
+  Input,
+} from "@/components";
 import { opensearch } from "shared-types";
+import { getNextBusinessDayTimestamp, offsetFromUtc } from "shared-utils";
 
 type Props = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -174,7 +181,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
           sideOffset={1}
         >
           <Calendar
-            disabled={[{ after: new Date() }]}
+            disabled={[{ after: offsetFromUtc(new Date(getNextBusinessDayTimestamp())) }]}
             initialFocus
             mode="range"
             defaultMonth={selectedDate?.from}

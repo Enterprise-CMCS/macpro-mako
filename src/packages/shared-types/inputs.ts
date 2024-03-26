@@ -7,6 +7,7 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   className?: string;
   classNames?: any;
   showOutsideDays?: boolean;
+  defaultMonth?: Date;
 };
 
 export type DatePickerProps = {

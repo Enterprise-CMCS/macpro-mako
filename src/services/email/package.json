@@ -7,9 +7,12 @@
     "author": "",
     "license": "CC0-1.0",
     "dependencies": {
-        "@aws-sdk/client-ses": "^3.499.0"
-    },
-    "scripts": {
+        "@aws-sdk/client-ses": "^3.499.0",
+        "@haftahave/serverless-ses-template": "^6.1.0",
+        "base-64": "^1.0.0",
+        "luxon": "^3.4.4",
+        "shared-types": "*"
+    },    "scripts": {
         "lint": "eslint '**/*.{ts,js}'"
     },
     "devDependencies": {
