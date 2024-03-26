@@ -18,6 +18,7 @@ import {
   useParams,
   useModalContext,
   useAlertContext,
+  Route,
 } from "@/components";
 import {
   ActionFormIntro,
@@ -76,13 +77,19 @@ export const RaiIssue = ({
               // when any queries are added, such as the case of /details?id=...
               urlQuery.get(ORIGIN)
                 ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-                : "/dashboard"
+                : "/dashboard",
             );
             navigate(
-              originPath ? { path: originPath } : { path: "/dashboard" }
+              originPath ? { path: originPath } : { path: "/dashboard" },
             );
           } catch (e) {
             console.error(e);
+            alert.setContent({
+              header: "An error has occurred:",
+              body: e instanceof Error ? e.message : String(e),
+            });
+            alert.setBannerShow(true);
+            alert.setBannerDisplayOn(window.location.pathname as Route);
           }
         })}
       >
@@ -152,7 +159,7 @@ export const RaiIssue = ({
                     <li className="ml-8 my-2" key={idx}>
                       {err.message as string}
                     </li>
-                  )
+                  ),
               )}
             </ul>
           </Alert>
