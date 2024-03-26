@@ -83,7 +83,23 @@ interface SubsectionData {
   showEHBBenchmark?: boolean;
 }
 
-function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
+interface SubsectionFieldProps {
+  namePrefix: string;
+  optionalSection?: boolean;
+}
+
+function subsectionFormFields({
+  namePrefix,
+  optionalSection = false,
+}: SubsectionFieldProps): RHFSlotProps[] {
+  // The Authorization select menu in the optional sections should not include
+  // the "None" option, accodring to HCD. This is because the original PDF did
+  // not include a "None" option in those optional sections. So, we use
+  // slice() to exclude the first option.
+  const authOptions: { label: string; value: string }[] = optionalSection
+    ? authorizationOptions.slice(1)
+    : authorizationOptions;
+
   return [
     {
       rhf: "Input",
@@ -152,7 +168,7 @@ function subsectionFormFields(namePrefix: string): RHFSlotProps[] {
       rules: { required: "* Required" },
       props: {
         className: "w-[300px]",
-        options: authorizationOptions,
+        options: authOptions,
       },
     },
     {
@@ -609,7 +625,10 @@ export const v202401: FormSchema = {
                               removeText: "Remove benefit",
                             },
                             fields: [
-                              ...subsectionFormFields("other_covered_benefits"),
+                              ...subsectionFormFields({
+                                namePrefix: "other_covered_benefits",
+                                optionalSection: true,
+                              }),
                             ],
                           },
                         ],
@@ -682,9 +701,10 @@ export const v202401: FormSchema = {
                               removeText: "Remove benefit",
                             },
                             fields: [
-                              ...subsectionFormFields(
-                                "additional_covered_benefits",
-                              ),
+                              ...subsectionFormFields({
+                                namePrefix: "additional_covered_benefits",
+                                optionalSection: true,
+                              }),
                             ],
                           },
                         ],
