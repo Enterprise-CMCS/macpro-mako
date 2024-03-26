@@ -19,7 +19,7 @@ export const RHFTextDisplay = (props: RHFTextDisplayProps) => {
           case "br":
             return (
               <>
-                <br /> {t.text}
+                <span className="block pb-2"> {t.text} </span>
               </>
             );
           case "brWrap":
