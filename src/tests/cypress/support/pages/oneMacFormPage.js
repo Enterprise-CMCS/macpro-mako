@@ -23,7 +23,7 @@ const waiverAuthorityLabel = "//label[text()='Waiver Authority']";
 const amendmentTitleField = "#title";
 const tempExtensionTypeHeader =
   "//h3[contains(text(),'Temporary Extension Type')]";
-const tempExtensionTypeBtn = "#temp-ext-type";
+const tempExtensionTypeBtn = "//button//*[contains(text(), 'select a temporary extension type')]";
 const formIntroElement = "form p:first-of-type";
 const returnToFormBtn = "//*[@role='dialog']//button[text()='Return to form']";
 const labelElementFromLabel = {
@@ -39,6 +39,8 @@ const elementFromLabel = {
   "Existing Waiver Number to Renew": parentIdElement,
   "Existing Waiver Number to Amend": parentIdElement,
   "Additional Information": "textarea[name='additionalInformation']",
+  "Subject": "[name='subject']",
+  "Description": "[name='description']",
 };
 const errorMessageLine1FromLabel = {
   "SPA ID": "#componentIdStatusMsg0",
@@ -201,7 +203,7 @@ export class oneMacFormPage {
     cy.xpath(tempExtensionTypeHeader).next("div").contains(whatType);
   }
   selectTempExtensionType(whatType) {
-    cy.get(tempExtensionTypeBtn).select(whatType);
+    cy.xpath(tempExtensionTypeBtn).select(whatType);
   }
   uploadAttachment(fileName, attachmentIndex) {
    // const innerBTN = `#uploader-input-${attachmentIndex - 1}`;

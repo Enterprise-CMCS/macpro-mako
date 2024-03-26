@@ -10,13 +10,14 @@ Feature: Package Dashboard Temporary Extension
         Then Click on Request Temporary Extension in Package dashboard
         Then select "1915(c)" as the Temporary Extension Type
         Then into "Existing Waiver Number to Renew" type "MD-2200.R00.00"
-
-        Then into "Temporary Extension Request Number" type "MD-5533.R00.TE01"
+        type the generated "Temporary Extension" Number 2 into the ID Input box using the state "MD"
         Then attach "picture.jpg" file to attachment 1
-        Then into "Additional Information" type "This is just a test"
+        Then into "Additional Information" type "This an automated test to createa a 1915(c) test."
         Then Click on Submit Button
-        Then verify submission successful message in the alert bar
-        Then search for "MD-5533.R00.TE01"
+        Then verify package submitted message in the alert bar
+        Then click on the Waivers tab
+        Then search for the generated "Temporary Extension" Number 2
+        Then verify the id number in the first row matches the generated "Temporary Extension" Number 2
         Then click the Waiver Number link in the first row
         Then verify the details section exists
         Then verify there is a Type header in the details section
@@ -25,3 +26,96 @@ Feature: Package Dashboard Temporary Extension
         Then verify the Approved Initial or Renewal Number ID is the approved intial waiver number 1
         Then verify there is an Initial Submission Date header in the details section
         Then verify a date exists for the Initial Submission Date
+
+    #1915(c) Initial and Renewal Waivers don't exist in system at the moment
+    # Scenario: Verify user can create a temporary extension from the initial waiver package details
+    #     Then click on the Waivers tab
+    #     Then Click on Filter Button
+    #     Then click on Type
+    #     Then click the 1915c check box
+    #     Then click on Type
+    #     Then click on Action Type
+    #     Then click the Initial check box
+    #     Then click on Type
+    #     Then click on Status
+    #     Then click Approved checkbox
+    #     Then Click on the close Filter Button
+    #     Then click the Waiver Number link in the first row
+    #     Then verify Request a Temporary Extension package action exists
+    #     Then click Request a Temporary Extension package action
+    #     Then verify the Temporary Extension Type is "1915(b)"
+    #     Then verify "Approved Initial or Renewal Waiver Number" is prefilled
+    #     Then into "Temporary Extension Request Number" type "MD-5533.R00.TE02"
+    #     Then attach "picture.jpg" file to attachment 1
+    #     Then into "Additional Information" type "This is just a test."
+    #     Then Click on Submit Button
+    #     Then verify submission successful message in the alert bar
+
+    # Scenario: Verify user can create a temporary extension from the waiver renewal package details
+    #     Then click on the Waivers tab
+    #     Then Click on Filter Button
+    #     Then click on Type
+    #     Then click the 1915c check box
+    #     Then click on Type
+    #     Then click on Action Type
+    #     Then click the Renewal check box
+    #     Then click on Type
+    #     Then click on Status
+    #     Then click Approved checkbox
+    #     Then Click on the close Filter Button
+    #     Then click the Waiver Number link in the first row
+    #     Then verify Request a Temporary Extension package action exists
+    #     Then click Request a Temporary Extension package action
+    #     Then verify the Temporary Extension Type is "1915(b)"
+    #     Then verify "Approved Initial or Renewal Waiver Number" is prefilled
+    #     Then into "Temporary Extension Request Number" type "MD-5533.R00.TE03"
+    #     Then attach "picture.jpg" file to attachment 1
+    #     Then into "Additional Information" type "This is just a test."
+    #     Then Click on Submit Button
+    #     Then verify submission successful message in the alert bar
+
+    # Scenario: Verify user can create a temporary extension from the package dashboard waiver tab - initial
+    #     Then click on the Waivers tab
+    #     Then Click on Filter Button
+    #     Then click on Type
+    #     Then click the 1915c check box
+    #     Then click on Type
+    #     Then click on Action Type
+    #     Then click the Initial check box
+    #     Then click on Type
+    #     Then click on Status
+    #     Then click Approved checkbox
+    #     Then Click on the close Filter Button
+    #     Then click the actions button in row one
+    #     Then verify the Request Temporary Extension button is displayed
+    #     Then click the Request Temporary Extension button
+    #     Then verify the Temporary Extension Type is "1915(b)"
+    #     Then verify "Approved Initial or Renewal Waiver Number" is prefilled
+    #     Then into "Temporary Extension Request Number" type "MD-5533.R00.TE04"
+    #     Then attach "picture.jpg" file to attachment 1
+    #     Then into "Additional Information" type "This is just a test."
+    #     Then Click on Submit Button
+    #     Then verify submission successful message in the alert bar
+
+    # Scenario: Verify user can create a temporary extension from the package dashboard waiver tab - renewal
+    #     Then click on the Waivers tab
+    #     Then Click on Filter Button
+    #     Then click on Type
+    #     Then click the 1915c check box
+    #     Then click on Type
+    #     Then click on Action Type
+    #     Then click the Renewal check box
+    #     Then click on Type
+    #     Then click on Status
+    #     Then click Approved checkbox
+    #     Then Click on the close Filter Button
+    #     Then click the actions button in row one
+    #     Then verify the Request Temporary Extension button is displayed
+    #     Then click the Request Temporary Extension button
+    #     Then verify the Temporary Extension Type is "1915(b)"
+    #     Then verify "Approved Initial or Renewal Waiver Number" is prefilled
+    #     Then into "Temporary Extension Request Number" type "MD-5533.R00.TE05"
+    #     Then attach "picture.jpg" file to attachment 1
+    #     Then into "Additional Information" type "This is just a test."
+    #     Then Click on Submit Button
+    #     Then verify submission successful message in the alert bar

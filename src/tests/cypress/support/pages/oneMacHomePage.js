@@ -114,7 +114,7 @@ export class oneMacHomePage {
   }
 
   clicksignInBtn() {
-    cy.xpath(signInBtn).click();
+    cy.xpath(signInBtn).click()
   }
 
   clickFAQPage() {

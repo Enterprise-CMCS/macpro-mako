@@ -21,6 +21,8 @@ Feature: Package Dashboard: CHIP SPA Initial Submission
         Then verify the form title is "CHIP SPA Details"
         Then type the generated "CHIP SPA" Number 1 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of CHIP SPA" to 3 months from today
+        Then into "Subject" type "Cypress Regression Test"
+        Then into "Description" type "This package was creating while running the test automation."
         Then verify the attachment info descriptiion
         Then verify the attachment info link is for "CHIP SPA"
         Then attach "picture.jpg" file to attachment 1

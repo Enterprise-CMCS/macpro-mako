@@ -21,6 +21,8 @@ const OneMacFAQPage = new oneMacFAQPage();
 const OneMacPackageDetailsPage = new oneMacPackageDetailsPage();
 const util = new utilities();
 
+
+
 Given("I am on Login Page", () => {
   OneMacHomePage.launch();
 });
@@ -1970,6 +1972,13 @@ Then("type the generated {string} Number {int} into the ID Input box using the s
           data["lastAmendmentSecondPart"] = util.doubleDigitCounter(data["lastAmendmentSecondPart"]);
           newID += data["lastAmendmentFirstPart"] + ".R00." + data["lastAmendmentSecondPart"];
           break;
+        case "Temporary Extension":
+            if (parseInt(data["lastTempExtensionSecondPart"]) === 99) {
+              data["lastTempExtensionFirstPart"] = util.firstpartCounter(data["lastTempExtensionFirstPart"]);
+            }
+            data["lastTempExtensionSecondPart"] = util.doubleDigitCounter(data["lastTempExtensionSecondPart"]);
+            newID += data["lastTempExtensionFirstPart"] + ".R00.TE" + data["lastTempExtensionSecondPart"];
+            break;
         case "Medicaid SPA":
         case "CHIP SPA":
           data["lastSpaID"] = util.spaIDCounter(data["lastSpaID"]);

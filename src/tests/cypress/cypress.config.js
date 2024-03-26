@@ -2,13 +2,14 @@ const { defineConfig } = require("cypress");
 const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
 const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild");
+// AWS exports
+const awsConfig = require('./aws-exports-es5.js')
 
 async function setupNodeEvents(on, config) {
   // This is required for the preprocessor to be able to generate JSON reports after each run, and more,
   await preprocessor.addCucumberPreprocessorPlugin(on, config);
 
-  on(
-    "file:preprocessor",
+  on("file:preprocessor",
     createBundler({
       plugins: [createEsbuildPlugin.default(config)],
     })
@@ -43,6 +44,9 @@ module.exports = defineConfig({
   viewportHeight: 900,
   experimentalStudio: true,
   types: ["cypress", "cypress-axe"],
+  env: {
+    awsConfig: awsConfig.default,
+  },
   e2e: {
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.

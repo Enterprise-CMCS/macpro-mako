@@ -278,6 +278,8 @@ jobs:
             Package_Details_Renewal_Waiver_CMS_User.spec.feature,
             Package_Details_Initial_Waiver_State_User.spec.feature,
             Package_Details_Initial_Waiver_CMS_User.spec.feature,
+            Temporary_Extension_1915b_Form.spec.feature,
+            Temporary_Extension_1915c_Form.spec.feature,
             Withdraw_Package_Form_Initial_Waiver.spec.feature,
             Withdraw_Package_Form_Waiver_Amendment.spec.feature,
             Withdraw_Package_Form_Waiver_Renewal.spec.feature,

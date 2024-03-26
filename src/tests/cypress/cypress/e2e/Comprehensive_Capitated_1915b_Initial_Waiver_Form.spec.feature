@@ -39,6 +39,8 @@ Feature: 1915b Comprehensive Capitated Initial Waiver
         Then click on "1915(b) Comprehensive (Capitated) New Initial Waiver" choice
         Then type the generated "Initial Waiver" Number 2 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Initial Waiver" to 3 months from today
+        Then into "Subject" type "Cypress Regression Test"
+        Then into "Description" type "This package was creating while running the test automation."
         Then attach "file.docx" file to attachment 1
         Then attach "excel.xlsx" file to attachment 2
         Then into "Additional Information" type "This Initial Waiver package was created by the test automation."
