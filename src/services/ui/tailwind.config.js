@@ -6,6 +6,9 @@ export default {
     fontFamily: {
       serif: ["Merriweather", "serif"],
     },
+    fontSize: {
+      "3xl": "1.75rem",
+    },
     container: {
       center: true,
       padding: "2rem",

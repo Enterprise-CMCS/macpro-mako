@@ -20,7 +20,7 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
                 : "bg-primary text-white")
             }
           >
-            <FormLabel className="text-2xl font-semibold">
+            <FormLabel className="text-3xl font-bold">
               {props.section.title}
             </FormLabel>
           </div>
