@@ -216,3 +216,64 @@ const legacyAdminChanges = async (
   }
   await bulkUpdateDataWrapper(osDomain, index, docs);
 };
+
+const legacyAdminChanges = async (
+  kafkaRecords: KafkaRecord[],
+  topicPartition: string,
+) => {
+  const docs: any[] = [];
+  for (const kafkaRecord of kafkaRecords) {
+    const { key, value } = kafkaRecord;
+    try {
+      // Skip delete events
+      if (!value) continue;
+
+      // Set id
+      const id: string = decode(key);
+
+      // Parse event data
+      const record = JSON.parse(decode(value));
+
+      // Process legacy events
+      if (record?.origin !== "micro") {
+        // Skip if it's not a package view from onemac with adminChanges
+        if (
+          !(
+            record?.sk === "Package" &&
+            record.submitterName &&
+            record.adminChanges
+          )
+        ) {
+          continue;
+        }
+        for (const adminChange of record.adminChanges) {
+          const result = opensearch.changelog.legacyAdminChange
+            .transform(id)
+            .safeParse(adminChange);
+
+          if (result.success && result.data === undefined) continue;
+
+          // Log Error and skip if transform had an error
+          if (!result?.success) {
+            logError({
+              type: ErrorType.VALIDATION,
+              error: result?.error,
+              metadata: { topicPartition, kafkaRecord, record },
+            });
+            continue;
+          }
+
+          // If we made it this far, we push the document to the docs array so it gets indexed
+          docs.push(result.data);
+        }
+      }
+    } catch (error) {
+      logError({
+        type: ErrorType.BADPARSE,
+        error,
+        metadata: { topicPartition, kafkaRecord },
+      });
+    }
+  }
+  return docs;
+};
