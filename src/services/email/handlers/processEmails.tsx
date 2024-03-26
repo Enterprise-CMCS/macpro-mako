@@ -8,7 +8,7 @@ import { buildEmailData } from "../libs/data-lib";
 const SES = new SESClient({ region: process.env.region });
 
 export const main = handler(async (record) => {
-
+  console.log("record: ", record);
   // get the bundle of emails associated with this action
   const emailBundle = getBundle(record, process.env.stage);
   console.log("emailBundle: ", emailBundle);

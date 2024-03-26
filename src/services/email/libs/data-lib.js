@@ -33,11 +33,11 @@ const formatDateFromTimestamp = (timestamp) => {
 
 };
 
-function formatNinetyDaysDate(emailBundle, lookupValues) {
+function formatNinetyDaysDate(data, lookupValues) {
     if (lookupValues?.ninetyDaysDate)
         return formatDateFromTimestamp(lookupValues?.ninetyDaysDate);
-    if (!emailBundle?.notificationMetadata?.submissionDate) return "Pending";
-    return DateTime.fromMillis(emailBundle.notificationMetadata.submissionDate)
+    if (!data?.notificationMetadata?.submissionDate) return "Pending";
+    return DateTime.fromMillis(data.notificationMetadata.submissionDate)
         .plus({ days: 90 })
         .toFormat("DDDD '@ 11:59pm ET'");
 
