@@ -36,6 +36,7 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getItem } from "@/api";
 import { ItemResult } from "shared-types/opensearch/changelog";
+import { FAQFooter } from "../submission";
 
 type Attachments = keyof z.infer<typeof tempExtensionSchema>["attachments"];
 export const tempExtensionSchema = z
@@ -179,6 +180,7 @@ export const TemporaryExtension = () => {
         <SC.ErrorBanner />
         <SC.SubmissionButtons />
       </form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };

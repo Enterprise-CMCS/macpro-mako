@@ -30,6 +30,7 @@ import { useQuery as useQueryString } from "@/hooks";
 import {
   AdditionalInfoInput,
   DescriptionInput,
+  FAQFooter,
   SubjectInput,
 } from "@/features/submission/shared-components";
 import { SubmitAndCancelBtnSection } from "../shared-components";
@@ -268,6 +269,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
           <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };
