@@ -6,7 +6,6 @@ testcafe_results
 yarn-error.log
 .serverless
 .webpack
-.repack
 .yarn_install
 tsconfig.tsbuildinfo
 build_run

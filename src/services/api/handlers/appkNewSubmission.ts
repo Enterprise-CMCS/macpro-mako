@@ -13,6 +13,19 @@ import { search } from "../../../libs/opensearch-lib";
 
 export const submit = async (event: APIGatewayEvent) => {
   // reject no body
+  /**
+    state: z.string(),
+    parentWaiver: zAppkWaiverNumberSchema,
+    childWaivers: z.array(zAppkWaiverNumberSchema),
+    additionalInformation: z.string().max(4000).optional(),
+    title: z.string(),
+    attachments: z.object({
+      appk: zAttachmentRequired({ min: 1 }),
+      other: zAttachmentRequired({ min: 1 }),
+    }),
+    proposedEffectiveDate: z.date(),
+    seaActionType: z.string().default("Amend"),
+   */
   if (!event.body) {
     return response({
       statusCode: 400,

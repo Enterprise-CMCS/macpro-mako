@@ -1,8 +1,7 @@
-import { removeUnderscoresAndCapitalize } from "@/utils";
 import { isCmsUser } from "shared-utils";
 
 import { BLANK_VALUE } from "@/consts";
-import { Authority, opensearch } from "shared-types";
+import { opensearch } from "shared-types";
 import { FC, ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
 
@@ -13,7 +12,7 @@ export const ReviewTeamList: FC<opensearch.main.Document> = (props) => {
   const [expanded, setExpanded] = useState(false);
   const displayTeam = useMemo(
     () => (expanded ? props.reviewTeam : props.reviewTeam?.slice(0, 3)),
-    [expanded, props.reviewTeam]
+    [expanded, props.reviewTeam],
   );
   return !displayTeam || !displayTeam.length ? (
     BLANK_VALUE
@@ -38,19 +37,17 @@ export type DetailSectionItem = {
   value: ReactNode;
   canView: (u: OneMacUser | undefined) => boolean;
 };
-export const spaDetails = (
-  data: opensearch.main.Document
+export const recordDetails = (
+  data: opensearch.main.Document,
 ): DetailSectionItem[] => [
-  {
-    label: "Waiver Authority",
-    value: data.authority,
-    canView: () => {
-      return data.authority?.toLowerCase() == Authority.WAIVER;
-    },
-  },
   {
     label: "Submission ID",
     value: data.id,
+    canView: () => true,
+  },
+  {
+    label: "Authority",
+    value: data?.authority,
     canView: () => true,
   },
   {
@@ -59,21 +56,47 @@ export const spaDetails = (
     canView: () => true,
   },
   {
-    label: "Type",
-    value: data?.authority
-      ? removeUnderscoresAndCapitalize(data.authority)
-      : BLANK_VALUE,
-    canView: () => true,
+    label: "Subject",
+    value: <p>{data?.subject || BLANK_VALUE}</p>,
+    canView: (u) =>
+      !u || !u.user
+        ? false
+        : isCmsUser(u.user) && !(data.actionType === "Extend"),
   },
   {
-    label: "Initial Submission Date",
+    label: "Type",
+    value: data.types
+      ? data.types.map((T) => <p key={T?.SPA_TYPE_ID}>{T?.SPA_TYPE_NAME}</p>)
+      : BLANK_VALUE,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
+  },
+  {
+    label: "Subtype",
+    value: data.subTypes
+      ? data.subTypes.map((T) => <p key={T?.TYPE_ID}>{T?.TYPE_NAME}</p>)
+      : BLANK_VALUE,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
+  },
+  {
+    label: "Initial submission date",
     value: data.submissionDate
       ? formatSeatoolDate(data.submissionDate)
       : BLANK_VALUE,
     canView: () => true,
   },
   {
-    label: "Proposed Effective Date",
+    label: "Approved Initial or Renewal Number",
+    value: data.originalWaiverNumber,
+    canView: () => {
+      return data.actionType === "Extend";
+    },
+  },
+  {
+    label: "Proposed effective date",
     value: data.proposedDate
       ? formatSeatoolDate(data.proposedDate)
       : BLANK_VALUE,
@@ -82,9 +105,9 @@ export const spaDetails = (
     },
   },
   {
-    label: "Approved Effective Date",
-    value: data.approvedEffectiveDate
-      ? formatSeatoolDate(data.approvedEffectiveDate)
+    label: "Formal RAI received",
+    value: data.raiReceivedDate
+      ? formatSeatoolDate(data.raiReceivedDate)
       : BLANK_VALUE,
     canView: () => {
       return !(data.actionType === "Extend");
@@ -95,8 +118,13 @@ export const spaDetails = (
     value: data.statusDate ? formatSeatoolDate(data.statusDate) : BLANK_VALUE,
     canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
   },
+];
+
+export const approvedAndAEffectiveDetails = (
+  data: opensearch.main.Document,
+): DetailSectionItem[] => [
   {
-    label: "Final Disposition Date",
+    label: "Final disposition date",
     value: data.finalDispositionDate
       ? formatSeatoolDate(data.finalDispositionDate)
       : BLANK_VALUE,
@@ -104,30 +132,42 @@ export const spaDetails = (
       return !(data.actionType === "Extend");
     },
   },
+  {
+    label: "Approved effective date",
+    value: data.approvedEffectiveDate
+      ? formatSeatoolDate(data.approvedEffectiveDate)
+      : BLANK_VALUE,
+    canView: () => {
+      return !(data.actionType === "Extend");
+    },
+  },
+];
+
+export const descriptionDetails = (
+  data: opensearch.main.Document,
+): DetailSectionItem[] => [
+  {
+    label: "Description",
+    value: data.description ?? BLANK_VALUE,
+    canView: (u) =>
+      !u || !u.user
+        ? false
+        : isCmsUser(u.user) && !(data.actionType === "Extend"),
+  },
 ];
 
 export const submissionDetails = (
-  data: opensearch.main.Document
+  data: opensearch.main.Document,
 ): DetailSectionItem[] => [
   {
-    label: "Submitted By",
+    label: "Submitted by",
     value: <p className="text-lg">{data?.submitterName || BLANK_VALUE}</p>,
     canView: () => true,
   },
   {
-    label: "Submission Source",
+    label: "Submission source",
     value: <p className="text-lg">{data?.origin || BLANK_VALUE}</p>,
     canView: () => true,
-  },
-  {
-    label: "Subject",
-    value: <p>{data?.subject || BLANK_VALUE}</p>,
-    canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
-  },
-  {
-    label: "Description",
-    value: <p>{data?.description || BLANK_VALUE}</p>,
-    canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
   },
   {
     label: "CPOC",
@@ -139,6 +179,9 @@ export const submissionDetails = (
   {
     label: "Review Team (SRT)",
     value: <ReviewTeamList {...data} />,
-    canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
+    canView: (u) =>
+      !u || !u.user
+        ? false
+        : isCmsUser(u.user) && !(data.actionType === "Extend"),
   },
 ];
