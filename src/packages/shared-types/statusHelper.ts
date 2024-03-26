@@ -42,6 +42,8 @@ export const finalDispositionStatuses = [
   SEATOOL_STATUS.APPROVED,
   SEATOOL_STATUS.DISAPPROVED,
   SEATOOL_STATUS.WITHDRAWN,
+  SEATOOL_STATUS.TERMINATED,
+  SEATOOL_STATUS.UNSUBMITTED,
 ];
 
 export const getStatus = (seatoolStatus?: string | null) => {
