@@ -6,10 +6,10 @@ Feature: Waiver Package Details View: Initial Waivers
         Then click the main Dashboard Button
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Type
-        Then click on Type
+        Then click on Authority
+        Then click on Authority
         Then click the 1915b check box
-        Then click on Type
+        Then click on Authority
         Then click on Action Type
         Then click the Initial check box
         Then click on Action Type

@@ -5,9 +5,9 @@ Feature: CHIP SPA CMS Details View - Card View with Actions
         When Login with "an Active" "CMS Read Only" user
         Then click the main Dashboard Button
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click CHIP SPA check box
-        Then click on Type
+        Then click on Authority
         Then click on Status
 
     Scenario: Screen Enhance - Pending CHIP SPA

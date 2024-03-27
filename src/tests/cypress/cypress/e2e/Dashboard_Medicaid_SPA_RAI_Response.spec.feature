@@ -5,9 +5,9 @@ Feature: RAI Response for Medicaid SPA package view
         When Login with "an Active" "State Submitter" user
         Then click the main Dashboard Button
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click Medicaid SPA check box
-        Then click on Type
+        Then click on Authority
         Then click on Status
         Then click RAI Issued checkbox
         Then Click on the close Filter Button

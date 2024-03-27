@@ -78,7 +78,7 @@ Feature: Package Dashboard - SPA Tab Column Picker for CMS User
 
     Scenario: Filter for medicaid spa only, remove all check from drop down and keep type, verify type state medicaid spa
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click Medicaid SPA check box
         Then Click on the close Filter Button
         Then click show hide columns button

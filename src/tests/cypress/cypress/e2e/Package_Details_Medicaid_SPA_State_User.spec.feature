@@ -5,9 +5,9 @@ Feature: Medicaid SPA State Details View - Card View with Actions
         When Login with "an Active" "State Submitter" user
         Then click the main Dashboard Button
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click Medicaid SPA check box
-        Then click on Type
+        Then click on Authority
         Then click on Status
 
     Scenario: Screen Enhance - Approved Medicaid SPA

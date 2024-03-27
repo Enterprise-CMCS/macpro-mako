@@ -58,6 +58,7 @@ const closeButton = "//header/button[1]";
 const typeDropDownFilter = "//button[text()='Type']";
 const finalDispositionDatePickerFilter = "#finalDispositionDate-date-filter";
 const typeDropDown = "//button[text()='Type']";
+const authorityDropDown = "//button[text()='Authority']";
 const actionTypeDropDown = "//button[text()='Action Type']";
 const statusDropDown = "//button[text()='Status']";
 const cPOCNameDropDown = "#cpocName-button";
@@ -467,6 +468,10 @@ export class oneMacDashboardPage {
   clickTypeDropDown() {
     cy.xpath(typeDropDown).wait(1000);
     cy.xpath(typeDropDown).click();
+  }
+  clickAuthorityDropDown(){
+    cy.xpath(authorityDropDown).wait(1000);
+    cy.xpath(authorityDropDown).click();
   }
 
   clickActionTypeDropDown() {

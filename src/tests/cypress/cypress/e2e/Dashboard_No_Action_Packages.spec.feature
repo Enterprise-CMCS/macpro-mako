@@ -30,7 +30,7 @@ Feature: Withdraw package action in package dashboard
     Scenario: Demonstrate that withdraw a package is not available on Waiver with Approved status
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click on Action Type
         Then click the Initial check box
         Then click the Renewal check box

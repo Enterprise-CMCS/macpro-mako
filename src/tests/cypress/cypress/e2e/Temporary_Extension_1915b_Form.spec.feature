@@ -3,6 +3,7 @@ Feature: Package Dashboard Temporary Extension
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
+        Then click the main Dashboard Button
 
     Scenario: Verify user can create a temporary extension from new submission button
         Then click on New Submission
@@ -30,10 +31,10 @@ Feature: Package Dashboard Temporary Extension
     Scenario: Verify user can create a temporary extension from the initial waiver package details
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click on Action Type
         Then click the Initial check box
-        Then click on Type
+        Then click on Authority
         Then click on Status
         Then click Approved checkbox
         Then click the Waiver Number link in the first row
@@ -50,12 +51,12 @@ Feature: Package Dashboard Temporary Extension
     Scenario: Verify user can create a temporary extension from the waiver renewal package details
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click the 1915b check box
-        Then click on Type
+        Then click on Authority
         Then click on Action Type
         Then click the Renewal check box
-        Then click on Type
+        Then click on Authority
         Then click on Status
         Then click Approved checkbox
         Then Click on the close Filter Button
@@ -73,12 +74,12 @@ Feature: Package Dashboard Temporary Extension
     Scenario: Verify user can create a temporary extension from the package dashboard waiver tab - initial
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click the 1915b check box
-        Then click on Type
+        Then click on Authority
         Then click on Action Type
         Then click the Initial check box
-        Then click on Type
+        Then click on Authority
         Then click on Status
         Then click Approved checkbox
         Then Click on the close Filter Button
@@ -96,12 +97,12 @@ Feature: Package Dashboard Temporary Extension
     Scenario: Verify user can create a temporary extension from the package dashboard waiver tab - renewal
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click the 1915b check box
-        Then click on Type
+        Then click on Authority
         Then click on Action Type
         Then click the Renewal check box
-        Then click on Type
+        Then click on Authority
         Then click on Status
         Then click Approved checkbox
         Then Click on the close Filter Button

@@ -22,7 +22,7 @@ Feature: OY2-14464 Package Dashboard - Separate Tab for Waivers and SPAs
     Scenario: verify initial waiver waiver number pattern
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click the 1915b check box
         Then click on Action Type
         Then click the Initial check box
@@ -33,7 +33,7 @@ Feature: OY2-14464 Package Dashboard - Separate Tab for Waivers and SPAs
     Scenario: verify waiver renewal waiver number pattern
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click the 1915b check box
         Then click on Action Type
         Then click the Renewal check box

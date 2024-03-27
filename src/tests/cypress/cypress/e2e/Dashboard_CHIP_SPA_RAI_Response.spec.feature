@@ -5,9 +5,9 @@ Feature: RAI Response for CHIP SPA package view
         When Login with "an Active" "State Submitter" user
         Then click the main Dashboard Button
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click CHIP SPA check box
-        Then click on Type
+        Then click on Authority
         Then click on Status
         Then click RAI Issued checkbox
         Then Click on the close Filter Button
@@ -38,8 +38,8 @@ Feature: RAI Response for CHIP SPA package view
         Then attach "adobe.pdf" file to attachment 1
         Then attach "adobe.pdf" file to attachment 2
         Then into "Additional Information" type "This is just a test."
-        #Then Click the Submit Button without waiting
-    #Then verify the modal pop-up is visible
+#Then Click the Submit Button without waiting
+#Then verify the modal pop-up is visible
 #Then verify the title of the modal pop-up is Do you want to submit your official formal RAI response
 #Then verify the detailed text in the modal contains you are submitting your official formal RAI Response to restart the SPA review process and a new 90th day will be identified
 #Then click modal cancel button

@@ -6,9 +6,9 @@ Feature: Waiver Package Details View: Appendix K Amendment for a State User
         Then click the main Dashboard Button
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click the 1915b check box
-        Then click on Type
+        Then click on Authority
         Then click on Action Type
         Then click 1915c Appendix K Amendment check box
         Then click on Action Type
@@ -74,6 +74,7 @@ Feature: Waiver Package Details View: Appendix K Amendment for a State User
 
     Scenario: Screen Enhance: Appendix K Details View - RAI Issued
         Then click RAI Issued checkbox
+        Then Click on the close Filter Button
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
         Then verify the status on the card is "RAI Issued"

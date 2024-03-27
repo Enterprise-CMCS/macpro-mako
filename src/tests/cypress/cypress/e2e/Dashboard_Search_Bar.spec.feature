@@ -22,7 +22,7 @@ Feature: OY2-11149 Submission Dashboard - Search bar
         When Login with "an Active" "State Submitter" user
         Then click the main Dashboard Button
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click CHIP SPA check box
         Then Click on the close Filter Button
         Then copy the ID from the link in the first row

@@ -6,9 +6,9 @@ Feature: Waiver Package Details View: Waiver Renewals for a State User
         Then click the main Dashboard Button
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click the 1915b check box
-        Then click on Type
+        Then click on Authority
         Then click on Action Type
         Then click the Renewal check box
         Then click on Action Type

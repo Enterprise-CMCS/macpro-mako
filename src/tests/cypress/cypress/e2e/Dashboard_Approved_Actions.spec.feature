@@ -10,19 +10,21 @@ Feature: Verify package actions in Approved Status in the package dashboard
         Then click Approved checkbox
 
     Scenario: Demonstrate add amendment and temp ext are available for Initial Waiver in Approved Status
-        Then click on Type
+        Then click on Authority
         Then click the 1915b check box
         Then click on Action Type
         Then click the Initial check box
+        Then Click on the close Filter Button
         Then click the actions button in row one
         Then verify the Add Amendment button is displayed
         Then verify the Request Temporary Extension button is displayed
 
     Scenario: Demonstrate add amendment and temp ext are available for Waiver Renewals in Approved Status
-        Then click on Type
+        Then click on Authority
         Then click the 1915b check box
         Then click on Action Type
         Then click the Renewal check box
+        Then Click on the close Filter Button
         Then click the actions button in row one
         Then verify the Add Amendment button is displayed
         Then verify the Request Temporary Extension button is displayed

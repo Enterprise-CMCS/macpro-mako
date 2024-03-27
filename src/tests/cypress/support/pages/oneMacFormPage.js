@@ -112,8 +112,8 @@ export class oneMacFormPage {
     cy.get(elementFromLabel[whereTo]).type(newValue, {delay: 100});
   }
   verifyPrefill(whereTo) {
-    cy.xpath(`//h3[text()='${whereTo}']`)
-      .next("div")
+    cy.xpath(`//*[text()='${whereTo}']`)
+      .next()
       .contains(/^(?!\s*$).+/);
   }
   verifyErrorMessagesAreNotThere(whichLabel) {

@@ -9,7 +9,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click on Status
 
         Then click Under Review checkbox
-        Then click on Type
+        Then click on Authority
 
         Then click 1915c Appendix K Amendment check box
 

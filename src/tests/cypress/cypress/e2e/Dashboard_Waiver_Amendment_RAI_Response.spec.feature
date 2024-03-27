@@ -4,16 +4,18 @@ Feature: RAI Response for 1915B Waiver Amendment - Package View
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "State Submitter" user
+        Then click the main Dashboard Button
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click the 1915b check box
-        Then click on Type
+        Then click on Authority
         Then click on Action Type
         Then click the Waiver Amendment check box
         Then click on Action Type
         Then click on Status
         Then click RAI Issued checkbox
+        Then Click on the close Filter Button
 
     Scenario: Respond to RAI from package dashboard
         Then click the actions button in row one

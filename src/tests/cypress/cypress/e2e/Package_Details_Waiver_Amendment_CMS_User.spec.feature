@@ -5,9 +5,9 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a CMS User
         When Login with "an Active" "CMS Read Only" user
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Type
+        Then click on Authority
         Then click the 1915b check box
-        Then click on Type
+        Then click on Authority
         Then click on Action Type
         Then click the Waiver Amendment check box
         Then click on Action Type

@@ -905,6 +905,9 @@ Then("verify reset Exists", () => {
 Then("click on Type", () => {
   OneMacDashboardPage.clickTypeDropDown();
 });
+Then("click on Authority", () => {
+  OneMacDashboardPage.clickAuthorityDropDown();
+});
 Then("click on Action Type", () => {
   OneMacDashboardPage.clickActionTypeDropDown();
 });
@@ -1973,12 +1976,12 @@ Then("type the generated {string} Number {int} into the ID Input box using the s
           newID += data["lastAmendmentFirstPart"] + ".R00." + data["lastAmendmentSecondPart"];
           break;
         case "Temporary Extension":
-            if (parseInt(data["lastTempExtensionSecondPart"]) === 99) {
-              data["lastTempExtensionFirstPart"] = util.firstpartCounter(data["lastTempExtensionFirstPart"]);
-            }
-            data["lastTempExtensionSecondPart"] = util.doubleDigitCounter(data["lastTempExtensionSecondPart"]);
-            newID += data["lastTempExtensionFirstPart"] + ".R00.TE" + data["lastTempExtensionSecondPart"];
-            break;
+          if (parseInt(data["lastTempExtensionSecondPart"]) === 99) {
+            data["lastTempExtensionFirstPart"] = util.firstpartCounter(data["lastTempExtensionFirstPart"]);
+          }
+          data["lastTempExtensionSecondPart"] = util.doubleDigitCounter(data["lastTempExtensionSecondPart"]);
+          newID += data["lastTempExtensionFirstPart"] + ".R00.TE" + data["lastTempExtensionSecondPart"];
+          break;
         case "Medicaid SPA":
         case "CHIP SPA":
           data["lastSpaID"] = util.spaIDCounter(data["lastSpaID"]);
