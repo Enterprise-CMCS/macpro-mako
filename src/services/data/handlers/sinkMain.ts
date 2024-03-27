@@ -3,6 +3,7 @@ import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
 import {
   Action,
+  Authority,
   KafkaRecord,
   SEATOOL_STATUS,
   getStatus,
@@ -200,6 +201,38 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
                 );
               }
 
+              // Handle the appk children when an appk parent id is updated
+              // I'd like a better way to identify an appk parent.
+              if (
+                item._source.authority === Authority["1915c"] &&
+                !item._source.appkParentId
+              ) {
+                console.log("AppK Parent ID update detected...");
+                const items = await os.search(osDomain, index, {
+                  from: 0,
+                  size: 200,
+                  query: {
+                    bool: {
+                      must: [{ term: { "appkParentId.keyword": id } }],
+                    },
+                  },
+                });
+                if (items !== undefined && items.hits.hits !== undefined) {
+                  console.log(
+                    `Updating children appKParentId from ${id} to ${record.newId}`,
+                  );
+                  const modifiedHits: opensearch.main.Document[] =
+                    items.hits.hits.map(
+                      (hit: { _source: opensearch.main.Document }) => {
+                        return {
+                          id: hit._source.id,
+                          appkParentId: record.newId,
+                        };
+                      },
+                    );
+                  docs.push(...modifiedHits);
+                }
+              }
               return undefined;
             }
           }
