@@ -175,6 +175,10 @@ export const zExtensionOriginalWaiverNumberSchema = z
 
 export const zUpdateIdSchema = z
   .string()
+  .regex(/^[a-zA-Z0-9.-]*$/, {
+    message:
+      "The new ID can only contain letters, numbers, dots, and dashes without any whitespace.",
+  })
   .refine(async (value) => !(await itemExists(value)), {
     message:
       "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
