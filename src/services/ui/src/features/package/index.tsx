@@ -40,6 +40,7 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
       switch (data._source.authority) {
         case Authority["1915b"]:
         case Authority["1915c"]:
+        case undefined: // Some TEs have no authority
           switch (data._source.actionType) {
             case "Extend":
               return "Temporary Extension Request Details";
