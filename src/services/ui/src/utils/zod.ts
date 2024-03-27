@@ -181,5 +181,5 @@ export const zUpdateIdSchema = z
   })
   .refine(async (value) => !(await itemExists(value)), {
     message:
-      "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
+      "According to our records, this ID already exists. Please check the ID and try entering it again.",
   });
