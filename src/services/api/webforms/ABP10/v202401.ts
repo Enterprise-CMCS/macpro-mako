@@ -10,7 +10,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "economy_and_efficiency_of_plans",
+              name: "abp10_economy-and-efficiency-of-plans_assures-abp-coverage-in-accordance_checkgroup",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -24,10 +24,10 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Select",
-              name: "economy_and_efficeiency_same_approach_as_medicaid_state_plan",
+              name: "abp10_economy-and-efficiency-of-plans_describe-approach_select",
               label:
                 "Will economy and efficiency be achieved using the same approach as used for Medicaid state plan services?",
-              labelClassName: "font-bold",
+              labelStyling: "font-bold",
               rules: { required: "* Required" },
               props: {
                 className: "w-[150px]",
@@ -43,14 +43,14 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               label: "Describe the approach",
-              labelClassName: "font-bold",
-              name: "describe_approach",
-              formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              labelStyling: "font-bold",
+              name: "abp10_economy-and-efficiency-of-plans_describe-approach_textarea",
+              formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
               rules: { required: "* Required" },
               dependency: {
                 conditions: [
                   {
-                    name: "economy_and_efficeiency_same_approach_as_medicaid_state_plan",
+                    name: "abp10_economy-and-efficiency-of-plans_describe-approach_select",
                     type: "expectedValue",
                     expectedValue: "no",
                   },
@@ -69,7 +69,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "compliance_with_the_law",
+              name: "abp10_compliance-with-the-law_compliance-with-the-law_checkgroup",
               rules: { required: "* Required" },
               props: {
                 options: [
