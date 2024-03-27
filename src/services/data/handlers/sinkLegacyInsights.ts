@@ -1,13 +1,13 @@
 import { Handler } from "aws-lambda";
+import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import { KafkaRecord, opensearch } from "shared-types";
-import { KafkaEvent } from "shared-types";
+import { KafkaEvent, KafkaRecord } from "shared-types";
 import { ErrorType, getTopic, logError } from "../libs/sink-lib";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
 }
-const index = "subtypes";
+const index = "legacyinsights";
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   const loggableEvent = { ...event, records: "too large to display" };
@@ -19,9 +19,9 @@ export const handler: Handler<KafkaEvent> = async (event) => {
         case undefined:
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
-        case "aws.seatool.debezium.cdc.SEA.dbo.Type":
+        case "aws.onemac.migration.cdc":
           docs.push(
-            ...(await subtypes(event.records[topicPartition], topicPartition)),
+            ...(await onemac(event.records[topicPartition], topicPartition)),
           );
           break;
       }
@@ -41,29 +41,33 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   }
 };
 
-const subtypes = async (
-  kafkaRecords: KafkaRecord[],
-  topicPartition: string,
-) => {
+const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
-    const { value } = kafkaRecord;
+    const { key, value, offset } = kafkaRecord;
     try {
-      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
-      const record = JSON.parse(decodedValue).payload.after;
-      if (!record) {
-        continue;
-      }
-      const result = opensearch.subtypes.Type.transform().safeParse(record);
-      if (!result.success) {
-        logError({
-          type: ErrorType.VALIDATION,
-          error: result?.error,
-          metadata: { topicPartition, kafkaRecord, record },
+      const id: string = decode(key);
+      if (!value) {
+        docs.push({
+          id,
+          hardDeletedFromLegacy: true,
         });
         continue;
       }
-      docs.push(result.data);
+      const record = JSON.parse(decode(value));
+      if (!record.sk) continue;
+      docs.push({
+        ...record,
+        id: record.sk === "Package" ? id : offset.toString(),
+        approvedEffectiveDate: null,
+        changedDate: null,
+        finalDispositionDate: null,
+        proposedDate: null,
+        proposedEffectiveDate: null,
+        statusDate: null,
+        submissionDate: null,
+        hardDeletedFromLegacy: null,
+      });
     } catch (error) {
       logError({
         type: ErrorType.BADPARSE,

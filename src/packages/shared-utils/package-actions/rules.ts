@@ -16,8 +16,8 @@ const arIssueRai: ActionRule = {
     (!checker.hasLatestRai ||
       // The latest RAI is complete
       (checker.hasCompletedRai &&
-        // The package is not a medicaid spa (med spas only get 1 rai)
-        !checker.authorityIs([Authority.MED_SPA]) &&
+        // The package is a chip (chips can have more than 1 rai)
+        checker.authorityIs([Authority.CHIP_SPA]) &&
         // The package does not have RAI Response Withdraw enabled
         !checker.hasEnabledRaiWithdraw)) &&
     isCmsWriteUser(user) &&
@@ -29,7 +29,9 @@ const arRespondToRai: ActionRule = {
   check: (checker, user) =>
     !checker.isTempExtension &&
     checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
-    checker.hasRequestedRai &&
+    checker.hasLatestRai &&
+    // safety; prevent bad status from causing overwrite
+    (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
     isStateUser(user),
 };
 
@@ -70,6 +72,8 @@ const arWithdrawRaiResponse: ActionRule = {
     !checker.isTempExtension &&
     checker.isInActivePendingStatus &&
     checker.hasRaiResponse &&
+    // safety; prevent bad status from causing overwrite
+    !checker.hasRaiWithdrawal &&
     checker.hasEnabledRaiWithdraw &&
     isStateUser(user),
 };

@@ -9,7 +9,7 @@ import { z } from "zod";
 import { ItemResult as Changelog } from "./../changelog";
 import {
   newSubmission,
-  legacySubmission,
+  legacyPackageView,
   withdrawPackage,
   withdrawRai,
   toggleWithdrawEnabled,
@@ -18,7 +18,7 @@ import {
 } from "./transforms";
 
 export type Document = z.infer<newSubmission.Schema> &
-  z.infer<legacySubmission.Schema> &
+  z.infer<legacyPackageView.Schema> &
   z.infer<withdrawRai.Schema> &
   z.infer<withdrawPackage.Schema> &
   z.infer<toggleWithdrawEnabled.Schema> &
