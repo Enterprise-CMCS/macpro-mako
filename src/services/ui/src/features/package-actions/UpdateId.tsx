@@ -33,7 +33,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
     const unflattenedFormData = unflatten(formData);
 
-    const data = updateIdSchema.parse(unflattenedFormData);
+    const data = await updateIdSchema.parseAsync(unflattenedFormData);
 
     const user = await getUser();
     await submit({
