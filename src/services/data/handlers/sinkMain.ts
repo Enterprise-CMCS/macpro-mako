@@ -1,7 +1,13 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import { Action, KafkaRecord, opensearch } from "shared-types";
+import {
+  Action,
+  KafkaRecord,
+  SEATOOL_STATUS,
+  getStatus,
+  opensearch,
+} from "shared-types";
 import { KafkaEvent } from "shared-types";
 import {
   ErrorType,
@@ -160,26 +166,40 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
                 };
               }
 
-              // Copy record with new id
-              if (item.actionType && item.actionType === "Extend") {
-                // if it's a TE, we want all the data
-                docs.push({ ...item, id: record.newId });
+              // Move record
+              if (
+                item._source.actionType &&
+                item._source.actionType === "Extend"
+              ) {
+                console.log("TEHERE");
+                const seatoolStatus = SEATOOL_STATUS.TERMINATED;
+                const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
+                docs.push(
+                  { ...item._source, id: record.newId },
+                  {
+                    id,
+                    origin: null,
+                    seatoolStatus,
+                    cmsStatus,
+                    stateStatus,
+                  },
+                );
               } else {
-                // if it's not a TE, we exclude the seatool derived data
-                docs.push({
-                  id: record.newId,
-                  appkParentId: item._source.appkParentId,
-                  origin: item._source.origin,
-                  raiWithdrawEnabled: item._source.raiWithdrawEnabled,
-                  submitterName: item._source.submitterName,
-                  submitterEmail: item._source.submitterEmail,
-                });
+                docs.push(
+                  {
+                    id: record.newId,
+                    appkParentId: item._source.appkParentId,
+                    origin: item._source.origin,
+                    raiWithdrawEnabled: item._source.raiWithdrawEnabled,
+                    submitterName: item._source.submitterName,
+                    submitterEmail: item._source.submitterEmail,
+                  },
+                  {
+                    id,
+                    origin: null,
+                  },
+                );
               }
-              // Remove the record from our dashboard
-              docs.push({
-                id,
-                origin: null,
-              });
 
               return undefined;
             }

@@ -13,6 +13,7 @@ import {
   zAmendmentWaiverNumberSchema,
   zInitialWaiverNumberSchema,
   zRenewalWaiverNumberSchema,
+  zExtensionWaiverNumberSchema,
   zSpaIdSchema,
 } from "@/utils/zod";
 
@@ -21,7 +22,8 @@ export const updateIdSchema = z.object({
   newId: zSpaIdSchema
     .or(zInitialWaiverNumberSchema)
     .or(zRenewalWaiverNumberSchema)
-    .or(zAmendmentWaiverNumberSchema),
+    .or(zAmendmentWaiverNumberSchema)
+    .or(zExtensionWaiverNumberSchema),
 });
 
 export const onValidSubmission: SC.ActionFunction = async ({
