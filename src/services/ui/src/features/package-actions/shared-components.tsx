@@ -297,9 +297,15 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
       });
       alert.setBannerShow(true);
       alert.setBannerDisplayOn(
-        location.state?.from?.split("?")[0] ?? "/dashboard",
+        location.state?.from && !location.pathname.endsWith("/update-id")
+          ? location.state.from
+          : "/dashboard",
       );
-      navigate(location.state?.from ?? "/dashboard");
+      navigate(
+        location.state?.from && !location.pathname.endsWith("/update-id")
+          ? location.state.from
+          : "/dashboard",
+      );
     }
   }, [data]);
 };
