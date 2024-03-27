@@ -16,7 +16,6 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
   if (isLoading) return <LoadingSpinner />;
 
   const authority = item.data?._source.authority;
-  console.log(authority);
   return (
     <DetailCardWrapper title={"Package Actions"}>
       <div className="my-3">
@@ -27,8 +26,6 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
         ) : (
           <ul className="my-3">
             {data.actions.map((type, idx) => {
-              // Why are we doing ths?
-              console.log(type);
               if (
                 authority === Authority["1915b"] || // why?
                 [Action.TEMP_EXTENSION, Action.UPDATE_ID].includes(type) // this is for new actions format
