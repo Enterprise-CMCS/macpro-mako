@@ -631,7 +631,7 @@ export const v202401: FormSchema = {
                             },
                             fields: [
                               ...subsectionFormFields({
-                                sectionName: "other_covered_benefits",
+                                sectionName: "other-covered-benefits",
                                 optionalSection: true,
                               }),
                             ],
