@@ -171,7 +171,6 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
                 item._source.actionType &&
                 item._source.actionType === "Extend"
               ) {
-                console.log("TEHERE");
                 const seatoolStatus = SEATOOL_STATUS.TERMINATED;
                 const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
                 docs.push(
