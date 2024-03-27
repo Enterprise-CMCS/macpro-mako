@@ -4,6 +4,10 @@ import {
   onValidSubmission as toggleRaiWithdrawSubmission,
 } from "./ToggleRaiResponseWithdraw";
 import {
+  WithdrawRai,
+  onValidSubmission as withdrawRaiSubmission,
+} from "./WithdrawRai";
+import {
   WithdrawPackage,
   onValidSubmission as withdrawPackageSubmission,
 } from "./WithdrawPackage";
@@ -22,6 +26,11 @@ export const packageActionRoutes: RouteObject = {
   path: "/action/:authority/:id",
   element: <ActionWrapper />,
   children: [
+    {
+      path: "withdraw-rai",
+      element: <WithdrawRai />,
+      action: withdrawRaiSubmission,
+    },
     {
       path: "enable-rai-withdraw",
       element: <ToggleRaiResponseWithdraw isEnabled />,
