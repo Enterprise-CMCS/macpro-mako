@@ -27,7 +27,7 @@ export const v202401: FormSchema = {
               name: "abp10_economy-and-efficiency-of-plans_describe-approach_select",
               label:
                 "Will economy and efficiency be achieved using the same approach as used for Medicaid state plan services?",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               rules: { required: "* Required" },
               props: {
                 className: "w-[150px]",
@@ -43,7 +43,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               label: "Describe the approach",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "abp10_economy-and-efficiency-of-plans_describe-approach_textarea",
               formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
               rules: { required: "* Required" },

@@ -190,7 +190,7 @@ export const v202401: FormSchema = {
                                           name: "abp3-1_select-of-sect-1937-coverage-opt_benefits-description_textarea",
                                           label:
                                             "Describe the benefits, source of benefits, and any limitations.",
-                                          labelStyling: "font-bold",
+                                          labelClassName: "font-bold",
                                           rules: {
                                             required: "* Required",
                                           },
@@ -288,7 +288,7 @@ export const v202401: FormSchema = {
               name: "abp3-1_select-of-ehb-bench-plan_name_input",
               rhf: "Input",
               label: "EHB-benchmark plan name",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               rules: {
                 required: "* Required",
               },
@@ -299,7 +299,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Is the EHB-benchmark plan the same as the Section 1937 coverage option?",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               rules: {
                 required: "* Required",
               },
@@ -315,7 +315,7 @@ export const v202401: FormSchema = {
             {
               label:
                 "The state/territory will use the following as its EHB-benchmark option as described at 45 CFR 156.111(b)(2)(B), in compliance with the individual insurance market under 45 CFR 156.100 through 156.125:",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "abp3-1_select-of-ehb-bench-plan_option_radiogroup",
               rhf: "Radio",
               descriptionAbove: true,
@@ -339,7 +339,7 @@ export const v202401: FormSchema = {
                         rhf: "Select",
                         name: "abp3-1_select-of-ehb-bench-plan_is-geo-area_select",
                         label: "State/territory",
-                        labelStyling: "p-3",
+                        labelClassName: "p-3",
                         formItemStyling: "flex-row",
                         props: {
                           className: "w-[150px]",
@@ -449,7 +449,7 @@ export const v202401: FormSchema = {
                         rhf: "Radio",
                         name: "abp3-1_select-of-ehb-bench-plan_indicate-ehb-bench-plan_radiogroup",
                         label: "Type of EHB-benchmark plan",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         props: {
                           options: [
                             {
@@ -523,7 +523,7 @@ export const v202401: FormSchema = {
                             rhf: "Checkbox",
                             name: "abp3-1_select-of-ehb-bench-plan_one-or-more-EHBs-other-states_checkgroup",
                             label: "Select one or more EHBs from other states.",
-                            labelStyling: "font-bold",
+                            labelClassName: "font-bold",
                             rules: { required: "* Required" },
                             props: {
                               options: [
@@ -535,7 +535,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "abp3-1_select-of-ehb-bench-plan_ambulatory-patient-services-state-territory_select",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
+                                      labelClassName: "p-3",
                                       formItemStyling: "flex-row",
                                       props: {
                                         className: "w-[150px]",
@@ -648,7 +648,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "abp3-1_select-of-ehb-bench-plan_emergency-services-state-territory_select",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
+                                      labelClassName: "p-3",
                                       formItemStyling: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -764,7 +764,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "abp3-1_select-of-ehb-bench-plan_hospital-state-territory_select",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
+                                      labelClassName: "p-3",
                                       formItemStyling: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -880,7 +880,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "abp3-1_select-of-ehb-bench-plan_maternity-and-newborn-care-state-territory_select",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
+                                      labelClassName: "p-3",
                                       formItemStyling: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -998,7 +998,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "abp3-1_select-of-ehb-bench-plan_mental-health-and-substance-use-disorders-state-territory_select",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
+                                      labelClassName: "p-3",
                                       formItemStyling: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -1114,7 +1114,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "abp3-1_select-of-ehb-bench-plan_prescription-drugs-state-territory_select",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
+                                      labelClassName: "p-3",
                                       formItemStyling: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -1232,7 +1232,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "abp3-1_select-of-ehb-bench-plan_rehab-and-habilitative-services-and-devices-state-territory_select",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
+                                      labelClassName: "p-3",
                                       formItemStyling: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -1348,7 +1348,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "abp3-1_select-of-ehb-bench-plan_laboratory-services-state-territory_select",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
+                                      labelClassName: "p-3",
                                       formItemStyling: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -1466,7 +1466,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "abp3-1_select-of-ehb-bench-plan_prevent-and-well-services-and-chronic-disease-management-state-territory_select",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
+                                      labelClassName: "p-3",
                                       formItemStyling: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -1584,7 +1584,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "abp3-1_select-of-ehb-bench-plan_pediatric-services-including-oral-and-vision-care-state-territory_select",
                                       label: "Identify the state/territory",
-                                      labelStyling: "p-3",
+                                      labelClassName: "p-3",
                                       formItemStyling: "flex-row",
                                       rules: {
                                         required: "* Required",
