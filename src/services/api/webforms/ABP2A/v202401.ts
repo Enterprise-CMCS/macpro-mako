@@ -65,7 +65,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp-2a_assurances_check",
+              name: "abp-2a_assurances_adult-eligibility-included_checkgroup",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -137,7 +137,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_assurances_check",
+              name: "abp-2a_delivery-of-info_assurances_checkgroup",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -203,7 +203,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_state-territory-assures-it-will-document-exempt-individuals_check",
+              name: "abp-2a_delivery-of-info_state-territory-assures-it-will-document-exempt-individuals_checkgroup",
               formItemStyling: "whitespace-pre-wrap",
               props: {
                 options: [
@@ -235,7 +235,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_where-will-info-be-doc_check",
+              name: "abp-2a_delivery-of-info_where-will-info-be-doc_checkgroup",
               descriptionAbove: true,
               descriptionStyling: "font-bold text-black",
               description: "Where will the information be documented?",
@@ -272,7 +272,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_what-docu-will-be-maintained_check",
+              name: "abp-2a_delivery-of-info_what-docu-will-be-maintained_checkgroup",
               descriptionAbove: true,
               descriptionStyling: "font-bold text-black",
               description:
@@ -314,7 +314,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_state-territory-assures-maintain-data_check",
+              name: "abp-2a_delivery-of-info_state-territory-assures-maintain-data_checkgroup",
               props: {
                 options: [
                   {
