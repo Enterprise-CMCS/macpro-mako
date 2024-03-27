@@ -159,22 +159,28 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
                   success: null,
                 };
               }
-              docs.push(
-                // Copy of record with new id
-                {
+
+              // Copy record with new id
+              if (item.actionType && item.actionType === "Extend") {
+                // if it's a TE, we want all the data
+                docs.push({ ...item, id: record.newId });
+              } else {
+                // if it's not a TE, we exclude the seatool derived data
+                docs.push({
                   id: record.newId,
                   appkParentId: item._source.appkParentId,
                   origin: item._source.origin,
                   raiWithdrawEnabled: item._source.raiWithdrawEnabled,
                   submitterName: item._source.submitterName,
                   submitterEmail: item._source.submitterEmail,
-                },
-                // This removes the old record from the app
-                {
-                  id,
-                  origin: null,
-                },
-              );
+                });
+              }
+              // Remove the record from our dashboard
+              docs.push({
+                id,
+                origin: null,
+              });
+
               return undefined;
             }
           }
