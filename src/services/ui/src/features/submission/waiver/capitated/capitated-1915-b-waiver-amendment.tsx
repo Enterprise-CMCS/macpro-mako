@@ -180,7 +180,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
                       <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
-                      to="/faq/initial-waiver-id-format"
+                      to="/faq/waiver-amendment-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"

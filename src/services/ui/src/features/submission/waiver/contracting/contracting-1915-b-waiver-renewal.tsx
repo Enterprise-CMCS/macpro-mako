@@ -261,7 +261,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc faqLink="/faq/medicaid-spa-attachments" />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/waiver-renewal-id-format" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
