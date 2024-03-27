@@ -258,7 +258,7 @@ function subsection({
             },
             fields: [
               ...headerSlots,
-              ...subsectionFormFields(namePrefix),
+              ...subsectionFormFields({ namePrefix: namePrefix }),
               ...(showEHBBenchmark
                 ? ([
                     {
