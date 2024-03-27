@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import { Action, KafkaRecord } from "shared-types";
+import { Action, KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
 import { ErrorType, getTopic, logError } from "../libs/sink-lib";
 const osDomain = process.env.osDomain;
@@ -22,7 +22,11 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           throw new Error();
         case "aws.onemac.migration.cdc":
           docs.push(
-            ...(await onemac(event.records[topicPartition], topicPartition))
+            ...(await onemac(event.records[topicPartition], topicPartition)),
+            ...(await legacyAdminChanges(
+              event.records[topicPartition],
+              topicPartition,
+            )),
           );
           break;
       }
@@ -30,7 +34,10 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     try {
       await os.bulkUpdateData(osDomain, index, docs);
     } catch (error: any) {
-      logError({ type: ErrorType.BULKUPDATE });
+      logError({
+        type: ErrorType.BULKUPDATE,
+        metadata: { event: loggableEvent },
+      });
       throw error;
     }
   } catch (error) {
@@ -47,29 +54,121 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       // Skip delete events
       if (!value) continue;
 
+      // Set id
+      const id: string = decode(key);
+
+      // Parse event data
       const record = JSON.parse(decode(value));
 
-      // Skip legacy events
-      if (record?.origin !== "micro") continue;
+      // Process legacy events
+      if (record?.origin !== "micro") {
+        // Skip if it's not a submission event with a good GSIpk
+        if (
+          record?.sk === "Package" ||
+          !record.GSI1pk?.startsWith("OneMAC#submit")
+        ) {
+          continue;
+        }
+        const result = opensearch.changelog.legacyEvent
+          .transform(id)
+          .safeParse(record);
 
-      if (record?.actionType === Action.REMOVE_APPK_CHILD) {
+        if (result.success && result.data === undefined) continue;
+
+        // Log Error and skip if transform had an error
+        if (!result?.success) {
+          logError({
+            type: ErrorType.VALIDATION,
+            error: result?.error,
+            metadata: { topicPartition, kafkaRecord, record },
+          });
+          continue;
+        }
+
+        // If we made it this far, we push the document to the docs array so it gets indexed
+        docs.push(result.data);
+      }
+
+      // Process micro events
+      if (record?.origin === "micro") {
+        // Resolve actionType
+        const actionType = record.actionType || "new-submission";
+
+        // Push to docs so it can be indexed, with some differences if app k
         docs.push({
           ...record,
-          appkChildId: record.id,
+          id:
+            actionType === Action.REMOVE_APPK_CHILD
+              ? `${record.appkParentId}-${offset}`
+              : `${id}-${offset}`,
+          packageId:
+            actionType === Action.REMOVE_APPK_CHILD ? record.appkParentId : id,
+          appkChildId:
+            actionType === Action.REMOVE_APPK_CHILD ? record.id : undefined,
           timestamp,
-          id: `${record.appkParentId}-${offset}`,
-          packageId: record.appkParentId,
+          actionType,
         });
-      } else {
-        const id: string = decode(key);
-        // Handle everything else
-        docs.push({
-          ...record,
-          ...(!record?.actionType && { actionType: "new-submission" }), // new-submission custom actionType
-          timestamp,
-          id: `${id}-${offset}`,
-          packageId: id,
-        });
+      }
+    } catch (error) {
+      logError({
+        type: ErrorType.BADPARSE,
+        error,
+        metadata: { topicPartition, kafkaRecord },
+      });
+    }
+  }
+  return docs;
+};
+
+const legacyAdminChanges = async (
+  kafkaRecords: KafkaRecord[],
+  topicPartition: string,
+) => {
+  const docs: any[] = [];
+  for (const kafkaRecord of kafkaRecords) {
+    const { key, value } = kafkaRecord;
+    try {
+      // Skip delete events
+      if (!value) continue;
+
+      // Set id
+      const id: string = decode(key);
+
+      // Parse event data
+      const record = JSON.parse(decode(value));
+
+      // Process legacy events
+      if (record?.origin !== "micro") {
+        // Skip if it's not a package view from onemac with adminChanges
+        if (
+          !(
+            record?.sk === "Package" &&
+            record.submitterName &&
+            record.adminChanges
+          )
+        ) {
+          continue;
+        }
+        for (const adminChange of record.adminChanges) {
+          const result = opensearch.changelog.legacyAdminChange
+            .transform(id)
+            .safeParse(adminChange);
+
+          if (result.success && result.data === undefined) continue;
+
+          // Log Error and skip if transform had an error
+          if (!result?.success) {
+            logError({
+              type: ErrorType.VALIDATION,
+              error: result?.error,
+              metadata: { topicPartition, kafkaRecord, record },
+            });
+            continue;
+          }
+
+          // If we made it this far, we push the document to the docs array so it gets indexed
+          docs.push(result.data);
+        }
       }
     } catch (error) {
       logError({
