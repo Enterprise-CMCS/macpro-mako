@@ -1,13 +1,15 @@
 import { FormSchema, RHFSlotProps, Section } from "shared-types";
 
+const formName = "abp5";
+
 const benefitSourceOptions = [
   {
     label: "Base benchmark small group",
-    value: "base_benchmark_small_group",
+    value: "base-benchmark-small-group",
   },
   {
     label: "Base benchmark federal employees",
-    value: "base_benchmark_federal_employees",
+    value: "base-benchmark-federal-employees",
   },
   {
     label: "Base benchmark state employees",
@@ -331,7 +333,7 @@ export const v202401: FormSchema = {
               label:
                 "Does this description of benefits align with the traditional state plan?",
               labelClassName: "font-bold",
-              name: "benefits_align_with_traditional_state_plan",
+              name: `${formName}_alignment_benefits-align_select`,
               rules: { required: "* Required" },
               props: {
                 className: "w-[150px]",
@@ -355,7 +357,7 @@ export const v202401: FormSchema = {
               label:
                 "Does the state/territory propose a benchmark-equivalent benefit package?",
               labelClassName: "font-bold",
-              name: "benchmark_equivalent_benefit_package",
+              name: `${formName}_desc-of-benefits_benchmark-equivalent-pkg_select`,
               rules: { required: "* Required" },
               props: {
                 className: "w-[150px]",
@@ -378,7 +380,7 @@ export const v202401: FormSchema = {
               rhf: "Input",
               label: "Name of selected base benchmark plan",
               labelClassName: "font-bold",
-              name: "base_benchmark_plan_name",
+              name: `${formName}_benefits-included_plan-name_input`,
               rules: { required: "* Required" },
             },
             {
@@ -386,7 +388,7 @@ export const v202401: FormSchema = {
               label:
                 "Name of selected Section 1937 coverage option if other than Secretary-approved. Otherwise, enter “Secretary-approved.”",
               labelClassName: "font-bold",
-              name: "section_1937_coverage_option_name",
+              name: `${formName}_benefits-included_section-1937-name_input`,
               rules: { required: "* Required" },
             },
           ],
@@ -416,7 +418,7 @@ export const v202401: FormSchema = {
       headerSlots: [
         {
           rhf: "Checkbox",
-          name: "does_not_apply_financial_requirement_or_treatment_limitation",
+          name: `${formName}_mental-health-and-substance_no-financial-req-treatment-limit_checkbox`,
           rules: { required: "* Required" },
           props: {
             options: [
@@ -438,7 +440,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "prescription_drug_benefit_same_as_medicaid_state_plan",
+              name: `${formName}_prescrip-drugs_same-as-medicaid-state-plan_checkbox`,
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -452,7 +454,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "TextDisplay",
-              name: "prescription_drug_benefit_provided",
+              name: `${formName}_prescrip-drugs_benefit-provided_textDisplay`,
               text: "Benefit provided",
               props: {
                 className: "font-bold",
@@ -460,14 +462,14 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "TextDisplay",
-              name: "prescription_drug_benefit_description",
+              name: `${formName}_prescrip-drugs_benefit_desc_textDisplay`,
               text: "Coverage is at least the greater of one drug in each U.S. Pharmacopeia (USP) category and class or the same number of prescription drugs in each category and class as the base benchmark.",
             },
             {
               rhf: "Radio",
               label: "Prescription drug limits",
               labelClassName: "font-bold",
-              name: "prescription_drug_limits",
+              name: `${formName}_prescrip-drugs_limits_radio`,
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -498,7 +500,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label: "Authorization",
               labelClassName: "font-bold",
-              name: "prescription_drug_authorization",
+              name: `${formName}_prescrip-drugs_auth_select`,
               rules: { required: "* Required" },
               props: {
                 className: "w-[300px]",
@@ -518,7 +520,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label: "Provider qualifications",
               labelClassName: "font-bold",
-              name: "prescription_drug_provider_qualifications",
+              name: `${formName}_prescrip-drugs_provider-qual_select`,
               rules: { required: "* Required" },
               props: {
                 className: "w-[300px]",
@@ -535,7 +537,7 @@ export const v202401: FormSchema = {
               label:
                 "Coverage that exceeds the minimum requirements or other information",
               labelClassName: "font-bold",
-              name: "prescription_drug_other_information",
+              name: `${formName}_prescrip-drugs_other-info_input`,
               rules: { required: "* Required" },
             },
             {
@@ -543,7 +545,7 @@ export const v202401: FormSchema = {
               label:
                 "Is there an EHB-benchmark benefit duplicated or substituted?",
               labelClassName: "font-bold",
-              name: "prescription_drug_benchmark_benefit_duplicated_or_substituted",
+              name: `${formName}_prescrip-drugs_benefit-dup-or-sub_radio`,
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -570,7 +572,7 @@ export const v202401: FormSchema = {
       headerSlots: [
         {
           rhf: "Checkbox",
-          name: "rehabilitative_and_habilitative_does_not_apply_financial_requirement_or_treatment_limitation",
+          name: `${formName}_rehab_no-limits_checkbox`,
           rules: { required: "* Required" },
           props: {
             options: [
@@ -607,7 +609,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "optional_items",
+              name: `${formName}_opt-items_opt-items_checkbox`,
               props: {
                 options: [
                   {
@@ -621,7 +623,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "FieldGroup",
-                            name: "other_covered_benefits_benefit",
+                            name: `${formName}_opt-items_other-non-essential_fieldGroup`,
                             groupNamePrefix: "other_covered_benefits_benefit",
                             props: {
                               appendText: "Add benefit",
@@ -648,7 +650,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "FieldGroup",
-                            name: "other_base_benchmark_benefits_not_covered",
+                            name: `${formName}_opt-items_other-base_fieldGroup`,
                             groupNamePrefix:
                               "other_base_benchmark_benefits_not_covered",
                             props: {
@@ -662,7 +664,7 @@ export const v202401: FormSchema = {
                                   "Base benchmark benefit that was substituted",
                                 labelClassName: "font-bold",
                                 rules: { required: "* Required" },
-                                name: "base_benchmark_benefit_substituted",
+                                name: `${formName}_opt-items_benchmark-subbed_input`,
                               },
                               {
                                 rhf: "TextDisplay",
@@ -670,7 +672,7 @@ export const v202401: FormSchema = {
                                   { text: "Benefit provided", type: "bold" },
                                   { text: "Base benchmark", type: "br" },
                                 ],
-                                name: "benefit_provided",
+                                name: `${formName}_opt-items_benefit-provided_textdisplay`,
                               },
                               {
                                 rhf: "Textarea",
@@ -678,7 +680,7 @@ export const v202401: FormSchema = {
                                   "Why did the state or territory choose to exclude this benefit?",
                                 labelClassName: "font-bold",
                                 rules: { required: "* Required" },
-                                name: "explanation",
+                                name: `${formName}_opt-items_explanation_textarea`,
                               },
                             ],
                           },
@@ -697,7 +699,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "FieldGroup",
-                            name: "additional_covered_benefits",
+                            name: `${formName}_add-benefits_add-benefits_fieldgroup`,
                             groupNamePrefix: "additional_covered_benefits",
                             props: {
                               appendText: "Add benefit",
@@ -705,7 +707,7 @@ export const v202401: FormSchema = {
                             },
                             fields: [
                               ...subsectionFormFields({
-                                namePrefix: "additional_covered_benefits",
+                                namePrefix: "add-benefits",
                                 optionalSection: true,
                               }),
                             ],
