@@ -33,18 +33,29 @@ export async function setPassword(params: any): Promise<void> {
 
 export async function updateUserAttributes(params: any): Promise<void> {
   try {
-    // Fetch existing user attributes to check for "onemac-micro-super"
+    // Fetch existing user attributes
     const getUserCommand = new AdminGetUserCommand({
       UserPoolId: params.UserPoolId,
       Username: params.Username,
     });
     const user = await client.send(getUserCommand);
+
+    // Check for existing "custom:cms-roles"
     const cmsRolesAttribute = user.UserAttributes?.find(
       (attr) => attr.Name === "custom:cms-roles",
     );
     const existingRoles =
       cmsRolesAttribute && cmsRolesAttribute.Value
         ? cmsRolesAttribute.Value.split(",")
+        : [];
+
+    // Check for existing "custom:state"
+    const stateAttribute = user.UserAttributes?.find(
+      (attr) => attr.Name === "custom:state",
+    );
+    const existingStates =
+      stateAttribute && stateAttribute.Value
+        ? stateAttribute.Value.split(",")
         : [];
 
     // Prepare for updating user attributes
@@ -54,13 +65,13 @@ export async function updateUserAttributes(params: any): Promise<void> {
       UserAttributes: params.UserAttributes,
     };
 
-    // Ensure "onemac-micro-super" is included if it was already present
+    // Ensure "onemac-micro-super" is preserved
     if (existingRoles.includes("onemac-micro-super")) {
       const rolesIndex = attributeData.UserAttributes.findIndex(
         (attr: any) => attr.Name === "custom:cms-roles",
       );
       if (rolesIndex !== -1) {
-        // Merge existing roles with new roles, ensuring "onemac-micro-super" is included
+        // Merge existing roles with new ones, ensuring "onemac-micro-super" is included
         let newRoles = new Set(
           attributeData.UserAttributes[rolesIndex].Value.split(",").concat(
             "onemac-micro-super",
@@ -73,6 +84,29 @@ export async function updateUserAttributes(params: any): Promise<void> {
         attributeData.UserAttributes.push({
           Name: "custom:cms-roles",
           Value: "onemac-micro-super",
+        });
+      }
+    }
+
+    // Ensure "ZZ" state is preserved
+    if (existingStates.includes("ZZ")) {
+      const stateIndex = attributeData.UserAttributes.findIndex(
+        (attr: any) => attr.Name === "custom:state",
+      );
+      if (stateIndex !== -1) {
+        // Merge existing states with new ones, ensuring "ZZ" is included
+        let newStates = new Set(
+          attributeData.UserAttributes[stateIndex].Value.split(",").concat(
+            "ZZ",
+          ),
+        );
+        attributeData.UserAttributes[stateIndex].Value =
+          Array.from(newStates).join(",");
+      } else {
+        // If "custom:state" wasn't in the incoming event, add it with "ZZ"
+        attributeData.UserAttributes.push({
+          Name: "custom:state",
+          Value: "ZZ",
         });
       }
     }
