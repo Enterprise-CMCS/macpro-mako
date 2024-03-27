@@ -33,7 +33,7 @@ const FAQHelperText = () => (
       For additional information on where to submit, refer to the{" "}
       {/* TODO: Get desired FAQ `target` from Wale */}
       <Link
-        to="/faq/system"
+        to="/faq/crosswalk-system"
         target={FAQ_TAB}
         rel="noopener noreferrer"
         className="text-blue-700 hover:underline flex items-center"

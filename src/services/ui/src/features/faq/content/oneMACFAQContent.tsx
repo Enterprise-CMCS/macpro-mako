@@ -27,10 +27,10 @@ export const oneMACFAQContent: FAQContent[] = [
     sectionTitle: "General",
     qanda: [
       {
-        anchorText: "system",
+        anchorText: "crosswalk-system",
         question: "Which system should I use for my state’s submission?",
         answerJSX: (
-          <section id={"system"}>
+          <section>
             <p>
               Check which system to submit your state plan in with this
               crosswalk training document.
