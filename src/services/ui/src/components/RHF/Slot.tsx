@@ -39,12 +39,12 @@ export const RHFSlot = <
   label,
   description,
   descriptionAbove,
-  descriptionStyling,
+  descriptionClassName,
   name,
   props,
   text,
-  labelStyling,
-  formItemStyling,
+  labelClassName,
+  formItemClassName,
   groupNamePrefix,
   ...rest
 }: RHFSlotProps & { control: any }): ControllerProps<
@@ -62,16 +62,16 @@ export const RHFSlot = <
     return (
       <FormItem
         className={`flex flex-col gap-1 py-2${
-          formItemStyling ? ` ${formItemStyling}` : ""
+          formItemClassName ? ` ${formItemClassName}` : ""
         }`}
       >
         {label && (
-          <FormLabel className={labelStyling}>
+          <FormLabel className={labelClassName}>
             <RHFTextDisplay text={label} />
           </FormLabel>
         )}
         {descriptionAbove && description && (
-          <FormDescription className={descriptionStyling}>
+          <FormDescription className={descriptionClassName}>
             <RHFTextDisplay text={description} />
           </FormDescription>
         )}
@@ -107,7 +107,7 @@ export const RHFSlot = <
                 const opts = useMemo(() => {
                   if (hops.sort) {
                     const sorted = hops.options.sort((a, b) =>
-                      a.label.localeCompare(b.label)
+                      a.label.localeCompare(b.label),
                     );
                     hops.sort === "descending" && sorted.reverse();
                     return sorted;
@@ -223,7 +223,7 @@ export const RHFSlot = <
                           onCheckedChange={(c) => {
                             const filtered =
                               field.value?.filter(
-                                (f: unknown) => f !== OPT.value
+                                (f: unknown) => f !== OPT.value,
                               ) || [];
                             if (!c) return field.onChange(filtered);
                             field.onChange([...filtered, OPT.value]);
@@ -232,6 +232,7 @@ export const RHFSlot = <
                           parentValue={field.value}
                           changeMethod={field.onChange}
                           aria-label={field.name}
+                          optionlabelClassName={OPT.optionlabelClassName}
                         />
                         {field.value?.includes(OPT.value) &&
                           !!OPT.slots &&
@@ -282,7 +283,7 @@ export const RHFSlot = <
                           variant={"outline"}
                           className={cn(
                             "w-[240px] pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
+                            !field.value && "text-muted-foreground",
                           )}
                         >
                           {field.value ? (

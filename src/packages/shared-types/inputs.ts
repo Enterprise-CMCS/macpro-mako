@@ -1,4 +1,5 @@
 import { DayPicker } from "react-day-picker";
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import * as SelectPrimitive from "@radix-ui/react-select";
@@ -41,6 +42,6 @@ export type SwitchProps = React.ComponentPropsWithoutRef<
 
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  charcount?: "simple" | "limited";
-  charcountstyling?: string;
+  charCount?: "simple" | "limited";
+  charCountClassName?: string;
 }

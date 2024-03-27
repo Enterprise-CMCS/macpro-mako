@@ -29,7 +29,7 @@ test.describe("test a11y on static routes", () => {
       const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
       console.log(
         `${route} violations: `,
-        accessibilityScanResults.violations.length
+        accessibilityScanResults.violations.length,
       );
       expect(accessibilityScanResults.violations).toEqual([]);
     });
@@ -41,6 +41,7 @@ const webformRoutes = [
   "/webform/abp10/202401",
   "/webform/abp3_1/202401",
   "/webform/abp3/202401",
+  "/webform/abp5/202401",
   "/webform/abp1/202401",
   "/webform/abp1/202402",
 ];
@@ -55,7 +56,7 @@ test.describe("test a11y on webform routes", () => {
       const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
       console.log(
         `${route} violations: `,
-        accessibilityScanResults.violations.length
+        accessibilityScanResults.violations.length,
       );
       expect(accessibilityScanResults.violations).toEqual([]);
     });

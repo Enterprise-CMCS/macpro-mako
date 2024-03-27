@@ -1265,7 +1265,7 @@ export const v202401: FormSchema = {
     //   form: [
     //     {
     //       description: "A test of horizontal layouts with no slot styles",
-    //       wrapperStyling: "flex flex-wrap gap-6",
+    //       wrapperClassName: "flex flex-wrap gap-6",
     //       slots: [
     //         {
     //           name: "example1_1",
@@ -1286,7 +1286,7 @@ export const v202401: FormSchema = {
     //     },
     //     {
     //       description: "A test of horizontal layouts with slot styles",
-    //       wrapperStyling: "flex flex-wrap gap-6",
+    //       wrapperClassName: "flex flex-wrap gap-6",
     //       slots: [
     //         {
     //           name: "example2_1",

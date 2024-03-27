@@ -10,26 +10,26 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         <textarea
           className={cn(
             "flex min-h-[60px] w-full rounded-sm border border-black bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-            className
+            className,
           )}
           ref={ref}
           {...props}
         />
-        {props.charcount && (
+        {props.charCount && (
           <p
             className={cn(
               "text-right text-gray-500 pr-2 text-sm",
-              props.charcountstyling
+              props.charCountClassName,
             )}
           >{`${strLn}${
-            props.maxLength && props.charcount === "limited"
+            props.maxLength && props.charCount === "limited"
               ? `/${props.maxLength}`
               : ""
           }`}</p>
         )}
       </>
     );
-  }
+  },
 );
 Textarea.displayName = "Textarea";
 
