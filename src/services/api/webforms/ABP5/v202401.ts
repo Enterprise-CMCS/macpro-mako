@@ -79,19 +79,19 @@ const authorizationOptions = [
 
 interface SubsectionData {
   title: string;
-  namePrefix: string;
+  sectionName: string;
   description?: string;
   headerSlots?: RHFSlotProps[];
   showEHBBenchmark?: boolean;
 }
 
 interface SubsectionFieldProps {
-  namePrefix: string;
+  sectionName: string;
   optionalSection?: boolean;
 }
 
 function subsectionFormFields({
-  namePrefix,
+  sectionName,
   optionalSection = false,
 }: SubsectionFieldProps): RHFSlotProps[] {
   // The Authorization select menu in the optional sections should not include
@@ -107,7 +107,7 @@ function subsectionFormFields({
       rhf: "Input",
       label: "Benefit provided",
       labelClassName: "font-bold",
-      name: `${namePrefix}_benefit_provided`,
+      name: `${formName}_${sectionName}_benefit-provided_input`,
       rules: { required: "* Required" },
       props: {
         className: "w-[300px]",
@@ -117,7 +117,7 @@ function subsectionFormFields({
       rhf: "Select",
       label: "Source",
       labelClassName: "font-bold",
-      name: `${namePrefix}_source`,
+      name: `${formName}_${sectionName}_source_select`,
       rules: { required: "* Required" },
       props: {
         className: "w-[300px]",
@@ -129,13 +129,13 @@ function subsectionFormFields({
       label:
         "Other information regarding this benefit source, including the name of the source plan",
       labelClassName: "font-bold",
-      name: `${namePrefix}_state_plan_other_information`,
+      name: `${formName}_${sectionName}_source-other-info_input`,
       formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
       rules: { required: "* Required" },
       dependency: {
         conditions: [
           {
-            name: `${namePrefix}_source`,
+            name: `${formName}_${sectionName}_source_select`,
             type: "expectedValue",
             expectedValue: "state_plan_other",
           },
@@ -148,13 +148,13 @@ function subsectionFormFields({
       label:
         "Other information regarding this benefit source, including the name of the source plan",
       labelClassName: "font-bold",
-      name: `${namePrefix}_secretary_approved_other_information`,
+      name: `${formName}_${sectionName}_secretary-other-info_input`,
       formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
       rules: { required: "* Required" },
       dependency: {
         conditions: [
           {
-            name: `${namePrefix}_source`,
+            name: `${formName}_${sectionName}_source_select`,
             type: "expectedValue",
             expectedValue: "secretary_approved_other",
           },
@@ -166,7 +166,7 @@ function subsectionFormFields({
       rhf: "Select",
       label: "Authorization",
       labelClassName: "font-bold",
-      name: `${namePrefix}_authorization`,
+      name: `${formName}_${sectionName}_auth_select`,
       rules: { required: "* Required" },
       props: {
         className: "w-[300px]",
@@ -177,7 +177,7 @@ function subsectionFormFields({
       rhf: "Select",
       label: "Provider qualifications",
       labelClassName: "font-bold",
-      name: `${namePrefix}_provider_qualifications`,
+      name: `${formName}_${sectionName}_provider-qual_select`,
       rules: { required: "* Required" },
       props: {
         className: "w-[300px]",
@@ -188,13 +188,13 @@ function subsectionFormFields({
       rhf: "Input",
       label: "Other information regarding provider qualifications",
       labelClassName: "font-bold",
-      name: `${namePrefix}_provider_qualifications_other_information`,
+      name: `${formName}_${sectionName}_provider-qual-other-info_input`,
       formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
       rules: { required: "* Required" },
       dependency: {
         conditions: [
           {
-            name: `${namePrefix}_provider_qualifications`,
+            name: `${formName}_${sectionName}_provider-qual_select`,
             type: "expectedValue",
             expectedValue: "other",
           },
@@ -206,7 +206,7 @@ function subsectionFormFields({
       rhf: "Input",
       label: "Amount limit",
       labelClassName: "font-bold",
-      name: `${namePrefix}_amount_limit`,
+      name: `${formName}_${sectionName}_amount-limit_input`,
       rules: { required: "* Required" },
       props: {
         className: "w-[300px]",
@@ -216,7 +216,7 @@ function subsectionFormFields({
       rhf: "Input",
       label: "Duration limit",
       labelClassName: "font-bold",
-      name: `${namePrefix}_duration_limit`,
+      name: `${formName}_${sectionName}_duration-limit_input`,
       rules: { required: "* Required" },
       props: {
         className: "w-[300px]",
@@ -226,7 +226,7 @@ function subsectionFormFields({
       rhf: "Input",
       label: "Scope limit",
       labelClassName: "font-bold",
-      name: `${namePrefix}_scope_limit`,
+      name: `${formName}_${sectionName}_scope-limit_input`,
       rules: { required: "* Required" },
       props: {
         className: "w-[300px]",
@@ -237,7 +237,7 @@ function subsectionFormFields({
 
 function subsection({
   title,
-  namePrefix,
+  sectionName,
   description,
   headerSlots = [],
   showEHBBenchmark = true,
@@ -252,15 +252,15 @@ function subsection({
         slots: [
           {
             rhf: "FieldGroup",
-            name: `${namePrefix}_benefit`,
-            groupNamePrefix: `${namePrefix}_benefit`,
+            name: `${formName}_${sectionName}_benefit`,
+            groupNamePrefix: `${formName}_${sectionName}_benefit`,
             props: {
               appendText: "Add benefit",
               removeText: "Remove benefit",
             },
             fields: [
               ...headerSlots,
-              ...subsectionFormFields({ namePrefix: namePrefix }),
+              ...subsectionFormFields({ sectionName: sectionName }),
               ...(showEHBBenchmark
                 ? ([
                     {
@@ -268,7 +268,7 @@ function subsection({
                       label:
                         "Is there an EHB-benchmark benefit duplicated or substituted?",
                       labelClassName: "font-bold",
-                      name: `${namePrefix}_benchmark_benefit_duplicated_or_substituted`,
+                      name: `${formName}_${sectionName}_benefit-dupe-or-sub_radio`,
                       rules: { required: "* Required" },
                       props: {
                         options: [
@@ -282,7 +282,7 @@ function subsection({
                                     rhf: "Input",
                                     label: "Benefit duplicated",
                                     labelClassName: "font-bold",
-                                    name: "benefit_duplicated",
+                                    name: `${formName}_${sectionName}_benefit-duped_input`,
                                     rules: { required: "* Required" },
                                   },
                                 ],
@@ -299,7 +299,7 @@ function subsection({
                                     rhf: "Input",
                                     label: "Benefit substituted",
                                     labelClassName: "font-bold",
-                                    name: "benefit_substituted",
+                                    name: `${formName}_${sectionName}_benefit-subbed_input`,
                                     rules: { required: "* Required" },
                                   },
                                 ],
@@ -397,28 +397,28 @@ export const v202401: FormSchema = {
     },
     subsection({
       title: "1. Essential health benefit: Ambulatory patient services",
-      namePrefix: "ambulatory_patient",
+      sectionName: "ambulatory-patient",
     }),
     subsection({
       title: "2. Essential health benefit: Emergency services",
-      namePrefix: "emergency",
+      sectionName: "emergency",
     }),
     subsection({
       title: "3. Essential health benefit: Hospitalization",
-      namePrefix: "hospitalization",
+      sectionName: "hospitalization",
     }),
     subsection({
       title: "4. Essential health benefit: Maternity and newborn care",
-      namePrefix: "maternity_and_newborn_care",
+      sectionName: "maternity-newborn-care",
     }),
     subsection({
       title:
         "5. Essential health benefit: Mental health and substance use disorder services including behavioral health treatment",
-      namePrefix: "mental_health_and_substance_use_disorder",
+      sectionName: "mental-health-substance",
       headerSlots: [
         {
           rhf: "Checkbox",
-          name: `${formName}_mental-health-and-substance_no-financial-req-treatment-limit_checkbox`,
+          name: `${formName}_mental-health-substance_no-financial-req-treatment-limit_checkbox`,
           rules: { required: "* Required" },
           props: {
             options: [
@@ -454,7 +454,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "TextDisplay",
-              name: `${formName}_prescrip-drugs_benefit-provided_textDisplay`,
+              name: `${formName}_prescrip-drugs_benefit-provided_textdisplay`,
               text: "Benefit provided",
               props: {
                 className: "font-bold",
@@ -462,7 +462,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "TextDisplay",
-              name: `${formName}_prescrip-drugs_benefit_desc_textDisplay`,
+              name: `${formName}_prescrip-drugs_benefit_desc_textdisplay`,
               text: "Coverage is at least the greater of one drug in each U.S. Pharmacopeia (USP) category and class or the same number of prescription drugs in each category and class as the base benchmark.",
             },
             {
@@ -568,7 +568,7 @@ export const v202401: FormSchema = {
     subsection({
       title:
         "7. Essential health benefit: Rehabilitative and habilitative services and devices",
-      namePrefix: "rehabilitative_and_habilitative",
+      sectionName: "rehabilitative-and-habilitative",
       headerSlots: [
         {
           rhf: "Checkbox",
@@ -588,19 +588,19 @@ export const v202401: FormSchema = {
     }),
     subsection({
       title: "8. Essential health benefit: Laboratory services",
-      namePrefix: "laboratory",
+      sectionName: "laboratory",
     }),
     subsection({
       title:
         "9. Essential health benefit: Preventive and wellness services and chronic disease management",
-      namePrefix: "preventive_and_wellness",
+      sectionName: "preventive-and-wellness",
       description:
         "The state/territory must provide, at a minimum, a broad range of preventive services, including “A” and “B” services recommended by the United States Preventive Services Task Force; vaccines recommended by the Advisory Committee for Immunization Practices (ACIP); preventive care and screening for infants, children, and adults recommended by the Health Resources and Services Administration (HRSA) Bright Futures program; and additional preventive services for women recommended by the Institute of Medicine (IOM).",
     }),
     subsection({
       title:
         "10. Essential health benefit: Pediatric services including oral and vision care",
-      namePrefix: "pediatric",
+      sectionName: "pediatric",
     }),
     {
       title: "Optional items",
@@ -623,7 +623,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "FieldGroup",
-                            name: `${formName}_opt-items_other-non-essential_fieldGroup`,
+                            name: `${formName}_opt-items_other-non-essential_fieldgroup`,
                             groupNamePrefix: "other_covered_benefits_benefit",
                             props: {
                               appendText: "Add benefit",
@@ -631,7 +631,7 @@ export const v202401: FormSchema = {
                             },
                             fields: [
                               ...subsectionFormFields({
-                                namePrefix: "other_covered_benefits",
+                                sectionName: "other_covered_benefits",
                                 optionalSection: true,
                               }),
                             ],
@@ -650,7 +650,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "FieldGroup",
-                            name: `${formName}_opt-items_other-base_fieldGroup`,
+                            name: `${formName}_opt-items_other-base_fieldgroup`,
                             groupNamePrefix:
                               "other_base_benchmark_benefits_not_covered",
                             props: {
@@ -707,7 +707,7 @@ export const v202401: FormSchema = {
                             },
                             fields: [
                               ...subsectionFormFields({
-                                namePrefix: "add-benefits",
+                                sectionName: "add-benefits",
                                 optionalSection: true,
                               }),
                             ],
