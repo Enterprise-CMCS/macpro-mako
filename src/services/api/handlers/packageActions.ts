@@ -31,7 +31,7 @@ import {
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
-import { formatSeatoolDate, seaToolFriendlyTimestamp } from "shared-utils";
+import { formatSeatoolDate, seaToolFriendlyTimestamp, getNextBusinessDayTimestamp } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
 
 const TOPIC_NAME = process.env.topicName as string;
@@ -248,6 +248,12 @@ export async function respondToRai(body: RaiResponse, document: any) {
     `;
     const result2 = await transaction.request().query(query2);
     console.log(result2);
+
+    // append additional data for emails
+    // not a fan of this, but its following the existing pattern
+    body.notificationMetadata = {
+      submissionDate: getNextBusinessDayTimestamp()
+    };
 
     //   // write to kafka here
     const result = raiResponseSchema.safeParse({
