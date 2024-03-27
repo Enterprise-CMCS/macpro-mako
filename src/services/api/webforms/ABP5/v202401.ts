@@ -439,6 +439,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "prescription_drug_benefit_same_as_medicaid_state_plan",
+              rules: { required: "* Required" },
               props: {
                 options: [
                   {
@@ -467,6 +468,7 @@ export const v202401: FormSchema = {
               label: "Prescription drug limits",
               labelClassName: "font-bold",
               name: "prescription_drug_limits",
+              rules: { required: "* Required" },
               props: {
                 options: [
                   {
@@ -534,6 +536,7 @@ export const v202401: FormSchema = {
                 "Coverage that exceeds the minimum requirements or other information",
               labelClassName: "font-bold",
               name: "prescription_drug_other_information",
+              rules: { required: "* Required" },
             },
             {
               rhf: "Radio",
