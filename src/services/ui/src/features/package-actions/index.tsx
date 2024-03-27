@@ -8,6 +8,10 @@ import {
   onValidSubmission as withdrawPackageSubmission,
 } from "./WithdrawPackage";
 import {
+  RespondToRai,
+  onValidSubmission as respondToRaiSubmission,
+} from "./RespondToRai";
+import {
   TemporaryExtension,
   onValidSubmission as temporaryExtensionSubmission,
 } from "./TemporaryExtension";
@@ -32,6 +36,11 @@ export const packageActionRoutes: RouteObject = {
       path: "withdraw-package",
       element: <WithdrawPackage />,
       action: withdrawPackageSubmission,
+    },
+    {
+      path: "respond-to-rai",
+      element: <RespondToRai />,
+      action: respondToRaiSubmission,
     },
     {
       path: "temporary-extension",
