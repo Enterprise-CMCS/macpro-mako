@@ -2,8 +2,7 @@ const { defineConfig } = require("cypress");
 const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
 const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild");
-// AWS exports
-const awsConfig = require('./aws-exports-es5.js')
+
 
 async function setupNodeEvents(on, config) {
   // This is required for the preprocessor to be able to generate JSON reports after each run, and more,
@@ -51,7 +50,7 @@ module.exports = defineConfig({
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     setupNodeEvents,
-    baseUrl: "https://d2iainsf03w0ir.cloudfront.net/",
+    baseUrl: "https://mako-dev.cms.gov/",
     specPattern: ["cypress/e2e/**/*.feature", "cypress/e2e/**/*.spec.js", "cypress/a11y/**/*.spec.js"],
     supportFile: "support/index.js",
     stepDefinitions: ["cypress/e2e/common/steps.js"],
