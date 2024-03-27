@@ -1,7 +1,7 @@
 const newSubmissionBTN = '//*[contains(text(),"New Submission")]';;
 const successMessage = "#alert-bar h2";
 const successMessage1 = "#alert-bar";
-const packageSubmittedMsg = '//*[@role="alert"]';
+const packageSubmittedMsg = '//h3';
 //Element is Xpath use cy.xpath instead of cy.get
 const successMessageAfterRAIResponse =
   '//*[contains(text(),"Your submission has been received.")]';

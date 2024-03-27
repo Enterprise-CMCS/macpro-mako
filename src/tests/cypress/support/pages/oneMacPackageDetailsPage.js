@@ -6,10 +6,9 @@ const appKTopRaiRespCaret = "#waiverappkrai0_caret-button";
 const appKTopRaiRespDownloadBtn = "#dl_waiverappkrai0";
 
 //Elements are Xpath use cy.xpath instead of cy.xpath
-const detailsPage = "//section[@id='package-overview']";
+const detailsPage = "//section[@id='package_overview']";
 const statusHeader = "//h2[contains(text(),'Status')]";
-const packageActionsHeader =
-  "//section[@id='package-overview']//h2[text()='Actions']";
+const packageActionsHeader = "//h2[text()='Package Actions']";
 const respondToRAIAction = "//a/li[text()='Respond to Formal RAI']";
 const withdrawPackageAction = "//a/li[text()='Withdraw Package']";
 const requestTempExtensionPackageAction =
