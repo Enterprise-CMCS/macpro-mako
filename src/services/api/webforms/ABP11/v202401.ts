@@ -2,8 +2,10 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header: "ABP 11: Payment methodology",
+  formId: "abp11",
   sections: [
     {
+      sectionId: "abp-payment-methods",
       title: "Alternative Benefit Plans - Payment methodologies",
       form: [
         {
@@ -31,6 +33,49 @@ export const v202401: FormSchema = {
                 "Only required if not using the payment methodology in the approved state plan",
               descriptionAbove: true,
               props: { maxFiles: 3 },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Benefit package details",
+      sectionId: "ben-details",
+      form: [
+        {
+          description:
+            "For the population defined in Section 1, the state/territory wants to:",
+          slots: [
+            {
+              rhf: "Radio",
+              name: "amending_benefit",
+              rules: {
+                required: "* Required",
+              },
+              props: {
+                options: [
+                  {
+                    label: "Amend one existing benefit package",
+                    value: "existing_package",
+                  },
+                  {
+                    label: "Create a single new benefit package",
+                    value: "new_package",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          description: "Benefit package name",
+          slots: [
+            {
+              rhf: "Input",
+              name: "benefit_package_name",
+              rules: {
+                required: "* Required",
+              },
             },
           ],
         },

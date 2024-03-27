@@ -12,6 +12,7 @@ import {
 
 import { cn } from "@/utils";
 import { Label } from "@/components";
+import { FormSchema } from "shared-types";
 
 const Form = FormProvider;
 
@@ -42,7 +43,7 @@ const FormField = <
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext);
   const itemContext = React.useContext(FormItemContext);
-  const { getFieldState, formState } = useFormContext();
+  const { getFieldState, formState,  } = useFormContext<FormSchema>();
 
   const fieldState = getFieldState(fieldContext.name, formState);
 

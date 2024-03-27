@@ -15,6 +15,7 @@ import {
 
 export interface FormSchema {
   header: string;
+  formId: string;
   sections: Section[];
 }
 
@@ -114,6 +115,7 @@ export type FormGroup = {
 
 export interface Section {
   title: string;
+  sectionId: string;
   form: FormGroup[];
   dependency?: DependencyRule;
 }
