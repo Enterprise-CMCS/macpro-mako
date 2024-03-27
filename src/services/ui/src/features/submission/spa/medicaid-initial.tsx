@@ -33,6 +33,7 @@ import { useQuery as useQueryString } from "@/hooks";
 import {
   AdditionalInfoInput,
   DescriptionInput,
+  FAQFooter,
   SubjectInput,
 } from "../shared-components";
 
@@ -283,6 +284,7 @@ export const MedicaidSpaFormPage = () => {
           </div>
         </form>
       </Inputs.Form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };

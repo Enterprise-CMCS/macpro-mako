@@ -24,6 +24,8 @@ import { useEffect, useState } from "react";
 import * as Content from "@/components";
 import { zAppkWaiverNumberSchema } from "@/utils";
 import { Link } from "react-router-dom";
+import { Alert, Button } from "@/components";
+import { FAQFooter } from "../shared-components";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
@@ -58,7 +60,7 @@ export const AppKSubmissionForm = () => {
           }, 5000); // delay for opensearch record to be ready
         },
         onError: (err) => console.error(err),
-      }
+      },
     );
   });
 
@@ -211,6 +213,7 @@ export const AppKSubmissionForm = () => {
           </div>
         </form>
       </I.Form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };
