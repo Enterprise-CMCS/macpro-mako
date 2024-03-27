@@ -36,7 +36,7 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
                     path="/action/:authority/:id/:type"
                     key={`${idx}-${type}`}
                     params={{ id, type, authority }}
-                    className="text-sky-700 font-semibold"
+                    className="text-sky-700 font-semibold text-lg"
                   >
                     <li>{mapActionLabel(type)}</li>
                   </Link>
