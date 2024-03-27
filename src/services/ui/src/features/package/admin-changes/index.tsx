@@ -85,7 +85,7 @@ export const AdminChanges = () => {
 
   return (
     <DetailsSection
-      id="administrative_package_changess"
+      id="administrative_package_changes"
       title={`Administrative Package Changes (${data?.length})`}
       description="Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC."
     >

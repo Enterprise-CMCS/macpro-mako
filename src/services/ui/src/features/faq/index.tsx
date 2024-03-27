@@ -33,7 +33,7 @@ export const Faq = () => {
       </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1">
-          <article key={"Asdf"} className="mb-8">
+          <article className="mb-8">
             <Accordion
               type="multiple"
               value={openItems}
@@ -41,16 +41,16 @@ export const Faq = () => {
             >
               {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
                 <article key={sectionTitle} className="mb-8">
-                  <h2 className="text-2xl mb-4 text-primary">
-                    {sectionTitle}
-                  </h2>
+                  <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
                   {qanda.map(({ anchorText, answerJSX, question }) => (
                     <AccordionItem
                       value={anchorText}
                       id={anchorText}
                       key={anchorText}
                     >
-                      <AccordionTrigger>{question}</AccordionTrigger>
+                      <AccordionTrigger className="text-left">
+                        {question}
+                      </AccordionTrigger>
                       <AccordionContent>{answerJSX}</AccordionContent>
                     </AccordionItem>
                   ))}
