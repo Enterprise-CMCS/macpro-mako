@@ -71,16 +71,18 @@ export async function updateUserAttributes(params: any): Promise<void> {
         (attr: any) => attr.Name === "custom:cms-roles",
       );
       if (rolesIndex !== -1) {
-        // Merge existing roles with new ones, ensuring "onemac-micro-super" is included
-        let newRoles = new Set(
-          attributeData.UserAttributes[rolesIndex].Value.split(",").concat(
-            "onemac-micro-super",
-          ),
-        );
+        // Only merge if new roles are not empty
+        let newRoles = attributeData.UserAttributes[rolesIndex].Value
+          ? new Set(
+              attributeData.UserAttributes[rolesIndex].Value.split(",").concat(
+                "onemac-micro-super",
+              ),
+            )
+          : new Set(["onemac-micro-super"]); // Ensure "onemac-micro-super" is always included
         attributeData.UserAttributes[rolesIndex].Value =
           Array.from(newRoles).join(",");
       } else {
-        // If "custom:cms-roles" wasn't in the incoming event, add it with "onemac-micro-super"
+        // Add "custom:cms-roles" with "onemac-micro-super"
         attributeData.UserAttributes.push({
           Name: "custom:cms-roles",
           Value: "onemac-micro-super",
@@ -94,16 +96,18 @@ export async function updateUserAttributes(params: any): Promise<void> {
         (attr: any) => attr.Name === "custom:state",
       );
       if (stateIndex !== -1) {
-        // Merge existing states with new ones, ensuring "ZZ" is included
-        let newStates = new Set(
-          attributeData.UserAttributes[stateIndex].Value.split(",").concat(
-            "ZZ",
-          ),
-        );
+        // Only merge if new states are not empty
+        let newStates = attributeData.UserAttributes[stateIndex].Value
+          ? new Set(
+              attributeData.UserAttributes[stateIndex].Value.split(",").concat(
+                "ZZ",
+              ),
+            )
+          : new Set(["ZZ"]); // Ensure "ZZ" is always included
         attributeData.UserAttributes[stateIndex].Value =
           Array.from(newStates).join(",");
       } else {
-        // If "custom:state" wasn't in the incoming event, add it with "ZZ"
+        // Add "custom:state" with "ZZ"
         attributeData.UserAttributes.push({
           Name: "custom:state",
           Value: "ZZ",
