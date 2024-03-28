@@ -13,7 +13,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Radio",
-              name: "amending_benefit",
+              name: "abp3-1_benefit-package-details_amending-benefit_radiogroup",
               rules: {
                 required: "* Required",
               },
@@ -37,7 +37,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Input",
-              name: "benefit_package_name",
+              name: "abp3-1_benefit-package-details_name_input",
               rules: {
                 required: "* Required",
               },
@@ -54,7 +54,7 @@ export const v202401: FormSchema = {
             "The state/territory selects as its Section 1937 coverage option the following type of benchmark benefit package or benchmark-equivalent benefit package under this Alternative Benefit Plan:",
           slots: [
             {
-              name: "benchmark",
+              name: "abp3-1_select-of-sect-1937-coverage-opt_benchmark_radiogroup",
               rhf: "Radio",
               rules: {
                 required: "* Required",
@@ -68,7 +68,7 @@ export const v202401: FormSchema = {
                       {
                         slots: [
                           {
-                            name: "state_territory_benchmark",
+                            name: "abp3-1_select-of-sect-1937-coverage-opt_state-territory-bench_radiogroup",
                             rhf: "Radio",
                             rules: {
                               required: "* Required",
@@ -87,7 +87,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Input",
-                                      name: "benchmark_plan_name",
+                                      name: "abp3-1_select-of-sect-1937-coverage-opt_state-territory-bench-plan-name_input",
                                       label: "Plan name",
                                       rules: {
                                         required: "* Required",
@@ -102,7 +102,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Input",
-                                      name: "benchmark_HMO_plan_name",
+                                      name: "abp3-1_select-of-sect-1937-coverage-opt_bench-hmo-plan-name_input",
                                       label: "Plan name",
                                       rules: {
                                         required: "* Required",
@@ -117,7 +117,7 @@ export const v202401: FormSchema = {
                                     {
                                       slots: [
                                         {
-                                          name: "benefits_based_on",
+                                          name: "abp3-1_select-of-sect-1937-coverage-opt_benefits-based-on_radiogroup",
                                           rhf: "Radio",
                                           rules: {
                                             required: "* Required",
@@ -133,7 +133,7 @@ export const v202401: FormSchema = {
                                                     slots: [
                                                       {
                                                         rhf: "Radio",
-                                                        name: "state_plan_benefits",
+                                                        name: "abp3-1_select-of-sect-1937-coverage-opt_state-plan-benefits_radiogroup",
                                                         props: {
                                                           options: [
                                                             {
@@ -187,7 +187,7 @@ export const v202401: FormSchema = {
                                         },
                                         {
                                           rhf: "Textarea",
-                                          name: "benefits__description",
+                                          name: "abp3-1_select-of-sect-1937-coverage-opt_benefits-description_textarea",
                                           label:
                                             "Describe the benefits, source of benefits, and any limitations.",
                                           labelStyling: "font-bold",
@@ -216,7 +216,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "geographic_variation",
+                            name: "abp3-1_select-of-sect-1937-coverage-opt_geographic-variation_radiogroup",
                             rules: {
                               required: "* Required",
                             },
@@ -234,7 +234,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Input",
-                                      name: "benchmark_equivalent_state_coverage_plan_name",
+                                      name: "abp3-1_select-of-sect-1937-coverage-opt_bench-equivalent-state-coverage-plan-name_input",
                                       label: "Plan name",
                                       rules: {
                                         required: "* Required",
@@ -249,7 +249,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Input",
-                                      name: "benchmark_equivalent_HMO_plan_name",
+                                      name: "abp3-1_select-of-sect-1937-coverage-opt_bench-equivalent-hmo-plan-name_input",
                                       label: "Plan name",
                                       rules: {
                                         required: "* Required",
@@ -285,7 +285,7 @@ export const v202401: FormSchema = {
             "The state or territory must select an EHB-benchmark plan as the basis for providing essential health benefits in its benchmark or benchmark-equivalent package.",
           slots: [
             {
-              name: "EHB_benchmark_name",
+              name: "abp3-1_select-of-ehb-bench-plan_name_input",
               rhf: "Input",
               label: "EHB-benchmark plan name",
               labelStyling: "font-bold",
@@ -295,7 +295,7 @@ export const v202401: FormSchema = {
             },
 
             {
-              name: "is_EHB_benchmark_plan_same_section_1937",
+              name: "abp3-1_select-of-ehb-bench-plan_is-ehb-bench-plan-same-section-1937_select",
               rhf: "Select",
               label:
                 "Is the EHB-benchmark plan the same as the Section 1937 coverage option?",
@@ -316,7 +316,7 @@ export const v202401: FormSchema = {
               label:
                 "The state/territory will use the following as its EHB-benchmark option as described at 45 CFR 156.111(b)(2)(B), in compliance with the individual insurance market under 45 CFR 156.100 through 156.125:",
               labelStyling: "font-bold",
-              name: "EHB_benchmark_option",
+              name: "abp3-1_select-of-ehb-bench-plan_option_radiogroup",
               rhf: "Radio",
               descriptionAbove: true,
               descriptionStyling: "text-base text-black",
@@ -337,7 +337,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Select",
-                        name: "is_geographic_area",
+                        name: "abp3-1_select-of-ehb-bench-plan_is-geo-area_select",
                         label: "State/territory",
                         labelStyling: "p-3",
                         formItemStyling: "flex-row",
@@ -447,7 +447,7 @@ export const v202401: FormSchema = {
                       },
                       {
                         rhf: "Radio",
-                        name: "indicate_EHB_bencmark_plan",
+                        name: "abp3-1_select-of-ehb-bench-plan_indicate-ehb-bench-plan_radiogroup",
                         label: "Type of EHB-benchmark plan",
                         labelStyling: "font-bold",
                         props: {
@@ -490,7 +490,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "EHB-benchmark_plan",
+                            name: "abp3-1_select-of-ehb-bench-plan_EHB-bench-plan_radiogroup",
                             rules: {
                               required: "* Required",
                             },
@@ -521,7 +521,7 @@ export const v202401: FormSchema = {
                           },
                           {
                             rhf: "Checkbox",
-                            name: "one_or_more_EHBs_other_states",
+                            name: "abp3-1_select-of-ehb-bench-plan_one-or-more-EHBs-other-states_checkgroup",
                             label: "Select one or more EHBs from other states.",
                             labelStyling: "font-bold",
                             rules: { required: "* Required" },
@@ -533,7 +533,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "ambulatory_patient_services_state_territory",
+                                      name: "abp3-1_select-of-ehb-bench-plan_ambulatory-patient-services-state-territory_select",
                                       label: "Identify the state/territory",
                                       labelStyling: "p-3",
                                       formItemStyling: "flex-row",
@@ -646,7 +646,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "emergency_services_state_territory",
+                                      name: "abp3-1_select-of-ehb-bench-plan_emergency-services-state-territory_select",
                                       label: "Identify the state/territory",
                                       labelStyling: "p-3",
                                       formItemStyling: "flex-row",
@@ -762,7 +762,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "hospitalization_state_territory",
+                                      name: "abp3-1_select-of-ehb-bench-plan_hospital-state-territory_select",
                                       label: "Identify the state/territory",
                                       labelStyling: "p-3",
                                       formItemStyling: "flex-row",
@@ -878,7 +878,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "maternity_and_newborn_care_state_territory",
+                                      name: "abp3-1_select-of-ehb-bench-plan_maternity-and-newborn-care-state-territory_select",
                                       label: "Identify the state/territory",
                                       labelStyling: "p-3",
                                       formItemStyling: "flex-row",
@@ -996,7 +996,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "mental_health_and_substance_use_disorders_state_territory",
+                                      name: "abp3-1_select-of-ehb-bench-plan_mental-health-and-substance-use-disorders-state-territory_select",
                                       label: "Identify the state/territory",
                                       labelStyling: "p-3",
                                       formItemStyling: "flex-row",
@@ -1112,7 +1112,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "prescription_drugs_state_territory",
+                                      name: "abp3-1_select-of-ehb-bench-plan_prescription-drugs-state-territory_select",
                                       label: "Identify the state/territory",
                                       labelStyling: "p-3",
                                       formItemStyling: "flex-row",
@@ -1230,7 +1230,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "rehabilitative_and_habilitative_services_and_devices_state_territory",
+                                      name: "abp3-1_select-of-ehb-bench-plan_rehab-and-habilitative-services-and-devices-state-territory_select",
                                       label: "Identify the state/territory",
                                       labelStyling: "p-3",
                                       formItemStyling: "flex-row",
@@ -1346,7 +1346,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "laboratory_services_state_territory",
+                                      name: "abp3-1_select-of-ehb-bench-plan_laboratory-services-state-territory_select",
                                       label: "Identify the state/territory",
                                       labelStyling: "p-3",
                                       formItemStyling: "flex-row",
@@ -1464,7 +1464,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "preventive_and_wellness_services_and_chronic_disease_management_state_territory",
+                                      name: "abp3-1_select-of-ehb-bench-plan_prevent-and-well-services-and-chronic-disease-management-state-territory_select",
                                       label: "Identify the state/territory",
                                       labelStyling: "p-3",
                                       formItemStyling: "flex-row",
@@ -1582,7 +1582,7 @@ export const v202401: FormSchema = {
                                   slots: [
                                     {
                                       rhf: "Select",
-                                      name: "ediatric_services_including_oral_and_vision_care_state_territory",
+                                      name: "abp3-1_select-of-ehb-bench-plan_pediatric-services-including-oral-and-vision-care-state-territory_select",
                                       label: "Identify the state/territory",
                                       labelStyling: "p-3",
                                       formItemStyling: "flex-row",
@@ -1718,7 +1718,7 @@ export const v202401: FormSchema = {
         {
           slots: [
             {
-              name: "assurances_meets_scope",
+              name: "abp3-1_assurances_meets-scope_checkgroup",
               rhf: "Checkbox",
               rules: {
                 required: "* Required",
@@ -1737,7 +1737,7 @@ export const v202401: FormSchema = {
                     dependency: {
                       conditions: [
                         {
-                          name: "EHB_benchmark_option",
+                          name: "abp3-1_select-of-ehb-bench-plan_option_radiogroup",
                           type: "expectedValue",
                           expectedValue: "EHB_benchmark_2017_plan_year",
                         },
@@ -1771,7 +1771,7 @@ export const v202401: FormSchema = {
             "Other information about selection of the Section 1937 coverage option and the EHB-benchmark plan (optional)",
           slots: [
             {
-              name: "additional_information",
+              name: "abp3-1_additional_info_description_textarea",
               rhf: "Textarea",
             },
           ],
