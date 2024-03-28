@@ -1,6 +1,7 @@
 import {
   Alert,
   LoadingSpinner,
+  Route,
   useAlertContext,
   useModalContext,
 } from "@/components";
@@ -285,16 +286,26 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
   const location = useLocation();
 
   return useEffect(() => {
-    if (data && data.submitted) {
+    if (data?.submitted) {
       alert.setContent({
         header,
         body,
       });
+      alert.setBannerStyle("success");
       alert.setBannerShow(true);
       alert.setBannerDisplayOn(
         location.state?.from?.split("?")[0] ?? "/dashboard",
       );
       navigate(location.state?.from ?? "/dashboard");
+    } else if (!data?.submitted && data?.error) {
+      alert.setContent({
+        header: "An unexpected error has occurred:",
+        body:
+          data.error instanceof Error ? data.error.message : String(data.error),
+      });
+      alert.setBannerStyle("destructive");
+      alert.setBannerDisplayOn(window.location.pathname as Route);
+      alert.setBannerShow(true);
     }
   }, [data]);
 };
@@ -312,5 +323,5 @@ const filterUndefinedValues = (obj: Record<any, any>) => {
 // Types
 export type ActionFunction = (
   args: ActionFunctionArgs,
-) => Promise<{ submitted: boolean }>;
+) => Promise<{ submitted: boolean; error?: Error | unknown }>;
 export type ActionFunctionReturnType = Awaited<ReturnType<ActionFunction>>;
