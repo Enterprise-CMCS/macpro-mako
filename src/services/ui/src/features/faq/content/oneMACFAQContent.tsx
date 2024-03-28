@@ -414,7 +414,7 @@ export const oneMACFAQContent: FAQContent[] = [
               <tbody>
                 <tr>
                   <td className="border border-gray-300 px-4 py-2">
-                    RAI Response*
+                    RAI Response Letter*
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     Letter responding to RAI questions, any updated SPA pages,
@@ -916,7 +916,7 @@ export const oneMACFAQContent: FAQContent[] = [
         ),
       },
       {
-        anchorText: "1915(b)-waiver-extension-attachments",
+        anchorText: "temporary-extensions-spa-attachments",
         question:
           "What are the attachments for a 1915(b) Waiver - Request for Temporary Extension?",
         answerJSX: (
@@ -957,7 +957,7 @@ export const oneMACFAQContent: FAQContent[] = [
         ),
       },
       {
-        anchorText: "1915(c)-waiver-extension-attachments",
+        anchorText: "temporary-extensions-attachments",
         question:
           "What are the attachments for a 1915(c) Waiver - Request for Temporary Extension",
         answerJSX: (

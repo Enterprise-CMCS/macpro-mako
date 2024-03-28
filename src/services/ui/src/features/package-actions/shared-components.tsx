@@ -26,7 +26,7 @@ import {
   useNavigate,
   useNavigation,
   useSubmit,
-  useParams
+  useParams,
 } from "react-router-dom";
 import { Authority } from "shared-types";
 
@@ -69,9 +69,9 @@ export const AttachmentsSection = <T extends string>({
       <h2 className="font-bold text-2xl font-sans mb-2">Attachments</h2>
       {supportingInformation && <p>{supportingInformation}</p>}
       <p>
-        Maximum file size of 80 MB per attachment.{" "}
-        <strong>You can add multiple files per attachment type.</strong> Read
-        the description for each of the attachment types on the{" "}
+        Maximum file size of 80 MB per attachment. You can add multiple files
+        per attachment type. Read the description for each of the attachment
+        types on the
         <Link
           className="text-blue-700 hover:underline"
           to={`/faq/${segment}-spa-attachments`}
