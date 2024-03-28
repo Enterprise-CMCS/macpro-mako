@@ -10,7 +10,10 @@ export const SEATOOL_STATUS = {
   PENDING_APPROVAL: "Pending-Approval",
   UNKNOWN: "Unknown",
   PENDING_OFF_THE_CLOCK: "Pending-Off the Clock",
-};
+} as const;
+
+export type SEA_STATUS_TERMS =
+  (typeof SEATOOL_STATUS)[keyof typeof SEATOOL_STATUS];
 
 const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.PENDING]: "Under Review",
@@ -23,6 +26,7 @@ const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.UNSUBMITTED]: "Unsubmitted",
   [SEATOOL_STATUS.PENDING_APPROVAL]: "Under Review",
   [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
+  [SEATOOL_STATUS.UNKNOWN]: "Unknown",
 };
 
 const statusToDisplayToCmsUser = {
@@ -36,6 +40,7 @@ const statusToDisplayToCmsUser = {
   [SEATOOL_STATUS.UNSUBMITTED]: "Unsubmitted",
   [SEATOOL_STATUS.PENDING_APPROVAL]: "Pending - Approval",
   [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
+  [SEATOOL_STATUS.UNKNOWN]: "Unknown",
 };
 
 export const finalDispositionStatuses = [
@@ -46,7 +51,7 @@ export const finalDispositionStatuses = [
   SEATOOL_STATUS.UNSUBMITTED,
 ];
 
-export const getStatus = (seatoolStatus?: string | null) => {
+export const getStatus = (seatoolStatus?: SEA_STATUS_TERMS | null) => {
   const stateStatus = statusToDisplayToStateUser[seatoolStatus ?? "Unknown"];
   const cmsStatus = statusToDisplayToCmsUser[seatoolStatus ?? "Unknown"];
   return { stateStatus, cmsStatus };

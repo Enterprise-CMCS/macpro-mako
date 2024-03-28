@@ -5,7 +5,7 @@ import { Info } from "lucide-react";
 import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/utils";
 import { unflatten } from "flat";
-import { Authority } from "shared-types";
+import { Authority, SEATOOL_STATUS } from "shared-types";
 import { z } from "zod";
 
 const title: Record<Authority, string> = {
@@ -64,7 +64,14 @@ export const WithdrawRai = () => {
   const { id, authority } = useParams() as { id: string; authority: Authority };
   SC.useDisplaySubmissionAlert(
     "RAI response withdrawn",
-    `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`
+    `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`,
+    (data) => {
+      return (
+        data._source.seatoolStatus === SEATOOL_STATUS.PENDING_RAI &&
+        !!data._source.raiWithdrawnDate
+      );
+    },
+    id,
   );
 
   return (

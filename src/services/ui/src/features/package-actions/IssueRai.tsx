@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
-import { Authority } from "shared-types";
+import { Authority, SEATOOL_STATUS } from "shared-types";
 import { unflatten } from "flat";
 import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
 import { submit } from "@/api/submissionService";
@@ -49,11 +49,18 @@ export const issueRaiDefaultAction: SC.ActionFunction = async ({
 
 export const IssueRai = () => {
   const { handleSubmit } = SC.useSubmitForm();
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
 
   SC.useDisplaySubmissionAlert(
     "RAI issued",
-    `The RAI for ${id} has been submitted. An email confirmation will be sent to you and the state.`
+    `The RAI for ${id} has been submitted. An email confirmation will be sent to you and the state.`,
+    (data) => {
+      return (
+        data._source.seatoolStatus === SEATOOL_STATUS.PENDING_RAI &&
+        !!data._source.raiRequestedDate
+      );
+    },
+    id,
   );
 
   return (

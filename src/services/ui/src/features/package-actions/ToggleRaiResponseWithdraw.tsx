@@ -53,16 +53,19 @@ export const ToggleRaiResponseWithdraw = ({ isEnabled }: Props) => {
     : "Once you submit this form, you will disable the previous Formal RAI Response Withdraw - Enabled action. The State will not be able to withdraw the Formal RAI Response. ";
 
   if (!formMethods.getValues("raiWithdrawEnabled")) {
-    console.log("testing", isEnabled);
     formMethods.setValue("raiWithdrawEnabled", isEnabled);
   }
 
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
   SC.useDisplaySubmissionAlert(
     `RAI response withdrawal ${raiTypeText.toLowerCase()}d`,
     raiTypeText === "Enable"
       ? "The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied."
-      : "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied."
+      : "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
+    (data) => {
+      return data._source.raiWithdrawEnabled === isEnabled;
+    },
+    id,
   );
 
   return (

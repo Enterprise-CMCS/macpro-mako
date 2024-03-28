@@ -95,7 +95,7 @@ const compileSrtList = (
   officers?.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
-  return status && finalDispositionStatuses.includes(status)
+  return status && finalDispositionStatuses.includes(status as any)
     ? getDateStringOrNullFromEpoc(record.STATE_PLAN.STATUS_DATE)
     : null;
 };
@@ -137,7 +137,7 @@ export const transform = (id: string) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
       getRaiDate(data);
-    const seatoolStatus = data.STATE_PLAN.SPW_STATUS_ID
+    const seatoolStatus: any = data.STATE_PLAN.SPW_STATUS_ID
       ? SEATOOL_SPW_STATUS[data.STATE_PLAN.SPW_STATUS_ID]
       : "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
@@ -155,7 +155,7 @@ export const transform = (id: string) => {
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
       initialIntakeNeeded:
-        !leadAnalystName && !finalDispositionStatuses.includes(seatoolStatus),
+        !leadAnalystName && seatoolStatus !== SEATOOL_STATUS.WITHDRAWN,
       leadAnalystName,
       authorityId: authorityId || null,
       authority: getAuthority(authorityId, id) as Authority | null,
@@ -197,7 +197,9 @@ export const transform = (id: string) => {
         seatoolStatus,
         flavorLookup(data.STATE_PLAN.PLAN_TYPE),
       ),
-      raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus)
+      raiWithdrawEnabled: finalDispositionStatuses.includes(
+        seatoolStatus as any,
+      )
         ? false
         : undefined,
     };

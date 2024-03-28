@@ -16,6 +16,8 @@ import {
   Upload,
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
+import { SeaStatus, useSyncStatus } from "@/hooks/useSyncStatus";
+import { queryClient } from "@/router";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import {
@@ -29,6 +31,7 @@ import {
   useSubmit,
 } from "react-router-dom";
 import { Authority } from "shared-types";
+import { ItemResult } from "shared-types/opensearch/main";
 
 // Components
 
@@ -235,8 +238,12 @@ export const ErrorBanner = () => {
 export const FormLoadingSpinner = () => {
   const { state } = useNavigation();
   const { formState } = useFormContext();
+  const data = useActionData() as ActionFunctionReturnType;
+
   return (
-    (state === "submitting" || formState.isSubmitting) && <LoadingSpinner />
+    (!!data?.submitted || state === "submitting" || formState.isSubmitting) && (
+      <LoadingSpinner />
+    )
   );
 };
 
@@ -278,13 +285,21 @@ export const useSubmitForm = () => {
   };
 };
 
-export const useDisplaySubmissionAlert = (header: string, body: string) => {
+export const useDisplaySubmissionAlert = (
+  header: string,
+  body: string,
+  isCorrectStatus: (data: ItemResult) => boolean,
+  id: string,
+) => {
   const alert = useAlertContext();
   const data = useActionData() as ActionFunctionReturnType;
-  const navigate = useNavigate();
   const location = useLocation();
+  const syncData = useSyncStatus({
+    path: location.state?.from ?? "/dashboard",
+    isCorrectStatus,
+  });
 
-  return useEffect(() => {
+  useEffect(() => {
     if (data && data.submitted) {
       alert.setContent({
         header,
@@ -294,7 +309,7 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
       alert.setBannerDisplayOn(
         location.state?.from?.split("?")[0] ?? "/dashboard",
       );
-      navigate(location.state?.from ?? "/dashboard");
+      syncData(id);
     }
   }, [data]);
 };

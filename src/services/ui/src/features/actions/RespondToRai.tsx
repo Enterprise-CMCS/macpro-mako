@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { opensearch, Authority } from "shared-types";
+import { opensearch, Authority, SEATOOL_STATUS } from "shared-types";
 import { Info } from "lucide-react";
 
 import {
@@ -36,6 +36,7 @@ import {
   useOriginPath,
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 export const RespondToRai = ({
   item,
@@ -51,9 +52,17 @@ export const RespondToRai = ({
   const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      return (
+        data._source.seatoolStatus === SEATOOL_STATUS.PENDING &&
+        !!data._source.raiReceivedDate
+      );
+    },
+  });
   const acceptAction = useCallback(() => {
     modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const form = useForm({
     resolver: zodResolver(schema),
@@ -80,17 +89,17 @@ export const RespondToRai = ({
               // when any queries are added, such as the case of /details?id=...
               urlQuery.get(ORIGIN)
                 ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-                : "/dashboard"
+                : "/dashboard",
             );
-            navigate(
-              originPath ? { path: originPath } : { path: "/dashboard" }
-            );
+            syncRecord(id);
           } catch (e) {
             console.error(e);
           }
         })}
       >
-        {form.formState.isSubmitting && <LoadingSpinner />}
+        {(form.formState.isSubmitting || form.formState.isSubmitSuccessful) && (
+          <LoadingSpinner />
+        )}
         {/* Intro */}
         <ActionFormIntro
           title={`${item._source.authority} Formal RAI Response Details`}
@@ -154,7 +163,7 @@ export const RespondToRai = ({
                     <li className="ml-8 my-2" key={idx}>
                       {err.message as string}
                     </li>
-                  )
+                  ),
               )}
             </ul>
           </Alert>
