@@ -63,7 +63,6 @@ export const RaiIssue = ({
   });
   const acceptAction = useCallback(() => {
     modal.setModalOpen(false);
-    syncRecord(id);
   }, [originPath]);
 
   return (
@@ -89,15 +88,15 @@ export const RaiIssue = ({
                 ? originRoute[urlQuery.get(ORIGIN)! as Origin]
                 : "/dashboard",
             );
-            navigate(
-              originPath ? { path: originPath } : { path: "/dashboard" },
-            );
+            syncRecord(id);
           } catch (e) {
             console.error(e);
           }
         })}
       >
-        {form.formState.isSubmitting && <LoadingSpinner />}
+        {(form.formState.isSubmitting || form.formState.isSubmitSuccessful) && (
+          <LoadingSpinner />
+        )}
         {/* Intro */}
         <ActionFormIntro title={"Formal RAI Details"}>
           <RequiredIndicator /> Indicates a required field

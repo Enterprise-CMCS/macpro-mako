@@ -117,7 +117,9 @@ export const WithdrawPackage = ({
   return (
     <Form {...form}>
       <form>
-        {form.formState.isSubmitting && <LoadingSpinner />}
+        {(form.formState.isSubmitting || form.formState.isSubmitSuccessful) && (
+          <LoadingSpinner />
+        )}
         {/* Intro */}
         <ActionFormIntro title={`Withdraw ${item._source.authority} Package`}>
           <RequiredIndicator /> Indicates a required field

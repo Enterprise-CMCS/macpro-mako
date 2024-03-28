@@ -94,7 +94,9 @@ export const WithdrawRai = ({
   return (
     <Form {...form}>
       <form>
-        {form.formState.isSubmitting && <LoadingSpinner />}
+        {(form.formState.isSubmitting || form.formState.isSubmitSuccessful) && (
+          <LoadingSpinner />
+        )}
         {/* Intro */}
         <ActionFormIntro title={"Withdraw Formal RAI Response Details"}>
           <RequiredIndicator /> Indicates a required field
