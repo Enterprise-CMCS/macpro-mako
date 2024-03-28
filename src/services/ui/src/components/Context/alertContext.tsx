@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import { Check, X } from "lucide-react";
 import { createContextProvider } from "@/utils";
-import { Alert, SimplePageContainer, Route } from "@/components";
+import { Alert, SimplePageContainer, Route, AlertVariant } from "@/components";
 import { useLocation } from "react-router-dom";
 
 type BannerContent = {
@@ -11,6 +11,7 @@ type BannerContent = {
 
 const useAlertController = () => {
   const [bannerShow, setBannerShow] = useState<boolean>(false);
+  const [bannerStyle, setBannerStyle] = useState<AlertVariant>("success");
   const [bannerDisplayOn, setBannerDisplayOn] = useState<Route>("/");
   const [content, setContent] = useState<BannerContent>({
     header: "No header given",
@@ -19,6 +20,8 @@ const useAlertController = () => {
   return {
     content,
     setContent,
+    bannerStyle,
+    setBannerStyle,
     bannerDisplayOn,
     setBannerDisplayOn,
     bannerShow,
@@ -51,7 +54,10 @@ export const AlertProvider = ({ children }: PropsWithChildren) => {
        * Route change*/}
       {context.bannerDisplayOn === location.pathname && context.bannerShow && (
         <SimplePageContainer>
-          <Alert variant={"success"} className="mt-4 mb-8 flex-row text-sm">
+          <Alert
+            variant={context.bannerStyle}
+            className="mt-4 mb-8 flex-row text-sm"
+          >
             <div className={"flex items-start justify-between"}>
               <Check />
               <div className={"ml-2 w-full"}>

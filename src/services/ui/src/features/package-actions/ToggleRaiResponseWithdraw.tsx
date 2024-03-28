@@ -37,7 +37,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
     return { submitted: true };
   } catch (err) {
-    return { submitted: false };
+    return { submitted: false, error: err };
   }
 };
 
@@ -62,7 +62,7 @@ export const ToggleRaiResponseWithdraw = ({ isEnabled }: Props) => {
     `RAI response withdrawal ${raiTypeText.toLowerCase()}d`,
     raiTypeText === "Enable"
       ? "The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied."
-      : "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied."
+      : "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
   );
 
   return (
