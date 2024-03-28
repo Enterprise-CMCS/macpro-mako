@@ -122,6 +122,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
       alert.setBannerStyle("destructive");
       alert.setBannerDisplayOn(window.location.pathname as Route);
       alert.setBannerShow(true);
+      window.scrollTo(0, 0);
     }
   };
 

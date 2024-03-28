@@ -306,6 +306,7 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
       alert.setBannerStyle("destructive");
       alert.setBannerDisplayOn(window.location.pathname as Route);
       alert.setBannerShow(true);
+      window.scrollTo(0, 0);
     }
   }, [data]);
 };
