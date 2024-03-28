@@ -17,6 +17,7 @@ import {
   useParams,
   useModalContext,
   useAlertContext,
+  Route,
 } from "@/components";
 import {
   SetupOptions,
@@ -53,9 +54,7 @@ const attachmentInstructions: Record<SetupOptions, ReactElement> = {
 
 const addlInfoInstructions: Record<SetupOptions, ReactElement> = {
   "Medicaid SPA": (
-    <p>
-      Explain your need for withdrawal, or upload supporting documentation.
-    </p>
+    <p>Explain your need for withdrawal, or upload supporting documentation.</p>
   ),
   "CHIP SPA": <p>Explain your need for withdrawal.</p>,
 };
@@ -95,17 +94,25 @@ export const WithdrawPackage = ({
           header: "Package withdrawn",
           body: `The package ${item._source.id} has been withdrawn.`,
         });
+        alert.setBannerStyle("success");
         alert.setBannerShow(true);
         alert.setBannerDisplayOn(
           // This uses the originRoute map because this value doesn't work
           // when any queries are added, such as the case of /details?id=...
           urlQuery.get(ORIGIN)
             ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-            : "/dashboard"
+            : "/dashboard",
         );
         navigate(originPath ? { path: originPath } : { path: "/dashboard" });
       } catch (e) {
         console.error(e);
+        alert.setContent({
+          header: "An unexpected error has occurred:",
+          body: e instanceof Error ? e.message : String(e),
+        });
+        alert.setBannerStyle("destructive");
+        alert.setBannerDisplayOn(window.location.pathname as Route);
+        alert.setBannerShow(true);
       }
     })();
   }, []);
@@ -175,7 +182,7 @@ export const WithdrawPackage = ({
                     <li className="ml-8 my-2" key={idx}>
                       {err.message as string}
                     </li>
-                  )
+                  ),
               )}
             </ul>
           </Alert>
