@@ -47,7 +47,7 @@ export const PackageDetails: FC<{
   const { data } = usePackageDetailsCache();
   // const title = props.title || `${data.authority} Package Details`;
   return (
-    <DetailsSection id="package_details" title={props.title}>
+    <DetailsSection id="package_detailss" title={props.title}>
       <div className="flex-col gap-4 max-w-2xl">
         <DetailItemsGrid displayItems={recordDetails(data)} />
         <DetailItemsGrid

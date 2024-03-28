@@ -25,8 +25,8 @@ import {
   useLocation,
   useNavigate,
   useNavigation,
-  useParams,
   useSubmit,
+  useParams,
 } from "react-router-dom";
 import { Authority } from "shared-types";
 
@@ -60,19 +60,23 @@ export const AttachmentsSection = <T extends string>({
   supportingInformation?: string;
 }) => {
   const form = useFormContext();
+  const location = useLocation();
+  const pathSegments = location.pathname.split("/");
+  const segment = pathSegments[3]; // 'chip' | 'mediaid
 
   return (
     <>
       <h2 className="font-bold text-2xl font-sans mb-2">Attachments</h2>
       {supportingInformation && <p>{supportingInformation}</p>}
       <p>
-        Maximum file size of 80 MB per attachment.{" "}
-        <strong>You can add multiple files per attachment type.</strong> Read
-        the description for each of the attachment types on the{" "}
+        Maximum file size of 80 MB per attachment. You can add multiple files
+        per attachment type. Read the description for each of the attachment
+        types on the
         <Link
           className="text-blue-700 hover:underline"
-          to={"/faq/medicaid-spa-attachments"} // arbitrary default, covered by a bug to be fixed soon
+          to={`/faq/${segment}-spa-attachments`}
           target={FAQ_TAB}
+          rel="noopener noreferrer"
         >
           {" "}
           FAQ Page.
@@ -86,6 +90,7 @@ export const AttachmentsSection = <T extends string>({
           className="text-blue-700 hover:underline"
           to={"/faq/acceptable-file-formats"}
           target={FAQ_TAB}
+          rel="noopener noreferrer"
         >
           {" "}
           FAQ Page.

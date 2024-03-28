@@ -210,7 +210,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
                       1915(b) Waiver Renewal Number <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
-                      to="/faq/waiver-amendment-id-format"
+                      to="/faq/waiver-renewal-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline flex items-center"
