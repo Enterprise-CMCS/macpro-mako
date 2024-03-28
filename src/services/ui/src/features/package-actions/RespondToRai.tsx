@@ -60,6 +60,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
   } catch (err) {
     return {
       submitted: false,
+      error: err,
     };
   }
 };
@@ -70,7 +71,7 @@ export const RespondToRai = () => {
 
   SC.useDisplaySubmissionAlert(
     "RAI response submitted",
-    `The RAI response for ${id} has been submitted.`
+    `The RAI response for ${id} has been submitted.`,
   );
 
   return (
