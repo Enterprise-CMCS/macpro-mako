@@ -27,25 +27,26 @@ export const ToggleRaiResponseWithdraw = ({
 }: {
   item?: opensearch.main.ItemResult;
 }) => {
-  const navigate = useNavigate();
   const urlQuery = useQueryString();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
   const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
+  const ACTION_WORD = useMemo(
+    () => (type === Action.ENABLE_RAI_WITHDRAW ? "Enable" : "Disable"),
+    [type],
+  );
   const syncRecord = useSyncStatus({
     path: originPath ? originPath : "/dashboard",
     isCorrectStatus: (data) => {
-      return (
-        data._source.seatoolStatus === SEATOOL_STATUS.PENDING &&
-        !!data._source.raiReceivedDate
-      );
+      const isEnabled = ACTION_WORD === "Enable";
+      console.log(data, isEnabled);
+      return data._source.raiWithdrawEnabled === isEnabled;
     },
   });
   const acceptAction = useCallback(() => {
     modal.setModalOpen(false);
-    syncRecord(id);
   }, []);
   const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
     id: string;
@@ -55,11 +56,6 @@ export const ToggleRaiResponseWithdraw = ({
     user,
     authority: item?._source.authority as Authority,
   });
-
-  const ACTION_WORD = useMemo(
-    () => (type === Action.ENABLE_RAI_WITHDRAW ? "Enable" : "Disable"),
-    [type],
-  );
 
   useEffect(() => {
     if (isSuccess) {
@@ -78,14 +74,17 @@ export const ToggleRaiResponseWithdraw = ({
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+      console.log("hello world", id);
+      syncRecord(id);
     }
   }, [isSuccess]);
+
+  console.log({ isSuccess });
 
   if (!item) return <Navigate path={"/dashboard"} />; // Prevents optional chains below
   return (
     <>
-      {isLoading && <LoadingSpinner />}
+      {(isLoading || isSuccess) && <LoadingSpinner />}
       <ActionFormIntro
         title={`${ACTION_WORD} Formal RAI Response Withdraw Details`}
       >
