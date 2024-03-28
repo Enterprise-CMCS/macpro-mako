@@ -10,7 +10,7 @@ const modalTitle = "#dialog-title";
 const modalText = "#dialog-content";
 const modalCancelBTN =
   "//*[@id='react-aria-modal-dialog']//button[text()='Cancel']";
-const attachmentInfoDescription = "//h2[text()='Attachments']//following::p[contains(text(), 'per attachment')]";
+const attachmentInfoDescription = "//p[contains(text(), 'Maximum file size of 80 MB per attachment)]";
 const enterMmdlBtn = "//button[contains(text(),'Enter the MMDL system')]";
 const enterMacProBtn = "//button[contains(text(),'Enter the MACPro system')]";
 
@@ -32,6 +32,7 @@ const labelElementFromLabel = {
 const elementFromLabel = {
   // Different forms may have different labels for the ID field
   "SPA ID": idElement,
+  "Approved Initial or Renewal Waiver Number": "[name=originalWaiverNumber]",
   "Temporary Extension Request Number": idElement,
   "Initial Waiver Number": idElement,
   "1915(b) Waiver Amendment Number": idElement,
@@ -43,8 +44,8 @@ const elementFromLabel = {
   "Description": "[name='description']",
 };
 const errorMessageLine1FromLabel = {
-  "SPA ID": "#componentIdStatusMsg0",
-  "Temporary Extension Request Number": "#componentIdStatusMsg0",
+  "SPA ID": idElement,
+  "Temporary Extension Request Number": idElement,
   "Initial Waiver Number": idElement,
   "1915(b) Waiver Renewal Number": idElement,
   "1915(b) Waiver Amendment Number": idElement,
@@ -55,10 +56,10 @@ const errorMessageLine1FromLabel = {
   "Proposed Effective Date": "form [class*='space-y-2'] button svg"
 };
 const errorMessageLine2FromLabel = {
-  "SPA ID": "#componentIdStatusMsg1",
-  "Temporary Extension Request Number": "#componentIdStatusMsg1",
-  "Initial Waiver Number": "#componentIdStatusMsg1",
-  "1915(b) Waiver Renewal Number": "#componentIdStatusMsg1",
+  "SPA ID": idElement,
+  "Temporary Extension Request Number": idElement,
+  "Initial Waiver Number": idElement,
+  "1915(b) Waiver Renewal Number": idElement,
   "1915(b) Waiver Amendment Number": idElement,
 };
 const hintTextFromLabel = {
@@ -203,7 +204,7 @@ export class oneMacFormPage {
     cy.xpath(tempExtensionTypeHeader).next("div").contains(whatType);
   }
   selectTempExtensionType(whatType) {
-    cy.xpath(tempExtensionTypeBtn).select(whatType);
+    cy.xpath(tempExtensionTypeBtn).parent("button").click().next().select(whatType, {force:true});
   }
   uploadAttachment(fileName, attachmentIndex) {
    // const innerBTN = `#uploader-input-${attachmentIndex - 1}`;
@@ -274,22 +275,22 @@ export class oneMacFormPage {
       case "1915b Waiver":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/FAQ#waiverb-attachments");
+          .should("have.attr", "href", "/faq/waiverb-attachments");
         break;
       case "Temp Extension":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/FAQ#waiverb-extension-attachments");
+          .should("have.attr", "href", "/faq/waiverb-extension-attachments");
         break;
       case "Appendix K":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/FAQ#appk-attachments");
+          .should("have.attr", "href", "/faq/appk-attachments");
         break;
       case "Waiver RAI":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/FAQ#waiverb-rai-attachments");
+          .should("have.attr", "href", "/faq/waiverb-rai-attachments");
         break;
     }
   }

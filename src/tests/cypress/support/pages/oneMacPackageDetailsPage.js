@@ -9,7 +9,7 @@ const appKTopRaiRespDownloadBtn = "#dl_waiverappkrai0";
 const detailsPage = "//section[@id='package_overview']";
 const statusHeader = "//h2[contains(text(),'Status')]";
 const packageActionsHeader = "//h2[text()='Package Actions']";
-const respondToRAIAction = "//a/li[text()='Respond to Formal RAI']";
+const respondToRAIAction = "//a/*[text()='Respond to Formal RAI']";
 const withdrawPackageAction = "//a/li[text()='Withdraw Package']";
 const requestTempExtensionPackageAction =
   "//a[text()='Request Temporary Extension']";
@@ -19,7 +19,7 @@ const withdrawFormalRAIResponseAction =
 const enableRAIResponseWithdrawAction =
   "//a[text()='Enable Formal RAI Response Withdraw']";
 const detailSection =
-  "#package-details";
+  "#package_details";
 const disableRAIResponseWithdrawAction =
   "//a[text()='Disable Formal RAI Response Withdraw']";
 const CHIPSPAIDHeader = "//h3[contains(text(),'SPA ID')]";

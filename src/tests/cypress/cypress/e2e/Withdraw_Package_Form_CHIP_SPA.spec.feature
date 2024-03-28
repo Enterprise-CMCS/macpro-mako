@@ -12,6 +12,8 @@ Feature: Verify user can withdraw a CHIP SPA package in Under Review Status in t
     Scenario: Validate CHIP SPA Withdrawal Page from dashboard
         Then type the generated "CHIP SPA" Number 2 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of CHIP SPA" to 3 months from today
+        Then into "Subject" type "CHIP WIthdrawal Cypress Regression Test"
+        Then into "Description" type "Test withdrawing from the dashboard."
         Then attach "file.docx" file to attachment 1
         Then attach "excel.xlsx" file to attachment 2
         Then into "Additional Information" type "This CHIP SPA package was created by the test automation."
@@ -42,6 +44,8 @@ Feature: Verify user can withdraw a CHIP SPA package in Under Review Status in t
     Scenario: Validate CHIP SPA Withdrawal Page from details page
         Then type the generated "CHIP SPA" Number 3 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of CHIP SPA" to 3 months from today
+        Then into "Subject" type "CHIP WIthdrawal Cypress Regression Test"
+        Then into "Description" type "Test withdrawalf from the details page."
         Then attach "file.docx" file to attachment 1
         Then attach "excel.xlsx" file to attachment 2
         Then into "Additional Information" type "This CHIP SPA package was created by the test automation."

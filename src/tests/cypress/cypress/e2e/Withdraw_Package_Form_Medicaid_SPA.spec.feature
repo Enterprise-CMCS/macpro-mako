@@ -12,6 +12,8 @@ Feature: Verify user can withdraw a Medicaid SPA package in Under Review Status 
     Scenario: Validate Medicaid SPA Withdrawal Page from dashboard
         Then type the generated "Medicaid SPA" Number 2 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of Medicaid SPA" to 3 months from today
+        Then into "Subject" type "Medicaid SPA Withdrawal Cypress Regression Test"
+        Then into "Description" type "This package was creating while running the test automation."
         Then attach "file.docx" file to attachment 1
         Then attach "excel.xlsx" file to attachment 2
         Then into "Additional Information" type "This Medicaid SPA package was created by the test automation."
@@ -42,6 +44,8 @@ Feature: Verify user can withdraw a Medicaid SPA package in Under Review Status 
     Scenario: Validate Medicaid SPA Withdrawal Page from details page
         Then type the generated "Medicaid SPA" Number 3 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of Medicaid SPA" to 3 months from today
+        Then into "Subject" type "Medicaid SPA Withdrawal Cypress Regression Test"
+        Then into "Description" type "This package was creating while running the test automation."
         Then attach "file.docx" file to attachment 1
         Then attach "excel.xlsx" file to attachment 2
         Then into "Additional Information" type "This Medicaid SPA package was created by the test automation."

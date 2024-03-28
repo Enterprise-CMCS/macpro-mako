@@ -6,12 +6,15 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click the main Dashboard Button
         Then click on the Waivers tab
         Then Click on Filter Button
-        Then click on Status
-
-        Then click Under Review checkbox
         Then click on Authority
-
-        Then click 1915c Appendix K Amendment check box
+        Then click the 1915c check box
+        Then click on Authority
+        Then click on Action Type
+        Then click the Waiver Amendment check box
+        Then click on Action Type
+        Then click on Status
+        Then click Under Review checkbox
+        Then Click on the close Filter Button
 
     Scenario: Screen Enhance - Validate 1915C Appendix K Amendment Withdrawal Page from dashboard
         Then click the actions button in row one

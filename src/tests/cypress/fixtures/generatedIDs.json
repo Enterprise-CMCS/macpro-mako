@@ -11,5 +11,7 @@
   "generatedMedicaidSPAID1": "MD-24-0011-VM",
   "generatedMedicaidSPAID2": "MD-24-0018-VM",
   "generatedMedicaidSPAID3": "MD-24-0019-VM",
-  "generatedCHIPSPAID1": "MD-24-0005-CYPS"
+  "generatedCHIPSPAID1": "MD-24-0005-CYPS",
+  "generatedInitialWaiverID5": "MD-1001.R00.00",
+  "generatedTemporaryExtensionID1": "MD-1000.R00.TE03"
 }
