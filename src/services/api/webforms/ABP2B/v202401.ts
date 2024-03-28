@@ -12,7 +12,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp-2a_assurances_adult-eligibility-included_checkgroup",
+              name: "abp-2b_assurances_adult-eligibility-included_checkgroup",
               descriptionAbove: true,
               description:
                 "When offering voluntary enrollment in an ABP (benchmark or benchmark-equivalent), prior to enrollment, the state/territory will:",
@@ -93,7 +93,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_assurances_checkgroup",
+              name: "abp-2b_delivery-of-info_assurances_checkgroup",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -111,7 +111,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Input",
-                        name: "abp-2a_delivery-of-info_describe-other-input",
+                        name: "abp-2b_delivery-of-info_describe-other-input",
                         label: "Describe",
                         labelStyling: "font-bold",
                         rules: {
@@ -125,7 +125,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Upload",
-              name: "abp-2a_delivery-of-info_provide-copy_upload",
+              name: "abp-2b_delivery-of-info_provide-copy_upload",
               description:
                 "Provide a copy of the letter, email, or other communication.",
               descriptionAbove: true,
@@ -137,7 +137,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Input",
-              name: "abp-2a_delivery-of-info_when-to-inform_input",
+              name: "abp-2b_delivery-of-info_when-to-inform_input",
               descriptionAbove: true,
               description:
                 "When did/will the state/territory inform the individuals?",
@@ -148,7 +148,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Textarea",
-              name: "abp-2a_delivery-of-info_process-for-allow-voluntarily-enrolled-to-disenroll_textarea",
+              name: "abp-2b_delivery-of-info_process-for-allow-voluntarily-enrolled-to-disenroll_textarea",
               descriptionAbove: true,
               description:
                 "What is the state/territory's process for allowing voluntarily enrolled individuals to disenroll?",
@@ -159,7 +159,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_state-territory-assures-it-will-document-exempt-individuals_checkgroup",
+              name: "abp-2b_delivery-of-info_state-territory-assures-it-will-document-exempt-individuals_checkgroup",
               formItemStyling: "whitespace-pre-wrap",
               props: {
                 options: [
@@ -193,7 +193,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_where-will-info-be-doc_checkgroup",
+              name: "abp-2b_delivery-of-info_where-will-info-be-doc_checkgroup",
               descriptionAbove: true,
               descriptionStyling: "font-bold text-black",
               description: "Where will the information be documented?",
@@ -216,7 +216,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Input",
-                        name: "abp-2a_delivery-of-info_where-will-info-be-doc-describe-other_input",
+                        name: "abp-2b_delivery-of-info_where-will-info-be-doc-describe-other_input",
                         label: "Describe",
                         labelStyling: "font-bold",
                         rules: {
@@ -230,7 +230,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_what-docu-will-be-maintained_checkgroup",
+              name: "abp-2b_delivery-of-info_what-docu-will-be-maintained_checkgroup",
               descriptionAbove: true,
               descriptionStyling: "font-bold text-black",
               description:
@@ -258,7 +258,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Input",
-                        name: "abp-2a_delivery-of-info_describe-other_input",
+                        name: "abp-2b_delivery-of-info_describe-other_input",
                         label: "Describe",
                         labelStyling: "font-bold",
                         rules: {
@@ -272,7 +272,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_state-territory-assures-maintain-data_checkgroup",
+              name: "abp-2b_delivery-of-info_state-territory-assures-maintain-data_checkgroup",
               props: {
                 options: [
                   {
@@ -296,7 +296,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Textarea",
-              name: "abp-2a_additional_information_textarea",
+              name: "abp-2b_additional_information_textarea",
             },
           ],
         },
