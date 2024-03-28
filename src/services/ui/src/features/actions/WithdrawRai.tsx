@@ -16,6 +16,7 @@ import {
   useParams,
   useModalContext,
   useAlertContext,
+  Route,
 } from "@/components";
 import {
   SlotAdditionalInfo,
@@ -67,17 +68,25 @@ export const WithdrawRai = ({
           header: "RAI response withdrawn",
           body: `The RAI response for ${item._source.id} has been withdrawn. CMS may follow up if additional information is needed.`,
         });
+        alert.setBannerStyle("success");
         alert.setBannerShow(true);
         alert.setBannerDisplayOn(
           // This uses the originRoute map because this value doesn't work
           // when any queries are added, such as the case of /details?id=...
           urlQuery.get(ORIGIN)
             ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-            : "/dashboard"
+            : "/dashboard",
         );
         navigate(originPath ? { path: originPath } : { path: "/dashboard" });
       } catch (e) {
         console.error(e);
+        alert.setContent({
+          header: "An unexpected error has occurred:",
+          body: e instanceof Error ? e.message : String(e),
+        });
+        alert.setBannerStyle("destructive");
+        alert.setBannerDisplayOn(window.location.pathname as Route);
+        alert.setBannerShow(true);
       }
     })();
   }, []);
@@ -139,7 +148,7 @@ export const WithdrawRai = ({
                     <li className="ml-8 my-2" key={idx}>
                       {err.message as string}
                     </li>
-                  )
+                  ),
               )}
             </ul>
           </Alert>
