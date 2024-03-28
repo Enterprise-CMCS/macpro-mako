@@ -57,6 +57,7 @@ const withdrawalRequestedCaretBtn =
 const subStatus = "#substatus";
 //this is to parse dates like 02/12/2024
 const dateRegex = /[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/;
+const issueRAIBtn = "//a/*[text()= 'Issue Formal RAI']";
 
 export class oneMacPackageDetailsPage {
   verifyPackageDetailsPageIsVisible() {
@@ -318,6 +319,9 @@ export class oneMacPackageDetailsPage {
   }
   verifyTheSubStatus() {
     cy.xpath(statusHeader).next().contains("Withdraw Formal RAI Response Enabled");
+  }
+  clickIssueRAIBtn() {
+    cy.xpath(issueRAIBtn).click({ force: true });
   }
 }
 export default oneMacPackageDetailsPage;

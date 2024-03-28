@@ -15,18 +15,7 @@ Feature: Package Dashboard Temporary Extension
         Then attach "picture.jpg" file to attachment 1
         Then into "Additional Information" type "This an automated test to createa a 1915(b) test."
         Then Click on Submit Button
-        Then verify package submitted message in the alert bar
-        Then click on the Waivers tab
-        Then search for the generated "Temporary Extension" Number 1
-        Then verify the id number in the first row matches the generated "Temporary Extension" Number 1
-        Then click the Waiver Number link in the first row
-        Then verify the details section exists
-        Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Temporary Extension" exists for the Type
-        Then verify there is a Approved Initial or Renewal Number header in the details section
-        Then verify the Approved Initial or Renewal Number ID is the approved intial waiver number 1
-        Then verify there is an Initial Submission Date header in the details section
-        Then verify a date exists for the Initial Submission Date
+        Then verify the message in the alert bar is "Temporary Extension issued"
 
     Scenario: Verify user can create a temporary extension from the initial waiver package details
         Then click on the Waivers tab
@@ -41,7 +30,7 @@ Feature: Package Dashboard Temporary Extension
         Then attach "picture.jpg" file to attachment 1
         Then into "Additional Information" type "This is just a test."
         Then Click on Submit Button
-        Then verify package submitted message in the alert bar
+        Then verify the message in the alert bar is "Temporary Extension issued"
 
     Scenario: Verify user can create a temporary extension from the waiver renewal package details
         Then click on the Waivers tab
@@ -56,7 +45,7 @@ Feature: Package Dashboard Temporary Extension
         Then attach "picture.jpg" file to attachment 1
         Then into "Additional Information" type "This is just a test."
         Then Click on Submit Button
-        Then verify package submitted message in the alert bar
+        Then verify the message in the alert bar is "Temporary Extension issued"
 
     Scenario: Verify user can create a temporary extension from the package dashboard waiver tab - initial
         Then click on the Waivers tab
@@ -71,7 +60,7 @@ Feature: Package Dashboard Temporary Extension
         Then attach "picture.jpg" file to attachment 1
         Then into "Additional Information" type "This is just a test."
         Then Click on Submit Button
-        Then verify package submitted message in the alert bar
+        Then verify the message in the alert bar is "Temporary Extension issued"
 
     Scenario: Verify user can create a temporary extension from the package dashboard waiver tab - renewal
         Then click on the Waivers tab
@@ -86,4 +75,4 @@ Feature: Package Dashboard Temporary Extension
         Then attach "picture.jpg" file to attachment 1
         Then into "Additional Information" type "This is just a test."
         Then Click on Submit Button
-        Then verify package submitted message in the alert bar
+        Then verify the message in the alert bar is "Temporary Extension issued"

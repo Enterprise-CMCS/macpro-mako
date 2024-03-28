@@ -38,7 +38,7 @@ Feature: Appendix K Waiver Type Selection
         Then type "MD-22106.R01.02" into the ID Input box
         Then set "Proposed Effective Date of 1915(c) Appendix K Amendment" to 3 months from today
         Then into "Subject" type "Cypress Regression Test"
-        Then into "Description" type "This package was creating while running the test automation."
+        Then into "Description" type "This package was created while running the test automation."
         Then attach "adobe.pdf" file to attachment 1
         Then into "Additional Information" type "This is just a test."
         Then Click on Submit Button

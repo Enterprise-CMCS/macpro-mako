@@ -1550,7 +1550,10 @@ Then("click the Respond to RAI button", () => {
   OneMacDashboardPage.clickRespondToRAIBtn();
 });
 Then("click the Issue Formal RAI button", () => {
-  OneMacDashboardPage.clickRespondToRAIBtn();
+  OneMacDashboardPage.clickIssueRAIBtn();
+});
+Then("click the details page Issue Formal RAI button", () => {
+  OneMacPackageDetailsPage.clickIssueRAIBtn();
 });
 Then("click the Request Temporary Extension button", () => {
   OneMacDashboardPage.clickRequestTempExtensionBtn();
@@ -2006,14 +2009,6 @@ Then("search for the generated {string} Number {int}", (type, count) => {
   });
   cy.wait(1000);
 });
-Then(
-  "verify the id number in the first row matches the generated SPA ID {int}",
-  (count) => {
-    cy.fixture("generatedIDs.json").then((data) => {
-      OneMacDashboardPage.verifyIDNumberInFirstRowIs(data["generatedSPAID" + count]);
-    });
-  }
-);
 Then(
   "verify the id number in the first row matches the generated {string} Number {int}", (type, count) => {
     cy.fixture("generatedIDs.json").then((data) => {

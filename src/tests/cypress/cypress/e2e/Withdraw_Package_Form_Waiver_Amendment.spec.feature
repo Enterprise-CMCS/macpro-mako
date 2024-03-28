@@ -14,7 +14,7 @@ Feature: Verify user can withdraw a 1915(b) Waiver Amendment in Under Review Sta
         Then type the generated "Waiver Amendment" Number 3 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
         Then into "Subject" type "Waiver Amendment Withdrawal Cypress Regression Test"
-        Then into "Description" type "This package was creating while running the test automation."
+        Then into "Description" type "This package was created while running the test automation."
         Then attach "file.docx" file to attachment 1
         Then attach "excel.xlsx" file to attachment 2
         Then into "Additional Information" type "This Waiver Amendment package was created by the test automation."
@@ -48,7 +48,7 @@ Feature: Verify user can withdraw a 1915(b) Waiver Amendment in Under Review Sta
         Then type the generated "Waiver Amendment" Number 4 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
         Then into "Subject" type "Waiver Amendment Withdrawal Cypress Regression Test"
-        Then into "Description" type "This package was creating while running the test automation."
+        Then into "Description" type "This package was created while running the test automation."
         Then attach "file.docx" file to attachment 1
         Then attach "excel.xlsx" file to attachment 2
         Then into "Additional Information" type "This Waiver Amendment package was created by the test automation."
@@ -83,7 +83,7 @@ Feature: Verify user can withdraw a 1915(b) Waiver Amendment in Under Review Sta
         Then type the generated "Waiver Amendment" Number 5 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
         Then into "Subject" type "Waiver Amendment Withdrawal Cypress Regression Test"
-        Then into "Description" type "This package was creating while running the test automation."
+        Then into "Description" type "This package was created while running the test automation."
         Then attach "file.docx" file to attachment 1
         Then attach "excel.xlsx" file to attachment 2
         Then into "Additional Information" type "This Waiver Amendment package was created by the test automation."
@@ -117,7 +117,7 @@ Feature: Verify user can withdraw a 1915(b) Waiver Amendment in Under Review Sta
         Then type the generated "Waiver Amendment" Number 6 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
         Then into "Subject" type "Waiver Amendment Withdrawal Cypress Regression Test"
-        Then into "Description" type "This package was creating while running the test automation."
+        Then into "Description" type "This package was created while running the test automation."
         Then attach "file.docx" file to attachment 1
         Then attach "excel.xlsx" file to attachment 2
         Then into "Additional Information" type "This Waiver Amendment package was created by the test automation."

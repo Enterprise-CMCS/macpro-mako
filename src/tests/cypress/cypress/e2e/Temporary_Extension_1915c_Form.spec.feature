@@ -15,7 +15,7 @@ Feature: Package Dashboard Temporary Extension
         Then attach "picture.jpg" file to attachment 1
         Then into "Additional Information" type "This an automated test to createa a 1915(c) test."
         Then Click on Submit Button
-        Then verify package submitted message in the alert bar
+        Then verify the message in the alert bar is "Temporary Extension issued"
         Then click on the Waivers tab
         Then search for the generated "Temporary Extension" Number 2
         Then verify the id number in the first row matches the generated "Temporary Extension" Number 2

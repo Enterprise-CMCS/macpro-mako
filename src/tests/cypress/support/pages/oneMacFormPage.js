@@ -10,7 +10,7 @@ const modalTitle = "#dialog-title";
 const modalText = "#dialog-content";
 const modalCancelBTN =
   "//*[@id='react-aria-modal-dialog']//button[text()='Cancel']";
-const attachmentInfoDescription = "//p[contains(text(), 'Maximum file size of 80 MB per attachment)]";
+const attachmentInfoDescription = "//p[contains(text(), 'Maximum file size of 80 MB per attachment')]";
 const enterMmdlBtn = "//button[contains(text(),'Enter the MMDL system')]";
 const enterMacProBtn = "//button[contains(text(),'Enter the MACPro system')]";
 
@@ -75,13 +75,13 @@ const dateElementsFromLabel = {
   "Proposed Effective Date of Medicaid SPA": "//button//*[text()='Pick a date']",
   "Proposed Effective Date of CHIP SPA": "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(b) Initial Waiver":
-  "//button//*[text()='Pick a date']",
+    "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(b) Waiver Renewal":
-  "//button//*[text()='Pick a date']",
+    "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(b) Waiver Amendment":
-  "//button//*[text()='Pick a date']",
+    "//button//*[text()='Pick a date']",
   "Proposed Effective Date of 1915(c) Appendix K Amendment":
-  "//button//*[text()='Pick a date']",
+    "//button//*[text()='Pick a date']",
 };
 const nextMonthDatePickerBtn = "button[name='next-month']";
 const lastMonthDatePickerBtn = "button[name='previous-month']";
@@ -110,7 +110,7 @@ export class oneMacFormPage {
     cy.get(elementFromLabel[whereTo]).clear();
   }
   inputInto(whereTo, newValue) {
-    cy.get(elementFromLabel[whereTo]).type(newValue, {delay: 100});
+    cy.get(elementFromLabel[whereTo]).type(newValue, { delay: 100 });
   }
   verifyPrefill(whereTo) {
     cy.xpath(`//*[text()='${whereTo}']`)
@@ -148,13 +148,13 @@ export class oneMacFormPage {
       .contains(linkLabel).invoke('removeAttr', 'target').click();
   }
   inputID(anId) {
-    cy.get(IDInputBox).type(anId, {delay:200});
+    cy.get(IDInputBox).type(anId, { delay: 200 });
   }
   clearIDInputBox() {
     cy.get(IDInputBox).clear();
   }
   verifyIDLabelIs(label) {
-      cy.get(withdrawLabel).should("be.visible").and("contain", label);
+    cy.get(withdrawLabel).should("be.visible").and("contain", label);
   }
   verifyIDErrorMessageIsNotDisplayed() {
     cy.get(idElement).parent().next(errorMessageID).should("not.exist");
@@ -187,27 +187,26 @@ export class oneMacFormPage {
     cy.xpath(waiverAuthorityLabel).next().contains(whatAuthority);
   }
   addMonthsTo(whichDate, numMonths) {
-    cy.xpath(dateElementsFromLabel[whichDate]).then(($datePicker) =>
-    {
+    cy.xpath(dateElementsFromLabel[whichDate]).then(($datePicker) => {
       cy.wrap($datePicker).click()
-      for(let i = 0; i < numMonths; i++){
+      for (let i = 0; i < numMonths; i++) {
         cy.get(nextMonthDatePickerBtn).click();
       }
     })
-    
+
     let aday = Math.floor(Math.random() * 29) + 1;
     cy.get(dayDatePickerBtn).filter(":contains(" + aday + ")").first().click()
 
   }
-  selectWaiverAuthority(whichAuthority) {}
+  selectWaiverAuthority(whichAuthority) { }
   verifyTempExtensionType(whatType) {
     cy.xpath(tempExtensionTypeHeader).next("div").contains(whatType);
   }
   selectTempExtensionType(whatType) {
-    cy.xpath(tempExtensionTypeBtn).parent("button").click().next().select(whatType, {force:true});
+    cy.xpath(tempExtensionTypeBtn).parent("button").click().next().select(whatType, { force: true });
   }
   uploadAttachment(fileName, attachmentIndex) {
-   // const innerBTN = `#uploader-input-${attachmentIndex - 1}`;
+    // const innerBTN = `#uploader-input-${attachmentIndex - 1}`;
     const filePath = `/files/${fileName}`;
 
     cy.get(addFileBTN).eq(attachmentIndex - 1).attachFile(filePath);
@@ -239,8 +238,8 @@ export class oneMacFormPage {
   clickModalCancelBtn() {
     cy.xpath(modalCancelBTN).click();
   }
-  clickReturnToFormBtn(){
-    cy.xpath(returnToFormBtn).click({force: true});
+  clickReturnToFormBtn() {
+    cy.xpath(returnToFormBtn).click({ force: true });
   }
   verifyErrorMsgContains(s) {
     cy.get(packageFormPt2ErrorMsg).contains(s);
@@ -339,7 +338,7 @@ export class oneMacFormPage {
   verifySuccessMessageIsDisplayedInModal() {
     cy.get(submissionModal).contains("Submission Successful");
   }
-  clickGoToDashBoardBtn(){
+  clickGoToDashBoardBtn() {
     cy.xpath(goToDashBoardBtn).click();
   }
 }
