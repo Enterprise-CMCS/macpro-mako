@@ -26,7 +26,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker
         Then verify status checkbox exists
         Then verify Initial Submission Date checkbox exists
         Then verify submitted by checkbox exists
-        Then verify type checkbox exists
+        Then verify Authority checkbox exists
         Then verify action type checkbox exists
         Then verify CPOC Name checkbox exists
         #Then verify Final Disposition checkbox exists
@@ -41,7 +41,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker
         Then click Formal RAI Response column visibility toggle button
         Then click Initial Submission Date column visibility toggle button
         Then click state column visibility toggle button
-        Then click type column visibility toggle button
+        Then click Authority column visibility toggle button
         Then click action type column visibility toggle button
         Then click CPOC Name column visibility toggle button
         #Then click Final Disposition checkbox
@@ -75,15 +75,15 @@ Feature: Package Dashboard - Waiver Tab Column Picker
         Then Click on My Account
         Then click the sign out button
 
-    # Scenario: Verify state doesn't exists, but is selectable
-    #     Then verify state column does not exist
-    #     Then click show hide columns button
-    #     Then click state column visibility toggle button
-    #     Then click show hide columns button
-    #     Then verify State column exists
-    #     Then click show hide columns button
-    #     Then click state column visibility toggle button
-    #     Then click show hide columns button
-    #     Then verify state column does not exist
-    #     Then Click on My Account
-    #     Then click the sign out button
+# Scenario: Verify state doesn't exists, but is selectable
+#     Then verify state column does not exist
+#     Then click show hide columns button
+#     Then click state column visibility toggle button
+#     Then click show hide columns button
+#     Then verify State column exists
+#     Then click show hide columns button
+#     Then click state column visibility toggle button
+#     Then click show hide columns button
+#     Then verify state column does not exist
+#     Then Click on My Account
+#     Then click the sign out button

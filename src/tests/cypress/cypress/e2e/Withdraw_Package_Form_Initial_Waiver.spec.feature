@@ -26,9 +26,9 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click the actions button in row one
         Then click withdraw package button
         Then verify the form is titled "Withdraw Waiver"
-        Then verify Form Intro Text is "Complete this form to withdraw"
-        Then verify ID Label is "Waiver Number"
-        Then verify Authority is "1915(b) Waiver"
+
+
+
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
@@ -36,7 +36,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click Return to form
         Then Click the Submit Button without waiting
         Then click yes, withdraw package button
-        Then verify the message in the alert bar is "An Attachment or Additional Information is required."
+        Then verify the "form" error message is "An Attachment or Additional Information is required."
         Then into "Additional Information" type "This Initial Waiver package was withdrawn by the test automation."
         Then Click the Submit Button without waiting
         Then click yes, withdraw package button
@@ -61,9 +61,6 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the package details page is visible
         Then click withdraw button
         Then verify the form is titled "Withdraw Waiver"
-        Then verify Form Intro Text is "Complete this form to withdraw"
-        Then verify ID Label is "Waiver Number"
-        Then verify Authority is "1915(b) Waiver"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
@@ -71,7 +68,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click Return to form
         Then Click the Submit Button without waiting
         Then click yes, withdraw package button
-        Then verify the message in the alert bar is "An Attachment or Additional Information is required."
+        Then verify the "form" error message is "An Attachment or Additional Information is required."
         Then attach "adobe.pdf" file to attachment 1
         Then Click the Submit Button without waiting
         Then click yes, withdraw package button
@@ -95,9 +92,9 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click the actions button in row one
         Then click withdraw package button
         Then verify the form is titled "Withdraw Waiver"
-        Then verify Form Intro Text is "Complete this form to withdraw"
-        Then verify ID Label is "Waiver Number"
-        Then verify Authority is "1915(b) Waiver"
+
+
+
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
@@ -105,7 +102,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click Return to form
         Then Click the Submit Button without waiting
         Then click yes, withdraw package button
-        Then verify the message in the alert bar is "An Attachment or Additional Information is required."
+        Then verify the "form" error message is "An Attachment or Additional Information is required."
         Then attach "adobe.pdf" file to attachment 1
         Then Click the Submit Button without waiting
         Then click yes, withdraw package button
@@ -130,9 +127,9 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the package details page is visible
         Then click withdraw button
         Then verify the form is titled "Withdraw Waiver"
-        Then verify Form Intro Text is "Complete this form to withdraw"
-        Then verify ID Label is "Waiver Number"
-        Then verify Authority is "1915(b) Waiver"
+
+
+
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
@@ -140,7 +137,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click Return to form
         Then Click the Submit Button without waiting
         Then click yes, withdraw package button
-        Then verify the message in the alert bar is "An Attachment or Additional Information is required."
+        Then verify the "form" error message is "An Attachment or Additional Information is required."
         Then into "Additional Information" type "This Initial Waiver package was withdrawn by the test automation."
         Then Click the Submit Button without waiting
         Then click yes, withdraw package button

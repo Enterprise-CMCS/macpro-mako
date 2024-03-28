@@ -24,7 +24,7 @@ const amendmentTitleField = "#title";
 const tempExtensionTypeHeader =
   "//h3[contains(text(),'Temporary Extension Type')]";
 const tempExtensionTypeBtn = "//button//*[contains(text(), 'select a temporary extension type')]";
-const formIntroElement = "form p:first-of-type";
+const formIntroElement = "form p";
 const returnToFormBtn = "//*[@role='dialog']//button[text()='Return to form']";
 const labelElementFromLabel = {
   "Additional Information": "//h3[contains(text(),'Additional Information')]",
@@ -53,7 +53,8 @@ const errorMessageLine1FromLabel = {
   "Existing Waiver Number to Amend": parentIdElement,
   "first attachment": ".space-y-2:nth-of-type(1) input[type='file']",
   "second attachment": ".space-y-2:nth-of-type(2) input[type='file']",
-  "Proposed Effective Date": "form [class*='space-y-2'] button svg"
+  "Proposed Effective Date": "form [class*='space-y-2'] button svg",
+  "form": "[role='alert']:nth-of-type(2)",
 };
 const errorMessageLine2FromLabel = {
   "SPA ID": idElement,
@@ -194,11 +195,10 @@ export class oneMacFormPage {
       }
     })
 
-    let aday = Math.floor(Math.random() * 29) + 1;
+    const aday = Math.floor(Math.random() * 29) + 1;
     cy.get(dayDatePickerBtn).filter(":contains(" + aday + ")").first().click()
 
   }
-  selectWaiverAuthority(whichAuthority) { }
   verifyTempExtensionType(whatType) {
     cy.xpath(tempExtensionTypeHeader).next("div").contains(whatType);
   }
@@ -330,7 +330,7 @@ export class oneMacFormPage {
     cy.get(modalText).contains(s);
   }
   verifyFormIntro(introText) {
-    cy.get(formIntroElement).first().should("be.visible").contains(introText);
+    cy.get(formIntroElement).find("Complete").should("be.visible").contains(introText);
   }
   verifyAttachmentType(attachmentType) {
     cy.xpath(`//label[text()='${attachmentType}']`).should("be.visible");

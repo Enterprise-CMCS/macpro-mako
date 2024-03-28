@@ -22,7 +22,7 @@ Feature: Package Dashboard - SPA Tab Column Picker for CMS User
         Then verify state checkbox exists
         Then verify status checkbox exists
         Then verify submitted by checkbox exists
-        Then verify type checkbox exists
+        Then verify Authority checkbox exists
         Then verify CPOC Name checkbox exists
         #Then verify Final Disposition checkbox exists
         Then click show hide columns button
@@ -33,7 +33,7 @@ Feature: Package Dashboard - SPA Tab Column Picker for CMS User
         Then click Initial Submission Date column visibility toggle button
         Then click state column visibility toggle button
         Then click status column visibility toggle button
-        Then click type column visibility toggle button
+        Then click Authority column visibility toggle button
         Then click CPOC Name column visibility toggle button
         Then click submitted by column visibility toggle button
         #Then click Final Disposition checkbox
@@ -66,11 +66,11 @@ Feature: Package Dashboard - SPA Tab Column Picker for CMS User
     Scenario: Verify type exists, click type from drop down, verify it no longer exists, click it again, verify it exists again.
         Then verify type column exists
         Then click show hide columns button
-        Then click type column visibility toggle button
+        Then click Authority column visibility toggle button
         Then click show hide columns button
         Then verify type column does not exist
         Then click show hide columns button
-        Then click type column visibility toggle button
+        Then click Authority column visibility toggle button
         Then click show hide columns button
         Then verify type column exists
         Then Click on My Account

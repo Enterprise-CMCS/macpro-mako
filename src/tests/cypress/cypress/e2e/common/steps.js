@@ -122,6 +122,9 @@ Then("verify package submitted message in the alert bar", () => {
 Then("verify the message in the alert bar is {string}", (s) => {
   OneMacDashboardPage.verifyAlertMessageIs(s);
 });
+Then("verify the error message in the alert bar is {string}", (s) => {
+  OneMacDashboardPage.verifyErrorMessageIs(s);
+});
 Then("verify submission successful message in the alert bar", () => {
   OneMacDashboardPage.verifySuccessMessage1IsDisplayed();
 });
@@ -1031,8 +1034,8 @@ Then("verify status checkbox exists", () => {
 Then("verify submitted by checkbox exists", () => {
   OneMacDashboardPage.verifycheckBoxSubmittedByExists();
 });
-Then("verify type checkbox exists", () => {
-  OneMacDashboardPage.verifycheckBoxTypeExists();
+Then("verify Authority checkbox exists", () => {
+  OneMacDashboardPage.verifyCheckBoxAuthorityExists();
 });
 Then("verify action type checkbox exists", () => {
   OneMacDashboardPage.verifycheckBoxTypeActionExists();
@@ -1094,8 +1097,8 @@ Then("click status column visibility toggle button", () => {
 Then("click submitted by column visibility toggle button", () => {
   OneMacDashboardPage.clickCheckBoxSubmittedBy();
 });
-Then("click type column visibility toggle button", () => {
-  OneMacDashboardPage.clickCheckBoxType();
+Then("click Authority column visibility toggle button", () => {
+  OneMacDashboardPage.clickCheckBoxAuthority();
 });
 Then("click action type column visibility toggle button", () => {
   OneMacDashboardPage.clickCheckBoxATypeAction();
@@ -1158,7 +1161,7 @@ Then("verify package row one exists", () => {
   OneMacDashboardPage.verifyPackageRowOneExists();
 });
 Then("verify Initial Submission Date column one date is this quarter", () => {
-    OneMacDashboardPage.verifypackageRowOneInitialSubmissionDateIsThisQuarter();
+  OneMacDashboardPage.verifypackageRowOneInitialSubmissionDateIsThisQuarter();
 });
 Then("verify states selected includes {string}", (state) => {
   OneMacDashboardPage.verifyStatesSelectedIncludes(state);
@@ -1450,15 +1453,6 @@ Then("verify there is a Type header in the details section", () => {
 });
 Then("verify a type containing {string} exists for the Authority", (type) => {
   OneMacPackageDetailsPage.verifyAuthorityIs(type);
-});
-Then("verify the type is 1915c Temporary Extension", () => {
-  OneMacPackageDetailsPage.verifyTypeContains1915cTempExtension();
-});
-Then("verify the type is 1915b Temporary Extension", () => {
-  OneMacPackageDetailsPage.verifyTypeContains1915bTempExtension();
-});
-Then("verify the type is 1915b Waiver Amendment", () => {
-  OneMacPackageDetailsPage.verifyTypeContains1915bWaiverAmendment();
 });
 Then(
   "verify there is a Approved Initial or Renewal Number header in the details section",

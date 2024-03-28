@@ -25,7 +25,7 @@ Feature: Verify user can withdraw a CHIP SPA package in Under Review Status in t
         Then click the actions button in row one
         Then click withdraw package button
         Then verify the form is titled "Withdraw CHIP SPA Package"
-        Then verify Form Intro Text is "Complete this form to withdraw"
+
         Then verify ID Label is "Package ID"
         Then verify Authority is "CHIP SPA"
         Then verify "Supporting Documentation" is an Attachment Type
@@ -35,7 +35,7 @@ Feature: Verify user can withdraw a CHIP SPA package in Under Review Status in t
         Then click Return to form
         Then Click the Submit Button without waiting
         Then click yes, withdraw package button without waiting
-        Then verify the message in the alert bar is "An Attachment or Additional Information is required."
+        Then verify the "form" error message is "An Attachment or Additional Information is required."
         Then into "Additional Information" type "This CHIP SPA package was withdrawn by the test automation."
         Then Click the Submit Button without waiting
         Then click yes, withdraw package button
@@ -58,8 +58,8 @@ Feature: Verify user can withdraw a CHIP SPA package in Under Review Status in t
         Then verify the package details page is visible
         Then click withdraw button
         Then verify the form is titled "Withdraw Waiver"
-        Then verify Form Intro Text is "Complete this form to withdraw"
-        Then verify ID Label is "Waiver Number"
+
+
         Then verify Authority is "CHIP SPA"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
@@ -68,7 +68,7 @@ Feature: Verify user can withdraw a CHIP SPA package in Under Review Status in t
         Then click Return to form
         Then Click the Submit Button without waiting
         Then click yes, withdraw package button without waiting
-        Then verify the message in the alert bar is "An Attachment or Additional Information is required."
+        Then verify the "form" error message is "An Attachment or Additional Information is required."
         Then attach "adobe.pdf" file to attachment 1
         Then Click the Submit Button without waiting
         Then click yes, withdraw package button

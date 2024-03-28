@@ -25,7 +25,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker for CMS User
         Then verify status checkbox exists
         Then verify Initial Submission Date checkbox exists
         Then verify submitted by checkbox exists
-        Then verify type checkbox exists
+        Then verify Authority checkbox exists
         Then verify action type checkbox exists
         Then verify CPOC Name checkbox exists
         #Then verify Final Disposition checkbox exists
@@ -40,7 +40,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker for CMS User
         Then click Initial Submission Date column visibility toggle button
         Then click state column visibility toggle button
         Then click status column visibility toggle button
-        Then click type column visibility toggle button
+        Then click Authority column visibility toggle button
         Then click action type column visibility toggle button
         Then click CPOC Name column visibility toggle button
         Then click submitted by column visibility toggle button

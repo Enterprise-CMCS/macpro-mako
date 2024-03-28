@@ -146,7 +146,7 @@ const checkBoxStatus = "//*[@data-state='open'][@role='dialog']//*[contains(text
 //Element is Xpath use cy.xpath instead of cy.get
 const checkBoxSubmittedBy = "//*[@data-state='open'][@role='dialog']//*[contains(text(),'Submitted By')]";
 //Element is Xpath use cy.xpath instead of cy.get
-const checkBoxType = "//*[@data-state='open'][@role='dialog']//*[text()='Type']";
+const checkBoxAuthority = "//*[@data-state='open'][@role='dialog']//*[text()='Authority']";
 const checkBoxTypeAction = "//*[@data-state='open'][@role='dialog']//*[text()='Action Type']";
 const checkboxCPOCName = "//*[@data-state='open'][@role='dialog']//*[contains(text(),'CPOC Name')]";
 const IDNumberColumn = "//th//*[text()='SPA ID']";
@@ -616,14 +616,14 @@ export class oneMacDashboardPage {
   clickCheckBoxSubmittedBy() {
     cy.xpath(checkBoxSubmittedBy).click();
   }
-  verifycheckBoxTypeExists() {
-    cy.xpath(checkBoxType).should("be.visible");
+  verifyCheckBoxAuthorityExists() {
+    cy.xpath(checkBoxAuthority).should("be.visible");
   }
   verifycheckBoxTypeActionExists() {
     cy.xpath(checkBoxTypeAction).should("be.visible");
   }
-  clickCheckBoxType() {
-    cy.xpath(checkBoxType).click();
+  clickCheckBoxAuthority() {
+    cy.xpath(checkBoxAuthority).click();
   }
   clickCheckBoxATypeAction() {
     cy.xpath(checkBoxTypeAction).click();
