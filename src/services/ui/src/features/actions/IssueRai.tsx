@@ -71,6 +71,7 @@ export const RaiIssue = ({
               header: "RAI issued",
               body: `The RAI for ${item._source.id} has been submitted. An email confirmation will be sent to you and the state.`,
             });
+            alert.setBannerStyle("success");
             alert.setBannerShow(true);
             alert.setBannerDisplayOn(
               // This uses the originRoute map because this value doesn't work
@@ -85,11 +86,12 @@ export const RaiIssue = ({
           } catch (e) {
             console.error(e);
             alert.setContent({
-              header: "An error has occurred:",
+              header: "An unexpected error has occurred:",
               body: e instanceof Error ? e.message : String(e),
             });
-            alert.setBannerShow(true);
+            alert.setBannerStyle("destructive");
             alert.setBannerDisplayOn(window.location.pathname as Route);
+            alert.setBannerShow(true);
           }
         })}
       >

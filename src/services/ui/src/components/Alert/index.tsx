@@ -20,8 +20,9 @@ const alertVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
+export type AlertVariant = "default" | "destructive" | "infoBlock" | "success";
 
 const Alert = React.forwardRef<
   HTMLDivElement,
