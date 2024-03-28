@@ -8,42 +8,32 @@ export const v202401: FormSchema = {
       title: "Benefit package details",
       form: [
         {
-          description: "Select one of the following",
+          description:
+            "For the population defined in section 1, the state/territory wants to:",
           slots: [
             {
               rhf: "Radio",
-              name: "benefit_package_details",
+              name: "abp3_benefit-package_details_radiogroup",
               rules: { required: "* Required" },
               props: {
                 options: [
                   {
-                    label:
-                      "The state/territory is amending one existing benefit package for the population defined in section 1.",
-                    value: "benchmark_amending",
+                    label: "Amend one existing benefit package",
+                    value: "amend_existing",
                   },
                   {
-                    label:
-                      "The state/territory is creating a single new benefit package for the population defined in section 1.",
-                    value: "benchmark_creating",
+                    label: "Create a single new benefit package",
+                    value: "create_new_benefit_package",
                   },
                 ],
               },
             },
             {
               rhf: "Input",
-              name: "benefit_package_name",
+              name: "abp3_benefit-package_name_input",
               label: "Benefit package name",
+              labelStyling: "font-bold",
               rules: { required: "* Required" },
-              dependency: {
-                conditions: [
-                  {
-                    name: "benefit_package_details",
-                    type: "expectedValue",
-                    expectedValue: "benchmark_creating",
-                  },
-                ],
-                effect: { type: "show" },
-              },
             },
           ],
         },
@@ -58,7 +48,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Radio",
-              name: "section_1937_coverage_option",
+              name: "abp3_select-of-sect-1937-cov-opt_type_radiogroup",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -67,12 +57,10 @@ export const v202401: FormSchema = {
                     value: "benchmark_benefit_package",
                     form: [
                       {
-                        description:
-                          "The state/territory will provide the following benchmark benefit package:",
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "Benchmark_benefit_packag_options",
+                            name: "abp3_select-of-sect-1937-cov-opt_benchmark-benefit-package-options_radiogroup",
                             rules: { required: "* Required" },
                             props: {
                               options: [
@@ -91,7 +79,7 @@ export const v202401: FormSchema = {
                                         {
                                           rhf: "Input",
                                           label: "Plan name",
-                                          name: "state_employee_coverage_plan_name",
+                                          name: "abp3_select-of-sect-1937-cov-opt_state-employee-coverage-plan-name_input",
                                           rules: { required: "* Required" },
                                         },
                                       ],
@@ -108,7 +96,7 @@ export const v202401: FormSchema = {
                                         {
                                           rhf: "Input",
                                           label: "Plan name",
-                                          name: "commercial_hmo_plan_name",
+                                          name: "abp3_select-of-sect-1937-cov-opt_commercial-hmo_input",
                                           rules: { required: "* Required" },
                                         },
                                       ],
@@ -123,20 +111,20 @@ export const v202401: FormSchema = {
                                       slots: [
                                         {
                                           rhf: "Radio",
-                                          name: "secretary_approved_coverage_options",
+                                          name: "abp3_select-of-sect-1937-cov-opt_secretary-approved_radiogroup",
                                           rules: { required: "* Required" },
                                           props: {
                                             options: [
                                               {
                                                 label:
-                                                  "The state/territory offers benefits based on the approved state plan.",
+                                                  "The state/territory offers the following benefits based on the approved state plan:",
                                                 value: "approved_state_plan",
                                                 form: [
                                                   {
                                                     slots: [
                                                       {
                                                         rhf: "Radio",
-                                                        name: "approved_state_plan_options",
+                                                        name: "abp3_select-of-sect-1937-cov-opt_approved-state-plan-opts_radiogroup",
                                                         rules: {
                                                           required:
                                                             "* Required",
@@ -145,31 +133,31 @@ export const v202401: FormSchema = {
                                                           options: [
                                                             {
                                                               label:
-                                                                "The state/territory offers the benefits provided in the approved state plan.",
+                                                                "Benefits provided in the approved state plan",
                                                               value:
                                                                 "approved_state_plan",
                                                             },
                                                             {
                                                               label:
-                                                                "Benefits include all those provided in the approved state plan plus additional benefits.",
+                                                                "All benefits provided in the approved state plan plus additional benefits",
                                                               value:
                                                                 "additional_benefits",
                                                             },
                                                             {
                                                               label:
-                                                                "Benefits are the same as provided in the approved state plan but in a different amount, duration, and/or scope.",
+                                                                "Benefits provided in the approved state plan but in a different amount, duration, and/or scope",
                                                               value:
                                                                 "different_amount_duration_scope",
                                                             },
                                                             {
                                                               label:
-                                                                "The state/territory offers only a partial list of benefits provided in the approved state plan.",
+                                                                "A partial list of benefits provided in the approved state plan",
                                                               value:
                                                                 "partial_list_of_benefits",
                                                             },
                                                             {
                                                               label:
-                                                                "The state/territory offers a partial list of benefits provided in the approved state plan plus additional benefits.",
+                                                                "A partial list of benefits provided in the approved state plan plus additional benefits",
                                                               value:
                                                                 "partial_list_of_benefits_plus_additional_benefits",
                                                             },
@@ -190,10 +178,11 @@ export const v202401: FormSchema = {
                                         },
                                         {
                                           rhf: "Textarea",
-                                          name: "benefits_and_limitations",
+                                          name: "abp3_select-of-sect-1937-cov-opt_benefits-and-limits_textarea",
                                           rules: { required: "* Required" },
+                                          labelStyling: "font-bold",
                                           label:
-                                            "Briefly identify the benefits, the source of benefits, and any limitations.",
+                                            "Describe the benefits, source of benefits, and any limitations.",
                                         },
                                       ],
                                     },
@@ -216,7 +205,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "benchmark_equivalent",
+                            name: "abp3_select-of-sect-1937-cov-opt_bench-equivalent_radiogroup",
                             rules: { required: "* Required" },
                             props: {
                               options: [
@@ -234,7 +223,7 @@ export const v202401: FormSchema = {
                                       slots: [
                                         {
                                           rhf: "Input",
-                                          name: "state_employee_coverage_plan_name",
+                                          name: "abp3_select-of-sect-1937-cov-opt_state-employee-coverage-plan-name_input",
                                           label: "Plan name",
                                           rules: { required: "* Required" },
                                         },
@@ -251,7 +240,7 @@ export const v202401: FormSchema = {
                                       slots: [
                                         {
                                           rhf: "Input",
-                                          name: "commercial_hmo_plan_name",
+                                          name: "abp3_select-of-sect-1937-cov-opt_commercial-hmo-plan-name_input",
                                           label: "Plan name",
                                           rules: { required: "* Required" },
                                         },
@@ -288,7 +277,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Is the base benchmark plan the same as the Section 1937 coverage option?",
-              name: "base_benchmark_plan_same_as_section_1937",
+              name: "abp3_select-of-base-bench-plan_same-as-sect-1937_select",
               rules: { required: "* Required" },
               props: {
                 className: "w-[150px]",
@@ -301,8 +290,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Radio",
               label:
-                "Indicate which benchmark plan described at 45 CFR 156.100(a) the state/territory will use as its base benchmark plan.",
-              name: "base_benchmark_plan",
+                "The state/territory will use the following as its base benchmark plan as described at 45 CFR 156.100(a):",
+              labelStyling: "font-bold",
+              name: "abp3_select-of-base-bench-plan_base-benchmark-plan_radiogroup",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -331,7 +321,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Input",
               label: "Plan name",
-              name: "base_benchmark_plan_name",
+              name: "abp3_select-of-base-bench-plan_name_input",
               rules: { required: "* Required" },
             },
           ],
@@ -343,11 +333,11 @@ export const v202401: FormSchema = {
       form: [
         {
           description:
-            "Other information related to selection of the Section 1937 coverage option and the base benchmark plan (optional)",
+            "Other information about selection of the Section 1937 coverage option and the base benchmark plan (optional)",
           slots: [
             {
               rhf: "Textarea",
-              name: "additional_information",
+              name: "abp3_additional_info_description_textarea",
             },
           ],
         },

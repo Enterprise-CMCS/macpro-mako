@@ -101,17 +101,8 @@ stepFunctions:
           - !GetAtt StateMachineLogGroup.Arn
       definition:
         Comment: "A state machine to reindex the OpenSearch index."
-        StartAt: MapRole
+        StartAt: DeleteAllTriggers
         States:
-          MapRole:
-            Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-mapRole"
-            Parameters:
-              Context.$: $$
-            Next: DeleteAllTriggers
-            Catch:
-              - ErrorEquals: ["States.ALL"]
-                Next: NotifyOfFailure
           DeleteAllTriggers:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-deleteTriggers"
@@ -123,6 +114,7 @@ stepFunctions:
                 - !Ref SinkTypesLambdaFunction
                 - !Ref SinkSubtypesLambdaFunction
                 - !Ref SinkInsightsLambdaFunction
+                - !Ref SinkLegacyInsightsLambdaFunction
             Next: DeleteIndex
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -141,68 +133,10 @@ stepFunctions:
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-setupIndex"
             Parameters:
               Context.$: $$
-            Next: StartIndexingReferenceData
+            Next: StartIndexingData
             Catch:
               - ErrorEquals: ["States.ALL"]
                 Next: NotifyOfFailure
-          StartIndexingReferenceData:
-            Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-createTriggers"
-            Parameters:
-              Context.$: $$
-              BrokerString: ${self:custom.brokerString}
-              SecurityGroup: !Sub security_group:${SecurityGroup}
-              ConsumerGroupPrefix: ${self:custom.consumerGroupPrefix}
-              Subnets:
-                - ${self:custom.vpc.privateSubnets.0}
-                - ${self:custom.vpc.privateSubnets.1}
-                - ${self:custom.vpc.privateSubnets.2}
-              Triggers:
-                - Function: !Ref SinkTypesLambdaFunction
-                  BatchSize: 10000
-                  Topics:
-                    - aws.seatool.debezium.cdc.SEA.dbo.SPA_Type
-                - Function: !Ref SinkSubtypesLambdaFunction
-                  BatchSize: 10000
-                  Topics:
-                    - aws.seatool.debezium.cdc.SEA.dbo.Type
-            Next: CheckReferenceDataProgress
-            Catch:
-              - ErrorEquals: ["States.ALL"]
-                Next: NotifyOfFailure
-          CheckReferenceDataProgress:
-            Type: Task
-            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-checkConsumerLag"
-            Parameters:
-              Context.$: $$
-              Triggers:
-                - Function: !Ref SinkTypesLambdaFunction
-                  BatchSize: 10000
-                  Topics:
-                    - aws.seatool.debezium.cdc.SEA.dbo.SPA_Type
-                - Function: !Ref SinkSubtypesLambdaFunction
-                  BatchSize: 10000
-                  Topics:
-                    - aws.seatool.debezium.cdc.SEA.dbo.Type
-              BrokerString: ${self:custom.brokerString}
-            Next: IsReferenceDataReady
-            Catch:
-              - ErrorEquals: ["States.ALL"]
-                Next: NotifyOfFailure
-          IsReferenceDataReady:
-            Type: Choice
-            Choices:
-              - Variable: $.ready
-                BooleanEquals: true
-                Next: StartIndexingData
-              - Variable: $.ready
-                BooleanEquals: false
-                Next: WaitForReferenceData
-            Default: WaitForReferenceData
-          WaitForReferenceData:
-            Type: Wait
-            Seconds: 10
-            Next: CheckReferenceDataProgress
           StartIndexingData:
             Type: Task
             Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${sls:stage}-createTriggers"
@@ -226,6 +160,14 @@ stepFunctions:
                   Topics:
                     - aws.onemac.migration.cdc
                     - ${param:topicNamespace}aws.onemac.migration.cdc
+                - Function: !Ref SinkTypesLambdaFunction
+                  BatchSize: 10000
+                  Topics:
+                    - aws.seatool.debezium.cdc.SEA.dbo.SPA_Type
+                - Function: !Ref SinkSubtypesLambdaFunction
+                  BatchSize: 10000
+                  Topics:
+                    - aws.seatool.debezium.cdc.SEA.dbo.Type
             Next: CheckDataProgress
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -246,6 +188,14 @@ stepFunctions:
                   Topics:
                     - aws.onemac.migration.cdc
                     - ${param:topicNamespace}aws.onemac.migration.cdc
+                - Function: !Ref SinkTypesLambdaFunction
+                  BatchSize: 10000
+                  Topics:
+                    - aws.seatool.debezium.cdc.SEA.dbo.SPA_Type
+                - Function: !Ref SinkSubtypesLambdaFunction
+                  BatchSize: 10000
+                  Topics:
+                    - aws.seatool.debezium.cdc.SEA.dbo.Type
               BrokerString: ${self:custom.brokerString}
             Next: IsDataReady
             Catch:
@@ -263,7 +213,7 @@ stepFunctions:
             Default: WaitForData
           WaitForData:
             Type: Wait
-            Seconds: 10
+            Seconds: 3
             Next: CheckDataProgress
           StartIndexingInsights:
             Type: Task
@@ -281,6 +231,10 @@ stepFunctions:
                 - Function: !Ref SinkInsightsLambdaFunction
                   Topics:
                     - aws.seatool.ksql.onemac.agg.State_Plan
+                - Function: !Ref SinkLegacyInsightsLambdaFunction
+                  Topics:
+                    - aws.onemac.migration.cdc
+                    - ${param:topicNamespace}aws.onemac.migration.cdc
             Next: NotifyOfSuccess
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -323,6 +277,9 @@ params:
     bootstrapKibanaUsers: "true"
     topicNamespace: --${self:custom.project}--${sls:stage}--
     sinkProvisionedConcurrency: 0
+
+package:
+  individually: true
 
 functions:
   bootstrapUsers:
@@ -373,10 +330,6 @@ functions:
     handler: handlers/deleteTriggers.handler
     timeout: 900
   mapRole:
-    environment:
-      iamRoleName: !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
-      masterRoleToAssume: !GetAtt OpenSearchMasterRole.Arn
-      osRoleName: all_access
     handler: handlers/mapRole.handler
     vpc:
       securityGroupIds:
@@ -403,6 +356,14 @@ functions:
     provisionedConcurrency: ${param:sinkProvisionedConcurrency}
   sinkInsights:
     handler: handlers/sinkInsights.handler
+    maximumRetryAttempts: 0
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  sinkLegacyInsights:
+    handler: handlers/sinkLegacyInsights.handler
     maximumRetryAttempts: 0
     vpc:
       securityGroupIds:
@@ -452,6 +413,14 @@ resources:
       Properties:
         ServiceToken: !GetAtt RunReindexLambdaFunction.Arn
         StateMachine: !Ref ReindexDataStateMachine
+    MapRole:
+      Type: Custom::MapRole
+      Properties:
+        ServiceToken: !GetAtt MapRoleLambdaFunction.Arn
+        OsDomain: !Sub https://${OpenSearch.DomainEndpoint}
+        IamRoleName: !Sub "arn:aws:iam::${AWS::AccountId}:role/*"
+        MasterRoleToAssume: !GetAtt OpenSearchMasterRole.Arn
+        OsRoleName: all_access
     MetricFilterSinkMain:
       Type: "AWS::Logs::MetricFilter"
       Properties:
@@ -783,6 +752,7 @@ resources:
           - !Ref SinkTypesLambdaFunction
           - !Ref SinkSubtypesLambdaFunction
           - !Ref SinkInsightsLambdaFunction
+          - !Ref SinkLegacyInsightsLambdaFunction
   Outputs:
     OpenSearchDomainArn:
       Value: !GetAtt OpenSearch.Arn

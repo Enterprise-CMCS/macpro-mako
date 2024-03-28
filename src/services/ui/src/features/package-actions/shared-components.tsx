@@ -1,4 +1,9 @@
-import { Alert, LoadingSpinner, useAlertContext, useModalContext } from "@/components";
+import {
+  Alert,
+  LoadingSpinner,
+  useAlertContext,
+  useModalContext,
+} from "@/components";
 import {
   Button,
   FormDescription,
@@ -66,7 +71,7 @@ export const AttachmentsSection = <T extends string>({
         the description for each of the attachment types on the{" "}
         <Link
           className="text-blue-700 hover:underline"
-          to={"/faq/#medicaid-spa-rai-attachments"}
+          to={"/faq/medicaid-spa-attachments"} // arbitrary default, covered by a bug to be fixed soon
           target={FAQ_TAB}
         >
           {" "}
@@ -74,12 +79,12 @@ export const AttachmentsSection = <T extends string>({
         </Link>
       </p>
       <p>
-        We accept the following file formats:{" "}
-        <strong>.docx, .jpg, .png, .pdf, .xlsx,</strong>
-        and a few others. See the full list on the{" "}
+        We accept the following file formats:{"  "}
+        <strong>.docx, .jpg, .pdf, .png, .xlsx. </strong>
+        See the full list on the{" "}
         <Link
           className="text-blue-700 hover:underline"
-          to={"/faq/#medicaid-spa-rai-attachments"}
+          to={"/faq/acceptable-file-formats"}
           target={FAQ_TAB}
         >
           {" "}
@@ -95,6 +100,7 @@ export const AttachmentsSection = <T extends string>({
             <FormItem key={name} className="my-4 space-y-2">
               <FormLabel>{name}</FormLabel> {required && <RequiredIndicator />}
               <Upload files={field?.value ?? []} setFiles={field.onChange} />
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -159,7 +165,7 @@ export const PackageSection = () => {
         <p className="text-xl">{id}</p>
       </div>
       <div>
-        <p>Type</p>
+        <p>Authority</p>
         <p className="text-xl">
           {authority === Authority["1915b"] && "1915(b) Waiver"}
           {authority === Authority["CHIP_SPA"] && "CHIP SPA"}
@@ -217,7 +223,7 @@ export const ErrorBanner = () => {
                   <li className="ml-8 my-2" key={idx}>
                     {err.message as string}
                   </li>
-                )
+                ),
             )}
           </ul>
         </Alert>
@@ -228,7 +234,10 @@ export const ErrorBanner = () => {
 
 export const FormLoadingSpinner = () => {
   const { state } = useNavigation();
-  return state === "submitting" && <LoadingSpinner />;
+  const { formState } = useFormContext();
+  return (
+    (state === "submitting" || formState.isSubmitting) && <LoadingSpinner />
+  );
 };
 
 // Hooks
@@ -240,7 +249,6 @@ export const useSubmitForm = () => {
 
   const validSubmission: SubmitHandler<any> = (data, e) => {
     const formData = new FormData();
-
     // Append all other data
     for (const key in data) {
       if (key !== "attachments") {
@@ -283,8 +291,10 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
         body,
       });
       alert.setBannerShow(true);
-      alert.setBannerDisplayOn(location.state.from.split("?")[0]);
-      navigate(location.state.from);
+      alert.setBannerDisplayOn(
+        location.state?.from?.split("?")[0] ?? "/dashboard",
+      );
+      navigate(location.state?.from ?? "/dashboard");
     }
   }, [data]);
 };
@@ -293,7 +303,7 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
 const filterUndefinedValues = (obj: Record<any, any>) => {
   if (obj) {
     return Object.fromEntries(
-      Object.entries(obj).filter(([key, value]) => value !== undefined)
+      Object.entries(obj).filter(([key, value]) => value !== undefined),
     );
   }
   return {};
@@ -301,6 +311,6 @@ const filterUndefinedValues = (obj: Record<any, any>) => {
 
 // Types
 export type ActionFunction = (
-  args: ActionFunctionArgs
+  args: ActionFunctionArgs,
 ) => Promise<{ submitted: boolean }>;
 export type ActionFunctionReturnType = Awaited<ReturnType<ActionFunction>>;

@@ -10,13 +10,14 @@ import { isStateUser, isCmsWriteUser, isIDM } from "../user-helper";
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
   check: (checker, user) =>
+    !checker.isTempExtension &&
     checker.isInActivePendingStatus &&
     // Doesn't have any RAIs
     (!checker.hasLatestRai ||
       // The latest RAI is complete
       (checker.hasCompletedRai &&
-        // The package is not a medicaid spa (med spas only get 1 rai)
-        !checker.authorityIs([Authority.MED_SPA]) &&
+        // The package is a chip (chips can have more than 1 rai)
+        checker.authorityIs([Authority.CHIP_SPA]) &&
         // The package does not have RAI Response Withdraw enabled
         !checker.hasEnabledRaiWithdraw)) &&
     isCmsWriteUser(user) &&
@@ -26,14 +27,27 @@ const arIssueRai: ActionRule = {
 const arRespondToRai: ActionRule = {
   action: Action.RESPOND_TO_RAI,
   check: (checker, user) =>
+    !checker.isTempExtension &&
     checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
-    checker.hasRequestedRai &&
+    checker.hasLatestRai &&
+    // safety; prevent bad status from causing overwrite
+    (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
+    isStateUser(user),
+};
+
+const arTempExtension: ActionRule = {
+  action: Action.TEMP_EXTENSION,
+  check: (checker, user) =>
+    checker.hasStatus(SEATOOL_STATUS.APPROVED) &&
+    checker.isWaiver &&
+    checker.isInitialOrRenewal &&
     isStateUser(user),
 };
 
 const arEnableWithdrawRaiResponse: ActionRule = {
   action: Action.ENABLE_RAI_WITHDRAW,
   check: (checker, user) =>
+    !checker.isTempExtension &&
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     !checker.hasEnabledRaiWithdraw &&
@@ -44,6 +58,7 @@ const arEnableWithdrawRaiResponse: ActionRule = {
 const arDisableWithdrawRaiResponse: ActionRule = {
   action: Action.DISABLE_RAI_WITHDRAW,
   check: (checker, user) =>
+    !checker.isTempExtension &&
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
@@ -54,15 +69,20 @@ const arDisableWithdrawRaiResponse: ActionRule = {
 const arWithdrawRaiResponse: ActionRule = {
   action: Action.WITHDRAW_RAI,
   check: (checker, user) =>
+    !checker.isTempExtension &&
     checker.isInActivePendingStatus &&
     checker.hasRaiResponse &&
+    // safety; prevent bad status from causing overwrite
+    !checker.hasRaiWithdrawal &&
     checker.hasEnabledRaiWithdraw &&
     isStateUser(user),
 };
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
-    !checker.hasStatus(finalDispositionStatuses) && isStateUser(user),
+    !checker.isTempExtension &&
+    !checker.hasStatus(finalDispositionStatuses) &&
+    isStateUser(user),
 };
 
 // TODO: Add rule for remove-appk-child
@@ -74,4 +94,5 @@ export default [
   arDisableWithdrawRaiResponse,
   arWithdrawRaiResponse,
   arWithdrawPackage,
+  arTempExtension,
 ];

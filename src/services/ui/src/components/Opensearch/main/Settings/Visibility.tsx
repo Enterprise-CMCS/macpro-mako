@@ -2,14 +2,16 @@ import { cn } from "@/utils";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import * as UI from "@/components";
 
-type Item = { label: string; field?: string; hidden: boolean };
+// type Item = { label: string; field?: string; hidden: boolean };
 
-type Props<T extends Item> = {
+type Props<T extends UI.OsTableColumn> = {
   list: T[];
   onItemClick: (field: string) => void;
 };
 
-export const VisibilityPopover = <T extends Item>(props: Props<T>) => {
+export const VisibilityPopover = <T extends UI.OsTableColumn>(
+  props: Props<T>
+) => {
   return (
     <UI.Popover>
       <UI.PopoverTrigger>
@@ -25,7 +27,7 @@ export const VisibilityPopover = <T extends Item>(props: Props<T>) => {
   );
 };
 
-export const VisiblityItem = <T extends Item>(
+export const VisiblityItem = <T extends UI.OsTableColumn>(
   props: T & { onClick: () => void }
 ) => {
   const eyeStyles = cn("flex flex-row gap-2 cursor-pointer", {
@@ -48,7 +50,7 @@ export const VisiblityItem = <T extends Item>(
   );
 };
 
-export const VisibilityMenu = <T extends Item>(props: Props<T>) => {
+export const VisibilityMenu = <T extends UI.OsTableColumn>(props: Props<T>) => {
   return (
     <div className="flex flex-col gap-2">
       {props.list.map((IT) => {

@@ -16,6 +16,10 @@ import {
   RespondToRai,
   onValidSubmission as respondToRaiSubmission,
 } from "./RespondToRai";
+import {
+  TemporaryExtension,
+  onValidSubmission as temporaryExtensionSubmission,
+} from "./TemporaryExtension";
 import { ActionWrapper } from "./ActionWrapper";
 
 export const packageActionRoutes: RouteObject = {
@@ -51,6 +55,11 @@ export const packageActionRoutes: RouteObject = {
       path: "respond-to-rai",
       element: <RespondToRai />,
       action: respondToRaiSubmission,
+    },
+    {
+      path: "temporary-extension",
+      element: <TemporaryExtension />,
+      action: temporaryExtensionSubmission,
     },
     {
       path: "*",

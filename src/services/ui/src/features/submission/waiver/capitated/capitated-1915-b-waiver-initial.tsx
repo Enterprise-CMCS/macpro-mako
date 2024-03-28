@@ -6,9 +6,7 @@ import * as Content from "../../../../components/Form/content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api";
 import {
-  Alert,
   BreadCrumbs,
-  LoadingSpinner,
   SimplePageContainer,
   SectionCard,
   formCrumbsFromPath,
@@ -23,26 +21,29 @@ import {
   zInitialWaiverNumberSchema,
 } from "@/utils";
 import { FAQ_TAB } from "@/components/Routing/consts";
-import { useModalContext } from "@/components/Context/modalContext";
 import { useAlertContext } from "@/components/Context/alertContext";
-import { useCallback } from "react";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
 import {
   AdditionalInfoInput,
   DescriptionInput,
-  SubTypeSelect,
   SubjectInput,
 } from "@/features/submission/shared-components";
+import { SubmitAndCancelBtnSection } from "../shared-components";
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
   proposedEffectiveDate: z.date(),
-  // TODO: FFF
-  // subject: z.string(),
-  // description: z.string(),
-  // typeId: z.string().default("111"),
-  // subTypeId: z.string(),
+  subject: z
+    .string()
+    .trim()
+    .min(1, { message: "This field is required" })
+    .max(120, { message: "Subject should be under 120 characters" }),
+  description: z
+    .string()
+    .trim()
+    .min(1, { message: "This field is required" })
+    .max(4000, { message: "Description should be under 4000 characters" }),
   attachments: z.object({
     bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
     bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
@@ -52,7 +53,7 @@ const formSchema = z.object({
   additionalInformation: zAdditionalInfo.optional(),
   seaActionType: z.string().default("New"),
 });
-type Waiver1915BCapitatedAmendment = z.infer<typeof formSchema>;
+export type Waiver1915BCapitatedAmendment = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
@@ -86,14 +87,10 @@ export const Capitated1915BWaiverInitialPage = () => {
   const navigate = useNavigate();
   const urlQuery = useQueryString();
   const alert = useAlertContext();
-  const modal = useModalContext();
   const originPath = useOriginPath();
-  const cancelOnAccept = useCallback(() => {
-    modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
-  }, []);
+
   const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmendment> = async (
-    formData
+    formData,
   ) => {
     try {
       console.log("testing");
@@ -113,7 +110,7 @@ export const Capitated1915BWaiverInitialPage = () => {
         // when any queries are added, such as the case of /details?id=...
         urlQuery.get(ORIGIN)
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard"
+          : "/dashboard",
       );
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
@@ -199,16 +196,16 @@ export const Capitated1915BWaiverInitialPage = () => {
                 </Inputs.FormItem>
               )}
             />
-            {/* // TODO: FFF */}
-            {/* <SubTypeSelect
+            <SubjectInput
               control={form.control}
-              typeId={"111"}
-              name="subTypeId"
-              authorityId={122} // waivers authority
+              name="subject"
+              helperText="The title or purpose of the Waiver"
             />
-
-            <SubjectInput control={form.control} name="subject" />
-            <DescriptionInput control={form.control} name="description" /> */}
+            <DescriptionInput
+              control={form.control}
+              name="description"
+              helperText="A summary of the Waiver. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
+            />
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqLink="/faq/medicaid-spa-attachments" />
@@ -223,7 +220,10 @@ export const Capitated1915BWaiverInitialPage = () => {
                       {label}
                       {required ? <Inputs.RequiredIndicator /> : null}
                     </Inputs.FormLabel>
-                    <Inputs.Upload files={field?.value ?? []} setFiles={field.onChange}  />
+                    <Inputs.Upload
+                      files={field?.value ?? []}
+                      setFiles={field.onChange}
+                    />
                     <Inputs.FormMessage />
                   </Inputs.FormItem>
                 )}
@@ -235,41 +235,7 @@ export const Capitated1915BWaiverInitialPage = () => {
             name="additionalInformation"
           />
           <Content.PreSubmissionMessage />
-          {Object.keys(form.formState.errors).length !== 0 ? (
-            <Alert className="mb-6" variant="destructive">
-              Missing or malformed information. Please see errors above.
-            </Alert>
-          ) : null}
-          {form.formState.isSubmitting ? (
-            <div className="p-4">
-              <LoadingSpinner />
-            </div>
-          ) : null}
-          <div className="flex gap-2 justify-end">
-            <Inputs.Button
-              disabled={form.formState.isSubmitting}
-              type="submit"
-              className="px-12"
-            >
-              Submit
-            </Inputs.Button>
-            <Inputs.Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                modal.setContent({
-                  header: "Stop form submission?",
-                  body: "All information you've entered on this form will be lost if you leave this page.",
-                  acceptButtonText: "Yes, leave form",
-                  cancelButtonText: "Return to form",
-                });
-                modal.setOnAccept(() => cancelOnAccept);
-                modal.setModalOpen(true);
-              }}
-            >
-              Cancel
-            </Inputs.Button>
-          </div>
+          <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
     </SimplePageContainer>

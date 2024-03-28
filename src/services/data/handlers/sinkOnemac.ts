@@ -50,7 +50,7 @@ export const onemac_main = async (event: KafkaEvent) => {
                 "LEGACY Validation Error. The following record failed to parse: ",
                 JSON.stringify(record),
                 "Because of the following Reason(s):",
-                result.error.message
+                result.error.message,
               );
             }
 
@@ -93,7 +93,7 @@ export const onemac_main = async (event: KafkaEvent) => {
             "ONEMAC Validation Error. The following record failed to parse: ",
             JSON.stringify(record),
             "Because of the following Reason(s):",
-            result?.error.message
+            result?.error.message,
           );
         }
 

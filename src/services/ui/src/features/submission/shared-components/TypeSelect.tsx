@@ -1,7 +1,7 @@
-import { useSeaTypes } from "@/api";
+import { useGetTypes } from "@/api";
 import * as Inputs from "@/components/Inputs";
 import { Control, FieldValues, Path } from "react-hook-form";
-import { opensearch } from "shared-types";
+import Select from "react-select";
 
 type TypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
@@ -9,43 +9,57 @@ type TypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
   authorityId: number;
 };
 
+type SelectOption = {
+  value: number;
+  label: string;
+};
+
 export function TypeSelect<TFieldValues extends FieldValues>({
   control,
   name,
   authorityId,
 }: TypeSelectFormFieldProps<TFieldValues>) {
-  const { data } = useSeaTypes<opensearch.types.Document>(authorityId);
+  const { data } = useGetTypes(authorityId);
+
+  const options = data?.map((item) => ({
+    value: item.id,
+    label: item.name,
+  }));
 
   return (
     <Inputs.FormField
       control={control}
       name={name}
-      render={({ field }) => (
-        <Inputs.FormItem className="max-w-sm">
-          <Inputs.FormLabel className="font-semibold block">
-            Type <Inputs.RequiredIndicator />
-          </Inputs.FormLabel>
-          <Inputs.Select
-            onValueChange={field.onChange}
-            defaultValue={field.value}
-          >
-            <Inputs.FormControl>
-              <Inputs.SelectTrigger>
-                <Inputs.SelectValue placeholder="Select a type" />
-              </Inputs.SelectTrigger>
-            </Inputs.FormControl>
-            <Inputs.SelectContent>
-              {data &&
-                data.map((T) => (
-                  <Inputs.SelectItem key={T.id} value={String(T.id)}>
-                    {T.name}
-                  </Inputs.SelectItem>
-                ))}
-            </Inputs.SelectContent>
-          </Inputs.Select>
-          <Inputs.FormMessage />
-        </Inputs.FormItem>
-      )}
+      render={({ field }) => {
+        return (
+          <Inputs.FormItem className="max-w-lg">
+            <Inputs.FormLabel className="font-semibold block">
+              Type <Inputs.RequiredIndicator />
+            </Inputs.FormLabel>
+            <p className="text-gray-500 max-w-3xl">
+              You may select more than one
+            </p>
+            <Select
+              isMulti
+              value={
+                field.value
+                  ? field.value.map((id: number) =>
+                      options?.find((O) => O.value === id),
+                    )
+                  : []
+              }
+              onChange={(val) =>
+                field.onChange(val.map((v: SelectOption) => v.value))
+              }
+              options={options}
+              closeMenuOnSelect={false}
+              className="border border-black shadow-sm rounded-sm"
+              placeholder="- Select -"
+            />
+            <Inputs.FormMessage />
+          </Inputs.FormItem>
+        );
+      }}
     />
   );
 }

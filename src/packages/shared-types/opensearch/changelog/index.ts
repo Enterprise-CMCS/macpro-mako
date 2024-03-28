@@ -6,6 +6,7 @@ import {
   AggQuery,
   ExportHeaderOptions,
 } from "./../_";
+import { z } from "zod";
 import {
   OneMac,
   RaiIssue,
@@ -14,6 +15,7 @@ import {
   WithdrawPackage,
   ToggleWithdrawRaiEnabled,
 } from "../../action-types";
+import { legacyAdminChange, legacyEvent } from "./transforms";
 
 export type Document = OneMac &
   WithdrawPackage &
@@ -25,7 +27,8 @@ export type Document = OneMac &
     timestamp: string;
     packageId: string;
     appkChildId: string;
-  };
+  } & z.infer<legacyEvent.Schema> &
+  z.infer<legacyAdminChange.Schema>;
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
@@ -37,3 +40,5 @@ export type Filterable = FIL<Field>;
 export type State = QueryState<Field>;
 export type Aggs = AggQuery<Field>;
 export type ExportHeader = ExportHeaderOptions<Document>;
+
+export * from "./transforms";

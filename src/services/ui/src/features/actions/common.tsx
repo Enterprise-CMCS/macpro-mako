@@ -22,7 +22,7 @@ export const PackageInfo = ({ item }: { item: opensearch.main.ItemResult }) => (
   <section>
     <SectionTemplate label={"Package ID"} value={item._id} />
     <SectionTemplate
-      label={"Type"}
+      label={"Authority"}
       value={
         item?._source?.authority
           ? removeUnderscoresAndCapitalize(item._source.authority as string)

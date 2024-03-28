@@ -1,11 +1,12 @@
-import { SearchForm } from "@/components";
+import { OsTableColumn, SearchForm } from "@/components";
 import { FC } from "react";
 import { useOsUrl } from "../useOpensearch";
 import { useOsContext } from "../Provider";
 import { OsFilterDrawer } from "./Drawer";
-import { OsFilterExport } from "./Export";
+import { OsExportData } from "./Export";
 
 export const OsFiltering: FC<{
+  columns: OsTableColumn[];
   disabled?: boolean;
 }> = (props) => {
   const url = useOsUrl();
@@ -29,7 +30,7 @@ export const OsFiltering: FC<{
           disabled={!!props.disabled}
         />
         <div className="flex flex-row gap-2">
-          <OsFilterExport />
+          <OsExportData columns={props.columns} />
           <OsFilterDrawer />
         </div>
       </div>

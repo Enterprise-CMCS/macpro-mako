@@ -21,7 +21,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           throw new Error();
         case "aws.seatool.debezium.cdc.SEA.dbo.Type":
           docs.push(
-            ...(await subtypes(event.records[topicPartition], topicPartition))
+            ...(await subtypes(event.records[topicPartition], topicPartition)),
           );
           break;
       }
@@ -29,7 +29,10 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     try {
       await os.bulkUpdateData(osDomain, index, docs);
     } catch (error: any) {
-      logError({ type: ErrorType.BULKUPDATE });
+      logError({
+        type: ErrorType.BULKUPDATE,
+        metadata: { event: loggableEvent },
+      });
       throw error;
     }
   } catch (error) {
@@ -40,7 +43,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
 const subtypes = async (
   kafkaRecords: KafkaRecord[],
-  topicPartition: string
+  topicPartition: string,
 ) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {

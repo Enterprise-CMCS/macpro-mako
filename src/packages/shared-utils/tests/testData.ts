@@ -93,7 +93,7 @@ export const testItemResult: opensearch.main.ItemResult = {
     finalDispositionDate: null,
     stateStatus: "Under Review",
     submissionDate: "2024-03-01T00:00:00.000Z",
-    subTypeId: null,
+    subTypeIds: null,
     cmsStatus: "Pending",
     reviewTeam: [],
     flavor: "MEDICAID",
@@ -108,7 +108,6 @@ export const testItemResult: opensearch.main.ItemResult = {
       {
         _index: "changelog",
         _id: "MD-12-3456",
-        _score: null,
         // @ts-ignore
         _source: {
           authority: "medicaid spa",

@@ -85,4 +85,10 @@ export type ExportHeaderOptions<TData> = {
   name: string;
 };
 
-export type Index = "main" | "insights" | "changelog" | "types" | "subtypes";
+export type Index =
+  | "main"
+  | "insights"
+  | "changelog"
+  | "types"
+  | "subtypes"
+  | "legacyinsights";

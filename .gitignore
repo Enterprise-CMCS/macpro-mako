@@ -6,7 +6,6 @@ testcafe_results
 yarn-error.log
 .serverless
 .webpack
-.repack
 .yarn_install
 tsconfig.tsbuildinfo
 build_run
@@ -15,3 +14,4 @@ build_run
 coverage
 lambda_layer.zip
 **/.auth/*.json
+.dccache

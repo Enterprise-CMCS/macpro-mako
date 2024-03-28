@@ -1,54 +1,81 @@
-import { useSeaTypes } from "@/api";
+import { useEffect, useMemo } from "react";
+import { useGetSubTypes } from "@/api";
 import * as Inputs from "@/components/Inputs";
-import { Control, FieldValues, Path } from "react-hook-form";
-import { opensearch } from "shared-types";
+import { useFormContext, useWatch } from "react-hook-form";
+import Select from "react-select";
+import { uniqBy } from "lodash";
 
-type SubTypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
-  control: Control<TFieldValues>;
-  name: Path<TFieldValues>;
+type SubTypeSelectFormFieldProps = {
   authorityId: number;
-  typeId: string;
+};
+type SelectOption = {
+  value: number;
+  label: string;
 };
 
-export function SubTypeSelect<TFieldValues extends FieldValues>({
-  control,
-  typeId,
-  name,
-  authorityId,
-}: SubTypeSelectFormFieldProps<TFieldValues>) {
-  const { data } = useSeaTypes<opensearch.subtypes.Document>(
-    authorityId,
-    typeId
+export function SubTypeSelect({ authorityId }: SubTypeSelectFormFieldProps) {
+  const { control, setValue } = useFormContext();
+  const typeIds = useWatch({ name: "typeIds", defaultValue: [] });
+  const subTypeIds = useWatch({
+    name: "subTypeIds",
+    defaultValue: [],
+  });
+
+  const { data } = useGetSubTypes(authorityId, typeIds);
+
+  const options = useMemo(
+    () =>
+      uniqBy(data, "name").map((item) => ({
+        value: item.id,
+        label: item.name,
+      })),
+    [data],
   );
+
+  useEffect(() => {
+    const validValues = typeIds?.filter((val: number) =>
+      options.find((option) => option.value === val),
+    );
+
+    if (validValues.length > 0) {
+      setValue("subTypeIds", validValues, { shouldValidate: true });
+    }
+    if (typeIds.length === 0) {
+      setValue("subTypeIds", []);
+    }
+  }, [options, typeIds, data]);
 
   return (
     <Inputs.FormField
       control={control}
-      name={name}
-      render={({ field }) => (
-        <Inputs.FormItem className="max-w-sm">
+      name={"subTypeIds"}
+      render={() => (
+        <Inputs.FormItem className="max-w-lg">
           <Inputs.FormLabel className="font-semibold block">
-            Sub Type <Inputs.RequiredIndicator />
+            Subtype <Inputs.RequiredIndicator />
           </Inputs.FormLabel>
-          <Inputs.Select
-            onValueChange={field.onChange}
-            defaultValue={field.value}
-            disabled={!typeId}
-          >
-            <Inputs.FormControl>
-              <Inputs.SelectTrigger>
-                <Inputs.SelectValue placeholder="Select a sub type" />
-              </Inputs.SelectTrigger>
-            </Inputs.FormControl>
-            <Inputs.SelectContent>
-              {data &&
-                data.map((T) => (
-                  <Inputs.SelectItem key={T.id} value={String(T.id)}>
-                    {T.name}
-                  </Inputs.SelectItem>
-                ))}
-            </Inputs.SelectContent>
-          </Inputs.Select>
+          <p className="text-gray-500 max-w-3xl">
+            You may select more than one
+          </p>
+          <Select
+            isMulti
+            isDisabled={!typeIds.length}
+            value={options.filter((option) =>
+              subTypeIds?.includes(option.value),
+            )}
+            onChange={(val) => {
+              if (val.length === 0) {
+                setValue("subTypeIds", [], { shouldValidate: true });
+                return;
+              }
+              const v = val.map((v: SelectOption) => v.value);
+              setValue("subTypeIds", v, { shouldValidate: true });
+            }}
+            options={options}
+            closeMenuOnSelect={false}
+            className="border border-black shadow-sm rounded-sm"
+            placeholder="Select a type to see options"
+          />
           <Inputs.FormMessage />
         </Inputs.FormItem>
       )}

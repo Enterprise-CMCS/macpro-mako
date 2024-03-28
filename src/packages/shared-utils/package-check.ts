@@ -1,4 +1,4 @@
-import { opensearch, Authority, SEATOOL_STATUS } from "../shared-types";
+import { opensearch, Authority, SEATOOL_STATUS } from "shared-types";
 
 const secondClockStatuses = [
   SEATOOL_STATUS.PENDING,
@@ -8,7 +8,7 @@ const secondClockStatuses = [
 
 const checkAuthority = (
   authority: Authority | null,
-  validAuthorities: Authority[]
+  validAuthorities: Authority[],
 ) =>
   !authority
     ? false
@@ -28,10 +28,16 @@ export const PackageCheck = ({
   raiWithdrawnDate,
   raiWithdrawEnabled,
   authority,
+  actionType,
+  appkParentId,
 }: opensearch.main.Document) => {
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
-    isWaiver: checkAuthority(authority, [Authority["1915b"]]),
+    isWaiver: checkAuthority(authority, [
+      Authority["1915b"],
+      Authority["1915c"],
+    ]),
+    isAppk: checkAuthority(authority, [Authority["1915c"]]) && !appkParentId,
     /** Keep excess methods to a minimum with `is` **/
     authorityIs: (validAuthorities: Authority[]) =>
       checkAuthority(authority, validAuthorities),
@@ -66,13 +72,22 @@ export const PackageCheck = ({
       !!raiRequestedDate && !!raiReceivedDate && !raiWithdrawnDate,
     /** Latest RAI has a response and/or has been withdrawn **/
     hasCompletedRai: !!raiRequestedDate && !!raiReceivedDate,
+    /** Latest RAI has a response and/or has been withdrawn **/
+    hasRaiWithdrawal: !!raiWithdrawnDate,
     /** RAI Withdraw has been enabled **/
     hasEnabledRaiWithdraw: raiWithdrawEnabled,
   };
+
+  const actionTypeChecks = {
+    isInitialOrRenewal: actionType === "New" || actionType === "Renew",
+    isTempExtension: actionType === "Extend",
+  };
+
   return {
     ...planChecks,
     ...statusChecks,
     ...raiChecks,
+    ...actionTypeChecks,
   };
 };
 

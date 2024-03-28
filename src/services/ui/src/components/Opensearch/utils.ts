@@ -46,7 +46,7 @@ const filterMapQueryReducer = (
         queries: ["id", "submitterName", "leadAnalystName"].map((FIELD) => ({
           wildcard: {
             [`${FIELD}.keyword`]: {
-              value: `*${filter.value}*`,
+              value: `*${(filter.value as string).trim()}*`,
               case_insensitive: true,
             },
           },

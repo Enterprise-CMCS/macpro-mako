@@ -35,7 +35,7 @@ function getLeadAnalyst(eventData: SeaTool) {
     eventData.STATE_PLAN.LEAD_ANALYST_ID
   ) {
     const leadAnalyst = eventData.LEAD_ANALYST.find(
-      (analyst) => analyst.OFFICER_ID === eventData.STATE_PLAN.LEAD_ANALYST_ID
+      (analyst) => analyst.OFFICER_ID === eventData.STATE_PLAN.LEAD_ANALYST_ID,
     );
 
     if (leadAnalyst) {
@@ -90,7 +90,7 @@ const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
     : null;
 
 const compileSrtList = (
-  officers: SeatoolOfficer[] | null | undefined
+  officers: SeatoolOfficer[] | null | undefined,
 ): string[] =>
   officers?.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
 
@@ -104,7 +104,7 @@ const isInSecondClock = (
   raiReceivedDate: any,
   raiWithdrawnDate: any,
   seatoolStatus: any,
-  authority: any
+  authority: any,
 ) => {
   if (
     authority != "CHIP" && // if it's not a chip
@@ -149,20 +149,34 @@ export const transform = (id: string) => {
       actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE ||
-          data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE
+          data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE,
       ),
       description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
       initialIntakeNeeded:
-        !leadAnalystName && seatoolStatus !== SEATOOL_STATUS.WITHDRAWN,
+        !leadAnalystName && !finalDispositionStatuses.includes(seatoolStatus),
       leadAnalystName,
       authorityId: authorityId || null,
       authority: getAuthority(authorityId, id) as Authority | null,
-      typeId: data.STATE_PLAN_SERVICETYPES?.[0]?.SPA_TYPE_ID || null,
-      typeName: data.STATE_PLAN_SERVICETYPES?.[0]?.SPA_TYPE_NAME || null,
-      subTypeId: data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.TYPE_ID || null,
-      subTypeName: data.STATE_PLAN_SERVICE_SUBTYPES?.[0]?.TYPE_NAME || null,
+      types:
+        data.STATE_PLAN_SERVICETYPES?.filter(
+          (type): type is NonNullable<typeof type> => type != null,
+        ).map((type) => {
+          return {
+            SPA_TYPE_ID: type.SPA_TYPE_ID,
+            SPA_TYPE_NAME: type.SPA_TYPE_NAME.replace(/â|â/g, "-"),
+          };
+        }) || null,
+      subTypes:
+        data.STATE_PLAN_SERVICE_SUBTYPES?.filter(
+          (subType): subType is NonNullable<typeof subType> => subType != null,
+        ).map((subType) => {
+          return {
+            TYPE_ID: subType.TYPE_ID,
+            TYPE_NAME: subType.TYPE_NAME.replace(/â|â/g, "-"),
+          };
+        }) || null,
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
@@ -174,14 +188,14 @@ export const transform = (id: string) => {
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       seatoolStatus,
       submissionDate: getDateStringOrNullFromEpoc(
-        data.STATE_PLAN.SUBMISSION_DATE
+        data.STATE_PLAN.SUBMISSION_DATE,
       ),
       subject: data.STATE_PLAN.TITLE_NAME,
       secondClock: isInSecondClock(
         raiReceivedDate,
         raiWithdrawnDate,
         seatoolStatus,
-        flavorLookup(data.STATE_PLAN.PLAN_TYPE)
+        flavorLookup(data.STATE_PLAN.PLAN_TYPE),
       ),
       raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus)
         ? false
@@ -217,9 +231,7 @@ export const tombstone = (id: string) => {
     statusDate: null,
     submissionDate: null,
     subject: null,
-    typeId: null,
-    typeName: null,
-    subTypeId: null,
-    subTypeName: null,
+    types: null,
+    subTypes: null,
   };
 };

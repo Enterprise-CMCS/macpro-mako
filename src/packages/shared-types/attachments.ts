@@ -3,7 +3,7 @@ import { s3ParseUrl } from "shared-utils/s3-url-parser";
 import { Authority } from "./authority";
 
 export const attachmentTitleMap = (
-  authority: Authority
+  authority: Authority,
 ): Record<string, string> => ({
   // SPA
   cmsForm179: "CMS Form 179",
@@ -40,6 +40,8 @@ export const attachmentTitleMap = (
     "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
   b4IndependentAssessment:
     "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
+  appk: "1915(c) Appendix K Amendment Waiver Template",
+  waiverExtensionRequest: "Waiver Extension Request",
 });
 export type AttachmentKey = keyof typeof attachmentTitleMap;
 export type AttachmentTitle = (typeof attachmentTitleMap)[AttachmentKey];
@@ -64,7 +66,7 @@ export const legacyAttachmentSchema = z.object({
 export type LegacyAttachment = z.infer<typeof legacyAttachmentSchema>;
 
 export function handleLegacyAttachment(
-  attachment: LegacyAttachment
+  attachment: LegacyAttachment,
 ): Attachment | null {
   const parsedUrl = s3ParseUrl(attachment.url || "");
   if (!parsedUrl) return null;

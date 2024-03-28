@@ -9,6 +9,7 @@
   "license": "CC0-1.0",
   "devDependencies": {},
   "dependencies": {
-    "file-type": "^19.0.0"
+    "file-type": "^19.0.0",
+    "mime-types": "^2.1.35"
   }
 }

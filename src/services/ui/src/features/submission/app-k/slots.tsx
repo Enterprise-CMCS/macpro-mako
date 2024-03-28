@@ -4,26 +4,23 @@ import { OPTIONS_STATE } from "./consts";
 import * as I from "@/components/Inputs";
 import {
   ControllerProps,
-  ControllerRenderProps,
   FieldPath,
   FieldValues,
   useFieldArray,
+  useFormContext,
 } from "react-hook-form";
 import { ReactNode, useEffect, useState } from "react";
-import { useOsSearch } from "@/api";
-import { opensearch } from "shared-types";
-import { DEFAULT_FILTERS } from "@/components/Opensearch/main";
 import { useDebounce } from "@/hooks";
-import { Grip, Plus, XIcon } from "lucide-react";
+import { Plus, XIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
 import { cn } from "@/utils";
-import { zWaiverId } from "./consts";
-import { DragNDrop } from "./DragNDrop";
+import { zAppkWaiverNumberSchema } from "@/utils";
+import { itemExists } from "@/api";
 
 export const SlotStateSelect = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   label,
   ...props
@@ -31,11 +28,7 @@ export const SlotStateSelect = <
   label: ReactNode;
   className?: string;
 }): ControllerProps<TFieldValues, TName>["render"] =>
-  function Render({
-    field,
-  }: {
-    field: ControllerRenderProps<TFieldValues, TName>;
-  }) {
+  function Render({ field }) {
     const { data: user } = useGetUser();
     const stateAccess = user?.user?.["custom:state"]?.split(",");
     return (
@@ -59,91 +52,93 @@ export const SlotStateSelect = <
 
 export const SlotWaiverId = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   state,
-  index,
   onRemove,
-  onIncludes,
   ...props
 }: {
   state: string;
-  index: number;
-  onRemove: () => void;
-  onIncludes: (val: string) => boolean;
+  onRemove?: () => void;
   className?: string;
 }): ControllerProps<TFieldValues, TName>["render"] =>
-  function Render({ field }) {
+  function Render({ field, fieldState }) {
     const debounced = useDebounce(field.value, 750);
-    const [status, setStatus] = useState<
-      "loading" | "valid" | "invalid" | "init"
-    >("init");
-    const search = useOsSearch<
-      opensearch.main.Field,
-      opensearch.main.Response
-    >();
+    const [loading, setLoading] = useState<boolean>(false);
+    const context = useFormContext();
 
     const onValidate = async (value: string) => {
       const preExitConditions = !state || !value;
+      // if (preExitConditions) return context.clearErrors(field.name);
       if (preExitConditions) return;
 
-      const parsed = zWaiverId.safeParse(String(value));
-      if (!parsed.success) return setStatus("invalid");
+      setLoading(true);
 
-      const existsInList = onIncludes(parsed.data);
-      if (existsInList) return setStatus("invalid");
+      if (field.name === "parentWaiver") {
+        const childWaivers = context.getValues("childWaivers") || [];
+        if (childWaivers?.includes(value)) {
+          return context.setError(field.name, {
+            message: "Waiver id already exists",
+          });
+        }
+      }
 
-      const searchResult = await search.mutateAsync({
-        index: "main",
-        pagination: { number: 0, size: 100 },
-        filters: [
-          ...DEFAULT_FILTERS.waivers.filters!,
-          {
-            field: "id.keyword",
-            prefix: "must",
-            value: `${state}-${parsed.data}`,
-            type: "match",
-          },
-        ],
-      });
-      const entryExists = searchResult.hits.total.value;
-      setStatus(entryExists ? "invalid" : "valid");
+      if (field.name.includes("childWaivers")) {
+        const [_, index] = field.name.split(".");
+        const childWaivers = context.getValues("childWaivers") || [];
+        const parentWaiver = context.getValues("parentWaiver");
+        const existsInList = childWaivers
+          .filter((_: any, I: number) => I != Number(index))
+          .concat(parentWaiver)
+          .includes(value);
+
+        if (existsInList) {
+          return context.setError(field.name, {
+            message: "Waiver id already exists",
+          });
+        }
+      }
+
+      const parsed = await zAppkWaiverNumberSchema.safeParseAsync(value);
+
+      if (!parsed.success) {
+        const [err] = parsed.error.errors;
+        return context.setError(field.name, err);
+      }
+
+      const exists = await itemExists(`${state}-${value}`);
+
+      if (exists) {
+        return context.setError(field.name, {
+          message:
+            "According to our records, this 1915(c) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
+        });
+      }
+
+      context.clearErrors(field.name);
     };
 
-    useEffect(
-      function onDebounceValidate() {
-        onValidate(debounced);
-      },
-      [debounced]
-    );
-
     useEffect(() => {
-      if (!search.isLoading) return;
-      setStatus("loading");
-    }, [search.isLoading]);
+      onValidate(debounced).then(() => setLoading(false));
+    }, [debounced]);
 
     return (
       <I.FormItem {...props}>
         <div className="relative flex gap-1 items-center">
-          <Grip size={20} className="mr-2 cursor-move" />
-          <div className="relative flex gap-1 items-center">
-            <I.Input
-              value={state}
-              readOnly
-              className="w-[50px] font-bold cursor-default"
-            />
-            <p className="font-semibold">-</p>
+          <div className="relative flex gap-2 items-center">
+            <p className="text-sm font-semibold">{state} -</p>
             <I.Input
               className={cn({
-                "w-[223px]": true,
-                "border-red-500": status === "invalid",
-                "border-green-500": status === "valid",
+                "w-[250px]": true,
+                "border-red-500": !!fieldState.error?.message,
+                "border-green-500": !!debounced && !fieldState.error?.message,
               })}
+              placeholder="#####.R##.##"
               autoFocus
               onChange={field.onChange}
               value={field.value}
             />
-            {status === "loading" && (
+            {loading && (
               <motion.div
                 className="absolute right-[10px] inset-y-0 w-6 h-6 my-auto origin-center flex items-center justify-center"
                 animate={{ rotate: "360deg" }}
@@ -153,13 +148,11 @@ export const SlotWaiverId = <
               </motion.div>
             )}
           </div>
-          {!index && <p className="ml-1 text-lg">*</p>}
-          <XIcon
-            size={20}
-            onClick={onRemove}
-            className={cn("cursor-pointer", { "opacity-0": !index })}
-          />
+          {onRemove && (
+            <XIcon size={20} onClick={onRemove} className={"cursor-pointer"} />
+          )}
         </div>
+        <I.FormMessage />
       </I.FormItem>
     );
   };
@@ -171,80 +164,46 @@ export const WaiverIdFieldArray = (props: any) => {
     shouldUnregister: true,
   });
 
-  const onDragEnd = (dragItem: number, dragOver: number) => {
-    fieldArr.move(dragItem, dragOver);
-  };
-
-  useEffect(() => {
-    if (!props.state) return;
-    fieldArr.remove();
-    setTimeout(() => fieldArr.append(""), 0);
-  }, [props.state]);
-
   return (
     <div>
-      <div className="flex flex-col justify-start">
-        <div className="flex flex-row gap-2 items-center">
-          <I.FormLabel className="font-bold">Waivers</I.FormLabel>
+      <div className="flex flex-col gap-2 justify-start">
+        <div className="flex flex-col gap-1">
+          <I.FormLabel className="font-bold">
+            Control Numbers (optional)
+          </I.FormLabel>
+          <I.FormLabel>
+            Other waiver IDs that will be associated with the APP-K
+          </I.FormLabel>
+        </div>
+
+        <div className="flex flex-col py-2 gap-4">
+          {fieldArr.fields.map((FLD, index) => {
+            return (
+              <div key={FLD.id} style={{ width: "max-content" }}>
+                <I.FormField
+                  control={props.control}
+                  name={`${props.name}.${index}`}
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  render={SlotWaiverId({
+                    onRemove: () => fieldArr.remove(index),
+                    state: props.state,
+                  })}
+                />
+              </div>
+            );
+          })}
           <I.Button
             disabled={!props.state}
             type="button"
             size="sm"
             onClick={() => fieldArr.append("")}
             variant="outline"
+            className="w-[100px]"
           >
             <Plus className="h-5 w-5 mr-1" />
             Add
           </I.Button>
-        </div>
-
-        <div className="py-2 flex flex-col gap-1">
-          <p className="text-gray-500 font-light">
-            Must follow the format <strong>####.R##.##</strong> or{" "}
-            <strong>#####.R##.##</strong>
-            to include:
-          </p>
-
-          <ul className="italic text-gray-500 font-light pl-2">
-            <li>##### = 4 or 5 digit waiver initial number</li>
-            <li>
-              R## = renewal number (R01, R02, ...) (Use R00 for waivers without
-              renewals)
-            </li>
-            <li>## = appendix K amendment number (01)</li>
-            <li>
-              <strong>*</strong> ID used to represent APP-K
-            </li>
-          </ul>
-        </div>
-
-        <div className="flex flex-col py-4 gap-4">
-          <DragNDrop onDragEnd={onDragEnd}>
-            {fieldArr.fields.map((FLD, index) => {
-              const inputIds = props.control._getFieldArray(props.name);
-
-              return (
-                <div key={FLD.id} style={{ width: "max-content" }}>
-                  <I.FormField
-                    control={props.control}
-                    name={`${props.name}.${index}`}
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    render={SlotWaiverId({
-                      index,
-                      onRemove: () => fieldArr.remove(index),
-                      onIncludes: (val: string) => {
-                        return inputIds
-                          .filter((_: any, I: number) => I !== index)
-                          .includes(val);
-                      },
-                      state: props.state,
-                    })}
-                  />
-                </div>
-              );
-            })}
-          </DragNDrop>
         </div>
       </div>
     </div>

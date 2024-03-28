@@ -107,6 +107,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
     case buildActionUrl(Action.DISABLE_RAI_WITHDRAW):
     case buildActionUrl(Action.WITHDRAW_RAI):
     case buildActionUrl(Action.WITHDRAW_PACKAGE):
+    case buildActionUrl(Action.TEMP_EXTENSION):
     default:
       return {
         ...baseProperties,
@@ -161,9 +162,11 @@ export const submit = async <T extends Record<string, unknown>>({
     );
     // Generate a presigned url for each attachment
     const preSignedURLs: PreSignedURL[] = await Promise.all(
-      attachments.map(() =>
+      attachments.map((attachment) =>
         API.post("os", "/getUploadUrl", {
-          body: {},
+          body: {
+            fileName: attachment.file.name,
+          },
         })
       )
     );

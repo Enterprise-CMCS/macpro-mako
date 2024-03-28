@@ -17,6 +17,7 @@ export const handler: Handler = async (_, __, callback) => {
       "types",
       "subtypes",
       "seatool", // This index is no longer used, but we want to ensure its removal.
+      "legacyinsights",
     ];
     for (const index of indices) {
       await os.deleteIndex(process.env.osDomain, index as Index);

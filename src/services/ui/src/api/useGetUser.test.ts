@@ -58,7 +58,7 @@ const mockUserAttr = ({
             Value: isCms ? "onemac-micro-reviewer" : "onemac-micro-cmsreview",
           },
         ] as Array<{ Name: string; Value: string }>);
-      },
+      }
     );
   });
 
