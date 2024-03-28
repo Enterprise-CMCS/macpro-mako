@@ -128,10 +128,6 @@ resources:
             AttributeDataType: String
             Mutable: true
             Required: false
-          - Name: local-roles
-            AttributeDataType: String
-            Mutable: true
-            Required: false
           - Name: username
             AttributeDataType: String
             Mutable: true

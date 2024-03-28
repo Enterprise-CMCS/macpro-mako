@@ -260,20 +260,35 @@ stepFunctions:
 
 params:
   master:
-    osInstanceType: m5.large.search
+    osInstanceType: or1.large.search
+    osVolumeType: gp3
+    osVolumeSize: 20
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
   val:
-    osInstanceType: m5.large.search
+    osInstanceType: or1.large.search
+    osVolumeType: gp3
+    osVolumeSize: 20
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
   production:
     bootstrapKibanaUsers: "false"
-    osInstanceType: m5.large.search
+    osInstanceType: or1.large.search
+    osVolumeType: gp3
+    osVolumeSize: 20
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
+  juliet:
+    osInstanceType: or1.large.search
+    osVolumeType: gp3
+    osVolumeSize: 20
+    bootstrapKibanaUsers: "true"
+    topicNamespace: --${self:custom.project}--${sls:stage}--
+    sinkProvisionedConcurrency: 0
   default:
     osInstanceType: t3.small.search
+    osVolumeType: gp2
+    osVolumeSize: 10
     bootstrapKibanaUsers: "true"
     topicNamespace: --${self:custom.project}--${sls:stage}--
     sinkProvisionedConcurrency: 0
@@ -602,8 +617,8 @@ resources:
             Value: ${sls:stage}
         EBSOptions:
           EBSEnabled: true
-          VolumeType: gp2
-          VolumeSize: 10
+          VolumeType: ${param:osVolumeType}
+          VolumeSize: ${param:osVolumeSize}
         ClusterConfig:
           InstanceType: ${param:osInstanceType}
           InstanceCount:
@@ -626,7 +641,7 @@ resources:
           Enabled: true
         NodeToNodeEncryptionOptions:
           Enabled: true
-        EngineVersion: OpenSearch_2.3
+        EngineVersion: OpenSearch_2.11
         DomainEndpointOptions:
           EnforceHTTPS: true
           TLSSecurityPolicy: Policy-Min-TLS-1-2-2019-07
