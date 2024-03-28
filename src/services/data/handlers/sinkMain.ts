@@ -43,7 +43,10 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     try {
       await os.bulkUpdateData(osDomain, index, docs);
     } catch (error: any) {
-      logError({ type: ErrorType.BULKUPDATE });
+      logError({
+        type: ErrorType.BULKUPDATE,
+        metadata: { event: loggableEvent },
+      });
       throw error;
     }
   } catch (error) {
@@ -79,10 +82,8 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         });
         continue;
       }
-      const validAuthorityIds = [122, 123, 124, 125];
       if (
         result.data.authorityId &&
-        validAuthorityIds.includes(result.data.authorityId) &&
         typeof result.data.seatoolStatus === "string" &&
         result.data.seatoolStatus != "Unknown"
       ) {
@@ -108,20 +109,18 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
 
       // Handle deletes and continue
       if (!value) {
-        docs.push(opensearch.main.legacySubmission.tombstone(id));
+        docs.push(opensearch.main.legacyPackageView.tombstone(id));
         continue;
       }
       const record = JSON.parse(decode(value));
-      // Handle legacy and continue
+      // Process legacy events
       if (record?.origin !== "micro") {
-        if (
-          record?.sk === "Package" && // Is a Package View
-          record?.submitterName && // Is originally from Legacy
-          record?.submitterName !== "-- --" // Is originally from Legacy
-        ) {
-          const result = opensearch.main.legacySubmission
+        // Is a Package View from legacy onemac
+        if (record?.sk === "Package" && record.submitterName) {
+          const result = opensearch.main.legacyPackageView
             .transform(id)
             .safeParse(record);
+          if (result.success && result.data === undefined) continue;
           if (!result.success) {
             logError({
               type: ErrorType.VALIDATION,
@@ -130,52 +129,56 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
             });
             continue;
           }
-
           docs.push(result.data);
         }
         continue;
       }
 
       // Handle everything else
-      const result = (() => {
-        switch (record?.actionType) {
-          case "new-submission":
-          case undefined:
-            return opensearch.main.newSubmission
-              .transform(id)
-              .safeParse(record);
-          case Action.DISABLE_RAI_WITHDRAW:
-          case Action.ENABLE_RAI_WITHDRAW:
-            return opensearch.main.toggleWithdrawEnabled
-              .transform(id)
-              .safeParse(record);
-          case Action.WITHDRAW_RAI:
-            return opensearch.main.withdrawRai.transform(id).safeParse(record);
-          case Action.WITHDRAW_PACKAGE:
-            return opensearch.main.withdrawPackage
-              .transform(id)
-              .safeParse(record);
-          case Action.REMOVE_APPK_CHILD:
-            return opensearch.main.removeAppkChild
-              .transform(id)
-              .safeParse(record);
+      if (record.origin === "micro") {
+        const result = (() => {
+          switch (record?.actionType) {
+            case "new-submission":
+            case undefined:
+              return opensearch.main.newSubmission
+                .transform(id)
+                .safeParse(record);
+            case Action.DISABLE_RAI_WITHDRAW:
+            case Action.ENABLE_RAI_WITHDRAW:
+              return opensearch.main.toggleWithdrawEnabled
+                .transform(id)
+                .safeParse(record);
+            case Action.WITHDRAW_RAI:
+              return opensearch.main.withdrawRai
+                .transform(id)
+                .safeParse(record);
+            case Action.WITHDRAW_PACKAGE:
+              return opensearch.main.withdrawPackage
+                .transform(id)
+                .safeParse(record);
+            case Action.REMOVE_APPK_CHILD:
+              return opensearch.main.removeAppkChild
+                .transform(id)
+                .safeParse(record);
+          }
+        })();
+        if (result === undefined) {
+          console.log(
+            `no action to take for ${id} action ${record.actionType}.  Continuing...`,
+          );
+          continue;
         }
-      })();
-      if (result === undefined) {
-        console.log(
-          `no action to take for ${id} action ${record.actionType}.  Continuing...`,
-        );
+        if (!result?.success) {
+          logError({
+            type: ErrorType.VALIDATION,
+            error: result?.error,
+            metadata: { topicPartition, kafkaRecord, record },
+          });
+          continue;
+        }
+        docs.push(result.data);
         continue;
       }
-      if (!result?.success) {
-        logError({
-          type: ErrorType.VALIDATION,
-          error: result?.error,
-          metadata: { topicPartition, kafkaRecord, record },
-        });
-        continue;
-      }
-      docs.push(result.data);
     } catch (error) {
       logError({
         type: ErrorType.BADPARSE,

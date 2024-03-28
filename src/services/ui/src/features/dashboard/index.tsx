@@ -82,7 +82,7 @@ export const Dashboard = () => {
               onValueChange={(tab) =>
                 osData.onSet(
                   (s) => ({ ...s, filters: [], tab: tab as OsTab, search: "" }),
-                  true
+                  true,
                 )
               }
             >

@@ -22,7 +22,7 @@ export const getOsInsightData = async (id) => {
     console.log("Insights Item: ", JSON.stringify(osInsightsItem, null, 4));
     returnData.cpoc = osInsightsItem?._source?.LEAD_ANALYST ? buildEmailsToSend(osInsightsItem?._source?.LEAD_ANALYST, osInsightsItem?._source?.STATE_PLAN.LEAD_ANALYST_ID) : "'CPOC Substitute' <mako.stateuser@gmail.com>";
     returnData.srt = osInsightsItem?._source?.ACTION_OFFICERS ? buildEmailsToSend(osInsightsItem?._source?.ACTION_OFFICERS) : "'SRT Substitute' <mako.stateuser@gmail.com>";
-    returnData.ninetyDaysLookup = osInsightsItem?._source?.STATE_PLAN.ALERT_90_DAYS_DATE;
+    returnData.ninetyDaysDate = osInsightsItem?._source?.STATE_PLAN.ALERT_90_DAYS_DATE;
 
     // const osChangeLogItem = await os.search(process.env.osDomain, "changelog", {
     //   from: 0,
