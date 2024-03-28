@@ -18,7 +18,7 @@ export const SubmitAndCancelBtnSection = () => {
 
   return (
     <>
-      {form.formState.isSubmitting && (
+      {(form.formState.isSubmitting || form.formState.isSubmitSuccessful) && (
         <div className="p-4">
           <LoadingSpinner />
         </div>
