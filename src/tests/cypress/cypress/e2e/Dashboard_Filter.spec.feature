@@ -12,7 +12,7 @@ Feature: Package Dashboard - Filter
         Then verify the filter close button exists
         Then verify reset Exists
         Then verify state dropdown filter exists
-        Then verify type dropdown filter exists
+        Then verify authority dropdown filter exists
         Then verify status DropDown Filter exists
         Then verify Initial Submission Date filter dropdown exists
         Then click on Initial Submission Date filter dropdown
@@ -38,7 +38,7 @@ Feature: Package Dashboard - Filter
         Then verify the filter close button exists
         Then verify reset Exists
         Then verify state dropdown filter exists
-        Then verify type dropdown filter exists
+        Then verify authority dropdown filter exists
         Then verify status DropDown Filter exists
         Then verify Initial Submission Date filter dropdown exists
         Then click on Initial Submission Date filter dropdown

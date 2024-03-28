@@ -20,7 +20,7 @@ Feature: CHIP SPA CMS Details View - Card View with Actions
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "CHIP SPA" exists for the Type
+        Then verify a type containing "CHIP SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -50,7 +50,7 @@ Feature: CHIP SPA CMS Details View - Card View with Actions
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "CHIP SPA" exists for the Type
+        Then verify a type containing "CHIP SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -80,7 +80,7 @@ Feature: CHIP SPA CMS Details View - Card View with Actions
         Then verify the details section exists
         Then verify the package details title contains "CHIP SPA Package"
         Then verify there is a Type header in the details section
-        Then verify a type containing "CHIP SPA" exists for the Type
+        Then verify a type containing "CHIP SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -110,7 +110,7 @@ Feature: CHIP SPA CMS Details View - Card View with Actions
         Then verify the package details page is visible
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "CHIP SPA" exists for the Type
+        Then verify a type containing "CHIP SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -138,7 +138,7 @@ Feature: CHIP SPA CMS Details View - Card View with Actions
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "CHIP SPA" exists for the Type
+        Then verify a type containing "CHIP SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -169,7 +169,7 @@ Feature: CHIP SPA CMS Details View - Card View with Actions
         Then verify the package details page is visible
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "CHIP SPA" exists for the Type
+        Then verify a type containing "CHIP SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -199,7 +199,7 @@ Feature: CHIP SPA CMS Details View - Card View with Actions
         Then verify the package details page is visible
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "CHIP SPA" exists for the Type
+        Then verify a type containing "CHIP SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section

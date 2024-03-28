@@ -27,7 +27,7 @@ Feature: Verify user can withdraw a Medicaid SPA package in Under Review Status 
         Then verify the form is titled "Withdraw Medicaid SPA Package"
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Package ID"
-        Then verify Type is "Medicaid SPA"
+        Then verify Authority is "Medicaid SPA"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
@@ -60,7 +60,7 @@ Feature: Verify user can withdraw a Medicaid SPA package in Under Review Status 
         Then verify the form is titled "Withdraw Waiver"
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
-        Then verify Type is "Medicaid SPA"
+        Then verify Authority is "Medicaid SPA"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists

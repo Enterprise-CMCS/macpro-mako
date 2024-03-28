@@ -27,7 +27,7 @@ Feature: Verify user can withdraw a CHIP SPA package in Under Review Status in t
         Then verify the form is titled "Withdraw CHIP SPA Package"
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Package ID"
-        Then verify Type is "CHIP SPA"
+        Then verify Authority is "CHIP SPA"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
@@ -60,7 +60,7 @@ Feature: Verify user can withdraw a CHIP SPA package in Under Review Status in t
         Then verify the form is titled "Withdraw Waiver"
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
-        Then verify Type is "CHIP SPA"
+        Then verify Authority is "CHIP SPA"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists

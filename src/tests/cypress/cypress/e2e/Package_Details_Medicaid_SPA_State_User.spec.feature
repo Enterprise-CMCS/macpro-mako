@@ -20,7 +20,7 @@ Feature: Medicaid SPA State Details View - Card View with Actions
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "Medicaid SPA" exists for the Type
+        Then verify a type containing "Medicaid SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -48,7 +48,7 @@ Feature: Medicaid SPA State Details View - Card View with Actions
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "Medicaid SPA" exists for the Type
+        Then verify a type containing "Medicaid SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -75,7 +75,7 @@ Feature: Medicaid SPA State Details View - Card View with Actions
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "Medicaid SPA" exists for the Type
+        Then verify a type containing "Medicaid SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -103,7 +103,7 @@ Feature: Medicaid SPA State Details View - Card View with Actions
         Then verify withdraw package action exists
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "Medicaid SPA" exists for the Type
+        Then verify a type containing "Medicaid SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -130,7 +130,7 @@ Feature: Medicaid SPA State Details View - Card View with Actions
         Then verify Respond to Formal RAI action exists
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "Medicaid SPA" exists for the Type
+        Then verify a type containing "Medicaid SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         #Then verify there is an Initial Submission Date header in the details section
@@ -157,7 +157,7 @@ Feature: Medicaid SPA State Details View - Card View with Actions
         Then verify Withdraw Formal RAI Response package action exists
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "Medicaid SPA" exists for the Type
+        Then verify a type containing "Medicaid SPA" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section

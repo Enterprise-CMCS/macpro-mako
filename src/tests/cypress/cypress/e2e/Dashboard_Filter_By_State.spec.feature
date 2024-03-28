@@ -5,16 +5,6 @@ Feature: OY2-13094 Package Dashboard - Filter by State
         When Login with "an Active" "Help Desk" user
         Then click the main Dashboard Button
 
-    Scenario: Screen enhancement
-        Then Click on Filter Button
-        Then verify state dropdown filter exists
-        Then click on state dropdown filter
-        Then verify state filter select exists
-        Then verify no states are selected
-        Then Click on the close Filter Button
-        Then Click on My Account
-        Then click the sign out button
-
     Scenario: filter by state full name
         Then Click on Filter Button
         Then click on state dropdown filter
@@ -25,14 +15,14 @@ Feature: OY2-13094 Package Dashboard - Filter by State
         Then Click on My Account
         Then click the sign out button
 
-    # Scenario: filter by state Abbrev
-    #     Then Click on Filter Button
-    #     Then click on state dropdown filter
-    #     Then set value on state filter select to "NJ"
-    #     Then verify states selected includes "NJ"
-    #     Then Click on the close Filter Button
-    #     Then Click on My Account
-    #     Then click the sign out button
+    Scenario: filter by state Abbrev
+        Then Click on Filter Button
+        Then click on state dropdown filter
+        Then set value on state filter select to "VA"
+        Then verify states selected includes "VA"
+        Then Click on the close Filter Button
+        Then Click on My Account
+        Then click the sign out button
 
     Scenario:  filter by non-state
         Then Click on Filter Button

@@ -24,7 +24,7 @@ Feature: Waiver Package Details View:  Temporary Extension for a State User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b) Temporary Extension" exists for the Type
+        Then verify a type containing "1915(b) Temporary Extension" exists for the Authority
         Then verify there is an Initial Submission Date header in the details section
         Then verify a date exists for the Initial Submission Date
         Then verify the Initial Submission caret button exists
@@ -45,7 +45,7 @@ Feature: Waiver Package Details View:  Temporary Extension for a State User
         Then verify there are no package actions available
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(c) Temporary Extension" exists for the Type
+        Then verify a type containing "1915(c) Temporary Extension" exists for the Authority
         Then verify there is an Initial Submission Date header in the details section
         Then verify a date exists for the Initial Submission Date
         Then verify the Initial Submission caret button exists

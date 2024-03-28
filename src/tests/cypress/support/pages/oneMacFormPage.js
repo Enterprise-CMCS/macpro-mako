@@ -180,7 +180,7 @@ export class oneMacFormPage {
     cy.get(errorMessageParentID).should("be.visible");
     cy.get(errorMessageParentID).contains(errorMessage);
   }
-  verifyTypeIs(s) {
+  verifyAuthorityIs(s) {
     cy.xpath(typeHeader).next().contains(s);
   }
   verifyWaiverAuthorityContains(whatAuthority) {

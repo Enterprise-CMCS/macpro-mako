@@ -22,7 +22,7 @@ Feature: Package Dashboard Temporary Extension
         Then click the Waiver Number link in the first row
         Then verify the details section exists
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(c) Temporary Extension" exists for the Type
+        Then verify a type containing "1915(c) Temporary Extension" exists for the Authority
         Then verify there is a Approved Initial or Renewal Number header in the details section
         Then verify the Approved Initial or Renewal Number ID is the approved intial waiver number 1
         Then verify there is an Initial Submission Date header in the details section

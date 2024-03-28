@@ -22,7 +22,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the form title is "Withdraw Waiver"
         Then verify Form Intro Text is "Complete this action to withdraw this 1915(c) Appendix K Amendment package. Once completed, you will not be able to resubmit the 1915(c) Appendix K Amendment package or undo this action."
         Then verify ID Label is "Waiver Amendment Number"
-        Then verify Type is "1915(c) Appendix K Amendment"
+        Then verify Authority is "1915(c) Appendix K Amendment"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify the submit button is disabled
@@ -41,7 +41,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the form title is "Withdraw Waiver"
         Then verify Form Intro Text is "Complete this action to withdraw this 1915(c) Appendix K Amendment package. Once completed, you will not be able to resubmit the 1915(c) Appendix K Amendment package or undo this action."
         Then verify ID Label is "Waiver Amendment Number"
-        Then verify Type is "1915(c) Appendix K Amendment"
+        Then verify Authority is "1915(c) Appendix K Amendment"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify the submit button is disabled

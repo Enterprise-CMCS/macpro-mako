@@ -24,7 +24,7 @@ Feature: Waiver Package Details View: Initial Waivers
         Then verify the details section exists
         #Then verify the package details title contains "Initial Waiver Package"
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b)" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -55,7 +55,7 @@ Feature: Waiver Package Details View: Initial Waivers
         Then verify the details section exists
         #Then verify the package details title contains "Initial Waiver Package"
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b)" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -85,7 +85,7 @@ Feature: Waiver Package Details View: Initial Waivers
         Then verify the details section exists
         #Then verify the package details title contains "Initial Waiver Package"
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b)" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -115,7 +115,7 @@ Feature: Waiver Package Details View: Initial Waivers
         Then verify the details section exists
         #Then verify the package details title contains "Initial Waiver Package"
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b)" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -145,7 +145,7 @@ Feature: Waiver Package Details View: Initial Waivers
         Then verify the details section exists
         #Then verify the package details title contains "Initial Waiver Package"
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b)" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -175,7 +175,7 @@ Feature: Waiver Package Details View: Initial Waivers
         Then verify the details section exists
         #Then verify the package details title contains "Initial Waiver Package"
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b)" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -206,7 +206,7 @@ Feature: Waiver Package Details View: Initial Waivers
         Then verify the details section exists
         #Then verify the package details title contains "Initial Waiver Package"
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b)" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section
@@ -236,7 +236,7 @@ Feature: Waiver Package Details View: Initial Waivers
         Then verify the details section exists
         #Then verify the package details title contains "Initial Waiver Package"
         Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b)" exists for the Type
+        Then verify a type containing "1915(b)" exists for the Authority
         Then verify there is a State header in the details section
         Then verify a state exists for the State
         Then verify there is an Initial Submission Date header in the details section

@@ -55,9 +55,8 @@ const filterByText = "//h4[text()='Filters']";
 //Element is Xpath use cy.xpath instead of cy.get
 const closeButton = "//header/button[1]";
 //Element is Xpath use cy.xpath instead of cy.get
-const typeDropDownFilter = "//button[text()='Type']";
+const authorityDropDownFilter = "//button[text()='Authority']";
 const finalDispositionDatePickerFilter = "#finalDispositionDate-date-filter";
-const typeDropDown = "//button[text()='Type']";
 const authorityDropDown = "//button[text()='Authority']";
 const actionTypeDropDown = "//button[text()='Action Type']";
 const statusDropDown = "//button[text()='Status']";
@@ -75,7 +74,7 @@ const initialSubmissionDateFilterDropdown =
 const dateDatePickerFilter =
   "#date";
 const formalRAIReceivedDateFilterDropdown =
-  "//button[text()='Formal RAI Response']";
+  "//button[text()='Formal RAI Received']";
 const formalRAIReceivedDatePickerFilter =
   "#latestRaiResponseTimestamp-date-filter";
 //Element is Xpath use cy.xpath instead of cy.get
@@ -85,7 +84,7 @@ const quarterToDateDatePickerBtn =
   "//button[contains(text(),'Quarter To Date')]";
 //Element is Xpath use cy.xpath instead of cy.get
 const statusDropDownFilter = "//button[text()='Status']";
-const packageRowOneInitialSubmissionDate = "#submissionTimestamp-0";
+const packageRowOneInitialSubmissionDate = "tr:nth-of-type(1) > td:nth-of-type(6)";
 const packageRowOneFormalRAIReceived = "#latestRaiResponseTimestamp-0";
 //Element is Xpath use cy.xpath instead of cy.get
 const resetButton = "//button[contains(text(),'Reset')]";
@@ -396,11 +395,11 @@ export class oneMacDashboardPage {
   verifycloseButtonExists() {
     cy.xpath(closeFilterBtn).parent("button").should("be.visible");
   }
-  verifytypeDropDownExists() {
-    cy.xpath(typeDropDown).should("be.visible");
+  verifyAuthorityDropDownExists() {
+    cy.xpath(authorityDropDown).should("be.visible");
   }
-  verifytypeDropDownFilterExists() {
-    cy.xpath(typeDropDownFilter).should("be.visible");
+  verifyauthorityDropDownFilterExists() {
+    cy.xpath(authorityDropDownFilter).should("be.visible");
   }
   verifyInitialSubmissionDateFilterDropDownExists() {
     cy.xpath(initialSubmissionDateFilterDropdown).should("be.visible");
@@ -442,7 +441,7 @@ export class oneMacDashboardPage {
     cy.get(packageRowOneInitialSubmissionDate, { timeout: 15000 })
       .invoke("text")
       .then((dateText) => {
-        const date = new Date(packageRowOneInitialSubmissionDate);
+        const date = new Date(dateText);
         const today = new Date();
         let dateQuarter = Math.floor((date.getMonth() + 3) / 3);
         let todaysQuarter = Math.floor((today.getMonth() + 3) / 3);
@@ -465,11 +464,11 @@ export class oneMacDashboardPage {
     cy.xpath(resetButton).wait(1000);
     cy.xpath(resetButton).click();
   }
-  clickTypeDropDown() {
-    cy.xpath(typeDropDown).wait(1000);
-    cy.xpath(typeDropDown).click();
+  clickauthorityDropDown() {
+    cy.xpath(authorityDropDown).wait(1000);
+    cy.xpath(authorityDropDown).click();
   }
-  clickAuthorityDropDown(){
+  clickAuthorityDropDown() {
     cy.xpath(authorityDropDown).wait(1000);
     cy.xpath(authorityDropDown).click();
   }
@@ -714,13 +713,7 @@ export class oneMacDashboardPage {
   checkforUnsubmittedIsNotClickable() {
     cy.xpath(Unsubmitted).should("be.disabled");
   }
-  checkIfPackageListResultsExist() {
-    //must check if the first row says no results.
-    if (cy.get("tbody").find(packageRows).first().contains('No Results Found')) {
-      return false;
-    } //else
-    return true;
-  }
+
   verifyStateDropdownFilterExists() {
     cy.xpath(stateDropdownFilter).should("be.visible");
   }
@@ -735,7 +728,7 @@ export class oneMacDashboardPage {
     cy.xpath(filterInput).parent().prev().contains(state);
   }
   verifyFilterInputSelectIsEmpty() {
-    cy.xpath(filterInput).parent().prev().should("contain", "Select");
+    cy.xpath(filterInput).parent().prev().should("be.empty");
   }
   typeStateToSelect(state) {
     cy.xpath(filterInput).focus().type(state);

@@ -22,8 +22,7 @@ const detailSection =
   "#package_details";
 const disableRAIResponseWithdrawAction =
   "//a[text()='Disable Formal RAI Response Withdraw']";
-const CHIPSPAIDHeader = "//h3[contains(text(),'SPA ID')]";
-const typeHeader = "//h3[contains(text(),'Type')]";
+const authorityHeader = "//h3[contains(text(),'Authority')]";
 const parentWaiverNumberHeader =
   "//h3[contains(text(),'Approved Initial or Renewal Number')]";
 const stateHeader = "//h3[text()='State']";
@@ -54,7 +53,6 @@ const initialSubmissionCaretBtn =
 const downloadAllBtn = "//button[contains(text(),'Download all documents')]";
 const withdrawalRequestedCaretBtn =
   '//h3//button[contains(@id,"Package0_caret-button")]';
-const subStatus = "#substatus";
 //this is to parse dates like 02/12/2024
 const dateRegex = /[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/;
 const issueRAIBtn = "//a/*[text()= 'Issue Formal RAI']";
@@ -130,11 +128,11 @@ export class oneMacPackageDetailsPage {
   verifyTitleContains(s) {
     cy.get(detailSection).find("h2").first().contains(s);
   }
-  verifyTypeHeaderExists() {
-    cy.xpath(typeHeader).should("be.visible");
+  verifyAuthorityHeaderExists() {
+    cy.xpath(authorityHeader).should("be.visible");
   }
-  verifyTypeIs(s) {
-    cy.xpath(typeHeader).parent().contains(s);
+  verifyAuthorityIs(s) {
+    cy.xpath(authorityHeader).parent().contains(s);
   }
   verifyParentWaiverNumberHeaderExists() {
     cy.xpath(parentWaiverNumberHeader).should("be.visible");

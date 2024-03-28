@@ -28,7 +28,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the form is titled "Withdraw Waiver"
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
-        Then verify Type is "1915(b) Waiver"
+        Then verify Authority is "1915(b) Waiver"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
@@ -63,7 +63,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the form is titled "Withdraw Waiver"
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
-        Then verify Type is "1915(b) Waiver"
+        Then verify Authority is "1915(b) Waiver"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
@@ -97,7 +97,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the form is titled "Withdraw Waiver"
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
-        Then verify Type is "1915(b) Waiver"
+        Then verify Authority is "1915(b) Waiver"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
@@ -132,7 +132,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the form is titled "Withdraw Waiver"
         Then verify Form Intro Text is "Complete this form to withdraw"
         Then verify ID Label is "Waiver Number"
-        Then verify Type is "1915(b) Waiver"
+        Then verify Authority is "1915(b) Waiver"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists

@@ -896,8 +896,8 @@ Then("verify Filters header Exists", () => {
 Then("verify the filter close button exists", () => {
   OneMacDashboardPage.verifycloseButtonExists();
 });
-Then("verify type dropdown filter exists", () => {
-  OneMacDashboardPage.verifytypeDropDownExists();
+Then("verify authority dropdown filter exists", () => {
+  OneMacDashboardPage.verifyAuthorityDropDownExists();
 });
 Then("verify reset Exists", () => {
   OneMacDashboardPage.verifyresetButtonExists();
@@ -1158,9 +1158,7 @@ Then("verify package row one exists", () => {
   OneMacDashboardPage.verifyPackageRowOneExists();
 });
 Then("verify Initial Submission Date column one date is this quarter", () => {
-  if (OneMacDashboardPage.checkIfPackageListResultsExist()) {
     OneMacDashboardPage.verifypackageRowOneInitialSubmissionDateIsThisQuarter();
-  }
 });
 Then("verify states selected includes {string}", (state) => {
   OneMacDashboardPage.verifyStatesSelectedIncludes(state);
@@ -1448,10 +1446,10 @@ Then("verify the package details title contains {string}", (string) => {
 });
 
 Then("verify there is a Type header in the details section", () => {
-  OneMacPackageDetailsPage.verifyTypeHeaderExists();
+  OneMacPackageDetailsPage.verifyAuthorityHeaderExists();
 });
-Then("verify a type containing {string} exists for the Type", (type) => {
-  OneMacPackageDetailsPage.verifyTypeIs(type);
+Then("verify a type containing {string} exists for the Authority", (type) => {
+  OneMacPackageDetailsPage.verifyAuthorityIs(type);
 });
 Then("verify the type is 1915c Temporary Extension", () => {
   OneMacPackageDetailsPage.verifyTypeContains1915cTempExtension();
@@ -1838,8 +1836,8 @@ Then("verify Form Intro Text is {string}", (introText) => {
 Then("verify ID Label is {string}", (label) => {
   OneMacFormPage.verifyIDLabelIs(label);
 });
-Then("verify Type is {string}", (string) => {
-  OneMacFormPage.verifyTypeIs(string);
+Then("verify Authority is {string}", (string) => {
+  OneMacFormPage.verifyAuthorityIs(string);
 });
 Then("verify {string} is an Attachment Type", (attachmentType) => {
   OneMacFormPage.verifyAttachmentType(attachmentType);
