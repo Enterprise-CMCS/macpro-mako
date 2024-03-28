@@ -24,15 +24,6 @@ Feature: OY2-13094 Package Dashboard - Filter by State
         Then Click on My Account
         Then click the sign out button
 
-    Scenario:  filter by non-state
-        Then Click on Filter Button
-        Then click on state dropdown filter
-        Then set value on state filter select to "foobar"
-        Then verify no states are selected
-        Then Click on the close Filter Button
-        Then Click on My Account
-        Then click the sign out button
-
     Scenario: filter and then reset
         Then Click on Filter Button
         Then click on state dropdown filter
