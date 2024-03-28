@@ -1,8 +1,12 @@
 import { Handler } from "aws-lambda";
-import * as os from "./../../../libs/opensearch-lib";
 import { KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
-import { ErrorType, getTopic, logError } from "../libs/sink-lib";
+import {
+  ErrorType,
+  bulkUpdateDataWrapper,
+  getTopic,
+  logError,
+} from "../libs/sink-lib";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
@@ -20,20 +24,9 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
         case "aws.seatool.debezium.cdc.SEA.dbo.Type":
-          docs.push(
-            ...(await subtypes(event.records[topicPartition], topicPartition)),
-          );
+          await subtypes(event.records[topicPartition], topicPartition);
           break;
       }
-    }
-    try {
-      await os.bulkUpdateData(osDomain, index, docs);
-    } catch (error: any) {
-      logError({
-        type: ErrorType.BULKUPDATE,
-        metadata: { event: loggableEvent },
-      });
-      throw error;
     }
   } catch (error) {
     logError({ type: ErrorType.UNKNOWN, metadata: { event: loggableEvent } });
@@ -72,5 +65,5 @@ const subtypes = async (
       });
     }
   }
-  return docs;
+  await bulkUpdateDataWrapper(osDomain, index, docs);
 };

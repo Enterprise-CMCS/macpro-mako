@@ -172,3 +172,14 @@ export const zExtensionOriginalWaiverNumberSchema = z
     message:
       "According to our records, this Approved Initial or Renewal Waiver Number is not approved. You must supply an approved Initial or Renewal Waiver Number.",
   });
+
+export const zUpdateIdSchema = z
+  .string()
+  .regex(/^[a-zA-Z0-9.-]*$/, {
+    message:
+      "The new ID can only contain letters, numbers, dots, and dashes without any whitespace.",
+  })
+  .refine(async (value) => !(await itemExists(value)), {
+    message:
+      "According to our records, this ID already exists. Please check the ID and try entering it again.",
+  });

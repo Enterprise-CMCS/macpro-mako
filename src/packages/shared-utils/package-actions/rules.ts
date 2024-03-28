@@ -5,7 +5,12 @@ import {
   SEATOOL_STATUS,
   finalDispositionStatuses,
 } from "shared-types";
-import { isStateUser, isCmsWriteUser, isIDM } from "../user-helper";
+import {
+  isStateUser,
+  isCmsWriteUser,
+  isIDM,
+  isCmsSuperUser,
+} from "../user-helper";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
@@ -84,6 +89,10 @@ const arWithdrawPackage: ActionRule = {
     !checker.hasStatus(finalDispositionStatuses) &&
     isStateUser(user),
 };
+const arUpdateId: ActionRule = {
+  action: Action.UPDATE_ID,
+  check: (_, user) => isCmsSuperUser(user),
+};
 
 // TODO: Add rule for remove-appk-child
 
@@ -95,4 +104,5 @@ export default [
   arWithdrawRaiResponse,
   arWithdrawPackage,
   arTempExtension,
+  arUpdateId,
 ];

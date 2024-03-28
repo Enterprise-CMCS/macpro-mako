@@ -153,23 +153,28 @@ export const SubmissionButtons = ({ onSubmit }: { onSubmit?: () => void }) => {
 
 export const PackageSection = () => {
   const { authority, id } = useParams() as { authority: Authority; id: string };
-
+  const lcAuthority = authority.toLowerCase();
+  // We should pass in the already lowercased Authority, right?  todo
   return (
     <section className="flex flex-col my-8 space-y-8">
       <div>
         <p>
-          {authority === Authority["1915b"] && "Waiver Number"}
-          {authority === Authority["CHIP_SPA"] && "Package ID"}
-          {authority === Authority["MED_SPA"] && "Package ID"}
+          {[Authority.CHIP_SPA, Authority.MED_SPA].includes(
+            authority.toLowerCase() as Authority,
+          ) && "Package ID"}
+          {[Authority["1915b"], Authority["1915c"]].includes(
+            authority.toLowerCase() as Authority,
+          ) && "Waiver Number"}
         </p>
         <p className="text-xl">{id}</p>
       </div>
       <div>
         <p>Authority</p>
         <p className="text-xl">
-          {authority === Authority["1915b"] && "1915(b) Waiver"}
-          {authority === Authority["CHIP_SPA"] && "CHIP SPA"}
-          {authority === Authority["MED_SPA"] && "Medicaid SPA"}
+          {lcAuthority === Authority["1915b"] && "1915(b) Waiver"}
+          {lcAuthority === Authority["1915c"] && "1915(c) Waiver"}
+          {lcAuthority === Authority["CHIP_SPA"] && "CHIP SPA"}
+          {lcAuthority === Authority["MED_SPA"] && "Medicaid SPA"}
         </p>
       </div>
     </section>
@@ -292,9 +297,15 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
       });
       alert.setBannerShow(true);
       alert.setBannerDisplayOn(
-        location.state?.from?.split("?")[0] ?? "/dashboard",
+        location.state?.from && !location.pathname.endsWith("/update-id")
+          ? location.state.from
+          : "/dashboard",
       );
-      navigate(location.state?.from ?? "/dashboard");
+      navigate(
+        location.state?.from && !location.pathname.endsWith("/update-id")
+          ? location.state.from
+          : "/dashboard",
+      );
     }
   }, [data]);
 };
