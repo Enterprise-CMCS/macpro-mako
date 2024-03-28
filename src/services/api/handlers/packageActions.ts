@@ -164,11 +164,6 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
           WHERE ID_Number = '${result.data.id}'
       `);
 
-    // append additional data for emails
-    result.data.notificationMetadata = {
-      submissionDate: getNextBusinessDayTimestamp()
-    };
-
     // write to kafka here
     await produceMessage(
       TOPIC_NAME,
@@ -176,6 +171,9 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
       JSON.stringify({
         ...result.data,
         actionType: Action.WITHDRAW_RAI,
+        notificationMetadata: {
+          submissionDate: getNextBusinessDayTimestamp()
+        },
       }),
     );
 
@@ -278,6 +276,9 @@ export async function respondToRai(body: RaiResponse, document: any) {
         ...result.data,
         responseDate: today,
         actionType: Action.RESPOND_TO_RAI,
+        notificationMetadata: {
+          submissionDate: getNextBusinessDayTimestamp()
+        },
       }),
     );
 
