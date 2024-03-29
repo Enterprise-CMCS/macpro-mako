@@ -2,11 +2,11 @@ import { DateTime } from "luxon";
 
 import { getLookupValues } from "./lookup-lib";
 
-const actionTypeLookup = [
-    "New" = "Initial Waiver",
-    "Amend" = "Waiver Amendment",
-    "Renew" = "Waiver Renewal",
-];
+const actionTypeLookup = {
+    New: "Initial Waiver",
+    Amend: "Waiver Amendment",
+    Renew: "Waiver Renewal",
+};
 
 const formatAttachments = (formatType, attachmentList) => {
     const formatChoices = {
