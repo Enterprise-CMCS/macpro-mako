@@ -91,4 +91,5 @@ export type Index =
   | "changelog"
   | "types"
   | "subtypes"
-  | "legacyinsights";
+  | "legacyinsights"
+  | "cpocs"

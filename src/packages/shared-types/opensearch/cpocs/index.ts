@@ -6,9 +6,9 @@ import {
   AggQuery,
 } from "../_";
 import { z } from "zod";
-import { SPA_Type } from "./transforms";
+import { cpocs } from "./transforms";
 
-export type Document = z.infer<SPA_Type.Schema>;
+export type Document = z.infer<cpocs.Schema>;
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
