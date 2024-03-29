@@ -35,6 +35,7 @@ import {
   DescriptionInput,
   SubjectInput,
 } from "../shared-components";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -98,6 +99,12 @@ export const MedicaidSpaFormPage = () => {
   const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      return !!data;
+    },
+  });
   const cancelOnAccept = useCallback(() => {
     modal.setModalOpen(false);
     navigate(originPath ? { path: originPath } : { path: "/dashboard" });
@@ -126,7 +133,7 @@ export const MedicaidSpaFormPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+      syncRecord(formData.id);
     } catch (e) {
       console.error(e);
     }
@@ -250,7 +257,7 @@ export const MedicaidSpaFormPage = () => {
               Missing or malformed information. Please see errors above.
             </Alert>
           ) : null}
-          {form.formState.isSubmitting ? (
+          {form.formState.isSubmitting || form.formState.isSubmitSuccessful ? (
             <div className="p-4">
               <LoadingSpinner />
             </div>

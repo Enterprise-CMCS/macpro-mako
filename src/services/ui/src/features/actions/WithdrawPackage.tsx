@@ -2,7 +2,7 @@ import { ReactElement, useCallback } from "react";
 import { Path, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Authority, opensearch } from "shared-types";
+import { Authority, SEATOOL_STATUS, opensearch } from "shared-types";
 import { Info } from "lucide-react";
 import {
   Button,
@@ -35,6 +35,7 @@ import {
   useOriginPath,
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 const attachmentInstructions: Record<SetupOptions, ReactElement> = {
   "Medicaid SPA": (
@@ -53,9 +54,7 @@ const attachmentInstructions: Record<SetupOptions, ReactElement> = {
 
 const addlInfoInstructions: Record<SetupOptions, ReactElement> = {
   "Medicaid SPA": (
-    <p>
-      Explain your need for withdrawal, or upload supporting documentation.
-    </p>
+    <p>Explain your need for withdrawal, or upload supporting documentation.</p>
   ),
   "CHIP SPA": <p>Explain your need for withdrawal.</p>,
 };
@@ -77,6 +76,12 @@ export const WithdrawPackage = ({
   const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      return data._source.seatoolStatus === SEATOOL_STATUS.WITHDRAWN;
+    },
+  });
   const cancelOnAccept = useCallback(() => {
     modal.setModalOpen(false);
     navigate(originPath ? { path: originPath } : { path: "/dashboard" });
@@ -101,9 +106,9 @@ export const WithdrawPackage = ({
           // when any queries are added, such as the case of /details?id=...
           urlQuery.get(ORIGIN)
             ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-            : "/dashboard"
+            : "/dashboard",
         );
-        navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+        syncRecord(id);
       } catch (e) {
         console.error(e);
       }
@@ -112,7 +117,9 @@ export const WithdrawPackage = ({
   return (
     <Form {...form}>
       <form>
-        {form.formState.isSubmitting && <LoadingSpinner />}
+        {(form.formState.isSubmitting || form.formState.isSubmitSuccessful) && (
+          <LoadingSpinner />
+        )}
         {/* Intro */}
         <ActionFormIntro title={`Withdraw ${item._source.authority} Package`}>
           <RequiredIndicator /> Indicates a required field
@@ -175,7 +182,7 @@ export const WithdrawPackage = ({
                     <li className="ml-8 my-2" key={idx}>
                       {err.message as string}
                     </li>
-                  )
+                  ),
               )}
             </ul>
           </Alert>

@@ -4,7 +4,7 @@ import * as SC from "@/features/package-actions/shared-components";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
-import { Authority } from "shared-types";
+import { Authority, SEATOOL_STATUS } from "shared-types";
 import { unflatten } from "flat";
 import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
 import { submit } from "@/api/submissionService";
@@ -70,7 +70,14 @@ export const RespondToRai = () => {
 
   SC.useDisplaySubmissionAlert(
     "RAI response submitted",
-    `The RAI response for ${id} has been submitted.`
+    `The RAI response for ${id} has been submitted.`,
+    (data) => {
+      return (
+        data._source.seatoolStatus === SEATOOL_STATUS.PENDING &&
+        !!data._source.raiReceivedDate
+      );
+    },
+    id,
   );
 
   return (

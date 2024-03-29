@@ -33,6 +33,7 @@ import {
   SubjectInput,
 } from "@/features/submission/shared-components";
 import { SubmitAndCancelBtnSection } from "../shared-components";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 const formSchema = z
   .object({
@@ -117,6 +118,12 @@ export const Capitated1915BWaiverRenewalPage = () => {
   const urlQuery = useQueryString();
   const alert = useAlertContext();
   const originPath = useOriginPath();
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      return !!data;
+    },
+  });
 
   const handleSubmit: SubmitHandler<Waiver1915BCapitatedRenewal> = async (
     formData,
@@ -141,7 +148,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+      syncRecord(formData.id);
     } catch (e) {
       console.error(e);
     }

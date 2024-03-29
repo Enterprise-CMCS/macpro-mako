@@ -130,7 +130,10 @@ export const TempExtensionWrapper = () => {
 
 export const TemporaryExtension = () => {
   const { handleSubmit, formMethods } = SC.useSubmitForm();
-  const { id: urlId, authority: urlAuthority } = useParams();
+  const { id: urlId, authority: urlAuthority } = useParams() as {
+    id: string;
+    authority: string;
+  };
   const formId = formMethods.getValues("originalWaiverNumber");
   const formAuthority = formMethods.getValues("authority");
   const authority = urlAuthority ? urlAuthority : formAuthority;
@@ -139,6 +142,10 @@ export const TemporaryExtension = () => {
   SC.useDisplaySubmissionAlert(
     "Temporary Extension issued",
     `The Temporary Extension Request for ${parentId} has been submitted.`,
+    (data) => {
+      return !!data;
+    },
+    parentId,
   );
 
   return (
