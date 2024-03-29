@@ -10,27 +10,7 @@ export const queryCpocs = async () => {
   }
 
   const query = {
-    size: 200,
-    // query: {
-    //   bool: {
-    //     must: [
-    //       {
-    //         match: {
-    //           authorityId: authorityId,
-    //         },
-    //       },
-    //     ],
-    //     must_not: [
-    //       {
-    //         match_phrase: {
-    //           name: {
-    //             query: "Do Not Use",
-    //           },
-    //         },
-    //       },
-    //     ],
-    //   },
-    // },
+    size: 1000,
     sort: [
       {
         "lastName.keyword": {
@@ -49,7 +29,6 @@ export const getCpocs = async (event: APIGatewayEvent) => {
       body: { message: "Event body required" },
     });
   }
-  // const body = JSON.parse(event.body) as GetCpocsBody;
   try {
     const result = await queryCpocs();
     if (!result)

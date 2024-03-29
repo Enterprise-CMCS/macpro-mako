@@ -14,7 +14,11 @@ export function CPOCSelect<TFieldValues extends FieldValues>({
 }: TypeSelectFormFieldProps<TFieldValues>) {
   const { data } = useGetCPOCs();
 
-  console.log(data);
+  const options = data?.map((item: any) => ({
+    value: item.id,
+    label: `${item.lastName}, ${item.firstName}`,
+  }));
+  console.log(JSON.stringify(options, null, 2));
 
   return (
     <Inputs.FormField
@@ -30,8 +34,8 @@ export function CPOCSelect<TFieldValues extends FieldValues>({
             <Select
               value={field.value}
               onChange={(val) => field.onChange(val)}
-              options={[{ Officer_ID: "hello", Email: "world" }] as any}
-              closeMenuOnSelect={false}
+              options={options}
+              closeMenuOnSelect={true}
               className="border border-black shadow-sm rounded-sm"
               placeholder="- Select -"
             />
