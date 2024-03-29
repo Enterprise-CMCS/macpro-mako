@@ -31,24 +31,12 @@ import {
 
 import { useQuery as useQueryString } from "@/hooks";
 import {
-  DescriptionInput,
-  SubjectInput,
   AdditionalInfoInput,
 } from "../shared-components";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
-  subject: z
-    .string()
-    .trim()
-    .min(1, { message: "This field is required" })
-    .max(120, { message: "Subject should be under 120 characters" }),
-  description: z
-    .string()
-    .trim()
-    .min(1, { message: "This field is required" })
-    .max(4000, { message: "Description should be under 4000 characters" }),
   attachments: z.object({
     currentStatePlan: zAttachmentRequired({ min: 1 }),
     amendedLanguage: zAttachmentRequired({ min: 1 }),
@@ -191,16 +179,6 @@ export const ChipSpaFormPage = () => {
                   <Inputs.FormMessage />
                 </Inputs.FormItem>
               )}
-            />
-            <SubjectInput
-              control={form.control}
-              name="subject"
-              helperText="The title or purpose of the SPA"
-            />
-            <DescriptionInput
-              control={form.control}
-              name="description"
-              helperText="A summary of the SPA. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
             />
           </SectionCard>
           <SectionCard title="Attachments">

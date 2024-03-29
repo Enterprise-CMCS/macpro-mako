@@ -27,11 +27,7 @@ import {
   useOriginPath,
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
-import {
-  AdditionalInfoInput,
-  DescriptionInput,
-  SubjectInput,
-} from "@/features/submission/shared-components";
+import { AdditionalInfoInput } from "@/features/submission/shared-components";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 
 const formSchema = z
@@ -39,16 +35,6 @@ const formSchema = z
     waiverNumber: zRenewalOriginalWaiverNumberSchema,
     id: zRenewalWaiverNumberSchema,
     proposedEffectiveDate: z.date(),
-    subject: z
-      .string()
-      .trim()
-      .min(1, { message: "This field is required" })
-      .max(120, { message: "Subject should be under 120 characters" }),
-    description: z
-      .string()
-      .trim()
-      .min(1, { message: "This field is required" })
-      .max(4000, { message: "Description should be under 4000 characters" }),
     attachments: z.object({
       bCapWaiverApplication: zAttachmentRequired({ min: 1 }),
       bCapCostSpreadsheets: zAttachmentRequired({ min: 1 }),
@@ -255,16 +241,6 @@ export const Capitated1915BWaiverRenewalPage = () => {
                   <Inputs.FormMessage />
                 </Inputs.FormItem>
               )}
-            />
-            <SubjectInput
-              control={form.control}
-              name="subject"
-              helperText="The title or purpose of the Waiver"
-            />
-            <DescriptionInput
-              control={form.control}
-              name="description"
-              helperText="A summary of the Waiver. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
             />
           </SectionCard>
           <SectionCard title="Attachments">
