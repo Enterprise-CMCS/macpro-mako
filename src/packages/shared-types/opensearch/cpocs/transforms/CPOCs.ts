@@ -7,4 +7,4 @@ export const seaOfficersSchema = z.object({
   Email: z.string().nullish(),
 });
 
-export type Schema = z.infer<typeof seaOfficersSchema>;
+export type Schema = typeof seaOfficersSchema
