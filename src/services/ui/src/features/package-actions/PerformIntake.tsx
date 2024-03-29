@@ -1,12 +1,10 @@
-import { Alert, useParams } from "@/components";
+import {  useParams } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { z } from "zod";
-import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
 import { Authority, SEATOOL_AUTHORITIES_MAP_TO_ID } from "shared-types";
 import { unflatten } from "flat";
 import { submit } from "@/api/submissionService";
-import * as Inputs from "@/components/Inputs";
 import { useFormContext } from "react-hook-form";
 import {
   CPOCSelect,
@@ -72,7 +70,6 @@ export const PerformIntake = () => {
   );
 
   const authorityId = SEATOOL_AUTHORITIES_MAP_TO_ID[authority];
-  console.log(authorityId);
 
   return (
     <>
@@ -95,7 +92,7 @@ export const PerformIntake = () => {
         <SubjectInput
           control={form.control}
           name="subject"
-          helperText="The title or purpose of the SPA"
+          helperText={`The title or purpose of the ${authority}`}
         />
         <DescriptionInput
           control={form.control}
@@ -105,7 +102,7 @@ export const PerformIntake = () => {
         <TypeSelect
           control={form.control}
           name="typeIds"
-          authorityId={authorityId} // chip authority
+          authorityId={authorityId}
         />
         <SubTypeSelect authorityId={authorityId} />
         <CPOCSelect control={form.control} name="cpoc" />
