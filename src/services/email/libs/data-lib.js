@@ -81,7 +81,7 @@ export const buildEmailData = async (bundle, data) => {
                 returnObject["submitter"] = (data.submitterEmail === "george@example.com") ? "\"George's Substitute\" <mako.stateuser@gmail.com>" : `"${data.submitterName}" <${data.submitterEmail}>`;
                 break;
             case "actionType":
-                returnObject["actionType"] = actionTypeLookup[data.actionType] ?? "Waiver";
+                returnObject["actionType"] = actionTypeLookup[data.seaActionType] ?? "Waiver";
                 break;
             case "osgEmail":
             case "chipInbox":
