@@ -1,14 +1,3 @@
-//
-//
-//
-//
-// Be advised:  This plan_types file holds the authorities; the authroity id and its corresponding name.
-// Be advised:  The seatool table is called Plan_Types, hence this file's name.
-//
-//
-//
-//
-
 export const SEATOOL_AUTHORITIES: { [key: string]: string } = {
   "121": "1115",
   "122": "1915(b)",
@@ -20,4 +9,17 @@ export const SEATOOL_AUTHORITIES: { [key: string]: string } = {
   "128": "APD",
   "129": "ADM",
   "130": "UPL",
+};
+
+export const SEATOOL_AUTHORITIES_MAP_TO_ID: { [key: string]: number } = {
+  ["1115"]: 121,
+  ["1915(b)"]: 122,
+  ["1915(c)"]: 123,
+  ["CHIP SPA"]: 124,
+  ["Medicaid SPA"]: 125,
+  ["1115 Indep. Plus"]: 126,
+  ["1915(c) Indep. Plus"]: 127,
+  ["APD"]: 128,
+  ["ADM"]: 129,
+  ["UPL"]: 130,
 };

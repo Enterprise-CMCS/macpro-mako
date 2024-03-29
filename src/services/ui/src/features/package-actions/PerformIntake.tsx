@@ -1,21 +1,35 @@
-import { Alert } from "@/components";
-import { useParams } from "react-router-dom";
+import { Alert, useParams } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { z } from "zod";
 import { Info } from "lucide-react";
 import { getUser } from "@/api/useGetUser";
-import { Authority } from "shared-types";
+import { Authority, SEATOOL_AUTHORITIES_MAP_TO_ID } from "shared-types";
 import { unflatten } from "flat";
 import { submit } from "@/api/submissionService";
 import * as Inputs from "@/components/Inputs";
 import { useFormContext } from "react-hook-form";
+import {
+  CPOCSelect,
+  DescriptionInput,
+  SubTypeSelect,
+  SubjectInput,
+  TypeSelect,
+} from "../submission/shared-components";
 
 export const performIntakeSchema = z.object({
-  type: z.string(), // perhaps an id
-  // subtype: z.string(), // perhaps an id
-  // subject: z.string(),
-  // description: z.string(),
-  // cpoc: z.string(), // perhaps an id, but need the index built first
+  subject: z
+    .string()
+    .trim()
+    .min(1, { message: "This field is required" })
+    .max(120, { message: "Subject should be under 120 characters" }),
+  description: z
+    .string()
+    .trim()
+    .min(1, { message: "This field is required" })
+    .max(4000, { message: "Description should be under 4000 characters" }),
+  typeIds: z.array(z.number()).min(1, { message: "Required" }),
+  subTypeIds: z.array(z.number()).min(1, { message: "Required" }),
+  cpoc: z.string().min(1, { message: "CPOC is required" }),
 });
 
 export const onValidSubmission: SC.ActionFunction = async ({
@@ -50,20 +64,25 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
 export const PerformIntake = () => {
   const { handleSubmit } = SC.useSubmitForm();
-  const { id } = useParams() as { id: string; authority: Authority };
+  const { id, authority } = useParams("/action/:authority/:id/:type");
   const form = useFormContext();
   SC.useDisplaySubmissionAlert(
     "Intake Complete",
     `The Intake for ${id} has been completed.`,
   );
 
+  const authorityId = SEATOOL_AUTHORITIES_MAP_TO_ID[authority];
+  console.log(authorityId);
+
   return (
     <>
       <SC.Heading title={"Perform Intake"} />
       <SC.RequiredFieldDescription />
       <SC.ActionDescription>
-        Once you submit this form, the supplied information will be writted to
-        SEATool, and intake for the record will be complete.{" "}
+        <p>
+          Once you submit this form, the supplied information will be writted to
+          SEATool, and intake for the record will be complete.
+        </p>
         <strong>
           If you leave this page, you will lose your progress on this form.
         </strong>
@@ -73,31 +92,23 @@ export const PerformIntake = () => {
         className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         onSubmit={handleSubmit}
       >
-        <Inputs.FormField
+        <SubjectInput
           control={form.control}
-          name="type"
-          render={({ field }) => (
-            <Inputs.FormItem>
-              <div className="flex gap-4">
-                <Inputs.FormLabel className="font-semibold">
-                  Type <Inputs.RequiredIndicator />
-                </Inputs.FormLabel>
-              </div>
-              <Inputs.FormControl>
-                <Inputs.Input
-                  className="max-w-sm"
-                  {...field}
-                  onInput={(e) => {
-                    if (e.target instanceof HTMLInputElement) {
-                      e.target.value = e.target.value.toUpperCase();
-                    }
-                  }}
-                />
-              </Inputs.FormControl>
-              <Inputs.FormMessage />
-            </Inputs.FormItem>
-          )}
+          name="subject"
+          helperText="The title or purpose of the SPA"
         />
+        <DescriptionInput
+          control={form.control}
+          name="description"
+          helperText={`A summary of the ${authority}. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction.`}
+        />
+        <TypeSelect
+          control={form.control}
+          name="typeIds"
+          authorityId={authorityId} // chip authority
+        />
+        <SubTypeSelect authorityId={authorityId} />
+        <CPOCSelect control={form.control} name="cpoc" />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
         <SC.SubmissionButtons />
