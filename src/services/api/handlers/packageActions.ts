@@ -27,6 +27,7 @@ import {
   removeAppkChildSchema,
   opensearch,
   updateIdSchema,
+  performIntakeSchema,
 } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
@@ -531,6 +532,107 @@ export async function updateId(body: any) {
       body.id,
       JSON.stringify({
         actionType: Action.UPDATE_ID,
+        timestamp: now,
+        ...result.data,
+      }),
+    );
+    await transaction.commit();
+  } catch (err) {
+    // Rollback and log
+    await transaction.rollback();
+    console.error("Error executing query:", err);
+    return response({
+      statusCode: 500,
+      body: err instanceof Error ? { message: err.message } : err,
+    });
+  } finally {
+    // Close pool
+    await pool.close();
+  }
+
+  return response({
+    statusCode: 200,
+    body: {
+      message: "record successfully submitted",
+    },
+  });
+}
+
+export async function performIntake(body: any) {
+  console.log("CMS performing intake for a record.");
+
+  const result = performIntakeSchema.safeParse(body);
+  if (!result.success) {
+    console.error(
+      "validation error:  The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message,
+    );
+    return response({
+      statusCode: 400,
+      body: {
+        message: "Event validation error",
+      },
+    });
+  }
+  console.log(JSON.stringify(result.data, null, 2));
+
+  const now = new Date().getTime();
+  const pool = await sql.connect(config);
+  const transaction = new sql.Transaction(pool);
+  try {
+    await transaction.begin();
+
+    // Generate INSERT statements for typeIds
+    const typeIdsValues = result.data.typeIds
+      .map((typeId: number) => `('${body.id}', '${typeId}')`)
+      .join(",\n");
+
+    const typeIdsInsert = typeIdsValues
+      ? `INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID) VALUES ${typeIdsValues};`
+      : "";
+
+    // Generate INSERT statements for subTypeIds
+    const subTypeIdsValues = result.data.subTypeIds
+      .map((subTypeId: number) => `('${body.id}', '${subTypeId}')`)
+      .join(",\n");
+
+    const subTypeIdsInsert = subTypeIdsValues
+      ? `INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID) VALUES ${subTypeIdsValues};`
+      : "";
+
+    const query = `
+      DECLARE @TitleName NVARCHAR(MAX) = ${
+        body.subject ? `'${body.subject.replace("'", "''")}'` : "NULL"
+      };
+      DECLARE @SummaryMemo NVARCHAR(MAX) = ${
+        body.description ? `'${body.description.replace("'", "''")}'` : "NULL"
+      };
+      DECLARE @StatusMemo NVARCHAR(MAX) = ${buildStatusMemoQuery(
+        body.id,
+        "Package Submitted",
+        "insert",
+      )}
+      
+      -- Main insert into State_Plan
+      INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo, Action_Type)
+      VALUES ('${body.id}', '${body.state}', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo, @ActionTypeID);
+
+      // -- Insert all types into State_Plan_Service_Types
+      // ${typeIdsInsert}
+  
+      // -- Insert all types into State_Plan_Service_SubTypes
+      // ${subTypeIdsInsert}
+      `;
+
+    await transaction.request().query(query);
+
+    await produceMessage(
+      TOPIC_NAME,
+      body.id,
+      JSON.stringify({
+        actionType: Action.PERFORM_INTAKE,
         timestamp: now,
         ...result.data,
       }),

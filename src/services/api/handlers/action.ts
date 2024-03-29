@@ -16,6 +16,7 @@ import {
   updateId,
   withdrawPackage,
   withdrawRai,
+  performIntake,
 } from "./packageActions";
 
 export const handler = async (event: APIGatewayEvent) => {
@@ -98,6 +99,9 @@ export const handler = async (event: APIGatewayEvent) => {
         break;
       case Action.UPDATE_ID:
         await updateId(body);
+        break;
+      case Action.PERFORM_INTAKE:
+        await performIntake(body);
         break;
       default:
         throw `No ${actionType} action available`;
