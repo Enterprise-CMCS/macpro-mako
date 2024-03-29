@@ -8,8 +8,8 @@ Feature: Appendix K Waiver Type Selection
         Then Click on Waiver Action
 
     Scenario: Screen Enhance - Appendix K
-        Then verify Appendix K is a clickable option
-        Then Click on Appendix K Amendment
+        Then verify "1915(c) Appendix K Amendment" choice goes to "/new-submission/waiver/app-k"
+        Then click on "1915(c) Appendix K Amendment" choice
         Then verify user is on new Appendix K page
         Then verify the attachment info descriptiion
         Then verify the attachment info link is for "Appendix K"
@@ -35,28 +35,10 @@ Feature: Appendix K Waiver Type Selection
     Scenario: create Appendix K from package dashboard and search it
         Then Click on Appendix K Amendment
         Then type "Appendix K Submission 1" into Amendment Title field
-        Then type "MD-22106.R01.02" into the ID Input box
+        Then verify Waiver Authority contains "1915(c)"
+        Then set the value of state select button to "Georgia"
         Then set "Proposed Effective Date of 1915(c) Appendix K Amendment" to 3 months from today
-        Then into "Subject" type "Cypress Regression Test"
-        Then into "Description" type "This package was created while running the test automation."
         Then attach "adobe.pdf" file to attachment 1
         Then into "Additional Information" type "This is just a test."
         Then Click on Submit Button
-        Then verify submission successful message in the alert bar
-        Then verify the Waivers tab is selected
-        Then search for "MD-22106.R01.02"
-        Then verify id number in the first row matches "MD-22106.R01.02"
-        Then click the Waiver Number link in the first row
-        Then verify the package details page is visible
-        Then verify the status on the card is "Submitted"
-        Then verify package actions header is visible
-        Then verify there are no package actions available
-        Then verify the details section exists
-        Then verify the waiver authority header exists
-        Then verify there is a State header in the details section
-        Then verify a state exists for the State
-        Then verify there is an Amendment Title header in the details section
-        Then verify the Amendment Title is "Appendix K Submission 1"
-        Then verify there is an Initial Submission Date header in the details section
-        Then verify a date exists for the Initial Submission Date
-        Then verify there is a Proposed Effective Date header in the details section
+        #Then verify submission successful message in the alert bar

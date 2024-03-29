@@ -20,7 +20,7 @@ const errorMessageLine2ID = "#componentIdStatusMsg1";
 const parentIDInputBox = "#parent-componentId";
 const errorMessageParentID = "#parent-componentIdStatusMsg0";
 const waiverAuthorityLabel = "//label[text()='Waiver Authority']";
-const amendmentTitleField = "#title";
+const amendmentTitleField = "[name=title]";
 const tempExtensionTypeHeader =
   "//h3[contains(text(),'Temporary Extension Type')]";
 const tempExtensionTypeBtn = "//button//*[contains(text(), 'select a temporary extension type')]";
@@ -94,12 +94,7 @@ const goToDashBoardBtn = "//button[text()='Go to Dashboard']";
 
 const withdrawLabel = "#package-id-label";
 
-//internal function for proposed effective date
-function caculateMonthsInFuture(numMonths) {
-  var t = new Date();
-  t.setMonth(t.getMonth() + Number(numMonths));
-  return `${t.toISOString().slice(0, 10)}`;
-}
+const stateSelectBtn = "button[role='combobox']";
 
 export class oneMacFormPage {
   verifyInputHeaderIs(inputHeader) {
@@ -254,42 +249,42 @@ export class oneMacFormPage {
       case "Medicaid SPA":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/medicaid-spa-attachments");
+          .should("have.attr", "href", "/faq/#medicaid-spa-attachments");
         break;
       case "Medicaid RAI":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/medicaid-spa-rai-attachments");
+          .should("have.attr", "href", "/faq/#medicaid-spa-rai-attachments");
         break;
       case "CHIP SPA":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/chip-spa-attachments");
+          .should("have.attr", "href", "/faq/#chip-spa-attachments");
         break;
       case "CHIP RAI":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/chip-spa-rai-attachments");
+          .should("have.attr", "href", "/faq/#chip-spa-rai-attachments");
         break;
       case "1915b Waiver":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/waiverb-attachments");
+          .should("have.attr", "href", "/faq/#waiverb-attachments");
         break;
       case "Temp Extension":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/waiverb-extension-attachments");
+          .should("have.attr", "href", "/faq/#waiverb-extension-attachments");
         break;
       case "Appendix K":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/appk-attachments");
+          .should("have.attr", "href", "/faq/#appk-attachments");
         break;
       case "Waiver RAI":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/waiverb-rai-attachments");
+          .should("have.attr", "href", "/faq/#waiverb-rai-attachments");
         break;
     }
   }
@@ -340,6 +335,9 @@ export class oneMacFormPage {
   }
   clickGoToDashBoardBtn() {
     cy.xpath(goToDashBoardBtn).click();
+  }
+  setStateSelectBtn(state) {
+    cy.get(stateSelectBtn).focus().type(state);
   }
 }
 export default oneMacFormPage;

@@ -67,7 +67,7 @@ export class oneMacSubmissionTypePage {
     cy.url().should("include", "/amendment/create");
   }
   verifyNewAppendixKPage() {
-    cy.url().should("include", "/appendix-k-amendment");
+    cy.url().should("include", "/waiver/app-k");
   }
   clickwaiverAction() {
     cy.xpath(waiverAction).click();

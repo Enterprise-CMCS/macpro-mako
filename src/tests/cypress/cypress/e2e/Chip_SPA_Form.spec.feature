@@ -32,5 +32,6 @@ Feature: Package Dashboard: CHIP SPA Initial Submission
         Then Click the Submit Button without waiting
         Then verify package submitted message in the alert bar
         Then verify the SPAs tab is selected
+        Then click the main Dashboard Button
         Then search for the generated "CHIP SPA" Number 1
         Then verify the id number in the first row matches the generated "CHIP SPA" Number 1

@@ -1193,6 +1193,9 @@ Then("verify no states are selected", () => {
 Then("set value on state filter select to {string}", (state) => {
   OneMacDashboardPage.typeStateToSelect(state + "{enter}");
 });
+Then("set the value of state select button to {string}", (state) => {
+  OneMacFormPage.setStateSelectBtn(state + "{enter}");
+});
 Then("verify {string} is showing in the state column", (state) => {
   OneMacDashboardPage.verifypackageRowOneValueIs(state);
 });
