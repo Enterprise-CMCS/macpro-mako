@@ -7,9 +7,8 @@ export async function fetchCpocData() {
   const endpoint = "/getCpocs";
 
   try {
-    const response = await API.get("os", endpoint, {});
+    const response = await API.post("os", endpoint, { body: {} });
     const results = response.hits?.hits || [];
-
     return results.map((hit: cpocs.ItemResult) => hit._source);
   } catch (error) {
     console.error("Error fetching CPOCs:", error);
@@ -20,7 +19,7 @@ export function useGetCPOCs<T>(
   queryOptions?: UseQueryOptions<T[], ReactQueryApiError>,
 ) {
   return useQuery<T[], ReactQueryApiError>(
-    ["SeatoolOffcers"],
+    ["package-cpocs"],
     () => fetchCpocData(),
     queryOptions,
   );
