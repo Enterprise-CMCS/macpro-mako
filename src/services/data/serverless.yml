@@ -293,9 +293,9 @@ params:
     topicNamespace: --${self:custom.project}--${sls:stage}--
     sinkProvisionedConcurrency: 0
   default:
-    osInstanceType: t3.small.search
-    osVolumeType: gp2
-    osVolumeSize: 10
+    osInstanceType: or1.medium.search
+    osVolumeType: gp3
+    osVolumeSize: 20
     bootstrapKibanaUsers: "true"
     topicNamespace: --${self:custom.project}--${sls:stage}--
     sinkProvisionedConcurrency: 0

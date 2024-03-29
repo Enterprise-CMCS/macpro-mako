@@ -4,7 +4,7 @@ import { ReactQueryApiError } from "shared-types";
 import { cpocs } from "shared-types/opensearch";
 
 export async function fetchCpocData() {
-  const endpoint = "/getCPOCs";
+  const endpoint = "/getCpocs";
 
   try {
     const response = await API.get("os", endpoint, {});

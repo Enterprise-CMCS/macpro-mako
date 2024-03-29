@@ -72,6 +72,7 @@ params:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
     getTypesProvisionedConcurrency: 2
+    getCpocsProvisionedConcurrency: 2
     getSubTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
@@ -83,6 +84,7 @@ params:
     getAllFormsProvisionedConcurrency: 1
     getTypesProvisionedConcurrency: 2
     getSubTypesProvisionedConcurrency: 2
+    getCpocsProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
@@ -93,6 +95,7 @@ params:
     getAllFormsProvisionedConcurrency: 1
     getTypesProvisionedConcurrency: 2
     getSubTypesProvisionedConcurrency: 2
+    getCpocsProvisionedConcurrency: 2
     searchProvisionedConcurrency: 10
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
@@ -100,9 +103,10 @@ params:
     appkNewSubmissionConcurrency: 5
   default:
     formsProvisionedConcurrency: 0
-    getAllFormsProvisionedConcurrency: 1
-    getTypesProvisionedConcurrency: 1
-    getSubTypesProvisionedConcurrency: 1
+    getAllFormsProvisionedConcurrency: 0
+    getTypesProvisionedConcurrency: 0
+    getSubTypesProvisionedConcurrency: 0
+    getCpocsProvisionedConcurrency: 0
     searchProvisionedConcurrency: 0
     itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
@@ -231,6 +235,24 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:getSubTypesProvisionedConcurrency}
+  getCpocs:
+    handler: handlers/getCpocs.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /getTypes
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    provisionedConcurrency: ${param:getCpocsProvisionedConcurrency}
   itemExists:
     handler: handlers/itemExists.handler
     maximumRetryAttempts: 0
