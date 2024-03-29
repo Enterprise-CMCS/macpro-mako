@@ -113,6 +113,7 @@ stepFunctions:
                 - !Ref SinkChangelogLambdaFunction
                 - !Ref SinkTypesLambdaFunction
                 - !Ref SinkSubtypesLambdaFunction
+                - !Ref SinkCpocsLambdaFunction
                 - !Ref SinkInsightsLambdaFunction
                 - !Ref SinkLegacyInsightsLambdaFunction
             Next: DeleteIndex
@@ -168,6 +169,9 @@ stepFunctions:
                   BatchSize: 10000
                   Topics:
                     - aws.seatool.debezium.cdc.SEA.dbo.Type
+                - Function: !Ref SinkCpocsLambdaFunction
+                  Topics:
+                    - aws.seatool.debezium.cdc.SEA.dbo.Officers
             Next: CheckDataProgress
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -196,6 +200,9 @@ stepFunctions:
                   BatchSize: 10000
                   Topics:
                     - aws.seatool.debezium.cdc.SEA.dbo.Type
+                - Function: !Ref SinkCpocsLambdaFunction
+                  Topics:
+                    - aws.seatool.debezium.cdc.SEA.dbo.Officers
               BrokerString: ${self:custom.brokerString}
             Next: IsDataReady
             Catch:
@@ -404,6 +411,14 @@ functions:
         ${self:custom.vpc.privateSubnets}
   sinkTypes:
     handler: handlers/sinkTypes.handler
+    maximumRetryAttempts: 0
+    vpc:
+      securityGroupIds:
+        - Ref: SecurityGroup
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  sinkCpocs:
+    handler: handlers/sinkCpocs.handler
     maximumRetryAttempts: 0
     vpc:
       securityGroupIds:
@@ -766,6 +781,7 @@ resources:
           - !Ref SinkChangelogLambdaFunction
           - !Ref SinkTypesLambdaFunction
           - !Ref SinkSubtypesLambdaFunction
+          - !Ref SinkCpocsLambdaFunction
           - !Ref SinkInsightsLambdaFunction
           - !Ref SinkLegacyInsightsLambdaFunction
   Outputs:
