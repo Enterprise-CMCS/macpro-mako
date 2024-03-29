@@ -2,6 +2,7 @@ import { useGetCPOCs } from "@/api";
 import * as Inputs from "@/components/Inputs";
 import { Control, FieldValues, Path } from "react-hook-form";
 import Select from "react-select";
+import { cpocs } from "shared-types/opensearch";
 
 type TypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
@@ -12,13 +13,14 @@ export function CPOCSelect<TFieldValues extends FieldValues>({
   control,
   name,
 }: TypeSelectFormFieldProps<TFieldValues>) {
-  const { data } = useGetCPOCs();
+  const { data } = useGetCPOCs<cpocs.Document>();
 
-  const options = data?.map((item: any) => ({
-    value: item.id,
-    label: `${item.lastName}, ${item.firstName}`,
-  }));
-  console.log(JSON.stringify(options, null, 2));
+  const options = data
+    ? data?.map((item) => ({
+        value: item.id,
+        label: `${item.lastName}, ${item.firstName}`,
+      }))
+    : [];
 
   return (
     <Inputs.FormField
@@ -32,8 +34,10 @@ export function CPOCSelect<TFieldValues extends FieldValues>({
             </Inputs.FormLabel>
 
             <Select
-              value={field.value}
-              onChange={(val) => field.onChange(val)}
+              value={
+                options.find((option) => option.value === field.value) || null
+              }
+              onChange={(option) => field.onChange(option ? option.value : "")}
               options={options}
               closeMenuOnSelect={true}
               className="border border-black shadow-sm rounded-sm"

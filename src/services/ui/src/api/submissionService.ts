@@ -176,6 +176,7 @@ export const submit = async <T extends Record<string, unknown>>({
     const uploadRecipes: UploadRecipe[] = urlsToRecipes(
       preSignedURLs,
       attachments,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       authority!,
     );
     // Upload attachments

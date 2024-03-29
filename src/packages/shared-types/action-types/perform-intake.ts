@@ -4,11 +4,19 @@ import { z } from "zod";
 export const performIntakeSchema = z.object({
   timestamp: z.string().optional(), // Used by waivers and chip spas
   origin: z.string(),
-  typeIds: z.array(z.number()).min(1),
-  subTypeIds: z.array(z.number()).min(1),
-  subject: z.string(),
-  description: z.string(),
-  // cpoc: z.string(), // or a number if using id... need the cpoc index first
+  subject: z
+    .string()
+    .trim()
+    .min(1, { message: "Required" })
+    .max(120, { message: "Subject should be under 120 characters" }),
+  description: z
+    .string()
+    .trim()
+    .min(1, { message: "Required" })
+    .max(4000, { message: "Description should be under 4000 characters" }),
+  typeIds: z.array(z.number()).min(1, { message: "Required" }),
+  subTypeIds: z.array(z.number()).min(1, { message: "Required" }),
+  cpoc: z.number().min(1, { message: "CPOC is required" }),
   submitterName: z.string(),
   submitterEmail: z.string(),
 });
