@@ -124,7 +124,7 @@ Thank you!`,
     name: "new-submission-1915b-cms",
     subject:  "{{authority}} {{id}} Submitted",
     html: `
-<p>The OneMAC Submission Portal received a 1915(b) {{actionType}} waiver submission:</p>
+<p>The OneMAC Submission Portal received a 1915(b) {{actionType}} submission:</p>
 <ul>
 <li>The submission can be accessed in the OneMAC application, which you 
 can find at <a href='{{applicationEndpoint}}'>this link</a>.</li>
@@ -139,7 +139,7 @@ details by clicking on its ID number.</li>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email:</b> {{submitterEmail}}
-<br><b>1915(b) {{actionType}} Waiver Number:</b> {{id}}</b>
+<br><b>1915(b) {{actionType}} Number:</b> {{id}}</b>
 <br><b>Waiver Authority:</b> {{authority}}
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
 </p>
@@ -188,14 +188,14 @@ Thank you!`,
 },
 {
     name: "new-submission-1915b-state",
-    subject:  "Your {{authority}} {{id}} has been submitted to CMS",
+    subject:  "Your {{actionType}} {{id}} has been submitted to CMS",
     html: `
-<p>This response confirms the submission of your Initial Waiver to CMS for review:</p>
+<p>This response confirms the submission of your {{actionType}} to CMS for review:</p>
 <p>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
-<br><b>Initial Waiver Number:</b> {{id}}</b>
+<br><b>{{actionType}} Number:</b> {{id}}</b>
 <br><b>Waiver Authority:</b> {{authority}}
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
 <br><b>90th Day Deadline:</b> {{ninetyDaysDate}}
