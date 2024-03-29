@@ -93,6 +93,10 @@ const arUpdateId: ActionRule = {
   action: Action.UPDATE_ID,
   check: (_, user) => isCmsSuperUser(user),
 };
+const arPerformIntake: ActionRule = {
+  action: Action.PERFORM_INTAKE,
+  check: (checker, user) => isCmsWriteUser(user) && checker.needsIntake,
+};
 
 // TODO: Add rule for remove-appk-child
 
@@ -105,4 +109,5 @@ export default [
   arWithdrawPackage,
   arTempExtension,
   arUpdateId,
+  arPerformIntake,
 ];

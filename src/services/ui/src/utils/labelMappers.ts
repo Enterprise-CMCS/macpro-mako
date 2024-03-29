@@ -21,6 +21,8 @@ export const mapActionLabel = (a: Action) => {
       return "Request Temporary Extension";
     case Action.UPDATE_ID:
       return "Update ID";
+    case Action.PERFORM_INTAKE:
+      return "Perform Intake";
     default:
       return "";
   }

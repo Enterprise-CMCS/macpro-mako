@@ -28,7 +28,11 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
             {data.actions.map((type, idx) => {
               if (
                 authority === Authority["1915b"] || // why?
-                [Action.TEMP_EXTENSION, Action.UPDATE_ID].includes(type) // this is for new actions format
+                [
+                  Action.TEMP_EXTENSION,
+                  Action.UPDATE_ID,
+                  Action.PERFORM_INTAKE,
+                ].includes(type) // this is for new actions format
               ) {
                 return (
                   <Link
