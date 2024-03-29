@@ -4,11 +4,11 @@ import {
   Filterable as FIL,
   QueryState,
   AggQuery,
-} from "../_";
+} from "./../_";
 import { z } from "zod";
-import { cpocs } from "./transforms";
+import { Officers } from "./transforms";
 
-export type Document = z.infer<cpocs.Schema>;
+export type Document = z.infer<Officers.Schema>;
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {

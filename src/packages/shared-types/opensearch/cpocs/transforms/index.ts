@@ -1,1 +1,1 @@
-export * as cpocs from "./CPOCs";
+export * as Officers from "./Officers";
