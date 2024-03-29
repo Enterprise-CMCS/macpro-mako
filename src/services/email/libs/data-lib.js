@@ -2,6 +2,12 @@ import { DateTime } from "luxon";
 
 import { getLookupValues } from "./lookup-lib";
 
+const actionTypeLookup = [
+    "New" = "Initial Waiver",
+    "Amend" = "Waiver Amendment",
+    "Renew" = "Waiver Renewal",
+];
+
 const formatAttachments = (formatType, attachmentList) => {
     const formatChoices = {
         "text": {
@@ -73,6 +79,9 @@ export const buildEmailData = async (bundle, data) => {
                 break;
             case "submitter":
                 returnObject["submitter"] = (data.submitterEmail === "george@example.com") ? "\"George's Substitute\" <mako.stateuser@gmail.com>" : `"${data.submitterName}" <${data.submitterEmail}>`;
+                break;
+            case "actionType":
+                returnObject["actionType"] = actionTypeLookup[data.actionType] ?? "Waiver";
                 break;
             case "osgEmail":
             case "chipInbox":

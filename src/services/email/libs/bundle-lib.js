@@ -15,7 +15,7 @@ const getBundleFromEvent = (configKey, stage) => {
             };
         case "new-submission-1915b":
             return {
-                "dataList": ["osgEmail", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "authority", "proposedEffectiveDateNice", "ninetyDaysDate", "additionalInformation", "formattedFileList", "textFileList"],
+                "dataList": ["osgEmail", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "authority", "actionType", "proposedEffectiveDateNice", "ninetyDaysDate", "additionalInformation", "formattedFileList", "textFileList"],
                 "emailCommands": [{
                     "Template": `new-submission-1915b-cms_${stage}`,
                     "ToAddresses": ["osgEmail"],
