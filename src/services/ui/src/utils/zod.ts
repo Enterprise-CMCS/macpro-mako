@@ -175,9 +175,9 @@ export const zExtensionOriginalWaiverNumberSchema = z
 
 export const zUpdateIdSchema = z
   .string()
-  .regex(/^[a-zA-Z0-9.-]*$/, {
+  .regex(/^(?![-.])[A-Z0-9]+(?:(?![-.]{2})[-.A-Z0-9])*(?<![-.])$/, {
     message:
-      "The new ID can only contain letters, numbers, dots, and dashes without any whitespace.",
+      "The new ID can only contain uppercase letters, numbers, dots, and dashes without any whitespace, no leading or trailing dashes or dots, no consecutive dots or dashes.",
   })
   .refine(async (value) => !(await itemExists(value)), {
     message:
