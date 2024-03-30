@@ -253,9 +253,7 @@ export const useSubmitForm = () => {
   const location = useLocation();
 
   const validSubmission: SubmitHandler<any> = (data, e) => {
-    console.log({ data });
     const formData = new FormData();
-    console.log({ formData });
     // Append all other data
     for (const key in data) {
       if (key !== "attachments") {
@@ -290,11 +288,7 @@ export const useIntakePackage = () => {
   const submit = useSubmit();
   const location = useLocation();
 
-  console.log({ location });
-
   const validSubmission: SubmitHandler<any> = (data, e) => {
-    console.log({ data });
-
     submit(data, {
       method: "post",
       encType: "application/json",
