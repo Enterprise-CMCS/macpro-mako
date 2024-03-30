@@ -11,10 +11,27 @@ import * as Inputs from "@/components/Inputs";
 import { useFormContext } from "react-hook-form";
 import { zUpdateIdSchema } from "@/utils/zod";
 
-export const updateIdSchema = z.object({
-  additionalInformation: z.string(),
-  newId: zUpdateIdSchema,
-});
+export const updateIdSchema = z
+  .object({
+    id: z.string(),
+    additionalInformation: z
+      .string()
+      .refine((data) => data.trim().length > 0, {
+        message: "Additional information cannot be empty or just spaces.",
+      }),
+    newId: zUpdateIdSchema,
+  })
+  .superRefine((data, ctx) => {
+    if (data.id.split("-")[0] !== data.newId.split("-")[0]) {
+      ctx.addIssue({
+        message: "New IDs must have the same state code as the old ID.",
+        code: z.ZodIssueCode.custom,
+        fatal: true,
+        path: ["newId"],
+      });
+    }
+    return z.NEVER;
+  });
 
 export const onValidSubmission: SC.ActionFunction = async ({
   request,
@@ -49,6 +66,8 @@ export const onValidSubmission: SC.ActionFunction = async ({
 export const UpdateId = () => {
   const { handleSubmit } = SC.useSubmitForm();
   const { id } = useParams() as { id: string; authority: Authority };
+  const { setValue } = useFormContext<z.infer<typeof updateIdSchema>>();
+  setValue("id", id);
   const form = useFormContext();
   SC.useDisplaySubmissionAlert(
     "ID Update submitted",
