@@ -507,6 +507,22 @@ export async function updateId(body: any) {
         WHERE ID_Number = '${body.id}';
     `);
 
+    // Copy Types rows
+    await transaction.request().query(`
+      INSERT INTO State_Plan_Service_Types (ID_Number, Service_Type_ID)
+        SELECT '${result.data.newId}', Service_Type_ID
+        FROM State_Plan_Service_Types
+        WHERE ID_Number = '${body.id}';
+    `);
+
+    //Copy SubTypes rows
+    await transaction.request().query(`
+      INSERT INTO State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID)
+        SELECT '${result.data.newId}', Service_SubType_ID
+        FROM State_Plan_Service_SubTypes
+        WHERE ID_Number = '${body.id}';
+    `);
+
     // Put Status Memo notes in the old package
     await transaction.request().query(`
       UPDATE SEA.dbo.State_Plan
