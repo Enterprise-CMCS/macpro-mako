@@ -285,13 +285,6 @@ params:
     osVolumeSize: 20
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
-  juliet:
-    osInstanceType: or1.large.search
-    osVolumeType: gp3
-    osVolumeSize: 20
-    bootstrapKibanaUsers: "true"
-    topicNamespace: --${self:custom.project}--${sls:stage}--
-    sinkProvisionedConcurrency: 0
   default:
     osInstanceType: or1.medium.search
     osVolumeType: gp3
