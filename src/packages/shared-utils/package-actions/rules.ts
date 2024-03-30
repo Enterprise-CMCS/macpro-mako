@@ -91,7 +91,8 @@ const arWithdrawPackage: ActionRule = {
 };
 const arUpdateId: ActionRule = {
   action: Action.UPDATE_ID,
-  check: (_, user) => isCmsSuperUser(user),
+  check: (checker, user) =>
+    isCmsSuperUser(user) && !checker.hasStatus(finalDispositionStatuses),
 };
 const arPerformIntake: ActionRule = {
   action: Action.PERFORM_INTAKE,
