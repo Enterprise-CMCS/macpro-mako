@@ -21,8 +21,7 @@ export function DescriptionInput<TFieldValues extends FieldValues>({
           <Inputs.FormLabel className="font-semibold block">
             Description <Inputs.RequiredIndicator />
           </Inputs.FormLabel>
-          <p className="text-gray-500 max-w-3xl">{helperText}</p>
-
+            <p className="text-gray-500 max-w-3xl">{helperText}</p>
           <Inputs.Textarea
             {...field}
             className="h-[100px] resize-none max-w-lg"

@@ -1,5 +1,10 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
+import {
+  Action,
+  Authority,
+  CognitoUserAttributes,
+  opensearch,
+} from "shared-types";
 import { getAvailableActions, formatSeatoolDate } from "shared-utils";
 import { Link as TypedLink } from "@/components";
 import { Link } from "react-router-dom";
@@ -45,7 +50,10 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
           <POP.PopoverContent>
             <div className="flex flex-col">
               {actions.map((action, idx) => {
-                if (data.authority === Authority["1915b"]) {
+                if (
+                  data.authority === Authority["1915b"] ||
+                  action == Action.PERFORM_INTAKE
+                ) {
                   return (
                     <TypedLink
                       state={{ from: `${location.pathname}${location.search}` }}

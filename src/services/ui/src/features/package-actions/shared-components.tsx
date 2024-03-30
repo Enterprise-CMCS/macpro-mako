@@ -34,9 +34,9 @@ import { Authority } from "shared-types";
 
 export const RequiredFieldDescription = () => {
   return (
-    <p>
+    <>
       <span className="text-red-500">*</span> Indicates a required field
-    </p>
+    </>
   );
 };
 
@@ -45,7 +45,7 @@ export const ActionDescription = ({
 }: {
   children: React.ReactNode;
 }) => {
-  return <p className="font-light mb-6 max-w-4xl">{children}</p>;
+  return <div className="font-light mb-6 max-w-4xl">{children}</div>;
 };
 
 export const Heading = ({ title }: { title: string }) => {
@@ -253,7 +253,9 @@ export const useSubmitForm = () => {
   const location = useLocation();
 
   const validSubmission: SubmitHandler<any> = (data, e) => {
+    console.log({ data });
     const formData = new FormData();
+    console.log({ formData });
     // Append all other data
     for (const key in data) {
       if (key !== "attachments") {
@@ -273,6 +275,29 @@ export const useSubmitForm = () => {
     submit(formData, {
       method: "post",
       encType: "multipart/form-data",
+      state: location.state,
+    });
+  };
+
+  return {
+    handleSubmit: methods.handleSubmit(validSubmission),
+    formMethods: methods,
+  };
+};
+
+export const useIntakePackage = () => {
+  const methods = useFormContext();
+  const submit = useSubmit();
+  const location = useLocation();
+
+  console.log({ location });
+
+  const validSubmission: SubmitHandler<any> = (data, e) => {
+    console.log({ data });
+
+    submit(data, {
+      method: "post",
+      encType: "application/json",
       state: location.state,
     });
   };

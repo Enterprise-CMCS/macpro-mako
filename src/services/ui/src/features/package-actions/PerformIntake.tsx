@@ -2,7 +2,11 @@ import { useParams } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { z } from "zod";
 import { getUser } from "@/api/useGetUser";
-import { Authority, SEATOOL_AUTHORITIES_MAP_TO_ID } from "shared-types";
+import {
+  Authority,
+  SEATOOL_AUTHORITIES_MAP_TO_ID,
+  performIntakeSchema,
+} from "shared-types";
 import { submit } from "@/api/submissionService";
 import { useFormContext } from "react-hook-form";
 import {
@@ -13,30 +17,13 @@ import {
   TypeSelect,
 } from "../submission/shared-components";
 
-export const performIntakeSchema = z.object({
-  subject: z
-    .string()
-    .trim()
-    .min(1, { message: "Required" })
-    .max(120, { message: "Subject should be under 120 characters" }),
-  description: z
-    .string()
-    .trim()
-    .min(1, { message: "Required" })
-    .max(4000, { message: "Description should be under 4000 characters" }),
-  typeIds: z.array(z.number()).min(1, { message: "Required" }),
-  subTypeIds: z.array(z.number()).min(1, { message: "Required" }),
-  cpoc: z.number().min(1, { message: "CPOC is required" }),
-});
-
 export const onValidSubmission: SC.ActionFunction = async ({
   request,
   params,
 }) => {
   try {
-    const formData = await request.formData();
+    const formData = await request.json();
     const data = await performIntakeSchema.parseAsync(formData);
-
     const user = await getUser();
     await submit({
       data: { ...data, id: params.id },
@@ -45,19 +32,15 @@ export const onValidSubmission: SC.ActionFunction = async ({
       authority: params.authority as Authority,
     });
 
-    return {
-      submitted: true,
-    };
+    return { submitted: true };
   } catch (err) {
     console.log(err);
-    return {
-      submitted: false,
-    };
+    return { submitted: false };
   }
 };
 
 export const PerformIntake = () => {
-  const { handleSubmit } = SC.useSubmitForm();
+  const { handleSubmit } = SC.useIntakePackage();
   const { id, authority } = useParams("/action/:authority/:id/:type");
   const form = useFormContext();
   SC.useDisplaySubmissionAlert(
