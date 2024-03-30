@@ -47,6 +47,10 @@ export const AC_UpdateId: FC<opensearch.changelog.Document> = (props) => {
         {props.submitterName} updated the package ID from {props.oldPackageId}{" "}
         to {props.newPackageId}
       </p>
+      <div>
+        <h2 className="font-bold">Change Reason</h2>
+        <p>{props.additionalInformation}</p>
+      </div>
     </div>
   );
 };
