@@ -2,11 +2,7 @@ import { useParams } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { z } from "zod";
 import { getUser } from "@/api/useGetUser";
-import {
-  Authority,
-  SEATOOL_AUTHORITIES_MAP_TO_ID,
-  performIntakeSchema,
-} from "shared-types";
+import { Authority, SEATOOL_AUTHORITIES_MAP_TO_ID } from "shared-types";
 import { submit } from "@/api/submissionService";
 import { useFormContext } from "react-hook-form";
 import {
@@ -16,6 +12,23 @@ import {
   SubjectInput,
   TypeSelect,
 } from "../submission/shared-components";
+import { unflatten } from "flat";
+
+export const performIntakeSchema = z.object({
+  subject: z
+    .string()
+    .trim()
+    .min(1, { message: "Required" })
+    .max(120, { message: "Subject should be under 120 characters" }),
+  description: z
+    .string()
+    .trim()
+    .min(1, { message: "Required" })
+    .max(4000, { message: "Description should be under 4000 characters" }),
+  typeIds: z.array(z.number()).min(1, { message: "Required" }),
+  subTypeIds: z.array(z.number()).min(1, { message: "Required" }),
+  cpoc: z.number().min(1, { message: "CPOC is required" }),
+});
 
 export const onValidSubmission: SC.ActionFunction = async ({
   request,
@@ -23,7 +36,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 }) => {
   try {
     const formData = await request.json();
-    const data = await performIntakeSchema.parseAsync(formData);
+    const data = performIntakeSchema.parse(formData);
     const user = await getUser();
     await submit({
       data: { ...data, id: params.id },

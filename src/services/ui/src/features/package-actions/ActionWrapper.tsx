@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodSchema } from "zod";
 import { BreadCrumbs, SimplePageContainer } from "@/components";
 import { detailsAndActionsCrumbs } from "@/features";
-import { Action, performIntakeSchema } from "shared-types";
+import { performIntakeSchema } from "./PerformIntake";
 import { issueRaiSchema } from "./IssueRai";
 import { withdrawRaiSchema } from "./WithdrawRai";
 import { toggleRaiResponseWithdrawSchema } from "./ToggleRaiResponseWithdraw";
@@ -13,6 +13,7 @@ import { respondToRaiSchema } from "./RespondToRai";
 import { useParams } from "@/components/Routing";
 import { tempExtensionSchema } from "./TemporaryExtension";
 import { updateIdSchema } from "./UpdateId";
+import { Action } from "shared-types";
 
 const schemas = {
   "issue-rai": issueRaiSchema,

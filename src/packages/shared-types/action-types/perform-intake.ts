@@ -1,21 +1,17 @@
 import { z } from "zod";
 
-// This is the event schema for ne submissions from our system
+// This is the event schema for intake performed from our system
 export const performIntakeSchema = z.object({
-  subject: z
-    .string()
-    .trim()
-    .min(1, { message: "Required" })
-    .max(120, { message: "Subject should be under 120 characters" })
-    .default(""),
-  description: z
-    .string()
-    .trim()
-    .min(1, { message: "Required" })
-    .max(4000, { message: "Description should be under 4000 characters" }),
-  typeIds: z.array(z.number()).min(1, { message: "Required" }),
-  subTypeIds: z.array(z.number()).min(1, { message: "Required" }),
-  cpoc: z.number().min(1, { message: "CPOC is required" }),
+  id: z.string(),
+  authority: z.string(),
+  origin: z.string(),
+  submitterName: z.string(),
+  submitterEmail: z.string(),
+  subject: z.string(),
+  description: z.string(),
+  typeIds: z.array(z.number()),
+  subTypeIds: z.array(z.number()),
+  cpoc: z.number(),
 });
 
 export type PerformIntake = z.infer<typeof performIntakeSchema>;
