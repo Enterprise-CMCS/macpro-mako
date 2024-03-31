@@ -101,6 +101,12 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         attachments: attachments ? buildAttachmentObject(attachments) : null,
         state: (data.id as string).split("-")[0],
       };
+    case buildActionUrl(Action.PERFORM_INTAKE):
+      return {
+        ...data,
+        ...userDetails,
+        state: (data.id as string).split("-")[0],
+      };
     case buildActionUrl(Action.ISSUE_RAI):
     case buildActionUrl(Action.RESPOND_TO_RAI):
     case buildActionUrl(Action.ENABLE_RAI_WITHDRAW):
@@ -109,7 +115,6 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
     case buildActionUrl(Action.WITHDRAW_PACKAGE):
     case buildActionUrl(Action.TEMP_EXTENSION):
     case buildActionUrl(Action.UPDATE_ID):
-    case buildActionUrl(Action.PERFORM_INTAKE):
     default:
       return {
         ...baseProperties,

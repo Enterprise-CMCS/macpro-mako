@@ -592,16 +592,19 @@ export async function performIntake(body: any) {
       },
     });
   }
-  console.log(JSON.stringify(result.data, null, 2));
 
+  console.log(JSON.stringify(body, null, 2));
   const now = new Date().getTime();
+  // const today = seaToolFriendlyTimestamp();
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
   try {
     await transaction.begin();
 
+    const intakePerson = body.submitterEmail;
+
     // Generate INSERT statements for typeIds
-    const typeIdsValues = result.data.typeIds
+    const typeIdsValues = body.typeIds
       .map((typeId: number) => `('${body.id}', '${typeId}')`)
       .join(",\n");
 
@@ -610,7 +613,7 @@ export async function performIntake(body: any) {
       : "";
 
     // Generate INSERT statements for subTypeIds
-    const subTypeIdsValues = result.data.subTypeIds
+    const subTypeIdsValues = body.subTypeIds
       .map((subTypeId: number) => `('${body.id}', '${subTypeId}')`)
       .join(",\n");
 
@@ -618,31 +621,50 @@ export async function performIntake(body: any) {
       ? `INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID) VALUES ${subTypeIdsValues};`
       : "";
 
-    const query = `
+    // const statusMemoUpdate = buildStatusMemoQuery(
+    //   body.id,
+    //   `Intake completed by ${body.submitterEmail}`,
+    // );
+
+    const query1 = `
       DECLARE @TitleName NVARCHAR(MAX) = ${
         body.subject ? `'${body.subject.replace("'", "''")}'` : "NULL"
       };
+      DECLARE @LeadAnalystID INT = ${body.cpoc ? body.cpoc : "NULL"};
       DECLARE @SummaryMemo NVARCHAR(MAX) = ${
         body.description ? `'${body.description.replace("'", "''")}'` : "NULL"
       };
+
+
       DECLARE @StatusMemo NVARCHAR(MAX) = ${buildStatusMemoQuery(
         body.id,
-        "Package Submitted",
-        "insert",
+        `Instake Completed by ${intakePerson}`,
+        "update",
       )}
       
       -- Main insert into State_Plan
-      INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo, Action_Type)
-      VALUES ('${body.id}', '${body.state}', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo, @ActionTypeID);
+      INSERT INTO SEA.dbo.State_Plan (ID_Number, Title_Name, Summary_Memo, Lead_Analyst_ID)
+      VALUES ('${body.id}', @TitleName, @SummaryMemo, @LeadAnalystID);
 
-      // -- Insert all types into State_Plan_Service_Types
-      // ${typeIdsInsert}
-  
-      // -- Insert all types into State_Plan_Service_SubTypes
-      // ${subTypeIdsInsert}
+      -- Insert all types into State_Plan_Service_Types
+      ${typeIdsInsert}
+
+      -- Insert all types into State_Plan_Service_SubTypes
+      ${subTypeIdsInsert}
       `;
 
-    await transaction.request().query(query);
+    await transaction.request().query(query1);
+
+    // const query2 = `
+    //     UPDATE SEA.dbo.State_Plan
+    //       SET
+    //       SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}'),
+    //         Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+    //         Status_Memo = ${statusMemoUpdate}
+    //       WHERE ID_Number = '${body.id}'
+    // `;
+
+    // await transaction.request().query(query2);
 
     await produceMessage(
       TOPIC_NAME,

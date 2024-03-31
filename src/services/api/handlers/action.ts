@@ -76,7 +76,7 @@ export const handler = async (event: APIGatewayEvent) => {
         },
       });
     }
-
+    console.log(actionType);
     // Call package action
     switch (actionType) {
       case Action.WITHDRAW_PACKAGE:
