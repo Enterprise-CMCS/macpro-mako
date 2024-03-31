@@ -86,9 +86,9 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
     case buildActionUrl(Action.REMOVE_APPK_CHILD):
       return {
         ...data,
+        ...baseProperties,
         ...userDetails,
         authority: Authority["1915c"],
-        origin: "micro",
       };
     case "/submit":
       return {
@@ -104,6 +104,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
     case buildActionUrl(Action.PERFORM_INTAKE):
       return {
         ...data,
+        ...baseProperties,
         ...userDetails,
         state: (data.id as string).split("-")[0],
       };
@@ -120,7 +121,6 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...baseProperties,
         ...userDetails,
         ...data,
-        ...userDetails,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
   }
