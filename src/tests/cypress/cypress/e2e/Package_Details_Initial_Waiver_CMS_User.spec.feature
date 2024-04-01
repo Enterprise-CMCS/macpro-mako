@@ -7,7 +7,6 @@ Feature: Waiver Package Details View: Initial Waivers
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Authority
-        Then click on Authority
         Then click the 1915b check box
         Then click on Authority
         Then click on Action Type

@@ -1378,6 +1378,12 @@ Then(
     OneMacDashboardPage.verifyWithdrawPackageBtnExists();
   }
 );
+Then(
+  "verify withdraw package button is not visible for package in package dashboard",
+  () => {
+    OneMacDashboardPage.verifyWithdrawPackageBtnDoesNotExists();
+  }
+);
 Then("click withdraw package button", () => {
   OneMacDashboardPage.clickWithdrawPackageBtn();
 });

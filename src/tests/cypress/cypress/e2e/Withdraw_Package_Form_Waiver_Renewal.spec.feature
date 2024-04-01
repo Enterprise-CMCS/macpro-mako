@@ -7,13 +7,13 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click on New Submission
         Then Click on Waiver Action
         Then click on 1915b Waiver Actions
-
+    @focus
     Scenario: Screen Enhance - Validate Renewal Waiver Withdrawal Page from dashboard
         Then click on "1915(b) Comprehensive (Capitated) Waiver Authority" choice
         Then click on "1915(b) Comprehensive (Capitated) Renewal Waiver" choice
-        Then into "Existing Waiver Number to Renew" type "MD-2200.R00.00"
+        Then into "Existing Waiver Number to Renew" type "MD-1000.R00.00"
         Then type the generated "1915(b) Waiver Renewal Number" Number 3 into the ID Input box using the state "MD"
-        Then set "Proposed Effective Date of 1915(b) Renewal Waiver" to 3 months from today
+        Then set "Proposed Effective Date of 1915(b) Waiver Renewal" to 3 months from today
         Then into "Subject" type "Waiver Renewal Withdrawal Cypress Regression Test"
         Then into "Description" type "This package was created while running the test automation."
         Then attach "file.docx" file to attachment 1
@@ -27,9 +27,6 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click the actions button in row one
         Then click withdraw package button
         Then verify the form is titled "Withdraw Waiver"
-
-
-
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
@@ -46,9 +43,9 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
     Scenario: Screen Enhance - Validate Renewal Waiver Withdrawal Page from details page
         Then click on "1915(b) Comprehensive (Capitated) Waiver Authority" choice
         Then click on "1915(b) Comprehensive (Capitated) Renewal Waiver" choice
-        Then into "Existing Waiver Number to Renew" type "MD-2200.R00.00"
+        Then into "Existing Waiver Number to Renew" type "MD-1000.R00.00"
         Then type the generated "1915(b) Waiver Renewal Number" Number 4 into the ID Input box using the state "MD"
-        Then set "Proposed Effective Date of 1915(b) Renewal Waiver" to 3 months from today
+        Then set "Proposed Effective Date of 1915(b) Waiver Renewal" to 3 months from today
         Then into "Subject" type "Waiver Renewal Withdrawal Cypress Regression Test"
         Then into "Description" type "This package was created while running the test automation."
         Then attach "file.docx" file to attachment 1
@@ -63,9 +60,6 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the package details page is visible
         Then click withdraw button
         Then verify the form is titled "Withdraw Waiver"
-
-
-
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
@@ -82,7 +76,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
     Scenario: Screen Enhance - Validate Renewal Waiver Withdrawal Page from dashboard
         Then click on "1915(b)(4) FFS Selective Contracting Waivers" choice
         Then click on "1915(b)(4) FFS Selective Contracting Renewal Waiver" choice
-        Then into "Existing Waiver Number to Renew" type "MD-2200.R00.00"
+        Then into "Existing Waiver Number to Renew" type "MD-1000.R00.00"
         Then type the generated "1915(b) Waiver Renewal Number" Number 5 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Renewal" to 3 months from today
         Then into "Subject" type "Waiver Renewal Withdrawal Cypress Regression Test"
@@ -98,9 +92,6 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click the actions button in row one
         Then click withdraw package button
         Then verify the form is titled "Withdraw Waiver"
-
-
-
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists
@@ -117,7 +108,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
     Scenario: Screen Enhance - Validate Renewal Waiver Withdrawal Page from details page
         Then click on "1915(b)(4) FFS Selective Contracting Waivers" choice
         Then click on "1915(b)(4) FFS Selective Contracting Renewal Waiver" choice
-        Then into "Existing Waiver Number to Renew" type "MD-2200.R00.00"
+        Then into "Existing Waiver Number to Renew" type "MD-1000.R00.00"
         Then type the generated "1915(b) Waiver Renewal Number" Number 6 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Renewal" to 3 months from today
         Then into "Subject" type "Waiver Renewal Withdrawal Cypress Regression Test"
@@ -134,9 +125,6 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then verify the package details page is visible
         Then click withdraw button
         Then verify the form is titled "Withdraw Waiver"
-
-
-
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page
         Then verify form cancel button exists

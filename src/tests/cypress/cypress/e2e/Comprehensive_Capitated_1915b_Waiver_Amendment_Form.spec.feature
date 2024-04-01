@@ -18,7 +18,7 @@ Feature: 1915b Comprehensive Capitated Waiver Amendment
 
     Scenario: Verify pre-print and spreadsheet are both required
         Then click on "1915(b) Comprehensive (Capitated) Waiver Amendment" choice
-        Then into "Existing Waiver Number to Amend" type "MD-2200.R00.00"
+        Then into "Existing Waiver Number to Amend" type "MD-1000.R00.00"
         Then type the generated "Waiver Amendment" Number 1 into the ID Input box using the state "MD"
         Then Click the Submit Button without waiting
         Then verify the "Proposed Effective Date" error message is "Required"
@@ -37,7 +37,7 @@ Feature: 1915b Comprehensive Capitated Waiver Amendment
 
     Scenario: create waiver amendment from package dashboard and search it
         Then click on "1915(b) Comprehensive (Capitated) Waiver Amendment" choice
-        Then into "Existing Waiver Number to Amend" type "MD-2200.R00.00"
+        Then into "Existing Waiver Number to Amend" type "MD-1000.R00.00"
         Then type the generated "Waiver Amendment" Number 1 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
         Then into "Subject" type "Cypress Regression Test"

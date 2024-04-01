@@ -883,6 +883,9 @@ export class oneMacDashboardPage {
   verifyWithdrawPackageBtnExists() {
     cy.xpath(withdrawPackageBtn).filter(":visible").first().should("exist");
   }
+  verifyWithdrawPackageBtnDoesNotExists() {
+    cy.xpath(withdrawPackageBtn).should("not.exist");
+  }
   clickConfirmWithdrawPackageBtn() {
     cy.xpath(withdrawPackageConfirmBtn).click();
     cy.wait(8000);

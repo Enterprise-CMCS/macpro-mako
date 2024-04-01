@@ -53,6 +53,7 @@ Feature: Verify user can withdraw a 1915(b) Waiver Amendment in Under Review Sta
         Then into "Additional Information" type "This Waiver Amendment package was created by the test automation."
         Then Click on Submit Button
         Then verify package submitted message in the alert bar
+        Then click the main Dashboard Button
         Then click on the Waivers tab
         Then search for the generated "Waiver Amendment" Number 4
         Then verify the id number in the first row matches the generated "Waiver Amendment" Number 4
@@ -85,6 +86,7 @@ Feature: Verify user can withdraw a 1915(b) Waiver Amendment in Under Review Sta
         Then into "Additional Information" type "This Waiver Amendment package was created by the test automation."
         Then Click on Submit Button
         Then verify package submitted message in the alert bar
+        Then click the main Dashboard Button
         Then click on the Waivers tab
         Then search for the generated "Waiver Amendment" Number 5
         Then verify the id number in the first row matches the generated "Waiver Amendment" Number 5
@@ -116,6 +118,7 @@ Feature: Verify user can withdraw a 1915(b) Waiver Amendment in Under Review Sta
         Then into "Additional Information" type "This Waiver Amendment package was created by the test automation."
         Then Click on Submit Button
         Then verify package submitted message in the alert bar
+        Then click the main Dashboard Button
         Then click on the Waivers tab
         Then search for the generated "Waiver Amendment" Number 6
         Then verify the id number in the first row matches the generated "Waiver Amendment" Number 6

@@ -250,7 +250,7 @@ export class oneMacFormPage {
       case "Medicaid SPA":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/#medicaid-spa-attachments");
+          .should("have.attr", "href", "/faq/medicaid-spa-attachments");
         break;
       case "Medicaid RAI":
         cy.xpath(attachmentInfoDescription)

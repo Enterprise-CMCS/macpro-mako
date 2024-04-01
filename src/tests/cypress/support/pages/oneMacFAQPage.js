@@ -16,11 +16,11 @@ const actualEmail =
 //General Section
 const whatBrowsersHeaderBtn = "//button[contains(text(),'What browsers can I use to access the system')]";
 const whatBrowsersBody = "div[role='region']  p";
-const WhatToDoConfirmationEmailHeaderBtn = "article:nth-of-type(1) > div > div:nth-of-type(3)  .flex.flex-1.font-medium.items-center.justify-between.py-4.transition-all";
+const WhatToDoConfirmationEmailHeaderBtn = "div#confirm-email  .flex.flex-1.font-medium.items-center.justify-between.py-4.transition-all";
 const WhatToDoConfirmationEmailBody = "div:nth-of-type(3) > div[role='region']  p";
-const isThisOfficialHeaderBtn = "article:nth-of-type(1) > div > div:nth-of-type(4)  .flex.flex-1.font-medium.items-center.justify-between.py-4.transition-all";
+const isThisOfficialHeaderBtn = "div#is-official  .flex.flex-1.font-medium.items-center.justify-between.py-4.transition-all";
 const isThisOfficialBody = "div:nth-of-type(4) > div[role='region']  p";
-const whatAreTheOneMacUserRoles = "//article[1]/div[1]/div[5]/h3[1]/button[1]";
+const whatAreTheOneMacUserRoles = "div#onemac-roles  .flex.flex-1.font-medium.items-center.justify-between.py-4.transition-all";
 //Element is Xpath use cy.xpath instead of cy.get
 const whatAreTheOneMacUserRolesTable =
   "//article[1]//*[@data-state='open']//table[1]";
@@ -46,7 +46,7 @@ const whatAttachmentsAreNeededToSubmitA1915bWaiverAction =
   "//button[contains(text(),'What attachments are needed to submit a 1915\(b\) waiver action')]";
 const whatAreTheAttachmentsFor1915bResponsetoRAI =
 "//button[contains(text(),'What are the attachments for a 1915\(b\) Waiver response to Request for Additional Information \(RAI\)')]";
-const tempExtFormatHeaderBtn = "//button[contains(text(),'What format is used to enter a 1915\(b\) and 1915\(c\) Temporary Extension number')]";
+const tempExtFormatHeaderBtn = "//button[contains(text(),'What format is used to enter a 1915\(b\) or 1915\(c\) Temporary Extension number')]";
 const whatAreTheAttachmentsFor1915bRequestTemprorayExtension =
   "//button[contains(text(),'What are the attachments for a 1915(b) Waiver - Request for Temporary Extension')]";
 const attachmentsFor1915cRequestTempExtHeaderBtn =
@@ -119,7 +119,7 @@ export class oneMacFAQPage {
       );
   }
   VerifyWhataretheOneMACuserrolesisdisplayedandclickit() {
-    cy.xpath(whatAreTheOneMacUserRoles).click();
+    cy.get(whatAreTheOneMacUserRoles).click();
   }
   VerifytextcontainsStateSubmitter() {
     cy.xpath(whatAreTheOneMacUserRolesTable).should("be.visible").and('contain.text', 'State Submitter');
