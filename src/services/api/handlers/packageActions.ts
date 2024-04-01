@@ -632,7 +632,8 @@ export async function performIntake(body: any) {
               ? `'${body.description.replace("'", "''")}'`
               : "NULL"
           },
-          Lead_Analyst_ID = ${body.cpoc ? body.cpoc : "NULL"}
+          Lead_Analyst_ID = ${body.cpoc ? body.cpoc : "NULL"},
+          Status_Memo = ${buildStatusMemoQuery(body.id, "Intake Performed")}
         WHERE ID_Number = '${body.id}'
 
         -- Insert all types into State_Plan_Service_Types
