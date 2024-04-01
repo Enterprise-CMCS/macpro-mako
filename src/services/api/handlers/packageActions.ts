@@ -601,7 +601,7 @@ export async function performIntake(body: any) {
   try {
     await transaction.begin();
 
-    const intakePerson = body.submitterEmail;
+    const intakePerson = `IntakePerformed by ${body.submitterEmail}`;
 
     // Generate INSERT statements for typeIds
     const typeIdsValues = body.typeIds
@@ -633,7 +633,7 @@ export async function performIntake(body: any) {
               : "NULL"
           },
           Lead_Analyst_ID = ${body.cpoc ? body.cpoc : "NULL"},
-          Status_Memo = ${buildStatusMemoQuery(body.id, "Intake Performed")}
+          Status_Memo = ${buildStatusMemoQuery(body.id, intakePerson)}
         WHERE ID_Number = '${body.id}'
 
         -- Insert all types into State_Plan_Service_Types
