@@ -11,7 +11,7 @@ const COGNITO_LOGIN_URLS = {
 
 export class oneMacDevLoginPage {
   loginAs(userRole, userStatus) {
-    cy.origin(COGNITO_LOGIN_URLS.featureBranch, { args: { EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn, userRole, userStatus } }, ({ EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn, userRole, userStatus}) => {
+    cy.origin(COGNITO_LOGIN_URLS.devEnv, { args: { EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn, userRole, userStatus } }, ({ EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn, userRole, userStatus}) => {
       cy.fixture(LOGIN_FIXTURE).then(function (loginCredentials) {
         cy.get(EmailInput).type(loginCredentials[userRole][userStatus], { force: true });
         cy.get(PasswordInput).type(DEFAULT_DEV_WORD, { force: true });
@@ -20,7 +20,7 @@ export class oneMacDevLoginPage {
     });
   }
   loginAsA11Y(userRole, userStatus) {
-    cy.origin(COGNITO_LOGIN_URLS.featureBranch, { args: { EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn, userRole, userStatus } }, ({ EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn, userRole, userStatus}) => {
+    cy.origin(COGNITO_LOGIN_URLS.devEnv, { args: { EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn, userRole, userStatus } }, ({ EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn, userRole, userStatus}) => {
       cy.fixture(LOGIN_FIXTURE).then(function (loginCredentials) {
         cy.get(EmailInput).type(loginCredentials["State Submitter"]["Active"], { force: true });
         cy.get(PasswordInput).type(DEFAULT_DEV_WORD, { force: true });
