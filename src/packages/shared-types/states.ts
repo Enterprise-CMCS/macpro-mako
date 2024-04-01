@@ -58,5 +58,6 @@ export const STATE_CODES = [
   "WV",
   "WI",
   "WY",
+  "ZZ",
 ] as const;
-export type StateCode = typeof STATE_CODES[number];
+export type StateCode = (typeof STATE_CODES)[number];
