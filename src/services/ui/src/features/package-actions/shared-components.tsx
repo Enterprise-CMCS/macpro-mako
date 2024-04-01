@@ -308,25 +308,33 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  return useEffect(() => {
+  useEffect(() => {
     if (data && data.submitted) {
-      alert.setContent({
-        header,
-        body,
-      });
+      const defaultNavigateUrl = "/dashboard";
+      const fromUrl = location.state?.from || defaultNavigateUrl;
+      const shouldNavigateToFromUrl =
+        fromUrl && !fromUrl.endsWith("/update-id");
+      const navigateUrl = shouldNavigateToFromUrl
+        ? fromUrl
+        : defaultNavigateUrl;
+
+      // Update the alert content
+      alert.setContent({ header, body });
+
+      // Navigate to the determined URL
+      navigate(navigateUrl);
+
+      // Show the alert banner
       alert.setBannerShow(true);
-      alert.setBannerDisplayOn(
-        location.state?.from && !location.pathname.endsWith("/update-id")
-          ? location.state.from
-          : "/dashboard",
-      );
-      navigate(
-        location.state?.from && !location.pathname.endsWith("/update-id")
-          ? location.state.from
-          : "/dashboard",
-      );
+
+      // Determine the URL for banner display without query parameters
+      const position = fromUrl.indexOf("?"); // Find the position of the "?"
+      const bannerDisplayUrl =
+        position > -1 ? fromUrl.slice(0, position) : defaultNavigateUrl;
+
+      alert.setBannerDisplayOn(bannerDisplayUrl);
     }
-  }, [data]);
+  }, [data, alert, navigate, location.state, location.pathname]);
 };
 
 // Utility Functions

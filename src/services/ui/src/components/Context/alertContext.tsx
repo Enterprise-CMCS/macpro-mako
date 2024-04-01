@@ -51,7 +51,7 @@ export const AlertProvider = ({ children }: PropsWithChildren) => {
        * Route change*/}
       {context.bannerDisplayOn === location.pathname && context.bannerShow && (
         <SimplePageContainer>
-          <Alert variant={"success"} className="mt-4 mb-8 flex-row text-sm">
+          <Alert variant={"success"} className="m-4 flex-row text-sm">
             <div className={"flex items-start justify-between"}>
               <Check />
               <div className={"ml-2 w-full"}>
