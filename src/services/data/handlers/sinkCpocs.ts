@@ -40,18 +40,30 @@ const officers = async (
 ) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
-    const { value } = kafkaRecord;
+    const { key, value } = kafkaRecord;
     try {
       // Handle delete events and continue
       if (value === undefined) {
         continue;
       }
 
+      // Set id
+      const id: string = decode(key);
+
       const decodedValue = Buffer.from(value, "base64").toString("utf-8");
       const record = JSON.parse(decodedValue).payload.after;
 
       // Handle tombstone events and continue
-      if (!record) continue;
+      if (!record) {
+        console.log(
+          `Tombstone detected for ${id}.  Pushing delete record to os...`,
+        );
+        docs.push({
+          id,
+          delete: true,
+        });
+        continue;
+      }
 
       const result = opensearch.cpocs.Officers.transform().safeParse(record);
       if (!result.success) {
