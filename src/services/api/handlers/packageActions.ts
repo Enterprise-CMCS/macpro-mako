@@ -32,7 +32,7 @@ import {
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
-import { formatSeatoolDate, seaToolFriendlyTimestamp } from "shared-utils";
+import { formatSeatoolDate, seaToolFriendlyTimestamp, getNextBusinessDayTimestamp } from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
 
 const TOPIC_NAME = process.env.topicName as string;
@@ -173,6 +173,9 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
       JSON.stringify({
         ...result.data,
         actionType: Action.WITHDRAW_RAI,
+        notificationMetadata: {
+          submissionDate: getNextBusinessDayTimestamp()
+        },
       }),
     );
 
@@ -275,6 +278,9 @@ export async function respondToRai(body: RaiResponse, document: any) {
         ...result.data,
         responseDate: today,
         actionType: Action.RESPOND_TO_RAI,
+        notificationMetadata: {
+          submissionDate: getNextBusinessDayTimestamp()
+        },
       }),
     );
 
