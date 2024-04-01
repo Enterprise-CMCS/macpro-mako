@@ -593,19 +593,15 @@ export async function performIntake(body: any) {
     });
   }
 
-  console.log(JSON.stringify(body, null, 2));
   const now = new Date().getTime();
-  // const today = seaToolFriendlyTimestamp();
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
   try {
     await transaction.begin();
 
-    const intakePerson = `IntakePerformed by ${body.submitterEmail}`;
-
     // Generate INSERT statements for typeIds
-    const typeIdsValues = body.typeIds
-      .map((typeId: number) => `('${body.id}', '${typeId}')`)
+    const typeIdsValues = result.data.typeIds
+      .map((typeId: number) => `('${result.data.id}', '${typeId}')`)
       .join(",\n");
 
     const typeIdsInsert = typeIdsValues
@@ -613,8 +609,8 @@ export async function performIntake(body: any) {
       : "";
 
     // Generate INSERT statements for subTypeIds
-    const subTypeIdsValues = body.subTypeIds
-      .map((subTypeId: number) => `('${body.id}', '${subTypeId}')`)
+    const subTypeIdsValues = result.data.subTypeIds
+      .map((subTypeId: number) => `('${result.data.id}', '${subTypeId}')`)
       .join(",\n");
 
     const subTypeIdsInsert = subTypeIdsValues
@@ -625,16 +621,18 @@ export async function performIntake(body: any) {
       UPDATE SEA.dbo.State_Plan
         SET 
           Title_Name = ${
-            body.subject ? `'${body.subject.replace("'", "''")}'` : "NULL"
-          },
-          Summary_Memo = ${
-            body.description
-              ? `'${body.description.replace("'", "''")}'`
+            result.data.subject
+              ? `'${result.data.subject.replace("'", "''")}'`
               : "NULL"
           },
-          Lead_Analyst_ID = ${body.cpoc ? body.cpoc : "NULL"},
-          Status_Memo = ${buildStatusMemoQuery(body.id, intakePerson)}
-        WHERE ID_Number = '${body.id}'
+          Summary_Memo = ${
+            result.data.description
+              ? `'${result.data.description.replace("'", "''")}'`
+              : "NULL"
+          },
+          Lead_Analyst_ID = ${result.data.cpoc ? result.data.cpoc : "NULL"},
+          Status_Memo = ${buildStatusMemoQuery(result.data.id, `Intake Completed:  Intake was completed by ${result.data.submitterName}`)}
+        WHERE ID_Number = '${result.data.id}'
 
         -- Insert all types into State_Plan_Service_Types
         ${typeIdsInsert}
@@ -645,7 +643,7 @@ export async function performIntake(body: any) {
 
     await produceMessage(
       TOPIC_NAME,
-      body.id,
+      result.data.id,
       JSON.stringify({
         actionType: Action.PERFORM_INTAKE,
         timestamp: now,
