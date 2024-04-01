@@ -155,7 +155,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     }
 
     const rangeObject = getDateRange(startDate, endOfDay(today));
-    onChange(rangeObject);
+    onChange(offsetRangeToUtc(rangeObject));
     setSelectedDate({ from: startDate, to: today });
     setFromValue(format(startDate, "MM/dd/yyyy"));
     setToValue(format(today, "MM/dd/yyyy"));
