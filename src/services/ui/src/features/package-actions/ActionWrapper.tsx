@@ -2,7 +2,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Outlet, useLocation } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodSchema } from "zod";
-import { BreadCrumbs, SimplePageContainer } from "@/components";
+import { BreadCrumbs, FAQFooter, SimplePageContainer } from "@/components";
 import { detailsAndActionsCrumbs } from "@/features";
 import { Action } from "shared-types";
 import { issueRaiSchema } from "./IssueRai";
@@ -55,6 +55,7 @@ export const ActionWrapper = () => {
       <FormProvider {...methods}>
         <Outlet />
       </FormProvider>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };

@@ -34,7 +34,6 @@ import {
   DescriptionInput,
   SubjectInput,
   AdditionalInfoInput,
-  FAQFooter,
 } from "../shared-components";
 
 const formSchema = z.object({
@@ -276,7 +275,7 @@ export const ChipSpaFormPage = () => {
           </div>
         </form>
       </Inputs.Form>
-      <FAQFooter />
+      <Content.FAQFooter />
     </SimplePageContainer>
   );
 };

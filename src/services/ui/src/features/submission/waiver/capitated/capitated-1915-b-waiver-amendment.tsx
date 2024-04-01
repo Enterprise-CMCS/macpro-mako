@@ -8,6 +8,7 @@ import {
   SectionCard,
   formCrumbsFromPath,
   FAQ_TAB,
+  FAQFooter,
   useAlertContext,
   useNavigate,
 } from "@/components";
@@ -30,7 +31,6 @@ import { useQuery as useQueryString } from "@/hooks";
 import {
   AdditionalInfoInput,
   DescriptionInput,
-  FAQFooter,
   SubjectInput,
 } from "@/features/submission/shared-components";
 import { SubmitAndCancelBtnSection } from "../shared-components";

@@ -6,6 +6,7 @@ import {
   SimplePageContainer,
   Navigate,
   useParams,
+  FAQFooter,
 } from "@/components";
 import {
   ToggleRaiResponseWithdraw,
@@ -98,7 +99,7 @@ const ActionFormSwitch = () => {
   } else {
     const setup = getFormSetup(
       item!._source.authority as string as SetupOptions,
-      type
+      type,
     );
     if (!setup) return <Navigate path="/" />;
     // Form renders
@@ -119,12 +120,14 @@ const ActionFormSwitch = () => {
 
 export const ActionFormIndex = () => {
   const { id, type } = useParams("/action/:id/:type");
+
   return (
     <SimplePageContainer>
       <BreadCrumbs
         options={detailsAndActionsCrumbs({ id: id, action: type })}
       />
       <ActionFormSwitch />
+      <FAQFooter />
     </SimplePageContainer>
   );
 };
