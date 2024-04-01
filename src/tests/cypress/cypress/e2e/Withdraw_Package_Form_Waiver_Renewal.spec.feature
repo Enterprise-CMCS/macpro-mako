@@ -12,7 +12,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click on "1915(b) Comprehensive (Capitated) Waiver Authority" choice
         Then click on "1915(b) Comprehensive (Capitated) Renewal Waiver" choice
         Then into "Existing Waiver Number to Renew" type "MD-2200.R00.00"
-        Then type the generated "Renewal Waiver" Number 3 into the ID Input box using the state "MD"
+        Then type the generated "1915(b) Waiver Renewal Number" Number 3 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Renewal Waiver" to 3 months from today
         Then into "Subject" type "Waiver Renewal Withdrawal Cypress Regression Test"
         Then into "Description" type "This package was created while running the test automation."
@@ -47,7 +47,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click on "1915(b) Comprehensive (Capitated) Waiver Authority" choice
         Then click on "1915(b) Comprehensive (Capitated) Renewal Waiver" choice
         Then into "Existing Waiver Number to Renew" type "MD-2200.R00.00"
-        Then type the generated "Renewal Waiver" Number 4 into the ID Input box using the state "MD"
+        Then type the generated "1915(b) Waiver Renewal Number" Number 4 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Renewal Waiver" to 3 months from today
         Then into "Subject" type "Waiver Renewal Withdrawal Cypress Regression Test"
         Then into "Description" type "This package was created while running the test automation."
@@ -83,7 +83,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click on "1915(b)(4) FFS Selective Contracting Waivers" choice
         Then click on "1915(b)(4) FFS Selective Contracting Renewal Waiver" choice
         Then into "Existing Waiver Number to Renew" type "MD-2200.R00.00"
-        Then type the generated "Renewal Waiver" Number 5 into the ID Input box using the state "MD"
+        Then type the generated "1915(b) Waiver Renewal Number" Number 5 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Renewal" to 3 months from today
         Then into "Subject" type "Waiver Renewal Withdrawal Cypress Regression Test"
         Then into "Description" type "This package was created while running the test automation."
@@ -118,7 +118,7 @@ Feature: Verify user can withdraw a package in Under Review Status in the packag
         Then click on "1915(b)(4) FFS Selective Contracting Waivers" choice
         Then click on "1915(b)(4) FFS Selective Contracting Renewal Waiver" choice
         Then into "Existing Waiver Number to Renew" type "MD-2200.R00.00"
-        Then type the generated "Renewal Waiver" Number 6 into the ID Input box using the state "MD"
+        Then type the generated "1915(b) Waiver Renewal Number" Number 6 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Renewal" to 3 months from today
         Then into "Subject" type "Waiver Renewal Withdrawal Cypress Regression Test"
         Then into "Description" type "This package was created while running the test automation."

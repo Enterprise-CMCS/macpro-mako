@@ -19,7 +19,7 @@ Feature: Waiver Renewal in Package Dashboard
     Scenario: Verify pre-print and spreadsheet are both required
         Then click on "1915(b) Comprehensive (Capitated) Renewal Waiver" choice
         Then into "Existing Waiver Number to Renew" type "MD-2200.R00.00"
-        Then type the generated "Renewal Waiver" Number 1 into the ID Input box using the state "MD"
+        Then type the generated "1915(b) Waiver Renewal Number" Number 1 into the ID Input box using the state "MD"
         Then Click the Submit Button without waiting
         Then verify the "Proposed Effective Date" error message is "Required"
         Then verify the "first attachment" error message is "Required"
@@ -38,7 +38,7 @@ Feature: Waiver Renewal in Package Dashboard
     Scenario: create waiver renewal from package dashboard and search it
         Then click on "1915(b) Comprehensive (Capitated) Renewal Waiver" choice
         Then into "Existing Waiver Number to Renew" type "MD-2200.R00.00"
-        Then type the generated "Renewal Waiver" Number 1 into the ID Input box using the state "MD"
+        Then type the generated "1915(b) Waiver Renewal Number" Number 1 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Renewal" to 3 months from today
         Then into "Subject" type "Cypress Regression Test"
         Then into "Description" type "This package was created while running the test automation."

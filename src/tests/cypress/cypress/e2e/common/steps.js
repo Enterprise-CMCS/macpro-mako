@@ -242,7 +242,7 @@ Then("type {string} into the ID Input box", (newID) => {
 Then("into {string} type {string}", (whereTo, newValue) => {
   OneMacFormPage.inputInto(whereTo, newValue);
 });
-Then("clear {string} input field", (whereTo, newValue) => {
+Then("clear {string} input field", (whereTo) => {
   OneMacFormPage.clearInput(whereTo);
 });
 
@@ -1761,57 +1761,6 @@ Then(
 Then("verify error message contains {string}", (msg) => {
   OneMacFormPage.verifyErrorMsgContains(msg);
 });
-Then("search for new waiver renewal number {string}", (s) => {
-  cy.fixture("packageDashboardWaiverNumbers.json").then((d) => {
-    switch (parseInt(s)) {
-      case 1:
-        OneMacDashboardPage.searchFor(d.newWaiverRenewalNum1);
-        break;
-      case 3:
-        OneMacDashboardPage.searchFor(d.newWaiverRenewalNum3);
-        break;
-    }
-  });
-  cy.wait(1000);
-});
-Then(
-  "verify id number in the first row matches new waiver renewal number {string}",
-  (s) => {
-    cy.fixture("packageDashboardWaiverNumbers.json").then((data) => {
-      switch (parseInt(s)) {
-        case 1:
-          OneMacDashboardPage.verifyIDNumberInFirstRowIs(
-            data.newWaiverRenewalNum1
-          );
-          break;
-        case 3:
-          OneMacDashboardPage.verifyIDNumberInFirstRowIs(
-            data.newWaiverRenewalNum3
-          );
-          break;
-      }
-    });
-  }
-);
-Then(
-  "verify id number in the first row matches new waiver amendment number {string}",
-  (s) => {
-    cy.fixture("packageDashboardWaiverNumbers.json").then((data) => {
-      switch (parseInt(s)) {
-        case 1:
-          OneMacDashboardPage.verifyIDNumberInFirstRowIs(
-            data.newWaiverAmendmentNum1
-          );
-          break;
-        case 3:
-          OneMacDashboardPage.verifyIDNumberInFirstRowIs(
-            data.newWaiverAmendmentNum3
-          );
-          break;
-      }
-    });
-  }
-);
 Then("type {string} into Amendment Title field", (amendmentTitle) => {
   OneMacFormPage.inputAmendmentTitle(amendmentTitle);
 });
@@ -1944,12 +1893,6 @@ Then("verify submission successful message in the modal", () => {
 Then("click the Go to Dashboard button", () => {
   OneMacFormPage.clickGoToDashBoardBtn();
 });
-Then("search for the generated SPA ID {int}", (count) => {
-  cy.fixture("generatedIDs.json").then((data) => {
-    OneMacDashboardPage.searchFor(data["generatedSPAID" + count]);
-  });
-  cy.wait(1000);
-});
 Then("type the generated {string} Number {int} into the ID Input box using the state {string}", (type, count, state = "MD") => {
   cy.fixture("generatedIDs.json").then((obj) => {
     cy.fixture("generatedIDPartialCounter.json").then((data) => {
@@ -1958,40 +1901,58 @@ Then("type the generated {string} Number {int} into the ID Input box using the s
         case "Initial Waiver":
           data["lastInitialWaiverPart"] = util.firstpartCounter(data["lastInitialWaiverPart"]);
           newID += data["lastInitialWaiverPart"] + ".R00.00";
+          obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
+          OneMacFormPage.inputInto(type, newID);
           break;
-        case "Renewal Waiver":
+        case "1915(b) Waiver Renewal Number":
           if (parseInt(data["lastRenewalSecondPart"]) === 99) {
             data["lastRenewalFirstPart"] = util.firstpartCounter(data["lastRenewalFirstPart"]);
           }
           data["lastRenewalSecondPart"] = util.doubleDigitCounter(data["lastRenewalSecondPart"]);
           newID += data["lastRenewalFirstPart"] + ".R" + data["lastRenewalSecondPart"] + ".00";
+          obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
+          OneMacFormPage.inputInto(type, newID);
           break;
-        case "Waiver Amendment":
+        case "1915(b) Waiver Amendment Number":
           if (parseInt(data["lastAmendmentSecondPart"]) === 99) {
             data["lastAmendmentFirstPart"] = util.firstpartCounter(data["lastAmendmentFirstPart"]);
           }
           data["lastAmendmentSecondPart"] = util.doubleDigitCounter(data["lastAmendmentSecondPart"]);
           newID += data["lastAmendmentFirstPart"] + ".R00." + data["lastAmendmentSecondPart"];
+          obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
+          OneMacFormPage.inputInto(type, newID);
           break;
-        case "Temporary Extension":
+        case "Temporary Extension Request Number":
           if (parseInt(data["lastTempExtensionSecondPart"]) === 99) {
             data["lastTempExtensionFirstPart"] = util.firstpartCounter(data["lastTempExtensionFirstPart"]);
           }
           data["lastTempExtensionSecondPart"] = util.doubleDigitCounter(data["lastTempExtensionSecondPart"]);
           newID += data["lastTempExtensionFirstPart"] + ".R00.TE" + data["lastTempExtensionSecondPart"];
+          obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
+          OneMacFormPage.inputInto(type, newID);
+          break;
+        case "Appendix K ID":
+          OneMacFormPage.clearInput(type);
+          if (parseInt(data["lastAppKSecondPart"]) === 99) {
+            data["lastAppKFirstPart"] = util.firstpartCounter(data["lastAppKFirstPart"]);
+          }
+          data["lastAppKSecondPart"] = util.doubleDigitCounter(data["lastAppKSecondPart"]);
+          newID = data["lastAppKFirstPart"] + ".R00." + data["lastAppKSecondPart"];
+          obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
+          OneMacFormPage.inputInto(type, newID);
           break;
         case "Medicaid SPA":
         case "CHIP SPA":
           data["lastSpaID"] = util.spaIDCounter(data["lastSpaID"]);
           let year = new Date().getFullYear().toString().slice(-2);
           newID += year + "-" + data["lastSpaID"] + "-CYPS";
+          obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
+          OneMacFormPage.inputInto("SPA ID", newID);
           break;
         default:
           cy.log("type is invalid or not covered in cases");
           break;
       }
-      obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
-      OneMacFormPage.inputID(newID);
       // write the merged object
       cy.writeFile("./fixtures/generatedIDs.json", obj);
       cy.writeFile("./fixtures/generatedIDPartialCounter.json", data);

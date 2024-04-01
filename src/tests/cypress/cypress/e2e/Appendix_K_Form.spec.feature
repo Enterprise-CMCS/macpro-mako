@@ -15,7 +15,7 @@ Feature: Appendix K Waiver Type Selection
         Then verify the attachment info link is for "Appendix K"
 
     Scenario: Verify the Waiver Number format on Appendix K Form
-        Then Click on Appendix K Amendment
+        Then click on "1915(c) Appendix K Amendment" choice
         Then type "Appendix K Submission 1" into Amendment Title field
         Then type "MD-22106.R01.03" into the ID Input box
         Then attach "adobe.pdf" file to attachment 1
@@ -33,12 +33,14 @@ Feature: Appendix K Waiver Type Selection
         Then verify the submit button is not disabled
 
     Scenario: create Appendix K from package dashboard and search it
-        Then Click on Appendix K Amendment
+        Then click on "1915(c) Appendix K Amendment" choice
         Then type "Appendix K Submission 1" into Amendment Title field
         Then verify Waiver Authority contains "1915(c)"
         Then set the value of state select button to "Georgia"
+        Then type the generated "Appendix K ID" Number 1 into the ID Input box using the state "GA"
         Then set "Proposed Effective Date of 1915(c) Appendix K Amendment" to 3 months from today
         Then attach "adobe.pdf" file to attachment 1
+        Then attach "file.docx" file to attachment 2
         Then into "Additional Information" type "This is just a test."
         Then Click on Submit Button
-        #Then verify submission successful message in the alert bar
+        Then verify package submitted message in the alert bar

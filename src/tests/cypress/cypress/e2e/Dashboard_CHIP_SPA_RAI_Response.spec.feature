@@ -33,7 +33,7 @@ Feature: RAI Response for CHIP SPA package view
         Then attach "file.docx" file to attachment 1
         Then into "Additional Information" type "This is an automated test to issue a formal rai."
         Then Click the Submit Button without waiting
-        Then verify the message in the alert bar is "RAI issued"
+        Then verify the message in the alert bar is "RAI Issued"
         Then Click on My Account
         Then click the sign out button
         When clicking the Sign In Button
@@ -45,7 +45,6 @@ Feature: RAI Response for CHIP SPA package view
         Then click on Respond to RAI package action
         Then verify the form is titled "CHIP SPA Formal RAI Response Details"
         Then verify the attachment info descriptiion
-        #Then verify the attachment info link is for "CHIP RAI"
         Then attach "file.docx" file to attachment 1
         Then attach "picture.jpg" file to attachment 2
         Then Click the Submit Button without waiting
@@ -73,7 +72,7 @@ Feature: RAI Response for CHIP SPA package view
         Then attach "file.docx" file to attachment 1
         Then into "Additional Information" type "This is an automated test to issue a formal rai."
         Then Click the Submit Button without waiting
-        Then verify the message in the alert bar is "RAI issued"
+        Then verify the message in the alert bar is "RAI Issued"
         Then Click on My Account
         Then click the sign out button
         When clicking the Sign In Button

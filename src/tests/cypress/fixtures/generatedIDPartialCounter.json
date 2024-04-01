@@ -4,7 +4,9 @@
   "lastRenewalFirstPart": 1000,
   "lastRenewalSecondPart": "05",
   "lastInitialWaiverPart": 1001,
-  "lastSpaID": "0007",
+  "lastSpaID": "0014",
   "lastTempExtensionFirstPart": 1000,
-  "lastTempExtensionSecondPart": "01"
+  "lastTempExtensionSecondPart": "01",
+  "lastAppKSecondPart": "06",
+  "lastAppKFirstPart": 1000
 }

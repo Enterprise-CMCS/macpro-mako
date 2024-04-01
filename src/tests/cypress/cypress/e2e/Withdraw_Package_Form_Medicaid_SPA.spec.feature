@@ -25,7 +25,6 @@ Feature: Verify user can withdraw a Medicaid SPA package in Under Review Status 
         Then click the actions button in row one
         Then click withdraw package button
         Then verify the form is titled "Withdraw Medicaid SPA Package"
-
         Then verify ID Label is "Package ID"
         Then verify Authority is "Medicaid SPA"
         Then verify "Supporting Documentation" is an Attachment Type
@@ -58,8 +57,6 @@ Feature: Verify user can withdraw a Medicaid SPA package in Under Review Status 
         Then verify the package details page is visible
         Then click withdraw button
         Then verify the form is titled "Withdraw Waiver"
-
-
         Then verify Authority is "Medicaid SPA"
         Then verify "Supporting Documentation" is an Attachment Type
         Then verify label "Additional Information" exists on page

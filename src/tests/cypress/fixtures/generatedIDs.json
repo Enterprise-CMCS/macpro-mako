@@ -1,6 +1,4 @@
 {
-  "generatedSPAID1": "MD-22-4234",
-  "generatedSPAID2": "MD-24-1672-VM",
   "generatedWaiverID1": "MD-99540.R00.00",
   "generatedInitialWaiverID2": "MD-4994.R00.00",
   "generatedWaiverAmendmentID1": "MD-1000.R00.01",
@@ -15,5 +13,7 @@
   "generatedInitialWaiverID5": "MD-1001.R00.00",
   "generatedTemporaryExtensionID1": "MD-1000.R00.TE01",
   "generatedRenewalWaiverID3": "MD-1000.R05.00",
-  "generatedWaiverAmendmentID3": "MD-1000.R00.07"
+  "generatedWaiverAmendmentID3": "MD-1000.R00.07",
+  "generatedAppendixKIDID1": "1000.R00.06",
+  "generatedCHIPSPAID4": "MD-24-0014-CYPS"
 }

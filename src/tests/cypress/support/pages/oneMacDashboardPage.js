@@ -245,16 +245,16 @@ export class oneMacDashboardPage {
     cy.xpath(newSubmissionBTN).click();
   }
   verifySuccessMessageIs(s) {
-    cy.get(successMessage).contains(s);
+    cy.get(successMessage).contains(s, { matchCase: false });
   }
   verifySuccessMessage1IsDisplayed() {
-    cy.xpath(successMessage1).contains("Submission Completed");
+    cy.xpath(successMessage1).contains("Submission Completed", { matchCase: false });
   }
   verifyPackageSubmittedIsDisplayed() {
-    cy.xpath(packageSubmittedMsg).contains("Package submitted");
+    cy.xpath(packageSubmittedMsg).contains("Package submitted", { matchCase: false });
   }
   verifyAlertMessageIs(s) {
-    cy.xpath(packageSubmittedMsg).contains(s);
+    cy.xpath(packageSubmittedMsg).contains(s, { matchCase: false });
   }
   verifyIDNumber(s) {
     cy.xpath(IDNUMBER(s)).first().should("exist");

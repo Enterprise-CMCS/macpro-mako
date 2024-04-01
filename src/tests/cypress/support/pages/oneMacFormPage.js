@@ -42,6 +42,7 @@ const elementFromLabel = {
   "Additional Information": "textarea[name='additionalInformation']",
   "Subject": "[name='subject']",
   "Description": "[name='description']",
+  "Appendix K ID": "[placeholder]",
 };
 const errorMessageLine1FromLabel = {
   "SPA ID": idElement,
@@ -259,7 +260,7 @@ export class oneMacFormPage {
       case "CHIP SPA":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/#chip-spa-attachments");
+          .should("have.attr", "href", "/faq/chip-spa-attachments");
         break;
       case "CHIP RAI":
         cy.xpath(attachmentInfoDescription)
