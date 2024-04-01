@@ -1046,6 +1046,9 @@ Then("verify CPOC Name checkbox exists", () => {
 Then("verify Formal RAI Received checkbox exists", () => {
   OneMacDashboardPage.verifyFormalRAIReceivedCheckboxExists();
 });
+Then("verify Formal RAI Response checkbox exists", () => {
+  OneMacDashboardPage.verifyFormalRAIResponseCheckboxExists();
+});
 Then("verify Final Disposition checkbox exists", () => {
   OneMacDashboardPage.verifyFinalDispositionCheckBoxExists();
 });
@@ -1058,8 +1061,8 @@ Then("verify status column exists", () => {
 Then("verify submitted by column exists", () => {
   OneMacDashboardPage.verifysubmittedByColumnExists();
 });
-Then("verify type column exists", () => {
-  OneMacDashboardPage.verifytypeColumnExists();
+Then("verify Authority column exists", () => {
+  OneMacDashboardPage.verifyAuthorityColumnExists();
 });
 Then("verify action type column exists", () => {
   OneMacDashboardPage.verifyActionTypeColumnExists();
@@ -1070,8 +1073,14 @@ Then("verify actions column exists", () => {
 Then("verify Formal RAI Received column exists", () => {
   OneMacDashboardPage.verifyFormalRAIReceivedColumnExists();
 });
+Then("verify Formal RAI Response column exists", () => {
+  OneMacDashboardPage.verifyFormalRAIResponseColumnExists();
+});
 Then("verify Formal RAI Received column does not exist", () => {
   OneMacDashboardPage.verifyFormalRAIReceivedColumnDoesNotExist();
+});
+Then("verify Formal RAI Response column does not exist", () => {
+  OneMacDashboardPage.verifyFormalRAIResponseColumnDoesNotExist();
 });
 Then("verify CPOC Name column exists", () => {
   OneMacDashboardPage.verifyCPOCNameColumnExists();
@@ -1106,14 +1115,14 @@ Then("click action type column visibility toggle button", () => {
 Then("click CPOC Name column visibility toggle button", () => {
   OneMacDashboardPage.clickCPOCNameCheckBox();
 });
-Then("click Formal RAI Response column visibility toggle button", () => {
+Then("click Formal RAI Received column visibility toggle button", () => {
   OneMacDashboardPage.clickFormalRAIReceivedVisibilityToggleBtn();
 });
 Then("click Final Disposition checkbox", () => {
   OneMacDashboardPage.clickFinalDispositionDateCheckBox();
 });
-Then("verify type column does not exist", () => {
-  OneMacDashboardPage.verifytypeColumnDoesNotExist();
+Then("verify Authority column does not exist", () => {
+  OneMacDashboardPage.verifyAuthorityColumnDoesNotExist();
 });
 Then("verify action type column does not exist", () => {
   OneMacDashboardPage.verifyActionTypeColumnDoesNotExist();

@@ -9,7 +9,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker for CMS User
         Then click on the Waivers tab
         Then verify show hide columns button exists
         Then verify Waiver Number column exists
-        Then verify type column exists
+        Then verify Authority column exists
         Then verify action type column exists
         Then verify State column exists
         Then verify Waiver Number column exists
@@ -36,7 +36,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker for CMS User
     Scenario: Waivers Tab - Uncheck all and verify Waiver Number exists
         Then click on the Waivers tab
         Then click show hide columns button
-        Then click Formal RAI Response column visibility toggle button
+        Then click Formal RAI Received column visibility toggle button
         Then click Initial Submission Date column visibility toggle button
         Then click state column visibility toggle button
         Then click status column visibility toggle button
@@ -47,7 +47,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker for CMS User
         #Then click Final Disposition checkbox
         Then click show hide columns button
         Then verify Waiver Number column exists
-        Then verify type column does not exist
+        Then verify Authority column does not exist
         Then verify action type column does not exist
         Then verify state column does not exist
         Then verify status column does not exist
@@ -63,7 +63,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker for CMS User
         Then click on the Waivers tab
         Then verify show hide columns button exists
         Then verify Waiver Number column exists
-        Then verify type column exists
+        Then verify Authority column exists
         Then verify action type column exists
         Then verify submitted by column exists
         Then verify Waiver Number column exists

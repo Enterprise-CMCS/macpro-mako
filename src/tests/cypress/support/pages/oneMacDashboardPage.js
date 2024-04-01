@@ -66,7 +66,8 @@ const statusFilterCheckboxes = "#packageStatus input";
 const typeFilterCheckboxes = "#componentType input";
 //Element is Xpath use cy.xpath instead of cy.get
 const formalRAIReceivedCheckbox =
-  "//*[@data-state='open'][@role='dialog']//*[contains(text(),'Formal RAI Response')]";
+  "//*[@data-state='open'][@role='dialog']//*[contains(text(),'Formal RAI Received')]";
+const formalRAIResponseCheckbox = "//*[@data-state='open'][@role='dialog']//*[contains(text(),'Formal RAI Response')]";
 
 //Element is Xpath use cy.xpath instead of cy.get
 const initialSubmissionDateFilterDropdown =
@@ -151,13 +152,14 @@ const checkBoxTypeAction = "//*[@data-state='open'][@role='dialog']//*[text()='A
 const checkboxCPOCName = "//*[@data-state='open'][@role='dialog']//*[contains(text(),'CPOC Name')]";
 const IDNumberColumn = "//th//*[text()='SPA ID']";
 const WaiverNumberColumn = "//th//*[text()='Waiver Number']";
-const typeColumn = "//th//*[text()='Type']";
+const authorityColumn = "//th//*[text()='Authority']";
 const actionTypeColumn = "//th//*[text()='Action Type']";
 const statusColumn = "//th//*[text()='Status']";
 const initialSubmissionDateColumn = "//th//*[text()='Initial Submission']";
 const submittedByColumn = "//th//*[text()='Submitted By']";
 const actionsColumn = "//th//*[text()='Actions']";
-const formalRAIReceivedColumn = "//th//*[text()='Formal RAI Response']";
+const formalRAIResponseColumn = "//th//*[text()='Formal RAI Response']";
+const formalRAIReceivedColumn = "//th//*[text()='Formal RAI Received']";
 const cPOCNameColumn = "//th//*[text()='CPOC Name']";
 const packageRowOneType = "//tbody/tr[2]/td[1]";
 const packageRowOneTypeAction = "//tbody/tr[1]/td[5]";
@@ -418,6 +420,9 @@ export class oneMacDashboardPage {
   verifyFormalRAIReceivedCheckboxExists() {
     cy.xpath(formalRAIReceivedCheckbox).should("exist");
   }
+  verifyFormalRAIResponseCheckboxExists() {
+    cy.xpath(formalRAIResponseCheckbox).should("exist");
+  }
   clickFormalRAIReceivedVisibilityToggleBtn() {
     cy.xpath(formalRAIReceivedCheckbox).click();
   }
@@ -637,8 +642,8 @@ export class oneMacDashboardPage {
   verifyWaiverNumberColumnExists() {
     cy.xpath(WaiverNumberColumn).should("be.visible");
   }
-  verifytypeColumnExists() {
-    cy.xpath(typeColumn).should("be.visible");
+  verifyAuthorityColumnExists() {
+    cy.xpath(authorityColumn).should("be.visible");
   }
   verifyActionTypeColumnExists() {
     cy.xpath(actionTypeColumn).should("be.visible");
@@ -662,11 +667,18 @@ export class oneMacDashboardPage {
   verifyFormalRAIReceivedColumnDoesNotExist() {
     cy.xpath(formalRAIReceivedColumn).should("not.exist");
   }
+  verifyFormalRAIResponseColumnExists() {
+    cy.xpath(formalRAIResponseColumn).scrollIntoView();
+    cy.xpath(formalRAIResponseColumn).should("be.visible");
+  }
+  verifyFormalRAIResponseColumnDoesNotExist() {
+    cy.xpath(formalRAIResponseColumn).should("not.exist");
+  }
   verifyIDNumberColumnDoesNotExist() {
     cy.xpath(IDNumberColumn).should("not.exist");
   }
-  verifytypeColumnDoesNotExist() {
-    cy.xpath(typeColumn).should("not.exist");
+  verifyAuthorityColumnDoesNotExist() {
+    cy.xpath(authorityColumn).should("not.exist");
   }
   verifyActionTypeColumnDoesNotExist() {
     cy.xpath(actionTypeColumn).should("not.exist");

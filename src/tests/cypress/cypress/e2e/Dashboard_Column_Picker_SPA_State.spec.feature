@@ -8,7 +8,7 @@ Feature: Package Dashboard - SPA Tab Column Picker
     Scenario: SPAs Tab - Screen enhancement
         Then verify show hide columns button exists
         Then verify SPA ID column exists
-        Then verify type column exists
+        Then verify Authority column exists
         Then verify State column exists
         Then verify status column exists
         Then verify Initial Submission Date column exists
@@ -31,7 +31,7 @@ Feature: Package Dashboard - SPA Tab Column Picker
 
     Scenario: SPAs Tab - Uncheck all and verify SPA ID and actions exists
         Then click show hide columns button
-        Then click Formal RAI Response column visibility toggle button
+        Then click Formal RAI Received column visibility toggle button
         Then click Initial Submission Date column visibility toggle button
         Then click status column visibility toggle button
         Then click state column visibility toggle button
@@ -42,7 +42,7 @@ Feature: Package Dashboard - SPA Tab Column Picker
         Then click show hide columns button
         Then verify SPA ID column exists
         Then verify actions column exists
-        Then verify type column does not exist
+        Then verify Authority column does not exist
         Then verify state column does not exist
         Then verify status column does not exist
         Then verify Initial Submission Date column does not exist
@@ -68,15 +68,15 @@ Feature: Package Dashboard - SPA Tab Column Picker
 
 
     Scenario: Verify type exists, click type from drop down, verify it no longer exists, click it again, verify it exists again.
-        Then verify type column exists
+        Then verify Authority column exists
         Then click show hide columns button
         Then click Authority column visibility toggle button
         Then click show hide columns button
-        Then verify type column does not exist
+        Then verify Authority column does not exist
         Then click show hide columns button
         Then click Authority column visibility toggle button
         Then click show hide columns button
-        Then verify type column exists
+        Then verify Authority column exists
         Then Click on My Account
         Then click the sign out button
 
@@ -87,7 +87,7 @@ Feature: Package Dashboard - SPA Tab Column Picker
         Then click Medicaid SPA check box
         Then Click on the close Filter Button
         Then click show hide columns button
-        Then click Formal RAI Response column visibility toggle button
+        Then click Formal RAI Received column visibility toggle button
         Then click Initial Submission Date column visibility toggle button
         Then click state column visibility toggle button
         Then click status column visibility toggle button
@@ -102,7 +102,7 @@ Feature: Package Dashboard - SPA Tab Column Picker
         Then search for "pending"
         Then verify Error message displayed should be No Results Found
         Then verify SPA ID column exists
-        Then verify type column exists
+        Then verify Authority column exists
         #Then verify state column does not exist
         Then verify Formal RAI Received column exists
         Then verify status column exists
@@ -116,11 +116,11 @@ Feature: Package Dashboard - SPA Tab Column Picker
         Then click show hide columns button
         Then click Initial Submission Date column visibility toggle button
         Then click status column visibility toggle button
-        Then click Formal RAI Response column visibility toggle button
+        Then click Formal RAI Received column visibility toggle button
         Then click submitted by column visibility toggle button
         #Then click state column visibility toggle button
         Then click show hide columns button
-        Then verify type column exists
+        Then verify Authority column exists
         #Then verify State column exists
         Then verify the type on row one exists
         Then verify the state on row one exists
@@ -128,7 +128,7 @@ Feature: Package Dashboard - SPA Tab Column Picker
         #Then click state column visibility toggle button
         Then click show hide columns button
         #Then verify state column does not exist
-        Then verify type column exists
+        Then verify Authority column exists
         Then verify the type on row one exists
         Then Click on My Account
         Then click the sign out button

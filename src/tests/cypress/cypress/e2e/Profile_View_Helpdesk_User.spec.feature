@@ -9,12 +9,12 @@ Feature: Helpdesk User
         Then verify the SPAs tab is selected
         Then verify Export to Excel CSV is Displayed
         Then verify SPA ID column exists
-        Then verify type column exists
+        Then verify Authority column exists
         Then verify State column exists
         Then verify submitted by column exists
         Then click on the Waivers tab
         Then verify Export to Excel CSV is Displayed
         Then verify Waiver Number column exists
-        Then verify type column exists
+        Then verify Authority column exists
         Then verify State column exists
         Then verify submitted by column exists

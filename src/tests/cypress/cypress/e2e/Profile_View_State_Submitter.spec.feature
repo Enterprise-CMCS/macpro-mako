@@ -6,7 +6,7 @@ Feature: OY2_9990_State_Submitter_Profile_Screen_Enhancements
         Then i am on Dashboard Page
         Then verify New Submission BTN is Displayed
         Then verify Waiver Number column exists
-        Then verify type column exists
+        Then verify Authority column exists
         Then verify state column does not exist
         Then verify submitted by column exists
         Then verify Home tab is Displayed

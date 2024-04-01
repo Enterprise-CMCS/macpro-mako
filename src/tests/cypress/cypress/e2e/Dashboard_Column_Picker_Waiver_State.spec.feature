@@ -9,7 +9,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker
     Scenario: Waivers Tab - Screen enhancement
         Then verify show hide columns button exists
         Then verify Waiver Number column exists
-        Then verify type column exists
+        Then verify Authority column exists
         Then verify action type column exists
         Then verify State column exists
         Then verify Waiver Number column exists
@@ -38,7 +38,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker
         Then click show hide columns button
         Then click status column visibility toggle button
         Then click submitted by column visibility toggle button
-        Then click Formal RAI Response column visibility toggle button
+        Then click Formal RAI Received column visibility toggle button
         Then click Initial Submission Date column visibility toggle button
         Then click state column visibility toggle button
         Then click Authority column visibility toggle button
@@ -48,7 +48,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker
         Then click show hide columns button
         Then verify Waiver Number column exists
         Then verify actions column exists
-        Then verify type column does not exist
+        Then verify Authority column does not exist
         Then verify action type column does not exist
         Then verify state column does not exist
         Then verify status column does not exist
@@ -63,7 +63,7 @@ Feature: Package Dashboard - Waiver Tab Column Picker
     Scenario: Waivers Tab - verify tabs reset after login
         Then verify show hide columns button exists
         Then verify Waiver Number column exists
-        Then verify type column exists
+        Then verify Authority column exists
         Then verify action type column exists
         #Then verify state column does not exist
         Then verify Waiver Number column exists
