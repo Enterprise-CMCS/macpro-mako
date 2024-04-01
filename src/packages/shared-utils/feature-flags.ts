@@ -19,4 +19,12 @@ export const featureFlags = {
     flag: "clear-data-button",
     defaultValue: false,
   },
+
+  /**
+   * Toggles Performance Intake
+   */
+  PERFORM_INTAKE: {
+    flag: "perform-intake",
+    defaultValue: false,
+  },
 } as const;

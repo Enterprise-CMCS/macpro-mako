@@ -1,9 +1,16 @@
 import { Action } from "shared-types";
-
 import { BLANK_VALUE } from "@/consts";
 import { Route } from "@/components";
+import { useLDClient } from "launchdarkly-react-client-sdk";
+import { featureFlags } from "shared-utils";
 
 export const mapActionLabel = (a: Action) => {
+  const ldClient = useLDClient();
+  const performIntake: string = ldClient?.variation(
+    featureFlags.PERFORM_INTAKE.flag,
+    featureFlags.PERFORM_INTAKE.defaultValue,
+  );
+
   switch (a) {
     case Action.ENABLE_RAI_WITHDRAW:
       return "Enable Formal RAI Response Withdraw";
@@ -22,7 +29,7 @@ export const mapActionLabel = (a: Action) => {
     case Action.UPDATE_ID:
       return "Update ID";
     case Action.PERFORM_INTAKE:
-      return "Perform Intake";
+      return performIntake ? "Perform Intake" : "";
     default:
       return "";
   }
