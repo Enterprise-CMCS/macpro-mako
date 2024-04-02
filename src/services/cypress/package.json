@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "devDependencies": {
+    "@badeball/cypress-configuration": "^6.1.1",
     "@badeball/cypress-cucumber-preprocessor": "^18.0.5",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
     "axe-core": "^4.4.1",
@@ -11,7 +12,8 @@
     "cypress": "^13.1.0",
     "cypress-axe": "^1.5.0",
     "cypress-file-upload": "^5.0.8",
-    "cypress-xpath": "^2.0.1"
+    "cypress-xpath": "^2.0.1",
+    "@cucumber/cucumber-expressions": "^17.1.0"
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": "cypress/e2e/common/steps.js"
@@ -20,7 +22,8 @@
     "start": "cd ../../ && ./dev local && cd -",
     "test:ci": "npx cypress run --browser chrome",
     "cypress": "cypress open",
-    "test": "concurrently --kill-others \"npm start\" \"npm run cypress\""
+    "test": "concurrently --kill-others \"npm start\" \"npm run cypress\"",
+    "deploy": "run deploy --stage cypress-migration --service cypress"
   },
   "author": "",
   "license": "ISC"

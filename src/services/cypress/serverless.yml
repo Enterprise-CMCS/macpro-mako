@@ -44,17 +44,13 @@ custom:
       - "!*"
       - package.json
     hooks:
-      beforeCreateDeploymentArtifacts: npm install
+      beforeCreateDeploymentArtifacts: yarn install
 
-  # Add an initialize hook to run npx cypress run
-  initialize:
-    lifecycleHooks:
-      initialize:
-        commands:
-          - npx cypress run --config-file cypress.config.js --config baseUrl=${self:custom:ApplicationEndpointUrl} cognitoUrl=${param:CognitoUserPoolClientDomain}
-
-functions:
-  cypress-e2e-testing:
-    handler: index.handler
-    params:
-      # Your function parameters go here
+#added commands to 
+commands:
+  cypress:
+    commands:
+      - yarn cypress run --config-file cypress.config.js --config baseUrl=${self:custom.ApplicationEndpointUrl} cognitoUrl=${self:custom.CognitoUserPoolClientDomain}
+  cypress:open:
+    commands:
+      - yarn cypress open --config-file cypress.config.js --config baseUrl=${self:custom.ApplicationEndpointUrl} cognitoUrl=${self:custom.CognitoUserPoolClientDomain}

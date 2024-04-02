@@ -43,6 +43,9 @@ module.exports = defineConfig({
   viewportHeight: 900,
   experimentalStudio: true,
   types: ["cypress", "cypress-axe"],
+  env: {
+    cognito_url: process.env.COGNITO_URL,
+  },
   e2e: {
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.

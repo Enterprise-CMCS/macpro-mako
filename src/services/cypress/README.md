@@ -5,20 +5,13 @@ MAKO uses the Cypress (https://cypress.io) front end testing tool with Cucumber 
 *Working with Node v18+ (untested with v16 and will not work with v14 or earlier)*
 ### Installing and using full cypress suite locally
 
-cd ~projectDir/src/tests/cypress
-npm i
+cd ~projectDir/src/services/cypress
+yarn
 
-npx cypress open
-
-### Installing and using cypress health check suite locally
-
-cd ~projectDir/src/tests/health-check
-npm i
-
-npx cypress open
+yarn cypress open
 
 
 ## Run an individual cypress test rather than whole test suite
 
-go to test suite directory (based on which suite you are looking for /tests/{suite-name})
-npx cypress run --spec "./cypress/e2e/test-name.spec.feature" --headed
+go to test suite directory
+yarn cypress run --spec "./cypress/e2e/test-name.spec.feature" --headed
