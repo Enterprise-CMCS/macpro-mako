@@ -190,7 +190,7 @@ Thank you!`,
     name: "new-submission-1915b-state",
     subject:  "Your {{actionType}} {{id}} has been submitted to CMS",
     html: `
-<p>This response confirms the submission of your {{actionType}} to CMS for review:</p>
+<p>This response confirms the submission of your 1915(b) {{actionType}} to CMS for review:</p>
 <p>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
