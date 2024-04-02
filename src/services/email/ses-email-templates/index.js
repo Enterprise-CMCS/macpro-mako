@@ -154,7 +154,7 @@ details by clicking on its ID number.</li>
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
     text: `
-The OneMAC Submission Portal received a 1915(b) initial waiver submission:
+The OneMAC Submission Portal received a 1915(b) {{actionType}} submission:
 
 The submission can be accessed in the OneMAC application, which you 
 can find at <a href='{{applicationEndpoint}}'>this link</a>.
@@ -171,7 +171,7 @@ details by clicking on its ID number.
 State or territory: {{territory}}
 Name: {{submitterName}}
 Email: {{submitterEmail}}
-Initial Waiver Number: {{id}}</b>
+1915(b) {{actionType}} Number: {{id}}</b>
 Waiver Authority: {{authority}}
 Proposed Effective Date: {{proposedEffectiveDateNice}}
 
@@ -195,7 +195,7 @@ Thank you!`,
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
-<br><b>{{actionType}} Number:</b> {{id}}</b>
+<br><b>1915(b) {{actionType}} Number:</b> {{id}}</b>
 <br><b>Waiver Authority:</b> {{authority}}
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
 <br><b>90th Day Deadline:</b> {{ninetyDaysDate}}
@@ -214,12 +214,12 @@ and extension requests on Waivers only. Any other correspondence will be disrega
 <a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
-This response confirms the submission of your Initial Waiver to CMS for review:
+This response confirms the submission of your 1915(b) {{actionType}} to CMS for review:
 
 State or territory: {{territory}}
 Name: {{submitterName}}
 Email Address: {{submitterEmail}}
-Initial Waiver Number: {{id}}</b>
+1915(b) {{actionType}} Number: {{id}}</b>
 Waiver Authority: {{authority}}
 Proposed Effective Date: {{proposedEffectiveDateNice}}
 90th Day Deadline: {{ninetyDaysDate}}
