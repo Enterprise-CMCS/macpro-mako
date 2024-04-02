@@ -22,7 +22,6 @@
     "start": "cd ../../ && ./dev local && cd -",
     "test:ci": "npx cypress run --browser chrome",
     "cypress": "cypress open",
-    "test": "concurrently --kill-others \"npm start\" \"npm run cypress\"",
     "deploy": "run deploy --stage cypress-migration --service cypress"
   },
   "author": "",

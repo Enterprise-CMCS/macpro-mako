@@ -301,7 +301,7 @@ jobs:
         with:
           node-version: 18
           cache: 'yarn'
-          cache-dependency-path: '**/tests/cypress/package.json'
+          cache-dependency-path: '**/services/cypress/package.json'
       - run: yarn install --frozen-lockfile --prefix src/services/cypress
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
@@ -370,7 +370,7 @@ jobs:
         with:
           node-version: 18
           cache: 'yarn'
-          cache-dependency-path: '**/tests/cypress/package.json'
+          cache-dependency-path: '**/services/cypress/package.json'
       - run: yarn install --frozen-lockfile --prefix src/services/cypress
       - name: Check Project A11y
         uses: cypress-io/github-action@v6
