@@ -1,0 +1,60 @@
+service: ${self:custom.project}-cypress
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-esbuild
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-iam-helper"
+  - "@stratiformdigital/serverless-s3-security-helper"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${env:REGION_A}
+
+stackTags:
+  PROJECT: ${self:custom.project}
+  SERVICE: ${self:service}
+
+iam:
+  role:
+    path: /delegatedadmin/developer/
+    permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
+  statements:
+    - Effect: Allow
+      Action:
+        - cloudwatch:GetDashboard
+      Resource: "*"
+
+custom:
+  project: ${env:PROJECT}
+  accountId: !Sub "${AWS::AccountId}"
+  CognitoUserPoolClientDomain: ${param:CognitoUserPoolClientDomain}
+  ApplicationEndpointUrl: ${param:ApplicationEndpointUrl}
+  serverlessTerminationProtection:
+    stages:
+      - master
+      - val
+      - production
+
+  # Add a package hook to run npm install
+  package:
+    patterns:
+      - "!*"
+      - package.json
+    hooks:
+      beforeCreateDeploymentArtifacts: npm install
+
+  # Add an initialize hook to run npx cypress run
+  initialize:
+    lifecycleHooks:
+      initialize:
+        commands:
+          - npx cypress run --config-file cypress.config.js --config baseUrl=${self:custom:ApplicationEndpointUrl} cognitoUrl=${param:CognitoUserPoolClientDomain}
+
+functions:
+  cypress-e2e-testing:
+    handler: index.handler
+    params:
+      # Your function parameters go here

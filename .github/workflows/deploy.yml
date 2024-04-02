@@ -310,6 +310,7 @@ jobs:
           spec: cypress/e2e/${{ matrix.containers }}
           browser: chrome
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
+          env: cognito_url=$(echo $(serverless param get --name CognitoUserPoolClientDomain)
       - name: Upload screenshots
         uses: actions/upload-artifact@v3
         if: failure()
