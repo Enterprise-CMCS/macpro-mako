@@ -7,6 +7,7 @@ import {
   SimplePageContainer,
   SectionCard,
   FAQ_TAB,
+  FAQFooter,
   formCrumbsFromPath,
   useAlertContext,
   useNavigate,
@@ -291,6 +292,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
           <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };
