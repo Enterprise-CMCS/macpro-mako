@@ -212,6 +212,9 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "abp-2a_delivery-of-info_state-territory-assures-it-will-document-exempt-individuals_checkgroup",
               formItemStyling: "whitespace-pre-wrap",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -324,6 +327,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "abp-2a_delivery-of-info_state-territory-assures-maintain-data_checkgroup",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
