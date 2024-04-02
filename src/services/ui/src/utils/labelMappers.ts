@@ -11,6 +11,10 @@ export const mapActionLabel = (a: Action) => {
     featureFlags.PERFORM_INTAKE.defaultValue,
   );
 
+  if (performIntake && a === Action.PERFORM_INTAKE) {
+    return Action.PERFORM_INTAKE;
+  }
+
   switch (a) {
     case Action.ENABLE_RAI_WITHDRAW:
       return "Enable Formal RAI Response Withdraw";
@@ -28,8 +32,6 @@ export const mapActionLabel = (a: Action) => {
       return "Request Temporary Extension";
     case Action.UPDATE_ID:
       return "Update ID";
-    case Action.PERFORM_INTAKE:
-      return performIntake ? "Perform Intake" : "";
     default:
       return "";
   }
