@@ -23,7 +23,7 @@ export const actionCrumb = (action: Action, id: string): BreadCrumbConfig => ({
 
 export const submissionFormCrumb = (
   path: Route,
-  idx: number
+  idx: number,
 ): BreadCrumbConfig => ({
   displayText: mapSubmissionCrumb(path),
   order: idx,
