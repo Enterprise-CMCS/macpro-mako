@@ -30,6 +30,7 @@ export const PackageCheck = ({
   authority,
   actionType,
   appkParentId,
+  appkParent,
 }: opensearch.main.Document) => {
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
@@ -37,7 +38,8 @@ export const PackageCheck = ({
       Authority["1915b"],
       Authority["1915c"],
     ]),
-    isAppk: checkAuthority(authority, [Authority["1915c"]]) && !appkParentId,
+    isAppk: appkParent,
+    isAppkChild: appkParentId,
     /** Keep excess methods to a minimum with `is` **/
     authorityIs: (validAuthorities: Authority[]) =>
       checkAuthority(authority, validAuthorities),
