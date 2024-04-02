@@ -63,6 +63,7 @@ export const submit = async (event: APIGatewayEvent) => {
       }),
       ...(!Number(WINDEX) && {
         appkTitle: body.title,
+        appkParent: true,
       }),
     });
 

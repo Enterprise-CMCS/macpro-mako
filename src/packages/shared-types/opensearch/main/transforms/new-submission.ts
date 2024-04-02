@@ -61,6 +61,7 @@ export const transform = (id: string) => {
         attachments: data.attachments,
         appkParentId: data.appkParentId,
         appkTitle: data.appkTitle, // this probably maps to subject, but for now we're just going to put it in main directly
+        appkParent: data.appkParent,
         raiWithdrawEnabled: data.raiWithdrawEnabled,
         additionalInformation: data.additionalInformation,
         submitterEmail: data.submitterEmail,
