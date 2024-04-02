@@ -19,7 +19,7 @@ export const mapActionLabel = (a: Action) => {
       return "Respond to Formal RAI";
     case Action.TEMP_EXTENSION:
       return "Request Temporary Extension";
-    case Action.REMOVE_APPK_CHILD:
+    default:
       return "";
   }
 };

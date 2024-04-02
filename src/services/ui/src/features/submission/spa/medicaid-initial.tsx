@@ -283,6 +283,7 @@ export const MedicaidSpaFormPage = () => {
           </div>
         </form>
       </Inputs.Form>
+      <Content.FAQFooter />
     </SimplePageContainer>
   );
 };

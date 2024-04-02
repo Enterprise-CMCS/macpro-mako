@@ -1,13 +1,5 @@
 /* eslint-disable react/prop-types */
 
-import {
-  BreadCrumbs,
-  LoadingSpinner,
-  SectionCard,
-  SimplePageContainer,
-  useLocationCrumbs,
-  FAQ_TAB,
-} from "@/components";
 import { SlotAttachments } from "@/features/actions";
 import * as I from "@/components/Inputs";
 import * as C from "@/components";
@@ -27,7 +19,7 @@ import { Link } from "react-router-dom";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
-  const crumbs = useLocationCrumbs();
+  const crumbs = C.useLocationCrumbs();
   const { data: user } = useGetUser();
   const modal = C.useModalContext();
   const originPath = useOriginPath();
@@ -77,12 +69,12 @@ export const AppKSubmissionForm = () => {
   }, [state]);
 
   return (
-    <SimplePageContainer>
-      {submission.isLoading && <LoadingSpinner />}
-      <BreadCrumbs options={crumbs} />
+    <C.SimplePageContainer>
+      {submission.isLoading && <C.LoadingSpinner />}
+      <C.BreadCrumbs options={crumbs} />
       <I.Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
-          <SectionCard title="1915(c) APPENDIX K Amendment Request Details">
+          <C.SectionCard title="1915(c) APPENDIX K Amendment Request Details">
             <Content.FormIntroText />
             <I.FormField
               control={form.control}
@@ -116,7 +108,7 @@ export const AppKSubmissionForm = () => {
                   </I.FormLabel>
                   <Link
                     to="/faq/waiver-c-id"
-                    target={FAQ_TAB}
+                    target={C.FAQ_TAB}
                     rel="noopener noreferrer"
                     className="text-blue-700 hover:underline"
                   >
@@ -153,8 +145,8 @@ export const AppKSubmissionForm = () => {
                 </I.FormItem>
               )}
             />
-          </SectionCard>
-          <SectionCard title="Attachments">
+          </C.SectionCard>
+          <C.SectionCard title="Attachments">
             <C.AttachmentsSizeTypesDesc faqLink="/faq/#chip-spa-attachments" />
 
             <I.FormField
@@ -183,9 +175,9 @@ export const AppKSubmissionForm = () => {
                 className: "my-4",
               })}
             />
-          </SectionCard>
+          </C.SectionCard>
 
-          <SectionCard title="Additional Information">
+          <C.SectionCard title="Additional Information">
             <I.FormField
               control={form.control}
               name="additionalInformation"
@@ -201,7 +193,7 @@ export const AppKSubmissionForm = () => {
                 </I.FormItem>
               )}
             />
-          </SectionCard>
+          </C.SectionCard>
           <C.PreSubmissionMessage />
           <div className="flex gap-2 p-4 ml-auto">
             <I.Button type="submit" disabled={form.formState.isSubmitting}>
@@ -231,6 +223,7 @@ export const AppKSubmissionForm = () => {
           </div>
         </form>
       </I.Form>
-    </SimplePageContainer>
+      <C.FAQFooter />
+    </C.SimplePageContainer>
   );
 };

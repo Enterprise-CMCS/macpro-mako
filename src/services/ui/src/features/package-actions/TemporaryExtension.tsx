@@ -35,6 +35,7 @@ import { submit } from "@/api/submissionService";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getItem } from "@/api";
+import { ItemResult } from "shared-types/opensearch/changelog";
 
 type Attachments = keyof z.infer<typeof tempExtensionSchema>["attachments"];
 export const tempExtensionSchema = z
@@ -53,33 +54,39 @@ export const tempExtensionSchema = z
   // This way, they will both be evaluated and errors shown if applicable
   .superRefine(async (data, ctx) => {
     // Check that the authorities match
-    const originalWaiverData = await getItem(data.originalWaiverNumber);
-    if (originalWaiverData._source.authority !== data.authority) {
-      ctx.addIssue({
-        message:
-          "The selected Temporary Extension Type does not match the Approved Initial or Renewal Waiver's type.",
-        code: z.ZodIssueCode.custom,
-        fatal: true,
-        path: ["authority"],
-      });
-    }
+    try {
+      const originalWaiverData = await getItem(data.originalWaiverNumber);
+      if (originalWaiverData._source.authority !== data.authority) {
+        ctx.addIssue({
+          message:
+            "The selected Temporary Extension Type does not match the Approved Initial or Renewal Waiver's type.",
+          code: z.ZodIssueCode.custom,
+          fatal: true,
+          path: ["authority"],
+        });
+      }
 
-    // Check that the original waiver and temp extension have the same id up to the last period
-    const originalWaiverNumberPrefix = data.originalWaiverNumber.substring(
-      0,
-      data.originalWaiverNumber.lastIndexOf(".")
-    );
-    const idPrefix = data.id.substring(0, data.id.lastIndexOf("."));
-    if (originalWaiverNumberPrefix !== idPrefix) {
-      ctx.addIssue({
-        message:
-          "The Approved Initial or Renewal Waiver Number and the Temporary Extension Request Number must be identical until the last period.",
-        code: z.ZodIssueCode.custom,
-        fatal: true,
-        path: ["id"],
-      });
+      // Check that the original waiver and temp extension have the same id up to the last period
+      const originalWaiverNumberPrefix = data.originalWaiverNumber.substring(
+        0,
+        data.originalWaiverNumber.lastIndexOf("."),
+      );
+      const idPrefix = data.id.substring(0, data.id.lastIndexOf("."));
+      if (originalWaiverNumberPrefix !== idPrefix) {
+        ctx.addIssue({
+          message:
+            "The Approved Initial or Renewal Waiver Number and the Temporary Extension Request Number must be identical until the last period.",
+          code: z.ZodIssueCode.custom,
+          fatal: true,
+          path: ["id"],
+        });
+      }
+      return z.never;
+    } catch (error) {
+      // If we've failed here, the item does not exist, and the originalWaiverNumberSchema validation will throw the correct errors.
+      console.error(error);
+      return z.never;
     }
-    return z.never;
   });
 
 export const onValidSubmission: SC.ActionFunction = async ({ request }) => {
@@ -87,7 +94,6 @@ export const onValidSubmission: SC.ActionFunction = async ({ request }) => {
     const formData = Object.fromEntries(await request.formData());
     const unflattenedFormData = unflatten(formData);
     const data = await tempExtensionSchema.parseAsync(unflattenedFormData);
-
     const user = await getUser();
 
     await submit({
@@ -132,7 +138,7 @@ export const TemporaryExtension = () => {
   const parentId = urlId ? urlId : formId;
   SC.useDisplaySubmissionAlert(
     "Temporary Extension issued",
-    `The Temporary Extension Request for ${parentId} has been submitted.`
+    `The Temporary Extension Request for ${parentId} has been submitted.`,
   );
 
   return (

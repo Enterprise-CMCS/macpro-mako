@@ -39,7 +39,7 @@ export const handler = async (event: APIGatewayEvent) => {
     const stateFilter = await getStateFilter(event);
     if (stateFilter) {
       const stateAccessAllowed = stateFilter?.terms.state.includes(
-        mainResult?._source?.state?.toLocaleLowerCase() || ""
+        mainResult?._source?.state?.toLocaleLowerCase() || "",
       );
 
       if (!stateAccessAllowed) {
@@ -55,7 +55,7 @@ export const handler = async (event: APIGatewayEvent) => {
     const changelogs = await getPackageChangelog(body.id);
     const attachmentExists = changelogs.hits.hits.some((CL) => {
       return CL._source.attachments?.some(
-        (ATT) => ATT.bucket === body.bucket && ATT.key === body.key
+        (ATT) => ATT.bucket === body.bucket && ATT.key === body.key,
       );
     });
     if (!attachmentExists) {
@@ -72,7 +72,7 @@ export const handler = async (event: APIGatewayEvent) => {
       body.bucket,
       body.key,
       body.filename,
-      60
+      60,
     );
 
     return response<unknown>({
@@ -97,7 +97,7 @@ async function getClient(bucket: string) {
       new AssumeRoleCommand({
         RoleArn: process.env.onemacLegacyS3AccessRoleArn,
         RoleSessionName: "AssumedRoleSession",
-      })
+      }),
     );
 
     // Extract the assumed role credentials
@@ -125,7 +125,7 @@ async function generatePresignedUrl(
   bucket: string,
   key: string,
   filename: string,
-  expirationInSeconds: number
+  expirationInSeconds: number,
 ) {
   // Get an S3 client
   const client = await getClient(bucket);

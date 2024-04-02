@@ -7,6 +7,7 @@ import {
   SimplePageContainer,
   SectionCard,
   FAQ_TAB,
+  FAQFooter,
   useAlertContext,
   formCrumbsFromPath,
   useNavigate,
@@ -84,7 +85,7 @@ export const Contracting1915BWaiverInitialPage = () => {
   const urlQuery = useQueryString();
   const alert = useAlertContext();
   const originPath = useOriginPath();
-  
+
   const handleSubmit: SubmitHandler<Waiver1915BContractingInitial> = async (
     formData,
   ) => {
@@ -229,9 +230,10 @@ export const Contracting1915BWaiverInitialPage = () => {
             name="additionalInformation"
           />
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection/>
+          <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };

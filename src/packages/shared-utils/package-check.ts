@@ -8,7 +8,7 @@ const secondClockStatuses = [
 
 const checkAuthority = (
   authority: Authority | null,
-  validAuthorities: Authority[]
+  validAuthorities: Authority[],
 ) =>
   !authority
     ? false
@@ -72,6 +72,8 @@ export const PackageCheck = ({
       !!raiRequestedDate && !!raiReceivedDate && !raiWithdrawnDate,
     /** Latest RAI has a response and/or has been withdrawn **/
     hasCompletedRai: !!raiRequestedDate && !!raiReceivedDate,
+    /** Latest RAI has a response and/or has been withdrawn **/
+    hasRaiWithdrawal: !!raiWithdrawnDate,
     /** RAI Withdraw has been enabled **/
     hasEnabledRaiWithdraw: raiWithdrawEnabled,
   };

@@ -223,7 +223,7 @@ export const ErrorBanner = () => {
                   <li className="ml-8 my-2" key={idx}>
                     {err.message as string}
                   </li>
-                )
+                ),
             )}
           </ul>
         </Alert>
@@ -249,7 +249,6 @@ export const useSubmitForm = () => {
 
   const validSubmission: SubmitHandler<any> = (data, e) => {
     const formData = new FormData();
-
     // Append all other data
     for (const key in data) {
       if (key !== "attachments") {
@@ -293,7 +292,7 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
       });
       alert.setBannerShow(true);
       alert.setBannerDisplayOn(
-        location.state?.from?.split("?")[0] ?? "/dashboard"
+        location.state?.from?.split("?")[0] ?? "/dashboard",
       );
       navigate(location.state?.from ?? "/dashboard");
     }
@@ -304,7 +303,7 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
 const filterUndefinedValues = (obj: Record<any, any>) => {
   if (obj) {
     return Object.fromEntries(
-      Object.entries(obj).filter(([key, value]) => value !== undefined)
+      Object.entries(obj).filter(([key, value]) => value !== undefined),
     );
   }
   return {};
@@ -312,6 +311,6 @@ const filterUndefinedValues = (obj: Record<any, any>) => {
 
 // Types
 export type ActionFunction = (
-  args: ActionFunctionArgs
+  args: ActionFunctionArgs,
 ) => Promise<{ submitted: boolean }>;
 export type ActionFunctionReturnType = Awaited<ReturnType<ActionFunction>>;

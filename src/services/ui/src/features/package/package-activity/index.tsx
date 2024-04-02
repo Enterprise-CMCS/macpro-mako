@@ -14,7 +14,7 @@ import { usePackageActivities, useAttachmentService } from "./hook";
 import { Link } from "@/components/Routing";
 
 export const PA_RemoveAppkChild: FC<opensearch.changelog.Document> = (
-  props
+  props,
 ) => {
   return (
     <div className="flex gap-1">
@@ -31,7 +31,7 @@ export const PA_RemoveAppkChild: FC<opensearch.changelog.Document> = (
 };
 
 export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
-  props
+  props,
 ) => {
   const hook = useAttachmentService(props);
 
@@ -98,7 +98,7 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
 };
 
 export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
-  props
+  props,
 ) => {
   const hook = useAttachmentService(props);
 
@@ -165,7 +165,7 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
 };
 
 export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
-  props
+  props,
 ) => {
   const hook = useAttachmentService(props);
 
@@ -299,7 +299,7 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
 // Control Map
 export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
   const [LABEL, CONTENT] = useMemo(() => {
-    switch (props.actionType) {
+    switch (props.actionType as string) {
       case "new-submission":
         return ["Initial package submitted", PA_InitialSubmission];
       case "withdraw-rai":
@@ -312,6 +312,9 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
         return ["RAI response submitted", PA_ResponseSubmitted];
       case "remove-appk-child":
         return [`Waiver withdrawn : ${props.appkChildId}`, PA_RemoveAppkChild];
+      case "legacy-withdraw-rai-request":
+          return ["RAI response withdrawn requested", PA_ResponseWithdrawn];
+
       default:
         return [BLANK_VALUE, PA_ResponseSubmitted];
     }
@@ -323,7 +326,9 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
         <p className="flex flex-row gap-2 text-gray-600">
           <strong>{LABEL as string}</strong>
           {" - "}
-          {format(new Date(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a")}
+          {props.timestamp
+            ? format(new Date(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a")
+            : "Unknown"}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">
