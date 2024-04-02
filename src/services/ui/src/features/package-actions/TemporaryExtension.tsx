@@ -136,6 +136,7 @@ export const TemporaryExtension = () => {
   };
   const formId = formMethods.getValues("originalWaiverNumber");
   const formAuthority = formMethods.getValues("authority");
+  const teId = formMethods.getValues("id");
   const authority = urlAuthority ? urlAuthority : formAuthority;
 
   const parentId = urlId ? urlId : formId;
@@ -145,7 +146,7 @@ export const TemporaryExtension = () => {
     (data) => {
       return !!data;
     },
-    parentId,
+    teId,
   );
 
   return (
