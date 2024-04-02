@@ -22,7 +22,7 @@ export const mapActionLabel = (a: Action) => {
     case Action.UPDATE_ID:
       return "Update ID";
     case Action.PERFORM_INTAKE:
-      return "Perform Intake";
+      return "Complete Intake";
     default:
       return "";
   }
