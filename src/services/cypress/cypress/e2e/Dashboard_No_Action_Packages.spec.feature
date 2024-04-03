@@ -64,7 +64,7 @@ Feature: Withdraw package action in package dashboard
         Then Click on the close Filter Button
         Then click the actions button in row one
         Then verify withdraw package button is not visible for package in package dashboard
-    @focus
+
     Scenario: Demonstrate that withdraw a package is not available on Renewal Waiver with Approved status
         Then click on the Waivers tab
         Then Click on Filter Button

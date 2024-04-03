@@ -15,8 +15,10 @@ export class oneMacDevLoginPage {
       });
     });
   }
-  loginAsA11Y(userRole, userStatus) {
-    cy.origin(Cypress.env('cognito_url'), { args: { EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn, userRole, userStatus } }, ({ EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn, userRole, userStatus}) => {
+  loginAsA11Y() {
+    let url = Cypress.env('cognito_url')
+    console.log("the cognito url being used for this test is " + url);
+    cy.origin(url, { args: { EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn } }, ({ EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn}) => {
       cy.fixture(LOGIN_FIXTURE).then(function (loginCredentials) {
         cy.get(EmailInput).type(loginCredentials["State Submitter"]["Active"], { force: true });
         cy.get(PasswordInput).type(DEFAULT_DEV_WORD, { force: true });
