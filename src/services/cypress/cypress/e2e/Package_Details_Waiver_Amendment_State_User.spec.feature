@@ -14,34 +14,6 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then click on Action Type
         Then click on Status
 
-
-    Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - Submitted
-        #Then click Submitted checkbox
-        Then click the Waiver Number link in the first row
-        Then verify the package details page is visible
-        Then verify the status on the card is "Submitted"
-        Then verify package actions header is visible
-        Then verify there are no package actions available
-        Then verify the details section exists
-        Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b)" exists for the Authority
-        Then verify there is a State header in the details section
-        Then verify a state exists for the State
-        Then verify there is an Initial Submission Date header in the details section
-        Then verify a date exists for the Initial Submission Date
-        Then verify there is a Proposed Effective Date header in the details section
-        Then verify subject is not visible in the details section
-        Then verify description is not visible in the details section
-        Then verify there is a CPOC header in the details section
-        Then verify the CPOC has a value displayed in the details section
-        Then verify Review Team SRT is not visible in the details section
-        Then verify there is a Final Disposition Date header in the details section
-        Then verify there is an Approved Effective Date in the details section
-    #Then verify the Initial Submission caret button exists
-    #Then expand the Initial Submission caret
-    #Then verify the download all button exists
-    #Then verify the additional information section exists
-
     Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - Under Review
         Then click Under Review checkbox
         Then click the Waiver Number link in the first row
@@ -119,7 +91,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify Review Team SRT is not visible in the details section
         Then verify there is a Final Disposition Date header in the details section
         Then verify there is an Approved Effective Date in the details section
-    verify the Proposed Effective Date is a date formatted like Mo dd yyyy
+        Then verify the Proposed Effective Date is a date formatted like Mo dd yyyy
     #Then verify the Initial Submission caret button exists
     #Then expand the Initial Submission caret
     #Then verify the download all button exists

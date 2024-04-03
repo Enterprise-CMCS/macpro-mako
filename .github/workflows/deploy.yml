@@ -374,7 +374,7 @@ jobs:
           cache-dependency-path: '**/services/cypress/package.json'
       - run: yarn install --frozen-lockfile --prefix src/services/cypress
       - name: Install cypress-axe
-        run: yarn install cypress-axe
+        run: yarn add cypress-axe
         working-directory: src/services/cypress
       - name: Check Project A11y
         uses: cypress-io/github-action@v6
