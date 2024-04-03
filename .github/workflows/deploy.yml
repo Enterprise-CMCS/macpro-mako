@@ -312,7 +312,7 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots
-          path: src/services/cypress/screenshots/
+          path: cypress/screenshots/
 
   a11y-tests:
     name: A11y Tests
@@ -368,7 +368,7 @@ jobs:
         with:
           install-command: yarn install --modules-folder node_modules/
           working-directory: src/services/cypress
-          spec: src/services/cypress/cypress/a11y/${{ matrix.containers }}
+          spec: cypress/a11y/${{ matrix.containers }}
           browser: chrome
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
           env: cognito_url=$(echo $(serverless param get --name CognitoUserPoolClientDomain)

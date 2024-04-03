@@ -33,7 +33,7 @@ async function setupNodeEvents(on, config) {
 
 module.exports = defineConfig({
   redirectionLimit: 30,
-  retries: 1,
+  retries: 0,
   watchForFileChanges: true,
   fixturesFolder: "fixtures",
   screenshotsFolder: "screenshots",
