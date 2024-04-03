@@ -32,7 +32,11 @@ import {
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
-import { formatSeatoolDate, seaToolFriendlyTimestamp, getNextBusinessDayTimestamp } from "shared-utils";
+import {
+  formatSeatoolDate,
+  seaToolFriendlyTimestamp,
+  getNextBusinessDayTimestamp,
+} from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
 
 const TOPIC_NAME = process.env.topicName as string;
@@ -174,7 +178,7 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
         ...result.data,
         actionType: Action.WITHDRAW_RAI,
         notificationMetadata: {
-          submissionDate: getNextBusinessDayTimestamp()
+          submissionDate: getNextBusinessDayTimestamp(),
         },
       }),
     );
@@ -279,7 +283,7 @@ export async function respondToRai(body: RaiResponse, document: any) {
         responseDate: today,
         actionType: Action.RESPOND_TO_RAI,
         notificationMetadata: {
-          submissionDate: getNextBusinessDayTimestamp()
+          submissionDate: getNextBusinessDayTimestamp(),
         },
       }),
     );
@@ -526,6 +530,14 @@ export async function updateId(body: any) {
       INSERT INTO State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID)
         SELECT '${result.data.newId}', Service_SubType_ID
         FROM State_Plan_Service_SubTypes
+        WHERE ID_Number = '${body.id}';
+    `);
+
+    //Copy Action_Officers rows
+    await transaction.request().query(`
+      INSERT INTO Action_Officers (ID_Number, Officer_ID)
+        SELECT '${result.data.newId}', Officer_ID
+        FROM Action_Officers
         WHERE ID_Number = '${body.id}';
     `);
 
