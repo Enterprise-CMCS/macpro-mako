@@ -3,7 +3,7 @@ import { opensearch } from "shared-types";
 
 export const getAppkChildren = async (
   packageId: string,
-  filter: any[] = []
+  filter: any[] = [],
 ) => {
   if (!process.env.osDomain) {
     throw new Error("process.env.osDomain must be defined");
@@ -14,10 +14,13 @@ export const getAppkChildren = async (
     size: 200,
     query: {
       bool: {
-        must: [{ term: { "appkParentId.keyword": packageId } }].concat(filter),
+        must: [
+          { term: { "appkParentId.keyword": packageId } },
+          { term: { "origin.keyword": "OneMAC" } },
+        ].concat(filter),
       },
     },
-  })) as opensearch.changelog.Response;
+  })) as opensearch.main.Response;
 
   return response;
 };
