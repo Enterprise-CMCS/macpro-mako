@@ -7,30 +7,30 @@ const cypressAxe = require('cypress-axe');
 async function setupNodeEvents(on, config) {
   // This is required for the preprocessor to be able to generate JSON reports after each run, and more,
   await preprocessor.addCucumberPreprocessorPlugin(on, config);
-  cypressAxe(on);
-  on("file:preprocessor",
-    createBundler({
-      plugins: [createEsbuildPlugin.default(config)],
-    })
-  );
+  on("file:preprocessor", createBundler({
+    plugins: [createEsbuildPlugin.default(config)],
+  }));
+
   on("task", {
     log(message) {
       console.log(message);
-
       return null;
     },
     table(message) {
       console.table(message);
-
       return null;
     },
   });
 
+  // Import and register the cypress-axe plugin
+  require('cypress-axe/support')(on, config);
+
   // Make sure to return the config object as it might have been modified by the plugin.
   return config;
 }
+
 module.exports = defineConfig({
-  redirectionLimit: 20,
+  redirectionLimit: 30,
   retries: 1,
   watchForFileChanges: true,
   fixturesFolder: "fixtures",
@@ -47,10 +47,8 @@ module.exports = defineConfig({
     cognito_url: process.env.COGNITO_URL,
   },
   e2e: {
-    // We've imported your old cypress plugins here.
-    // You may want to clean this up later by importing these.
     setupNodeEvents,
-    baseUrl: "https://d2iainsf03w0ir.cloudfront.net/",
+    baseUrl: "https://mako-dev.cms.gov/",
     specPattern: ["cypress/e2e/**/*.feature", "cypress/e2e/**/*.spec.js", "cypress/a11y/**/*.spec.js"],
     supportFile: "support/index.js",
     stepDefinitions: ["cypress/e2e/common/steps.js"],
