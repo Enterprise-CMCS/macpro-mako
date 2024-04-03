@@ -14,10 +14,7 @@ export const getAppkChildren = async (
     size: 200,
     query: {
       bool: {
-        must: [
-          { term: { "appkParentId.keyword": packageId } },
-          { term: { "origin.keyword": "OneMAC" } },
-        ].concat(filter),
+        must: [{ term: { "appkParentId.keyword": packageId } }].concat(filter),
       },
     },
   })) as opensearch.main.Response;
