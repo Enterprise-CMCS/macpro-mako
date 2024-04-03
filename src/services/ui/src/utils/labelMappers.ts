@@ -12,7 +12,7 @@ export const mapActionLabel = (a: Action) => {
   );
 
   if (performIntake && a === Action.PERFORM_INTAKE) {
-    return "Perform Intake";
+    return "Complete Intake";
   }
 
   switch (a) {

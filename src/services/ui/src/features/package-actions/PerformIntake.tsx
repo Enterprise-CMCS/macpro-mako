@@ -12,7 +12,6 @@ import {
   SubjectInput,
   TypeSelect,
 } from "../submission/shared-components";
-import { unflatten } from "flat";
 
 export const performIntakeSchema = z.object({
   subject: z
@@ -65,7 +64,7 @@ export const PerformIntake = () => {
 
   return (
     <>
-      <SC.Heading title={"Perform Intake"} />
+      <SC.Heading title={"Complete Intake"} />
       <SC.RequiredFieldDescription />
       <SC.ActionDescription>
         <p>
