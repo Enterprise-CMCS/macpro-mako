@@ -57,17 +57,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     setOpen(updateOpen);
   };
 
-  const checkSingleDateSelection = (
-    from: Date | undefined,
-    to: Date | undefined,
-  ) => {
-    if (from && !to) {
-      const rangeObject = getDateRange(from, endOfDay(from));
-      onChange(rangeObject);
-      setFromValue(format(from, "MM/dd/yyyy"));
-    }
-  };
-
   const offsetRangeToUtc = (val: opensearch.RangeValue) => ({
     gte: val.gte ? offsetToUtc(new Date(val.gte)).toISOString() : undefined,
     lte: val.lte ? offsetToUtc(new Date(val.lte)).toISOString() : undefined,
@@ -223,8 +212,11 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
                 );
                 setFromValue("");
                 setToValue("");
-              } else {
-                checkSingleDateSelection(d.from, d.to);
+              } else if (d?.from && !d?.to) {
+                setFromValue(format(d.from, "MM/dd/yyyy"));
+                onChange(
+                  offsetRangeToUtc(getDateRange(d.from, endOfDay(d.from))),
+                );
               }
             }}
             {...props}
