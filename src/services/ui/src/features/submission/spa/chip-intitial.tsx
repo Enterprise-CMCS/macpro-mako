@@ -282,6 +282,7 @@ export const ChipSpaFormPage = () => {
           </div>
         </form>
       </Inputs.Form>
+      <Content.FAQFooter />
     </SimplePageContainer>
   );
 };

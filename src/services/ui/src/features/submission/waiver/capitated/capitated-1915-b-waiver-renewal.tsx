@@ -8,6 +8,7 @@ import {
   SectionCard,
   formCrumbsFromPath,
   FAQ_TAB,
+  FAQFooter,
   useAlertContext,
   useNavigate,
 } from "@/components";
@@ -305,6 +306,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
           <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };
