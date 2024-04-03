@@ -301,7 +301,8 @@ jobs:
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
-          install-command: yarn install --prefix src/services/cypress
+          install-command: yarn install --modules-folder 'src/services/cypress/node_modules/'
+          working-directory: src/services/cypress
           spec: cypress/e2e/${{ matrix.containers }}
           browser: chrome
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
@@ -365,7 +366,8 @@ jobs:
       - name: Check Project A11y
         uses: cypress-io/github-action@v6
         with:
-          install-command: yarn install --prefix src/services/cypress
+          install-command: yarn install --modules-folder 'src/services/cypress/node_modules/'
+          working-directory: src/services/cypress
           spec: src/services/cypress/cypress/a11y/${{ matrix.containers }}
           browser: chrome
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
