@@ -7,13 +7,13 @@
     "@badeball/cypress-configuration": "^6.1.1",
     "@badeball/cypress-cucumber-preprocessor": "^18.0.5",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
-    "axe-core": "^4.4.1",
+    "@cucumber/cucumber-expressions": "^17.1.0",
+    "axe-core": "^4.9.0",
     "concurrently": "^6.2.1",
     "cypress": "^13.1.0",
     "cypress-axe": "^1.5.0",
     "cypress-file-upload": "^5.0.8",
-    "cypress-xpath": "^2.0.1",
-    "@cucumber/cucumber-expressions": "^17.1.0"
+    "cypress-xpath": "^2.0.1"
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": "cypress/e2e/common/steps.js"

@@ -302,8 +302,6 @@ jobs:
           node-version: 18
           cache: 'yarn'
           cache-dependency-path: '**/services/cypress/package.json'
-      - run: yarn install
-        working-directory: src/services/cypress
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
@@ -372,9 +370,8 @@ jobs:
           node-version: 18
           cache: 'yarn'
           cache-dependency-path: '**/services/cypress/package.json'
-      - run: yarn install --frozen-lockfile --prefix src/services/cypress
       - name: Install cypress-axe
-        run: yarn add cypress-axe
+        run: yarn add cypress-axe axe-core --save-dev
         working-directory: src/services/cypress
       - name: Check Project A11y
         uses: cypress-io/github-action@v6
@@ -383,6 +380,7 @@ jobs:
           spec: cypress/a11y/${{ matrix.containers }}
           browser: chrome
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
+          install-command: yarn install --frozen-lockfile --prefix src/services/cypress
 
   release:
     runs-on: ubuntu-20.04
