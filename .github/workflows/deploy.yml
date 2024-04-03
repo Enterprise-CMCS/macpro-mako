@@ -296,12 +296,6 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'yarn'
-          cache-dependency-path: '**/services/cypress/package.json'
       - name: Checkout
         uses: actions/checkout@v4
       - name: Run Cypress Tests
@@ -366,15 +360,6 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'yarn'
-          cache-dependency-path: '**/services/cypress/package.json'
-      - name: Install cypress-axe
-        run: yarn add cypress-axe axe-core --dev
-        working-directory: src/services/cypress
       - name: Checkout
         uses: actions/checkout@v4
       - name: Check Project A11y
@@ -383,6 +368,7 @@ jobs:
           working-directory: src/services/cypress
           spec: cypress/a11y/${{ matrix.containers }}
           browser: chrome
+          browser-version: 120
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
 
   release:
