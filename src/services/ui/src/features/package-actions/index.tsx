@@ -23,9 +23,9 @@ import {
 import { ActionWrapper } from "./ActionWrapper";
 import { UpdateId, onValidSubmission as updateIdSubmission } from "./UpdateId";
 import {
-  PerformIntake,
-  onValidSubmission as performIntakeSubmission,
-} from "./PerformIntake";
+  CompleteIntake,
+  onValidSubmission as completeIntakeSubmission,
+} from "./CompleteIntake";
 
 export const packageActionRoutes: RouteObject = {
   path: "/action/:authority/:id",
@@ -72,9 +72,9 @@ export const packageActionRoutes: RouteObject = {
       action: updateIdSubmission,
     },
     {
-      path: "perform-intake",
-      element: <PerformIntake />,
-      action: performIntakeSubmission,
+      path: "complete-intake",
+      element: <CompleteIntake />,
+      action: completeIntakeSubmission,
     },
     {
       path: "*",

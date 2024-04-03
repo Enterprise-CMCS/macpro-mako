@@ -13,7 +13,7 @@ import {
   TypeSelect,
 } from "../submission/shared-components";
 
-export const performIntakeSchema = z.object({
+export const completeIntakeSchema = z.object({
   subject: z
     .string()
     .trim()
@@ -35,11 +35,11 @@ export const onValidSubmission: SC.ActionFunction = async ({
 }) => {
   try {
     const formData = await request.json();
-    const data = performIntakeSchema.parse(formData);
+    const data = completeIntakeSchema.parse(formData);
     const user = await getUser();
     await submit({
       data: { ...data, id: params.id },
-      endpoint: "/action/perform-intake",
+      endpoint: "/action/complete-intake",
       user,
       authority: params.authority as Authority,
     });
@@ -51,7 +51,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
   }
 };
 
-export const PerformIntake = () => {
+export const CompleteIntake = () => {
   const { handleSubmit } = SC.useIntakePackage();
   const { id, authority } = useParams("/action/:authority/:id/:type");
   const form = useFormContext();

@@ -31,7 +31,7 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
                 [
                   Action.TEMP_EXTENSION,
                   Action.UPDATE_ID,
-                  Action.PERFORM_INTAKE,
+                  Action.COMPLETE_INTAKE,
                 ].includes(type) // this is for new actions format
               ) {
                 return (

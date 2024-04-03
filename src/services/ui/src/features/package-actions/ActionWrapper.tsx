@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodSchema } from "zod";
 import { BreadCrumbs, SimplePageContainer } from "@/components";
 import { detailsAndActionsCrumbs } from "@/features";
-import { performIntakeSchema } from "./PerformIntake";
+import { completeIntakeSchema } from "./CompleteIntake";
 import { issueRaiSchema } from "./IssueRai";
 import { withdrawRaiSchema } from "./WithdrawRai";
 import { toggleRaiResponseWithdrawSchema } from "./ToggleRaiResponseWithdraw";
@@ -23,7 +23,7 @@ const schemas = {
   "withdraw-package": withdrawPackageSchema,
   "temporary-extension": tempExtensionSchema,
   "update-id": updateIdSchema,
-  "perform-intake": performIntakeSchema,
+  "complete-intake": completeIntakeSchema,
   "respond-to-rai": respondToRaiSchema,
 } satisfies Record<string, ZodSchema<any>>;
 type SchemaKeys = keyof typeof schemas;
@@ -35,7 +35,7 @@ const actions: Record<SchemaKeys, Action> = {
   "respond-to-rai": Action.RESPOND_TO_RAI,
   "temporary-extension": Action.TEMP_EXTENSION,
   "update-id": Action.UPDATE_ID,
-  "perform-intake": Action.PERFORM_INTAKE,
+  "complete-intake": Action.COMPLETE_INTAKE,
   "withdraw-package": Action.WITHDRAW_PACKAGE,
   "withdraw-rai": Action.WITHDRAW_RAI,
 };

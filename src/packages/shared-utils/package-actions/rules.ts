@@ -94,8 +94,8 @@ const arUpdateId: ActionRule = {
   check: (checker, user) =>
     isCmsSuperUser(user) && !checker.hasStatus(finalDispositionStatuses),
 };
-const arPerformIntake: ActionRule = {
-  action: Action.PERFORM_INTAKE,
+const arCompleteIntake: ActionRule = {
+  action: Action.COMPLETE_INTAKE,
   check: (checker, user) => isCmsWriteUser(user) && checker.needsIntake,
 };
 
@@ -110,5 +110,5 @@ export default [
   arWithdrawPackage,
   arTempExtension,
   arUpdateId,
-  arPerformIntake,
+  arCompleteIntake,
 ];

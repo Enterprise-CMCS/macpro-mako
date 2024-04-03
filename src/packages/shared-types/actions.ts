@@ -11,7 +11,7 @@ export enum Action {
   REMOVE_APPK_CHILD = "remove-appk-child",
   TEMP_EXTENSION = "temporary-extension",
   UPDATE_ID = "update-id",
-  PERFORM_INTAKE = "perform-intake",
+  COMPLETE_INTAKE = "complete-intake",
   LEGACY_ADMIN_CHANGE = "legacy-admin-change",
   LEGACY_WITHDRAW_RAI_REQUEST = "legacy-withdraw-rai-request",
 }

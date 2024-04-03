@@ -27,7 +27,7 @@ import {
   removeAppkChildSchema,
   opensearch,
   updateIdSchema,
-  performIntakeSchema,
+  completeIntakeSchema,
 } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
@@ -592,10 +592,10 @@ export async function updateId(body: any) {
   });
 }
 
-export async function performIntake(body: any) {
+export async function completeIntake(body: any) {
   console.log("CMS performing intake for a record.");
 
-  const result = performIntakeSchema.safeParse(body);
+  const result = completeIntakeSchema.safeParse(body);
   if (!result.success) {
     console.error(
       "validation error:  The following record failed to parse: ",
@@ -663,7 +663,7 @@ export async function performIntake(body: any) {
       TOPIC_NAME,
       result.data.id,
       JSON.stringify({
-        actionType: Action.PERFORM_INTAKE,
+        actionType: Action.COMPLETE_INTAKE,
         timestamp: now,
         ...result.data,
       }),

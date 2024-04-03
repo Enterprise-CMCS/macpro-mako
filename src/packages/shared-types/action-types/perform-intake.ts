@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // This is the event schema for intake performed from our system
-export const performIntakeSchema = z.object({
+export const completeIntakeSchema = z.object({
   id: z.string(),
   authority: z.string(),
   origin: z.string(),
@@ -14,4 +14,4 @@ export const performIntakeSchema = z.object({
   cpoc: z.number(),
 });
 
-export type PerformIntake = z.infer<typeof performIntakeSchema>;
+export type CompleteIntake = z.infer<typeof completeIntakeSchema>;

@@ -52,7 +52,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
               {actions.map((action, idx) => {
                 if (
                   data.authority === Authority["1915b"] ||
-                  action == Action.PERFORM_INTAKE
+                  action == Action.COMPLETE_INTAKE
                 ) {
                   return (
                     <TypedLink

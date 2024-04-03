@@ -101,7 +101,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         attachments: attachments ? buildAttachmentObject(attachments) : null,
         state: (data.id as string).split("-")[0],
       };
-    case buildActionUrl(Action.PERFORM_INTAKE):
+    case buildActionUrl(Action.COMPLETE_INTAKE):
       return {
         ...data,
         ...baseProperties,
