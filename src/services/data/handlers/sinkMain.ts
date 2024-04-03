@@ -172,34 +172,22 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
                 item._source.actionType &&
                 item._source.actionType === "Extend"
               ) {
-                const seatoolStatus = SEATOOL_STATUS.TERMINATED;
-                const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-                docs.push(
-                  { ...item._source, id: record.newId },
-                  {
-                    id,
-                    origin: null,
-                    seatoolStatus,
-                    cmsStatus,
-                    stateStatus,
-                  },
-                );
+                docs.push({ ...item._source, id: record.newId });
               } else {
-                docs.push(
-                  {
-                    id: record.newId,
-                    appkParentId: item._source.appkParentId,
-                    origin: item._source.origin,
-                    raiWithdrawEnabled: item._source.raiWithdrawEnabled,
-                    submitterName: item._source.submitterName,
-                    submitterEmail: item._source.submitterEmail,
-                  },
-                  {
-                    id,
-                    origin: null,
-                  },
-                );
+                docs.push({
+                  id: record.newId,
+                  appkParentId: item._source.appkParentId,
+                  origin: item._source.origin,
+                  raiWithdrawEnabled: item._source.raiWithdrawEnabled,
+                  submitterName: item._source.submitterName,
+                  submitterEmail: item._source.submitterEmail,
+                });
               }
+              // Delete old
+              docs.push({
+                id,
+                delete: true,
+              });
 
               // Handle the appk children when an appk parent id is updated
               // I'd like a better way to identify an appk parent.
