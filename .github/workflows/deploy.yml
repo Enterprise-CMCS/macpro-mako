@@ -224,7 +224,7 @@ jobs:
     name: Cypress E2E Tests
     needs: deploy
     if: ${{ github.ref != 'refs/heads/production'}}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
@@ -302,6 +302,8 @@ jobs:
           node-version: 18
           cache: 'yarn'
           cache-dependency-path: '**/services/cypress/package.json'
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
@@ -321,7 +323,7 @@ jobs:
     name: A11y Tests
     needs: deploy
     if: ${{ github.ref != 'refs/heads/production' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
@@ -371,8 +373,10 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: '**/services/cypress/package.json'
       - name: Install cypress-axe
-        run: yarn add cypress-axe axe-core --save-dev
+        run: yarn add cypress-axe axe-core --dev
         working-directory: src/services/cypress
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Check Project A11y
         uses: cypress-io/github-action@v6
         with:
@@ -380,7 +384,6 @@ jobs:
           spec: cypress/a11y/${{ matrix.containers }}
           browser: chrome
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
-          install-command: yarn install --frozen-lockfile --prefix src/services/cypress
 
   release:
     runs-on: ubuntu-20.04

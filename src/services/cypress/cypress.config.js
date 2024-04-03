@@ -4,6 +4,12 @@ const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
 const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild");
 
 async function setupNodeEvents(on, config) {
+  on('before:browser:launch', (browser, launchOptions) => {
+    if (browser.family === 'chromium') {
+      launchOptions.args.push('--disable-gpu');
+    }
+    return launchOptions;
+  })
   // This is required for the preprocessor to be able to generate JSON reports after each run, and more,
   await preprocessor.addCucumberPreprocessorPlugin(on, config);
   on("file:preprocessor", createBundler({
