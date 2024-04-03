@@ -52,7 +52,7 @@ module.exports = defineConfig({
     setupNodeEvents,
     baseUrl: "https://mako-dev.cms.gov/",
     specPattern: ["cypress/e2e/**/*.feature", "cypress/e2e/**/*.spec.js", "cypress/a11y/**/*.spec.js"],
-    supportFile: "support/index.js",
+    supportFile: "support/e2e.js",
     stepDefinitions: ["cypress/e2e/common/steps.js"],
     experimentalRunAllSpecs: true,
   },

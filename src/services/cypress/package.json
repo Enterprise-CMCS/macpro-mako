@@ -2,7 +2,7 @@
   "name": "cypress-tests",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "e2e.js",
   "devDependencies": {
     "@badeball/cypress-configuration": "^6.1.1",
     "@badeball/cypress-cucumber-preprocessor": "^18.0.5",
