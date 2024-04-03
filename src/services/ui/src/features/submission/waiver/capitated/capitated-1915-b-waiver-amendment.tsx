@@ -8,6 +8,7 @@ import {
   SectionCard,
   formCrumbsFromPath,
   FAQ_TAB,
+  FAQFooter,
   useAlertContext,
   useNavigate,
   Route,
@@ -278,6 +279,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
           <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };

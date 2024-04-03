@@ -9,6 +9,7 @@ import {
   BreadCrumbs,
   SimplePageContainer,
   SectionCard,
+  FAQFooter,
   formCrumbsFromPath,
   useNavigate,
   Route,
@@ -248,6 +249,7 @@ export const Capitated1915BWaiverInitialPage = () => {
           <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };
