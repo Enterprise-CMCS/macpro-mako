@@ -7,15 +7,15 @@ import {
   getTopic,
   logError,
 } from "../libs/sink-lib";
+import { decode } from "base-64";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
 }
-const index = "subtypes";
+const index = "cpocs";
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   const loggableEvent = { ...event, records: "too large to display" };
-  const docs: any[] = [];
   try {
     for (const topicPartition of Object.keys(event.records)) {
       const topic = getTopic(topicPartition);
@@ -23,8 +23,8 @@ export const handler: Handler<KafkaEvent> = async (event) => {
         case undefined:
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
-        case "aws.seatool.debezium.cdc.SEA.dbo.Type":
-          await subtypes(event.records[topicPartition], topicPartition);
+        case "aws.seatool.debezium.cdc.SEA.dbo.Officers":
+          await officers(event.records[topicPartition], topicPartition);
           break;
       }
     }
@@ -34,20 +34,38 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   }
 };
 
-const subtypes = async (
+const officers = async (
   kafkaRecords: KafkaRecord[],
   topicPartition: string,
 ) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
-    const { value } = kafkaRecord;
+    const { key, value } = kafkaRecord;
     try {
-      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
-      const record = JSON.parse(decodedValue).payload.after;
-      if (!record) {
+      // Handle delete events and continue
+      if (value === undefined) {
         continue;
       }
-      const result = opensearch.subtypes.Type.transform().safeParse(record);
+
+      // Set id
+      const id: string = decode(key);
+
+      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
+      const record = JSON.parse(decodedValue).payload.after;
+
+      // Handle tombstone events and continue
+      if (!record) {
+        console.log(
+          `Tombstone detected for ${id}.  Pushing delete record to os...`,
+        );
+        docs.push({
+          id,
+          delete: true,
+        });
+        continue;
+      }
+
+      const result = opensearch.cpocs.Officers.transform().safeParse(record);
       if (!result.success) {
         logError({
           type: ErrorType.VALIDATION,
