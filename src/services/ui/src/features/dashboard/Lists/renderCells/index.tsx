@@ -1,5 +1,10 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
+import {
+  Action,
+  Authority,
+  CognitoUserAttributes,
+  opensearch,
+} from "shared-types";
 import { getAvailableActions, formatSeatoolDate } from "shared-utils";
 import { Link as TypedLink } from "@/components";
 import { Link } from "react-router-dom";
@@ -14,7 +19,6 @@ export const renderCellDate = (key: keyof opensearch.main.Document) =>
 
 export const renderCellIdLink = (pathResolver: (id: string) => string) =>
   function Cell(data: opensearch.main.Document) {
-    if (!data.authority) return <></>;
     const path = pathResolver(encodeURIComponent(data.id));
     return (
       <Link className="cursor-pointer text-blue-600" to={path}>
@@ -39,14 +43,17 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
               aria-label="record actions"
               className={cn(
                 "w-8 ",
-                actions.length ? "text-blue-700" : "text-gray-400"
+                actions.length ? "text-blue-700" : "text-gray-400",
               )}
             />
           </POP.PopoverTrigger>
           <POP.PopoverContent>
             <div className="flex flex-col">
               {actions.map((action, idx) => {
-                if (data.authority === Authority["1915b"]) {
+                if (
+                  data.authority === Authority["1915b"] ||
+                  action == Action.COMPLETE_INTAKE
+                ) {
                   return (
                     <TypedLink
                       state={{ from: `${location.pathname}${location.search}` }}
@@ -59,7 +66,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
                       }}
                       className={cn(
                         "text-blue-500",
-                        "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                        "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                       )}
                     >
                       {mapActionLabel(action)}
@@ -70,7 +77,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
                   <Link
                     className={cn(
                       "text-blue-500",
-                      "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                      "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                     )}
                     to={`/action/${data.id}/${action}?origin=actionsDashboard`}
                     key={`${idx}-${action}`}

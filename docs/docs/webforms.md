@@ -31,4 +31,19 @@ These webforms are a replacement for the pdf form uploads previously used in mmd
 ## Things to note
 Some of the fields listed in these webforms are FieldGroups and FieldArrays. This means that they are arrays of values that contain groups of like values (think an array of identicaly typed objects). The items within those arrays will have `Parent` values to indicate which parent they belong to.
 
+## Key structuring of Webforms:
+For our webforms, we are in communication with data connect on our we should pass our json data to their team. We have gone with this approach to help streamline our data, but also make it as easy as possible to hunt down questions if items are added or changed. Our “name” keys are made up of for different parts.
 
+Our agreed upon key structures for the “name” property of form field sections are as follows:
+
+The Four Parts to the name field are:
+- form name '-' instead of dots
+- section title separated by “-” shortened if possible
+- input id/label as close and short as possible with only '-' as separators
+- input type is usually the (rhf) value text/textarea/array/checkgroup/upload/radiogroup/select
+
+> `[form-name]_[section-title]_[question-id]_[input]`
+
+Example: **"abp1_pop-id_abp-pop-name_input"**
+
+**It is imperative that this pattern be followed in all forms.**

@@ -39,6 +39,50 @@ export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
   );
 };
 
+export const AC_UpdateId: FC<opensearch.changelog.Document> = (props) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="font-bold">Change made</p>
+      <p>
+        {props.submitterName} updated the package ID from {props.oldPackageId}{" "}
+        to {props.newPackageId}
+      </p>
+      <div>
+        <h2 className="font-bold">Change Reason</h2>
+        <p>{props.additionalInformation}</p>
+      </div>
+    </div>
+  );
+};
+
+export const AC_CompleteIntake: FC<opensearch.changelog.Document> = (props) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="font-bold">Change made</p>
+      <p>{props.submitterName} completed intake of the package.</p>
+    </div>
+  );
+};
+
+export const AC_LegacyAdminChange: FC<opensearch.changelog.Document> = (
+  props,
+) => {
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h2 className="font-bold text-lg mb-2">Change Made</h2>
+        <p>{props.changeMade || "No information submitted"}</p>
+      </div>
+      {props.changeReason && (
+        <div>
+          <h2 className="font-bold text-lg mb-2">Change Reason</h2>
+          <p>{props.changeReason}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const AC_Update: FC<opensearch.changelog.Document> = () => {
   return <p>Coming Soon</p>;
 };
@@ -50,8 +94,12 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         return ["Disable formal RAI response withdraw", AC_WithdrawDisabled];
       case "enable-rai-withdraw":
         return ["Enable formal RAI response withdraw", AC_WithdrawEnabled];
-      case "update":
-        return ["SPA ID update", AC_Update];
+      case "update-id":
+        return ["Package ID Update", AC_UpdateId];
+      case "complete-intake":
+        return ["Intake Completed", AC_CompleteIntake];
+      case "legacy-admin-change":
+        return [props.changeType || "Manual Update", AC_LegacyAdminChange];
       default:
         return [BLANK_VALUE, AC_Update];
     }
@@ -76,9 +124,13 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
 export const AdminChanges = () => {
   const cache = usePackageDetailsCache();
   const data = cache.data.changelog?.filter((CL) =>
-    ["disable-rai-withdraw", "enable-rai-withdraw"].includes(
-      CL._source.actionType,
-    ),
+    [
+      "disable-rai-withdraw",
+      "enable-rai-withdraw",
+      "legacy-admin-change",
+      "complete-intake",
+      "update-id",
+    ].includes(CL._source.actionType),
   );
 
   if (!data?.length) return <></>;

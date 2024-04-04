@@ -20,9 +20,11 @@ export const handler: Handler = async (_, __, callback) => {
       },
     });
     await manageIndexResource({ index: "changelog" });
-    await manageIndexResource({ index: "insights" });
     await manageIndexResource({ index: "types" });
     await manageIndexResource({ index: "subtypes" });
+    await manageIndexResource({ index: "cpocs" });
+    await manageIndexResource({ index: "insights" });
+    await manageIndexResource({ index: "legacyinsights" });
   } catch (error: any) {
     response.statusCode = 500;
     errorResponse = error;

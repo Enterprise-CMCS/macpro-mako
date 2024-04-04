@@ -53,20 +53,20 @@ export const handler: Handler = async (event, _, callback) => {
           uuidsToCheck.push(result.UUID);
         }
       }
-      for (const uuid of uuidsToCheck) {
-        let isEnabled = false;
-        while (!isEnabled) {
-          const listCommand = new GetEventSourceMappingCommand({ UUID: uuid });
-          const mappingResult = await lambdaClient.send(listCommand);
-          if (mappingResult.State === "Enabled") {
-            isEnabled = true;
-          } else {
-            console.log(`Waiting for mapping ${uuid} to be enabled...`);
-            await new Promise((resolve) => setTimeout(resolve, 10000)); // Wait for 10 seconds before checking again
-          }
+    }
+    for (const uuid of uuidsToCheck) {
+      let isEnabled = false;
+      while (!isEnabled) {
+        const listCommand = new GetEventSourceMappingCommand({ UUID: uuid });
+        const mappingResult = await lambdaClient.send(listCommand);
+        if (mappingResult.State === "Enabled") {
+          isEnabled = true;
+        } else {
+          console.log(`Waiting for mapping ${uuid} to be enabled...`);
+          await new Promise((resolve) => setTimeout(resolve, 10000)); // Wait for 10 seconds before checking again
         }
-        console.log(`Mapping ${uuid} is now enabled.`);
       }
+      console.log(`Mapping ${uuid} is now enabled.`);
     }
   } catch (error: any) {
     response.statusCode = 500;

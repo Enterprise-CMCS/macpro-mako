@@ -44,7 +44,6 @@ describe("zod schema helpers", () => {
   });
   afterEach(() => mockItem.server.resetHandlers());
   afterAll(() => mockItem.server.close());
-
   describe("idIsApproved", () => {
     it("returns false if no getItem fails", async () => {
       expect(await unit.idIsApproved("not-found")).toBe(false);
@@ -56,6 +55,24 @@ describe("zod schema helpers", () => {
 
     it("returns true if status is approved", async () => {
       expect(await unit.idIsApproved("existing-approved")).toBe(true);
+    });
+  });
+
+  describe("canBeRenewedOrAmended", () => {
+    it("returns true if item is New or Renew actionType", async () => {
+      const newCanRenewOrAmend = await unit.canBeRenewedOrAmended(
+        "existing-approved-actionType=New",
+      );
+      const renewCanRenewOrAmend = await unit.canBeRenewedOrAmended(
+        "existing-approved-actionType=Renew",
+      );
+      expect(newCanRenewOrAmend).toBe(true);
+      expect(renewCanRenewOrAmend).toBe(true);
+    });
+    it("returns false if an item is Amend actionType", async () => {
+      expect(
+        await unit.canBeRenewedOrAmended("existing-approved-actionType=Amend"),
+      ).toBe(false);
     });
   });
 });

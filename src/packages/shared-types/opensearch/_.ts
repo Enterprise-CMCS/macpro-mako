@@ -80,4 +80,16 @@ export type AggResult = Record<
   }
 >;
 
-export type Index = "main" | "insights" | "changelog" | "types" | "subtypes";
+export type ExportHeaderOptions<TData> = {
+  transform: (data: TData) => string;
+  name: string;
+};
+
+export type Index =
+  | "main"
+  | "insights"
+  | "changelog"
+  | "types"
+  | "subtypes"
+  | "legacyinsights"
+  | "cpocs"

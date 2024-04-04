@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { attachmentSchema } from "../attachments";
+import { notificationMetadataSchema } from "../notification-metadata";
 
 // This is the event schema for ne submissions from our system
 export const onemacSchema = z.object({
@@ -13,12 +14,7 @@ export const onemacSchema = z.object({
   submitterEmail: z.string(),
   attachments: z.array(attachmentSchema).nullish(),
   raiWithdrawEnabled: z.boolean().default(false),
-  notificationMetadata: z
-    .object({
-      proposedEffectiveDate: z.number().nullish(),
-      submissionDate: z.number().nullish(),
-    })
-    .nullish(),
+  notificationMetadata: notificationMetadataSchema.nullish(),
   // these are specific to TEs... should be broken into its own schema
   statusDate: z.number().optional(),
   submissionDate: z.number().optional(),

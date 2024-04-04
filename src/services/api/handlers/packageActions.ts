@@ -24,23 +24,44 @@ import {
   WithdrawPackage,
   toggleWithdrawRaiEnabledSchema,
   ToggleWithdrawRaiEnabled,
-  Authority,
   removeAppkChildSchema,
   opensearch,
+  updateIdSchema,
+  completeIntakeSchema,
 } from "shared-types";
 import { produceMessage } from "../libs/kafka";
 import { response } from "../libs/handler";
 import { SEATOOL_STATUS } from "shared-types/statusHelper";
-import { formatSeatoolDate, seaToolFriendlyTimestamp } from "shared-utils";
+import {
+  formatSeatoolDate,
+  seaToolFriendlyTimestamp,
+  getNextBusinessDayTimestamp,
+} from "shared-utils";
 import { buildStatusMemoQuery } from "../libs/statusMemo";
 
 const TOPIC_NAME = process.env.topicName as string;
 
 export async function issueRai(body: RaiIssue) {
   console.log("CMS issuing a new RAI");
+  const today = seaToolFriendlyTimestamp();
+  const result = raiIssueSchema.safeParse({ ...body, requestedDate: today });
+  if (result.success === false) {
+    console.error(
+      "validation error:  The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message,
+    );
+    return response({
+      statusCode: 400,
+      body: {
+        message: "Event validation error",
+      },
+    });
+  }
+
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
-  const today = seaToolFriendlyTimestamp();
   try {
     await transaction.begin();
     // Issue RAI
@@ -67,32 +88,25 @@ export async function issueRai(body: RaiIssue) {
     console.log(result2);
 
     // write to kafka here
-    const result = raiIssueSchema.safeParse({ ...body, requestedDate: today });
-    if (result.success === false) {
-      throw console.log(
-        "RAI Validation Error. The following record failed to parse: ",
-        JSON.stringify(body),
-        "Because of the following Reason(s):",
-        result.error.message
-      );
-    } else {
-      await produceMessage(
-        TOPIC_NAME,
-        body.id,
-        JSON.stringify({
-          ...result.data,
-          actionType: Action.ISSUE_RAI,
-        })
-      );
-    }
+    await produceMessage(
+      TOPIC_NAME,
+      body.id,
+      JSON.stringify({
+        ...result.data,
+        actionType: Action.ISSUE_RAI,
+      }),
+    );
 
     // Commit transaction
     await transaction.commit();
   } catch (err) {
     // Rollback and log
     await transaction.rollback();
-    console.error("Error executing one or both queries:", err);
-    throw err;
+    console.error(err);
+    return response({
+      statusCode: 500,
+      body: err instanceof Error ? { message: err.message } : err,
+    });
   } finally {
     // Close pool
     await pool.close();
@@ -100,188 +114,190 @@ export async function issueRai(body: RaiIssue) {
 }
 
 export async function withdrawRai(body: RaiWithdraw, document: any) {
-  const raiToWithdraw =
-    !!document.raiRequestedDate && !!document.raiReceivedDate
-      ? new Date(document.raiRequestedDate).getTime()
-      : null;
-  if (!raiToWithdraw) throw "No RAI available for response";
+  console.log("State withdrawing an RAI Response");
+  if (!document.raiRequestedDate) {
+    return response({
+      statusCode: 400,
+      body: {
+        message: "No candidate RAI available",
+      },
+    });
+  }
+  const raiToWithdraw = new Date(document.raiRequestedDate).getTime();
   const today = seaToolFriendlyTimestamp();
   const result = raiWithdrawSchema.safeParse({
     ...body,
     requestedDate: raiToWithdraw,
     withdrawnDate: today,
   });
-  console.log("Withdraw body is", body);
-
-  if (result.success === true) {
-    console.log("CMS withdrawing an RAI");
-    console.log("LATEST RAI KEY: " + raiToWithdraw);
-    const pool = await sql.connect(config);
-    const transaction = new sql.Transaction(pool);
-    try {
-      await transaction.begin();
-      // How we withdraw an RAI Response varies based on authority or not
-      // Medicaid is handled differently from the rest.
-      if (
-        [Authority.MED_SPA, Authority["1915b"], Authority["1915c"]].includes(
-          body.authority.toLowerCase() as Authority
-        )
-      ) {
-        // Set Received Date to null
-        await transaction.request().query(`
-          UPDATE SEA.dbo.RAI
-            SET 
-              RAI_RECEIVED_DATE = NULL,
-              RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
-          WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
-        `);
-        // Set Status to Pending - RAI
-        await transaction.request().query(`
-          UPDATE SEA.dbo.State_Plan
-            SET 
-              SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}'),
-              Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
-              Status_Memo = ${buildStatusMemoQuery(
-                body.id,
-                "RAI Response Withdrawn"
-              )}
-            WHERE ID_Number = '${result.data.id}'
-        `);
-      } else {
-        // Set Withdrawn_Date on the existing RAI
-        await transaction.request().query(`
-          UPDATE SEA.dbo.RAI
-            SET 
-              RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
-            WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
-        `);
-        // Set Status to Pending
-        await transaction.request().query(`
-          UPDATE SEA.dbo.State_Plan
-            SET 
-              SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${
-                SEATOOL_STATUS.PENDING
-              }'),
-              Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
-              Status_Memo = ${buildStatusMemoQuery(
-                result.data.id,
-                `RAI Response Withdrawn.  Response was received ${formatSeatoolDate(
-                  document.raiReceivedDate
-                )} and withdrawn ${new Date().toLocaleString("en-US", {
-                  timeZone: "America/New_York",
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                })}`
-              )}
-            WHERE ID_Number = '${result.data.id}'
-        `);
-      }
-
-      // write to kafka here
-      await produceMessage(
-        TOPIC_NAME,
-        result.data.id,
-        JSON.stringify({
-          ...result.data,
-          actionType: Action.WITHDRAW_RAI,
-        })
-      );
-
-      // Commit transaction
-      await transaction.commit();
-    } catch (err) {
-      // Rollback and log
-      await transaction.rollback();
-      console.error("Error executing one or both queries:", err);
-      throw err;
-    } finally {
-      // Close pool
-      await pool.close();
-    }
-
-    console.log(body);
-  } else {
-    console.log("An error occured with withdraw payload: ", result.error);
-    throw "An error occured with withdraw payload.";
+  if (result.success === false) {
+    console.error(
+      "validation error:  The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message,
+    );
+    return response({
+      statusCode: 400,
+      body: {
+        message: "Event validation error",
+      },
+    });
   }
-}
-
-export async function respondToRai(body: RaiResponse, document: any) {
-  console.log("State responding to RAI");
-  const raiToRespondTo =
-    !!document.raiRequestedDate && !document.raiReceivedDate
-      ? new Date(document.raiRequestedDate).getTime()
-      : null;
-  if (!raiToRespondTo) throw "No RAI available for response";
-  console.log("LATEST RAI KEY: " + raiToRespondTo);
+  console.log("LATEST RAI KEY: " + raiToWithdraw);
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
-  console.log(body);
-  const today = seaToolFriendlyTimestamp();
   try {
     await transaction.begin();
-    // Issue RAI
-    const query1 = `
-      UPDATE SEA.dbo.RAI
-        SET 
-          RAI_RECEIVED_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME)),
-          RAI_WITHDRAWN_DATE = NULL
-        WHERE ID_Number = '${body.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToRespondTo}', 10)), CAST('19700101' AS DATETIME))
-    `;
-    const result1 = await transaction.request().query(query1);
-    console.log(result1);
 
-    // Update Status
-    const query2 = `
-      UPDATE SEA.dbo.State_Plan
-        SET 
-          SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${
-            SEATOOL_STATUS.PENDING
-          }'),
-          Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
-          Status_Memo = ${buildStatusMemoQuery(
-            body.id,
-            "RAI Response Received"
-          )}
-        WHERE ID_Number = '${body.id}'
-    `;
-    const result2 = await transaction.request().query(query2);
-    console.log(result2);
+    // Set Received Date
+    await transaction.request().query(`
+        UPDATE SEA.dbo.RAI
+          SET 
+            RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
+        WHERE ID_Number = '${result.data.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
+      `);
+    // Set Status to Pending - RAI
+    await transaction.request().query(`
+        UPDATE SEA.dbo.State_Plan
+          SET 
+            SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING_RAI}'),
+            Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+            Status_Memo = ${buildStatusMemoQuery(
+              result.data.id,
+              `RAI Response Withdrawn.  This withdrawal is for the RAI requested on ${formatSeatoolDate(document.raiRequestedDate)} and received on ${formatSeatoolDate(document.raiReceivedDate)}`,
+            )}
+          WHERE ID_Number = '${result.data.id}'
+      `);
 
-    //   // write to kafka here
-    const result = raiResponseSchema.safeParse({
-      ...body,
-      responseDate: today,
-      requestedDate: raiToRespondTo,
-    });
-    if (result.success === false) {
-      console.log(
-        "RAI Validation Error. The following record failed to parse: ",
-        JSON.stringify(body),
-        "Because of the following Reason(s):",
-        result.error.message
-      );
-    } else {
-      console.log(JSON.stringify(result, null, 2));
-      await produceMessage(
-        TOPIC_NAME,
-        body.id,
-        JSON.stringify({
-          ...result.data,
-          responseDate: today,
-          actionType: Action.RESPOND_TO_RAI,
-        })
-      );
-    }
+    // write to kafka here
+    await produceMessage(
+      TOPIC_NAME,
+      result.data.id,
+      JSON.stringify({
+        ...result.data,
+        actionType: Action.WITHDRAW_RAI,
+        notificationMetadata: {
+          submissionDate: getNextBusinessDayTimestamp(),
+        },
+      }),
+    );
 
     // Commit transaction
     await transaction.commit();
   } catch (err) {
     // Rollback and log
     await transaction.rollback();
-    console.error("Error executing one or both queries:", err);
-    throw err;
+    console.error(err);
+    return response({
+      statusCode: 500,
+      body: err instanceof Error ? { message: err.message } : err,
+    });
+  } finally {
+    // Close pool
+    await pool.close();
+  }
+}
+
+export async function respondToRai(body: RaiResponse, document: any) {
+  console.log("State responding to RAI");
+  if (!document.raiRequestedDate) {
+    return response({
+      statusCode: 400,
+      body: {
+        message: "No candidate RAI available",
+      },
+    });
+  }
+  const raiToRespondTo = new Date(document.raiRequestedDate).getTime();
+  const today = seaToolFriendlyTimestamp();
+  const result = raiResponseSchema.safeParse({
+    ...body,
+    responseDate: today,
+    requestedDate: raiToRespondTo,
+  });
+  if (result.success === false) {
+    console.error(
+      "validation error:  The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message,
+    );
+    return response({
+      statusCode: 400,
+      body: {
+        message: "Event validation error",
+      },
+    });
+  }
+  const pool = await sql.connect(config);
+  const transaction = new sql.Transaction(pool);
+  let statusMemoUpdate: string;
+
+  // Potentially overwriting data... will be as verbose as possible.
+  if (document.raiReceivedDate && document.raiWithdrawnDate) {
+    statusMemoUpdate = buildStatusMemoQuery(
+      result.data.id,
+      `RAI Response Received.  This overwrites the previous response received on ${formatSeatoolDate(document.raiReceivedDate)} and withdrawn on ${formatSeatoolDate(document.raiWithdrawnDate)}`,
+    );
+  } else if (document.raiWithdrawnDate) {
+    statusMemoUpdate = buildStatusMemoQuery(
+      result.data.id,
+      `RAI Response Received.  This overwrites a previous response withdrawn on ${formatSeatoolDate(document.raiWithdrawnDate)}`,
+    );
+  } else {
+    statusMemoUpdate = buildStatusMemoQuery(body.id, "RAI Response Received");
+  }
+  try {
+    await transaction.begin();
+    // Issue RAI
+    const query1 = `
+        UPDATE SEA.dbo.RAI
+          SET 
+            RAI_RECEIVED_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME)),
+            RAI_WITHDRAWN_DATE = NULL
+          WHERE ID_Number = '${body.id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToRespondTo}', 10)), CAST('19700101' AS DATETIME))
+      `;
+    const result1 = await transaction.request().query(query1);
+    console.log(result1);
+
+    // Update Status
+    const query2 = `
+        UPDATE SEA.dbo.State_Plan
+          SET 
+            SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${SEATOOL_STATUS.PENDING}'),
+            Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+            Status_Memo = ${statusMemoUpdate}
+          WHERE ID_Number = '${body.id}'
+      `;
+    const result2 = await transaction.request().query(query2);
+    console.log(result2);
+
+    // Write to kafka here
+    console.log(JSON.stringify(result, null, 2));
+    await produceMessage(
+      TOPIC_NAME,
+      body.id,
+      JSON.stringify({
+        ...result.data,
+        responseDate: today,
+        actionType: Action.RESPOND_TO_RAI,
+        notificationMetadata: {
+          submissionDate: getNextBusinessDayTimestamp(),
+        },
+      }),
+    );
+
+    // Commit transaction
+    await transaction.commit();
+  } catch (err) {
+    // Rollback and log
+    await transaction.rollback();
+    console.error(err);
+    return response({
+      statusCode: 500,
+      body: err instanceof Error ? { message: err.message } : err,
+    });
   } finally {
     // Close pool
     await pool.close();
@@ -297,7 +313,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
       "Withdraw Package event validation error. The following record failed to parse: ",
       JSON.stringify(body),
       "Because of the following Reason(s):",
-      result.error.message
+      result.error.message,
     );
     return response({
       statusCode: 400,
@@ -317,7 +333,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
         Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
         Status_Memo = ${buildStatusMemoQuery(
           result.data.id,
-          "Package Withdrawn"
+          "Package Withdrawn",
         )}
       WHERE ID_Number = '${body.id}'
   `;
@@ -330,7 +346,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
     await produceMessage(
       TOPIC_NAME,
       body.id,
-      JSON.stringify({ ...result.data, actionType: Action.WITHDRAW_PACKAGE })
+      JSON.stringify({ ...result.data, actionType: Action.WITHDRAW_PACKAGE }),
     );
     // Commit transaction
     await transaction.commit();
@@ -350,7 +366,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
 
 export async function toggleRaiResponseWithdraw(
   body: ToggleWithdrawRaiEnabled,
-  toggle: boolean
+  toggle: boolean,
 ) {
   const result = toggleWithdrawRaiEnabledSchema.safeParse({
     ...body,
@@ -361,7 +377,7 @@ export async function toggleRaiResponseWithdraw(
       "Toggle Rai Response Withdraw Enable event validation error. The following record failed to parse: ",
       JSON.stringify(body),
       "Because of the following Reason(s):",
-      result.error.message
+      result.error.message,
     );
     return response({
       statusCode: 400,
@@ -379,7 +395,7 @@ export async function toggleRaiResponseWithdraw(
           ? Action.ENABLE_RAI_WITHDRAW
           : Action.DISABLE_RAI_WITHDRAW,
         ...result.data,
-      })
+      }),
     );
 
     return response({
@@ -423,7 +439,7 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
           Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
           Status_Memo = ${buildStatusMemoQuery(
             result.data.id,
-            "Package Withdrawn"
+            "Package Withdrawn",
           )}
         WHERE ID_Number = '${doc.id}'
     `);
@@ -433,7 +449,7 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
       JSON.stringify({
         actionType: Action.REMOVE_APPK_CHILD,
         ...result.data,
-      })
+      }),
     );
     await transaction.commit();
   } catch (err) {
@@ -448,4 +464,228 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
     // Close pool
     await pool.close();
   }
+}
+
+export async function updateId(body: any) {
+  console.log("CMS updating the ID of a package.");
+
+  const result = updateIdSchema.safeParse(body);
+  if (!result.success) {
+    console.error(
+      "validation error:  The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message,
+    );
+    return response({
+      statusCode: 400,
+      body: {
+        message: "Event validation error",
+      },
+    });
+  }
+  console.log(JSON.stringify(result.data, null, 2));
+
+  const now = new Date().getTime();
+  const today = seaToolFriendlyTimestamp();
+  const pool = await sql.connect(config);
+  const transaction = new sql.Transaction(pool);
+  try {
+    await transaction.begin();
+
+    // Copy State_Plan row, dropping UUID and replica_id
+    await transaction.request().query(`
+      DECLARE @columns NVARCHAR(MAX), @sql NVARCHAR(MAX), @newId NVARCHAR(50), @originalId NVARCHAR(50);
+
+      SET @newId = '${result.data.newId}';
+      SET @originalId = '${body.id}';
+      
+      SELECT @columns = COALESCE(@columns + ', ', '') + QUOTENAME(column_name)
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE table_name = 'State_Plan' AND column_name != 'ID_Number' AND column_name != 'UUID' AND column_name != 'replica_id' AND table_schema = 'dbo'
+        ORDER BY ordinal_position;
+      
+      SET @sql = 'INSERT INTO SEA.dbo.State_Plan (ID_Number, ' + @columns + ') SELECT ''' + @newId + ''' as ID_Number, ' + @columns + ' FROM SEA.dbo.State_Plan WHERE ID_Number = ''' + @originalId + '''';
+      EXEC sp_executesql @sql;
+    `);
+
+    // Copy RAI rows
+    await transaction.request().query(`
+      INSERT INTO RAI (ID_Number, RAI_REQUESTED_DATE, RAI_RECEIVED_DATE, RAI_WITHDRAWN_DATE)
+        SELECT '${result.data.newId}', RAI_REQUESTED_DATE, RAI_RECEIVED_DATE, RAI_WITHDRAWN_DATE
+        FROM RAI
+        WHERE ID_Number = '${body.id}';
+    `);
+
+    // Copy Types rows
+    await transaction.request().query(`
+      INSERT INTO State_Plan_Service_Types (ID_Number, Service_Type_ID)
+        SELECT '${result.data.newId}', Service_Type_ID
+        FROM State_Plan_Service_Types
+        WHERE ID_Number = '${body.id}';
+    `);
+
+    //Copy SubTypes rows
+    await transaction.request().query(`
+      INSERT INTO State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID)
+        SELECT '${result.data.newId}', Service_SubType_ID
+        FROM State_Plan_Service_SubTypes
+        WHERE ID_Number = '${body.id}';
+    `);
+
+    //Copy Action_Officers rows
+    await transaction.request().query(`
+      INSERT INTO Action_Officers (ID_Number, Officer_ID)
+        SELECT '${result.data.newId}', Officer_ID
+        FROM Action_Officers
+        WHERE ID_Number = '${body.id}';
+    `);
+
+    // Put Status Memo notes in the old package
+    await transaction.request().query(`
+      UPDATE SEA.dbo.State_Plan
+      SET 
+        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${
+          SEATOOL_STATUS.TERMINATED
+        }'),
+        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+        Status_Memo = ${buildStatusMemoQuery(body.id, `Package Terminated via ID Update: this package was copied to ${result.data.newId} and then terminated.`)}
+      WHERE ID_Number = '${body.id}'
+    `);
+
+    // Put Status Memo notes in the new package; this could be combined into the insert above, for speed.
+    await transaction.request().query(`
+    UPDATE SEA.dbo.State_Plan
+      SET 
+        Status_Memo = ${buildStatusMemoQuery(body.id, `Package Created via ID Update: this package was copied from ${body.id}.`)}
+      WHERE ID_Number = '${result.data.newId}'
+    `);
+
+    await produceMessage(
+      TOPIC_NAME,
+      body.id,
+      JSON.stringify({
+        actionType: Action.UPDATE_ID,
+        timestamp: now,
+        ...result.data,
+      }),
+    );
+    await transaction.commit();
+  } catch (err) {
+    // Rollback and log
+    await transaction.rollback();
+    console.error("Error executing query:", err);
+    return response({
+      statusCode: 500,
+      body: err instanceof Error ? { message: err.message } : err,
+    });
+  } finally {
+    // Close pool
+    await pool.close();
+  }
+
+  return response({
+    statusCode: 200,
+    body: {
+      message: "record successfully submitted",
+    },
+  });
+}
+
+export async function completeIntake(body: any) {
+  console.log("CMS performing intake for a record.");
+
+  const result = completeIntakeSchema.safeParse(body);
+  if (!result.success) {
+    console.error(
+      "validation error:  The following record failed to parse: ",
+      JSON.stringify(body),
+      "Because of the following Reason(s):",
+      result.error.message,
+    );
+    return response({
+      statusCode: 400,
+      body: {
+        message: "Event validation error",
+      },
+    });
+  }
+
+  const now = new Date().getTime();
+  const pool = await sql.connect(config);
+  const transaction = new sql.Transaction(pool);
+  try {
+    await transaction.begin();
+
+    // Generate INSERT statements for typeIds
+    const typeIdsValues = result.data.typeIds
+      .map((typeId: number) => `('${result.data.id}', '${typeId}')`)
+      .join(",\n");
+
+    const typeIdsInsert = typeIdsValues
+      ? `INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID) VALUES ${typeIdsValues};`
+      : "";
+
+    // Generate INSERT statements for subTypeIds
+    const subTypeIdsValues = result.data.subTypeIds
+      .map((subTypeId: number) => `('${result.data.id}', '${subTypeId}')`)
+      .join(",\n");
+
+    const subTypeIdsInsert = subTypeIdsValues
+      ? `INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID) VALUES ${subTypeIdsValues};`
+      : "";
+
+    await transaction.request().query(`
+      UPDATE SEA.dbo.State_Plan
+        SET 
+          Title_Name = ${
+            result.data.subject
+              ? `'${result.data.subject.replace("'", "''")}'`
+              : "NULL"
+          },
+          Summary_Memo = ${
+            result.data.description
+              ? `'${result.data.description.replace("'", "''")}'`
+              : "NULL"
+          },
+          Lead_Analyst_ID = ${result.data.cpoc ? result.data.cpoc : "NULL"},
+          Status_Memo = ${buildStatusMemoQuery(result.data.id, `Intake Completed:  Intake was completed by ${result.data.submitterName}`)}
+        WHERE ID_Number = '${result.data.id}'
+
+        -- Insert all types into State_Plan_Service_Types
+        ${typeIdsInsert}
+
+        -- Insert all types into State_Plan_Service_SubTypes
+        ${subTypeIdsInsert}
+    `);
+
+    await produceMessage(
+      TOPIC_NAME,
+      result.data.id,
+      JSON.stringify({
+        actionType: Action.COMPLETE_INTAKE,
+        timestamp: now,
+        ...result.data,
+      }),
+    );
+    await transaction.commit();
+  } catch (err) {
+    // Rollback and log
+    await transaction.rollback();
+    console.error("Error executing query:", err);
+    return response({
+      statusCode: 500,
+      body: err instanceof Error ? { message: err.message } : err,
+    });
+  } finally {
+    // Close pool
+    await pool.close();
+  }
+
+  return response({
+    statusCode: 200,
+    body: {
+      message: "record successfully submitted",
+    },
+  });
 }

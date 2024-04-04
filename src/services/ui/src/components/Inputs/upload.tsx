@@ -18,21 +18,21 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       if (fileRejections.length > 0) {
         setErrorMessage(
-          "Selected file(s) is too large or of a disallowed file type."
+          "Selected file(s) is too large or of a disallowed file type.",
         );
       } else {
         setErrorMessage(null);
         setFiles([...files, ...acceptedFiles]);
       }
     },
-    [files]
+    [files],
   );
 
   const accept: Accept = {};
   FILE_TYPES.map((type) =>
     accept[type.mime]
       ? accept[type.mime].push(type.extension)
-      : (accept[type.mime] = [type.extension])
+      : (accept[type.mime] = [type.extension]),
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -44,7 +44,7 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
 
   return (
     <>
-      <div className="my-2 flex gap-2">
+      <div className="my-2 flex flex-wrap gap-2">
         {files.map((file) => (
           // <div key={file.name} className="my-2 flex gap-2">
           <div
@@ -71,7 +71,7 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
         {...getRootProps()}
         className={cn(
           "w-full flex items-center justify-center border border-dashed  py-6 rounded-sm",
-          isDragActive && "border-blue-700"
+          isDragActive && "border-blue-700",
         )}
       >
         <p>

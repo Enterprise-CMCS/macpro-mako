@@ -40,6 +40,7 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
       switch (data._source.authority) {
         case Authority["1915b"]:
         case Authority["1915c"]:
+        case undefined: // Some TEs have no authority
           switch (data._source.actionType) {
             case "Extend":
               return "Temporary Extension Request Details";
@@ -88,7 +89,7 @@ const DetailsSidebar: FC<{ id: string }> = ({ id }) => {
   const links = useDetailsSidebarLinks(id);
 
   return (
-    <aside className="min-w-56 flex-none font-semibold m-4 mt-6 pr-8">
+    <aside className="min-w-56 flex-none font-semibold m-4 mt-6 pr-8 pl-4">
       {links.map(({ id, href, displayName }) => (
         <a className="block mb-2 text-blue-900" key={id} href={href}>
           {displayName}

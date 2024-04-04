@@ -5,7 +5,12 @@ import {
   SEATOOL_STATUS,
   finalDispositionStatuses,
 } from "shared-types";
-import { isStateUser, isCmsWriteUser, isIDM } from "../user-helper";
+import {
+  isStateUser,
+  isCmsWriteUser,
+  isIDM,
+  isCmsSuperUser,
+} from "../user-helper";
 
 const arIssueRai: ActionRule = {
   action: Action.ISSUE_RAI,
@@ -16,8 +21,8 @@ const arIssueRai: ActionRule = {
     (!checker.hasLatestRai ||
       // The latest RAI is complete
       (checker.hasCompletedRai &&
-        // The package is not a medicaid spa (med spas only get 1 rai)
-        !checker.authorityIs([Authority.MED_SPA]) &&
+        // The package is a chip (chips can have more than 1 rai)
+        checker.authorityIs([Authority.CHIP_SPA]) &&
         // The package does not have RAI Response Withdraw enabled
         !checker.hasEnabledRaiWithdraw)) &&
     isCmsWriteUser(user) &&
@@ -29,7 +34,9 @@ const arRespondToRai: ActionRule = {
   check: (checker, user) =>
     !checker.isTempExtension &&
     checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
-    checker.hasRequestedRai &&
+    checker.hasLatestRai &&
+    // safety; prevent bad status from causing overwrite
+    (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
     isStateUser(user),
 };
 
@@ -70,6 +77,8 @@ const arWithdrawRaiResponse: ActionRule = {
     !checker.isTempExtension &&
     checker.isInActivePendingStatus &&
     checker.hasRaiResponse &&
+    // safety; prevent bad status from causing overwrite
+    !checker.hasRaiWithdrawal &&
     checker.hasEnabledRaiWithdraw &&
     isStateUser(user),
 };
@@ -79,6 +88,15 @@ const arWithdrawPackage: ActionRule = {
     !checker.isTempExtension &&
     !checker.hasStatus(finalDispositionStatuses) &&
     isStateUser(user),
+};
+const arUpdateId: ActionRule = {
+  action: Action.UPDATE_ID,
+  check: (checker, user) =>
+    isCmsSuperUser(user) && !checker.hasStatus(finalDispositionStatuses),
+};
+const arCompleteIntake: ActionRule = {
+  action: Action.COMPLETE_INTAKE,
+  check: (checker, user) => isCmsWriteUser(user) && checker.needsIntake,
 };
 
 // TODO: Add rule for remove-appk-child
@@ -91,4 +109,6 @@ export default [
   arWithdrawRaiResponse,
   arWithdrawPackage,
   arTempExtension,
+  arUpdateId,
+  arCompleteIntake,
 ];
