@@ -46,7 +46,7 @@ export const SlotAdditionalInfo = <
 >({
   label,
   required,
-  withoutHeading = false,
+  withoutHeading,
   ...props
 }: {
   label?: ReactElement;
@@ -64,12 +64,14 @@ export const SlotAdditionalInfo = <
   }) {
     return (
       <FormItem {...props}>
-        {!withoutHeading ?? (
+        {!withoutHeading && (
           <h3 className="font-bold text-2xl font-sans">
             Additional Information {required && <RequiredIndicator />}
           </h3>
         )}
-        <FormLabel className="font-normal">{label}</FormLabel>
+        <FormLabel data-testid="addl-info-label" className="font-normal">
+          {label}
+        </FormLabel>
         <Textarea
           {...field}
           maxLength={4000}

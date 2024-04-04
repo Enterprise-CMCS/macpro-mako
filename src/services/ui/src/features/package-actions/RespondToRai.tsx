@@ -111,17 +111,6 @@ export const RespondToRai = () => {
             ),
           })}
         />
-        <FormField
-          control={formMethods.control}
-          name={"additionalInformation"}
-          render={SlotAdditionalInfo({
-            label: (
-              <p>
-                Add anything else that you would like to share with the State.
-              </p>
-            ),
-          })}
-        />
         <AdditionalFormInformation />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
