@@ -1037,7 +1037,7 @@ Summary:
 <br>{{formattedFileList}}
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
-<p>Thank you!</p>``,
+<p>Thank you!</p>`,
     text: ``,
 },
 {
