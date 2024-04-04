@@ -181,7 +181,9 @@ export const PackageSection = () => {
     </section>
   );
 };
-
+{
+  /* TODO: Consolidate with actions > renderSlots */
+}
 export const AdditionalInformation = ({
   helperText = "Add anything else that you would like to share with the State.",
   required = true,

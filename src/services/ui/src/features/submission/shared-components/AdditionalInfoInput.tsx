@@ -6,7 +6,9 @@ type AdditionalInfoFieldProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
   name: Path<TFieldValues>;
 };
-
+{
+  /* TODO: Consolidate with actions > renderSlots */
+}
 export function AdditionalInfoInput<TFieldValues extends FieldValues>({
   control,
   name,

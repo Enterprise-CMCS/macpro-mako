@@ -16,7 +16,7 @@ import { ReactElement, ReactNode } from "react";
 
 export const SlotAttachments = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   label,
   message,
@@ -40,16 +40,17 @@ export const SlotAttachments = <
     );
   };
 
+{
+  /* TODO: Turn description into character count */
+}
 export const SlotAdditionalInfo = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   label,
-  description,
   required,
   ...props
 }: {
-  description: string;
   label?: ReactElement;
   required?: boolean;
   className?: string;
@@ -65,8 +66,24 @@ export const SlotAdditionalInfo = <
           Additional Information {required && <RequiredIndicator />}
         </h3>
         <FormLabel className="font-normal">{label}</FormLabel>
-        <Textarea {...field} className="h-[200px] resize-none" />
-        <FormDescription>{description}</FormDescription>
+        <Textarea
+          {...field}
+          maxLength={4000}
+          aria-describedby="character-count"
+          aria-live="off"
+          aria-multiline={true}
+          className="h-[200px] resize-none"
+        />
+        <FormDescription>
+          <span
+            tabIndex={0}
+            id="character-count"
+            aria-label="character-count"
+            aria-live="polite"
+          >
+            {`${4000 - (field?.value?.length || 0)} characters remaining`}
+          </span>
+        </FormDescription>
       </FormItem>
     );
   };
