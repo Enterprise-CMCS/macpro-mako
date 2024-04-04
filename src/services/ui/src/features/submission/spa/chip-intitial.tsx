@@ -31,7 +31,6 @@ import {
 } from "@/utils";
 
 import { useQuery as useQueryString } from "@/hooks";
-import { AdditionalInfoInput } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
 
 const formSchema = z.object({

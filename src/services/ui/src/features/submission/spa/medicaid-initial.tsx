@@ -31,7 +31,6 @@ import {
   useOriginPath,
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
-import { AdditionalInfoInput } from "../shared-components";
 import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
 
