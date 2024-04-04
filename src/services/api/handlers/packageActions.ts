@@ -66,6 +66,8 @@ export async function issueRai(body: RaiIssue) {
     await transaction.begin();
 
     const idsToUpdate = await getIdsToUpdate(result.data.id);
+    console.log(idsToUpdate);
+    console.log("ASDFASDFASDF");
     for (const id of idsToUpdate) {
       // Issue RAI
       const query1 = `
@@ -96,6 +98,7 @@ export async function issueRai(body: RaiIssue) {
         id,
         JSON.stringify({
           ...result.data,
+          id,
           actionType: Action.ISSUE_RAI,
         }),
       );
@@ -180,6 +183,7 @@ export async function withdrawRai(body: RaiWithdraw, document: any) {
         id,
         JSON.stringify({
           ...result.data,
+          id,
           actionType: Action.WITHDRAW_RAI,
           notificationMetadata: {
             submissionDate: getNextBusinessDayTimestamp(),
@@ -288,6 +292,7 @@ export async function respondToRai(body: RaiResponse, document: any) {
         id,
         JSON.stringify({
           ...result.data,
+          id,
           responseDate: today,
           actionType: Action.RESPOND_TO_RAI,
           notificationMetadata: {
@@ -354,7 +359,11 @@ export async function withdrawPackage(body: WithdrawPackage) {
       await produceMessage(
         TOPIC_NAME,
         id,
-        JSON.stringify({ ...result.data, actionType: Action.WITHDRAW_PACKAGE }),
+        JSON.stringify({
+          ...result.data,
+          id,
+          actionType: Action.WITHDRAW_PACKAGE,
+        }),
       );
     }
     // Commit transaction
@@ -476,15 +485,22 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
 }
 
 async function getIdsToUpdate(id: string) {
-  const og = await getItem(process.env.osDomain!!, "main", id);
+  console.log(process.env.osDomain);
+  console.log(id);
+  const og = (await getItem(
+    process.env.osDomain!,
+    "main",
+    id,
+  )) as opensearch.main.ItemResult;
   if (!og) {
     throw "Package doesn't exist, and it should.";
   }
-  const idsToUpdate = [og.id];
-  if (og.appkParent) {
-    const children = await getAppkChildren(og.id);
+  console.log(JSON.stringify(og, null, 2));
+  const idsToUpdate = [og._id];
+  if (og._source.appkParent) {
+    const children = await getAppkChildren(og._id);
     children.hits?.hits?.forEach((child) => {
-      idsToUpdate.push(child._source.id);
+      idsToUpdate.push(child._id);
     });
   }
   return idsToUpdate;
