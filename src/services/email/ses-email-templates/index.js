@@ -976,6 +976,71 @@ or your state lead.
 Thank you!`,
 },
 {
+    name: "new-submission-1915c-cms",
+    subject:  "1915(c) {{id}} Submitted",
+    html: `
+<p>The OneMAC Submission Portal received a 1915(c) Appendix K Amendment Submission:</p>
+<p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Name:</b> {{initialSubmitterName}}
+<br><b>Email Address:</b> {{initialSubmitterEmail}}
+<br><b>Waiver Amendment Number:</b> {{id}}
+<br><b>Waiver Authority:</b> 1915(c)
+<br><b>Proposed Effective Date: {{proposedEffectiveDateNice}}
+<br><b>90th Day Deadline: {{nineyDaysDate}}
+</p>
+Summary:
+<br>{{additionalInformation}}
+<p>
+This response confirms the receipt of your Waiver request or your response
+to a Waiver Request for Additional Information (RAI). You can expect a formal
+response to your submittal to be issued within 90 days, before {{ninetyDaysDate}}.
+</p>
+<p>
+This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
+responses to Requests for Additional Information (RAI) on Waivers, and
+extension requests on Waivers only.  Any other correspondence will be disregarded.
+</p>
+<p>If you have any questions, please contact
+<a href='mailto: 
+<p>If you have any questions</p>
+<p>Thank you!</p>`,
+    text: ``,
+},
+{
+    name: "new-submission-1915c-state",
+    subject:  "Your 1915(c) {{id}} has been submitted to CMS",
+    html: `
+<p>This response confirms the submission of your 1915(c) Waiver to CMS for review:</p>
+<ul>
+<li>The submission can be accessed in the OneMAC application, which you 
+can find at <a href='{{applicationEndpoint}}'>this link</a>.</li>
+<li>If you are not already logged in, please click the "Login" link 
+at the top of the page and log in using your Enterprise User 
+Administration (EUA) credentials.</li>
+<li>After you have logged in, you will be taken to the OneMAC application. 
+The submission will be listed on the dashboard page, and you can view its 
+details by clicking on its ID number.</li>
+</ul>
+<p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email Address:</b> {{submitterEmail}}
+<br><b>Amendment Title:</b> {{title}}
+<br><b>Waiver Amendment Number:</b> {{id}}
+<br><b>Waiver Authority:</b> 1915(c)
+<br><b>Proposed Effective Date: {{proposedEffectiveDateNice}}
+</p>
+Summary:
+<br>{{additionalInformation}}
+<p>
+<br>Files:
+<br>{{formattedFileList}}
+<p>If you have any questions, please contact <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a> or your state lead.</p>
+<p>Thank you!</p>`,
+    text: ``,
+},
+{
     name: "withdraw-rai-1915c-cms",
     subject:  "Withdraw Formal RAI Response for Waiver Package [SPA ID] ",
     html: `

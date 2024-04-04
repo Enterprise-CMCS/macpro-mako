@@ -149,6 +149,19 @@ const getBundleFromEvent = (configKey, stage) => {
                     "ToAddresses": ["allState"],
                 }],
             };
+        case "new-submission-1915c":
+            return {
+                "dataList": ["osgEmail", "submitter", "id", "applicationEndpoint", "territory", "submitterName", "submitterEmail", "authority", "title", "proposedEffectiveDateNice", "ninetyDaysDate", "additionalInformation", "formattedFileList", "textFileList"],
+                "emailCommands": [{
+                    "Template": `new-submission-1915c-cms_${stage}`,
+                    "ToAddresses": ["osgEmail"],
+                },
+                {
+                    "Template": `new-submission-1915c-state_${stage}`,
+                    "ToAddresses": ["submitter"],
+                },
+                ]
+            };
         default:
             return { message: `no bundle defined for configKey ${configKey}`};
     }
