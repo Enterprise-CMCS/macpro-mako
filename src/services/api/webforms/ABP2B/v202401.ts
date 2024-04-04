@@ -172,7 +172,7 @@ export const v202401: FormSchema = {
                       {
                         text: "The state/territory assures it will document in the exempt individual's eligibility file that the individual:",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block pb-2 font-bold",
                       },
                       {
                         text: "A. Was informed in accordance with this section prior to enrollment",
@@ -298,7 +298,7 @@ export const v202401: FormSchema = {
       form: [
         {
           description:
-            "Other information about benefit package selection assurances for exempt participants (optional)",
+            "Other information about enrollment assurances for voluntary participants (optional)",
           slots: [
             {
               rhf: "Textarea",
