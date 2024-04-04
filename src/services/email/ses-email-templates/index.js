@@ -976,10 +976,10 @@ or your state lead.
 Thank you!`,
 },
 {
-    name: "new-submission-1915c-cms",
-    subject:  "1915(c) {{id}} Submitted",
+    name: "new-submission-1915c-state",
+    subject:  "Your 1915(c) {{id}} has been submitted to CMS",
     html: `
-<p>The OneMAC Submission Portal received a 1915(c) Appendix K Amendment Submission:</p>
+<p>This response confirms the submission of your 1915(c) Waiver to CMS for review:</p>
 <p>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
@@ -1001,17 +1001,16 @@ This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
 responses to Requests for Additional Information (RAI) on Waivers, and
 extension requests on Waivers only.  Any other correspondence will be disregarded.
 </p>
-<p>If you have any questions, please contact
-<a href='mailto: 
-<p>If you have any questions</p>
+<p>If you have questions, please contact 
+<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
     text: ``,
 },
 {
-    name: "new-submission-1915c-state",
-    subject:  "Your 1915(c) {{id}} has been submitted to CMS",
+    name: "new-submission-1915c-cms",
+    subject:  "1915(c) {{id}} Submitted",
     html: `
-<p>This response confirms the submission of your 1915(c) Waiver to CMS for review:</p>
+<p>The OneMAC Submission Portal received a 1915(c) Appendix K Amendment Submission:</p>
 <ul>
 <li>The submission can be accessed in the OneMAC application, which you 
 can find at <a href='{{applicationEndpoint}}'>this link</a>.</li>
@@ -1036,8 +1035,9 @@ Summary:
 <p>
 <br>Files:
 <br>{{formattedFileList}}
-<p>If you have any questions, please contact <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a> or your state lead.</p>
-<p>Thank you!</p>`,
+<p>If the contents of this email seem suspicious, do not open them, and instead 
+forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+<p>Thank you!</p>``,
     text: ``,
 },
 {
