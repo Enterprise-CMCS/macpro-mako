@@ -351,7 +351,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
             }'),
             Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
             Status_Memo = ${buildStatusMemoQuery(id, "Package Withdrawn")}
-          WHERE ID_Number = '${body.id}'
+          WHERE ID_Number = '${id}'
       `;
       const txnResult = await transaction.request().query(query);
       console.log(txnResult);
@@ -405,16 +405,20 @@ export async function toggleRaiResponseWithdraw(
     });
   }
   try {
-    await produceMessage(
-      TOPIC_NAME,
-      body.id,
-      JSON.stringify({
-        actionType: toggle
-          ? Action.ENABLE_RAI_WITHDRAW
-          : Action.DISABLE_RAI_WITHDRAW,
-        ...result.data,
-      }),
-    );
+    const idsToUpdate = await getIdsToUpdate(result.data.id);
+    for (const id of idsToUpdate) {
+      await produceMessage(
+        TOPIC_NAME,
+        id,
+        JSON.stringify({
+          actionType: toggle
+            ? Action.ENABLE_RAI_WITHDRAW
+            : Action.DISABLE_RAI_WITHDRAW,
+          ...result.data,
+          id,
+        }),
+      );
+    }
 
     return response({
       statusCode: 200,

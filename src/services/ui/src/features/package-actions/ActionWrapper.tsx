@@ -12,6 +12,7 @@ import { withdrawPackageSchema } from "./WithdrawPackage";
 import { respondToRaiSchema } from "./RespondToRai";
 import { useParams } from "@/components/Routing";
 import { tempExtensionSchema } from "./TemporaryExtension";
+import { useGetItem } from "@/api";
 
 const schemas = {
   "issue-rai": issueRaiSchema,
@@ -39,7 +40,7 @@ export const ActionWrapper = () => {
   const packageActionType = location.pathname.split("/").pop() as SchemaKeys;
 
   const { id } = useParams("/action/:authority/:id/:type");
-
+  useGetItem(id);
   const methods = useForm({
     resolver: zodResolver(schemas[packageActionType!]),
   });

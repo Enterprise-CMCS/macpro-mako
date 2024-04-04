@@ -98,14 +98,17 @@ export const AppKSubmissionForm = () => {
             <I.FormField
               control={form.control}
               name="state"
-              render={SlotStateSelect({ label: "State" })}
+              render={SlotStateSelect({
+                label: (
+                  <>
+                    State <I.RequiredIndicator />
+                  </>
+                ),
+              })}
             />
             {state && (
-              <div className="flex flex-col gap-2">
-                <div className="flex gap-4">
-                  <I.FormLabel className="font-bold">
-                    Appendix K ID <I.RequiredIndicator />
-                  </I.FormLabel>
+              <>
+                <p>
                   <Link
                     to="/faq/waiver-c-id"
                     target={C.FAQ_TAB}
@@ -114,13 +117,40 @@ export const AppKSubmissionForm = () => {
                   >
                     What is my Appendix K ID?
                   </Link>
+                  <div>
+                    Format is <strong>1111</strong>.<strong>R22</strong>.
+                    <strong>33</strong> or <strong>11111</strong>.
+                    <strong>R22</strong>.<strong>33</strong> where:
+                  </div>
+                  <ul className="pl-4 list-disc">
+                    <li>
+                      <strong>1111</strong> or <strong>11111</strong> is the
+                      four- or five-digit waiver initial number
+                    </li>
+                    <li>
+                      <strong>R22</strong> is the renewal number (Use{" "}
+                      <strong>R00</strong> for waivers without renewals.)
+                    </li>
+                    <li>
+                      <strong>33</strong> is the Appendix K amendment number
+                      (The last two digits relating to the number of amendments
+                      in the waiver cycle start with “01” and ascend.)
+                    </li>
+                  </ul>
+                </p>
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-4">
+                    <I.FormLabel className="font-bold">
+                      Appendix K ID <I.RequiredIndicator />
+                    </I.FormLabel>
+                  </div>
+                  <I.FormField
+                    control={form.control}
+                    name="parentWaiver"
+                    render={SlotWaiverId({ state })}
+                  />
                 </div>
-                <I.FormField
-                  control={form.control}
-                  name="parentWaiver"
-                  render={SlotWaiverId({ state })}
-                />
-              </div>
+              </>
             )}
 
             {!parentWaiver.state.error && parentWaiver.value && (

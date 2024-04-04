@@ -26,7 +26,11 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
         ) : (
           <ul className="my-3">
             {data.actions.map((type, idx) => {
-              if (authority === Authority["1915b"]) {
+              if (
+                [Authority["1915b"], Authority["1915c"]].includes(
+                  authority as Authority,
+                )
+              ) {
                 return (
                   <Link
                     state={{ from: `${location.pathname}${location.search}` }}

@@ -62,11 +62,10 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
     );
 
     // only want common actions; omit actions not in every appk package
-    let commonActions = allActions.reduce((acc, currentActions) => {
-      if (!acc.length) return currentActions;
+    let commonActions = allActions.reduce((acc, currentActions, index) => {
+      if (index === 0) return currentActions;
       return acc.filter((action) => currentActions.includes(action));
-    }, []); // Initial value of acc is null to handle the first iteration
-
+    }, []);
     // Remove RAI actions unless the RAI requested date is identical across all appk members
     // Scenario: If the parent and the children all have respond to rai as an available action
     //           But one of those children's latest rai has a different requested date (raitable in seetool)

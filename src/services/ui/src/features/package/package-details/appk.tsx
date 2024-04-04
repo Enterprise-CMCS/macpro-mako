@@ -84,15 +84,8 @@ export const AppK = () => {
         open={!!removeChild}
         onAccept={() => onChildRemove(removeChild)}
         onCancel={() => setRemoveChild("")}
-        title="Remove from Appendix-K"
-        body={
-          <>
-            <p>Are you sure you would like to remove: </p>
-            <p className="text-lg font-semibold">
-              <em>{removeChild}</em>
-            </p>
-          </>
-        }
+        title="Are you sure you want to withdraw this package?"
+        body={<p className="text-lg font-semibold">{removeChild}</p>}
       />
     </div>
   );
