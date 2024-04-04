@@ -982,8 +982,8 @@ Thank you!`,
 <p>The OneMAC Submission Portal received a 1915(c) Appendix K Amendment Submission:</p>
 <p>
 <br><b>State or territory:</b> {{territory}}
-<br><b>Name:</b> {{initialSubmitterName}}
-<br><b>Email Address:</b> {{initialSubmitterEmail}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email Address:</b> {{submitterEmail}}
 <br><b>Waiver Amendment Number:</b> {{id}}
 <br><b>Waiver Authority:</b> 1915(c)
 <br><b>Proposed Effective Date: {{proposedEffectiveDateNice}}
