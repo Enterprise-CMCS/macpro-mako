@@ -267,28 +267,20 @@ stepFunctions:
 
 params:
   master:
-    osInstanceType: or1.large.search
-    osVolumeType: gp3
-    osVolumeSize: 20
+    osInstanceType: m5.large.search
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
   val:
-    osInstanceType: or1.large.search
-    osVolumeType: gp3
-    osVolumeSize: 20
+    osInstanceType: m5.large.search
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
   production:
     bootstrapKibanaUsers: "false"
-    osInstanceType: or1.large.search
-    osVolumeType: gp3
-    osVolumeSize: 20
+    osInstanceType: m5.large.search
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
   default:
-    osInstanceType: or1.medium.search
-    osVolumeType: gp3
-    osVolumeSize: 20
+    osInstanceType: t3.small.search
     bootstrapKibanaUsers: "true"
     topicNamespace: --${self:custom.project}--${sls:stage}--
     sinkProvisionedConcurrency: 0
@@ -625,8 +617,8 @@ resources:
             Value: ${sls:stage}
         EBSOptions:
           EBSEnabled: true
-          VolumeType: ${param:osVolumeType}
-          VolumeSize: ${param:osVolumeSize}
+          VolumeType: gp2
+          VolumeSize: 10
         ClusterConfig:
           InstanceType: ${param:osInstanceType}
           InstanceCount:
@@ -649,7 +641,7 @@ resources:
           Enabled: true
         NodeToNodeEncryptionOptions:
           Enabled: true
-        EngineVersion: OpenSearch_2.11
+        EngineVersion: OpenSearch_2.3
         DomainEndpointOptions:
           EnforceHTTPS: true
           TLSSecurityPolicy: Policy-Min-TLS-1-2-2019-07
