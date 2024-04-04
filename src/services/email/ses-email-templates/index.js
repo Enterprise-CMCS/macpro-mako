@@ -2,6 +2,8 @@
  * @returns {Promise<{name: string, subject: string, html: string, text}[]>}
  */
 
+import { withdrawRai1915c } from "./withdraw-rai-1915c";
+
 module.exports = async () => [
     // Medicaid SPA email template group
     {
@@ -241,6 +243,25 @@ SPA@cms.hhs.gov or your state lead.
 
 Thank you!`,
     },
+{
+    name: "withdraw-package-1915b-cms",
+    subject:  "Waiver Package {{id}} Withdraw Request",
+    html: `
+<p>The OneMAC Submission Portal received a request to withdraw the package below.
+The package will no longer be considered for CMS review:</p>
+<p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email:</b> {{submitterEmail}}
+<br><b>Waiver Number:</b> {{id}}
+</p>
+Summary:
+<br>{{additionalInformation}}
+<br>
+<p>If the contents of this email seem suspicious, do not open them, and instead 
+forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+<p>Thank you!</p>`,
+},
 {
     name: "withdraw-package-1915b-state",
     subject:  "1915(b) Waiver {{id}} Withdrawal Confirmation",
@@ -955,5 +976,6 @@ If you have questions, please contact
 or your state lead.
 
 Thank you!`,
-}
+},
+withdrawRai1915c,
 ];
