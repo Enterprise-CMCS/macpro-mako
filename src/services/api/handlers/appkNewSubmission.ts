@@ -66,7 +66,6 @@ export const submit = async (event: APIGatewayEvent) => {
       ...(!!Number(WINDEX) && {
         appkParentId: `${body.state}-${body.parentWaiver}`,
         notificationMetadata,
-    };
       }),
     });
 
