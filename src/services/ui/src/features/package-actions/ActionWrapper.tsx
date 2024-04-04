@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodSchema } from "zod";
 import { BreadCrumbs, FAQFooter, SimplePageContainer } from "@/components";
 import { detailsAndActionsCrumbs } from "@/features";
-import { Action } from "shared-types";
+import { completeIntakeSchema } from "./CompleteIntake";
 import { issueRaiSchema } from "./IssueRai";
 import { withdrawRaiSchema } from "./WithdrawRai";
 import { toggleRaiResponseWithdrawSchema } from "./ToggleRaiResponseWithdraw";
@@ -12,6 +12,8 @@ import { withdrawPackageSchema } from "./WithdrawPackage";
 import { respondToRaiSchema } from "./RespondToRai";
 import { useParams } from "@/components/Routing";
 import { tempExtensionSchema } from "./TemporaryExtension";
+import { updateIdSchema } from "./UpdateId";
+import { Action } from "shared-types";
 
 const schemas = {
   "issue-rai": issueRaiSchema,
@@ -20,6 +22,8 @@ const schemas = {
   "disable-rai-withdraw": toggleRaiResponseWithdrawSchema,
   "withdraw-package": withdrawPackageSchema,
   "temporary-extension": tempExtensionSchema,
+  "update-id": updateIdSchema,
+  "complete-intake": completeIntakeSchema,
   "respond-to-rai": respondToRaiSchema,
 } satisfies Record<string, ZodSchema<any>>;
 type SchemaKeys = keyof typeof schemas;
@@ -30,6 +34,8 @@ const actions: Record<SchemaKeys, Action> = {
   "enable-rai-withdraw": Action.ENABLE_RAI_WITHDRAW,
   "respond-to-rai": Action.RESPOND_TO_RAI,
   "temporary-extension": Action.TEMP_EXTENSION,
+  "update-id": Action.UPDATE_ID,
+  "complete-intake": Action.COMPLETE_INTAKE,
   "withdraw-package": Action.WITHDRAW_PACKAGE,
   "withdraw-rai": Action.WITHDRAW_RAI,
 };

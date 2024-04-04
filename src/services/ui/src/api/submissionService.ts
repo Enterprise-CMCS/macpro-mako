@@ -47,7 +47,7 @@ export const buildAttachmentObject = (recipes?: UploadRecipe[]) => {
           title: r.title,
           bucket: r.bucket,
           uploadDate: Date.now(),
-        } as Attachment)
+        }) as Attachment,
     )
     .flat();
 };
@@ -59,7 +59,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
   user: OneMacUser | undefined,
   endpoint: SubmissionServiceEndpoint,
   authority?: string,
-  attachments?: UploadRecipe[]
+  attachments?: UploadRecipe[],
 ) => {
   const userDetails = {
     submitterEmail: user?.user?.email ?? "N/A",
@@ -79,16 +79,16 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...baseProperties,
         authority: Authority["1915c"],
         proposedEffectiveDate: seaToolFriendlyTimestamp(
-          data.proposedEffectiveDate as Date
+          data.proposedEffectiveDate as Date,
         ),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
     case buildActionUrl(Action.REMOVE_APPK_CHILD):
       return {
         ...data,
+        ...baseProperties,
         ...userDetails,
         authority: Authority["1915c"],
-        origin: "micro",
       };
     case "/submit":
       return {
@@ -96,9 +96,16 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...baseProperties,
         ...userDetails,
         proposedEffectiveDate: seaToolFriendlyTimestamp(
-          data.proposedEffectiveDate as Date
+          data.proposedEffectiveDate as Date,
         ),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
+        state: (data.id as string).split("-")[0],
+      };
+    case buildActionUrl(Action.COMPLETE_INTAKE):
+      return {
+        ...data,
+        ...baseProperties,
+        ...userDetails,
         state: (data.id as string).split("-")[0],
       };
     case buildActionUrl(Action.ISSUE_RAI):
@@ -108,19 +115,19 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
     case buildActionUrl(Action.WITHDRAW_RAI):
     case buildActionUrl(Action.WITHDRAW_PACKAGE):
     case buildActionUrl(Action.TEMP_EXTENSION):
+    case buildActionUrl(Action.UPDATE_ID):
     default:
       return {
         ...baseProperties,
         ...userDetails,
         ...data,
-        ...userDetails,
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
   }
 };
 
 export const buildAttachmentKeyValueArr = (
-  attachments: Record<string, File[]>
+  attachments: Record<string, File[]>,
 ): AttachmentKeyValue[] =>
   Object.entries(attachments)
     .filter(([, val]) => val !== undefined && (val as File[]).length)
@@ -135,7 +142,7 @@ export const buildAttachmentKeyValueArr = (
 export const urlsToRecipes = (
   urls: PreSignedURL[],
   attachments: AttachmentKeyValue[],
-  authority: Authority
+  authority: Authority,
 ): UploadRecipe[] =>
   urls.map((obj, idx) => ({
     ...obj, // Spreading the presigned url
@@ -158,7 +165,7 @@ export const submit = async <T extends Record<string, unknown>>({
   if (data?.attachments) {
     // Drop nulls and non arrays
     const attachments = buildAttachmentKeyValueArr(
-      data.attachments as Record<string, File[]>
+      data.attachments as Record<string, File[]>,
     );
     // Generate a presigned url for each attachment
     const preSignedURLs: PreSignedURL[] = await Promise.all(
@@ -167,14 +174,15 @@ export const submit = async <T extends Record<string, unknown>>({
           body: {
             fileName: attachment.file.name,
           },
-        })
-      )
+        }),
+      ),
     );
     // For each attachment, add name, title, and a presigned url... and push to uploadRecipes
     const uploadRecipes: UploadRecipe[] = urlsToRecipes(
       preSignedURLs,
       attachments,
-      authority!
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      authority!,
     );
     // Upload attachments
     await Promise.all(
@@ -183,7 +191,7 @@ export const submit = async <T extends Record<string, unknown>>({
           body: data,
           method: "PUT",
         });
-      })
+      }),
     );
     // Submit form data
     return await API.post("os", endpoint, {
@@ -192,7 +200,7 @@ export const submit = async <T extends Record<string, unknown>>({
         user,
         endpoint,
         authority,
-        uploadRecipes
+        uploadRecipes,
       ),
     });
   } else {
@@ -208,10 +216,10 @@ export const submit = async <T extends Record<string, unknown>>({
  * use {@link submit}. */
 export const useSubmissionService = <T extends Record<string, unknown>>(
   config: SubmissionServiceParameters<T>,
-  options?: UseMutationOptions<SubmissionServiceResponse, ReactQueryApiError>
+  options?: UseMutationOptions<SubmissionServiceResponse, ReactQueryApiError>,
 ) =>
   useMutation<SubmissionServiceResponse, ReactQueryApiError>(
     ["submit"],
     () => submit(config),
-    options
+    options,
   );
