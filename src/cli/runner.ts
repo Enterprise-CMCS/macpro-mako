@@ -47,6 +47,13 @@ export default class LabeledProcessRunner {
     return `\x1b[38;5;${color}m ${prefix.padStart(maxLength)}|\x1b[0m`;
   }
 
+  private sanitizeInput(input) {
+    // A basic pattern that allows letters, numbers, dashes, underscores, and periods
+    // Adjust the pattern to fit the expected input format
+    const sanitizedInput = input.replace(/[^a-zA-Z0-9-_\.]/g, "");
+    return sanitizedInput;
+  }
+
   // run_command_and_output runs the given shell command and interleaves its output with all
   // other commands run via this method.
   //
@@ -64,7 +71,7 @@ export default class LabeledProcessRunner {
       stdout?: boolean;
       stderr?: boolean;
       close?: boolean;
-    } = {}
+    } = {},
   ) {
     silenced = {
       ...{ open: false, stdout: false, stderr: false, close: false },
@@ -72,7 +79,7 @@ export default class LabeledProcessRunner {
     };
     const proc_opts = cwd ? { cwd } : {};
 
-    const command = cmd[0];
+    const command = this.sanitizeInput(cmd[0]);
     const args = cmd.slice(1);
 
     const proc = spawn(command, args, proc_opts);
@@ -89,10 +96,10 @@ export default class LabeledProcessRunner {
     };
 
     proc.stdout.on("data", (data) =>
-      handleOutput(data, prefix, silenced.stdout!)
+      handleOutput(data, prefix, silenced.stdout!),
     );
     proc.stderr.on("data", (data) =>
-      handleOutput(data, prefix, silenced.stderr!)
+      handleOutput(data, prefix, silenced.stderr!),
     );
 
     return new Promise<void>((resolve, reject) => {
