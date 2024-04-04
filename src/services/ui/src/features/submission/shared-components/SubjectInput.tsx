@@ -4,13 +4,13 @@ import { Control, FieldValues, Path } from "react-hook-form";
 type SubjectInputProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
   name: Path<TFieldValues>;
-  helperText: string
+  helperText: string;
 };
 
 export function SubjectInput<TFieldValues extends FieldValues>({
   control,
   name,
-  helperText
+  helperText,
 }: SubjectInputProps<TFieldValues>) {
   return (
     <Inputs.FormField
@@ -23,7 +23,7 @@ export function SubjectInput<TFieldValues extends FieldValues>({
           </Inputs.FormLabel>
           <p className="text-gray-500">{helperText}</p>
           <Inputs.FormControl>
-            <Inputs.Input {...field} />
+            <Inputs.Input {...field} value={field.value || ""} />
           </Inputs.FormControl>
           <Inputs.FormMessage />
         </Inputs.FormItem>
