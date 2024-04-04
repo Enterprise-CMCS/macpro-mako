@@ -1,6 +1,7 @@
 import {
   Alert,
   LoadingSpinner,
+  Route,
   useAlertContext,
   useModalContext,
 } from "@/components";
@@ -308,31 +309,33 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    if (data && data.submitted) {
-      const defaultNavigateUrl = "/dashboard";
-      const fromUrl = location.state?.from || defaultNavigateUrl;
-      const shouldNavigateToFromUrl =
-        fromUrl && !fromUrl.endsWith("/update-id");
-      const navigateUrl = shouldNavigateToFromUrl
-        ? fromUrl
-        : defaultNavigateUrl;
-
-      // Update the alert content
-      alert.setContent({ header, body });
-
-      // Navigate to the determined URL
-      navigate(navigateUrl);
-
-      // Show the alert banner
+  return useEffect(() => {
+    if (data?.submitted) {
+      alert.setContent({
+        header,
+        body,
+      });
+      alert.setBannerStyle("success");
       alert.setBannerShow(true);
-
-      // Determine the URL for banner display without query parameters
-      const position = fromUrl.indexOf("?"); // Find the position of the "?"
-      const bannerDisplayUrl =
-        position > -1 ? fromUrl.slice(0, position) : defaultNavigateUrl;
-
-      alert.setBannerDisplayOn(bannerDisplayUrl);
+      if (location.pathname?.endsWith("/update-id")) {
+        alert.setBannerDisplayOn("/dashboard");
+        navigate("/dashboard");
+      } else {
+        alert.setBannerDisplayOn(
+          location.state?.from?.split("?")[0] ?? "/dashboard",
+        );
+        navigate(location.state?.from ?? "/dashboard");
+      }
+    } else if (!data?.submitted && data?.error) {
+      alert.setContent({
+        header: "An unexpected error has occurred:",
+        body:
+          data.error instanceof Error ? data.error.message : String(data.error),
+      });
+      alert.setBannerStyle("destructive");
+      alert.setBannerDisplayOn(window.location.pathname as Route);
+      alert.setBannerShow(true);
+      window.scrollTo(0, 0);
     }
   }, [data, alert, navigate, location.state, location.pathname]);
 };
@@ -350,5 +353,5 @@ const filterUndefinedValues = (obj: Record<any, any>) => {
 // Types
 export type ActionFunction = (
   args: ActionFunctionArgs,
-) => Promise<{ submitted: boolean }>;
+) => Promise<{ submitted: boolean; error?: Error | unknown }>;
 export type ActionFunctionReturnType = Awaited<ReturnType<ActionFunction>>;

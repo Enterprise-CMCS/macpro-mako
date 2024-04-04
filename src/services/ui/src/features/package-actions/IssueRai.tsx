@@ -43,7 +43,7 @@ export const issueRaiDefaultAction: SC.ActionFunction = async ({
     };
   } catch (err) {
     console.log(err);
-    return { submitted: false };
+    return { submitted: false, error: err };
   }
 };
 
@@ -53,7 +53,7 @@ export const IssueRai = () => {
 
   SC.useDisplaySubmissionAlert(
     "RAI issued",
-    `The RAI for ${id} has been submitted. An email confirmation will be sent to you and the state.`
+    `The RAI for ${id} has been submitted. An email confirmation will be sent to you and the state.`,
   );
 
   return (

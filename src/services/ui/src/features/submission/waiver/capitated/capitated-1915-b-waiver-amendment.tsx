@@ -8,8 +8,10 @@ import {
   SectionCard,
   formCrumbsFromPath,
   FAQ_TAB,
+  FAQFooter,
   useAlertContext,
   useNavigate,
+  Route,
 } from "@/components";
 import * as Content from "@/components/Form/content";
 import * as Inputs from "@/components/Inputs";
@@ -93,6 +95,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
         header: "Package submitted",
         body: "Your submission has been received.",
       });
+      alert.setBannerStyle("success");
       alert.setBannerShow(true);
       alert.setBannerDisplayOn(
         // This uses the originRoute map because this value doesn't work
@@ -104,6 +107,14 @@ export const Capitated1915BWaiverAmendmentPage = () => {
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
       console.error(e);
+      alert.setContent({
+        header: "An unexpected error has occurred:",
+        body: e instanceof Error ? e.message : String(e),
+      });
+      alert.setBannerStyle("destructive");
+      alert.setBannerDisplayOn(window.location.pathname as Route);
+      alert.setBannerShow(true);
+      window.scrollTo(0, 0);
     }
   };
 
@@ -246,6 +257,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
           <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };

@@ -54,6 +54,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
   } catch (err) {
     return {
       submitted: false,
+      error: err,
     };
   }
 };
@@ -64,7 +65,7 @@ export const WithdrawRai = () => {
   const { id, authority } = useParams() as { id: string; authority: Authority };
   SC.useDisplaySubmissionAlert(
     "RAI response withdrawn",
-    `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`
+    `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`,
   );
 
   return (

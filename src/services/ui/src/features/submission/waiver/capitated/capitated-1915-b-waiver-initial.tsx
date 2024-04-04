@@ -9,8 +9,10 @@ import {
   BreadCrumbs,
   SimplePageContainer,
   SectionCard,
+  FAQFooter,
   formCrumbsFromPath,
   useNavigate,
+  Route,
 } from "@/components";
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
@@ -90,6 +92,7 @@ export const Capitated1915BWaiverInitialPage = () => {
         header: "Package submitted",
         body: "Your submission has been received.",
       });
+      alert.setBannerStyle("success");
       alert.setBannerShow(true);
       alert.setBannerDisplayOn(
         // This uses the originRoute map because this value doesn't work
@@ -101,6 +104,14 @@ export const Capitated1915BWaiverInitialPage = () => {
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
       console.error(e);
+      alert.setContent({
+        header: "An unexpected error has occurred:",
+        body: e instanceof Error ? e.message : String(e),
+      });
+      alert.setBannerStyle("destructive");
+      alert.setBannerDisplayOn(window.location.pathname as Route);
+      alert.setBannerShow(true);
+      window.scrollTo(0, 0);
     }
   };
 
@@ -214,6 +225,7 @@ export const Capitated1915BWaiverInitialPage = () => {
           <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };
