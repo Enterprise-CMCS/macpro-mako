@@ -40,9 +40,6 @@ export const SlotAttachments = <
     );
   };
 
-{
-  /* TODO: Turn description into character count */
-}
 export const SlotAdditionalInfo = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,

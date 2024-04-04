@@ -1,5 +1,5 @@
 import { submit, getUser } from "@/api";
-import { Alert, useModalContext } from "@/components";
+import { Alert, FormField, useModalContext } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/utils";
 import { unflatten } from "flat";
@@ -7,6 +7,7 @@ import { Info } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { Authority } from "shared-types";
 import { z } from "zod";
+import { SlotAdditionalInfo } from "@/features";
 
 const title: Record<Authority, string> = {
   "1915(b)": "Withdraw Waiver",
@@ -80,7 +81,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
 export const WithdrawPackage = () => {
   const modal = useModalContext();
-  const { handleSubmit } = SC.useSubmitForm();
+  const { handleSubmit, formMethods } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
 
   SC.useDisplaySubmissionAlert(
@@ -110,7 +111,18 @@ export const WithdrawPackage = () => {
             },
           ]}
         />
-        <SC.AdditionalInformation helperText="Explain your need for withdrawal or upload supporting documentation." />
+        <FormField
+          control={formMethods.control}
+          name={"additionalInformation"}
+          render={SlotAdditionalInfo({
+            label: (
+              <p>
+                Explain your need for withdrawal or upload supporting
+                documentation.
+              </p>
+            ),
+          })}
+        />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
         <AdditionalFormInformation />
