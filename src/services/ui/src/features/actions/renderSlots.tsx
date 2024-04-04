@@ -49,11 +49,16 @@ export const SlotAdditionalInfo = <
 >({
   label,
   required,
+  withoutHeading = false,
   ...props
 }: {
   label?: ReactElement;
   required?: boolean;
   className?: string;
+  /* we're in transition between two visual styles for forms (one uses
+   * SectionCard to label sections with a heading, some use headers like
+   * these). this is temporary to satisfy that transition. */
+  withoutHeading?: boolean;
 }): ControllerProps<TFieldValues, TName>["render"] =>
   function Render({
     field,
@@ -62,9 +67,11 @@ export const SlotAdditionalInfo = <
   }) {
     return (
       <FormItem {...props}>
-        <h3 className="font-bold text-2xl font-sans">
-          Additional Information {required && <RequiredIndicator />}
-        </h3>
+        {!withoutHeading ?? (
+          <h3 className="font-bold text-2xl font-sans">
+            Additional Information {required && <RequiredIndicator />}
+          </h3>
+        )}
         <FormLabel className="font-normal">{label}</FormLabel>
         <Textarea
           {...field}
