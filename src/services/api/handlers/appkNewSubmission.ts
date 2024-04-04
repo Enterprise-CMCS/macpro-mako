@@ -65,8 +65,8 @@ export const submit = async (event: APIGatewayEvent) => {
       ...body,
       ...(!!Number(WINDEX) && {
         appkParentId: `${body.state}-${body.parentWaiver}`,
-        notificationMetadata,
       }),
+      notificationMetadata,
     });
 
     if (!validateZod.success) {
