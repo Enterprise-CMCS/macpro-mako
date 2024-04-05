@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
-import { useNavigate } from "@/components/Routing";
+import { Route, useNavigate } from "@/components/Routing";
 import {
   Alert,
   BreadCrumbs,
@@ -31,24 +31,12 @@ import {
 
 import { useQuery as useQueryString } from "@/hooks";
 import {
-  DescriptionInput,
-  SubjectInput,
   AdditionalInfoInput,
 } from "../shared-components";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
-  subject: z
-    .string()
-    .trim()
-    .min(1, { message: "This field is required" })
-    .max(120, { message: "Subject should be under 120 characters" }),
-  description: z
-    .string()
-    .trim()
-    .min(1, { message: "This field is required" })
-    .max(4000, { message: "Description should be under 4000 characters" }),
   attachments: z.object({
     currentStatePlan: zAttachmentRequired({ min: 1 }),
     amendedLanguage: zAttachmentRequired({ min: 1 }),
@@ -115,6 +103,7 @@ export const ChipSpaFormPage = () => {
         header: "Package submitted",
         body: "Your submission has been received.",
       });
+      alert.setBannerStyle("success");
       alert.setBannerShow(true);
       alert.setBannerDisplayOn(
         // This uses the originRoute map because this value doesn't work
@@ -126,6 +115,14 @@ export const ChipSpaFormPage = () => {
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
       console.error(e);
+      alert.setContent({
+        header: "An unexpected error has occurred:",
+        body: e instanceof Error ? e.message : String(e),
+      });
+      alert.setBannerStyle("destructive");
+      alert.setBannerDisplayOn(window.location.pathname as Route);
+      alert.setBannerShow(true);
+      window.scrollTo(0, 0);
     }
   });
 
@@ -191,16 +188,6 @@ export const ChipSpaFormPage = () => {
                   <Inputs.FormMessage />
                 </Inputs.FormItem>
               )}
-            />
-            <SubjectInput
-              control={form.control}
-              name="subject"
-              helperText="The title or purpose of the SPA"
-            />
-            <DescriptionInput
-              control={form.control}
-              name="description"
-              helperText="A summary of the SPA. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
             />
           </SectionCard>
           <SectionCard title="Attachments">
@@ -275,6 +262,7 @@ export const ChipSpaFormPage = () => {
           </div>
         </form>
       </Inputs.Form>
+      <Content.FAQFooter />
     </SimplePageContainer>
   );
 };
