@@ -28,14 +28,15 @@ export const v202401: FormSchema = {
                     styledLabel: [
                       {
                         text: "The state/territory assures it will appropriately identify any individuals in the eligibility groups who:",
+                        classname: "block pb-2",
                       },
                       {
                         text: "A. Are exempt from mandatory enrollment in an ABP",
-                        type: "br",
+                        classname: "block pb-2",
                       },
                       {
                         text: "B. Meet the exemption criteria and are given a choice of ABP coverage defined using Section 1937 requirements or ABP coverage defined as the state/territory’s approved Medicaid state plan not subject to Section 1937 requirements",
-                        type: "br",
+                        classname: "block pb-2",
                       },
                     ],
                   },
