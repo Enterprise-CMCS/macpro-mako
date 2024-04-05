@@ -7,14 +7,18 @@ export const v202401: FormSchema = {
       title: "Assurances",
       form: [
         {
-          description:
-            "These assurances must be made by the state/territory if enrollment is mandatory for any of the target populations or subpopulations.",
           slots: [
             {
               name: "abp2c_assurances_mandatory-identify-exempt_checkgroup",
               rhf: "Checkbox",
               label:
+                "These assurances must be made by the state/territory if enrollment is mandatory for any of the target populations or subpopulations.",
+
+              descriptionStyling: "font-bold text-black text-base",
+              descriptionAbove: true,
+              description:
                 "When mandatorily enrolling eligibility groups in an Alternative Benefit Plan (ABP) (benchmark or benchmark-equivalent plan) that could have exempt individuals, prior to enrollment:",
+              rules: { required: "* Required" },
               props: {
                 options: [
                   {
@@ -27,9 +31,11 @@ export const v202401: FormSchema = {
                       },
                       {
                         text: "A. Are exempt from mandatory enrollment in an ABP",
+                        type: "br",
                       },
                       {
                         text: "B. Meet the exemption criteria and are given a choice of ABP coverage defined using Section 1937 requirements or ABP coverage defined as the state/territory’s approved Medicaid state plan not subject to Section 1937 requirements",
+                        type: "br",
                       },
                     ],
                   },
@@ -40,6 +46,8 @@ export const v202401: FormSchema = {
               name: "abp2c_assurances_how-identify_checkgroup",
               rhf: "Checkbox",
               label: "How will the state/territory identify these individuals?",
+              labelStyling: "font-bold text-black",
+              rules: { required: "* Required" },
               props: {
                 options: [
                   {
@@ -51,6 +59,8 @@ export const v202401: FormSchema = {
                         name: "abp2c_assurances_how-id-review-eligible-crit-desc_textarea",
                         rhf: "Textarea",
                         label: "Describe",
+                        labelStyling: "font-bold text-black",
+                        rules: { required: "* Required" },
                       },
                     ],
                   },
@@ -62,6 +72,8 @@ export const v202401: FormSchema = {
                         name: "abp2c_assurances_how-id-self-id-desc_textarea",
                         rhf: "Textarea",
                         label: "Describe",
+                        labelStyling: "font-bold text-black",
+                        rules: { required: "* Required" },
                       },
                     ],
                   },
@@ -73,6 +85,8 @@ export const v202401: FormSchema = {
                         name: "abp2c_assurances_how-id-other-desc_textarea",
                         rhf: "Textarea",
                         label: "Describe",
+                        labelStyling: "font-bold text-black",
+                        rules: { required: "* Required" },
                       },
                     ],
                   },
@@ -91,6 +105,7 @@ export const v202401: FormSchema = {
             {
               name: "abp2c_exemptions_mandatory-inform-current-exempt_checkgroup",
               rhf: "Checkbox",
+              rules: { required: "* Required" },
               props: {
                 options: [
                   {
@@ -105,6 +120,7 @@ export const v202401: FormSchema = {
             {
               name: "abp2c_exemptions_madatory-inform-future-exempt_checkgroup",
               rhf: "Checkbox",
+              rules: { required: "* Required" },
               props: {
                 options: [
                   {
@@ -121,6 +137,8 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               label:
                 "How will the state/territory identify if an individual becomes exempt?",
+              labelStyling: "font-bold text-black",
+              rules: { required: "* Required" },
               props: {
                 options: [
                   {
@@ -151,6 +169,8 @@ export const v202401: FormSchema = {
                         name: "abp2c_exemptions_how-id-exempt-other-desc_textarea",
                         rhf: "Textarea",
                         label: "Describe",
+                        labelStyling: "font-bold text-black",
+                        rules: { required: "* Required" },
                       },
                     ],
                   },
@@ -160,6 +180,8 @@ export const v202401: FormSchema = {
             {
               name: "abp2c_exemptions_freq-determine-exemptions_radiogroup",
               rhf: "Radio",
+              rules: { required: "* Required" },
+              labelStyling: "font-bold text-black",
               label:
                 "How frequently will the state/territory review the ABP population to determine if individuals are exempt from mandatory enrollment or meet the exemption criteria?",
               props: {
@@ -188,6 +210,8 @@ export const v202401: FormSchema = {
                         name: "abp2c_exemptions_freq-determine-ex-other-desc_textarea",
                         rhf: "Textarea",
                         label: "Describe",
+                        labelStyling: "font-bold text-black",
+                        rules: { required: "* Required" },
                       },
                     ],
                   },
@@ -197,6 +221,7 @@ export const v202401: FormSchema = {
             {
               name: "abp2c_exemptions_assure-disenroll-process_checkgroup",
               rhf: "Checkbox",
+              rules: { required: "* Required" },
               props: {
                 options: [
                   {
@@ -211,7 +236,9 @@ export const v202401: FormSchema = {
             {
               name: "abp2c_exemptions_desc-disenroll-process_textarea",
               rhf: "Textarea",
+              rules: { required: "* Required" },
               label: "Describe the process for processing requests.",
+              labelStyling: "font-bold text-black",
             },
           ],
         },
@@ -227,6 +254,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label:
                 "Other information about enrollment assurances for mandatory participants (optional)",
+              labelStyling: "font-bold text-black",
             },
           ],
         },
