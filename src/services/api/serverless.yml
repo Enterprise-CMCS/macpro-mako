@@ -128,7 +128,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
@@ -147,7 +147,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:getAttachmentUrlProvisionedConcurrency}
@@ -166,7 +166,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:getAttachmentUrlProvisionedConcurrency}
@@ -195,7 +195,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
 
@@ -213,7 +213,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:getTypesProvisionedConcurrency}
@@ -231,7 +231,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:getSubTypesProvisionedConcurrency}
@@ -249,7 +249,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:getCpocsProvisionedConcurrency}
@@ -267,7 +267,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:itemProvisionedConcurrency}
@@ -291,7 +291,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
@@ -315,7 +315,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
@@ -332,7 +332,7 @@ functions:
           cors: true
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
@@ -349,7 +349,7 @@ functions:
           cors: true
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
@@ -373,7 +373,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:appkNewSubmissionConcurrency}
@@ -477,18 +477,6 @@ resources:
         ComparisonOperator: "GreaterThanOrEqualToThreshold"
         AlarmActions:
           - ${param:ECSFailureTopicArn}
-    SecurityGroup:
-      Type: AWS::EC2::SecurityGroup
-      DeletionPolicy: Retain
-      Properties:
-        GroupDescription: Security group for API Search.
-        VpcId: ${self:custom.vpc.id}
-    SecurityGroupEgress:
-      Type: AWS::EC2::SecurityGroupEgress
-      Properties:
-        GroupId: !Ref SecurityGroup
-        IpProtocol: -1
-        CidrIp: 0.0.0.0/0
   Outputs:
     ApiGatewayRestApiName:
       Value: !Ref ApiGatewayRestApi
