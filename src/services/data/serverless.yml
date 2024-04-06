@@ -261,27 +261,19 @@ stepFunctions:
 params:
   master:
     osInstanceType: or1.large.search
-    osVolumeType: gp3
-    osVolumeSize: 20
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
   val:
     osInstanceType: or1.large.search
-    osVolumeType: gp3
-    osVolumeSize: 20
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
   production:
     bootstrapKibanaUsers: "false"
     osInstanceType: or1.large.search
-    osVolumeType: gp3
-    osVolumeSize: 20
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
   default:
     osInstanceType: or1.medium.search
-    osVolumeType: gp3
-    osVolumeSize: 20
     bootstrapKibanaUsers: "true"
     topicNamespace: --${self:custom.project}--${sls:stage}--
     sinkProvisionedConcurrency: 0
@@ -610,8 +602,8 @@ resources:
             Value: ${sls:stage}
         EBSOptions:
           EBSEnabled: true
-          VolumeType: ${param:osVolumeType}
-          VolumeSize: ${param:osVolumeSize}
+          VolumeType: gp3
+          VolumeSize: 20
         ClusterConfig:
           InstanceType: ${param:osInstanceType}
           InstanceCount:
