@@ -1,0 +1,14 @@
+{
+  "name": "networking",
+  "description": "",
+  "private": true,
+  "version": "0.0.0",
+  "main": "index.js",
+  "author": "",
+  "license": "CC0-1.0",
+  "devDependencies": {},
+  "dependencies": {},
+  "scripts": {
+    "lint": "eslint '**/*.{ts,js}'"
+  }
+}
