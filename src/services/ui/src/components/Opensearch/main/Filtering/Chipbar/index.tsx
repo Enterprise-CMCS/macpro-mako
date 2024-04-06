@@ -3,6 +3,7 @@ import { type FC, useCallback } from "react";
 import { Chip, useOsUrl, checkMultiFilter } from "@/components";
 import { opensearch } from "shared-types";
 import { useFilterDrawerContext } from "../FilterProvider";
+import { offsetFromUtc } from "shared-utils";
 import { useLabelMapping } from "@/hooks";
 
 export interface RenderProp {
@@ -43,10 +44,10 @@ export const ChipDate: FC<RenderProp> = ({
         clearFilter(filter);
       }}
     >
-      {`${filter?.label}: ${new Date(
-        value.gte || ""
-      ).toLocaleDateString()} - ${new Date(
-        value.lte || ""
+      {`${filter?.label}: ${offsetFromUtc(
+        new Date(value.gte || ""),
+      ).toLocaleDateString()} - ${offsetFromUtc(
+        new Date(value.lte || ""),
       ).toLocaleDateString()}`}
     </Chip>
   );
@@ -89,7 +90,7 @@ export const FilterChips: FC = () => {
   const twoOrMoreFiltersApplied = checkMultiFilter(url.state.filters, 2);
   const clearFilter = (
     filter: opensearch.main.Filterable,
-    valIndex?: number
+    valIndex?: number,
   ) => {
     url.onSet((s) => {
       let filters = s.filters;
