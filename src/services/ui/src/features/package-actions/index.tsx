@@ -21,6 +21,11 @@ import {
   onValidSubmission as temporaryExtensionSubmission,
 } from "./TemporaryExtension";
 import { ActionWrapper } from "./ActionWrapper";
+import { UpdateId, onValidSubmission as updateIdSubmission } from "./UpdateId";
+import {
+  CompleteIntake,
+  onValidSubmission as completeIntakeSubmission,
+} from "./CompleteIntake";
 
 export const packageActionRoutes: RouteObject = {
   path: "/action/:authority/:id",
@@ -60,6 +65,16 @@ export const packageActionRoutes: RouteObject = {
       path: "temporary-extension",
       element: <TemporaryExtension />,
       action: temporaryExtensionSubmission,
+    },
+    {
+      path: "update-id",
+      element: <UpdateId />,
+      action: updateIdSubmission,
+    },
+    {
+      path: "complete-intake",
+      element: <CompleteIntake />,
+      action: completeIntakeSubmission,
     },
     {
       path: "*",

@@ -1,6 +1,12 @@
 services:
+  networking:
+    path: src/services/networking
   alerts:
     path: src/services/alerts
+  uploads:
+    path: src/services/uploads
+  ui-infra:
+    path: src/services/ui-infra
   dashboard:
     path: src/services/dashboard
     params:
@@ -9,10 +15,7 @@ services:
     path: src/services/data
     params:
       ECSFailureTopicArn: ${alerts.ECSFailureTopicArn}
-  uploads:
-    path: src/services/uploads
-  ui-infra:
-    path: src/services/ui-infra
+      LambdaSecurityGroupId: ${networking.LambdaSecurityGroupId}
   api:
     path: src/services/api
     params:
@@ -23,11 +26,13 @@ services:
       attachmentsBucketName: ${uploads.AttachmentsBucketName}
       attachmentsBucketRegion: ${uploads.AttachmentsBucketRegion}
       attachmentsBucketArn: ${uploads.AttachmentsBucketArn}
+      LambdaSecurityGroupId: ${networking.LambdaSecurityGroupId}
   auth:
     path: src/services/auth
     params:
       ApplicationEndpointUrl: ${ui-infra.ApplicationEndpointUrl}
       ApiName: ${api.ApiGatewayRestApiName}
+      LambdaSecurityGroupId: ${networking.LambdaSecurityGroupId}
   ui:
     path: src/services/ui
     params:
@@ -49,3 +54,4 @@ services:
       osDomainArn: ${data.OpenSearchDomainArn}
       osDomain: ${data.OpenSearchDomainEndpoint}
       CognitoUserPoolId: ${auth.UserPoolId}
+      LambdaSecurityGroupId: ${networking.LambdaSecurityGroupId}

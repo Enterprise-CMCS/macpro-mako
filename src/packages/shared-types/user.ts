@@ -3,6 +3,7 @@ export enum UserRoles {
   CMS_REVIEWER = "onemac-micro-reviewer",
   HELPDESK = "onemac-micro-helpdesk",
   STATE_SUBMITTER = "onemac-micro-statesubmitter",
+  CMS_SUPER_USER = "onemac-micro-super",
 }
 
 export type UserRolesString = `${UserRoles}${"," | ""}` | "";
@@ -22,9 +23,13 @@ export const CMS_ROLES = [
   UserRoles.CMS_READ_ONLY,
   UserRoles.CMS_REVIEWER,
   UserRoles.HELPDESK,
+  UserRoles.CMS_SUPER_USER,
 ];
 
-export const CMS_WRITE_ROLES = [UserRoles.CMS_REVIEWER];
+export const CMS_WRITE_ROLES = [
+  UserRoles.CMS_REVIEWER,
+  UserRoles.CMS_SUPER_USER,
+];
 
 export const CMS_READ_ONLY_ROLES = [
   UserRoles.CMS_READ_ONLY,
@@ -38,4 +43,5 @@ export const RoleDescriptionStrings: { [key: string]: string } = {
   [UserRoles.CMS_REVIEWER]: "Reviewer",
   [UserRoles.HELPDESK]: "Helpdesk",
   [UserRoles.STATE_SUBMITTER]: "State Submitter",
+  [UserRoles.CMS_SUPER_USER]: "Super User",
 };

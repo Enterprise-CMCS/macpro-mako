@@ -145,6 +145,35 @@
     ]
   },
   {
+    "username": "super@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "super@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Superduper"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Paratrooper"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-micro-reviewer,onemac-micro-super"
+      }
+    ]
+  },
+  {
     "username": "automated-reviewer@example.com",
     "attributes": [
       {
