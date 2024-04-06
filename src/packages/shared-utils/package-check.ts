@@ -31,6 +31,7 @@ export const PackageCheck = ({
   actionType,
   appkParentId,
   appkParent,
+  initialIntakeNeeded,
 }: opensearch.main.Document) => {
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
@@ -64,6 +65,10 @@ export const PackageCheck = ({
     hasStatus: (authorizedStatuses: string | string[]) =>
       checkStatus(seatoolStatus, authorizedStatuses),
   };
+  const subStatusChecks = {
+    /** Is in any of our pending statuses, sans Pending-RAI **/
+    needsIntake: initialIntakeNeeded,
+  };
   const raiChecks = {
     /** There is an RAI and it does not have a response **/
     hasRequestedRai: !!raiRequestedDate && !raiReceivedDate,
@@ -88,6 +93,7 @@ export const PackageCheck = ({
   return {
     ...planChecks,
     ...statusChecks,
+    ...subStatusChecks,
     ...raiChecks,
     ...actionTypeChecks,
   };

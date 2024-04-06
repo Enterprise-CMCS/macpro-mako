@@ -1,7 +1,7 @@
 import { useGetItem, useGetPackageActions } from "@/api";
 import { LoadingSpinner, Link } from "@/components";
 import { mapActionLabel } from "@/utils";
-import { Authority } from "shared-types";
+import { Action, Authority } from "shared-types";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
 import { useLocation } from "react-router-dom";
@@ -29,7 +29,12 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
               if (
                 [Authority["1915b"], Authority["1915c"]].includes(
                   authority as Authority,
-                )
+                ) ||
+                [
+                  Action.TEMP_EXTENSION,
+                  Action.UPDATE_ID,
+                  Action.COMPLETE_INTAKE,
+                ].includes(type)
               ) {
                 return (
                   <Link
@@ -37,7 +42,7 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
                     path="/action/:authority/:id/:type"
                     key={`${idx}-${type}`}
                     params={{ id, type, authority }}
-                    className="text-sky-700 font-semibold"
+                    className="text-sky-700 font-semibold text-lg"
                   >
                     <li>{mapActionLabel(type)}</li>
                   </Link>
