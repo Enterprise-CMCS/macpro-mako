@@ -71,9 +71,6 @@ params:
   master:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
-    getTypesProvisionedConcurrency: 2
-    getCpocsProvisionedConcurrency: 2
-    getSubTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
@@ -82,9 +79,6 @@ params:
   val:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
-    getTypesProvisionedConcurrency: 2
-    getSubTypesProvisionedConcurrency: 2
-    getCpocsProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
@@ -93,9 +87,6 @@ params:
   production:
     formsProvisionedConcurrency: 5
     getAllFormsProvisionedConcurrency: 1
-    getTypesProvisionedConcurrency: 2
-    getSubTypesProvisionedConcurrency: 2
-    getCpocsProvisionedConcurrency: 2
     searchProvisionedConcurrency: 10
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
@@ -104,9 +95,6 @@ params:
   default:
     formsProvisionedConcurrency: 0
     getAllFormsProvisionedConcurrency: 0
-    getTypesProvisionedConcurrency: 0
-    getSubTypesProvisionedConcurrency: 0
-    getCpocsProvisionedConcurrency: 0
     searchProvisionedConcurrency: 0
     itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
@@ -216,7 +204,6 @@ functions:
         - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:getTypesProvisionedConcurrency}
   getSubTypes:
     handler: handlers/getSubTypes.handler
     maximumRetryAttempts: 0
@@ -234,7 +221,6 @@ functions:
         - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:getSubTypesProvisionedConcurrency}
   getCpocs:
     handler: handlers/getCpocs.handler
     maximumRetryAttempts: 0
@@ -252,7 +238,6 @@ functions:
         - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:getCpocsProvisionedConcurrency}
   itemExists:
     handler: handlers/itemExists.handler
     maximumRetryAttempts: 0
