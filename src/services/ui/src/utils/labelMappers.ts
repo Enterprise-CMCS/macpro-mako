@@ -2,6 +2,7 @@ import { Action } from "shared-types";
 
 import { BLANK_VALUE } from "@/consts";
 import { Route } from "@/components";
+import config from "@/config";
 
 export const mapActionLabel = (a: Action) => {
   switch (a) {
@@ -19,6 +20,14 @@ export const mapActionLabel = (a: Action) => {
       return "Respond to Formal RAI";
     case Action.TEMP_EXTENSION:
       return "Request Temporary Extension";
+    case Action.UPDATE_ID:
+      return "Update ID";
+    case Action.COMPLETE_INTAKE:
+      // Poor man's feature flag.
+      return config.cognito.REDIRECT_SIGNIN.includes("localhost") ||
+        config.cognito.REDIRECT_SIGNIN.includes("cloudfront")
+        ? "Complete Intake"
+        : "";
     default:
       return "";
   }
