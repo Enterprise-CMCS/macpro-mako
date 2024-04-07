@@ -428,6 +428,7 @@ resources:
       Properties:
         ServiceToken: !GetAtt RunReindexLambdaFunction.Arn
         StateMachine: !Ref ReindexDataStateMachine
+      DependsOn: MapRole
     MapRole:
       Type: Custom::MapRole
       Properties:
