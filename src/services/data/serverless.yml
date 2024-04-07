@@ -27,6 +27,10 @@ provider:
       path: /delegatedadmin/developer/
       permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
       statements:
+        - Effect: Deny # Prevents delayed custom resource logs from re-creating log groups after deletion.
+          Action:
+            - logs:CreateLogGroup
+          Resource: "*"
         - Effect: "Allow"
           Action:
             - cognito-idp:AdminCreateUser
