@@ -104,18 +104,16 @@ const arCompleteIntake: ActionRule = {
 const arAmendBCAPWaiver: ActionRule = {
   action: Action.AMEND_1915B_CAP,
   check: (checker, user) =>
-    checker.isWaiver &&
-    checker.isInitialOrRenewal &&
     checker.authorityIs([Authority["1915b"]]) &&
+    checker.isInitialOrRenewal &&
     checker.hasStatus("Approved"),
 };
 
 const arAmendBCONTWaiver: ActionRule = {
   action: Action.AMEND_1915B_CONT,
   check: (checker, user) =>
-    checker.isWaiver &&
-    checker.isInitialOrRenewal &&
     checker.authorityIs([Authority["1915b4"]]) &&
+    checker.isInitialOrRenewal &&
     checker.hasStatus("Approved"),
 };
 

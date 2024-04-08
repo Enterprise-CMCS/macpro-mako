@@ -22,6 +22,9 @@ export const mapActionLabel = (a: Action) => {
       return "Request Temporary Extension";
     case Action.UPDATE_ID:
       return "Update ID";
+    case Action.AMEND_1915B_CAP:
+    case Action.AMEND_1915B_CONT:
+      return "Add Amendment";
     case Action.COMPLETE_INTAKE:
       // Poor man's feature flag.
       return config.cognito.REDIRECT_SIGNIN.includes("localhost") ||

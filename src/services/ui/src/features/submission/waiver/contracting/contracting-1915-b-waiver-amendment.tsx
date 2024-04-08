@@ -12,6 +12,7 @@ import {
   useAlertContext,
   formCrumbsFromPath,
   Route,
+  useParams,
 } from "@/components";
 import * as Content from "@/components/Form/content";
 import * as Inputs from "@/components/Inputs";
@@ -69,6 +70,7 @@ const attachmentList = [
 ] as const;
 
 export const Contracting1915BWaiverAmendmentPage = () => {
+  const { id } = useParams("/action/:authority/:id/:type");
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
@@ -119,7 +121,10 @@ export const Contracting1915BWaiverAmendmentPage = () => {
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
+      {/* ActionWrapper already does crumbs for this as an action, so in lieu of
+       * an ID path parameter (meaning arriving via New Submission) we'll show our
+       own.*/}
+      {!id && <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />}
       <Inputs.Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -152,6 +157,8 @@ export const Contracting1915BWaiverAmendmentPage = () => {
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
                       {...field}
+                      value={id || ""}
+                      disabled={!!id}
                       onInput={(e) => {
                         if (e.target instanceof HTMLInputElement) {
                           e.target.value = e.target.value.toUpperCase();

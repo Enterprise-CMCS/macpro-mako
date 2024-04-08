@@ -26,6 +26,10 @@ import {
   CompleteIntake,
   onValidSubmission as completeIntakeSubmission,
 } from "./CompleteIntake";
+import {
+  Capitated1915BWaiverAmendmentPage,
+  Contracting1915BWaiverAmendmentPage,
+} from "@/features";
 
 export const packageActionRoutes: RouteObject = {
   path: "/action/:authority/:id",
@@ -60,6 +64,14 @@ export const packageActionRoutes: RouteObject = {
       path: "respond-to-rai",
       element: <RespondToRai />,
       action: respondToRaiSubmission,
+    },
+    {
+      path: "1915b-capitated-amendment",
+      element: <Capitated1915BWaiverAmendmentPage />,
+    },
+    {
+      path: "1915b-contracting-amendment",
+      element: <Contracting1915BWaiverAmendmentPage />,
     },
     {
       path: "temporary-extension",
