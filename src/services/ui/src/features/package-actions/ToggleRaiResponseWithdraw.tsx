@@ -37,7 +37,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
     return { submitted: true };
   } catch (err) {
-    return { submitted: false };
+    return { submitted: false, error: err };
   }
 };
 

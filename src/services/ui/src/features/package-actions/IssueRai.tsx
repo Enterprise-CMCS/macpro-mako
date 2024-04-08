@@ -43,7 +43,7 @@ export const issueRaiDefaultAction: SC.ActionFunction = async ({
     };
   } catch (err) {
     console.log(err);
-    return { submitted: false };
+    return { submitted: false, error: err };
   }
 };
 

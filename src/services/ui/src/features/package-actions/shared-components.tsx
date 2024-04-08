@@ -1,6 +1,7 @@
 import {
   Alert,
   LoadingSpinner,
+  Route,
   useAlertContext,
   useModalContext,
 } from "@/components";
@@ -37,9 +38,9 @@ import { ItemResult } from "shared-types/opensearch/main";
 
 export const RequiredFieldDescription = () => {
   return (
-    <p>
+    <>
       <span className="text-red-500">*</span> Indicates a required field
-    </p>
+    </>
   );
 };
 
@@ -48,7 +49,7 @@ export const ActionDescription = ({
 }: {
   children: React.ReactNode;
 }) => {
-  return <p className="font-light mb-6 max-w-4xl">{children}</p>;
+  return <div className="font-light mb-6 max-w-4xl">{children}</div>;
 };
 
 export const Heading = ({ title }: { title: string }) => {
@@ -156,23 +157,28 @@ export const SubmissionButtons = ({ onSubmit }: { onSubmit?: () => void }) => {
 
 export const PackageSection = () => {
   const { authority, id } = useParams() as { authority: Authority; id: string };
-
+  const lcAuthority = authority.toLowerCase();
+  // We should pass in the already lowercased Authority, right?  todo
   return (
     <section className="flex flex-col my-8 space-y-8">
       <div>
         <p>
-          {authority === Authority["1915b"] && "Waiver Number"}
-          {authority === Authority["CHIP_SPA"] && "Package ID"}
-          {authority === Authority["MED_SPA"] && "Package ID"}
+          {[Authority.CHIP_SPA, Authority.MED_SPA].includes(
+            authority.toLowerCase() as Authority,
+          ) && "Package ID"}
+          {[Authority["1915b"], Authority["1915c"]].includes(
+            authority.toLowerCase() as Authority,
+          ) && "Waiver Number"}
         </p>
         <p className="text-xl">{id}</p>
       </div>
       <div>
         <p>Authority</p>
         <p className="text-xl">
-          {authority === Authority["1915b"] && "1915(b) Waiver"}
-          {authority === Authority["CHIP_SPA"] && "CHIP SPA"}
-          {authority === Authority["MED_SPA"] && "Medicaid SPA"}
+          {lcAuthority === Authority["1915b"] && "1915(b) Waiver"}
+          {lcAuthority === Authority["1915c"] && "1915(c) Waiver"}
+          {lcAuthority === Authority["CHIP_SPA"] && "CHIP SPA"}
+          {lcAuthority === Authority["MED_SPA"] && "Medicaid SPA"}
         </p>
       </div>
     </section>
@@ -285,6 +291,25 @@ export const useSubmitForm = () => {
   };
 };
 
+export const useIntakePackage = () => {
+  const methods = useFormContext();
+  const submit = useSubmit();
+  const location = useLocation();
+
+  const validSubmission: SubmitHandler<any> = (data, e) => {
+    submit(data, {
+      method: "post",
+      encType: "application/json",
+      state: location.state,
+    });
+  };
+
+  return {
+    handleSubmit: methods.handleSubmit(validSubmission),
+    formMethods: methods,
+  };
+};
+
 export const useDisplaySubmissionAlert = (
   header: string,
   body: string,
@@ -299,19 +324,37 @@ export const useDisplaySubmissionAlert = (
     isCorrectStatus,
   });
 
-  useEffect(() => {
-    if (data && data.submitted) {
+  return useEffect(() => {
+    if (data?.submitted) {
       alert.setContent({
         header,
         body,
       });
+      alert.setBannerStyle("success");
       alert.setBannerShow(true);
       alert.setBannerDisplayOn(
         location.state?.from?.split("?")[0] ?? "/dashboard",
       );
       syncData(id);
+      if (location.pathname?.endsWith("/update-id")) {
+        alert.setBannerDisplayOn("/dashboard");
+      } else {
+        alert.setBannerDisplayOn(
+          location.state?.from?.split("?")[0] ?? "/dashboard",
+        );
+      }
+    } else if (!data?.submitted && data?.error) {
+      alert.setContent({
+        header: "An unexpected error has occurred:",
+        body:
+          data.error instanceof Error ? data.error.message : String(data.error),
+      });
+      alert.setBannerStyle("destructive");
+      alert.setBannerDisplayOn(window.location.pathname as Route);
+      alert.setBannerShow(true);
+      window.scrollTo(0, 0);
     }
-  }, [data]);
+  }, [data, alert, location.state, location.pathname]);
 };
 
 // Utility Functions
@@ -327,5 +370,5 @@ const filterUndefinedValues = (obj: Record<any, any>) => {
 // Types
 export type ActionFunction = (
   args: ActionFunctionArgs,
-) => Promise<{ submitted: boolean }>;
+) => Promise<{ submitted: boolean; error?: Error | unknown }>;
 export type ActionFunctionReturnType = Awaited<ReturnType<ActionFunction>>;

@@ -18,6 +18,7 @@ import {
   useParams,
   useModalContext,
   useAlertContext,
+  Route,
 } from "@/components";
 import {
   ActionFormIntro,
@@ -80,6 +81,7 @@ export const RaiIssue = ({
               header: "RAI issued",
               body: `The RAI for ${item._source.id} has been submitted. An email confirmation will be sent to you and the state.`,
             });
+            alert.setBannerStyle("success");
             alert.setBannerShow(true);
             alert.setBannerDisplayOn(
               // This uses the originRoute map because this value doesn't work
@@ -91,6 +93,14 @@ export const RaiIssue = ({
             syncRecord(id);
           } catch (e) {
             console.error(e);
+            alert.setContent({
+              header: "An unexpected error has occurred:",
+              body: e instanceof Error ? e.message : String(e),
+            });
+            alert.setBannerStyle("destructive");
+            alert.setBannerDisplayOn(window.location.pathname as Route);
+            alert.setBannerShow(true);
+            window.scrollTo(0, 0);
           }
         })}
       >

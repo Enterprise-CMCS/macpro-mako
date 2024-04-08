@@ -17,6 +17,7 @@ import {
   useAlertContext,
   useNavigate,
   useParams,
+  Route,
 } from "@/components";
 
 import {
@@ -83,6 +84,7 @@ export const RespondToRai = ({
               header: "RAI response submitted",
               body: `The RAI response for ${item._source.id} has been submitted.`,
             });
+            alert.setBannerStyle("success");
             alert.setBannerShow(true);
             alert.setBannerDisplayOn(
               // This uses the originRoute map because this value doesn't work
@@ -94,6 +96,14 @@ export const RespondToRai = ({
             syncRecord(id);
           } catch (e) {
             console.error(e);
+            alert.setContent({
+              header: "An unexpected error has occurred:",
+              body: e instanceof Error ? e.message : String(e),
+            });
+            alert.setBannerStyle("destructive");
+            alert.setBannerDisplayOn(window.location.pathname as Route);
+            alert.setBannerShow(true);
+            window.scrollTo(0, 0);
           }
         })}
       >

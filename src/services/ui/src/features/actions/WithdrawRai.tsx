@@ -16,6 +16,7 @@ import {
   useParams,
   useModalContext,
   useAlertContext,
+  Route,
 } from "@/components";
 import {
   SlotAdditionalInfo,
@@ -77,6 +78,7 @@ export const WithdrawRai = ({
           header: "RAI response withdrawn",
           body: `The RAI response for ${item._source.id} has been withdrawn. CMS may follow up if additional information is needed.`,
         });
+        alert.setBannerStyle("success");
         alert.setBannerShow(true);
         alert.setBannerDisplayOn(
           // This uses the originRoute map because this value doesn't work
@@ -88,6 +90,14 @@ export const WithdrawRai = ({
         syncRecord(id);
       } catch (e) {
         console.error(e);
+        alert.setContent({
+          header: "An unexpected error has occurred:",
+          body: e instanceof Error ? e.message : String(e),
+        });
+        alert.setBannerStyle("destructive");
+        alert.setBannerDisplayOn(window.location.pathname as Route);
+        alert.setBannerShow(true);
+        window.scrollTo(0, 0);
       }
     })();
   }, []);

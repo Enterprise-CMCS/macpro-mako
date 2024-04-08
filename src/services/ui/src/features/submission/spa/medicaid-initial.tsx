@@ -16,6 +16,7 @@ import {
   useAlertContext,
   useNavigate,
   useLocationCrumbs,
+  Route,
 } from "@/components";
 import * as Content from "@/components";
 import { submit } from "@/api";
@@ -32,24 +33,12 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import {
   AdditionalInfoInput,
-  DescriptionInput,
-  SubjectInput,
 } from "../shared-components";
 import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
   additionalInformation: z.string().max(4000).optional(),
-  subject: z
-    .string()
-    .trim()
-    .min(1, { message: "This field is required" })
-    .max(120, { message: "Subject should be under 120 characters" }),
-  description: z
-    .string()
-    .trim()
-    .min(1, { message: "This field is required" })
-    .max(4000, { message: "Description should be under 4000 characters" }),
   attachments: z.object({
     cmsForm179: zAttachmentRequired({
       min: 1,
@@ -125,6 +114,7 @@ export const MedicaidSpaFormPage = () => {
         header: "Package submitted",
         body: "Your submission has been received.",
       });
+      alert.setBannerStyle("success");
       alert.setBannerShow(true);
       alert.setBannerDisplayOn(
         // This uses the originRoute map because this value doesn't work
@@ -136,6 +126,14 @@ export const MedicaidSpaFormPage = () => {
       syncRecord(formData.id);
     } catch (e) {
       console.error(e);
+      alert.setContent({
+        header: "An unexpected error has occurred:",
+        body: e instanceof Error ? e.message : String(e),
+      });
+      alert.setBannerStyle("destructive");
+      alert.setBannerDisplayOn(window.location.pathname as Route);
+      alert.setBannerShow(true);
+      window.scrollTo(0, 0);
     }
   };
   return (
@@ -200,16 +198,6 @@ export const MedicaidSpaFormPage = () => {
                   <Inputs.FormMessage />
                 </Inputs.FormItem>
               )}
-            />
-            <SubjectInput
-              control={form.control}
-              name="subject"
-              helperText="The title or purpose of the SPA"
-            />
-            <DescriptionInput
-              control={form.control}
-              name="description"
-              helperText="A summary of the SPA. This should include details about a reduction or increase, the amount of the reduction or increase, Federal Budget impact, and fiscal year. If there is a reduction, indicate if the EPSDT population is or isn’t exempt from the reduction."
             />
           </SectionCard>
           <SectionCard title="Attachments">

@@ -9,6 +9,7 @@ import {
   Button,
   useModalContext,
   useAlertContext,
+  Route,
 } from "@/components";
 import { useSubmissionService, useGetUser } from "@/api";
 import {
@@ -66,6 +67,7 @@ export const ToggleRaiResponseWithdraw = ({
             ? "The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied."
             : "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
       });
+      alert.setBannerStyle("success");
       alert.setBannerShow(true);
       alert.setBannerDisplayOn(
         // This uses the originRoute map because this value doesn't work
@@ -76,6 +78,15 @@ export const ToggleRaiResponseWithdraw = ({
       );
       console.log("hello world", id);
       syncRecord(id);
+    } else if (error) {
+      alert.setContent({
+        header: "An unexpected error has occurred:",
+        body: error.response.data.message,
+      });
+      alert.setBannerStyle("destructive");
+      alert.setBannerDisplayOn(window.location.pathname as Route);
+      alert.setBannerShow(true);
+      window.scrollTo(0, 0);
     }
   }, [isSuccess]);
 
