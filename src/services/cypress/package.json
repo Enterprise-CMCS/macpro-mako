@@ -24,5 +24,8 @@
     "cypress": "cypress open"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@serverless/compose": "^1.3.0"
+  }
 }
