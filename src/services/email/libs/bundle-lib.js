@@ -346,6 +346,68 @@ const getBundleFromEvent = (configKey, stage) => {
           },
         ],
       };
+    case "temporary-extension":
+      return {
+        dataList: [
+          "osgEmail",
+          "submitter",
+          "id",
+          "applicationEndpoint",
+          "territory",
+          "submitterName",
+          "submitterEmail",
+          "authority",
+          "title",
+          "proposedEffectiveDateNice",
+          "ninetyDaysDate",
+          "additionalInformation",
+          "formattedFileList",
+          "textFileList",
+        ],
+        emailCommands: [
+          {
+            Template: `temporary-extension-cms_${stage}`,
+            ToAddresses: ["osgEmail"],
+          },
+          {
+            Template: `temporary-extension-state_${stage}`,
+            ToAddresses: ["submitter"],
+          },
+        ],
+      };
+    case "withdraw-rai-1915b":
+      return {
+        lookupList: ["osInsights", "cognito", "osMain"],
+        dataList: [
+          "osgEmail",
+          "dmcoEmail",
+          "cpoc",
+          "srt",
+          "allState",
+          "id",
+          "applicationEndpoint",
+          "territory",
+          "submitterName",
+          "submitterEmail",
+          "authority",
+          "ninetyDaysDate",
+          "additionalInformation",
+          "formattedFileList",
+          "textFileList",
+          "initialSubmitterName",
+          "initialSubmitterEmail",
+        ],
+        emailCommands: [
+          {
+            Template: `withdraw-rai-1915b-cms_${stage}`,
+            ToAddresses: ["osgEmail"],
+          },
+          {
+            Template: `withdraw-rai-1915b-state_${stage}`,
+            ToAddresses: ["allState"],
+          },
+        ],
+      };
     default:
       return { message: `no bundle defined for configKey ${configKey}` };
   }

@@ -470,6 +470,52 @@ spa@cms.hhs.gov.
 Thank you!`,
   },
   {
+    name: "withdraw-rai-1915b-cms",
+    subject: "Withdraw Formal RAI Response for Waiver Package {{id}} ",
+    html: `
+<p>The OneMAC Submission Portal received a request to withdraw the Formal 
+RAI Response. You are receiving this email notification as the Formal RAI 
+for {{id}} was withdrawn by {{submitterName}} {{submitterEmail}}.</p>
+<p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Name:</b> {{initialSubmitterName}}
+<br><b>Email Address:</b> {{initialSubmitterEmail}}
+<br><b>Waiver Number:</b> {{id}}
+</p>
+Summary:
+<br>{{additionalInformation}}
+<br>
+<br><b>Files</b>:
+<br>{{formattedFileList}}
+<p>If the contents of this email seem suspicious, do not open them, and 
+instead forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.
+</p>
+<p>Thank you!</p>`,
+  },
+  {
+    name: "withdraw-rai-1915b-state",
+    subject: "Withdraw Formal RAI Response for Waiver Package {{id}}",
+    html: `
+<p>The OneMAC Submission Portal received a request to withdraw the Formal 
+RAI Response. You are receiving this email notification as the Formal RAI 
+for {{id}} was withdrawn by {{submitterName}} {{submitterEmail}}.</p>
+<p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Name:</b> {{initialSubmitterName}}
+<br><b>Email Address:</b> {{initialSubmitterEmail}}
+<br><b>Waiver Number:</b> {{id}}
+</p>
+Summary:
+<br>{{additionalInformation}}
+<br>
+<p>This mailbox is for the submittal of State Plan Amendments and non-web 
+based responses to Requests for Additional Information (RAI) on submitted 
+SPAs only. Any other correspondence will be disregarded.</p>
+<p>If you have questions, please contact 
+<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
+<p>Thank you!</p>`,
+  },
+  {
     name: "withdraw-package-medicaid-spa-cms",
     subject: "SPA Package {{id}} Withdraw Request",
     html: `
