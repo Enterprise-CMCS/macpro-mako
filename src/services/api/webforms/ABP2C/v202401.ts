@@ -1,7 +1,7 @@
 import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
-  header: "ABP 2c: Enrollment Assurances - Mandatory participants",
+  header: "ABP 2c: Enrollment assurances - Mandatory participants",
   sections: [
     {
       title: "Assurances",
@@ -11,13 +11,15 @@ export const v202401: FormSchema = {
             {
               name: "abp2c_assurances_mandatory-identify-exempt_checkgroup",
               rhf: "Checkbox",
-              label:
-                "These assurances must be made by the state/territory if enrollment is mandatory for any of the target populations or subpopulations.",
-
-              descriptionStyling: "font-bold text-black text-base",
               descriptionAbove: true,
-              description:
-                "When mandatorily enrolling eligibility groups in an Alternative Benefit Plan (ABP) (benchmark or benchmark-equivalent plan) that could have exempt individuals, prior to enrollment:",
+              description: [
+                "These assurances must be made by the state/territory if enrollment is mandatory for any of the target populations or subpopulations.",
+                {
+                  type: "br",
+                  classname: "font-bold text-black text-base block pt-2",
+                  text: "When mandatorily enrolling eligibility groups in an Alternative Benefit Plan (ABP) (benchmark or benchmark-equivalent plan) that could have exempt individuals, prior to enrollment:",
+                },
+              ],
               rules: { required: "* Required" },
               props: {
                 options: [
