@@ -12,11 +12,12 @@ export const v202401: FormSchema = {
               name: "abp2c_assurances_mandatory-identify-exempt_checkgroup",
               rhf: "Checkbox",
               descriptionAbove: true,
+              descriptionStyling: "text-black text-base",
               description: [
                 "These assurances must be made by the state/territory if enrollment is mandatory for any of the target populations or subpopulations.",
                 {
                   type: "br",
-                  classname: "font-bold text-black text-base block pt-2",
+                  classname: "font-bold block pt-2",
                   text: "When mandatorily enrolling eligibility groups in an Alternative Benefit Plan (ABP) (benchmark or benchmark-equivalent plan) that could have exempt individuals, prior to enrollment:",
                 },
               ],
