@@ -180,6 +180,7 @@ export const AppKSubmissionForm = () => {
               control={form.control}
               name={"additionalInformation"}
               render={SlotAdditionalInfo({
+                withoutHeading: true,
                 label: (
                   <p>
                     Add anything else you would like to share with CMS, limited
