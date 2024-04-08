@@ -1,4 +1,4 @@
-import { opensearch, Authority, SEATOOL_STATUS } from "shared-types";
+import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
 
 const secondClockStatuses = [
   SEATOOL_STATUS.PENDING,
@@ -35,6 +35,7 @@ export const PackageCheck = ({
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
     isWaiver: checkAuthority(authority, [
+      Authority["1915b4"],
       Authority["1915b"],
       Authority["1915c"],
     ]),

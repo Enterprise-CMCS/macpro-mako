@@ -14,6 +14,9 @@ export enum Action {
   COMPLETE_INTAKE = "complete-intake",
   LEGACY_ADMIN_CHANGE = "legacy-admin-change",
   LEGACY_WITHDRAW_RAI_REQUEST = "legacy-withdraw-rai-request",
+  // waiver-only
+  AMEND_1915B_CAP = "1915b-capitated-amendment",
+  AMEND_1915B_CONT = "1915b-contracting-amendment",
 }
 
 export type ActionRule = {

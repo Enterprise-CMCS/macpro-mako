@@ -101,6 +101,24 @@ const arCompleteIntake: ActionRule = {
 
 // TODO: Add rule for remove-appk-child
 
+const arAmendBCAPWaiver: ActionRule = {
+  action: Action.AMEND_1915B_CAP,
+  check: (checker, user) =>
+    checker.isWaiver &&
+    checker.isInitialOrRenewal &&
+    checker.authorityIs([Authority["1915b"]]) &&
+    checker.hasStatus("Approved"),
+};
+
+const arAmendBCONTWaiver: ActionRule = {
+  action: Action.AMEND_1915B_CONT,
+  check: (checker, user) =>
+    checker.isWaiver &&
+    checker.isInitialOrRenewal &&
+    checker.authorityIs([Authority["1915b4"]]) &&
+    checker.hasStatus("Approved"),
+};
+
 export default [
   arIssueRai,
   arRespondToRai,
@@ -111,4 +129,6 @@ export default [
   arTempExtension,
   arUpdateId,
   arCompleteIntake,
+  arAmendBCAPWaiver,
+  arAmendBCONTWaiver,
 ];
