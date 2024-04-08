@@ -248,7 +248,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
               />
             ))}
           </SectionCard>
-          <SectionCard title={"Additional Info"}>
+          <SectionCard title={"Additional Information"}>
             <FormField
               control={form.control}
               name={"additionalInformation"}
