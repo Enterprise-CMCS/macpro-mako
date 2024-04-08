@@ -1,4 +1,4 @@
-import { Alert } from "@/components";
+import { Alert, FormField, SectionCard } from "@/components";
 import { useParams } from "react-router-dom";
 import * as SC from "@/features/package-actions/shared-components";
 import { z } from "zod";
@@ -8,6 +8,7 @@ import { Authority } from "shared-types";
 import { unflatten } from "flat";
 import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
 import { submit } from "@/api/submissionService";
+import { SlotAdditionalInfo } from "@/features";
 
 const title: Record<Authority, string> = {
   "1915(b)": "1915(b) Waiver Formal RAI Response Details",
@@ -66,7 +67,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 };
 
 export const RespondToRai = () => {
-  const { handleSubmit } = SC.useSubmitForm();
+  const { handleSubmit, formMethods } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
 
   SC.useDisplaySubmissionAlert(
@@ -99,9 +100,16 @@ export const RespondToRai = () => {
             { name: "Other", required: false, registerName: "other" },
           ]}
         />
-        <SC.AdditionalInformation
-          helperText="Add anything else that you would like to share with CMS."
-          required={false}
+        <FormField
+          control={formMethods.control}
+          name={"additionalInformation"}
+          render={SlotAdditionalInfo({
+            label: (
+              <p>
+                Add anything else that you would like to share with the State.
+              </p>
+            ),
+          })}
         />
         <AdditionalFormInformation />
         <SC.FormLoadingSpinner />

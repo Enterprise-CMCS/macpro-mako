@@ -1,4 +1,4 @@
-import { Alert } from "@/components";
+import { Alert, FormField } from "@/components";
 import { useParams } from "react-router-dom";
 import * as SC from "@/features/package-actions/shared-components";
 import { z } from "zod";
@@ -10,15 +10,14 @@ import { submit } from "@/api/submissionService";
 import * as Inputs from "@/components/Inputs";
 import { useFormContext } from "react-hook-form";
 import { zUpdateIdSchema } from "@/utils/zod";
+import { SlotAdditionalInfo } from "@/features";
 
 export const updateIdSchema = z
   .object({
     id: z.string(),
-    additionalInformation: z
-      .string()
-      .refine((data) => data.trim().length > 0, {
-        message: "Additional information cannot be empty or just spaces.",
-      }),
+    additionalInformation: z.string().refine((data) => data.trim().length > 0, {
+      message: "Additional information cannot be empty or just spaces.",
+    }),
     newId: zUpdateIdSchema,
   })
   .superRefine((data, ctx) => {
@@ -64,7 +63,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 };
 
 export const UpdateId = () => {
-  const { handleSubmit } = SC.useSubmitForm();
+  const { handleSubmit, formMethods } = SC.useSubmitForm();
   const { id } = useParams() as { id: string; authority: Authority };
   const { setValue } = useFormContext<z.infer<typeof updateIdSchema>>();
   setValue("id", id);
@@ -115,9 +114,13 @@ export const UpdateId = () => {
             </Inputs.FormItem>
           )}
         />
-        <SC.AdditionalInformation
-          helperText="Please explain the reason for updating this ID."
-          required={true}
+        <FormField
+          control={formMethods.control}
+          name={"additionalInformation"}
+          render={SlotAdditionalInfo({
+            required: true,
+            label: <p>Please explain the reason for updating this ID.</p>,
+          })}
         />
         <AdditionalFormInformation />
         <SC.FormLoadingSpinner />
