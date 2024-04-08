@@ -71,8 +71,6 @@ params:
   master:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
-    getTypesProvisionedConcurrency: 2
-    getSubTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
@@ -81,8 +79,6 @@ params:
   val:
     formsProvisionedConcurrency: 2
     getAllFormsProvisionedConcurrency: 1
-    getTypesProvisionedConcurrency: 2
-    getSubTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 4
     itemProvisionedConcurrency: 2
     getAttachmentUrlProvisionedConcurrency: 2
@@ -91,8 +87,6 @@ params:
   production:
     formsProvisionedConcurrency: 5
     getAllFormsProvisionedConcurrency: 1
-    getTypesProvisionedConcurrency: 2
-    getSubTypesProvisionedConcurrency: 2
     searchProvisionedConcurrency: 10
     itemProvisionedConcurrency: 5
     getAttachmentUrlProvisionedConcurrency: 5
@@ -100,9 +94,7 @@ params:
     appkNewSubmissionConcurrency: 5
   default:
     formsProvisionedConcurrency: 0
-    getAllFormsProvisionedConcurrency: 1
-    getTypesProvisionedConcurrency: 1
-    getSubTypesProvisionedConcurrency: 1
+    getAllFormsProvisionedConcurrency: 0
     searchProvisionedConcurrency: 0
     itemProvisionedConcurrency: 0
     getAttachmentUrlProvisionedConcurrency: 0
@@ -124,7 +116,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
@@ -143,7 +135,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:getAttachmentUrlProvisionedConcurrency}
@@ -162,7 +154,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:getAttachmentUrlProvisionedConcurrency}
@@ -191,7 +183,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
 
@@ -209,10 +201,9 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:getTypesProvisionedConcurrency}
   getSubTypes:
     handler: handlers/getSubTypes.handler
     maximumRetryAttempts: 0
@@ -227,10 +218,26 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
-    provisionedConcurrency: ${param:getSubTypesProvisionedConcurrency}
+  getCpocs:
+    handler: handlers/getCpocs.handler
+    maximumRetryAttempts: 0
+    environment:
+      region: ${self:provider.region}
+      osDomain: ${param:osDomain}
+    events:
+      - http:
+          path: /getCpocs
+          method: post
+          cors: true
+          authorizer: aws_iam
+    vpc:
+      securityGroupIds:
+        - ${param:LambdaSecurityGroupId}
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
   itemExists:
     handler: handlers/itemExists.handler
     maximumRetryAttempts: 0
@@ -245,7 +252,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:itemProvisionedConcurrency}
@@ -269,7 +276,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
@@ -293,7 +300,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:submitProvisionedConcurrency}
@@ -310,7 +317,7 @@ functions:
           cors: true
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
@@ -327,7 +334,7 @@ functions:
           cors: true
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:searchProvisionedConcurrency}
@@ -351,7 +358,7 @@ functions:
           authorizer: aws_iam
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:appkNewSubmissionConcurrency}
@@ -455,18 +462,6 @@ resources:
         ComparisonOperator: "GreaterThanOrEqualToThreshold"
         AlarmActions:
           - ${param:ECSFailureTopicArn}
-    SecurityGroup:
-      Type: AWS::EC2::SecurityGroup
-      DeletionPolicy: Retain
-      Properties:
-        GroupDescription: Security group for API Search.
-        VpcId: ${self:custom.vpc.id}
-    SecurityGroupEgress:
-      Type: AWS::EC2::SecurityGroupEgress
-      Properties:
-        GroupId: !Ref SecurityGroup
-        IpProtocol: -1
-        CidrIp: 0.0.0.0/0
   Outputs:
     ApiGatewayRestApiName:
       Value: !Ref ApiGatewayRestApi

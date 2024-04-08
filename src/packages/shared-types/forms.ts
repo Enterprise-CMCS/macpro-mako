@@ -65,7 +65,14 @@ export type RHFTextListItem = {
   link?: string;
 };
 
-type RHFTextItemType = "br" | "brWrap" | "link" | "bold" | "italic" | "list";
+type RHFTextItemType =
+  | "br"
+  | "brWrap"
+  | "link"
+  | "bold"
+  | "italic"
+  | "list"
+  | "default";
 
 export type RHFOption = {
   label: string;

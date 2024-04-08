@@ -1,9 +1,21 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import { Action, KafkaRecord, opensearch } from "shared-types";
+import {
+  Action,
+  Authority,
+  KafkaRecord,
+  SEATOOL_STATUS,
+  getStatus,
+  opensearch,
+} from "shared-types";
 import { KafkaEvent } from "shared-types";
-import { ErrorType, getTopic, logError } from "../libs/sink-lib";
+import {
+  ErrorType,
+  bulkUpdateDataWrapper,
+  getTopic,
+  logError,
+} from "../libs/sink-lib";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
@@ -12,7 +24,6 @@ const index = "main";
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   const loggableEvent = { ...event, records: "too large to display" };
-  const docs: any[] = [];
   try {
     for (const topicPartition of Object.keys(event.records)) {
       const topic = getTopic(topicPartition);
@@ -21,33 +32,15 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
         case "aws.onemac.migration.cdc":
-          docs.push(
-            ...(await onemac(event.records[topicPartition], topicPartition)),
-          );
+          await onemac(event.records[topicPartition], topicPartition);
           break;
         case "aws.seatool.ksql.onemac.agg.State_Plan":
-          docs.push(
-            ...(await ksql(event.records[topicPartition], topicPartition)),
-          );
+          await ksql(event.records[topicPartition], topicPartition);
           break;
         case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
-          docs.push(
-            ...(await changed_date(
-              event.records[topicPartition],
-              topicPartition,
-            )),
-          );
+          await changed_date(event.records[topicPartition], topicPartition);
           break;
       }
-    }
-    try {
-      await os.bulkUpdateData(osDomain, index, docs);
-    } catch (error: any) {
-      logError({
-        type: ErrorType.BULKUPDATE,
-        metadata: { event: loggableEvent },
-      });
-      throw error;
     }
   } catch (error) {
     logError({ type: ErrorType.UNKNOWN, metadata: { event: loggableEvent } });
@@ -97,11 +90,11 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       });
     }
   }
-  return docs;
+  await bulkUpdateDataWrapper(osDomain, index, docs);
 };
 
 const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
-  const docs: any[] = [];
+  let docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
     try {
@@ -136,7 +129,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
 
       // Handle everything else
       if (record.origin === "micro") {
-        const result = (() => {
+        const result = await (async () => {
           switch (record?.actionType) {
             case "new-submission":
             case undefined:
@@ -160,12 +153,79 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
               return opensearch.main.removeAppkChild
                 .transform(id)
                 .safeParse(record);
+            case Action.UPDATE_ID: {
+              console.log("UPDATE_ID detected...");
+              // Immediately index all prior documents
+              await bulkUpdateDataWrapper(osDomain, index, docs);
+              // Reset docs back to empty
+              docs = [];
+              const item = await os.getItem(osDomain, index, id);
+              if (item === undefined) {
+                return {
+                  error: "An error occured parsing the event.",
+                  success: null,
+                };
+              }
+
+              // Move record
+              if (
+                item._source.actionType &&
+                item._source.actionType === "Extend"
+              ) {
+                docs.push({ ...item._source, id: record.newId });
+              } else {
+                docs.push({
+                  id: record.newId,
+                  appkParentId: item._source.appkParentId,
+                  origin: item._source.origin,
+                  raiWithdrawEnabled: item._source.raiWithdrawEnabled,
+                  submitterName: item._source.submitterName,
+                  submitterEmail: item._source.submitterEmail,
+                });
+              }
+              // Delete old
+              docs.push({
+                id,
+                delete: true,
+              });
+
+              // Handle the appk children when an appk parent id is updated
+              // I'd like a better way to identify an appk parent.
+              if (
+                item._source.authority === Authority["1915c"] &&
+                !item._source.appkParentId
+              ) {
+                console.log("AppK Parent ID update detected...");
+                const items = await os.search(osDomain, index, {
+                  from: 0,
+                  size: 200,
+                  query: {
+                    bool: {
+                      must: [{ term: { "appkParentId.keyword": id } }],
+                    },
+                  },
+                });
+                if (items !== undefined && items.hits.hits !== undefined) {
+                  console.log(
+                    `Updating children appKParentId from ${id} to ${record.newId}`,
+                  );
+                  const modifiedHits: opensearch.main.Document[] =
+                    items.hits.hits.map(
+                      (hit: { _source: opensearch.main.Document }) => {
+                        return {
+                          id: hit._source.id,
+                          appkParentId: record.newId,
+                        };
+                      },
+                    );
+                  docs.push(...modifiedHits);
+                }
+              }
+              return undefined;
+            }
           }
         })();
         if (result === undefined) {
-          console.log(
-            `no action to take for ${id} action ${record.actionType}.  Continuing...`,
-          );
           continue;
         }
         if (!result?.success) {
@@ -187,7 +247,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       });
     }
   }
-  return docs;
+  await bulkUpdateDataWrapper(osDomain, index, docs);
 };
 
 const changed_date = async (
@@ -231,5 +291,5 @@ const changed_date = async (
       });
     }
   }
-  return docs;
+  await bulkUpdateDataWrapper(osDomain, index, docs);
 };

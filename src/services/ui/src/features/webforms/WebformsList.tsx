@@ -30,7 +30,12 @@ export const WebformsList = () => {
                 Object.entries(data).map(([key, versions]) =>
                   versions.map((version) => (
                     <tr key={`${key}-${version}`}>
-                      <td>{key}</td>
+                      <td>
+                        {key.slice(0, -1) +
+                          (key.slice(-1).match(/[a-zA-Z]/)
+                            ? key.slice(-1).toLowerCase()
+                            : key.slice(-1))}
+                      </td>{" "}
                       <td>{version}</td>
                       <td>
                         <Link
@@ -42,7 +47,7 @@ export const WebformsList = () => {
                         </Link>
                       </td>
                     </tr>
-                  ))
+                  )),
                 )}
             </tbody>
           </table>

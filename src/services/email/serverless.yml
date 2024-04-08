@@ -102,7 +102,7 @@ functions:
     memorySize: 1024
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
 
@@ -220,7 +220,6 @@ resources:
           SnsDestination:
             TopicARN: !Ref EmailEventTopic
 
-
     SinkEmailTrigger:
       Type: AWS::Lambda::EventSourceMapping
       Properties:
@@ -241,23 +240,7 @@ resources:
           - Type: VPC_SUBNET
             URI: subnet:${self:custom.vpc.privateSubnets.2}
           - Type: VPC_SECURITY_GROUP
-            URI: !Sub security_group:${SecurityGroup}
+            URI: !Sub security_group:${param:LambdaSecurityGroupId}
         StartingPosition: LATEST
         Topics:
           - ${param:topicNamespace}aws.onemac.migration.cdc
-
-    SecurityGroup:
-      Type: AWS::EC2::SecurityGroup
-      DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
-      Properties:
-        GroupDescription: Security group for Sink Lambda Function.
-        VpcId: ${self:custom.vpc.id}
-        SecurityGroupEgress:
-          - IpProtocol: tcp
-            CidrIp: 0.0.0.0/0
-            FromPort: 443
-            ToPort: 443
-          - IpProtocol: tcp
-            CidrIp: 10.0.0.0/8
-            FromPort: 9094
-            ToPort: 9094

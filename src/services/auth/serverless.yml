@@ -20,6 +20,7 @@ provider:
       statements:
         - Effect: "Allow"
           Action:
+            - cognito-idp:AdminGetUser
             - cognito-idp:AdminCreateUser
             - cognito-idp:AdminSetUserPassword
             - cognito-idp:AdminUpdateUserAttributes
@@ -65,7 +66,7 @@ functions:
     handler: handlers/postAuth.handler
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     environment:
@@ -247,15 +248,6 @@ resources:
                   Action:
                     - "execute-api:Invoke"
                   Resource: !Sub arn:aws:execute-api:${self:provider.region}:${AWS::AccountId}:${param:ApiName}/*
-    SecurityGroup:
-      Type: AWS::EC2::SecurityGroup
-      DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
-      Properties:
-        GroupDescription: Security group for Sink Lambda Function.
-        VpcId: ${self:custom.vpc.id}
-        SecurityGroupEgress:
-          - IpProtocol: -1
-            CidrIp: 0.0.0.0/0
   Outputs:
     UserPoolId:
       Value: !Ref CognitoUserPool

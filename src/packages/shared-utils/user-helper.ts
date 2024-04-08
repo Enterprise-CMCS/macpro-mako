@@ -31,6 +31,9 @@ export const isCmsReadonlyUser = (user: CognitoUserAttributes) =>
 /** Confirms user is a State user */
 export const isStateUser = (user: CognitoUserAttributes | null) =>
   userHasAuthorizedRole(user, STATE_ROLES);
+/** Confirms user is a State user */
+export const isCmsSuperUser = (user: CognitoUserAttributes | null) =>
+  userHasAuthorizedRole(user, [UserRoles.CMS_SUPER_USER]);
 /** Confirms user is an IDM user */
 export const isIDM = (user: CognitoUserAttributes | null) =>
   user?.username.startsWith("IDM_");

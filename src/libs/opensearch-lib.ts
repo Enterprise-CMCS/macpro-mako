@@ -58,10 +58,17 @@ export async function bulkUpdateData(
 
   client = client || (await getClient(host));
 
-  const body: any[] = arrayOfDocuments.flatMap((doc) => [
-    { update: { _index: index, _id: doc.id } }, // Action and metadata
-    { doc: doc, doc_as_upsert: true }, // Document to update or upsert
-  ]);
+  const body: any[] = [];
+  for (const doc of arrayOfDocuments) {
+    if (doc.delete) {
+      body.push({ delete: { _index: index, _id: doc.id } });
+    } else {
+      body.push(
+        { update: { _index: index, _id: doc.id } },
+        { doc: doc, doc_as_upsert: true },
+      );
+    }
+  }
 
   async function attemptBulkUpdate(
     retries: number = 5,
