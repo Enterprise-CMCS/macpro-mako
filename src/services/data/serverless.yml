@@ -27,6 +27,10 @@ provider:
       path: /delegatedadmin/developer/
       permissionsBoundary: arn:aws:iam::${aws:accountId}:policy/cms-cloud-admin/developer-boundary-policy
       statements:
+        - Effect: Deny # Prevents delayed custom resource logs from re-creating log groups after deletion.
+          Action:
+            - logs:CreateLogGroup
+          Resource: "*"
         - Effect: "Allow"
           Action:
             - cognito-idp:AdminCreateUser
@@ -113,6 +117,7 @@ stepFunctions:
                 - !Ref SinkChangelogLambdaFunction
                 - !Ref SinkTypesLambdaFunction
                 - !Ref SinkSubtypesLambdaFunction
+                - !Ref SinkCpocsLambdaFunction
                 - !Ref SinkInsightsLambdaFunction
                 - !Ref SinkLegacyInsightsLambdaFunction
             Next: DeleteIndex
@@ -143,7 +148,7 @@ stepFunctions:
             Parameters:
               Context.$: $$
               BrokerString: ${self:custom.brokerString}
-              SecurityGroup: !Sub security_group:${SecurityGroup}
+              SecurityGroup: !Sub security_group:${param:LambdaSecurityGroupId}
               ConsumerGroupPrefix: ${self:custom.consumerGroupPrefix}
               Subnets:
                 - ${self:custom.vpc.privateSubnets.0}
@@ -168,6 +173,9 @@ stepFunctions:
                   BatchSize: 10000
                   Topics:
                     - aws.seatool.debezium.cdc.SEA.dbo.Type
+                - Function: !Ref SinkCpocsLambdaFunction
+                  Topics:
+                    - aws.seatool.debezium.cdc.SEA.dbo.Officers
             Next: CheckDataProgress
             Catch:
               - ErrorEquals: ["States.ALL"]
@@ -196,6 +204,9 @@ stepFunctions:
                   BatchSize: 10000
                   Topics:
                     - aws.seatool.debezium.cdc.SEA.dbo.Type
+                - Function: !Ref SinkCpocsLambdaFunction
+                  Topics:
+                    - aws.seatool.debezium.cdc.SEA.dbo.Officers
               BrokerString: ${self:custom.brokerString}
             Next: IsDataReady
             Catch:
@@ -221,7 +232,7 @@ stepFunctions:
             Parameters:
               Context.$: $$
               BrokerString: ${self:custom.brokerString}
-              SecurityGroup: !Sub security_group:${SecurityGroup}
+              SecurityGroup: !Sub security_group:${param:LambdaSecurityGroupId}
               ConsumerGroupPrefix: ${self:custom.consumerGroupPrefix}
               Subnets:
                 - ${self:custom.vpc.privateSubnets.0}
@@ -260,20 +271,20 @@ stepFunctions:
 
 params:
   master:
-    osInstanceType: m5.large.search
+    osInstanceType: or1.large.search
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
   val:
-    osInstanceType: m5.large.search
+    osInstanceType: or1.large.search
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
   production:
     bootstrapKibanaUsers: "false"
-    osInstanceType: m5.large.search
+    osInstanceType: or1.large.search
     topicNamespace: ""
     sinkProvisionedConcurrency: 2
   default:
-    osInstanceType: t3.small.search
+    osInstanceType: or1.medium.search
     bootstrapKibanaUsers: "true"
     topicNamespace: --${self:custom.project}--${sls:stage}--
     sinkProvisionedConcurrency: 0
@@ -292,7 +303,7 @@ functions:
     timeout: 900
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
   cleanupKafka:
@@ -300,7 +311,7 @@ functions:
     timeout: 300
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
   cleanupTriggersOnDelete:
@@ -313,7 +324,7 @@ functions:
     timeout: 300
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
   createTriggers:
@@ -323,7 +334,7 @@ functions:
     handler: handlers/deleteIndex.handler
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
   deleteTriggers:
@@ -333,7 +344,7 @@ functions:
     handler: handlers/mapRole.handler
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
   runReindex:
@@ -342,7 +353,7 @@ functions:
     handler: handlers/setupIndex.handler
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
   sinkChangelog:
@@ -350,7 +361,7 @@ functions:
     maximumRetryAttempts: 0
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:sinkProvisionedConcurrency}
@@ -359,7 +370,7 @@ functions:
     maximumRetryAttempts: 0
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
   sinkLegacyInsights:
@@ -367,7 +378,7 @@ functions:
     maximumRetryAttempts: 0
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
   sinkMain:
@@ -375,7 +386,7 @@ functions:
     maximumRetryAttempts: 0
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     provisionedConcurrency: ${param:sinkProvisionedConcurrency}
@@ -384,7 +395,7 @@ functions:
     maximumRetryAttempts: 0
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
   sinkTypes:
@@ -392,7 +403,15 @@ functions:
     maximumRetryAttempts: 0
     vpc:
       securityGroupIds:
-        - Ref: SecurityGroup
+        - ${param:LambdaSecurityGroupId}
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+  sinkCpocs:
+    handler: handlers/sinkCpocs.handler
+    maximumRetryAttempts: 0
+    vpc:
+      securityGroupIds:
+        - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
 
@@ -413,6 +432,7 @@ resources:
       Properties:
         ServiceToken: !GetAtt RunReindexLambdaFunction.Arn
         StateMachine: !Ref ReindexDataStateMachine
+      DependsOn: MapRole
     MapRole:
       Type: Custom::MapRole
       Properties:
@@ -517,21 +537,6 @@ resources:
         Threshold: 1
         AlarmActions:
           - ${param:ECSFailureTopicArn}
-    SecurityGroup:
-      Type: AWS::EC2::SecurityGroup
-      DeletionPolicy: Retain # VPC based lambda's are problematic when deleting the SG due to ENI attachmnent out of our control.
-      Properties:
-        GroupDescription: Security group for Sink Lambda Function.
-        VpcId: ${self:custom.vpc.id}
-        SecurityGroupEgress:
-          - IpProtocol: tcp
-            CidrIp: 0.0.0.0/0
-            FromPort: 443
-            ToPort: 443
-          - IpProtocol: tcp
-            CidrIp: 10.0.0.0/8
-            FromPort: 9094
-            ToPort: 9094
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:
@@ -602,8 +607,8 @@ resources:
             Value: ${sls:stage}
         EBSOptions:
           EBSEnabled: true
-          VolumeType: gp2
-          VolumeSize: 10
+          VolumeType: gp3
+          VolumeSize: 20
         ClusterConfig:
           InstanceType: ${param:osInstanceType}
           InstanceCount:
@@ -626,7 +631,7 @@ resources:
           Enabled: true
         NodeToNodeEncryptionOptions:
           Enabled: true
-        EngineVersion: OpenSearch_2.3
+        EngineVersion: OpenSearch_2.11
         DomainEndpointOptions:
           EnforceHTTPS: true
           TLSSecurityPolicy: Policy-Min-TLS-1-2-2019-07
@@ -751,6 +756,7 @@ resources:
           - !Ref SinkChangelogLambdaFunction
           - !Ref SinkTypesLambdaFunction
           - !Ref SinkSubtypesLambdaFunction
+          - !Ref SinkCpocsLambdaFunction
           - !Ref SinkInsightsLambdaFunction
           - !Ref SinkLegacyInsightsLambdaFunction
   Outputs:

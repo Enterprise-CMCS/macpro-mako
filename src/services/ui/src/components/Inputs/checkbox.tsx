@@ -30,7 +30,7 @@ const Checkbox = React.forwardRef<
           id={props.label}
           className={cn(
             "peer h-7 w-7 my-2 shrink-0 border-black border-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-primary-foreground",
-            className
+            className,
           )}
           {...rest}
         >
@@ -41,9 +41,9 @@ const Checkbox = React.forwardRef<
           </CheckboxPrimitive.Indicator>
         </CheckboxPrimitive.Root>
         <div className="grid gap-1.5 leading-none">
-          {!!props.label && (
+          {!!(props.label || props.styledLabel) && (
             <label
-              htmlFor={props.label}
+              htmlFor={props.label ?? props.styledLabel}
               className="text-md font-medium leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
               {props.styledLabel ?? props.label}
