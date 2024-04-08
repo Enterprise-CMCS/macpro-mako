@@ -81,7 +81,7 @@ export const Contracting1915BWaiverInitialPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: Authority["1915b"],
+        authority: Authority["1915b4"],
       });
       alert.setContent({
         header: "Package submitted",
