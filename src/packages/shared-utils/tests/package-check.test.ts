@@ -35,6 +35,16 @@ describe("PackageCheck", () => {
       expect(packageCheck.isWaiver).toBe(true);
       packageCheck = PackageCheck({
         ...testItemResult._source,
+        authority: Authority["1915c"],
+      });
+      expect(packageCheck.isWaiver).toBe(true);
+      packageCheck = PackageCheck({
+        ...testItemResult._source,
+        authority: Authority["1915b4"],
+      });
+      expect(packageCheck.isWaiver).toBe(true);
+      packageCheck = PackageCheck({
+        ...testItemResult._source,
         authority: Authority.CHIP_SPA,
       });
       expect(packageCheck.isWaiver).toBe(false);
