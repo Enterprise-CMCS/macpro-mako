@@ -298,6 +298,8 @@ jobs:
           aws-region: us-east-1
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Print Cognito Url
+        run: echo $(serverless param get --name CognitoUserPoolClientDomain)
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
@@ -306,7 +308,7 @@ jobs:
           spec: cypress/e2e/${{ matrix.containers }}
           browser: chrome
           config: baseUrl=${{ steps.deployment-data.outputs.APPURL }}
-          env: cognito_url=$(echo $(serverless param get --name CognitoUserPoolClientDomain)
+          env: cognito_url=$(echo $(serverless param get --name CognitoUserPoolClientDomain))
       - name: Upload screenshots
         uses: actions/upload-artifact@v3
         if: failure()
