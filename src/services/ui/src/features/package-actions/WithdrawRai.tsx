@@ -10,6 +10,7 @@ import { z } from "zod";
 
 const title: Record<Authority, string> = {
   "1915(b)": "1915(b) Withdraw Formal RAI Response Details",
+  "1915(b)(4)": "1915(b) Withdraw Formal RAI Response Details",
   "1915(c)": "Formal RAI Details",
   "chip spa": "Formal RAI Details",
   "medicaid spa": "Formal RAI Details",

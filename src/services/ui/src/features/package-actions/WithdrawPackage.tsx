@@ -10,6 +10,7 @@ import { z } from "zod";
 
 const title: Record<Authority, string> = {
   "1915(b)": "Withdraw Waiver",
+  "1915(b)(4)": "Withdraw Waiver",
   "1915(c)": "Withdraw Waiver",
   "chip spa": "Withdraw CHIP SPA Package",
   "medicaid spa": "Withdraw Medicaid SPA Package",
@@ -17,6 +18,7 @@ const title: Record<Authority, string> = {
 };
 const descriptionText: Record<Authority, string> = {
   "1915(b)": "this 1915(b) Waiver",
+  "1915(b)(4)": "this 1915(b) Waiver",
   "1915(c)": "this 1915(c) Waiver",
   "chip spa": "",
   "medicaid spa": "",

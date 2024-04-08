@@ -11,6 +11,7 @@ import { submit } from "@/api/submissionService";
 
 const title: Record<Authority, string> = {
   "1915(b)": "1915(b) Waiver Formal RAI Response Details",
+  "1915(b)(4)": "1915(b) Waiver Formal RAI Response Details",
   "1915(c)": "1915(c) Waiver Formal RAI Response Details",
   "chip spa": "Formal RAI Response Details",
   "medicaid spa": "Formal RAI Response Details",
@@ -19,6 +20,7 @@ const title: Record<Authority, string> = {
 
 const attachmentTitle: Record<Authority, string> = {
   "1915(b)": "Waiver RAI Response",
+  "1915(b)(4)": "Waiver RAI Response",
   "1915(c)": "Waiver RAI Response",
   "chip spa": "RAI Response",
   "medicaid spa": "RAI Response",
