@@ -10,6 +10,7 @@ import {
   FormMessage,
   Input,
   RequiredIndicator,
+  SectionCard,
   Select,
   SelectContent,
   SelectItem,
@@ -36,6 +37,7 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getItem } from "@/api";
 import { ItemResult } from "shared-types/opensearch/changelog";
+import { SlotAdditionalInfo } from "@/features";
 
 type Attachments = keyof z.infer<typeof tempExtensionSchema>["attachments"];
 export const tempExtensionSchema = z
@@ -170,9 +172,14 @@ export const TemporaryExtension = () => {
             },
           ]}
         />
-        <SC.AdditionalInformation
-          required={false}
-          helperText="Add anything else that you would like to share with CMS."
+        <FormField
+          control={formMethods.control}
+          name={"additionalInformation"}
+          render={SlotAdditionalInfo({
+            label: (
+              <p>Add anything else that you would like to share with CMS.</p>
+            ),
+          })}
         />
         <AdditionalFormInformation />
         <SC.FormLoadingSpinner />
