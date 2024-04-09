@@ -282,6 +282,8 @@ export const useDisplaySubmissionAlert = (
   const alert = useAlertContext();
   const data = useActionData() as ActionFunctionReturnType;
   const location = useLocation();
+  //create querystring
+
   const syncData = useSyncStatus({
     path: location.state?.from ?? "/dashboard",
     isCorrectStatus,
@@ -317,7 +319,7 @@ export const useDisplaySubmissionAlert = (
       alert.setBannerShow(true);
       window.scrollTo(0, 0);
     }
-  }, [data, alert, location.state, location.pathname]);
+  }, [data, location.state, location.pathname]);
 };
 
 // Utility Functions

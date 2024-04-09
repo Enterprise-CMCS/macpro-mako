@@ -1,11 +1,13 @@
-import { getItem } from "@/api";
-import { Route } from "@/components/Routing";
+import { getItem, useGetItem } from "@/api";
+import { Route, urlEmbedQuery } from "@/components/Routing";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { type SEATOOL_STATUS } from "shared-types";
 import { queryClient } from "@/router";
 import { ItemResult } from "shared-types/opensearch/main";
+import { OsUrlState } from "@/components";
+import { authorityById } from "@/utils";
 
 export type SeaStatus = (typeof SEATOOL_STATUS)[keyof typeof SEATOOL_STATUS];
 
@@ -19,6 +21,8 @@ export const useSyncStatus = ({
   const navigate = useNavigate();
   const [runQuery, setRunQuery] = useState(false);
   const [id, setId] = useState("");
+  const authority = authorityById(id);
+  console.log("what is the authority", authority);
   // An unfortunate evil for now unless another idea is found
   // the key needs to be unique to avoid an edge case where
   // the state doesn't get reset because the key is the same
@@ -44,7 +48,14 @@ export const useSyncStatus = ({
 
       if (data && isCorrectStatus(data)) {
         queryClient.invalidateQueries(["actions", id]);
-        navigate(path);
+        if (path === "/dashboard") {
+          const newPath = urlEmbedQuery<Partial<OsUrlState>>("/dashboard", {
+            tab: authority === "" ? "spas" : authority,
+          });
+          navigate(newPath);
+        } else {
+          navigate(path);
+        }
         return false;
       }
 

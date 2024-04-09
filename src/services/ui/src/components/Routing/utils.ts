@@ -9,7 +9,10 @@ export function urlEmbedParams(path: any, params?: Record<string, any>) {
   }, path);
 }
 
-export function urlEmbedQuery(path: string, query?: Record<string, any>) {
+export function urlEmbedQuery<T = Record<string, any>>(
+  path: string,
+  query?: T,
+) {
   if (!query) return path;
   const searchParams = new URLSearchParams(query);
 
