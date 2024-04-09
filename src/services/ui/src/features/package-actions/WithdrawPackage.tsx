@@ -5,7 +5,7 @@ import { zAttachmentOptional } from "@/utils";
 import { unflatten } from "flat";
 import { Info } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { Authority } from "shared-types";
+import { Authority, SEATOOL_STATUS } from "shared-types";
 import { z } from "zod";
 import { SlotAdditionalInfo } from "@/features";
 
