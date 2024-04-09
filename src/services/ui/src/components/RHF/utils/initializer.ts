@@ -29,7 +29,6 @@ export const slotInitializer = (ACC: GL, SLOT: T.RHFSlotProps): GL => {
     case "Switch":
       ACC[SLOT.name] = false;
       break;
-    case "Radio":
     case "Checkbox":
       SLOT.props?.options.forEach(optionReducer);
       ACC[SLOT.name] = [];
@@ -43,6 +42,7 @@ export const slotInitializer = (ACC: GL, SLOT: T.RHFSlotProps): GL => {
       break;
     case "Input":
     case "Select":
+    case "Radio":
     case "Textarea":
     default:
       ACC[SLOT.name] = "";
