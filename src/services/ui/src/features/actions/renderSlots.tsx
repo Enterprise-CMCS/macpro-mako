@@ -16,7 +16,7 @@ import { ReactElement, ReactNode } from "react";
 
 export const SlotAttachments = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   label,
   message,
@@ -42,17 +42,20 @@ export const SlotAttachments = <
 
 export const SlotAdditionalInfo = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   label,
-  description,
   required,
+  withoutHeading,
   ...props
 }: {
-  description: string;
   label?: ReactElement;
   required?: boolean;
   className?: string;
+  /* we're in transition between two visual styles for forms (one uses
+   * SectionCard to label sections with a heading, some use headers like
+   * these). this is temporary to satisfy that transition. */
+  withoutHeading?: boolean;
 }): ControllerProps<TFieldValues, TName>["render"] =>
   function Render({
     field,
@@ -61,12 +64,32 @@ export const SlotAdditionalInfo = <
   }) {
     return (
       <FormItem {...props}>
-        <h3 className="font-bold text-2xl font-sans">
-          Additional Information {required && <RequiredIndicator />}
-        </h3>
-        <FormLabel className="font-normal">{label}</FormLabel>
-        <Textarea {...field} className="h-[200px] resize-none" />
-        <FormDescription>{description}</FormDescription>
+        {!withoutHeading && (
+          <h3 className="font-bold text-2xl font-sans">
+            Additional Information {required && <RequiredIndicator />}
+          </h3>
+        )}
+        <FormLabel data-testid="addl-info-label" className="font-normal">
+          {label}
+        </FormLabel>
+        <Textarea
+          {...field}
+          maxLength={4000}
+          aria-describedby="character-count"
+          aria-live="off"
+          aria-multiline={true}
+          className="h-[200px] resize-none"
+        />
+        <FormDescription>
+          <span
+            tabIndex={0}
+            id="character-count"
+            aria-label="character-count"
+            aria-live="polite"
+          >
+            {`${4000 - (field?.value?.length || 0)} characters remaining`}
+          </span>
+        </FormDescription>
       </FormItem>
     );
   };
