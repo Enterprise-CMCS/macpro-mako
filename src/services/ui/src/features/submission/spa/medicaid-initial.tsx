@@ -33,6 +33,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -86,6 +87,12 @@ export const MedicaidSpaFormPage = () => {
   const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      return !!data;
+    },
+  });
   const cancelOnAccept = useCallback(() => {
     modal.setModalOpen(false);
     navigate(originPath ? { path: originPath } : { path: "/dashboard" });
@@ -115,7 +122,7 @@ export const MedicaidSpaFormPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+      syncRecord(formData.id);
     } catch (e) {
       console.error(e);
       alert.setContent({

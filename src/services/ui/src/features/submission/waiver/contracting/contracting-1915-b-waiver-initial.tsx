@@ -31,6 +31,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
 import { SubmitAndCancelBtnSection } from "../shared-components";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
@@ -73,6 +74,12 @@ export const Contracting1915BWaiverInitialPage = () => {
   const urlQuery = useQueryString();
   const alert = useAlertContext();
   const originPath = useOriginPath();
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      return !!data;
+    },
+  });
 
   const handleSubmit: SubmitHandler<Waiver1915BContractingInitial> = async (
     formData,
@@ -97,7 +104,7 @@ export const Contracting1915BWaiverInitialPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+      syncRecord(formData.id);
     } catch (e) {
       console.error(e);
       alert.setContent({
