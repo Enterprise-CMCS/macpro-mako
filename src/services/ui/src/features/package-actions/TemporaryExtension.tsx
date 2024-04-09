@@ -135,12 +135,17 @@ export const TemporaryExtension = () => {
   const { id: urlId, authority: urlAuthority } = useParams();
   const formId = formMethods.getValues("originalWaiverNumber");
   const formAuthority = formMethods.getValues("authority");
+  const teId = formMethods.getValues("id");
   const authority = urlAuthority ? urlAuthority : formAuthority;
 
   const parentId = urlId ? urlId : formId;
   SC.useDisplaySubmissionAlert(
     "Temporary Extension issued",
     `The Temporary Extension Request for ${parentId} has been submitted.`,
+    (data) => {
+      return !!data;
+    },
+    teId,
   );
 
   return (

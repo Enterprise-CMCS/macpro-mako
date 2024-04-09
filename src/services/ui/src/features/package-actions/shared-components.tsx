@@ -17,6 +17,7 @@ import {
   Upload,
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import {
@@ -30,6 +31,7 @@ import {
   useSubmit,
 } from "react-router-dom";
 import { Authority } from "shared-types";
+import { ItemResult } from "shared-types/opensearch/main";
 
 // Components
 
@@ -271,11 +273,19 @@ export const useIntakePackage = () => {
   };
 };
 
-export const useDisplaySubmissionAlert = (header: string, body: string) => {
+export const useDisplaySubmissionAlert = (
+  header: string,
+  body: string,
+  isCorrectStatus: (data: ItemResult) => boolean,
+  id: string,
+) => {
   const alert = useAlertContext();
   const data = useActionData() as ActionFunctionReturnType;
-  const navigate = useNavigate();
   const location = useLocation();
+  const syncData = useSyncStatus({
+    path: location.state?.from ?? "/dashboard",
+    isCorrectStatus,
+  });
 
   return useEffect(() => {
     if (data?.submitted) {
@@ -285,14 +295,16 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
       });
       alert.setBannerStyle("success");
       alert.setBannerShow(true);
+      alert.setBannerDisplayOn(
+        location.state?.from?.split("?")[0] ?? "/dashboard",
+      );
+      syncData(id);
       if (location.pathname?.endsWith("/update-id")) {
         alert.setBannerDisplayOn("/dashboard");
-        navigate("/dashboard");
       } else {
         alert.setBannerDisplayOn(
           location.state?.from?.split("?")[0] ?? "/dashboard",
         );
-        navigate(location.state?.from ?? "/dashboard");
       }
     } else if (!data?.submitted && data?.error) {
       alert.setContent({
@@ -305,7 +317,7 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
       alert.setBannerShow(true);
       window.scrollTo(0, 0);
     }
-  }, [data, alert, navigate, location.state, location.pathname]);
+  }, [data, alert, location.state, location.pathname]);
 };
 
 // Utility Functions

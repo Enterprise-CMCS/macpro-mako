@@ -87,6 +87,10 @@ export const WithdrawPackage = () => {
   SC.useDisplaySubmissionAlert(
     "Package withdrawn",
     `The package ${id} has been withdrawn.`,
+    (data) => {
+      return data._source.seatoolStatus === SEATOOL_STATUS.WITHDRAWN;
+    },
+    id,
   );
 
   return (

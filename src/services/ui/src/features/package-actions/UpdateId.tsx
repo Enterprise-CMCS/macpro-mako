@@ -71,6 +71,8 @@ export const UpdateId = () => {
   SC.useDisplaySubmissionAlert(
     "ID Update submitted",
     `The ID Update for ${id} has been submitted.`,
+    () => true,
+    id,
   );
 
   return (

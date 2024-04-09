@@ -58,6 +58,8 @@ export const CompleteIntake = () => {
   SC.useDisplaySubmissionAlert(
     "Intake Complete",
     `The Intake for ${id} has been completed.`,
+    () => true,
+    id,
   );
 
   const authorityId = SEATOOL_AUTHORITIES_MAP_TO_ID[authority];
