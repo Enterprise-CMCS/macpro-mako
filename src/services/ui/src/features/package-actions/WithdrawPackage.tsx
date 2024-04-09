@@ -115,7 +115,6 @@ export const WithdrawPackage = () => {
               },
             ]}
           />
-          <SC.AdditionalInformation helperText="Explain your need for withdrawal or upload supporting documentation." />
           <SC.FormLoadingSpinner />
           <SC.ErrorBanner />
           <AdditionalFormInformation />
