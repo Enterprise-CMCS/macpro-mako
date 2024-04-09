@@ -346,7 +346,8 @@ const getBundleFromEvent = (configKey, stage) => {
           },
         ],
       };
-    case "temporary-extension":
+    case "temporary-extension-1915b":
+    case "temporary-extension-1915c":
       return {
         dataList: [
           "osgEmail",
@@ -357,8 +358,6 @@ const getBundleFromEvent = (configKey, stage) => {
           "submitterName",
           "submitterEmail",
           "authority",
-          "title",
-          "proposedEffectiveDateNice",
           "ninetyDaysDate",
           "additionalInformation",
           "formattedFileList",
@@ -417,11 +416,6 @@ const buildKeyFromRecord = (record) => {
   if (record?.origin !== "micro" || !record?.authority) return;
 
   const actionType = record?.actionType ?? "new-submission";
-
-  if (record.seaActionType === "Extend") {
-    //TEs do not seperate based on authority
-    return actionType;
-  }
 
   //replace spaces from authority with hyphens and remove parentheses
   const authority = record.authority

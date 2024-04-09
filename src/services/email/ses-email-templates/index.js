@@ -1127,8 +1127,8 @@ details by clicking on its ID number.</li>
 </ul>
 <p>
 <br><b>State or territory:</b> {{territory}}
-<br><b>Name:</b> {{initialSubmitterName}}
-<br><b>Email Address:</b> {{initialSubmitterEmail}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email Address:</b> {{submitterEmail}}
 <br><b>Temporary Extension Request Number:</b> {{id}}
 <br><b>Temporary Extension Type:</b> {{authority}}
 </p>
@@ -1151,8 +1151,8 @@ forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p
 This response confirms you have submitted a {{authority}} Waiver Extension to CMS for review:</p>
 <p>
 <br><b>State or territory:</b> {{territory}}
-<br><b>Name:</b> {{initialSubmitterName}}
-<br><b>Email Address:</b> {{initialSubmitterEmail}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email Address:</b> {{submitterEmail}}
 <br><b>Temporary Extension Request Number:</b> {{id}}
 <br><b>Temporary Extension Type:</b> {{authority}}
 <br><b>90th Day Deadline: {{ninetyDaysDate}}
