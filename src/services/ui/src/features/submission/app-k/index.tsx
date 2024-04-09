@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 
-import { SlotAttachments } from "@/features/actions";
+import { SlotAdditionalInfo, SlotAttachments } from "@/features/actions";
 import * as I from "@/components/Inputs";
 import * as C from "@/components";
-import { useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FORM, SchemaForm } from "./consts";
 import { SlotStateSelect, SlotWaiverId, WaiverIdFieldArray } from "./slots";
@@ -206,22 +206,19 @@ export const AppKSubmissionForm = () => {
               })}
             />
           </C.SectionCard>
-
           <C.SectionCard title="Additional Information">
             <I.FormField
               control={form.control}
-              name="additionalInformation"
-              render={({ field }) => (
-                <I.FormItem>
-                  <I.FormLabel className="font-normal">
-                    Add anything else you would like to share with CMS.
-                  </I.FormLabel>
-                  <I.Textarea {...field} className="h-[200px] resize-none" />
-                  <I.FormDescription>
-                    4,000 characters allowed
-                  </I.FormDescription>
-                </I.FormItem>
-              )}
+              name={"additionalInformation"}
+              render={SlotAdditionalInfo({
+                withoutHeading: true,
+                label: (
+                  <p>
+                    Add anything else you would like to share with CMS, limited
+                    to 4000 characters
+                  </p>
+                ),
+              })}
             />
           </C.SectionCard>
           <C.PreSubmissionMessage />

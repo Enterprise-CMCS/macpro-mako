@@ -148,7 +148,6 @@ export const RespondToRai = ({
             label: (
               <p>Add anything else that you would like to share with CMS.</p>
             ),
-            description: "4,000 characters allowed",
             className: "pt-6",
             required: false,
           })}

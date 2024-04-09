@@ -167,7 +167,6 @@ export const WithdrawPackage = ({
               addlInfoInstructions[
                 item!._source.authority as string as SetupOptions
               ],
-            description: "4,000 characters allowed",
             className: "pt-6",
             required: false,
           })}
