@@ -3,7 +3,7 @@ import { Path, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
-import { opensearch, Authority } from "shared-types";
+import { opensearch, Authority, SEATOOL_STATUS } from "shared-types";
 
 import {
   Button,
@@ -36,6 +36,7 @@ import {
   useOriginPath,
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 export const RaiIssue = ({
   item,
@@ -54,8 +55,16 @@ export const RaiIssue = ({
   const originPath = useOriginPath();
   const acceptAction = useCallback(() => {
     modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, [originPath]);
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      return (
+        data._source.seatoolStatus === SEATOOL_STATUS.PENDING_RAI &&
+        !!data._source.raiRequestedDate
+      );
+    },
+  });
   return (
     <Form {...form}>
       <form
@@ -80,9 +89,7 @@ export const RaiIssue = ({
                 ? originRoute[urlQuery.get(ORIGIN)! as Origin]
                 : "/dashboard",
             );
-            navigate(
-              originPath ? { path: originPath } : { path: "/dashboard" },
-            );
+            syncRecord(id);
           } catch (e) {
             console.error(e);
             alert.setContent({

@@ -21,6 +21,7 @@ import {
 } from "@/utils";
 import { ActionFormIntro, PackageInfo } from "@/features";
 import { useQuery as useQueryString } from "@/hooks";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 export const ToggleRaiResponseWithdraw = ({
   item,
@@ -36,7 +37,6 @@ export const ToggleRaiResponseWithdraw = ({
   const originPath = useOriginPath();
   const acceptAction = useCallback(() => {
     modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const { mutate, isLoading, isSuccess, error } = useSubmissionService<{
     id: string;
@@ -51,6 +51,14 @@ export const ToggleRaiResponseWithdraw = ({
     () => (type === Action.ENABLE_RAI_WITHDRAW ? "Enable" : "Disable"),
     [type],
   );
+
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      const isEnabled = ACTION_WORD === "Enable";
+      return data._source.raiWithdrawEnabled === isEnabled;
+    },
+  });
 
   useEffect(() => {
     if (isSuccess) {
@@ -70,7 +78,7 @@ export const ToggleRaiResponseWithdraw = ({
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+      syncRecord(id);
     } else if (error) {
       alert.setContent({
         header: "An unexpected error has occurred:",

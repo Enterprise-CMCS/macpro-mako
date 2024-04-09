@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { opensearch, Authority } from "shared-types";
+import { opensearch, Authority, SEATOOL_STATUS } from "shared-types";
 import { Info } from "lucide-react";
 
 import {
@@ -37,6 +37,7 @@ import {
   useOriginPath,
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 export const RespondToRai = ({
   item,
@@ -52,9 +53,17 @@ export const RespondToRai = ({
   const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      return (
+        data._source.seatoolStatus === SEATOOL_STATUS.PENDING &&
+        !!data._source.raiReceivedDate
+      );
+    },
+  });
   const acceptAction = useCallback(() => {
     modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const form = useForm({
     resolver: zodResolver(schema),
@@ -84,9 +93,7 @@ export const RespondToRai = ({
                 ? originRoute[urlQuery.get(ORIGIN)! as Origin]
                 : "/dashboard",
             );
-            navigate(
-              originPath ? { path: originPath } : { path: "/dashboard" },
-            );
+            syncRecord(id);
           } catch (e) {
             console.error(e);
             alert.setContent({

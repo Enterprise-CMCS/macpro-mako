@@ -2,7 +2,7 @@ import { ReactElement, useCallback } from "react";
 import { Path, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Authority, opensearch } from "shared-types";
+import { Authority, SEATOOL_STATUS, opensearch } from "shared-types";
 import { Info } from "lucide-react";
 import {
   Button,
@@ -36,6 +36,7 @@ import {
   useOriginPath,
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 const attachmentInstructions: Record<SetupOptions, ReactElement> = {
   "Medicaid SPA": (
@@ -66,7 +67,6 @@ export const WithdrawPackage = ({
 }: FormSetup & {
   item: opensearch.main.ItemResult;
 }) => {
-  const navigate = useNavigate();
   const urlQuery = useQueryString();
   const { id, type } = useParams("/action/:id/:type");
   const { data: user } = useGetUser();
@@ -76,9 +76,14 @@ export const WithdrawPackage = ({
   const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      return data._source.seatoolStatus === SEATOOL_STATUS.WITHDRAWN;
+    },
+  });
   const cancelOnAccept = useCallback(() => {
     modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const confirmOnAccept = useCallback(() => {
     modal.setModalOpen(false);
@@ -103,7 +108,7 @@ export const WithdrawPackage = ({
             ? originRoute[urlQuery.get(ORIGIN)! as Origin]
             : "/dashboard",
         );
-        navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+        syncRecord(id);
       } catch (e) {
         console.error(e);
         alert.setContent({

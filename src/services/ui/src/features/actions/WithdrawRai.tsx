@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { opensearch, Authority } from "shared-types";
+import { opensearch, Authority, SEATOOL_STATUS } from "shared-types";
 import { Info } from "lucide-react";
 import {
   Button,
@@ -34,6 +34,7 @@ import {
   useOriginPath,
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 export const WithdrawRai = ({
   item,
@@ -50,9 +51,17 @@ export const WithdrawRai = ({
   const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
+  const syncRecord = useSyncStatus({
+    path: originPath ? originPath : "/dashboard",
+    isCorrectStatus: (data) => {
+      return (
+        data._source.seatoolStatus === SEATOOL_STATUS.PENDING_RAI &&
+        !!data._source.raiWithdrawnDate
+      );
+    },
+  });
   const cancelOnAccept = useCallback(() => {
     modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
   }, []);
   const confirmOnAccept = useCallback(() => {
     modal.setModalOpen(false);
@@ -77,7 +86,7 @@ export const WithdrawRai = ({
             ? originRoute[urlQuery.get(ORIGIN)! as Origin]
             : "/dashboard",
         );
-        navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+        syncRecord(id);
       } catch (e) {
         console.error(e);
         alert.setContent({
