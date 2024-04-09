@@ -1,3 +1,5 @@
+import { Action } from "shared-types";
+
 const getBundleFromEvent = (configKey, stage) => {
   switch (configKey) {
     case "new-submission-medicaid-spa":
@@ -413,9 +415,17 @@ const getBundleFromEvent = (configKey, stage) => {
 };
 
 const buildKeyFromRecord = (record) => {
+  const seaActionTypeLookup = {
+    Extend: Action.TEMP_EXTENSION,
+  };
+
   if (record?.origin !== "micro" || !record?.authority) return;
 
-  const actionType = record?.actionType ?? "new-submission";
+  //use action type if present, else check for sea tool action type and translate that, else assume new-submission
+  const actionType =
+    record?.actionType ??
+    seaActionTypeLookup[record.seaActionType] ??
+    "new-submission";
 
   //replace spaces from authority with hyphens and remove parentheses
   const authority = record.authority
