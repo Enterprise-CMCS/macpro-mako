@@ -78,24 +78,25 @@ const authorizationOptions = [
 ];
 
 interface SubsectionData {
-  title: string;
-  sectionName: string;
+  benefitProvided?: string;
+  dependency?: DependencyRule;
   description?: string;
   headerSlots?: RHFSlotProps[];
+  sectionName: string;
   showEHBBenchmark?: boolean;
-  benefitProvided?: string;
+  title: string;
 }
 
 interface SubsectionFieldProps {
-  sectionName: string;
-  optionalSection?: boolean;
   benefitProvided?: string;
+  optionalSection?: boolean;
+  sectionName: string;
 }
 
 function subsectionFormFields({
-  sectionName,
-  optionalSection = false,
   benefitProvided,
+  optionalSection = false,
+  sectionName,
 }: SubsectionFieldProps): RHFSlotProps[] {
   // The Authorization select menu in the optional sections should not include
   // the "None" option, accodring to HCD. This is because the original PDF did
@@ -265,15 +266,17 @@ function subsectionFormFields({
 }
 
 function subsection({
-  title,
-  sectionName,
+  benefitProvided,
+  dependency,
   description,
   headerSlots = [],
+  sectionName,
   showEHBBenchmark = true,
-  benefitProvided,
+  title,
 }: SubsectionData): Section {
   return {
     title: title,
+    dependency: dependency,
     subsection: true,
     form: [
       {
@@ -353,6 +356,17 @@ function subsection({
   };
 }
 
+const initialDependency: DependencyRule = {
+  conditions: [
+    {
+      name: `${formName}_alignment_benefits-align_select`,
+      type: "expectedValue",
+      expectedValue: "no",
+    },
+  ],
+  effect: { type: "show" },
+};
+
 export const v202401: FormSchema = {
   header: "ABP 5: Benefits description",
   sections: [
@@ -382,6 +396,7 @@ export const v202401: FormSchema = {
     },
     {
       title: "Description of benefits",
+      dependency: initialDependency,
       form: [
         {
           slots: [
@@ -406,6 +421,7 @@ export const v202401: FormSchema = {
     },
     {
       title: "Benefits included",
+      dependency: initialDependency,
       form: [
         {
           slots: [
@@ -431,23 +447,28 @@ export const v202401: FormSchema = {
     subsection({
       title: "1. Essential health benefit: Ambulatory patient services",
       sectionName: "ambulatory-patient",
+      dependency: initialDependency,
     }),
     subsection({
       title: "2. Essential health benefit: Emergency services",
       sectionName: "emergency",
+      dependency: initialDependency,
     }),
     subsection({
       title: "3. Essential health benefit: Hospitalization",
       sectionName: "hospitalization",
+      dependency: initialDependency,
     }),
     subsection({
       title: "4. Essential health benefit: Maternity and newborn care",
       sectionName: "maternity-newborn-care",
+      dependency: initialDependency,
     }),
     subsection({
       title:
         "5. Essential health benefit: Mental health and substance use disorder services including behavioral health treatment",
       sectionName: "mental-health-substance",
+      dependency: initialDependency,
       headerSlots: [
         {
           rhf: "Checkbox",
@@ -468,6 +489,7 @@ export const v202401: FormSchema = {
     {
       title: "6. Essential health benefit: Prescription drugs",
       subsection: true,
+      dependency: initialDependency,
       form: [
         {
           slots: [
@@ -602,6 +624,7 @@ export const v202401: FormSchema = {
       title:
         "7. Essential health benefit: Rehabilitative and habilitative services and devices",
       sectionName: "rehabilitative-and-habilitative",
+      dependency: initialDependency,
       headerSlots: [
         {
           rhf: "Checkbox",
@@ -622,11 +645,13 @@ export const v202401: FormSchema = {
     subsection({
       title: "8. Essential health benefit: Laboratory services",
       sectionName: "laboratory",
+      dependency: initialDependency,
     }),
     subsection({
       title:
         "9. Essential health benefit: Preventive and wellness services and chronic disease management",
       sectionName: "preventive-and-wellness",
+      dependency: initialDependency,
       description:
         "The state/territory must provide, at a minimum, a broad range of preventive services, including “A” and “B” services recommended by the United States Preventive Services Task Force; vaccines recommended by the Advisory Committee for Immunization Practices (ACIP); preventive care and screening for infants, children, and adults recommended by the Health Resources and Services Administration (HRSA) Bright Futures program; and additional preventive services for women recommended by the Institute of Medicine (IOM).",
     }),
@@ -634,10 +659,12 @@ export const v202401: FormSchema = {
       title:
         "10. Essential health benefit: Pediatric services including oral and vision care",
       sectionName: "pediatric",
+      dependency: initialDependency,
       benefitProvided: "Medicaid State Plan EPSDT Benefits",
     }),
     {
       title: "Optional items",
+      dependency: initialDependency,
       form: [
         {
           slots: [
