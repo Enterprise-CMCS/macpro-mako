@@ -695,7 +695,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Textarea",
                                 label:
-                                  "Why did the state or territory choose to exclude this benefit?",
+                                  "Why did the state/territory choose to exclude this benefit?",
                                 labelClassName: "font-bold",
                                 rules: { required: "* Required" },
                                 name: `${formName}_opt-items_explanation_textarea`,
