@@ -41,6 +41,10 @@ export default {
           DEFAULT: "hsl(var(--primary) / <alpha-value>)",
           foreground: "hsl(var(--primary-foreground) / <alpha-value>)",
         },
+        "primary-dark": {
+          DEFAULT: "hsl(var(--primary-dark) / <alpha-value>)",
+          foreground: "hsl(var(--primary-dark-foreground) / <alpha-value>)",
+        },
         secondary: {
           DEFAULT: "hsl(var(--secondary) / <alpha-value>)",
           foreground: "hsl(var(--secondary-foreground) / <alpha-value>)",
