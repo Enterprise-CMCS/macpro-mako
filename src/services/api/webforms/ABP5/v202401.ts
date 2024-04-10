@@ -174,6 +174,24 @@ function subsectionFormFields({
       },
     },
     {
+      rhf: "Input",
+      label: "Other information regarding authorization",
+      labelClassName: "font-bold",
+      name: `${formName}_${sectionName}_authorization-other-info_input`,
+      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      rules: { required: "* Required" },
+      dependency: {
+        conditions: [
+          {
+            name: `${formName}_${sectionName}_auth_select`,
+            type: "expectedValue",
+            expectedValue: "other",
+          },
+        ],
+        effect: { type: "show" },
+      },
+    },
+    {
       rhf: "Select",
       label: "Provider qualifications",
       labelClassName: "font-bold",
