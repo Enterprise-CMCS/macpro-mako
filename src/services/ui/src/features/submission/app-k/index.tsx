@@ -137,6 +137,15 @@ export const AppKSubmissionForm = () => {
                       (The last two digits relating to the number of amendments
                       in the waiver cycle start with “01” and ascend.)
                     </li>
+                    <li>
+                      <strong>
+                        The first ID entered will be used to track the
+                        submission on the OneMAC dashboard.
+                      </strong>
+                      {"  "}
+                      You’ll be able to find the other waiver IDs entered below
+                      by searching for the first waiver ID.
+                    </li>
                   </ul>
                 </p>
                 <div className="flex flex-col gap-2">
