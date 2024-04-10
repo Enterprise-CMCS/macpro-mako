@@ -51,7 +51,7 @@ export const WithdrawRai = ({
   const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
-  const syncRecord = useSyncStatus({
+  const { syncRecord, loading } = useSyncStatus({
     path: originPath ? originPath : "/dashboard",
     isCorrectStatus: (data) => {
       return (

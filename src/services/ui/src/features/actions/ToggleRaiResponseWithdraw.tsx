@@ -52,7 +52,7 @@ export const ToggleRaiResponseWithdraw = ({
     [type],
   );
 
-  const syncRecord = useSyncStatus({
+  const { syncRecord, loading } = useSyncStatus({
     path: originPath ? originPath : "/dashboard",
     isCorrectStatus: (data) => {
       const isEnabled = ACTION_WORD === "Enable";

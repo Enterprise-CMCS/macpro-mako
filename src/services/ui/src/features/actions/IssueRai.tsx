@@ -56,7 +56,7 @@ export const RaiIssue = ({
   const acceptAction = useCallback(() => {
     modal.setModalOpen(false);
   }, [originPath]);
-  const syncRecord = useSyncStatus({
+  const { syncRecord, loading } = useSyncStatus({
     path: originPath ? originPath : "/dashboard",
     isCorrectStatus: (data) => {
       return (

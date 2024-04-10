@@ -22,7 +22,6 @@ export const useSyncStatus = ({
   const [runQuery, setRunQuery] = useState(false);
   const [id, setId] = useState("");
   const authority = authorityById(id);
-  console.log("what is the authority", authority);
   // An unfortunate evil for now unless another idea is found
   // the key needs to be unique to avoid an edge case where
   // the state doesn't get reset because the key is the same
@@ -30,7 +29,7 @@ export const useSyncStatus = ({
   // data update count to fallback
   const uniqueQueryId = useRef(Math.random());
 
-  useQuery({
+  const { isLoading } = useQuery({
     queryKey: ["polling", id, uniqueQueryId],
     queryFn: async () => {
       try {
@@ -64,8 +63,11 @@ export const useSyncStatus = ({
     enabled: runQuery,
   });
 
-  return (id: string) => {
-    setRunQuery(true);
-    setId(id);
+  return {
+    loading: isLoading,
+    syncRecord: (id: string) => {
+      setRunQuery(true);
+      setId(id);
+    },
   };
 };

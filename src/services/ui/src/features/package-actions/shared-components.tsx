@@ -284,12 +284,12 @@ export const useDisplaySubmissionAlert = (
   const location = useLocation();
   //create querystring
 
-  const syncData = useSyncStatus({
+  const { loading, syncRecord } = useSyncStatus({
     path: location.state?.from ?? "/dashboard",
     isCorrectStatus,
   });
 
-  return useEffect(() => {
+  useEffect(() => {
     if (data?.submitted) {
       alert.setContent({
         header,
@@ -300,7 +300,7 @@ export const useDisplaySubmissionAlert = (
       alert.setBannerDisplayOn(
         location.state?.from?.split("?")[0] ?? "/dashboard",
       );
-      syncData(id);
+      syncRecord(id);
       if (location.pathname?.endsWith("/update-id")) {
         alert.setBannerDisplayOn("/dashboard");
       } else {
@@ -320,6 +320,10 @@ export const useDisplaySubmissionAlert = (
       window.scrollTo(0, 0);
     }
   }, [data, location.state, location.pathname]);
+
+  return {
+    loading,
+  };
 };
 
 // Utility Functions

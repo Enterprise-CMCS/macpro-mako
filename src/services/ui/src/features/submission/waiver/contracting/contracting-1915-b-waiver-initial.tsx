@@ -74,7 +74,7 @@ export const Contracting1915BWaiverInitialPage = () => {
   const urlQuery = useQueryString();
   const alert = useAlertContext();
   const originPath = useOriginPath();
-  const syncRecord = useSyncStatus({
+  const { loading, syncRecord } = useSyncStatus({
     path: originPath ? originPath : "/dashboard",
     isCorrectStatus: (data) => {
       return !!data;
