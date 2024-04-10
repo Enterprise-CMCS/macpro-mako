@@ -192,6 +192,7 @@ export const WaiverIdFieldArray = (props: any) => {
                     state: props.state,
                   })}
                 />
+                <I.FormMessage />
               </div>
             );
           })}
