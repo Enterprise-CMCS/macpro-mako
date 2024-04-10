@@ -52,7 +52,7 @@ export const mapSubmissionCrumb = (path: Route) => {
     case "/new-submission/waiver/b/b4/amendment/create":
       return "1915(b)(4) FFS Selective Contracting Waiver Amendment";
     case "/new-submission/waiver/app-k":
-      return "1915(c) APPENDIX K Amendment";
+      return "Request a 1915(c) Appendix K Amendment";
     case "/new-submission/waiver/temporary-extensions":
       return "Request 1915(b) or 1915(c) Temporary Extension";
     default:
