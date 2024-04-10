@@ -1,4 +1,9 @@
-import { FormSchema, RHFSlotProps, Section } from "shared-types";
+import {
+  DependencyRule,
+  FormSchema,
+  RHFSlotProps,
+  Section,
+} from "shared-types";
 
 const formName = "abp5";
 
