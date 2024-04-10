@@ -44,7 +44,7 @@ export const AppKSubmissionForm = () => {
         onSuccess: () => {
           alert.setContent({
             header: "Package submitted",
-            body: "Your submission has been received.",
+            body: "The 1915(c) Appendix K Amendment Request has been submitted.",
           });
           alert.setBannerShow(true);
           alert.setBannerDisplayOn("/dashboard");
