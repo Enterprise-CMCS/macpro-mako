@@ -162,8 +162,9 @@ export const AppKSubmissionForm = () => {
               name="proposedEffectiveDate"
               render={({ field }) => (
                 <I.FormItem className="max-w-sm">
-                  <I.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date <I.RequiredIndicator />
+                  <I.FormLabel className="font-bold block">
+                    Proposed Effective Date of 1915(c) Appendix K Amendment
+                    <I.RequiredIndicator />
                   </I.FormLabel>
                   <I.FormControl>
                     <I.DatePicker
