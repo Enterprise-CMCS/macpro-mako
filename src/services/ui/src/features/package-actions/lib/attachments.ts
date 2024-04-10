@@ -1,35 +1,44 @@
 import { Action, Authority } from "shared-types";
 import { AttachmentRecipe } from "@/utils";
+import { defaultIssueRaiAttachments } from "./modules/issue-rai";
+import {
+  chipSpaRaiAttachments,
+  medSpaRaiAttachments,
+} from "./modules/respond-to-rai";
+import {
+  chipWithdrawPackageAttachments,
+  medWithdrawPackageAttachments,
+} from "./modules/withdraw-package";
 
 type AttachmentsGroup = Record<Authority, AttachmentRecipe<any>[] | undefined>;
 
 const issueRaiFor: AttachmentsGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
-  waiver: undefined,
+  "chip spa": defaultIssueRaiAttachments,
+  "medicaid spa": defaultIssueRaiAttachments,
+  "1915(b)": defaultIssueRaiAttachments,
+  "1915(c)": defaultIssueRaiAttachments,
+  waiver: defaultIssueRaiAttachments,
 };
 
 const respondToRaiFor: AttachmentsGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
+  "chip spa": chipSpaRaiAttachments,
+  "medicaid spa": medSpaRaiAttachments,
   "1915(b)": undefined,
   "1915(c)": undefined,
   waiver: undefined,
 };
 
 const withdrawRaiFor: AttachmentsGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
-  waiver: undefined,
+  "chip spa": defaultIssueRaiAttachments,
+  "medicaid spa": defaultIssueRaiAttachments,
+  "1915(b)": defaultIssueRaiAttachments,
+  "1915(c)": defaultIssueRaiAttachments,
+  waiver: defaultIssueRaiAttachments,
 };
 
 const withdrawPackageFor: AttachmentsGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
+  "chip spa": chipWithdrawPackageAttachments,
+  "medicaid spa": medWithdrawPackageAttachments,
   "1915(b)": undefined,
   "1915(c)": undefined,
   waiver: undefined,
