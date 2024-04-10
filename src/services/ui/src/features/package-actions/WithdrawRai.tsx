@@ -65,7 +65,7 @@ export const WithdrawRai = () => {
   const { handleSubmit, formMethods } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
 
-  SC.useDisplaySubmissionAlert(
+  const { loading } = SC.useDisplaySubmissionAlert(
     "RAI response withdrawn",
     `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`,
     (data) => {
@@ -103,7 +103,7 @@ export const WithdrawRai = () => {
             label: <p>Explain your need for withdrawal.</p>,
           })}
         />
-        <SC.FormLoadingSpinner />
+        <SC.FormLoadingSpinner loading={loading} />
         <SC.ErrorBanner />
         <AdditionalFormInformation />
         <SC.SubmissionButtons

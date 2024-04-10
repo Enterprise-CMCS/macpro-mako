@@ -94,7 +94,7 @@ export const ToggleRaiResponseWithdraw = ({
   if (!item) return <Navigate path={"/dashboard"} />; // Prevents optional chains below
   return (
     <>
-      {isLoading && <LoadingSpinner />}
+      {(loading || isLoading) && <LoadingSpinner />}
       <ActionFormIntro
         title={`${ACTION_WORD} Formal RAI Response Withdraw Details`}
       >

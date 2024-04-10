@@ -29,7 +29,7 @@ export const useSyncStatus = ({
   // data update count to fallback
   const uniqueQueryId = useRef(Math.random());
 
-  const { isLoading } = useQuery({
+  const { isLoading, isFetched } = useQuery({
     queryKey: ["polling", id, uniqueQueryId],
     queryFn: async () => {
       try {
@@ -64,7 +64,7 @@ export const useSyncStatus = ({
   });
 
   return {
-    loading: isLoading,
+    loading: (isLoading && runQuery) || isFetched,
     syncRecord: (id: string) => {
       setRunQuery(true);
       setId(id);

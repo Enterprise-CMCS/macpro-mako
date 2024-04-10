@@ -84,7 +84,7 @@ export const WithdrawPackage = () => {
   const { handleSubmit, formMethods } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
 
-  SC.useDisplaySubmissionAlert(
+  const { loading } = SC.useDisplaySubmissionAlert(
     "Package withdrawn",
     `The package ${id} has been withdrawn.`,
     (data) => {
@@ -127,7 +127,7 @@ export const WithdrawPackage = () => {
             ),
           })}
         />
-        <SC.FormLoadingSpinner />
+        <SC.FormLoadingSpinner loading={loading} />
         <SC.ErrorBanner />
         <AdditionalFormInformation />
         <SC.SubmissionButtons

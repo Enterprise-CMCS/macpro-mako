@@ -68,7 +68,7 @@ export const UpdateId = () => {
   const { setValue } = useFormContext<z.infer<typeof updateIdSchema>>();
   setValue("id", id);
   const form = useFormContext();
-  SC.useDisplaySubmissionAlert(
+  const { loading } = SC.useDisplaySubmissionAlert(
     "ID Update submitted",
     `The ID Update for ${id} has been submitted.`,
     () => true,
@@ -125,7 +125,7 @@ export const UpdateId = () => {
           })}
         />
         <AdditionalFormInformation />
-        <SC.FormLoadingSpinner />
+        <SC.FormLoadingSpinner loading={loading} />
         <SC.ErrorBanner />
         <SC.SubmissionButtons />
       </form>

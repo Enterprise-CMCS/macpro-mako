@@ -139,7 +139,7 @@ export const TemporaryExtension = () => {
   const authority = urlAuthority ? urlAuthority : formAuthority;
 
   const parentId = urlId ? urlId : formId;
-  SC.useDisplaySubmissionAlert(
+  const { loading } = SC.useDisplaySubmissionAlert(
     "Temporary Extension issued",
     `The Temporary Extension Request for ${parentId} has been submitted.`,
     (data) => {
@@ -187,7 +187,7 @@ export const TemporaryExtension = () => {
           })}
         />
         <AdditionalFormInformation />
-        <SC.FormLoadingSpinner />
+        <SC.FormLoadingSpinner loading={true} />
         <SC.ErrorBanner />
         <SC.SubmissionButtons />
       </form>

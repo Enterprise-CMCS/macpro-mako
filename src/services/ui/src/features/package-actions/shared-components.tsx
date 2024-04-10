@@ -208,11 +208,17 @@ export const ErrorBanner = () => {
   );
 };
 
-export const FormLoadingSpinner = () => {
+export const FormLoadingSpinner = ({
+  loading = false,
+}: {
+  loading?: boolean;
+}) => {
   const { state } = useNavigation();
   const { formState } = useFormContext();
   return (
-    (state === "submitting" || formState.isSubmitting) && <LoadingSpinner />
+    (loading || state === "submitting" || formState.isSubmitting) && (
+      <LoadingSpinner />
+    )
   );
 };
 

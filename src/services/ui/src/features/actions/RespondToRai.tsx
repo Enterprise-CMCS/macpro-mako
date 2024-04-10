@@ -107,7 +107,7 @@ export const RespondToRai = ({
           }
         })}
       >
-        {form.formState.isSubmitting && <LoadingSpinner />}
+        {(loading || form.formState.isSubmitting) && <LoadingSpinner />}
         {/* Intro */}
         <ActionFormIntro
           title={`${item._source.authority} Formal RAI Response Details`}

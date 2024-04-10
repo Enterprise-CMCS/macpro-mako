@@ -70,7 +70,7 @@ export const RespondToRai = () => {
   const { handleSubmit, formMethods } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
 
-  SC.useDisplaySubmissionAlert(
+  const { loading } = SC.useDisplaySubmissionAlert(
     "RAI response submitted",
     `The RAI response for ${id} has been submitted.`,
     (data) => {
@@ -119,7 +119,7 @@ export const RespondToRai = () => {
           })}
         />
         <AdditionalFormInformation />
-        <SC.FormLoadingSpinner />
+        <SC.FormLoadingSpinner loading={loading} />
         <SC.ErrorBanner />
         <SC.SubmissionButtons />
       </form>

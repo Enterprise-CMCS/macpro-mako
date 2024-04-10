@@ -59,7 +59,7 @@ export const ToggleRaiResponseWithdraw = ({ isEnabled }: Props) => {
 
   const { id } = useParams() as { id: string };
 
-  SC.useDisplaySubmissionAlert(
+  const { loading } = SC.useDisplaySubmissionAlert(
     `RAI response withdrawal ${raiTypeText.toLowerCase()}d`,
     raiTypeText === "Enable"
       ? "The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied."
@@ -83,7 +83,7 @@ export const ToggleRaiResponseWithdraw = ({ isEnabled }: Props) => {
       </SC.ActionDescription>
       <SC.PackageSection />
       <form onSubmit={handleSubmit}>
-        <SC.FormLoadingSpinner />
+        <SC.FormLoadingSpinner loading={loading} />
         <SC.ErrorBanner />
         <SC.SubmissionButtons />
       </form>

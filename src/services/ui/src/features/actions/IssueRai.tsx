@@ -103,7 +103,7 @@ export const RaiIssue = ({
           }
         })}
       >
-        {form.formState.isSubmitting && <LoadingSpinner />}
+        {(loading || form.formState.isSubmitting) && <LoadingSpinner />}
         {/* Intro */}
         <ActionFormIntro title={"Formal RAI Details"}>
           <RequiredIndicator /> Indicates a required field

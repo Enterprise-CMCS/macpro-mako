@@ -55,7 +55,7 @@ export const CompleteIntake = () => {
   const { handleSubmit } = SC.useIntakePackage();
   const { id, authority } = useParams("/action/:authority/:id/:type");
   const form = useFormContext();
-  SC.useDisplaySubmissionAlert(
+  const { loading } = SC.useDisplaySubmissionAlert(
     "Intake Complete",
     `The Intake for ${id} has been completed.`,
     () => true,
@@ -99,7 +99,7 @@ export const CompleteIntake = () => {
         />
         <SubTypeSelect authorityId={authorityId} />
         <CPOCSelect control={form.control} name="cpoc" />
-        <SC.FormLoadingSpinner />
+        <SC.FormLoadingSpinner loading={loading} />
         <SC.ErrorBanner />
         <SC.SubmissionButtons />
       </form>
