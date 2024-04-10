@@ -46,6 +46,7 @@ export const SlotStateSelect = <
             ))}
           </I.SelectContent>
         </I.Select>
+        <I.FormMessage />
       </I.FormItem>
     );
   };

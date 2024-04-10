@@ -85,6 +85,7 @@ export const AppKSubmissionForm = () => {
                     Amendment Title <I.RequiredIndicator />
                   </I.FormLabel>
                   <I.Textarea {...field} className="h-[80px]" />
+                  <I.FormMessage />
                 </I.FormItem>
               )}
             />
