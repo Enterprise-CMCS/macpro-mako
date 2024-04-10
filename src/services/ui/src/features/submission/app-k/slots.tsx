@@ -136,7 +136,11 @@ export const SlotWaiverId = <
               })}
               placeholder="#####.R##.##"
               autoFocus
-              onChange={field.onChange}
+              onChange={(e) => {
+                field.onChange({
+                  target: { value: e.target.value.toUpperCase() },
+                });
+              }}
               value={field.value}
             />
             {loading && (
@@ -192,7 +196,6 @@ export const WaiverIdFieldArray = (props: any) => {
                     state: props.state,
                   })}
                 />
-                <I.FormMessage />
               </div>
             );
           })}
