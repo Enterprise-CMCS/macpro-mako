@@ -5,7 +5,11 @@ import { useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { useOriginPath } from "@/utils";
 
-export const SubmitAndCancelBtnSection = () => {
+export const SubmitAndCancelBtnSection = ({
+  loading = false,
+}: {
+  loading?: boolean;
+}) => {
   const form = useFormContext();
   const navigate = useNavigate();
   const originPath = useOriginPath();
@@ -18,7 +22,7 @@ export const SubmitAndCancelBtnSection = () => {
 
   return (
     <>
-      {form.formState.isSubmitting && (
+      {(loading || form.formState.isSubmitting) && (
         <div className="p-4">
           <LoadingSpinner />
         </div>

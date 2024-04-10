@@ -268,7 +268,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection />
+          <SubmitAndCancelBtnSection loading={loading} />
         </form>
       </Inputs.Form>
       <FAQFooter />

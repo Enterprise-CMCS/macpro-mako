@@ -291,7 +291,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection />
+          <SubmitAndCancelBtnSection loading={loading} />
         </form>
       </Inputs.Form>
       <FAQFooter />

@@ -232,7 +232,7 @@ export const Contracting1915BWaiverInitialPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection />
+          <SubmitAndCancelBtnSection loading={loading} />
         </form>
       </Inputs.Form>
       <FAQFooter />

@@ -265,7 +265,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection />
+          <SubmitAndCancelBtnSection loading={loading} />
         </form>
       </Inputs.Form>
       <FAQFooter />

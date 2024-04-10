@@ -252,7 +252,7 @@ export const MedicaidSpaFormPage = () => {
               Missing or malformed information. Please see errors above.
             </Alert>
           ) : null}
-          {form.formState.isSubmitting ? (
+          {loading || form.formState.isSubmitting ? (
             <div className="p-4">
               <LoadingSpinner />
             </div>
