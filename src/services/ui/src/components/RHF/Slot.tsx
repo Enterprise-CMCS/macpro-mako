@@ -44,7 +44,7 @@ export const RHFSlot = <
   props,
   text,
   labelClassName,
-  formItemStyling,
+  formItemClassName,
   groupNamePrefix,
   ...rest
 }: RHFSlotProps & { control: any }): ControllerProps<
@@ -62,7 +62,7 @@ export const RHFSlot = <
     return (
       <FormItem
         className={`flex flex-col gap-1 py-2${
-          formItemStyling ? ` ${formItemStyling}` : ""
+          formItemClassName ? ` ${formItemClassName}` : ""
         }`}
       >
         {label && (

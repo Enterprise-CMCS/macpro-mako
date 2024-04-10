@@ -12,7 +12,7 @@ export const v202401: FormSchema = {
               name: "abp2c_assurances_mandatory-identify-exempt_checkgroup",
               rhf: "Checkbox",
               descriptionAbove: true,
-              descriptionStyling: "text-black text-base",
+              descriptionClassName: "text-black text-base",
               description: [
                 "These assurances must be made by the state/territory if enrollment is mandatory for any of the target populations or subpopulations.",
                 {
