@@ -127,7 +127,7 @@ export const WithdrawPackage = () => {
 
               modal.setContent({
                 header: "Are you sure you want to withdraw this package?",
-                body: `All packages associated with ${id} will able be withdrawn.`,
+                body: `All packages associated with ${id} will also be withdrawn.`,
                 acceptButtonText: "Yes, withdraw",
                 cancelButtonText: "Cancel",
               });
