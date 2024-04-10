@@ -83,16 +83,19 @@ interface SubsectionData {
   description?: string;
   headerSlots?: RHFSlotProps[];
   showEHBBenchmark?: boolean;
+  benefitProvided?: string;
 }
 
 interface SubsectionFieldProps {
   sectionName: string;
   optionalSection?: boolean;
+  benefitProvided?: string;
 }
 
 function subsectionFormFields({
   sectionName,
   optionalSection = false,
+  benefitProvided,
 }: SubsectionFieldProps): RHFSlotProps[] {
   // The Authorization select menu in the optional sections should not include
   // the "None" option, accodring to HCD. This is because the original PDF did
@@ -103,16 +106,24 @@ function subsectionFormFields({
     : authorizationOptions;
 
   return [
-    {
-      rhf: "Input",
-      label: "Benefit provided",
-      labelClassName: "font-bold",
-      name: `${formName}_${sectionName}_benefit-provided_input`,
-      rules: { required: "* Required" },
-      props: {
-        className: "w-[300px]",
-      },
-    },
+    benefitProvided
+      ? {
+          rhf: "TextDisplay",
+          label: "Benefit provided",
+          labelClassName: "font-bold",
+          name: "test",
+          text: benefitProvided,
+        }
+      : {
+          rhf: "Input",
+          label: "Benefit provided",
+          labelClassName: "font-bold",
+          name: `${formName}_${sectionName}_benefit-provided_input`,
+          rules: { required: "* Required" },
+          props: {
+            className: "w-[300px]",
+          },
+        },
     {
       rhf: "Select",
       label: "Source",
@@ -259,6 +270,7 @@ function subsection({
   description,
   headerSlots = [],
   showEHBBenchmark = true,
+  benefitProvided,
 }: SubsectionData): Section {
   return {
     title: title,
@@ -278,7 +290,10 @@ function subsection({
             },
             fields: [
               ...headerSlots,
-              ...subsectionFormFields({ sectionName: sectionName }),
+              ...subsectionFormFields({
+                sectionName: sectionName,
+                benefitProvided: benefitProvided,
+              }),
               ...(showEHBBenchmark
                 ? ([
                     {
@@ -619,6 +634,7 @@ export const v202401: FormSchema = {
       title:
         "10. Essential health benefit: Pediatric services including oral and vision care",
       sectionName: "pediatric",
+      benefitProvided: "Medicaid State Plan EPSDT Benefits",
     }),
     {
       title: "Optional items",
