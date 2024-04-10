@@ -172,7 +172,8 @@ export const WaiverIdFieldArray = (props: any) => {
             Control Numbers (optional)
           </I.FormLabel>
           <I.FormLabel>
-            Other waiver IDs that will be associated with the APP-K
+            Other waiver IDs that will be associated with the 1915(c) Appendix K
+            Amendment
           </I.FormLabel>
         </div>
 
