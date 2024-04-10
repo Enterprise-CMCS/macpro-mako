@@ -115,6 +115,18 @@ export const WithdrawPackage = () => {
               },
             ]}
           />
+          <FormField
+            control={formMethods.control}
+            name={"additionalInformation"}
+            render={SlotAdditionalInfo({
+              label: (
+                <p>
+                  Explain your need for withdrawal or upload supporting
+                  documentation.
+                </p>
+              ),
+            })}
+          />
           <SC.FormLoadingSpinner />
           <SC.ErrorBanner />
           <AdditionalFormInformation />
