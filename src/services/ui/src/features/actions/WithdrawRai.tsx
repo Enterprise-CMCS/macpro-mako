@@ -133,7 +133,6 @@ export const WithdrawRai = ({
           name={"additionalInformation" as Path<typeof schema>}
           render={SlotAdditionalInfo({
             label: <p>Explain your need for withdrawal.</p>,
-            description: "4,000 characters allowed",
             className: "pt-6",
             required: true,
           })}
