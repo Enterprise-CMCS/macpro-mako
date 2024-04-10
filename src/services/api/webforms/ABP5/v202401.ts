@@ -484,10 +484,10 @@ export const v202401: FormSchema = {
               text: "Coverage is at least the greater of one drug in each U.S. Pharmacopeia (USP) category and class or the same number of prescription drugs in each category and class as the base benchmark.",
             },
             {
-              rhf: "Radio",
+              rhf: "Checkbox",
               label: "Prescription drug limits",
               labelClassName: "font-bold",
-              name: `${formName}_prescrip-drugs_limits_radio`,
+              name: `${formName}_prescrip-drugs-limits_checkbox`,
               rules: { required: "* Required" },
               props: {
                 options: [
