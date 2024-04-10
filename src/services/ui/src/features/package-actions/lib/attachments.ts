@@ -2,12 +2,13 @@ import { Action, Authority } from "shared-types";
 import { AttachmentRecipe } from "@/utils";
 import { defaultIssueRaiAttachments } from "./modules/issue-rai";
 import {
+  bWaiverRaiAttachments,
   chipSpaRaiAttachments,
   medSpaRaiAttachments,
 } from "./modules/respond-to-rai";
 import {
   chipWithdrawPackageAttachments,
-  medWithdrawPackageAttachments,
+  defaultWithdrawPackageAttachments,
 } from "./modules/withdraw-package";
 
 type AttachmentsGroup = Record<Authority, AttachmentRecipe<any>[] | undefined>;
@@ -17,15 +18,13 @@ const issueRaiFor: AttachmentsGroup = {
   "medicaid spa": defaultIssueRaiAttachments,
   "1915(b)": defaultIssueRaiAttachments,
   "1915(c)": defaultIssueRaiAttachments,
-  waiver: defaultIssueRaiAttachments,
 };
 
 const respondToRaiFor: AttachmentsGroup = {
   "chip spa": chipSpaRaiAttachments,
   "medicaid spa": medSpaRaiAttachments,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
-  waiver: undefined,
+  "1915(b)": bWaiverRaiAttachments,
+  "1915(c)": bWaiverRaiAttachments,
 };
 
 const withdrawRaiFor: AttachmentsGroup = {
@@ -33,15 +32,13 @@ const withdrawRaiFor: AttachmentsGroup = {
   "medicaid spa": defaultIssueRaiAttachments,
   "1915(b)": defaultIssueRaiAttachments,
   "1915(c)": defaultIssueRaiAttachments,
-  waiver: defaultIssueRaiAttachments,
 };
 
 const withdrawPackageFor: AttachmentsGroup = {
   "chip spa": chipWithdrawPackageAttachments,
-  "medicaid spa": medWithdrawPackageAttachments,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
-  waiver: undefined,
+  "medicaid spa": defaultWithdrawPackageAttachments,
+  "1915(b)": defaultWithdrawPackageAttachments,
+  "1915(c)": defaultWithdrawPackageAttachments,
 };
 
 const tempExtensionFor: AttachmentsGroup = {
@@ -49,7 +46,6 @@ const tempExtensionFor: AttachmentsGroup = {
   "medicaid spa": undefined,
   "1915(b)": undefined,
   "1915(c)": undefined,
-  waiver: undefined,
 };
 
 const updateIdFor: AttachmentsGroup = {
@@ -57,7 +53,6 @@ const updateIdFor: AttachmentsGroup = {
   "medicaid spa": undefined,
   "1915(b)": undefined,
   "1915(c)": undefined,
-  waiver: undefined,
 };
 
 const completeIntakeFor: AttachmentsGroup = {
@@ -65,7 +60,6 @@ const completeIntakeFor: AttachmentsGroup = {
   "medicaid spa": undefined,
   "1915(b)": undefined,
   "1915(c)": undefined,
-  waiver: undefined,
 };
 
 export const getAttachmentsFor = (

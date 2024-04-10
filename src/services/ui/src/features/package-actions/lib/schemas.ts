@@ -1,11 +1,15 @@
 import { Action, Authority } from "shared-types";
 import { ZodEffects, ZodObject } from "zod";
 import { defaultIssueRaiSchema } from "./modules/issue-rai";
-import { chipSpaRaiSchema, medSpaRaiSchema } from "./modules/respond-to-rai";
+import {
+  bWaiverRaiSchema,
+  chipSpaRaiSchema,
+  medSpaRaiSchema,
+} from "./modules/respond-to-rai";
 import { defaultWithdrawRaiSchema } from "./modules/withdraw-rai";
 import {
   chipWithdrawPackageSchema,
-  medWithdrawPackageSchema,
+  defaultWithdrawPackageSchema,
 } from "./modules/withdraw-package";
 
 type Schema = ZodObject<any> | ZodEffects<any>;
@@ -16,15 +20,13 @@ const issueRaiFor: SchemaMap = {
   "medicaid spa": defaultIssueRaiSchema,
   "1915(b)": defaultIssueRaiSchema,
   "1915(c)": defaultIssueRaiSchema,
-  waiver: defaultIssueRaiSchema,
 };
 
 const respondToRaiFor: SchemaMap = {
   "chip spa": chipSpaRaiSchema,
   "medicaid spa": medSpaRaiSchema,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
-  waiver: undefined,
+  "1915(b)": bWaiverRaiSchema,
+  "1915(c)": bWaiverRaiSchema,
 };
 
 const withdrawRaiFor: SchemaMap = {
@@ -32,15 +34,13 @@ const withdrawRaiFor: SchemaMap = {
   "medicaid spa": defaultWithdrawRaiSchema,
   "1915(b)": defaultWithdrawRaiSchema,
   "1915(c)": defaultWithdrawRaiSchema,
-  waiver: defaultWithdrawRaiSchema,
 };
 
 const withdrawPackageFor: SchemaMap = {
   "chip spa": chipWithdrawPackageSchema,
-  "medicaid spa": medWithdrawPackageSchema,
-  "1915(b)": undefined,
+  "medicaid spa": defaultWithdrawPackageSchema,
+  "1915(b)": defaultWithdrawPackageSchema,
   "1915(c)": undefined,
-  waiver: undefined,
 };
 
 const tempExtensionFor: SchemaMap = {
@@ -48,7 +48,6 @@ const tempExtensionFor: SchemaMap = {
   "medicaid spa": undefined,
   "1915(b)": undefined,
   "1915(c)": undefined,
-  waiver: undefined,
 };
 
 const updateIdFor: SchemaMap = {
@@ -56,7 +55,6 @@ const updateIdFor: SchemaMap = {
   "medicaid spa": undefined,
   "1915(b)": undefined,
   "1915(c)": undefined,
-  waiver: undefined,
 };
 
 const completeIntakeFor: SchemaMap = {
@@ -64,7 +62,6 @@ const completeIntakeFor: SchemaMap = {
   "medicaid spa": undefined,
   "1915(b)": undefined,
   "1915(c)": undefined,
-  waiver: undefined,
 };
 
 export const getSchemaFor = (a: Action, p: Authority): Schema | undefined => {

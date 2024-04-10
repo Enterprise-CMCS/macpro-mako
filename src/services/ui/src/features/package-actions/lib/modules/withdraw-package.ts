@@ -22,7 +22,7 @@ export const chipWithdrawPackageAttachments: AttachmentRecipe<
   },
 ];
 
-export const medWithdrawPackageSchema = z
+export const defaultWithdrawPackageSchema = z
   .object({
     additionalInformation: zAdditionalInfo.optional(),
     attachments: z.object({
@@ -44,8 +44,8 @@ export const medWithdrawPackageSchema = z
       return z.NEVER;
     }
   });
-export const medWithdrawPackageAttachments: AttachmentRecipe<
-  z.infer<typeof medWithdrawPackageSchema>
+export const defaultWithdrawPackageAttachments: AttachmentRecipe<
+  z.infer<typeof defaultWithdrawPackageSchema>
 >[] = [
   {
     name: "supportingDocumentation",

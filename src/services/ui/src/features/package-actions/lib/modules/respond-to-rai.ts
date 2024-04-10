@@ -72,3 +72,21 @@ export const medSpaRaiAttachments: AttachmentRecipe<
     required: false,
   },
 ];
+
+export const bWaiverRaiSchema = z.object({
+  additionalInformation: z.string().optional().default(""),
+  attachments: z.object({
+    raiResponseLetter: zAttachmentRequired({ min: 1 }),
+    other: zAttachmentOptional,
+  }),
+});
+export const bWaiverRaiAttachments: AttachmentRecipe<
+  z.infer<typeof bWaiverRaiSchema>
+>[] = [
+  {
+    name: "raiResponseLetter",
+    required: true,
+    label: "Waiver RAI Response",
+  },
+  { label: "Other", required: false, name: "other" },
+];
