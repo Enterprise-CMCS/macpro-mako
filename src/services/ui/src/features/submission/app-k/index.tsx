@@ -75,7 +75,7 @@ export const AppKSubmissionForm = () => {
       <I.Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
           <C.SectionCard title="1915(c) Appendix K Amendment Request Details">
-            <Content.FormIntroText />
+            <Content.FormIntroTextForAppK />
             <I.FormField
               control={form.control}
               name="title"
