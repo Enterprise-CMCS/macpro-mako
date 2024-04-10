@@ -56,13 +56,7 @@ export const AppK = () => {
             return (
               <T.TableRow key={`${CHILD._id}`}>
                 <T.TableCell className="font-medium">
-                  <Link
-                    path="/details"
-                    query={{ id: CHILD._id }}
-                    className="hover:underline font-semibold text-blue-600"
-                  >
-                    {CHILD._id}
-                  </Link>
+                  <p>{CHILD._id}</p>
                 </T.TableCell>
                 <T.TableCell>
                   <Button
