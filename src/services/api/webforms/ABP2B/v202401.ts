@@ -113,7 +113,7 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2b_delivery-of-info_describe-other-input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                         },
@@ -221,7 +221,7 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2b_delivery-of-info_where-will-info-be-doc-describe-other_input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                         },
@@ -263,7 +263,7 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2b_delivery-of-info_describe-other_input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                         },

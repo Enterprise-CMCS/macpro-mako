@@ -14,7 +14,7 @@ export const v202401: FormSchema = {
               name: "abp-2a_benefit-align-and-require_is-state-territory-aligned_select",
               label:
                 "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
-              labelStyling: "font-bold text-[0.8rem]",
+              labelClassName: "font-bold text-[0.8rem]",
               description:
                 "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
               descriptionAbove: true,
@@ -164,7 +164,7 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2a_delivery-of-info_describe-other-input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                         },
@@ -272,7 +272,7 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2a_delivery-of-info_where-will-info-be-doc-describe-other_input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                         },
@@ -314,7 +314,7 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2a_delivery-of-info_describe-other_input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                         },
