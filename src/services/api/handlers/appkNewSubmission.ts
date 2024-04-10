@@ -56,11 +56,17 @@ export const submit = async (event: APIGatewayEvent) => {
       );
     }
 
+    const notificationMetadata = {
+      submissionDate: getNextBusinessDayTimestamp(),
+      proposedEffectiveDate: body.proposedEffectiveDate,
+    };
+
     const validateZod = onemacSchema.safeParse({
       ...body,
       ...(!!Number(WINDEX) && {
         appkParentId: `${body.state}-${body.parentWaiver}`,
       }),
+      notificationMetadata,
     });
 
     if (!validateZod.success) {
@@ -147,7 +153,9 @@ export const submit = async (event: APIGatewayEvent) => {
       await produceMessage(
         process.env.topicName as string,
         SCHEMA.id,
-        JSON.stringify(SCHEMA.data)
+        JSON.stringify(
+          SCHEMA.data,
+        )
       );
     }
 

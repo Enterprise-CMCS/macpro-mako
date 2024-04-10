@@ -124,6 +124,9 @@ export const submit = async (event: APIGatewayEvent) => {
         submissionDate: getNextBusinessDayTimestamp(),
         statusDate: seaToolFriendlyTimestamp(),
         changedDate: Date.now(),
+        notificationMetadata: {
+          submissionDate: getNextBusinessDayTimestamp(),
+        },
       }),
     );
 
