@@ -187,7 +187,7 @@ export const TemporaryExtension = () => {
           })}
         />
         <AdditionalFormInformation />
-        <SC.FormLoadingSpinner loading={true} />
+        <SC.FormLoadingSpinner loading={loading} />
         <SC.ErrorBanner />
         <SC.SubmissionButtons />
       </form>
