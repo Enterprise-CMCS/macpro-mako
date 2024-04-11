@@ -31,9 +31,8 @@ import {
   useOriginPath,
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
-import {
-  AdditionalInfoInput,
-} from "../shared-components";
+import { FormField } from "@/components/Inputs";
+import { SlotAdditionalInfo } from "@/features";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -228,10 +227,18 @@ export const MedicaidSpaFormPage = () => {
               />
             ))}
           </SectionCard>
-          <AdditionalInfoInput
-            control={form.control}
-            name="additionalInformation"
-          />
+          <SectionCard title={"Additional Information"}>
+            <FormField
+              control={form.control}
+              name={"additionalInformation"}
+              render={SlotAdditionalInfo({
+                withoutHeading: true,
+                label: (
+                  <p>Add anything else you would like to share with CMS</p>
+                ),
+              })}
+            />
+          </SectionCard>
           <Content.PreSubmissionMessage />
           {Object.keys(form.formState.errors).length !== 0 ? (
             <Alert className="mb-6" variant="destructive">

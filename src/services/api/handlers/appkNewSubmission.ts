@@ -52,15 +52,25 @@ export const submit = async (event: APIGatewayEvent) => {
     if (!validateRegex) {
       throw console.error(
         "MAKO Validation Error. The following APP-K Id format is incorrect: ",
-        ID
+        ID,
       );
     }
+
+    const notificationMetadata = {
+      submissionDate: getNextBusinessDayTimestamp(),
+      proposedEffectiveDate: body.proposedEffectiveDate,
+    };
 
     const validateZod = onemacSchema.safeParse({
       ...body,
       ...(!!Number(WINDEX) && {
         appkParentId: `${body.state}-${body.parentWaiver}`,
       }),
+      ...(!Number(WINDEX) && {
+        appkTitle: body.title,
+        appkParent: true,
+      }),
+      notificationMetadata,
     });
 
     if (!validateZod.success) {
@@ -68,7 +78,7 @@ export const submit = async (event: APIGatewayEvent) => {
         "MAKO Validation Error. The following record failed to parse: ",
         JSON.stringify(validateZod),
         "Because of the following Reason(s): ",
-        validateZod.error.message
+        validateZod.error.message,
       );
     }
 
@@ -79,7 +89,7 @@ export const submit = async (event: APIGatewayEvent) => {
     if (existsInOpensearch) {
       throw console.error(
         "MAKO Validation Error. The following APP-K Id already exists ",
-        `${body.state}-${ID}`
+        `${body.state}-${ID}`,
       );
     }
 
@@ -147,7 +157,7 @@ export const submit = async (event: APIGatewayEvent) => {
       await produceMessage(
         process.env.topicName as string,
         SCHEMA.id,
-        JSON.stringify(SCHEMA.data)
+        JSON.stringify(SCHEMA.data),
       );
     }
 

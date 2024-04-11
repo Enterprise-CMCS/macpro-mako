@@ -47,7 +47,7 @@ export const useGetItemCache = (id: string) => {
   const data = (() => {
     const data = queryClient.getQueryCache().find(["record", id])?.state
       .data as opensearch.main.ItemResult;
-    return data._source;
+    return data?._source;
   })();
 
   const refetch = () => {

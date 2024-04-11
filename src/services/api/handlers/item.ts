@@ -24,7 +24,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
     const packageResult = await getPackage(body.id);
 
     let appkChildren: any[] = [];
-    if (packageResult._source.authority === Authority["1915c"]) {
+    if (packageResult._source.appkParent) {
       const children = await getAppkChildren(body.id);
       appkChildren = children.hits.hits;
     }

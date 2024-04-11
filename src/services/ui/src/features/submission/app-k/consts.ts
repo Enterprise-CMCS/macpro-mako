@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { zAttachmentRequired } from "@/utils";
+import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
 import { zAppkWaiverNumberSchema } from "@/utils";
 export const OPTIONS_STATE = [
   { label: "Alabama", value: "AL" },
@@ -65,10 +65,10 @@ export const FORM = z.object({
   parentWaiver: zAppkWaiverNumberSchema,
   childWaivers: z.array(zAppkWaiverNumberSchema),
   additionalInformation: z.string().max(4000).optional(),
-  title: z.string(),
+  title: z.string().trim().min(1, { message: "Required" }),
   attachments: z.object({
     appk: zAttachmentRequired({ min: 1 }),
-    other: zAttachmentRequired({ min: 1 }),
+    other: zAttachmentOptional,
   }),
   proposedEffectiveDate: z.date(),
   seaActionType: z.string().default("Amend"),

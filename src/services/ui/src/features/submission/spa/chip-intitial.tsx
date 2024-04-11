@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
@@ -14,6 +14,7 @@ import {
   FAQ_TAB,
   useAlertContext,
   useLocationCrumbs,
+  FormField,
 } from "@/components";
 import * as Inputs from "@/components/Inputs";
 import * as Content from "@/components";
@@ -30,9 +31,7 @@ import {
 } from "@/utils";
 
 import { useQuery as useQueryString } from "@/hooks";
-import {
-  AdditionalInfoInput,
-} from "../shared-components";
+import { SlotAdditionalInfo } from "@/features";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -217,12 +216,18 @@ export const ChipSpaFormPage = () => {
               />
             ))}
           </SectionCard>
-
-          <AdditionalInfoInput
-            control={form.control}
-            name="additionalInformation"
-          />
-
+          <SectionCard title={"Additional Information"}>
+            <FormField
+              control={form.control}
+              name={"additionalInformation"}
+              render={SlotAdditionalInfo({
+                withoutHeading: true,
+                label: (
+                  <p>Add anything else you would like to share with CMS</p>
+                ),
+              })}
+            />
+          </SectionCard>
           <Content.PreSubmissionMessage />
           {Object.keys(form.formState.errors).length !== 0 ? (
             <Alert className="mb-6 " variant="destructive">

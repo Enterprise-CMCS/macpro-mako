@@ -120,7 +120,7 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       cell: renderCellDate("finalDispositionDate"),
     },
     {
-      field: "origin",
+      field: "origin.keyword",
       label: "Submission Source",
       hidden: true,
       transform: (data) => data.origin,

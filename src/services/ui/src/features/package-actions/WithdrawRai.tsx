@@ -1,12 +1,13 @@
 import { submit, getUser } from "@/api";
 import { useParams } from "react-router-dom";
-import { Alert, useModalContext } from "@/components";
+import { Alert, FormField, useModalContext } from "@/components";
 import { Info } from "lucide-react";
 import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/utils";
 import { unflatten } from "flat";
 import { Authority } from "shared-types";
 import { z } from "zod";
+import { SlotAdditionalInfo } from "@/features";
 
 const title: Record<Authority, string> = {
   "1915(b)": "1915(b) Withdraw Formal RAI Response Details",
@@ -61,7 +62,7 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
 export const WithdrawRai = () => {
   const modal = useModalContext();
-  const { handleSubmit } = SC.useSubmitForm();
+  const { handleSubmit, formMethods } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
   SC.useDisplaySubmissionAlert(
     "RAI response withdrawn",
@@ -87,7 +88,13 @@ export const WithdrawRai = () => {
             },
           ]}
         />
-        <SC.AdditionalInformation helperText="Explain your need for withdrawal." />
+        <FormField
+          control={formMethods.control}
+          name={"additionalInformation"}
+          render={SlotAdditionalInfo({
+            label: <p>Explain your need for withdrawal.</p>,
+          })}
+        />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
         <AdditionalFormInformation />

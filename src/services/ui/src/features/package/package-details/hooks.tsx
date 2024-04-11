@@ -56,6 +56,11 @@ export const recordDetails = (
     canView: () => true,
   },
   {
+    label: "Amendment Title",
+    value: <p>{data?.appkTitle || BLANK_VALUE}</p>,
+    canView: () => !!data.appkTitle,
+  },
+  {
     label: "Subject",
     value: <p>{data?.subject || BLANK_VALUE}</p>,
     canView: (u) =>

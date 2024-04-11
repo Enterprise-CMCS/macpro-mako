@@ -146,7 +146,6 @@ export const RaiIssue = ({
                 Add anything else that you would like to share with the State.
               </p>
             ),
-            description: "4,000 characters allowed",
             className: "pt-6",
             required: true,
           })}

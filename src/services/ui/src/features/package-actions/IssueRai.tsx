@@ -1,4 +1,4 @@
-import { Alert } from "@/components";
+import { Alert, FormField, SectionCard } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { useParams } from "react-router-dom";
 import { z } from "zod";
@@ -8,6 +8,7 @@ import { Authority } from "shared-types";
 import { unflatten } from "flat";
 import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
 import { submit } from "@/api/submissionService";
+import { SlotAdditionalInfo } from "@/features";
 
 type Attachments = keyof z.infer<typeof issueRaiSchema>["attachments"];
 export const issueRaiSchema = z.object({
@@ -48,7 +49,7 @@ export const issueRaiDefaultAction: SC.ActionFunction = async ({
 };
 
 export const IssueRai = () => {
-  const { handleSubmit } = SC.useSubmitForm();
+  const { handleSubmit, formMethods } = SC.useSubmitForm();
   const { id } = useParams();
 
   SC.useDisplaySubmissionAlert(
@@ -83,7 +84,17 @@ export const IssueRai = () => {
             { name: "Other", required: false, registerName: "other" },
           ]}
         />
-        <SC.AdditionalInformation />
+        <FormField
+          control={formMethods.control}
+          name={"additionalInformation"}
+          render={SlotAdditionalInfo({
+            label: (
+              <p>
+                Add anything else that you would like to share with the State.
+              </p>
+            ),
+          })}
+        />
         <AdditionalFormInformation />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />

@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 
-import { SlotAttachments } from "@/features/actions";
+import { SlotAdditionalInfo, SlotAttachments } from "@/features/actions";
 import * as I from "@/components/Inputs";
 import * as C from "@/components";
-import { useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FORM, SchemaForm } from "./consts";
 import { SlotStateSelect, SlotWaiverId, WaiverIdFieldArray } from "./slots";
@@ -12,20 +12,21 @@ import { useGetUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import * as Content from "@/components";
-import { zAppkWaiverNumberSchema } from "@/utils";
+import { useOriginPath, zAppkWaiverNumberSchema } from "@/utils";
 import { Link } from "react-router-dom";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
   const crumbs = C.useLocationCrumbs();
   const { data: user } = useGetUser();
-  const [isNavigating, setIsNavigating] = useState(false);
-
+  const modal = C.useModalContext();
+  const originPath = useOriginPath();
   const form = useForm<SchemaForm>({
     resolver: zodResolver(FORM),
   });
+  const alert = C.useAlertContext();
 
   const submission = useMutation({
     mutationFn: (config: SubmissionServiceParameters<any>) => submit(config),
@@ -41,13 +42,13 @@ export const AppKSubmissionForm = () => {
       },
       {
         onSuccess: () => {
-          setIsNavigating(true);
-          setTimeout(() => {
-            nav({
-              path: "/details",
-              query: { id: `${draft.state}-${draft.parentWaiver}` },
-            });
-          }, 5000); // delay for opensearch record to be ready
+          alert.setContent({
+            header: "Package submitted",
+            body: "The 1915(c) Appendix K Amendment Request has been submitted.",
+          });
+          alert.setBannerShow(true);
+          alert.setBannerDisplayOn("/dashboard");
+          nav(originPath ? { path: originPath } : { path: "/dashboard" });
         },
         onError: (err) => console.error(err),
       },
@@ -69,12 +70,12 @@ export const AppKSubmissionForm = () => {
 
   return (
     <C.SimplePageContainer>
-      {(submission.isLoading || isNavigating) && <C.LoadingSpinner />}
+      {submission.isLoading && <C.LoadingSpinner />}
       <C.BreadCrumbs options={crumbs} />
       <I.Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
-          <C.SectionCard title="1915(c) APPENDIX K Amendment Request Details">
-            <Content.FormIntroText />
+          <C.SectionCard title="1915(c) Appendix K Amendment Request Details">
+            <Content.FormIntroTextForAppK />
             <I.FormField
               control={form.control}
               name="title"
@@ -84,6 +85,7 @@ export const AppKSubmissionForm = () => {
                     Amendment Title <I.RequiredIndicator />
                   </I.FormLabel>
                   <I.Textarea {...field} className="h-[80px]" />
+                  <I.FormMessage />
                 </I.FormItem>
               )}
             />
@@ -97,14 +99,17 @@ export const AppKSubmissionForm = () => {
             <I.FormField
               control={form.control}
               name="state"
-              render={SlotStateSelect({ label: "State" })}
+              render={SlotStateSelect({
+                label: (
+                  <>
+                    State <I.RequiredIndicator />
+                  </>
+                ),
+              })}
             />
             {state && (
-              <div className="flex flex-col gap-2">
-                <div className="flex gap-4">
-                  <I.FormLabel className="font-bold">
-                    Appendix K ID <I.RequiredIndicator />
-                  </I.FormLabel>
+              <>
+                <p>
                   <Link
                     to="/faq/waiver-c-id"
                     target={C.FAQ_TAB}
@@ -113,13 +118,49 @@ export const AppKSubmissionForm = () => {
                   >
                     What is my Appendix K ID?
                   </Link>
+                  <div>
+                    Format is <strong>1111</strong>.<strong>R22</strong>.
+                    <strong>33</strong> or <strong>11111</strong>.
+                    <strong>R22</strong>.<strong>33</strong> where:
+                  </div>
+                  <ul className="pl-4 list-disc">
+                    <li>
+                      <strong>1111</strong> or <strong>11111</strong> is the
+                      four- or five-digit waiver initial number
+                    </li>
+                    <li>
+                      <strong>R22</strong> is the renewal number (Use{" "}
+                      <strong>R00</strong> for waivers without renewals.)
+                    </li>
+                    <li>
+                      <strong>33</strong> is the Appendix K amendment number
+                      (The last two digits relating to the number of amendments
+                      in the waiver cycle start with “01” and ascend.)
+                    </li>
+                    <li>
+                      <strong>
+                        The first ID entered will be used to track the
+                        submission on the OneMAC dashboard.
+                      </strong>
+                      {"  "}
+                      You’ll be able to find the other waiver IDs entered below
+                      by searching for the first waiver ID.
+                    </li>
+                  </ul>
+                </p>
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-4">
+                    <I.FormLabel className="font-bold">
+                      Appendix K ID <I.RequiredIndicator />
+                    </I.FormLabel>
+                  </div>
+                  <I.FormField
+                    control={form.control}
+                    name="parentWaiver"
+                    render={SlotWaiverId({ state })}
+                  />
                 </div>
-                <I.FormField
-                  control={form.control}
-                  name="parentWaiver"
-                  render={SlotWaiverId({ state })}
-                />
-              </div>
+              </>
             )}
 
             {!parentWaiver.state.error && parentWaiver.value && (
@@ -131,8 +172,9 @@ export const AppKSubmissionForm = () => {
               name="proposedEffectiveDate"
               render={({ field }) => (
                 <I.FormItem className="max-w-sm">
-                  <I.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date <I.RequiredIndicator />
+                  <I.FormLabel className="font-bold block">
+                    Proposed Effective Date of 1915(c) Appendix K Amendment
+                    <I.RequiredIndicator />
                   </I.FormLabel>
                   <I.FormControl>
                     <I.DatePicker
@@ -175,29 +217,45 @@ export const AppKSubmissionForm = () => {
               })}
             />
           </C.SectionCard>
-
           <C.SectionCard title="Additional Information">
             <I.FormField
               control={form.control}
-              name="additionalInformation"
-              render={({ field }) => (
-                <I.FormItem>
-                  <I.FormLabel className="font-normal">
+              name={"additionalInformation"}
+              render={SlotAdditionalInfo({
+                withoutHeading: true,
+                label: (
+                  <p>
                     Add anything else you would like to share with CMS, limited
                     to 4000 characters
-                  </I.FormLabel>
-                  <I.Textarea {...field} className="h-[200px] resize-none" />
-                  <I.FormDescription>
-                    4,000 characters allowed
-                  </I.FormDescription>
-                </I.FormItem>
-              )}
+                  </p>
+                ),
+              })}
             />
           </C.SectionCard>
           <C.PreSubmissionMessage />
           <div className="flex gap-2 p-4 ml-auto">
-            <I.Button type="submit">Submit</I.Button>
-            <I.Button type="button" variant="outline">
+            <I.Button type="submit" disabled={form.formState.isSubmitting}>
+              Submit
+            </I.Button>
+            <I.Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                modal.setContent({
+                  header: "Stop form submission?",
+                  body: "All information you've entered on this form will be lost if you leave this page.",
+                  acceptButtonText: "Yes, leave form",
+                  cancelButtonText: "Return to form",
+                });
+                modal.setOnAccept(() => () => {
+                  modal.setModalOpen(false);
+                  nav(
+                    originPath ? { path: originPath } : { path: "/dashboard" },
+                  );
+                });
+                modal.setModalOpen(true);
+              }}
+            >
               Cancel
             </I.Button>
           </div>
