@@ -91,7 +91,8 @@ export const buildEmailData = async (bundle, data) => {
       case "submitter":
         returnObject["submitter"] =
           data.submitterEmail === "george@example.com"
-            ? '"George\'s Substitute" <mako.stateuser@gmail.com>'
+            ? // eslint-disable-next-line quotes
+              '"George\'s Substitute" <mako.stateuser@gmail.com>'
             : `"${data.submitterName}" <${data.submitterEmail}>`;
         break;
       case "actionType":
