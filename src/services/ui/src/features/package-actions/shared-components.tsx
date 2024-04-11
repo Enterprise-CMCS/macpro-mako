@@ -186,38 +186,6 @@ export const PackageSection = () => {
   );
 };
 
-export const AdditionalInformation = ({
-  helperText = "Add anything else that you would like to share with the State.",
-  required = true,
-}: {
-  helperText?: string;
-  required?: boolean;
-}) => {
-  const form = useFormContext();
-
-  return (
-    <section className="my-4">
-      <h2 className="font-bold text-2xl font-sans mb-2">
-        Additional Information {required && <RequiredIndicator />}
-      </h2>
-      <FormField
-        control={form.control}
-        name="additionalInformation"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>
-              <p>{helperText}</p>
-            </FormLabel>
-            <Textarea {...field} className="h-[200px] resize-none" />
-            <FormMessage />
-            <FormDescription>4,000 characters allowed</FormDescription>
-          </FormItem>
-        )}
-      />
-    </section>
-  );
-};
-
 export const ErrorBanner = () => {
   const form = useFormContext();
 

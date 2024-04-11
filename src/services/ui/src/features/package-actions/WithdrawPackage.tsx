@@ -1,5 +1,5 @@
 import { submit, getUser } from "@/api";
-import { Alert, useModalContext } from "@/components";
+import { Alert, FormField, useModalContext } from "@/components";
 import * as SC from "@/features/package-actions/shared-components";
 import { zAttachmentOptional } from "@/utils";
 import { unflatten } from "flat";
@@ -7,6 +7,8 @@ import { Info } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { Authority } from "shared-types";
 import { z } from "zod";
+import { useGetItemCache } from "@/api";
+import { SlotAdditionalInfo } from "@/features";
 
 const title: Record<Authority, string> = {
   "1915(b)": "Withdraw Waiver",
@@ -80,13 +82,77 @@ export const onValidSubmission: SC.ActionFunction = async ({
 
 export const WithdrawPackage = () => {
   const modal = useModalContext();
-  const { handleSubmit } = SC.useSubmitForm();
+  const { handleSubmit, formMethods } = SC.useSubmitForm();
   const { id, authority } = useParams() as { id: string; authority: Authority };
+
+  const s = useGetItemCache(id);
 
   SC.useDisplaySubmissionAlert(
     "Package withdrawn",
     `The package ${id} has been withdrawn.`,
   );
+
+  if (s.data?.appkParent) {
+    return (
+      <>
+        <SC.Heading title={title[authority]} />
+        <SC.RequiredFieldDescription />
+        <SC.ActionDescription>
+          Complete this form to withdraw {descriptionText[authority]} package.
+          Once complete, you will not be able to resubmit this package. CMS will
+          be notified and will use this content to review your request. If CMS
+          needs any additional information, they will follow up by email.
+        </SC.ActionDescription>
+        <SC.PackageSection />
+        <form onSubmit={handleSubmit}>
+          <SC.AttachmentsSection<Attachments>
+            supportingInformation="Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information box."
+            attachments={[
+              {
+                name: "Supporting Documentation",
+                registerName: "supportingDocumentation",
+                required: false,
+              },
+            ]}
+          />
+          <FormField
+            control={formMethods.control}
+            name={"additionalInformation"}
+            render={SlotAdditionalInfo({
+              label: (
+                <p>
+                  Explain your need for withdrawal or upload supporting
+                  documentation.
+                </p>
+              ),
+            })}
+          />
+          <SC.FormLoadingSpinner />
+          <SC.ErrorBanner />
+          <AdditionalFormInformation />
+          <SC.SubmissionButtons
+            onSubmit={() => {
+              const acceptAction = () => {
+                modal.setModalOpen(false);
+                handleSubmit();
+              };
+
+              modal.setContent({
+                header: "Are you sure you want to withdraw this package?",
+                body: `All packages associated with ${id} will also be withdrawn.`,
+                acceptButtonText: "Yes, withdraw",
+                cancelButtonText: "Cancel",
+              });
+
+              modal.setOnAccept(() => acceptAction);
+
+              modal.setModalOpen(true);
+            }}
+          />
+        </form>
+      </>
+    );
+  }
 
   return (
     <>
@@ -110,7 +176,18 @@ export const WithdrawPackage = () => {
             },
           ]}
         />
-        <SC.AdditionalInformation helperText="Explain your need for withdrawal or upload supporting documentation." />
+        <FormField
+          control={formMethods.control}
+          name={"additionalInformation"}
+          render={SlotAdditionalInfo({
+            label: (
+              <p>
+                Explain your need for withdrawal or upload supporting
+                documentation.
+              </p>
+            ),
+          })}
+        />
         <SC.FormLoadingSpinner />
         <SC.ErrorBanner />
         <AdditionalFormInformation />

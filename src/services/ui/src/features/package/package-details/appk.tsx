@@ -56,13 +56,7 @@ export const AppK = () => {
             return (
               <T.TableRow key={`${CHILD._id}`}>
                 <T.TableCell className="font-medium">
-                  <Link
-                    path="/details"
-                    query={{ id: CHILD._id }}
-                    className="hover:underline font-semibold text-blue-600"
-                  >
-                    {CHILD._id}
-                  </Link>
+                  <p>{CHILD._id}</p>
                 </T.TableCell>
                 <T.TableCell>
                   <Button
@@ -84,15 +78,8 @@ export const AppK = () => {
         open={!!removeChild}
         onAccept={() => onChildRemove(removeChild)}
         onCancel={() => setRemoveChild("")}
-        title="Remove from Appendix-K"
-        body={
-          <>
-            <p>Are you sure you would like to remove: </p>
-            <p className="text-lg font-semibold">
-              <em>{removeChild}</em>
-            </p>
-          </>
-        }
+        title="Are you sure you want to withdraw this package?"
+        body={<p className="text-lg font-semibold">{removeChild}</p>}
       />
     </div>
   );

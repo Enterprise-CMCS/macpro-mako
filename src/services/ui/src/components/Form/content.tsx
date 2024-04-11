@@ -21,11 +21,13 @@ export const FormIntroText = () => (
 export const FormIntroTextForAppK = () => (
   <div>
     <FormIntroText />
-    <strong className="bold">
-      If your Appendix K submission is for more than one waiver number, please
-      enter one of the applicable waiver numbers. You do not need to create
-      multiple submissions.
-    </strong>
+    <p className="max-w-4xl mt-4 text-gray-700 font-light">
+      <span className="font-bold">
+        If your Appendix K submission is for more than one waiver number, please
+        enter one of the applicable waiver numbers. You do not need to create
+        multiple submissions.
+      </span>
+    </p>
   </div>
 );
 
