@@ -299,6 +299,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install serverless compose
+        working-directory: src/services/cypress
         run: |
           yarn add serverless
           yarn add @serverless/compose
