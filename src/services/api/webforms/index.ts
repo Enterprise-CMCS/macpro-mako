@@ -30,8 +30,8 @@ export const webformVersions: Record<string, Record<string, FormSchema>> = {
     v202401: ABP3_1.v202401,
   },
   ABP4: {
-    v202401: ABP4.v202401
-  }
+    v202401: ABP4.v202401,
+  },
   ABP10: {
     v202401: ABP10.v202401,
   },
