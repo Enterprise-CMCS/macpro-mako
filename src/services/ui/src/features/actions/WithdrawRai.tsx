@@ -12,7 +12,6 @@ import {
   Alert,
   LoadingSpinner,
   AttachmentsSizeTypesDesc,
-  useNavigate,
   useParams,
   useModalContext,
   useAlertContext,
@@ -35,6 +34,7 @@ import {
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
 import { useSyncStatus } from "@/hooks/useSyncStatus";
+import { useNavigate } from "react-router-dom";
 
 export const WithdrawRai = ({
   item,
@@ -61,6 +61,7 @@ export const WithdrawRai = ({
     },
   });
   const cancelOnAccept = useCallback(() => {
+    navigate(-1);
     modal.setModalOpen(false);
   }, []);
   const confirmOnAccept = useCallback(() => {

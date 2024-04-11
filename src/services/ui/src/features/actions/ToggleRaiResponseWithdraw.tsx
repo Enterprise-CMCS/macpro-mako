@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo } from "react";
 import { Action, Authority, opensearch } from "shared-types";
 import {
   Navigate,
-  useNavigate,
   useParams,
   Alert,
   LoadingSpinner,
@@ -22,6 +21,7 @@ import {
 import { ActionFormIntro, PackageInfo } from "@/features";
 import { useQuery as useQueryString } from "@/hooks";
 import { useSyncStatus } from "@/hooks/useSyncStatus";
+import { useNavigate } from "react-router-dom";
 
 export const ToggleRaiResponseWithdraw = ({
   item,
@@ -36,6 +36,7 @@ export const ToggleRaiResponseWithdraw = ({
   const alert = useAlertContext();
   const originPath = useOriginPath();
   const acceptAction = useCallback(() => {
+    navigate(-1);
     modal.setModalOpen(false);
   }, []);
   const { mutate, isLoading, isSuccess, error } = useSubmissionService<{

@@ -1,6 +1,7 @@
 import { ReactElement, useCallback } from "react";
 import { Path, useForm } from "react-hook-form";
 import { z } from "zod";
+import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Authority, SEATOOL_STATUS, opensearch } from "shared-types";
 import { Info } from "lucide-react";
@@ -13,7 +14,6 @@ import {
   Alert,
   LoadingSpinner,
   AttachmentsSizeTypesDesc,
-  useNavigate,
   useParams,
   useModalContext,
   useAlertContext,
@@ -73,6 +73,7 @@ export const WithdrawPackage = ({
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
+  const navigate = useNavigate();
   const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
@@ -84,6 +85,7 @@ export const WithdrawPackage = ({
   });
   const cancelOnAccept = useCallback(() => {
     modal.setModalOpen(false);
+    navigate(-1);
   }, []);
   const confirmOnAccept = useCallback(() => {
     modal.setModalOpen(false);

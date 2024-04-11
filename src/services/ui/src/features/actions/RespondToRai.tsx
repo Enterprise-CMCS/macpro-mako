@@ -15,7 +15,6 @@ import {
   AttachmentsSizeTypesDesc,
   useModalContext,
   useAlertContext,
-  useNavigate,
   useParams,
   Route,
 } from "@/components";
@@ -38,6 +37,7 @@ import {
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
 import { useSyncStatus } from "@/hooks/useSyncStatus";
+import { useNavigate } from "react-router-dom";
 
 export const RespondToRai = ({
   item,
@@ -63,6 +63,7 @@ export const RespondToRai = ({
     },
   });
   const acceptAction = useCallback(() => {
+    navigate(-1);
     modal.setModalOpen(false);
   }, []);
   const form = useForm({
