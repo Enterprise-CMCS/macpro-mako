@@ -42,8 +42,6 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "abp4_cost-sharing_see-approved-attachment_checkgroup",
-              description:
-                "Attachment 4.18-A or G may be revised to include cost sharing for ABP services that are not otherwise described in the state plan. Any such cost sharing must comply with Section 1916 of the Social Security Act.",
               rules: { required: "* Required" },
               formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
               dependency: {
