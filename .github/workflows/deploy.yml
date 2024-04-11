@@ -298,6 +298,10 @@ jobs:
           aws-region: us-east-1
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Install serverless compose
+        run: |
+          yarn add serverless
+          yarn add @serverless/compose
       - name: Print Cognito Url
         run: echo $(npx serverless param get --name CognitoUserPoolClientDomain)
       - name: Run Cypress Tests
