@@ -69,8 +69,9 @@ export const AttachmentsSizeTypesDesc = ({
     <br />
     <p>
       We accept the following file formats:{" "}
-      <strong className="bold">.docx, .jpg, .pdf, .png, .xlsx.</strong> See the
-      full list on the{" "}
+      <strong className="bold">
+        .docx, .docx, .pdf, .jpg, .opd, and more.{" "}
+      </strong>{" "}
       {
         <Link
           to="/faq/acceptable-file-formats"
@@ -78,7 +79,7 @@ export const AttachmentsSizeTypesDesc = ({
           rel="noopener noreferrer"
           className="text-blue-700 hover:underline"
         >
-          FAQ Page
+          See the full list
         </Link>
       }
       .

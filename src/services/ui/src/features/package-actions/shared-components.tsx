@@ -85,8 +85,7 @@ export const AttachmentsSection = <T extends string>({
       </p>
       <p>
         We accept the following file formats:{"  "}
-        <strong>.docx, .jpg, .pdf, .png, .xlsx. </strong>
-        See the full list on the{" "}
+        <strong>.docx, .docx, .pdf, .jpg, .opd, and more. </strong>
         <Link
           className="text-blue-700 hover:underline"
           to={"/faq/acceptable-file-formats"}
@@ -94,7 +93,7 @@ export const AttachmentsSection = <T extends string>({
           rel="noopener noreferrer"
         >
           {" "}
-          FAQ Page.
+          See the full list
         </Link>
       </p>
       {attachments.map(({ name, required, registerName }) => (
