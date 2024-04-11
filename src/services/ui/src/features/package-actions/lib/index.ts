@@ -3,7 +3,12 @@ import { getSchemaFor } from "@/features/package-actions/lib/schemas";
 import { getAttachmentsFor } from "@/features/package-actions/lib/attachments";
 import { OneMacUser, submit } from "@/api";
 import { buildActionUrl } from "@/utils";
-import { Route, useAlertContext, useNavigate } from "@/components";
+import {
+  BannerContent,
+  Route,
+  useAlertContext,
+  useNavigate,
+} from "@/components";
 import { FieldValues } from "react-hook-form";
 
 type FormSetup = {
@@ -18,7 +23,6 @@ export const getSetupFor = (a: Action, p: Authority): FormSetup => ({
   attachmentsSetup: getAttachmentsFor(a, p),
   // content: {},
 });
-type AlertContent = { header: string; body: string | undefined };
 /** Submits the given data to is corresponding Action endpoint, and centralizes
  * success/error handling. */
 export const submitActionForm = async ({
@@ -30,7 +34,7 @@ export const submitActionForm = async ({
   alert,
   navigate,
   originRoute,
-  content,
+  successBannerContent,
 }: {
   data: FieldValues;
   id: string;
@@ -40,7 +44,7 @@ export const submitActionForm = async ({
   originRoute: Route;
   alert: ReturnType<typeof useAlertContext>;
   navigate: ReturnType<typeof useNavigate>;
-  content: { success: AlertContent; error: AlertContent };
+  successBannerContent: BannerContent;
 }) => {
   try {
     await submit({
@@ -49,10 +53,7 @@ export const submitActionForm = async ({
       user,
       authority: authority,
     });
-    alert.setContent({
-      header: content.success.header,
-      body: content.success?.body || "Submission successful.",
-    });
+    alert.setContent(successBannerContent);
     alert.setBannerStyle("success");
     alert.setBannerShow(true);
     alert.setBannerDisplayOn(originRoute);
@@ -60,7 +61,7 @@ export const submitActionForm = async ({
   } catch (e: unknown) {
     console.error(e);
     alert.setContent({
-      header: content.error.header,
+      header: "An unexpected error has occurred:",
       body: e instanceof Error ? e.message : String(e),
     });
     alert.setBannerStyle("destructive");

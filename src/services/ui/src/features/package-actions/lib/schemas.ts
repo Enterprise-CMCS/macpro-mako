@@ -13,51 +13,51 @@ import {
 } from "./modules/withdraw-package";
 
 type Schema = ZodObject<any> | ZodEffects<any>;
-type SchemaMap = Record<Authority, Schema | undefined>;
+type SchemaGroup = Record<Authority, Schema | undefined>;
 
-const issueRaiFor: SchemaMap = {
+const issueRaiFor: SchemaGroup = {
   "chip spa": defaultIssueRaiSchema,
   "medicaid spa": defaultIssueRaiSchema,
   "1915(b)": defaultIssueRaiSchema,
   "1915(c)": defaultIssueRaiSchema,
 };
 
-const respondToRaiFor: SchemaMap = {
+const respondToRaiFor: SchemaGroup = {
   "chip spa": chipSpaRaiSchema,
   "medicaid spa": medSpaRaiSchema,
   "1915(b)": bWaiverRaiSchema,
   "1915(c)": bWaiverRaiSchema,
 };
 
-const withdrawRaiFor: SchemaMap = {
+const withdrawRaiFor: SchemaGroup = {
   "chip spa": defaultWithdrawRaiSchema,
   "medicaid spa": defaultWithdrawRaiSchema,
   "1915(b)": defaultWithdrawRaiSchema,
   "1915(c)": defaultWithdrawRaiSchema,
 };
 
-const withdrawPackageFor: SchemaMap = {
+const withdrawPackageFor: SchemaGroup = {
   "chip spa": chipWithdrawPackageSchema,
   "medicaid spa": defaultWithdrawPackageSchema,
   "1915(b)": defaultWithdrawPackageSchema,
   "1915(c)": undefined,
 };
 
-const tempExtensionFor: SchemaMap = {
+const tempExtensionFor: SchemaGroup = {
   "chip spa": undefined,
   "medicaid spa": undefined,
   "1915(b)": undefined,
   "1915(c)": undefined,
 };
 
-const updateIdFor: SchemaMap = {
+const updateIdFor: SchemaGroup = {
   "chip spa": undefined,
   "medicaid spa": undefined,
   "1915(b)": undefined,
   "1915(c)": undefined,
 };
 
-const completeIntakeFor: SchemaMap = {
+const completeIntakeFor: SchemaGroup = {
   "chip spa": undefined,
   "medicaid spa": undefined,
   "1915(b)": undefined,
@@ -65,7 +65,7 @@ const completeIntakeFor: SchemaMap = {
 };
 
 export const getSchemaFor = (a: Action, p: Authority): Schema | undefined => {
-  const actionSchemaMap: Record<string, SchemaMap> = {
+  const actionSchemaMap: Record<string, SchemaGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,
     "withdraw-rai": withdrawRaiFor,
