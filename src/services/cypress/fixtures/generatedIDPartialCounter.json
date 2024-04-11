@@ -1,12 +1,16 @@
 {
   "lastAmendmentFirstPart": 1000,
-  "lastAmendmentSecondPart": "07",
+  "lastAmendmentSecondPart": 23,
   "lastRenewalFirstPart": 1000,
-  "lastRenewalSecondPart": "07",
-  "lastInitialWaiverPart": 1001,
-  "lastSpaID": "0014",
-  "lastTempExtensionFirstPart": 1000,
-  "lastTempExtensionSecondPart": "01",
-  "lastAppKSecondPart": "06",
-  "lastAppKFirstPart": 1000
+  "lastRenewalSecondPart": 22,
+  "lastInitialWaiverPart": 1026,
+  "lastSpaID": "0024",
+  "lastbTempExtensionFirstPart": 1000,
+  "lastbTempExtensionSecondPart": "04",
+  "lastcTempExtensionFirstPart": 5000,
+  "lastcTempExtensionSecondPart": "02",
+  "lastAppKSecondPart": "08",
+  "lastAppKFirstPart": 1000,
+  "lastChipSpaPart": 1006,
+  "lastMedicaidSpaPart": 1012
 }

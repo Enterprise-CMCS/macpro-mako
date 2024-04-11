@@ -3,7 +3,7 @@ const cancelBTN = "//button[text()='Cancel']";
 const idElement = "[name='id']";
 const parentIdElement = "[name='waiverNumber']";
 const packageFormPt2ErrorMsg = "#componentIdStatusMsg1";
-const typeHeader = "//label[text()='Type']";
+const authorityHeader = "//label[text()='Authority']";
 
 const modalContainer = "#react-aria-modal-dialog";
 const modalTitle = "#dialog-title";
@@ -22,12 +22,12 @@ const errorMessageParentID = "#parent-componentIdStatusMsg0";
 const waiverAuthorityLabel = "//label[text()='Waiver Authority']";
 const amendmentTitleField = "[name=title]";
 const tempExtensionTypeHeader =
-  "//h3[contains(text(),'Temporary Extension Type')]";
+  "//*[contains(text(),'Temporary Extension Type')]";
 const tempExtensionTypeBtn = "//button//*[contains(text(), 'select a temporary extension type')]";
 const formIntroElement = "form p";
 const returnToFormBtn = "//*[@role='dialog']//button[text()='Return to form']";
 const labelElementFromLabel = {
-  "Additional Information": "//h3[contains(text(),'Additional Information')]",
+  "Additional Information": "//*[contains(text(),'Additional Information')]",
 };
 const elementFromLabel = {
   // Different forms may have different labels for the ID field
@@ -52,10 +52,10 @@ const errorMessageLine1FromLabel = {
   "1915(b) Waiver Amendment Number": idElement,
   "Existing Waiver Number to Renew": parentIdElement,
   "Existing Waiver Number to Amend": parentIdElement,
-  "first attachment": ".space-y-2:nth-of-type(1) input[type='file']",
-  "second attachment": ".space-y-2:nth-of-type(2) input[type='file']",
-  "Proposed Effective Date": "form [class*='space-y-2'] button svg",
-  "form": "[role='alert']:nth-of-type(2)",
+  "Approved Initial or Renewal Waiver Number": "[name='originalWaiverNumber']",
+  "first attachment": ".space-y-2:nth-of-type(2) input[type='file']",
+  "second attachment": ".space-y-2:nth-of-type(3) input[type='file']",
+  "Proposed Effective Date": "form [class*='space-y-2'] button svg"
 };
 const errorMessageLine2FromLabel = {
   "SPA ID": idElement,
@@ -96,7 +96,7 @@ const goToDashBoardBtn = "//button[text()='Go to Dashboard']";
 const withdrawLabel = "#package-id-label";
 
 const stateSelectBtn = "button[role='combobox']";
-
+const formErrorAlert = "form [role=alert]";
 export class oneMacFormPage {
   verifyInputHeaderIs(inputHeader) {
     cy.xpath(labelElementFromLabel[inputHeader])
@@ -124,6 +124,9 @@ export class oneMacFormPage {
         : cy.get(errorMessageLine1FromLabel[whichLabel]).parent().next(errorMessageID).should("be.visible");
 
     errorMessageElement.should("be.visible").contains(errorMessage);
+  }
+  verifyFormErrorMessageContains(errorMessage){
+    cy.get(formErrorAlert).first().should("be.visible").and("contain", errorMessage);
   }
   verifyHintTextContains(whichLabel, hintText) {
     const hintTextElement = cy.get(hintTextFromLabel[whichLabel]);
@@ -178,7 +181,7 @@ export class oneMacFormPage {
     cy.get(errorMessageParentID).contains(errorMessage);
   }
   verifyAuthorityIs(s) {
-    cy.xpath(typeHeader).next().contains(s);
+    cy.xpath(authorityHeader).next().contains(s);
   }
   verifyWaiverAuthorityContains(whatAuthority) {
     cy.xpath(waiverAuthorityLabel).next().contains(whatAuthority);
@@ -255,7 +258,7 @@ export class oneMacFormPage {
       case "Medicaid RAI":
         cy.xpath(attachmentInfoDescription)
           .find("a")
-          .should("have.attr", "href", "/faq/#medicaid-spa-rai-attachments");
+          .should("have.attr", "href", "/faq/medicaid-spa-rai-attachments");
         break;
       case "CHIP SPA":
         cy.xpath(attachmentInfoDescription)

@@ -10,7 +10,7 @@ Feature: Create a waiver Amendment
         Then click on "1915(b)(4) FFS Selective Contracting Waivers" choice
 
     Scenario: Screen Enhance - 1915(b)(4) FFS Selective Contracting Waiver Amendment
-        Then verify "1915(b)(4) FFS Selective Contracting Waiver Amendment" choice goes to "/new-submission/waiver/b/b4/initial/create"
+        Then verify "1915(b)(4) FFS Selective Contracting Waiver Amendment" choice goes to "/new-submission/waiver/b/b4/amendment/create"
         Then click on "1915(b)(4) FFS Selective Contracting Waiver Amendment" choice
         Then verify user is on new waiver amendment page
         Then verify the attachment info descriptiion
@@ -19,7 +19,7 @@ Feature: Create a waiver Amendment
     Scenario: Verify 1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print is required
         Then click on "1915(b)(4) FFS Selective Contracting Waiver Amendment" choice
         Then verify Waiver Authority contains "1915(b)"
-        Then type the generated "Waiver Amendment" Number 2 into the ID Input box using the state "MD"
+        Then type the generated "1915(b) Waiver Amendment Number" Number 2 into the ID Input box using the state "MD"
         Then Click the Submit Button without waiting
         Then verify the "Proposed Effective Date" error message is "Required"
         Then verify the "first attachment" error message is "Required"
@@ -33,12 +33,13 @@ Feature: Create a waiver Amendment
 
     Scenario: create Waiver Amendment from package dashboard and search it
         Then click on "1915(b)(4) FFS Selective Contracting Waiver Amendment" choice
-        Then type the generated "Waiver Amendment" Number 2 into the ID Input box using the state "MD"
+        Then into "Existing Waiver Number to Amend" type "MD-1000.R00.00"
+        Then type the generated "1915(b) Waiver Amendment Number" Number 2 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of 1915(b) Waiver Amendment" to 3 months from today
         Then attach "picture.jpg" file to attachment 1
         Then into "Additional Information" type "This Waiver Amendment package was created by the test automation."
         Then Click on Submit Button
         Then verify package submitted message in the alert bar
         Then click on the Waivers tab
-        Then search for the generated "Waiver Amendment" Number 2
-        Then verify the id number in the first row matches the generated "Waiver Amendment" Number 2
+        Then search for the generated "1915(b) Waiver Amendment Number" Number 2
+        Then verify the id number in the first row matches the generated "1915(b) Waiver Amendment Number" Number 2

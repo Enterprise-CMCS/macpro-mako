@@ -27,8 +27,6 @@ Feature: Package Dashboard: Medicaid SPA Form
         Then verify the form title is "Medicaid SPA Details"
         Then type the generated "Medicaid SPA" Number 1 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of Medicaid SPA" to 3 months from today
-        Then into "Subject" type "Cypress Regression Test"
-        Then into "Description" type "This package was created while running the test automation."
         Then verify the attachment info descriptiion
         Then verify the attachment info link is for "Medicaid SPA"
         Then attach "adobe.pdf" file to attachment 1

@@ -117,13 +117,10 @@ Then("verify the success message is {string}", (s) => {
   OneMacDashboardPage.verifySuccessMessageIs(s);
 });
 Then("verify package submitted message in the alert bar", () => {
-  OneMacDashboardPage.verifyPackageSubmittedIsDisplayed();
+  OneMacDashboardPage.verifyAlertMessageIs("Package submitted");
 });
 Then("verify the message in the alert bar is {string}", (s) => {
   OneMacDashboardPage.verifyAlertMessageIs(s);
-});
-Then("verify the error message in the alert bar is {string}", (s) => {
-  OneMacDashboardPage.verifyErrorMessageIs(s);
 });
 Then("verify submission successful message in the alert bar", () => {
   OneMacDashboardPage.verifySuccessMessage1IsDisplayed();
@@ -257,6 +254,12 @@ Then(
   "verify the {string} error message is {string}",
   (whichLabel, chkErrorMessage) => {
     OneMacFormPage.verifyErrorMessageContains(whichLabel, "1", chkErrorMessage);
+  }
+);
+Then(
+  "verify the form error message is {string}",
+  (chkErrorMessage) => {
+    OneMacFormPage.verifyFormErrorMessageContains(chkErrorMessage);
   }
 );
 Then(
@@ -1909,17 +1912,18 @@ Then("click the Go to Dashboard button", () => {
   OneMacFormPage.clickGoToDashBoardBtn();
 });
 Then("type the generated {string} Number {int} into the ID Input box using the state {string}", (type, count, state = "MD") => {
-  cy.fixture("generatedIDs.json").then((obj) => {
-    cy.fixture("generatedIDPartialCounter.json").then((data) => {
+  cy.readFile("./fixtures/generatedIDs.json").then((obj) => {
+    cy.readFile("./fixtures/generatedIDPartialCounter.json").then((data) => {
       let newID = state + "-";
       switch (type) {
-        case "Initial Waiver":
+        case "Initial Waiver Number":{
           data["lastInitialWaiverPart"] = util.firstpartCounter(data["lastInitialWaiverPart"]);
           newID += data["lastInitialWaiverPart"] + ".R00.00";
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
+          console.log(`newID is ${newID}`)
           OneMacFormPage.inputInto(type, newID);
-          break;
-        case "1915(b) Waiver Renewal Number":
+          break;}
+        case "1915(b) Waiver Renewal Number":{
           if (parseInt(data["lastRenewalSecondPart"]) === 99) {
             data["lastRenewalFirstPart"] = util.firstpartCounter(data["lastRenewalFirstPart"]);
           }
@@ -1927,8 +1931,8 @@ Then("type the generated {string} Number {int} into the ID Input box using the s
           newID += data["lastRenewalFirstPart"] + ".R" + data["lastRenewalSecondPart"] + ".00";
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
           OneMacFormPage.inputInto(type, newID);
-          break;
-        case "1915(b) Waiver Amendment Number":
+          break;}
+        case "1915(b) Waiver Amendment Number":{
           if (parseInt(data["lastAmendmentSecondPart"]) === 99) {
             data["lastAmendmentFirstPart"] = util.firstpartCounter(data["lastAmendmentFirstPart"]);
           }
@@ -1936,17 +1940,26 @@ Then("type the generated {string} Number {int} into the ID Input box using the s
           newID += data["lastAmendmentFirstPart"] + ".R00." + data["lastAmendmentSecondPart"];
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
           OneMacFormPage.inputInto(type, newID);
-          break;
-        case "Temporary Extension Request Number":
-          if (parseInt(data["lastTempExtensionSecondPart"]) === 99) {
-            data["lastTempExtensionFirstPart"] = util.firstpartCounter(data["lastTempExtensionFirstPart"]);
+          break;}
+        case "1915(b) Temporary Extension Request Number":{
+          if (parseInt(data["lastbTempExtensionSecondPart"]) === 99) {
+            data["lastbTempExtensionFirstPart"] = util.firstpartCounter(data["lastbTempExtensionFirstPart"]);
           }
-          data["lastTempExtensionSecondPart"] = util.doubleDigitCounter(data["lastTempExtensionSecondPart"]);
-          newID += data["lastTempExtensionFirstPart"] + ".R00.TE" + data["lastTempExtensionSecondPart"];
+          data["lastbTempExtensionSecondPart"] = util.doubleDigitCounter(data["lastbTempExtensionSecondPart"]);
+          newID += data["lastbTempExtensionFirstPart"] + ".R00.TE" + data["lastbTempExtensionSecondPart"];
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
-          OneMacFormPage.inputInto(type, newID);
-          break;
-        case "Appendix K ID":
+          OneMacFormPage.inputInto("Temporary Extension Request Number", newID);
+          break;}
+          case "1915(c) Temporary Extension Request Number":{
+            if (parseInt(data["lastcTempExtensionSecondPart"]) === 99) {
+              data["lastcTempExtensionFirstPart"] = util.firstpartCounter(data["lastcTempExtensionFirstPart"]);
+            }
+            data["lastcTempExtensionSecondPart"] = util.doubleDigitCounter(data["lastcTempExtensionSecondPart"]);
+            newID += data["lastcTempExtensionFirstPart"] + ".R00.TE" + data["lastcTempExtensionSecondPart"];
+            obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
+            OneMacFormPage.inputInto("Temporary Extension Request Number", newID);
+            break;}
+        case "Appendix K ID":{
           OneMacFormPage.clearInput(type);
           if (parseInt(data["lastAppKSecondPart"]) === 99) {
             data["lastAppKFirstPart"] = util.firstpartCounter(data["lastAppKFirstPart"]);
@@ -1955,34 +1968,45 @@ Then("type the generated {string} Number {int} into the ID Input box using the s
           newID = data["lastAppKFirstPart"] + ".R00." + data["lastAppKSecondPart"];
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
           OneMacFormPage.inputInto(type, newID);
-          break;
-        case "Medicaid SPA":
-        case "CHIP SPA":
-          data["lastSpaID"] = util.spaIDCounter(data["lastSpaID"]);
+          break;}
+        case "Medicaid SPA":{
+          data["lastMedicaidSpaPart"] = util.spaIDCounter(data["lastMedicaidSpaPart"]);
           let year = new Date().getFullYear().toString().slice(-2);
-          newID += year + "-" + data["lastSpaID"] + "-CYPS";
+          newID += year + "-" + data["lastMedicaidSpaPart"] + "-CYMS"; //CYMS
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
           OneMacFormPage.inputInto("SPA ID", newID);
-          break;
+          break;}
+        case "CHIP SPA":{
+          data["lastChipSpaPart"] = util.spaIDCounter(data["lastChipSpaPart"]);
+          let year = new Date().getFullYear().toString().slice(-2);
+          newID += year + "-" + data["lastChipSpaPart"] + "-CYCS"; //CYCS
+          obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
+          OneMacFormPage.inputInto("SPA ID", newID);
+          break;}
         default:
           cy.log("type is invalid or not covered in cases");
           break;
       }
       // write the merged object
+      console.log("obj: " + JSON.stringify(obj));
+      console.log("data: " + data);
       cy.writeFile("./fixtures/generatedIDs.json", obj);
       cy.writeFile("./fixtures/generatedIDPartialCounter.json", data);
     })
   });
 });
 Then("search for the generated {string} Number {int}", (type, count) => {
-  cy.fixture("generatedIDs.json").then((data) => {
-    OneMacDashboardPage.searchFor(data["generated" + type.replace(/\s/g, '') + "ID" + count]);
+  cy.readFile("./fixtures/generatedIDs.json").then((data) => {
+    let idToSearch = data["generated" + type.replace(/\s/g, '') + "ID" + count];
+    console.log(`text of the data variable we programatically created is generated` + type.replace(/\s/g, '') + "ID" + count)
+    console.log(`id we're searching for is ${idToSearch}`);
+    OneMacDashboardPage.searchFor(idToSearch);
   });
   cy.wait(1000);
 });
 Then(
   "verify the id number in the first row matches the generated {string} Number {int}", (type, count) => {
-    cy.fixture("generatedIDs.json").then((data) => {
+    cy.readFile("./fixtures/generatedIDs.json").then((data) => {
       OneMacDashboardPage.verifyIDNumberInFirstRowIs(data["generated" + type.replace(/\s/g, '') + "ID" + count]);
     });
   }

@@ -41,5 +41,5 @@ Feature: Waiver Renewal in Package Dashboard
         Then Click on Submit Button
         Then verify package submitted message in the alert bar
         Then click on the Waivers tab
-        Then search for the generated "Renewal Waiver" Number 2
-        Then verify the id number in the first row matches the generated "Renewal Waiver" Number 2
+        Then search for the generated "1915(b) Waiver Renewal Number" Number 2
+        Then verify the id number in the first row matches the generated "1915(b) Waiver Renewal Number" Number 2

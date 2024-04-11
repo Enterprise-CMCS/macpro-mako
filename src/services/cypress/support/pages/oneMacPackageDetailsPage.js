@@ -12,16 +12,16 @@ const packageActionsHeader = "//h2[text()='Package Actions']";
 const respondToRAIAction = "//a/*[text()='Respond to Formal RAI']";
 const withdrawPackageAction = "//a/li[text()='Withdraw Package']";
 const requestTempExtensionPackageAction =
-  "//a[text()='Request Temporary Extension']";
-const addAmendmentPackageAction = "//a[text()='Add Amendment']";
+  "//a/*[text()='Request Temporary Extension']";
+const addAmendmentPackageAction = "//a/*[text()='Add Amendment']";
 const withdrawFormalRAIResponseAction =
-  "//a[text()='Withdraw Formal RAI Response']";
+  "//a/*[text()='Withdraw Formal RAI Response']";
 const enableRAIResponseWithdrawAction =
-  "//a[text()='Enable Formal RAI Response Withdraw']";
+  "//a/*[text()='Enable Formal RAI Response Withdraw']";
 const detailSection =
   "#package_details";
 const disableRAIResponseWithdrawAction =
-  "//a[text()='Disable Formal RAI Response Withdraw']";
+  "//a/*[text()='Disable Formal RAI Response Withdraw']";
 const authorityHeader = "//h3[contains(text(),'Authority')]";
 const parentWaiverNumberHeader =
   "//h3[contains(text(),'Approved Initial or Renewal Number')]";
@@ -43,7 +43,7 @@ const waiverAuthorityHeader = "//h3[text()='Waiver Authority']";
 const attachmentsSection = "//h2[text()='Supporting Documentation']";
 const amendmentTitleHeader = "//h3[text()='Amendment Title']";
 const amendmentNumberHeader = "//h3[text()='Amendment Number']";
-const withdrawBtn = "//a[text()='Withdraw Package']";
+const withdrawBtn = "//a[contains(@href, '/withdraw-package')]";
 const subjectHeader = "//h3[contains(text(),'Subject')]";
 const descriptionHeader = "//h3[contains(text(),'Description')]";
 const cPOCNameHeader = "//h3[contains(text(),'CPOC')]";

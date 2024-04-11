@@ -17,18 +17,20 @@ Feature: Appendix K Waiver Type Selection
     Scenario: Verify the Waiver Number format on Appendix K Form
         Then click on "1915(c) Appendix K Amendment" choice
         Then type "Appendix K Submission 1" into Amendment Title field
-        Then type "MD-22106.R01.03" into the ID Input box
+        Then set the value of state select button to "Georgia"
+        Then clear the ID Input box
+        Then type "22106.R01.03" into the ID Input box
         Then attach "adobe.pdf" file to attachment 1
         Then set "Proposed Effective Date of 1915(c) Appendix K Amendment" to 3 months from today
         Then verify ID error message is not present
         Then verify the submit button is not disabled
         Then clear the ID Input box
-        Then type "MD.1236" into the ID Input box
+        Then type ".1236" into the ID Input box
         Then verify the ID error message is "The Waiver Amendment Number must be in the format of SS-####.R##.## or SS-#####.R##.##"
         Then verify the ID error message has a second line with "For amendments, the last two digits start with ‘01’ and ascends."
         Then verify the submit button is disabled
         Then clear the ID Input box
-        Then type "MD-22106.R01.03" into the ID Input box
+        Then type "22106.R01.03" into the ID Input box
         Then verify ID error message is not present
         Then verify the submit button is not disabled
 
