@@ -1052,7 +1052,7 @@ extension requests on Waivers only.  Any other correspondence will be disregarde
 <p>If you have questions, please contact 
 <a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
-    text: ``,
+    text: "",
   },
   {
     name: "new-submission-1915c-cms",
@@ -1085,7 +1085,7 @@ Summary:
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
-    text: ``,
+    text: "",
   },
   {
     name: "withdraw-rai-1915c-cms",
@@ -1108,7 +1108,7 @@ Summary:
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
-    text: ``,
+    text: "",
   },
   {
     name: "temporary-extension-cms",
@@ -1140,7 +1140,7 @@ Summary:
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
-    text: ``,
+    text: "",
   },
   {
     name: "temporary-extension-state",
@@ -1166,6 +1166,6 @@ and extension requests on Waivers only. Any other correspondence will be disrega
 <p>If you have questions or did not expect this email, please contact 
 <a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
-    text: ``,
+    text: "",
   },
 ];
