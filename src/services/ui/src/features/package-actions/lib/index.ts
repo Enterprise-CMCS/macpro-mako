@@ -10,18 +10,19 @@ import {
   useNavigate,
 } from "@/components";
 import { FieldValues } from "react-hook-form";
+import { getContentFor } from "@/features/package-actions/lib/content";
 
 type FormSetup = {
   schema: ReturnType<typeof getSchemaFor>;
   attachmentsSetup: ReturnType<typeof getAttachmentsFor>;
-  // content: {};
+  content: ReturnType<typeof getContentFor>;
 };
 /** Builds a form setup using an Action x Authority 2-dimensional
  * lookup. */
 export const getSetupFor = (a: Action, p: Authority): FormSetup => ({
   schema: getSchemaFor(a, p),
   attachmentsSetup: getAttachmentsFor(a, p),
-  // content: {},
+  content: getContentFor(a, p),
 });
 /** Submits the given data to is corresponding Action endpoint, and centralizes
  * success/error handling. */

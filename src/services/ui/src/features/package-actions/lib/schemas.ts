@@ -40,7 +40,7 @@ const withdrawPackageFor: SchemaGroup = {
   "chip spa": chipWithdrawPackageSchema,
   "medicaid spa": defaultWithdrawPackageSchema,
   "1915(b)": defaultWithdrawPackageSchema,
-  "1915(c)": undefined,
+  "1915(c)": defaultWithdrawPackageSchema,
 };
 
 const tempExtensionFor: SchemaGroup = {

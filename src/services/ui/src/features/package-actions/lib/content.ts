@@ -1,43 +1,57 @@
 import { ReactNode } from "react";
-import { BannerContent } from "@/components";
-import { Action, Authority } from "shared-types";
+import { BannerContent, SubmissionAlert } from "@/components";
+import { Action, Authority, opensearch } from "shared-types";
+import { defaultIssueRaiContent } from "@/features/package-actions/lib/modules/issue-rai";
+import {
+  spaRaiContent,
+  waiverRaiContent,
+} from "@/features/package-actions/lib/modules/respond-to-rai";
+import { defaultWithdrawRaiContent } from "@/features/package-actions/lib/modules/withdraw-rai";
+import {
+  chipWithdrawPackageContent,
+  defaultWithdrawPackageContent,
+} from "@/features/package-actions/lib/modules/withdraw-package";
 
-export type FormContent = {
+type FormContent = {
   title: string;
   description: ReactNode;
   preSubmitNotice: string;
   successBanner: BannerContent;
   additionalInfoInstruction?: string;
   attachmentsInstruction?: string;
+  confirmationModal?: SubmissionAlert;
 };
-type FormContentGroup = Record<Authority, FormContent | undefined>;
+/** Form content sometimes requires data values for templating, so forms
+ * hydrate the content with these functions. */
+export type FormContentHydrator = (d: opensearch.main.Document) => FormContent;
+type FormContentGroup = Record<Authority, FormContentHydrator | undefined>;
 
 const issueRaiFor: FormContentGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultIssueRaiContent,
+  "medicaid spa": defaultIssueRaiContent,
+  "1915(b)": defaultIssueRaiContent,
+  "1915(c)": defaultIssueRaiContent,
 };
 
 const respondToRaiFor: FormContentGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": spaRaiContent,
+  "medicaid spa": spaRaiContent,
+  "1915(b)": waiverRaiContent,
+  "1915(c)": waiverRaiContent,
 };
 
 const withdrawRaiFor: FormContentGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultWithdrawRaiContent,
+  "medicaid spa": defaultWithdrawRaiContent,
+  "1915(b)": defaultWithdrawRaiContent,
+  "1915(c)": defaultWithdrawRaiContent,
 };
 
 const withdrawPackageFor: FormContentGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": chipWithdrawPackageContent,
+  "medicaid spa": defaultWithdrawPackageContent,
+  "1915(b)": defaultWithdrawPackageContent,
+  "1915(c)": defaultWithdrawPackageContent,
 };
 
 const tempExtensionFor: FormContentGroup = {
@@ -64,7 +78,7 @@ const completeIntakeFor: FormContentGroup = {
 export const getContentFor = (
   a: Action,
   p: Authority,
-): FormContent | undefined => {
+): FormContentHydrator | undefined => {
   const actionContentMap: Record<string, FormContentGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,

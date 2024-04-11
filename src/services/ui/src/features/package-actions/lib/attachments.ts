@@ -10,6 +10,7 @@ import {
   chipWithdrawPackageAttachments,
   defaultWithdrawPackageAttachments,
 } from "./modules/withdraw-package";
+import { defaultWithdrawRaiAttachments } from "@/features/package-actions/lib/modules/withdraw-rai";
 
 type AttachmentsGroup = Record<Authority, AttachmentRecipe<any>[] | undefined>;
 
@@ -28,10 +29,10 @@ const respondToRaiFor: AttachmentsGroup = {
 };
 
 const withdrawRaiFor: AttachmentsGroup = {
-  "chip spa": defaultIssueRaiAttachments,
-  "medicaid spa": defaultIssueRaiAttachments,
-  "1915(b)": defaultIssueRaiAttachments,
-  "1915(c)": defaultIssueRaiAttachments,
+  "chip spa": defaultWithdrawRaiAttachments,
+  "medicaid spa": defaultWithdrawRaiAttachments,
+  "1915(b)": defaultWithdrawRaiAttachments,
+  "1915(c)": defaultWithdrawRaiAttachments,
 };
 
 const withdrawPackageFor: AttachmentsGroup = {
