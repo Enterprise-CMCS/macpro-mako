@@ -53,13 +53,3 @@ jobs:
           SLACK_TITLE: Failure
           SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-
-  delete_environment:
-    needs: destroy
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: strumwolf/delete-deployment-environment@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          environment: ${{ inputs.environment || (startsWith(github.event.ref, 'snyk-') && 'snyk' || github.event.ref) }}
-          onlyRemoveDeployments: true
