@@ -1,0 +1,268 @@
+import { FormSchema } from "shared-types";
+
+export const v202401: FormSchema = {
+  header: "ABP 2c: Enrollment assurances - Mandatory participants",
+  sections: [
+    {
+      title: "Assurances",
+      form: [
+        {
+          slots: [
+            {
+              name: "abp2c_assurances_mandatory-identify-exempt_checkgroup",
+              rhf: "Checkbox",
+              descriptionAbove: true,
+              descriptionStyling: "text-black text-base",
+              description: [
+                "These assurances must be made by the state/territory if enrollment is mandatory for any of the target populations or subpopulations.",
+                {
+                  type: "br",
+                  classname: "font-bold block pt-2",
+                  text: "When mandatorily enrolling eligibility groups in an Alternative Benefit Plan (ABP) (benchmark or benchmark-equivalent plan) that could have exempt individuals, prior to enrollment:",
+                },
+              ],
+              rules: { required: "* Required" },
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state/territory assures it will appropriately identify any individuals in the eligibility groups who:",
+                    value: "assure_individuals_in_egroup_exempt_section_1937",
+                    styledLabel: [
+                      {
+                        text: "The state/territory assures it will appropriately identify any individuals in the eligibility groups who:",
+                        classname: "block pb-2",
+                      },
+                      {
+                        text: "A. Are exempt from mandatory enrollment in an ABP",
+                        classname: "block pb-2",
+                      },
+                      {
+                        text: "B. Meet the exemption criteria and are given a choice of ABP coverage defined using Section 1937 requirements or ABP coverage defined as the state/territory’s approved Medicaid state plan not subject to Section 1937 requirements",
+                        classname: "block pb-2",
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              name: "abp2c_assurances_how-identify_checkgroup",
+              rhf: "Checkbox",
+              label: "How will the state/territory identify these individuals?",
+              labelStyling: "font-bold text-black",
+              rules: { required: "* Required" },
+              props: {
+                options: [
+                  {
+                    label:
+                      "Review of eligibility criteria (e.g., age, disorder, diagnosis, condition)",
+                    value: "review_of_eligibility_criteria",
+                    slots: [
+                      {
+                        name: "abp2c_assurances_how-id-review-eligible-crit-desc_textarea",
+                        rhf: "Textarea",
+                        label: "Describe",
+                        labelStyling: "font-bold text-black",
+                        rules: { required: "* Required" },
+                      },
+                    ],
+                  },
+                  {
+                    label: "Self-identification",
+                    value: "self_identification",
+                    slots: [
+                      {
+                        name: "abp2c_assurances_how-id-self-id-desc_textarea",
+                        rhf: "Textarea",
+                        label: "Describe",
+                        labelStyling: "font-bold text-black",
+                        rules: { required: "* Required" },
+                      },
+                    ],
+                  },
+                  {
+                    label: "Other",
+                    value: "other",
+                    slots: [
+                      {
+                        name: "abp2c_assurances_how-id-other-desc_textarea",
+                        rhf: "Textarea",
+                        label: "Describe",
+                        labelStyling: "font-bold text-black",
+                        rules: { required: "* Required" },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Exemptions",
+      form: [
+        {
+          slots: [
+            {
+              name: "abp2c_exemptions_mandatory-inform-current-exempt_checkgroup",
+              rhf: "Checkbox",
+              rules: { required: "* Required" },
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state/territory must inform the individual they are exempt or meet the exemption criteria, and the state/territory must comply with all requirements related to voluntary enrollment or, for beneficiaries in the “individuals age 19 or older and under age 65 at or below 133% FPL” eligibility group, optional enrollment in ABP coverage defined using Section 1937 requirements or ABP coverage defined as the state/territory's approved Medicaid state plan.",
+                    value:
+                      "state_must_inform_current_exemptions_comply_volunteer_enroll_between_19_and_65_or_133_FPL_optional_enroll_coverage_section_1937",
+                  },
+                ],
+              },
+            },
+            {
+              name: "abp2c_exemptions_madatory-inform-future-exempt_checkgroup",
+              rhf: "Checkbox",
+              rules: { required: "* Required" },
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state/territory assures that for individuals who have become exempt from enrollment in an ABP, the state/territory must inform them they are now exempt. The state/territory must comply with all requirements related to voluntary enrollment or, for beneficiaries in the “individuals age 19 or older and under age 65 at or below 133% FPL” eligibility group, optional enrollment in ABP coverage defined using Section 1937 requirements or ABP coverage defined as the state/territory's approved Medicaid state plan.",
+                    value:
+                      "state_assures_individuals_future_exempt_informedcomply_volunteer_enroll_between_19_and_65_or_133_FPL_optional_enroll_coverage_section_1937",
+                  },
+                ],
+              },
+            },
+            {
+              name: "abp2c_exemptions_how-id-become-exempt_checkgroup",
+              rhf: "Checkbox",
+              label:
+                "How will the state/territory identify if an individual becomes exempt?",
+              labelStyling: "font-bold text-black",
+              rules: { required: "* Required" },
+              props: {
+                options: [
+                  {
+                    label: "Review of claims data",
+                    value: "review_of_claims_data",
+                  },
+                  {
+                    label: "Self-identification",
+                    value: "self_identification",
+                  },
+                  {
+                    label: "Review at the time of eligibility redetermination",
+                    value: "review_eligibility_redetermination",
+                  },
+                  {
+                    label: "Provider identification",
+                    value: "provider_identification",
+                  },
+                  {
+                    label: "Change in eligibility group",
+                    value: "change_in_eligibility_group",
+                  },
+                  {
+                    label: "Other",
+                    value: "other",
+                    slots: [
+                      {
+                        name: "abp2c_exemptions_how-id-exempt-other-desc_textarea",
+                        rhf: "Textarea",
+                        label: "Describe",
+                        labelStyling: "font-bold text-black",
+                        rules: { required: "* Required" },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              name: "abp2c_exemptions_freq-determine-exemptions_radiogroup",
+              rhf: "Radio",
+              rules: { required: "* Required" },
+              labelStyling: "font-bold text-black",
+              label:
+                "How frequently will the state/territory review the ABP population to determine if individuals are exempt from mandatory enrollment or meet the exemption criteria?",
+              props: {
+                options: [
+                  {
+                    label: "Monthly",
+                    value: "monthly",
+                  },
+                  {
+                    label: "Quarterly",
+                    value: "quarterly",
+                  },
+                  {
+                    label: "Annually",
+                    value: "annually",
+                  },
+                  {
+                    label: "On an as-needed basis",
+                    value: "as_needed_basis",
+                  },
+                  {
+                    label: "Other",
+                    value: "other",
+                    slots: [
+                      {
+                        name: "abp2c_exemptions_freq-determine-ex-other-desc_textarea",
+                        rhf: "Textarea",
+                        label: "Describe",
+                        labelStyling: "font-bold text-black",
+                        rules: { required: "* Required" },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              name: "abp2c_exemptions_assure-disenroll-process_checkgroup",
+              rhf: "Checkbox",
+              rules: { required: "* Required" },
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state/territory assures that it will promptly process all requests made by exempt individuals for disenrollment from the ABP and has in place a process that ensures exempt individuals have access to all standard state/territory plan services or, for beneficiaries in the “individuals age 19 or older and under age 65 at or below 133% FPL” eligibility group, optional enrollment in ABP coverage defined using Section 1937 requirements or ABP coverage defined as the state/territory's approved Medicaid state plan.",
+                    value:
+                      "state_assures_prompt_disenrollment_request_process_for_exempt_and_ensure_services_available",
+                  },
+                ],
+              },
+            },
+            {
+              name: "abp2c_exemptions_desc-disenroll-process_textarea",
+              rhf: "Textarea",
+              rules: { required: "* Required" },
+              label: "Describe the process for processing requests.",
+              labelStyling: "font-bold text-black",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Additional Information",
+      form: [
+        {
+          slots: [
+            {
+              name: "abp2c_additional_info_description_textarea",
+              rhf: "Textarea",
+              label:
+                "Other information about enrollment assurances for mandatory participants (optional)",
+              labelStyling: "font-bold text-black",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
