@@ -301,10 +301,8 @@ jobs:
       - name: Install serverless compose
         working-directory: src/services/cypress
         run: |
-          yarn add serverless
-          yarn add @serverless/compose
-      - name: Print Cognito Url
-        run: echo $(npx serverless param get --name CognitoUserPoolClientDomain)
+          yarn add serverless @serverless/compose
+          echo $(npx serverless param get --name CognitoUserPoolClientDomain)
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
