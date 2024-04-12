@@ -7,26 +7,32 @@ import {
   useModalContext,
   useNavigate,
 } from "@/components";
-import * as SC from "@/features/package-actions/shared-components";
 import { Info } from "lucide-react";
 import { useGetUser } from "@/api/useGetUser";
 import { useOriginPath } from "@/utils";
-import { FormSetup } from "./lib";
+import { AdditionalInfoSection, FormSetup, PreSubmitNotice } from "./lib";
 import { submitActionForm } from "@/features/package-actions/lib";
 import { useGetItem } from "@/api";
 import { useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams } from "react-router-dom";
-import { Action, Authority } from "shared-types";
+import { useParams } from "@/components";
 import { SlotAdditionalInfo } from "@/features";
+import {
+  SubmissionButtons,
+  AttachmentsSection,
+  ActionDescription,
+  Heading,
+  RequiredFieldDescription,
+} from "@/features/package-actions/lib";
+import {
+  ErrorBanner,
+  FormLoadingSpinner,
+  PackageSection,
+} from "@/features/package-actions/shared-components";
 
 export const ActionForm = ({ setup }: { setup: FormSetup }) => {
-  const { authority, id, type } = useParams<{
-    authority: Authority;
-    type: Action;
-    id: string;
-  }>();
+  const { id, type, authority } = useParams("/action/:authority/:id/:type");
   const navigate = useNavigate();
   const origin = useOriginPath();
   const alert = useAlertContext();
@@ -52,9 +58,12 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
         alert,
         navigate,
         originRoute: origin,
-        successBannerContent: content!.successBanner,
       }),
   );
+  alert.setContent({
+    header: "Test",
+    body: "Test",
+  });
   // Adapted handler for destructive confirmation modal use
   const confirmSubmitCallback = useCallback(() => {
     modal.setModalOpen(false);
@@ -67,31 +76,29 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
   } else {
     return (
       <Form {...form}>
-        <SC.Heading title={content.title} />
-        <SC.RequiredFieldDescription />
-        <SC.ActionDescription>{content.description}</SC.ActionDescription>
-        <SC.PackageSection />
+        {form.formState.isSubmitting && <LoadingSpinner />}
+        <Heading title={content.title} />
+        <RequiredFieldDescription />
+        <ActionDescription>{content.description}</ActionDescription>
+
+        {/* BEGIN BESPOKE NEEDS */}
+        <PackageSection />
         <form onSubmit={handler}>
-          <SC.AttachmentsSection
+          <AttachmentsSection
             instructions={content?.attachmentsInstruction || ""}
             attachments={setup.attachments}
             faqLink={""}
           />
-          <FormField
-            control={form.control}
-            name={"additionalInformation"}
-            render={SlotAdditionalInfo({
-              label: <p>{content?.additionalInfoInstruction || ""}</p>,
-            })}
+          <AdditionalInfoSection
+            instruction={content?.additionalInfoInstruction}
           />
-          <Alert variant={"infoBlock"} className="space-x-2 mb-8">
-            <Info />
-            <p>{content.preSubmitNotice}</p>
-          </Alert>
-          <SC.FormLoadingSpinner />
-          <SC.ErrorBanner />
+          <PreSubmitNotice message={content.preSubmitNotice} />
+          <FormLoadingSpinner />
+          <ErrorBanner />
+          {/* END BESPOKE NEEDS */}
+
           {content?.confirmationModal ? (
-            <SC.SubmissionButtons
+            <SubmissionButtons
               confirmWithdraw={() => {
                 modal.setContent(content.confirmationModal!);
                 modal.setOnAccept(() => confirmSubmitCallback);
@@ -99,7 +106,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
               }}
             />
           ) : (
-            <SC.SubmissionButtons />
+            <SubmissionButtons />
           )}
         </form>
       </Form>

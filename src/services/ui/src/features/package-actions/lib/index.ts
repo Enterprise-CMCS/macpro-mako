@@ -1,5 +1,5 @@
 import { Action, Authority } from "shared-types";
-import { getSchemaFor } from "@/features/package-actions/lib/schemas";
+import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getAttachmentsFor } from "@/features/package-actions/lib/attachments";
 import { OneMacUser, submit } from "@/api";
 import { buildActionUrl, useOriginPath } from "@/utils";
@@ -10,7 +10,7 @@ import {
   useNavigate,
 } from "@/components";
 import { FieldValues } from "react-hook-form";
-import { getContentFor } from "@/features/package-actions/lib/content";
+import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
 
 export type FormSetup = {
   schema: ReturnType<typeof getSchemaFor>;
@@ -35,7 +35,6 @@ export const submitActionForm = async ({
   alert,
   navigate,
   originRoute,
-  successBannerContent,
 }: {
   data: FieldValues;
   id: string;
@@ -45,7 +44,6 @@ export const submitActionForm = async ({
   originRoute: ReturnType<typeof useOriginPath>;
   alert: ReturnType<typeof useAlertContext>;
   navigate: ReturnType<typeof useNavigate>;
-  successBannerContent: BannerContent;
 }) => {
   const path = originRoute ? originRoute : "/dashboard";
   try {
@@ -55,7 +53,8 @@ export const submitActionForm = async ({
       user,
       authority: authority,
     });
-    alert.setContent(successBannerContent);
+    // TODO: Make this the responsibility of the component
+    // alert.setContent(successBannerContent);
     alert.setBannerStyle("success");
     alert.setBannerShow(true);
     alert.setBannerDisplayOn(path);
@@ -72,3 +71,6 @@ export const submitActionForm = async ({
     window.scrollTo(0, 0);
   }
 };
+
+export * from "./content";
+export * from "./fields";

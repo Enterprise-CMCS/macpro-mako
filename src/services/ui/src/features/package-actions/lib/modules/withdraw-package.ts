@@ -5,7 +5,7 @@ import {
   zAttachmentOptional,
   zAttachmentRequired,
 } from "@/utils";
-import { FormContentHydrator } from "@/features/package-actions/lib/content";
+import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 
 export const chipWithdrawPackageSchema = z.object({
   additionalInformation: zAdditionalInfo.optional(),

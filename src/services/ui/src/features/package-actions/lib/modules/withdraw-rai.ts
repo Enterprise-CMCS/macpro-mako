@@ -4,7 +4,7 @@ import {
   zAdditionalInfo,
   zAttachmentOptional,
 } from "@/utils";
-import { FormContentHydrator } from "@/features/package-actions/lib/content";
+import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 
 export const defaultWithdrawRaiSchema = z.object({
   additionalInformation: zAdditionalInfo,

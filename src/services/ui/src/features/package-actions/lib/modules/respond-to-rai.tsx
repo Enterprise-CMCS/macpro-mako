@@ -5,7 +5,7 @@ import {
   zAttachmentRequired,
 } from "@/utils";
 import { z } from "zod";
-import { FormContentHydrator } from "@/features/package-actions/lib/content";
+import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 export const chipSpaRaiSchema = z.object({
   additionalInformation: zAdditionalInfo.optional(),
   attachments: z.object({
