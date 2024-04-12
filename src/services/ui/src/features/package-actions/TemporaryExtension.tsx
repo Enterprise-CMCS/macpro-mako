@@ -139,8 +139,8 @@ export const TemporaryExtension = () => {
 
   const parentId = urlId ? urlId : formId;
   SC.useDisplaySubmissionAlert(
-    "Temporary Extension issued",
-    `The Temporary Extension Request for ${parentId} has been submitted.`,
+    "Temporary Extension Request submitted.",
+    "Your submission has been received.",
   );
 
   return (
