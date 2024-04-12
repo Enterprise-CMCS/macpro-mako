@@ -26,7 +26,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Select",
-              name: "abp4_cost-sharing_abp-for-individuals-income-over-100%-poverty_select",
+              name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty_select",
               label:
                 "The ABP for individuals with income over 100% of the federal poverty level (FPL) includes cost sharing other than that described in Attachment 4.18-A or G1, G2a, G2b, G2c, and G3.",
               labelStyling: "font-bold",
