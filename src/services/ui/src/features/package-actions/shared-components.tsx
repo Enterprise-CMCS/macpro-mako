@@ -1,7 +1,9 @@
 import {
   Alert,
+  AttachmentsSizeTypesDesc,
   LoadingSpinner,
   Route,
+  SubmissionAlert,
   useAlertContext,
   useModalContext,
 } from "@/components";
@@ -18,7 +20,7 @@ import {
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { useEffect } from "react";
-import { SubmitHandler, useFormContext } from "react-hook-form";
+import { Path, SubmitHandler, useFormContext } from "react-hook-form";
 import {
   ActionFunctionArgs,
   Link,
@@ -30,6 +32,7 @@ import {
   useSubmit,
 } from "react-router-dom";
 import { Authority } from "shared-types";
+import { AttachmentRecipe } from "@/utils";
 
 // Components
 
@@ -53,53 +56,29 @@ export const Heading = ({ title }: { title: string }) => {
   return <h1 className="text-2xl font-semibold mt-4 mb-2">{title}</h1>;
 };
 
-export const AttachmentsSection = <T extends string>({
+export const AttachmentsSection = ({
   attachments,
-  supportingInformation,
+  instructions,
+  faqLink,
 }: {
-  attachments: { name: string; required: boolean; registerName: T }[];
-  supportingInformation?: string;
+  attachments: AttachmentRecipe<any>[];
+  instructions?: string;
+  faqLink: string;
 }) => {
   const form = useFormContext();
-
   return (
     <>
       <h2 className="font-bold text-2xl font-sans mb-2">Attachments</h2>
-      {supportingInformation && <p>{supportingInformation}</p>}
-      <p>
-        Maximum file size of 80 MB per attachment.{" "}
-        <strong>You can add multiple files per attachment type.</strong> Read
-        the description for each of the attachment types on the{" "}
-        <Link
-          className="text-blue-700 hover:underline"
-          to={"/faq/medicaid-spa-attachments"} // arbitrary default, covered by a bug to be fixed soon
-          target={FAQ_TAB}
-        >
-          {" "}
-          FAQ Page.
-        </Link>
-      </p>
-      <p>
-        We accept the following file formats:{"  "}
-        <strong>.docx, .jpg, .pdf, .png, .xlsx. </strong>
-        See the full list on the{" "}
-        <Link
-          className="text-blue-700 hover:underline"
-          to={"/faq/acceptable-file-formats"}
-          target={FAQ_TAB}
-        >
-          {" "}
-          FAQ Page.
-        </Link>
-      </p>
-      {attachments.map(({ name, required, registerName }) => (
+      {instructions && <p>{instructions}</p>}
+      <AttachmentsSizeTypesDesc faqLink={faqLink} />
+      {attachments.map(({ name, label, required }) => (
         <FormField
-          key={name}
+          key={String(name) + "-field"}
           control={form.control}
-          name={`attachments.${registerName}`}
+          name={`attachments.${String(name)}`}
           render={({ field }) => (
-            <FormItem key={name} className="my-4 space-y-2">
-              <FormLabel>{name}</FormLabel> {required && <RequiredIndicator />}
+            <FormItem key={String(name) + "-render"} className="my-4 space-y-2">
+              <FormLabel>{label}</FormLabel> {required && <RequiredIndicator />}
               <Upload files={field?.value ?? []} setFiles={field.onChange} />
               <FormMessage />
             </FormItem>
@@ -110,7 +89,13 @@ export const AttachmentsSection = <T extends string>({
   );
 };
 
-export const SubmissionButtons = ({ onSubmit }: { onSubmit?: () => void }) => {
+/** Action form submission buttons. Use the `confirmWithdraw` prop when performing
+ * a destructive action like a withdrawal. */
+export const SubmissionButtons = ({
+  confirmWithdraw,
+}: {
+  confirmWithdraw?: () => void;
+}) => {
   const { state } = useNavigation();
   const modal = useModalContext();
   const navigate = useNavigate();
@@ -122,13 +107,20 @@ export const SubmissionButtons = ({ onSubmit }: { onSubmit?: () => void }) => {
 
   return (
     <section className="space-x-2 mb-8">
-      <Button
-        type={onSubmit ? "button" : "submit"}
-        onClick={onSubmit}
-        disabled={state === "submitting"}
-      >
-        Submit
-      </Button>
+      {confirmWithdraw && (
+        <Button
+          type={"button"}
+          onClick={() => confirmWithdraw()}
+          disabled={state === "submitting"}
+        >
+          Submit
+        </Button>
+      )}
+      {!confirmWithdraw && (
+        <Button type={"submit"} disabled={state === "submitting"}>
+          Submit
+        </Button>
+      )}
       <Button
         onClick={() => {
           modal.setContent({
@@ -137,9 +129,7 @@ export const SubmissionButtons = ({ onSubmit }: { onSubmit?: () => void }) => {
             acceptButtonText: "Yes, leave form",
             cancelButtonText: "Return to form",
           });
-
           modal.setOnAccept(() => acceptAction);
-
           modal.setModalOpen(true);
         }}
         variant={"outline"}

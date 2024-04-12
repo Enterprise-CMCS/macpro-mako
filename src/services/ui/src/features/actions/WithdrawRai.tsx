@@ -21,7 +21,7 @@ import {
 import {
   SlotAdditionalInfo,
   SlotAttachments,
-  FormSetup,
+  OldFormSetup,
   ActionFormIntro,
   PackageInfo,
 } from "@/features";
@@ -39,7 +39,7 @@ export const WithdrawRai = ({
   item,
   schema,
   attachments,
-}: FormSetup & { item: opensearch.main.ItemResult }) => {
+}: OldFormSetup & { item: opensearch.main.ItemResult }) => {
   const navigate = useNavigate();
   const urlQuery = useQueryString();
   const { id, type } = useParams("/action/:id/:type");

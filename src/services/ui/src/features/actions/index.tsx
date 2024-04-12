@@ -18,7 +18,7 @@ import {
   chipWithdrawPackageSetup,
   defaultIssueRaiSetup,
   defaultWithdrawRaiSetup,
-  FormSetup,
+  OldFormSetup,
   medicaidRespondToRaiSetup,
   medicaidWithdrawPackageSetup,
 } from "@/features";
@@ -26,7 +26,7 @@ import { useGetItem, useGetPackageActions } from "@/api";
 import { WithdrawRai } from "./WithdrawRai";
 
 export type SetupOptions = "CHIP SPA" | "Medicaid SPA";
-const getFormSetup = (opt: SetupOptions, type: Action): FormSetup | null => {
+const getFormSetup = (opt: SetupOptions, type: Action): OldFormSetup | null => {
   switch (type) {
     case "issue-rai":
       return defaultIssueRaiSetup;

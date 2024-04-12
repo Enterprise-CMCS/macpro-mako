@@ -3,7 +3,6 @@ import * as F from "@/features";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
 import { type Route } from "./components/Routing/types";
-import { packageActionRoutes } from "@/features/package-actions";
 import {
   TempExtensionWrapper,
   TemporaryExtension,
@@ -113,7 +112,7 @@ export const router = createBrowserRouter([
         path: "/new-submission/spa/chip/create",
         element: <F.ChipSpaFormPage />,
       },
-      { path: "/action/:id/:type", element: <F.ActionFormIndex /> },
+      { path: "/action/:authority/:id/:type", element: <F.ActionPage /> },
       { path: "/webforms", element: <F.WebformsList /> },
       { path: "/webform/:id/:version", element: <F.Webform /> },
       { path: "/profile", element: <F.Profile /> },
@@ -127,7 +126,6 @@ export const router = createBrowserRouter([
         element: <TempExtensionWrapper />,
         action: tempExtensionAction,
       },
-      packageActionRoutes,
     ],
     loader: F.loader(queryClient),
   },

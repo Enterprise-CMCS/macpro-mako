@@ -21,7 +21,7 @@ import {
 } from "@/components";
 
 import {
-  FormSetup,
+  OldFormSetup,
   SlotAdditionalInfo,
   SlotAttachments,
   ActionFormIntro,
@@ -42,7 +42,7 @@ export const RespondToRai = ({
   item,
   schema,
   attachments,
-}: FormSetup & {
+}: OldFormSetup & {
   item: opensearch.main.ItemResult;
 }) => {
   const navigate = useNavigate();

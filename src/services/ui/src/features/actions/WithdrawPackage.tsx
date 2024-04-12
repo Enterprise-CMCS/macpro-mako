@@ -21,7 +21,7 @@ import {
 } from "@/components";
 import {
   SetupOptions,
-  FormSetup,
+  OldFormSetup,
   ActionFormIntro,
   PackageInfo,
   SlotAdditionalInfo,
@@ -63,7 +63,7 @@ export const WithdrawPackage = ({
   item,
   schema,
   attachments,
-}: FormSetup & {
+}: OldFormSetup & {
   item: opensearch.main.ItemResult;
 }) => {
   const navigate = useNavigate();

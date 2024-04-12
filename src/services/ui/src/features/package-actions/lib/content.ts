@@ -75,10 +75,7 @@ const completeIntakeFor: FormContentGroup = {
   "1915(c)": undefined,
 };
 
-export const getContentFor = (
-  a: Action,
-  p: Authority,
-): FormContentHydrator | undefined => {
+export const getContentFor = (a: Action, p: Authority): FormContentHydrator => {
   const actionContentMap: Record<string, FormContentGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,
@@ -88,5 +85,9 @@ export const getContentFor = (
     "update-id": updateIdFor,
     "complete-intake": completeIntakeFor,
   };
-  return actionContentMap?.[a][p] || undefined;
+  const group = actionContentMap?.[a];
+  if (!group) throw new Error(`No content group for "${a}"`);
+  const content = group[p];
+  if (!content) throw new Error(`No content for "${p}" found in group "${a}`);
+  return content;
 };

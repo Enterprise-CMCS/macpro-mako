@@ -24,7 +24,7 @@ import {
   ActionFormIntro,
   PackageInfo,
   SlotAdditionalInfo,
-  FormSetup,
+  OldFormSetup,
   SlotAttachments,
 } from "@/features";
 import { useGetUser, submit } from "@/api";
@@ -41,7 +41,7 @@ export const RaiIssue = ({
   item,
   schema,
   attachments,
-}: FormSetup & { item: opensearch.main.ItemResult }) => {
+}: OldFormSetup & { item: opensearch.main.ItemResult }) => {
   const navigate = useNavigate();
   const urlQuery = useQueryString();
   const { id, type } = useParams("/action/:id/:type");

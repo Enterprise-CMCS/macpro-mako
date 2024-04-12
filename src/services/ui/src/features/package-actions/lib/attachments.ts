@@ -66,7 +66,7 @@ const completeIntakeFor: AttachmentsGroup = {
 export const getAttachmentsFor = (
   a: Action,
   p: Authority,
-): AttachmentRecipe<any>[] | undefined => {
+): AttachmentRecipe<any>[] => {
   const attachmentsMap: Record<string, AttachmentsGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,
@@ -76,5 +76,10 @@ export const getAttachmentsFor = (
     "update-id": updateIdFor,
     "complete-intake": completeIntakeFor,
   };
-  return attachmentsMap?.[a][p] || undefined;
+  const group = attachmentsMap?.[a];
+  if (!group) throw new Error(`No attachments group for "${a}"`);
+  const attachments = group[p];
+  if (!attachments)
+    throw new Error(`No attachments for "${p}" found in group "${a}`);
+  return attachments;
 };

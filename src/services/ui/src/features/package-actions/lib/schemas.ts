@@ -64,7 +64,7 @@ const completeIntakeFor: SchemaGroup = {
   "1915(c)": undefined,
 };
 
-export const getSchemaFor = (a: Action, p: Authority): Schema | undefined => {
+export const getSchemaFor = (a: Action, p: Authority): Schema => {
   const actionSchemaMap: Record<string, SchemaGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,
@@ -74,5 +74,9 @@ export const getSchemaFor = (a: Action, p: Authority): Schema | undefined => {
     "update-id": updateIdFor,
     "complete-intake": completeIntakeFor,
   };
-  return actionSchemaMap?.[a][p] || undefined;
+  const group = actionSchemaMap[a];
+  if (!group) throw new Error(`No schema group for "${a}"`);
+  const schema = group[p];
+  if (!schema) throw new Error(`No schema for "${p}" found in group "${a}`);
+  return schema;
 };

@@ -158,19 +158,20 @@ export const TemporaryExtension = () => {
       </SC.ActionDescription>
       <form onSubmit={handleSubmit}>
         <TEPackageSection authority={authority} id={urlId} />
-        <SC.AttachmentsSection<Attachments>
+        <SC.AttachmentsSection
           attachments={[
             {
-              registerName: "waiverExtensionRequest",
-              name: "Waiver Extension Request",
+              name: "waiverExtensionRequest",
+              label: "Waiver Extension Request",
               required: true,
             },
             {
-              registerName: "other",
-              name: "Other",
+              name: "other",
+              label: "Other",
               required: false,
             },
           ]}
+          faqLink={""}
         />
         <FormField
           control={formMethods.control}

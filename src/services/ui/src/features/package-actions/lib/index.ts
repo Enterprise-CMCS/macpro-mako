@@ -2,7 +2,7 @@ import { Action, Authority } from "shared-types";
 import { getSchemaFor } from "@/features/package-actions/lib/schemas";
 import { getAttachmentsFor } from "@/features/package-actions/lib/attachments";
 import { OneMacUser, submit } from "@/api";
-import { buildActionUrl } from "@/utils";
+import { buildActionUrl, useOriginPath } from "@/utils";
 import {
   BannerContent,
   Route,
@@ -12,16 +12,16 @@ import {
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/content";
 
-type FormSetup = {
+export type FormSetup = {
   schema: ReturnType<typeof getSchemaFor>;
-  attachmentsSetup: ReturnType<typeof getAttachmentsFor>;
+  attachments: ReturnType<typeof getAttachmentsFor>;
   content: ReturnType<typeof getContentFor>;
 };
 /** Builds a form setup using an Action x Authority 2-dimensional
  * lookup. */
 export const getSetupFor = (a: Action, p: Authority): FormSetup => ({
   schema: getSchemaFor(a, p),
-  attachmentsSetup: getAttachmentsFor(a, p),
+  attachments: getAttachmentsFor(a, p),
   content: getContentFor(a, p),
 });
 /** Submits the given data to is corresponding Action endpoint, and centralizes
@@ -42,11 +42,12 @@ export const submitActionForm = async ({
   type: Action;
   user: OneMacUser;
   authority: Authority;
-  originRoute: Route;
+  originRoute: ReturnType<typeof useOriginPath>;
   alert: ReturnType<typeof useAlertContext>;
   navigate: ReturnType<typeof useNavigate>;
   successBannerContent: BannerContent;
 }) => {
+  const path = originRoute ? originRoute : "/dashboard";
   try {
     await submit({
       data: { ...data, id: id },
@@ -57,8 +58,8 @@ export const submitActionForm = async ({
     alert.setContent(successBannerContent);
     alert.setBannerStyle("success");
     alert.setBannerShow(true);
-    alert.setBannerDisplayOn(originRoute);
-    navigate({ path: originRoute });
+    alert.setBannerDisplayOn(path);
+    navigate({ path });
   } catch (e: unknown) {
     console.error(e);
     alert.setContent({
