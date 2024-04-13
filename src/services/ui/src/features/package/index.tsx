@@ -43,7 +43,7 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
         case undefined: // Some TEs have no authority
           if (data._source.appkParent)
             return "Appendix K Amendment Package Details";
-          else if (data._source.actionType == "Extend")
+          else if (data._source.actionType)
             return "Temporary Extension Request Details";
           else return undefined;
         default:
