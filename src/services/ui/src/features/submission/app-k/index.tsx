@@ -56,16 +56,10 @@ export const AppKSubmissionForm = () => {
   });
 
   const state = form.watch("state");
-  const parentWaiver = {
-    value: zAppkWaiverNumberSchema.safeParse(form.watch("parentWaiver"))
-      .success,
-    state: form.getFieldState("parentWaiver"),
-  };
 
   useEffect(() => {
     if (!state) return;
-    form.setValue("childWaivers", []);
-    form.setValue("parentWaiver", "");
+    form.setValue("waiverIds", []);
   }, [state]);
 
   return (
@@ -154,17 +148,14 @@ export const AppKSubmissionForm = () => {
                       Appendix K ID <I.RequiredIndicator />
                     </I.FormLabel>
                   </div>
-                  <I.FormField
-                    control={form.control}
-                    name="parentWaiver"
-                    render={SlotWaiverId({ state })}
+
+                  <WaiverIdFieldArray
+                    state={state}
+                    {...form}
+                    name="childWaivers"
                   />
                 </div>
               </>
-            )}
-
-            {!parentWaiver.state.error && parentWaiver.value && (
-              <WaiverIdFieldArray state={state} {...form} name="childWaivers" />
             )}
 
             <I.FormField
