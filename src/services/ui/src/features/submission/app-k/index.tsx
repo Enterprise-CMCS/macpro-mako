@@ -3,10 +3,10 @@
 import { SlotAdditionalInfo, SlotAttachments } from "@/features/actions";
 import * as I from "@/components/Inputs";
 import * as C from "@/components";
-import { Path, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FORM, SchemaForm } from "./consts";
-import { SlotStateSelect, SlotWaiverId, WaiverIdFieldArray } from "./slots";
+import { SlotStateSelect, WaiverIdFieldArray } from "./slots";
 import { SubmissionServiceParameters, submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
@@ -14,7 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
 import { useEffect } from "react";
 import * as Content from "@/components";
-import { useOriginPath, zAppkWaiverNumberSchema } from "@/utils";
+import { useOriginPath } from "@/utils";
 import { Link } from "react-router-dom";
 
 export const AppKSubmissionForm = () => {
@@ -56,16 +56,10 @@ export const AppKSubmissionForm = () => {
   });
 
   const state = form.watch("state");
-  const parentWaiver = {
-    value: zAppkWaiverNumberSchema.safeParse(form.watch("parentWaiver"))
-      .success,
-    state: form.getFieldState("parentWaiver"),
-  };
 
   useEffect(() => {
     if (!state) return;
-    form.setValue("childWaivers", []);
-    form.setValue("parentWaiver", "");
+    form.setValue("waiverIds", []);
   }, [state]);
 
   return (
@@ -154,17 +148,13 @@ export const AppKSubmissionForm = () => {
                       Appendix K ID <I.RequiredIndicator />
                     </I.FormLabel>
                   </div>
-                  <I.FormField
-                    control={form.control}
-                    name="parentWaiver"
-                    render={SlotWaiverId({ state })}
+                  <WaiverIdFieldArray
+                    state={state}
+                    {...form}
+                    name="childWaivers"
                   />
                 </div>
               </>
-            )}
-
-            {!parentWaiver.state.error && parentWaiver.value && (
-              <WaiverIdFieldArray state={state} {...form} name="childWaivers" />
             )}
 
             <I.FormField

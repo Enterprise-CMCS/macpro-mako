@@ -62,8 +62,7 @@ export const OPTIONS_STATE = [
 
 export const FORM = z.object({
   state: z.string(),
-  parentWaiver: zAppkWaiverNumberSchema,
-  childWaivers: z.array(zAppkWaiverNumberSchema),
+  waiverIds: z.array(zAppkWaiverNumberSchema),
   additionalInformation: z.string().max(4000).optional(),
   title: z.string().trim().min(1, { message: "Required" }),
   attachments: z.object({
