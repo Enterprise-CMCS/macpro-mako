@@ -44,7 +44,7 @@ export const AppKSubmissionForm = () => {
         onSuccess: () => {
           alert.setContent({
             header: "Package submitted",
-            body: "Your submission has been received.",
+            body: "The 1915(c) Appendix K Amendment Request has been submitted.",
           });
           alert.setBannerShow(true);
           alert.setBannerDisplayOn("/dashboard");
@@ -74,8 +74,8 @@ export const AppKSubmissionForm = () => {
       <C.BreadCrumbs options={crumbs} />
       <I.Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
-          <C.SectionCard title="1915(c) APPENDIX K Amendment Request Details">
-            <Content.FormIntroText />
+          <C.SectionCard title="1915(c) Appendix K Amendment Request Details">
+            <Content.FormIntroTextForAppK />
             <I.FormField
               control={form.control}
               name="title"
@@ -85,6 +85,7 @@ export const AppKSubmissionForm = () => {
                     Amendment Title <I.RequiredIndicator />
                   </I.FormLabel>
                   <I.Textarea {...field} className="h-[80px]" />
+                  <I.FormMessage />
                 </I.FormItem>
               )}
             />
@@ -136,6 +137,15 @@ export const AppKSubmissionForm = () => {
                       (The last two digits relating to the number of amendments
                       in the waiver cycle start with “01” and ascend.)
                     </li>
+                    <li>
+                      <strong>
+                        The first ID entered will be used to track the
+                        submission on the OneMAC dashboard.
+                      </strong>
+                      {"  "}
+                      You’ll be able to find the other waiver IDs entered below
+                      by searching for the first waiver ID.
+                    </li>
                   </ul>
                 </p>
                 <div className="flex flex-col gap-2">
@@ -162,8 +172,9 @@ export const AppKSubmissionForm = () => {
               name="proposedEffectiveDate"
               render={({ field }) => (
                 <I.FormItem className="max-w-sm">
-                  <I.FormLabel className="text-lg font-bold block">
-                    Proposed Effective Date <I.RequiredIndicator />
+                  <I.FormLabel className="font-bold block">
+                    Proposed Effective Date of 1915(c) Appendix K Amendment
+                    <I.RequiredIndicator />
                   </I.FormLabel>
                   <I.FormControl>
                     <I.DatePicker

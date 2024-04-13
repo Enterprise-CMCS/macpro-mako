@@ -115,6 +115,18 @@ export const WithdrawPackage = () => {
               },
             ]}
           />
+          <FormField
+            control={formMethods.control}
+            name={"additionalInformation"}
+            render={SlotAdditionalInfo({
+              label: (
+                <p>
+                  Explain your need for withdrawal or upload supporting
+                  documentation.
+                </p>
+              ),
+            })}
+          />
           <SC.FormLoadingSpinner />
           <SC.ErrorBanner />
           <AdditionalFormInformation />
@@ -127,7 +139,7 @@ export const WithdrawPackage = () => {
 
               modal.setContent({
                 header: "Are you sure you want to withdraw this package?",
-                body: `All packages associated with ${id} will able be withdrawn.`,
+                body: `All packages associated with ${id} will also be withdrawn.`,
                 acceptButtonText: "Yes, withdraw",
                 cancelButtonText: "Cancel",
               });

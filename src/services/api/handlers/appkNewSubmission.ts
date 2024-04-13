@@ -56,6 +56,11 @@ export const submit = async (event: APIGatewayEvent) => {
       );
     }
 
+    const notificationMetadata = {
+      submissionDate: getNextBusinessDayTimestamp(),
+      proposedEffectiveDate: body.proposedEffectiveDate,
+    };
+
     const validateZod = onemacSchema.safeParse({
       ...body,
       ...(!!Number(WINDEX) && {
@@ -65,6 +70,7 @@ export const submit = async (event: APIGatewayEvent) => {
         appkTitle: body.title,
         appkParent: true,
       }),
+      notificationMetadata,
     });
 
     if (!validateZod.success) {
