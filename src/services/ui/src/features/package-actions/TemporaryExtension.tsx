@@ -10,7 +10,6 @@ import {
   FormMessage,
   Input,
   RequiredIndicator,
-  SectionCard,
   Select,
   SelectContent,
   SelectItem,
@@ -36,7 +35,6 @@ import { submit } from "@/api/submissionService";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getItem } from "@/api";
-import { ItemResult } from "shared-types/opensearch/changelog";
 import { SlotAdditionalInfo } from "@/features";
 
 type Attachments = keyof z.infer<typeof tempExtensionSchema>["attachments"];
@@ -133,11 +131,9 @@ export const TempExtensionWrapper = () => {
 export const TemporaryExtension = () => {
   const { handleSubmit, formMethods } = SC.useSubmitForm();
   const { id: urlId, authority: urlAuthority } = useParams();
-  const formId = formMethods.getValues("originalWaiverNumber");
   const formAuthority = formMethods.getValues("authority");
   const authority = urlAuthority ? urlAuthority : formAuthority;
 
-  const parentId = urlId ? urlId : formId;
   SC.useDisplaySubmissionAlert(
     "Temporary Extension Request submitted.",
     "Your submission has been received.",
