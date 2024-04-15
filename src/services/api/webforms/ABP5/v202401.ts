@@ -720,8 +720,8 @@ export const v202401: FormSchema = {
                             groupNamePrefix:
                               "other_base_benchmark_benefits_not_covered",
                             props: {
-                              appendText: "Add benefit",
-                              removeText: "Remove benefit",
+                              appendText: "Add item",
+                              removeText: "Remove item",
                             },
                             fields: [
                               {
