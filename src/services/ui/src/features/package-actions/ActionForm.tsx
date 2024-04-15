@@ -50,11 +50,8 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
       }),
   );
   useEffect(() => {
-    alert.setContent({
-      header: "Test",
-      body: "Test",
-    });
-  }, []);
+    content?.successBanner && alert.setContent(content.successBanner);
+  }, [content]);
   // Adapted handler for destructive confirmation modal use
   const confirmSubmitCallback = useCallback(() => {
     modal.setModalOpen(false);

@@ -1,16 +1,15 @@
 import { Action, Authority } from "shared-types";
 import { ZodEffects, ZodObject } from "zod";
-import { defaultIssueRaiSchema } from "./modules/issue-rai";
 import {
   bWaiverRaiSchema,
   chipSpaRaiSchema,
-  medSpaRaiSchema,
-} from "./modules/respond-to-rai";
-import { defaultWithdrawRaiSchema } from "./modules/withdraw-rai";
-import {
   chipWithdrawPackageSchema,
+  defaultIssueRaiSchema,
+  defaultTempExtSchema,
   defaultWithdrawPackageSchema,
-} from "./modules/withdraw-package";
+  defaultWithdrawRaiSchema,
+  medSpaRaiSchema,
+} from "@/features/package-actions/lib/modules";
 
 type Schema = ZodObject<any> | ZodEffects<any>;
 type SchemaGroup = Record<Authority, Schema | undefined>;
@@ -44,10 +43,10 @@ const withdrawPackageFor: SchemaGroup = {
 };
 
 const tempExtensionFor: SchemaGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultTempExtSchema,
+  "medicaid spa": defaultTempExtSchema,
+  "1915(b)": defaultTempExtSchema,
+  "1915(c)": defaultTempExtSchema,
 };
 
 const updateIdFor: SchemaGroup = {

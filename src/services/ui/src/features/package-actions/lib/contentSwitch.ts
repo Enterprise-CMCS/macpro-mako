@@ -1,16 +1,15 @@
 import { ReactNode } from "react";
 import { BannerContent, SubmissionAlert } from "@/components";
 import { Action, Authority, opensearch } from "shared-types";
-import { defaultIssueRaiContent } from "@/features/package-actions/lib/modules/issue-rai";
-import {
-  spaRaiContent,
-  waiverRaiContent,
-} from "@/features/package-actions/lib/modules/respond-to-rai";
-import { defaultWithdrawRaiContent } from "@/features/package-actions/lib/modules/withdraw-rai";
 import {
   chipWithdrawPackageContent,
+  defaultIssueRaiContent,
+  defaultTempExtContent,
   defaultWithdrawPackageContent,
-} from "@/features/package-actions/lib/modules/withdraw-package";
+  defaultWithdrawRaiContent,
+  spaRaiContent,
+  waiverRaiContent,
+} from "@/features/package-actions/lib/modules";
 
 type FormContent = {
   title: string;
@@ -55,10 +54,10 @@ const withdrawPackageFor: FormContentGroup = {
 };
 
 const tempExtensionFor: FormContentGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultTempExtContent,
+  "medicaid spa": defaultTempExtContent,
+  "1915(b)": defaultTempExtContent,
+  "1915(c)": defaultTempExtContent,
 };
 
 const updateIdFor: FormContentGroup = {

@@ -5,6 +5,7 @@ import {
   chipSpaRaiFields,
   chipWithdrawPackageFields,
   defaultIssueRaiFields,
+  defaultTempExtFields,
   defaultWithdrawPackageFields,
   defaultWithdrawRaiFields,
   medSpaRaiFields,
@@ -41,10 +42,10 @@ const withdrawPackageFor: FieldsGroup = {
 };
 
 const tempExtensionFor: FieldsGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultTempExtFields,
+  "medicaid spa": defaultTempExtFields,
+  "1915(b)": defaultTempExtFields,
+  "1915(c)": defaultTempExtFields,
 };
 
 const updateIdFor: FieldsGroup = {
