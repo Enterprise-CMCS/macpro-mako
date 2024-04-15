@@ -15,6 +15,7 @@ import { tempExtensionSchema } from "./TemporaryExtension";
 import { useGetItem } from "@/api";
 import { updateIdSchema } from "./UpdateId";
 import { Action } from "shared-types";
+import { useEffect, useLayoutEffect } from "react";
 
 const schemas = {
   "issue-rai": issueRaiSchema,
@@ -44,6 +45,9 @@ const actions: Record<SchemaKeys, Action> = {
 export const ActionWrapper = () => {
   const location = useLocation();
   const packageActionType = location.pathname.split("/").pop() as SchemaKeys;
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const { id } = useParams("/action/:authority/:id/:type");
   useGetItem(id);

@@ -8,11 +8,11 @@ import { usePackageDetailsCache } from "..";
 type Attachments = NonNullable<opensearch.changelog.Document["attachments"]>;
 
 export const useAttachmentService = (
-  props: Pick<opensearch.changelog.Document, "packageId">
+  props: Pick<opensearch.changelog.Document, "packageId">,
 ) => {
   const { mutateAsync, error, isLoading } = useMutation(
     (att: Attachments[number]) =>
-      getAttachmentUrl(props.packageId, att.bucket, att.key, att.filename)
+      getAttachmentUrl(props.packageId, att.bucket, att.key, att.filename),
   );
 
   const onZip = (attachments: Attachments) => {
@@ -39,7 +39,7 @@ export const useAttachmentService = (
         zip.generateAsync({ type: "blob" }).then((content) => {
           saveAs(
             content,
-            `${props.packageId} - ${new Date().toDateString()}.zip`
+            `${props.packageId} - ${new Date().toDateString()}.zip`,
           );
         });
       })
@@ -62,7 +62,7 @@ export const usePackageActivities = () => {
       "issue-rai",
       "respond-to-rai",
       "remove-appk-child",
-    ].includes(CL._source.actionType)
+    ].includes(CL._source.actionType),
   );
 
   const onDownloadAll = () => {
@@ -76,6 +76,7 @@ export const usePackageActivities = () => {
     service.onZip(attachmentsAggregate);
   };
 
+  console.log({ data });
   return {
     data,
     accordianDefault: [data?.[0]?._source?.id as string],

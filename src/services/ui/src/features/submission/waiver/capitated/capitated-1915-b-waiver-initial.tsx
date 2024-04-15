@@ -81,7 +81,7 @@ export const Capitated1915BWaiverInitialPage = () => {
   const { loading, syncRecord } = useSyncStatus({
     path: originPath ? originPath : "/dashboard",
     isCorrectStatus: (data) => {
-      return !!data;
+      return data._source.actionType === "New";
     },
   });
 

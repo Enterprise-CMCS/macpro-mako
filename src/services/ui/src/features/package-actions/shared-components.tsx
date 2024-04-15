@@ -289,9 +289,10 @@ export const useDisplaySubmissionAlert = (
   const data = useActionData() as ActionFunctionReturnType;
   const location = useLocation();
   //create querystring
+  const newSubmission = isNewSubmission();
 
   const { loading, syncRecord } = useSyncStatus({
-    path: location.state?.from ?? "/dashboard",
+    path: newSubmission ? "/dashboard" : location.state?.from ?? "/dashboard",
     isCorrectStatus,
   });
 
@@ -333,6 +334,9 @@ export const useDisplaySubmissionAlert = (
 };
 
 // Utility Functions
+export const isNewSubmission = () =>
+  window.location.href.includes("new-submission");
+
 const filterUndefinedValues = (obj: Record<any, any>) => {
   if (obj) {
     return Object.fromEntries(

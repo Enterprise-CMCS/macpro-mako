@@ -103,7 +103,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
   const { loading, syncRecord } = useSyncStatus({
     path: originPath ? originPath : "/dashboard",
     isCorrectStatus: (data) => {
-      return !!data;
+      return data._source.actionType === "Renew";
     },
   });
 

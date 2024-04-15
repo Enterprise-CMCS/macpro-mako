@@ -83,7 +83,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
   const { syncRecord, loading } = useSyncStatus({
     path: originPath ? originPath : "/dashboard",
     isCorrectStatus: (data) => {
-      return !!data;
+      return data._source.actionType === "Amend";
     },
   });
 

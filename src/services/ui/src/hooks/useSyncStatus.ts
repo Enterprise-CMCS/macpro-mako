@@ -58,7 +58,7 @@ export const useSyncStatus = ({
         return false;
       }
 
-      return 1000; //aka 1 second
+      return 2000; //aka 2 seconds
     },
     enabled: runQuery,
   });

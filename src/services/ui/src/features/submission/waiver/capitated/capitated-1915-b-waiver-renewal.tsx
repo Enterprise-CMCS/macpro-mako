@@ -110,7 +110,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
   const { syncRecord, loading } = useSyncStatus({
     path: originPath ? originPath : "/dashboard",
     isCorrectStatus: (data) => {
-      return !!data;
+      return data._source.actionType === "Renew";
     },
   });
 
