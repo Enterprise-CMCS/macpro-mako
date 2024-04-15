@@ -144,7 +144,7 @@ function subsectionFormFields({
     {
       rhf: "Input",
       label:
-        "Other information regarding this benefit source, including the name of the source plan",
+        "Other information about this benefit source, including the name of the source plan",
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_source-other-info_input`,
       formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
@@ -163,7 +163,7 @@ function subsectionFormFields({
     {
       rhf: "Input",
       label:
-        "Other information regarding this benefit source, including the name of the source plan",
+        "Other information about this benefit source, including the name of the source plan",
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_secretary-other-info_input`,
       formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
@@ -192,7 +192,7 @@ function subsectionFormFields({
     },
     {
       rhf: "Input",
-      label: "Other information regarding authorization",
+      label: "Other information about authorization",
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_authorization-other-info_input`,
       formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
@@ -221,7 +221,7 @@ function subsectionFormFields({
     },
     {
       rhf: "Input",
-      label: "Other information regarding provider qualifications",
+      label: "Other information about provider qualifications",
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_provider-qual-other-info_input`,
       formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
