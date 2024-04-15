@@ -1,6 +1,11 @@
 import { Action, Authority } from "shared-types";
 import { ReactElement } from "react";
 import { defaultIssueRaiFields } from "@/features/package-actions/lib/modules/issue-rai";
+import {
+  bWaiverRaiFields,
+  chipSpaRaiFields,
+  medSpaRaiFields,
+} from "@/features/package-actions/lib/modules/respond-to-rai";
 
 type FieldsGroup = Record<Authority, ReactElement[] | undefined>;
 
@@ -12,9 +17,9 @@ const issueRaiFor: FieldsGroup = {
 };
 
 const respondToRaiFor: FieldsGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
+  "chip spa": chipSpaRaiFields,
+  "medicaid spa": medSpaRaiFields,
+  "1915(b)": bWaiverRaiFields,
   "1915(c)": undefined,
 };
 
