@@ -27,12 +27,14 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
           <ul className="my-3">
             {data.actions.map((type, idx) => {
               if (
-                authority === Authority["1915b"] || // why?
+                [Authority["1915b"], Authority["1915c"]].includes(
+                  authority as Authority,
+                ) ||
                 [
                   Action.TEMP_EXTENSION,
                   Action.UPDATE_ID,
                   Action.COMPLETE_INTAKE,
-                ].includes(type) // this is for new actions format
+                ].includes(type)
               ) {
                 return (
                   <Link
