@@ -14,7 +14,7 @@ import {
 
 type FormContent = {
   title: string;
-  description: ReactNode;
+  description?: ReactNode;
   preSubmitNotice: string;
   successBanner: BannerContent;
   additionalInfoInstruction?: string;

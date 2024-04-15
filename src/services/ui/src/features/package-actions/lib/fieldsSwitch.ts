@@ -1,13 +1,14 @@
 import { Action, Authority } from "shared-types";
 import { ReactElement } from "react";
+import { defaultIssueRaiFields } from "@/features/package-actions/lib/modules/issue-rai";
 
 type FieldsGroup = Record<Authority, ReactElement[] | undefined>;
 
 const issueRaiFor: FieldsGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultIssueRaiFields,
+  "medicaid spa": defaultIssueRaiFields,
+  "1915(b)": defaultIssueRaiFields,
+  "1915(c)": defaultIssueRaiFields,
 };
 
 const respondToRaiFor: FieldsGroup = {

@@ -1,6 +1,10 @@
 import {
+  ErrorBanner,
   Form,
+  Heading,
   LoadingSpinner,
+  PreSubmitNotice,
+  RequiredFieldDescription,
   SubmissionButtons,
   useAlertContext,
   useModalContext,
@@ -8,20 +12,13 @@ import {
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import { useOriginPath } from "@/utils";
-import { FormSetup, PreSubmitNotice } from "./lib";
+import { FormSetup } from "./lib";
 import { submitActionForm } from "@/features/package-actions/lib";
 import { useGetItem } from "@/api";
 import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "@/components";
-import {
-  ActionDescription,
-  Heading,
-  RequiredFieldDescription,
-  ErrorBanner,
-} from "@/features/package-actions/lib";
-import { PackageSection } from "@/features/package-actions/shared-components";
 
 export const ActionForm = ({ setup }: { setup: FormSetup }) => {
   const { id, type, authority } = useParams("/action/:authority/:id/:type");
@@ -73,10 +70,6 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
         {form.formState.isSubmitting && <LoadingSpinner />}
         <Heading title={content.title} />
         <RequiredFieldDescription />
-        <ActionDescription>{content.description}</ActionDescription>
-
-        {/* TODO: make package info section a ReactElement | undefined prop rendered conditionally */}
-        <PackageSection />
         <form onSubmit={handler}>
           {setup?.fields && setup.fields.map((field) => field)}
           <PreSubmitNotice message={content.preSubmitNotice} />

@@ -1,13 +1,17 @@
 import { z } from "zod";
 import {
-  AttachmentRecipe,
   zAdditionalInfo,
   zAttachmentOptional,
   zAttachmentRequired,
 } from "@/utils";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 import { ReactElement } from "react";
-import { AdditionalInfoSection, AttachmentsSection } from "@/components";
+import {
+  ActionDescription,
+  AdditionalInfoSection,
+  AttachmentsSection,
+} from "@/components";
+import { PackageSection } from "@/features/package-actions/shared-components";
 
 export const defaultIssueRaiSchema = z.object({
   additionalInformation: zAdditionalInfo,
@@ -16,21 +20,19 @@ export const defaultIssueRaiSchema = z.object({
     other: zAttachmentOptional,
   }),
 });
-export const defaultIssueRaiAttachments: AttachmentRecipe<
-  z.infer<typeof defaultIssueRaiSchema>
->[] = [
-  {
-    name: "formalRaiLetter",
-    label: "Formal RAI Letter",
-    required: true,
-  },
-  {
-    name: "other",
-    label: "Other",
-    required: false,
-  },
-];
 export const defaultIssueRaiFields: ReactElement[] = [
+  <ActionDescription key={"content-description"}>
+    Issuance of a Formal RAI in OneMAC will create a Formal RAI email sent to
+    the State. This will also create a section in the package details summary
+    for you and the State to have record. Please attach the Formal RAI Letter
+    along with any additional information or comments in the provided text box.
+    Once you submit this form, a confirmation email is sent to you and to the
+    State.
+    <strong className="bold">
+      If you leave this page, you will lose your progress on this form.
+    </strong>
+  </ActionDescription>,
+  <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     key={"field-attachments"}
     attachments={[
@@ -56,19 +58,6 @@ export const defaultIssueRaiFields: ReactElement[] = [
 ];
 export const defaultIssueRaiContent: FormContentHydrator = (document) => ({
   title: "Formal RAI Details",
-  description: (
-    <>
-      Issuance of a Formal RAI in OneMAC will create a Formal RAI email sent to
-      the State. This will also create a section in the package details summary
-      for you and the State to have record. Please attach the Formal RAI Letter
-      along with any additional information or comments in the provided text
-      box. Once you submit this form, a confirmation email is sent to you and to
-      the State.
-      <strong className="bold">
-        If you leave this page, you will lose your progress on this form.
-      </strong>
-    </>
-  ),
   preSubmitNotice:
     "Once you submit this form, a confirmation email is sent to you and to the State.",
   successBanner: {

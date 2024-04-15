@@ -3,30 +3,21 @@ import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
 import { OneMacUser, submit } from "@/api";
 import { buildActionUrl, useOriginPath } from "@/utils";
-import {
-  BannerContent,
-  Route,
-  useAlertContext,
-  useNavigate,
-} from "@/components";
+import { Route, useAlertContext, useNavigate } from "@/components";
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
-import { ReactElement } from "react";
-import { defaultIssueRaiFields } from "@/features/package-actions/lib/modules/issue-rai";
 
 export type FormSetup = {
   schema: ReturnType<typeof getSchemaFor>;
-  attachments: ReturnType<typeof getFieldsFor>;
+  fields: ReturnType<typeof getFieldsFor>;
   content: ReturnType<typeof getContentFor>;
-  fields: ReactElement[] | undefined;
 };
 /** Builds a form setup using an Action x Authority 2-dimensional
  * lookup. */
 export const getSetupFor = (a: Action, p: Authority): FormSetup => ({
   schema: getSchemaFor(a, p),
-  attachments: getFieldsFor(a, p),
+  fields: getFieldsFor(a, p),
   content: getContentFor(a, p),
-  fields: a === "issue-rai" ? defaultIssueRaiFields : undefined,
 });
 /** Submits the given data to is corresponding Action endpoint, and centralizes
  * success/error handling. */
@@ -76,4 +67,4 @@ export const submitActionForm = async ({
   }
 };
 
-export * from "./content";
+export * from "../../../components/Form/old-content";
