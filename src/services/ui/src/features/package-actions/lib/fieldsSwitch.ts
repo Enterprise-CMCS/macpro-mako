@@ -1,11 +1,12 @@
 import { Action, Authority } from "shared-types";
 import { ReactElement } from "react";
-import { defaultIssueRaiFields } from "@/features/package-actions/lib/modules/issue-rai";
 import {
   bWaiverRaiFields,
   chipSpaRaiFields,
+  defaultIssueRaiFields,
+  defaultWithdrawRaiFields,
   medSpaRaiFields,
-} from "@/features/package-actions/lib/modules/respond-to-rai";
+} from "@/features/package-actions/lib/modules";
 
 type FieldsGroup = Record<Authority, ReactElement[] | undefined>;
 
@@ -24,10 +25,10 @@ const respondToRaiFor: FieldsGroup = {
 };
 
 const withdrawRaiFor: FieldsGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultWithdrawRaiFields,
+  "medicaid spa": defaultWithdrawRaiFields,
+  "1915(b)": defaultWithdrawRaiFields,
+  "1915(c)": defaultWithdrawRaiFields,
 };
 
 const withdrawPackageFor: FieldsGroup = {
