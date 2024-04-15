@@ -1,6 +1,6 @@
 import { Action, Authority } from "shared-types";
 import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
-import { getAttachmentsFor } from "@/features/package-actions/lib/attachments";
+import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
 import { OneMacUser, submit } from "@/api";
 import { buildActionUrl, useOriginPath } from "@/utils";
 import {
@@ -16,7 +16,7 @@ import { defaultIssueRaiFields } from "@/features/package-actions/lib/modules/is
 
 export type FormSetup = {
   schema: ReturnType<typeof getSchemaFor>;
-  attachments: ReturnType<typeof getAttachmentsFor>;
+  attachments: ReturnType<typeof getFieldsFor>;
   content: ReturnType<typeof getContentFor>;
   fields: ReactElement[] | undefined;
 };
@@ -24,7 +24,7 @@ export type FormSetup = {
  * lookup. */
 export const getSetupFor = (a: Action, p: Authority): FormSetup => ({
   schema: getSchemaFor(a, p),
-  attachments: getAttachmentsFor(a, p),
+  attachments: getFieldsFor(a, p),
   content: getContentFor(a, p),
   fields: a === "issue-rai" ? defaultIssueRaiFields : undefined,
 });
