@@ -1,5 +1,5 @@
 import { ConfirmationModal, Link, LoadingSpinner } from "@/components";
-import { Authority } from "shared-types";
+import { Authority, SEATOOL_STATUS } from "shared-types";
 import { useState } from "react";
 import * as T from "@/components/Table";
 import { Button } from "@/components/Inputs";
@@ -60,6 +60,9 @@ export const AppK = () => {
                 </T.TableCell>
                 <T.TableCell>
                   <Button
+                    disabled={
+                      cache.data.seatoolStatus === SEATOOL_STATUS.WITHDRAWN
+                    }
                     size="sm"
                     className="flex gap-1"
                     onClick={() => setRemoveChild(CHILD._id)}

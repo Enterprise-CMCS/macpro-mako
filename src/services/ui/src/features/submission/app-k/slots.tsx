@@ -75,29 +75,16 @@ export const SlotWaiverId = <
 
       setLoading(true);
 
-      if (field.name === "parentWaiver") {
-        const childWaivers = context.getValues("childWaivers") || [];
-        if (childWaivers?.includes(value)) {
-          return context.setError(field.name, {
-            message: "Waiver id already exists",
-          });
-        }
-      }
+      const [_, index] = field.name.split(".");
+      const childWaivers = context.getValues("waiverIds") || [];
+      const existsInList = childWaivers
+        .filter((_: any, I: number) => I != Number(index))
+        .includes(value);
 
-      if (field.name.includes("childWaivers")) {
-        const [_, index] = field.name.split(".");
-        const childWaivers = context.getValues("childWaivers") || [];
-        const parentWaiver = context.getValues("parentWaiver");
-        const existsInList = childWaivers
-          .filter((_: any, I: number) => I != Number(index))
-          .concat(parentWaiver)
-          .includes(value);
-
-        if (existsInList) {
-          return context.setError(field.name, {
-            message: "Waiver id already exists",
-          });
-        }
+      if (existsInList) {
+        return context.setError(field.name, {
+          message: "Waiver id already exists",
+        });
       }
 
       const parsed = await zAppkWaiverNumberSchema.safeParseAsync(value);
@@ -174,11 +161,12 @@ export const WaiverIdFieldArray = (props: any) => {
       <div className="flex flex-col gap-2 justify-start">
         <div className="flex flex-col gap-1">
           <I.FormLabel className="font-bold">
-            Control Numbers (optional)
-          </I.FormLabel>
+            The first ID entered will be used to track the submission on the
+            OneMAC dashboard.
+          </I.FormLabel>{" "}
           <I.FormLabel>
-            Other waiver IDs that will be associated with the 1915(c) Appendix K
-            Amendment
+            You will be able to find other waiver IDs entered below by searching
+            for the first waiver ID.
           </I.FormLabel>
         </div>
 

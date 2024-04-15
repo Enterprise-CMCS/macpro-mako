@@ -1,6 +1,6 @@
 import { useGetItem } from "@/api";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 export type DetailsSidebarLink = {
   id: string;

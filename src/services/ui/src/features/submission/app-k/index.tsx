@@ -33,6 +33,7 @@ export const AppKSubmissionForm = () => {
   });
 
   const onSubmit = form.handleSubmit(async (draft) => {
+    console.log(draft);
     await submission.mutateAsync(
       {
         data: draft,
@@ -150,8 +151,8 @@ export const AppKSubmissionForm = () => {
                   </div>
                   <WaiverIdFieldArray
                     state={state}
+                    name="waiverIds"
                     {...form}
-                    name="childWaivers"
                   />
                 </div>
               </>
