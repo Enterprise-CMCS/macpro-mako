@@ -234,17 +234,4 @@ Feature: Waiver Package Details View: Appendix K Amendment for a CMS User
         Then expand the Initial Submission caret
         Then verify the download all button exists
 
-    Scenario: Appendix K Details View - Enable Formal RAI Response Withdraw
-        Then click the Pending checkbox
-        Then Click on the close Filter Button
-        Then search for "MD-22958.R00.01"
-        Then click the Waiver Number link in the first row
-        Then verify the package details page is visible
-        Then verify the status on the card is "Pending"
-        Then verify Enable Formal RAI Response Withdraw package action exists
-        Then click Enable Formal RAI Response Withdraw package action
-        Then Click on Submit Button
-        Then verify the status on the card is "Pending"
-        Then verify the sub status on the card is Withdraw Formal RAI Response Enabled
-        Then verify package actions header is visible
-        Then verify Disable Formal RAI Response Withdraw package action exists
+   

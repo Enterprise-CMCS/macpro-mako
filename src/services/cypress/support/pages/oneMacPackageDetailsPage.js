@@ -26,21 +26,19 @@ const authorityHeader = "//h3[contains(text(),'Authority')]";
 const parentWaiverNumberHeader =
   "//h3[contains(text(),'Approved Initial or Renewal Number')]";
 const stateHeader = "//h3[text()='State']";
-const initialSubmittedDateHeader = "//h3[text()='Initial Submission Date']";
+const initialSubmittedDateHeader = "//h3[text()='Initial submission date']";
 const raiResponsesHeader = "//section//h2[text()='Formal RAI Responses']";
 const proposedEffectiveDateHeader =
-  "//h3[contains(text(),'Proposed Effective Date')]";
+  "//h3[contains(text(),'Proposed effective date')]";
 const finalDispositionDateHeader =
-  "//h3[contains(text(),'Final Disposition Date')]";
+  "//h3[contains(text(),'Final disposition date')]";
 const approvedEffectiveDateHeader =
-  "//h3[contains(text(),'Approved Effective Date')]";
+  "//h3[contains(text(),'Approved effective date')]";
 const formalRAIReceivedDateHeader =
-  "//h3[contains(text(),'Formal RAI Received')]";
-const adminPkgChangeSection = "#package-activities";
-const additionalInfoSection =
-  "//section[contains(@id, 'addl-info-chrono')]//h2[text()='Additional Information']";
+  "//h3[contains(text(),'Formal RAI received')]";
+const adminPkgChangeSection = "#administrative_package_changess";
 const waiverAuthorityHeader = "//h3[text()='Waiver Authority']";
-const attachmentsSection = "//h2[text()='Supporting Documentation']";
+const packageActivitySection = "#package_activity";
 const amendmentTitleHeader = "//h3[text()='Amendment Title']";
 const amendmentNumberHeader = "//h3[text()='Amendment Number']";
 const withdrawBtn = "//a[contains(@href, '/withdraw-package')]";
@@ -224,11 +222,8 @@ export class oneMacPackageDetailsPage {
   verifyWaiverAuthorityHeaderis1915cHCBS() {
     cy.xpath(waiverAuthorityHeader).next().contains("1915(c) HCBS");
   }
-  verifyAttachmentsSectionExists() {
-    cy.xpath(attachmentsSection).should("be.visible");
-  }
-  verifyAdditionalInfoSectionExists() {
-    cy.xpath(additionalInfoSection).should("be.visible");
+  verifyPackageActivitySectionExists() {
+    cy.get(packageActivitySection).should("be.visible");
   }
   verifyAdministrativePackageChangesSectionExists() {
     cy.get(adminPkgChangeSection).should("be.visible");

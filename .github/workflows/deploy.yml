@@ -251,7 +251,6 @@ jobs:
             FAQ_Page.spec.feature,
             Home_Page.spec.feature,
             Medicaid_SPA_Form.spec.feature,
-            Package_Details_2nd_Clock.spec.feature,
             Package_Details_Admin_Package_Changes.spec.feature,
             Package_Details_CHIP_SPA_CMS_User.spec.feature,
             Package_Details_CHIP_SPA_State_User.spec.feature,

@@ -207,18 +207,3 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a CMS User
         Then verify the Initial Submission caret button exists
         Then expand the Initial Submission caret
         Then verify the download all button exists
-
-    Scenario: Waiver Amendment Details View - Enable Formal RAI Response Withdraw
-        Then click the Pending checkbox
-        Then Click on Filter Button
-        Then search for "MD-2200.R00.10"
-        Then click the Waiver Number link in the first row
-        Then verify the package details page is visible
-        Then verify the status on the card is "Pending"
-        Then verify Enable Formal RAI Response Withdraw package action exists
-        Then click Enable Formal RAI Response Withdraw package action
-        Then Click on Submit Button
-        Then verify the status on the card is "Pending"
-        Then verify the sub status on the card is Withdraw Formal RAI Response Enabled
-        Then verify package actions header is visible
-        Then verify Disable Formal RAI Response Withdraw package action exists

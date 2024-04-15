@@ -9,5 +9,5 @@ Feature: CHIP SPA State Details View - Package Activity Log
         Then search for "MD-23-4441-VMX"
         Then verify id number in the first row matches "MD-23-4441-VMX"
         Then click the SPA ID link in the first row
-        Then verify the attachments section exists
-        Then verify the Package Activity section exists
+        Then verify the package activity section exists
+        Then verify the Administrative Package Changes section exists

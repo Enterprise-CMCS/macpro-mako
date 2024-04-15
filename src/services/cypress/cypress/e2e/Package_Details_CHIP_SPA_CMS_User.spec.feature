@@ -126,7 +126,7 @@ Feature: CHIP SPA CMS Details View - Card View with Actions
         Then verify there is a Final Disposition Date header in the details section
         Then verify there is an Approved Effective Date in the details section
         Then verify the description has a value displayed in the details section
-    #Then verify the attachments section exists
+        Then verify the package activity section exists
     #Then verify the additional information section exists
 
     Scenario: Screen Enhance - Approved CHIP SPA
@@ -218,17 +218,3 @@ Feature: CHIP SPA CMS Details View - Card View with Actions
         Then verify the Initial Submission caret button exists
         Then expand the Initial Submission caret
         Then verify the download all button exists
-
-# Scenario: CHIP SPA Details View - Enable Formal RAI Response Withdraw
-#     Then click the Pending checkbox
-#     Then Click on the close Filter Button
-#     Then click the SPA ID link in the first row
-#     Then verify the package details page is visible
-#     Then verify the status on the card is "Pending"
-#     Then verify Enable Formal RAI Response Withdraw package action exists
-#     Then click Enable Formal RAI Response Withdraw package action
-#     Then Click on Submit Button
-#     Then verify the status on the card is "Pending"
-#     Then verify the sub status on the card is Withdraw Formal RAI Response Enabled
-#     Then verify package actions header is visible
-#     Then verify Disable Formal RAI Response Withdraw package action exists

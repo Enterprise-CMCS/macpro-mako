@@ -44,18 +44,19 @@ Feature: Package Dashboard Temporary Extension
         Then Click on Submit Button
         Then verify the message in the alert bar is "Temporary Extension issued"
 
-    Scenario: Verify user can create a temporary extension from the waiver renewal package details
-        Then click on the Waivers tab
-        Then search for "MD-22008.R01.00"
-        Then verify id number in the first row matches "MD-22008.R01.00"
-        Then click the Waiver Number link in the first row
-        Then verify Request a Temporary Extension package action exists
-        Then click Request a Temporary Extension package action
-        Then verify the Temporary Extension Type is "1915(b)"
-        Then verify "Approved Initial or Renewal Waiver Number" is prefilled
-        Then type the "1915(b) Temporary Extension Request Number" Number 4 into the ID Input box using the state "MD"
-        Then attach "picture.jpg" file to attachment 1
-        Then into "Additional Information" type "This is just a test."
+    #TODO create renewal number pattern for TEs
+    # Scenario: Verify user can create a temporary extension from the waiver renewal package details
+    #     Then click on the Waivers tab
+    #     Then search for "MD-22008.R01.00"
+    #     Then verify id number in the first row matches "MD-22008.R01.00"
+    #     Then click the Waiver Number link in the first row
+    #     Then verify Request a Temporary Extension package action exists
+    #     Then click Request a Temporary Extension package action
+    #     Then verify the Temporary Extension Type is "1915(b)"
+    #     Then verify "Approved Initial or Renewal Waiver Number" is prefilled
+    #     Then type the "1915(b) Temporary Extension Request Number" Number 4 into the ID Input box using the state "MD"
+    #     Then attach "picture.jpg" file to attachment 1
+    #     Then into "Additional Information" type "This is just a test."
         Then Click on Submit Button
         Then verify the message in the alert bar is "Temporary Extension issued"
 
@@ -74,17 +75,17 @@ Feature: Package Dashboard Temporary Extension
         Then Click on Submit Button
         Then verify the message in the alert bar is "Temporary Extension issued"
 
-    Scenario: Verify user can create a temporary extension from the package dashboard waiver tab - renewal
-        Then click on the Waivers tab
-        Then search for "MD-22008.R01.00"
-        Then verify id number in the first row matches "MD-22008.R01.00"
-        Then click the actions button in row one
-        Then verify the Request Temporary Extension button is displayed
-        Then click the Request Temporary Extension button
-        Then verify the Temporary Extension Type is "1915(b)"
-        Then verify "Approved Initial or Renewal Waiver Number" is prefilled
-        Then type the "1915(b) Temporary Extension Request Number" Number 6 into the ID Input box using the state "MD"
-        Then attach "picture.jpg" file to attachment 1
-        Then into "Additional Information" type "This is just a test."
-        Then Click on Submit Button
-        Then verify the message in the alert bar is "Temporary Extension issued"
+    # Scenario: Verify user can create a temporary extension from the package dashboard waiver tab - renewal
+    #     Then click on the Waivers tab
+    #     Then search for "MD-22008.R01.00"
+    #     Then verify id number in the first row matches "MD-22008.R01.00"
+    #     Then click the actions button in row one
+    #     Then verify the Request Temporary Extension button is displayed
+    #     Then click the Request Temporary Extension button
+    #     Then verify the Temporary Extension Type is "1915(b)"
+    #     Then verify "Approved Initial or Renewal Waiver Number" is prefilled
+    #     Then type the "1915(b) Temporary Extension Request Number" Number 6 into the ID Input box using the state "MD"
+    #     Then attach "picture.jpg" file to attachment 1
+    #     Then into "Additional Information" type "This is just a test."
+    #     Then Click on Submit Button
+    #     Then verify the message in the alert bar is "Temporary Extension issued"

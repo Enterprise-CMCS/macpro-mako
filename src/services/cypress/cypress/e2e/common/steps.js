@@ -1646,13 +1646,13 @@ Then("verify the waiver authority header exists", () => {
 Then("verify the waiver authority is 1915c HCBS", () => {
   OneMacPackageDetailsPage.verifyWaiverAuthorityHeaderis1915cHCBS();
 });
-Then("verify the attachments section exists", () => {
-  OneMacPackageDetailsPage.verifyAttachmentsSectionExists();
+Then("verify the package activity section exists", () => {
+  OneMacPackageDetailsPage.verifyPackageActivitySectionExists();
 });
 Then("verify the additional information section exists", () => {
   OneMacPackageDetailsPage.verifyAdditionalInfoSectionExists();
 });
-Then("verify the Package Activity section exists", () => {
+Then("verify the Administrative Package Changes section exists", () => {
   OneMacPackageDetailsPage.verifyAdministrativePackageChangesSectionExists();
 });
 Then("click withdraw button", () => {
@@ -1916,14 +1916,15 @@ Then("type the generated {string} Number {int} into the ID Input box using the s
     cy.readFile("./fixtures/generatedIDPartialCounter.json").then((data) => {
       let newID = state + "-";
       switch (type) {
-        case "Initial Waiver Number":{
+        case "Initial Waiver Number": {
           data["lastInitialWaiverPart"] = util.firstpartCounter(data["lastInitialWaiverPart"]);
           newID += data["lastInitialWaiverPart"] + ".R00.00";
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
           console.log(`newID is ${newID}`)
           OneMacFormPage.inputInto(type, newID);
-          break;}
-        case "1915(b) Waiver Renewal Number":{
+          break;
+        }
+        case "1915(b) Waiver Renewal Number": {
           if (parseInt(data["lastRenewalSecondPart"]) === 99) {
             data["lastRenewalFirstPart"] = util.firstpartCounter(data["lastRenewalFirstPart"]);
           }
@@ -1931,8 +1932,9 @@ Then("type the generated {string} Number {int} into the ID Input box using the s
           newID += data["lastRenewalFirstPart"] + ".R" + data["lastRenewalSecondPart"] + ".00";
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
           OneMacFormPage.inputInto(type, newID);
-          break;}
-        case "1915(b) Waiver Amendment Number":{
+          break;
+        }
+        case "1915(b) Waiver Amendment Number": {
           if (parseInt(data["lastAmendmentSecondPart"]) === 99) {
             data["lastAmendmentFirstPart"] = util.firstpartCounter(data["lastAmendmentFirstPart"]);
           }
@@ -1940,8 +1942,9 @@ Then("type the generated {string} Number {int} into the ID Input box using the s
           newID += data["lastAmendmentFirstPart"] + ".R00." + data["lastAmendmentSecondPart"];
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
           OneMacFormPage.inputInto(type, newID);
-          break;}
-        case "1915(b) Temporary Extension Request Number":{
+          break;
+        }
+        case "1915(b) Temporary Extension Request Number": {
           if (parseInt(data["lastbTempExtensionSecondPart"]) === 99) {
             data["lastbTempExtensionFirstPart"] = util.firstpartCounter(data["lastbTempExtensionFirstPart"]);
           }
@@ -1949,17 +1952,19 @@ Then("type the generated {string} Number {int} into the ID Input box using the s
           newID += data["lastbTempExtensionFirstPart"] + ".R00.TE" + data["lastbTempExtensionSecondPart"];
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
           OneMacFormPage.inputInto("Temporary Extension Request Number", newID);
-          break;}
-          case "1915(c) Temporary Extension Request Number":{
-            if (parseInt(data["lastcTempExtensionSecondPart"]) === 99) {
-              data["lastcTempExtensionFirstPart"] = util.firstpartCounter(data["lastcTempExtensionFirstPart"]);
-            }
-            data["lastcTempExtensionSecondPart"] = util.doubleDigitCounter(data["lastcTempExtensionSecondPart"]);
-            newID += data["lastcTempExtensionFirstPart"] + ".R00.TE" + data["lastcTempExtensionSecondPart"];
-            obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
-            OneMacFormPage.inputInto("Temporary Extension Request Number", newID);
-            break;}
-        case "Appendix K ID":{
+          break;
+        }
+        case "1915(c) Temporary Extension Request Number": {
+          if (parseInt(data["lastcTempExtensionSecondPart"]) === 99) {
+            data["lastcTempExtensionFirstPart"] = util.firstpartCounter(data["lastcTempExtensionFirstPart"]);
+          }
+          data["lastcTempExtensionSecondPart"] = util.doubleDigitCounter(data["lastcTempExtensionSecondPart"]);
+          newID += data["lastcTempExtensionFirstPart"] + ".R00.TE" + data["lastcTempExtensionSecondPart"];
+          obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
+          OneMacFormPage.inputInto("Temporary Extension Request Number", newID);
+          break;
+        }
+        case "Appendix K ID": {
           OneMacFormPage.clearInput(type);
           if (parseInt(data["lastAppKSecondPart"]) === 99) {
             data["lastAppKFirstPart"] = util.firstpartCounter(data["lastAppKFirstPart"]);
@@ -1968,21 +1973,24 @@ Then("type the generated {string} Number {int} into the ID Input box using the s
           newID = data["lastAppKFirstPart"] + ".R00." + data["lastAppKSecondPart"];
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
           OneMacFormPage.inputInto(type, newID);
-          break;}
-        case "Medicaid SPA":{
+          break;
+        }
+        case "Medicaid SPA": {
           data["lastMedicaidSpaPart"] = util.spaIDCounter(data["lastMedicaidSpaPart"]);
           let year = new Date().getFullYear().toString().slice(-2);
           newID += year + "-" + data["lastMedicaidSpaPart"] + "-CYMS"; //CYMS
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
           OneMacFormPage.inputInto("SPA ID", newID);
-          break;}
-        case "CHIP SPA":{
+          break;
+        }
+        case "CHIP SPA": {
           data["lastChipSpaPart"] = util.spaIDCounter(data["lastChipSpaPart"]);
           let year = new Date().getFullYear().toString().slice(-2);
           newID += year + "-" + data["lastChipSpaPart"] + "-CYCS"; //CYCS
           obj["generated" + type.replace(/\s/g, '') + "ID" + count] = newID;
           OneMacFormPage.inputInto("SPA ID", newID);
-          break;}
+          break;
+        }
         default:
           cy.log("type is invalid or not covered in cases");
           break;
