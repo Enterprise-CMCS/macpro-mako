@@ -64,10 +64,6 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify Review Team SRT is not visible in the details section
         Then verify there is a Final Disposition Date header in the details section
         Then verify there is an Approved Effective Date in the details section
-    #Then verify the Initial Submission caret button exists
-    #Then expand the Initial Submission caret
-    #Then verify the download all button exists
-    #Then verify the additional information section exists
 
     Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - Approved
         Then click Approved checkbox
@@ -91,11 +87,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify Review Team SRT is not visible in the details section
         Then verify there is a Final Disposition Date header in the details section
         Then verify there is an Approved Effective Date in the details section
-        Then verify the Proposed Effective Date is a date formatted like Mo dd yyyy
-    #Then verify the Initial Submission caret button exists
-    #Then expand the Initial Submission caret
-    #Then verify the download all button exists
-    #Then verify the additional information section exists
+        Then verify the Proposed Effective Date is a date formatted like mo dd yyyy
 
     Scenario: Screen Enhance: 1915 b Waiver Amendment Details View - Disapproved
         Then click Disapproved checkbox
@@ -146,7 +138,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a State User
         Then verify Review Team SRT is not visible in the details section
         Then verify there is a Final Disposition Date header in the details section
         Then verify there is an Approved Effective Date in the details section
-    #Then verify the Initial Submission caret button exists
-    #Then expand the Initial Submission caret
-    #Then verify the download all button exists
-    #Then verify the additional information section exists
+#Then verify the Initial Submission caret button exists
+#Then expand the Initial Submission caret
+#Then verify the download all button exists
+#Then verify the additional information section exists

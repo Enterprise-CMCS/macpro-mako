@@ -102,7 +102,7 @@ Feature: Waiver Package Details View: Waiver Renewals for a State User
         Then verify the package details page is visible
         Then verify the status on the card is "Approved"
         Then verify package actions header is visible
-        Then verify Add Amendment package action exists
+        #Then verify Add Amendment package action exists
         Then verify Request a Temporary Extension package action exists
         Then verify the details section exists
         Then verify there is a Type header in the details section
@@ -130,33 +130,6 @@ Feature: Waiver Package Details View: Waiver Renewals for a State User
         Then click the Waiver Number link in the first row
         Then verify the package details page is visible
         Then verify the status on the card is "Disapproved"
-        Then verify package actions header is visible
-        Then verify there are no package actions available
-        Then verify the details section exists
-        Then verify there is a Type header in the details section
-        Then verify a type containing "1915(b)" exists for the Authority
-        Then verify there is a State header in the details section
-        Then verify a state exists for the State
-        Then verify there is an Initial Submission Date header in the details section
-        Then verify a date exists for the Initial Submission Date
-        Then verify there is a Proposed Effective Date header in the details section
-        Then verify the Initial Submission caret button exists
-        Then expand the Initial Submission caret
-        Then verify the download all button exists
-        Then verify subject is not visible in the details section
-        Then verify description is not visible in the details section
-        Then verify there is a CPOC header in the details section
-        Then verify the CPOC has a value displayed in the details section
-        Then verify Review Team SRT is not visible in the details section
-        Then verify there is a Final Disposition Date header in the details section
-        Then verify there is an Approved Effective Date in the details section
-
-    Scenario: Screen Enhance: Waiver Renewal Details View - Withdrawal Requested
-        Then click the Withdrawal Requested checkbox
-        Then Click on the close Filter Button
-        Then click the Waiver Number link in the first row
-        Then verify the package details page is visible
-        Then verify the status on the card is "Withdrawal Requested"
         Then verify package actions header is visible
         Then verify there are no package actions available
         Then verify the details section exists

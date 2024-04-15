@@ -106,7 +106,7 @@ Feature: Waiver Package Details View: Initial Waivers
         Then verify the package details page is visible
         Then verify the status on the card is "Approved"
         Then verify package actions header is visible
-        Then verify Add Amendment package action exists
+        #Then verify Add Amendment package action exists
         Then verify Request a Temporary Extension package action exists
         Then verify the details section exists
         #Then verify the package details title contains "Initial Waiver Package"

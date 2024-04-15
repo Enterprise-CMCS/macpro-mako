@@ -1287,9 +1287,11 @@ Then("click Disapproved checkbox", () => {
   OneMacDashboardPage.clickDisapprovedCheckbox();
 });
 Then("click the SPA ID link in the first row", () => {
+  cy.wait(1000);
   OneMacDashboardPage.clickSPAIDLinkInFirstRow();
 });
 Then("click the Waiver Number link in the first row", () => {
+  cy.wait(1000);
   OneMacDashboardPage.clickWaiverNumberLinkInFirstRow();
 });
 Then("click the Package Withdrawn checkbox", () => {
@@ -1557,6 +1559,7 @@ Then("verify RAI Responses header does not exist", () => {
   OneMacPackageDetailsPage.verifyRaiResponseHeaderDoesNotExist();
 });
 Then("click the actions button in row one", () => {
+  cy.wait(1000);
   OneMacDashboardPage.clickPackageRowOneActionsBtn();
 });
 Then("click the Respond to RAI button", () => {
@@ -1668,9 +1671,11 @@ Then("verify {string} is prefilled", (whereTo) => {
   OneMacFormPage.verifyPrefill(whereTo);
 });
 Then("copy the ID from the link in the first row", () => {
+  cy.wait(1000);
   OneMacDashboardPage.copyTheIDFromLinkInFirstRow();
 });
 Then("search for the ID copied from the link in the first row", () => {
+  cy.wait(1000);
   cy.fixture("savedID.json").then((data) => {
     OneMacDashboardPage.searchFor(data.savedID);
   });
