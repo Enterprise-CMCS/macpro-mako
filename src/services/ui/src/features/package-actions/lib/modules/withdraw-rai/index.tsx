@@ -15,7 +15,6 @@ export const defaultWithdrawRaiSchema = z.object({
     supportingDocumentation: zAttachmentOptional,
   }),
 });
-
 export const defaultWithdrawRaiFields: ReactElement[] = [
   <ActionDescription key={"content-description"}>
     Complete this form to withdraw the Formal RAI response. Once complete, you

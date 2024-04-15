@@ -3,7 +3,9 @@ import { ReactElement } from "react";
 import {
   bWaiverRaiFields,
   chipSpaRaiFields,
+  chipWithdrawPackageFields,
   defaultIssueRaiFields,
+  defaultWithdrawPackageFields,
   defaultWithdrawRaiFields,
   medSpaRaiFields,
 } from "@/features/package-actions/lib/modules";
@@ -32,10 +34,10 @@ const withdrawRaiFor: FieldsGroup = {
 };
 
 const withdrawPackageFor: FieldsGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": chipWithdrawPackageFields,
+  "medicaid spa": defaultWithdrawPackageFields,
+  "1915(b)": defaultWithdrawPackageFields,
+  "1915(c)": defaultWithdrawPackageFields,
 };
 
 const tempExtensionFor: FieldsGroup = {
