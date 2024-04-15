@@ -174,26 +174,21 @@ export const PackageSection = () => {
 
 export const ErrorBanner = () => {
   const form = useFormContext();
-
-  return (
-    <>
-      {Object.keys(form.formState.errors).length !== 0 && (
-        <Alert className="my-6" variant="destructive">
-          Input validation error(s)
-          <ul className="list-disc">
-            {Object.values(form.formState.errors).map(
-              (err, idx) =>
-                err?.message && (
-                  <li className="ml-8 my-2" key={idx}>
-                    {err.message as string}
-                  </li>
-                ),
-            )}
-          </ul>
-        </Alert>
-      )}
-    </>
-  );
+  return Object.keys(form.formState.errors).length !== 0 ? (
+    <Alert className="my-6" variant="destructive">
+      Input validation error(s)
+      <ul className="list-disc">
+        {Object.values(form.formState.errors).map(
+          (err, idx) =>
+            err?.message && (
+              <li className="ml-8 my-2" key={idx}>
+                {err.message as string}
+              </li>
+            ),
+        )}
+      </ul>
+    </Alert>
+  ) : null;
 };
 
 export const FormLoadingSpinner = () => {

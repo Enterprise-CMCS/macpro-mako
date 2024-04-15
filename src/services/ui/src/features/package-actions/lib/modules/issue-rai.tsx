@@ -6,6 +6,8 @@ import {
   zAttachmentRequired,
 } from "@/utils";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
+import { ReactElement } from "react";
+import { AdditionalInfoSection, AttachmentsSection } from "@/components";
 
 export const defaultIssueRaiSchema = z.object({
   additionalInformation: zAdditionalInfo,
@@ -28,6 +30,30 @@ export const defaultIssueRaiAttachments: AttachmentRecipe<
     required: false,
   },
 ];
+export const defaultIssueRaiFields: ReactElement[] = [
+  <AttachmentsSection
+    key={"field-attachments"}
+    attachments={[
+      {
+        name: "formalRaiLetter",
+        label: "Formal RAI Letter",
+        required: true,
+      },
+      {
+        name: "other",
+        label: "Other",
+        required: false,
+      },
+    ]}
+    faqLink={""}
+  />,
+  <AdditionalInfoSection
+    key={"field-addlinfo"}
+    instruction={
+      "Add anything else that you would like to share with the State."
+    }
+  />,
+];
 export const defaultIssueRaiContent: FormContentHydrator = (document) => ({
   title: "Formal RAI Details",
   description: (
@@ -49,6 +75,4 @@ export const defaultIssueRaiContent: FormContentHydrator = (document) => ({
     header: "RAI issued",
     body: `The RAI for ${document.id} has been submitted. An email confirmation will be sent to you and the state.`,
   },
-  additionalInfoInstruction:
-    "Add anything else that you would like to share with the State.",
 });

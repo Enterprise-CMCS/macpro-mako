@@ -1,35 +1,27 @@
 import {
-  Alert,
   Form,
-  FormField,
   LoadingSpinner,
+  SubmissionButtons,
   useAlertContext,
   useModalContext,
   useNavigate,
 } from "@/components";
-import { Info } from "lucide-react";
 import { useGetUser } from "@/api/useGetUser";
 import { useOriginPath } from "@/utils";
-import { AdditionalInfoSection, FormSetup, PreSubmitNotice } from "./lib";
+import { FormSetup, PreSubmitNotice } from "./lib";
 import { submitActionForm } from "@/features/package-actions/lib";
 import { useGetItem } from "@/api";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "@/components";
-import { SlotAdditionalInfo } from "@/features";
 import {
-  SubmissionButtons,
-  AttachmentsSection,
   ActionDescription,
   Heading,
   RequiredFieldDescription,
-} from "@/features/package-actions/lib";
-import {
   ErrorBanner,
-  FormLoadingSpinner,
-  PackageSection,
-} from "@/features/package-actions/shared-components";
+} from "@/features/package-actions/lib";
+import { PackageSection } from "@/features/package-actions/shared-components";
 
 export const ActionForm = ({ setup }: { setup: FormSetup }) => {
   const { id, type, authority } = useParams("/action/:authority/:id/:type");
@@ -60,10 +52,12 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
         originRoute: origin,
       }),
   );
-  alert.setContent({
-    header: "Test",
-    body: "Test",
-  });
+  useEffect(() => {
+    alert.setContent({
+      header: "Test",
+      body: "Test",
+    });
+  }, []);
   // Adapted handler for destructive confirmation modal use
   const confirmSubmitCallback = useCallback(() => {
     modal.setModalOpen(false);
@@ -81,22 +75,12 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
         <RequiredFieldDescription />
         <ActionDescription>{content.description}</ActionDescription>
 
-        {/* BEGIN BESPOKE NEEDS */}
+        {/* TODO: make package info section a ReactElement | undefined prop rendered conditionally */}
         <PackageSection />
         <form onSubmit={handler}>
-          <AttachmentsSection
-            instructions={content?.attachmentsInstruction || ""}
-            attachments={setup.attachments}
-            faqLink={""}
-          />
-          <AdditionalInfoSection
-            instruction={content?.additionalInfoInstruction}
-          />
+          {setup?.fields && setup.fields.map((field) => field)}
           <PreSubmitNotice message={content.preSubmitNotice} />
-          <FormLoadingSpinner />
           <ErrorBanner />
-          {/* END BESPOKE NEEDS */}
-
           {content?.confirmationModal ? (
             <SubmissionButtons
               confirmWithdraw={() => {
