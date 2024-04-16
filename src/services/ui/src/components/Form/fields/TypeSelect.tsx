@@ -1,9 +1,9 @@
 import { useGetTypes } from "@/api";
 import * as Inputs from "@/components/Inputs";
-import { Control, FieldValues, Path, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import Select from "react-select";
-import { useParams } from "react-router-dom";
 import { useSeaToolAuthorityId } from "@/utils/useSeaToolAuthorityId";
+import { LoadingSpinner } from "@/components";
 
 type SelectOption = {
   value: number;
@@ -12,7 +12,7 @@ type SelectOption = {
 
 export function TypeSelect() {
   const authorityId = useSeaToolAuthorityId();
-  const { data } = useGetTypes(authorityId);
+  const { data, isLoading } = useGetTypes(authorityId);
   const form = useFormContext();
 
   const options = data?.map((item) => ({
@@ -20,6 +20,7 @@ export function TypeSelect() {
     label: item.name,
   }));
 
+  if (isLoading) return <LoadingSpinner />;
   return (
     <Inputs.FormField
       control={form.control}
