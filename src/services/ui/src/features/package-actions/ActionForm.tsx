@@ -34,6 +34,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
   );
   const form = useForm({
     resolver: zodResolver(setup.schema),
+    mode: "onChange",
   });
   // Submission Handler
   const handler = form.handleSubmit(
