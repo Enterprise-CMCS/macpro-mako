@@ -47,7 +47,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "abp4_cost-sharing_abp-for-individuals-income-over-100%-poverty_select",
+                    name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty_select",
                     type: "expectedValue",
                     expectedValue: "yes",
                   },
@@ -74,7 +74,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "abp4_cost-sharing_abp-for-individuals-income-over-100%-poverty_select",
+                    name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty_select",
                     type: "expectedValue",
                     expectedValue: "yes",
                   },
