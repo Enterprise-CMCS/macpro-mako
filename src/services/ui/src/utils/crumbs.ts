@@ -7,16 +7,24 @@ import {
 import { authorityById, mapActionLabel, mapSubmissionCrumb } from "@/utils";
 import { Action } from "shared-types";
 
-export const dashboardCrumb = (id: string): BreadCrumbConfig => {
-  const authority = authorityById(id);
-  const newPath = urlEmbedQuery<Partial<OsUrlState>>("/dashboard", {
-    tab: authority === "" ? "spas" : authority,
-  });
+export const dashboardCrumb = (id?: string): BreadCrumbConfig => {
+  if (id) {
+    const authority = authorityById(id);
+    const newPath = urlEmbedQuery<Partial<OsUrlState>>("/dashboard", {
+      tab: authority === "" ? "spas" : authority,
+    });
+    return {
+      displayText: "Dashboard",
+      order: 1,
+      default: true,
+      to: newPath,
+    };
+  }
   return {
     displayText: "Dashboard",
     order: 1,
     default: true,
-    to: newPath,
+    to: "/dashboard",
   };
 };
 
