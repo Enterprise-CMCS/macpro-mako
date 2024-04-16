@@ -49,6 +49,7 @@ export const ActionWrapper = () => {
   useGetItem(id);
   const methods = useForm({
     resolver: zodResolver(schemas[packageActionType!]),
+    mode: "onChange",
   });
 
   return (
