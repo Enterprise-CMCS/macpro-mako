@@ -58,6 +58,7 @@ export const RespondToRai = ({
   }, []);
   const form = useForm({
     resolver: zodResolver(schema),
+    mode: "onChange",
   });
 
   return (

@@ -72,6 +72,7 @@ export const WithdrawPackage = ({
   const { data: user } = useGetUser();
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
+    mode: "onChange",
   });
   const modal = useModalContext();
   const alert = useAlertContext();

@@ -46,6 +46,7 @@ export const WithdrawRai = ({
   const { data: user } = useGetUser();
   const form = useForm({
     resolver: zodResolver(schema),
+    mode: "onChange",
   });
   const modal = useModalContext();
   const alert = useAlertContext();

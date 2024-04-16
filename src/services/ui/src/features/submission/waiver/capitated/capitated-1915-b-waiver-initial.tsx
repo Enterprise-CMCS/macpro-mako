@@ -118,6 +118,7 @@ export const Capitated1915BWaiverInitialPage = () => {
 
   const form = useForm<Waiver1915BCapitatedAmendment>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   return (
