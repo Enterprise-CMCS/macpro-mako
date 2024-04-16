@@ -10,6 +10,8 @@ import {
   waiverRaiContent,
   defaultDisableRaiWithdrawContent,
   defaultEnableRaiWithdrawContent,
+  defaultCompleteIntakeContent,
+  defaultUpdateIdContent,
 } from "@/features/package-actions/lib/modules";
 
 type FormContent = {
@@ -73,17 +75,17 @@ const tempExtensionFor: FormContentGroup = {
 };
 
 const updateIdFor: FormContentGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultUpdateIdContent,
+  "medicaid spa": defaultUpdateIdContent,
+  "1915(b)": defaultUpdateIdContent,
+  "1915(c)": defaultUpdateIdContent,
 };
 
 const completeIntakeFor: FormContentGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultCompleteIntakeContent,
+  "medicaid spa": defaultCompleteIntakeContent,
+  "1915(b)": defaultCompleteIntakeContent,
+  "1915(c)": defaultCompleteIntakeContent,
 };
 
 export const getContentFor = (a: Action, p: Authority): FormContentHydrator => {

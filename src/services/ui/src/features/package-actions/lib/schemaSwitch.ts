@@ -11,6 +11,8 @@ import {
   defaultWithdrawPackageSchema,
   defaultWithdrawRaiSchema,
   medSpaRaiSchema,
+  defaultCompleteIntakeSchema,
+  defaultUpdateIdSchema,
 } from "@/features/package-actions/lib/modules";
 
 type Schema = ZodObject<any> | ZodEffects<any>;
@@ -66,17 +68,17 @@ const tempExtensionFor: SchemaGroup = {
 };
 
 const updateIdFor: SchemaGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultUpdateIdSchema,
+  "medicaid spa": defaultUpdateIdSchema,
+  "1915(b)": defaultUpdateIdSchema,
+  "1915(c)": defaultUpdateIdSchema,
 };
 
 const completeIntakeFor: SchemaGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultCompleteIntakeSchema,
+  "medicaid spa": defaultCompleteIntakeSchema,
+  "1915(b)": defaultCompleteIntakeSchema,
+  "1915(c)": defaultCompleteIntakeSchema,
 };
 
 export const getSchemaFor = (a: Action, p: Authority): Schema => {

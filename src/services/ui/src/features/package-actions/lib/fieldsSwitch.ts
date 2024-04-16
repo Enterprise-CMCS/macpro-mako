@@ -4,10 +4,12 @@ import {
   bWaiverRaiFields,
   chipSpaRaiFields,
   chipWithdrawPackageFields,
+  defaultCompleteIntakeFields,
   defaultDisableRaiWithdrawFields,
   defaultEnableRaiWithdrawFields,
   defaultIssueRaiFields,
   defaultTempExtFields,
+  defaultUpdateIdFields,
   defaultWithdrawPackageFields,
   defaultWithdrawRaiFields,
   medSpaRaiFields,
@@ -65,17 +67,17 @@ const tempExtensionFor: FieldsGroup = {
 };
 
 const updateIdFor: FieldsGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultUpdateIdFields,
+  "medicaid spa": defaultUpdateIdFields,
+  "1915(b)": defaultUpdateIdFields,
+  "1915(c)": defaultUpdateIdFields,
 };
 
 const completeIntakeFor: FieldsGroup = {
-  "chip spa": undefined,
-  "medicaid spa": undefined,
-  "1915(b)": undefined,
-  "1915(c)": undefined,
+  "chip spa": defaultCompleteIntakeFields,
+  "medicaid spa": defaultCompleteIntakeFields,
+  "1915(b)": defaultCompleteIntakeFields,
+  "1915(c)": defaultCompleteIntakeFields,
 };
 
 export const getFieldsFor = (a: Action, p: Authority): ReactElement[] => {
