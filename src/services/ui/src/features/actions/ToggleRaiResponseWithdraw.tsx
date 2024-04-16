@@ -21,10 +21,11 @@ import {
 import { ActionFormIntro, PackageInfo } from "@/features";
 import { useQuery as useQueryString } from "@/hooks";
 import { useSyncStatus } from "@/hooks/useSyncStatus";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const ToggleRaiResponseWithdraw = ({
   item,
+  ...rest
 }: {
   item?: opensearch.main.ItemResult;
 }) => {
@@ -53,8 +54,9 @@ export const ToggleRaiResponseWithdraw = ({
     [type],
   );
 
+  const location = useLocation();
   const { syncRecord, loading } = useSyncStatus({
-    path: originPath ? originPath : "/dashboard",
+    path: location.state?.from ?? "/dashboard",
     isCorrectStatus: (data) => {
       const isEnabled = ACTION_WORD === "Enable";
       return data._source.raiWithdrawEnabled === isEnabled;

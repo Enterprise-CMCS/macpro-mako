@@ -50,6 +50,7 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
               } else {
                 return (
                   <Link
+                    state={{ from: `${location.pathname}${location.search}` }}
                     key={`${idx}-${type}`}
                     path="/action/:id/:type"
                     params={{ id, type }}

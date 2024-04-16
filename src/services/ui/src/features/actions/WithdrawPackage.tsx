@@ -1,7 +1,7 @@
 import { ReactElement, useCallback } from "react";
 import { Path, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Authority, SEATOOL_STATUS, opensearch } from "shared-types";
 import { Info } from "lucide-react";
@@ -76,9 +76,9 @@ export const WithdrawPackage = ({
   const navigate = useNavigate();
   const modal = useModalContext();
   const alert = useAlertContext();
-  const originPath = useOriginPath();
+  const location = useLocation();
   const { loading, syncRecord } = useSyncStatus({
-    path: originPath ? originPath : "/dashboard",
+    path: location.state?.from ?? "/dashboard",
     isCorrectStatus: (data) => {
       return data._source.seatoolStatus === SEATOOL_STATUS.WITHDRAWN;
     },

@@ -37,7 +37,7 @@ import {
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
 import { useSyncStatus } from "@/hooks/useSyncStatus";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const RespondToRai = ({
   item,
@@ -52,9 +52,9 @@ export const RespondToRai = ({
   const { data: user } = useGetUser();
   const modal = useModalContext();
   const alert = useAlertContext();
-  const originPath = useOriginPath();
+  const location = useLocation();
   const { syncRecord, loading } = useSyncStatus({
-    path: originPath ? originPath : "/dashboard",
+    path: location.state?.from ?? "/dashboard",
     isCorrectStatus: (data) => {
       return (
         data._source.seatoolStatus === SEATOOL_STATUS.PENDING &&
