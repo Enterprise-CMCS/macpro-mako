@@ -13,7 +13,6 @@ import {
   AdditionalInfoSection,
   AttachmentsSection,
 } from "@/components";
-import { PackageSection } from "@/features/package-actions/shared-components";
 import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
 
 export const defaultTempExtSchema = z

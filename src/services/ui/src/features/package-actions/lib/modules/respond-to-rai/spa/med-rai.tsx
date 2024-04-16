@@ -9,8 +9,8 @@ import {
   ActionDescription,
   AdditionalInfoSection,
   AttachmentsSection,
+  PackageSection,
 } from "@/components";
-import { PackageSection } from "@/features/package-actions/shared-components";
 
 export const medSpaRaiSchema = z.object({
   additionalInformation: zAdditionalInfo.optional(),

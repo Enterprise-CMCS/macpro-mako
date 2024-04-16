@@ -20,15 +20,15 @@ import {
   SimplePageContainer,
   SubmissionButtons,
   useLocationCrumbs,
+  FormLoadingSpinner,
 } from "@/components";
 import { useParams } from "react-router-dom";
 import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
 import {
   ActionFunction,
-  FormLoadingSpinner,
   useDisplaySubmissionAlert,
   useSubmitForm,
-} from "@/features/package-actions/shared-components";
+} from "@/features/package-actions/legacy-shared-components";
 import { Info } from "lucide-react";
 
 export const onValidSubmission: ActionFunction = async ({ request }) => {

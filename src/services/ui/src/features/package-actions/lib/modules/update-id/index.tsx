@@ -2,8 +2,11 @@ import { z } from "zod";
 import { zUpdateIdSchema } from "@/utils";
 import { ReactElement } from "react";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
-import { ActionDescription, AdditionalInfoSection } from "@/components";
-import { PackageSection } from "@/features/package-actions/shared-components";
+import {
+  ActionDescription,
+  AdditionalInfoSection,
+  PackageSection,
+} from "@/components";
 import { NewIdField } from "@/features/package-actions/lib/modules/update-id/legacy-components";
 
 export const defaultUpdateIdSchema = z

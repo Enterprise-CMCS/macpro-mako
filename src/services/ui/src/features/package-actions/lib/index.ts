@@ -3,7 +3,7 @@ import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
 import { OneMacUser, submit } from "@/api";
 import { buildActionUrl, useOriginPath } from "@/utils";
-import { ACTION, Route, useAlertContext, useNavigate } from "@/components";
+import { Route, useAlertContext, useNavigate } from "@/components";
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
 

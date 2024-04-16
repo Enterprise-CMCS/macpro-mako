@@ -6,8 +6,8 @@ import {
   ActionDescription,
   AdditionalInfoSection,
   AttachmentsSection,
+  PackageSection,
 } from "@/components";
-import { PackageSection } from "@/features/package-actions/shared-components";
 
 export * from "./spa/withdraw-chip-rai";
 

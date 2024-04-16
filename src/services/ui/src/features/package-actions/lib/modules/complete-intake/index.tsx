@@ -2,12 +2,12 @@ import { z } from "zod";
 import { ReactElement } from "react";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 import { ActionDescription } from "@/components";
-import { PackageSection } from "@/features/package-actions/shared-components";
 import { SubjectInput } from "@/components/Form/fields/SubjectInput";
 import { DescriptionInput } from "@/components/Form/fields/DescriptionInput";
 import { TypeSelect } from "@/components/Form/fields/TypeSelect";
 import { SubTypeSelect } from "@/components/Form/fields/SubTypeSelect";
 import { CPOCSelect } from "@/components/Form/fields/CPOCSelect";
+import { PackageSection } from "@/components/Form/content/PackageSection";
 
 export const defaultCompleteIntakeSchema = z.object({
   subject: z

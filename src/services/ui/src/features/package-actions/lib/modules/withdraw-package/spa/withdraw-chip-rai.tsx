@@ -7,7 +7,7 @@ import {
   AdditionalInfoSection,
   AttachmentsSection,
 } from "@/components";
-import { PackageSection } from "@/features/package-actions/shared-components";
+import { PackageSection } from "@/components/Form/content/PackageSection";
 
 export const chipWithdrawPackageSchema = z.object({
   additionalInformation: zAdditionalInfo.optional(),

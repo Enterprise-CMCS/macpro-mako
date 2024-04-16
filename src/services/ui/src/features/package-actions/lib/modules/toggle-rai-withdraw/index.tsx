@@ -1,7 +1,6 @@
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 import { ReactElement } from "react";
-import { ActionDescription } from "@/components";
-import { PackageSection } from "@/features/package-actions/shared-components";
+import { ActionDescription, PackageSection } from "@/components";
 import { z } from "zod";
 
 // react-hook-form needs any kind of schema to prevent an undefined error
