@@ -24,6 +24,7 @@ export const AppKSubmissionForm = () => {
   const modal = C.useModalContext();
   const originPath = useOriginPath();
   const form = useForm<SchemaForm>({
+    reValidateMode: "onBlur",
     resolver: zodResolver(FORM),
   });
   const alert = C.useAlertContext();
@@ -113,12 +114,12 @@ export const AppKSubmissionForm = () => {
                   >
                     What is my Appendix K ID?
                   </Link>
-                  <div>
+                  <div className="my-1">
                     Format is <strong>1111</strong>.<strong>R22</strong>.
                     <strong>33</strong> or <strong>11111</strong>.
                     <strong>R22</strong>.<strong>33</strong> where:
                   </div>
-                  <ul className="pl-4 list-disc">
+                  <ul className="pl-4 list-disc w-[600px] flex flex-col gap-1">
                     <li>
                       <strong>1111</strong> or <strong>11111</strong> is the
                       four- or five-digit waiver initial number
@@ -132,23 +133,9 @@ export const AppKSubmissionForm = () => {
                       (The last two digits relating to the number of amendments
                       in the waiver cycle start with “01” and ascend.)
                     </li>
-                    <li>
-                      <strong>
-                        The first ID entered will be used to track the
-                        submission on the OneMAC dashboard.
-                      </strong>
-                      {"  "}
-                      You’ll be able to find the other waiver IDs entered below
-                      by searching for the first waiver ID.
-                    </li>
                   </ul>
                 </p>
                 <div className="flex flex-col gap-2">
-                  <div className="flex gap-4">
-                    <I.FormLabel className="font-bold">
-                      Appendix K ID <I.RequiredIndicator />
-                    </I.FormLabel>
-                  </div>
                   <WaiverIdFieldArray
                     state={state}
                     name="waiverIds"
@@ -225,7 +212,10 @@ export const AppKSubmissionForm = () => {
           </C.SectionCard>
           <C.PreSubmissionMessage />
           <div className="flex gap-2 p-4 ml-auto">
-            <I.Button type="submit" disabled={form.formState.isSubmitting}>
+            <I.Button
+              type="submit"
+              disabled={form.formState.isSubmitting || !form.formState.isValid}
+            >
               Submit
             </I.Button>
             <I.Button

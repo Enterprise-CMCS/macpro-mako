@@ -159,17 +159,15 @@ export const WaiverIdFieldArray = (props: any) => {
   return (
     <div>
       <div className="flex flex-col gap-2 justify-start">
-        <div className="flex flex-col gap-1">
-          <I.FormLabel className="font-bold">
+        <I.FormLabel className="w-[500px]">
+          <strong>
             The first ID entered will be used to track the submission on the
             OneMAC dashboard.
-          </I.FormLabel>{" "}
-          <I.FormLabel>
-            You will be able to find other waiver IDs entered below by searching
-            for the first waiver ID.
-          </I.FormLabel>
-        </div>
-
+          </strong>{" "}
+          You will be able to find other waiver IDs entered below by searching
+          for the first waiver ID.
+        </I.FormLabel>{" "}
+        <I.FormLabel></I.FormLabel>
         <div className="flex flex-col py-2 gap-4">
           {fieldArr.fields.map((FLD, index) => {
             return (
@@ -193,10 +191,10 @@ export const WaiverIdFieldArray = (props: any) => {
             size="sm"
             onClick={() => fieldArr.append("")}
             variant="outline"
-            className="w-[100px]"
+            className="w-[100px] mt-2"
           >
             <Plus className="h-5 w-5 mr-1" />
-            Add
+            Add ID
           </I.Button>
         </div>
       </div>
