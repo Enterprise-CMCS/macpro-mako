@@ -102,8 +102,7 @@ export const defaultTempExtContent: FormContentHydrator = (document) => ({
   preSubmitNotice:
     "Once you submit this form, a confirmation email is sent to you and to CMS. CMS will use this content to review your package, and you will not be able to edit this form. If CMS needs any additional information, they will follow up by email.",
   successBanner: {
-    header: "Temporary Extension issued",
-    // TODO: figure out parent ID in success banner
-    body: `The Temporary Extension Request for ${"[parentId]"} has been submitted.`,
+    header: "Temporary Extension Request submitted.",
+    body: "Your submission has been received.",
   },
 });
