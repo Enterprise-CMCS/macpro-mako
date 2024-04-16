@@ -48,8 +48,6 @@ export const submitActionForm = async ({
       user,
       authority: authority,
     });
-    // TODO: Make this the responsibility of the component
-    // alert.setContent(successBannerContent);
     alert.setBannerStyle("success");
     alert.setBannerShow(true);
     alert.setBannerDisplayOn(path);

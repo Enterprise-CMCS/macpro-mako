@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { BannerContent, SubmissionAlert } from "@/components";
 import { Action, Authority, opensearch } from "shared-types";
 import {
@@ -9,15 +8,14 @@ import {
   defaultWithdrawRaiContent,
   spaRaiContent,
   waiverRaiContent,
+  defaultDisableRaiWithdrawContent,
+  defaultEnableRaiWithdrawContent,
 } from "@/features/package-actions/lib/modules";
 
 type FormContent = {
   title: string;
-  description?: ReactNode;
-  preSubmitNotice: string;
   successBanner: BannerContent;
-  additionalInfoInstruction?: string;
-  attachmentsInstruction?: string;
+  preSubmitNotice?: string;
   confirmationModal?: SubmissionAlert;
 };
 /** Form content sometimes requires data values for templating, so forms
@@ -37,6 +35,20 @@ const respondToRaiFor: FormContentGroup = {
   "medicaid spa": spaRaiContent,
   "1915(b)": waiverRaiContent,
   "1915(c)": waiverRaiContent,
+};
+
+const enableRaiWithdrawFor: FormContentGroup = {
+  "chip spa": defaultEnableRaiWithdrawContent,
+  "medicaid spa": defaultEnableRaiWithdrawContent,
+  "1915(b)": defaultEnableRaiWithdrawContent,
+  "1915(c)": defaultEnableRaiWithdrawContent,
+};
+
+const disableRaiWithdrawFor: FormContentGroup = {
+  "chip spa": defaultDisableRaiWithdrawContent,
+  "medicaid spa": defaultDisableRaiWithdrawContent,
+  "1915(b)": defaultDisableRaiWithdrawContent,
+  "1915(c)": defaultDisableRaiWithdrawContent,
 };
 
 const withdrawRaiFor: FormContentGroup = {
@@ -78,6 +90,8 @@ export const getContentFor = (a: Action, p: Authority): FormContentHydrator => {
   const actionContentMap: Record<string, FormContentGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,
+    "enable-rai-withdraw": enableRaiWithdrawFor,
+    "disable-rai-withdraw": disableRaiWithdrawFor,
     "withdraw-rai": withdrawRaiFor,
     "withdraw-package": withdrawPackageFor,
     "temporary-extension": tempExtensionFor,

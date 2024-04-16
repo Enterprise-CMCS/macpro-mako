@@ -69,8 +69,10 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
         <RequiredFieldDescription />
         <form onSubmit={handler}>
           {setup?.fields && setup.fields.map((field) => field)}
-          <PreSubmitNotice message={content.preSubmitNotice} />
           <ErrorBanner />
+          {content?.preSubmitNotice && (
+            <PreSubmitNotice message={content.preSubmitNotice} />
+          )}
           {content?.confirmationModal ? (
             <SubmissionButtons
               confirmWithdraw={() => {

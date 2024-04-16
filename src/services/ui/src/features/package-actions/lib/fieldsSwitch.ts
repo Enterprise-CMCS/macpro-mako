@@ -4,6 +4,8 @@ import {
   bWaiverRaiFields,
   chipSpaRaiFields,
   chipWithdrawPackageFields,
+  defaultDisableRaiWithdrawFields,
+  defaultEnableRaiWithdrawFields,
   defaultIssueRaiFields,
   defaultTempExtFields,
   defaultWithdrawPackageFields,
@@ -25,6 +27,20 @@ const respondToRaiFor: FieldsGroup = {
   "medicaid spa": medSpaRaiFields,
   "1915(b)": bWaiverRaiFields,
   "1915(c)": undefined,
+};
+
+const enableRaiWithdrawFor: FieldsGroup = {
+  "chip spa": defaultEnableRaiWithdrawFields,
+  "medicaid spa": defaultEnableRaiWithdrawFields,
+  "1915(b)": defaultEnableRaiWithdrawFields,
+  "1915(c)": defaultEnableRaiWithdrawFields,
+};
+
+const disableRaiWithdrawFor: FieldsGroup = {
+  "chip spa": defaultDisableRaiWithdrawFields,
+  "medicaid spa": defaultDisableRaiWithdrawFields,
+  "1915(b)": defaultDisableRaiWithdrawFields,
+  "1915(c)": defaultDisableRaiWithdrawFields,
 };
 
 const withdrawRaiFor: FieldsGroup = {
@@ -66,6 +82,8 @@ export const getFieldsFor = (a: Action, p: Authority): ReactElement[] => {
   const fieldsGroupMap: Record<string, FieldsGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,
+    "enable-rai-withdraw": enableRaiWithdrawFor,
+    "disable-rai-withdraw": disableRaiWithdrawFor,
     "withdraw-rai": withdrawRaiFor,
     "withdraw-package": withdrawPackageFor,
     "temporary-extension": tempExtensionFor,

@@ -4,6 +4,8 @@ import {
   bWaiverRaiSchema,
   chipSpaRaiSchema,
   chipWithdrawPackageSchema,
+  defaultDisableRaiWithdrawSchema,
+  defaultEnableRaiWithdrawSchema,
   defaultIssueRaiSchema,
   defaultTempExtSchema,
   defaultWithdrawPackageSchema,
@@ -26,6 +28,20 @@ const respondToRaiFor: SchemaGroup = {
   "medicaid spa": medSpaRaiSchema,
   "1915(b)": bWaiverRaiSchema,
   "1915(c)": bWaiverRaiSchema,
+};
+
+const enableRaiWithdrawFor: SchemaGroup = {
+  "chip spa": defaultEnableRaiWithdrawSchema,
+  "medicaid spa": defaultEnableRaiWithdrawSchema,
+  "1915(b)": defaultEnableRaiWithdrawSchema,
+  "1915(c)": defaultEnableRaiWithdrawSchema,
+};
+
+const disableRaiWithdrawFor: SchemaGroup = {
+  "chip spa": defaultDisableRaiWithdrawSchema,
+  "medicaid spa": defaultDisableRaiWithdrawSchema,
+  "1915(b)": defaultDisableRaiWithdrawSchema,
+  "1915(c)": defaultDisableRaiWithdrawSchema,
 };
 
 const withdrawRaiFor: SchemaGroup = {
@@ -67,6 +83,8 @@ export const getSchemaFor = (a: Action, p: Authority): Schema => {
   const actionSchemaMap: Record<string, SchemaGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,
+    "enable-rai-withdraw": enableRaiWithdrawFor,
+    "disable-rai-withdraw": disableRaiWithdrawFor,
     "withdraw-rai": withdrawRaiFor,
     "withdraw-package": withdrawPackageFor,
     "temporary-extension": tempExtensionFor,
