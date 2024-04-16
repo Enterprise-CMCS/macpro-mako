@@ -3,7 +3,7 @@ import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
 import { OneMacUser, submit } from "@/api";
 import { buildActionUrl, useOriginPath } from "@/utils";
-import { Route, useAlertContext, useNavigate } from "@/components";
+import { ACTION, Route, useAlertContext, useNavigate } from "@/components";
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
 
@@ -41,10 +41,13 @@ export const submitActionForm = async ({
   navigate: ReturnType<typeof useNavigate>;
 }) => {
   const path = originRoute ? originRoute : "/dashboard";
+  const actionsThatUseSubmitEndpoint: Action[] = [Action.TEMP_EXTENSION];
   try {
     await submit({
       data: { ...data, id: id },
-      endpoint: buildActionUrl(type),
+      endpoint: !actionsThatUseSubmitEndpoint.includes(type)
+        ? buildActionUrl(type!) // "/action/{type}"
+        : "/submit",
       user,
       authority: authority,
     });

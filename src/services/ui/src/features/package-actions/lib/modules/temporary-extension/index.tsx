@@ -14,6 +14,7 @@ import {
   AttachmentsSection,
 } from "@/components";
 import { PackageSection } from "@/features/package-actions/shared-components";
+import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
 
 export const defaultTempExtSchema = z
   .object({
@@ -75,7 +76,7 @@ export const defaultTempExtFields: ReactElement[] = [
       If you leave this page, you will lose your progress on this form.
     </strong>
   </ActionDescription>,
-  <PackageSection key={"content-packagedetails"} />,
+  <TEPackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     key={"field-attachments"}
     attachments={[
@@ -100,7 +101,7 @@ export const defaultTempExtFields: ReactElement[] = [
 export const defaultTempExtContent: FormContentHydrator = (document) => ({
   title: "Temporary Extension Request Details",
   preSubmitNotice:
-    "Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.",
+    "Once you submit this form, a confirmation email is sent to you and to CMS. CMS will use this content to review your package, and you will not be able to edit this form. If CMS needs any additional information, they will follow up by email.",
   successBanner: {
     header: "Temporary Extension issued",
     // TODO: figure out parent ID in success banner
