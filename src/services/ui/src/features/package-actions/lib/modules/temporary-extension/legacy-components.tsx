@@ -17,12 +17,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components";
-import { tempExtensionSchema } from "@/features/package-actions/TemporaryExtension";
+import { defaultTempExtSchema } from "@/features/package-actions/lib/modules";
 
 export const TEPackageSection = () => {
   const { id, authority } = useParams();
   const type = id?.split(".")[1]?.includes("00") ? "Initial" : "Renewal";
-  const { setValue } = useFormContext<z.infer<typeof tempExtensionSchema>>();
+  const { setValue } = useFormContext<z.infer<typeof defaultTempExtSchema>>();
 
   if (id && authority) {
     setValue("originalWaiverNumber", id);
@@ -111,7 +111,7 @@ const IdInput = () => {
 };
 
 const TempExtensionTypeDropDown = () => {
-  const { control } = useFormContext<z.infer<typeof tempExtensionSchema>>();
+  const { control } = useFormContext<z.infer<typeof defaultTempExtSchema>>();
 
   return (
     <FormField
@@ -142,7 +142,7 @@ const TempExtensionTypeDropDown = () => {
 };
 
 const TempExtensionApproveOrRenewNumber = () => {
-  const { control } = useFormContext<z.infer<typeof tempExtensionSchema>>();
+  const { control } = useFormContext<z.infer<typeof defaultTempExtSchema>>();
 
   return (
     <FormField

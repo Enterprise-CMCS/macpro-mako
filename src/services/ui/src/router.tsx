@@ -5,9 +5,8 @@ import { QueryClient } from "@tanstack/react-query";
 import { type Route } from "./components/Routing/types";
 import {
   TempExtensionWrapper,
-  TemporaryExtension,
   onValidSubmission as tempExtensionAction,
-} from "@/features/package-actions/TemporaryExtension";
+} from "@/features/package-actions/lib/modules/temporary-extension/legacy-page";
 export const queryClient = new QueryClient();
 
 export const router = createBrowserRouter([

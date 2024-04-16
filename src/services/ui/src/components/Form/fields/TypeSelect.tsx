@@ -1,25 +1,19 @@
 import { useGetTypes } from "@/api";
 import * as Inputs from "@/components/Inputs";
-import { Control, FieldValues, Path } from "react-hook-form";
+import { Control, FieldValues, Path, useFormContext } from "react-hook-form";
 import Select from "react-select";
-
-type TypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
-  control: Control<TFieldValues>;
-  name: Path<TFieldValues>;
-  authorityId: number;
-};
+import { useParams } from "react-router-dom";
+import { useSeaToolAuthorityId } from "@/utils/useSeaToolAuthorityId";
 
 type SelectOption = {
   value: number;
   label: string;
 };
 
-export function TypeSelect<TFieldValues extends FieldValues>({
-  control,
-  name,
-  authorityId,
-}: TypeSelectFormFieldProps<TFieldValues>) {
+export function TypeSelect() {
+  const authorityId = useSeaToolAuthorityId();
   const { data } = useGetTypes(authorityId);
+  const form = useFormContext();
 
   const options = data?.map((item) => ({
     value: item.id,
@@ -28,8 +22,8 @@ export function TypeSelect<TFieldValues extends FieldValues>({
 
   return (
     <Inputs.FormField
-      control={control}
-      name={name}
+      control={form.control}
+      name={"typeIds"}
       render={({ field }) => {
         return (
           <Inputs.FormItem className="max-w-lg">

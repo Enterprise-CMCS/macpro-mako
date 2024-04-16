@@ -1,27 +1,22 @@
 import * as Inputs from "@/components/Inputs";
-import { Control, FieldValues, Path } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
+import { useParams } from "react-router-dom";
 
-type SubjectInputProps<TFieldValues extends FieldValues> = {
-  control: Control<TFieldValues>;
-  name: Path<TFieldValues>;
-  helperText: string;
-};
-
-export function SubjectInput<TFieldValues extends FieldValues>({
-  control,
-  name,
-  helperText,
-}: SubjectInputProps<TFieldValues>) {
+export function SubjectInput() {
+  const form = useFormContext();
+  const { authority } = useParams();
   return (
     <Inputs.FormField
-      control={control}
-      name={name}
+      control={form.control}
+      name={"subject"}
       render={({ field }) => (
         <Inputs.FormItem className="max-w-sm">
           <Inputs.FormLabel className="font-semibold block">
             Subject <Inputs.RequiredIndicator />
           </Inputs.FormLabel>
-          <p className="text-gray-500">{helperText}</p>
+          <p className="text-gray-500">
+            The title or purpose of the ${authority}
+          </p>
           <Inputs.FormControl>
             <Inputs.Input {...field} value={field.value || ""} />
           </Inputs.FormControl>

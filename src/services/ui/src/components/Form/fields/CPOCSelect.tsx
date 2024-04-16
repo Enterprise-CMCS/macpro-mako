@@ -1,19 +1,12 @@
 import { useGetCPOCs } from "@/api";
 import * as Inputs from "@/components/Inputs";
-import { Control, FieldValues, Path } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import Select from "react-select";
 import { cpocs } from "shared-types/opensearch";
 
-type TypeSelectFormFieldProps<TFieldValues extends FieldValues> = {
-  control: Control<TFieldValues>;
-  name: Path<TFieldValues>;
-};
-
-export function CPOCSelect<TFieldValues extends FieldValues>({
-  control,
-  name,
-}: TypeSelectFormFieldProps<TFieldValues>) {
+export function CPOCSelect() {
   const { data } = useGetCPOCs<cpocs.Document>();
+  const form = useFormContext();
 
   const options = data
     ? data?.map((item) => ({
@@ -24,8 +17,8 @@ export function CPOCSelect<TFieldValues extends FieldValues>({
 
   return (
     <Inputs.FormField
-      control={control}
-      name={name}
+      control={form.control}
+      name={"cpoc"}
       render={({ field }) => {
         return (
           <Inputs.FormItem className="max-w-lg">

@@ -4,16 +4,15 @@ import * as Inputs from "@/components/Inputs";
 import { useFormContext, useWatch } from "react-hook-form";
 import Select from "react-select";
 import { uniqBy } from "lodash";
+import { useSeaToolAuthorityId } from "@/utils/useSeaToolAuthorityId";
 
-type SubTypeSelectFormFieldProps = {
-  authorityId: number;
-};
 type SelectOption = {
   value: number;
   label: string;
 };
 
-export function SubTypeSelect({ authorityId }: SubTypeSelectFormFieldProps) {
+export function SubTypeSelect() {
+  const authorityId = useSeaToolAuthorityId();
   const { control, setValue } = useFormContext();
   const typeIds = useWatch({ name: "typeIds", defaultValue: [] });
   const subTypeIds = useWatch({
