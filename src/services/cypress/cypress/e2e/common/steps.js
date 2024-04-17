@@ -1914,6 +1914,7 @@ Then("verify submission successful message in the modal", () => {
 });
 
 Then("click the Go to Dashboard button", () => {
+  cy.reload();
   OneMacFormPage.clickGoToDashBoardBtn();
 });
 Then("type the generated {string} Number {int} into the ID Input box using the state {string}", (type, count, state = "MD") => {

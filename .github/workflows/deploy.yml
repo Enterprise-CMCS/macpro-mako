@@ -310,7 +310,7 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots
-          path: cypress/screenshots/
+          path: src/services/cypress/screenshots/
 
   a11y-tests:
     name: A11y Tests
