@@ -916,7 +916,7 @@ export const oneMACFAQContent: FAQContent[] = [
         ),
       },
       {
-        anchorText: "temporary-extensions-spa-attachments",
+        anchorText: "temporary-extensions-b-attachments",
         question:
           "What are the attachments for a 1915(b) Waiver - Request for Temporary Extension?",
         answerJSX: (
@@ -957,7 +957,7 @@ export const oneMACFAQContent: FAQContent[] = [
         ),
       },
       {
-        anchorText: "temporary-extensions-attachments",
+        anchorText: "temporary-extensions-b-attachments",
         question:
           "What are the attachments for a 1915(c) Waiver - Request for Temporary Extension",
         answerJSX: (

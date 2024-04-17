@@ -4,16 +4,15 @@ import {
   Route,
   useAlertContext,
   useModalContext,
+  useParams,
 } from "@/components";
 import {
   Button,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
   RequiredIndicator,
-  Textarea,
   Upload,
 } from "@/components/Inputs";
 import { FAQ_TAB } from "@/components/Routing/consts";
@@ -27,7 +26,6 @@ import {
   useNavigate,
   useNavigation,
   useSubmit,
-  useParams,
 } from "react-router-dom";
 import { Authority } from "shared-types";
 
@@ -61,9 +59,6 @@ export const AttachmentsSection = <T extends string>({
   supportingInformation?: string;
 }) => {
   const form = useFormContext();
-  const location = useLocation();
-  const pathSegments = location.pathname.split("/");
-  const segment = pathSegments[3]; // 'chip' | 'mediaid
 
   return (
     <>
@@ -75,7 +70,7 @@ export const AttachmentsSection = <T extends string>({
         types on the
         <Link
           className="text-blue-700 hover:underline"
-          to={`/faq/${segment}-spa-attachments`}
+          to="/faq/temporary-extensions-b-attachments"
           target={FAQ_TAB}
           rel="noopener noreferrer"
         >
