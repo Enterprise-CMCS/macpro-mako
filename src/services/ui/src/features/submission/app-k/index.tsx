@@ -111,7 +111,7 @@ export const AppKSubmissionForm = () => {
               <>
                 <p>
                   <Link
-                    to="/faq/waiver-c-id"
+                    to="/faq/app-k-id"
                     target={C.FAQ_TAB}
                     rel="noopener noreferrer"
                     className="text-blue-700 hover:underline"
@@ -188,7 +188,7 @@ export const AppKSubmissionForm = () => {
             />
           </C.SectionCard>
           <C.SectionCard title="Attachments">
-            <C.AttachmentsSizeTypesDesc faqLink="/chip-spa-attachments" />
+            <C.AttachmentsSizeTypesDesc faqLink="/faq/appk-attachments" />
             <I.FormField
               control={form.control}
               name={"attachments.appk"}
