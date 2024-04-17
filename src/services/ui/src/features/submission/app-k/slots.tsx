@@ -83,7 +83,7 @@ export const SlotWaiverId = <
 
       if (existsInList) {
         return context.setError(field.name, {
-          message: "Waiver id already exists",
+          message: "Waiver ID is already included in this Appendix-K",
         });
       }
 
