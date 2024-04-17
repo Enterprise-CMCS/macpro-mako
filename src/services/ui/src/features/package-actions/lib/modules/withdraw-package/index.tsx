@@ -68,12 +68,19 @@ export const defaultWithdrawPackageContent: FormContentHydrator = (
   title: `Withdraw ${document.authority} Package`,
   preSubmitNotice:
     "Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.",
-  confirmationModal: {
-    header: "Withdraw Package?",
-    body: `The package ${document.id} will be withdrawn.`,
-    acceptButtonText: "Yes, withdraw package",
-    cancelButtonText: "Return to form",
-  },
+  confirmationModal: document?.appkParent
+    ? {
+        header: "Are you sure you want to withdraw this package?",
+        body: `All packages associated with ${document.id} will also be withdrawn.`,
+        acceptButtonText: "Yes, withdraw",
+        cancelButtonText: "Cancel",
+      }
+    : {
+        header: "Withdraw Package?",
+        body: `The package ${document.id} will be withdrawn.`,
+        acceptButtonText: "Yes, withdraw package",
+        cancelButtonText: "Return to form",
+      },
   successBanner: {
     header: "Package withdrawn",
     body: `The package ${document.id} has been withdrawn.`,
