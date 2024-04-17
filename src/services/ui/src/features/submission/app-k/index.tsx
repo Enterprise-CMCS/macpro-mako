@@ -106,14 +106,19 @@ export const AppKSubmissionForm = () => {
             {state && (
               <>
                 <p>
-                  <Link
-                    to="/faq/waiver-c-id"
-                    target={C.FAQ_TAB}
-                    rel="noopener noreferrer"
-                    className="text-blue-700 hover:underline"
-                  >
-                    What is my Appendix K ID?
-                  </Link>
+                  <div className="flex gap-4">
+                    <I.FormLabel className="font-bold">
+                      Waiver IDs <I.RequiredIndicator />
+                    </I.FormLabel>
+                    <Link
+                      to="/faq/waiver-c-id"
+                      target={C.FAQ_TAB}
+                      rel="noopener noreferrer"
+                      className="text-blue-700 hover:underline"
+                    >
+                      What is my Appendix K ID?
+                    </Link>
+                  </div>
                   <div className="my-1">
                     Format is <strong>1111</strong>.<strong>R22</strong>.
                     <strong>33</strong> or <strong>11111</strong>.
@@ -151,7 +156,7 @@ export const AppKSubmissionForm = () => {
               render={({ field }) => (
                 <I.FormItem className="max-w-sm">
                   <I.FormLabel className="font-bold block">
-                    Proposed Effective Date of 1915(c) Appendix K Amendment
+                    Proposed Effective Date of 1915(c) Appendix K Amendment{" "}
                     <I.RequiredIndicator />
                   </I.FormLabel>
                   <I.FormControl>

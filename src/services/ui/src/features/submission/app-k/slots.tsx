@@ -143,6 +143,11 @@ export const SlotWaiverId = <
           {onRemove && (
             <XIcon size={20} onClick={onRemove} className={"cursor-pointer"} />
           )}
+          {!onRemove && (
+            <div className="ml-1">
+              <I.RequiredIndicator />
+            </div>
+          )}
         </div>
         <I.FormMessage />
       </I.FormItem>
@@ -178,7 +183,7 @@ export const WaiverIdFieldArray = (props: any) => {
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore
                   render={SlotWaiverId({
-                    onRemove: () => fieldArr.remove(index),
+                    ...(index && { onRemove: () => fieldArr.remove(index) }),
                     state: props.state,
                   })}
                 />
