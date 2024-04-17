@@ -223,7 +223,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc faqLink="/faq/medicaid-spa-attachments" />
+            <Content.AttachmentsSizeTypesDesc faqLink="/faq/waiverb-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
