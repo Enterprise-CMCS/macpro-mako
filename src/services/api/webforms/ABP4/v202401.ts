@@ -58,7 +58,7 @@ export const v202401: FormSchema = {
                 options: [
                   {
                     label:
-                      "See approved Attachment 4.18-F or G for description..",
+                      "See approved Attachment 4.18-F or G for description.",
                     value: "true",
                   },
                 ],
