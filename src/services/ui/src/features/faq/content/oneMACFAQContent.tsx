@@ -959,7 +959,7 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "temporary-extensions-b-attachments",
         question:
-          "What are the attachments for a 1915(c) Waiver - Request for Temporary Extension",
+          "What are the attachments for a 1915(c) Waiver - Request for Temporary Extension?",
         answerJSX: (
           <>
             <p>Note: “*” indicates a required attachment.</p>
