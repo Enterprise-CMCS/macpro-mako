@@ -33,6 +33,7 @@ export const defaultWithdrawRaiFields: ReactElement[] = [
     faqLink={""}
   />,
   <AdditionalInfoSection
+    required
     key={"field-addlinfo"}
     instruction={
       "Add anything else that you would like to share with the State."

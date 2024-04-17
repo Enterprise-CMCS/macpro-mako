@@ -1,4 +1,4 @@
-import { Action, Authority } from "shared-types";
+import { Action, Authority, AuthorityUnion } from "shared-types";
 import { ReactElement } from "react";
 import {
   bWaiverRaiFields,
@@ -15,72 +15,72 @@ import {
   medSpaRaiFields,
 } from "@/features/package-actions/lib/modules";
 
-type FieldsGroup = Record<Authority, ReactElement[] | undefined>;
+type FieldsGroup = Record<AuthorityUnion, ReactElement[] | undefined>;
 
 const issueRaiFor: FieldsGroup = {
-  "chip spa": defaultIssueRaiFields,
-  "medicaid spa": defaultIssueRaiFields,
+  "CHIP SPA": defaultIssueRaiFields,
+  "Medicaid SPA": defaultIssueRaiFields,
   "1915(b)": defaultIssueRaiFields,
   "1915(c)": defaultIssueRaiFields,
 };
 
 const respondToRaiFor: FieldsGroup = {
-  "chip spa": chipSpaRaiFields,
-  "medicaid spa": medSpaRaiFields,
+  "CHIP SPA": chipSpaRaiFields,
+  "Medicaid SPA": medSpaRaiFields,
   "1915(b)": bWaiverRaiFields,
   "1915(c)": undefined,
 };
 
 const enableRaiWithdrawFor: FieldsGroup = {
-  "chip spa": defaultEnableRaiWithdrawFields,
-  "medicaid spa": defaultEnableRaiWithdrawFields,
+  "CHIP SPA": defaultEnableRaiWithdrawFields,
+  "Medicaid SPA": defaultEnableRaiWithdrawFields,
   "1915(b)": defaultEnableRaiWithdrawFields,
   "1915(c)": defaultEnableRaiWithdrawFields,
 };
 
 const disableRaiWithdrawFor: FieldsGroup = {
-  "chip spa": defaultDisableRaiWithdrawFields,
-  "medicaid spa": defaultDisableRaiWithdrawFields,
+  "CHIP SPA": defaultDisableRaiWithdrawFields,
+  "Medicaid SPA": defaultDisableRaiWithdrawFields,
   "1915(b)": defaultDisableRaiWithdrawFields,
   "1915(c)": defaultDisableRaiWithdrawFields,
 };
 
 const withdrawRaiFor: FieldsGroup = {
-  "chip spa": defaultWithdrawRaiFields,
-  "medicaid spa": defaultWithdrawRaiFields,
+  "CHIP SPA": defaultWithdrawRaiFields,
+  "Medicaid SPA": defaultWithdrawRaiFields,
   "1915(b)": defaultWithdrawRaiFields,
   "1915(c)": defaultWithdrawRaiFields,
 };
 
 const withdrawPackageFor: FieldsGroup = {
-  "chip spa": chipWithdrawPackageFields,
-  "medicaid spa": defaultWithdrawPackageFields,
+  "CHIP SPA": chipWithdrawPackageFields,
+  "Medicaid SPA": defaultWithdrawPackageFields,
   "1915(b)": defaultWithdrawPackageFields,
   "1915(c)": defaultWithdrawPackageFields,
 };
 
 const tempExtensionFor: FieldsGroup = {
-  "chip spa": defaultTempExtFields,
-  "medicaid spa": defaultTempExtFields,
+  "CHIP SPA": defaultTempExtFields,
+  "Medicaid SPA": defaultTempExtFields,
   "1915(b)": defaultTempExtFields,
   "1915(c)": defaultTempExtFields,
 };
 
 const updateIdFor: FieldsGroup = {
-  "chip spa": defaultUpdateIdFields,
-  "medicaid spa": defaultUpdateIdFields,
+  "CHIP SPA": defaultUpdateIdFields,
+  "Medicaid SPA": defaultUpdateIdFields,
   "1915(b)": defaultUpdateIdFields,
   "1915(c)": defaultUpdateIdFields,
 };
 
 const completeIntakeFor: FieldsGroup = {
-  "chip spa": defaultCompleteIntakeFields,
-  "medicaid spa": defaultCompleteIntakeFields,
+  "CHIP SPA": defaultCompleteIntakeFields,
+  "Medicaid SPA": defaultCompleteIntakeFields,
   "1915(b)": defaultCompleteIntakeFields,
   "1915(c)": defaultCompleteIntakeFields,
 };
 
-export const getFieldsFor = (a: Action, p: Authority): ReactElement[] => {
+export const getFieldsFor = (a: Action, p: AuthorityUnion): ReactElement[] => {
   const fieldsGroupMap: Record<string, FieldsGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,

@@ -1,4 +1,4 @@
-import { Action, Authority } from "shared-types";
+import { Action, AuthorityUnion } from "shared-types";
 import { ZodEffects, ZodObject } from "zod";
 import {
   bWaiverRaiSchema,
@@ -16,72 +16,72 @@ import {
 } from "@/features/package-actions/lib/modules";
 
 type Schema = ZodObject<any> | ZodEffects<any>;
-type SchemaGroup = Record<Authority, Schema | undefined>;
+type SchemaGroup = Record<AuthorityUnion, Schema | undefined>;
 
 const issueRaiFor: SchemaGroup = {
-  "chip spa": defaultIssueRaiSchema,
-  "medicaid spa": defaultIssueRaiSchema,
+  "CHIP SPA": defaultIssueRaiSchema,
+  "Medicaid SPA": defaultIssueRaiSchema,
   "1915(b)": defaultIssueRaiSchema,
   "1915(c)": defaultIssueRaiSchema,
 };
 
 const respondToRaiFor: SchemaGroup = {
-  "chip spa": chipSpaRaiSchema,
-  "medicaid spa": medSpaRaiSchema,
+  "CHIP SPA": chipSpaRaiSchema,
+  "Medicaid SPA": medSpaRaiSchema,
   "1915(b)": bWaiverRaiSchema,
   "1915(c)": bWaiverRaiSchema,
 };
 
 const enableRaiWithdrawFor: SchemaGroup = {
-  "chip spa": defaultEnableRaiWithdrawSchema,
-  "medicaid spa": defaultEnableRaiWithdrawSchema,
+  "CHIP SPA": defaultEnableRaiWithdrawSchema,
+  "Medicaid SPA": defaultEnableRaiWithdrawSchema,
   "1915(b)": defaultEnableRaiWithdrawSchema,
   "1915(c)": defaultEnableRaiWithdrawSchema,
 };
 
 const disableRaiWithdrawFor: SchemaGroup = {
-  "chip spa": defaultDisableRaiWithdrawSchema,
-  "medicaid spa": defaultDisableRaiWithdrawSchema,
+  "CHIP SPA": defaultDisableRaiWithdrawSchema,
+  "Medicaid SPA": defaultDisableRaiWithdrawSchema,
   "1915(b)": defaultDisableRaiWithdrawSchema,
   "1915(c)": defaultDisableRaiWithdrawSchema,
 };
 
 const withdrawRaiFor: SchemaGroup = {
-  "chip spa": defaultWithdrawRaiSchema,
-  "medicaid spa": defaultWithdrawRaiSchema,
+  "CHIP SPA": defaultWithdrawRaiSchema,
+  "Medicaid SPA": defaultWithdrawRaiSchema,
   "1915(b)": defaultWithdrawRaiSchema,
   "1915(c)": defaultWithdrawRaiSchema,
 };
 
 const withdrawPackageFor: SchemaGroup = {
-  "chip spa": chipWithdrawPackageSchema,
-  "medicaid spa": defaultWithdrawPackageSchema,
+  "CHIP SPA": chipWithdrawPackageSchema,
+  "Medicaid SPA": defaultWithdrawPackageSchema,
   "1915(b)": defaultWithdrawPackageSchema,
   "1915(c)": defaultWithdrawPackageSchema,
 };
 
 const tempExtensionFor: SchemaGroup = {
-  "chip spa": defaultTempExtSchema,
-  "medicaid spa": defaultTempExtSchema,
+  "CHIP SPA": defaultTempExtSchema,
+  "Medicaid SPA": defaultTempExtSchema,
   "1915(b)": defaultTempExtSchema,
   "1915(c)": defaultTempExtSchema,
 };
 
 const updateIdFor: SchemaGroup = {
-  "chip spa": defaultUpdateIdSchema,
-  "medicaid spa": defaultUpdateIdSchema,
+  "CHIP SPA": defaultUpdateIdSchema,
+  "Medicaid SPA": defaultUpdateIdSchema,
   "1915(b)": defaultUpdateIdSchema,
   "1915(c)": defaultUpdateIdSchema,
 };
 
 const completeIntakeFor: SchemaGroup = {
-  "chip spa": defaultCompleteIntakeSchema,
-  "medicaid spa": defaultCompleteIntakeSchema,
+  "CHIP SPA": defaultCompleteIntakeSchema,
+  "Medicaid SPA": defaultCompleteIntakeSchema,
   "1915(b)": defaultCompleteIntakeSchema,
   "1915(c)": defaultCompleteIntakeSchema,
 };
 
-export const getSchemaFor = (a: Action, p: Authority): Schema => {
+export const getSchemaFor = (a: Action, p: AuthorityUnion): Schema => {
   const actionSchemaMap: Record<string, SchemaGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,

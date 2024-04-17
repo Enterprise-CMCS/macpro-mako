@@ -57,7 +57,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
                   params={{
                     id: data.id,
                     type: action,
-                    authority: data.authority.toLowerCase(),
+                    authority: data.authority,
                   }}
                   className={cn(
                     "text-blue-500",

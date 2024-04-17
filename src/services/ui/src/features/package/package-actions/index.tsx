@@ -30,7 +30,7 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
                 state={{ from: `${location.pathname}${location.search}` }}
                 path="/action/:authority/:id/:type"
                 key={`${idx}-${type}`}
-                params={{ id, type, authority: authority!.toLowerCase() }}
+                params={{ id, type, authority: authority! }}
                 className="text-sky-700 font-semibold text-lg"
               >
                 <li>{mapActionLabel(type)}</li>

@@ -1,4 +1,4 @@
-import { Action, Authority } from "shared-types";
+import { Action, Authority, AuthorityUnion } from "shared-types";
 import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
 import { OneMacUser, submit } from "@/api";
@@ -14,7 +14,7 @@ export type FormSetup = {
 };
 /** Builds a form setup using an Action x Authority 2-dimensional
  * lookup. */
-export const getSetupFor = (a: Action, p: Authority): FormSetup => ({
+export const getSetupFor = (a: Action, p: AuthorityUnion): FormSetup => ({
   schema: getSchemaFor(a, p),
   fields: getFieldsFor(a, p),
   content: getContentFor(a, p),

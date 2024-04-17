@@ -1,5 +1,5 @@
 import { BannerContent, SubmissionAlert } from "@/components";
-import { Action, Authority, opensearch } from "shared-types";
+import { Action, Authority, AuthorityUnion, opensearch } from "shared-types";
 import {
   chipWithdrawPackageContent,
   defaultIssueRaiContent,
@@ -23,72 +23,75 @@ type FormContent = {
 /** Form content sometimes requires data values for templating, so forms
  * hydrate the content with these functions. */
 export type FormContentHydrator = (d: opensearch.main.Document) => FormContent;
-type FormContentGroup = Record<Authority, FormContentHydrator | undefined>;
+type FormContentGroup = Record<AuthorityUnion, FormContentHydrator | undefined>;
 
 const issueRaiFor: FormContentGroup = {
-  "chip spa": defaultIssueRaiContent,
-  "medicaid spa": defaultIssueRaiContent,
+  "CHIP SPA": defaultIssueRaiContent,
+  "Medicaid SPA": defaultIssueRaiContent,
   "1915(b)": defaultIssueRaiContent,
   "1915(c)": defaultIssueRaiContent,
 };
 
 const respondToRaiFor: FormContentGroup = {
-  "chip spa": spaRaiContent,
-  "medicaid spa": spaRaiContent,
+  "CHIP SPA": spaRaiContent,
+  "Medicaid SPA": spaRaiContent,
   "1915(b)": waiverRaiContent,
   "1915(c)": waiverRaiContent,
 };
 
 const enableRaiWithdrawFor: FormContentGroup = {
-  "chip spa": defaultEnableRaiWithdrawContent,
-  "medicaid spa": defaultEnableRaiWithdrawContent,
+  "CHIP SPA": defaultEnableRaiWithdrawContent,
+  "Medicaid SPA": defaultEnableRaiWithdrawContent,
   "1915(b)": defaultEnableRaiWithdrawContent,
   "1915(c)": defaultEnableRaiWithdrawContent,
 };
 
 const disableRaiWithdrawFor: FormContentGroup = {
-  "chip spa": defaultDisableRaiWithdrawContent,
-  "medicaid spa": defaultDisableRaiWithdrawContent,
+  "CHIP SPA": defaultDisableRaiWithdrawContent,
+  "Medicaid SPA": defaultDisableRaiWithdrawContent,
   "1915(b)": defaultDisableRaiWithdrawContent,
   "1915(c)": defaultDisableRaiWithdrawContent,
 };
 
 const withdrawRaiFor: FormContentGroup = {
-  "chip spa": defaultWithdrawRaiContent,
-  "medicaid spa": defaultWithdrawRaiContent,
+  "CHIP SPA": defaultWithdrawRaiContent,
+  "Medicaid SPA": defaultWithdrawRaiContent,
   "1915(b)": defaultWithdrawRaiContent,
   "1915(c)": defaultWithdrawRaiContent,
 };
 
 const withdrawPackageFor: FormContentGroup = {
-  "chip spa": chipWithdrawPackageContent,
-  "medicaid spa": defaultWithdrawPackageContent,
+  "CHIP SPA": chipWithdrawPackageContent,
+  "Medicaid SPA": defaultWithdrawPackageContent,
   "1915(b)": defaultWithdrawPackageContent,
   "1915(c)": defaultWithdrawPackageContent,
 };
 
 const tempExtensionFor: FormContentGroup = {
-  "chip spa": defaultTempExtContent,
-  "medicaid spa": defaultTempExtContent,
+  "CHIP SPA": defaultTempExtContent,
+  "Medicaid SPA": defaultTempExtContent,
   "1915(b)": defaultTempExtContent,
   "1915(c)": defaultTempExtContent,
 };
 
 const updateIdFor: FormContentGroup = {
-  "chip spa": defaultUpdateIdContent,
-  "medicaid spa": defaultUpdateIdContent,
+  "CHIP SPA": defaultUpdateIdContent,
+  "Medicaid SPA": defaultUpdateIdContent,
   "1915(b)": defaultUpdateIdContent,
   "1915(c)": defaultUpdateIdContent,
 };
 
 const completeIntakeFor: FormContentGroup = {
-  "chip spa": defaultCompleteIntakeContent,
-  "medicaid spa": defaultCompleteIntakeContent,
+  "CHIP SPA": defaultCompleteIntakeContent,
+  "Medicaid SPA": defaultCompleteIntakeContent,
   "1915(b)": defaultCompleteIntakeContent,
   "1915(c)": defaultCompleteIntakeContent,
 };
 
-export const getContentFor = (a: Action, p: Authority): FormContentHydrator => {
+export const getContentFor = (
+  a: Action,
+  p: AuthorityUnion,
+): FormContentHydrator => {
   const actionContentMap: Record<string, FormContentGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,
