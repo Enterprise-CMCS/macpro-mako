@@ -4,7 +4,6 @@ import {
   Route,
   useAlertContext,
   useModalContext,
-  useParams,
 } from "@/components";
 import {
   Button,
@@ -26,6 +25,7 @@ import {
   useNavigate,
   useNavigation,
   useSubmit,
+  useParams,
 } from "react-router-dom";
 import { Authority } from "shared-types";
 
