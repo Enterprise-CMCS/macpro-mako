@@ -135,7 +135,7 @@ export const TemporaryExtension = () => {
   const authority = urlAuthority ? urlAuthority : formAuthority;
 
   SC.useDisplaySubmissionAlert(
-    "Temporary Extension Request submitted.",
+    "Temporary extension request submitted",
     "Your submission has been received.",
   );
 
