@@ -14,7 +14,13 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
       <div className="py-4">
         {props.form.description && (
           <div className="mb-2">
-            <FormLabel className="font-bold">
+            <FormLabel
+              className={
+                props.form.descriptionStyling
+                  ? props.form.descriptionStyling
+                  : "font-bold"
+              }
+            >
               {props.form?.description}
             </FormLabel>
           </div>

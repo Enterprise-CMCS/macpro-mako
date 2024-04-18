@@ -10,6 +10,7 @@ export const v202401: FormSchema = {
         {
           description:
             "If the target population includes persons under 21, complete the following assurances regarding Early and Periodic Screening, Diagnostic, and Treatment (EPSDT). Otherwise, skip to the Prescription drug coverage assurances below.",
+          descriptionStyling: "font-normal",
           slots: [
             {
               rhf: "Select",
@@ -31,7 +32,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp7_epsdt-assurances_notice-to-individual-includes-descripion_checkgroup",
+              name: "abp7_epsdt-assurances_notice-to-individual-includes-description_checkgroup",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -77,6 +78,7 @@ export const v202401: FormSchema = {
                       {
                         description:
                           "Per 42 CFR 440.345, describe how the additional benefits will be provided, how access to additional benefits will be coordinated, and how beneficiaries and providers will be informed of these processes in order to ensure individuals have access to the full EPSDT benefit.",
+                        descriptionStyling: "font-normal",
                         slots: [
                           {
                             rhf: "Radio",
