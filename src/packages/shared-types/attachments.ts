@@ -43,7 +43,7 @@ export const attachmentTitleMap = (
   appk: "1915(c) Appendix K Amendment Waiver Template",
   waiverExtensionRequest: "Waiver Extension Request",
   revisedAmendedStatePlanLanguage: "Revised Amended State Plan Language",
-  officialRaiResponse: "officialRaiResponse",
+  officialRaiResponse: "Official RAI Response",
   officialWithdrawalLetter: "Official Withdrawal Letter"
 
 });
