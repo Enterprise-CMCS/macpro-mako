@@ -8,7 +8,7 @@ export const NewIdField = () => {
       control={form.control}
       name="newId"
       render={({ field }) => (
-        <Inputs.FormItem>
+        <Inputs.FormItem className={"mb-8"}>
           <div className="flex gap-4">
             <Inputs.FormLabel className="font-semibold">
               New ID <Inputs.RequiredIndicator />
