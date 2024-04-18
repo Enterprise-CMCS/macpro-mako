@@ -1,8 +1,8 @@
-import { useParams } from "react-router-dom";
 import { Authority } from "shared-types";
+import { useParams } from "@/components";
 
 export const PackageSection = () => {
-  const { authority, id } = useParams() as { authority: Authority; id: string };
+  const { id, authority } = useParams("/action/:authority/:id/:type");
   const lcAuthority = authority.toLowerCase();
   // We should pass in the already lowercased Authority, right?  todo
   return (

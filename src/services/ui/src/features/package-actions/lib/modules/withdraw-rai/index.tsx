@@ -3,7 +3,7 @@ import { zAdditionalInfo, zAttachmentOptional } from "@/utils";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 import { ReactElement } from "react";
 import {
-  ActionDescription,
+  ActionFormDescription,
   AdditionalInfoSection,
   AttachmentsSection,
   PackageSection,
@@ -16,10 +16,10 @@ export const defaultWithdrawRaiSchema = z.object({
   }),
 });
 export const defaultWithdrawRaiFields: ReactElement[] = [
-  <ActionDescription key={"content-description"}>
+  <ActionFormDescription key={"content-description"}>
     Complete this form to withdraw the Formal RAI response. Once complete, you
     and CMS will receive an email confirmation.
-  </ActionDescription>,
+  </ActionFormDescription>,
   <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     key={"field-attachments"}

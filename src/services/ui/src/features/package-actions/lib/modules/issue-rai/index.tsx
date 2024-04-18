@@ -7,7 +7,7 @@ import {
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 import { ReactElement } from "react";
 import {
-  ActionDescription,
+  ActionFormDescription,
   AdditionalInfoSection,
   AttachmentsSection,
   PackageSection,
@@ -21,7 +21,7 @@ export const defaultIssueRaiSchema = z.object({
   }),
 });
 export const defaultIssueRaiFields: ReactElement[] = [
-  <ActionDescription key={"content-description"}>
+  <ActionFormDescription key={"content-description"}>
     Issuance of a Formal RAI in OneMAC will create a Formal RAI email sent to
     the State. This will also create a section in the package details summary
     for you and the State to have record. Please attach the Formal RAI Letter
@@ -31,7 +31,7 @@ export const defaultIssueRaiFields: ReactElement[] = [
     <strong className="bold">
       If you leave this page, you will lose your progress on this form.
     </strong>
-  </ActionDescription>,
+  </ActionFormDescription>,
   <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     key={"field-attachments"}

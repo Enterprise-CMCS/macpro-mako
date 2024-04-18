@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { ReactElement } from "react";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
-import { ActionDescription } from "@/components";
+import { ActionFormDescription } from "@/components";
 import { SubjectInput } from "@/components/Form/fields/SubjectInput";
 import { DescriptionInput } from "@/components/Form/fields/DescriptionInput";
 import { TypeSelect } from "@/components/Form/fields/TypeSelect";
@@ -25,7 +25,7 @@ export const defaultCompleteIntakeSchema = z.object({
   cpoc: z.number().min(1, { message: "CPOC is required" }),
 });
 export const defaultCompleteIntakeFields: ReactElement[] = [
-  <ActionDescription key={"section-desc"}>
+  <ActionFormDescription key={"section-desc"}>
     <p>
       Once you submit this form, the supplied information will be writted to
       SEATool, and intake for the record will be complete.
@@ -33,7 +33,7 @@ export const defaultCompleteIntakeFields: ReactElement[] = [
     <strong>
       If you leave this page, you will lose your progress on this form.
     </strong>
-  </ActionDescription>,
+  </ActionFormDescription>,
   <PackageSection key={"section-packageinfo"} />,
   <SubjectInput key={"field-subject"} />,
   <DescriptionInput key={"field-desc"} />,

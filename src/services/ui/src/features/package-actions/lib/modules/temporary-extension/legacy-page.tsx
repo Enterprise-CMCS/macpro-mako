@@ -9,13 +9,13 @@ import { Authority } from "shared-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  ActionDescription,
+  ActionFormDescription,
   AdditionalInfoSection,
   Alert,
   AttachmentsSection,
   BreadCrumbs,
   ErrorBanner,
-  Heading,
+  ActionFormHeading,
   RequiredFieldDescription,
   SimplePageContainer,
   SubmissionButtons,
@@ -83,9 +83,9 @@ export const TemporaryExtension = () => {
 
   return (
     <SimplePageContainer>
-      <Heading title="Temporary Extension Request Details" />
+      <ActionFormHeading title="Temporary Extension Request Details" />
       <RequiredFieldDescription />
-      <ActionDescription key={"content-description"}>
+      <ActionFormDescription key={"content-description"}>
         Once you submit this form, a confirmation email is sent to you and to
         CMS. CMS will use this content to review your package, and you will not
         be able to edit this form. If CMS needs any additional information, they
@@ -93,7 +93,7 @@ export const TemporaryExtension = () => {
         <strong className="font-bold">
           If you leave this page, you will lose your progress on this form.
         </strong>
-      </ActionDescription>
+      </ActionFormDescription>
       <form onSubmit={handleSubmit}>
         <TEPackageSection key={"content-packagedetails"} />
         <AttachmentsSection

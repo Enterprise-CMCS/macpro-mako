@@ -6,7 +6,7 @@ import {
 } from "@/utils";
 import { ReactElement } from "react";
 import {
-  ActionDescription,
+  ActionFormDescription,
   AdditionalInfoSection,
   AttachmentsSection,
   PackageSection,
@@ -20,7 +20,7 @@ export const medSpaRaiSchema = z.object({
   }),
 });
 export const medSpaRaiFields: ReactElement[] = [
-  <ActionDescription key={"content-description"}>
+  <ActionFormDescription key={"content-description"}>
     Once you submit this form, a confirmation email is sent to you and to CMS.
     CMS will use this content to review your package, and you will not be able
     to edit this form. If CMS needs any additional information, they will follow
@@ -28,7 +28,7 @@ export const medSpaRaiFields: ReactElement[] = [
     <strong className="bold">
       If you leave this page, you will lose your progress on this form.
     </strong>
-  </ActionDescription>,
+  </ActionFormDescription>,
   <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     key={"field-attachments"}

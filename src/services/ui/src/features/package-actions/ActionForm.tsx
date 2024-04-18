@@ -1,7 +1,7 @@
 import {
   ErrorBanner,
   Form,
-  Heading,
+  ActionFormHeading,
   LoadingSpinner,
   PreSubmitNotice,
   RequiredFieldDescription,
@@ -66,7 +66,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
     return (
       <Form {...form}>
         {form.formState.isSubmitting && <LoadingSpinner />}
-        <Heading title={content.title} />
+        <ActionFormHeading title={content.title} />
         <RequiredFieldDescription />
         <form onSubmit={handler}>
           {setup?.fields && setup.fields.map((field) => field)}

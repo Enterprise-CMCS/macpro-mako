@@ -3,7 +3,7 @@ import { zUpdateIdSchema } from "@/utils";
 import { ReactElement } from "react";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 import {
-  ActionDescription,
+  ActionFormDescription,
   AdditionalInfoSection,
   PackageSection,
 } from "@/components";
@@ -29,13 +29,13 @@ export const defaultUpdateIdSchema = z
     return z.NEVER;
   });
 export const defaultUpdateIdFields: ReactElement[] = [
-  <ActionDescription key={"section-desc"}>
+  <ActionFormDescription key={"section-desc"}>
     Once you submit this form, the ID of the existing package will be updated in
     SEATool and OneMAC.{" "}
     <strong>
       If you leave this page, you will lose your progress on this form.
     </strong>
-  </ActionDescription>,
+  </ActionFormDescription>,
   <PackageSection key={"section-packageinfo"} />,
   <NewIdField key={"field-newid"} />,
   <AdditionalInfoSection
