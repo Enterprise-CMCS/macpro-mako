@@ -49,7 +49,7 @@ export function SubTypeSelect() {
       control={control}
       name={"subTypeIds"}
       render={() => (
-        <Inputs.FormItem className="max-w-lg">
+        <Inputs.FormItem className="mb-8 max-w-lg">
           <Inputs.FormLabel className="font-semibold block">
             Subtype <Inputs.RequiredIndicator />
           </Inputs.FormLabel>

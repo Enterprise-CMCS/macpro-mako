@@ -30,7 +30,7 @@ export const TEPackageSection = () => {
   }
 
   return (
-    <section className="flex flex-col my-8 space-y-8">
+    <section className="flex flex-col mb-8 space-y-8">
       {/* If ID exists show these */}
       {id && (
         <>

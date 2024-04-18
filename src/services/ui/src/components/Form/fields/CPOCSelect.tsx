@@ -21,7 +21,7 @@ export function CPOCSelect() {
       name={"cpoc"}
       render={({ field }) => {
         return (
-          <Inputs.FormItem className="max-w-lg">
+          <Inputs.FormItem className="mb-8 max-w-lg">
             <Inputs.FormLabel className="font-semibold block">
               CPOC <Inputs.RequiredIndicator />
             </Inputs.FormLabel>

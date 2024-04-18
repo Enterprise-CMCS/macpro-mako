@@ -10,7 +10,7 @@ export function SubjectInput() {
       control={form.control}
       name={"subject"}
       render={({ field }) => (
-        <Inputs.FormItem className="max-w-sm">
+        <Inputs.FormItem className="mb-8 max-w-sm">
           <Inputs.FormLabel className="font-semibold block">
             Subject <Inputs.RequiredIndicator />
           </Inputs.FormLabel>

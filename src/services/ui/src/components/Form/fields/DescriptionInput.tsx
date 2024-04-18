@@ -10,7 +10,7 @@ export function DescriptionInput() {
       control={form.control}
       name={"description"}
       render={({ field }) => (
-        <Inputs.FormItem>
+        <Inputs.FormItem className={"mb-8"}>
           <Inputs.FormLabel className="font-semibold block">
             Description <Inputs.RequiredIndicator />
           </Inputs.FormLabel>

@@ -18,7 +18,7 @@ export const AdditionalInfoSection = ({
 }) => {
   const form = useFormContext();
   return (
-    <section>
+    <section className={"mb-8"}>
       <h2 className="font-bold text-2xl font-sans mb-2">
         Additional Info {required && <RequiredIndicator />}
       </h2>

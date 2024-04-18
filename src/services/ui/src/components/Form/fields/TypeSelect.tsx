@@ -27,7 +27,7 @@ export function TypeSelect() {
       name={"typeIds"}
       render={({ field }) => {
         return (
-          <Inputs.FormItem className="max-w-lg">
+          <Inputs.FormItem className="mb-8 max-w-lg">
             <Inputs.FormLabel className="font-semibold block">
               Type <Inputs.RequiredIndicator />
             </Inputs.FormLabel>

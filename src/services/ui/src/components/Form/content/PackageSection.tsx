@@ -6,7 +6,7 @@ export const PackageSection = () => {
   const lcAuthority = authority.toLowerCase();
   // We should pass in the already lowercased Authority, right?  todo
   return (
-    <section className="flex flex-col my-8 space-y-8">
+    <section className="flex flex-col mb-8 space-y-8">
       <div>
         <p>
           {[Authority.CHIP_SPA, Authority.MED_SPA].includes(

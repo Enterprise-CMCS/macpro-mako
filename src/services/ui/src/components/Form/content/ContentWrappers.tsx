@@ -10,7 +10,7 @@ export const RequiredFieldDescription = () => (
 );
 
 export const ActionDescription = ({ children }: { children: ReactNode }) => {
-  return <div className="font-light mb-6 max-w-4xl">{children}</div>;
+  return <div className="font-light mb-8 max-w-4xl">{children}</div>;
 };
 
 export const Heading = ({ title }: { title: string }) => {
