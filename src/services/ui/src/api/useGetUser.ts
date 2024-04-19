@@ -1,3 +1,4 @@
+import { queryClient } from "@/router";
 import { useQuery } from "@tanstack/react-query";
 import { Auth } from "aws-amplify";
 import { CognitoUserAttributes } from "shared-types";
@@ -45,3 +46,6 @@ export const useGetUser = () =>
     queryKey: ["user"],
     queryFn: () => getUser(),
   });
+
+export const getLoggedInUser = () =>
+  queryClient.getQueryData(["user"]) as OneMacUser;
