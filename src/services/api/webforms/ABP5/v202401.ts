@@ -242,7 +242,13 @@ function subsectionFormFields({
       label: "Amount limit",
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_amount-limit_input`,
-      rules: { required: "* Required" },
+      rules: {
+        required: "* Required",
+        pattern: {
+          value: /^[1-9]\d*$/,
+          message: "Must be a positive integer value",
+        },
+      },
       props: {
         className: "w-[300px]",
       },
@@ -252,7 +258,13 @@ function subsectionFormFields({
       label: "Duration limit",
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_duration-limit_input`,
-      rules: { required: "* Required" },
+      rules: {
+        required: "* Required",
+        pattern: {
+          value: /^[1-9]\d*$/,
+          message: "Must be a positive integer value",
+        },
+      },
       props: {
         className: "w-[300px]",
       },
@@ -262,7 +274,13 @@ function subsectionFormFields({
       label: "Scope limit",
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_scope-limit_input`,
-      rules: { required: "* Required" },
+      rules: {
+        required: "* Required",
+        pattern: {
+          value: /^[1-9]\d*$/,
+          message: "Must be a positive integer value",
+        },
+      },
       props: {
         className: "w-[300px]",
       },
