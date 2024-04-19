@@ -4,28 +4,32 @@ import { mapActionLabel } from "@/utils";
 import { Action, Authority } from "shared-types";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { getLoggedInUser } from "@/api";
 import { getAvailableActions } from "shared-utils";
 
 import type { opensearch } from "shared-types";
 
-export const PackageActionsCard: FC<{ id: string, data: opensearch.main.Document }> = ({ id, data }) => {
+export const PackageActionsCard: FC<{
+  id: string;
+  data: opensearch.main.Document;
+}> = ({ id, data }) => {
   const location = useLocation();
   const item = useGetItem(id);
-
 
   const authority = item.data?._source.authority;
 
   // used cache to get logged in user
   const user = getLoggedInUser();
+  // this shouldn't happen, but just in case
+  if (!user) return <Navigate to="/dashboard" />;
   // use package check instead of making API call
   const actions = getAvailableActions(user, data);
 
   return (
     <DetailCardWrapper title={"Package Actions"}>
       <div className="my-3">
-        {!data || actions.length ? (
+        {!data || !actions.length ? (
           <em className="text-gray-400 my-3">
             No actions are currently available for this submission.
           </em>
