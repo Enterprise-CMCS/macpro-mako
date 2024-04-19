@@ -306,6 +306,7 @@ function subsection({
         description: description,
         descriptionClassName: "font-normal",
         slots: [
+          ...headerSlots,
           {
             rhf: "FieldGroup",
             name: `${formName}_${sectionName}_benefit`,
@@ -315,7 +316,6 @@ function subsection({
               removeText: "Remove benefit",
             },
             fields: [
-              ...headerSlots,
               ...subsectionFormFields({
                 sectionName: sectionName,
                 benefitProvided: benefitProvided,
