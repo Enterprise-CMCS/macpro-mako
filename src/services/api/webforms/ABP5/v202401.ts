@@ -630,10 +630,36 @@ export const v202401: FormSchema = {
                   {
                     label: "Yes, a duplication",
                     value: "yes_duplication",
+                    form: [
+                      {
+                        slots: [
+                          {
+                            rhf: "Input",
+                            label: "Benefit duplicated",
+                            labelClassName: "font-bold",
+                            name: `${formName}_prescrip-drugs_benefit-duped_input`,
+                            rules: { required: "* Required" },
+                          },
+                        ],
+                      },
+                    ],
                   },
                   {
                     label: "Yes, a substitution",
                     value: "yes_substitution",
+                    form: [
+                      {
+                        slots: [
+                          {
+                            rhf: "Input",
+                            label: "Benefit substituted",
+                            labelClassName: "font-bold",
+                            name: `${formName}_prescrip-drugs_benefit-subbed_input`,
+                            rules: { required: "* Required" },
+                          },
+                        ],
+                      },
+                    ],
                   },
                   { label: "No", value: "no" },
                 ],
