@@ -40,6 +40,7 @@ const webformRoutes = [
   "/guides/abp",
   "/webform/abp10/202401",
   "/webform/abp7/202401",
+  "/webform/abp4/202401",
   "/webform/abp3_1/202401",
   "/webform/abp3/202401",
   "/webform/abp2b/202401",
