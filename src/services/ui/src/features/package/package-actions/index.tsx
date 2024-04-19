@@ -1,31 +1,37 @@
-import { useGetItem, useGetPackageActions } from "@/api";
-import { LoadingSpinner, Link } from "@/components";
+import { useGetItem } from "@/api";
+import { Link } from "@/components";
 import { mapActionLabel } from "@/utils";
 import { Action, Authority } from "shared-types";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
 import { useLocation } from "react-router-dom";
+import { getLoggedInUser } from "@/api";
+import { getAvailableActions } from "shared-utils";
 
-export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
+import type { opensearch } from "shared-types";
+
+export const PackageActionsCard: FC<{ id: string, data: opensearch.main.Document }> = ({ id, data }) => {
   const location = useLocation();
   const item = useGetItem(id);
 
-  const { data, isLoading } = useGetPackageActions(id, {
-    retry: false,
-  });
-  if (isLoading) return <LoadingSpinner />;
 
   const authority = item.data?._source.authority;
+
+  // used cache to get logged in user
+  const user = getLoggedInUser();
+  // use package check instead of making API call
+  const actions = getAvailableActions(user, data);
+
   return (
     <DetailCardWrapper title={"Package Actions"}>
       <div className="my-3">
-        {!data || !data.actions.length ? (
+        {!data || actions.length ? (
           <em className="text-gray-400 my-3">
             No actions are currently available for this submission.
           </em>
         ) : (
           <ul className="my-3">
-            {data.actions.map((type, idx) => {
+            {actions.map((type, idx) => {
               if (
                 [Authority["1915b"], Authority["1915c"]].includes(
                   authority as Authority,

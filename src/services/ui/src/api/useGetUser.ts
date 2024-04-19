@@ -48,4 +48,4 @@ export const useGetUser = () =>
   });
 
 export const getLoggedInUser = () =>
-  queryClient.getQueryData(["user"]) as OneMacUser;
+  queryClient.getQueryData(["user"]) as CognitoUserAttributes;
