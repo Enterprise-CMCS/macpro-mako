@@ -333,7 +333,7 @@ function subsection({
                         options: [
                           {
                             label: "Yes, a duplication",
-                            value: "yes_duplication",
+                            value: `${sectionName}_yes_duplication`,
                             form: [
                               {
                                 slots: [
@@ -350,7 +350,7 @@ function subsection({
                           },
                           {
                             label: "Yes, a substitution",
-                            value: "yes_substitution",
+                            value: `${sectionName}_yes_substitution`,
                             form: [
                               {
                                 slots: [
@@ -365,7 +365,7 @@ function subsection({
                               },
                             ],
                           },
-                          { label: "No", value: "no" },
+                          { label: "No", value: `${sectionName}_no` },
                         ],
                       },
                     },
