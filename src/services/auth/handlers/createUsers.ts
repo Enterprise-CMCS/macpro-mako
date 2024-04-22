@@ -27,10 +27,14 @@ exports.handler = async function myHandler() {
       UserAttributes: users[i].attributes,
     };
 
-    await cognitolib.createUser(poolData);
-    // Set a temp password first, and then set the password configured in SSM for consistent dev login
-    await cognitolib.setPassword(passwordData);
-    // If user exists and attributes are updated in this file, updateUserAttributes is needed to update the attributes
-    await cognitolib.updateUserAttributes(attributeData);
+    try {
+      await cognitolib.createUser(poolData);
+      // Set a temp password first, and then set the password configured in SSM for consistent dev login
+      await cognitolib.setPassword(passwordData);
+      // If user exists and attributes are updated in this file, updateUserAttributes is needed to update the attributes
+      await cognitolib.updateUserAttributes(attributeData);
+    } catch (err: unknown) {
+      console.log("error", err);
+    }
   }
 };
