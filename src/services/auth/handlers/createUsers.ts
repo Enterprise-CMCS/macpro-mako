@@ -5,6 +5,7 @@ const userPoolId = process.env.userPoolId;
 exports.handler = async function myHandler() {
   console.log("USER POOL ID: ");
   console.log(userPoolId);
+  console.log("users", users);
 
   for (let i = 0; i < users.length; i++) {
     console.log(users[i]);
