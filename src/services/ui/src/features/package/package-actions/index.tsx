@@ -25,41 +25,17 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
           </em>
         ) : (
           <ul className="my-3">
-            {data.actions.map((type, idx) => {
-              if (
-                [Authority["1915b"], Authority["1915c"]].includes(
-                  authority as Authority,
-                ) ||
-                [
-                  Action.TEMP_EXTENSION,
-                  Action.UPDATE_ID,
-                  Action.COMPLETE_INTAKE,
-                ].includes(type)
-              ) {
-                return (
-                  <Link
-                    state={{ from: `${location.pathname}${location.search}` }}
-                    path="/action/:authority/:id/:type"
-                    key={`${idx}-${type}`}
-                    params={{ id, type, authority }}
-                    className="text-sky-700 font-semibold text-lg"
-                  >
-                    <li>{mapActionLabel(type)}</li>
-                  </Link>
-                );
-              } else {
-                return (
-                  <Link
-                    key={`${idx}-${type}`}
-                    path="/action/:id/:type"
-                    params={{ id, type }}
-                    className="text-sky-700 font-semibold text-lg"
-                  >
-                    <li>{mapActionLabel(type)}</li>
-                  </Link>
-                );
-              }
-            })}
+            {data.actions.map((type, idx) => (
+              <Link
+                state={{ from: `${location.pathname}${location.search}` }}
+                path="/action/:authority/:id/:type"
+                key={`${idx}-${type}`}
+                params={{ id, type, authority: authority! }}
+                className="text-sky-700 font-semibold text-lg"
+              >
+                <li>{mapActionLabel(type)}</li>
+              </Link>
+            ))}
           </ul>
         )}
       </div>
