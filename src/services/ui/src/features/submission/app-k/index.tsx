@@ -3,7 +3,7 @@
 import { SlotAdditionalInfo, SlotAttachments } from "@/features/actions";
 import * as I from "@/components/Inputs";
 import * as C from "@/components";
-import { Path, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FORM, SchemaForm } from "./consts";
 import { SlotStateSelect, SlotWaiverId, WaiverIdFieldArray } from "./slots";
@@ -16,6 +16,7 @@ import { useEffect } from "react";
 import * as Content from "@/components";
 import { useOriginPath, zAppkWaiverNumberSchema } from "@/utils";
 import { Link } from "react-router-dom";
+import { useSyncStatus } from "@/hooks/useSyncStatus";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
@@ -30,6 +31,16 @@ export const AppKSubmissionForm = () => {
 
   const submission = useMutation({
     mutationFn: (config: SubmissionServiceParameters<any>) => submit(config),
+  });
+
+  const { syncRecord, loading } = useSyncStatus({
+    path: "/dashboard",
+    isCorrectStatus: (data) => {
+      return (
+        data._source.authority === Authority["1915c"] &&
+        data._source.actionType === "Amend"
+      );
+    },
   });
 
   const onSubmit = form.handleSubmit(async (draft) => {
@@ -48,7 +59,8 @@ export const AppKSubmissionForm = () => {
           });
           alert.setBannerShow(true);
           alert.setBannerDisplayOn("/dashboard");
-          nav(originPath ? { path: originPath } : { path: "/dashboard" });
+          syncRecord(`${draft.state}-${draft.parentWaiver}`);
+          // nav(originPath ? { path: originPath } : { path: "/dashboard" });
         },
         onError: (err) => console.error(err),
       },
@@ -70,7 +82,7 @@ export const AppKSubmissionForm = () => {
 
   return (
     <C.SimplePageContainer>
-      {submission.isLoading && <C.LoadingSpinner />}
+      {(submission.isLoading || loading) && <C.LoadingSpinner />}
       <C.BreadCrumbs options={crumbs} />
       <I.Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
@@ -249,9 +261,17 @@ export const AppKSubmissionForm = () => {
                 });
                 modal.setOnAccept(() => () => {
                   modal.setModalOpen(false);
-                  nav(
-                    originPath ? { path: originPath } : { path: "/dashboard" },
+
+                  const newPath = C.urlEmbedQuery<Partial<C.OsUrlState>>(
+                    "/dashboard",
+                    {
+                      tab: "waivers",
+                    },
                   );
+
+                  nav({
+                    path: newPath as C.Route,
+                  });
                 });
                 modal.setModalOpen(true);
               }}
