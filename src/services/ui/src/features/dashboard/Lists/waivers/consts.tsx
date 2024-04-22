@@ -24,6 +24,19 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       transform: (data) => data.id,
       cell: renderCellIdLink((id) => `/details?id=${encodeURIComponent(id)}`),
     },
+    // hide actions column for: readonly,help desk
+    ...(!CMS_READ_ONLY_ROLES.some((UR) =>
+      props.user?.["custom:cms-roles"].includes(UR),
+    )
+      ? [
+          {
+            locked: true,
+            isSystem: true,
+            label: "Actions",
+            cell: renderCellActions(props.user),
+          },
+        ]
+      : []),
     {
       field: "state.keyword",
       label: "State",
@@ -162,18 +175,5 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       transform: (data) => data.submitterName ?? BLANK_VALUE,
       cell: (data) => data.submitterName,
     },
-    // hide actions column for: readonly,help desk
-    ...(!CMS_READ_ONLY_ROLES.some((UR) =>
-      props.user?.["custom:cms-roles"].includes(UR),
-    )
-      ? [
-          {
-            locked: true,
-            isSystem: true,
-            label: "Actions",
-            cell: renderCellActions(props.user),
-          },
-        ]
-      : []),
   ];
 };
