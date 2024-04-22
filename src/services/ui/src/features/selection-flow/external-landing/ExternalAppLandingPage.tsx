@@ -33,7 +33,6 @@ const FAQHelperText = () => (
   <span className="max-w-xl">
     <i>
       For additional information on where to submit, refer to the{" "}
-      {/* TODO: Get desired FAQ `target` from Wale */}
       <Link
         className="text-sky-700 hover:text-sky-800 underline"
         target={FAQ_TAB}
