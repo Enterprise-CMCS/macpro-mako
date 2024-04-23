@@ -14,7 +14,7 @@ import {
   Route,
   FormField,
 } from "@/components";
-import * as Content from "@/components/Form/content";
+import * as Content from "@/components/Form/old-content";
 import * as Inputs from "@/components/Inputs";
 import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
