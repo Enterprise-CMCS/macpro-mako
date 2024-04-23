@@ -8,7 +8,7 @@ const LOGIN_FIXTURE = `user-logins.json`;
 export class oneMacDevLoginPage {
   loginAs(userRole, userStatus) {
     cy.origin(Cypress.env('cognito_url'), { args: { EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn, userRole, userStatus } }, ({ EmailInput, PasswordInput, LOGIN_FIXTURE, DEFAULT_DEV_WORD, LoginBtn, userRole, userStatus}) => {
-      cy.wait(500);
+      cy.wait(1000);
       cy.fixture(LOGIN_FIXTURE).then(function (loginCredentials) {
         cy.get(EmailInput).type(loginCredentials[userRole][userStatus], { force: true });
         cy.get(PasswordInput).type(DEFAULT_DEV_WORD, { force: true });

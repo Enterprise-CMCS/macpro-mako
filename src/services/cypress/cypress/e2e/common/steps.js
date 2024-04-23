@@ -32,7 +32,7 @@ Then("Verify I am on the login page and not logged in", () => {
 
 When("clicking the Sign In Button", () => {
   OneMacHomePage.clicksignInBtn();
-  cy.wait(500);
+  cy.wait(1000);
 });
 When("Clicking on FAQ Tab", () => {
   OneMacHomePage.clickFAQPage();
@@ -40,7 +40,7 @@ When("Clicking on FAQ Tab", () => {
 When("Login with {string} {string} user", (status, userRole) => {
   const realStatus = status.replace("a ", "").replace("an ", "");
   OneMacDevLoginPage.loginAs(userRole, realStatus);
-  cy.wait(500);
+  cy.wait(1000);
 });
 Then("click on New Submission", () => {
   OneMacDashboardPage.clickNewSubmission();
@@ -1899,16 +1899,6 @@ Then("verify all sections are expanded", () => {
 });
 Then("verify page url contains {string}", (checkUrl) => {
   OneMacDashboardPage.verifyPageByURL(checkUrl);
-});
-
-Then("type the generated SPA ID {int} into the ID Input box using the state {string}", (count, state) => {
-  let spaID = util.generateSPAID(state || 'MD');
-  OneMacFormPage.inputID(spaID);
-  cy.fixture("generatedIDs.json").then((obj) => {
-    obj["generatedSPAID" + count] = spaID;
-    // write the merged object
-    cy.writeFile("./fixtures/generatedIDs.json", obj)
-  })
 });
 
 Then("verify submission successful message in the modal", () => {
