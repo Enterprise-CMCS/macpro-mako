@@ -43,8 +43,11 @@ export const attachmentTitleMap = (
   appk: "1915(c) Appendix K Amendment Waiver Template",
   waiverExtensionRequest: "Waiver Extension Request",
 });
-export type AttachmentKey = keyof typeof attachmentTitleMap;
-export type AttachmentTitle = (typeof attachmentTitleMap)[AttachmentKey];
+
+// ANDIE CHANGE THIS!!!
+export const attachmentSectionMap = attachmentTitleMap(Authority["MED_SPA"]);
+export type AttachmentKey = keyof typeof attachmentSectionMap;
+// export type AttachmentTitle = (typeof attachmentTitleMap)[AttachmentKey];
 
 export const attachmentSchema = z.object({
   filename: z.string(),

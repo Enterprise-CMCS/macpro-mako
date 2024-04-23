@@ -32,9 +32,8 @@ export const bWaiverRaiFields: ReactElement[] = [
       {
         name: "raiResponseLetter",
         required: true,
-        label: "Waiver RAI Response",
       },
-      { label: "Other", required: false, name: "other" },
+      { required: false, name: "other" },
     ]}
     faqLink={""}
   />,

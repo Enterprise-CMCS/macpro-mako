@@ -35,12 +35,10 @@ export const medSpaRaiFields: ReactElement[] = [
     attachments={[
       {
         name: "raiResponseLetter",
-        label: "RAI Response Letter",
         required: true,
       },
       {
         name: "other",
-        label: "Other",
         required: false,
       },
     ]}

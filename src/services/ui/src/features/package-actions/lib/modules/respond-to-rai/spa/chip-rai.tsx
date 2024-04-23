@@ -39,32 +39,26 @@ export const chipSpaRaiFields: ReactElement[] = [
     attachments={[
       {
         name: "revisedAmendedStatePlanLanguage",
-        label: "Revised Amended State Plan Language",
         required: true,
       },
       {
         name: "officialRaiResponse",
-        label: "Official RAI Response",
         required: true,
       },
       {
         name: "budgetDocuments",
-        label: "Budget Documents",
         required: false,
       },
       {
         name: "publicNotice",
-        label: "Public Notice",
         required: false,
       },
       {
         name: "tribalConsultation",
-        label: "Tribal Consultation",
         required: false,
       },
       {
         name: "other",
-        label: "Other",
         required: false,
       },
     ]}
