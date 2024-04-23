@@ -2,7 +2,7 @@ import { PropsWithChildren, useState } from "react";
 import { createContextProvider } from "@/utils";
 import { ConfirmationModal } from "@/components";
 
-type SubmissionAlert = {
+export type SubmissionAlert = {
   header: string;
   body: string;
   cancelButtonText?: string;
