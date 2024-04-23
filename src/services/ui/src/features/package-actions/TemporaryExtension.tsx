@@ -159,6 +159,7 @@ export const TemporaryExtension = () => {
       <form onSubmit={handleSubmit}>
         <TEPackageSection authority={authority} id={urlId} />
         <SC.AttachmentsSection<Attachments>
+          faqTo="/faq/waiverb-rai-attachments"
           attachments={[
             {
               registerName: "waiverExtensionRequest",

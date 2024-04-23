@@ -75,6 +75,7 @@ export const IssueRai = () => {
       <SC.PackageSection />
       <form onSubmit={handleSubmit}>
         <SC.AttachmentsSection<Attachments>
+          faqTo="faq/mwaiverb-rai-attachments"
           attachments={[
             {
               name: "Formal RAI Letter",

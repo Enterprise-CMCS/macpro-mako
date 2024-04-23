@@ -54,9 +54,11 @@ export const Heading = ({ title }: { title: string }) => {
 export const AttachmentsSection = <T extends string>({
   attachments,
   supportingInformation,
+  faqTo,
 }: {
   attachments: { name: string; required: boolean; registerName: T }[];
   supportingInformation?: string;
+  faqTo: string;
 }) => {
   const form = useFormContext();
 
@@ -70,7 +72,7 @@ export const AttachmentsSection = <T extends string>({
         types on the
         <Link
           className="text-blue-700 hover:underline"
-          to="/faq/temporary-extensions-b-attachments"
+          to={faqTo}
           target={FAQ_TAB}
           rel="noopener noreferrer"
         >

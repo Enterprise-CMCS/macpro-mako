@@ -91,6 +91,7 @@ export const RespondToRai = () => {
       <SC.PackageSection />
       <form onSubmit={handleSubmit}>
         <SC.AttachmentsSection<Attachments>
+          faqTo="faq/medicaid-spa-rai-attachments"
           attachments={[
             {
               name: attachmentTitle[authority],

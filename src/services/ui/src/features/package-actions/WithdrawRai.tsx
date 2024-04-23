@@ -80,6 +80,7 @@ export const WithdrawRai = () => {
       <SC.PackageSection />
       <form onSubmit={handleSubmit}>
         <SC.AttachmentsSection<Attachments>
+          faqTo="/faq"
           attachments={[
             {
               name: "Supporting Documentation",
