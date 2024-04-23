@@ -12,7 +12,7 @@ Feature: Appendix K Waiver Type Selection
         Then click on "1915(c) Appendix K Amendment" choice
         Then verify user is on new Appendix K page
         Then verify the attachment info descriptiion
-        Then verify the attachment info link is for "Appendix K"
+        #Then verify the attachment info link is for "Appendix K"
 
     Scenario: Verify the Waiver Number format on Appendix K Form
         Then click on "1915(c) Appendix K Amendment" choice

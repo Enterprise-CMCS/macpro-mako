@@ -3,6 +3,7 @@ Feature: Waiver Package Details View: 1915 b Waiver Amendment for a CMS User
         Given I am on Login Page
         When clicking the Sign In Button
         When Login with "an Active" "CMS Read Only" user
+        Then click the main Dashboard Button
         Then click on the Waivers tab
         Then Click on Filter Button
         Then click on Authority

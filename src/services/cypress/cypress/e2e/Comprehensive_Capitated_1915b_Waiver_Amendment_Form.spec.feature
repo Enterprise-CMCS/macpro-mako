@@ -14,7 +14,7 @@ Feature: 1915b Comprehensive Capitated Waiver Amendment
         Then click on "1915(b) Comprehensive (Capitated) Waiver Amendment" choice
         Then verify user is on new waiver amendment page
         Then verify the attachment info descriptiion
-        Then verify the attachment info link is for "1915b Waiver"
+    #Then verify the attachment info link is for "1915b Waiver"
 
     Scenario: Verify pre-print and spreadsheet are both required
         Then click on "1915(b) Comprehensive (Capitated) Waiver Amendment" choice

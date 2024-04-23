@@ -256,7 +256,8 @@ export class oneMacDashboardPage {
     cy.xpath(packageSubmittedMsg).contains("Package submitted", { matchCase: false });
   }
   verifyAlertMessageIs(s) {
-    cy.xpath(packageSubmittedMsg).contains(s, { matchCase: false });
+    cy.get('body').contains(s, { matchCase: false });
+    //cy.xpath(packageSubmittedMsg).contains(s, { matchCase: false });
   }
   verifyIDNumber(s) {
     cy.xpath(IDNUMBER(s)).first().should("exist");

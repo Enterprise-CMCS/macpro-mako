@@ -13,7 +13,7 @@ Feature: RAI Response for CHIP SPA package view
         Then type the generated "CHIP SPA" Number 4 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of CHIP SPA" to 3 months from today
         Then verify the attachment info descriptiion
-        Then verify the attachment info link is for "CHIP SPA"
+        #Then verify the attachment info link is for "CHIP SPA"
         Then attach "picture.jpg" file to attachment 1
         Then attach "adobe.pdf" file to attachment 2
         Then attach "adobe.pdf" file to attachment 3

@@ -32,6 +32,7 @@ Then("Verify I am on the login page and not logged in", () => {
 
 When("clicking the Sign In Button", () => {
   OneMacHomePage.clicksignInBtn();
+  cy.wait(500);
 });
 When("Clicking on FAQ Tab", () => {
   OneMacHomePage.clickFAQPage();
@@ -39,6 +40,7 @@ When("Clicking on FAQ Tab", () => {
 When("Login with {string} {string} user", (status, userRole) => {
   const realStatus = status.replace("a ", "").replace("an ", "");
   OneMacDevLoginPage.loginAs(userRole, realStatus);
+  cy.wait(500);
 });
 Then("click on New Submission", () => {
   OneMacDashboardPage.clickNewSubmission();

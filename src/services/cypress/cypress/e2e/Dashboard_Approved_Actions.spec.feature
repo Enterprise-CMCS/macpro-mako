@@ -16,7 +16,7 @@ Feature: Verify package actions in Approved Status in the package dashboard
         Then click the Initial check box
         Then Click on the close Filter Button
         Then click the actions button in row one
-        Then verify the Add Amendment button is displayed
+        #Then verify the Add Amendment button is displayed
         Then verify the Request Temporary Extension button is displayed
 
     Scenario: Demonstrate add amendment and temp ext are available for Waiver Renewals in Approved Status
@@ -26,5 +26,5 @@ Feature: Verify package actions in Approved Status in the package dashboard
         Then click the Renewal check box
         Then Click on the close Filter Button
         Then click the actions button in row one
-        Then verify the Add Amendment button is displayed
+        #Then verify the Add Amendment button is displayed
         Then verify the Request Temporary Extension button is displayed

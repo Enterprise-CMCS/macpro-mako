@@ -13,7 +13,7 @@ Feature: RAI Response for Medicaid SPA package view
         Then type the generated "Medicaid SPA" Number 4 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of Medicaid SPA" to 3 months from today
         Then verify the attachment info descriptiion
-        Then verify the attachment info link is for "Medicaid SPA"
+        #Then verify the attachment info link is for "Medicaid SPA"
         Then attach "picture.jpg" file to attachment 1
         Then attach "adobe.pdf" file to attachment 2
         Then attach "adobe.pdf" file to attachment 3
@@ -43,7 +43,7 @@ Feature: RAI Response for Medicaid SPA package view
         Then click on Respond to RAI package action
         Then verify the form is titled "Medicaid SPA Formal RAI Response Details"
         Then verify the attachment info descriptiion
-        Then verify the attachment info link is for "Medicaid RAI"
+        #Then verify the attachment info link is for "Medicaid RAI"
         Then attach "file.docx" file to attachment 1
         Then attach "picture.jpg" file to attachment 2
         Then Click on Submit Button

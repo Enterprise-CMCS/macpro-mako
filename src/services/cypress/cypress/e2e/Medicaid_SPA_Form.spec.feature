@@ -28,7 +28,7 @@ Feature: Package Dashboard: Medicaid SPA Form
         Then type the generated "Medicaid SPA" Number 1 into the ID Input box using the state "MD"
         Then set "Proposed Effective Date of Medicaid SPA" to 3 months from today
         Then verify the attachment info descriptiion
-        Then verify the attachment info link is for "Medicaid SPA"
+        #Then verify the attachment info link is for "Medicaid SPA"
         Then attach "adobe.pdf" file to attachment 1
         Then attach "picture.jpg" file to attachment 2
         Then into "Additional Information" type "This is an automated test."

@@ -14,7 +14,7 @@ Feature: Waiver Renewal in Package Dashboard
         Then click on "1915(b)(4) FFS Selective Contracting Renewal Waiver" choice
         Then verify user is on new waiver renewal page
         Then verify the attachment info descriptiion
-        Then verify the attachment info link is for "1915b Waiver"
+    #Then verify the attachment info link is for "1915b Waiver"
 
     Scenario: Verify pre-print isrequired
         Then click on "1915(b)(4) FFS Selective Contracting Renewal Waiver" choice

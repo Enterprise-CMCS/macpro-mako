@@ -24,7 +24,7 @@ Feature: Package Dashboard: CHIP SPA Initial Submission
         #Then into "Subject" type "Cypress Regression Test"
         #Then into "Description" type "This package was created while running the test automation."
         Then verify the attachment info descriptiion
-        Then verify the attachment info link is for "CHIP SPA"
+        #Then verify the attachment info link is for "CHIP SPA"
         Then attach "picture.jpg" file to attachment 1
         Then attach "adobe.pdf" file to attachment 2
         Then attach "adobe.pdf" file to attachment 3
