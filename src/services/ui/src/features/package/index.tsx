@@ -9,11 +9,11 @@ import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
 
 import { PackageDetails } from "./package-details";
-import { detailsAndActionsCrumbs } from "../actions";
 import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
 import { Authority } from "shared-types";
+import { detailsAndActionsCrumbs } from "@/features/package-actions/actions-breadcrumbs";
 
 export const DetailCardWrapper = ({
   title,

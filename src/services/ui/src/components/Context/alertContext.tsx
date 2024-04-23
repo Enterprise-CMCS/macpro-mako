@@ -4,7 +4,7 @@ import { createContextProvider } from "@/utils";
 import { Alert, SimplePageContainer, Route, AlertVariant } from "@/components";
 import { useLocation } from "react-router-dom";
 
-type BannerContent = {
+export type BannerContent = {
   header: string;
   body: string;
 };

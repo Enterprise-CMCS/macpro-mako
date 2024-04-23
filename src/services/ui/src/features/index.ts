@@ -1,6 +1,6 @@
 export * from "./selection-flow";
 export * from "./package";
-export * from "./actions";
+export * from "./package-actions";
 export * from "./dashboard";
 export * from "./package";
 export * from "./profile";
