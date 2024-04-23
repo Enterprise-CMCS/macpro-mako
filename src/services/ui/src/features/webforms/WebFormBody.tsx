@@ -44,7 +44,7 @@ export function WebformBody({
     },
     (err) => {
       console.error({ err });
-    }
+    },
   );
 
   return (
@@ -77,7 +77,7 @@ const ClearDataButton: FC<{ reset: () => void }> = ({ reset }) => {
   const ldClient = useLDClient();
   const clearDataButton: string = ldClient?.variation(
     featureFlags.CLEAR_DATA_BUTTON.flag,
-    featureFlags.CLEAR_DATA_BUTTON.defaultValue
+    featureFlags.CLEAR_DATA_BUTTON.defaultValue,
   );
 
   if (clearDataButton) {

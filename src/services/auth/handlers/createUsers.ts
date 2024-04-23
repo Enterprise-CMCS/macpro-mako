@@ -6,30 +6,49 @@ exports.handler = async function myHandler() {
   console.log("USER POOL ID: ");
   console.log(userPoolId);
 
-  for (let i = 0; i < users.length; i++) {
-    console.log(users[i]);
+  const userData = users.map((user) => {
     const poolData = {
       UserPoolId: userPoolId,
-      Username: users[i].username,
-      UserAttributes: users[i].attributes,
+      Username: user.username,
+      UserAttributes: user.attributes,
       MessageAction: "SUPPRESS",
     };
     const passwordData = {
       Password: process.env.bootstrapUsersPassword,
       UserPoolId: userPoolId,
-      Username: users[i].username,
+      Username: user.username,
       Permanent: true,
     };
     const attributeData = {
-      Username: users[i].username,
+      Username: user.username,
       UserPoolId: userPoolId,
-      UserAttributes: users[i].attributes,
+      UserAttributes: user.attributes,
     };
 
-    await cognitolib.createUser(poolData);
-    // Set a temp password first, and then set the password configured in SSM for consistent dev login
-    await cognitolib.setPassword(passwordData);
-    // If user exists and attributes are updated in this file, updateUserAttributes is needed to update the attributes
-    await cognitolib.updateUserAttributes(attributeData);
+    return {
+      attributeData,
+      poolData,
+      passwordData,
+    };
+  });
+
+  try {
+    await Promise.all(
+      users.map((_user, i) => {
+        return cognitolib.createUser(userData[i].poolData);
+      }),
+    );
+    await Promise.all(
+      users.map((_user, i) => {
+        return cognitolib.setPassword(userData[i].passwordData);
+      }),
+    );
+    await Promise.all(
+      users.map((_user, i) => {
+        return cognitolib.updateUserAttributes(userData[i].attributeData);
+      }),
+    );
+  } catch (err: unknown) {
+    console.log("ERROR", err);
   }
 };

@@ -58,6 +58,7 @@ params:
 functions:
   bootstrapUsers:
     handler: handlers/createUsers.handler
+    timeout: 30
     environment:
       userPoolId: !Ref CognitoUserPool
       bootstrapUsersPassword: ${self:custom.bootstrapUsersPassword}
