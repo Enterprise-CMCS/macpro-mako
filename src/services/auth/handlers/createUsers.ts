@@ -32,10 +32,6 @@ exports.handler = async function myHandler() {
     };
   });
 
-  const createUserPromises = users.map((_user, i) => {
-    return cognitolib.createUser(userData[i].poolData);
-  });
-
   const setPasswordPromises = users.map((_user, i) => {
     return cognitolib.setPassword(userData[i].passwordData);
   });
@@ -45,15 +41,21 @@ exports.handler = async function myHandler() {
   });
 
   try {
-    console.log("running first query");
-    await Promise.all(createUserPromises);
-    console.log("first query complete");
-    console.log("running second query");
-    await Promise.all(setPasswordPromises);
-    console.log("second query completed");
-    console.log("running thrid query");
-    await Promise.all(updateUserAttrsPromises);
-    console.log("third query completed");
+    await Promise.all(
+      users.map((_user, i) => {
+        return cognitolib.createUser(userData[i].poolData);
+      }),
+    );
+    await Promise.all(
+      users.map((_user, i) => {
+        return cognitolib.setPassword(userData[i].passwordData);
+      }),
+    );
+    await Promise.all(
+      users.map((_user, i) => {
+        return cognitolib.updateUserAttributes(userData[i].attributeData);
+      }),
+    );
   } catch (err: unknown) {
     console.log("ERROR", err);
   }
