@@ -599,7 +599,7 @@ export const v202402: FormSchema = {
                                                         rhf: "Input",
                                                         name: "abp1_target-criteria_name-of-region_input",
                                                         label: "Region Name",
-                                                        labelStyling:
+                                                        labelClassName:
                                                           "font-bold",
                                                         rules: {
                                                           required:
