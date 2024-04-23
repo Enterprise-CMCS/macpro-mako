@@ -32,14 +32,6 @@ exports.handler = async function myHandler() {
     };
   });
 
-  const setPasswordPromises = users.map((_user, i) => {
-    return cognitolib.setPassword(userData[i].passwordData);
-  });
-
-  const updateUserAttrsPromises = users.map((_user, i) => {
-    return cognitolib.updateUserAttributes(userData[i].attributeData);
-  });
-
   try {
     await Promise.all(
       users.map((_user, i) => {
