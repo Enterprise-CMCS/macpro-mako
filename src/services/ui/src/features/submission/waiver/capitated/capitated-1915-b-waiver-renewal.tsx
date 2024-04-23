@@ -12,8 +12,9 @@ import {
   useAlertContext,
   useNavigate,
   Route,
+  FormField,
 } from "@/components";
-import * as Content from "@/components/Form/content";
+import * as Content from "@/components/Form/old-content";
 import * as Inputs from "@/components/Inputs";
 import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
@@ -29,8 +30,8 @@ import {
   useOriginPath,
 } from "@/utils";
 import { useQuery as useQueryString } from "@/hooks";
-import { AdditionalInfoInput } from "@/features/submission/shared-components";
 import { SubmitAndCancelBtnSection } from "../shared-components";
+import { SlotAdditionalInfo } from "@/features";
 
 const formSchema = z
   .object({
@@ -277,10 +278,18 @@ export const Capitated1915BWaiverRenewalPage = () => {
               />
             ))}
           </SectionCard>
-          <AdditionalInfoInput
-            control={form.control}
-            name="additionalInformation"
-          />
+          <SectionCard title={"Additional Information"}>
+            <FormField
+              control={form.control}
+              name={"additionalInformation"}
+              render={SlotAdditionalInfo({
+                withoutHeading: true,
+                label: (
+                  <p>Add anything else you would like to share with CMS</p>
+                ),
+              })}
+            />
+          </SectionCard>
           <Content.PreSubmissionMessage />
           <SubmitAndCancelBtnSection />
         </form>

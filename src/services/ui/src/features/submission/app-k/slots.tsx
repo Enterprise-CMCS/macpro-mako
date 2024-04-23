@@ -46,6 +46,7 @@ export const SlotStateSelect = <
             ))}
           </I.SelectContent>
         </I.Select>
+        <I.FormMessage />
       </I.FormItem>
     );
   };
@@ -111,7 +112,7 @@ export const SlotWaiverId = <
       if (exists) {
         return context.setError(field.name, {
           message:
-            "According to our records, this 1915(c) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
+            "According to our records, this 1915(c) Waiver Amendment Number already exists. Please check the 1915(c) Waiver Amendment Number and try entering it again.",
         });
       }
 
@@ -135,7 +136,11 @@ export const SlotWaiverId = <
               })}
               placeholder="#####.R##.##"
               autoFocus
-              onChange={field.onChange}
+              onChange={(e) => {
+                field.onChange({
+                  target: { value: e.target.value.toUpperCase() },
+                });
+              }}
               value={field.value}
             />
             {loading && (
@@ -172,7 +177,8 @@ export const WaiverIdFieldArray = (props: any) => {
             Control Numbers (optional)
           </I.FormLabel>
           <I.FormLabel>
-            Other waiver IDs that will be associated with the APP-K
+            Other waiver IDs that will be associated with the 1915(c) Appendix K
+            Amendment
           </I.FormLabel>
         </div>
 

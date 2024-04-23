@@ -2,7 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components";
-import * as Content from "../../../../components/Form/content";
+import * as Content from "../../../../components/Form/old-content";
 import { Link, useLocation } from "react-router-dom";
 import { useGetUser } from "@/api";
 import {
@@ -13,6 +13,7 @@ import {
   formCrumbsFromPath,
   useNavigate,
   Route,
+  FormField,
 } from "@/components";
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
@@ -26,8 +27,8 @@ import { FAQ_TAB } from "@/components/Routing/consts";
 import { useAlertContext } from "@/components/Context/alertContext";
 import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
-import { AdditionalInfoInput } from "@/features/submission/shared-components";
 import { SubmitAndCancelBtnSection } from "../shared-components";
+import { SlotAdditionalInfo } from "@/features";
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
@@ -217,10 +218,18 @@ export const Capitated1915BWaiverInitialPage = () => {
               />
             ))}
           </SectionCard>
-          <AdditionalInfoInput
-            control={form.control}
-            name="additionalInformation"
-          />
+          <SectionCard title={"Additional Information"}>
+            <FormField
+              control={form.control}
+              name={"additionalInformation"}
+              render={SlotAdditionalInfo({
+                withoutHeading: true,
+                label: (
+                  <p>Add anything else you would like to share with CMS</p>
+                ),
+              })}
+            />
+          </SectionCard>
           <Content.PreSubmissionMessage />
           <SubmitAndCancelBtnSection />
         </form>

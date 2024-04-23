@@ -43,23 +43,3 @@ jobs:
 
       - name: Destroy
         run: run destroy --stage $STAGE_NAME --verify false
-
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        if: env.SLACK_WEBHOOK != '' && failure()
-        env:
-          SLACK_COLOR: ${{job.status}}
-          SLACK_ICON: https://github.com/Enterprise-CMCS.png?size=48
-          SLACK_TITLE: Failure
-          SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-
-  delete_environment:
-    needs: destroy
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: strumwolf/delete-deployment-environment@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          environment: ${{ inputs.environment || (startsWith(github.event.ref, 'snyk-') && 'snyk' || github.event.ref) }}
-          onlyRemoveDeployments: true

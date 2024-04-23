@@ -223,7 +223,7 @@ export const slotValidator =
 
     if (SLOT.rhf === "Radio") {
       const validOption = SLOT.props?.options.find(
-        (OPT) => OPT.value === data[SLOT.name]
+        (OPT) => OPT.value === data[SLOT.name],
       );
       if (!validOption) {
         ACC[SLOT.name] = `invalid option - '${data[SLOT.name]}'`;
@@ -234,7 +234,7 @@ export const slotValidator =
 
     if (SLOT.rhf === "Select") {
       const validOption = SLOT.props?.options.find(
-        (OPT) => OPT.value === data[SLOT.name]
+        (OPT) => OPT.value === data[SLOT.name],
       );
       if (!validOption) {
         ACC[SLOT.name] = `invalid option - '${data[SLOT.name]}'`;
@@ -246,14 +246,14 @@ export const slotValidator =
     if (SLOT.rhf === "Checkbox") {
       if (data[SLOT.name]?.length) {
         const validList = data[SLOT.name].every((VAL: any) =>
-          SLOT.props?.options.some((OPT) => OPT.value === VAL)
+          SLOT.props?.options.some((OPT) => OPT.value === VAL),
         );
         if (!validList) {
           ACC[SLOT.name] = `invalid option - '${data[SLOT.name]}'`;
         }
 
         const selectedOptions = SLOT.props?.options.filter((OPT) =>
-          data[SLOT.name].includes(OPT.value)
+          data[SLOT.name].includes(OPT.value),
         );
         selectedOptions?.forEach(optionValidator);
       }
