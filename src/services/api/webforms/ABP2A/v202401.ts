@@ -14,11 +14,11 @@ export const v202401: FormSchema = {
               name: "abp-2a_benefit-align-and-require_is-state-territory-aligned_select",
               label:
                 "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
-              labelStyling: "font-bold text-[0.8rem]",
+              labelClassName: "font-bold text-[0.8rem]",
               description:
                 "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -37,7 +37,7 @@ export const v202401: FormSchema = {
               description:
                 "Explain how the state has fully aligned its benefits.",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -164,7 +164,7 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2a_delivery-of-info_describe-other-input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                         },
@@ -180,7 +180,7 @@ export const v202401: FormSchema = {
               description:
                 "Provide a copy of the letter, email, or other communication.",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -195,7 +195,7 @@ export const v202401: FormSchema = {
               rules: {
                 required: "* Required",
               },
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
             },
             {
               rhf: "Textarea",
@@ -203,7 +203,7 @@ export const v202401: FormSchema = {
               descriptionAbove: true,
               description:
                 "Describe the state/territory's process for allowing individuals in the Section 1902(a)(10)(A)(i)(VIII) eligibility group who meet exemption criteria to disenroll from the ABP using Section 1937 requirements and enroll in the ABP that is the state/territory's approved Medicaid state plan.",
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -211,7 +211,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "abp-2a_delivery-of-info_state-territory-assures-it-will-document-exempt-individuals_checkgroup",
-              formItemStyling: "whitespace-pre-wrap",
+              formItemClassName: "whitespace-pre-wrap",
               rules: {
                 required: "* Required",
               },
@@ -249,7 +249,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "abp-2a_delivery-of-info_where-will-info-be-doc_checkgroup",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               description: "Where will the information be documented?",
               rules: {
                 required: "* Required",
@@ -272,7 +272,7 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2a_delivery-of-info_where-will-info-be-doc-describe-other_input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                         },
@@ -286,10 +286,10 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "abp-2a_delivery-of-info_what-docu-will-be-maintained_checkgroup",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               description:
                 "What documentation will be maintained in the eligibility file?",
-              formItemStyling: "border-b-4",
+              formItemClassName: "border-b-4",
               rules: {
                 required: "* Required",
               },
@@ -314,7 +314,7 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2a_delivery-of-info_describe-other_input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                         },
