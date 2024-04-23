@@ -45,9 +45,15 @@ exports.handler = async function myHandler() {
   });
 
   try {
+    console.log("running first query");
     await Promise.all(createUserPromises);
+    console.log("first query complete");
+    console.log("running second query");
     await Promise.all(setPasswordPromises);
+    console.log("second query completed");
+    console.log("running thrid query");
     await Promise.all(updateUserAttrsPromises);
+    console.log("third query completed");
   } catch (err: unknown) {
     console.log("ERROR", err);
   }
