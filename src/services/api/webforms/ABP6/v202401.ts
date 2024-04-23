@@ -164,6 +164,7 @@ export const v202401: FormSchema = {
               label:
                 "Does the benchmark benefit package that is the basis for comparison of the benchmark-equivalent benefit package include vision services?",
               props: {
+                className: "w-[150px]",
                 options: [
                   {
                     value: "yes",
@@ -171,7 +172,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "no",
-                    label: "no",
+                    label: "No",
                   },
                 ],
               },
@@ -209,6 +210,7 @@ export const v202401: FormSchema = {
               label:
                 "Does the benchmark benefit package that is the basis for comparison of the benchmark-equivalent benefit package include hearing services?",
               props: {
+                className: "w-[150px]",
                 options: [
                   {
                     value: "yes",
@@ -216,7 +218,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "no",
-                    label: "no",
+                    label: "No",
                   },
                 ],
               },
