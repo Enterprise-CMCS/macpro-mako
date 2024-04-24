@@ -9,7 +9,7 @@ import {
   RequiredIndicator,
   Upload,
 } from "@/components";
-import { attachmentSectionMap } from "shared-types";
+import { attachmentTitleMap } from "shared-types";
 import type { AttachmentKey } from "shared-types";
 
 type AttachmentType = {
@@ -39,7 +39,7 @@ export const AttachmentsSection = ({
           name={`attachments.${String(name)}`}
           render={({ field }) => (
             <FormItem key={String(name) + "-render"} className="my-4 space-y-2">
-              <FormLabel>{attachmentSectionMap[name]}</FormLabel>{" "}
+              <FormLabel>{attachmentTitleMap[name] ?? name}</FormLabel>{" "}
               {required && <RequiredIndicator />}
               <Upload files={field?.value ?? []} setFiles={field.onChange} />
               <FormMessage />

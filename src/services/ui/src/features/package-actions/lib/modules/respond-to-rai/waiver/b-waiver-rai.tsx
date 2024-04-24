@@ -30,7 +30,7 @@ export const bWaiverRaiFields: ReactElement[] = [
     key={"field-attachments"}
     attachments={[
       {
-        name: "raiResponseLetter",
+        name: "raiResponseLetter1915b",
         required: true,
       },
       { required: false, name: "other" },

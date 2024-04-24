@@ -5,6 +5,7 @@ import {
   ReactQueryApiError,
   Action,
   attachmentTitleMap,
+  AttachmentKey,
 } from "shared-types";
 import { buildActionUrl, SubmissionServiceEndpoint } from "@/utils";
 import { OneMacUser } from "@/api";
@@ -142,7 +143,6 @@ export const buildAttachmentKeyValueArr = (
 export const urlsToRecipes = (
   urls: PreSignedURL[],
   attachments: AttachmentKeyValue[],
-  authority: Authority,
 ): UploadRecipe[] =>
   urls.map((obj, idx) => ({
     ...obj, // Spreading the presigned url
@@ -150,7 +150,7 @@ export const urlsToRecipes = (
     // Add your attachments object key and file label value to the attachmentTitleMap
     // for this transform to work. Else the title will just be the object key.
     title:
-      attachmentTitleMap(authority)?.[attachments[idx].attachmentKey] ||
+      attachmentTitleMap[attachments[idx].attachmentKey as AttachmentKey] ||
       attachments[idx].attachmentKey,
     name: attachments[idx].file.name,
   }));
@@ -181,8 +181,6 @@ export const submit = async <T extends Record<string, unknown>>({
     const uploadRecipes: UploadRecipe[] = urlsToRecipes(
       preSignedURLs,
       attachments,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      authority!,
     );
     // Upload attachments
     await Promise.all(
