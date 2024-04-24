@@ -46,8 +46,3 @@ export const useGetUser = () =>
     queryKey: ["user"],
     queryFn: () => getUser(),
   });
-
-export const getLoggedInUser = () => {
-  const currentOneMacUser = queryClient.getQueryData(["user"]) as OneMacUser;
-  return currentOneMacUser.user;
-};

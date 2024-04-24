@@ -1,11 +1,9 @@
-import { useGetItem } from "@/api";
+import { useGetItemCache } from "@/api";
 import { Link } from "@/components";
 import { mapActionLabel } from "@/utils";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { getLoggedInUser } from "@/api";
-import { getAvailableActions } from "shared-utils";
+import { useLocation } from "react-router-dom";
 
 import type { opensearch } from "shared-types";
 
@@ -14,16 +12,10 @@ export const PackageActionsCard: FC<{
   data: opensearch.main.Document;
 }> = ({ id, data }) => {
   const location = useLocation();
-  const item = useGetItem(id);
 
-  const authority = item.data?._source.authority;
+  const { data: item, actions } = useGetItemCache(id);
 
-  // used cache to get logged in user
-  const user = getLoggedInUser();
-  // this shouldn't happen, but just in case
-  if (!user) return <Navigate to="/dashboard" />;
-  // use package check instead of making API call
-  const actions = getAvailableActions(user, data);
+  const authority = item.authority;
 
   return (
     <DetailCardWrapper title={"Package Actions"}>
