@@ -13,6 +13,7 @@ describe("getForm", () => {
       expect(API.post).toHaveBeenCalledWith("os", "/forms", {
         body: { formId: "test-id", formVersion: undefined },
       });
+      expect(API.post).not.toThrowError();
     });
 
     it("with a form version", async () => {
@@ -20,6 +21,7 @@ describe("getForm", () => {
       expect(API.post).toHaveBeenCalledWith("os", "/forms", {
         body: { formId: "test-id", formVersion: "test-version" },
       });
+      expect(API.post).not.toThrowError();
     });
   });
 });
@@ -32,5 +34,6 @@ describe("getAllForms", () => {
   it("makes an AWS Amplify request for all forms", async () => {
     await unit.getAllForms();
     expect(API.get).toHaveBeenCalledWith("os", "/allForms", {});
+    expect(API.get).not.toThrowError();
   });
 });
