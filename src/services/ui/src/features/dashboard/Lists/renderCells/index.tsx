@@ -49,44 +49,24 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
           </POP.PopoverTrigger>
           <POP.PopoverContent>
             <div className="flex flex-col">
-              {actions.map((action, idx) => {
-                if (
-                  data.authority === Authority["1915b"] ||
-                  action == Action.COMPLETE_INTAKE
-                ) {
-                  return (
-                    <TypedLink
-                      state={{ from: `${location.pathname}${location.search}` }}
-                      path="/action/:authority/:id/:type"
-                      key={`${idx}-${action}`}
-                      params={{
-                        id: data.id,
-                        type: action,
-                        authority: data.authority,
-                      }}
-                      className={cn(
-                        "text-blue-500",
-                        "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-                      )}
-                    >
-                      {mapActionLabel(action)}
-                    </TypedLink>
-                  );
-                }
-                return (
-                  <Link
-                    className={cn(
-                      "text-blue-500",
-                      "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-                    )}
-                    to={`/action/${data.id}/${action}?origin=actionsDashboard`}
-                    key={`${idx}-${action}`}
-                    aria-label={action}
-                  >
-                    {mapActionLabel(action)}
-                  </Link>
-                );
-              })}
+              {actions.map((action, idx) => (
+                <TypedLink
+                  state={{ from: `${location.pathname}${location.search}` }}
+                  path="/action/:authority/:id/:type"
+                  key={`${idx}-${action}`}
+                  params={{
+                    id: data.id,
+                    type: action,
+                    authority: data.authority,
+                  }}
+                  className={cn(
+                    "text-blue-500",
+                    "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+                  )}
+                >
+                  {mapActionLabel(action)}
+                </TypedLink>
+              ))}
             </div>
           </POP.PopoverContent>
         </POP.Popover>
