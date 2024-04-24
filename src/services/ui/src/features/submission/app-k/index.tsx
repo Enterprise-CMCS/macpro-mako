@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 
-import { SlotAdditionalInfo, SlotAttachments } from "@/features/actions";
 import * as I from "@/components/Inputs";
 import * as C from "@/components";
 import { useForm } from "react-hook-form";
@@ -16,6 +15,7 @@ import { useEffect } from "react";
 import * as Content from "@/components";
 import { useOriginPath } from "@/utils";
 import { Link } from "react-router-dom";
+import { SlotAdditionalInfo, SlotAttachments } from "@/features";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();

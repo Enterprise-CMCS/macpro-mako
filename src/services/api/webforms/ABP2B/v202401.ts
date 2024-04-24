@@ -16,7 +16,7 @@ export const v202401: FormSchema = {
               descriptionAbove: true,
               description:
                 "When offering voluntary enrollment in an ABP (benchmark or benchmark-equivalent), prior to enrollment, the state/territory will:",
-              descriptionStyling: "font-bold text-black text-base",
+              descriptionClassName: "font-bold text-black text-base",
               label:
                 "These assurances must be made by the state/territory if the Alternative Benefit Plan (ABP) population includes any eligibility groups other than or in addition to the “adult” eligibility group.",
               rules: { required: "* Required" },
@@ -113,7 +113,7 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2b_delivery-of-info_describe-other-input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                         },
@@ -129,7 +129,7 @@ export const v202401: FormSchema = {
               description:
                 "Provide a copy of the letter, email, or other communication.",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -144,7 +144,7 @@ export const v202401: FormSchema = {
               rules: {
                 required: "* Required",
               },
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
             },
             {
               rhf: "Textarea",
@@ -152,7 +152,7 @@ export const v202401: FormSchema = {
               descriptionAbove: true,
               description:
                 "What is the state/territory's process for allowing voluntarily enrolled individuals to disenroll?",
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -160,7 +160,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "abp-2b_delivery-of-info_state-territory-assures-it-will-document-exempt-individuals_checkgroup",
-              formItemStyling: "whitespace-pre-wrap",
+              formItemClassName: "whitespace-pre-wrap",
               rules: {
                 required: "* Required",
               },
@@ -198,7 +198,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "abp-2b_delivery-of-info_where-will-info-be-doc_checkgroup",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               description: "Where will the information be documented?",
               rules: {
                 required: "* Required",
@@ -221,7 +221,7 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2b_delivery-of-info_where-will-info-be-doc-describe-other_input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                         },
@@ -235,10 +235,10 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "abp-2b_delivery-of-info_what-docu-will-be-maintained_checkgroup",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               description:
                 "What documentation will be maintained in the eligibility file?",
-              formItemStyling: "border-b-4",
+              formItemClassName: "border-b-4",
               rules: {
                 required: "* Required",
               },
@@ -263,7 +263,7 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2b_delivery-of-info_describe-other_input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                         },
@@ -302,7 +302,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Textarea",
-              name: "abp-2b_additional_information_textarea",
+              name: "abp-2b_additional-info_other-info-about-enroll-assurance_textarea",
             },
           ],
         },
