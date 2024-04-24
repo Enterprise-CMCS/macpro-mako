@@ -66,7 +66,6 @@ describe("helpers", () => {
       const res = unit.urlsToRecipes(
         [{ url: "/test", key: "test", bucket: "test-bucket" }],
         [{ attachmentKey: "test", file: testFile }],
-        Authority.MED_SPA
       );
       expect(res).toStrictEqual([
         {
@@ -102,7 +101,7 @@ describe("helpers", () => {
           mockGeorge,
           "/default" as SubmissionServiceEndpoint,
           "MEDICAID",
-          mockUploadRecipes(3)
+          mockUploadRecipes(3),
         );
       expect(payload.authority).toEqual("MEDICAID");
       expect(payload.origin).toEqual("micro");
@@ -118,7 +117,7 @@ describe("helpers", () => {
         mockGeorge,
         "/submit",
         "MEDICAID",
-        mockUploadRecipes(3)
+        mockUploadRecipes(3),
       );
     expect(payload.authority).toEqual("MEDICAID");
     expect(payload.origin).toEqual("micro");
