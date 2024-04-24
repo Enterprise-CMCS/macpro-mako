@@ -1,4 +1,4 @@
-import { Route, useAlertContext } from "@/components";
+import { Route, urlEmbedQuery, useAlertContext } from "@/components";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import {
@@ -66,9 +66,12 @@ export const useIntakePackage = () => {
   };
 };
 
+export const isNewSubmission = () =>
+  window.location.href.includes("new-submission");
+
 export const useDisplaySubmissionAlert = (header: string, body: string) => {
   const alert = useAlertContext();
-  const data = useActionData() as ActionFunctionReturnType;
+  const data = useActionData() as ActionFunctionReturnType & { isTe?: boolean };
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -83,6 +86,14 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
       if (location.pathname?.endsWith("/update-id")) {
         alert.setBannerDisplayOn("/dashboard");
         navigate("/dashboard");
+      } else if (data.isTe) {
+        if (isNewSubmission() || location.state?.from?.includes("dashboard")) {
+          alert.setBannerDisplayOn("/dashboard");
+          navigate(urlEmbedQuery("/dashboard", { tab: "waivers" }));
+        } else {
+          alert.setBannerDisplayOn("/details");
+          navigate(location?.state?.from ?? "/dashboard");
+        }
       } else {
         alert.setBannerDisplayOn(
           location.state?.from?.split("?")[0] ?? "/dashboard",

@@ -1,12 +1,26 @@
-import { BreadCrumbConfig, Route } from "@/components";
-import { mapActionLabel, mapSubmissionCrumb } from "@/utils";
+import { BreadCrumbConfig, Route, urlEmbedQuery } from "@/components";
+import { authorityById, mapActionLabel, mapSubmissionCrumb } from "@/utils";
 import { Action } from "shared-types";
 
-export const dashboardCrumb: BreadCrumbConfig = {
-  displayText: "Dashboard",
-  order: 1,
-  default: true,
-  to: "/dashboard",
+export const dashboardCrumb = (id?: string): BreadCrumbConfig => {
+  if (id) {
+    const authority = authorityById(id);
+    const newPath = urlEmbedQuery("/dashboard", {
+      tab: authority === "" ? "spas" : authority,
+    });
+    return {
+      displayText: "Dashboard",
+      order: 1,
+      default: true,
+      to: newPath,
+    };
+  }
+  return {
+    displayText: "Dashboard",
+    order: 1,
+    default: true,
+    to: "/dashboard",
+  };
 };
 
 export const detailsCrumb = (id: string): BreadCrumbConfig => ({
@@ -23,7 +37,7 @@ export const actionCrumb = (action: Action, id: string): BreadCrumbConfig => ({
 
 export const submissionFormCrumb = (
   path: Route,
-  idx: number
+  idx: number,
 ): BreadCrumbConfig => ({
   displayText: mapSubmissionCrumb(path),
   order: idx,

@@ -5,6 +5,7 @@ import { getOsData, useOsSearch, useGetUser } from "@/api";
 import { useLzUrl } from "@/hooks";
 import { OsTab } from "./types";
 import { createSearchFilterable } from "../utils";
+import { useLocation } from "react-router-dom";
 
 export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
   spas: {
@@ -137,6 +138,10 @@ export const useOsAggregate = () => {
 };
 export type OsUrlState = opensearch.main.State & { tab: OsTab };
 export const useOsUrl = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const queryObject = Object.fromEntries(queryParams.entries());
+
   return useLzUrl<OsUrlState>({
     key: "os",
     initValue: {
@@ -145,6 +150,7 @@ export const useOsUrl = () => {
       tab: "spas",
       pagination: { number: 0, size: 25 },
       sort: { field: "submissionDate", order: "desc" },
+      ...queryObject,
     },
   });
 };
