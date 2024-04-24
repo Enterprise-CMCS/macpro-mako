@@ -14,14 +14,17 @@ import { useNavigate } from "@/components/Routing";
 import { useEffect } from "react";
 import * as Content from "@/components";
 import { useOriginPath, zAppkWaiverNumberSchema } from "@/utils";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
+import { DataPoller } from "@/utils/DataPoller";
+import { getItem } from "@/api";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
   const crumbs = C.useLocationCrumbs();
   const { data: user } = useGetUser();
   const modal = C.useModalContext();
+  const location = useLocation();
   const originPath = useOriginPath();
   const form = useForm<SchemaForm>({
     resolver: zodResolver(FORM),
@@ -41,14 +44,31 @@ export const AppKSubmissionForm = () => {
         user,
       },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
           alert.setContent({
             header: "Package submitted",
             body: "The 1915(c) Appendix K Amendment Request has been submitted.",
           });
           alert.setBannerShow(true);
           alert.setBannerDisplayOn("/dashboard");
-          nav(originPath ? { path: originPath } : { path: "/dashboard" });
+          await new DataPoller({
+            interval: 1000,
+            pollAttempts: 20,
+            fetcher: () => getItem(`${draft.state}-${draft.parentWaiver}`),
+            checkStatus: (data) => {
+              return (
+                data._source.authority === Authority["1915c"] &&
+                data._source.actionType === "Amend"
+              );
+            },
+          }).startPollingData();
+
+          nav({
+            path: "/dashboard",
+            query: {
+              tab: "waivers",
+            },
+          });
         },
         onError: (err) => console.error(err),
       },
