@@ -18,7 +18,7 @@ import {
 } from "@/components";
 import * as Inputs from "@/components/Inputs";
 import * as Content from "@/components";
-import { useGetUser, submit } from "@/api";
+import { useGetUser, submit, getItem } from "@/api";
 import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
@@ -32,6 +32,7 @@ import {
 
 import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
+import { DataPoller } from "@/utils/DataPoller";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -111,6 +112,17 @@ export const ChipSpaFormPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
+
+      const poller = new DataPoller({
+        interval: 1000,
+        pollAttempts: 10,
+        fetcher: () => getItem(formData.id),
+        checkStatus: (data) => {
+          return !!data;
+        },
+      });
+      await poller.startPollingData();
+
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
       console.error(e);

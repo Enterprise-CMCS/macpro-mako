@@ -16,7 +16,7 @@ import {
 } from "@/components";
 import * as Content from "@/components/Form/old-content";
 import * as Inputs from "@/components/Inputs";
-import { useGetUser, submit } from "@/api";
+import { useGetUser, submit, getItem } from "@/api";
 import { Authority } from "shared-types";
 import {
   zAdditionalInfo,
@@ -32,6 +32,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
+import { DataPoller } from "@/utils/DataPoller";
 
 const formSchema = z
   .object({
@@ -131,6 +132,17 @@ export const Capitated1915BWaiverRenewalPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
+
+      const poller = new DataPoller({
+        interval: 1000,
+        pollAttempts: 10,
+        fetcher: () => getItem(formData.id),
+        checkStatus: (data) => {
+          return data._source.actionType === "Renew";
+        },
+      });
+      await poller.startPollingData();
+
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
       console.error(e);

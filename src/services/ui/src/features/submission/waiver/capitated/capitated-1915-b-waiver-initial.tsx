@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components";
 import * as Content from "../../../../components/Form/old-content";
 import { Link, useLocation } from "react-router-dom";
-import { useGetUser } from "@/api";
+import { getItem, useGetUser } from "@/api";
 import {
   BreadCrumbs,
   SimplePageContainer,
@@ -29,6 +29,7 @@ import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
+import { DataPoller } from "@/utils/DataPoller";
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
@@ -102,6 +103,17 @@ export const Capitated1915BWaiverInitialPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
+
+      const poller = new DataPoller({
+        interval: 1000,
+        pollAttempts: 10,
+        fetcher: () => getItem(formData.id),
+        checkStatus: (data) => {
+          return data._source.actionType === "New";
+        },
+      });
+      await poller.startPollingData();
+
       navigate(originPath ? { path: originPath } : { path: "/dashboard" });
     } catch (e) {
       console.error(e);

@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 export type Options<TFetcherReturn> = {
   fetcher: () => TFetcherReturn;
   checkStatus: (data: Awaited<TFetcherReturn>) => boolean;
