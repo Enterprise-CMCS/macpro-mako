@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { API } from "aws-amplify";
-import { mockForm } from "./mocks";
 import * as unit from "./useGetForm";
 
 describe("getForm", () => {
@@ -8,33 +7,30 @@ describe("getForm", () => {
     API.post = vi.fn();
   });
 
-  it("makes an AWS Amplify request without a form version", async () => {
-    await unit.getForm("test-id");
-    expect(API.post).toHaveBeenCalledWith("os", "/forms", {
-      body: { formId: "test-id", formVersion: undefined },
+  describe("makes an AWS Amplify request", () => {
+    it("without a form version", async () => {
+      await unit.getForm("test-id");
+      expect(API.post).toHaveBeenCalledWith("os", "/forms", {
+        body: { formId: "test-id", formVersion: undefined },
+      });
     });
-  });
 
-  it("makes an AWS Amplify request with a form version", async () => {
-    await unit.getForm("test-id", "test-version");
-    expect(API.post).toHaveBeenCalledWith("os", "/forms", {
-      body: { formId: "test-id", formVersion: "test-version" },
+    it("with a form version", async () => {
+      await unit.getForm("test-id", "test-version");
+      expect(API.post).toHaveBeenCalledWith("os", "/forms", {
+        body: { formId: "test-id", formVersion: "test-version" },
+      });
     });
   });
 });
 
-// describe("useGetForm", () => {
-// it("makes an AWS Amplify request without a form version", () => {
-//   API.post = vi.fn();
-//   unit.useGetForm("test-id");
-//   expect(API.post).toHaveBeenCalledWith("os", "/forms", {
-//     body: { formId: "test-id", formVersion: undefined },
-//   });
-// });
-// it("makes an AWS Amplify request with a form version", async () => {
-//   await unit.useGetForm("test-id", "test-version");
-//   expect(API.post).toHaveBeenCalledWith("os", "/forms", {
-//     body: { formId: "test-id", formVersion: "test-version" },
-//   });
-// });
-// });
+describe("getAllForms", () => {
+  beforeEach(() => {
+    API.get = vi.fn();
+  });
+
+  it("makes an AWS Amplify request for all forms", async () => {
+    await unit.getAllForms();
+    expect(API.get).toHaveBeenCalledWith("os", "/allForms", {});
+  });
+});
