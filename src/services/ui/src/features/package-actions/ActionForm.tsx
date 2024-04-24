@@ -20,11 +20,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "@/components";
 import { getStatusFor } from "./lib/correctStatusSwitch";
+import { useLocation } from "react-router-dom";
 
 export const ActionForm = ({ setup }: { setup: FormSetup }) => {
   const { id, type, authority } = useParams("/action/:authority/:id/:type");
   const navigate = useNavigate();
   const origin = useOriginPath();
+  const location = useLocation();
   const alert = useAlertContext();
   const modal = useModalContext();
   const { data: user } = useGetUser();
@@ -51,6 +53,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
         navigate,
         originRoute: origin,
         statusToCheck: getStatusFor(type),
+        locationState: location.state,
       }),
   );
   useEffect(() => {

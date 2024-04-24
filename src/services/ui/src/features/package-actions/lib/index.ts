@@ -33,6 +33,7 @@ export const submitActionForm = async ({
   navigate,
   originRoute,
   statusToCheck,
+  locationState,
 }: {
   data: FieldValues;
   id: string;
@@ -43,6 +44,7 @@ export const submitActionForm = async ({
   alert: ReturnType<typeof useAlertContext>;
   navigate: ReturnType<typeof useNavigate>;
   statusToCheck: ReturnType<typeof getStatusFor>;
+  locationState: { from?: string };
 }) => {
   const path = originRoute ? originRoute : "/dashboard";
   const actionsThatUseSubmitEndpoint: Action[] = [Action.TEMP_EXTENSION];
@@ -60,7 +62,7 @@ export const submitActionForm = async ({
     alert.setBannerDisplayOn(path);
     const poller = new DataPoller({
       interval: 1000,
-      pollAttempts: 10,
+      pollAttempts: 20,
       checkStatus: statusToCheck,
       fetcher: () => getItem(id),
     });
@@ -68,7 +70,7 @@ export const submitActionForm = async ({
       await poller.startPollingData();
 
     console.log("poller results", { correctStatusFound, maxAttemptsReached });
-    navigate({ path });
+    navigate({ path: (locationState?.from ?? "/dashboard") as Route });
   } catch (e: unknown) {
     console.error(e);
     alert.setContent({

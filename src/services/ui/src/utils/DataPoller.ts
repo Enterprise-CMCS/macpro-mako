@@ -19,31 +19,29 @@ export class DataPoller<TFetcherReturn> {
     return new Promise<{
       maxAttemptsReached: boolean;
       correctStatusFound: boolean;
-    }>((resolve, reject) => {
+    }>((resolve, _reject) => {
       let timesPolled = 0;
 
       const intervalId = setInterval(async () => {
+        console.log(timesPolled);
         timesPolled++;
-        try {
-          if (timesPolled <= this.options.pollAttempts) {
-            const data = await this.options.fetcher();
-            const correctStatus = this.options.checkStatus(data);
+        if (timesPolled <= this.options.pollAttempts) {
+          const data = await this.options.fetcher();
+          const correctStatus = this.options.checkStatus(data);
 
-            if (correctStatus) {
-              resolve({
-                correctStatusFound: true,
-                maxAttemptsReached: false,
-              });
-            }
-          } else {
+          if (correctStatus) {
             resolve({
-              correctStatusFound: false,
-              maxAttemptsReached: true,
+              correctStatusFound: true,
+              maxAttemptsReached: false,
             });
             clearInterval(intervalId);
           }
-        } catch (err: unknown) {
-          reject(err);
+        } else {
+          resolve({
+            correctStatusFound: false,
+            maxAttemptsReached: true,
+          });
+          clearInterval(intervalId);
         }
       }, this.options.interval);
     });

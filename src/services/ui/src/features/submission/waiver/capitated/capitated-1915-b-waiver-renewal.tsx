@@ -135,7 +135,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
 
       const poller = new DataPoller({
         interval: 1000,
-        pollAttempts: 10,
+        pollAttempts: 20,
         fetcher: () => getItem(formData.id),
         checkStatus: (data) => {
           return data._source.actionType === "Renew";
