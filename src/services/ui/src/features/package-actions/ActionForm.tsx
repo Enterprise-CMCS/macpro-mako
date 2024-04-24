@@ -19,6 +19,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "@/components";
+import { getStatusFor } from "./lib/correctStatusSwitch";
 
 export const ActionForm = ({ setup }: { setup: FormSetup }) => {
   const { id, type, authority } = useParams("/action/:authority/:id/:type");
@@ -36,6 +37,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
     resolver: zodResolver(setup.schema),
     mode: "onChange",
   });
+
   // Submission Handler
   const handler = form.handleSubmit(
     async (data) =>
@@ -48,6 +50,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
         alert,
         navigate,
         originRoute: origin,
+        statusToCheck: getStatusFor(type),
       }),
   );
   useEffect(() => {

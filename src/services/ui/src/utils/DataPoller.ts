@@ -1,15 +1,15 @@
-export type Options = {
-  fetcher: () => Promise<unknown>;
-  checkStatus: (data: any) => boolean;
+export type Options<TFetcherReturn> = {
+  fetcher: () => TFetcherReturn;
+  checkStatus: (data: Awaited<TFetcherReturn>) => boolean;
   interval: number;
   pollAttempts: number;
 };
 
-export class DataPoller {
-  private options: Options;
+export class DataPoller<TFetcherReturn> {
+  private options: Options<TFetcherReturn>;
   isCorrectStatus = false;
 
-  constructor(options: Options) {
+  constructor(options: Options<TFetcherReturn>) {
     this.options = options;
   }
 
