@@ -66,10 +66,9 @@ export const submitActionForm = async ({
       checkStatus: statusToCheck,
       fetcher: () => getItem(id),
     });
-    const { correctStatusFound, maxAttemptsReached } =
-      await poller.startPollingData();
 
-    console.log("poller results", { correctStatusFound, maxAttemptsReached });
+    await poller.startPollingData();
+
     navigate({ path: (locationState?.from ?? "/dashboard") as Route });
   } catch (e: unknown) {
     console.error(e);

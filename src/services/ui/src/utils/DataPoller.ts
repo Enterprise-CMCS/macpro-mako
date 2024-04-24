@@ -23,7 +23,6 @@ export class DataPoller<TFetcherReturn> {
       let timesPolled = 0;
 
       const intervalId = setInterval(async () => {
-        console.log(timesPolled);
         timesPolled++;
         if (timesPolled <= this.options.pollAttempts) {
           const data = await this.options.fetcher();
