@@ -4,7 +4,6 @@ import {
   Authority,
   ReactQueryApiError,
   Action,
-  attachmentTitleMap,
   AttachmentKey,
 } from "shared-types";
 import { buildActionUrl, SubmissionServiceEndpoint } from "@/utils";
@@ -30,10 +29,10 @@ type PreSignedURL = {
 };
 export type UploadRecipe = PreSignedURL & {
   data: File;
-  title: string;
+  title: AttachmentKey;
   name: string;
 };
-type AttachmentKeyValue = { attachmentKey: string; file: File };
+type AttachmentKeyValue = { attachmentKey: AttachmentKey; file: File };
 
 /** Pass in an array of UploadRecipes and get a back-end compatible object
  * to store attachment data */
@@ -134,7 +133,7 @@ export const buildAttachmentKeyValueArr = (
     .filter(([, val]) => val !== undefined && (val as File[]).length)
     .map(([key, value]) => {
       return (value as File[]).map((file) => ({
-        attachmentKey: key,
+        attachmentKey: key as AttachmentKey,
         file: file,
       }));
     })
@@ -149,9 +148,7 @@ export const urlsToRecipes = (
     data: attachments[idx].file, // The attachment file object
     // Add your attachments object key and file label value to the attachmentTitleMap
     // for this transform to work. Else the title will just be the object key.
-    title:
-      attachmentTitleMap[attachments[idx].attachmentKey as AttachmentKey] ||
-      attachments[idx].attachmentKey,
+    title: attachments[idx].attachmentKey,
     name: attachments[idx].file.name,
   }));
 
