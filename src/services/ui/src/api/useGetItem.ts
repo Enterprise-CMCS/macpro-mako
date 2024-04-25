@@ -5,8 +5,6 @@ import {
 } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { opensearch, ReactQueryApiError, SEATOOL_STATUS } from "shared-types";
-import { useGetUser } from "./useGetUser";
-import { getAvailableActions } from "shared-utils";
 
 export const getItem = async (
   id: string,
@@ -46,21 +44,15 @@ export const useGetItem = (
 
 export const useGetItemCache = (id: string) => {
   const queryClient = useQueryClient();
-  const user = useGetUser();
   const data = (() => {
     const data = queryClient.getQueryCache().find(["record", id])?.state
       .data as opensearch.main.ItemResult;
     return data?._source;
-  })();
-  // const actions = getAvailableActions(user.data?.user, data)
-  const actions = (() => {
-    if (!user.data?.user) return [];
-    return getAvailableActions(user.data?.user, data);
   })();
 
   const refetch = () => {
     queryClient.refetchQueries(["record", id]);
   };
 
-  return { data, refetch, actions };
+  return { data, refetch };
 };

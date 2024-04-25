@@ -1,21 +1,19 @@
-import { useGetItemCache } from "@/api";
 import { Link } from "@/components";
 import { mapActionLabel } from "@/utils";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
 import { useLocation } from "react-router-dom";
-
 import type { opensearch } from "shared-types";
+import { useGetUser } from "@/api";
+import { getAvailableActions } from "shared-utils";
 
 export const PackageActionsCard: FC<{
   id: string;
   data: opensearch.main.Document;
 }> = ({ id, data }) => {
   const location = useLocation();
-
-  const { data: item, actions } = useGetItemCache(id);
-
-  const authority = item.authority;
+  const { data: user } = useGetUser();
+  const actions = getAvailableActions(user!.user!, data);
 
   return (
     <DetailCardWrapper title={"Package Actions"}>
@@ -31,7 +29,7 @@ export const PackageActionsCard: FC<{
                 state={{ from: `${location.pathname}${location.search}` }}
                 path="/action/:authority/:id/:type"
                 key={`${idx}-${type}`}
-                params={{ id, type, authority: authority }}
+                params={{ id, type, authority: data.authority }}
                 className="text-sky-700 font-semibold text-lg"
               >
                 <li>{mapActionLabel(type)}</li>
