@@ -22,8 +22,7 @@ export const defaultWithdrawRaiFields: ReactElement[] = [
   </ActionFormDescription>,
   <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
-    faqAttLink="/faq/chip-spa-rai-attachments"
-    fileFormatLink="/faq/acceptable-file-formats"
+    faqAttLink="/faq"
     key={"field-attachments"}
     attachments={[
       {

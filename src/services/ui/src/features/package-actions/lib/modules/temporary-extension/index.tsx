@@ -78,8 +78,7 @@ export const defaultTempExtFields: ReactElement[] = [
   <TEPackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     key={"field-attachments"}
-    faqAttLink="temporary-extensions-b-attachments"
-    fileFormatLink="waiver-extension-id-format"
+    faqAttLink="/faq/temporary-extensions-b-attachments"
     attachments={[
       {
         name: "waiverExtensionRequest",

@@ -97,6 +97,7 @@ export const TemporaryExtension = () => {
       <form onSubmit={handleSubmit}>
         <TEPackageSection key={"content-packagedetails"} />
         <AttachmentsSection
+          faqAttLink="/faq/1915(b)-waiver-extension-attachments"
           key={"field-attachments"}
           attachments={[
             {

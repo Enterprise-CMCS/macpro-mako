@@ -42,7 +42,6 @@ export const defaultWithdrawPackageFields: ReactElement[] = [
   </ActionFormDescription>,
   <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
-    fileFormatLink="/faq/acceptable-file-formats"
     faqAttLink="/faq"
     key={"field-attachments"}
     instructions={

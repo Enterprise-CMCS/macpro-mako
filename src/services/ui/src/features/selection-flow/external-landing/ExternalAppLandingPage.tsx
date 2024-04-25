@@ -6,6 +6,7 @@ import {
   BreadCrumbs,
   FAQ_TAB,
   optionCrumbsFromPath,
+  Route,
 } from "@/components";
 import { SimplePageTitle } from "@/features";
 
@@ -31,7 +32,6 @@ const FAQHelperText = () => (
   <span className="max-w-xl">
     <i>
       For additional information on where to submit, refer to the{" "}
-      {/* TODO: Get desired FAQ `target` from Wale */}
       <Link
         to="/faq/crosswalk-system"
         target={FAQ_TAB}

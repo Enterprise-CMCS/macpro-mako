@@ -8,7 +8,6 @@ import {
   FormMessage,
   RequiredIndicator,
   Upload,
-  useParams,
 } from "@/components";
 
 export const AttachmentsSection = ({
@@ -21,7 +20,6 @@ export const AttachmentsSection = ({
   faqAttLink: string;
 }) => {
   const form = useFormContext();
-  const { authority, type } = useParams("/action/:authority/:id/:type");
   return (
     <section className={"mb-8"}>
       <h2 className="font-bold text-2xl font-sans mb-2">Attachments</h2>
