@@ -11,7 +11,7 @@
   "dependencies": {
     "@chakra-ui/react": "^2.3.6",
     "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11",
+    "@emotion/styled": "^11.11.5",
     "@octokit/auth-action": "^2.0.2",
     "@octokit/types": "^8.0.0",
     "d3-color": "3.1.0",
@@ -19,7 +19,7 @@
     "framer-motion": "^6",
     "jszip": "^3.10.1",
     "next": "^13.5.4",
-    "octokit": "^3.1.2",
+    "octokit": "^3.2.0",
     "react": "18.2.0",
     "react-aws-icons": "^1.2.1",
     "react-dom": "18.2.0",
