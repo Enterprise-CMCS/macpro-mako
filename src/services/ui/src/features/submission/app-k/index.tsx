@@ -11,7 +11,7 @@ import { useGetUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as Content from "@/components";
 import { useOriginPath, zAppkWaiverNumberSchema } from "@/utils";
 import { Link, useLocation } from "react-router-dom";
@@ -26,6 +26,7 @@ export const AppKSubmissionForm = () => {
   const modal = C.useModalContext();
   const location = useLocation();
   const originPath = useOriginPath();
+  const [isDataPolling, setIsDataPolling] = useState(false);
   const form = useForm<SchemaForm>({
     resolver: zodResolver(FORM),
   });
@@ -51,6 +52,7 @@ export const AppKSubmissionForm = () => {
           });
           alert.setBannerShow(true);
           alert.setBannerDisplayOn("/dashboard");
+          setIsDataPolling(true);
           await new DataPoller({
             interval: 1000,
             pollAttempts: 20,
@@ -62,6 +64,7 @@ export const AppKSubmissionForm = () => {
               );
             },
           }).startPollingData();
+          setIsDataPolling(false);
 
           nav({
             path: "/dashboard",
@@ -90,7 +93,7 @@ export const AppKSubmissionForm = () => {
 
   return (
     <C.SimplePageContainer>
-      {submission.isLoading && <C.LoadingSpinner />}
+      {(submission.isLoading || isDataPolling) && <C.LoadingSpinner />}
       <C.BreadCrumbs options={crumbs} />
       <I.Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">

@@ -5,7 +5,7 @@
 import { unflatten } from "flat";
 import { defaultTempExtSchema } from ".";
 import { getItem, getUser, submit } from "@/api";
-import { Authority } from "shared-types";
+import { Action, Authority } from "shared-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -26,11 +26,13 @@ import { useParams } from "react-router-dom";
 import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
 import {
   ActionFunction,
+  isNewSubmission,
   useDisplaySubmissionAlert,
   useSubmitForm,
 } from "@/features/package-actions/legacy-shared-components";
 import { Info } from "lucide-react";
 import { DataPoller } from "@/utils/DataPoller";
+import { useMemo } from "react";
 
 export const onValidSubmission: ActionFunction = async ({ request }) => {
   try {
@@ -82,6 +84,13 @@ export const TempExtensionWrapper = () => {
 };
 
 export const TemporaryExtension = () => {
+  const { type, id } = useParams();
+
+  const navigationLocation = useMemo(
+    () => (isNewSubmission() ? "/dashboard?tab=waivers" : `/details?id=${id}`),
+    [type],
+  );
+
   const { handleSubmit, formMethods } = useSubmitForm();
   const { id: urlId } = useParams();
   const formId = formMethods.getValues("originalWaiverNumber");
@@ -140,7 +149,7 @@ export const TemporaryExtension = () => {
         </Alert>
         <FormLoadingSpinner />
         <ErrorBanner />
-        <SubmissionButtons />
+        <SubmissionButtons cancelNavigationLocation={navigationLocation} />
       </form>
     </SimplePageContainer>
   );
