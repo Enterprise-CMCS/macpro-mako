@@ -152,7 +152,6 @@ export const v202401: FormSchema = {
                 "Other information about how ESPDT benefits will be provided to participants under age 21 (optional)",
               labelStyling: "font-bold",
               name: "abp7_epsdt-assurances_other-info-about-espdt-provided-to-under-21_input",
-              rules: { required: "* Required" },
             },
           ],
         },
