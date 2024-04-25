@@ -19,7 +19,7 @@ export const attachmentTitleMap = {
   formalRaiLetter: "Formal RAI Letter",
   // RAI RESPONSE
   raiResponseLetter: "RAI Response Letter",
-  raiResponseLetter1915b: "Waiver RAI Response",
+  raiResponseLetterWaiver: "Waiver RAI Response",
   revisedAmendedStatePlanLanguage: "Revised Amended State Plan Language",
   officialRaiResponse: "officialRaiResponse",
   // MISC
