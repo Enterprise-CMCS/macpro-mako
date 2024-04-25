@@ -52,7 +52,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
               {actions.map((action, idx) => (
                 <TypedLink
                   state={{
-                    from: `${location.pathname}${location.search}?origin=actionsDashboard`,
+                    from: `${location.pathname}${location.search}`,
                   }}
                   path="/action/:authority/:id/:type"
                   key={`${idx}-${action}`}
@@ -60,6 +60,9 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
                     id: data.id,
                     type: action,
                     authority: data.authority,
+                  }}
+                  query={{
+                    origin: "actionsDashboard",
                   }}
                   className={cn(
                     "text-blue-500",

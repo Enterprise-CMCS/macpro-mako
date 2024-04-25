@@ -1,7 +1,6 @@
 import { useGetItem, useGetPackageActions } from "@/api";
 import { LoadingSpinner, Link } from "@/components";
 import { mapActionLabel } from "@/utils";
-import { Action, Authority } from "shared-types";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
 import { useLocation } from "react-router-dom";
@@ -28,11 +27,14 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
             {data.actions.map((type, idx) => (
               <Link
                 state={{
-                  from: `${location.pathname}${location.search}?origin=actionsDetails`,
+                  from: `${location.pathname}${location.search}`,
                 }}
                 path="/action/:authority/:id/:type"
                 key={`${idx}-${type}`}
                 params={{ id, type, authority: authority! }}
+                query={{
+                  origin: "actionsDetails",
+                }}
                 className="text-sky-700 font-semibold text-lg"
               >
                 <li>{mapActionLabel(type)}</li>
