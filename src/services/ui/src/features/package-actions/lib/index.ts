@@ -46,7 +46,7 @@ export const submitActionForm = async ({
   statusToCheck: ReturnType<typeof getStatusFor>;
   locationState: { from?: string };
 }) => {
-  const path = originRoute ? originRoute : "/dashboard";
+  // const path = originRoute ? originRoute : "/dashboard";
   const actionsThatUseSubmitEndpoint: Action[] = [Action.TEMP_EXTENSION];
   try {
     await submit({
@@ -59,7 +59,9 @@ export const submitActionForm = async ({
     });
     alert.setBannerStyle("success");
     alert.setBannerShow(true);
-    alert.setBannerDisplayOn(path);
+    alert.setBannerDisplayOn(
+      locationState.from?.includes("dashboard") ? "/dashboard" : "/details",
+    );
     const poller = new DataPoller({
       interval: 1000,
       pollAttempts: 20,
