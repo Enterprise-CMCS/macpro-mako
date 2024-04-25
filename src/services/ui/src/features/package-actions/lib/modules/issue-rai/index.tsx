@@ -47,7 +47,7 @@ export const defaultIssueRaiFields: ReactElement[] = [
         required: false,
       },
     ]}
-    faqLink={""}
+    faqAttLink={""}
   />,
   <AdditionalInfoSection
     required

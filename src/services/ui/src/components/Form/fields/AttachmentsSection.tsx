@@ -8,23 +8,25 @@ import {
   FormMessage,
   RequiredIndicator,
   Upload,
+  useParams,
 } from "@/components";
 
 export const AttachmentsSection = ({
   attachments,
   instructions,
-  faqLink,
+  faqAttLink,
 }: {
   attachments: AttachmentRecipe<any>[];
   instructions?: string;
-  faqLink: string;
+  faqAttLink: string;
 }) => {
   const form = useFormContext();
+  const { authority, type } = useParams("/action/:authority/:id/:type");
   return (
     <section className={"mb-8"}>
       <h2 className="font-bold text-2xl font-sans mb-2">Attachments</h2>
       {instructions && <p>{instructions}</p>}
-      <AttachmentsSizeTypesDesc faqLink={faqLink} />
+      <AttachmentsSizeTypesDesc faqAttLink={faqAttLink} />
       {attachments.map(({ name, label, required }) => (
         <FormField
           key={String(name) + "-field"}

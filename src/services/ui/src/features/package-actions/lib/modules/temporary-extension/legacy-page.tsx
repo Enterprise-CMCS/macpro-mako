@@ -110,7 +110,6 @@ export const TemporaryExtension = () => {
               required: false,
             },
           ]}
-          faqLink={""}
         />
         <AdditionalInfoSection
           key={"field-addlinfo"}

@@ -22,7 +22,7 @@ export const useNavigate = () => {
       query?: Record<string, string>;
       hash?: string;
     } & Params<T>,
-    options?: NavigateOptions
+    options?: NavigateOptions,
   ) => {
     const to = (() => {
       let url: string = props.path;
@@ -50,7 +50,7 @@ export const redirect = <T extends Route>(
     path: T;
     query?: Record<string, string>;
     hash?: string;
-  } & Params<T>
+  } & Params<T>,
 ) => {
   const to = (() => {
     let url: string = props.path;

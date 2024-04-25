@@ -191,7 +191,7 @@ export const Contracting1915BWaiverInitialPage = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc faqLink="/faq/waiverb-attachments" />
+            <Content.AttachmentsSizeTypesDesc faqAttLink="/faq/waiverb-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}

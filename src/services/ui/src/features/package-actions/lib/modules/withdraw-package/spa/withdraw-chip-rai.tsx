@@ -35,7 +35,6 @@ export const chipWithdrawPackageFields: ReactElement[] = [
         required: true,
       },
     ]}
-    faqLink={""}
   />,
   <AdditionalInfoSection
     key={"field-addlinfo"}

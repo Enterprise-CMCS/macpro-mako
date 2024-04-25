@@ -44,10 +44,10 @@ export const SpaIdFormattingDesc = () => (
 );
 
 export const AttachmentsSizeTypesDesc = ({
-  faqLink,
+  faqAttLink,
   includeCMS179 = false,
 }: {
-  faqLink: string;
+  faqAttLink: string;
   includeCMS179?: boolean;
 }) => (
   <div className="text-gray-700 font-light">
@@ -58,7 +58,7 @@ export const AttachmentsSizeTypesDesc = ({
       for each of the attachment types on the{" "}
       {
         <Link
-          to={faqLink}
+          to={faqAttLink}
           target={FAQ_TAB}
           rel="noopener noreferrer"
           className="text-blue-700 hover:underline"
@@ -76,7 +76,7 @@ export const AttachmentsSizeTypesDesc = ({
       </strong>{" "}
       {
         <Link
-          to="/faq/acceptable-file-formats"
+          to={"/faq/acceptable-file-formats"}
           target={FAQ_TAB}
           rel="noopener noreferrer"
           className="text-blue-700 hover:underline"

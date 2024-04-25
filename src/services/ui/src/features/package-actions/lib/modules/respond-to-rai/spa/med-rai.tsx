@@ -44,7 +44,6 @@ export const medSpaRaiFields: ReactElement[] = [
         required: false,
       },
     ]}
-    faqLink={""}
   />,
   <AdditionalInfoSection
     key={"field-addlinfo"}

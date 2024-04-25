@@ -42,6 +42,8 @@ export const defaultWithdrawPackageFields: ReactElement[] = [
   </ActionFormDescription>,
   <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
+    fileFormatLink="/faq/acceptable-file-formats"
+    faqAttLink="/faq"
     key={"field-attachments"}
     instructions={
       "Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information section."
@@ -53,7 +55,6 @@ export const defaultWithdrawPackageFields: ReactElement[] = [
         required: false,
       },
     ]}
-    faqLink={""}
   />,
   <AdditionalInfoSection
     key={"field-addlinfo"}

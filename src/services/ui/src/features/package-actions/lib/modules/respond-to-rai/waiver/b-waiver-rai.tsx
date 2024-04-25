@@ -36,7 +36,6 @@ export const bWaiverRaiFields: ReactElement[] = [
       },
       { label: "Other", required: false, name: "other" },
     ]}
-    faqLink={""}
   />,
   <AdditionalInfoSection
     key={"field-addlinfo"}
