@@ -27,7 +27,9 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
           <ul className="my-3">
             {data.actions.map((type, idx) => (
               <Link
-                state={{ from: `${location.pathname}${location.search}` }}
+                state={{
+                  from: `${location.pathname}${location.search}?origin=actionsDetails`,
+                }}
                 path="/action/:authority/:id/:type"
                 key={`${idx}-${type}`}
                 params={{ id, type, authority: authority! }}
