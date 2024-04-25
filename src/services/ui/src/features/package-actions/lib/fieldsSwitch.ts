@@ -1,4 +1,4 @@
-import { Action, Authority, AuthorityUnion } from "shared-types";
+import { Action, AuthorityUnion } from "shared-types";
 import { ReactElement } from "react";
 import {
   bWaiverRaiFields,
@@ -18,10 +18,10 @@ import {
 type FieldsGroup = Record<AuthorityUnion, ReactElement[] | undefined>;
 
 const issueRaiFor: FieldsGroup = {
-  "CHIP SPA": defaultIssueRaiFields, // chip-spa-rai-attachments -> chip-rai-attachments
-  "Medicaid SPA": defaultIssueRaiFields, // medicaid-spa-rai-attachments -> medicaid-rai-attachments
-  "1915(b)": defaultIssueRaiFields, // waiverb-rai-attachments -> 1915(b)-rai-attachments
-  "1915(c)": defaultIssueRaiFields, // waiverb-rai-attachments -> 1915(c)-rai-attachments
+  "CHIP SPA": defaultIssueRaiFields,
+  "Medicaid SPA": defaultIssueRaiFields,
+  "1915(b)": defaultIssueRaiFields,
+  "1915(c)": defaultIssueRaiFields,
 };
 
 const respondToRaiFor: FieldsGroup = {
