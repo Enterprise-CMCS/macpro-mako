@@ -111,7 +111,7 @@ export const AppKSubmissionForm = () => {
               <>
                 <p>
                   <Link
-                    to="/faq/app-k-id"
+                    to="/faq/waiver-c-id"
                     target={C.FAQ_TAB}
                     rel="noopener noreferrer"
                     className="text-blue-700 hover:underline"
