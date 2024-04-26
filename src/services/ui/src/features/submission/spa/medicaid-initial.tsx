@@ -127,7 +127,11 @@ export const MedicaidSpaFormPage = () => {
       });
       await poller.startPollingData();
 
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+      navigate(
+        originPath
+          ? { path: `${originPath}?tab=spas` as Route }
+          : { path: "/dashboard?tab=spas" as Route },
+      );
     } catch (e) {
       console.error(e);
       alert.setContent({
