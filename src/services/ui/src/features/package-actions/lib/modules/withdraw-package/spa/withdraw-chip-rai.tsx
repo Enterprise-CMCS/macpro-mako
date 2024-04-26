@@ -43,7 +43,7 @@ export const chipWithdrawPackageFields: ReactElement[] = [
   />,
 ];
 export const chipWithdrawPackageContent: FormContentHydrator = (document) => ({
-  title: "Withdraw CHIP SPA Package",
+  title: "Withdraw CHIP SPA",
   preSubmitNotice:
     "Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.",
   confirmationModal: {
