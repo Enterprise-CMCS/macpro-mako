@@ -10,19 +10,13 @@ import {
   Upload,
 } from "@/components";
 import { attachmentTitleMap } from "shared-types";
-import type { AttachmentKey } from "shared-types";
-
-type AttachmentType = {
-  name: AttachmentKey;
-  required: boolean;
-};
 
 export const AttachmentsSection = ({
   attachments,
   instructions,
   faqLink,
 }: {
-  attachments: AttachmentRecipe<AttachmentType>[];
+  attachments: AttachmentRecipe[];
   instructions?: string;
   faqLink: string;
 }) => {

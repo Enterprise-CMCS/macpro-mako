@@ -9,7 +9,7 @@ export type SubmissionServiceEndpoint =
 export const buildActionUrl = (action: Action): PackageActionEndpoint =>
   `/action/${action}`;
 
-export type AttachmentRecipe<S extends Record<string, unknown>> = {
+export type AttachmentRecipe = {
   readonly name: AttachmentKey;
   readonly required: boolean;
 };
