@@ -115,7 +115,11 @@ export const Capitated1915BWaiverAmendmentPage = () => {
       });
       await poller.startPollingData();
 
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+      navigate(
+        originPath
+          ? { path: originPath }
+          : { path: "/dashboard?tab=waivers" as Route },
+      );
     } catch (e) {
       console.error(e);
       alert.setContent({

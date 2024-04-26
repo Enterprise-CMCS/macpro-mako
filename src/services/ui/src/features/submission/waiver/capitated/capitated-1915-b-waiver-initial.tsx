@@ -114,7 +114,12 @@ export const Capitated1915BWaiverInitialPage = () => {
       });
       await poller.startPollingData();
 
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+      console.log(originPath);
+      navigate(
+        originPath
+          ? { path: originPath }
+          : { path: "/dashboard?tab=waivers" as Route },
+      );
     } catch (e) {
       console.error(e);
       alert.setContent({
