@@ -245,7 +245,7 @@ function subsectionFormFields({
       rules: {
         required: "* Required",
         pattern: {
-          value: /^[1-9]\d*$/,
+          value: /^[0-9]\d*$/,
           message: "Must be a positive integer value",
         },
       },
@@ -261,7 +261,7 @@ function subsectionFormFields({
       rules: {
         required: "* Required",
         pattern: {
-          value: /^[1-9]\d*$/,
+          value: /^[0-9]\d*$/,
           message: "Must be a positive integer value",
         },
       },
@@ -277,7 +277,7 @@ function subsectionFormFields({
       rules: {
         required: "* Required",
         pattern: {
-          value: /^[1-9]\d*$/,
+          value: /^[0-9]\d*$/,
           message: "Must be a positive integer value",
         },
       },

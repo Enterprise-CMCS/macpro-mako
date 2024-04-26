@@ -530,7 +530,7 @@ export const v202401: FormSchema = {
                                                         },
                                                         rules: {
                                                           pattern: {
-                                                            value: /^[1-9]\d*$/,
+                                                            value: /^[0-9]\d*$/,
                                                             message:
                                                               "Must be a positive integer value",
                                                           },
@@ -663,7 +663,7 @@ export const v202401: FormSchema = {
                                                             rules: {
                                                               pattern: {
                                                                 value:
-                                                                  /^[1-9]\d*$/,
+                                                                  /^[0-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
@@ -800,7 +800,7 @@ export const v202401: FormSchema = {
                                                             rules: {
                                                               pattern: {
                                                                 value:
-                                                                  /^[1-9]\d*$/,
+                                                                  /^[0-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
@@ -936,7 +936,7 @@ export const v202401: FormSchema = {
                                                             rules: {
                                                               pattern: {
                                                                 value:
-                                                                  /^[1-9]\d*$/,
+                                                                  /^[0-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
