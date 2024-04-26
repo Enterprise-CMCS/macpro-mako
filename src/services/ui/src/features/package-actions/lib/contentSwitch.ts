@@ -1,7 +1,6 @@
 import { BannerContent, SubmissionAlert } from "@/components";
-import { Action, Authority, AuthorityUnion, opensearch } from "shared-types";
+import { Action, AuthorityUnion, opensearch } from "shared-types";
 import {
-  chipWithdrawPackageContent,
   defaultIssueRaiContent,
   defaultTempExtContent,
   defaultWithdrawPackageContent,
@@ -61,7 +60,7 @@ const withdrawRaiFor: FormContentGroup = {
 };
 
 const withdrawPackageFor: FormContentGroup = {
-  "CHIP SPA": chipWithdrawPackageContent,
+  "CHIP SPA": defaultWithdrawPackageContent,
   "Medicaid SPA": defaultWithdrawPackageContent,
   "1915(b)": defaultWithdrawPackageContent,
   "1915(c)": defaultWithdrawPackageContent,
