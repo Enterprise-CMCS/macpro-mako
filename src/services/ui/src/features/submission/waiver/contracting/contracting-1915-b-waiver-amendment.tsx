@@ -114,7 +114,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
 
       navigate(
         originPath
-          ? { path: originPath }
+          ? { path: `${originPath}?tab=waivers` as Route }
           : { path: "/dashboard?tab=waivers" as Route },
       );
     } catch (e) {
