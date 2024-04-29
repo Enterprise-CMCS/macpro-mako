@@ -12,6 +12,7 @@ import {
   defaultCompleteIntakeContent,
   defaultUpdateIdContent,
 } from "@/features/package-actions/lib/modules";
+import { appKWithdrawPackageContent } from "@/features/package-actions/lib/modules/withdraw-package/waiver/withdraw-appk";
 
 type FormContent = {
   title: string;
@@ -63,7 +64,7 @@ const withdrawPackageFor: FormContentGroup = {
   "CHIP SPA": defaultWithdrawPackageContent,
   "Medicaid SPA": defaultWithdrawPackageContent,
   "1915(b)": defaultWithdrawPackageContent,
-  "1915(c)": defaultWithdrawPackageContent,
+  "1915(c)": appKWithdrawPackageContent,
 };
 
 const tempExtensionFor: FormContentGroup = {
