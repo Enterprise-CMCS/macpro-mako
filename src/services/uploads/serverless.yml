@@ -265,7 +265,7 @@ resources:
                     - Fn::If:
                         - Backup
                         - !Sub "${self:custom.attachmentsBackupBucketArn}/*"
-                        - !Ref AWS::NoValue
+                        - foo/*
   Outputs:
     AttachmentsBucketName:
       Value:

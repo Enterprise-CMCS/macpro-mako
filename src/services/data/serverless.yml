@@ -80,7 +80,7 @@ provider:
             - Fn::If:
                 - Backup
                 - !Sub "${self:custom.eventsBackupBucketArn}/*"
-                - !Ref AWS::NoValue
+                - foo/*
 custom:
   project: ${env:PROJECT}
   serverlessTerminationProtection:
