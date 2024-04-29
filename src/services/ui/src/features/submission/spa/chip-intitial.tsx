@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Path, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
@@ -18,7 +18,7 @@ import {
 } from "@/components";
 import * as Inputs from "@/components/Inputs";
 import * as Content from "@/components";
-import { useGetUser, submit, getItem } from "@/api";
+import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
@@ -32,7 +32,7 @@ import {
 
 import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
-import { DataPoller } from "@/utils/Poller/DataPoller";
+import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -113,14 +113,8 @@ export const ChipSpaFormPage = () => {
           : "/dashboard",
       );
 
-      const poller = new DataPoller({
-        interval: 1000,
-        pollAttempts: 20,
-        fetcher: () => getItem(formData.id),
-        checkStatus: (data) => {
-          return !!data;
-        },
-      });
+      const poller = seaStatusPoller(formData.id, (data) => !!data);
+
       await poller.startPollingData();
 
       navigate(

@@ -1,13 +1,12 @@
 export type Options<TFetcherReturn> = {
   fetcher: () => TFetcherReturn;
-  checkStatus: (data: Awaited<TFetcherReturn>) => boolean;
+  onPoll: (data: Awaited<TFetcherReturn>) => boolean;
   interval: number;
   pollAttempts: number;
 };
 
 export class DataPoller<TFetcherReturn> {
   private options: Options<TFetcherReturn>;
-  isCorrectStatus = false;
 
   constructor(options: Options<TFetcherReturn>) {
     this.options = options;
@@ -24,9 +23,9 @@ export class DataPoller<TFetcherReturn> {
         timesPolled++;
         if (timesPolled <= this.options.pollAttempts) {
           const data = await this.options.fetcher();
-          const correctStatus = this.options.checkStatus(data);
+          const stopPoll = this.options.onPoll(data);
 
-          if (correctStatus) {
+          if (stopPoll) {
             resolve({
               correctStatusFound: true,
               maxAttemptsReached: false,

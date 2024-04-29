@@ -16,7 +16,7 @@ import {
 } from "@/components";
 import * as Content from "@/components/Form/old-content";
 import * as Inputs from "@/components/Inputs";
-import { useGetUser, submit, getItem } from "@/api";
+import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
 import {
   zAdditionalInfo,
@@ -32,7 +32,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
 import { SubmitAndCancelBtnSection } from "../shared-components";
-import { DataPoller } from "@/utils/Poller/DataPoller";
+import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,
@@ -102,14 +102,11 @@ export const Contracting1915BWaiverAmendmentPage = () => {
           : "/dashboard",
       );
 
-      const poller = new DataPoller({
-        interval: 1000,
-        pollAttempts: 20,
-        fetcher: () => getItem(formData.id),
-        checkStatus: (data) => {
-          return data._source.actionType === "Amend";
-        },
-      });
+      const poller = seaStatusPoller(
+        formData.id,
+        (data) => data._source.actionType === "Amend",
+      );
+
       await poller.startPollingData();
 
       navigate(

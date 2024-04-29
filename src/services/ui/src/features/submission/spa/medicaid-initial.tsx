@@ -19,7 +19,7 @@ import {
   Route,
 } from "@/components";
 import * as Content from "@/components";
-import { getItem, submit } from "@/api";
+import { submit } from "@/api";
 import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
@@ -33,7 +33,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
-import { DataPoller } from "@/utils/Poller/DataPoller";
+import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -117,14 +117,8 @@ export const MedicaidSpaFormPage = () => {
           : "/dashboard",
       );
 
-      const poller = new DataPoller({
-        interval: 1000,
-        pollAttempts: 20,
-        fetcher: () => getItem(formData.id),
-        checkStatus: (data) => {
-          return !!data;
-        },
-      });
+      const poller = seaStatusPoller(formData.id, (data) => !!data);
+
       await poller.startPollingData();
 
       navigate(

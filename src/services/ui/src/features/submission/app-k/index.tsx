@@ -2,7 +2,7 @@
 
 import * as I from "@/components/Inputs";
 import * as C from "@/components";
-import { Path, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FORM, SchemaForm } from "./consts";
 import { SlotStateSelect, SlotWaiverId, WaiverIdFieldArray } from "./slots";
@@ -16,8 +16,7 @@ import * as Content from "@/components";
 import { useOriginPath, zAppkWaiverNumberSchema } from "@/utils";
 import { Link, useLocation } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
-import { DataPoller } from "@/utils/Poller/DataPoller";
-import { getItem } from "@/api";
+import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
@@ -53,17 +52,15 @@ export const AppKSubmissionForm = () => {
           alert.setBannerShow(true);
           alert.setBannerDisplayOn("/dashboard");
           setIsDataPolling(true);
-          await new DataPoller({
-            interval: 1000,
-            pollAttempts: 20,
-            fetcher: () => getItem(`${draft.state}-${draft.parentWaiver}`),
-            checkStatus: (data) => {
+          await seaStatusPoller(
+            `${draft.state}-${draft.parentWaiver}`,
+            (data) => {
               return (
                 data._source.authority === Authority["1915c"] &&
                 data._source.actionType === "Amend"
               );
             },
-          }).startPollingData();
+          ).startPollingData();
           setIsDataPolling(false);
 
           nav({

@@ -4,8 +4,8 @@
  * pattern that New Submissions will later be adapted to use */
 import { unflatten } from "flat";
 import { defaultTempExtSchema } from ".";
-import { getItem, getUser, submit } from "@/api";
-import { Action, Authority } from "shared-types";
+import { getUser, submit } from "@/api";
+import { Authority } from "shared-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -31,8 +31,8 @@ import {
   useSubmitForm,
 } from "@/features/package-actions/legacy-shared-components";
 import { Info } from "lucide-react";
-import { DataPoller } from "@/utils/Poller/DataPoller";
 import { useMemo } from "react";
+import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
 
 export const onValidSubmission: ActionFunction = async ({ request }) => {
   try {
@@ -48,14 +48,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
       authority: data.authority as Authority,
     });
 
-    await new DataPoller({
-      pollAttempts: 20,
-      interval: 1000,
-      fetcher: () => getItem(data.id),
-      checkStatus: (data) => {
-        return !!data;
-      },
-    }).startPollingData();
+    await seaStatusPoller(data.id, (data) => !!data).startPollingData();
 
     return {
       submitted: true,

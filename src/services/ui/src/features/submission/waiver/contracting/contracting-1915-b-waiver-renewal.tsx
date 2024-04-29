@@ -32,7 +32,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
 import { SubmitAndCancelBtnSection } from "../shared-components";
-import { DataPoller } from "@/utils/Poller/DataPoller";
+import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
 
 const formSchema = z
   .object({
@@ -126,14 +126,11 @@ export const Contracting1915BWaiverRenewalPage = () => {
           : "/dashboard",
       );
 
-      const poller = new DataPoller({
-        interval: 1000,
-        pollAttempts: 20,
-        fetcher: () => getItem(formData.id),
-        checkStatus: (data) => {
-          return data._source.actionType === "Renew";
-        },
-      });
+      const poller = seaStatusPoller(
+        formData.id,
+        (data) => data._source.actionType === "Renew",
+      );
+
       await poller.startPollingData();
 
       navigate(

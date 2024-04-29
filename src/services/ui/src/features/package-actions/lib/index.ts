@@ -1,13 +1,13 @@
 import { Action, Authority, AuthorityUnion } from "shared-types";
 import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
-import { OneMacUser, getItem, submit } from "@/api";
+import { OneMacUser, submit } from "@/api";
 import { buildActionUrl, useOriginPath } from "@/utils";
 import { Route, useAlertContext, useNavigate } from "@/components";
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
-import { DataPoller } from "@/utils/Poller/DataPoller";
 import { getStatusForValidNavigation } from "./correctStatusSwitch";
+import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
 
 export type FormSetup = {
   schema: ReturnType<typeof getSchemaFor>;
@@ -61,12 +61,7 @@ export const submitActionForm = async ({
     alert.setBannerShow(true);
     // banner display doesn't work with url queries
     alert.setBannerDisplayOn(path.split("?")[0] as Route);
-    const poller = new DataPoller({
-      interval: 1000,
-      pollAttempts: 20,
-      checkStatus: statusToCheck,
-      fetcher: () => getItem(id),
-    });
+    const poller = seaStatusPoller(id, statusToCheck);
 
     await poller.startPollingData();
 
