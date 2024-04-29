@@ -74,15 +74,6 @@ export const TemporaryExtension = () => {
   const { handleSubmit, formMethods } = useSubmitForm();
   const { id: urlId } = useParams();
   const formId = formMethods.getValues("originalWaiverNumber");
-  const authority = formMethods.watch("authority");
-
-  let faqUrl = "/faq/temporary-extensions-b-attachments";
-  if (authority === "1915(b)") {
-    faqUrl = "/faq/temporary-extensions-b-attachments";
-  }
-  if (authority === "1915(c)") {
-    faqUrl = "/faq/temporary-extensions-c-attachments";
-  }
 
   const parentId = urlId ? urlId : formId;
   useDisplaySubmissionAlert(
@@ -106,7 +97,7 @@ export const TemporaryExtension = () => {
       <form onSubmit={handleSubmit}>
         <TEPackageSection key={"content-packagedetails"} />
         <AttachmentsSection
-          faqAttLink={faqUrl}
+          faqAttLink={"/faq/temporary-extensions-b-attachments"}
           key={"field-attachments"}
           attachments={[
             {
