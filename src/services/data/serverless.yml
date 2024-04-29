@@ -86,6 +86,8 @@ custom:
   bootstrapKibanaUsers: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapKibanaUsers, param:bootstrapKibanaUsers}
   bootstrapUsersPassword: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/bootstrapUsersPassword, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/bootstrapUsersPassword}
   consumerGroupPrefix: --${self:custom.project}--${sls:stage}--
+  eventsBackupBucketArn: ${cf:${self:custom.project}-backup-${sls:stage}.EventsBackupBucketArn, ""}
+  eventsBackupBucketName: ${cf:${self:custom.project}-backup-${sls:stage}.EventsBackupBucketName, ""}
   scripts:
     hooks:
       deploy:finalize: |
@@ -414,6 +416,16 @@ functions:
         - ${param:LambdaSecurityGroupId}
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
+  sinkBackup:
+    handler: handlers/sinkBackup.handler
+    maximumRetryAttempts: 0
+    vpc:
+      securityGroupIds:
+        - ${param:LambdaSecurityGroupId}
+      subnetIds: >-
+        ${self:custom.vpc.privateSubnets}
+    environment:
+      eventsBackupBucketName: ${self:custom.eventsBackupBucketName}
 
 resources:
   Conditions:
@@ -422,6 +434,11 @@ resources:
         - Fn::Equals:
             - ${param:topicNamespace}
             - ""
+    Backup:
+      Fn::Not:
+        - Fn::Equals:
+            - ""
+            - ${self:custom.eventsBackupBucketArn}
   Resources:
     StateMachineLogGroup:
       Type: AWS::Logs::LogGroup
