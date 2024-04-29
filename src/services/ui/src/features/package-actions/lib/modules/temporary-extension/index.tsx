@@ -81,12 +81,10 @@ export const defaultTempExtFields: ReactElement[] = [
     attachments={[
       {
         name: "waiverExtensionRequest",
-        label: "Waiver Extension Request",
         required: true,
       },
       {
         name: "other",
-        label: "Other",
         required: false,
       },
     ]}
