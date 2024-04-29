@@ -42,6 +42,10 @@ export const attachmentTitleMap = (
     "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
   appk: "1915(c) Appendix K Amendment Waiver Template",
   waiverExtensionRequest: "Waiver Extension Request",
+  revisedAmendedStatePlanLanguage: "Revised Amended State Plan Language",
+  officialRaiResponse: "Official RAI Response",
+  officialWithdrawalLetter: "Official Withdrawal Letter"
+
 });
 export type AttachmentKey = keyof typeof attachmentTitleMap;
 export type AttachmentTitle = (typeof attachmentTitleMap)[AttachmentKey];
