@@ -32,7 +32,6 @@ export const chipWithdrawPackageFields: ReactElement[] = [
     attachments={[
       {
         name: "officialWithdrawalLetter",
-        label: "Official Withdrawal Letter",
         required: true,
       },
     ]}

@@ -27,7 +27,6 @@ export const defaultWithdrawRaiFields: ReactElement[] = [
     attachments={[
       {
         name: "supportingDocumentation",
-        label: "Supporting Documentation",
         required: false,
       },
     ]}

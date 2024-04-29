@@ -50,7 +50,6 @@ export const defaultWithdrawPackageFields: ReactElement[] = [
     attachments={[
       {
         name: "supportingDocumentation",
-        label: "Supporting Documentation",
         required: false,
       },
     ]}
