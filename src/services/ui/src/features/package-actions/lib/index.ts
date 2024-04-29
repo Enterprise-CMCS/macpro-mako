@@ -2,12 +2,13 @@ import { Action, Authority, AuthorityUnion } from "shared-types";
 import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
 import { OneMacUser, submit } from "@/api";
-import { buildActionUrl, useOriginPath } from "@/utils";
+import { buildActionUrl, isSpaById, useOriginPath } from "@/utils";
 import { Route, useAlertContext, useNavigate } from "@/components";
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
 import { correctStatusToStopPollingData } from "./correctStatusSwitch";
 import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
+import { stripQueryStringFromURL } from "@/utils/stripQueryString";
 
 export type FormSetup = {
   schema: ReturnType<typeof getSchemaFor>;
@@ -61,11 +62,22 @@ export const submitActionForm = async ({
     alert.setBannerShow(true);
     // banner display doesn't work with url queries
     alert.setBannerDisplayOn(path.split("?")[0] as Route);
-    const poller = seaStatusPoller(id, statusToCheck);
 
+    const poller = seaStatusPoller(id, statusToCheck);
     await poller.startPollingData();
 
-    navigate({ path });
+    // path has to be stripped in case it contains a query string in it already
+    // this will break things if you try to add any below in the navigate function
+    // an example of this is details?id=example-123
+    const strippedPath = stripQueryStringFromURL(path);
+
+    navigate({
+      path: strippedPath.path as Route,
+      query: {
+        ...strippedPath.queryParams,
+        tab: isSpaById(id) ? "spas" : "waivers",
+      },
+    });
   } catch (e: unknown) {
     console.error(e);
     alert.setContent({
