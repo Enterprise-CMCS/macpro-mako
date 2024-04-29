@@ -6,7 +6,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 const client = new S3Client({
   maxAttempts: 3,
 });
-const bucket = process.env.BUCKET;
+const bucket = process.env.bucket;
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   const loggableEvent = { ...event, records: "too large to display" };

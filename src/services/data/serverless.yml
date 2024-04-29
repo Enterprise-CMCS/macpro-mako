@@ -73,6 +73,10 @@ provider:
             - states:StartExecution
           Resource:
             - !Sub arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${self:service}-${sls:stage}-reindex
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+          Resource: !Sub "${self:custom.eventsBackupBucketArn}/*"
 
 custom:
   project: ${env:PROJECT}
@@ -425,7 +429,7 @@ functions:
       subnetIds: >-
         ${self:custom.vpc.privateSubnets}
     environment:
-      eventsBackupBucketName: ${self:custom.eventsBackupBucketName}
+      bucket: ${self:custom.eventsBackupBucketName}
 
 resources:
   Conditions:
@@ -776,6 +780,31 @@ resources:
           - !Ref SinkCpocsLambdaFunction
           - !Ref SinkInsightsLambdaFunction
           - !Ref SinkLegacyInsightsLambdaFunction
+    SinkBackupEventSourceMapping:
+      Type: AWS::Lambda::EventSourceMapping
+      Condition: Backup
+      Properties:
+        BatchSize: 1000
+        Enabled: true
+        FunctionName: !GetAtt SinkBackupLambdaFunction.Arn
+        SelfManagedEventSource:
+          Endpoints:
+            KafkaBootstrapServers:
+              Fn::Split:
+                - ","
+                - ${self:custom.brokerString}
+        SourceAccessConfigurations:
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.0}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.1}
+          - Type: VPC_SUBNET
+            URI: subnet:${self:custom.vpc.privateSubnets.2}
+          - Type: VPC_SECURITY_GROUP
+            URI: !Sub security_group:${param:LambdaSecurityGroupId}
+        StartingPosition: TRIM_HORIZON
+        Topics:
+          - aws.onemac.migration.cdc
   Outputs:
     OpenSearchDomainArn:
       Value: !GetAtt OpenSearch.Arn
