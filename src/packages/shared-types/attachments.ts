@@ -21,7 +21,7 @@ export const attachmentTitleMap = {
   raiResponseLetter: "RAI Response Letter",
   raiResponseLetterWaiver: "Waiver RAI Response",
   revisedAmendedStatePlanLanguage: "Revised Amended State Plan Language",
-  officialRaiResponse: "officialRaiResponse",
+  officialRaiResponse: "Official RAI Response",
   // MISC
   other: "Other",
   // RAI WITHDRAW
@@ -39,7 +39,6 @@ export const attachmentTitleMap = {
   appk: "1915(c) Appendix K Amendment Waiver Template",
   waiverExtensionRequest: "Waiver Extension Request",
 };
-
 export type AttachmentKey = keyof typeof attachmentTitleMap;
 export type AttachmentTitle = (typeof attachmentTitleMap)[AttachmentKey];
 

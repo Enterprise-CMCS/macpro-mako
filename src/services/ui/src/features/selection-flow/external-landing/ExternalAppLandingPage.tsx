@@ -7,6 +7,7 @@ import {
   BreadCrumbs,
   FAQ_TAB,
   optionCrumbsFromPath,
+  Route,
 } from "@/components";
 import { SimplePageTitle } from "@/features";
 
@@ -32,12 +33,10 @@ const FAQHelperText = () => (
   <span className="max-w-xl">
     <i>
       For additional information on where to submit, refer to the{" "}
-      {/* TODO: Get desired FAQ `target` from Wale */}
       <Link
         className="text-sky-700 hover:text-sky-800 underline"
         target={FAQ_TAB}
-        path="/faq"
-        hash={"system"}
+        path={"/faq/system" as Route}
       >
         Crosswalk from Paper-based State Plan to MACPro and MMDL
       </Link>{" "}
