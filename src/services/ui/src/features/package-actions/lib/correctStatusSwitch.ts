@@ -1,7 +1,7 @@
 import { type getItem } from "@/api";
 import { Action, SEATOOL_STATUS } from "shared-types";
 
-export const getStatusForValidNavigation = (a: Action) => {
+export const correctStatusToStopPollingData = (a: Action) => {
   const actionContentMap: Record<
     string,
     (data: Awaited<ReturnType<typeof getItem>>) => boolean

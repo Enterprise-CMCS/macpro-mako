@@ -6,7 +6,7 @@ import { buildActionUrl, useOriginPath } from "@/utils";
 import { Route, useAlertContext, useNavigate } from "@/components";
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
-import { getStatusForValidNavigation } from "./correctStatusSwitch";
+import { correctStatusToStopPollingData } from "./correctStatusSwitch";
 import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
 
 export type FormSetup = {
@@ -43,7 +43,7 @@ export const submitActionForm = async ({
   originRoute: ReturnType<typeof useOriginPath>;
   alert: ReturnType<typeof useAlertContext>;
   navigate: ReturnType<typeof useNavigate>;
-  statusToCheck: ReturnType<typeof getStatusForValidNavigation>;
+  statusToCheck: ReturnType<typeof correctStatusToStopPollingData>;
   locationState: { from?: string };
 }) => {
   const path = originRoute ? originRoute : "/dashboard";
