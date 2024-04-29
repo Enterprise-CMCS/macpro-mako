@@ -12,7 +12,7 @@ export const v202401: FormSchema = {
               name: "abp2c_assurances_mandatory-identify-exempt_checkgroup",
               rhf: "Checkbox",
               descriptionAbove: true,
-              descriptionStyling: "text-black text-base",
+              descriptionClassName: "text-black text-base",
               description: [
                 "These assurances must be made by the state/territory if enrollment is mandatory for any of the target populations or subpopulations.",
                 {
@@ -50,7 +50,7 @@ export const v202401: FormSchema = {
               name: "abp2c_assurances_how-identify_checkgroup",
               rhf: "Checkbox",
               label: "How will the state/territory identify these individuals?",
-              labelStyling: "font-bold text-black",
+              labelClassName: "font-bold text-black",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -63,7 +63,7 @@ export const v202401: FormSchema = {
                         name: "abp2c_assurances_how-id-review-eligible-crit-desc_textarea",
                         rhf: "Textarea",
                         label: "Describe",
-                        labelStyling: "font-bold text-black",
+                        labelClassName: "font-bold text-black",
                         rules: { required: "* Required" },
                       },
                     ],
@@ -76,7 +76,7 @@ export const v202401: FormSchema = {
                         name: "abp2c_assurances_how-id-self-id-desc_textarea",
                         rhf: "Textarea",
                         label: "Describe",
-                        labelStyling: "font-bold text-black",
+                        labelClassName: "font-bold text-black",
                         rules: { required: "* Required" },
                       },
                     ],
@@ -89,7 +89,7 @@ export const v202401: FormSchema = {
                         name: "abp2c_assurances_how-id-other-desc_textarea",
                         rhf: "Textarea",
                         label: "Describe",
-                        labelStyling: "font-bold text-black",
+                        labelClassName: "font-bold text-black",
                         rules: { required: "* Required" },
                       },
                     ],
@@ -141,7 +141,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               label:
                 "How will the state/territory identify if an individual becomes exempt?",
-              labelStyling: "font-bold text-black",
+              labelClassName: "font-bold text-black",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -173,7 +173,7 @@ export const v202401: FormSchema = {
                         name: "abp2c_exemptions_how-id-exempt-other-desc_textarea",
                         rhf: "Textarea",
                         label: "Describe",
-                        labelStyling: "font-bold text-black",
+                        labelClassName: "font-bold text-black",
                         rules: { required: "* Required" },
                       },
                     ],
@@ -185,7 +185,7 @@ export const v202401: FormSchema = {
               name: "abp2c_exemptions_freq-determine-exemptions_radiogroup",
               rhf: "Radio",
               rules: { required: "* Required" },
-              labelStyling: "font-bold text-black",
+              labelClassName: "font-bold text-black",
               label:
                 "How frequently will the state/territory review the ABP population to determine if individuals are exempt from mandatory enrollment or meet the exemption criteria?",
               props: {
@@ -214,7 +214,7 @@ export const v202401: FormSchema = {
                         name: "abp2c_exemptions_freq-determine-ex-other-desc_textarea",
                         rhf: "Textarea",
                         label: "Describe",
-                        labelStyling: "font-bold text-black",
+                        labelClassName: "font-bold text-black",
                         rules: { required: "* Required" },
                       },
                     ],
@@ -242,7 +242,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               rules: { required: "* Required" },
               label: "Describe the process for processing requests.",
-              labelStyling: "font-bold text-black",
+              labelClassName: "font-bold text-black",
             },
           ],
         },
@@ -258,7 +258,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label:
                 "Other information about enrollment assurances for mandatory participants (optional)",
-              labelStyling: "font-bold text-black",
+              labelClassName: "font-bold text-black",
             },
           ],
         },
