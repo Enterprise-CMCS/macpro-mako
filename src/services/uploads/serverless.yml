@@ -256,16 +256,14 @@ resources:
                     - "s3:GetObjectVersionAcl"
                     - "s3:GetObjectVersionTagging"
                   Resource: !Sub "arn:aws:s3:::${self:custom.attachmentsBucketName}/*"
-                - Effect: Allow
-                  Action:
-                    - "s3:ReplicateObject"
-                    - "s3:ReplicateDelete"
-                    - "s3:ReplicateTags"
-                  Resource:
-                    - Fn::If:
-                        - Backup
-                        - !Sub "${self:custom.attachmentsBackupBucketArn}/*"
-                        - foo/*
+                - Fn::If:
+                    - Backup
+                    - Effect: Allow
+                      Action:
+                        - s3:PutObject
+                      Resource: !Sub "${self:custom.attachmentsBackupBucketArn}/*"
+                    - !Ref AWS::NoValue
+
   Outputs:
     AttachmentsBucketName:
       Value:

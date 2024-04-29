@@ -73,14 +73,13 @@ provider:
             - states:StartExecution
           Resource:
             - !Sub arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${self:service}-${sls:stage}-reindex
-        - Effect: Allow
-          Action:
-            - s3:PutObject
-          Resource:
-            - Fn::If:
-                - Backup
-                - !Sub "${self:custom.eventsBackupBucketArn}/*"
-                - foo/*
+        - Fn::If:
+            - Backup
+            - Effect: Allow
+              Action:
+                - s3:PutObject
+              Resource: !Sub "${self:custom.eventsBackupBucketArn}/*"
+            - !Ref AWS::NoValue
 custom:
   project: ${env:PROJECT}
   serverlessTerminationProtection:
