@@ -261,7 +261,11 @@ resources:
                     - "s3:ReplicateObject"
                     - "s3:ReplicateDelete"
                     - "s3:ReplicateTags"
-                  Resource: "${self:custom.attachmentsBackupBucketArn}/*"
+                  Resource:
+                    - Fn::If:
+                        - Backup
+                        - !Sub "${self:custom.attachmentsBackupBucketArn}/*"
+                        - !Ref AWS::NoValue
   Outputs:
     AttachmentsBucketName:
       Value:
