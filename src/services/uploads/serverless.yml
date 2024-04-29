@@ -57,6 +57,7 @@ custom:
   forceApplyBucketPolicies: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/forceApplyBucketPolicies, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/forceApplyBucketPolicies, "blank"}
   clamDefsBucketName: ${self:service}-${sls:stage}-avscan-${aws:accountId}
   attachmentsBucketName: ${self:service}-${sls:stage}-attachments-${aws:accountId}
+  backupBucketArn: ${cf:${self:custom.project}-backup-${sls:stage}.BackupBucketArn, ""}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
@@ -110,6 +111,12 @@ functions:
     handler: src/emptyBuckets.handler
     timeout: 900
 resources:
+  Conditions:
+    Backup:
+      Fn::Not:
+        - Fn::Equals:
+            - ""
+            - ${self:custom.backupBucketArn}
   Resources:
     AttachmentsBucket:
       Type: AWS::S3::Bucket
@@ -135,6 +142,16 @@ resources:
           LambdaConfigurations:
             - Event: s3:ObjectCreated:*
               Function: !GetAtt AvScanLambdaFunction.Arn
+        ReplicationConfiguration:
+          Fn::If:
+            - Backup
+            - Role: !GetAtt ReplicationRole.Arn
+              Rules:
+                - Destination:
+                    Bucket: ${self:custom.backupBucketArn}
+                  Prefix: ""
+                  Status: Enabled
+            - !Ref AWS::NoValue
       DependsOn: LambdaInvokePermission
     AttachmentsBucketPolicyCustomResource:
       Type: Custom::AttachmentsBucketPolicy
@@ -164,7 +181,9 @@ resources:
                 StringNotEquals:
                   s3:ExistingObjectTag/virusScanStatus:
                     - "CLEAN"
-                  aws:PrincipalArn: !GetAtt IamRoleLambdaExecution.Arn
+                  aws:PrincipalArn:
+                    - !GetAtt IamRoleLambdaExecution.Arn
+                    - !GetAtt ReplicationRole.Arn
     LambdaInvokePermission:
       Type: AWS::Lambda::Permission
       Properties:
@@ -211,6 +230,38 @@ resources:
         ServiceToken: !GetAtt EmptyBucketsLambdaFunction.Arn
         Buckets:
           - !Ref ClamDefsBucket
+    ReplicationRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: s3.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: ReplicationPolicy
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - "s3:GetReplicationConfiguration"
+                    - "s3:ListBucket"
+                  Resource: !Sub "arn:aws:s3:::${self:custom.attachmentsBucketName}"
+                - Effect: Allow
+                  Action:
+                    - "s3:GetObjectVersionForReplication"
+                    - "s3:GetObjectVersionAcl"
+                    - "s3:GetObjectVersionTagging"
+                  Resource: !Sub "arn:aws:s3:::${self:custom.attachmentsBucketName}/*"
+                - Effect: Allow
+                  Action:
+                    - "s3:ReplicateObject"
+                    - "s3:ReplicateDelete"
+                    - "s3:ReplicateTags"
+                  Resource: "${self:custom.backupBucketArn}/*"
   Outputs:
     AttachmentsBucketName:
       Value:

@@ -1,0 +1,35 @@
+service: ${self:custom.project}-backup
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-stack-termination-protection
+  - "@stratiformdigital/serverless-s3-security-helper"
+
+provider:
+  name: aws
+  region: ${env:REGION_A}
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+
+custom:
+  project: ${env:PROJECT}
+  accountId: !Sub "${AWS::AccountId}"
+  stage: ${opt:stage, self:provider.stage}
+  backupBucketName: ${self:service}-${sls:stage}-backup-${aws:accountId}
+
+resources:
+  Resources:
+    BackupBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.backupBucketName}
+  Outputs:
+    BackupBucketName:
+      Value:
+        Ref: BackupBucket
+    BackupBucketArn:
+      Value: !GetAtt BackupBucket.Arn
+    BackupBucketRegion:
+      Value: ${self:provider.region}
