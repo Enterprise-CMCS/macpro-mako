@@ -1,10 +1,7 @@
 import { z } from "zod";
 import { s3ParseUrl } from "shared-utils/s3-url-parser";
-import { Authority } from "./authority";
 
-export const attachmentTitleMap = (
-  authority: Authority,
-): Record<string, string> => ({
+export const attachmentTitleMap = {
   // SPA
   cmsForm179: "CMS Form 179",
   currentStatePlan: "Current State Plan",
@@ -17,15 +14,14 @@ export const attachmentTitleMap = (
   tribalConsultation: "Tribal Consultation",
   amendedLanguage: "Amended State Plan Language",
   budgetDocuments: "Budget Documents",
+  officialWithdrawalLetter: "Official Withdrawal Letter",
   // ISSUE RAI
   formalRaiLetter: "Formal RAI Letter",
   // RAI RESPONSE
-  raiResponseLetter: (() => {
-    if (authority === Authority["1915b"]) {
-      return "Waiver RAI Response";
-    }
-    return "RAI Response Letter";
-  })(),
+  raiResponseLetter: "RAI Response Letter",
+  raiResponseLetterWaiver: "Waiver RAI Response",
+  revisedAmendedStatePlanLanguage: "Revised Amended State Plan Language",
+  officialRaiResponse: "Official RAI Response",
   // MISC
   other: "Other",
   // RAI WITHDRAW
@@ -42,11 +38,7 @@ export const attachmentTitleMap = (
     "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
   appk: "1915(c) Appendix K Amendment Waiver Template",
   waiverExtensionRequest: "Waiver Extension Request",
-  revisedAmendedStatePlanLanguage: "Revised Amended State Plan Language",
-  officialRaiResponse: "Official RAI Response",
-  officialWithdrawalLetter: "Official Withdrawal Letter"
-
-});
+};
 export type AttachmentKey = keyof typeof attachmentTitleMap;
 export type AttachmentTitle = (typeof attachmentTitleMap)[AttachmentKey];
 
