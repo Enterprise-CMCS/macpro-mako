@@ -57,7 +57,7 @@ custom:
   forceApplyBucketPolicies: ${ssm:/aws/reference/secretsmanager/${self:custom.project}/${sls:stage}/forceApplyBucketPolicies, ssm:/aws/reference/secretsmanager/${self:custom.project}/default/forceApplyBucketPolicies, "blank"}
   clamDefsBucketName: ${self:service}-${sls:stage}-avscan-${aws:accountId}
   attachmentsBucketName: ${self:service}-${sls:stage}-attachments-${aws:accountId}
-  backupBucketArn: ${cf:${self:custom.project}-backup-${sls:stage}.BackupBucketArn, ""}
+  attachmentsBackupBucketArn: ${cf:${self:custom.project}-backup-${sls:stage}.AttachmentsBackupBucketArn, ""}
   serverlessTerminationProtection:
     stages: # Apply CloudFormation termination protection for these stages
       - master
@@ -116,7 +116,7 @@ resources:
       Fn::Not:
         - Fn::Equals:
             - ""
-            - ${self:custom.backupBucketArn}
+            - ${self:custom.attachmentsBackupBucketArn}
   Resources:
     AttachmentsBucket:
       Type: AWS::S3::Bucket
@@ -148,7 +148,7 @@ resources:
             - Role: !GetAtt ReplicationRole.Arn
               Rules:
                 - Destination:
-                    Bucket: ${self:custom.backupBucketArn}
+                    Bucket: ${self:custom.attachmentsBackupBucketArn}
                   Prefix: ""
                   Status: Enabled
             - !Ref AWS::NoValue
@@ -261,7 +261,7 @@ resources:
                     - "s3:ReplicateObject"
                     - "s3:ReplicateDelete"
                     - "s3:ReplicateTags"
-                  Resource: "${self:custom.backupBucketArn}/*"
+                  Resource: "${self:custom.attachmentsBackupBucketArn}/*"
   Outputs:
     AttachmentsBucketName:
       Value:

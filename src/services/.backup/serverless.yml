@@ -21,15 +21,20 @@ custom:
 
 resources:
   Resources:
-    BackupBucket:
+    AttachmentsBackupBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:custom.backupBucketName}
+        BucketName: ${self:service}-${sls:stage}-attachments-backup-${aws:accountId}
+    EventsBackupBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-${sls:stage}-events-backup-${aws:accountId}
   Outputs:
-    BackupBucketName:
-      Value:
-        Ref: BackupBucket
-    BackupBucketArn:
-      Value: !GetAtt BackupBucket.Arn
-    BackupBucketRegion:
-      Value: ${self:provider.region}
+    AttachmentsBackupBucketName:
+      Value: !Ref AttachmentsBackupBucket
+    AttachmentsBackupBucketArn:
+      Value: !GetAtt AttachmentsBackupBucket.Arn
+    EventsBackupBucketName:
+      Value: !Ref EventsBackupBucket
+    EventsBackupBucketArn:
+      Value: !GetAtt EventsBackupBucket.Arn
