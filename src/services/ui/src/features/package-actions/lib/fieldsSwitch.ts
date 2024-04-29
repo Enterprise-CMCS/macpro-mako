@@ -1,4 +1,4 @@
-import { Action, Authority, AuthorityUnion } from "shared-types";
+import { Action, AuthorityUnion } from "shared-types";
 import { ReactElement } from "react";
 import {
   bWaiverRaiFields,
