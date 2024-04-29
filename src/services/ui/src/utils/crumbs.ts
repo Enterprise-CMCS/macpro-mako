@@ -1,25 +1,15 @@
 import { BreadCrumbConfig, Route, urlEmbedQuery } from "@/components";
-import { authorityById, mapActionLabel, mapSubmissionCrumb } from "@/utils";
+import { isSpaById, mapActionLabel, mapSubmissionCrumb } from "@/utils";
 import { Action } from "shared-types";
 
 export const dashboardCrumb = (id?: string): BreadCrumbConfig => {
-  if (id) {
-    const authority = authorityById(id);
-    const newPath = urlEmbedQuery("/dashboard", {
-      tab: authority === "" ? "spas" : authority,
-    });
-    return {
-      displayText: "Dashboard",
-      order: 1,
-      default: true,
-      to: newPath,
-    };
-  }
   return {
     displayText: "Dashboard",
     order: 1,
     default: true,
-    to: "/dashboard",
+    to: id
+      ? urlEmbedQuery("/dashboard", { tab: isSpaById(id) ? "spas" : "waivers" })
+      : "/dashboard",
   };
 };
 

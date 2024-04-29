@@ -25,14 +25,8 @@ export const isAuthorizedState = async (id: string) => {
   }
 };
 
-export const authorityById = (id: string) => {
+export const isSpaById = (id: string) => {
   const spaBegin = /^[A-z]{2}-[0-9]{2}-/g;
-  const waiverBegin = /^[A-z]{2}-[0-9]{4,5}\./g;
 
-  if (spaBegin.test(id)) {
-    return "spas";
-  } else if (waiverBegin.test(id)) {
-    return "waivers";
-  }
-  return "";
+  return spaBegin.test(id);
 };
