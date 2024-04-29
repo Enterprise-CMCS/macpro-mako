@@ -6,8 +6,8 @@ import { buildActionUrl, useOriginPath } from "@/utils";
 import { Route, useAlertContext, useNavigate } from "@/components";
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
-import { DataPoller } from "@/utils/DataPoller";
-import { getStatusFor } from "./correctStatusSwitch";
+import { DataPoller } from "@/utils/Poller/DataPoller";
+import { getStatusForValidNavigation } from "./correctStatusSwitch";
 
 export type FormSetup = {
   schema: ReturnType<typeof getSchemaFor>;
@@ -43,10 +43,10 @@ export const submitActionForm = async ({
   originRoute: ReturnType<typeof useOriginPath>;
   alert: ReturnType<typeof useAlertContext>;
   navigate: ReturnType<typeof useNavigate>;
-  statusToCheck: ReturnType<typeof getStatusFor>;
+  statusToCheck: ReturnType<typeof getStatusForValidNavigation>;
   locationState: { from?: string };
 }) => {
-  // const path = originRoute ? originRoute : "/dashboard";
+  const path = originRoute ? originRoute : "/dashboard";
   const actionsThatUseSubmitEndpoint: Action[] = [Action.TEMP_EXTENSION];
   try {
     await submit({
@@ -59,9 +59,8 @@ export const submitActionForm = async ({
     });
     alert.setBannerStyle("success");
     alert.setBannerShow(true);
-    alert.setBannerDisplayOn(
-      locationState.from?.includes("dashboard") ? "/dashboard" : "/details",
-    );
+    // banner display doesn't work with url queries
+    alert.setBannerDisplayOn(path.split("?")[0] as Route);
     const poller = new DataPoller({
       interval: 1000,
       pollAttempts: 20,
@@ -71,7 +70,7 @@ export const submitActionForm = async ({
 
     await poller.startPollingData();
 
-    navigate({ path: (locationState?.from ?? "/dashboard") as Route });
+    navigate({ path });
   } catch (e: unknown) {
     console.error(e);
     alert.setContent({

@@ -32,7 +32,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
 import { SubmitAndCancelBtnSection } from "../shared-components";
-import { DataPoller } from "@/utils/DataPoller";
+import { DataPoller } from "@/utils/Poller/DataPoller";
 
 const formSchema = z
   .object({

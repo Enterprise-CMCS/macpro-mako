@@ -32,7 +32,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
-import { DataPoller } from "@/utils/DataPoller";
+import { DataPoller } from "@/utils/Poller/DataPoller";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,

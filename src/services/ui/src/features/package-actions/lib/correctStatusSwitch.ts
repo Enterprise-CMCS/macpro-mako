@@ -1,7 +1,7 @@
 import { type getItem } from "@/api";
 import { Action, SEATOOL_STATUS } from "shared-types";
 
-export const getStatusFor = (a: Action) => {
+export const getStatusForValidNavigation = (a: Action) => {
   const actionContentMap: Record<
     string,
     (data: Awaited<ReturnType<typeof getItem>>) => boolean
@@ -40,6 +40,6 @@ export const getStatusFor = (a: Action) => {
     "complete-intake": () => true,
   };
   const group = actionContentMap?.[a];
-  if (!group) throw new Error(`No content group for "${a}"`);
+  if (!group) throw new Error(`No status for group "${a}"`);
   return group;
 };

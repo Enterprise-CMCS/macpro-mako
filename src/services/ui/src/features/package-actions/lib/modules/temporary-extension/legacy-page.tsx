@@ -31,7 +31,7 @@ import {
   useSubmitForm,
 } from "@/features/package-actions/legacy-shared-components";
 import { Info } from "lucide-react";
-import { DataPoller } from "@/utils/DataPoller";
+import { DataPoller } from "@/utils/Poller/DataPoller";
 import { useMemo } from "react";
 
 export const onValidSubmission: ActionFunction = async ({ request }) => {

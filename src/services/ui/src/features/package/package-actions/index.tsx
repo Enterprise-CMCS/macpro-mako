@@ -32,6 +32,9 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
                 key={`${idx}-${type}`}
                 params={{ id, type, authority: authority! }}
                 className="text-sky-700 font-semibold text-lg"
+                query={{
+                  origin: "actionsDetails",
+                }}
               >
                 <li>{mapActionLabel(type)}</li>
               </Link>

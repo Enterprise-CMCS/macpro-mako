@@ -33,7 +33,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
-import { DataPoller } from "@/utils/DataPoller";
+import { DataPoller } from "@/utils/Poller/DataPoller";
 
 const formSchema = z.object({
   id: zSpaIdSchema,

@@ -19,7 +19,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "@/components";
-import { getStatusFor } from "./lib/correctStatusSwitch";
+import { getStatusForValidNavigation } from "./lib/correctStatusSwitch";
 import { useLocation } from "react-router-dom";
 
 export const ActionForm = ({ setup }: { setup: FormSetup }) => {
@@ -40,6 +40,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
     mode: "onChange",
   });
 
+  console.log({ origin });
   // Submission Handler
   const handler = form.handleSubmit(
     async (data) =>
@@ -52,7 +53,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
         alert,
         navigate,
         originRoute: origin,
-        statusToCheck: getStatusFor(type),
+        statusToCheck: getStatusForValidNavigation(type),
         locationState: location.state,
       }),
   );
