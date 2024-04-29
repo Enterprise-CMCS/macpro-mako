@@ -27,6 +27,7 @@ export const bWaiverRaiFields: ReactElement[] = [
   </ActionFormDescription>,
   <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
+    faqAttLink="/faq/waiverb-rai-attachments"
     key={"field-attachments"}
     attachments={[
       {
@@ -35,7 +36,6 @@ export const bWaiverRaiFields: ReactElement[] = [
       },
       { required: false, name: "other" },
     ]}
-    faqLink={""}
   />,
   <AdditionalInfoSection
     key={"field-addlinfo"}

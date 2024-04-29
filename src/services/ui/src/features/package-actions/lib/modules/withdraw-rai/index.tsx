@@ -22,6 +22,7 @@ export const defaultWithdrawRaiFields: ReactElement[] = [
   </ActionFormDescription>,
   <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
+    faqAttLink="/faq"
     key={"field-attachments"}
     attachments={[
       {
@@ -29,7 +30,6 @@ export const defaultWithdrawRaiFields: ReactElement[] = [
         required: false,
       },
     ]}
-    faqLink={""}
   />,
   <AdditionalInfoSection
     required

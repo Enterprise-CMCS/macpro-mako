@@ -24,6 +24,7 @@ export const chipWithdrawPackageFields: ReactElement[] = [
   </ActionFormDescription>,
   <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
+    faqAttLink="/faq"
     key={"field-attachments"}
     instructions={
       "Official withdrawal letters are required and must be on state letterhead signed by the State Medicaid Director or CHIP Director."
@@ -34,7 +35,6 @@ export const chipWithdrawPackageFields: ReactElement[] = [
         required: true,
       },
     ]}
-    faqLink={""}
   />,
   <AdditionalInfoSection
     key={"field-addlinfo"}

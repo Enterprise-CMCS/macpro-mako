@@ -97,6 +97,7 @@ export const TemporaryExtension = () => {
       <form onSubmit={handleSubmit}>
         <TEPackageSection key={"content-packagedetails"} />
         <AttachmentsSection
+          faqAttLink={"/faq/temporary-extensions-b-attachments"}
           key={"field-attachments"}
           attachments={[
             {
@@ -108,7 +109,6 @@ export const TemporaryExtension = () => {
               required: false,
             },
           ]}
-          faqLink={""}
         />
         <AdditionalInfoSection
           key={"field-addlinfo"}
