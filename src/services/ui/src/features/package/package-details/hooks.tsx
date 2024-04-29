@@ -170,11 +170,6 @@ export const submissionDetails = (
     canView: () => true,
   },
   {
-    label: "Submission source",
-    value: <p className="text-lg">{data?.origin || BLANK_VALUE}</p>,
-    canView: () => true,
-  },
-  {
     label: "CPOC",
     value: <p className="text-lg">{data?.leadAnalystName || BLANK_VALUE}</p>,
     canView: () => {

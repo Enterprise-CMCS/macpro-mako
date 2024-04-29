@@ -1,6 +1,6 @@
 import { useGetItem } from "@/api";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 export type DetailsSidebarLink = {
   id: string;
@@ -16,10 +16,9 @@ export const useDetailsSidebarLinks = (
 
   useLayoutEffect(() => {
     const ids = [
-      "package_details",
+      "package_detailss",
       "package_activity",
       "administrative_package_changess",
-      "appendix_k",
     ];
 
     // Check if dataId is not undefined before proceeding
