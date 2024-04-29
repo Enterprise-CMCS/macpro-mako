@@ -5,7 +5,7 @@ import { reInsertRegex } from "shared-utils";
 
 export const getForm = async (
   formId: string,
-  formVersion?: string
+  formVersion?: string,
 ): Promise<FormSchema> => {
   const form = await API.post("os", "/forms", {
     body: { formId, formVersion },
@@ -16,7 +16,7 @@ export const getForm = async (
 
 export const useGetForm = (formId: string, formVersion?: string) => {
   return useQuery<FormSchema, ReactQueryApiError>([formId, formVersion], () =>
-    getForm(formId, formVersion)
+    getForm(formId, formVersion),
   );
 };
 
@@ -31,6 +31,6 @@ export const getAllForms = async () => {
 
 export const useGetAllForms = () => {
   return useQuery<ResultObject, ReactQueryApiError>(["All Webforms"], () =>
-    getAllForms()
+    getAllForms(),
   );
 };
