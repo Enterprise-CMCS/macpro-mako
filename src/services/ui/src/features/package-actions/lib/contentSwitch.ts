@@ -11,8 +11,8 @@ import {
   defaultEnableRaiWithdrawContent,
   defaultCompleteIntakeContent,
   defaultUpdateIdContent,
+  waiverWithdrawPackageContent,
 } from "@/features/package-actions/lib/modules";
-import { waiverWithdrawPackageContent } from "@/features/package-actions/lib/modules/withdraw-package/waiver/withdraw-appk";
 
 type FormContent = {
   title: string;

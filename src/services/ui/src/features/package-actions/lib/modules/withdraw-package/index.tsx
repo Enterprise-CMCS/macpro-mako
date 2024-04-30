@@ -10,6 +10,7 @@ import {
 } from "@/components";
 
 export * from "./spa/withdraw-chip-rai";
+export * from "./waiver/withdraw-waiver";
 
 export const defaultWithdrawPackageSchema = z
   .object({
