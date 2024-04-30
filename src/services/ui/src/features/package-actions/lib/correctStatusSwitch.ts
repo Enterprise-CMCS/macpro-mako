@@ -13,7 +13,7 @@ import {
 } from "./modules";
 
 export const correctStatusToStopPollingData = (a: Action) => {
-  const actionContentMap: Record<string, CheckStatusFunction> = {
+  const actionStatusMap: Record<string, CheckStatusFunction> = {
     "issue-rai": RAI_ISSUED_STATUS,
     "respond-to-rai": RAI_RESPONDED_TO_STATUS,
     "enable-rai-withdraw": RAI_WITHDRAW_ENABLED_STATUS,
@@ -24,7 +24,7 @@ export const correctStatusToStopPollingData = (a: Action) => {
     "update-id": ID_UPDATED_STATUS,
     "complete-intake": INTAKE_COMPLETED_STATUS,
   };
-  const group = actionContentMap?.[a];
+  const group = actionStatusMap?.[a];
   if (!group) throw new Error(`No status for group "${a}"`);
   return group;
 };
