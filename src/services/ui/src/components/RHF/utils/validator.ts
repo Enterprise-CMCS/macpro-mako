@@ -19,7 +19,7 @@ import {
 export const validateInput = (inputValue: any, rules?: RegisterOptions) => {
   const isEmpty =
     isUndefined(inputValue) ||
-    inputValue.trim() === "" ||
+    inputValue === "" ||
     (Array.isArray(inputValue) && !inputValue.length);
 
   if (isEmpty && rules?.required) {
