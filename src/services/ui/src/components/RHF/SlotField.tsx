@@ -166,6 +166,7 @@ export const SlotField = ({
                 parentValue={field.value}
                 changeMethod={field.onChange}
                 aria-label={field.name}
+                optionlabelClassName={OPT.optionlabelClassName}
               />
               {field.value?.includes(OPT.value) && (
                 <OptChildren

@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { render, prettyDOM } from "@testing-library/react";
 import { RHFSlot } from "../.";
-import { Form, FormField } from "@/components";
+import { Form, FormField } from "../../Inputs";
 import { Control, useForm } from "react-hook-form";
 import { RHFSlotProps } from "shared-types";
 
@@ -31,8 +31,8 @@ const testValues: RHFSlotProps = {
   rhf: "Input",
   description: "test desc",
   descriptionAbove: false,
-  descriptionStyling: "py-2",
-  formItemStyling: "py-4",
+  descriptionClassName: "py-2",
+  formItemClassName: "py-4",
 };
 
 describe("Slot Input Field Tests", () => {
