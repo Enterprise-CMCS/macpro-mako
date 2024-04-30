@@ -204,7 +204,7 @@ export const MedicaidSpaFormPage = () => {
           </SectionCard>
           <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc
-              faqLink="/faq/medicaid-spa-attachments"
+              faqAttLink="/faq/medicaid-spa-attachments"
               includeCMS179
             />
             {attachmentList.map(({ name, label, required }) => (

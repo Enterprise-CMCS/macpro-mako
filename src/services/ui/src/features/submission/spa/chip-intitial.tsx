@@ -200,7 +200,7 @@ export const ChipSpaFormPage = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc faqLink="/faq/chip-spa-attachments" />
+            <Content.AttachmentsSizeTypesDesc faqAttLink="/faq/chip-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
