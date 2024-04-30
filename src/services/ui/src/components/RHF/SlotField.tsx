@@ -28,7 +28,7 @@ import {
   Switch,
   Textarea,
   Upload,
-} from "../Inputs";
+} from "@/components/Inputs";
 
 type SlotFieldProps = RHFSlotProps & { control: any; field: any };
 type SelectedSubsetProps = RHFOption & {
@@ -55,7 +55,7 @@ export const SlotField = ({
       return <Switch {...props} {...field} aria-label={field.name} />;
     case "TextDisplay":
       return (
-        <p {...props}>
+        <p {...props} data-testid={name}>
           <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} />
         </p>
       );
@@ -212,8 +212,6 @@ export const SlotField = ({
           })}
         </RadioGroup>
       );
-    default:
-      return null;
   }
 };
 
