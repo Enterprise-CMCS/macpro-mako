@@ -12,7 +12,7 @@ import {
   defaultCompleteIntakeContent,
   defaultUpdateIdContent,
 } from "@/features/package-actions/lib/modules";
-import { appKWithdrawPackageContent } from "@/features/package-actions/lib/modules/withdraw-package/waiver/withdraw-appk";
+import { waiverWithdrawPackageContent } from "@/features/package-actions/lib/modules/withdraw-package/waiver/withdraw-appk";
 
 type FormContent = {
   title: string;
@@ -63,8 +63,8 @@ const withdrawRaiFor: FormContentGroup = {
 const withdrawPackageFor: FormContentGroup = {
   "CHIP SPA": defaultWithdrawPackageContent,
   "Medicaid SPA": defaultWithdrawPackageContent,
-  "1915(b)": defaultWithdrawPackageContent,
-  "1915(c)": appKWithdrawPackageContent,
+  "1915(b)": waiverWithdrawPackageContent,
+  "1915(c)": waiverWithdrawPackageContent,
 };
 
 const tempExtensionFor: FormContentGroup = {
