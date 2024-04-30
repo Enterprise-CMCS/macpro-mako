@@ -11,7 +11,7 @@ import { PackageSection } from "@/components/Form/content/PackageSection";
 export const bWaiverRaiSchema = z.object({
   additionalInformation: z.string().optional().default(""),
   attachments: z.object({
-    raiResponseLetter: zAttachmentRequired({ min: 1 }),
+    raiResponseLetterWaiver: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,
   }),
 });

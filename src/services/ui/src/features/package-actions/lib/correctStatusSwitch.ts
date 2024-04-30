@@ -1,43 +1,28 @@
-import { type getItem } from "@/api";
-import { Action, SEATOOL_STATUS } from "shared-types";
+import { Action } from "shared-types";
+import { CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
+import {
+  ID_UPDATED_STATUS,
+  INTAKE_COMPLETED_STATUS,
+  PACKAGE_WITHDRAWN_STATUS,
+  RAI_ISSUED_STATUS,
+  RAI_RESPONDED_TO_STATUS,
+  RAI_WITHDRAWN_STATUS,
+  RAI_WITHDRAW_DISABLED_STATUS,
+  RAI_WITHDRAW_ENABLED_STATUS,
+  TEMPORARY_EXTENSION_REQUESTED_STATUS,
+} from "./modules";
 
 export const correctStatusToStopPollingData = (a: Action) => {
-  const actionContentMap: Record<
-    string,
-    (data: Awaited<ReturnType<typeof getItem>>) => boolean
-  > = {
-    "issue-rai": (data) => {
-      return (
-        data._source.seatoolStatus === SEATOOL_STATUS.PENDING_RAI &&
-        !!data._source.raiRequestedDate
-      );
-    },
-    "respond-to-rai": (data) => {
-      return (
-        data._source.seatoolStatus === SEATOOL_STATUS.PENDING &&
-        !!data._source.raiReceivedDate
-      );
-    },
-    "enable-rai-withdraw": (data) => {
-      return data._source.raiWithdrawEnabled;
-    },
-    "disable-rai-withdraw": (data) => {
-      return !data._source.raiWithdrawEnabled;
-    },
-    "withdraw-rai": (data) => {
-      return (
-        data._source.seatoolStatus === SEATOOL_STATUS.PENDING_RAI &&
-        !!data._source.raiWithdrawnDate
-      );
-    },
-    "withdraw-package": (data) => {
-      return data._source.seatoolStatus === SEATOOL_STATUS.WITHDRAWN;
-    },
-    "temporary-extension": (data) => {
-      return !!data;
-    },
-    "update-id": () => true,
-    "complete-intake": () => true,
+  const actionContentMap: Record<string, CheckStatusFunction> = {
+    "issue-rai": RAI_ISSUED_STATUS,
+    "respond-to-rai": RAI_RESPONDED_TO_STATUS,
+    "enable-rai-withdraw": RAI_WITHDRAW_ENABLED_STATUS,
+    "disable-rai-withdraw": RAI_WITHDRAW_DISABLED_STATUS,
+    "withdraw-rai": RAI_WITHDRAWN_STATUS,
+    "withdraw-package": PACKAGE_WITHDRAWN_STATUS,
+    "temporary-extension": TEMPORARY_EXTENSION_REQUESTED_STATUS,
+    "update-id": ID_UPDATED_STATUS,
+    "complete-intake": INTAKE_COMPLETED_STATUS,
   };
   const group = actionContentMap?.[a];
   if (!group) throw new Error(`No status for group "${a}"`);

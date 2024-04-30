@@ -1,4 +1,5 @@
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
+import { CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
 
 export * from "./spa/med-rai";
 export * from "./spa/chip-rai";
@@ -23,3 +24,7 @@ export const waiverRaiContent: FormContentHydrator = (document) => ({
     body: `The RAI response for ${document.id} has been submitted.`,
   },
 });
+
+export const RAI_RESPONDED_TO_STATUS: CheckStatusFunction = (checks) =>
+  checks.isExpectedStatus("PENDING") &&
+  checks.propertyExists("raiReceivedDate");

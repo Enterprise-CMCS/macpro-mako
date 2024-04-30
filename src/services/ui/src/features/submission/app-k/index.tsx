@@ -54,12 +54,9 @@ export const AppKSubmissionForm = () => {
           setIsDataPolling(true);
           await seaStatusPoller(
             `${draft.state}-${draft.parentWaiver}`,
-            (data) => {
-              return (
-                data._source.authority === Authority["1915c"] &&
-                data._source.actionType === "Amend"
-              );
-            },
+            (checks) =>
+              checks.isExpectedAuthority(Authority["1915c"]) &&
+              checks.isExpectedActionType("Amend"),
           ).startPollingData();
           setIsDataPolling(false);
 

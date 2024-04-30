@@ -105,9 +105,8 @@ export const Capitated1915BWaiverAmendmentPage = () => {
           : "/dashboard",
       );
 
-      const poller = seaStatusPoller(
-        formData.id,
-        (data) => data._source.actionType === "Amend",
+      const poller = seaStatusPoller(formData.id, (checks) =>
+        checks.isExpectedActionType("Amend"),
       );
 
       await poller.startPollingData();

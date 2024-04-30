@@ -8,6 +8,7 @@ import {
   AttachmentsSection,
   PackageSection,
 } from "@/components";
+import { type CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
 
 export * from "./spa/withdraw-chip-rai";
 
@@ -85,3 +86,6 @@ export const defaultWithdrawPackageContent: FormContentHydrator = (
     body: `The package ${document.id} has been withdrawn.`,
   },
 });
+
+export const PACKAGE_WITHDRAWN_STATUS: CheckStatusFunction = (checks) =>
+  checks.isExpectedStatus("WITHDRAWN");

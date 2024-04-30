@@ -2,6 +2,7 @@ import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitc
 import { ReactElement } from "react";
 import { ActionFormDescription, PackageSection } from "@/components";
 import { z } from "zod";
+import { type CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
 
 // react-hook-form needs any kind of schema to prevent an undefined error
 export const defaultEnableRaiWithdrawSchema = z.object({});
@@ -46,3 +47,9 @@ export const defaultDisableRaiWithdrawContent: FormContentHydrator = (
     body: "The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
   },
 });
+
+export const RAI_WITHDRAW_DISABLED_STATUS: CheckStatusFunction = (checks) =>
+  !checks.withdrawEnabled;
+
+export const RAI_WITHDRAW_ENABLED_STATUS: CheckStatusFunction = (checks) =>
+  checks.withdrawEnabled;

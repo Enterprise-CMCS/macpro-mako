@@ -117,7 +117,10 @@ export const MedicaidSpaFormPage = () => {
           : "/dashboard",
       );
 
-      const poller = seaStatusPoller(formData.id, (data) => !!data);
+      const poller = seaStatusPoller(
+        formData.id,
+        (checks) => checks.recordExists,
+      );
 
       await poller.startPollingData();
 

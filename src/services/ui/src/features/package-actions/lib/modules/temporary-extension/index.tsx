@@ -14,6 +14,7 @@ import {
   AttachmentsSection,
 } from "@/components";
 import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
+import { CheckStatusFunction } from "../../dataStatusChecker";
 
 export const defaultTempExtSchema = z
   .object({
@@ -104,3 +105,7 @@ export const defaultTempExtContent: FormContentHydrator = (document) => ({
     body: "Your submission has been received.",
   },
 });
+
+export const TEMPORARY_EXTENSION_REQUESTED_STATUS: CheckStatusFunction = (
+  checks,
+) => checks.recordExists;

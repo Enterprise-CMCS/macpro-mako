@@ -99,9 +99,8 @@ export const Contracting1915BWaiverInitialPage = () => {
           : "/dashboard",
       );
 
-      const poller = seaStatusPoller(
-        formData.id,
-        (data) => data._source.actionType === "New",
+      const poller = seaStatusPoller(formData.id, (checks) =>
+        checks.isExpectedActionType("New"),
       );
 
       await poller.startPollingData();

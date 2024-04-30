@@ -8,6 +8,7 @@ import {
   AttachmentsSection,
   PackageSection,
 } from "@/components";
+import { type CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
 
 export const defaultWithdrawRaiSchema = z.object({
   additionalInformation: zAdditionalInfo,
@@ -54,3 +55,7 @@ export const defaultWithdrawRaiContent: FormContentHydrator = (document) => ({
     body: `The RAI response for ${document.id} has been withdrawn. CMS may follow up if additional information is needed.`,
   },
 });
+
+export const RAI_WITHDRAWN_STATUS: CheckStatusFunction = (checks) =>
+  checks.isExpectedStatus("PENDING_RAI") &&
+  checks.propertyExists("raiWithdrawnDate");

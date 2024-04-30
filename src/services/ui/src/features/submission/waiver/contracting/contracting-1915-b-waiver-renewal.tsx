@@ -126,9 +126,8 @@ export const Contracting1915BWaiverRenewalPage = () => {
           : "/dashboard",
       );
 
-      const poller = seaStatusPoller(
-        formData.id,
-        (data) => data._source.actionType === "Renew",
+      const poller = seaStatusPoller(formData.id, (checks) =>
+        checks.isExpectedActionType("Renew"),
       );
 
       await poller.startPollingData();

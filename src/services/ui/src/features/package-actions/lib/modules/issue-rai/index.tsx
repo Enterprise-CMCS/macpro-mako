@@ -12,6 +12,7 @@ import {
   AttachmentsSection,
   PackageSection,
 } from "@/components";
+import { type CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
 
 export const defaultIssueRaiSchema = z.object({
   additionalInformation: zAdditionalInfo,
@@ -64,3 +65,7 @@ export const defaultIssueRaiContent: FormContentHydrator = (document) => ({
     body: `The RAI for ${document.id} has been submitted. An email confirmation will be sent to you and the state.`,
   },
 });
+
+export const RAI_ISSUED_STATUS: CheckStatusFunction = (checks) =>
+  checks.isExpectedStatus("PENDING_RAI") &&
+  checks.propertyExists("raiRequestedDate");

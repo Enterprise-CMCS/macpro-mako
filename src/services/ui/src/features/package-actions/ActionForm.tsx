@@ -40,7 +40,6 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
     mode: "onChange",
   });
 
-  console.log({ origin });
   // Submission Handler
   const handler = form.handleSubmit(
     async (data) =>
