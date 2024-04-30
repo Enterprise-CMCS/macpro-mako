@@ -260,7 +260,9 @@ resources:
                     - Backup
                     - Effect: Allow
                       Action:
-                        - s3:PutObject
+                        - "s3:ReplicateObject"
+                        - "s3:ReplicateDelete"
+                        - "s3:ReplicateTags"
                       Resource: !Sub "${self:custom.attachmentsBackupBucketArn}/*"
                     - !Ref AWS::NoValue
 
