@@ -1,8 +1,7 @@
 import { PropsWithChildren, ReactElement } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import {
   Button,
-  Link,
   SimplePageContainer,
   BreadCrumbs,
   FAQ_TAB,
@@ -34,9 +33,10 @@ const FAQHelperText = () => (
     <i>
       For additional information on where to submit, refer to the{" "}
       <Link
-        className="text-sky-700 hover:text-sky-800 underline"
+        to="/faq/crosswalk-system"
         target={FAQ_TAB}
-        path={"/faq/system" as Route}
+        rel="noopener noreferrer"
+        className="text-blue-700 hover:underline flex items-center"
       >
         Crosswalk from Paper-based State Plan to MACPro and MMDL
       </Link>{" "}

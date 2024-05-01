@@ -38,16 +38,14 @@ export const defaultIssueRaiFields: ReactElement[] = [
     attachments={[
       {
         name: "formalRaiLetter",
-        label: "Formal RAI Letter",
         required: true,
       },
       {
         name: "other",
-        label: "Other",
         required: false,
       },
     ]}
-    faqLink={""}
+    faqAttLink={"/faq"}
   />,
   <AdditionalInfoSection
     required

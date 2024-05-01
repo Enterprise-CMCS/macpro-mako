@@ -31,20 +31,18 @@ export const medSpaRaiFields: ReactElement[] = [
   </ActionFormDescription>,
   <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
+    faqAttLink="/faq/medicaid-spa-rai-attachments"
     key={"field-attachments"}
     attachments={[
       {
         name: "raiResponseLetter",
-        label: "RAI Response Letter",
         required: true,
       },
       {
         name: "other",
-        label: "Other",
         required: false,
       },
     ]}
-    faqLink={""}
   />,
   <AdditionalInfoSection
     key={"field-addlinfo"}
