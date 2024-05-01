@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { cn } from "@/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components";
 import {
+  DependencyWrapper,
   FieldGroup,
   RHFFieldArray,
   RHFFormGroup,
@@ -148,34 +149,43 @@ export const SlotField = ({
       return (
         <div className="flex flex-col gap-2">
           {(props as RHFComponentMap["Checkbox"]).options.map((OPT) => (
-            <div key={`CHECK-${OPT.value}`}>
-              <Checkbox
-                label={OPT.label}
-                value={OPT.value}
-                checked={field.value?.includes(OPT.value)}
-                styledLabel={
-                  <RHFTextDisplay text={OPT.styledLabel ?? OPT.label} />
-                }
-                onCheckedChange={(c) => {
-                  const filtered =
-                    field.value?.filter((f: unknown) => f !== OPT.value) || [];
-                  if (!c) return field.onChange(filtered);
-                  field.onChange([...filtered, OPT.value]);
-                }}
-                dependency={OPT.dependency}
-                parentValue={field.value}
-                changeMethod={field.onChange}
-                aria-label={field.name}
-                optionlabelClassName={OPT.optionlabelClassName}
-              />
-              {field.value?.includes(OPT.value) && (
-                <OptChildren
-                  {...OPT}
-                  groupNamePrefix={groupNamePrefix}
-                  control={control}
+            <DependencyWrapper
+              name={OPT.value}
+              dependency={OPT.dependency}
+              changeMethod={field.onChange}
+              parentValue={field.value}
+              key={`CHECK-dw-${OPT.value}`}
+            >
+              <div key={`CHECK-${OPT.value}`}>
+                <Checkbox
+                  label={OPT.label}
+                  value={OPT.value}
+                  checked={field.value?.includes(OPT.value)}
+                  styledLabel={
+                    <RHFTextDisplay text={OPT.styledLabel ?? OPT.label} />
+                  }
+                  onCheckedChange={(c) => {
+                    const filtered =
+                      field.value?.filter((f: unknown) => f !== OPT.value) ||
+                      [];
+                    if (!c) return field.onChange(filtered);
+                    field.onChange([...filtered, OPT.value]);
+                  }}
+                  dependency={OPT.dependency}
+                  parentValue={field.value}
+                  changeMethod={field.onChange}
+                  aria-label={field.name}
+                  optionlabelClassName={OPT.optionlabelClassName}
                 />
-              )}
-            </div>
+                {field.value?.includes(OPT.value) && (
+                  <OptChildren
+                    {...OPT}
+                    groupNamePrefix={groupNamePrefix}
+                    control={control}
+                  />
+                )}
+              </div>
+            </DependencyWrapper>
           ))}
         </div>
       );
