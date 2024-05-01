@@ -1,13 +1,6 @@
 import { Action, CognitoUserAttributes, opensearch } from "../../shared-types";
 import rules from "./rules";
-import { PackageCheck } from "../package-check";
-import { getPackageActions } from "api/handlers/getPackageActions";
-
-export const getChildrenActions = (
-  user: CognitoUserAttributes,
-  children: opensearch.main.ItemResult[],
-): Action[][] =>
-  children.map((child) => getAvailableActions(user, child._source));
+import { haveSameRaiDate, PackageCheck } from "../package-check";
 
 export const getAvailableActions = (
   user: CognitoUserAttributes,
@@ -18,9 +11,11 @@ export const getAvailableActions = (
     .filter((r) => r.check(checks, user))
     .map((r) => r.action);
   // Normal and AppK child packages return here
-  if (!result.appkParent && !result.appkChildren?.length) return actions;
+  if (!result.appkParent || !result.appkChildren?.length) return actions;
   // AppK children action bundling
-  const childrenActions = getChildrenActions(user, result.appkChildren!);
+  const childrenActions: Action[][] = result.appkChildren.map((child) =>
+    getAvailableActions(user, child._source),
+  );
   // We only want common actions; omit actions not in every AppK package
   const commonActions = [actions, ...childrenActions].reduce(
     (acc, currentActions, idx) =>
@@ -44,11 +39,4 @@ export const getAvailableActions = (
         ].includes(a);
       })
     : commonActions;
-};
-
-/** Checks whether all AppK members have the same RAI Requested date */
-const haveSameRaiDate = (members: opensearch.main.Document[]) => {
-  return members
-    .map((member) => member.raiRequestedDate)
-    .every((date, _, arr) => date === arr[0]);
 };
