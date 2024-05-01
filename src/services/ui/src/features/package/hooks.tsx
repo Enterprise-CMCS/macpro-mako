@@ -16,10 +16,9 @@ export const useDetailsSidebarLinks = (
 
   useLayoutEffect(() => {
     const ids = [
-      "package_details",
+      "package_detailss",
       "package_activity",
       "administrative_package_changess",
-      "appendix_k",
     ];
 
     // Check if dataId is not undefined before proceeding
