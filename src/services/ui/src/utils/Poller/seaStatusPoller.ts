@@ -1,9 +1,10 @@
 import { getItem } from "@/api/useGetItem";
 import { DataPoller } from "./DataPoller";
-import {
-  DataStateCheck,
-  type CheckStatusFunction,
-} from "@/features/package-actions/lib/dataStatusChecker";
+import { PackageCheck } from "shared-utils";
+
+export type CheckStatusFunction = (
+  check: ReturnType<typeof PackageCheck>,
+) => boolean;
 
 export const seaStatusPoller = (
   id: string,
@@ -13,8 +14,9 @@ export const seaStatusPoller = (
     interval: 1000,
     pollAttempts: 20,
     onPoll: (data) => {
-      const checks = DataStateCheck(data);
-      return statusToCheck(checks);
+      const check = PackageCheck(data._source);
+
+      return statusToCheck(check);
     },
     fetcher: () => getItem(id),
   });
