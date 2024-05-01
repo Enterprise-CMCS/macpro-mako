@@ -15,3 +15,4 @@ export * from "./seatool-statics";
 export * from "./seatool-tables";
 export * from "./uploads";
 export * from "./user";
+export * from "./action-type";
