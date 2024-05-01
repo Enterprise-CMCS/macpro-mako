@@ -8,7 +8,7 @@ import { TypeSelect } from "@/components/Form/fields/TypeSelect";
 import { SubTypeSelect } from "@/components/Form/fields/SubTypeSelect";
 import { CPOCSelect } from "@/components/Form/fields/CPOCSelect";
 import { PackageSection } from "@/components/Form/content/PackageSection";
-import { type CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
+import { CheckStatusFunction } from "@/utils/Poller/seaStatusPoller";
 
 export const defaultCompleteIntakeSchema = z.object({
   subject: z
@@ -52,4 +52,4 @@ export const defaultCompleteIntakeContent: FormContentHydrator = (
   },
 });
 
-export const INTAKE_COMPLETED_STATUS: CheckStatusFunction = (_checks) => true;
+export const intakeCompleted: CheckStatusFunction = (_checks) => true;

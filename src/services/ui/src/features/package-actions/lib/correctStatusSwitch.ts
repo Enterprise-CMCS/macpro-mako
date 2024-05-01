@@ -1,28 +1,28 @@
 import { Action } from "shared-types";
-import { CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
 import {
-  ID_UPDATED_STATUS,
-  INTAKE_COMPLETED_STATUS,
-  PACKAGE_WITHDRAWN_STATUS,
-  RAI_ISSUED_STATUS,
-  RAI_RESPONDED_TO_STATUS,
-  RAI_WITHDRAWN_STATUS,
-  RAI_WITHDRAW_DISABLED_STATUS,
-  RAI_WITHDRAW_ENABLED_STATUS,
-  TEMPORARY_EXTENSION_REQUESTED_STATUS,
+  idUpdated,
+  intakeCompleted,
+  packageWithdrawn,
+  raiIssued,
+  raiRespondedTo,
+  raiWithdrawalDisabled,
+  raiWithdrawalEnabled,
+  raiWithdrawn,
+  temporaryExtensionRequested,
 } from "./modules";
+import { CheckStatusFunction } from "@/utils/Poller/seaStatusPoller";
 
 export const correctStatusToStopPollingData = (a: Action) => {
   const actionStatusMap: Record<string, CheckStatusFunction> = {
-    "issue-rai": RAI_ISSUED_STATUS,
-    "respond-to-rai": RAI_RESPONDED_TO_STATUS,
-    "enable-rai-withdraw": RAI_WITHDRAW_ENABLED_STATUS,
-    "disable-rai-withdraw": RAI_WITHDRAW_DISABLED_STATUS,
-    "withdraw-rai": RAI_WITHDRAWN_STATUS,
-    "withdraw-package": PACKAGE_WITHDRAWN_STATUS,
-    "temporary-extension": TEMPORARY_EXTENSION_REQUESTED_STATUS,
-    "update-id": ID_UPDATED_STATUS,
-    "complete-intake": INTAKE_COMPLETED_STATUS,
+    "issue-rai": raiIssued,
+    "respond-to-rai": raiRespondedTo,
+    "enable-rai-withdraw": raiWithdrawalEnabled,
+    "disable-rai-withdraw": raiWithdrawalDisabled,
+    "withdraw-rai": raiWithdrawn,
+    "withdraw-package": packageWithdrawn,
+    "temporary-extension": temporaryExtensionRequested,
+    "update-id": idUpdated,
+    "complete-intake": intakeCompleted,
   };
   const group = actionStatusMap?.[a];
   if (!group) throw new Error(`No status for group "${a}"`);

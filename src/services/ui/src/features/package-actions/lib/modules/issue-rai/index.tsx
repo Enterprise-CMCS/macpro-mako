@@ -12,7 +12,8 @@ import {
   AttachmentsSection,
   PackageSection,
 } from "@/components";
-import { type CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
+import { CheckStatusFunction } from "@/utils/Poller/seaStatusPoller";
+import { SEATOOL_STATUS } from "shared-types";
 
 export const defaultIssueRaiSchema = z.object({
   additionalInformation: zAdditionalInfo,
@@ -66,6 +67,5 @@ export const defaultIssueRaiContent: FormContentHydrator = (document) => ({
   },
 });
 
-export const RAI_ISSUED_STATUS: CheckStatusFunction = (checks) =>
-  checks.isExpectedStatus("PENDING_RAI") &&
-  checks.propertyExists("raiRequestedDate");
+export const raiIssued: CheckStatusFunction = (checks) =>
+  checks.hasStatus(SEATOOL_STATUS.PENDING_RAI) && checks.hasLatestRai;

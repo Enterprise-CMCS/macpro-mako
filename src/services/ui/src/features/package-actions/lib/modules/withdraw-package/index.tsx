@@ -8,7 +8,8 @@ import {
   AttachmentsSection,
   PackageSection,
 } from "@/components";
-import { type CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
+import { CheckStatusFunction } from "@/utils/Poller/seaStatusPoller";
+import { SEATOOL_STATUS } from "shared-types";
 
 export * from "./spa/withdraw-chip-rai";
 
@@ -87,5 +88,5 @@ export const defaultWithdrawPackageContent: FormContentHydrator = (
   },
 });
 
-export const PACKAGE_WITHDRAWN_STATUS: CheckStatusFunction = (checks) =>
-  checks.isExpectedStatus("WITHDRAWN");
+export const packageWithdrawn: CheckStatusFunction = (checks) =>
+  checks.hasStatus(SEATOOL_STATUS.WITHDRAWN);

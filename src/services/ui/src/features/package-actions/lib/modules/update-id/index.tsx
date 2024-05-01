@@ -8,7 +8,7 @@ import {
   PackageSection,
 } from "@/components";
 import { NewIdField } from "@/features/package-actions/lib/modules/update-id/legacy-components";
-import { type CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
+import { CheckStatusFunction } from "@/utils/Poller/seaStatusPoller";
 
 export const defaultUpdateIdSchema = z
   .object({
@@ -55,4 +55,4 @@ export const defaultUpdateIdContent: FormContentHydrator = (document) => ({
     "Once you submit this form, the ID of the existing package will be updated in SEATool and OneMAC.",
 });
 
-export const ID_UPDATED_STATUS: CheckStatusFunction = (_checks) => true;
+export const idUpdated: CheckStatusFunction = (_checks) => true;

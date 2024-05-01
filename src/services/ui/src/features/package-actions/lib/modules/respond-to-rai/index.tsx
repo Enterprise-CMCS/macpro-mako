@@ -1,5 +1,6 @@
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
-import { CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
+import { CheckStatusFunction } from "@/utils/Poller/seaStatusPoller";
+import { SEATOOL_STATUS } from "shared-types";
 
 export * from "./spa/med-rai";
 export * from "./spa/chip-rai";
@@ -25,6 +26,5 @@ export const waiverRaiContent: FormContentHydrator = (document) => ({
   },
 });
 
-export const RAI_RESPONDED_TO_STATUS: CheckStatusFunction = (checks) =>
-  checks.isExpectedStatus("PENDING") &&
-  checks.propertyExists("raiReceivedDate");
+export const raiRespondedTo: CheckStatusFunction = (checks) =>
+  checks.hasStatus(SEATOOL_STATUS.PENDING) && checks.hasRaiResponse;

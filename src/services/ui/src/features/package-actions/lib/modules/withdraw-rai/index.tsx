@@ -8,7 +8,8 @@ import {
   AttachmentsSection,
   PackageSection,
 } from "@/components";
-import { type CheckStatusFunction } from "@/features/package-actions/lib/dataStatusChecker";
+import { CheckStatusFunction } from "@/utils/Poller/seaStatusPoller";
+import { SEATOOL_STATUS } from "shared-types";
 
 export const defaultWithdrawRaiSchema = z.object({
   additionalInformation: zAdditionalInfo,
@@ -56,6 +57,5 @@ export const defaultWithdrawRaiContent: FormContentHydrator = (document) => ({
   },
 });
 
-export const RAI_WITHDRAWN_STATUS: CheckStatusFunction = (checks) =>
-  checks.isExpectedStatus("PENDING_RAI") &&
-  checks.propertyExists("raiWithdrawnDate");
+export const raiWithdrawn: CheckStatusFunction = (checks) =>
+  checks.hasStatus(SEATOOL_STATUS.PENDING_RAI) && checks.hasRaiWithdrawal;
