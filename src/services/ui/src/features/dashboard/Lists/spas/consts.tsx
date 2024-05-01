@@ -16,6 +16,19 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
   if (!props?.user) return [];
 
   return [
+    // hide actions column for: readonly,help desk
+    ...(!CMS_READ_ONLY_ROLES.some((UR) =>
+      props.user?.["custom:cms-roles"].includes(UR),
+    )
+      ? [
+          {
+            locked: true,
+            isSystem: true,
+            label: "Actions",
+            cell: renderCellActions(props.user),
+          },
+        ]
+      : []),
     {
       props: { className: "w-[150px]" },
       field: "id.keyword",
@@ -146,18 +159,5 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       transform: (data) => data.submitterName ?? BLANK_VALUE,
       cell: (data) => data.submitterName,
     },
-    // hide actions column for: readonly,help desk
-    ...(!CMS_READ_ONLY_ROLES.some((UR) =>
-      props.user?.["custom:cms-roles"].includes(UR),
-    )
-      ? [
-          {
-            locked: true,
-            isSystem: true,
-            label: "Actions",
-            cell: renderCellActions(props.user),
-          },
-        ]
-      : []),
   ];
 };
