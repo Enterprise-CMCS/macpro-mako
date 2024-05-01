@@ -1,5 +1,6 @@
 import { BreadCrumbConfig, Route, urlEmbedQuery } from "@/components";
-import { isSpaById, mapActionLabel, mapSubmissionCrumb } from "@/utils";
+import { SPA_ID_REGEX } from "@/consts";
+import { mapActionLabel, mapSubmissionCrumb } from "@/utils";
 import { Action } from "shared-types";
 
 export const dashboardCrumb = (id?: string): BreadCrumbConfig => {
@@ -8,7 +9,9 @@ export const dashboardCrumb = (id?: string): BreadCrumbConfig => {
     order: 1,
     default: true,
     to: id
-      ? urlEmbedQuery("/dashboard", { tab: isSpaById(id) ? "spas" : "waivers" })
+      ? urlEmbedQuery("/dashboard", {
+          tab: SPA_ID_REGEX.test(id) ? "spas" : "waivers",
+        })
       : "/dashboard",
   };
 };

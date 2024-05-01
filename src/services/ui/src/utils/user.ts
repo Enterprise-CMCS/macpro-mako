@@ -24,9 +24,3 @@ export const isAuthorizedState = async (id: string) => {
     return false;
   }
 };
-
-export const isSpaById = (id: string) => {
-  const spaBegin = /^[A-z]{2}-[0-9]{2}-/g;
-
-  return spaBegin.test(id);
-};

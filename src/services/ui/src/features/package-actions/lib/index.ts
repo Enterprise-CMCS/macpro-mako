@@ -2,13 +2,14 @@ import { Action, Authority, AuthorityUnion } from "shared-types";
 import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
 import { OneMacUser, submit } from "@/api";
-import { buildActionUrl, isSpaById, useOriginPath } from "@/utils";
+import { buildActionUrl, useOriginPath } from "@/utils";
 import { Route, useAlertContext, useNavigate } from "@/components";
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
 import { correctStatusToStopPollingData } from "./correctStatusSwitch";
 import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
 import { stripQueryStringFromURL } from "@/utils/stripQueryString";
+import { SPA_ID_REGEX } from "@/consts";
 
 export type FormSetup = {
   schema: ReturnType<typeof getSchemaFor>;
@@ -75,7 +76,7 @@ export const submitActionForm = async ({
       path: strippedPath.path as Route,
       query: {
         ...strippedPath.queryParams,
-        tab: isSpaById(id) ? "spas" : "waivers",
+        tab: SPA_ID_REGEX.test(id) ? "spas" : "waivers",
       },
     });
   } catch (e: unknown) {
