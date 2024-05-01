@@ -1,5 +1,10 @@
 import { describe, test, expect } from "vitest";
-import { render, prettyDOM } from "@testing-library/react";
+import {
+  render,
+  prettyDOM,
+  fireEvent,
+  getByLabelText,
+} from "@testing-library/react";
 import { RHFSlot } from "../.";
 import { Form, FormField } from "../../Inputs";
 import { Control, useForm } from "react-hook-form";
@@ -47,7 +52,7 @@ describe("Slot Input Field Tests", () => {
       <TestWrapper {...testValues} rhf="Textarea" props={{}} />,
     );
     const input = rend.getByRole("textbox", { name: `${testValues.name}` });
-    expect(input.name).toBe(testValues.name);
+    expect((input as any)?.name).toBe(testValues.name);
   });
 
   test("renders TextDisplay", () => {
@@ -73,11 +78,9 @@ describe("Slot Input Field Tests", () => {
     const rend = render(
       <TestWrapper {...testValues} rhf="DatePicker" props={{}} />,
     );
-    const input = rend.getByText("Pick a date");
-    expect(input).toBeTruthy();
+    const dpt = rend.getByText("Pick a date");
+    expect(dpt).toBeTruthy();
   });
-
-  test("Datepicker has value selected", () => {});
 
   test("renders Select", () => {
     const rend = render(
@@ -104,7 +107,12 @@ describe("Slot Input Field Tests", () => {
         }}
       />,
     );
-    console.log("select", prettyDOM(rend.container.firstChild));
+    const radio1 = rend.getByLabelText("test1");
+    const radio2 = rend.getByLabelText("test2");
+
+    fireEvent.click(radio1);
+    expect(radio1).toBeChecked();
+    expect(radio2).not.toBeChecked();
   });
 
   test("render CheckGroup with OptChildren", () => {
@@ -145,5 +153,19 @@ describe("Slot Input Field Tests", () => {
         }}
       />,
     );
+
+    const check1 = rend.getByLabelText("test1");
+    const check2 = rend.getByLabelText("test2");
+
+    fireEvent.click(check1);
+    expect(check1).toBeChecked();
+    expect(check2).not.toBeChecked();
+
+    fireEvent.click(check2);
+    const text1 = rend.getByText("sample text display 1");
+    const text2 = rend.getByText("sample text display 2");
+    expect(check2).toBeChecked();
+    expect(text1).toBeTruthy();
+    expect(text2).toBeTruthy();
   });
 });

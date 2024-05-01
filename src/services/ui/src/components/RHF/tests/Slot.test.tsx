@@ -31,8 +31,8 @@ const testValues: RHFSlotProps = {
   rhf: "Input",
   description: "test desc",
   descriptionAbove: false,
-  descriptionStyling: "py-2",
-  formItemStyling: "py-4",
+  descriptionClassName: "py-2",
+  formItemClassName: "py-4",
 };
 
 describe("RHFSlot tests", () => {
@@ -51,8 +51,8 @@ describe("RHFSlot tests", () => {
       <TestWrapper
         {...testValues}
         descriptionAbove={true}
-        descriptionStyling={"py-4"}
-        formItemStyling={"py-6"}
+        descriptionClassName={"py-4"}
+        formItemClassName={"py-6"}
       />,
     );
     const desc = rend.getByText(`${testValues.description}`);
@@ -65,7 +65,7 @@ describe("RHFSlot tests", () => {
 
   test("no desc, no form styling", () => {
     const rend = render(
-      <TestWrapper {...testValues} description={""} formItemStyling={""} />,
+      <TestWrapper {...testValues} description={""} formItemClassName={""} />,
     );
     const desc = rend.queryByText(`${testValues.description}`);
     const wrap = rend.getByTestId(`${testValues.name}Wrapper`);
