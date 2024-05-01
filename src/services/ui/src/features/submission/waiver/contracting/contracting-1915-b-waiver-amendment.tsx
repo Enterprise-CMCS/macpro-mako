@@ -103,7 +103,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
       );
 
       const poller = seaStatusPoller(formData.id, (checks) =>
-        checks.isExpectedActionType("Amend"),
+        checks.actionIs("Amend"),
       );
 
       await poller.startPollingData();

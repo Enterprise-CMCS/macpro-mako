@@ -105,7 +105,7 @@ export const Capitated1915BWaiverInitialPage = () => {
       );
 
       const poller = seaStatusPoller(formData.id, (checks) =>
-        checks.isExpectedActionType("New"),
+        checks.actionIs("New"),
       );
 
       await poller.startPollingData();
