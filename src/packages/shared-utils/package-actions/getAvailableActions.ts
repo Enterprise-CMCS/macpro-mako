@@ -17,7 +17,7 @@ export const getAvailableActions = (
   const actions = rules
     .filter((r) => r.check(checks, user))
     .map((r) => r.action);
-  // Normal packages return here
+  // Normal and AppK child packages return here
   if (!result.appkParent && !result.appkChildren?.length) return actions;
   // AppK children action bundling
   const childrenActions = getChildrenActions(user, result.appkChildren!);
