@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
+import {
+  zAdditionalInfo,
+  zAttachmentOptional,
+  zAttachmentRequired,
+} from "@/utils";
 import { ReactElement } from "react";
 import {
   ActionFormDescription,
@@ -9,7 +13,7 @@ import {
 import { PackageSection } from "@/components/Form/content/PackageSection";
 
 export const bWaiverRaiSchema = z.object({
-  additionalInformation: z.string().optional().default(""),
+  additionalInformation: zAdditionalInfo.optional(),
   attachments: z.object({
     raiResponseLetterWaiver: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,
