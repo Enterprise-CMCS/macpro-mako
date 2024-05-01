@@ -2,13 +2,18 @@ import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitc
 import { defaultWithdrawPackageContent } from "@/features/package-actions/lib/modules";
 import { opensearch } from "shared-types";
 
+const mapActionType: Record<string, string> = {
+  New: "initial",
+  Renew: "renewal",
+  Amend: "amendment",
+};
 const confirmationModalBody = (document: opensearch.main.Document) => {
-  const beginning = `You are about to withdraw ${document.authority} waiver ${document.id}.`;
+  const beginning = `You are about to withdraw ${document.authority} ${mapActionType[document.actionType]} waiver ${document.id}.`;
   const middle = document.appkParent
     ? `Completing this action will conclude
-    the review of this ${document.authority} waiver package, and all packages associated with ${document.id} will also be withdrawn.`
+    the review of this ${document.authority} ${mapActionType[document.actionType]} waiver package, and all packages associated with ${document.id} will also be withdrawn.`
     : `Completing this action will conclude 
-    the review of this ${document.authority} waiver package.`;
+    the review of this ${document.authority} ${mapActionType[document.actionType]} waiver package.`;
   const end =
     "If you are not sure this is the correct action to select, contact your CMS point of contact for assistance.";
   return `${beginning} ${middle} ${end}`;
