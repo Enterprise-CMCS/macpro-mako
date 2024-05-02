@@ -15,7 +15,7 @@ export function DescriptionInput() {
             Description <Inputs.RequiredIndicator />
           </Inputs.FormLabel>
           <p className="text-gray-500 max-w-3xl">
-            A summary of the ${authority}. This should include details about a
+            A summary of the {authority}. This should include details about a
             reduction or increase, the amount of the reduction or increase,
             Federal Budget impact, and fiscal year. If there is a reduction,
             indicate if the EPSDT population is or isn’t exempt from the

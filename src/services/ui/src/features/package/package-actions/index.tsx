@@ -26,10 +26,15 @@ export const PackageActionsCard: FC<{
           <ul className="my-3">
             {actions.map((type, idx) => (
               <Link
-                state={{ from: `${location.pathname}${location.search}` }}
+                state={{
+                  from: `${location.pathname}${location.search}`,
+                }}
                 path="/action/:authority/:id/:type"
                 key={`${idx}-${type}`}
                 params={{ id, type, authority: data.authority }}
+                query={{
+                  origin: "actionsDetails",
+                }}
                 className="text-sky-700 font-semibold text-lg"
               >
                 <li>{mapActionLabel(type)}</li>
