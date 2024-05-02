@@ -2,7 +2,7 @@ import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitc
 import { ReactElement } from "react";
 import { ActionFormDescription, PackageSection } from "@/components";
 import { z } from "zod";
-import { CheckDocumentFunction } from "@/utils/Poller/seaStatusPoller";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 
 // react-hook-form needs any kind of schema to prevent an undefined error
 export const defaultEnableRaiWithdrawSchema = z.object({});

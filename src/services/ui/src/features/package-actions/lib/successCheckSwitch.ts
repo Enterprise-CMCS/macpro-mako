@@ -10,7 +10,7 @@ import {
   raiWithdrawn,
   temporaryExtensionRequested,
 } from "./modules";
-import { CheckDocumentFunction } from "@/utils/Poller/seaStatusPoller";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 
 export const successCheckSwitch = (a: Action) => {
   const actionStatusMap: Record<string, CheckDocumentFunction> = {

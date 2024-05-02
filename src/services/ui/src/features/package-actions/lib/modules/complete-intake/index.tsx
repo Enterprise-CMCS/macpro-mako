@@ -8,7 +8,7 @@ import { TypeSelect } from "@/components/Form/fields/TypeSelect";
 import { SubTypeSelect } from "@/components/Form/fields/SubTypeSelect";
 import { CPOCSelect } from "@/components/Form/fields/CPOCSelect";
 import { PackageSection } from "@/components/Form/content/PackageSection";
-import { CheckDocumentFunction } from "@/utils/Poller/seaStatusPoller";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 
 export const defaultCompleteIntakeSchema = z.object({
   subject: z

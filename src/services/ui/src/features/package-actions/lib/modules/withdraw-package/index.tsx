@@ -8,7 +8,7 @@ import {
   AttachmentsSection,
   PackageSection,
 } from "@/components";
-import { CheckDocumentFunction } from "@/utils/Poller/seaStatusPoller";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 import { SEATOOL_STATUS } from "shared-types";
 
 export * from "./spa/withdraw-chip-rai";

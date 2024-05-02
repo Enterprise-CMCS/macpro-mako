@@ -16,7 +16,7 @@ import * as Content from "@/components";
 import { useOriginPath, zAppkWaiverNumberSchema } from "@/utils";
 import { Link, useLocation } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
-import { documentPoller } from "@/utils/Poller/seaStatusPoller";
+import { documentPoller } from "@/utils/Poller/documentPoller";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();

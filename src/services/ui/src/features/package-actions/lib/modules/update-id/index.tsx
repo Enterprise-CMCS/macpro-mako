@@ -8,7 +8,7 @@ import {
   PackageSection,
 } from "@/components";
 import { NewIdField } from "@/features/package-actions/lib/modules/update-id/legacy-components";
-import { CheckDocumentFunction } from "@/utils/Poller/seaStatusPoller";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 
 export const defaultUpdateIdSchema = z
   .object({

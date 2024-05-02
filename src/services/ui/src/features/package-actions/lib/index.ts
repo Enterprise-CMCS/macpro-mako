@@ -7,7 +7,7 @@ import { Route, useAlertContext, useNavigate } from "@/components";
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
 import { successCheckSwitch } from "./successCheckSwitch";
-import { documentPoller } from "@/utils/Poller/seaStatusPoller";
+import { documentPoller } from "@/utils/Poller/documentPoller";
 import { stripQueryStringFromURL } from "@/utils/stripQueryString";
 import { SPA_ID_REGEX } from "@/consts";
 

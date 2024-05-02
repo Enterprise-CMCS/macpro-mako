@@ -29,7 +29,7 @@ import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
-import { documentPoller } from "@/utils/Poller/seaStatusPoller";
+import { documentPoller } from "@/utils/Poller/documentPoller";
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,

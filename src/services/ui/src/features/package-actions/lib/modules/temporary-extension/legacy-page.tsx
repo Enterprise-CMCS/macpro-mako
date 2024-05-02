@@ -31,7 +31,7 @@ import {
 } from "@/features/package-actions/legacy-shared-components";
 import { Info } from "lucide-react";
 import { useMemo } from "react";
-import { documentPoller } from "@/utils/Poller/seaStatusPoller";
+import { documentPoller } from "@/utils/Poller/documentPoller";
 import { isNewSubmission } from "@/utils";
 
 export const onValidSubmission: ActionFunction = async ({ request }) => {

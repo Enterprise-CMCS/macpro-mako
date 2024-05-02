@@ -1,5 +1,5 @@
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
-import { CheckDocumentFunction } from "@/utils/Poller/seaStatusPoller";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 import { SEATOOL_STATUS } from "shared-types";
 
 export * from "./spa/med-rai";

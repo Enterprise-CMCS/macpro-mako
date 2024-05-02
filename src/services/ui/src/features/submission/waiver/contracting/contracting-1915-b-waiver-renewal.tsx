@@ -32,7 +32,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
 import { SubmitAndCancelBtnSection } from "../shared-components";
-import { documentPoller } from "@/utils/Poller/seaStatusPoller";
+import { documentPoller } from "@/utils/Poller/documentPoller";
 
 const formSchema = z
   .object({
