@@ -6,7 +6,7 @@ import { buildActionUrl, useOriginPath } from "@/utils";
 import { Route, useAlertContext, useNavigate } from "@/components";
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
-import { correctStatusToStopPollingData } from "./correctStatusSwitch";
+import { successCheckSwitch } from "./correctStatusSwitch";
 import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
 import { stripQueryStringFromURL } from "@/utils/stripQueryString";
 import { SPA_ID_REGEX } from "@/consts";
@@ -45,7 +45,7 @@ export const submitActionForm = async ({
   originRoute: ReturnType<typeof useOriginPath>;
   alert: ReturnType<typeof useAlertContext>;
   navigate: ReturnType<typeof useNavigate>;
-  statusToCheck: ReturnType<typeof correctStatusToStopPollingData>;
+  statusToCheck: ReturnType<typeof successCheckSwitch>;
   locationState: { from?: string };
 }) => {
   const path = originRoute ? originRoute : "/dashboard";

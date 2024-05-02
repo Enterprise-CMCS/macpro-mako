@@ -12,7 +12,7 @@ import {
 } from "./modules";
 import { CheckStatusFunction } from "@/utils/Poller/seaStatusPoller";
 
-export const correctStatusToStopPollingData = (a: Action) => {
+export const successCheckSwitch = (a: Action) => {
   const actionStatusMap: Record<string, CheckStatusFunction> = {
     "issue-rai": raiIssued,
     "respond-to-rai": raiRespondedTo,

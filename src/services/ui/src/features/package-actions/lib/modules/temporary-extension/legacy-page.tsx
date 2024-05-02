@@ -26,13 +26,13 @@ import { useParams } from "react-router-dom";
 import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
 import {
   ActionFunction,
-  isNewSubmission,
   useDisplaySubmissionAlert,
   useSubmitForm,
 } from "@/features/package-actions/legacy-shared-components";
 import { Info } from "lucide-react";
 import { useMemo } from "react";
 import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
+import { isNewSubmission } from "@/utils";
 
 export const onValidSubmission: ActionFunction = async ({ request }) => {
   try {

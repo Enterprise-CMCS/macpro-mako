@@ -1,4 +1,5 @@
 import { Route, urlEmbedQuery, useAlertContext } from "@/components";
+import { isNewSubmission } from "@/utils";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import {
@@ -65,9 +66,6 @@ export const useIntakePackage = () => {
     formMethods: methods,
   };
 };
-
-export const isNewSubmission = () =>
-  window.location.href.includes("new-submission");
 
 export const useDisplaySubmissionAlert = (header: string, body: string) => {
   const alert = useAlertContext();

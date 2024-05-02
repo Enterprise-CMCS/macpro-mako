@@ -19,7 +19,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "@/components";
-import { correctStatusToStopPollingData } from "./lib/correctStatusSwitch";
+import { successCheckSwitch } from "./lib/correctStatusSwitch";
 import { useLocation } from "react-router-dom";
 
 export const ActionForm = ({ setup }: { setup: FormSetup }) => {
@@ -52,7 +52,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
         alert,
         navigate,
         originRoute: origin,
-        statusToCheck: correctStatusToStopPollingData(type),
+        statusToCheck: successCheckSwitch(type),
         locationState: location.state,
       }),
   );
