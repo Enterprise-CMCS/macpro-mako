@@ -32,7 +32,7 @@ import {
 
 import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
-import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
+import { documentPoller } from "@/utils/Poller/seaStatusPoller";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -113,7 +113,7 @@ export const ChipSpaFormPage = () => {
           : "/dashboard",
       );
 
-      const poller = seaStatusPoller(
+      const poller = documentPoller(
         formData.id,
         (checks) => checks.recordExists,
       );

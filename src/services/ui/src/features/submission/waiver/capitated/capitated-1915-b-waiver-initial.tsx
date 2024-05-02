@@ -29,7 +29,7 @@ import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
 import { useQuery as useQueryString } from "@/hooks";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
-import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
+import { documentPoller } from "@/utils/Poller/seaStatusPoller";
 
 const formSchema = z.object({
   id: zInitialWaiverNumberSchema,
@@ -104,7 +104,7 @@ export const Capitated1915BWaiverInitialPage = () => {
           : "/dashboard",
       );
 
-      const poller = seaStatusPoller(formData.id, (checks) =>
+      const poller = documentPoller(formData.id, (checks) =>
         checks.actionIs("New"),
       );
 

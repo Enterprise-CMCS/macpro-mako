@@ -33,7 +33,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
-import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
+import { documentPoller } from "@/utils/Poller/seaStatusPoller";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -117,7 +117,7 @@ export const MedicaidSpaFormPage = () => {
           : "/dashboard",
       );
 
-      const poller = seaStatusPoller(
+      const poller = documentPoller(
         formData.id,
         (checks) => checks.recordExists,
       );

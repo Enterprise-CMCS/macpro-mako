@@ -16,7 +16,7 @@ import * as Content from "@/components";
 import { useOriginPath, zAppkWaiverNumberSchema } from "@/utils";
 import { Link, useLocation } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
-import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
+import { documentPoller } from "@/utils/Poller/seaStatusPoller";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
@@ -52,7 +52,7 @@ export const AppKSubmissionForm = () => {
           alert.setBannerShow(true);
           alert.setBannerDisplayOn("/dashboard");
           setIsDataPolling(true);
-          await seaStatusPoller(
+          await documentPoller(
             `${draft.state}-${draft.parentWaiver}`,
             (checks) =>
               checks.authorityIs([Authority["1915c"]]) &&

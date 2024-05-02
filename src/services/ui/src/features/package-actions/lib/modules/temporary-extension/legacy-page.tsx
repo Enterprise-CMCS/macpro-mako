@@ -31,7 +31,7 @@ import {
 } from "@/features/package-actions/legacy-shared-components";
 import { Info } from "lucide-react";
 import { useMemo } from "react";
-import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
+import { documentPoller } from "@/utils/Poller/seaStatusPoller";
 import { isNewSubmission } from "@/utils";
 
 export const onValidSubmission: ActionFunction = async ({ request }) => {
@@ -48,7 +48,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
       authority: data.authority as Authority,
     });
 
-    await seaStatusPoller(data.id, (data) => !!data).startPollingData();
+    await documentPoller(data.id, (data) => !!data).startPollingData();
 
     return {
       submitted: true,

@@ -6,7 +6,7 @@ export type CheckStatusFunction = (
   check: ReturnType<typeof PackageCheck> & { recordExists: boolean },
 ) => boolean;
 
-export const seaStatusPoller = (
+export const documentPoller = (
   id: string,
   statusToCheck: CheckStatusFunction,
 ) =>

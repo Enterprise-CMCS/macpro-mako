@@ -32,7 +32,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
-import { seaStatusPoller } from "@/utils/Poller/seaStatusPoller";
+import { documentPoller } from "@/utils/Poller/seaStatusPoller";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,
@@ -105,7 +105,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
           : "/dashboard",
       );
 
-      const poller = seaStatusPoller(formData.id, (checks) =>
+      const poller = documentPoller(formData.id, (checks) =>
         checks.actionIs("Amend"),
       );
 
