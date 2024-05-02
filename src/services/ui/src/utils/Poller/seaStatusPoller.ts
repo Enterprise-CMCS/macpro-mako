@@ -2,13 +2,13 @@ import { getItem } from "@/api/useGetItem";
 import { DataPoller } from "./DataPoller";
 import { PackageCheck } from "shared-utils";
 
-export type CheckStatusFunction = (
+export type CheckDocumentFunction = (
   check: ReturnType<typeof PackageCheck> & { recordExists: boolean },
 ) => boolean;
 
 export const documentPoller = (
   id: string,
-  statusToCheck: CheckStatusFunction,
+  documentChecker: CheckDocumentFunction,
 ) =>
   new DataPoller({
     interval: 1000,
@@ -16,7 +16,7 @@ export const documentPoller = (
     onPoll: (data) => {
       const check = PackageCheck(data._source);
 
-      return statusToCheck({ ...check, recordExists: !!data });
+      return documentChecker({ ...check, recordExists: !!data });
     },
     fetcher: () => getItem(id),
   });

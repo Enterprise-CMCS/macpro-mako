@@ -8,7 +8,7 @@ import {
   AttachmentsSection,
   PackageSection,
 } from "@/components";
-import { CheckStatusFunction } from "@/utils/Poller/seaStatusPoller";
+import { CheckDocumentFunction } from "@/utils/Poller/seaStatusPoller";
 import { SEATOOL_STATUS } from "shared-types";
 
 export * from "./spa/withdraw-chip-rai";
@@ -88,5 +88,5 @@ export const defaultWithdrawPackageContent: FormContentHydrator = (
   },
 });
 
-export const packageWithdrawn: CheckStatusFunction = (checks) =>
+export const packageWithdrawn: CheckDocumentFunction = (checks) =>
   checks.hasStatus(SEATOOL_STATUS.WITHDRAWN);

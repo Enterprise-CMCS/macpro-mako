@@ -10,10 +10,10 @@ import {
   raiWithdrawn,
   temporaryExtensionRequested,
 } from "./modules";
-import { CheckStatusFunction } from "@/utils/Poller/seaStatusPoller";
+import { CheckDocumentFunction } from "@/utils/Poller/seaStatusPoller";
 
 export const successCheckSwitch = (a: Action) => {
-  const actionStatusMap: Record<string, CheckStatusFunction> = {
+  const actionStatusMap: Record<string, CheckDocumentFunction> = {
     "issue-rai": raiIssued,
     "respond-to-rai": raiRespondedTo,
     "enable-rai-withdraw": raiWithdrawalEnabled,

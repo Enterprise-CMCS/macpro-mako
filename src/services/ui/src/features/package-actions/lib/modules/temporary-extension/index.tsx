@@ -14,7 +14,7 @@ import {
   AttachmentsSection,
 } from "@/components";
 import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
-import { CheckStatusFunction } from "@/utils/Poller/seaStatusPoller";
+import { CheckDocumentFunction } from "@/utils/Poller/seaStatusPoller";
 
 export const defaultTempExtSchema = z
   .object({
@@ -106,5 +106,5 @@ export const defaultTempExtContent: FormContentHydrator = (document) => ({
   },
 });
 
-export const temporaryExtensionRequested: CheckStatusFunction = (checks) =>
+export const temporaryExtensionRequested: CheckDocumentFunction = (checks) =>
   checks.recordExists;

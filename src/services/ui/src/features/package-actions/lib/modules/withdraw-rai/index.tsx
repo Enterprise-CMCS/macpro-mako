@@ -8,7 +8,7 @@ import {
   AttachmentsSection,
   PackageSection,
 } from "@/components";
-import { CheckStatusFunction } from "@/utils/Poller/seaStatusPoller";
+import { CheckDocumentFunction } from "@/utils/Poller/seaStatusPoller";
 import { SEATOOL_STATUS } from "shared-types";
 
 export const defaultWithdrawRaiSchema = z.object({
@@ -57,5 +57,5 @@ export const defaultWithdrawRaiContent: FormContentHydrator = (document) => ({
   },
 });
 
-export const raiWithdrawn: CheckStatusFunction = (checks) =>
+export const raiWithdrawn: CheckDocumentFunction = (checks) =>
   checks.hasStatus(SEATOOL_STATUS.PENDING_RAI) && checks.hasRaiWithdrawal;
