@@ -19,7 +19,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "@/components";
-import { successCheckSwitch } from "./lib/correctStatusSwitch";
+import { successCheckSwitch } from "./lib/successCheckSwitch";
 import { useLocation } from "react-router-dom";
 
 export const ActionForm = ({ setup }: { setup: FormSetup }) => {
