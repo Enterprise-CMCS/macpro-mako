@@ -15,7 +15,7 @@ export class DataPoller<TFetcherReturn> {
   async startPollingData() {
     return new Promise<{
       maxAttemptsReached: boolean;
-      correctStatusFound: boolean;
+      correctDataStateFound: boolean;
     }>((resolve, _reject) => {
       let timesPolled = 0;
 
@@ -27,14 +27,14 @@ export class DataPoller<TFetcherReturn> {
 
           if (stopPoll) {
             resolve({
-              correctStatusFound: true,
+              correctDataStateFound: true,
               maxAttemptsReached: false,
             });
             clearInterval(intervalId);
           }
         } else {
           resolve({
-            correctStatusFound: false,
+            correctDataStateFound: false,
             maxAttemptsReached: true,
           });
           clearInterval(intervalId);
