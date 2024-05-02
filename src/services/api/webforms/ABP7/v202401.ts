@@ -17,7 +17,7 @@ export const v202401: FormSchema = {
               name: "abp7_epsdt-assurances_does-abp-include-beneficiaries-under-21_select",
               label:
                 "Does the Alternative Benefit Plan (ABP) include beneficiaries under age 21?",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               rules: { required: "* Required" },
               props: {
                 className: "w-[150px]",
@@ -61,7 +61,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Radio",
               label: "How will EPSDT services be provided?",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "abp7_epsdt-assurances_how-will-epsdt-be-provided_radiogroup",
               rules: { required: "* Required" },
               props: {
@@ -84,7 +84,7 @@ export const v202401: FormSchema = {
                             rhf: "Radio",
                             label:
                               "How will the state/territory provide additional EPSDT benefits?",
-                            labelStyling: "font-bold",
+                            labelClassName: "font-bold",
                             name: "abp7_epsdt-assurances_how-will-state-territory-provided-additional-benefits_radiogroup",
                             rules: { required: "* Required" },
                             props: {
@@ -100,7 +100,7 @@ export const v202401: FormSchema = {
                                     {
                                       rhf: "Radio",
                                       label: "Payment method",
-                                      labelStyling: "font-bold",
+                                      labelClassName: "font-bold",
                                       name: "abp7_epsdt-assurances_payment-method_radiogroup",
                                       rules: { required: "* Required" },
                                       props: {
@@ -123,7 +123,7 @@ export const v202401: FormSchema = {
                                                 rhf: "Textarea",
                                                 name: "abp7_epsdt-assurances_payment-other_textarea",
                                                 label: "Describe",
-                                                labelStyling: "font-bold",
+                                                labelClassName: "font-bold",
                                                 rules: {
                                                   required: "* Required",
                                                 },
@@ -150,7 +150,7 @@ export const v202401: FormSchema = {
               rhf: "Input",
               label:
                 "Other information about how ESPDT benefits will be provided to participants under age 21 (optional)",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "abp7_epsdt-assurances_other-info-about-espdt-provided-to-under-21_input",
             },
           ],
