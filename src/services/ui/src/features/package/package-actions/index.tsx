@@ -36,9 +36,6 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
                   origin: "actionsDetails",
                 }}
                 className="text-sky-700 font-semibold text-lg"
-                query={{
-                  origin: "actionsDetails",
-                }}
               >
                 <li>{mapActionLabel(type)}</li>
               </Link>
