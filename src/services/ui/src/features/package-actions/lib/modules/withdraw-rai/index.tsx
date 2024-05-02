@@ -36,9 +36,7 @@ export const defaultWithdrawRaiFields: ReactElement[] = [
   <AdditionalInfoSection
     required
     key={"field-addlinfo"}
-    instruction={
-      "Add anything else that you would like to share with the State."
-    }
+    instruction={"Explain your need for withdrawal."}
   />,
 ];
 export const defaultWithdrawRaiContent: FormContentHydrator = (document) => ({
