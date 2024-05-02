@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { zAdditionalInfo, zAttachmentRequired } from "@/utils";
-import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 import { ReactElement } from "react";
 import {
   ActionFormDescription,
@@ -41,18 +40,3 @@ export const chipWithdrawPackageFields: ReactElement[] = [
     instruction={"Explain your need for withdrawal."}
   />,
 ];
-export const chipWithdrawPackageContent: FormContentHydrator = (document) => ({
-  title: "Withdraw CHIP SPA",
-  preSubmitNotice:
-    "Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.",
-  confirmationModal: {
-    header: "Withdraw Package?",
-    body: `You are about to withdraw ${document.authority} ${document.id}. Completing this action will conclude the review of this ${document.authority} package. If you are not sure this is the correct action to select, contact your CMS point of contact for assistance`,
-    acceptButtonText: "Yes, withdraw package",
-    cancelButtonText: "Return to form",
-  },
-  successBanner: {
-    header: "Package withdrawn",
-    body: `The package ${document.id} has been withdrawn.`,
-  },
-});
