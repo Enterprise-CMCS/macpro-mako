@@ -64,7 +64,7 @@ export const defaultWithdrawPackageFields: ReactElement[] = [
 export const defaultWithdrawPackageContent: FormContentHydrator = (
   document,
 ) => ({
-  title: `Withdraw ${document.authority} Package`,
+  title: `Withdraw ${document.authority}`,
   preSubmitNotice:
     "Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.",
   confirmationModal: document?.appkParent

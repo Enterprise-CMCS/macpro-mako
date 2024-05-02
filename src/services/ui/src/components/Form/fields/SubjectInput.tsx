@@ -15,7 +15,7 @@ export function SubjectInput() {
             Subject <Inputs.RequiredIndicator />
           </Inputs.FormLabel>
           <p className="text-gray-500">
-            The title or purpose of the ${authority}
+            The title or purpose of the {authority}
           </p>
           <Inputs.FormControl>
             <Inputs.Input {...field} value={field.value || ""} />
