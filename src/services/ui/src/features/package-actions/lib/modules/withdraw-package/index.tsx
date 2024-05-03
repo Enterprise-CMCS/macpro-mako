@@ -10,6 +10,7 @@ import {
 } from "@/components";
 
 export * from "./spa/withdraw-chip-rai";
+export * from "./waiver/withdraw-waiver";
 
 export const defaultWithdrawPackageSchema = z
   .object({
@@ -64,22 +65,15 @@ export const defaultWithdrawPackageFields: ReactElement[] = [
 export const defaultWithdrawPackageContent: FormContentHydrator = (
   document,
 ) => ({
-  title: `Withdraw ${document.authority} Package`,
+  title: `Withdraw ${document.authority}`,
   preSubmitNotice:
     "Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.",
-  confirmationModal: document?.appkParent
-    ? {
-        header: "Are you sure you want to withdraw this package?",
-        body: `All packages associated with ${document.id} will also be withdrawn.`,
-        acceptButtonText: "Yes, withdraw",
-        cancelButtonText: "Cancel",
-      }
-    : {
-        header: "Withdraw Package?",
-        body: `The package ${document.id} will be withdrawn.`,
-        acceptButtonText: "Yes, withdraw package",
-        cancelButtonText: "Return to form",
-      },
+  confirmationModal: {
+    header: "Withdraw package?",
+    body: `You are about to withdraw ${document.authority} ${document.id}. Completing this action will conclude the review of this ${document.authority} package. If you are not sure this is the correct action to select, contact your CMS point of contact for assistance`,
+    acceptButtonText: "Yes, withdraw package",
+    cancelButtonText: "Return to form",
+  },
   successBanner: {
     header: "Package withdrawn",
     body: `The package ${document.id} has been withdrawn.`,
