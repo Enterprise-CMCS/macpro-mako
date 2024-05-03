@@ -65,7 +65,8 @@ export const AppK = () => {
                 <T.TableCell>
                   <Button
                     disabled={
-                      cache.data.seatoolStatus === SEATOOL_STATUS.WITHDRAWN
+                      cache.data.seatoolStatus === SEATOOL_STATUS.WITHDRAWN ||
+                      user?.isCms
                     }
                     size="sm"
                     className="flex gap-1"

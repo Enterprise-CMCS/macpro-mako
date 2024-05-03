@@ -99,7 +99,7 @@ export const SlotWaiverId = <
       if (exists) {
         return context.setError(field.name, {
           message:
-            "According to our records, this 1915(c) Waiver Amendment Number already exists. Please check the 1915(c) Waiver Amendment Number and try entering it again.",
+            "According to our records, this Waiver Amendment Number already exists. Please check the Waiver Amendment Number and try entering it again.",
         });
       }
 
