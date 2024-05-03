@@ -197,7 +197,7 @@ export const Capitated1915BWaiverInitialPage = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc faqLink="/faq/medicaid-spa-attachments" />
+            <Content.AttachmentsSizeTypesDesc faqAttLink="/faq/waiverb-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
