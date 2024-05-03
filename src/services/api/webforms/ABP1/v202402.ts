@@ -40,7 +40,7 @@ export const v202402: FormSchema = {
                   label: "Eligibility group",
                   props: {
                     sort: "ascending",
-                    className: "min-w-[300px]",
+                    className: "w-[300px]",
                     options: [
                       {
                         label: "Parents and Other Caretaker Relatives",
@@ -271,7 +271,7 @@ export const v202402: FormSchema = {
                     required: "* Required",
                   },
                   props: {
-                    className: "w-[200px]",
+                    className: "w-[300px]",
                     options: [
                       {
                         label: "Mandatory",
