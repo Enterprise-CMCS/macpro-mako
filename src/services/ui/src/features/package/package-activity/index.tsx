@@ -305,7 +305,7 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
       case "remove-appk-child": {
         if (props.appkChildId) {
           return [
-            `Package removed : ${props.appkChildId}`,
+            `Package removed: ${props.appkChildId}`,
             PA_AppkParentRemovedChild,
           ];
         }
