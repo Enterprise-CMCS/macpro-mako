@@ -62,7 +62,7 @@ export const chipSpaRaiFields: ReactElement[] = [
         required: false,
       },
     ]}
-    faqLink={""}
+    faqAttLink="/faq/chip-spa-rai-attachments"
   />,
   <AdditionalInfoSection
     key={"field-addlinfo"}

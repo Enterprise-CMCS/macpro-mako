@@ -77,8 +77,8 @@ export const TemporaryExtension = () => {
 
   const parentId = urlId ? urlId : formId;
   useDisplaySubmissionAlert(
-    "Temporary Extension issued",
-    `The Temporary Extension Request for ${parentId} has been submitted.`,
+    "Temporary extension request submitted",
+    "Your submission has been received.",
   );
 
   return (
@@ -97,6 +97,7 @@ export const TemporaryExtension = () => {
       <form onSubmit={handleSubmit}>
         <TEPackageSection key={"content-packagedetails"} />
         <AttachmentsSection
+          faqAttLink={"/faq/temporary-extensions-b-attachments"}
           key={"field-attachments"}
           attachments={[
             {
@@ -108,7 +109,6 @@ export const TemporaryExtension = () => {
               required: false,
             },
           ]}
-          faqLink={""}
         />
         <AdditionalInfoSection
           key={"field-addlinfo"}

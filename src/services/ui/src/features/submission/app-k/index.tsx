@@ -2,7 +2,7 @@
 
 import * as I from "@/components/Inputs";
 import * as C from "@/components";
-import { Path, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FORM, SchemaForm } from "./consts";
 import { SlotStateSelect, SlotWaiverId, WaiverIdFieldArray } from "./slots";
@@ -188,8 +188,7 @@ export const AppKSubmissionForm = () => {
             />
           </C.SectionCard>
           <C.SectionCard title="Attachments">
-            <C.AttachmentsSizeTypesDesc faqLink="/faq/#chip-spa-attachments" />
-
+            <C.AttachmentsSizeTypesDesc faqAttLink="/faq/appk-attachments" />
             <I.FormField
               control={form.control}
               name={"attachments.appk"}

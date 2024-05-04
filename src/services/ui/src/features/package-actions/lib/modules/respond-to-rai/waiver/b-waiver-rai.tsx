@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
+import {
+  zAdditionalInfo,
+  zAttachmentOptional,
+  zAttachmentRequired,
+} from "@/utils";
 import { ReactElement } from "react";
 import {
   ActionFormDescription,
@@ -9,9 +13,9 @@ import {
 import { PackageSection } from "@/components/Form/content/PackageSection";
 
 export const bWaiverRaiSchema = z.object({
-  additionalInformation: z.string().optional().default(""),
+  additionalInformation: zAdditionalInfo.optional(),
   attachments: z.object({
-    raiResponseLetter: zAttachmentRequired({ min: 1 }),
+    raiResponseLetterWaiver: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,
   }),
 });
@@ -27,6 +31,7 @@ export const bWaiverRaiFields: ReactElement[] = [
   </ActionFormDescription>,
   <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
+    faqAttLink="/faq/waiverb-rai-attachments"
     key={"field-attachments"}
     attachments={[
       {
@@ -35,12 +40,9 @@ export const bWaiverRaiFields: ReactElement[] = [
       },
       { required: false, name: "other" },
     ]}
-    faqLink={""}
   />,
   <AdditionalInfoSection
     key={"field-addlinfo"}
-    instruction={
-      "Add anything else that you would like to share with the State."
-    }
+    instruction={"Add anything else that you would like to share with CMS."}
   />,
 ];

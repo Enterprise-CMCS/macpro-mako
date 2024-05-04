@@ -116,6 +116,11 @@ export const v202401: FormSchema = {
                         labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
@@ -143,6 +148,10 @@ export const v202401: FormSchema = {
                 "When did/will the state/territory inform the individuals?",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               descriptionClassName: "font-bold text-black",
             },
@@ -224,6 +233,11 @@ export const v202401: FormSchema = {
                         labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
@@ -266,6 +280,11 @@ export const v202401: FormSchema = {
                         labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
