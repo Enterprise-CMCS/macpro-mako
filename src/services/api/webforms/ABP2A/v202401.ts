@@ -86,22 +86,22 @@ export const v202401: FormSchema = {
                       {
                         text: "Once an individual is identified, the state/territory assures it will effectively inform the individual of the following:",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "A. That enrollment in the specified ABP is voluntary",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "B. That the individual may disenroll from the ABP defined subject to Section 1937 requirements at any time and instead receive an ABP defined as the approved state/territory Medicaid state plan not subject to Section 1937 requirements.",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "C. What the process is for transferring to the state plan-based ABP",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                     ],
                     value: "individual_identified_must_inform_the_individual",
@@ -111,17 +111,17 @@ export const v202401: FormSchema = {
                       {
                         text: "The state/territory assures it will inform the individual of the following:",
                         type: "default",
-                        classname: "block py-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                     ],
                     label: "",
@@ -167,6 +167,11 @@ export const v202401: FormSchema = {
                         labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
@@ -194,6 +199,10 @@ export const v202401: FormSchema = {
                 "When did/will the state/territory inform the individuals?",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               descriptionClassName: "font-bold text-black",
             },
@@ -223,17 +232,17 @@ export const v202401: FormSchema = {
                       {
                         text: "The state/territory assures it will document in the exempt individual's eligibility file that the individual:",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "A. Was informed in accordance with this section prior to enrollment",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "B. Was given ample time to arrive at an informed choice",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: " C. Chose to enroll in ABP coverage subject to Section 1937 requirements or defined as the state/territory's approved Medicaid state plan not subject to Section 1937 requirements",
@@ -275,6 +284,11 @@ export const v202401: FormSchema = {
                         labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
@@ -317,6 +331,11 @@ export const v202401: FormSchema = {
                         labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
