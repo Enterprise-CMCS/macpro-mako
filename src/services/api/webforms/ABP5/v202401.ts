@@ -125,7 +125,13 @@ function subsectionFormFields({
           label: "Benefit provided",
           labelClassName: "font-bold",
           name: `${formName}_${sectionName}_benefit-provided_input`,
-          rules: { required: "* Required" },
+          rules: {
+            required: "* Required",
+            pattern: {
+              value: /^\S(.*\S)?$/,
+              message: "Must not have leading or trailing whitespace.",
+            },
+          },
           props: {
             className: "w-[300px]",
           },
@@ -148,7 +154,13 @@ function subsectionFormFields({
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_source-other-info_input`,
       formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-      rules: { required: "* Required" },
+      rules: {
+        required: "* Required",
+        pattern: {
+          value: /^\S(.*\S)?$/,
+          message: "Must not have leading or trailing whitespace.",
+        },
+      },
       dependency: {
         conditions: [
           {
@@ -167,7 +179,13 @@ function subsectionFormFields({
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_secretary-other-info_input`,
       formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-      rules: { required: "* Required" },
+      rules: {
+        required: "* Required",
+        pattern: {
+          value: /^\S(.*\S)?$/,
+          message: "Must not have leading or trailing whitespace.",
+        },
+      },
       dependency: {
         conditions: [
           {
@@ -196,7 +214,13 @@ function subsectionFormFields({
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_authorization-other-info_input`,
       formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-      rules: { required: "* Required" },
+      rules: {
+        required: "* Required",
+        pattern: {
+          value: /^\S(.*\S)?$/,
+          message: "Must not have leading or trailing whitespace.",
+        },
+      },
       dependency: {
         conditions: [
           {
@@ -225,7 +249,13 @@ function subsectionFormFields({
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_provider-qual-other-info_input`,
       formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-      rules: { required: "* Required" },
+      rules: {
+        required: "* Required",
+        pattern: {
+          value: /^\S(.*\S)?$/,
+          message: "Must not have leading or trailing whitespace.",
+        },
+      },
       dependency: {
         conditions: [
           {
@@ -245,7 +275,7 @@ function subsectionFormFields({
       rules: {
         required: "* Required",
         pattern: {
-          value: /^[1-9]\d*$/,
+          value: /^[0-9]\d*$/,
           message: "Must be a positive integer value",
         },
       },
@@ -261,7 +291,7 @@ function subsectionFormFields({
       rules: {
         required: "* Required",
         pattern: {
-          value: /^[1-9]\d*$/,
+          value: /^[0-9]\d*$/,
           message: "Must be a positive integer value",
         },
       },
@@ -277,7 +307,7 @@ function subsectionFormFields({
       rules: {
         required: "* Required",
         pattern: {
-          value: /^[1-9]\d*$/,
+          value: /^[0-9]\d*$/,
           message: "Must be a positive integer value",
         },
       },
@@ -342,7 +372,14 @@ function subsection({
                                     label: "Benefit duplicated",
                                     labelClassName: "font-bold",
                                     name: `${formName}_${sectionName}_benefit-duped_input`,
-                                    rules: { required: "* Required" },
+                                    rules: {
+                                      required: "* Required",
+                                      pattern: {
+                                        value: /^\S(.*\S)?$/,
+                                        message:
+                                          "Must not have leading or trailing whitespace.",
+                                      },
+                                    },
                                   },
                                 ],
                               },
@@ -359,7 +396,14 @@ function subsection({
                                     label: "Benefit substituted",
                                     labelClassName: "font-bold",
                                     name: `${formName}_${sectionName}_benefit-subbed_input`,
-                                    rules: { required: "* Required" },
+                                    rules: {
+                                      required: "* Required",
+                                      pattern: {
+                                        value: /^\S(.*\S)?$/,
+                                        message:
+                                          "Must not have leading or trailing whitespace.",
+                                      },
+                                    },
                                   },
                                 ],
                               },
@@ -453,7 +497,13 @@ export const v202401: FormSchema = {
               label: "Name of selected base benchmark plan",
               labelClassName: "font-bold",
               name: `${formName}_benefits-included_plan-name_input`,
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
             {
               rhf: "Input",
@@ -461,7 +511,13 @@ export const v202401: FormSchema = {
                 "Name of selected Section 1937 coverage option if other than Secretary-approved. Otherwise, enter “Secretary-approved.”",
               labelClassName: "font-bold",
               name: `${formName}_benefits-included_section-1937-name_input`,
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },
@@ -616,7 +672,13 @@ export const v202401: FormSchema = {
                 "Coverage that exceeds the minimum requirements or other information",
               labelClassName: "font-bold",
               name: `${formName}_prescrip-drugs_other-info_input`,
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
             {
               rhf: "Radio",
@@ -638,7 +700,14 @@ export const v202401: FormSchema = {
                             label: "Benefit duplicated",
                             labelClassName: "font-bold",
                             name: `${formName}_prescrip-drugs_benefit-duped_input`,
-                            rules: { required: "* Required" },
+                            rules: {
+                              required: "* Required",
+                              pattern: {
+                                value: /^\S(.*\S)?$/,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
+                            },
                           },
                         ],
                       },
@@ -655,7 +724,14 @@ export const v202401: FormSchema = {
                             label: "Benefit substituted",
                             labelClassName: "font-bold",
                             name: `${formName}_prescrip-drugs_benefit-subbed_input`,
-                            rules: { required: "* Required" },
+                            rules: {
+                              required: "* Required",
+                              pattern: {
+                                value: /^\S(.*\S)?$/,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
+                            },
                           },
                         ],
                       },
@@ -773,7 +849,14 @@ export const v202401: FormSchema = {
                                 label:
                                   "Base benchmark benefit that was substituted",
                                 labelClassName: "font-bold",
-                                rules: { required: "* Required" },
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: /^\S(.*\S)?$/,
+                                    message:
+                                      "Must not have leading or trailing whitespace.",
+                                  },
+                                },
                                 name: `${formName}_opt-items_benchmark-subbed_input`,
                               },
                               {
