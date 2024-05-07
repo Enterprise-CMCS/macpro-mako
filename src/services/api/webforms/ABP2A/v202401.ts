@@ -12,13 +12,18 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               name: "abp-2a_benefit-align-and-require_is-state-territory-aligned_select",
-              label:
-                "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
-              labelClassName: "font-bold text-[0.8rem]",
-              description:
-                "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
-              descriptionAbove: true,
-              descriptionClassName: "font-bold text-black",
+              styledLabel: [
+                {
+                  text: "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
+                  type: "default",
+                  classname: "font-bold",
+                },
+                {
+                  text: "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
+                  type: "default",
+                  classname: "font-bold",
+                },
+              ],
               rules: {
                 required: "* Required",
               },

@@ -1,7 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useMemo } from "react";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
-import type { RHFSlotProps, RHFComponentMap, FormGroup } from "shared-types";
+import type {
+  RHFSlotProps,
+  RHFComponentMap,
+  FormGroup,
+  RHFTextField,
+} from "shared-types";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import {
@@ -37,6 +42,7 @@ export const RHFSlot = <
   control,
   rhf,
   label,
+  styledLabel,
   description,
   descriptionAbove,
   descriptionClassName,
@@ -70,6 +76,7 @@ export const RHFSlot = <
             <RHFTextDisplay text={label} />
           </FormLabel>
         )}
+        {styledLabel && <RHFTextDisplay text={styledLabel} />}
         {descriptionAbove && description && (
           <FormDescription className={descriptionClassName}>
             <RHFTextDisplay text={description} />
