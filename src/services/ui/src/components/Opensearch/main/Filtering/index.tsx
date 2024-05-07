@@ -13,11 +13,11 @@ export const OsFiltering: FC<{
   const context = useOsContext();
 
   return (
-    <div>
+    <div className="w-full my-2">
       <p className="mb-1 text-sm">
         {"Search by Package ID, CPOC Name, or Submitter Name"}
       </p>
-      <div className="flex flex-row content-between gap-2 mb-4">
+      <div className="flex w-full md:flex-row flex-col flex-grow content-between gap-2 mb-4">
         <SearchForm
           isSearching={context.isLoading}
           handleSearch={(search) =>
@@ -29,7 +29,7 @@ export const OsFiltering: FC<{
           }
           disabled={!!props.disabled}
         />
-        <div className="flex flex-row gap-2">
+        <div className="flex justify-center flex-row gap-2">
           <OsExportData columns={props.columns} />
           <OsFilterDrawer />
         </div>

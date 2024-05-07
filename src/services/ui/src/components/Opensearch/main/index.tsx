@@ -17,7 +17,7 @@ export const OsMainView: FC<{
       ...COL,
       hidden: !!COL?.hidden,
       locked: COL?.locked ?? false,
-    }))
+    })),
   );
 
   const onToggle = (field: string) => {
@@ -30,7 +30,7 @@ export const OsMainView: FC<{
   };
 
   return (
-    <section className="flex flex-col h-[100vh]">
+    <section className="flex md:items-stretch items-center flex-col h-[100vh]">
       <OsFiltering columns={osColumns} />
       <OsTable onToggle={onToggle} columns={osColumns} />
       <Pagination

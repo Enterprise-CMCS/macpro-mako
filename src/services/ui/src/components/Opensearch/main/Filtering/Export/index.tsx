@@ -73,7 +73,7 @@ export const OsExportData: FC<{
       variant="outline"
       onClick={handleExport}
       disabled={loading}
-      className="hover:bg-transparent self-center h-10 flex gap-2"
+      className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
     >
       {loading && (
         <motion.div

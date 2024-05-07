@@ -1,5 +1,6 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { QueryClient } from "@tanstack/react-query";
+import { Plus as PlusIcon } from "lucide-react";
 import { getUser } from "@/api";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
@@ -64,18 +65,21 @@ export const Dashboard = () => {
       }}
     >
       <FilterDrawerProvider>
-        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between my-4">
-            <h1 className="text-xl">Dashboard</h1>
+        <div className="mx-auto px-4 lg:px-8">
+          {/* Header  */}
+          <div className="flex xs:flex-row flex-col items-center justify-between pt-4 pb-6">
+            <h1 className="text-xl font-bold mb-4">Dashboard</h1>
             {!userContext?.isCms && (
               <Link
                 path="/new-submission"
-                className="text-white bg-primary inline-block border-none px-10 py-2 rounded cursor-pointer"
+                className="flex items-center text-white font-bold bg-primary border-none px-10 py-2 rounded cursor-pointer"
               >
-                New Submission
+                <span className="mr-2">New Submission</span>
+                <PlusIcon className="w-4 h-4" />
               </Link>
             )}
           </div>
+          {/* Tabs */}
           <div className="w-[100%] items-center justify-center">
             <Tabs
               value={osData.state.tab}
