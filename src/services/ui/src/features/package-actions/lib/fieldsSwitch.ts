@@ -1,4 +1,4 @@
-import { Action, Authority, AuthorityUnion } from "shared-types";
+import { Action, AuthorityUnion } from "shared-types";
 import { ReactElement } from "react";
 import {
   bWaiverRaiFields,
@@ -28,7 +28,7 @@ const respondToRaiFor: FieldsGroup = {
   "CHIP SPA": chipSpaRaiFields,
   "Medicaid SPA": medSpaRaiFields,
   "1915(b)": bWaiverRaiFields,
-  "1915(c)": undefined,
+  "1915(c)": bWaiverRaiFields,
 };
 
 const enableRaiWithdrawFor: FieldsGroup = {

@@ -13,6 +13,7 @@ const Checkbox = React.forwardRef<
       value?: string;
       styledLabel?: React.ReactNode;
       description?: string;
+      optionlabelClassName?: string;
     }
 >(({ className, ...props }, ref) => {
   const { changeMethod, parentValue, ...rest } = props;
@@ -24,7 +25,7 @@ const Checkbox = React.forwardRef<
       parentValue={parentValue}
       {...rest}
     >
-      <div className="items-top flex space-x-2 items-center">
+      <div className="items-top flex space-x-2">
         <CheckboxPrimitive.Root
           ref={ref}
           id={props.label}
@@ -44,7 +45,10 @@ const Checkbox = React.forwardRef<
           {!!(props.label || props.styledLabel) && (
             <label
               htmlFor={props.label ?? props.styledLabel}
-              className="text-md font-medium leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              className={cn(
+                "mt-2 text-md font-medium leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+                props.optionlabelClassName,
+              )}
             >
               {props.styledLabel ?? props.label}
             </label>

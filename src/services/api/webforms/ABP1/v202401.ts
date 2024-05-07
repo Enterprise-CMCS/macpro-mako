@@ -16,6 +16,10 @@ export const v202401: FormSchema = {
               label: "Alternative Benefit Plan population name",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               props: { placeholder: "enter name" },
             },
@@ -530,7 +534,7 @@ export const v202401: FormSchema = {
                                                         },
                                                         rules: {
                                                           pattern: {
-                                                            value: /^[1-9]\d*$/,
+                                                            value: /^[0-9]\d*$/,
                                                             message:
                                                               "Must be a positive integer value",
                                                           },
@@ -630,6 +634,12 @@ export const v202401: FormSchema = {
                                                         rules: {
                                                           required:
                                                             "* Required",
+                                                          pattern: {
+                                                            value:
+                                                              /^\S(.*\S)?$/,
+                                                            message:
+                                                              "Must not have leading or trailing whitespace.",
+                                                          },
                                                         },
                                                       },
                                                       {
@@ -663,7 +673,7 @@ export const v202401: FormSchema = {
                                                             rules: {
                                                               pattern: {
                                                                 value:
-                                                                  /^[1-9]\d*$/,
+                                                                  /^[0-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
@@ -767,6 +777,12 @@ export const v202401: FormSchema = {
                                                         rules: {
                                                           required:
                                                             "* Required",
+                                                          pattern: {
+                                                            value:
+                                                              /^\S(.*\S)?$/,
+                                                            message:
+                                                              "Must not have leading or trailing whitespace.",
+                                                          },
                                                         },
                                                       },
                                                       {
@@ -800,7 +816,7 @@ export const v202401: FormSchema = {
                                                             rules: {
                                                               pattern: {
                                                                 value:
-                                                                  /^[1-9]\d*$/,
+                                                                  /^[0-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
@@ -903,6 +919,12 @@ export const v202401: FormSchema = {
                                                         rules: {
                                                           required:
                                                             "* Required",
+                                                          pattern: {
+                                                            value:
+                                                              /^\S(.*\S)?$/,
+                                                            message:
+                                                              "Must not have leading or trailing whitespace.",
+                                                          },
                                                         },
                                                       },
                                                       {
@@ -936,7 +958,7 @@ export const v202401: FormSchema = {
                                                             rules: {
                                                               pattern: {
                                                                 value:
-                                                                  /^[1-9]\d*$/,
+                                                                  /^[0-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
@@ -1265,7 +1287,7 @@ export const v202401: FormSchema = {
     //   form: [
     //     {
     //       description: "A test of horizontal layouts with no slot styles",
-    //       wrapperStyling: "flex flex-wrap gap-6",
+    //       wrapperClassName: "flex flex-wrap gap-6",
     //       slots: [
     //         {
     //           name: "example1_1",
@@ -1286,7 +1308,7 @@ export const v202401: FormSchema = {
     //     },
     //     {
     //       description: "A test of horizontal layouts with slot styles",
-    //       wrapperStyling: "flex flex-wrap gap-6",
+    //       wrapperClassName: "flex flex-wrap gap-6",
     //       slots: [
     //         {
     //           name: "example2_1",

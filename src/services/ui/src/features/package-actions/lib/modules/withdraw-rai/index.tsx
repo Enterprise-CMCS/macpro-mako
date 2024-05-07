@@ -22,22 +22,19 @@ export const defaultWithdrawRaiFields: ReactElement[] = [
   </ActionFormDescription>,
   <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
+    faqAttLink="/faq"
     key={"field-attachments"}
     attachments={[
       {
         name: "supportingDocumentation",
-        label: "Supporting Documentation",
         required: false,
       },
     ]}
-    faqLink={""}
   />,
   <AdditionalInfoSection
     required
     key={"field-addlinfo"}
-    instruction={
-      "Add anything else that you would like to share with the State."
-    }
+    instruction={"Explain your need for withdrawal."}
   />,
 ];
 export const defaultWithdrawRaiContent: FormContentHydrator = (document) => ({

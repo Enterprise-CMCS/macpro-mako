@@ -29,7 +29,7 @@ export const v202401: FormSchema = {
               name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty_select",
               label:
                 "The ABP for individuals with income over 100% of the federal poverty level (FPL) includes cost sharing other than that described in Attachment 4.18-A or G1, G2a, G2b, G2c, and G3.",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               rules: { required: "* Required" },
               props: {
                 className: "w-[150px]",
@@ -43,7 +43,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "abp4_cost-sharing_see-approved-attachment_checkgroup",
               rules: { required: "* Required" },
-              formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
@@ -68,9 +68,9 @@ export const v202401: FormSchema = {
               rhf: "Upload",
               name: "abp4_cost-sharing_attachment_upload",
               label: "Attachment 4.18-F or G",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               rules: { required: "* Required" },
-              formItemStyling: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
@@ -87,7 +87,7 @@ export const v202401: FormSchema = {
               name: "abp4-cost-sharing_other-info-about-requirements_textarea",
               label:
                 "Other information about cost-sharing requirements (optional)",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
             },
           ],
         },
