@@ -116,6 +116,8 @@ export const Contracting1915BWaiverInitialPage = () => {
     mode: "onChange",
   });
 
+  console.log(form.formState.errors);
+
   return (
     <SimplePageContainer>
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />

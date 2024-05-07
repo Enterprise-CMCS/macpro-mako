@@ -38,12 +38,14 @@ export const zAdditionalInfo = z
   .string()
   .max(4000, "This field may only be up to 4000 characters.");
 
+const waiverInitialRegex = /^[A-Z]{2}-\d{4,5}\.R00\.00$/;
+const correctFormatSchema = z.string().regex(waiverInitialRegex, {
+  message:
+    "The Initial Waiver Number must be in the format of SS-####.R00.00 or SS-#####.R00.00",
+});
+
 export const zInitialWaiverNumberSchema = z
   .string()
-  .regex(
-    /^[A-Z]{2}-\d{4,5}\.R00\.00$/,
-    "The Initial Waiver Number must be in the format of SS-####.R00.00 or SS-#####.R00.00",
-  )
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -51,6 +53,16 @@ export const zInitialWaiverNumberSchema = z
   .refine(async (value) => !(await itemExists(value)), {
     message:
       "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
+  })
+  .superRefine((val, ctx) => {
+    const result = correctFormatSchema.safeParse(val);
+    if (!result.success) {
+      ctx.addIssue({
+        message: result.error.issues.at(0)?.message,
+        code: z.ZodIssueCode.custom,
+        fatal: true,
+      });
+    }
   });
 
 export const zRenewalWaiverNumberSchema = z
