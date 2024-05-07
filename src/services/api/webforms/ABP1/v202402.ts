@@ -16,6 +16,10 @@ export const v202402: FormSchema = {
               label: "ABP package name",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               props: { placeholder: "enter name" },
             },
@@ -40,7 +44,7 @@ export const v202402: FormSchema = {
                   label: "Eligibility group",
                   props: {
                     sort: "ascending",
-                    className: "min-w-[300px]",
+                    className: "w-[300px]",
                     options: [
                       {
                         label: "Parents and Other Caretaker Relatives",
@@ -271,7 +275,7 @@ export const v202402: FormSchema = {
                     required: "* Required",
                   },
                   props: {
-                    className: "w-[200px]",
+                    className: "w-[300px]",
                     options: [
                       {
                         label: "Mandatory",
@@ -502,7 +506,7 @@ export const v202402: FormSchema = {
                                                         },
                                                         rules: {
                                                           pattern: {
-                                                            value: /^[1-9]\d*$/,
+                                                            value: /^[0-9]\d*$/,
                                                             message:
                                                               "Must be a positive integer value",
                                                           },
@@ -604,6 +608,12 @@ export const v202402: FormSchema = {
                                                         rules: {
                                                           required:
                                                             "* Required",
+                                                          pattern: {
+                                                            value:
+                                                              /^\S(.*\S)?$/,
+                                                            message:
+                                                              "Must not have leading or trailing whitespace.",
+                                                          },
                                                         },
                                                       },
                                                       {
@@ -637,7 +647,7 @@ export const v202402: FormSchema = {
                                                             rules: {
                                                               pattern: {
                                                                 value:
-                                                                  /^[1-9]\d*$/,
+                                                                  /^[0-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
@@ -741,6 +751,12 @@ export const v202402: FormSchema = {
                                                         rules: {
                                                           required:
                                                             "* Required",
+                                                          pattern: {
+                                                            value:
+                                                              /^\S(.*\S)?$/,
+                                                            message:
+                                                              "Must not have leading or trailing whitespace.",
+                                                          },
                                                         },
                                                       },
                                                       {
@@ -774,7 +790,7 @@ export const v202402: FormSchema = {
                                                             rules: {
                                                               pattern: {
                                                                 value:
-                                                                  /^[1-9]\d*$/,
+                                                                  /^[0-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
@@ -877,6 +893,12 @@ export const v202402: FormSchema = {
                                                         rules: {
                                                           required:
                                                             "* Required",
+                                                          pattern: {
+                                                            value:
+                                                              /^\S(.*\S)?$/,
+                                                            message:
+                                                              "Must not have leading or trailing whitespace.",
+                                                          },
                                                         },
                                                       },
                                                       {
@@ -910,7 +932,7 @@ export const v202402: FormSchema = {
                                                             rules: {
                                                               pattern: {
                                                                 value:
-                                                                  /^[1-9]\d*$/,
+                                                                  /^[0-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
