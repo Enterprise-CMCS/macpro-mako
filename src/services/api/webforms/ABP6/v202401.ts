@@ -12,23 +12,34 @@ export const v202401: FormSchema = {
               rhf: "TextDisplay",
               name: "abp6_desc-of-ben_helperText",
               text: "Complete this section only if the state/territory is proposing a benchmark-equivalent benefit package.",
-              rules: { required: "* Required" },
             },
             {
               rhf: "Input",
               name: "abp6_desc-of-ben_agg-actuarial-ben-plan_input",
               label:
                 "Aggregate actuarial value of the benchmark plan (e.g., FEHBP, state/territory employee coverage, commercial plan, state plan) that is equivalent to the state/territory's benefit package",
-              labelStyling: "font-bold",
-              rules: { required: "* Required" },
+              labelClassName: "font-bold",
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^[0-9]\d*$/,
+                  message: "Must be a positive integer value",
+                },
+              },
             },
             {
               rhf: "Input",
               name: "abp6_desc-of-ben_agg-actuarial-ben-euqivalent-plan_input",
               label:
                 "Aggregate actuarial value of the state/territory's benchmark-equivalent plan (must be greater than or equal to the amount entered above)",
-              labelStyling: "font-bold",
-              rules: { required: "* Required" },
+              labelClassName: "font-bold",
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^[0-9]\d*$/,
+                  message: "Must be a positive integer value",
+                },
+              },
             },
             {
               rhf: "Checkbox",
@@ -42,10 +53,11 @@ export const v202401: FormSchema = {
                       "The state/territory has included a chart and a thorough description of all benefits included in its benchmark-equivalent benefit package with a crosswalk of each benefit to the essential health benefit (EHB) categories or an indication that the benefit is not an essential health benefit. The state/territory has also included the payment methodology associated with each benefit.",
                     slots: [
                       {
-                        name: "abp6_desc-of-ben_benefit-chart-of-benchmark-equiv_upload",
-                        label: "Upload attachment(s)",
-                        labelStyling: "font-bold",
                         rhf: "Upload",
+                        name: "abp6_desc-of-ben_benefit-chart-of-benchmark-equiv_upload",
+                        rules: { required: "* Required" },
+                        label: "Upload attachment(s)",
+                        labelClassName: "font-bold",
                       },
                     ],
                   },
@@ -57,7 +69,7 @@ export const v202401: FormSchema = {
                       {
                         name: "abp6_desc-of-ben_actuarial-report_upload",
                         label: "Upload actuarial report",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rhf: "Upload",
                       },
                     ],
@@ -67,7 +79,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Textarea",
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               name: "abp6_desc-of-ben_other-info-related-bench-equiv_textarea",
               label:
                 "Other information related to this benchmark-equivalent benefit package (optional)",
@@ -160,7 +172,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               name: "abp6_bench-quiv-assurances_bench-pckg-include-vision-services_select",
               rules: { required: "* Required" },
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               label:
                 "Does the benchmark benefit package that is the basis for comparison of the benchmark-equivalent benefit package include vision services?",
               props: {
@@ -181,7 +193,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "abp6_bench-quiv-assurances_vision-service-equivalent-percentage_checkgroup",
               rules: { required: "* Required" },
-              formItemStyling: "ml-[0.7rem] px-4 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.7rem] px-4 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
@@ -206,7 +218,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               name: "abp6_bench-quiv-assurances_bench-pckg-include-hearing-services_select",
               rules: { required: "* Required" },
-              labelStyling: "font-bold",
+              labelClassName: "font-bold",
               label:
                 "Does the benchmark benefit package that is the basis for comparison of the benchmark-equivalent benefit package include hearing services?",
               props: {
@@ -227,7 +239,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "abp6_bench-quiv-assurances_hearing-service-equivalent-percentage_checkgroup",
               rules: { required: "* Required" },
-              formItemStyling: "ml-[0.7rem] px-4 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.7rem] px-4 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
@@ -257,7 +269,7 @@ export const v202401: FormSchema = {
       form: [
         {
           description:
-            "Other information about selection of the Section 1937 coverage option and the EHB-benchmark plan (optional)",
+            "Other information about benchmark-equivalent assurances (optional)",
           slots: [
             {
               name: "abp3-1_additional_info_description_textarea",
