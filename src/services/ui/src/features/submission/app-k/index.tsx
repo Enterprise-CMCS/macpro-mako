@@ -206,10 +206,7 @@ export const AppKSubmissionForm = () => {
               render={SlotAdditionalInfo({
                 withoutHeading: true,
                 label: (
-                  <p>
-                    Add anything else you would like to share with CMS, limited
-                    to 4000 characters
-                  </p>
+                  <p>Add anything else you would like to share with CMS.</p>
                 ),
               })}
             />
