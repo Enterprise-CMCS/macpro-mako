@@ -12,7 +12,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               name: "abp-2a_benefit-align-and-require_is-state-territory-aligned_select",
-              styledLabel: [
+              descriptionClassName: "text-black text-base",
+              descriptionAbove: true,
+              description: [
                 {
                   text: "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
                   type: "default",
