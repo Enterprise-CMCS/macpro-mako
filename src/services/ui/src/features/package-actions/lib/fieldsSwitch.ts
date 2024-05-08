@@ -28,7 +28,7 @@ const respondToRaiFor: FieldsGroup = {
   "CHIP SPA": chipSpaRaiFields,
   "Medicaid SPA": medSpaRaiFields,
   "1915(b)": bWaiverRaiFields,
-  "1915(c)": undefined,
+  "1915(c)": bWaiverRaiFields,
 };
 
 const enableRaiWithdrawFor: FieldsGroup = {

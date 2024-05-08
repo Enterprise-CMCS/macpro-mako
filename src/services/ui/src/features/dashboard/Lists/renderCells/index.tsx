@@ -51,13 +51,18 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
             <div className="flex flex-col">
               {actions.map((action, idx) => (
                 <TypedLink
-                  state={{ from: `${location.pathname}${location.search}` }}
+                  state={{
+                    from: `${location.pathname}${location.search}`,
+                  }}
                   path="/action/:authority/:id/:type"
                   key={`${idx}-${action}`}
                   params={{
                     id: data.id,
                     type: action,
                     authority: data.authority,
+                  }}
+                  query={{
+                    origin: "actionsDashboard",
                   }}
                   className={cn(
                     "text-blue-500",

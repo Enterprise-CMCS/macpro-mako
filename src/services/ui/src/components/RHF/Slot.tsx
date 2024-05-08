@@ -148,7 +148,7 @@ export const RHFSlot = <
                     {hops.options.map((OPT) => {
                       return (
                         <div key={`OPT-${OPT.value}`} className="flex flex-col">
-                          <div className="flex gap-2 items-center">
+                          <div className="flex gap-2">
                             <RadioGroupItem
                               value={OPT.value}
                               id={OPT.value}
@@ -156,7 +156,7 @@ export const RHFSlot = <
                             />
                             {
                               <FormLabel
-                                className="font-normal"
+                                className="font-normal mt-2"
                                 htmlFor={OPT.value}
                               >
                                 <RHFTextDisplay

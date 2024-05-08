@@ -40,6 +40,10 @@ export const v202401: FormSchema = {
               name: "abp3-1_benefit-package-details_name_input",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
             },
           ],
@@ -91,6 +95,11 @@ export const v202401: FormSchema = {
                                       label: "Plan name",
                                       rules: {
                                         required: "* Required",
+                                        pattern: {
+                                          value: /^\S(.*\S)?$/,
+                                          message:
+                                            "Must not have leading or trailing whitespace.",
+                                        },
                                       },
                                     },
                                   ],
@@ -106,6 +115,11 @@ export const v202401: FormSchema = {
                                       label: "Plan name",
                                       rules: {
                                         required: "* Required",
+                                        pattern: {
+                                          value: /^\S(.*\S)?$/,
+                                          message:
+                                            "Must not have leading or trailing whitespace.",
+                                        },
                                       },
                                     },
                                   ],
@@ -238,6 +252,11 @@ export const v202401: FormSchema = {
                                       label: "Plan name",
                                       rules: {
                                         required: "* Required",
+                                        pattern: {
+                                          value: /^\S(.*\S)?$/,
+                                          message:
+                                            "Must not have leading or trailing whitespace.",
+                                        },
                                       },
                                     },
                                   ],
@@ -253,6 +272,11 @@ export const v202401: FormSchema = {
                                       label: "Plan name",
                                       rules: {
                                         required: "* Required",
+                                        pattern: {
+                                          value: /^\S(.*\S)?$/,
+                                          message:
+                                            "Must not have leading or trailing whitespace.",
+                                        },
                                       },
                                     },
                                   ],
@@ -291,6 +315,10 @@ export const v202401: FormSchema = {
               labelClassName: "font-bold",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
             },
 

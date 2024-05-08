@@ -33,7 +33,13 @@ export const v202401: FormSchema = {
               name: "abp3_benefit-package_name_input",
               label: "Benefit package name",
               labelClassName: "font-bold",
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },
@@ -80,7 +86,14 @@ export const v202401: FormSchema = {
                                           rhf: "Input",
                                           label: "Plan name",
                                           name: "abp3_select-of-sect-1937-cov-opt_state-employee-coverage-plan-name_input",
-                                          rules: { required: "* Required" },
+                                          rules: {
+                                            required: "* Required",
+                                            pattern: {
+                                              value: /^\S(.*\S)?$/,
+                                              message:
+                                                "Must not have leading or trailing whitespace.",
+                                            },
+                                          },
                                         },
                                       ],
                                     },
@@ -97,7 +110,14 @@ export const v202401: FormSchema = {
                                           rhf: "Input",
                                           label: "Plan name",
                                           name: "abp3_select-of-sect-1937-cov-opt_commercial-hmo_input",
-                                          rules: { required: "* Required" },
+                                          rules: {
+                                            required: "* Required",
+                                            pattern: {
+                                              value: /^\S(.*\S)?$/,
+                                              message:
+                                                "Must not have leading or trailing whitespace.",
+                                            },
+                                          },
                                         },
                                       ],
                                     },
@@ -112,7 +132,14 @@ export const v202401: FormSchema = {
                                         {
                                           rhf: "Radio",
                                           name: "abp3_select-of-sect-1937-cov-opt_secretary-approved_radiogroup",
-                                          rules: { required: "* Required" },
+                                          rules: {
+                                            required: "* Required",
+                                            pattern: {
+                                              value: /^\S(.*\S)?$/,
+                                              message:
+                                                "Must not have leading or trailing whitespace.",
+                                            },
+                                          },
                                           props: {
                                             options: [
                                               {
@@ -225,7 +252,14 @@ export const v202401: FormSchema = {
                                           rhf: "Input",
                                           name: "abp3_select-of-sect-1937-cov-opt_state-employee-coverage-plan-name_input",
                                           label: "Plan name",
-                                          rules: { required: "* Required" },
+                                          rules: {
+                                            required: "* Required",
+                                            pattern: {
+                                              value: /^\S(.*\S)?$/,
+                                              message:
+                                                "Must not have leading or trailing whitespace.",
+                                            },
+                                          },
                                         },
                                       ],
                                     },
@@ -242,7 +276,14 @@ export const v202401: FormSchema = {
                                           rhf: "Input",
                                           name: "abp3_select-of-sect-1937-cov-opt_commercial-hmo-plan-name_input",
                                           label: "Plan name",
-                                          rules: { required: "* Required" },
+                                          rules: {
+                                            required: "* Required",
+                                            pattern: {
+                                              value: /^\S(.*\S)?$/,
+                                              message:
+                                                "Must not have leading or trailing whitespace.",
+                                            },
+                                          },
                                         },
                                       ],
                                     },
@@ -322,7 +363,13 @@ export const v202401: FormSchema = {
               rhf: "Input",
               label: "Plan name",
               name: "abp3_select-of-base-bench-plan_name_input",
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },
