@@ -8,17 +8,24 @@ export const v202401: FormSchema = {
       title: "Assurances",
       form: [
         {
-          description: "",
           slots: [
             {
               rhf: "Checkbox",
               name: "abp-2b_assurances_adult-eligibility-included_checkgroup",
+              descriptionClassName: "text-black text-base",
               descriptionAbove: true,
-              description:
-                "When offering voluntary enrollment in an ABP (benchmark or benchmark-equivalent), prior to enrollment, the state/territory will:",
-              descriptionClassName: "font-bold text-black text-base",
-              label:
-                "These assurances must be made by the state/territory if the Alternative Benefit Plan (ABP) population includes any eligibility groups other than or in addition to the “adult” eligibility group.",
+              description: [
+                {
+                  text: "These assurances must be made by the state/territory if the Alternative Benefit Plan (ABP) population includes any eligibility groups other than or in addition to the “adult” eligibility group.",
+                  type: "default",
+                  classname: "block pb-4",
+                },
+                {
+                  text: "When offering voluntary enrollment in an ABP (benchmark or benchmark-equivalent), prior to enrollment, the state/territory will:",
+                  type: "default",
+                  classname: "font-bold block pt-2",
+                },
+              ],
               rules: { required: "* Required" },
               props: {
                 options: [
