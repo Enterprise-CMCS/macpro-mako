@@ -263,6 +263,7 @@ export const RHFSlot = <
                                 control={control}
                                 form={FORM}
                                 groupNamePrefix={groupNamePrefix}
+                                className="py-0"
                               />
                             </div>
                           ))}
