@@ -17,12 +17,12 @@ export const v202401: FormSchema = {
                 {
                   text: "These assurances must be made by the state/territory if the Alternative Benefit Plan (ABP) population includes any eligibility groups other than or in addition to the “adult” eligibility group.",
                   type: "default",
-                  classname: "pb-2",
+                  classname: "block pb-4",
                 },
                 {
                   text: "When offering voluntary enrollment in an ABP (benchmark or benchmark-equivalent), prior to enrollment, the state/territory will:",
                   type: "default",
-                  classname: "font-bold",
+                  classname: "font-bold block pt-2",
                 },
               ],
               rules: { required: "* Required" },

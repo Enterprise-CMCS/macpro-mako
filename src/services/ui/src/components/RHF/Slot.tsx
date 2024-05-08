@@ -71,12 +71,11 @@ export const RHFSlot = <
           formItemClassName ? ` ${formItemClassName}` : ""
         }`}
       >
-        {label && (
+        {(label ?? styledLabel) && (
           <FormLabel className={labelClassName}>
-            <RHFTextDisplay text={label} />
+            <RHFTextDisplay text={(styledLabel ?? label) as RHFTextField} />
           </FormLabel>
         )}
-        {styledLabel && <RHFTextDisplay text={styledLabel} />}
         {descriptionAbove && description && (
           <FormDescription className={descriptionClassName}>
             <RHFTextDisplay text={description} />

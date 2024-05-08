@@ -16,12 +16,12 @@ export const v202401: FormSchema = {
                 {
                   text: "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
                   type: "default",
-                  classname: "font-bold",
+                  classname: "font-bold block py-1",
                 },
                 {
                   text: "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
                   type: "default",
-                  classname: "font-bold",
+                  classname: "font-bold block pt-4",
                 },
               ],
               rules: {
