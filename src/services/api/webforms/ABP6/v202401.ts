@@ -39,6 +39,11 @@ export const v202401: FormSchema = {
                   value: /^[0-9]\d*$/,
                   message: "Must be a positive integer value",
                 },
+                validate: {
+                  greaterThanValueAbove: (v, vals) =>
+                    v > vals["abp6_desc-of-ben_agg-actuarial-ben-plan_input"] ||
+                    "Must be greater than value entered above",
+                },
               },
             },
             {
