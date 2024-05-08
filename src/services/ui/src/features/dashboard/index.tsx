@@ -4,6 +4,7 @@ import { Plus as PlusIcon } from "lucide-react";
 import { getUser } from "@/api";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
+import { SimplePageContainer } from "@/components";
 import {
   OsProvider,
   type OsTab,
@@ -65,10 +66,10 @@ export const Dashboard = () => {
       }}
     >
       <FilterDrawerProvider>
-        <div className="mx-auto px-4 lg:px-8">
+        <SimplePageContainer>
           {/* Header  */}
-          <div className="flex xs:flex-row flex-col items-center justify-between pt-4 pb-6">
-            <h1 className="text-xl font-bold mb-4">Dashboard</h1>
+          <div className="flex xs:flex-row flex-col items-center justify-between py-4">
+            <h1 className="text-xl font-bold mb-4 md:mb-0">Dashboard</h1>
             {!userContext?.isCms && (
               <Link
                 path="/new-submission"
@@ -85,7 +86,12 @@ export const Dashboard = () => {
               value={osData.state.tab}
               onValueChange={(tab) =>
                 osData.onSet(
-                  (s) => ({ ...s, filters: [], tab: tab as OsTab, search: "" }),
+                  (s) => ({
+                    ...s,
+                    filters: [],
+                    tab: tab as OsTab,
+                    search: "",
+                  }),
                   true,
                 )
               }
@@ -108,7 +114,7 @@ export const Dashboard = () => {
               </TabsContent>
             </Tabs>
           </div>
-        </div>
+        </SimplePageContainer>
       </FilterDrawerProvider>
     </OsProvider>
   );
