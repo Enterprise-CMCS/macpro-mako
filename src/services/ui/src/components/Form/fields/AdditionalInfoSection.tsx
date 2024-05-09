@@ -5,8 +5,8 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  SectionCard,
   Textarea,
+  FormSectionCard,
 } from "@/components";
 
 export const AdditionalInfoSection = ({
@@ -17,7 +17,11 @@ export const AdditionalInfoSection = ({
 }) => {
   const form = useFormContext();
   return (
-    <SectionCard title="Additional Information" required>
+    <FormSectionCard
+      id="additional-info"
+      title="Additional Information"
+      required
+    >
       <FormField
         control={form.control}
         name={"additionalInformation"}
@@ -49,6 +53,6 @@ export const AdditionalInfoSection = ({
           </FormItem>
         )}
       />
-    </SectionCard>
+    </FormSectionCard>
   );
 };

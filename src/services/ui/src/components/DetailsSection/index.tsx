@@ -3,7 +3,7 @@ import { SectionCard } from "../Cards";
 
 interface DetailsSectionProps {
   children: React.ReactNode;
-  title: string;
+  title: React.ReactNode;
   id: string;
   description?: string;
 }
