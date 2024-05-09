@@ -22,6 +22,7 @@ export type RHFSlotProps = {
   name: string;
   label?: RHFTextField;
   labelClassName?: string;
+  styledLabel?: RHFTextField;
   formItemClassName?: string;
   groupNamePrefix?: string;
   description?: RHFTextField;
