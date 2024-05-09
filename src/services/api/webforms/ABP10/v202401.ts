@@ -45,7 +45,8 @@ export const v202401: FormSchema = {
               label: "Describe the approach",
               labelClassName: "font-bold",
               name: "abp10_economy-and-efficiency-of-plans_describe-approach_textarea",
-              formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              formItemClassName:
+                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               rules: { required: "* Required" },
               dependency: {
                 conditions: [
