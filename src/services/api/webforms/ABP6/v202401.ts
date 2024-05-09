@@ -41,7 +41,8 @@ export const v202401: FormSchema = {
                 },
                 validate: {
                   greaterThanValueAbove: (v, vals) =>
-                    v > vals["abp6_desc-of-ben_agg-actuarial-ben-plan_input"] ||
+                    v >
+                      vals?.["abp6_desc-of-ben_agg-actuarial-ben-plan_input"] ||
                     "Must be greater than value entered above",
                 },
               },
@@ -277,7 +278,7 @@ export const v202401: FormSchema = {
             "Other information about benchmark-equivalent assurances (optional)",
           slots: [
             {
-              name: "abp3-1_additional_info_description_textarea",
+              name: "abp6_additional_info_description_textarea",
               rhf: "Textarea",
             },
           ],
