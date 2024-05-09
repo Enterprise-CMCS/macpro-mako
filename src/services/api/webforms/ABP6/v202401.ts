@@ -41,9 +41,10 @@ export const v202401: FormSchema = {
                 },
                 validate: {
                   greaterThanValueAbove: (v, vals) =>
-                    v >
-                      vals?.["abp6_desc-of-ben_agg-actuarial-ben-plan_input"] ||
-                    "Must be greater than value entered above",
+                    parseInt(v) >
+                      parseInt(
+                        vals?.["abp6_desc-of-ben_agg-actuarial-ben-plan_input"],
+                      ) || "Must be greater than value entered above",
                 },
               },
             },
