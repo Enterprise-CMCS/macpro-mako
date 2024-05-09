@@ -5,23 +5,19 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  RequiredIndicator,
+  SectionCard,
   Textarea,
 } from "@/components";
 
 export const AdditionalInfoSection = ({
   instruction,
-  required,
 }: {
   instruction?: ReactNode;
   required?: boolean;
 }) => {
   const form = useFormContext();
   return (
-    <section className={"mb-8"}>
-      <h2 className="font-bold text-2xl font-sans mb-2">
-        Additional Information {required && <RequiredIndicator />}
-      </h2>
+    <SectionCard title="Additional Information" required>
       <FormField
         control={form.control}
         name={"additionalInformation"}
@@ -53,6 +49,6 @@ export const AdditionalInfoSection = ({
           </FormItem>
         )}
       />
-    </section>
+    </SectionCard>
   );
 };

@@ -129,9 +129,6 @@ export const Capitated1915BWaiverAmendmentPage = () => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
-          <h1 className="text-2xl font-semibold mt-4 mb-2">
-            1915(b) Comprehensive (Capitated) Waiver Amendment
-          </h1>
           <SectionCard title="1915(b) Waiver Amendment Request Details">
             <Content.FormIntroText />
             <div className="flex flex-col">
