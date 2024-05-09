@@ -57,6 +57,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
 export const TempExtensionWrapper = () => {
   const methods = useForm({
     resolver: zodResolver(defaultTempExtSchema),
+    mode: "onChange",
   });
   const crumbs = useLocationCrumbs();
 
