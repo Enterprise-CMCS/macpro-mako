@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect } from "react";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
-import type { RHFSlotProps } from "shared-types";
+import type { RHFSlotProps, RHFTextField } from "shared-types";
 import {
   FormControl,
   FormDescription,
@@ -18,6 +18,7 @@ export const RHFSlot = <
 >({
   control,
   label,
+  styledLabel,
   description,
   descriptionAbove,
   descriptionClassName,
@@ -43,9 +44,9 @@ export const RHFSlot = <
         }`}
         data-testid={rest.name + "Wrapper"}
       >
-        {label && (
+        {(label ?? styledLabel) && (
           <FormLabel className={labelClassName}>
-            <RHFTextDisplay text={label} />
+            <RHFTextDisplay text={(styledLabel ?? label) as RHFTextField} />
           </FormLabel>
         )}
         {descriptionAbove && description && (
