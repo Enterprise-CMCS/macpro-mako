@@ -1,13 +1,10 @@
 import { z } from "zod";
 import { isAuthorizedState } from "@/utils";
 import { canBeRenewedOrAmended, idIsApproved, itemExists } from "@/api";
+import { validId } from "@/zodIdValidator";
 
 export const zSpaIdSchema = z
   .string()
-  .regex(
-    /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/,
-    "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX",
-  )
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -15,7 +12,13 @@ export const zSpaIdSchema = z
   .refine(async (value) => !(await itemExists(value)), {
     message:
       "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
-  });
+  })
+  .superRefine(
+    validId(
+      /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/,
+      "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX",
+    ),
+  );
 
 export const zAttachmentOptional = z.array(z.instanceof(File)).optional();
 
@@ -38,12 +41,6 @@ export const zAdditionalInfo = z
   .string()
   .max(4000, "This field may only be up to 4000 characters.");
 
-const waiverInitialRegex = /^[A-Z]{2}-\d{4,5}\.R00\.00$/;
-const correctFormatSchema = z.string().regex(waiverInitialRegex, {
-  message:
-    "The Initial Waiver Number must be in the format of SS-####.R00.00 or SS-#####.R00.00",
-});
-
 export const zInitialWaiverNumberSchema = z
   .string()
   .refine((value) => isAuthorizedState(value), {
@@ -54,23 +51,15 @@ export const zInitialWaiverNumberSchema = z
     message:
       "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
   })
-  .superRefine((val, ctx) => {
-    const result = correctFormatSchema.safeParse(val);
-    if (!result.success) {
-      ctx.addIssue({
-        message: result.error.issues.at(0)?.message,
-        code: z.ZodIssueCode.custom,
-        fatal: true,
-      });
-    }
-  });
+  .superRefine(
+    validId(
+      /^[A-Z]{2}-\d{4,5}\.R00\.00$/,
+      "The Initial Waiver Number must be in the format of SS-####.R00.00 or SS-#####.R00.00",
+    ),
+  );
 
 export const zRenewalWaiverNumberSchema = z
   .string()
-  .regex(
-    /^[A-Z]{2}-\d{4,5}\.R(?!00)\d{2}\.\d{2}$/,
-    "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with '01' and ascends.",
-  )
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -78,14 +67,16 @@ export const zRenewalWaiverNumberSchema = z
   .refine(async (value) => !(await itemExists(value)), {
     message:
       "According to our records, this 1915(b) Waiver Renewal Number already exists. Please check the 1915(b) Waiver Renewal Number and try entering it again.",
-  });
+  })
+  .superRefine(
+    validId(
+      /^[A-Z]{2}-\d{4,5}\.R(?!00)\d{2}\.\d{2}$/,
+      "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with '01' and ascends.",
+    ),
+  );
 
 export const zAmendmentWaiverNumberSchema = z
   .string()
-  .regex(
-    /^[A-Z]{2}-\d{4,5}\.R\d{2}\.(?!00)\d{2}$/,
-    "The 1915(b) Waiver Amendment Number must be in the format of SS-####.R##.## or SS-#####.R##.##. For amendments, the last two digits start with '01' and ascends.",
-  )
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -93,14 +84,16 @@ export const zAmendmentWaiverNumberSchema = z
   .refine(async (value) => !(await itemExists(value)), {
     message:
       "According to our records, this 1915(b) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
-  });
+  })
+  .superRefine(
+    validId(
+      /^[A-Z]{2}-\d{4,5}\.R\d{2}\.(?!00)\d{2}$/,
+      "The 1915(b) Waiver Amendment Number must be in the format of SS-####.R##.## or SS-#####.R##.##. For amendments, the last two digits start with '01' and ascends.",
+    ),
+  );
 
 export const zAmendmentOriginalWaiverNumberSchema = z
   .string()
-  .regex(
-    /^[A-Z]{2}-\d{4,5}\.R\d{2}\.\d{2}$/,
-    "The approved 1915(b) Initial or Renewal Number must be in the format of SS-####.R##.## or SS-#####.R##.##.",
-  )
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -117,13 +110,15 @@ export const zAmendmentOriginalWaiverNumberSchema = z
   .refine(async (value) => idIsApproved(value), {
     message:
       "According to our records, this 1915(b) Waiver Number is not approved. You must supply an approved 1915(b) Initial or Renewal Waiver Number.",
-  });
+  })
+  .superRefine(
+    validId(
+      /^[A-Z]{2}-\d{4,5}\.R\d{2}\.\d{2}$/,
+      "The approved 1915(b) Initial or Renewal Number must be in the format of SS-####.R##.## or SS-#####.R##.##.",
+    ),
+  );
 export const zRenewalOriginalWaiverNumberSchema = z
   .string()
-  .regex(
-    /^[A-Z]{2}-\d{4,5}\.R\d{2}\.\d{2}$/,
-    "The approved 1915(b) Initial or Renewal Waiver Number must be in the format of SS-####.R##.## or SS-#####.R##.##.",
-  )
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -140,7 +135,13 @@ export const zRenewalOriginalWaiverNumberSchema = z
   .refine(async (value) => idIsApproved(value), {
     message:
       "According to our records, this 1915(b) Waiver Number is not approved. You must supply an approved 1915(b) Initial or Renewal Waiver Number.",
-  });
+  })
+  .superRefine(
+    validId(
+      /^[A-Z]{2}-\d{4,5}\.R\d{2}\.\d{2}$/,
+      "The approved 1915(b) Initial or Renewal Waiver Number must be in the format of SS-####.R##.## or SS-#####.R##.##.",
+    ),
+  );
 
 export const zAppkWaiverNumberSchema = z
   .string()
@@ -152,10 +153,6 @@ export const zAppkWaiverNumberSchema = z
 
 export const zExtensionWaiverNumberSchema = z
   .string()
-  .regex(
-    /^[A-Z]{2}-\d{4,5}\.R\d{2}\.TE\d{2}$/,
-    "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##",
-  )
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -163,14 +160,16 @@ export const zExtensionWaiverNumberSchema = z
   .refine(async (value) => !(await itemExists(value)), {
     message:
       "According to our records, this Temporary Extension Request Number already exists. Please check the Temporary Extension Request Number and try entering it again.",
-  });
+  })
+  .superRefine(
+    validId(
+      /^[A-Z]{2}-\d{4,5}\.R\d{2}\.TE\d{2}$/,
+      "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##",
+    ),
+  );
 
 export const zExtensionOriginalWaiverNumberSchema = z
   .string()
-  .regex(
-    /^[A-Z]{2}-\d{4,5}\.R\d{2}\.00$/,
-    "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00.",
-  )
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -183,15 +182,23 @@ export const zExtensionOriginalWaiverNumberSchema = z
   .refine(async (value) => idIsApproved(value), {
     message:
       "According to our records, this Approved Initial or Renewal Waiver Number is not approved. You must supply an approved Initial or Renewal Waiver Number.",
-  });
+  })
+  .superRefine(
+    validId(
+      /^[A-Z]{2}-\d{4,5}\.R\d{2}\.00$/,
+      "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00.",
+    ),
+  );
 
 export const zUpdateIdSchema = z
   .string()
-  .regex(/^(?![-.])[A-Z0-9]+(?:(?![-.]{2})[-.A-Z0-9])*(?<![-.])$/, {
-    message:
-      "The new ID can only contain uppercase letters, numbers, dots, and dashes without any whitespace, no leading or trailing dashes or dots, no consecutive dots or dashes.",
-  })
   .refine(async (value) => !(await itemExists(value)), {
     message:
       "According to our records, this ID already exists. Please check the ID and try entering it again.",
-  });
+  })
+  .superRefine(
+    validId(
+      /^(?![-.])[A-Z0-9]+(?:(?![-.]{2})[-.A-Z0-9])*(?<![-.])$/,
+      "The new ID can only contain uppercase letters, numbers, dots, and dashes without any whitespace, no leading or trailing dashes or dots, no consecutive dots or dashes.",
+    ),
+  );
