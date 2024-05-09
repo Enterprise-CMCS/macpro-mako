@@ -206,7 +206,14 @@ export const v202401: FormSchema = {
                                         {
                                           rhf: "Textarea",
                                           name: "abp3_select-of-sect-1937-cov-opt_benefits-and-limits_textarea",
-                                          rules: { required: "* Required" },
+                                          rules: {
+                                            required: "* Required",
+                                            pattern: {
+                                              value: /^\S(.*\S)?$/,
+                                              message:
+                                                "Must not have leading or trailing whitespace.",
+                                            },
+                                          },
                                           labelClassName: "font-bold",
                                           label:
                                             "Describe the benefits, source of benefits, and any limitations.",
@@ -385,6 +392,12 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               name: "abp3_additional_info_description_textarea",
+              rules: {
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },
