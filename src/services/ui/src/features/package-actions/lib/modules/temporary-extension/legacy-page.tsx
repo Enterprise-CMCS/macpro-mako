@@ -15,15 +15,13 @@ import {
   AttachmentsSection,
   BreadCrumbs,
   ErrorBanner,
-  ActionFormHeading,
-  RequiredFieldDescription,
+  ActionFormHeaderCard,
   SimplePageContainer,
   SubmissionButtons,
   useLocationCrumbs,
   FormLoadingSpinner,
 } from "@/components";
 import { useParams } from "react-router-dom";
-import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
 import {
   ActionFunction,
   useDisplaySubmissionAlert,
@@ -71,11 +69,7 @@ export const TempExtensionWrapper = () => {
 };
 
 export const TemporaryExtension = () => {
-  const { handleSubmit, formMethods } = useSubmitForm();
-  const { id: urlId } = useParams();
-  const formId = formMethods.getValues("originalWaiverNumber");
-
-  const parentId = urlId ? urlId : formId;
+  const { handleSubmit } = useSubmitForm();
   useDisplaySubmissionAlert(
     "Temporary extension request submitted",
     "Your submission has been received.",
@@ -83,19 +77,19 @@ export const TemporaryExtension = () => {
 
   return (
     <SimplePageContainer>
-      <ActionFormHeading title="Temporary Extension Request Details" />
-      <RequiredFieldDescription />
-      <ActionFormDescription key={"content-description"}>
-        Once you submit this form, a confirmation email is sent to you and to
-        CMS. CMS will use this content to review your package, and you will not
-        be able to edit this form. If CMS needs any additional information, they
-        will follow up by email.{" "}
-        <strong className="font-bold">
-          If you leave this page, you will lose your progress on this form.
-        </strong>
-      </ActionFormDescription>
       <form onSubmit={handleSubmit}>
-        <TEPackageSection key={"content-packagedetails"} />
+        <ActionFormHeaderCard
+          hasRequiredField
+          title="Temporary Extension Request Details"
+          isTE
+        >
+          <ActionFormDescription boldReminder key={"content-description"}>
+            Once you submit this form, a confirmation email is sent to you and
+            to CMS. CMS will use this content to review your package, and you
+            will not be able to edit this form. If CMS needs any additional
+            information, they will follow up by email.{" "}
+          </ActionFormDescription>
+        </ActionFormHeaderCard>
         <AttachmentsSection
           faqAttLink={"/faq/temporary-extensions-b-attachments"}
           key={"field-attachments"}
