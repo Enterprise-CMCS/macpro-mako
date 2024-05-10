@@ -66,14 +66,11 @@ export const defaultTempExtSchema = z
     }
   });
 export const defaultTempExtFields: ReactElement[] = [
-  <ActionFormDescription key={"content-description"}>
+  <ActionFormDescription boldReminder key={"content-description"}>
     Once you submit this form, a confirmation email is sent to you and to CMS.
     CMS will use this content to review your package, and you will not be able
     to edit this form. If CMS needs any additional information, they will follow
-    up by email.{" "}
-    <strong className="font-bold">
-      If you leave this page, you will lose your progress on this form.
-    </strong>
+    up by email.
   </ActionFormDescription>,
   <TEPackageSection key={"content-packagedetails"} />,
   <AttachmentsSection

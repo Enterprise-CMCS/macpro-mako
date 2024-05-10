@@ -6,7 +6,6 @@ import {
   ActionFormDescription,
   AdditionalInfoSection,
   AttachmentsSection,
-  PackageSection,
 } from "@/components";
 
 export const defaultWithdrawRaiSchema = z.object({
@@ -16,11 +15,10 @@ export const defaultWithdrawRaiSchema = z.object({
   }),
 });
 export const defaultWithdrawRaiFields: ReactElement[] = [
-  <ActionFormDescription key={"content-description"}>
+  <ActionFormDescription key="content-description">
     Complete this form to withdraw the Formal RAI response. Once complete, you
     and CMS will receive an email confirmation.
   </ActionFormDescription>,
-  <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     faqAttLink="/faq"
     key={"field-attachments"}

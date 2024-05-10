@@ -28,12 +28,9 @@ export const defaultEnableRaiWithdrawContent: FormContentHydrator = (
 // react-hook-form needs any kind of schema to prevent an undefined error
 export const defaultDisableRaiWithdrawSchema = z.object({});
 export const defaultDisableRaiWithdrawFields: ReactElement[] = [
-  <ActionFormDescription key={"section-description"}>
+  <ActionFormDescription boldReminder key={"section-description"}>
     The state will not be able to withdraw its RAI response. It may take up to a
-    minute for this change to be applied.{" "}
-    <strong className="font-bold">
-      If you leave this page, you will lose your progress on this form.
-    </strong>
+    minute for this change to be applied.
   </ActionFormDescription>,
   <PackageSection key={"section-packageinfo"} />,
 ];

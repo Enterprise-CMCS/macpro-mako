@@ -10,7 +10,6 @@ import {
   ActionFormDescription,
   AdditionalInfoSection,
   AttachmentsSection,
-  PackageSection,
 } from "@/components";
 
 export const defaultIssueRaiSchema = z.object({
@@ -21,18 +20,14 @@ export const defaultIssueRaiSchema = z.object({
   }),
 });
 export const defaultIssueRaiFields: ReactElement[] = [
-  <ActionFormDescription key={"content-description"}>
+  <ActionFormDescription boldReminder key="content-description">
     Issuance of a Formal RAI in OneMAC will create a Formal RAI email sent to
     the State. This will also create a section in the package details summary
     for you and the State to have record. Please attach the Formal RAI Letter
     along with any additional information or comments in the provided text box.
     Once you submit this form, a confirmation email is sent to you and to the
     State.
-    <strong className="bold">
-      If you leave this page, you will lose your progress on this form.
-    </strong>
   </ActionFormDescription>,
-  <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     key={"field-attachments"}
     attachments={[

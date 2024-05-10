@@ -29,12 +29,9 @@ export const defaultUpdateIdSchema = z
     return z.NEVER;
   });
 export const defaultUpdateIdFields: ReactElement[] = [
-  <ActionFormDescription key={"section-desc"}>
+  <ActionFormDescription boldReminder key={"section-desc"}>
     Once you submit this form, the ID of the existing package will be updated in
-    SEATool and OneMAC.{" "}
-    <strong>
-      If you leave this page, you will lose your progress on this form.
-    </strong>
+    SEATool and OneMAC.
   </ActionFormDescription>,
   <PackageSection key={"section-packageinfo"} />,
   <NewIdField key={"field-newid"} />,

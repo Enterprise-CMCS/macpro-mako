@@ -25,14 +25,9 @@ export const defaultCompleteIntakeSchema = z.object({
   cpoc: z.number().min(1, { message: "CPOC is required" }),
 });
 export const defaultCompleteIntakeFields: ReactElement[] = [
-  <ActionFormDescription key={"section-desc"}>
-    <p>
-      Once you submit this form, the supplied information will be writted to
-      SEATool, and intake for the record will be complete.
-    </p>
-    <strong>
-      If you leave this page, you will lose your progress on this form.
-    </strong>
+  <ActionFormDescription boldReminder key={"section-desc"}>
+    Once you submit this form, the supplied information will be writted to
+    SEATool, and intake for the record will be complete.
   </ActionFormDescription>,
   <PackageSection key={"section-packageinfo"} />,
   <SubjectInput key={"field-subject"} />,

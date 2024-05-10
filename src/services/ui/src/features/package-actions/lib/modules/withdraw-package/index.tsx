@@ -6,7 +6,6 @@ import {
   ActionFormDescription,
   AdditionalInfoSection,
   AttachmentsSection,
-  PackageSection,
 } from "@/components";
 
 export * from "./spa/withdraw-chip-rai";
@@ -35,13 +34,12 @@ export const defaultWithdrawPackageSchema = z
     }
   });
 export const defaultWithdrawPackageFields: ReactElement[] = [
-  <ActionFormDescription key={"content-description"}>
+  <ActionFormDescription key="content-description">
     Complete this form to withdraw a package. Once complete, you will not be
     able to resubmit this package. CMS will be notified and will use this
     content to review your request. If CMS needs any additional information,
     they will follow up by email.
   </ActionFormDescription>,
-  <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     faqAttLink="/faq"
     key={"field-attachments"}
