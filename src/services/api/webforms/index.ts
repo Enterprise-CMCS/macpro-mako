@@ -6,6 +6,7 @@ import * as ABP3 from "./ABP3";
 import * as ABP3_1 from "./ABP3_1";
 import * as ABP4 from "./ABP4";
 import * as ABP5 from "./ABP5";
+import * as ABP6 from "./ABP6";
 import * as ABP7 from "./ABP7";
 import * as ABP9 from "./ABP9";
 import * as ABP10 from "./ABP10";
@@ -37,6 +38,9 @@ export const webformVersions: Record<string, Record<string, FormSchema>> = {
   },
   ABP5: {
     v202401: ABP5.v202401,
+  },
+  ABP6: {
+    v202401: ABP6.v202401,
   },
   ABP7: {
     v202401: ABP7.v202401,
