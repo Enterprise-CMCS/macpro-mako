@@ -29,7 +29,6 @@ export const defaultCompleteIntakeFields: ReactElement[] = [
     Once you submit this form, the supplied information will be writted to
     SEATool, and intake for the record will be complete.
   </ActionFormDescription>,
-  <PackageSection key={"section-packageinfo"} />,
   <SubjectInput key={"field-subject"} />,
   <DescriptionInput key={"field-desc"} />,
   <TypeSelect key={"field-type"} />,

@@ -2,11 +2,7 @@ import { z } from "zod";
 import { zUpdateIdSchema } from "@/utils";
 import { ReactElement } from "react";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
-import {
-  ActionFormDescription,
-  AdditionalInfoSection,
-  PackageSection,
-} from "@/components";
+import { ActionFormDescription, AdditionalInfoSection } from "@/components";
 import { NewIdField } from "@/features/package-actions/lib/modules/update-id/legacy-components";
 
 export const defaultUpdateIdSchema = z
@@ -33,7 +29,6 @@ export const defaultUpdateIdFields: ReactElement[] = [
     Once you submit this form, the ID of the existing package will be updated in
     SEATool and OneMAC.
   </ActionFormDescription>,
-  <PackageSection key={"section-packageinfo"} />,
   <NewIdField key={"field-newid"} />,
   <AdditionalInfoSection
     key={"field-addlinfo"}

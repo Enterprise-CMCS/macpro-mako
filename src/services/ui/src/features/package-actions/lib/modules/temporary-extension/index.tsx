@@ -13,7 +13,6 @@ import {
   AdditionalInfoSection,
   AttachmentsSection,
 } from "@/components";
-import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
 
 export const defaultTempExtSchema = z
   .object({
@@ -66,13 +65,12 @@ export const defaultTempExtSchema = z
     }
   });
 export const defaultTempExtFields: ReactElement[] = [
-  <ActionFormDescription boldReminder key={"content-description"}>
+  <ActionFormDescription boldReminder key={"te-content-description"}>
     Once you submit this form, a confirmation email is sent to you and to CMS.
     CMS will use this content to review your package, and you will not be able
     to edit this form. If CMS needs any additional information, they will follow
     up by email.
   </ActionFormDescription>,
-  <TEPackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     key={"field-attachments"}
     faqAttLink="/faq/temporary-extensions-b-attachments"

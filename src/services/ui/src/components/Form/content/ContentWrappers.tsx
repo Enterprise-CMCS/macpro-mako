@@ -7,6 +7,7 @@ import {
   SectionCard,
 } from "@/components";
 import { useFormContext } from "react-hook-form";
+import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
 
 export const FormSectionCard = ({
   children,
@@ -67,10 +68,12 @@ export const ActionFormHeading = ({ title }: { title: string }) => {
 export const ActionFormHeaderCard = ({
   title,
   hasRequiredField,
+  isTE,
   children,
 }: {
   title: string;
   hasRequiredField?: boolean;
+  isTE?: boolean;
   children: ReactNode;
 }) => {
   return (
@@ -79,7 +82,7 @@ export const ActionFormHeaderCard = ({
         {hasRequiredField && <RequiredFieldDescription />}
         {children}
       </div>
-      <PackageSection />
+      {isTE ? <TEPackageSection /> : <PackageSection />}
     </FormSectionCard>
   );
 };

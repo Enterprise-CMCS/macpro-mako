@@ -73,6 +73,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
                   <ActionFormHeaderCard
                     title={content.title}
                     hasRequiredField
+                    isTE={field.key === "te-content-description"}
                     key="content-description"
                   >
                     {field}
