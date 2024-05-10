@@ -8,17 +8,24 @@ export const v202401: FormSchema = {
       title: "Assurances",
       form: [
         {
-          description: "",
           slots: [
             {
               rhf: "Checkbox",
               name: "abp-2b_assurances_adult-eligibility-included_checkgroup",
+              descriptionClassName: "text-black text-base",
               descriptionAbove: true,
-              description:
-                "When offering voluntary enrollment in an ABP (benchmark or benchmark-equivalent), prior to enrollment, the state/territory will:",
-              descriptionClassName: "font-bold text-black text-base",
-              label:
-                "These assurances must be made by the state/territory if the Alternative Benefit Plan (ABP) population includes any eligibility groups other than or in addition to the “adult” eligibility group.",
+              description: [
+                {
+                  text: "These assurances must be made by the state/territory if the Alternative Benefit Plan (ABP) population includes any eligibility groups other than or in addition to the “adult” eligibility group.",
+                  type: "default",
+                  classname: "block pb-4",
+                },
+                {
+                  text: "When offering voluntary enrollment in an ABP (benchmark or benchmark-equivalent), prior to enrollment, the state/territory will:",
+                  type: "default",
+                  classname: "font-bold block pt-2",
+                },
+              ],
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -34,22 +41,22 @@ export const v202401: FormSchema = {
                       {
                         text: "Effectively inform individuals who voluntarily enroll:",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "A. That enrollment is voluntary",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "B. That they may disenroll from the ABP at any time and regain immediate access to full standard state/territory plan coverage",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "C. What the process is for disenrolling",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                     ],
                     value:
@@ -60,17 +67,17 @@ export const v202401: FormSchema = {
                       {
                         text: "Inform individuals of:",
                         type: "default",
-                        classname: "block py-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "A. The benefits available under the ABP",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "B. The costs of the different benefit packages and a comparison of how the ABP differs from the approved Medicaid state/territory plan",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                     ],
                     label: "",
@@ -116,6 +123,11 @@ export const v202401: FormSchema = {
                         labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
@@ -143,6 +155,10 @@ export const v202401: FormSchema = {
                 "When did/will the state/territory inform the individuals?",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               descriptionClassName: "font-bold text-black",
             },
@@ -172,17 +188,17 @@ export const v202401: FormSchema = {
                       {
                         text: "The state/territory assures it will document in the exempt individual's eligibility file that the individual:",
                         type: "default",
-                        classname: "block pb-2 font-bold",
+                        classname: "block py-1 font-bold",
                       },
                       {
                         text: "A. Was informed in accordance with this section prior to enrollment",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "B. Was given ample time to arrive at an informed choice",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: " C. Chose to enroll in ABP coverage subject to Section 1937 requirements or defined as the state/territory's approved Medicaid state plan not subject to Section 1937 requirements",
@@ -224,6 +240,11 @@ export const v202401: FormSchema = {
                         labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
@@ -266,6 +287,11 @@ export const v202401: FormSchema = {
                         labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
