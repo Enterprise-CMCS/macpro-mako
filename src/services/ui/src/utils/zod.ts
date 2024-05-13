@@ -153,23 +153,25 @@ export const zAppkWaiverNumberSchema = z
 
 export const zExtensionWaiverNumberSchema = z
   .string()
+  .refine((value) => value.length !== 0, { message: "Required" })
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
-  })
-  .refine(async (value) => !(await itemExists(value)), {
-    message:
-      "According to our records, this Temporary Extension Request Number already exists. Please check the Temporary Extension Request Number and try entering it again.",
   })
   .superRefine(
     validId(
       /^[A-Z]{2}-\d{4,5}\.R\d{2}\.TE\d{2}$/,
       "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##",
     ),
-  );
+  )
+  .refine(async (value) => !(await itemExists(value)), {
+    message:
+      "According to our records, this Temporary Extension Request Number already exists. Please check the Temporary Extension Request Number and try entering it again.",
+  });
 
 export const zExtensionOriginalWaiverNumberSchema = z
   .string()
+  .refine((value) => value.length !== 0, { message: "Required" })
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -202,3 +204,17 @@ export const zUpdateIdSchema = z
       "The new ID can only contain uppercase letters, numbers, dots, and dashes without any whitespace, no leading or trailing dashes or dots, no consecutive dots or dashes.",
     ),
   );
+
+// this code is a solution that solves a problem we are having with TE forms
+// it comes from the following source (view that form more information)
+// https://github.com/colinhacks/zod/issues/479
+export function zodAlwaysRefine<T extends z.ZodTypeAny>(zodType: T) {
+  return z.any().superRefine(async (value, ctx) => {
+    const res = await zodType.safeParseAsync(value);
+
+    if (res.success === false)
+      for (const issue of res.error.issues) {
+        ctx.addIssue(issue);
+      }
+  }) as unknown as T;
+}
