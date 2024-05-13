@@ -49,7 +49,7 @@ const newSubmissionPageRouteMapper: Record<Keys, Route> = {
 };
 
 export const optionCrumbsFromPath = (path: string): BreadCrumbConfig[] => [
-  dashboardCrumb,
+  dashboardCrumb(),
   ...path
     .split("/")
     .map((v, idx) => {

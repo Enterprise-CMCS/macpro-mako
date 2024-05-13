@@ -1,4 +1,9 @@
-import { opensearch, Authority, SEATOOL_STATUS } from "shared-types";
+import {
+  opensearch,
+  Authority,
+  SEATOOL_STATUS,
+  ActionType,
+} from "shared-types";
 
 const secondClockStatuses = [
   SEATOOL_STATUS.PENDING,
@@ -88,6 +93,7 @@ export const PackageCheck = ({
   const actionTypeChecks = {
     isInitialOrRenewal: actionType === "New" || actionType === "Renew",
     isTempExtension: actionType === "Extend",
+    actionIs: (action: ActionType) => actionType === action,
   };
 
   return {

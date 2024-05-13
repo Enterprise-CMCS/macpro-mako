@@ -19,11 +19,14 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "@/components";
+import { successCheckSwitch } from "./lib/successCheckSwitch";
+import { useLocation } from "react-router-dom";
 
 export const ActionForm = ({ setup }: { setup: FormSetup }) => {
   const { id, type, authority } = useParams("/action/:authority/:id/:type");
   const navigate = useNavigate();
   const origin = useOriginPath();
+  const location = useLocation();
   const alert = useAlertContext();
   const modal = useModalContext();
   const { data: user } = useGetUser();
@@ -36,6 +39,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
     resolver: zodResolver(setup.schema),
     mode: "onChange",
   });
+
   // Submission Handler
   const handler = form.handleSubmit(
     async (data) =>
@@ -48,6 +52,8 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
         alert,
         navigate,
         originRoute: origin,
+        statusToCheck: successCheckSwitch(type),
+        locationState: location.state,
       }),
   );
   useEffect(() => {

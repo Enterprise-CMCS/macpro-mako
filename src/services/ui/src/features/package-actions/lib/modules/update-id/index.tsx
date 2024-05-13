@@ -8,6 +8,7 @@ import {
   PackageSection,
 } from "@/components";
 import { NewIdField } from "@/features/package-actions/lib/modules/update-id/legacy-components";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 
 export const defaultUpdateIdSchema = z
   .object({
@@ -53,3 +54,5 @@ export const defaultUpdateIdContent: FormContentHydrator = (document) => ({
   preSubmitNotice:
     "Once you submit this form, the ID of the existing package will be updated in SEATool and OneMAC.",
 });
+
+export const idUpdated: CheckDocumentFunction = (_checks) => true;
