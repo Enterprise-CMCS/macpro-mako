@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { testItemResult, testCMSCognitoUser } from "./testData";
 import { PackageCheck } from "../package-check";
-import { Authority, SEATOOL_STATUS } from "shared-types";
+import { ActionType, Authority, SEATOOL_STATUS } from "shared-types";
 
 // Build Mock Package data:
 //   - make it basic, like a new submission
@@ -145,6 +145,17 @@ describe("PackageCheck", () => {
         raiWithdrawEnabled: true,
       });
       expect(packageChecker.hasEnabledRaiWithdraw).toBe(true);
+    });
+  });
+  describe("Action Type Checks", () => {
+    it("checks against input", () => {
+      let packageChecker = PackageCheck({
+        ...testItemResult._source,
+        actionType: "Amend" as ActionType,
+      });
+
+      expect(packageChecker.actionIs("Amend")).toBe(true);
+      expect(packageChecker.actionIs("Extend")).toBe(false);
     });
   });
 });

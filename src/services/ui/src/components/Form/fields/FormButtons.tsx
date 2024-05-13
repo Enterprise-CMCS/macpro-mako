@@ -5,8 +5,10 @@ import { useNavigation, useNavigate } from "react-router-dom";
  * a destructive action like a withdrawal. */
 export const SubmissionButtons = ({
   confirmWithdraw,
+  cancelNavigationLocation,
 }: {
   confirmWithdraw?: () => void;
+  cancelNavigationLocation?: string;
 }) => {
   const { state } = useNavigation();
   const modal = useModalContext();
@@ -14,7 +16,11 @@ export const SubmissionButtons = ({
 
   const acceptAction = () => {
     modal.setModalOpen(false);
-    navigate(-1);
+    if (cancelNavigationLocation) {
+      navigate(cancelNavigationLocation);
+    } else {
+      navigate(-1);
+    }
   };
 
   return (

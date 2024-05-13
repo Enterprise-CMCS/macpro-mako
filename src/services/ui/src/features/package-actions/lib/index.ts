@@ -6,6 +6,10 @@ import { buildActionUrl, useOriginPath } from "@/utils";
 import { Route, useAlertContext, useNavigate } from "@/components";
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
+import { successCheckSwitch } from "./successCheckSwitch";
+import { documentPoller } from "@/utils/Poller/documentPoller";
+import { stripQueryStringFromURL } from "@/utils/stripQueryString";
+import { SPA_ID_REGEX } from "@/consts";
 
 export type FormSetup = {
   schema: ReturnType<typeof getSchemaFor>;
@@ -30,6 +34,8 @@ export const submitActionForm = async ({
   alert,
   navigate,
   originRoute,
+  statusToCheck,
+  locationState,
 }: {
   data: FieldValues;
   id: string;
@@ -39,6 +45,8 @@ export const submitActionForm = async ({
   originRoute: ReturnType<typeof useOriginPath>;
   alert: ReturnType<typeof useAlertContext>;
   navigate: ReturnType<typeof useNavigate>;
+  statusToCheck: ReturnType<typeof successCheckSwitch>;
+  locationState: { from?: string };
 }) => {
   const path = originRoute ? originRoute : "/dashboard";
   const actionsThatUseSubmitEndpoint: Action[] = [Action.TEMP_EXTENSION];
@@ -53,8 +61,24 @@ export const submitActionForm = async ({
     });
     alert.setBannerStyle("success");
     alert.setBannerShow(true);
-    alert.setBannerDisplayOn(path);
-    navigate({ path });
+    // banner display doesn't work with url queries
+    alert.setBannerDisplayOn(path.split("?")[0] as Route);
+
+    const poller = documentPoller(id, statusToCheck);
+    await poller.startPollingData();
+
+    // path has to be stripped in case it contains a query string in it already
+    // this will break things if you try to add any below in the navigate function
+    // an example of this is details?id=example-123
+    const strippedPath = stripQueryStringFromURL(path);
+
+    navigate({
+      path: strippedPath.path as Route,
+      query: {
+        ...strippedPath.queryParams,
+        tab: SPA_ID_REGEX.test(id) ? "spas" : "waivers",
+      },
+    });
   } catch (e: unknown) {
     console.error(e);
     alert.setContent({
