@@ -46,7 +46,13 @@ export const v202401: FormSchema = {
               labelClassName: "font-bold",
               name: "abp10_economy-and-efficiency-of-plans_describe-approach_textarea",
               formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
               dependency: {
                 conditions: [
                   {

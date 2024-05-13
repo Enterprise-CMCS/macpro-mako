@@ -47,6 +47,10 @@ export const v202401: FormSchema = {
               descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               dependency: {
                 conditions: [
@@ -222,6 +226,10 @@ export const v202401: FormSchema = {
               descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
             },
             {
@@ -380,6 +388,12 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               name: "abp-2a_additional_information_textarea",
+              rules: {
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },
