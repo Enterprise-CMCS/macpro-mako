@@ -30,6 +30,9 @@ import {
   useSubmitForm,
 } from "@/features/package-actions/legacy-shared-components";
 import { Info } from "lucide-react";
+import { useMemo } from "react";
+import { documentPoller } from "@/utils/Poller/documentPoller";
+import { isNewSubmission } from "@/utils";
 
 export const onValidSubmission: ActionFunction = async ({ request }) => {
   try {
@@ -45,8 +48,11 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
       authority: data.authority as Authority,
     });
 
+    await documentPoller(data.id, (data) => !!data).startPollingData();
+
     return {
       submitted: true,
+      isTe: true,
     };
   } catch (err) {
     console.log(err);
@@ -72,6 +78,13 @@ export const TempExtensionWrapper = () => {
 };
 
 export const TemporaryExtension = () => {
+  const { type, id } = useParams();
+
+  const navigationLocation = useMemo(
+    () => (isNewSubmission() ? "/dashboard?tab=waivers" : `/details?id=${id}`),
+    [type],
+  );
+
   const { handleSubmit, formMethods } = useSubmitForm();
   const { id: urlId } = useParams();
   const formId = formMethods.getValues("originalWaiverNumber");
@@ -128,7 +141,7 @@ export const TemporaryExtension = () => {
         </Alert>
         <FormLoadingSpinner />
         <ErrorBanner />
-        <SubmissionButtons />
+        <SubmissionButtons cancelNavigationLocation={navigationLocation} />
       </form>
     </SimplePageContainer>
   );

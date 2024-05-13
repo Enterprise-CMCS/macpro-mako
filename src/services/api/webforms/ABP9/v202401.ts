@@ -26,7 +26,13 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               name: "abp9_employee-sponsored-insurance-or-payment_describe-employee-sponsored-insurance_textarea",
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
               formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
               label:
                 "Describe the employer-sponsored insurance, including the population covered, amount of premium assistance by population, and employer-sponsored insurance activities, including required contribution, cost-effectiveness test requirements, and benefit information.",
@@ -61,7 +67,13 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               name: "abp9_employee-sponsored-insurance-or-pay_describe-include-pop-covered-assist-contribut_textarea",
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
               formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
               label:
                 "Describe, including the population covered, amount of premium assistance by population, required contributions, cost-effectiveness test requirements, and benefit information.",
@@ -84,6 +96,12 @@ export const v202401: FormSchema = {
               label:
                 "Other information about employer-sponsored insurance or payment of premiums (optional)",
               labelClassName: "font-bold",
+              rules: {
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },

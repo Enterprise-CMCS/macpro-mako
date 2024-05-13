@@ -15,6 +15,7 @@ import {
   AttachmentsSection,
 } from "@/components";
 import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 
 export const defaultTempExtSchema = zodAlwaysRefine(
   z.object({
@@ -104,3 +105,6 @@ export const defaultTempExtContent: FormContentHydrator = (document) => ({
     body: "Your submission has been received.",
   },
 });
+
+export const temporaryExtensionRequested: CheckDocumentFunction = (checks) =>
+  checks.recordExists;
