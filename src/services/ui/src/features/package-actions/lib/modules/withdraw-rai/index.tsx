@@ -7,6 +7,8 @@ import {
   AdditionalInfoSection,
   AttachmentsSection,
 } from "@/components";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
+import { SEATOOL_STATUS } from "shared-types";
 
 export const defaultWithdrawRaiSchema = z.object({
   additionalInformation: zAdditionalInfo,
@@ -50,3 +52,6 @@ export const defaultWithdrawRaiContent: FormContentHydrator = (document) => ({
     body: `The RAI response for ${document.id} has been withdrawn. CMS may follow up if additional information is needed.`,
   },
 });
+
+export const raiWithdrawn: CheckDocumentFunction = (checks) =>
+  checks.hasStatus(SEATOOL_STATUS.PENDING_RAI) && checks.hasRaiWithdrawal;

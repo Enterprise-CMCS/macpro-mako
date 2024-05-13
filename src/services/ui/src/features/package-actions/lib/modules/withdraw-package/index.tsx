@@ -7,6 +7,8 @@ import {
   AdditionalInfoSection,
   AttachmentsSection,
 } from "@/components";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
+import { SEATOOL_STATUS } from "shared-types";
 
 export * from "./spa/withdraw-chip-rai";
 export * from "./waiver/withdraw-waiver";
@@ -77,3 +79,6 @@ export const defaultWithdrawPackageContent: FormContentHydrator = (
     body: `The package ${document.id} has been withdrawn.`,
   },
 });
+
+export const packageWithdrawn: CheckDocumentFunction = (checks) =>
+  checks.hasStatus(SEATOOL_STATUS.WITHDRAWN);
