@@ -491,6 +491,11 @@ export const v202401: FormSchema = {
                                                 label: "Describe:",
                                                 rules: {
                                                   required: "* Required",
+                                                  pattern: {
+                                                    value: /^\S(.*\S)?$/,
+                                                    message:
+                                                      "Must not have leading or trailing whitespace.",
+                                                  },
                                                 },
                                               },
                                             ],
@@ -649,6 +654,12 @@ export const v202401: FormSchema = {
                                                         rules: {
                                                           required:
                                                             "* Required",
+                                                          pattern: {
+                                                            value:
+                                                              /^\S(.*\S)?$/,
+                                                            message:
+                                                              "Must not have leading or trailing whitespace.",
+                                                          },
                                                         },
                                                       },
                                                       {
@@ -792,6 +803,12 @@ export const v202401: FormSchema = {
                                                         rules: {
                                                           required:
                                                             "* Required",
+                                                          pattern: {
+                                                            value:
+                                                              /^\S(.*\S)?$/,
+                                                            message:
+                                                              "Must not have leading or trailing whitespace.",
+                                                          },
                                                         },
                                                       },
                                                       {
@@ -934,6 +951,12 @@ export const v202401: FormSchema = {
                                                         rules: {
                                                           required:
                                                             "* Required",
+                                                          pattern: {
+                                                            value:
+                                                              /^\S(.*\S)?$/,
+                                                            message:
+                                                              "Must not have leading or trailing whitespace.",
+                                                          },
                                                         },
                                                       },
                                                       {
@@ -1113,6 +1136,11 @@ export const v202401: FormSchema = {
                                   label: "Describe",
                                   rules: {
                                     required: "* Required",
+                                    pattern: {
+                                      value: /^\S(.*\S)?$/,
+                                      message:
+                                        "Must not have leading or trailing whitespace.",
+                                    },
                                   },
                                 },
                               ],
@@ -1132,6 +1160,11 @@ export const v202401: FormSchema = {
                         label: "Describe",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
@@ -1199,6 +1232,11 @@ export const v202401: FormSchema = {
                             rhf: "Textarea",
                             rules: {
                               required: "* Required",
+                              pattern: {
+                                value: /^\S(.*\S)?$/,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
                             },
                           },
                         ],
@@ -1217,6 +1255,11 @@ export const v202401: FormSchema = {
                             rhf: "Textarea",
                             rules: {
                               required: "* Required",
+                              pattern: {
+                                value: /^\S(.*\S)?$/,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
                             },
                           },
                         ],
@@ -1235,6 +1278,11 @@ export const v202401: FormSchema = {
                             rhf: "Textarea",
                             rules: {
                               required: "* Required",
+                              pattern: {
+                                value: /^\S(.*\S)?$/,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
                             },
                           },
                         ],
@@ -1253,6 +1301,11 @@ export const v202401: FormSchema = {
                             rhf: "Textarea",
                             rules: {
                               required: "* Required",
+                              pattern: {
+                                value: /^\S(.*\S)?$/,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
                             },
                           },
                         ],
@@ -1277,6 +1330,12 @@ export const v202401: FormSchema = {
             {
               name: "additional_information",
               rhf: "Textarea",
+              rules: {
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },

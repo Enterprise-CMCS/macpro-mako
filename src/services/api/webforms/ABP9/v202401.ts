@@ -26,7 +26,13 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               name: "abp9_employee-sponsored-insurance-or-payment_describe-employee-sponsored-insurance_textarea",
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
               formItemClassName:
                 "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               label:
@@ -62,7 +68,13 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               name: "abp9_employee-sponsored-insurance-or-pay_describe-include-pop-covered-assist-contribut_textarea",
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
               formItemClassName:
                 "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               label:
@@ -86,6 +98,12 @@ export const v202401: FormSchema = {
               label:
                 "Other information about employer-sponsored insurance or payment of premiums (optional)",
               labelClassName: "font-bold",
+              rules: {
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },

@@ -126,6 +126,11 @@ export const v202401: FormSchema = {
                                                 labelClassName: "font-bold",
                                                 rules: {
                                                   required: "* Required",
+                                                  pattern: {
+                                                    value: /^\S(.*\S)?$/,
+                                                    message:
+                                                      "Must not have leading or trailing whitespace.",
+                                                  },
                                                 },
                                               },
                                             ],
@@ -152,6 +157,12 @@ export const v202401: FormSchema = {
                 "Other information about how ESPDT benefits will be provided to participants under age 21 (optional)",
               labelClassName: "font-bold",
               name: "abp7_epsdt-assurances_other-info-about-espdt-provided-to-under-21_input",
+              rules: {
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },

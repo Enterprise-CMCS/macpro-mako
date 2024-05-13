@@ -90,6 +90,12 @@ export const v202401: FormSchema = {
               label:
                 "Other information about cost-sharing requirements (optional)",
               labelClassName: "font-bold",
+              rules: {
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },
