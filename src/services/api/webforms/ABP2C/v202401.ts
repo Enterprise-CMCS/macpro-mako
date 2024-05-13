@@ -64,7 +64,14 @@ export const v202401: FormSchema = {
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
-                        rules: { required: "* Required" },
+                        rules: {
+                          required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
+                        },
                       },
                     ],
                   },
@@ -77,7 +84,14 @@ export const v202401: FormSchema = {
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
-                        rules: { required: "* Required" },
+                        rules: {
+                          required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
+                        },
                       },
                     ],
                   },
@@ -90,7 +104,14 @@ export const v202401: FormSchema = {
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
-                        rules: { required: "* Required" },
+                        rules: {
+                          required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
+                        },
                       },
                     ],
                   },
@@ -174,7 +195,14 @@ export const v202401: FormSchema = {
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
-                        rules: { required: "* Required" },
+                        rules: {
+                          required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
+                        },
                       },
                     ],
                   },
@@ -215,7 +243,14 @@ export const v202401: FormSchema = {
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
-                        rules: { required: "* Required" },
+                        rules: {
+                          required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
+                        },
                       },
                     ],
                   },
@@ -240,7 +275,13 @@ export const v202401: FormSchema = {
             {
               name: "abp2c_exemptions_desc-disenroll-process_textarea",
               rhf: "Textarea",
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
               label: "Describe the process for processing requests.",
               labelClassName: "font-bold text-black",
             },
@@ -259,6 +300,12 @@ export const v202401: FormSchema = {
               label:
                 "Other information about enrollment assurances for mandatory participants (optional)",
               labelClassName: "font-bold text-black",
+              rules: {
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },
