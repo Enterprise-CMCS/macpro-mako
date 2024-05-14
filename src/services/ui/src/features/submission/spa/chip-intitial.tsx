@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +9,6 @@ import {
   LoadingSpinner,
   SectionCard,
   SimplePageContainer,
-  useModalContext,
   FAQ_TAB,
   useAlertContext,
   useLocationCrumbs,
@@ -33,6 +31,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
+import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -81,13 +80,8 @@ export const ChipSpaFormPage = () => {
   const { data: user } = useGetUser();
   const navigate = useNavigate();
   const urlQuery = useQueryString();
-  const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
-  const cancelOnAccept = useCallback(() => {
-    modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
-  }, []);
   const form = useForm<ChipFormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -252,32 +246,9 @@ export const ChipSpaFormPage = () => {
               <LoadingSpinner />
             </div>
           ) : null}
-          <div className="flex gap-2 justify-end ">
-            <Inputs.Button
-              disabled={form.formState.isSubmitting}
-              type="submit"
-              className="px-12"
-            >
-              Submit
-            </Inputs.Button>
-            <Inputs.Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                modal.setContent({
-                  header: "Stop form submission?",
-                  body: "All information you've entered on this form will be lost if you leave this page.",
-                  acceptButtonText: "Yes, leave form",
-                  cancelButtonText: "Return to form",
-                });
-                modal.setOnAccept(() => cancelOnAccept);
-                modal.setModalOpen(true);
-              }}
-              className="px-12"
-            >
-              Cancel
-            </Inputs.Button>
-          </div>
+          <SubmitAndCancelBtnSection
+            cancelNavigationLocation={originPath ?? "/dashboard"}
+          />
         </form>
       </Inputs.Form>
       <Content.FAQFooter />

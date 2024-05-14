@@ -17,7 +17,6 @@ import {
   ErrorBanner,
   ActionFormHeaderCard,
   SimplePageContainer,
-  SubmissionButtons,
   useLocationCrumbs,
   FormLoadingSpinner,
 } from "@/components";
@@ -31,6 +30,7 @@ import { Info } from "lucide-react";
 import { useMemo } from "react";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { isNewSubmission } from "@/utils";
+import { SubmitAndCancelBtnSection } from "@/features/submission/waiver/shared-components";
 
 export const onValidSubmission: ActionFunction = async ({ request }) => {
   try {
@@ -138,7 +138,9 @@ export const TemporaryExtension = () => {
         </Alert>
         <FormLoadingSpinner />
         <ErrorBanner />
-        <SubmissionButtons cancelNavigationLocation={navigationLocation} />
+        <SubmitAndCancelBtnSection
+          cancelNavigationLocation={navigationLocation}
+        />
       </form>
     </SimplePageContainer>
   );

@@ -3,7 +3,6 @@ import {
   Form,
   LoadingSpinner,
   PreSubmitNotice,
-  SubmissionButtons,
   useAlertContext,
   useModalContext,
   useNavigate,
@@ -19,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, ActionFormHeaderCard } from "@/components";
 import { successCheckSwitch } from "./lib/successCheckSwitch";
 import { useLocation } from "react-router-dom";
+import { SubmitAndCancelBtnSection } from "../submission/waiver/shared-components";
 
 export const ActionForm = ({ setup }: { setup: FormSetup }) => {
   const { id, type, authority } = useParams("/action/:authority/:id/:type");
@@ -94,7 +94,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
             <PreSubmitNotice message={content.preSubmitNotice} />
           )}
           {content?.confirmationModal ? (
-            <SubmissionButtons
+            <SubmitAndCancelBtnSection
               confirmWithdraw={() => {
                 modal.setContent(content.confirmationModal!);
                 modal.setOnAccept(() => confirmSubmitCallback);
@@ -102,7 +102,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
               }}
             />
           ) : (
-            <SubmissionButtons />
+            <SubmitAndCancelBtnSection />
           )}
         </form>
       </Form>

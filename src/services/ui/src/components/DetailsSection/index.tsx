@@ -17,7 +17,7 @@ export const DetailsSection: React.FC<DetailsSectionProps> = ({
   useScrollToTop();
   return (
     <SectionCard id={id} title={title}>
-      {description && <p className="mb-4 text-sm">{description}</p>}
+      {description && <p className="text-sm">{description}</p>}
       {children}
     </SectionCard>
   );

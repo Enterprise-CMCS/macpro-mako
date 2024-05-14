@@ -14,16 +14,15 @@ import { useNavigate } from "@/components/Routing";
 import { useEffect, useState } from "react";
 import * as Content from "@/components";
 import { useOriginPath, zAppkWaiverNumberSchema } from "@/utils";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
+import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
   const crumbs = C.useLocationCrumbs();
   const { data: user } = useGetUser();
-  const modal = C.useModalContext();
-  const location = useLocation();
   const originPath = useOriginPath();
   const [isDataPolling, setIsDataPolling] = useState(false);
   const form = useForm<SchemaForm>({
@@ -249,32 +248,9 @@ export const AppKSubmissionForm = () => {
             />
           </C.SectionCard>
           <C.PreSubmissionMessage />
-          <div className="flex gap-2 p-4 ml-auto">
-            <I.Button type="submit" disabled={form.formState.isSubmitting}>
-              Submit
-            </I.Button>
-            <I.Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                modal.setContent({
-                  header: "Stop form submission?",
-                  body: "All information you've entered on this form will be lost if you leave this page.",
-                  acceptButtonText: "Yes, leave form",
-                  cancelButtonText: "Return to form",
-                });
-                modal.setOnAccept(() => () => {
-                  modal.setModalOpen(false);
-                  nav(
-                    originPath ? { path: originPath } : { path: "/dashboard" },
-                  );
-                });
-                modal.setModalOpen(true);
-              }}
-            >
-              Cancel
-            </I.Button>
-          </div>
+          <SubmitAndCancelBtnSection
+            cancelNavigationLocation={originPath ?? "/dashboard"}
+          />
         </form>
       </I.Form>
       <C.FAQFooter />
