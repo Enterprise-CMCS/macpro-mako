@@ -12,6 +12,8 @@ import {
   AttachmentsSection,
   PackageSection,
 } from "@/components";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
+import { SEATOOL_STATUS } from "shared-types";
 
 export const defaultIssueRaiSchema = z.object({
   additionalInformation: zAdditionalInfo,
@@ -64,3 +66,6 @@ export const defaultIssueRaiContent: FormContentHydrator = (document) => ({
     body: `The RAI for ${document.id} has been submitted. An email confirmation will be sent to you and the state.`,
   },
 });
+
+export const raiIssued: CheckDocumentFunction = (checks) =>
+  checks.hasStatus(SEATOOL_STATUS.PENDING_RAI) && checks.hasLatestRai;

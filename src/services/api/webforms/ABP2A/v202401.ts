@@ -12,13 +12,20 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               name: "abp-2a_benefit-align-and-require_is-state-territory-aligned_select",
-              label:
-                "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
-              labelClassName: "font-bold text-[0.8rem]",
-              description:
-                "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
+              descriptionClassName: "text-black text-base",
               descriptionAbove: true,
-              descriptionClassName: "font-bold text-black",
+              description: [
+                {
+                  text: "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
+                  type: "default",
+                  classname: "font-bold block py-1",
+                },
+                {
+                  text: "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
+                  type: "default",
+                  classname: "font-bold block pt-4",
+                },
+              ],
               rules: {
                 required: "* Required",
               },
@@ -40,6 +47,10 @@ export const v202401: FormSchema = {
               descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               dependency: {
                 conditions: [
@@ -215,6 +226,10 @@ export const v202401: FormSchema = {
               descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
             },
             {
@@ -373,6 +388,12 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               name: "abp-2a_additional_information_textarea",
+              rules: {
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },

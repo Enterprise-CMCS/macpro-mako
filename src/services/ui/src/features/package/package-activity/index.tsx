@@ -339,6 +339,7 @@ export const PackageActivities = () => {
         <p className="text-gray-500">No package activity recorded</p>
       )}
       <Accordion
+        key={hook.accordianDefault[0]}
         type="multiple"
         className="flex flex-col gap-2"
         defaultValue={hook.accordianDefault}
