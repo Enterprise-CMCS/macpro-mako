@@ -8,7 +8,7 @@ const Checkbox = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> &
     DependencyWrapperProps & {
       className?: string;
-      label: string;
+      label?: string;
       value?: string;
       styledLabel?: React.ReactNode;
       description?: string;
