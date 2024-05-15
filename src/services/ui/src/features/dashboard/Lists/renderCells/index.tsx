@@ -61,13 +61,13 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
                     type: action,
                     authority: data.authority,
                   }}
-                  query={{
-                    origin: "actionsDashboard",
-                  }}
                   className={cn(
                     "text-blue-500",
                     "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                   )}
+                  query={{
+                    origin: "actionsDashboard",
+                  }}
                 >
                   {mapActionLabel(action)}
                 </TypedLink>
