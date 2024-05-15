@@ -44,9 +44,9 @@ export const RHFSlot = <
         }`}
         data-testid={rest.name + "Wrapper"}
       >
-        {(label ?? styledLabel) && (
+        {(label || styledLabel) && (
           <FormLabel className={labelClassName}>
-            <RHFTextDisplay text={(styledLabel ?? label) as RHFTextField} />
+            <RHFTextDisplay text={(styledLabel || label) as RHFTextField} />
           </FormLabel>
         )}
         {descriptionAbove && description && (
