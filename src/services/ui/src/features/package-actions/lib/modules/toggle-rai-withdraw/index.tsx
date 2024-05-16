@@ -9,7 +9,7 @@ export const defaultEnableRaiWithdrawSchema = z.object({});
 export const defaultEnableRaiWithdrawFields: ReactElement[] = [
   <ActionFormDescription boldReminder key={"field-description"}>
     Once you submit this form, the most recent Formal RAI Response for this
-    package will be able to be withdrawn by the state
+    package will be able to be withdrawn by the state.
   </ActionFormDescription>,
 ];
 export const defaultEnableRaiWithdrawContent: FormContentHydrator = (

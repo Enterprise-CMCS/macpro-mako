@@ -2,6 +2,7 @@ import { LoadingSpinner, useModalContext, Button } from "@/components";
 import * as Inputs from "@/components";
 import { useNavigation, useNavigate } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
+import { useEffect } from "react";
 
 interface buttonProps {
   loadingSpinner?: boolean;
@@ -17,7 +18,6 @@ export const SubmitAndCancelBtnSection = ({
   cancelNavigationLocation,
 }: buttonProps) => {
   const form = useFormContext();
-  const { state } = useNavigation();
   const modal = useModalContext();
   const navigate = useNavigate();
 
@@ -45,25 +45,14 @@ export const SubmitAndCancelBtnSection = ({
       )}
 
       <section className="flex justify-end gap-2 p-4 ml-auto">
-        {confirmWithdraw && (
-          <Button
-            className="px-12"
-            type={"button"}
-            onClick={() => confirmWithdraw()}
-            disabled={state === "submitting"}
-          >
-            Submit
-          </Button>
-        )}
-        {!confirmWithdraw && (
-          <Button
-            className="px-12"
-            type={"submit"}
-            disabled={state === "submitting"}
-          >
-            Submit
-          </Button>
-        )}
+        <Button
+          className="px-12"
+          type={confirmWithdraw ? "button" : "submit"}
+          onClick={confirmWithdraw ? () => confirmWithdraw() : () => null}
+          disabled={!form.formState.isValid}
+        >
+          Submit
+        </Button>
         <Button
           className="px-12"
           onClick={() => {
@@ -78,7 +67,6 @@ export const SubmitAndCancelBtnSection = ({
           }}
           variant={"outline"}
           type="reset"
-          disabled={state === "submitting"}
         >
           Cancel
         </Button>

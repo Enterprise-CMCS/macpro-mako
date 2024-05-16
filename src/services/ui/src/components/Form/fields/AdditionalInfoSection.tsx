@@ -11,6 +11,7 @@ import {
 
 export const AdditionalInfoSection = ({
   instruction,
+  required,
 }: {
   instruction?: ReactNode;
   required?: boolean;
@@ -20,7 +21,7 @@ export const AdditionalInfoSection = ({
     <FormSectionCard
       id="additional-info"
       title="Additional Information"
-      required
+      required={required}
     >
       <FormField
         control={form.control}

@@ -42,6 +42,12 @@ export const RequiredFieldDescription = () => (
   </>
 );
 
+export const ProgressLossReminder = () => (
+  <p className="font-bold">
+    If you leave this page, you will lose your progress on this form.
+  </p>
+);
+
 export const ActionFormDescription = ({
   children,
   boldReminder,
@@ -52,11 +58,7 @@ export const ActionFormDescription = ({
   return (
     <div className="mt-4 text-gray-700 font-light">
       {children}
-      {boldReminder && (
-        <span className="font-bold">
-          If you leave this page, you will lose your progress on this form.
-        </span>
-      )}
+      {boldReminder && <ProgressLossReminder />}
     </div>
   );
 };
