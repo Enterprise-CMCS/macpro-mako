@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { zAdditionalInfo, zAttachmentRequired } from "@/utils";
+import { zAdditionalInfoOptional, zAttachmentRequired } from "@/utils";
 import { ReactElement } from "react";
 import {
   ActionFormDescription,
@@ -9,7 +9,7 @@ import {
 import { PackageSection } from "@/components/Form/content/PackageSection";
 
 export const chipWithdrawPackageSchema = z.object({
-  additionalInformation: zAdditionalInfo.optional(),
+  additionalInformation: zAdditionalInfoOptional,
   attachments: z.object({
     officialWithdrawalLetter: zAttachmentRequired({ min: 1 }),
   }),

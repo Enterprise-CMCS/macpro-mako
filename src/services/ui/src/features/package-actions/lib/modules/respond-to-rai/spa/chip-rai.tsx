@@ -1,6 +1,6 @@
 import { z } from "zod";
 import {
-  zAdditionalInfo,
+  zAdditionalInfoOptional,
   zAttachmentOptional,
   zAttachmentRequired,
 } from "@/utils";
@@ -13,7 +13,7 @@ import {
 import { PackageSection } from "@/components/Form/content/PackageSection";
 
 export const chipSpaRaiSchema = z.object({
-  additionalInformation: zAdditionalInfo.optional(),
+  additionalInformation: zAdditionalInfoOptional,
   attachments: z.object({
     revisedAmendedStatePlanLanguage: zAttachmentRequired({ min: 1 }),
     officialRaiResponse: zAttachmentRequired({ min: 1 }),

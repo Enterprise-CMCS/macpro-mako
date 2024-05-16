@@ -19,7 +19,7 @@ import * as Inputs from "@/components/Inputs";
 import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
 import {
-  zAdditionalInfo,
+  zAdditionalInfoOptional,
   zRenewalOriginalWaiverNumberSchema,
   zAttachmentOptional,
   zAttachmentRequired,
@@ -46,7 +46,7 @@ const formSchema = z
       tribalConsultation: zAttachmentOptional,
       other: zAttachmentOptional,
     }),
-    additionalInformation: zAdditionalInfo.optional(),
+    additionalInformation: zAdditionalInfoOptional,
     seaActionType: z.string().default("Renew"),
   })
   .superRefine((data, ctx) => {

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import {
-  zAdditionalInfo,
+  zAdditionalInfoOptional,
   zAttachmentOptional,
   zAttachmentRequired,
 } from "@/utils";
@@ -13,7 +13,7 @@ import {
 } from "@/components";
 
 export const medSpaRaiSchema = z.object({
-  additionalInformation: zAdditionalInfo.optional(),
+  additionalInformation: zAdditionalInfoOptional,
   attachments: z.object({
     raiResponseLetter: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,

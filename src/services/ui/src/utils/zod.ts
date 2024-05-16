@@ -34,9 +34,24 @@ export const zAttachmentRequired = ({
       message: message,
     });
 
+export const zAdditionalInfoOptional = z
+  .string()
+  .max(4000, "This field may only be up to 4000 characters.")
+  .optional()
+  .refine(
+    (value) => {
+      if (!value) return true;
+      return value === "" || value.trim().length > 0;
+    },
+    { message: "Additional Information can not be only whitespace." },
+  );
+
 export const zAdditionalInfo = z
   .string()
   .max(4000, "This field may only be up to 4000 characters.")
+  .refine((value) => value !== "", {
+    message: "Additional Information is required.",
+  })
   .refine((value) => value.trim().length > 0, {
     message: "Additional Information can not be only whitespace.",
   });
