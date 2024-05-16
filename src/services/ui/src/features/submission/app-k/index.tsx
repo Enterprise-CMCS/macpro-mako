@@ -36,7 +36,6 @@ export const AppKSubmissionForm = () => {
   });
 
   const onSubmit = form.handleSubmit(async (draft) => {
-    console.log(draft);
     await submission.mutateAsync(
       {
         data: draft,
