@@ -36,7 +36,10 @@ export const zAttachmentRequired = ({
 
 export const zAdditionalInfo = z
   .string()
-  .max(4000, "This field may only be up to 4000 characters.");
+  .max(4000, "This field may only be up to 4000 characters.")
+  .refine((value) => value.trim().length > 0, {
+    message: "Additional Information can not be only whitespace.",
+  });
 
 export const zInitialWaiverNumberSchema = z
   .string()
