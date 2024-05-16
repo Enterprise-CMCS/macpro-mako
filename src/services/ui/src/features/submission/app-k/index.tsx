@@ -55,7 +55,7 @@ export const AppKSubmissionForm = () => {
           alert.setBannerDisplayOn("/dashboard");
           setIsDataPolling(true);
           await documentPoller(
-            `${draft.state}-${draft.parentWaiver}`,
+            `${draft.state}-${draft.waiverIds[0]}`,
             (checks) =>
               checks.authorityIs([Authority["1915c"]]) &&
               checks.actionIs("Amend"),
@@ -223,7 +223,10 @@ export const AppKSubmissionForm = () => {
               render={SlotAdditionalInfo({
                 withoutHeading: true,
                 label: (
-                  <p>Add anything else you would like to share with CMS.</p>
+                  <p>
+                    Add anything else you would like to share with CMS, limited
+                    to 4000 characters
+                  </p>
                 ),
               })}
             />
