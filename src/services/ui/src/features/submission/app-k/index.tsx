@@ -13,8 +13,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
 import { useEffect, useState } from "react";
 import * as Content from "@/components";
-import { useOriginPath, zAppkWaiverNumberSchema } from "@/utils";
-import { Link, useLocation } from "react-router-dom";
+import { useOriginPath } from "@/utils";
+import { Link } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 
@@ -23,7 +23,6 @@ export const AppKSubmissionForm = () => {
   const crumbs = C.useLocationCrumbs();
   const { data: user } = useGetUser();
   const modal = C.useModalContext();
-  const location = useLocation();
   const originPath = useOriginPath();
   const [isDataPolling, setIsDataPolling] = useState(false);
   const form = useForm<SchemaForm>({
