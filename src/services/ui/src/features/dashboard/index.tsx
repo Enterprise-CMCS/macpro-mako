@@ -65,10 +65,10 @@ export const Dashboard = () => {
         isLoading: osData.isLoading,
       }}
     >
-      <FilterDrawerProvider>
-        <SimplePageContainer>
+      <div className="flex flex-col w-full mx-auto px-4 lg:px-8">
+        <FilterDrawerProvider>
           {/* Header  */}
-          <div className="flex xs:flex-row flex-col items-center justify-between py-4">
+          <div className="flex w-full self-center max-w-screen-xl xs:flex-row flex-col justify-between py-4">
             <h1 className="text-xl font-bold mb-4 md:mb-0">Dashboard</h1>
             {!userContext?.isCms && (
               <Link
@@ -81,41 +81,43 @@ export const Dashboard = () => {
             )}
           </div>
           {/* Tabs */}
-          <div className="w-[100%] items-center justify-center">
-            <Tabs
-              value={osData.state.tab}
-              onValueChange={(tab) =>
-                osData.onSet(
-                  (s) => ({
-                    ...s,
-                    filters: [],
-                    tab: tab as OsTab,
-                    search: "",
-                  }),
-                  true,
-                )
-              }
-            >
-              <TabsList>
-                <TabsTrigger value="spas" className="px-6 py-2">
-                  <h2 className="font-bold text-[1.3em]">SPAs</h2>
-                </TabsTrigger>
-                <TabsTrigger value="waivers" className="px-6 py-2">
-                  <h2 className="font-bold text-[1.3em]">Waivers</h2>
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value="spas">
-                <FilterChips />
-                <SpasList />
-              </TabsContent>
-              <TabsContent value="waivers">
-                <FilterChips />
-                <WaiversList />
-              </TabsContent>
-            </Tabs>
+          <div className="w-full">
+            <div className="flex flex-col">
+              <Tabs
+                value={osData.state.tab}
+                onValueChange={(tab) =>
+                  osData.onSet(
+                    (s) => ({
+                      ...s,
+                      filters: [],
+                      tab: tab as OsTab,
+                      search: "",
+                    }),
+                    true,
+                  )
+                }
+              >
+                <TabsList>
+                  <TabsTrigger value="spas" className="px-6 py-2">
+                    <h2 className="font-bold text-[1.3em]">SPAs</h2>
+                  </TabsTrigger>
+                  <TabsTrigger value="waivers" className="px-6 py-2">
+                    <h2 className="font-bold text-[1.3em]">Waivers</h2>
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="spas">
+                  <FilterChips />
+                  <SpasList />
+                </TabsContent>
+                <TabsContent value="waivers">
+                  <FilterChips />
+                  <WaiversList />
+                </TabsContent>
+              </Tabs>
+            </div>
           </div>
-        </SimplePageContainer>
-      </FilterDrawerProvider>
+        </FilterDrawerProvider>
+      </div>
     </OsProvider>
   );
 };
