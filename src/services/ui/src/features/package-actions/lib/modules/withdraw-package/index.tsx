@@ -57,6 +57,7 @@ export const defaultWithdrawPackageFields: ReactElement[] = [
       },
     ]}
   />,
+
   <AdditionalInfoSection
     key={"field-addlinfo"}
     instruction={
