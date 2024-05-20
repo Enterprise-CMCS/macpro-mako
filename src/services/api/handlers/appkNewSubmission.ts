@@ -15,8 +15,7 @@ export const submit = async (event: APIGatewayEvent) => {
   // reject no body
   /**
     state: z.string(),
-    parentWaiver: zAppkWaiverNumberSchema,
-    childWaivers: z.array(zAppkWaiverNumberSchema),
+    waiverIds:z.array(zAppkWaiverNumberSchema)
     additionalInformation: z.string().max(4000).optional(),
     title: z.string(),
     attachments: z.object({
@@ -42,11 +41,10 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 
-  const waiverIds = [body.parentWaiver, ...body.childWaivers] as string[];
   const schemas = [];
 
-  for (const WINDEX in waiverIds) {
-    const ID = waiverIds[WINDEX].trim();
+  for (const WINDEX in body.waiverIds) {
+    const ID = body.waiverIds[WINDEX].trim();
     const validateRegex = /^\d{4,5}\.R\d{2}\.\d{2}$/.test(ID);
     // Reject invalid ID
     if (!validateRegex) {
@@ -64,7 +62,7 @@ export const submit = async (event: APIGatewayEvent) => {
     const validateZod = onemacSchema.safeParse({
       ...body,
       ...(!!Number(WINDEX) && {
-        appkParentId: `${body.state}-${body.parentWaiver}`,
+        appkParentId: `${body.state}-${body.waiverIds[0]}`,
       }),
       ...(!Number(WINDEX) && {
         appkTitle: body.title,
@@ -114,11 +112,11 @@ export const submit = async (event: APIGatewayEvent) => {
       effectiveDate: body.proposedEffectiveDate,
     };
 
-    for (const WINDEX in waiverIds) {
+    for (const WINDEX in body.waiverIds) {
       await transaction.request().query(`
       Insert into SEA.dbo.State_Plan (ID_Number, State_Code, Action_Type, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag)
         values (
-          '${`${body.state}-${waiverIds[WINDEX]}`}'
+          '${`${body.state}-${body.waiverIds[WINDEX]}`}'
           ,'${body.state}'
           ,(SELECT Action_ID
             FROM SEA.dbo.Action_Types
