@@ -100,9 +100,10 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
                 modal.setOnAccept(() => confirmSubmitCallback);
                 modal.setModalOpen(true);
               }}
+              enableSubmit={content.enableSubmit}
             />
           ) : (
-            <SubmitAndCancelBtnSection />
+            <SubmitAndCancelBtnSection enableSubmit={content.enableSubmit} />
           )}
         </form>
       </Form>

@@ -1,14 +1,15 @@
 import { LoadingSpinner, useModalContext, Button } from "@/components";
 import * as Inputs from "@/components";
-import { useNavigation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
-import { useEffect } from "react";
+import { useMemo } from "react";
 
 interface buttonProps {
   loadingSpinner?: boolean;
   showAlert?: boolean;
   confirmWithdraw?: () => void;
   cancelNavigationLocation?: string;
+  enableSubmit?: boolean;
 }
 
 export const SubmitAndCancelBtnSection = ({
@@ -16,6 +17,7 @@ export const SubmitAndCancelBtnSection = ({
   showAlert,
   confirmWithdraw,
   cancelNavigationLocation,
+  enableSubmit,
 }: buttonProps) => {
   const form = useFormContext();
   const modal = useModalContext();
@@ -29,6 +31,13 @@ export const SubmitAndCancelBtnSection = ({
       navigate(-1);
     }
   };
+
+  // adding this so we can overwrite the disable submit functionality
+  //      specifically for enable/disable RAI withdrawl
+  const disableSubmit = useMemo(() => {
+    if (enableSubmit) return false;
+    else return !form.formState.isValid;
+  }, [form.formState.isValid]);
 
   return (
     <>
@@ -49,7 +58,7 @@ export const SubmitAndCancelBtnSection = ({
           className="px-12"
           type={confirmWithdraw ? "button" : "submit"}
           onClick={confirmWithdraw ? () => confirmWithdraw() : () => null}
-          disabled={!form.formState.isValid}
+          disabled={disableSubmit}
         >
           Submit
         </Button>
