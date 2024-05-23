@@ -5,6 +5,7 @@ import { validId } from "@/zodIdValidator";
 
 export const zSpaIdSchema = z
   .string()
+  .refine((value) => value.length !== 0, { message: "Required" })
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -43,6 +44,7 @@ export const zAdditionalInfo = z
 
 export const zInitialWaiverNumberSchema = z
   .string()
+  .refine((value) => value.length !== 0, { message: "Required" })
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -60,6 +62,7 @@ export const zInitialWaiverNumberSchema = z
 
 export const zRenewalWaiverNumberSchema = z
   .string()
+  .refine((value) => value.length !== 0, { message: "Required" })
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -77,6 +80,7 @@ export const zRenewalWaiverNumberSchema = z
 
 export const zAmendmentWaiverNumberSchema = z
   .string()
+  .refine((value) => value.length !== 0, { message: "Required" })
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -94,6 +98,7 @@ export const zAmendmentWaiverNumberSchema = z
 
 export const zAmendmentOriginalWaiverNumberSchema = z
   .string()
+  .refine((value) => value.length !== 0, { message: "Required" })
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -119,6 +124,7 @@ export const zAmendmentOriginalWaiverNumberSchema = z
   });
 export const zRenewalOriginalWaiverNumberSchema = z
   .string()
+  .refine((value) => value.length !== 0, { message: "Required" })
   .refine((value) => isAuthorizedState(value), {
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
