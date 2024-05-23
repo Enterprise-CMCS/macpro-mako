@@ -176,6 +176,12 @@ export const zExtensionOriginalWaiverNumberSchema = z
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
+  .superRefine(
+    validId(
+      /^[A-Z]{2}-\d{4,5}\.R\d{2}\.00$/,
+      "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00.",
+    ),
+  )
   // This should already exist
   .refine(async (value) => itemExists(value), {
     message:
@@ -184,13 +190,7 @@ export const zExtensionOriginalWaiverNumberSchema = z
   .refine(async (value) => idIsApproved(value), {
     message:
       "According to our records, this Approved Initial or Renewal Waiver Number is not approved. You must supply an approved Initial or Renewal Waiver Number.",
-  })
-  .superRefine(
-    validId(
-      /^[A-Z]{2}-\d{4,5}\.R\d{2}\.00$/,
-      "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00.",
-    ),
-  );
+  });
 
 export const zUpdateIdSchema = z
   .string()
