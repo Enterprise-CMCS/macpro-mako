@@ -21,6 +21,7 @@ import {
   SubmissionButtons,
   useLocationCrumbs,
   FormLoadingSpinner,
+  FAQFooter,
 } from "@/components";
 import { useParams } from "react-router-dom";
 import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
@@ -142,6 +143,7 @@ export const TemporaryExtension = () => {
         <ErrorBanner />
         <SubmissionButtons cancelNavigationLocation={navigationLocation} />
       </form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };

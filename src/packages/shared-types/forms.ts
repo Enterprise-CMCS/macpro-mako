@@ -76,7 +76,7 @@ type RHFTextItemType =
   | "default";
 
 export type RHFOption = {
-  label: string;
+  label?: string;
   value: string;
   styledLabel?: RHFTextField;
   dependency?: DependencyRule;
