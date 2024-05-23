@@ -43,11 +43,11 @@ type Props = Omit<
 export function FilterableDateRange({ value, onChange, ...props }: Props) {
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<DateRange | undefined>({
-    from: value?.gte ? offsetToUtc(new Date(value?.gte)) : undefined,
+    from: value?.gte ? offsetFromUtc(new Date(value?.gte)) : undefined,
     to: value?.lte ? offsetToUtc(new Date(value?.lte)) : undefined,
   });
   const [fromValue, setFromValue] = useState<string>(
-    value?.gte ? format(offsetToUtc(new Date(value?.gte)), "MM/dd/yyyy") : "",
+    value?.gte ? format(offsetFromUtc(new Date(value?.gte)), "MM/dd/yyyy") : "",
   );
   const [toValue, setToValue] = useState<string>(
     value?.lte ? format(offsetToUtc(new Date(value?.lte)), "MM/dd/yyyy") : "",
@@ -58,7 +58,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   const offsetRangeToUtc = (val: opensearch.RangeValue) => ({
-    gte: val.gte ? offsetToUtc(new Date(val.gte)).toISOString() : undefined,
+    gte: val.gte ? offsetFromUtc(new Date(val.gte)).toISOString() : undefined,
     lte: val.lte ? offsetToUtc(new Date(val.lte)).toISOString() : undefined,
   });
 
