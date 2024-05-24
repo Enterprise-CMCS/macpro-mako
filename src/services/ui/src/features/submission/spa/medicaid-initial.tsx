@@ -33,6 +33,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
+import { documentPoller } from "@/utils/Poller/documentPoller";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -115,7 +116,19 @@ export const MedicaidSpaFormPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+
+      const poller = documentPoller(
+        formData.id,
+        (checks) => checks.recordExists,
+      );
+
+      await poller.startPollingData();
+
+      navigate(
+        originPath
+          ? { path: `${originPath}?tab=spas` as Route }
+          : { path: "/dashboard?tab=spas" as Route },
+      );
     } catch (e) {
       console.error(e);
       alert.setContent({

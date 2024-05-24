@@ -75,29 +75,16 @@ export const SlotWaiverId = <
 
       setLoading(true);
 
-      if (field.name === "parentWaiver") {
-        const childWaivers = context.getValues("childWaivers") || [];
-        if (childWaivers?.includes(value)) {
-          return context.setError(field.name, {
-            message: "Waiver id already exists",
-          });
-        }
-      }
+      const [_, index] = field.name.split(".");
+      const childWaivers = context.getValues("waiverIds") || [];
+      const existsInList = childWaivers
+        .filter((_: any, I: number) => I != Number(index))
+        .includes(value);
 
-      if (field.name.includes("childWaivers")) {
-        const [_, index] = field.name.split(".");
-        const childWaivers = context.getValues("childWaivers") || [];
-        const parentWaiver = context.getValues("parentWaiver");
-        const existsInList = childWaivers
-          .filter((_: any, I: number) => I != Number(index))
-          .concat(parentWaiver)
-          .includes(value);
-
-        if (existsInList) {
-          return context.setError(field.name, {
-            message: "Waiver id already exists",
-          });
-        }
+      if (existsInList) {
+        return context.setError(field.name, {
+          message: "Waiver ID is already included in this Appendix-K",
+        });
       }
 
       const parsed = await zAppkWaiverNumberSchema.safeParseAsync(value);
@@ -112,7 +99,7 @@ export const SlotWaiverId = <
       if (exists) {
         return context.setError(field.name, {
           message:
-            "According to our records, this 1915(c) Waiver Amendment Number already exists. Please check the 1915(c) Waiver Amendment Number and try entering it again.",
+            "According to our records, this Waiver Amendment Number already exists. Please check the Waiver Amendment Number and try entering it again.",
         });
       }
 
@@ -156,6 +143,11 @@ export const SlotWaiverId = <
           {onRemove && (
             <XIcon size={20} onClick={onRemove} className={"cursor-pointer"} />
           )}
+          {!onRemove && (
+            <div className="ml-1">
+              <I.RequiredIndicator />
+            </div>
+          )}
         </div>
         <I.FormMessage />
       </I.FormItem>
@@ -172,16 +164,15 @@ export const WaiverIdFieldArray = (props: any) => {
   return (
     <div>
       <div className="flex flex-col gap-2 justify-start">
-        <div className="flex flex-col gap-1">
-          <I.FormLabel className="font-bold">
-            Control Numbers (optional)
-          </I.FormLabel>
-          <I.FormLabel>
-            Other waiver IDs that will be associated with the 1915(c) Appendix K
-            Amendment
-          </I.FormLabel>
-        </div>
-
+        <I.FormLabel className="w-[500px]">
+          <strong>
+            The first ID entered will be used to track the submission on the
+            OneMAC dashboard.
+          </strong>{" "}
+          You will be able to find other waiver IDs entered below by searching
+          for the first waiver ID.
+        </I.FormLabel>{" "}
+        <I.FormLabel></I.FormLabel>
         <div className="flex flex-col py-2 gap-4">
           {fieldArr.fields.map((FLD, index) => {
             return (
@@ -192,7 +183,7 @@ export const WaiverIdFieldArray = (props: any) => {
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore
                   render={SlotWaiverId({
-                    onRemove: () => fieldArr.remove(index),
+                    ...(index && { onRemove: () => fieldArr.remove(index) }),
                     state: props.state,
                   })}
                 />
@@ -205,10 +196,10 @@ export const WaiverIdFieldArray = (props: any) => {
             size="sm"
             onClick={() => fieldArr.append("")}
             variant="outline"
-            className="w-[100px]"
+            className="w-[100px] mt-2"
           >
             <Plus className="h-5 w-5 mr-1" />
-            Add
+            Add ID
           </I.Button>
         </div>
       </div>

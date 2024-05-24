@@ -1,4 +1,6 @@
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
+import { SEATOOL_STATUS } from "shared-types";
 
 export * from "./spa/med-rai";
 export * from "./spa/chip-rai";
@@ -23,3 +25,6 @@ export const waiverRaiContent: FormContentHydrator = (document) => ({
     body: `The RAI response for ${document.id} has been submitted.`,
   },
 });
+
+export const raiRespondedTo: CheckDocumentFunction = (checks) =>
+  checks.hasStatus(SEATOOL_STATUS.PENDING) && checks.hasRaiResponse;

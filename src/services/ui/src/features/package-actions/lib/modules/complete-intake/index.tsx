@@ -8,6 +8,7 @@ import { TypeSelect } from "@/components/Form/fields/TypeSelect";
 import { SubTypeSelect } from "@/components/Form/fields/SubTypeSelect";
 import { CPOCSelect } from "@/components/Form/fields/CPOCSelect";
 import { PackageSection } from "@/components/Form/content/PackageSection";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 
 export const defaultCompleteIntakeSchema = z.object({
   subject: z
@@ -50,3 +51,5 @@ export const defaultCompleteIntakeContent: FormContentHydrator = (
     body: `The Intake for ${document.id} has been completed.`,
   },
 });
+
+export const intakeCompleted: CheckDocumentFunction = (_checks) => true;

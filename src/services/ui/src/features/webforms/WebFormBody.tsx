@@ -54,7 +54,7 @@ export function WebformBody({
           <fieldset disabled={readonly}>
             <RHFDocument document={data} {...form} />
             {!readonly && (
-              <div className="flex justify-between text-blue-700 underline my-2">
+              <div className="flex justify-between text-blue-700 underline mb-2 mt-10">
                 <div>
                   <Button type="button" onClick={onSave} variant="ghost">
                     Save draft

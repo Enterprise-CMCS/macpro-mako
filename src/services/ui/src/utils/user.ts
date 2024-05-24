@@ -3,7 +3,7 @@ import { isCmsUser, isStateUser } from "shared-utils";
 import { getUser } from "@/api";
 
 export const getUserStateCodes = (
-  user: CognitoUserAttributes | null | undefined
+  user: CognitoUserAttributes | null | undefined,
 ): StateCode[] => {
   // We always need a user, and state users always need a custom:state value
   if (!user || (isStateUser(user) && user["custom:state"] === undefined))
@@ -17,7 +17,7 @@ export const isAuthorizedState = async (id: string) => {
     const user = await getUser();
     if (!user.user) throw Error("No cognito attributes found.");
     return getUserStateCodes(user.user).includes(
-      id.substring(0, 2) as StateCode
+      id.substring(0, 2) as StateCode,
     );
   } catch (e) {
     console.error(e);

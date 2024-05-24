@@ -17,7 +17,7 @@ export const v202401: FormSchema = {
                 "These assurances must be made by the state/territory if enrollment is mandatory for any of the target populations or subpopulations.",
                 {
                   type: "br",
-                  classname: "font-bold block pt-2",
+                  classname: "font-bold block py-4",
                   text: "When mandatorily enrolling eligibility groups in an Alternative Benefit Plan (ABP) (benchmark or benchmark-equivalent plan) that could have exempt individuals, prior to enrollment:",
                 },
               ],
@@ -31,15 +31,15 @@ export const v202401: FormSchema = {
                     styledLabel: [
                       {
                         text: "The state/territory assures it will appropriately identify any individuals in the eligibility groups who:",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "A. Are exempt from mandatory enrollment in an ABP",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "B. Meet the exemption criteria and are given a choice of ABP coverage defined using Section 1937 requirements or ABP coverage defined as the state/territory’s approved Medicaid state plan not subject to Section 1937 requirements",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                     ],
                   },
@@ -64,7 +64,14 @@ export const v202401: FormSchema = {
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
-                        rules: { required: "* Required" },
+                        rules: {
+                          required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
+                        },
                       },
                     ],
                   },
@@ -77,7 +84,14 @@ export const v202401: FormSchema = {
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
-                        rules: { required: "* Required" },
+                        rules: {
+                          required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
+                        },
                       },
                     ],
                   },
@@ -90,7 +104,14 @@ export const v202401: FormSchema = {
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
-                        rules: { required: "* Required" },
+                        rules: {
+                          required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
+                        },
                       },
                     ],
                   },
@@ -174,7 +195,14 @@ export const v202401: FormSchema = {
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
-                        rules: { required: "* Required" },
+                        rules: {
+                          required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
+                        },
                       },
                     ],
                   },
@@ -215,7 +243,14 @@ export const v202401: FormSchema = {
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
-                        rules: { required: "* Required" },
+                        rules: {
+                          required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
+                        },
                       },
                     ],
                   },
@@ -240,7 +275,13 @@ export const v202401: FormSchema = {
             {
               name: "abp2c_exemptions_desc-disenroll-process_textarea",
               rhf: "Textarea",
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
               label: "Describe the process for processing requests.",
               labelClassName: "font-bold text-black",
             },
@@ -259,6 +300,12 @@ export const v202401: FormSchema = {
               label:
                 "Other information about enrollment assurances for mandatory participants (optional)",
               labelClassName: "font-bold text-black",
+              rules: {
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },

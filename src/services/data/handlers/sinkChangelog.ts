@@ -127,14 +127,24 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
           continue;
         }
         if (actionType === Action.REMOVE_APPK_CHILD) {
-          docs.push({
-            ...record,
-            id: `${record.appkParentId}-${offset}`,
-            packageId: record.appkParentId,
-            appkChildId: record.id,
-            timestamp,
-            actionType,
-          });
+          docs.push(
+            {
+              ...record,
+              id: `${record.appkParentId}-${offset}`,
+              packageId: record.appkParentId,
+              appkChildId: record.id,
+              timestamp,
+              actionType,
+            },
+            {
+              ...record,
+              id: `${record.id}-${offset}`,
+              appkParentId: record.appkParentId,
+              packageId: record.id,
+              timestamp,
+              actionType,
+            },
+          );
           continue;
         }
         docs.push({
