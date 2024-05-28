@@ -162,7 +162,9 @@ export const SlotField = ({
                   value={OPT.value}
                   checked={field.value?.includes(OPT.value)}
                   styledLabel={
-                    <RHFTextDisplay text={OPT.styledLabel ?? OPT.label} />
+                    <RHFTextDisplay
+                      text={(OPT.styledLabel || OPT.label) as string}
+                    />
                   }
                   onCheckedChange={(c) => {
                     const filtered =
@@ -207,7 +209,9 @@ export const SlotField = ({
                   />
                   {
                     <FormLabel className="font-normal mt-2" htmlFor={OPT.value}>
-                      <RHFTextDisplay text={OPT.styledLabel ?? OPT.label} />
+                      <RHFTextDisplay
+                        text={(OPT.styledLabel || OPT.label) as string}
+                      />
                     </FormLabel>
                   }
                 </div>
