@@ -58,6 +58,8 @@ jobs:
       - name: Build Deploy Metrics
         run: |
           cd docs/_deploy-metrics
+          cat $GITHUB_ENV
+          source $GITHUB_ENV
           yarn build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
