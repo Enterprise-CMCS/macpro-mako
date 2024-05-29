@@ -27,7 +27,7 @@ export const OsExportData: FC<{
     const filters = [
       ...url.state.filters,
       ...(DEFAULT_FILTERS[url.state.tab]?.filters || []),
-      ...createSearchFilterable(query.search || ""),
+      ...createSearchFilterable(url.state.search || ""),
     ];
 
     const resolvedData = await getMainExportData(filters);
