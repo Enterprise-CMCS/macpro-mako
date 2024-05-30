@@ -13,6 +13,8 @@ export const PackageActionsCard: FC<{
 }> = ({ id, data }) => {
   const location = useLocation();
   const { data: user } = useGetUser();
+  console.log("getAvailableActions", data);
+
   const actions = getAvailableActions(user!.user!, data);
 
   return (
