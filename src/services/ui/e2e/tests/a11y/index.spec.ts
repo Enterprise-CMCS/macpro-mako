@@ -4,6 +4,7 @@ import AxeBuilder from "@axe-core/playwright";
 const staticRoutes = [
   "/",
   "/dashboard",
+  "/details",
   "/faq",
   "/profile",
   "/new-submission",
@@ -17,6 +18,19 @@ const staticRoutes = [
   "/new-submission/spa/medicaid/landing/medicaid-abp",
   "/new-submission/spa/medicaid/landing/medicaid-eligibility",
   "/new-submission/spa/chip/landing/chip-eligibility",
+  "/new-submission/waiver/b/capitated/amendment/create",
+  "/new-submission/waiver/b/capitated/renewal/create",
+  "/new-submission/waiver/b/capitated/initial/create",
+  "/new-submission/waiver/b/b4/initial/create",
+  "/new-submission/waiver/b/b4/amendment/create",
+  "/new-submission/waiver/b/b4/renewal/create",
+  "/new-submission/spa/medicaid/landing/medicaid-abp",
+  "/new-submission/spa/medicaid/landing/medicaid-eligibility",
+  "/new-submission/spa/chip/landing/chip-eligibility",
+  "/new-submission/spa/medicaid/create",
+  "/new-submission/spa/chip/create",
+  "/new-submission/waiver/app-k",
+  "/new-submission/waiver/temporary-extensions",
 ];
 
 test.describe("test a11y on static routes", () => {
