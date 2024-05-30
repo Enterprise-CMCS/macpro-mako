@@ -93,6 +93,7 @@ export const MedicaidSpaFormPage = () => {
   }, []);
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
