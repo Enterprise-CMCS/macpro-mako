@@ -89,7 +89,6 @@ export const getSchemaFor = (a: Action, p: AuthorityUnion): Schema => {
     "disable-rai-withdraw": disableRaiWithdrawFor,
     "withdraw-rai": withdrawRaiFor,
     "withdraw-package": withdrawPackageFor,
-    //
     "temporary-extension": tempExtensionFor,
     "update-id": updateIdFor,
     "complete-intake": completeIntakeFor,
