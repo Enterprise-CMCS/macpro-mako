@@ -97,7 +97,15 @@ export const PreSubmitNotice = ({
   <Alert variant={"infoBlock"} className="space-x-2 mb-8">
     <Info />
     {/* Wraps strings, but allows for ReactElements to declare their own wrapper */}
-    {typeof message === "string" ? <p>{message}</p> : message}
+    {typeof message === "string" ? (
+      <p>
+        {message} <ProgressLossReminder />
+      </p>
+    ) : (
+      <>
+        {message} <ProgressLossReminder />
+      </>
+    )}
   </Alert>
 );
 
