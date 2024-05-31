@@ -201,9 +201,11 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
                   }),
                 );
               } else if (d?.from && !d?.to) {
-                onChange(
-                  offsetRangeToUtc(getDateRange(d.from, endOfDay(d.from))),
-                );
+                // both of these need to use 'offsetToUtc' in order to work
+                onChange({
+                  gte: offsetToUtc(new Date(d.from)).toISOString(),
+                  lte: offsetToUtc(new Date(endOfDay(d.from))).toISOString(),
+                });
               }
             }}
             {...props}
