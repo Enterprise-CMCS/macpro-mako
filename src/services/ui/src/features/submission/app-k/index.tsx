@@ -101,10 +101,12 @@ export const AppKSubmissionForm = () => {
               )}
             />
             <div className="flex flex-col">
-              <I.FormLabel className="font-semibold">
+              <I.FormLabel className="font-semibold" htmlFor="1975c">
                 Waiver Authority
               </I.FormLabel>
-              <span className="text-lg font-thin">1915(c)</span>
+              <span className="text-lg font-thin" id="1975c">
+                1915(c)
+              </span>
             </div>
 
             <I.FormField
