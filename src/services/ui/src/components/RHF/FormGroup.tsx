@@ -8,10 +8,11 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
   form: TRhf.FormGroup;
   control: Control<TFieldValues>;
   groupNamePrefix?: string;
+  className?: string;
 }) => {
   return (
     <DependencyWrapper {...props.form}>
-      <div className="py-4">
+      <div className={props.className ? props.className : "py-2"}>
         {props.form.description && (
           <div className="mb-2">
             <FormLabel
