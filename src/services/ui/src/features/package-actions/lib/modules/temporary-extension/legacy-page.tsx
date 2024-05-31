@@ -19,6 +19,7 @@ import {
   SimplePageContainer,
   useLocationCrumbs,
   FormLoadingSpinner,
+  ProgressLossReminder,
 } from "@/components";
 import { useParams } from "react-router-dom";
 import {
@@ -129,12 +130,13 @@ export const TemporaryExtension = () => {
         />
         <Alert variant={"infoBlock"} className="space-x-2 mb-8">
           <Info />
-          <p>
+          <div>
             Once you submit this form, a confirmation email is sent to you and
             to CMS. CMS will use this content to review your package, and you
             will not be able to edit this form. If CMS needs any additional
             information, they will follow up by email.
-          </p>
+            <ProgressLossReminder />
+          </div>
         </Alert>
         <FormLoadingSpinner />
         <ErrorBanner />
