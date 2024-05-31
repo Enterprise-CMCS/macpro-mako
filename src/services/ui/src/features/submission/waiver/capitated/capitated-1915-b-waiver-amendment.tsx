@@ -32,6 +32,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
+import { documentPoller } from "@/utils/Poller/documentPoller";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,
@@ -103,7 +104,18 @@ export const Capitated1915BWaiverAmendmentPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+
+      const poller = documentPoller(formData.id, (checks) =>
+        checks.actionIs("Amend"),
+      );
+
+      await poller.startPollingData();
+
+      navigate(
+        originPath
+          ? { path: `${originPath}?tab=waivers` as Route }
+          : { path: "/dashboard?tab=waivers" as Route },
+      );
     } catch (e) {
       console.error(e);
       alert.setContent({
@@ -119,6 +131,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
 
   const form = useForm<Waiver1915BCapitatedAmendment>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   return (

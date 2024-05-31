@@ -48,7 +48,7 @@ const AttachmentDetails: FC<{
   );
 };
 
-export const PA_RemoveAppkChild: FC<opensearch.changelog.Document> = (
+export const PA_AppkParentRemovedChild: FC<opensearch.changelog.Document> = (
   props,
 ) => {
   return (
@@ -60,7 +60,24 @@ export const PA_RemoveAppkChild: FC<opensearch.changelog.Document> = (
       >
         {props.appkChildId}
       </Link>
-      <p>was withdrawn</p>
+      <p>was removed</p>
+    </div>
+  );
+};
+
+export const PA_AppkChildRemovedFromParent: FC<
+  opensearch.changelog.Document
+> = (props) => {
+  return (
+    <div className="flex gap-1">
+      <p>Removed from:</p>
+      <Link
+        path="/details"
+        query={{ id: props.appkParentId }}
+        className="hover:underline font-semibold text-blue-600"
+      >
+        {props.appkParentId}
+      </Link>
     </div>
   );
 };
@@ -285,8 +302,19 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
         return ["RAI issued", PA_RaiIssued];
       case "respond-to-rai":
         return ["RAI response submitted", PA_ResponseSubmitted];
-      case "remove-appk-child":
-        return [`Waiver withdrawn : ${props.appkChildId}`, PA_RemoveAppkChild];
+      case "remove-appk-child": {
+        if (props.appkChildId) {
+          return [
+            `Package removed: ${props.appkChildId}`,
+            PA_AppkParentRemovedChild,
+          ];
+        }
+
+        return [
+          `Removed from: ${props.appkParentId}`,
+          PA_AppkChildRemovedFromParent,
+        ];
+      }
       case "legacy-withdraw-rai-request":
         return ["RAI response withdrawn requested", PA_ResponseWithdrawn];
 
@@ -339,6 +367,7 @@ export const PackageActivities = () => {
         <p className="text-gray-500">No package activity recorded</p>
       )}
       <Accordion
+        key={hook.accordianDefault[0]}
         type="multiple"
         className="flex flex-col gap-2"
         defaultValue={hook.accordianDefault}

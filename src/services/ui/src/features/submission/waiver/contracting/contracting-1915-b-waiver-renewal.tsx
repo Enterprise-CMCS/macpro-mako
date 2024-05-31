@@ -16,7 +16,7 @@ import {
 } from "@/components";
 import * as Content from "@/components/Form/old-content";
 import * as Inputs from "@/components/Inputs";
-import { useGetUser, submit } from "@/api";
+import { useGetUser, submit, getItem } from "@/api";
 import { Authority } from "shared-types";
 import {
   zAdditionalInfo,
@@ -32,6 +32,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
 import { SubmitAndCancelBtnSection } from "../shared-components";
+import { documentPoller } from "@/utils/Poller/documentPoller";
 
 const formSchema = z
   .object({
@@ -124,7 +125,18 @@ export const Contracting1915BWaiverRenewalPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+
+      const poller = documentPoller(formData.id, (checks) =>
+        checks.actionIs("Renew"),
+      );
+
+      await poller.startPollingData();
+
+      navigate(
+        originPath
+          ? { path: `${originPath}?tab=waivers` as Route }
+          : { path: "/dashboard?tab=waivers" as Route },
+      );
     } catch (e) {
       console.error(e);
       alert.setContent({
@@ -140,6 +152,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
 
   const form = useForm<Waiver1915BContractingRenewal>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   return (

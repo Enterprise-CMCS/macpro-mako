@@ -1,14 +1,7 @@
 import { Handler } from "aws-lambda";
 import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
-import {
-  Action,
-  Authority,
-  KafkaRecord,
-  SEATOOL_STATUS,
-  getStatus,
-  opensearch,
-} from "shared-types";
+import { Action, Authority, KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
 import {
   ErrorType,
