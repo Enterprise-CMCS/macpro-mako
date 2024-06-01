@@ -171,13 +171,17 @@ export const Capitated1915BWaiverInitialPage = () => {
                       What is my Initial Waiver Number?
                     </Link>
                   </div>
-                  <p className="text-gray-500 font-light">
+                  <p
+                    className="text-gray-500 font-light"
+                    id="waiver-number-format"
+                  >
                     Must be a new initial number with the format SS-####.R00.00
                     or SS-#####.R00.00
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
                       {...field}
+                      aria-describedby="waiver-number-format"
                       onInput={(e) => {
                         if (e.target instanceof HTMLInputElement) {
                           e.target.value = e.target.value.toUpperCase();

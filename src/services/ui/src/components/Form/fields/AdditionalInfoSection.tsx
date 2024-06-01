@@ -28,7 +28,11 @@ export const AdditionalInfoSection = ({
         render={({ field }) => (
           <FormItem>
             {instruction && (
-              <FormLabel data-testid="addl-info-label" className="font-normal">
+              <FormLabel
+                htmlFor={field.name}
+                data-testid="addl-info-label"
+                className="font-normal"
+              >
                 {instruction}
               </FormLabel>
             )}
@@ -39,6 +43,7 @@ export const AdditionalInfoSection = ({
               aria-live="off"
               aria-multiline={true}
               className="h-[200px] resize-none"
+              id={field.name}
             />
             <FormDescription>
               <span
