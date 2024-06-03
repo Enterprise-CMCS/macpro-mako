@@ -92,10 +92,14 @@ export const AppKSubmissionForm = () => {
               name="title"
               render={({ field }) => (
                 <I.FormItem className="w-[280px]">
-                  <I.FormLabel className="font-bold">
+                  <I.FormLabel className="font-bold" htmlFor="amendment-title">
                     Amendment Title <I.RequiredIndicator />
                   </I.FormLabel>
-                  <I.Textarea {...field} className="h-[80px]" />
+                  <I.Textarea
+                    {...field}
+                    className="h-[80px]"
+                    id="amendment-title"
+                  />
                   <I.FormMessage />
                 </I.FormItem>
               )}
