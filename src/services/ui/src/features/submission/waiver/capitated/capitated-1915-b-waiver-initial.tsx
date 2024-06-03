@@ -166,7 +166,7 @@ export const Capitated1915BWaiverInitialPage = () => {
                       to={"/faq/initial-waiver-id-format"}
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
+                      className="text-blue-900 underline"
                     >
                       What is my Initial Waiver Number?
                     </Link>

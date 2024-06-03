@@ -192,7 +192,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
                       to="/faq/waiver-amendment-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
+                      className="text-blue-900 underline"
                     >
                       What is my 1915(b) Waiver Amendment Number?
                     </Link>
