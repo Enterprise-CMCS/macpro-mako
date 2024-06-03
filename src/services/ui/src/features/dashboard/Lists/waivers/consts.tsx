@@ -30,7 +30,7 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
         ]
       : []),
     {
-      props: { className: "w-[150px]" },
+      props: { className: "w-[200px]" },
       field: "id.keyword",
       label: "Waiver Number",
       locked: true,

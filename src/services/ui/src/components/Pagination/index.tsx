@@ -24,8 +24,9 @@ export const Pagination: FC<Props> = (props) => {
           Next
         </div>
       </div>
-      <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-        <div className="flex gap-6">
+      <div className="hidden sm:flex-col md:flex-row sm:flex sm:flex-1 items-center justify-between">
+        {/* Records per page ... 1-25 of xxxx records */}
+        <div className="flex gap-6 mb-5 md:mb-0">
           <p className="flex gap-2 text-sm text-gray-700" id="recordsLabel">
             Records per page:
             <select
@@ -47,6 +48,7 @@ export const Pagination: FC<Props> = (props) => {
             records
           </p>
         </div>
+        {/* < 1 ....n-1, n, n+1, .... x > */}
         <div>
           <nav
             className="isolate inline-flex -space-x-px rounded-md shadow-sm"
@@ -114,7 +116,7 @@ export const Pagination: FC<Props> = (props) => {
                       "text-white": isActive,
                       "hover:text-black": isActive,
                       "hover:bg-blue-700": isActive,
-                    }
+                    },
                   )}
                 >
                   {PAGE}
