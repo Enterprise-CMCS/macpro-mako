@@ -20,6 +20,7 @@ const SelectTrigger = React.forwardRef<
       "p-3 flex w-full items-center justify-between rounded-sm border border-black bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
       className,
     )}
+    aria-labelledby="select-label"
     {...props}
   >
     {children}
@@ -75,6 +76,7 @@ const SelectLabel = React.forwardRef<
   <SelectPrimitive.Label
     ref={ref}
     className={cn("px-2 py-1.5 text-sm font-semibold", className)}
+    id="select-label"
     {...props}
   />
 ));
