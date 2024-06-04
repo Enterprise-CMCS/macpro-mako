@@ -1,1 +1,1 @@
-export const RequiredIndicator = () => <span className="text-red-500">*</span>;
+export const RequiredIndicator = () => <span className="text-red-600">*</span>;

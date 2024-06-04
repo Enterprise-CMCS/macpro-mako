@@ -14,7 +14,6 @@ import {
   AdditionalInfoSection,
   AttachmentsSection,
 } from "@/components";
-import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
 import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 
 export const defaultTempExtSchema = zodAlwaysRefine(
@@ -67,16 +66,12 @@ export const defaultTempExtSchema = zodAlwaysRefine(
   }
 });
 export const defaultTempExtFields: ReactElement[] = [
-  <ActionFormDescription key={"content-description"}>
+  <ActionFormDescription boldReminder key={"te-content-description"}>
     Once you submit this form, a confirmation email is sent to you and to CMS.
     CMS will use this content to review your package, and you will not be able
     to edit this form. If CMS needs any additional information, they will follow
-    up by email.{" "}
-    <strong className="font-bold">
-      If you leave this page, you will lose your progress on this form.
-    </strong>
+    up by email.
   </ActionFormDescription>,
-  <TEPackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     key={"field-attachments"}
     faqAttLink="/faq/temporary-extensions-b-attachments"

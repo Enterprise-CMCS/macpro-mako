@@ -1,13 +1,12 @@
 import { z } from "zod";
 import { ReactElement } from "react";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
-import { ActionFormDescription } from "@/components";
+import { ActionFormDescription, SectionCard } from "@/components";
 import { SubjectInput } from "@/components/Form/fields/SubjectInput";
 import { DescriptionInput } from "@/components/Form/fields/DescriptionInput";
 import { TypeSelect } from "@/components/Form/fields/TypeSelect";
 import { SubTypeSelect } from "@/components/Form/fields/SubTypeSelect";
 import { CPOCSelect } from "@/components/Form/fields/CPOCSelect";
-import { PackageSection } from "@/components/Form/content/PackageSection";
 import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 
 export const defaultCompleteIntakeSchema = z.object({
@@ -26,21 +25,17 @@ export const defaultCompleteIntakeSchema = z.object({
   cpoc: z.number().min(1, { message: "CPOC is required" }),
 });
 export const defaultCompleteIntakeFields: ReactElement[] = [
-  <ActionFormDescription key={"section-desc"}>
-    <p>
-      Once you submit this form, the supplied information will be writted to
-      SEATool, and intake for the record will be complete.
-    </p>
-    <strong>
-      If you leave this page, you will lose your progress on this form.
-    </strong>
+  <ActionFormDescription boldReminder key={"section-desc"}>
+    Once you submit this form, the supplied information will be writted to
+    SEATool, and intake for the record will be complete.
   </ActionFormDescription>,
-  <PackageSection key={"section-packageinfo"} />,
-  <SubjectInput key={"field-subject"} />,
-  <DescriptionInput key={"field-desc"} />,
-  <TypeSelect key={"field-type"} />,
-  <SubTypeSelect key={"field-subtype"} />,
-  <CPOCSelect key={"field-cpoc"} />,
+  <SectionCard key={"section-form"}>
+    <SubjectInput key={"field-subject"} />
+    <DescriptionInput key={"field-desc"} />
+    <TypeSelect key={"field-type"} />
+    <SubTypeSelect key={"field-subtype"} />
+    <CPOCSelect key={"field-cpoc"} />
+  </SectionCard>,
 ];
 export const defaultCompleteIntakeContent: FormContentHydrator = (
   document,

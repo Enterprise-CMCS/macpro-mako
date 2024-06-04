@@ -17,12 +17,12 @@ import { useOriginPath } from "@/utils";
 import { Link } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
+import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
   const crumbs = C.useLocationCrumbs();
   const { data: user } = useGetUser();
-  const modal = C.useModalContext();
   const originPath = useOriginPath();
   const [isDataPolling, setIsDataPolling] = useState(false);
   const form = useForm<SchemaForm>({
@@ -92,19 +92,25 @@ export const AppKSubmissionForm = () => {
               name="title"
               render={({ field }) => (
                 <I.FormItem className="w-[280px]">
-                  <I.FormLabel className="font-bold">
+                  <I.FormLabel className="font-bold" htmlFor="amendment-title">
                     Amendment Title <I.RequiredIndicator />
                   </I.FormLabel>
-                  <I.Textarea {...field} className="h-[80px]" />
+                  <I.Textarea
+                    {...field}
+                    className="h-[80px]"
+                    id="amendment-title"
+                  />
                   <I.FormMessage />
                 </I.FormItem>
               )}
             />
             <div className="flex flex-col">
-              <I.FormLabel className="font-semibold">
+              <I.FormLabel className="font-semibold" htmlFor="1975c">
                 Waiver Authority
               </I.FormLabel>
-              <span className="text-lg font-thin">1915(c)</span>
+              <span className="text-lg font-thin" id="1975c">
+                1915(c)
+              </span>
             </div>
 
             <I.FormField
@@ -129,7 +135,7 @@ export const AppKSubmissionForm = () => {
                       to="/faq/waiver-c-id"
                       target={C.FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
+                      className="text-blue-900 underline"
                     >
                       What is my Appendix K ID?
                     </Link>
@@ -230,35 +236,9 @@ export const AppKSubmissionForm = () => {
             />
           </C.SectionCard>
           <C.PreSubmissionMessage />
-          <div className="flex gap-2 p-4 ml-auto">
-            <I.Button
-              type="submit"
-              disabled={form.formState.isSubmitting || !form.formState.isValid}
-            >
-              Submit
-            </I.Button>
-            <I.Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                modal.setContent({
-                  header: "Stop form submission?",
-                  body: "All information you've entered on this form will be lost if you leave this page.",
-                  acceptButtonText: "Yes, leave form",
-                  cancelButtonText: "Return to form",
-                });
-                modal.setOnAccept(() => () => {
-                  modal.setModalOpen(false);
-                  nav(
-                    originPath ? { path: originPath } : { path: "/dashboard" },
-                  );
-                });
-                modal.setModalOpen(true);
-              }}
-            >
-              Cancel
-            </I.Button>
-          </div>
+          <SubmitAndCancelBtnSection
+            cancelNavigationLocation={originPath ?? "/dashboard"}
+          />
         </form>
       </I.Form>
       <C.FAQFooter />

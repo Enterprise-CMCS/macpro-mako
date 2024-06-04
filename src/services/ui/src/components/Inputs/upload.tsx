@@ -4,6 +4,7 @@ import { useDropzone, FileRejection, Accept } from "react-dropzone";
 import * as I from "@/components/Inputs";
 import { X } from "lucide-react";
 import { FILE_TYPES } from "shared-types/uploads";
+import { v4 as uuidv4 } from "uuid";
 
 type UploadProps = {
   maxFiles?: number;
@@ -13,6 +14,7 @@ type UploadProps = {
 
 export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const uniqueId = uuidv4();
 
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {
@@ -46,7 +48,6 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
     <>
       <div className="my-2 flex flex-wrap gap-2">
         {files.map((file) => (
-          // <div key={file.name} className="my-2 flex gap-2">
           <div
             className="flex border-2 rounded-md py-1 pl-2.5 pr-1 border-sky-500 items-center"
             key={file.name}
@@ -62,7 +63,6 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
             >
               <X className="ml-2 text-sky-700 w-5" />
             </I.Button>
-            {/* </div> */}
           </div>
         ))}
       </div>
@@ -80,7 +80,11 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
             choose from folder
           </span>
         </p>
-        <input {...getInputProps()} />
+        <label htmlFor={`upload-${uniqueId}`} className="sr-only">
+          Drag file here or choose from folder
+        </label>
+        <input id={`upload-${uniqueId}`} {...getInputProps()} />
+
         {/* {isDragActive && <p>Drag is Active</p>} */}
       </div>
     </>
