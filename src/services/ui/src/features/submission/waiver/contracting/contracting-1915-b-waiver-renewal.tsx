@@ -16,7 +16,7 @@ import {
 } from "@/components";
 import * as Content from "@/components/Form/old-content";
 import * as Inputs from "@/components/Inputs";
-import { useGetUser, submit, getItem } from "@/api";
+import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
 import {
   zAdditionalInfo,
@@ -299,7 +299,11 @@ export const Contracting1915BWaiverRenewalPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection />
+          <SubmitAndCancelBtnSection
+            showAlert
+            loadingSpinner
+            cancelNavigationLocation={originPath ?? "/dashboard"}
+          />
         </form>
       </Inputs.Form>
       <FAQFooter />

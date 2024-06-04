@@ -2,11 +2,10 @@ import { z } from "zod";
 import { zAdditionalInfo, zAttachmentRequired } from "@/utils";
 import { ReactElement } from "react";
 import {
-  ActionFormDescription,
   AdditionalInfoSection,
   AttachmentsSection,
+  ActionFormDescription,
 } from "@/components";
-import { PackageSection } from "@/components/Form/content/PackageSection";
 
 export const chipWithdrawPackageSchema = z.object({
   additionalInformation: zAdditionalInfo.optional(),
@@ -14,14 +13,14 @@ export const chipWithdrawPackageSchema = z.object({
     officialWithdrawalLetter: zAttachmentRequired({ min: 1 }),
   }),
 });
+
 export const chipWithdrawPackageFields: ReactElement[] = [
-  <ActionFormDescription key={"content-description"}>
+  <ActionFormDescription key="content-description">
     Complete this form to withdraw a package. Once complete, you will not be
     able to resubmit this package. CMS will be notified and will use this
     content to review your request. If CMS needs any additional information,
     they will follow up by email.
   </ActionFormDescription>,
-  <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     faqAttLink="/faq"
     key={"field-attachments"}

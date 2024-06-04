@@ -8,6 +8,7 @@ import {
   FormMessage,
   RequiredIndicator,
   Upload,
+  FormSectionCard,
 } from "@/components";
 import { attachmentTitleMap } from "shared-types";
 
@@ -22,8 +23,7 @@ export const AttachmentsSection = ({
 }) => {
   const form = useFormContext();
   return (
-    <section className={"mb-8"}>
-      <h2 className="font-bold text-2xl font-sans mb-2">Attachments</h2>
+    <FormSectionCard title="Attachments" id="attachments">
       {instructions && <p>{instructions}</p>}
       <AttachmentsSizeTypesDesc faqAttLink={faqAttLink} />
       {attachments.map(({ name, required }) => (
@@ -41,6 +41,6 @@ export const AttachmentsSection = ({
           )}
         />
       ))}
-    </section>
+    </FormSectionCard>
   );
 };
