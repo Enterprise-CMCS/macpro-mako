@@ -15,6 +15,7 @@ import { useDetailsSidebarLinks } from "./hooks";
 import { Authority } from "shared-types";
 import { detailsAndActionsCrumbs } from "@/features/package-actions/actions-breadcrumbs";
 
+
 export const DetailCardWrapper = ({
   title,
   children,
@@ -58,7 +59,7 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
         className="block md:flex space-x-0 md:space-x-8"
       >
         <PackageStatusCard id={id} />
-        <PackageActionsCard id={id} />
+        <PackageActionsCard id={id} data={data._source} />
       </section>
       <div className="flex flex-col gap-3">
         <PackageDetails title={title} />

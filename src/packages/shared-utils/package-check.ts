@@ -106,3 +106,12 @@ export const PackageCheck = ({
 };
 
 export type IPackageCheck = ReturnType<typeof PackageCheck>;
+
+// Moving the above code into a functional format that resembles this,
+// stashing this here in the meantime.
+/** Checks whether all AppK members have the same RAI Requested date */
+export const haveSameRaiDate = (members: opensearch.main.Document[]) => {
+  return members
+    .map((member) => member.raiRequestedDate)
+    .every((date, _, arr) => date === arr[0]);
+};
