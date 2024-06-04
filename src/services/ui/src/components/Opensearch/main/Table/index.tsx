@@ -15,8 +15,8 @@ export const OsTable: FC<{
   const url = useOsUrl();
 
   return (
-    <UI.Table className="flex-1">
-      <UI.TableHeader className="sticky top-0 bg-white z-50">
+    <UI.Table className="overflow-scroll w-full">
+      <UI.TableHeader className="sticky top-0 bg-white">
         <UI.TableRow>
           <UI.TableHead
             className="w-[10px]"
@@ -53,7 +53,6 @@ export const OsTable: FC<{
           })}
         </UI.TableRow>
       </UI.TableHeader>
-
       <UI.TableBody>
         {/* TODO: Add a skeleton loader after discussing with HCD.
         See https://qmacbis.atlassian.net/browse/OY2-25623 */}

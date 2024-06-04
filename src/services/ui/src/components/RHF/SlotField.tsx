@@ -249,6 +249,7 @@ export const OptChildren = ({
                 form={FORM}
                 control={control}
                 groupNamePrefix={groupNamePrefix}
+                className="py-0"
               />
             </div>
           );

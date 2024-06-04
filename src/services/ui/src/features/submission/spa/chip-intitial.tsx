@@ -90,6 +90,7 @@ export const ChipSpaFormPage = () => {
   }, []);
   const form = useForm<ChipFormSchema>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
   const handleSubmit = form.handleSubmit(async (formData) => {
     try {

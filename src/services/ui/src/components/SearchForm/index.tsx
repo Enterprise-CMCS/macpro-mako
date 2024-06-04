@@ -49,7 +49,7 @@ export const SearchForm: FC<{
         <input
           id="searchInput"
           type="text"
-          className="w-[30rem] py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
+          className="w-full md:w-[30rem] py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
           maxLength={28}
           value={searchText}
           onChange={handleInputChange}
