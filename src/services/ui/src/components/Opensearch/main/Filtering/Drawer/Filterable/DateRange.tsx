@@ -146,8 +146,12 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   const label = useMemo(() => {
-    const from = value?.gte ? format(new Date(value?.gte), "LLL dd, y") : "";
-    const to = value?.lte ? format(new Date(value?.lte), "LLL dd, y") : "";
+    const from = value?.gte
+      ? format(offsetFromUtc(new Date(value?.gte)), "LLL dd, y")
+      : "";
+    const to = value?.lte
+      ? format(offsetToUtc(new Date(value?.lte)), "LLL dd, y")
+      : "";
 
     if (from && to) return `${from} - ${to}`;
     if (from) return `${from}`;
