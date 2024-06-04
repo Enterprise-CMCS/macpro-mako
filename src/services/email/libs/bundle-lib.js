@@ -401,11 +401,40 @@ const getBundleFromEvent = (configKey, stage) => {
         emailCommands: [
           {
             Template: `withdraw-rai-1915b-cms_${stage}`,
-            ToAddresses: ["osgEmail"],
+            ToAddresses: ["cpoc", "srt", "dmcoEmail", "osgEmail"],
           },
           {
             Template: `withdraw-rai-1915b-state_${stage}`,
             ToAddresses: ["allState"],
+          },
+        ],
+      };
+    case "withdraw-rai-1915c":
+      return {
+        lookupList: ["osInsights", "cognito", "osMain"],
+        dataList: [
+          "osgEmail",
+          "dhcbsooEmail",
+          "cpoc",
+          "srt",
+          "allState",
+          "id",
+          "applicationEndpoint",
+          "territory",
+          "submitterName",
+          "submitterEmail",
+          "authority",
+          "ninetyDaysDate",
+          "additionalInformation",
+          "formattedFileList",
+          "textFileList",
+          "initialSubmitterName",
+          "initialSubmitterEmail",
+        ],
+        emailCommands: [
+          {
+            Template: `withdraw-rai-1915c-cms_${stage}`,
+            ToAddresses: ["cpoc", "srt", "dhcbsooEmail", "osgEmail"],
           },
         ],
       };
