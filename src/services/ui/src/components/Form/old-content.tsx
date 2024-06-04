@@ -61,7 +61,7 @@ export const AttachmentsSizeTypesDesc = ({
           to={faqAttLink}
           target={FAQ_TAB}
           rel="noopener noreferrer"
-          className="text-blue-700 hover:underline"
+          className="text-blue-900 underline"
         >
           FAQ Page
         </Link>
@@ -79,7 +79,7 @@ export const AttachmentsSizeTypesDesc = ({
           to={"/faq/acceptable-file-formats"}
           target={FAQ_TAB}
           rel="noopener noreferrer"
-          className="text-blue-700 hover:underline"
+          className="text-blue-900 underline"
         >
           See the full list
         </Link>

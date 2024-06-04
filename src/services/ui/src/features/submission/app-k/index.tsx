@@ -92,19 +92,25 @@ export const AppKSubmissionForm = () => {
               name="title"
               render={({ field }) => (
                 <I.FormItem className="w-[280px]">
-                  <I.FormLabel className="font-bold">
+                  <I.FormLabel className="font-bold" htmlFor="amendment-title">
                     Amendment Title <I.RequiredIndicator />
                   </I.FormLabel>
-                  <I.Textarea {...field} className="h-[80px]" />
+                  <I.Textarea
+                    {...field}
+                    className="h-[80px]"
+                    id="amendment-title"
+                  />
                   <I.FormMessage />
                 </I.FormItem>
               )}
             />
             <div className="flex flex-col">
-              <I.FormLabel className="font-semibold">
+              <I.FormLabel className="font-semibold" htmlFor="1975c">
                 Waiver Authority
               </I.FormLabel>
-              <span className="text-lg font-thin">1915(c)</span>
+              <span className="text-lg font-thin" id="1975c">
+                1915(c)
+              </span>
             </div>
 
             <I.FormField
@@ -129,7 +135,7 @@ export const AppKSubmissionForm = () => {
                       to="/faq/waiver-c-id"
                       target={C.FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
+                      className="text-blue-900 underline"
                     >
                       What is my Appendix K ID?
                     </Link>
