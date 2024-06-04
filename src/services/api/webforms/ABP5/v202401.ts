@@ -153,7 +153,7 @@ function subsectionFormFields({
         "Other information about this benefit source, including the name of the source plan",
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_source-other-info_input`,
-      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
       rules: {
         required: "* Required",
         pattern: {
@@ -178,7 +178,7 @@ function subsectionFormFields({
         "Other information about this benefit source, including the name of the source plan",
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_secretary-other-info_input`,
-      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
       rules: {
         required: "* Required",
         pattern: {
@@ -213,7 +213,7 @@ function subsectionFormFields({
       label: "Other information about authorization",
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_authorization-other-info_input`,
-      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
       rules: {
         required: "* Required",
         pattern: {
@@ -248,7 +248,7 @@ function subsectionFormFields({
       label: "Other information about provider qualifications",
       labelClassName: "font-bold",
       name: `${formName}_${sectionName}_provider-qual-other-info_input`,
-      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
       rules: {
         required: "* Required",
         pattern: {

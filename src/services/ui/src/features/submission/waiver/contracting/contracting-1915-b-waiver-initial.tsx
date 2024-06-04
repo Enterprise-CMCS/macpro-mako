@@ -125,7 +125,10 @@ export const Contracting1915BWaiverInitialPage = () => {
 
   const form = useForm<Waiver1915BContractingInitial>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
+
+  console.log(form.formState.errors);
 
   return (
     <SimplePageContainer>

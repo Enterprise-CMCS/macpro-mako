@@ -128,6 +128,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
 
   const form = useForm<Waiver1915BContractingAmendment>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   return (

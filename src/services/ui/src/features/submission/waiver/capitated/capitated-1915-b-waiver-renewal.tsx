@@ -159,6 +159,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
 
   const form = useForm<Waiver1915BCapitatedRenewal>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   return (
