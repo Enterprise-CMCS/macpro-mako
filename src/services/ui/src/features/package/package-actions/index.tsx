@@ -1,39 +1,37 @@
-import { Link } from "@/components";
+import { useGetItem, useGetPackageActions } from "@/api";
+import { LoadingSpinner, Link } from "@/components";
 import { mapActionLabel } from "@/utils";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
 import { useLocation } from "react-router-dom";
-import type { opensearch } from "shared-types";
-import { useGetUser } from "@/api";
-import { getAvailableActions } from "shared-utils";
 
-export const PackageActionsCard: FC<{
-  id: string;
-  data: opensearch.main.Document;
-}> = ({ id, data }) => {
+export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
   const location = useLocation();
-  const { data: user } = useGetUser();
-  console.log("getAvailableActions", data);
+  const item = useGetItem(id);
 
-  const actions = getAvailableActions(user!.user!, data);
+  const { data, isLoading } = useGetPackageActions(id, {
+    retry: false,
+  });
+  if (isLoading) return <LoadingSpinner />;
 
+  const authority = item.data?._source.authority;
   return (
     <DetailCardWrapper title={"Package Actions"}>
       <div className="my-3">
-        {!data || !actions.length ? (
+        {!data || !data.actions.length ? (
           <em className="text-gray-400 my-3">
             No actions are currently available for this submission.
           </em>
         ) : (
           <ul className="my-3">
-            {actions.map((type, idx) => (
+            {data.actions.map((type, idx) => (
               <Link
                 state={{
                   from: `${location.pathname}${location.search}`,
                 }}
                 path="/action/:authority/:id/:type"
                 key={`${idx}-${type}`}
-                params={{ id, type, authority: data.authority }}
+                params={{ id, type, authority: authority! }}
                 query={{
                   origin: "actionsDetails",
                 }}

@@ -71,8 +71,6 @@ export const testItemResult: opensearch.main.ItemResult = {
         uploadDate: 1709319909222,
       },
     ],
-    appkParent: undefined,
-    appkChildren: undefined,
     appkParentId: null,
     raiWithdrawEnabled: false,
     additionalInformation: "does the master branch work?!",
