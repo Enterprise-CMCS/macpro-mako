@@ -36,7 +36,6 @@ export const v202401: FormSchema = {
                       "inform_exempt_and_comply_with_requirements_related_to_voluntary_enrollment",
                   },
                   {
-                    label: "",
                     styledLabel: [
                       {
                         text: "Effectively inform individuals who voluntarily enroll:",
@@ -80,7 +79,6 @@ export const v202401: FormSchema = {
                         classname: "block py-1",
                       },
                     ],
-                    label: "",
                     value:
                       "inform_individuals_of_abp_benefits_and_costs_of_different_packages",
                   },
@@ -187,7 +185,6 @@ export const v202401: FormSchema = {
               props: {
                 options: [
                   {
-                    label: "",
                     styledLabel: [
                       {
                         text: "The state/territory assures it will document in the exempt individual's eligibility file that the individual:",

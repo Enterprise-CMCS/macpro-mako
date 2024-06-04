@@ -84,6 +84,7 @@ export const ChipSpaFormPage = () => {
   const originPath = useOriginPath();
   const form = useForm<ChipFormSchema>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
   const handleSubmit = form.handleSubmit(async (formData) => {
     try {

@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components";
 import { defaultTempExtSchema } from "@/features/package-actions/lib/modules";
+import { useDebounce } from "@/hooks";
 
 export const TEPackageSection = () => {
   const { id, authority } = useParams();
@@ -142,37 +143,41 @@ const TempExtensionTypeDropDown = () => {
 };
 
 const TempExtensionApproveOrRenewNumber = () => {
-  const { control } = useFormContext<z.infer<typeof defaultTempExtSchema>>();
+  const { control, trigger } =
+    useFormContext<z.infer<typeof defaultTempExtSchema>>();
 
   return (
     <FormField
       name="originalWaiverNumber"
       control={control}
-      render={({ field }) => (
-        <FormItem className="max-w-md">
-          <FormLabel>
-            <strong className="font-bold">
-              Approved Initial or Renewal Waiver Number
-            </strong>{" "}
-            <RequiredIndicator />
-          </FormLabel>
-          <FormDescription>
-            Enter the existing waiver number in the format it was approved,
-            using a dash after the two character state abbreviation.
-          </FormDescription>
-          <FormControl>
-            <Input
-              {...field}
-              onInput={(e) => {
-                if (e.target instanceof HTMLInputElement) {
-                  e.target.value = e.target.value.toUpperCase();
-                }
-              }}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
+      render={({ field }) => {
+        return (
+          <FormItem className="max-w-md">
+            <FormLabel>
+              <strong className="font-bold">
+                Approved Initial or Renewal Waiver Number
+              </strong>{" "}
+              <RequiredIndicator />
+            </FormLabel>
+            <FormDescription>
+              Enter the existing waiver number in the format it was approved,
+              using a dash after the two character state abbreviation.
+            </FormDescription>
+            <FormControl>
+              <Input
+                {...field}
+                onInput={(e) => {
+                  trigger("authority");
+                  if (e.target instanceof HTMLInputElement) {
+                    e.target.value = e.target.value.toUpperCase();
+                  }
+                }}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 };

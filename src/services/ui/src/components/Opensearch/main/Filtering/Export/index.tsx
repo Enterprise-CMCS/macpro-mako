@@ -6,7 +6,12 @@ import { motion } from "framer-motion";
 import { format } from "date-fns";
 
 import { DEFAULT_FILTERS } from "../../useOpensearch";
-import { Button, OsTableColumn, useOsUrl } from "@/components";
+import {
+  Button,
+  OsTableColumn,
+  createSearchFilterable,
+  useOsUrl,
+} from "@/components";
 import { FC } from "react";
 
 export const OsExportData: FC<{
@@ -15,37 +20,17 @@ export const OsExportData: FC<{
   const [loading, setLoading] = useState(false);
   const url = useOsUrl();
 
-  const generateExport = async (): Promise<Record<any, any>> => {
-    setLoading(true);
-
-    const exportData: Record<any, any>[] = [];
-    const resolvedData = await getMainExportData(
-      url.state.filters.concat(DEFAULT_FILTERS[url.state.tab]?.filters ?? []),
-    );
-
-    for (const item of resolvedData) {
-      const column: Record<any, any> = {};
-
-      for (const header of columns) {
-        if (!header.transform) continue;
-        if (header.hidden) continue;
-        column[header.label] = header.transform(item);
-      }
-      exportData.push(column);
-    }
-
-    setLoading(false);
-
-    return exportData;
-  };
-
   const handleExport = async () => {
     setLoading(true);
 
     const exportData: Record<any, any>[] = [];
-    const resolvedData = await getMainExportData(
-      url.state.filters.concat(DEFAULT_FILTERS[url.state.tab]?.filters ?? []),
-    );
+    const filters = [
+      ...url.state.filters,
+      ...(DEFAULT_FILTERS[url.state.tab]?.filters || []),
+      ...createSearchFilterable(url.state.search || ""),
+    ];
+
+    const resolvedData = await getMainExportData(filters);
 
     for (const item of resolvedData) {
       const column: Record<any, any> = {};

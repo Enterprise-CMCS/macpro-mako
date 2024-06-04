@@ -115,24 +115,10 @@ export const ErrorBanner = () => {
     () => Object.keys(form.formState.errors).length,
     [form.formState.errors],
   );
-  const errorLanguage = useMemo(
-    () =>
-      errorLen > 1 ? "Input validation error(s)" : "Input validation error",
-    [errorLen],
-  );
+
   return errorLen !== 0 ? (
     <Alert className="my-6" variant="destructive">
-      {errorLanguage}
-      <ul className="list-disc">
-        {Object.values(form.formState.errors).map(
-          (err, idx) =>
-            err?.message && (
-              <li className="ml-8 my-2" key={idx}>
-                {err.message as string}
-              </li>
-            ),
-        )}
-      </ul>
+      Missing or malformed information. Please see errors above.
     </Alert>
   ) : null;
 };

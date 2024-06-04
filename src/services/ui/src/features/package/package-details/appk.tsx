@@ -1,5 +1,5 @@
-import { ConfirmationModal, Link, LoadingSpinner } from "@/components";
-import { Authority } from "shared-types";
+import { ConfirmationModal, LoadingSpinner } from "@/components";
+import { Authority, SEATOOL_STATUS } from "shared-types";
 import { useState } from "react";
 import * as T from "@/components/Table";
 import { Button } from "@/components/Inputs";
@@ -12,6 +12,7 @@ import { usePackageDetailsCache } from "..";
 
 export const AppK = () => {
   const [removeChild, setRemoveChild] = useState("");
+  const [loading, setLoading] = useState(false);
   const { data: user } = useGetUser();
   const cache = usePackageDetailsCache();
   const submission = useMutation({
@@ -19,6 +20,7 @@ export const AppK = () => {
   });
 
   const onChildRemove = async (id: string) => {
+    setLoading(true);
     await submission.mutate(
       {
         data: { id, appkParentId: cache.data.id },
@@ -31,10 +33,12 @@ export const AppK = () => {
           setTimeout(() => {
             setRemoveChild("");
             cache.refetch();
+            setLoading(false);
           }, 5000);
         },
         onError: (err) => {
           console.error(err);
+          setLoading(false);
         },
       },
     );
@@ -60,6 +64,10 @@ export const AppK = () => {
                 </T.TableCell>
                 <T.TableCell>
                   <Button
+                    disabled={
+                      cache.data.seatoolStatus === SEATOOL_STATUS.WITHDRAWN ||
+                      user?.isCms
+                    }
                     size="sm"
                     className="flex gap-1"
                     onClick={() => setRemoveChild(CHILD._id)}
@@ -73,7 +81,7 @@ export const AppK = () => {
           })}
         </T.TableBody>
       </T.Table>
-      {submission.isLoading && <LoadingSpinner />}
+      {(submission.isLoading || loading) && <LoadingSpinner />}
       <ConfirmationModal
         open={!!removeChild}
         onAccept={() => onChildRemove(removeChild)}

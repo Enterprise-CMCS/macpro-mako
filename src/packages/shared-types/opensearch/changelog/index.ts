@@ -29,6 +29,7 @@ export type Document = OneMac &
     timestamp: string;
     packageId: string;
     appkChildId: string;
+    appkParentId: string;
     oldPackageId: string;
     newPackageId: string;
   } & z.infer<legacyEvent.Schema> &

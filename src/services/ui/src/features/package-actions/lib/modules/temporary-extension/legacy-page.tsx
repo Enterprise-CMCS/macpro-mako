@@ -20,6 +20,7 @@ import {
   useLocationCrumbs,
   FormLoadingSpinner,
   ProgressLossReminder,
+  FAQFooter,
 } from "@/components";
 import { useParams } from "react-router-dom";
 import {
@@ -62,6 +63,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
 export const TempExtensionWrapper = () => {
   const methods = useForm({
     resolver: zodResolver(defaultTempExtSchema),
+    mode: "onChange",
   });
   const crumbs = useLocationCrumbs();
 
@@ -144,6 +146,7 @@ export const TemporaryExtension = () => {
           cancelNavigationLocation={navigationLocation}
         />
       </form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };

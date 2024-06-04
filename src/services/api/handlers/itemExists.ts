@@ -11,24 +11,20 @@ export const handler = async (event: APIGatewayEvent) => {
   }
   try {
     const body = JSON.parse(event.body);
-    const packageResult = await os.search(process.env.osDomain!, "main", {
-      query: {
-        match_phrase: {
-          id: {
-            query: body.id,
-          },
-        },
-      },
-    });
-    if (packageResult?.hits.total.value == 0) {
+    const packageResult = await os.getItem(
+      process.env.osDomain!,
+      "main",
+      body.id,
+    );
+    if (packageResult?._source) {
       return response({
         statusCode: 200,
-        body: { message: "No record found for the given id", exists: false },
+        body: { message: "Record found for the given id", exists: true },
       });
     } else {
       return response({
         statusCode: 200,
-        body: { message: "Record found for the given id", exists: true },
+        body: { message: "No record found for the given id", exists: false },
       });
     }
   } catch (error) {
