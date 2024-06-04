@@ -21,7 +21,7 @@ export const SectionCard: FC<SectionCardProps> = ({
       <section>
         {title && (
           <>
-            <h2 className="text-3xl font-semibold mb-2">{title}</h2>
+            <h1 className="text-3xl font-semibold mb-2">{title}</h1>
             <hr className="my-6 bg-slate-200 " />
           </>
         )}

@@ -156,7 +156,7 @@ export const ChipSpaFormPage = () => {
                       to="/faq/spa-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
+                      className="text-blue-900 underline"
                     >
                       What is my SPA ID?
                     </Link>

@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from "tailwindcss/defaultTheme";
+
 export default {
   darkMode: ["class"],
   content: ["./src/**/*.{ts,tsx}", "./index.html"],
@@ -20,6 +22,10 @@ export default {
       "4xl": "2.25rem",
       "5xl": "3rem",
     },
+    screens: {
+      "xs": "350px",
+      ...defaultTheme.screens,
+    }, 
     container: {
       center: true,
       padding: "2rem",

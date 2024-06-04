@@ -176,10 +176,12 @@ export const Capitated1915BWaiverRenewalPage = () => {
           <SectionCard title="1915(b) Waiver Renewal Details">
             <Content.FormIntroText />
             <div className="flex flex-col">
-              <Inputs.FormLabel className="font-semibold">
+              <Inputs.FormLabel className="font-semibold" htmlFor="1975b">
                 Waiver Authority
               </Inputs.FormLabel>
-              <span className="text-lg font-thin">1915(b)</span>
+              <span className="text-lg font-thin" id="1975b">
+                1915(b)
+              </span>
             </div>
             <Inputs.FormField
               control={form.control}
