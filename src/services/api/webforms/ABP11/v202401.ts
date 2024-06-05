@@ -2,15 +2,17 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header: "ABP 11: Payment methodology",
+  formId: "abp11",
   sections: [
     {
       title: "Alternative Benefit Plans - Payment methodologies",
+      sectionId: "abp-pay-method",
       form: [
         {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp11_abp-pay-method_assurance-method-in-plan_checkgroup",
+              name: "assurance-method-in-plan",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -24,7 +26,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Upload",
-              name: "abp11_abp-pay-method_state-plan-attchmnt-alt-payment-method_upload",
+              name: "state-plan-attchmnt-alt-payment-method",
               label: "State plan amendment attachment",
               labelClassName: "font-bold",
               description:

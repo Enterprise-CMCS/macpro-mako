@@ -2,14 +2,16 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header: "ABP 2c: Enrollment assurances - Mandatory participants",
+  formId: "abp2c",
   sections: [
     {
       title: "Assurances",
+      sectionId: "assurances",
       form: [
         {
           slots: [
             {
-              name: "abp2c_assurances_mandatory-identify-exempt_checkgroup",
+              name: "mandatory-identify-exempt",
               rhf: "Checkbox",
               descriptionAbove: true,
               descriptionClassName: "text-black text-base",
@@ -47,7 +49,7 @@ export const v202401: FormSchema = {
               },
             },
             {
-              name: "abp2c_assurances_how-identify_checkgroup",
+              name: "how-identify",
               rhf: "Checkbox",
               label: "How will the state/territory identify these individuals?",
               labelClassName: "font-bold text-black",
@@ -60,7 +62,7 @@ export const v202401: FormSchema = {
                     value: "review_of_eligibility_criteria",
                     slots: [
                       {
-                        name: "abp2c_assurances_how-id-review-eligible-crit-desc_textarea",
+                        name: "how-id-review-eligible-crit-desc",
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
@@ -80,7 +82,7 @@ export const v202401: FormSchema = {
                     value: "self_identification",
                     slots: [
                       {
-                        name: "abp2c_assurances_how-id-self-id-desc_textarea",
+                        name: "how-id-self-id-desc",
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
@@ -100,7 +102,7 @@ export const v202401: FormSchema = {
                     value: "other",
                     slots: [
                       {
-                        name: "abp2c_assurances_how-id-other-desc_textarea",
+                        name: "how-id-other-desc",
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
@@ -124,11 +126,12 @@ export const v202401: FormSchema = {
     },
     {
       title: "Exemptions",
+      sectionId: "exemptions",
       form: [
         {
           slots: [
             {
-              name: "abp2c_exemptions_mandatory-inform-current-exempt_checkgroup",
+              name: "mandatory-inform-current-exempt",
               rhf: "Checkbox",
               rules: { required: "* Required" },
               props: {
@@ -143,7 +146,7 @@ export const v202401: FormSchema = {
               },
             },
             {
-              name: "abp2c_exemptions_madatory-inform-future-exempt_checkgroup",
+              name: "madatory-inform-future-exempt",
               rhf: "Checkbox",
               rules: { required: "* Required" },
               props: {
@@ -158,7 +161,7 @@ export const v202401: FormSchema = {
               },
             },
             {
-              name: "abp2c_exemptions_how-id-become-exempt_checkgroup",
+              name: "how-id-become-exempt",
               rhf: "Checkbox",
               label:
                 "How will the state/territory identify if an individual becomes exempt?",
@@ -191,7 +194,7 @@ export const v202401: FormSchema = {
                     value: "other",
                     slots: [
                       {
-                        name: "abp2c_exemptions_how-id-exempt-other-desc_textarea",
+                        name: "how-id-exempt-other-desc",
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
@@ -210,7 +213,7 @@ export const v202401: FormSchema = {
               },
             },
             {
-              name: "abp2c_exemptions_freq-determine-exemptions_radiogroup",
+              name: "freq-determine-exemptions",
               rhf: "Radio",
               rules: { required: "* Required" },
               labelClassName: "font-bold text-black",
@@ -239,7 +242,7 @@ export const v202401: FormSchema = {
                     value: "other",
                     slots: [
                       {
-                        name: "abp2c_exemptions_freq-determine-ex-other-desc_textarea",
+                        name: "freq-determine-ex-other-desc",
                         rhf: "Textarea",
                         label: "Describe",
                         labelClassName: "font-bold text-black",
@@ -258,7 +261,7 @@ export const v202401: FormSchema = {
               },
             },
             {
-              name: "abp2c_exemptions_assure-disenroll-process_checkgroup",
+              name: "assure-disenroll-process",
               rhf: "Checkbox",
               rules: { required: "* Required" },
               props: {
@@ -273,7 +276,7 @@ export const v202401: FormSchema = {
               },
             },
             {
-              name: "abp2c_exemptions_desc-disenroll-process_textarea",
+              name: "desc-disenroll-process",
               rhf: "Textarea",
               rules: {
                 required: "* Required",
@@ -291,11 +294,12 @@ export const v202401: FormSchema = {
     },
     {
       title: "Additional Information",
+      sectionId: "addtnl-info",
       form: [
         {
           slots: [
             {
-              name: "abp2c_additional_info_description_textarea",
+              name: "description",
               rhf: "Textarea",
               label:
                 "Other information about enrollment assurances for mandatory participants (optional)",

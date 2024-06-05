@@ -2,10 +2,12 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header: "ABP 7: Benefits assurances",
+  formId: "abp7",
   sections: [
     {
       title:
         "Early and Periodic Screening, Diagnostic, and Treatment (EPSDT) assurances",
+      sectionId: "epsdt-assurances",
       form: [
         {
           description:
@@ -14,7 +16,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Select",
-              name: "abp7_epsdt-assurances_does-abp-include-beneficiaries-under-21_select",
+              name: "does-abp-include-beneficiaries-under-21",
               label:
                 "Does the Alternative Benefit Plan (ABP) include beneficiaries under age 21?",
               labelClassName: "font-bold",
@@ -32,7 +34,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp7_epsdt-assurances_notice-to-individual-includes-description_checkgroup",
+              name: "notice-to-individual-includes-description",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -46,7 +48,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp7_epsdt-assurances_provided-to-individuals-under-21_checkgroup",
+              name: "provided-to-individuals-under-21",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -62,7 +64,7 @@ export const v202401: FormSchema = {
               rhf: "Radio",
               label: "How will EPSDT services be provided?",
               labelClassName: "font-bold",
-              name: "abp7_epsdt-assurances_how-will-epsdt-be-provided_radiogroup",
+              name: "how-will-epsdt-be-provided",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -85,7 +87,7 @@ export const v202401: FormSchema = {
                             label:
                               "How will the state/territory provide additional EPSDT benefits?",
                             labelClassName: "font-bold",
-                            name: "abp7_epsdt-assurances_how-will-state-territory-provided-additional-benefits_radiogroup",
+                            name: "how-will-state-territory-provided-additional-benefits",
                             rules: { required: "* Required" },
                             props: {
                               options: [
@@ -101,7 +103,7 @@ export const v202401: FormSchema = {
                                       rhf: "Radio",
                                       label: "Payment method",
                                       labelClassName: "font-bold",
-                                      name: "abp7_epsdt-assurances_payment-method_radiogroup",
+                                      name: "payment-method",
                                       rules: { required: "* Required" },
                                       props: {
                                         options: [
@@ -121,7 +123,7 @@ export const v202401: FormSchema = {
                                             slots: [
                                               {
                                                 rhf: "Textarea",
-                                                name: "abp7_epsdt-assurances_payment-other_textarea",
+                                                name: "payment-other",
                                                 label: "Describe",
                                                 labelClassName: "font-bold",
                                                 rules: {
@@ -156,7 +158,7 @@ export const v202401: FormSchema = {
               label:
                 "Other information about how ESPDT benefits will be provided to participants under age 21 (optional)",
               labelClassName: "font-bold",
-              name: "abp7_epsdt-assurances_other-info-about-espdt-provided-to-under-21_input",
+              name: "other-info-about-espdt-provided-to-under-21",
               rules: {
                 pattern: {
                   value: /^\S(.*\S)?$/,
@@ -170,12 +172,13 @@ export const v202401: FormSchema = {
     },
     {
       title: "Prescription drug coverage assurances",
+      sectionId: "perscription-drug-coverage",
       form: [
         {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp7_perscription-drug-coverage_assurances_checkgroup",
+              name: "assurances",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -212,12 +215,13 @@ export const v202401: FormSchema = {
     },
     {
       title: "Other benefit assurances",
+      sectionId: "other-benefit",
       form: [
         {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp7_other-benefit_assurances_checkgroup",
+              name: "assurances",
               rules: { required: "* Required" },
               props: {
                 options: [

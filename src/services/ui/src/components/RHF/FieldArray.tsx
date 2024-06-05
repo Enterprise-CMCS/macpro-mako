@@ -7,7 +7,7 @@ import { Button, FormField } from "../Inputs";
 import { slotInitializer } from "./utils";
 
 export const RHFFieldArray = <TFields extends FieldValues>(
-  props: FieldArrayProps<TFields>
+  props: FieldArrayProps<TFields>,
 ) => {
   const fieldArr = useFieldArray({
     control: props.control,
@@ -16,12 +16,12 @@ export const RHFFieldArray = <TFields extends FieldValues>(
   });
 
   const onAppend = () => {
-    fieldArr.append(props.fields.reduce(slotInitializer, {}) as never);
+    fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
   };
 
   useEffect(() => {
     if (fieldArr.fields.length) return;
-    fieldArr.append(props.fields.reduce(slotInitializer, {}) as never);
+    fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
   }, []);
 
   return (
@@ -31,7 +31,7 @@ export const RHFFieldArray = <TFields extends FieldValues>(
           <div className="flex flex-row gap-3" key={FLD.id}>
             {props.fields.map((SLOT) => {
               const prefix = `${props.name}.${index}.`;
-              const adjustedPrefix = (props.groupNamePrefix ?? "") + prefix;
+              const adjustedPrefix = props.parentId + prefix;
               const adjustedSlotName = prefix + SLOT.name;
               return (
                 <FormField
@@ -43,7 +43,7 @@ export const RHFFieldArray = <TFields extends FieldValues>(
                     ...SLOT,
                     control: props.control,
                     name: adjustedSlotName,
-                    groupNamePrefix: adjustedPrefix,
+                    parentId: adjustedPrefix,
                   })}
                 />
               );

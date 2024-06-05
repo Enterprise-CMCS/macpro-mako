@@ -2,15 +2,17 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header: "ABP 9: Employer-sponsored insurance and payment of premiums",
+  formId: "abp9",
   sections: [
     {
       title: "Employer-sponsored insurance and payment of premiums",
+      sectionId: "employee-sponsored-insur-or-pay",
       form: [
         {
           slots: [
             {
               rhf: "Select",
-              name: "abp9_employee-sponsored-insur-or-pay_does-state-territory-provided-abp-through-employer-sponsored-insur_select",
+              name: "does-state-territory-provided-abp-through-employer-sponsored-insur",
               label:
                 "Does the state/territory provide the Alternative Benefit Plan (ABP) through the payment of employer-sponsored insurance for participants with such coverage with additional benefits and services provided through a benchmark or benchmark-equivalent benefit package?",
               labelClassName: "font-bold",
@@ -25,7 +27,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Textarea",
-              name: "abp9_employee-sponsored-insurance-or-payment_describe-employee-sponsored-insurance_textarea",
+              name: "describe-employee-sponsored-insurance",
               rules: {
                 required: "* Required",
                 pattern: {
@@ -41,7 +43,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "abp9_employee-sponsored-insur-or-pay_does-state-territory-provided-abp-through-employer-sponsored-insur_select",
+                    name: "abp9_employee-sponsored-insur-or-pay_does-state-territory-provided-abp-through-employer-sponsored-insur",
                     type: "expectedValue",
                     expectedValue: "yes",
                   },
@@ -52,7 +54,7 @@ export const v202401: FormSchema = {
 
             {
               rhf: "Select",
-              name: "abp9_employee-sponsored-insurance-or-pay_does-provide-pay-of-premiums_select",
+              name: "abp9_employee-sponsored-insurance-or-pay_does-provide-pay-of-premiums",
               label:
                 "Does the state/territory otherwise provide for payment of premiums?",
               labelClassName: "font-bold",
@@ -67,7 +69,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Textarea",
-              name: "abp9_employee-sponsored-insurance-or-pay_describe-include-pop-covered-assist-contribut_textarea",
+              name: "abp9_employee-sponsored-insurance-or-pay_describe-include-pop-covered-assist-contribut",
               rules: {
                 required: "* Required",
                 pattern: {
@@ -83,7 +85,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "abp9_employee-sponsored-insurance-or-pay_does-provide-pay-of-premiums_select",
+                    name: "abp9_employee-sponsored-insurance-or-pay_does-provide-pay-of-premiums",
                     type: "expectedValue",
                     expectedValue: "yes",
                   },
@@ -94,7 +96,7 @@ export const v202401: FormSchema = {
 
             {
               rhf: "Textarea",
-              name: "abp9_employee-sponsored-insurance-or-payment_other-info_textarea",
+              name: "other-info",
               label:
                 "Other information about employer-sponsored insurance or payment of premiums (optional)",
               labelClassName: "font-bold",
