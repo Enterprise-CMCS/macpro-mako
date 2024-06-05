@@ -101,6 +101,7 @@ interface SubsectionFieldProps {
 function subsectionFormFields({
   benefitProvided,
   optionalSection = false,
+  sectionName,
 }: SubsectionFieldProps): RHFSlotProps[] {
   // The Authorization select menu in the optional sections should not include
   // the "None" option, accodring to HCD. This is because the original PDF did
@@ -163,7 +164,7 @@ function subsectionFormFields({
       dependency: {
         conditions: [
           {
-            name: "source",
+            name: `${formName}_${sectionName}_source`,
             type: "expectedValue",
             expectedValue: "state_plan_other",
           },
@@ -188,7 +189,7 @@ function subsectionFormFields({
       dependency: {
         conditions: [
           {
-            name: "source",
+            name: `${formName}_${sectionName}_source`,
             type: "expectedValue",
             expectedValue: "secretary_approved_other",
           },
@@ -223,7 +224,7 @@ function subsectionFormFields({
       dependency: {
         conditions: [
           {
-            name: "auth",
+            name: `${formName}_${sectionName}_auth`,
             type: "expectedValue",
             expectedValue: "other",
           },
@@ -258,7 +259,7 @@ function subsectionFormFields({
       dependency: {
         conditions: [
           {
-            name: "provider-qual",
+            name: `${formName}_${sectionName}_provider-qual`,
             type: "expectedValue",
             expectedValue: "other",
           },
