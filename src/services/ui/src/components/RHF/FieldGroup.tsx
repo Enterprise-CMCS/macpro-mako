@@ -17,12 +17,12 @@ export const FieldGroup = <TFields extends FieldValues>(
   });
 
   const onAppend = () => {
-    fieldArr.append(props.fields.reduce(slotInitializer, {}) as never);
+    fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
   };
 
   useEffect(() => {
     if (fieldArr.fields.length) return;
-    fieldArr.append(props.fields.reduce(slotInitializer, {}) as never);
+    fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
   }, []);
 
   return (
