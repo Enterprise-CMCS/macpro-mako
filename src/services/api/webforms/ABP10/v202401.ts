@@ -59,7 +59,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "describe-approach",
+                    name: "abp2_economy-and-efficiency-of-plans_describe-approach",
                     type: "expectedValue",
                     expectedValue: "no",
                   },

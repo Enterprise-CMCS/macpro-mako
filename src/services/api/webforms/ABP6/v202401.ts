@@ -205,7 +205,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "bench-pckg-include-vision-services",
+                    name: "abp6_bench-equiv-assurances_bench-pckg-include-vision-services",
                     expectedValue: "yes",
                     type: "expectedValue",
                   },
@@ -251,7 +251,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "bench-pckg-include-hearing-services",
+                    name: "abp6_bench-equiv-assurances_bench-pckg-include-hearing-services",
                     expectedValue: "yes",
                     type: "expectedValue",
                   },

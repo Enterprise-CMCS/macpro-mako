@@ -43,7 +43,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "does-state-territory-provided-abp-through-employer-sponsored-insur",
+                    name: "abp9_employee-sponsored-insur-or-pay_does-state-territory-provided-abp-through-employer-sponsored-insur",
                     type: "expectedValue",
                     expectedValue: "yes",
                   },

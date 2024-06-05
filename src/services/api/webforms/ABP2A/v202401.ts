@@ -57,7 +57,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "is-state-territory-aligned",
+                    name: "abp2a_benefit-align-and-require_is-state-territory-aligned",
                     type: "expectedValue",
                     expectedValue: "yes",
                   },

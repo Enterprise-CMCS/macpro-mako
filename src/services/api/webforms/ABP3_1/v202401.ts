@@ -1775,7 +1775,7 @@ export const v202401: FormSchema = {
                     dependency: {
                       conditions: [
                         {
-                          name: "option",
+                          name: "abp3-1_select-of-ehb-bench-plan_ehb-bench-option",
                           type: "expectedValue",
                           expectedValue: "EHB_benchmark_2017_plan_year",
                         },

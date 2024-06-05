@@ -322,7 +322,7 @@ export const v202402: FormSchema = {
       dependency: {
         conditions: [
           {
-            name: "is-enroll-avail",
+            name: "abp1_pop-id_is-enroll-avail",
             type: "expectedValue",
             expectedValue: "no",
           },
@@ -1182,7 +1182,7 @@ export const v202402: FormSchema = {
           dependency: {
             conditions: [
               {
-                name: "is_geo_area",
+                name: "abp1_geo-area_is_geo_area",
                 type: "expectedValue",
                 expectedValue: "no",
               },
