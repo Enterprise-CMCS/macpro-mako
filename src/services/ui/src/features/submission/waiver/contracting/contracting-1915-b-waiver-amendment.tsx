@@ -32,6 +32,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
 import { SubmitAndCancelBtnSection } from "../shared-components";
+import { documentPoller } from "@/utils/Poller/documentPoller";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,
@@ -100,7 +101,18 @@ export const Contracting1915BWaiverAmendmentPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+
+      const poller = documentPoller(formData.id, (checks) =>
+        checks.actionIs("Amend"),
+      );
+
+      await poller.startPollingData();
+
+      navigate(
+        originPath
+          ? { path: `${originPath}?tab=waivers` as Route }
+          : { path: "/dashboard?tab=waivers" as Route },
+      );
     } catch (e) {
       console.error(e);
       alert.setContent({
@@ -116,6 +128,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
 
   const form = useForm<Waiver1915BContractingAmendment>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   return (
@@ -132,10 +145,12 @@ export const Contracting1915BWaiverAmendmentPage = () => {
           <SectionCard title="1915(b) Waiver Amendment Request Details">
             <Content.FormIntroText />
             <div className="flex flex-col">
-              <Inputs.FormLabel className="font-semibold">
+              <Inputs.FormLabel className="font-semibold" htmlFor="1975b">
                 Waiver Authority
               </Inputs.FormLabel>
-              <span className="text-lg font-thin">1915(b)</span>
+              <span className="text-lg font-thin" id="1975b">
+                1915(b)
+              </span>
             </div>
             <Inputs.FormField
               control={form.control}
@@ -178,7 +193,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
                       to="/faq/waiver-amendment-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
+                      className="text-blue-900 underline"
                     >
                       What is my 1915(b) Waiver Amendment Number?
                     </Link>
@@ -223,7 +238,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc faqLink="/faq/medicaid-spa-attachments" />
+            <Content.AttachmentsSizeTypesDesc faqAttLink="/faq/waiverb-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}
@@ -258,7 +273,11 @@ export const Contracting1915BWaiverAmendmentPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection />
+          <SubmitAndCancelBtnSection
+            showAlert
+            loadingSpinner
+            cancelNavigationLocation={originPath ?? "/dashboard"}
+          />
         </form>
       </Inputs.Form>
       <FAQFooter />

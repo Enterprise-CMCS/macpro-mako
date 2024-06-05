@@ -1,12 +1,19 @@
-import { BreadCrumbConfig, Route } from "@/components";
+import { BreadCrumbConfig, Route, urlEmbedQuery } from "@/components";
+import { SPA_ID_REGEX } from "@/consts";
 import { mapActionLabel, mapSubmissionCrumb } from "@/utils";
 import { Action } from "shared-types";
 
-export const dashboardCrumb: BreadCrumbConfig = {
-  displayText: "Dashboard",
-  order: 1,
-  default: true,
-  to: "/dashboard",
+export const dashboardCrumb = (id?: string): BreadCrumbConfig => {
+  return {
+    displayText: "Dashboard",
+    order: 1,
+    default: true,
+    to: id
+      ? urlEmbedQuery("/dashboard", {
+          tab: SPA_ID_REGEX.test(id) ? "spas" : "waivers",
+        })
+      : "/dashboard",
+  };
 };
 
 export const detailsCrumb = (id: string): BreadCrumbConfig => ({
@@ -23,7 +30,7 @@ export const actionCrumb = (action: Action, id: string): BreadCrumbConfig => ({
 
 export const submissionFormCrumb = (
   path: Route,
-  idx: number
+  idx: number,
 ): BreadCrumbConfig => ({
   displayText: mapSubmissionCrumb(path),
   order: idx,

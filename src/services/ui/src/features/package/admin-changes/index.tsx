@@ -142,9 +142,14 @@ export const AdminChanges = () => {
       description="Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC."
     >
       <Accordion
+        // There is a cached value (defaultValue) below
+        // If you ever want to get around the cached value so
+        // that is re-renders simply use a unique key that will
+        // change when you need it to re-render
+        key={data?.[0]?._source?.id}
         type="multiple"
         defaultValue={[data?.[0]._source.id as string]}
-        className="flex flex-col mt-6 gap-2"
+        className="flex flex-col gap-2"
       >
         {data?.map((CL) => <AdminChange {...CL._source} key={CL._source.id} />)}
       </Accordion>

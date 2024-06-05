@@ -15,21 +15,24 @@ import {
   AttachmentsSection,
   BreadCrumbs,
   ErrorBanner,
-  ActionFormHeading,
-  RequiredFieldDescription,
+  ActionFormHeaderCard,
   SimplePageContainer,
-  SubmissionButtons,
   useLocationCrumbs,
   FormLoadingSpinner,
+  ProgressLossReminder,
+  FAQFooter,
 } from "@/components";
 import { useParams } from "react-router-dom";
-import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
 import {
   ActionFunction,
   useDisplaySubmissionAlert,
   useSubmitForm,
 } from "@/features/package-actions/legacy-shared-components";
 import { Info } from "lucide-react";
+import { useMemo } from "react";
+import { documentPoller } from "@/utils/Poller/documentPoller";
+import { isNewSubmission } from "@/utils";
+import { SubmitAndCancelBtnSection } from "@/features/submission/waiver/shared-components";
 
 export const onValidSubmission: ActionFunction = async ({ request }) => {
   try {
@@ -45,8 +48,11 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
       authority: data.authority as Authority,
     });
 
+    await documentPoller(data.id, (data) => !!data).startPollingData();
+
     return {
       submitted: true,
+      isTe: true,
     };
   } catch (err) {
     console.log(err);
@@ -57,6 +63,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
 export const TempExtensionWrapper = () => {
   const methods = useForm({
     resolver: zodResolver(defaultTempExtSchema),
+    mode: "onChange",
   });
   const crumbs = useLocationCrumbs();
 
@@ -71,46 +78,51 @@ export const TempExtensionWrapper = () => {
 };
 
 export const TemporaryExtension = () => {
+  const { type, id } = useParams();
+
+  const navigationLocation = useMemo(
+    () => (isNewSubmission() ? "/dashboard?tab=waivers" : `/details?id=${id}`),
+    [type],
+  );
+
   const { handleSubmit, formMethods } = useSubmitForm();
   const { id: urlId } = useParams();
   const formId = formMethods.getValues("originalWaiverNumber");
 
   const parentId = urlId ? urlId : formId;
   useDisplaySubmissionAlert(
-    "Temporary Extension issued",
-    `The Temporary Extension Request for ${parentId} has been submitted.`,
+    "Temporary extension request submitted",
+    "Your submission has been received.",
   );
 
   return (
     <SimplePageContainer>
-      <ActionFormHeading title="Temporary Extension Request Details" />
-      <RequiredFieldDescription />
-      <ActionFormDescription key={"content-description"}>
-        Once you submit this form, a confirmation email is sent to you and to
-        CMS. CMS will use this content to review your package, and you will not
-        be able to edit this form. If CMS needs any additional information, they
-        will follow up by email.{" "}
-        <strong className="font-bold">
-          If you leave this page, you will lose your progress on this form.
-        </strong>
-      </ActionFormDescription>
       <form onSubmit={handleSubmit}>
-        <TEPackageSection key={"content-packagedetails"} />
+        <ActionFormHeaderCard
+          hasRequiredField
+          title="Temporary Extension Request Details"
+          isTE
+        >
+          <ActionFormDescription boldReminder key={"content-description"}>
+            Once you submit this form, a confirmation email is sent to you and
+            to CMS. CMS will use this content to review your package, and you
+            will not be able to edit this form. If CMS needs any additional
+            information, they will follow up by email.
+          </ActionFormDescription>
+        </ActionFormHeaderCard>
         <AttachmentsSection
+          faqAttLink={"/faq/temporary-extensions-b-attachments"}
           key={"field-attachments"}
           attachments={[
             {
               name: "waiverExtensionRequest",
-              label: "Waiver Extension Request",
               required: true,
             },
             {
               name: "other",
-              label: "Other",
               required: false,
             },
           ]}
-          faqLink={""}
         />
         <AdditionalInfoSection
           key={"field-addlinfo"}
@@ -120,17 +132,21 @@ export const TemporaryExtension = () => {
         />
         <Alert variant={"infoBlock"} className="space-x-2 mb-8">
           <Info />
-          <p>
+          <div>
             Once you submit this form, a confirmation email is sent to you and
             to CMS. CMS will use this content to review your package, and you
             will not be able to edit this form. If CMS needs any additional
             information, they will follow up by email.
-          </p>
+            <ProgressLossReminder />
+          </div>
         </Alert>
         <FormLoadingSpinner />
         <ErrorBanner />
-        <SubmissionButtons />
+        <SubmitAndCancelBtnSection
+          cancelNavigationLocation={navigationLocation}
+        />
       </form>
+      <FAQFooter />
     </SimplePageContainer>
   );
 };

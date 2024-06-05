@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from "tailwindcss/defaultTheme";
+
 export default {
   darkMode: ["class"],
   content: ["./src/**/*.{ts,tsx}", "./index.html"],
@@ -6,6 +8,24 @@ export default {
     fontFamily: {
       serif: ["Merriweather", "serif"],
     },
+    // We need 3xl to be 1.75 rem/28 px per HCD feedback, so it is modified
+    // here to be consistent across the app. Tailwind requires all sizes be
+    // defined, so we've included the default sizes for anything other
+    // than 3xl:
+    fontSize: {
+      xs: "0.75rem",
+      sm: "0.875rem",
+      lg: "1.125rem",
+      xl: "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.75rem", // Modified per HCD feedback
+      "4xl": "2.25rem",
+      "5xl": "3rem",
+    },
+    screens: {
+      "xs": "350px",
+      ...defaultTheme.screens,
+    }, 
     container: {
       center: true,
       padding: "2rem",
@@ -19,6 +39,7 @@ export default {
       },
       colors: {
         border: "hsl(var(--border) / <alpha-value>)",
+        cardBorder: "hsl(var(--card-border) / <alpha-value>)",
         input: "hsl(var(--input) / <alpha-value>)",
         ring: "hsl(var(--ring) / <alpha-value>)",
         background: "hsl(var(--background) / <alpha-value>)",
@@ -26,6 +47,10 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary) / <alpha-value>)",
           foreground: "hsl(var(--primary-foreground) / <alpha-value>)",
+        },
+        "primary-dark": {
+          DEFAULT: "hsl(var(--primary-dark) / <alpha-value>)",
+          foreground: "hsl(var(--primary-dark-foreground) / <alpha-value>)",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary) / <alpha-value>)",

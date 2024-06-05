@@ -2,28 +2,31 @@
 
 import * as I from "@/components/Inputs";
 import * as C from "@/components";
-import { Path, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FORM, SchemaForm } from "./consts";
-import { SlotStateSelect, SlotWaiverId, WaiverIdFieldArray } from "./slots";
+import { SlotStateSelect, WaiverIdFieldArray } from "./slots";
 import { SubmissionServiceParameters, submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as Content from "@/components";
-import { useOriginPath, zAppkWaiverNumberSchema } from "@/utils";
+import { useOriginPath } from "@/utils";
 import { Link } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
+import { documentPoller } from "@/utils/Poller/documentPoller";
+import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
   const crumbs = C.useLocationCrumbs();
   const { data: user } = useGetUser();
-  const modal = C.useModalContext();
   const originPath = useOriginPath();
+  const [isDataPolling, setIsDataPolling] = useState(false);
   const form = useForm<SchemaForm>({
+    reValidateMode: "onBlur",
     resolver: zodResolver(FORM),
   });
   const alert = C.useAlertContext();
@@ -41,14 +44,28 @@ export const AppKSubmissionForm = () => {
         user,
       },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
           alert.setContent({
             header: "Package submitted",
             body: "The 1915(c) Appendix K Amendment Request has been submitted.",
           });
           alert.setBannerShow(true);
           alert.setBannerDisplayOn("/dashboard");
-          nav(originPath ? { path: originPath } : { path: "/dashboard" });
+          setIsDataPolling(true);
+          await documentPoller(
+            `${draft.state}-${draft.waiverIds[0]}`,
+            (checks) =>
+              checks.authorityIs([Authority["1915c"]]) &&
+              checks.actionIs("Amend"),
+          ).startPollingData();
+          setIsDataPolling(false);
+
+          nav({
+            path: "/dashboard",
+            query: {
+              tab: "waivers",
+            },
+          });
         },
         onError: (err) => console.error(err),
       },
@@ -56,21 +73,15 @@ export const AppKSubmissionForm = () => {
   });
 
   const state = form.watch("state");
-  const parentWaiver = {
-    value: zAppkWaiverNumberSchema.safeParse(form.watch("parentWaiver"))
-      .success,
-    state: form.getFieldState("parentWaiver"),
-  };
 
   useEffect(() => {
     if (!state) return;
-    form.setValue("childWaivers", []);
-    form.setValue("parentWaiver", "");
+    form.setValue("waiverIds", []);
   }, [state]);
 
   return (
     <C.SimplePageContainer>
-      {submission.isLoading && <C.LoadingSpinner />}
+      {(submission.isLoading || isDataPolling) && <C.LoadingSpinner />}
       <C.BreadCrumbs options={crumbs} />
       <I.Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
@@ -81,19 +92,25 @@ export const AppKSubmissionForm = () => {
               name="title"
               render={({ field }) => (
                 <I.FormItem className="w-[280px]">
-                  <I.FormLabel className="font-bold">
+                  <I.FormLabel className="font-bold" htmlFor="amendment-title">
                     Amendment Title <I.RequiredIndicator />
                   </I.FormLabel>
-                  <I.Textarea {...field} className="h-[80px]" />
+                  <I.Textarea
+                    {...field}
+                    className="h-[80px]"
+                    id="amendment-title"
+                  />
                   <I.FormMessage />
                 </I.FormItem>
               )}
             />
             <div className="flex flex-col">
-              <I.FormLabel className="font-semibold">
+              <I.FormLabel className="font-semibold" htmlFor="1975c">
                 Waiver Authority
               </I.FormLabel>
-              <span className="text-lg font-thin">1915(c)</span>
+              <span className="text-lg font-thin" id="1975c">
+                1915(c)
+              </span>
             </div>
 
             <I.FormField
@@ -110,20 +127,25 @@ export const AppKSubmissionForm = () => {
             {state && (
               <>
                 <p>
-                  <Link
-                    to="/faq/waiver-c-id"
-                    target={C.FAQ_TAB}
-                    rel="noopener noreferrer"
-                    className="text-blue-700 hover:underline"
-                  >
-                    What is my Appendix K ID?
-                  </Link>
-                  <div>
+                  <div className="flex gap-4">
+                    <I.FormLabel className="font-bold">
+                      Waiver IDs <I.RequiredIndicator />
+                    </I.FormLabel>
+                    <Link
+                      to="/faq/waiver-c-id"
+                      target={C.FAQ_TAB}
+                      rel="noopener noreferrer"
+                      className="text-blue-900 underline"
+                    >
+                      What is my Appendix K ID?
+                    </Link>
+                  </div>
+                  <div className="my-1">
                     Format is <strong>1111</strong>.<strong>R22</strong>.
                     <strong>33</strong> or <strong>11111</strong>.
                     <strong>R22</strong>.<strong>33</strong> where:
                   </div>
-                  <ul className="pl-4 list-disc">
+                  <ul className="pl-4 list-disc w-[600px] flex flex-col gap-1">
                     <li>
                       <strong>1111</strong> or <strong>11111</strong> is the
                       four- or five-digit waiver initial number
@@ -137,34 +159,16 @@ export const AppKSubmissionForm = () => {
                       (The last two digits relating to the number of amendments
                       in the waiver cycle start with “01” and ascend.)
                     </li>
-                    <li>
-                      <strong>
-                        The first ID entered will be used to track the
-                        submission on the OneMAC dashboard.
-                      </strong>
-                      {"  "}
-                      You’ll be able to find the other waiver IDs entered below
-                      by searching for the first waiver ID.
-                    </li>
                   </ul>
                 </p>
                 <div className="flex flex-col gap-2">
-                  <div className="flex gap-4">
-                    <I.FormLabel className="font-bold">
-                      Appendix K ID <I.RequiredIndicator />
-                    </I.FormLabel>
-                  </div>
-                  <I.FormField
-                    control={form.control}
-                    name="parentWaiver"
-                    render={SlotWaiverId({ state })}
+                  <WaiverIdFieldArray
+                    state={state}
+                    name="waiverIds"
+                    {...form}
                   />
                 </div>
               </>
-            )}
-
-            {!parentWaiver.state.error && parentWaiver.value && (
-              <WaiverIdFieldArray state={state} {...form} name="childWaivers" />
             )}
 
             <I.FormField
@@ -173,7 +177,7 @@ export const AppKSubmissionForm = () => {
               render={({ field }) => (
                 <I.FormItem className="max-w-sm">
                   <I.FormLabel className="font-bold block">
-                    Proposed Effective Date of 1915(c) Appendix K Amendment
+                    Proposed Effective Date of 1915(c) Appendix K Amendment{" "}
                     <I.RequiredIndicator />
                   </I.FormLabel>
                   <I.FormControl>
@@ -188,8 +192,7 @@ export const AppKSubmissionForm = () => {
             />
           </C.SectionCard>
           <C.SectionCard title="Attachments">
-            <C.AttachmentsSizeTypesDesc faqLink="/faq/#chip-spa-attachments" />
-
+            <C.AttachmentsSizeTypesDesc faqAttLink="/faq/appk-attachments" />
             <I.FormField
               control={form.control}
               name={"attachments.appk"}
@@ -233,32 +236,9 @@ export const AppKSubmissionForm = () => {
             />
           </C.SectionCard>
           <C.PreSubmissionMessage />
-          <div className="flex gap-2 p-4 ml-auto">
-            <I.Button type="submit" disabled={form.formState.isSubmitting}>
-              Submit
-            </I.Button>
-            <I.Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                modal.setContent({
-                  header: "Stop form submission?",
-                  body: "All information you've entered on this form will be lost if you leave this page.",
-                  acceptButtonText: "Yes, leave form",
-                  cancelButtonText: "Return to form",
-                });
-                modal.setOnAccept(() => () => {
-                  modal.setModalOpen(false);
-                  nav(
-                    originPath ? { path: originPath } : { path: "/dashboard" },
-                  );
-                });
-                modal.setModalOpen(true);
-              }}
-            >
-              Cancel
-            </I.Button>
-          </div>
+          <SubmitAndCancelBtnSection
+            cancelNavigationLocation={originPath ?? "/dashboard"}
+          />
         </form>
       </I.Form>
       <C.FAQFooter />

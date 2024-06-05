@@ -1,5 +1,5 @@
 import { FC, useMemo } from "react";
-import { opensearch } from "shared-types";
+import { AttachmentKey, opensearch } from "shared-types";
 import { format } from "date-fns";
 import {
   Accordion,
@@ -12,8 +12,43 @@ import * as Table from "@/components";
 import { BLANK_VALUE } from "@/consts";
 import { usePackageActivities, useAttachmentService } from "./hook";
 import { Link } from "@/components/Routing";
+import { attachmentTitleMap } from "shared-types";
 
-export const PA_RemoveAppkChild: FC<opensearch.changelog.Document> = (
+// id, attachments, hook
+const AttachmentDetails: FC<{
+  id: string;
+  attachments: opensearch.changelog.Document["attachments"];
+  hook: ReturnType<typeof useAttachmentService>;
+}> = ({ id, attachments, hook }) => {
+  return (
+    <Table.TableBody>
+      {attachments &&
+        attachments.map((ATC) => {
+          // ATC.title *should* have type: AttachmentKey
+          const attachmentLabel =
+            attachmentTitleMap[ATC.title as AttachmentKey] || ATC.title;
+          return (
+            <Table.TableRow key={`${id}-${ATC.key}`}>
+              <Table.TableCell>{attachmentLabel}</Table.TableCell>
+              <Table.TableCell>
+                <Table.Button
+                  className="ml-[-15px]"
+                  variant="link"
+                  onClick={() => {
+                    hook.onUrl(ATC).then(window.open);
+                  }}
+                >
+                  {ATC.filename}
+                </Table.Button>
+              </Table.TableCell>
+            </Table.TableRow>
+          );
+        })}
+    </Table.TableBody>
+  );
+};
+
+export const PA_AppkParentRemovedChild: FC<opensearch.changelog.Document> = (
   props,
 ) => {
   return (
@@ -25,7 +60,24 @@ export const PA_RemoveAppkChild: FC<opensearch.changelog.Document> = (
       >
         {props.appkChildId}
       </Link>
-      <p>was withdrawn</p>
+      <p>was removed</p>
+    </div>
+  );
+};
+
+export const PA_AppkChildRemovedFromParent: FC<
+  opensearch.changelog.Document
+> = (props) => {
+  return (
+    <div className="flex gap-1">
+      <p>Removed from:</p>
+      <Link
+        path="/details"
+        query={{ id: props.appkParentId }}
+        className="hover:underline font-semibold text-blue-600"
+      >
+        {props.appkParentId}
+      </Link>
     </div>
   );
 };
@@ -50,26 +102,11 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
                 <Table.TableHead>Attached File</Table.TableHead>
               </Table.TableRow>
             </Table.TableHeader>
-            <Table.TableBody>
-              {props.attachments?.map((ATC) => {
-                return (
-                  <Table.TableRow key={`${props.id}-${ATC.key}`}>
-                    <Table.TableCell>{ATC.title}</Table.TableCell>
-                    <Table.TableCell>
-                      <Table.Button
-                        className="ml-[-15px]"
-                        variant="link"
-                        onClick={() => {
-                          hook.onUrl(ATC).then(window.open);
-                        }}
-                      >
-                        {ATC.filename}
-                      </Table.Button>
-                    </Table.TableCell>
-                  </Table.TableRow>
-                );
-              })}
-            </Table.TableBody>
+            <AttachmentDetails
+              attachments={props.attachments}
+              id={props.id}
+              hook={hook}
+            />
           </Table.Table>
         )}
       </div>
@@ -117,26 +154,11 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
                 <Table.TableHead>Attached File</Table.TableHead>
               </Table.TableRow>
             </Table.TableHeader>
-            <Table.TableBody>
-              {props.attachments?.map((ATC) => {
-                return (
-                  <Table.TableRow key={`${props.id}-${ATC.key}`}>
-                    <Table.TableCell>{ATC.title}</Table.TableCell>
-                    <Table.TableCell>
-                      <Table.Button
-                        className="ml-[-15px]"
-                        variant="link"
-                        onClick={() => {
-                          hook.onUrl(ATC).then(window.open);
-                        }}
-                      >
-                        {ATC.filename}
-                      </Table.Button>
-                    </Table.TableCell>
-                  </Table.TableRow>
-                );
-              })}
-            </Table.TableBody>
+            <AttachmentDetails
+              attachments={props.attachments}
+              id={props.id}
+              hook={hook}
+            />
           </Table.Table>
         )}
       </div>
@@ -184,26 +206,11 @@ export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
                 <Table.TableHead>Attached File</Table.TableHead>
               </Table.TableRow>
             </Table.TableHeader>
-            <Table.TableBody>
-              {props.attachments?.map((ATC) => {
-                return (
-                  <Table.TableRow key={`${props.id}-${ATC.key}`}>
-                    <Table.TableCell>{ATC.title}</Table.TableCell>
-                    <Table.TableCell>
-                      <Table.Button
-                        className="ml-[-15px]"
-                        variant="link"
-                        onClick={() => {
-                          hook.onUrl(ATC).then(window.open);
-                        }}
-                      >
-                        {ATC.filename}
-                      </Table.Button>
-                    </Table.TableCell>
-                  </Table.TableRow>
-                );
-              })}
-            </Table.TableBody>
+            <AttachmentDetails
+              attachments={props.attachments}
+              id={props.id}
+              hook={hook}
+            />
           </Table.Table>
         )}
       </div>
@@ -249,26 +256,11 @@ export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
                 <Table.TableHead>Attached File</Table.TableHead>
               </Table.TableRow>
             </Table.TableHeader>
-            <Table.TableBody>
-              {props.attachments?.map((ATC) => {
-                return (
-                  <Table.TableRow key={`${props.id}-${ATC.key}`}>
-                    <Table.TableCell>{ATC.title}</Table.TableCell>
-                    <Table.TableCell>
-                      <Table.Button
-                        className="ml-[-15px]"
-                        variant="link"
-                        onClick={() => {
-                          hook.onUrl(ATC).then(window.open);
-                        }}
-                      >
-                        {ATC.filename}
-                      </Table.Button>
-                    </Table.TableCell>
-                  </Table.TableRow>
-                );
-              })}
-            </Table.TableBody>
+            <AttachmentDetails
+              attachments={props.attachments}
+              id={props.id}
+              hook={hook}
+            />
           </Table.Table>
         )}
       </div>
@@ -310,8 +302,19 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
         return ["RAI issued", PA_RaiIssued];
       case "respond-to-rai":
         return ["RAI response submitted", PA_ResponseSubmitted];
-      case "remove-appk-child":
-        return [`Waiver withdrawn : ${props.appkChildId}`, PA_RemoveAppkChild];
+      case "remove-appk-child": {
+        if (props.appkChildId) {
+          return [
+            `Package removed: ${props.appkChildId}`,
+            PA_AppkParentRemovedChild,
+          ];
+        }
+
+        return [
+          `Removed from: ${props.appkParentId}`,
+          PA_AppkChildRemovedFromParent,
+        ];
+      }
       case "legacy-withdraw-rai-request":
         return ["RAI response withdrawn requested", PA_ResponseWithdrawn];
 
@@ -364,6 +367,7 @@ export const PackageActivities = () => {
         <p className="text-gray-500">No package activity recorded</p>
       )}
       <Accordion
+        key={hook.accordianDefault[0]}
         type="multiple"
         className="flex flex-col gap-2"
         defaultValue={hook.accordianDefault}

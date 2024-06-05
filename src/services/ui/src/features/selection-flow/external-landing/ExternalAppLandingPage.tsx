@@ -1,12 +1,12 @@
 import { PropsWithChildren, ReactElement } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import {
   Button,
-  Link,
   SimplePageContainer,
   BreadCrumbs,
   FAQ_TAB,
   optionCrumbsFromPath,
+  Route,
 } from "@/components";
 import { SimplePageTitle } from "@/features";
 
@@ -32,12 +32,11 @@ const FAQHelperText = () => (
   <span className="max-w-xl">
     <i>
       For additional information on where to submit, refer to the{" "}
-      {/* TODO: Get desired FAQ `target` from Wale */}
       <Link
-        className="text-sky-700 hover:text-sky-800 underline"
+        to="/faq/crosswalk-system"
         target={FAQ_TAB}
-        path="/faq"
-        hash={"system"}
+        rel="noopener noreferrer"
+        className="text-blue-900 underline flex items-center"
       >
         Crosswalk from Paper-based State Plan to MACPro and MMDL
       </Link>{" "}

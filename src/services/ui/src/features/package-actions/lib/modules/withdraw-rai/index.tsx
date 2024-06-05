@@ -6,8 +6,9 @@ import {
   ActionFormDescription,
   AdditionalInfoSection,
   AttachmentsSection,
-  PackageSection,
 } from "@/components";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
+import { SEATOOL_STATUS } from "shared-types";
 
 export const defaultWithdrawRaiSchema = z.object({
   additionalInformation: zAdditionalInfo,
@@ -16,28 +17,24 @@ export const defaultWithdrawRaiSchema = z.object({
   }),
 });
 export const defaultWithdrawRaiFields: ReactElement[] = [
-  <ActionFormDescription key={"content-description"}>
+  <ActionFormDescription key="content-description">
     Complete this form to withdraw the Formal RAI response. Once complete, you
     and CMS will receive an email confirmation.
   </ActionFormDescription>,
-  <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
+    faqAttLink="/faq"
     key={"field-attachments"}
     attachments={[
       {
         name: "supportingDocumentation",
-        label: "Supporting Documentation",
         required: false,
       },
     ]}
-    faqLink={""}
   />,
   <AdditionalInfoSection
     required
     key={"field-addlinfo"}
-    instruction={
-      "Add anything else that you would like to share with the State."
-    }
+    instruction={"Explain your need for withdrawal."}
   />,
 ];
 export const defaultWithdrawRaiContent: FormContentHydrator = (document) => ({
@@ -55,3 +52,6 @@ export const defaultWithdrawRaiContent: FormContentHydrator = (document) => ({
     body: `The RAI response for ${document.id} has been withdrawn. CMS may follow up if additional information is needed.`,
   },
 });
+
+export const raiWithdrawn: CheckDocumentFunction = (checks) =>
+  checks.hasStatus(SEATOOL_STATUS.PENDING_RAI) && checks.hasRaiWithdrawal;

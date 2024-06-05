@@ -1,11 +1,8 @@
 import {
   ErrorBanner,
   Form,
-  ActionFormHeading,
   LoadingSpinner,
   PreSubmitNotice,
-  RequiredFieldDescription,
-  SubmissionButtons,
   useAlertContext,
   useModalContext,
   useNavigate,
@@ -18,12 +15,16 @@ import { useGetItem } from "@/api";
 import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams } from "@/components";
+import { useParams, ActionFormHeaderCard } from "@/components";
+import { successCheckSwitch } from "./lib/successCheckSwitch";
+import { useLocation } from "react-router-dom";
+import { SubmitAndCancelBtnSection } from "../submission/waiver/shared-components";
 
 export const ActionForm = ({ setup }: { setup: FormSetup }) => {
   const { id, type, authority } = useParams("/action/:authority/:id/:type");
   const navigate = useNavigate();
   const origin = useOriginPath();
+  const location = useLocation();
   const alert = useAlertContext();
   const modal = useModalContext();
   const { data: user } = useGetUser();
@@ -36,6 +37,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
     resolver: zodResolver(setup.schema),
     mode: "onChange",
   });
+
   // Submission Handler
   const handler = form.handleSubmit(
     async (data) =>
@@ -48,6 +50,8 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
         alert,
         navigate,
         originRoute: origin,
+        statusToCheck: successCheckSwitch(type),
+        locationState: location.state,
       }),
   );
   useEffect(() => {
@@ -66,24 +70,40 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
     return (
       <Form {...form}>
         {form.formState.isSubmitting && <LoadingSpinner />}
-        <ActionFormHeading title={content.title} />
-        <RequiredFieldDescription />
         <form onSubmit={handler}>
-          {setup?.fields && setup.fields.map((field) => field)}
+          {setup?.fields &&
+            setup.fields.map((field, index) => {
+              // only some forms will need to have the title in a card along with the description
+              if (index === 0) {
+                return (
+                  <ActionFormHeaderCard
+                    title={content.title}
+                    hasRequiredField
+                    isTE={field.key === "te-content-description"}
+                    key="content-description"
+                  >
+                    {field}
+                  </ActionFormHeaderCard>
+                );
+              } else {
+                return field;
+              }
+            })}
           <ErrorBanner />
           {content?.preSubmitNotice && (
             <PreSubmitNotice message={content.preSubmitNotice} />
           )}
           {content?.confirmationModal ? (
-            <SubmissionButtons
+            <SubmitAndCancelBtnSection
               confirmWithdraw={() => {
                 modal.setContent(content.confirmationModal!);
                 modal.setOnAccept(() => confirmSubmitCallback);
                 modal.setModalOpen(true);
               }}
+              enableSubmit={content.enableSubmit}
             />
           ) : (
-            <SubmissionButtons />
+            <SubmitAndCancelBtnSection enableSubmit={content.enableSubmit} />
           )}
         </form>
       </Form>

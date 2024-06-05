@@ -9,6 +9,6 @@ export const detailsAndActionsCrumbs = ({
   id: string;
   action?: Action;
 }): BreadCrumbConfig[] => {
-  const base = [dashboardCrumb, detailsCrumb(id)];
+  const base = [dashboardCrumb(id), detailsCrumb(id)];
   return !action ? base : [...base, actionCrumb(action, id)];
 };

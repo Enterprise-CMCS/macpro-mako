@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import { RHFSlot } from "./Slot";
 import { Button, FormField } from "../Inputs";
 import { slotInitializer } from "./utils";
+import { DependencyWrapper } from "./dependencyWrapper";
 
 export const FieldGroup = <TFields extends FieldValues>(
   props: FieldGroupProps<TFields>
@@ -25,7 +26,7 @@ export const FieldGroup = <TFields extends FieldValues>(
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 w-max">
+    <div className="flex flex-col gap-4 w-full">
       {fieldArr.fields.map((FLD, index) => {
         return (
           <div className="flex flex-col gap-3" key={FLD.id}>
@@ -33,7 +34,8 @@ export const FieldGroup = <TFields extends FieldValues>(
               const prefix = `${props.name}.${index}.`;
               const adjustedPrefix = (props.groupNamePrefix ?? "") + prefix;
               const adjustedSlotName = prefix + SLOT.name;
-              return (
+
+              const formField = (
                 <FormField
                   key={adjustedSlotName}
                   control={props.control}
@@ -46,6 +48,32 @@ export const FieldGroup = <TFields extends FieldValues>(
                     groupNamePrefix: adjustedPrefix,
                   })}
                 />
+              );
+
+              // If the slot has a dependency, wrap it in a dependency wrapper.
+              // Ensure the conditions are adjusted to the new name within the FieldGroup.
+              // Otherwise, just return the form field:
+              return SLOT.dependency ? (
+                <DependencyWrapper
+                  {...SLOT}
+                  key={adjustedSlotName}
+                  name={adjustedSlotName}
+                  dependency={
+                    SLOT.dependency.conditions && {
+                      conditions: [
+                        {
+                          ...SLOT.dependency.conditions[0],
+                          name: `${prefix}${SLOT.dependency.conditions[0].name}`,
+                        },
+                      ],
+                      effect: { type: "show" },
+                    }
+                  }
+                >
+                  {formField}
+                </DependencyWrapper>
+              ) : (
+                formField
               );
             })}
             {index >= 1 && (

@@ -1,7 +1,6 @@
 import { BannerContent, SubmissionAlert } from "@/components";
-import { Action, Authority, AuthorityUnion, opensearch } from "shared-types";
+import { Action, AuthorityUnion, opensearch } from "shared-types";
 import {
-  chipWithdrawPackageContent,
   defaultIssueRaiContent,
   defaultTempExtContent,
   defaultWithdrawPackageContent,
@@ -12,6 +11,7 @@ import {
   defaultEnableRaiWithdrawContent,
   defaultCompleteIntakeContent,
   defaultUpdateIdContent,
+  waiverWithdrawPackageContent,
 } from "@/features/package-actions/lib/modules";
 
 type FormContent = {
@@ -19,6 +19,7 @@ type FormContent = {
   successBanner: BannerContent;
   preSubmitNotice?: string;
   confirmationModal?: SubmissionAlert;
+  enableSubmit?: boolean;
 };
 /** Form content sometimes requires data values for templating, so forms
  * hydrate the content with these functions. */
@@ -61,10 +62,10 @@ const withdrawRaiFor: FormContentGroup = {
 };
 
 const withdrawPackageFor: FormContentGroup = {
-  "CHIP SPA": chipWithdrawPackageContent,
+  "CHIP SPA": defaultWithdrawPackageContent,
   "Medicaid SPA": defaultWithdrawPackageContent,
-  "1915(b)": defaultWithdrawPackageContent,
-  "1915(c)": defaultWithdrawPackageContent,
+  "1915(b)": waiverWithdrawPackageContent,
+  "1915(c)": waiverWithdrawPackageContent,
 };
 
 const tempExtensionFor: FormContentGroup = {

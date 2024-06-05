@@ -2,12 +2,9 @@ import { z } from "zod";
 import { zUpdateIdSchema } from "@/utils";
 import { ReactElement } from "react";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
-import {
-  ActionFormDescription,
-  AdditionalInfoSection,
-  PackageSection,
-} from "@/components";
+import { ActionFormDescription, AdditionalInfoSection } from "@/components";
 import { NewIdField } from "@/features/package-actions/lib/modules/update-id/legacy-components";
+import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 
 export const defaultUpdateIdSchema = z
   .object({
@@ -29,14 +26,10 @@ export const defaultUpdateIdSchema = z
     return z.NEVER;
   });
 export const defaultUpdateIdFields: ReactElement[] = [
-  <ActionFormDescription key={"section-desc"}>
+  <ActionFormDescription boldReminder key={"section-desc"}>
     Once you submit this form, the ID of the existing package will be updated in
-    SEATool and OneMAC.{" "}
-    <strong>
-      If you leave this page, you will lose your progress on this form.
-    </strong>
+    SEATool and OneMAC.
   </ActionFormDescription>,
-  <PackageSection key={"section-packageinfo"} />,
   <NewIdField key={"field-newid"} />,
   <AdditionalInfoSection
     key={"field-addlinfo"}
@@ -53,3 +46,5 @@ export const defaultUpdateIdContent: FormContentHydrator = (document) => ({
   preSubmitNotice:
     "Once you submit this form, the ID of the existing package will be updated in SEATool and OneMAC.",
 });
+
+export const idUpdated: CheckDocumentFunction = (_checks) => true;

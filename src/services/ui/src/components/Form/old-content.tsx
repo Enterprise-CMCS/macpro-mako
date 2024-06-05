@@ -1,20 +1,22 @@
 import { Link } from "react-router-dom";
 import { Info } from "lucide-react";
-import { RequiredIndicator, Alert, FAQ_TAB } from "@/components";
+import {
+  Alert,
+  FAQ_TAB,
+  RequiredFieldDescription,
+  ActionFormDescription,
+  ProgressLossReminder,
+} from "@/components";
 
 export const FormIntroText = () => (
   <div>
-    <RequiredIndicator />{" "}
-    <em className="font-light">Indicates a required field.</em>
-    <p className="max-w-4xl mt-4 text-gray-700 font-light">
+    <RequiredFieldDescription />
+    <ActionFormDescription boldReminder>
       Once you submit this form, a confirmation email is sent to you and to CMS.
       CMS will use this content to review your package, and you will not be able
       to edit this form. If CMS needs any additional information, they will
       follow up by email.{" "}
-      <span className="font-bold">
-        If you leave this page, you will lose your progress on this form.
-      </span>
-    </p>
+    </ActionFormDescription>
   </div>
 );
 
@@ -44,10 +46,10 @@ export const SpaIdFormattingDesc = () => (
 );
 
 export const AttachmentsSizeTypesDesc = ({
-  faqLink,
+  faqAttLink,
   includeCMS179 = false,
 }: {
-  faqLink: string;
+  faqAttLink: string;
   includeCMS179?: boolean;
 }) => (
   <div className="text-gray-700 font-light">
@@ -58,10 +60,10 @@ export const AttachmentsSizeTypesDesc = ({
       for each of the attachment types on the{" "}
       {
         <Link
-          to={faqLink}
+          to={faqAttLink}
           target={FAQ_TAB}
           rel="noopener noreferrer"
-          className="text-blue-700 hover:underline"
+          className="text-blue-900 underline"
         >
           FAQ Page
         </Link>
@@ -71,16 +73,17 @@ export const AttachmentsSizeTypesDesc = ({
     <br />
     <p>
       We accept the following file formats:{" "}
-      <strong className="bold">.docx, .jpg, .pdf, .png, .xlsx.</strong> See the
-      full list on the{" "}
+      <strong className="bold">
+        .docx, .docx, .pdf, .jpg, .opd, and more.{" "}
+      </strong>{" "}
       {
         <Link
-          to="/faq/acceptable-file-formats"
+          to={"/faq/acceptable-file-formats"}
           target={FAQ_TAB}
           rel="noopener noreferrer"
-          className="text-blue-700 hover:underline"
+          className="text-blue-900 underline"
         >
-          FAQ Page
+          See the full list
         </Link>
       }
       .
@@ -95,8 +98,8 @@ export const PreSubmissionMessage = () => (
       Once you submit this form, a confirmation email is sent to you and to CMS.
       CMS will use this content to review your package, and you will not be able
       to edit this form. If CMS needs any additional information, they will
-      follow up by email. If you leave this page, you will lose your progress on
-      this form.
+      follow up by email.
+      <ProgressLossReminder />
     </p>
   </Alert>
 );

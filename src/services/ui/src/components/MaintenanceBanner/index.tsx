@@ -19,11 +19,11 @@ export const MaintenanceBanner = () => {
   const ldClient = useLDClient();
   const siteUnderMaintenanceBannerFlag = ldClient?.variation(
     featureFlags.SITE_UNDER_MAINTENANCE_BANNER.flag,
-    featureFlags.SITE_UNDER_MAINTENANCE_BANNER.defaultValue
+    featureFlags.SITE_UNDER_MAINTENANCE_BANNER.defaultValue,
   );
 
   const possibleMaintenanceBanner = getMaintenanceBanner(
-    siteUnderMaintenanceBannerFlag
+    siteUnderMaintenanceBannerFlag,
   );
 
   if (possibleMaintenanceBanner) {

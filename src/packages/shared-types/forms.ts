@@ -21,12 +21,13 @@ export interface FormSchema {
 export type RHFSlotProps = {
   name: string;
   label?: RHFTextField;
-  labelStyling?: string;
-  formItemStyling?: string;
+  labelClassName?: string;
+  styledLabel?: RHFTextField;
+  formItemClassName?: string;
   groupNamePrefix?: string;
   description?: RHFTextField;
   descriptionAbove?: boolean;
-  descriptionStyling?: string;
+  descriptionClassName?: string;
   dependency?: DependencyRule;
   rules?: RegisterOptions;
 } & {
@@ -75,12 +76,13 @@ type RHFTextItemType =
   | "default";
 
 export type RHFOption = {
-  label: string;
+  label?: string;
   value: string;
   styledLabel?: RHFTextField;
   dependency?: DependencyRule;
   form?: FormGroup[];
   slots?: RHFSlotProps[];
+  optionlabelClassName?: string;
 };
 
 export type RHFComponentMap = {
@@ -114,8 +116,9 @@ export type RHFComponentMap = {
 
 export type FormGroup = {
   description?: string;
+  descriptionClassName?: string;
   slots: RHFSlotProps[];
-  wrapperStyling?: string;
+  wrapperClassName?: string;
   dependency?: DependencyRule;
 };
 
@@ -123,6 +126,7 @@ export interface Section {
   title: string;
   form: FormGroup[];
   dependency?: DependencyRule;
+  subsection?: boolean;
 }
 
 export interface Document {

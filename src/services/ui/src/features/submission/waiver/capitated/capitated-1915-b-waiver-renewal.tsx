@@ -32,6 +32,7 @@ import {
 import { useQuery as useQueryString } from "@/hooks";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
+import { documentPoller } from "@/utils/Poller/documentPoller";
 
 const formSchema = z
   .object({
@@ -131,7 +132,18 @@ export const Capitated1915BWaiverRenewalPage = () => {
           ? originRoute[urlQuery.get(ORIGIN)! as Origin]
           : "/dashboard",
       );
-      navigate(originPath ? { path: originPath } : { path: "/dashboard" });
+
+      const poller = documentPoller(formData.id, (checks) =>
+        checks.actionIs("Renew"),
+      );
+
+      await poller.startPollingData();
+
+      navigate(
+        originPath
+          ? { path: `${originPath}?tab=waivers` as Route }
+          : { path: "/dashboard?tab=waivers" as Route },
+      );
     } catch (e) {
       console.error(e);
       alert.setContent({
@@ -147,6 +159,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
 
   const form = useForm<Waiver1915BCapitatedRenewal>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   return (
@@ -163,10 +176,12 @@ export const Capitated1915BWaiverRenewalPage = () => {
           <SectionCard title="1915(b) Waiver Renewal Details">
             <Content.FormIntroText />
             <div className="flex flex-col">
-              <Inputs.FormLabel className="font-semibold">
+              <Inputs.FormLabel className="font-semibold" htmlFor="1975b">
                 Waiver Authority
               </Inputs.FormLabel>
-              <span className="text-lg font-thin">1915(b)</span>
+              <span className="text-lg font-thin" id="1975b">
+                1915(b)
+              </span>
             </div>
             <Inputs.FormField
               control={form.control}
@@ -208,7 +223,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
                       1915(b) Waiver Renewal Number <Inputs.RequiredIndicator />
                     </Inputs.FormLabel>
                     <Link
-                      to="/faq/waiver-amendment-id-format"
+                      to="/faq/waiver-renewal-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline flex items-center"
@@ -256,7 +271,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
             />
           </SectionCard>
           <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc faqLink="/faq/medicaid-spa-attachments" />
+            <Content.AttachmentsSizeTypesDesc faqAttLink="/faq/waiverb-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
                 key={name}

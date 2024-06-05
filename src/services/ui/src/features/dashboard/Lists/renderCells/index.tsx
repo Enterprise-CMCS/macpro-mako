@@ -51,7 +51,9 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
             <div className="flex flex-col">
               {actions.map((action, idx) => (
                 <TypedLink
-                  state={{ from: `${location.pathname}${location.search}` }}
+                  state={{
+                    from: `${location.pathname}${location.search}`,
+                  }}
                   path="/action/:authority/:id/:type"
                   key={`${idx}-${action}`}
                   params={{
@@ -63,6 +65,9 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
                     "text-blue-500",
                     "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                   )}
+                  query={{
+                    origin: "actionsDashboard",
+                  }}
                 >
                   {mapActionLabel(action)}
                 </TypedLink>

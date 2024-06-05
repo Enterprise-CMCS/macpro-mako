@@ -12,13 +12,20 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               name: "abp-2a_benefit-align-and-require_is-state-territory-aligned_select",
-              label:
-                "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
-              labelStyling: "font-bold text-[0.8rem]",
-              description:
-                "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
+              descriptionClassName: "text-black text-base",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              description: [
+                {
+                  text: "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
+                  type: "default",
+                  classname: "font-bold block py-1",
+                },
+                {
+                  text: "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
+                  type: "default",
+                  classname: "font-bold block pt-4",
+                },
+              ],
               rules: {
                 required: "* Required",
               },
@@ -37,9 +44,13 @@ export const v202401: FormSchema = {
               description:
                 "Explain how the state has fully aligned its benefits.",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               dependency: {
                 conditions: [
@@ -81,27 +92,26 @@ export const v202401: FormSchema = {
                       "state_territory_must_have_a_process_that_meets_exemption_criteria",
                   },
                   {
-                    label: "",
                     styledLabel: [
                       {
                         text: "Once an individual is identified, the state/territory assures it will effectively inform the individual of the following:",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "A. That enrollment in the specified ABP is voluntary",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "B. That the individual may disenroll from the ABP defined subject to Section 1937 requirements at any time and instead receive an ABP defined as the approved state/territory Medicaid state plan not subject to Section 1937 requirements.",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "C. What the process is for transferring to the state plan-based ABP",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                     ],
                     value: "individual_identified_must_inform_the_individual",
@@ -111,20 +121,19 @@ export const v202401: FormSchema = {
                       {
                         text: "The state/territory assures it will inform the individual of the following:",
                         type: "default",
-                        classname: "block py-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "B. The costs of the different benefit packages and a comparison of how the ABP subject to Section 1937 requirements differs from the ABP defined as the approved Medicaid state/territory plan benefits",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                     ],
-                    label: "",
                     value:
                       "state_territory_assures_it_will_inform_the_individual",
                   },
@@ -164,9 +173,14 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2a_delivery-of-info_describe-other-input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
@@ -180,7 +194,7 @@ export const v202401: FormSchema = {
               description:
                 "Provide a copy of the letter, email, or other communication.",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -194,8 +208,12 @@ export const v202401: FormSchema = {
                 "When did/will the state/territory inform the individuals?",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
             },
             {
               rhf: "Textarea",
@@ -203,37 +221,40 @@ export const v202401: FormSchema = {
               descriptionAbove: true,
               description:
                 "Describe the state/territory's process for allowing individuals in the Section 1902(a)(10)(A)(i)(VIII) eligibility group who meet exemption criteria to disenroll from the ABP using Section 1937 requirements and enroll in the ABP that is the state/territory's approved Medicaid state plan.",
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
             },
             {
               rhf: "Checkbox",
               name: "abp-2a_delivery-of-info_state-territory-assures-it-will-document-exempt-individuals_checkgroup",
-              formItemStyling: "whitespace-pre-wrap",
+              formItemClassName: "whitespace-pre-wrap",
               rules: {
                 required: "* Required",
               },
               props: {
                 options: [
                   {
-                    label: "",
                     styledLabel: [
                       {
                         text: "The state/territory assures it will document in the exempt individual's eligibility file that the individual:",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "A. Was informed in accordance with this section prior to enrollment",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: "B. Was given ample time to arrive at an informed choice",
                         type: "default",
-                        classname: "block pb-2",
+                        classname: "block py-1",
                       },
                       {
                         text: " C. Chose to enroll in ABP coverage subject to Section 1937 requirements or defined as the state/territory's approved Medicaid state plan not subject to Section 1937 requirements",
@@ -249,7 +270,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "abp-2a_delivery-of-info_where-will-info-be-doc_checkgroup",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               description: "Where will the information be documented?",
               rules: {
                 required: "* Required",
@@ -272,9 +293,14 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2a_delivery-of-info_where-will-info-be-doc-describe-other_input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
@@ -286,10 +312,10 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "abp-2a_delivery-of-info_what-docu-will-be-maintained_checkgroup",
               descriptionAbove: true,
-              descriptionStyling: "font-bold text-black",
+              descriptionClassName: "font-bold text-black",
               description:
                 "What documentation will be maintained in the eligibility file?",
-              formItemStyling: "border-b-4",
+              formItemClassName: "border-b-4",
               rules: {
                 required: "* Required",
               },
@@ -314,9 +340,14 @@ export const v202401: FormSchema = {
                         rhf: "Input",
                         name: "abp-2a_delivery-of-info_describe-other_input",
                         label: "Describe",
-                        labelStyling: "font-bold",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^\S(.*\S)?$/,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
@@ -354,6 +385,12 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               name: "abp-2a_additional_information_textarea",
+              rules: {
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },
