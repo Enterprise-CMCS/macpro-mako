@@ -5,8 +5,8 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  RequiredIndicator,
   Textarea,
+  FormSectionCard,
 } from "@/components";
 
 export const AdditionalInfoSection = ({
@@ -18,17 +18,22 @@ export const AdditionalInfoSection = ({
 }) => {
   const form = useFormContext();
   return (
-    <section className={"mb-8"}>
-      <h2 className="font-bold text-2xl font-sans mb-2">
-        Additional Information {required && <RequiredIndicator />}
-      </h2>
+    <FormSectionCard
+      id="additional-info"
+      title="Additional Information"
+      required={required}
+    >
       <FormField
         control={form.control}
         name={"additionalInformation"}
         render={({ field }) => (
           <FormItem>
             {instruction && (
-              <FormLabel data-testid="addl-info-label" className="font-normal">
+              <FormLabel
+                htmlFor={field.name}
+                data-testid="addl-info-label"
+                className="font-normal"
+              >
                 {instruction}
               </FormLabel>
             )}
@@ -39,6 +44,7 @@ export const AdditionalInfoSection = ({
               aria-live="off"
               aria-multiline={true}
               className="h-[200px] resize-none"
+              id={field.name}
             />
             <FormDescription>
               <span
@@ -53,6 +59,6 @@ export const AdditionalInfoSection = ({
           </FormItem>
         )}
       />
-    </section>
+    </FormSectionCard>
   );
 };

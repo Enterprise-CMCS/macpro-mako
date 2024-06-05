@@ -101,7 +101,6 @@ interface SubsectionFieldProps {
 function subsectionFormFields({
   benefitProvided,
   optionalSection = false,
-  sectionName,
 }: SubsectionFieldProps): RHFSlotProps[] {
   // The Authorization select menu in the optional sections should not include
   // the "None" option, accodring to HCD. This is because the original PDF did
@@ -124,7 +123,7 @@ function subsectionFormFields({
           rhf: "Input",
           label: "Benefit provided",
           labelClassName: "font-bold",
-          name: `${formName}_${sectionName}_benefit-provided`,
+          name: "benefit-provided",
           rules: {
             required: "* Required",
             pattern: {
@@ -140,7 +139,7 @@ function subsectionFormFields({
       rhf: "Select",
       label: "Source",
       labelClassName: "font-bold",
-      name: `${formName}_${sectionName}_source`,
+      name: "source",
       rules: { required: "* Required" },
       props: {
         className: "w-[300px]",
@@ -152,8 +151,8 @@ function subsectionFormFields({
       label:
         "Other information about this benefit source, including the name of the source plan",
       labelClassName: "font-bold",
-      name: `${formName}_${sectionName}_source-other-info`,
-      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      name: "source-other-info_input",
+      formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
       rules: {
         required: "* Required",
         pattern: {
@@ -164,7 +163,7 @@ function subsectionFormFields({
       dependency: {
         conditions: [
           {
-            name: `${formName}_${sectionName}_source`,
+            name: "source",
             type: "expectedValue",
             expectedValue: "state_plan_other",
           },
@@ -177,8 +176,8 @@ function subsectionFormFields({
       label:
         "Other information about this benefit source, including the name of the source plan",
       labelClassName: "font-bold",
-      name: `${formName}_${sectionName}_secretary-other-info`,
-      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      name: "secretary-other-info_input",
+      formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
       rules: {
         required: "* Required",
         pattern: {
@@ -189,7 +188,7 @@ function subsectionFormFields({
       dependency: {
         conditions: [
           {
-            name: `${formName}_${sectionName}_source`,
+            name: "source",
             type: "expectedValue",
             expectedValue: "secretary_approved_other",
           },
@@ -201,7 +200,7 @@ function subsectionFormFields({
       rhf: "Select",
       label: "Authorization",
       labelClassName: "font-bold",
-      name: `${formName}_${sectionName}_auth`,
+      name: "auth",
       rules: { required: "* Required" },
       props: {
         className: "w-[300px]",
@@ -212,8 +211,8 @@ function subsectionFormFields({
       rhf: "Input",
       label: "Other information about authorization",
       labelClassName: "font-bold",
-      name: `${formName}_${sectionName}_authorization-other-info`,
-      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      name: "authorization-other-info_input",
+      formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
       rules: {
         required: "* Required",
         pattern: {
@@ -224,7 +223,7 @@ function subsectionFormFields({
       dependency: {
         conditions: [
           {
-            name: `${formName}_${sectionName}_auth`,
+            name: "auth",
             type: "expectedValue",
             expectedValue: "other",
           },
@@ -236,7 +235,7 @@ function subsectionFormFields({
       rhf: "Select",
       label: "Provider qualifications",
       labelClassName: "font-bold",
-      name: `${formName}_${sectionName}_provider-qual`,
+      name: "provider-qual",
       rules: { required: "* Required" },
       props: {
         className: "w-[300px]",
@@ -247,8 +246,8 @@ function subsectionFormFields({
       rhf: "Input",
       label: "Other information about provider qualifications",
       labelClassName: "font-bold",
-      name: `${formName}_${sectionName}_provider-qual-other-info`,
-      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+      name: "provider-qual-other-info_input",
+      formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
       rules: {
         required: "* Required",
         pattern: {
@@ -259,7 +258,7 @@ function subsectionFormFields({
       dependency: {
         conditions: [
           {
-            name: `${formName}_${sectionName}_provider-qual`,
+            name: "provider-qual",
             type: "expectedValue",
             expectedValue: "other",
           },
@@ -271,7 +270,7 @@ function subsectionFormFields({
       rhf: "Input",
       label: "Amount limit",
       labelClassName: "font-bold",
-      name: `${formName}_${sectionName}_amount-limit`,
+      name: "amount-limit",
       rules: {
         required: "* Required",
         pattern: {
@@ -287,7 +286,7 @@ function subsectionFormFields({
       rhf: "Input",
       label: "Duration limit",
       labelClassName: "font-bold",
-      name: `${formName}_${sectionName}_duration-limit`,
+      name: "duration-limit",
       rules: {
         required: "* Required",
         pattern: {
@@ -303,7 +302,7 @@ function subsectionFormFields({
       rhf: "Input",
       label: "Scope limit",
       labelClassName: "font-bold",
-      name: `${formName}_${sectionName}_scope-limit`,
+      name: "scope-limit",
       rules: {
         required: "* Required",
         pattern: {

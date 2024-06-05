@@ -237,7 +237,12 @@ export const OptChildren = ({
               className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
               key={`rhf-form-${index}-${FORM.description}`}
             >
-              <RHFFormGroup form={FORM} control={control} parentId={parentId} />
+              <RHFFormGroup
+                form={FORM}
+                control={control}
+                parentId={parentId}
+                className="py-0"
+              />
             </div>
           );
         })}

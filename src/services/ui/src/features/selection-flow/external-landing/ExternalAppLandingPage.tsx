@@ -36,7 +36,7 @@ const FAQHelperText = () => (
         to="/faq/crosswalk-system"
         target={FAQ_TAB}
         rel="noopener noreferrer"
-        className="text-blue-700 hover:underline flex items-center"
+        className="text-blue-900 underline flex items-center"
       >
         Crosswalk from Paper-based State Plan to MACPro and MMDL
       </Link>{" "}
