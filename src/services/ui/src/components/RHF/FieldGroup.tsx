@@ -8,7 +8,7 @@ import { slotInitializer } from "./utils";
 import { DependencyWrapper } from "./dependencyWrapper";
 
 export const FieldGroup = <TFields extends FieldValues>(
-  props: FieldGroupProps<TFields>
+  props: FieldGroupProps<TFields>,
 ) => {
   const fieldArr = useFieldArray({
     control: props.control,
@@ -32,7 +32,7 @@ export const FieldGroup = <TFields extends FieldValues>(
           <div className="flex flex-col gap-3" key={FLD.id}>
             {props.fields.map((SLOT) => {
               const prefix = `${props.name}.${index}.`;
-              const adjustedPrefix = (props.groupNamePrefix ?? "") + prefix;
+              const adjustedPrefix = props.parentId + prefix;
               const adjustedSlotName = prefix + SLOT.name;
 
               const formField = (
@@ -45,7 +45,7 @@ export const FieldGroup = <TFields extends FieldValues>(
                     ...SLOT,
                     control: props.control,
                     name: adjustedSlotName,
-                    groupNamePrefix: adjustedPrefix,
+                    parentId: adjustedPrefix,
                   })}
                 />
               );

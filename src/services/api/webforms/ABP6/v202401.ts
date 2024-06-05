@@ -2,20 +2,22 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header: "ABP 6: Benchmark-equivalent benefit package",
+  formId: "abp6",
   sections: [
     {
       title: "Description of benefits",
+      sectionId: "desc-of-ben",
       form: [
         {
           slots: [
             {
               rhf: "TextDisplay",
-              name: "abp6_desc-of-ben_helperText",
+              name: "helperText",
               text: "Complete this section only if the state/territory is proposing a benchmark-equivalent benefit package.",
             },
             {
               rhf: "Input",
-              name: "abp6_desc-of-ben_agg-actuarial-ben-plan_input",
+              name: "agg-actuarial-ben-plan",
               label:
                 "Aggregate actuarial value of the benchmark plan (e.g., FEHBP, state/territory employee coverage, commercial plan, state plan) that is equivalent to the state/territory's benefit package",
               labelClassName: "font-bold",
@@ -29,7 +31,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Input",
-              name: "abp6_desc-of-ben_agg-actuarial-ben-euqivalent-plan_input",
+              name: "agg-actuarial-ben-euqivalent-plan",
               label:
                 "Aggregate actuarial value of the state/territory's benchmark-equivalent plan (must be greater than or equal to the amount entered above)",
               labelClassName: "font-bold",
@@ -41,16 +43,14 @@ export const v202401: FormSchema = {
                 },
                 validate: {
                   greaterThanValueAbove: (v, vals) =>
-                    parseInt(v) >
-                      parseInt(
-                        vals?.["abp6_desc-of-ben_agg-actuarial-ben-plan_input"],
-                      ) || "Must be greater than value entered above",
+                    parseInt(v) > parseInt(vals?.["agg-actuarial-ben-plan"]) ||
+                    "Must be greater than value entered above",
                 },
               },
             },
             {
               rhf: "Checkbox",
-              name: "abp6_desc-of-ben_state-desc-plan_included_files_checkgroup",
+              name: "state-desc-plan_included_files",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -61,7 +61,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Upload",
-                        name: "abp6_desc-of-ben_benefit-chart-of-benchmark-equiv_upload",
+                        name: "benefit-chart-of-benchmark-equiv",
                         rules: { required: "* Required" },
                         label: "Upload attachment(s)",
                         labelClassName: "font-bold",
@@ -74,7 +74,7 @@ export const v202401: FormSchema = {
                       "The state/territory has included a copy of the actuarial report.",
                     slots: [
                       {
-                        name: "abp6_desc-of-ben_actuarial-report_upload",
+                        name: "actuarial-report",
                         label: "Upload actuarial report",
                         labelClassName: "font-bold",
                         rhf: "Upload",
@@ -87,7 +87,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               labelClassName: "font-bold",
-              name: "abp6_desc-of-ben_other-info-related-bench-equiv_textarea",
+              name: "other-info-related-bench-equiv",
               label:
                 "Other information related to this benchmark-equivalent benefit package (optional)",
             },
@@ -97,12 +97,13 @@ export const v202401: FormSchema = {
     },
     {
       title: "Benchmark-equivalent benefit package assurances",
+      sectionId: "bench-equiv-assurances",
       form: [
         {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp6_bench-equiv-assurances_assurance-options_checkgroup",
+              name: "assurance-options",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -113,7 +114,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Checkbox",
-                        name: "abp6_bench-equiv-assurances_actuarial-report-preparation-assurances_checkgroup",
+                        name: "actuarial-report-preparation-assurances",
                         rules: { required: "* Required" },
                         props: {
                           options: [
@@ -177,7 +178,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Select",
-              name: "abp6_bench-quiv-assurances_bench-pckg-include-vision-services_select",
+              name: "bench-pckg-include-vision-services",
               rules: { required: "* Required" },
               labelClassName: "font-bold",
               label:
@@ -198,13 +199,13 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp6_bench-quiv-assurances_vision-service-equivalent-percentage_checkgroup",
+              name: "vision-service-equivalent-percentage",
               rules: { required: "* Required" },
               formItemClassName: "ml-[0.7rem] px-4 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
-                    name: "abp6_bench-quiv-assurances_bench-pckg-include-vision-services_select",
+                    name: "bench-pckg-include-vision-services",
                     expectedValue: "yes",
                     type: "expectedValue",
                   },
@@ -223,7 +224,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Select",
-              name: "abp6_bench-quiv-assurances_bench-pckg-include-hearing-services_select",
+              name: "bench-pckg-include-hearing-services",
               rules: { required: "* Required" },
               labelClassName: "font-bold",
               label:
@@ -244,13 +245,13 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp6_bench-quiv-assurances_hearing-service-equivalent-percentage_checkgroup",
+              name: "hearing-service-equivalent-percentage",
               rules: { required: "* Required" },
               formItemClassName: "ml-[0.7rem] px-4 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
-                    name: "abp6_bench-quiv-assurances_bench-pckg-include-hearing-services_select",
+                    name: "bench-pckg-include-hearing-services",
                     expectedValue: "yes",
                     type: "expectedValue",
                   },
@@ -273,13 +274,14 @@ export const v202401: FormSchema = {
     },
     {
       title: "Additional information",
+      sectionId: "addtnl-info",
       form: [
         {
           description:
             "Other information about benchmark-equivalent assurances (optional)",
           slots: [
             {
-              name: "abp6_additional_info_description_textarea",
+              name: "description",
               rhf: "Textarea",
             },
           ],

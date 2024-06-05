@@ -34,7 +34,7 @@ import {
 type SlotFieldProps = RHFSlotProps & { control: any; field: any };
 type SelectedSubsetProps = RHFOption & {
   control: any;
-  groupNamePrefix?: string;
+  parentId?: string;
 };
 
 export const SlotField = ({
@@ -43,7 +43,7 @@ export const SlotField = ({
   rhf,
   text,
   control,
-  groupNamePrefix,
+  parentId,
   fields,
   name,
 }: SlotFieldProps) => {
@@ -56,7 +56,7 @@ export const SlotField = ({
       return <Switch {...props} {...field} aria-label={field.name} />;
     case "TextDisplay":
       return (
-        <p {...props} data-testid={name}>
+        <p {...props} data-testid={field.name}>
           <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} />
         </p>
       );
@@ -74,7 +74,7 @@ export const SlotField = ({
           control={control}
           name={name}
           fields={fields ?? []}
-          groupNamePrefix={groupNamePrefix}
+          parentId={parentId}
           {...props}
         />
       );
@@ -84,7 +84,7 @@ export const SlotField = ({
           control={control}
           name={name}
           fields={fields ?? []}
-          groupNamePrefix={groupNamePrefix}
+          parentId={parentId}
           {...props}
         />
       );
@@ -180,11 +180,7 @@ export const SlotField = ({
                   optionlabelClassName={OPT.optionlabelClassName}
                 />
                 {field.value?.includes(OPT.value) && (
-                  <OptChildren
-                    {...OPT}
-                    groupNamePrefix={groupNamePrefix}
-                    control={control}
-                  />
+                  <OptChildren {...OPT} parentId={parentId} control={control} />
                 )}
               </div>
             </DependencyWrapper>
@@ -216,11 +212,7 @@ export const SlotField = ({
                   }
                 </div>
                 {field.value?.includes(OPT.value) && (
-                  <OptChildren
-                    {...OPT}
-                    groupNamePrefix={groupNamePrefix}
-                    control={control}
-                  />
+                  <OptChildren {...OPT} parentId={parentId} control={control} />
                 )}
               </div>
             );
@@ -234,7 +226,7 @@ export const OptChildren = ({
   form,
   slots,
   control,
-  groupNamePrefix,
+  parentId,
 }: SelectedSubsetProps) => {
   return (
     <>
@@ -245,11 +237,7 @@ export const OptChildren = ({
               className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
               key={`rhf-form-${index}-${FORM.description}`}
             >
-              <RHFFormGroup
-                form={FORM}
-                control={control}
-                groupNamePrefix={groupNamePrefix}
-              />
+              <RHFFormGroup form={FORM} control={control} parentId={parentId} />
             </div>
           );
         })}
@@ -261,7 +249,7 @@ export const OptChildren = ({
           >
             <FormField
               control={control}
-              name={(groupNamePrefix ?? "") + SLOT.name}
+              name={parentId + SLOT.name}
               {...(SLOT.rules && { rules: SLOT.rules })}
               render={RHFSlot({ ...SLOT, control })}
             />

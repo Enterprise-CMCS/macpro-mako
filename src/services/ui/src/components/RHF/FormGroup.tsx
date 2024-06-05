@@ -7,7 +7,7 @@ import { RHFSlot } from "./Slot";
 export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
   form: TRhf.FormGroup;
   control: Control<TFieldValues>;
-  groupNamePrefix?: string;
+  parentId?: string;
 }) => {
   return (
     <DependencyWrapper {...props.form}>
@@ -23,15 +23,16 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
         )}
         <div className={props.form.wrapperClassName}>
           {props.form.slots.map((SLOT) => (
-            <DependencyWrapper key={SLOT.name} {...SLOT}>
+            <DependencyWrapper key={props.parentId + SLOT.name} {...SLOT}>
               <FormField
                 control={props.control}
-                name={((props.groupNamePrefix ?? "") + SLOT.name) as never}
+                name={(props.parentId + SLOT.name) as never}
                 {...(SLOT.rules && { rules: SLOT.rules })}
                 render={RHFSlot({
                   ...SLOT,
                   control: props.control as Control,
-                  groupNamePrefix: props.groupNamePrefix,
+                  name: props.parentId + SLOT.name,
+                  parentId: props.parentId,
                 })}
               />
             </DependencyWrapper>

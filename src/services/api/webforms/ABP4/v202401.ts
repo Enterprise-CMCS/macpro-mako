@@ -2,15 +2,17 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header: "ABP 4: Alternative Benefit Plan cost sharing",
+  formId: "abp4",
   sections: [
     {
       title: "Cost sharing",
+      sectionId: "cost-sharing",
       form: [
         {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp4_cost-sharing_applies-to-abp_checkgroup",
+              name: "applies-to-abp",
               description:
                 "Attachment 4.18-A or G may be revised to include cost sharing for ABP services that are not otherwise described in the state plan. Any such cost sharing must comply with Section 1916 of the Social Security Act.",
               rules: { required: "* Required" },
@@ -26,7 +28,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Select",
-              name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty_select",
+              name: "abp-for-individuals-income-over-100-poverty",
               label:
                 "The ABP for individuals with income over 100% of the federal poverty level (FPL) includes cost sharing other than that described in Attachment 4.18-A or G1, G2a, G2b, G2c, and G3.",
               labelClassName: "font-bold",
@@ -41,13 +43,13 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp4_cost-sharing_see-approved-attachment_checkgroup",
+              name: "see-approved-attachment",
               rules: { required: "* Required" },
               formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
-                    name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty_select",
+                    name: "abp-for-individuals-income-over-100-poverty",
                     type: "expectedValue",
                     expectedValue: "yes",
                   },
@@ -66,7 +68,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Upload",
-              name: "abp4_cost-sharing_attachment_upload",
+              name: "attachment_upload",
               label: "Attachment 4.18-F or G",
               labelClassName: "font-bold",
               rules: { required: "* Required" },
@@ -74,7 +76,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty_select",
+                    name: "abp-for-individuals-income-over-100-poverty",
                     type: "expectedValue",
                     expectedValue: "yes",
                   },
@@ -84,7 +86,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Textarea",
-              name: "abp4-cost-sharing_other-info-about-requirements_textarea",
+              name: "other-info-about-requirements",
               label:
                 "Other information about cost-sharing requirements (optional)",
               labelClassName: "font-bold",
