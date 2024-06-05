@@ -43,7 +43,8 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "abp4_cost-sharing_see-approved-attachment_checkgroup",
               rules: { required: "* Required" },
-              formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              formItemClassName:
+                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
@@ -70,7 +71,8 @@ export const v202401: FormSchema = {
               label: "Attachment 4.18-F or G",
               labelClassName: "font-bold",
               rules: { required: "* Required" },
-              formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              formItemClassName:
+                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
