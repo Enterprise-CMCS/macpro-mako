@@ -11,7 +11,7 @@ export const formGroupInitializer =
 export const slotInitializer =
   (parentId?: string) =>
   (ACC: GL, SLOT: T.RHFSlotProps): GL => {
-    const adjustedName = `${parentId}${SLOT.name}`;
+    const adjustedName = `${parentId ?? ""}${SLOT.name}`;
 
     const optionReducer = (OPT: T.RHFOption) => {
       if (OPT.form) OPT.form.reduce(formGroupInitializer(parentId), ACC);
