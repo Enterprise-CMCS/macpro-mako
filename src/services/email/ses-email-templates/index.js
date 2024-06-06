@@ -1098,7 +1098,7 @@ for {{id}} was withdrawn by {{submitterName}} {{submitterEmail}}.</p>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{initialSubmitterName}}
 <br><b>Email Address:</b> {{initialSubmitterEmail}}
-<br><b>CHIP SPA Package ID:</b> {{id}}
+<br><b>Waiver Number:</b> {{id}}
 </p>
 Summary:
 <br>{{additionalInformation}}

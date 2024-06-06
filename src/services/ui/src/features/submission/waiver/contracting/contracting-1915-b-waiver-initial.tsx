@@ -19,7 +19,7 @@ import * as Inputs from "@/components/Inputs";
 import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
 import {
-  zAdditionalInfo,
+  zAdditionalInfoOptional,
   zAttachmentOptional,
   zAttachmentRequired,
   zInitialWaiverNumberSchema,
@@ -41,7 +41,7 @@ const formSchema = z.object({
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
-  additionalInformation: zAdditionalInfo.optional(),
+  additionalInformation: zAdditionalInfoOptional,
   seaActionType: z.string().default("New"),
 });
 type Waiver1915BContractingInitial = z.infer<typeof formSchema>;

@@ -25,7 +25,7 @@ export const RHFSlot = <
   labelClassName,
   formItemClassName,
   ...rest
-}: RHFSlotProps & { control: any }): ControllerProps<
+}: RHFSlotProps & { control: any; parentId?: string }): ControllerProps<
   TFieldValues,
   TName
 >["render"] =>

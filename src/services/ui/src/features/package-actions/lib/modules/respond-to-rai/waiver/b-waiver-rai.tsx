@@ -1,6 +1,6 @@
 import { z } from "zod";
 import {
-  zAdditionalInfo,
+  zAdditionalInfoOptional,
   zAttachmentOptional,
   zAttachmentRequired,
 } from "@/utils";
@@ -12,7 +12,7 @@ import {
 } from "@/components";
 
 export const bWaiverRaiSchema = z.object({
-  additionalInformation: zAdditionalInfo.optional(),
+  additionalInformation: zAdditionalInfoOptional,
   attachments: z.object({
     raiResponseLetterWaiver: zAttachmentRequired({ min: 1 }),
     other: zAttachmentOptional,

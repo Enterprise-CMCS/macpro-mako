@@ -15,6 +15,7 @@ import {
 
 export interface FormSchema {
   header: string;
+  formId: string;
   sections: Section[];
 }
 
@@ -24,7 +25,7 @@ export type RHFSlotProps = {
   labelClassName?: string;
   styledLabel?: RHFTextField;
   formItemClassName?: string;
-  groupNamePrefix?: string;
+  parentId?: string;
   description?: RHFTextField;
   descriptionAbove?: boolean;
   descriptionClassName?: string;
@@ -125,6 +126,7 @@ export type FormGroup = {
 export interface Section {
   title: string;
   form: FormGroup[];
+  sectionId: string;
   dependency?: DependencyRule;
   subsection?: boolean;
 }
@@ -141,7 +143,7 @@ export type FieldArrayProps<
   control: Control<T, unknown>;
   name: TFieldArrayName;
   fields: RHFSlotProps[];
-  groupNamePrefix?: string;
+  parentId?: string;
   appendText?: string;
 };
 
@@ -154,7 +156,7 @@ export type FieldGroupProps<
   fields: RHFSlotProps[];
   appendText?: string;
   removeText?: string;
-  groupNamePrefix?: string;
+  parentId?: string;
 };
 
 type ConditionRules =

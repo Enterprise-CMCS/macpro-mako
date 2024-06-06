@@ -18,11 +18,11 @@ const TestWrapper = (props: RHFSlotProps) => {
         <form>
           <FormField
             control={form.control}
-            name={((props.groupNamePrefix ?? "") + props.name) as never}
+            name={((props.parentId ?? "") + props.name) as never}
             render={RHFSlot({
               ...props,
               control: form.control as Control,
-              groupNamePrefix: props.groupNamePrefix,
+              parentId: props.parentId,
             })}
           />
         </form>
