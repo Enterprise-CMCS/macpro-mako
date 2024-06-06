@@ -63,7 +63,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   const offsetRangeToUtc = (val: opensearch.RangeValue) => ({
-    gte: val.gte ? offsetFromUtc(new Date(val.gte)).toISOString() : undefined,
+    gte: val.gte ? offsetToUtc(new Date(val.gte)).toISOString() : undefined,
     lte: val.lte ? offsetToUtc(new Date(val.lte)).toISOString() : undefined,
   });
 
@@ -166,11 +166,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
         }),
       );
     } else if (d?.from && !d?.to) {
-      // both of these need to use 'offsetToUtc' in order to work
-      onChange({
-        gte: offsetToUtc(new Date(d.from)).toISOString(),
-        lte: offsetToUtc(new Date(endOfDay(d.from))).toISOString(),
-      });
+      onChange(offsetRangeToUtc(getDateRange(d.from, endOfDay(d.from))));
     }
   };
 
