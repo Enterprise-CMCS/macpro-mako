@@ -69,7 +69,11 @@ export const SlotAdditionalInfo = <
             Additional Information {required && <RequiredIndicator />}
           </h3>
         )}
-        <FormLabel data-testid="addl-info-label" className="font-normal">
+        <FormLabel
+          htmlFor="additional-info"
+          data-testid="addl-info-label"
+          className="font-normal"
+        >
           {label}
         </FormLabel>
         <Textarea
@@ -79,6 +83,7 @@ export const SlotAdditionalInfo = <
           aria-live="off"
           aria-multiline={true}
           className="h-[200px] resize-none"
+          id="additional-info"
         />
         <FormDescription>
           <span

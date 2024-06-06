@@ -3,15 +3,17 @@ import { FormSchema } from "shared-types";
 export const v202401: FormSchema = {
   header:
     "ABP 2a: Voluntary benefit package selection assurances - Eligibility group under Section 1902(a)(10)(A)(i)(VIII) of the Act ",
+  formId: "abp2a",
   sections: [
     {
       title: "Benefit alignment and requirements",
+      sectionId: "benefit-align-and-require",
       form: [
         {
           slots: [
             {
               rhf: "Select",
-              name: "abp-2a_benefit-align-and-require_is-state-territory-aligned_select",
+              name: "is-state-territory-aligned",
               descriptionClassName: "text-black text-base",
               descriptionAbove: true,
               description: [
@@ -40,7 +42,7 @@ export const v202401: FormSchema = {
 
             {
               rhf: "Textarea",
-              name: "abp-2a_benefit-align-and-require_explain-how-state-territory-aligned_textarea",
+              name: "explain-how-state-territory-aligned",
               description:
                 "Explain how the state has fully aligned its benefits.",
               descriptionAbove: true,
@@ -55,7 +57,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "abp-2a_benefit-align-and-require_is-state-territory-aligned_select",
+                    name: "abp2a_benefit-align-and-require_is-state-territory-aligned",
                     type: "expectedValue",
                     expectedValue: "yes",
                   },
@@ -69,6 +71,7 @@ export const v202401: FormSchema = {
     },
     {
       title: "Assurances",
+      sectionId: "assurances",
       form: [
         {
           description:
@@ -76,7 +79,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp-2a_assurances_adult-eligibility-included_checkgroup",
+              name: "adult-eligibility-included",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -146,6 +149,7 @@ export const v202401: FormSchema = {
     },
     {
       title: "Delivery of information",
+      sectionId: "delivery-of-info",
       form: [
         {
           description:
@@ -153,7 +157,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_assurances_checkgroup",
+              name: "assurances",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -171,7 +175,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Input",
-                        name: "abp-2a_delivery-of-info_describe-other-input",
+                        name: "describe-other-enrollment",
                         label: "Describe",
                         labelClassName: "font-bold",
                         rules: {
@@ -190,7 +194,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Upload",
-              name: "abp-2a_delivery-of-info_provide-copy_upload",
+              name: "provide-copy_upload",
               description:
                 "Provide a copy of the letter, email, or other communication.",
               descriptionAbove: true,
@@ -202,7 +206,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Input",
-              name: "abp-2a_delivery-of-info_when-to-inform_input",
+              name: "when-to-inform",
               descriptionAbove: true,
               description:
                 "When did/will the state/territory inform the individuals?",
@@ -217,7 +221,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Textarea",
-              name: "abp-2a_delivery-of-info_describe-process-in-section1902_textarea",
+              name: "describe-process-in-section1902",
               descriptionAbove: true,
               description:
                 "Describe the state/territory's process for allowing individuals in the Section 1902(a)(10)(A)(i)(VIII) eligibility group who meet exemption criteria to disenroll from the ABP using Section 1937 requirements and enroll in the ABP that is the state/territory's approved Medicaid state plan.",
@@ -232,7 +236,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_state-territory-assures-it-will-document-exempt-individuals_checkgroup",
+              name: "state-territory-assures-it-will-document-exempt-individuals",
               formItemClassName: "whitespace-pre-wrap",
               rules: {
                 required: "* Required",
@@ -268,7 +272,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_where-will-info-be-doc_checkgroup",
+              name: "where-will-info-be-doc",
               descriptionAbove: true,
               descriptionClassName: "font-bold text-black",
               description: "Where will the information be documented?",
@@ -291,7 +295,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Input",
-                        name: "abp-2a_delivery-of-info_where-will-info-be-doc-describe-other_input",
+                        name: "where-will-info-be-doc-describe-other",
                         label: "Describe",
                         labelClassName: "font-bold",
                         rules: {
@@ -310,7 +314,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_what-docu-will-be-maintained_checkgroup",
+              name: "what-docu-will-be-maintained",
               descriptionAbove: true,
               descriptionClassName: "font-bold text-black",
               description:
@@ -338,7 +342,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "Input",
-                        name: "abp-2a_delivery-of-info_describe-other_input",
+                        name: "describe-other-maintained",
                         label: "Describe",
                         labelClassName: "font-bold",
                         rules: {
@@ -357,7 +361,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "abp-2a_delivery-of-info_state-territory-assures-maintain-data_checkgroup",
+              name: "state-territory-assures-maintain-data",
               rules: {
                 required: "* Required",
               },
@@ -377,6 +381,7 @@ export const v202401: FormSchema = {
     },
     {
       title: "Additional information",
+      sectionId: "addtnl-info",
       form: [
         {
           description:
@@ -384,7 +389,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Textarea",
-              name: "abp-2a_additional_information_textarea",
+              name: "addtnl-desc",
               rules: {
                 pattern: {
                   value: /^\S(.*\S)?$/,

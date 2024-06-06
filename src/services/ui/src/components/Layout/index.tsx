@@ -92,7 +92,7 @@ const UserDropdownMenu = () => {
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           align="start"
-          className="bg-white flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm"
+          className="bg-white z-50 flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm "
         >
           <DropdownMenu.Item className="flex">
             <button
@@ -249,8 +249,8 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     <>
       <div className="flex-1"></div>
       {isOpen && (
-        <div className="w-full fixed top-[100px] left-0 z-50">
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-2 gap-4 rounded-lg bg-accent">
+        <div className="w-full absolute top-[100px] sm:top-[85px] left-0 z-50">
+          <ul className="font-medium flex flex-col p-4 md:p-0 mt-2 gap-4 rounded-b-lg bg-primary">
             {links.map((link) => (
               <li key={link.link}>
                 <Link

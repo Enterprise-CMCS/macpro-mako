@@ -150,6 +150,37 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     setToValue(format(today, "MM/dd/yyyy"));
   };
 
+  // Calendar props
+  const disableDates = [
+    { after: offsetFromUtc(new Date(getNextBusinessDayTimestamp())) },
+  ];
+
+  const onSelect = (d: any) => {
+    setSelectedDate(d);
+    if (!!d?.from && !!d.to) {
+      onChange(
+        offsetRangeToUtc({
+          gte: d.from.toISOString(),
+          lte: endOfDay(d.to).toISOString(),
+        }),
+      );
+      setFromValue(format(d.from, "MM/dd/yyyy"));
+      setToValue(format(d.to, "MM/dd/yyyy"));
+    } else if (!d?.from && !d?.to) {
+      onChange(
+        offsetRangeToUtc({
+          gte: "",
+          lte: "",
+        }),
+      );
+      setFromValue("");
+      setToValue("");
+    } else if (d?.from && !d?.to) {
+      setFromValue(format(d.from, "MM/dd/yyyy"));
+      onChange(offsetRangeToUtc(getDateRange(d.from, endOfDay(d.from))));
+    }
+  };
+
   const label = useMemo(() => {
     const from = selectedDate?.from
       ? format(selectedDate.from, "LLL dd, y")
@@ -177,51 +208,38 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
           </div>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto p-0"
+          className="min-w-fit lg:w-auto p-0"
           align="start"
           side="left"
           sideOffset={1}
         >
-          <Calendar
-            disabled={[
-              { after: offsetFromUtc(new Date(getNextBusinessDayTimestamp())) },
-            ]}
-            initialFocus
-            mode="range"
-            defaultMonth={selectedDate?.from}
-            selected={selectedDate}
-            numberOfMonths={2}
-            className="bg-white"
-            onSelect={(d) => {
-              setSelectedDate(d);
-              if (!!d?.from && !!d.to) {
-                onChange(
-                  offsetRangeToUtc({
-                    gte: d.from.toISOString(),
-                    lte: endOfDay(d.to).toISOString(),
-                  }),
-                );
-                setFromValue(format(d.from, "MM/dd/yyyy"));
-                setToValue(format(d.to, "MM/dd/yyyy"));
-              } else if (!d?.from && !d?.to) {
-                onChange(
-                  offsetRangeToUtc({
-                    gte: "",
-                    lte: "",
-                  }),
-                );
-                setFromValue("");
-                setToValue("");
-              } else if (d?.from && !d?.to) {
-                setFromValue(format(d.from, "MM/dd/yyyy"));
-                onChange(
-                  offsetRangeToUtc(getDateRange(d.from, endOfDay(d.from))),
-                );
-              }
-            }}
-            {...props}
-          />
-          <div className="flex flex-row gap-4 w-[320px] p-2 m-auto">
+          <div className="hidden lg:block">
+            <Calendar
+              disabled={disableDates}
+              initialFocus
+              mode="range"
+              defaultMonth={selectedDate?.from}
+              selected={selectedDate}
+              numberOfMonths={2}
+              className="bg-white"
+              onSelect={onSelect}
+              {...props}
+            />
+          </div>
+          <div className="lg:hidden flex align-center">
+            <Calendar
+              disabled={disableDates}
+              initialFocus
+              mode="range"
+              defaultMonth={selectedDate?.from}
+              selected={selectedDate}
+              numberOfMonths={1}
+              className="bg-white"
+              onSelect={onSelect}
+              {...props}
+            />
+          </div>
+          <div className="flex flex-row gap-2 lg:gap-4 w-min-[300px] lg:w-[320px] p-2 m-auto">
             <Input
               onChange={onFromInput}
               value={fromValue}
@@ -236,15 +254,36 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
               className="text-md"
             />
           </div>
-          <div className="flex gap-4 p-2 ml-4">
-            <Button onClick={() => setPresetRange("today")}>Today</Button>
-            <Button onClick={() => setPresetRange("week")}>Last 7 Days</Button>
-            <Button onClick={() => setPresetRange("month")}>
-              Month To Date
-            </Button>
-            <Button onClick={() => setPresetRange("quarter")}>
-              Quarter To Date
-            </Button>
+          <div className="flex w-full flex-wrap lg:flex-row p-1">
+            <div className="w-1/2 lg:w-1/4 p-1">
+              <Button
+                className="w-full"
+                onClick={() => setPresetRange("today")}
+              >
+                Today
+              </Button>
+            </div>
+            <div className="w-1/2 lg:w-1/4 p-1">
+              <Button className="w-full" onClick={() => setPresetRange("week")}>
+                Last 7 Days
+              </Button>
+            </div>
+            <div className="w-1/2 lg:w-1/4 p-1">
+              <Button
+                className="w-full"
+                onClick={() => setPresetRange("month")}
+              >
+                Month To Date
+              </Button>
+            </div>
+            <div className="w-1/2 lg:w-1/4 p-1">
+              <Button
+                className="w-full"
+                onClick={() => setPresetRange("quarter")}
+              >
+                Quarter To Date
+              </Button>
+            </div>
           </div>
         </PopoverContent>
       </Popover>

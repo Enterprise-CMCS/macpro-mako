@@ -1,46 +1,69 @@
-import { LoadingSpinner, useNavigate } from "@/components";
+import { LoadingSpinner, useModalContext, Button } from "@/components";
 import * as Inputs from "@/components";
-
-import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
-import { useOriginPath } from "@/utils";
+import { useMemo } from "react";
 
-export const SubmitAndCancelBtnSection = () => {
+interface buttonProps {
+  loadingSpinner?: boolean;
+  showAlert?: boolean;
+  confirmWithdraw?: () => void;
+  cancelNavigationLocation?: string;
+  enableSubmit?: boolean;
+}
+
+export const SubmitAndCancelBtnSection = ({
+  loadingSpinner,
+  showAlert,
+  confirmWithdraw,
+  cancelNavigationLocation,
+  enableSubmit,
+}: buttonProps) => {
   const form = useFormContext();
+  const modal = useModalContext();
   const navigate = useNavigate();
-  const originPath = useOriginPath();
 
-  const modal = Inputs.useModalContext();
-  const cancelOnAccept = useCallback(() => {
+  const acceptAction = () => {
     modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
-  }, []);
+    if (cancelNavigationLocation) {
+      navigate(cancelNavigationLocation);
+    } else {
+      navigate(-1);
+    }
+  };
+
+  // adding this so we can overwrite the disable submit functionality
+  //      specifically for enable/disable RAI withdrawl
+  const disableSubmit = useMemo(() => {
+    if (enableSubmit) return false;
+    else return !form.formState.isValid;
+  }, [form.formState.isValid]);
 
   return (
     <>
-      {form.formState.isSubmitting && (
+      {loadingSpinner && form.formState.isSubmitting && (
         <div className="p-4">
           <LoadingSpinner />
         </div>
       )}
 
-      {Object.keys(form.formState.errors).length !== 0 && (
+      {showAlert && Object.keys(form.formState.errors).length !== 0 && (
         <Inputs.Alert className="mb-6 " variant="destructive">
           Missing or malformed information. Please see errors above.
         </Inputs.Alert>
       )}
 
-      <div className="flex gap-2 justify-end ">
-        <Inputs.Button
-          disabled={form.formState.isSubmitting}
-          type="submit"
+      <section className="flex justify-end gap-2 p-4 ml-auto">
+        <Button
           className="px-12"
+          type={confirmWithdraw ? "button" : "submit"}
+          onClick={confirmWithdraw ? () => confirmWithdraw() : () => null}
+          disabled={disableSubmit}
         >
           Submit
-        </Inputs.Button>
-        <Inputs.Button
-          type="button"
-          variant="outline"
+        </Button>
+        <Button
+          className="px-12"
           onClick={() => {
             modal.setContent({
               header: "Stop form submission?",
@@ -48,13 +71,15 @@ export const SubmitAndCancelBtnSection = () => {
               acceptButtonText: "Yes, leave form",
               cancelButtonText: "Return to form",
             });
-            modal.setOnAccept(() => cancelOnAccept);
+            modal.setOnAccept(() => acceptAction);
             modal.setModalOpen(true);
           }}
+          variant={"outline"}
+          type="reset"
         >
           Cancel
-        </Inputs.Button>
-      </div>
+        </Button>
+      </section>
     </>
   );
 };

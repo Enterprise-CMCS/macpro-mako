@@ -55,7 +55,7 @@ const useFormField = () => {
   return {
     id,
     name: fieldContext.name,
-    formItemId: `${id}-form-item`,
+    formItemId: fieldContext.name,
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
     ...fieldState,
@@ -88,15 +88,16 @@ const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & {
     className?: string;
+    htmlFor?: string;
   }
->(({ className, ...props }, ref) => {
+>(({ className, htmlFor, ...props }, ref) => {
   const { error, formItemId } = useFormField();
 
   return (
     <Label
       ref={ref}
       className={cn(error && "text-destructive", className)}
-      htmlFor={formItemId}
+      htmlFor={htmlFor || formItemId}
       {...props}
     />
   );
@@ -133,12 +134,7 @@ const FormDescription = React.forwardRef<
   const { formDescriptionId } = useFormField();
 
   return (
-    <p
-      ref={ref}
-      id={formDescriptionId}
-      className={cn("text-[0.8rem] text-muted-foreground", className)}
-      {...props}
-    />
+    <p ref={ref} id={formDescriptionId} className={className} {...props} />
   );
 });
 FormDescription.displayName = "FormDescription";

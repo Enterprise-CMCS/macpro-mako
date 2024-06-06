@@ -149,7 +149,7 @@ export const AdminChanges = () => {
         key={data?.[0]?._source?.id}
         type="multiple"
         defaultValue={[data?.[0]._source.id as string]}
-        className="flex flex-col mt-6 gap-2"
+        className="flex flex-col gap-2"
       >
         {data?.map((CL) => <AdminChange {...CL._source} key={CL._source.id} />)}
       </Accordion>
