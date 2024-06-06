@@ -2,15 +2,17 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header: "ABP 10: General assurances",
+  formId: "abp10",
   sections: [
     {
       title: "Economy and efficiency of plans",
+      sectionId: "economy-and-efficiency-of-plans",
       form: [
         {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp10_economy-and-efficiency-of-plans_assures-abp-coverage-in-accordance_checkgroup",
+              name: "assures-abp-coverage-in-accordance",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -24,7 +26,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Select",
-              name: "abp10_economy-and-efficiency-of-plans_describe-approach_select",
+              name: "describe-approach",
               label:
                 "Will economy and efficiency be achieved using the same approach as used for Medicaid state plan services?",
               labelClassName: "font-bold",
@@ -44,8 +46,9 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label: "Describe the approach",
               labelClassName: "font-bold",
-              name: "abp10_economy-and-efficiency-of-plans_describe-approach_textarea",
-              formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+              name: "describe-approach",
+              formItemClassName:
+                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               rules: {
                 required: "* Required",
                 pattern: {
@@ -56,7 +59,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "abp10_economy-and-efficiency-of-plans_describe-approach_select",
+                    name: "abp10_economy-and-efficiency-of-plans_describe-approach",
                     type: "expectedValue",
                     expectedValue: "no",
                   },
@@ -70,12 +73,13 @@ export const v202401: FormSchema = {
     },
     {
       title: "Compliance with the law",
+      sectionId: "compliance-with-the-law",
       form: [
         {
           slots: [
             {
               rhf: "Checkbox",
-              name: "abp10_compliance-with-the-law_compliance-with-the-law_checkgroup",
+              name: "comp-with-law",
               rules: { required: "* Required" },
               props: {
                 options: [

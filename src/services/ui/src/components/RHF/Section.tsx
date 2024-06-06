@@ -6,6 +6,7 @@ import { DependencyWrapper, RHFFormGroup } from ".";
 
 export const RHFSection = <TFieldValues extends FieldValues>(props: {
   section: Section;
+  formId: string;
   control: Control<TFieldValues>;
 }) => {
   return (
@@ -27,6 +28,7 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
           {props.section.form.map((FORM, index) => (
             <RHFFormGroup
               key={`rhf-form-${index}-${FORM.description}`}
+              parentId={props.formId + "_" + props.section.sectionId + "_"}
               control={props.control}
               form={FORM}
             />

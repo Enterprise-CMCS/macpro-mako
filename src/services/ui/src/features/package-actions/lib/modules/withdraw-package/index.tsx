@@ -1,12 +1,11 @@
 import { z } from "zod";
-import { zAdditionalInfo, zAttachmentOptional } from "@/utils";
+import { zAdditionalInfoOptional, zAttachmentOptional } from "@/utils";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 import { ReactElement } from "react";
 import {
   ActionFormDescription,
   AdditionalInfoSection,
   AttachmentsSection,
-  PackageSection,
 } from "@/components";
 import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 import { SEATOOL_STATUS } from "shared-types";
@@ -16,7 +15,7 @@ export * from "./waiver/withdraw-waiver";
 
 export const defaultWithdrawPackageSchema = z
   .object({
-    additionalInformation: zAdditionalInfo.optional(),
+    additionalInformation: zAdditionalInfoOptional,
     attachments: z.object({
       supportingDocumentation: zAttachmentOptional,
     }),
@@ -24,7 +23,8 @@ export const defaultWithdrawPackageSchema = z
   .superRefine((data, ctx) => {
     if (
       !data.attachments.supportingDocumentation?.length &&
-      data.additionalInformation === undefined
+      (data.additionalInformation === undefined ||
+        data.additionalInformation === "")
     ) {
       ctx.addIssue({
         message: "An Attachment or Additional Information is required.",
@@ -37,13 +37,12 @@ export const defaultWithdrawPackageSchema = z
     }
   });
 export const defaultWithdrawPackageFields: ReactElement[] = [
-  <ActionFormDescription key={"content-description"}>
+  <ActionFormDescription key="content-description">
     Complete this form to withdraw a package. Once complete, you will not be
     able to resubmit this package. CMS will be notified and will use this
     content to review your request. If CMS needs any additional information,
     they will follow up by email.
   </ActionFormDescription>,
-  <PackageSection key={"content-packagedetails"} />,
   <AttachmentsSection
     faqAttLink="/faq"
     key={"field-attachments"}

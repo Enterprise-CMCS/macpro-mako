@@ -3,9 +3,11 @@ import { FormSchema } from "shared-types";
 export const v202401: FormSchema = {
   header:
     "ABP 3: Selection of benchmark benefit package or benchmark-equivalent benefit package",
+  formId: "abp3",
   sections: [
     {
       title: "Benefit package details",
+      sectionId: "benefit-package",
       form: [
         {
           description:
@@ -13,7 +15,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Radio",
-              name: "abp3_benefit-package_details_radiogroup",
+              name: "details",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -30,7 +32,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Input",
-              name: "abp3_benefit-package_name_input",
+              name: "name",
               label: "Benefit package name",
               labelClassName: "font-bold",
               rules: {
@@ -47,6 +49,7 @@ export const v202401: FormSchema = {
     },
     {
       title: "Selection of Section 1937 coverage option",
+      sectionId: "select-of-sect-1937-cov-opt",
       form: [
         {
           description:
@@ -54,7 +57,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Radio",
-              name: "abp3_select-of-sect-1937-cov-opt_type_radiogroup",
+              name: "type",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -66,7 +69,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "abp3_select-of-sect-1937-cov-opt_benchmark-benefit-package-options_radiogroup",
+                            name: "benchmark-benefit-package-options",
                             rules: { required: "* Required" },
                             props: {
                               options: [
@@ -85,7 +88,7 @@ export const v202401: FormSchema = {
                                         {
                                           rhf: "Input",
                                           label: "Plan name",
-                                          name: "abp3_select-of-sect-1937-cov-opt_state-employee-coverage-plan-name_input",
+                                          name: "state-employee-coverage-plan-name",
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -109,7 +112,7 @@ export const v202401: FormSchema = {
                                         {
                                           rhf: "Input",
                                           label: "Plan name",
-                                          name: "abp3_select-of-sect-1937-cov-opt_commercial-hmo_input",
+                                          name: "commercial-hmo",
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -131,7 +134,7 @@ export const v202401: FormSchema = {
                                       slots: [
                                         {
                                           rhf: "Radio",
-                                          name: "abp3_select-of-sect-1937-cov-opt_secretary-approved_radiogroup",
+                                          name: "secretary-approved",
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -151,7 +154,7 @@ export const v202401: FormSchema = {
                                                     slots: [
                                                       {
                                                         rhf: "Radio",
-                                                        name: "abp3_select-of-sect-1937-cov-opt_approved-state-plan-opts_radiogroup",
+                                                        name: "approved-state-plan-opts",
                                                         rules: {
                                                           required:
                                                             "* Required",
@@ -205,7 +208,7 @@ export const v202401: FormSchema = {
                                         },
                                         {
                                           rhf: "Textarea",
-                                          name: "abp3_select-of-sect-1937-cov-opt_benefits-and-limits_textarea",
+                                          name: "benefits-and-limits",
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -239,7 +242,7 @@ export const v202401: FormSchema = {
                         slots: [
                           {
                             rhf: "Radio",
-                            name: "abp3_select-of-sect-1937-cov-opt_bench-equivalent_radiogroup",
+                            name: "bench-equivalent",
                             rules: { required: "* Required" },
                             props: {
                               options: [
@@ -257,7 +260,7 @@ export const v202401: FormSchema = {
                                       slots: [
                                         {
                                           rhf: "Input",
-                                          name: "abp3_select-of-sect-1937-cov-opt_state-employee-coverage-plan-name_input",
+                                          name: "state-employee-coverage-plan-name",
                                           label: "Plan name",
                                           rules: {
                                             required: "* Required",
@@ -281,7 +284,7 @@ export const v202401: FormSchema = {
                                       slots: [
                                         {
                                           rhf: "Input",
-                                          name: "abp3_select-of-sect-1937-cov-opt_commercial-hmo-plan-name_input",
+                                          name: "commercial-hmo-plan-name",
                                           label: "Plan name",
                                           rules: {
                                             required: "* Required",
@@ -316,6 +319,7 @@ export const v202401: FormSchema = {
     },
     {
       title: "Selection of base benchmark plan",
+      sectionId: "select-of-base-bench-plan",
       form: [
         {
           description:
@@ -325,7 +329,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Is the base benchmark plan the same as the Section 1937 coverage option?",
-              name: "abp3_select-of-base-bench-plan_same-as-sect-1937_select",
+              name: "same-as-sect-1937",
               rules: { required: "* Required" },
               props: {
                 className: "w-[150px]",
@@ -340,7 +344,7 @@ export const v202401: FormSchema = {
               label:
                 "The state/territory will use the following as its base benchmark plan as described at 45 CFR 156.100(a):",
               labelClassName: "font-bold",
-              name: "abp3_select-of-base-bench-plan_base-benchmark-plan_radiogroup",
+              name: "base-benchmark-plan",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -369,7 +373,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Input",
               label: "Plan name",
-              name: "abp3_select-of-base-bench-plan_name_input",
+              name: "name",
               rules: {
                 required: "* Required",
                 pattern: {
@@ -384,6 +388,7 @@ export const v202401: FormSchema = {
     },
     {
       title: "Additional information",
+      sectionId: "addtnl-info",
       form: [
         {
           description:
@@ -391,7 +396,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Textarea",
-              name: "abp3_additional_info_description_textarea",
+              name: "description",
               rules: {
                 pattern: {
                   value: /^\S(.*\S)?$/,

@@ -2,9 +2,11 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header: "ABP 1: Alternative Benefit Plan populations",
+  formId: "abp1",
   sections: [
     {
       title: "Population identification",
+      sectionId: "pop_id",
       form: [
         {
           description:
@@ -342,11 +344,12 @@ export const v202401: FormSchema = {
     },
     {
       title: "Targeting criteria",
+      sectionId: "sec-id",
       dependency: {
         // example of conditionally hidden section
         conditions: [
           {
-            name: "is_enrollment_available",
+            name: "abp1_pop-id_is_enrollment_available",
             type: "expectedValue",
             expectedValue: "no",
           },
@@ -1178,6 +1181,7 @@ export const v202401: FormSchema = {
     },
     {
       title: "Geographic Area",
+      sectionId: "geo-area",
       form: [
         {
           description:
@@ -1204,7 +1208,7 @@ export const v202401: FormSchema = {
           dependency: {
             conditions: [
               {
-                name: "is_geographic_area",
+                name: "abp1_geo-area_is_geographic_area",
                 type: "expectedValue",
                 expectedValue: "no",
               },
@@ -1321,6 +1325,7 @@ export const v202401: FormSchema = {
     },
     {
       title: "Additional information",
+      sectionId: "addt-info",
       form: [
         {
           description:

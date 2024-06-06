@@ -18,7 +18,7 @@ import {
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
 import {
-  zAdditionalInfo,
+  zAdditionalInfoOptional,
   zAttachmentOptional,
   zAttachmentRequired,
   zInitialWaiverNumberSchema,
@@ -40,7 +40,7 @@ const formSchema = z.object({
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
-  additionalInformation: zAdditionalInfo.optional(),
+  additionalInformation: zAdditionalInfoOptional,
   seaActionType: z.string().default("New"),
 });
 export type Waiver1915BCapitatedAmendment = z.infer<typeof formSchema>;
@@ -130,6 +130,7 @@ export const Capitated1915BWaiverInitialPage = () => {
 
   const form = useForm<Waiver1915BCapitatedAmendment>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   return (
@@ -146,10 +147,12 @@ export const Capitated1915BWaiverInitialPage = () => {
           <SectionCard title="Initial Waiver Details">
             <Content.FormIntroText />
             <div className="flex flex-col">
-              <Inputs.FormLabel className="font-semibold">
+              <Inputs.FormLabel className="font-semibold" htmlFor="1975b">
                 Waiver Authority
               </Inputs.FormLabel>
-              <span className="text-lg font-thin">1915(b)</span>
+              <span className="text-lg font-thin" id="1975b">
+                1915(b)
+              </span>
             </div>
             <Inputs.FormField
               control={form.control}
@@ -164,18 +167,22 @@ export const Capitated1915BWaiverInitialPage = () => {
                       to={"/faq/initial-waiver-id-format"}
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
+                      className="text-blue-900 underline"
                     >
                       What is my Initial Waiver Number?
                     </Link>
                   </div>
-                  <p className="text-gray-500 font-light">
+                  <p
+                    className="text-gray-500 font-light"
+                    id="waiver-number-format"
+                  >
                     Must be a new initial number with the format SS-####.R00.00
                     or SS-#####.R00.00
                   </p>
                   <Inputs.FormControl className="max-w-sm">
                     <Inputs.Input
                       {...field}
+                      aria-describedby="waiver-number-format"
                       onInput={(e) => {
                         if (e.target instanceof HTMLInputElement) {
                           e.target.value = e.target.value.toUpperCase();
@@ -243,7 +250,11 @@ export const Capitated1915BWaiverInitialPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection />
+          <SubmitAndCancelBtnSection
+            showAlert
+            loadingSpinner
+            cancelNavigationLocation={originPath ?? "/dashboard"}
+          />
         </form>
       </Inputs.Form>
       <FAQFooter />

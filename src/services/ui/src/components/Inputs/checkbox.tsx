@@ -21,7 +21,7 @@ const Checkbox = React.forwardRef<
         ref={ref}
         id={(props.label || props.styledLabel) as string}
         className={cn(
-          "peer h-7 w-7 my-2 shrink-0 border-black border-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-primary-foreground",
+          "peer h-7 w-7 my-2 shrink-0 rounded-sm border-black border-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-primary-foreground",
           className,
         )}
         {...props}
@@ -37,7 +37,7 @@ const Checkbox = React.forwardRef<
           <label
             htmlFor={(props.label || props.styledLabel) as string}
             className={cn(
-              "mt-2 text-md font-medium leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+              "mt-1 text-md font-normal leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
               props.optionlabelClassName,
             )}
           >

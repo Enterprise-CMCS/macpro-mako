@@ -19,7 +19,7 @@ import * as Inputs from "@/components/Inputs";
 import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
 import {
-  zAdditionalInfo,
+  zAdditionalInfoOptional,
   zAmendmentOriginalWaiverNumberSchema,
   zAmendmentWaiverNumberSchema,
   zAttachmentOptional,
@@ -43,7 +43,7 @@ const formSchema = z.object({
     tribalConsultation: zAttachmentOptional,
     other: zAttachmentOptional,
   }),
-  additionalInformation: zAdditionalInfo.optional(),
+  additionalInformation: zAdditionalInfoOptional,
   seaActionType: z.string().default("Amend"),
 });
 
@@ -128,6 +128,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
 
   const form = useForm<Waiver1915BContractingAmendment>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   return (
@@ -144,10 +145,12 @@ export const Contracting1915BWaiverAmendmentPage = () => {
           <SectionCard title="1915(b) Waiver Amendment Request Details">
             <Content.FormIntroText />
             <div className="flex flex-col">
-              <Inputs.FormLabel className="font-semibold">
+              <Inputs.FormLabel className="font-semibold" htmlFor="1975b">
                 Waiver Authority
               </Inputs.FormLabel>
-              <span className="text-lg font-thin">1915(b)</span>
+              <span className="text-lg font-thin" id="1975b">
+                1915(b)
+              </span>
             </div>
             <Inputs.FormField
               control={form.control}
@@ -190,7 +193,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
                       to="/faq/waiver-amendment-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
+                      className="text-blue-900 underline"
                     >
                       What is my 1915(b) Waiver Amendment Number?
                     </Link>
@@ -270,7 +273,11 @@ export const Contracting1915BWaiverAmendmentPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection />
+          <SubmitAndCancelBtnSection
+            showAlert
+            loadingSpinner
+            cancelNavigationLocation={originPath ?? "/dashboard"}
+          />
         </form>
       </Inputs.Form>
       <FAQFooter />

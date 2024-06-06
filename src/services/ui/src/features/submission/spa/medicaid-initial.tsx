@@ -11,7 +11,6 @@ import {
   LoadingSpinner,
   SectionCard,
   SimplePageContainer,
-  useModalContext,
   FAQ_TAB,
   useAlertContext,
   useNavigate,
@@ -34,6 +33,7 @@ import { useQuery as useQueryString } from "@/hooks";
 import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
+import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -84,15 +84,11 @@ export const MedicaidSpaFormPage = () => {
   const crumbs = useLocationCrumbs();
   const navigate = useNavigate();
   const urlQuery = useQueryString();
-  const modal = useModalContext();
   const alert = useAlertContext();
   const originPath = useOriginPath();
-  const cancelOnAccept = useCallback(() => {
-    modal.setModalOpen(false);
-    navigate(originPath ? { path: originPath } : { path: "/dashboard" });
-  }, []);
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
@@ -164,7 +160,7 @@ export const MedicaidSpaFormPage = () => {
                       to="/faq/spa-id-format"
                       target={FAQ_TAB}
                       rel="noopener noreferrer"
-                      className="text-blue-700 hover:underline"
+                      className="text-blue-900 underline"
                     >
                       What is my SPA ID?
                     </Link>
@@ -263,32 +259,9 @@ export const MedicaidSpaFormPage = () => {
               <LoadingSpinner />
             </div>
           ) : null}
-          <div className="flex gap-2 justify-end">
-            <Inputs.Button
-              disabled={form.formState.isSubmitting}
-              type="submit"
-              className="px-12"
-            >
-              Submit
-            </Inputs.Button>
-            <Inputs.Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                modal.setContent({
-                  header: "Stop form submission?",
-                  body: "All information you've entered on this form will be lost if you leave this page.",
-                  acceptButtonText: "Yes, leave form",
-                  cancelButtonText: "Return to form",
-                });
-                modal.setOnAccept(() => cancelOnAccept);
-                modal.setModalOpen(true);
-              }}
-              className="px-12"
-            >
-              Cancel
-            </Inputs.Button>
-          </div>
+          <SubmitAndCancelBtnSection
+            cancelNavigationLocation={originPath ?? "/dashboard"}
+          />
         </form>
       </Inputs.Form>
       <Content.FAQFooter />

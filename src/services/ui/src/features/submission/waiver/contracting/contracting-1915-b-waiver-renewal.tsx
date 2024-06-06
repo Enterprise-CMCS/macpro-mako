@@ -16,10 +16,10 @@ import {
 } from "@/components";
 import * as Content from "@/components/Form/old-content";
 import * as Inputs from "@/components/Inputs";
-import { useGetUser, submit, getItem } from "@/api";
+import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
 import {
-  zAdditionalInfo,
+  zAdditionalInfoOptional,
   zRenewalOriginalWaiverNumberSchema,
   zAttachmentOptional,
   zAttachmentRequired,
@@ -45,7 +45,7 @@ const formSchema = z
       tribalConsultation: zAttachmentOptional,
       other: zAttachmentOptional,
     }),
-    additionalInformation: zAdditionalInfo.optional(),
+    additionalInformation: zAdditionalInfoOptional,
     seaActionType: z.string().default("Renew"),
   })
   .superRefine((data, ctx) => {
@@ -152,6 +152,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
 
   const form = useForm<Waiver1915BContractingRenewal>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   return (
@@ -168,10 +169,12 @@ export const Contracting1915BWaiverRenewalPage = () => {
           <SectionCard title="1915(b) Waiver Renewal Details">
             <Content.FormIntroText />
             <div className="flex flex-col">
-              <Inputs.FormLabel className="font-semibold">
+              <Inputs.FormLabel className="font-semibold" htmlFor="1975b">
                 Waiver Authority
               </Inputs.FormLabel>
-              <span className="text-lg font-thin">1915(b)</span>
+              <span className="text-lg font-thin" id="1975b">
+                1915(b)
+              </span>
             </div>
             <Inputs.FormField
               control={form.control}
@@ -296,7 +299,11 @@ export const Contracting1915BWaiverRenewalPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection />
+          <SubmitAndCancelBtnSection
+            showAlert
+            loadingSpinner
+            cancelNavigationLocation={originPath ?? "/dashboard"}
+          />
         </form>
       </Inputs.Form>
       <FAQFooter />

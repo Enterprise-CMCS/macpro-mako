@@ -19,6 +19,7 @@ type FormContent = {
   successBanner: BannerContent;
   preSubmitNotice?: string;
   confirmationModal?: SubmissionAlert;
+  enableSubmit?: boolean;
 };
 /** Form content sometimes requires data values for templating, so forms
  * hydrate the content with these functions. */

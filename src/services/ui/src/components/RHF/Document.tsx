@@ -18,6 +18,7 @@ export const RHFDocument = <TFieldValues extends FieldValues>(props: {
         {props.document.sections.map((SEC, index) => (
           <RHFSection
             key={`rhf-section-${index}-${SEC.title}`}
+            formId={props.document.formId}
             control={props.control}
             section={SEC}
           />

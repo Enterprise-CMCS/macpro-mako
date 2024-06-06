@@ -48,7 +48,7 @@ export function WebformBody({
   );
 
   return (
-    <div className="max-w-screen-xl mx-auto p-4 py-8 lg:px-8">
+    <div className="max-w-screen-lg mx-auto p-4 py-8 lg:px-8">
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-6">
           <fieldset disabled={readonly}>
