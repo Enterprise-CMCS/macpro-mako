@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { zAdditionalInfo, zAttachmentOptional } from "@/utils";
+import { zAdditionalInfoOptional, zAttachmentOptional } from "@/utils";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 import { ReactElement } from "react";
 import {
@@ -15,7 +15,7 @@ export * from "./waiver/withdraw-waiver";
 
 export const defaultWithdrawPackageSchema = z
   .object({
-    additionalInformation: zAdditionalInfo.optional(),
+    additionalInformation: zAdditionalInfoOptional,
     attachments: z.object({
       supportingDocumentation: zAttachmentOptional,
     }),
@@ -23,7 +23,8 @@ export const defaultWithdrawPackageSchema = z
   .superRefine((data, ctx) => {
     if (
       !data.attachments.supportingDocumentation?.length &&
-      data.additionalInformation === undefined
+      (data.additionalInformation === undefined ||
+        data.additionalInformation === "")
     ) {
       ctx.addIssue({
         message: "An Attachment or Additional Information is required.",
