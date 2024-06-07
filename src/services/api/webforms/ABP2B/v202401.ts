@@ -118,7 +118,7 @@ export const v202401: FormSchema = {
                     value: "other",
                     slots: [
                       {
-                        rhf: "Input",
+                        rhf: "Textarea",
                         name: "describe-other-enrollment",
                         label: "Describe",
                         labelClassName: "font-bold",
