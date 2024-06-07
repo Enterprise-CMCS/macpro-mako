@@ -2,9 +2,15 @@
 name: GitHub Pages
 
 on:
-  push:
-    branches: ["master"]
-
+  workflow_run:
+    workflows:
+      - Deploy
+    types:
+      - completed
+    branches:
+      - master
+      - val
+      - production
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -29,9 +35,12 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: master
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - uses: ./.github/actions/setup
@@ -42,13 +51,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
-      - name: Set env
-        run: |
-          echo "NEXT_PUBLIC_API_REST_URL=$(
-            aws cloudformation \
-            --region us-east-1 describe-stacks \
-            --stack-name $PROJECT-api-$STAGE_NAME | jq -r '.Stacks[0].Outputs[] | select(.OutputKey == "ApiGatewayRestApiUrl") | .OutputValue'
-          )" >> $GITHUB_ENV
       - name: Install Packages
         run: |
           cd docs/_deploy-metrics
