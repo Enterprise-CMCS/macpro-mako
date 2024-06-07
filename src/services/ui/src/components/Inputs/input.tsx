@@ -3,11 +3,13 @@ import { cn } from "@/utils";
 import { InputProps } from "shared-types";
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, icon, ...props }, ref) => {
+  ({ className, icon, iconRight, ...props }, ref) => {
     return (
       <div className="relative">
         {icon && (
-          <span className="absolute inset-y-0 left-0 flex items-center pl-2 text-gray-500">
+          <span
+            className={`absolute inset-y-0  flex items-center  text-gray-500 ${iconRight ? "right-0 pr-2" : "left-0 pl-2"}`}
+          >
             {icon}
           </span>
         )}
