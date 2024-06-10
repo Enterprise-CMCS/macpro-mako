@@ -417,6 +417,7 @@ export const v202402: FormSchema = {
                                                 name: "fed-poverty-level-percent",
                                                 label:
                                                   "Percentage of federal poverty level",
+                                                labelClassName: "font-bold",
                                               },
                                             ],
                                           },
@@ -429,6 +430,7 @@ export const v202402: FormSchema = {
                                                 name: "ssi-fed-benefit-percentage",
                                                 label:
                                                   "Percentage of SSI federal benefit",
+                                                labelClassName: "font-bold",
                                                 props: {
                                                   icon: "%",
                                                 },
@@ -451,6 +453,7 @@ export const v202402: FormSchema = {
                                                 rhf: "Input",
                                                 name: "other-percentage",
                                                 label: "Other percentage",
+                                                labelClassName: "font-bold",
                                                 props: {
                                                   icon: "%",
                                                 },
@@ -466,7 +469,8 @@ export const v202402: FormSchema = {
                                               {
                                                 rhf: "Textarea",
                                                 name: "other-describe",
-                                                label: "Describe:",
+                                                label: "Describe",
+                                                labelClassName: "font-bold",
                                                 rules: {
                                                   required: "* Required",
                                                   pattern: {
@@ -638,7 +642,9 @@ export const v202402: FormSchema = {
                                                       {
                                                         rhf: "Textarea",
                                                         name: "region-descript",
-                                                        label: "Description",
+                                                        label: "Describe",
+                                                        labelClassName:
+                                                          "font-bold",
                                                         rules: {
                                                           required:
                                                             "* Required",
@@ -661,7 +667,9 @@ export const v202402: FormSchema = {
                                                           {
                                                             rhf: "Input",
                                                             label:
-                                                              "Household Size",
+                                                              "Household size",
+                                                            labelClassName:
+                                                              "font-bold",
                                                             name: "house-size",
                                                             props: {
                                                               placeholder:
@@ -683,8 +691,9 @@ export const v202402: FormSchema = {
                                                           {
                                                             rhf: "Input",
                                                             name: "standard",
-                                                            label:
-                                                              "Standard ($)",
+                                                            label: "Standard",
+                                                            labelClassName:
+                                                              "font-bold",
                                                             props: {
                                                               className:
                                                                 "w-[200px]",
@@ -713,6 +722,8 @@ export const v202402: FormSchema = {
                                                             {
                                                               label:
                                                                 "There is an additional incremental amount.",
+                                                              optionlabelClassName:
+                                                                "font-bold",
                                                               value: "yes",
                                                               form: [
                                                                 {
@@ -720,7 +731,9 @@ export const v202402: FormSchema = {
                                                                     {
                                                                       rhf: "Input",
                                                                       label:
-                                                                        "Incremental amount ($)",
+                                                                        "Incremental amount",
+                                                                      labelClassName:
+                                                                        "font-bold",
                                                                       name: "increment-amount",
                                                                       props: {
                                                                         icon: "$",
@@ -773,6 +786,8 @@ export const v202402: FormSchema = {
                                                         name: "name-of-liv-arrange",
                                                         label:
                                                           "Name of living arrangement",
+                                                        labelClassName:
+                                                          "font-bold",
                                                         rules: {
                                                           required:
                                                             "* Required",
@@ -787,7 +802,9 @@ export const v202402: FormSchema = {
                                                       {
                                                         rhf: "Textarea",
                                                         name: "liv-arrange-descript",
-                                                        label: "Description",
+                                                        label: "Describe",
+                                                        labelClassName:
+                                                          "font-bold",
                                                         rules: {
                                                           required:
                                                             "* Required",
@@ -810,7 +827,9 @@ export const v202402: FormSchema = {
                                                           {
                                                             rhf: "Input",
                                                             label:
-                                                              "Household Size",
+                                                              "Household size",
+                                                            labelClassName:
+                                                              "font-bold",
                                                             name: "house-size",
                                                             props: {
                                                               placeholder:
@@ -832,8 +851,9 @@ export const v202402: FormSchema = {
                                                           {
                                                             rhf: "Input",
                                                             name: "standard",
-                                                            label:
-                                                              "Standard ($)",
+                                                            label: "Standard",
+                                                            labelClassName:
+                                                              "font-bold",
                                                             props: {
                                                               className:
                                                                 "w-[200px]",
@@ -862,6 +882,8 @@ export const v202402: FormSchema = {
                                                             {
                                                               label:
                                                                 "There is an additional incremental amount.",
+                                                              optionlabelClassName:
+                                                                "font-bold",
                                                               value: "yes",
                                                               form: [
                                                                 {
@@ -869,7 +891,9 @@ export const v202402: FormSchema = {
                                                                     {
                                                                       rhf: "Input",
                                                                       label:
-                                                                        "Incremental amount ($)",
+                                                                        "Incremental amount",
+                                                                      labelClassName:
+                                                                        "font-bold",
                                                                       name: "incremental_amount",
                                                                       props: {
                                                                         icon: "$",
@@ -912,15 +936,17 @@ export const v202402: FormSchema = {
                                                     name: "add-some-other-way",
                                                     props: {
                                                       appendText:
-                                                        "Add some other way",
+                                                        "Add other way",
                                                       removeText:
-                                                        "Remove some other way",
+                                                        "Remove other way",
                                                     },
                                                     fields: [
                                                       {
                                                         rhf: "Input",
                                                         name: "name-of-group",
                                                         label: "Name",
+                                                        labelClassName:
+                                                          "font-bold",
                                                         rules: {
                                                           required:
                                                             "* Required",
@@ -935,7 +961,9 @@ export const v202402: FormSchema = {
                                                       {
                                                         rhf: "Textarea",
                                                         name: "group-descript",
-                                                        label: "Description",
+                                                        label: "Describe",
+                                                        labelClassName:
+                                                          "font-bold",
                                                         rules: {
                                                           required:
                                                             "* Required",
@@ -958,7 +986,9 @@ export const v202402: FormSchema = {
                                                           {
                                                             rhf: "Input",
                                                             label:
-                                                              "Household Size",
+                                                              "Household size",
+                                                            labelClassName:
+                                                              "font-bold",
                                                             name: "house-size",
                                                             props: {
                                                               placeholder:
@@ -980,8 +1010,9 @@ export const v202402: FormSchema = {
                                                           {
                                                             rhf: "Input",
                                                             name: "standard",
-                                                            label:
-                                                              "Standard ($)",
+                                                            label: "Standard",
+                                                            labelClassName:
+                                                              "font-bold",
                                                             props: {
                                                               className:
                                                                 "w-[200px]",
@@ -1010,6 +1041,8 @@ export const v202402: FormSchema = {
                                                             {
                                                               label:
                                                                 "There is an additional incremental amount.",
+                                                              optionlabelClassName:
+                                                                "font-bold",
                                                               value: "yes",
                                                               form: [
                                                                 {
@@ -1017,7 +1050,9 @@ export const v202402: FormSchema = {
                                                                     {
                                                                       rhf: "Input",
                                                                       label:
-                                                                        "Incremental amount ($)",
+                                                                        "Incremental amount",
+                                                                      labelClassName:
+                                                                        "font-bold",
                                                                       name: "increment-amount",
                                                                       props: {
                                                                         icon: "$",
