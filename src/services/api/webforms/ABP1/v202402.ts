@@ -508,10 +508,14 @@ export const v202402: FormSchema = {
                                                   {
                                                     rhf: "FieldArray",
                                                     name: "income-def-specific-state",
+                                                    props: {
+                                                      appendText:
+                                                        "Add Standard",
+                                                    },
                                                     fields: [
                                                       {
                                                         rhf: "Input",
-                                                        label: "Household Size",
+                                                        label: "Household size",
                                                         labelClassName:
                                                           "font-bold",
                                                         name: "house-size",
