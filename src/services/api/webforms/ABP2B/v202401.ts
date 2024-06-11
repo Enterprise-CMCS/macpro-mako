@@ -192,7 +192,7 @@ export const v202401: FormSchema = {
                       {
                         text: "The state/territory assures it will document in the exempt individual's eligibility file that the individual:",
                         type: "default",
-                        classname: "block py-1 font-bold",
+                        classname: "block py-1",
                       },
                       {
                         text: "A. Was informed in accordance with this section prior to enrollment",
