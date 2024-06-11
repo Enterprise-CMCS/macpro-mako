@@ -14,34 +14,39 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
   });
   if (isLoading) return <LoadingSpinner />;
 
-  const authority = item.data?._source.authority;
-  return (
-    <DetailCardWrapper title={"Package Actions"}>
-      <div className="my-3">
-        {!data || !data.actions.length ? (
+  if (!data?.actions?.length) {
+    return (
+      <DetailCardWrapper title={"Package Actions"}>
+        <div className="my-3">
           <em className="text-gray-400 my-3">
             No actions are currently available for this submission.
           </em>
-        ) : (
-          <ul className="my-3">
-            {data.actions.map((type, idx) => (
-              <Link
-                state={{
-                  from: `${location.pathname}${location.search}`,
-                }}
-                path="/action/:authority/:id/:type"
-                key={`${idx}-${type}`}
-                params={{ id, type, authority: authority! }}
-                query={{
-                  origin: "actionsDetails",
-                }}
-                className="text-sky-700 font-semibold text-lg"
-              >
-                <li>{mapActionLabel(type)}</li>
-              </Link>
-            ))}
-          </ul>
-        )}
+        </div>
+      </DetailCardWrapper>
+    );
+  }
+
+  return (
+    <DetailCardWrapper title={"Package Actions"}>
+      <div className="my-3">
+        <ul className="my-3">
+          {data.actions.map((type, idx) => (
+            <Link
+              state={{
+                from: `${location.pathname}${location.search}`,
+              }}
+              path="/action/:authority/:id/:type"
+              key={`${idx}-${type}`}
+              params={{ id, type, authority: item.data?._source.authority }}
+              query={{
+                origin: "actionsDetails",
+              }}
+              className="text-sky-700 font-semibold text-lg"
+            >
+              <li>{mapActionLabel(type)}</li>
+            </Link>
+          ))}
+        </ul>
       </div>
     </DetailCardWrapper>
   );
