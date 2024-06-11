@@ -365,6 +365,16 @@ export const v202401: FormSchema = {
               rules: {
                 required: "* Required",
               },
+              dependency: {
+                conditions: [
+                  {
+                    name: "abp3-1_select-of-ehb-bench-plan_is-ehb-bench-plan-same-section-1937",
+                    type: "expectedValue",
+                    expectedValue: "no",
+                  },
+                ],
+                effect: { type: "show" },
+              },
               props: {
                 options: [
                   {
@@ -1757,6 +1767,16 @@ export const v202401: FormSchema = {
     {
       title: "Assurances",
       sectionId: "assurances",
+      dependency: {
+        conditions: [
+          {
+            name: "abp3-1_select-of-ehb-bench-plan_is-ehb-bench-plan-same-section-1937",
+            type: "expectedValue",
+            expectedValue: "no",
+          },
+        ],
+        effect: { type: "show" },
+      },
       form: [
         {
           slots: [
