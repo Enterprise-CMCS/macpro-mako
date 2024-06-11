@@ -629,7 +629,7 @@ export const v202402: FormSchema = {
                                                       {
                                                         rhf: "Input",
                                                         name: "name-of-region",
-                                                        label: "Region Name",
+                                                        label: "Region name",
                                                         labelClassName:
                                                           "font-bold",
                                                         rules: {
