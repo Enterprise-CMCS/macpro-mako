@@ -23,11 +23,7 @@ export const mapActionLabel = (a: Action) => {
     case Action.UPDATE_ID:
       return "Update ID";
     case Action.COMPLETE_INTAKE:
-      // Poor man's feature flag.
-      return config.cognito.REDIRECT_SIGNIN.includes("localhost") ||
-        config.cognito.REDIRECT_SIGNIN.includes("cloudfront")
-        ? "Complete Intake"
-        : "";
+      return "Complete Intake";
     default:
       return "";
   }
