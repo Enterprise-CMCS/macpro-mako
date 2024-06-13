@@ -46,6 +46,7 @@ export const SlotField = ({
   parentId,
   fields,
   name,
+  horizontalLayout,
 }: SlotFieldProps) => {
   switch (rhf) {
     case "Input":
@@ -192,7 +193,7 @@ export const SlotField = ({
         <RadioGroup
           onValueChange={field.onChange}
           defaultValue={field.value}
-          className="flex flex-col space-y-1"
+          className={`flex  ${horizontalLayout ? "pl-5 gap-5" : "flex-col space-y-1"}`}
         >
           {(props as RHFComponentMap["Radio"]).options.map((OPT) => {
             return (

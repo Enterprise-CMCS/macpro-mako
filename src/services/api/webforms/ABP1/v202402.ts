@@ -557,52 +557,57 @@ export const v202402: FormSchema = {
                                                       },
                                                     ],
                                                   },
-                                                ],
-                                              },
-                                              {
-                                                slots: [
                                                   {
                                                     rhf: "Radio",
                                                     name: "is-increment-amount",
+                                                    label:
+                                                      "Is there an additional incremental amount?",
+                                                    labelClassName:
+                                                      "font-bold mt-3",
+                                                    horizontalLayout: true,
+
                                                     props: {
                                                       options: [
                                                         {
-                                                          label:
-                                                            "Is there an additional incremental amount?",
-                                                          optionlabelClassName:
-                                                            "font-bold",
+                                                          label: "Yes",
                                                           value: "yes",
-                                                          form: [
-                                                            {
-                                                              slots: [
-                                                                {
-                                                                  rhf: "Input",
-                                                                  label:
-                                                                    "Incremental dollar amount",
-                                                                  name: "increment-amount",
-                                                                  labelClassName:
-                                                                    "font-bold",
-                                                                  props: {
-                                                                    icon: "$",
-                                                                    className:
-                                                                      "w-[200px]",
-                                                                  },
-                                                                  rules: {
-                                                                    pattern: {
-                                                                      value:
-                                                                        /^\d*(?:\.\d{1,2})?$/,
-                                                                      message:
-                                                                        "Must be all numbers, no commas. e.g. 1234.56",
-                                                                    },
-                                                                    required:
-                                                                      "* Required",
-                                                                  },
-                                                                },
-                                                              ],
-                                                            },
-                                                          ],
+                                                        },
+                                                        {
+                                                          label: "No",
+                                                          value: "no",
                                                         },
                                                       ],
+                                                    },
+                                                  },
+                                                  {
+                                                    rhf: "Input",
+                                                    label: "Incremental amount",
+                                                    name: "increment-amount",
+                                                    labelClassName: "font-bold",
+                                                    props: {
+                                                      icon: "$",
+                                                      className: "w-[200px]",
+                                                    },
+                                                    dependency: {
+                                                      conditions: [
+                                                        {
+                                                          name: "abp1_target-criteria_is-increment-amount",
+                                                          type: "expectedValue",
+                                                          expectedValue: "yes",
+                                                        },
+                                                      ],
+                                                      effect: {
+                                                        type: "show",
+                                                      },
+                                                    },
+                                                    rules: {
+                                                      pattern: {
+                                                        value:
+                                                          /^\d*(?:\.\d{1,2})?$/,
+                                                        message:
+                                                          "Must be all numbers, no commas. e.g. 1234.56",
+                                                      },
+                                                      required: "* Required",
                                                     },
                                                   },
                                                 ],
@@ -715,46 +720,59 @@ export const v202402: FormSchema = {
                                                       {
                                                         rhf: "Radio",
                                                         name: "is-increment-amount",
+                                                        label:
+                                                          "Is there an additional incremental amount?",
+                                                        labelClassName:
+                                                          "font-bold mt-3",
+                                                        horizontalLayout: true,
+
                                                         props: {
                                                           options: [
                                                             {
-                                                              label:
-                                                                "Is there an additional incremental amount?",
-                                                              optionlabelClassName:
-                                                                "font-bold",
+                                                              label: "Yes",
                                                               value: "yes",
-                                                              form: [
-                                                                {
-                                                                  slots: [
-                                                                    {
-                                                                      rhf: "Input",
-                                                                      label:
-                                                                        "Incremental amount",
-                                                                      name: "increment-amount",
-                                                                      labelClassName:
-                                                                        "font-bold",
-                                                                      props: {
-                                                                        icon: "$",
-                                                                        className:
-                                                                          "w-[200px]",
-                                                                      },
-                                                                      rules: {
-                                                                        pattern:
-                                                                          {
-                                                                            value:
-                                                                              /^\d*(?:\.\d{1,2})?$/,
-                                                                            message:
-                                                                              "Must be all numbers, no commas. e.g. 1234.56",
-                                                                          },
-                                                                        required:
-                                                                          "* Required",
-                                                                      },
-                                                                    },
-                                                                  ],
-                                                                },
-                                                              ],
+                                                            },
+                                                            {
+                                                              label: "No",
+                                                              value: "no",
                                                             },
                                                           ],
+                                                        },
+                                                      },
+                                                      {
+                                                        rhf: "Input",
+                                                        label:
+                                                          "Incremental amount",
+                                                        name: "increment-amount",
+                                                        labelClassName:
+                                                          "font-bold",
+                                                        props: {
+                                                          icon: "$",
+                                                          className:
+                                                            "w-[200px]",
+                                                        },
+                                                        dependency: {
+                                                          conditions: [
+                                                            {
+                                                              name: "abp1_target-criteria_is-increment-amount",
+                                                              type: "expectedValue",
+                                                              expectedValue:
+                                                                "yes",
+                                                            },
+                                                          ],
+                                                          effect: {
+                                                            type: "show",
+                                                          },
+                                                        },
+                                                        rules: {
+                                                          pattern: {
+                                                            value:
+                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                            message:
+                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                          },
+                                                          required:
+                                                            "* Required",
                                                         },
                                                       },
                                                     ],
@@ -874,46 +892,60 @@ export const v202402: FormSchema = {
                                                       {
                                                         rhf: "Radio",
                                                         name: "is-increment-amount",
+                                                        label:
+                                                          "Is there an additional incremental amount?",
+                                                        labelClassName:
+                                                          "font-bold mt-3",
+                                                        horizontalLayout: true,
+
                                                         props: {
                                                           options: [
                                                             {
-                                                              label:
-                                                                "Is there an additional incremental amount?",
-                                                              optionlabelClassName:
-                                                                "font-bold",
+                                                              label: "Yes",
                                                               value: "yes",
-                                                              form: [
-                                                                {
-                                                                  slots: [
-                                                                    {
-                                                                      rhf: "Input",
-                                                                      label:
-                                                                        "Incremental amount",
-                                                                      name: "incremental_amount",
-                                                                      labelClassName:
-                                                                        "font-bold",
-                                                                      props: {
-                                                                        className:
-                                                                          "w-[200px]",
-                                                                        icon: "$",
-                                                                      },
-                                                                      rules: {
-                                                                        pattern:
-                                                                          {
-                                                                            value:
-                                                                              /^\d*(?:\.\d{1,2})?$/,
-                                                                            message:
-                                                                              "Must be all numbers, no commas. e.g. 1234.56",
-                                                                          },
-                                                                        required:
-                                                                          "* Required",
-                                                                      },
-                                                                    },
-                                                                  ],
-                                                                },
-                                                              ],
+                                                            },
+                                                            {
+                                                              label: "No",
+                                                              value: "no",
                                                             },
                                                           ],
+                                                        },
+                                                      },
+
+                                                      {
+                                                        rhf: "Input",
+                                                        label:
+                                                          "Incremental amount",
+                                                        name: "increment-amount",
+                                                        labelClassName:
+                                                          "font-bold",
+                                                        props: {
+                                                          icon: "$",
+                                                          className:
+                                                            "w-[200px]",
+                                                        },
+                                                        dependency: {
+                                                          conditions: [
+                                                            {
+                                                              name: "abp1_target-criteria_is-increment-amount",
+                                                              type: "expectedValue",
+                                                              expectedValue:
+                                                                "yes",
+                                                            },
+                                                          ],
+                                                          effect: {
+                                                            type: "show",
+                                                          },
+                                                        },
+                                                        rules: {
+                                                          pattern: {
+                                                            value:
+                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                            message:
+                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                          },
+                                                          required:
+                                                            "* Required",
                                                         },
                                                       },
                                                     ],
@@ -1031,46 +1063,59 @@ export const v202402: FormSchema = {
                                                       {
                                                         rhf: "Radio",
                                                         name: "is-increment-amount",
+                                                        label:
+                                                          "Is there an additional incremental amount?",
+                                                        labelClassName:
+                                                          "font-bold mt-3",
+                                                        horizontalLayout: true,
+
                                                         props: {
                                                           options: [
                                                             {
-                                                              label:
-                                                                "Is there an additional incremental amount?",
-                                                              optionlabelClassName:
-                                                                "font-bold",
+                                                              label: "Yes",
                                                               value: "yes",
-                                                              form: [
-                                                                {
-                                                                  slots: [
-                                                                    {
-                                                                      rhf: "Input",
-                                                                      label:
-                                                                        "Incremental amount",
-                                                                      name: "increment-amount",
-                                                                      labelClassName:
-                                                                        "font-bold",
-                                                                      props: {
-                                                                        icon: "$",
-                                                                        className:
-                                                                          "w-[200px]",
-                                                                      },
-                                                                      rules: {
-                                                                        pattern:
-                                                                          {
-                                                                            value:
-                                                                              /^\d*(?:\.\d{1,2})?$/,
-                                                                            message:
-                                                                              "Must be all numbers, no commas. e.g. 1234.56",
-                                                                          },
-                                                                        required:
-                                                                          "* Required",
-                                                                      },
-                                                                    },
-                                                                  ],
-                                                                },
-                                                              ],
+                                                            },
+                                                            {
+                                                              label: "No",
+                                                              value: "no",
                                                             },
                                                           ],
+                                                        },
+                                                      },
+                                                      {
+                                                        rhf: "Input",
+                                                        label:
+                                                          "Incremental amount",
+                                                        name: "increment-amount",
+                                                        labelClassName:
+                                                          "font-bold",
+                                                        props: {
+                                                          icon: "$",
+                                                          className:
+                                                            "w-[200px]",
+                                                        },
+                                                        dependency: {
+                                                          conditions: [
+                                                            {
+                                                              name: "abp1_target-criteria_is-increment-amount",
+                                                              type: "expectedValue",
+                                                              expectedValue:
+                                                                "yes",
+                                                            },
+                                                          ],
+                                                          effect: {
+                                                            type: "show",
+                                                          },
+                                                        },
+                                                        rules: {
+                                                          pattern: {
+                                                            value:
+                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                            message:
+                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                          },
+                                                          required:
+                                                            "* Required",
                                                         },
                                                       },
                                                     ],
