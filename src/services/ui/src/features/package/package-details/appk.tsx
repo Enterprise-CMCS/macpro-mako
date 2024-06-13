@@ -86,8 +86,17 @@ export const AppK = () => {
         open={!!removeChild}
         onAccept={() => onChildRemove(removeChild)}
         onCancel={() => setRemoveChild("")}
-        title="Are you sure you want to withdraw this package?"
-        body={<p className="text-lg font-semibold">{removeChild}</p>}
+        acceptButtonText="Yes, withdraw"
+        cancelButtonText="Cancel"
+        title="Are you sure you want to withdraw this 1915(c) Appendix K?"
+        body={
+          <>
+            <p>
+              Any 1915(c) Appendix Ks associated with {removeChild} will not be
+              affected.
+            </p>
+          </>
+        }
       />
     </div>
   );
