@@ -754,7 +754,7 @@ export const v202402: FormSchema = {
                                                         dependency: {
                                                           conditions: [
                                                             {
-                                                              name: "abp1_target-criteria_is-increment-amount",
+                                                              name: "is-increment-amount",
                                                               type: "expectedValue",
                                                               expectedValue:
                                                                 "yes",
@@ -927,7 +927,7 @@ export const v202402: FormSchema = {
                                                         dependency: {
                                                           conditions: [
                                                             {
-                                                              name: "abp1_target-criteria_is-increment-amount",
+                                                              name: "is-increment-amount",
                                                               type: "expectedValue",
                                                               expectedValue:
                                                                 "yes",
@@ -1097,7 +1097,7 @@ export const v202402: FormSchema = {
                                                         dependency: {
                                                           conditions: [
                                                             {
-                                                              name: "abp1_target-criteria_is-increment-amount",
+                                                              name: "is-increment-amount",
                                                               type: "expectedValue",
                                                               expectedValue:
                                                                 "yes",
