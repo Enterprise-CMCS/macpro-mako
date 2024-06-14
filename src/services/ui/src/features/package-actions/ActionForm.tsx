@@ -43,7 +43,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
     async (data) =>
       await submitActionForm({
         data,
-        id: id!,
+        id: data?.id ?? id,
         type: type!,
         authority: authority!,
         user: user!,
