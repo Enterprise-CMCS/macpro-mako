@@ -213,11 +213,7 @@ export const SlotField = ({
                   }
                 </div>
                 {field.value?.includes(OPT.value) && (
-                  <OptChildren
-                    {...OPT}
-                    parentId={parentId ?? "TSETWW"}
-                    control={control}
-                  />
+                  <OptChildren {...OPT} parentId={parentId} control={control} />
                 )}
               </div>
             );
