@@ -256,7 +256,7 @@ export const OptChildren = ({
               control={control}
               name={parentId + SLOT.name}
               {...(SLOT.rules && { rules: SLOT.rules })}
-              render={RHFSlot({ ...SLOT, control })}
+              render={RHFSlot({ ...SLOT, parentId, control })}
             />
           </div>
         ))}
