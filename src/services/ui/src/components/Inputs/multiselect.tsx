@@ -1,6 +1,17 @@
 import { type FC } from "react";
-import Select from "react-select";
+import Select, { StylesConfig } from "react-select";
 import { MultiselectOption } from "shared-types";
+
+const customStyles: StylesConfig = {
+  control: (provided) => ({
+    ...provided,
+    border: "1px solid black",
+    boxShadow: "none",
+    "&:hover": {
+      border: "1px solid black",
+    },
+  }),
+};
 
 export const Multiselect: FC<{
   options: MultiselectOption[];
@@ -15,6 +26,7 @@ export const Multiselect: FC<{
       options={props.options}
       closeMenuOnSelect={false}
       placeholder
+      styles={customStyles}
     />
   );
 };
