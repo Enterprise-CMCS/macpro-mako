@@ -47,6 +47,7 @@ export const slotInitializer =
         break;
       case "Input":
       case "Select":
+      case "Multiselect":
       case "Radio":
       case "Textarea":
       default:

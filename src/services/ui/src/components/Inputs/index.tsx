@@ -5,6 +5,7 @@ export * from "./date-picker";
 export * from "./form";
 export * from "./upload";
 export * from "./input";
+export * from "./multiselect";
 export * from "./label";
 export * from "./radio-group";
 export * from "./select";
