@@ -10,14 +10,6 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   defaultMonth?: Date;
 };
 
-export interface MultiselectOption {
-  readonly value: string;
-  readonly label: string;
-  readonly color?: string;
-  readonly isFixed?: boolean;
-  readonly isDisabled?: boolean;
-}
-
 export type DatePickerProps = {
   date: Date | undefined;
   onChange: (date: Date | undefined) => void;
@@ -40,6 +32,14 @@ export type SelectProps = React.ComponentPropsWithoutRef<
   options: { label: string; value: any }[];
   className?: string;
 };
+
+export interface MultiselectOption {
+  readonly value: string;
+  readonly label: string;
+  readonly color?: string;
+  readonly isFixed?: boolean;
+  readonly isDisabled?: boolean;
+}
 
 export type MultiselectProps = {
   className?: string;
