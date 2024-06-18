@@ -89,7 +89,7 @@ describe("Slot Input Field Tests", () => {
     expect(selectBox).toBeTruthy();
   });
 
-  describe.only("Multiselect", () => {
+  describe("Multiselect", () => {
     test("renders Multiselect", () => {
       const { getByRole } = render(
         <TestWrapper
