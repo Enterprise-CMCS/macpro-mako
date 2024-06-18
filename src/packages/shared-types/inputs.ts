@@ -45,6 +45,7 @@ export type MultiselectProps = {
   className?: string;
   options: MultiselectOption[];
   value?: string[];
+  onChange?: (selectedValues: string[]) => void;
 };
 
 export type SwitchProps = React.ComponentPropsWithoutRef<

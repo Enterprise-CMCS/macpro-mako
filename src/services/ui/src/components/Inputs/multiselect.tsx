@@ -13,15 +13,10 @@ const customStyles: StylesConfig = {
   }),
 };
 
-export const Multiselect: FC<MultiselectProps> = ({
-  options,
-  value,
-  ...props
-}) => {
+export const Multiselect: FC<MultiselectProps> = ({ options, ...props }) => {
   return (
     <Select<any, any>
       isMulti={true}
-      value={value?.map((str) => ({ value: str, label: str }))}
       options={options}
       closeMenuOnSelect={false}
       placeholder
