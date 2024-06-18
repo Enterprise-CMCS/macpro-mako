@@ -27,6 +27,8 @@ export const v202401: FormSchema = {
               props: {
                 options: [
                   {
+                    label:
+                      "The state/territory assures it will appropriately identify any individuals in the eligibility groups who:",
                     value: "assure_individuals_in_egroup_exempt_section_1937",
                     styledLabel: [
                       {
