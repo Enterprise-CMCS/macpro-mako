@@ -1,10 +1,5 @@
 import { describe, test, expect } from "vitest";
-import {
-  render,
-  prettyDOM,
-  fireEvent,
-  getByLabelText,
-} from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import { RHFSlot } from "../.";
 import { Form, FormField } from "../../Inputs";
 import { Control, useForm } from "react-hook-form";
@@ -92,6 +87,71 @@ describe("Slot Input Field Tests", () => {
     );
     const selectBox = rend.getByRole("combobox");
     expect(selectBox).toBeTruthy();
+  });
+
+  describe.only("Multiselect", () => {
+    test("renders Multiselect", () => {
+      const { getByRole } = render(
+        <TestWrapper
+          {...testValues}
+          rhf="Multiselect"
+          props={{
+            options: [
+              { label: "test 1", value: "test-1" },
+              { label: "test 2", value: "test-2" },
+            ],
+          }}
+        />,
+      );
+
+      expect(getByRole("combobox")).toBeInTheDocument();
+    });
+
+    test("renders options correctly", () => {
+      const { getByText, getByRole } = render(
+        <TestWrapper
+          {...testValues}
+          rhf="Multiselect"
+          props={{
+            options: [
+              { label: "test 1", value: "test-1" },
+              { label: "test 2", value: "test-2" },
+            ],
+          }}
+        />,
+      );
+
+      fireEvent.mouseDown(getByRole("combobox"));
+      expect(getByText("test 1")).toBeInTheDocument();
+      expect(getByText("test 2")).toBeInTheDocument();
+    });
+
+    test("allows multiple selections", () => {
+      const { getByText, getByRole, container } = render(
+        <TestWrapper
+          {...testValues}
+          rhf="Multiselect"
+          props={{
+            options: [
+              { label: "test 1", value: "test-1" },
+              { label: "test 2", value: "test-2" },
+            ],
+          }}
+        />,
+      );
+
+      fireEvent.mouseDown(getByRole("combobox"));
+      fireEvent.click(getByText("test 1"));
+      fireEvent.mouseDown(getByRole("combobox"));
+      fireEvent.click(getByText("test 2"));
+
+      const selectedOptions = container.querySelectorAll(
+        ".css-1p3m7a8-multiValue",
+      );
+      expect(selectedOptions).toHaveLength(2);
+      expect(selectedOptions[0]).toHaveTextContent("test-1");
+      expect(selectedOptions[1]).toHaveTextContent("test-2");
+    });
   });
 
   test("renders RadioGroup", () => {
