@@ -123,14 +123,7 @@ export const SlotField = ({
       const options = props?.options as MultiselectOption[];
       const value = field.value as string[];
 
-      return (
-        <Multiselect
-          options={options}
-          value={value}
-          onChange={(values) => field.onChange(values)}
-          {...props}
-        />
-      );
+      return <Multiselect options={options} value={value} {...props} />;
     }
     case "DatePicker":
       return (

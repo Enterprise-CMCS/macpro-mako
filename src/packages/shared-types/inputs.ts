@@ -44,6 +44,7 @@ export interface MultiselectOption {
 export type MultiselectProps = {
   className?: string;
   options: MultiselectOption[];
+  value?: string[];
 };
 
 export type SwitchProps = React.ComponentPropsWithoutRef<

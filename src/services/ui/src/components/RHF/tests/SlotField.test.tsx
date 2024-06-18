@@ -149,8 +149,8 @@ describe("Slot Input Field Tests", () => {
         ".css-1p3m7a8-multiValue",
       );
       expect(selectedOptions).toHaveLength(2);
-      expect(selectedOptions[0]).toHaveTextContent("test-1");
-      expect(selectedOptions[1]).toHaveTextContent("test-2");
+      expect(selectedOptions[0]).toHaveTextContent("test 1");
+      expect(selectedOptions[1]).toHaveTextContent("test 2");
     });
   });
 
