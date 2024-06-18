@@ -128,6 +128,7 @@ export const SlotField = ({
           options={options}
           value={value}
           onChange={(values) => field.onChange(values)}
+          {...props}
         />
       );
     }
