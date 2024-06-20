@@ -569,12 +569,12 @@ export const v202402: FormSchema = {
                                                     props: {
                                                       options: [
                                                         {
-                                                          label: "Yes",
-                                                          value: "yes",
-                                                        },
-                                                        {
                                                           label: "No",
                                                           value: "no",
+                                                        },
+                                                        {
+                                                          label: "Yes",
+                                                          value: "yes",
                                                         },
                                                       ],
                                                     },
@@ -649,7 +649,7 @@ export const v202402: FormSchema = {
                                                       {
                                                         rhf: "Textarea",
                                                         name: "region-descript",
-                                                        label: "Description",
+                                                        label: "Describe",
                                                         labelClassName:
                                                           "font-bold",
                                                         rules: {
@@ -729,12 +729,12 @@ export const v202402: FormSchema = {
                                                         props: {
                                                           options: [
                                                             {
-                                                              label: "Yes",
-                                                              value: "yes",
-                                                            },
-                                                            {
                                                               label: "No",
                                                               value: "no",
+                                                            },
+                                                            {
+                                                              label: "Yes",
+                                                              value: "yes",
                                                             },
                                                           ],
                                                         },
@@ -901,12 +901,12 @@ export const v202402: FormSchema = {
                                                         props: {
                                                           options: [
                                                             {
-                                                              label: "Yes",
-                                                              value: "yes",
-                                                            },
-                                                            {
                                                               label: "No",
                                                               value: "no",
+                                                            },
+                                                            {
+                                                              label: "Yes",
+                                                              value: "yes",
                                                             },
                                                           ],
                                                         },
@@ -1072,12 +1072,12 @@ export const v202402: FormSchema = {
                                                         props: {
                                                           options: [
                                                             {
-                                                              label: "Yes",
-                                                              value: "yes",
-                                                            },
-                                                            {
                                                               label: "No",
                                                               value: "no",
+                                                            },
+                                                            {
+                                                              label: "Yes",
+                                                              value: "yes",
                                                             },
                                                           ],
                                                         },
