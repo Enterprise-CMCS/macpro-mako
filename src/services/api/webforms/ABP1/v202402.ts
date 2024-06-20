@@ -572,12 +572,12 @@ export const v202402: FormSchema = {
                                                     props: {
                                                       options: [
                                                         {
-                                                          label: "No",
-                                                          value: "no",
-                                                        },
-                                                        {
                                                           label: "Yes",
                                                           value: "yes",
+                                                        },
+                                                        {
+                                                          label: "No",
+                                                          value: "no",
                                                         },
                                                       ],
                                                     },
@@ -732,12 +732,12 @@ export const v202402: FormSchema = {
                                                         props: {
                                                           options: [
                                                             {
-                                                              label: "No",
-                                                              value: "no",
-                                                            },
-                                                            {
                                                               label: "Yes",
                                                               value: "yes",
+                                                            },
+                                                            {
+                                                              label: "No",
+                                                              value: "no",
                                                             },
                                                           ],
                                                         },
@@ -904,12 +904,12 @@ export const v202402: FormSchema = {
                                                         props: {
                                                           options: [
                                                             {
-                                                              label: "No",
-                                                              value: "no",
-                                                            },
-                                                            {
                                                               label: "Yes",
                                                               value: "yes",
+                                                            },
+                                                            {
+                                                              label: "No",
+                                                              value: "no",
                                                             },
                                                           ],
                                                         },
@@ -1075,12 +1075,12 @@ export const v202402: FormSchema = {
                                                         props: {
                                                           options: [
                                                             {
-                                                              label: "No",
-                                                              value: "no",
-                                                            },
-                                                            {
                                                               label: "Yes",
                                                               value: "yes",
+                                                            },
+                                                            {
+                                                              label: "No",
+                                                              value: "no",
                                                             },
                                                           ],
                                                         },
