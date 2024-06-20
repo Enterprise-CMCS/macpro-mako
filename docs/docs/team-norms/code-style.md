@@ -39,7 +39,7 @@ For instance, rather than breaking
 down the object into individual variables, which can lead to verbose and confusing naming
 conventions, maintain the object as a whole.
 
-```typescript jsx
+```tsx
 const {
     setModalOpen,
     setContent: setModalContent,
@@ -64,7 +64,7 @@ more direct understanding of its usage within the code. This strategy is particu
 beneficial in scenarios where the object's structure and context significantly contribute
 to its functionality and meaning in the application.
 
-```typescript jsx
+```tsx
 <form
   onSubmit={form.handleSubmit(async (data) => {
     try {
