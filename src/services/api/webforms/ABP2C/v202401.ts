@@ -27,8 +27,6 @@ export const v202401: FormSchema = {
               props: {
                 options: [
                   {
-                    label:
-                      "The state/territory assures it will appropriately identify any individuals in the eligibility groups who:",
                     value: "assure_individuals_in_egroup_exempt_section_1937",
                     styledLabel: [
                       {
@@ -304,6 +302,9 @@ export const v202401: FormSchema = {
               label:
                 "Other information about enrollment assurances for mandatory participants (optional)",
               labelClassName: "font-bold text-black",
+              props: {
+                className: "min-h-[114px]",
+              },
               rules: {
                 pattern: {
                   value: /^\S(.*\S)?$/,
