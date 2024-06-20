@@ -17,7 +17,7 @@ export const v202402: FormSchema = {
               name: "abp-pop-name",
               label: "ABP package name",
               props: {
-                className: "w-[300px]",
+                className: "w-[355px]",
               },
               rules: {
                 required: "* Required",
@@ -407,6 +407,7 @@ export const v202402: FormSchema = {
                                                 props: {
                                                   icon: "%",
                                                   iconRight: true,
+                                                  className: "w-[229px]",
                                                 },
                                                 rules: {
                                                   pattern: {
@@ -434,6 +435,7 @@ export const v202402: FormSchema = {
                                                 props: {
                                                   icon: "%",
                                                   iconRight: true,
+                                                  className: "w-[229px]",
                                                 },
                                                 rules: {
                                                   pattern: {
@@ -457,6 +459,7 @@ export const v202402: FormSchema = {
                                                 props: {
                                                   icon: "%",
                                                   iconRight: true,
+                                                  className: "w-[229px]",
                                                 },
                                                 rules: {
                                                   pattern: {
