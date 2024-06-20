@@ -285,6 +285,7 @@ export const v202401: FormSchema = {
               },
               label: "Describe the process for processing requests.",
               labelClassName: "font-bold text-black",
+              formItemClassName: "pl-8",
             },
           ],
         },
