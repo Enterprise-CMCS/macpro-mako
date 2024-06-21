@@ -3,7 +3,7 @@ import defaultTheme from "tailwindcss/defaultTheme";
 
 export default {
   darkMode: ["class"],
-  content: ["./src/**/*.{ts,tsx}", "./index.html"],
+  content: ["./src/**/*.{ts,tsx}", "./index.html", "../../../src/services/api/webforms/*"],
   theme: {
     fontFamily: {
       serif: ["Merriweather", "serif"],
