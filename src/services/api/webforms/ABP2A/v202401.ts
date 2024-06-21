@@ -72,6 +72,16 @@ export const v202401: FormSchema = {
     {
       title: "Assurances",
       sectionId: "assurances",
+      dependency: {
+        conditions: [
+          {
+            name: "abp2a_benefit-align-and-require_is-state-territory-aligned",
+            type: "expectedValue",
+            expectedValue: "no",
+          },
+        ],
+        effect: { type: "show" },
+      },
       form: [
         {
           description:
@@ -97,7 +107,7 @@ export const v202401: FormSchema = {
                   {
                     styledLabel: [
                       {
-                        text: "Once an individual is identified, the state/territory assures it will effectively inform the individual of the following:",
+                        text: "Once an individual is identified, the state/territory assures it will effectively inform the individual:",
                         type: "default",
                         classname: "block py-1",
                       },
@@ -122,7 +132,7 @@ export const v202401: FormSchema = {
                   {
                     styledLabel: [
                       {
-                        text: "The state/territory assures it will inform the individual of the following:",
+                        text: "The state/territory assures it will inform the individual of:",
                         type: "default",
                         classname: "block py-1",
                       },
@@ -150,6 +160,16 @@ export const v202401: FormSchema = {
     {
       title: "Delivery of information",
       sectionId: "delivery-of-info",
+      dependency: {
+        conditions: [
+          {
+            name: "abp2a_benefit-align-and-require_is-state-territory-aligned",
+            type: "expectedValue",
+            expectedValue: "no",
+          },
+        ],
+        effect: { type: "show" },
+      },
       form: [
         {
           description:
@@ -174,7 +194,7 @@ export const v202401: FormSchema = {
                     value: "other",
                     slots: [
                       {
-                        rhf: "Input",
+                        rhf: "Textarea",
                         name: "describe-other-enrollment",
                         label: "Describe",
                         labelClassName: "font-bold",
@@ -294,7 +314,7 @@ export const v202401: FormSchema = {
                     value: "other",
                     slots: [
                       {
-                        rhf: "Input",
+                        rhf: "Textarea",
                         name: "where-will-info-be-doc-describe-other",
                         label: "Describe",
                         labelClassName: "font-bold",
@@ -341,7 +361,7 @@ export const v202401: FormSchema = {
                       "what_documentation_will_be_maintained_in_the_eligibility_file_other",
                     slots: [
                       {
-                        rhf: "Input",
+                        rhf: "Textarea",
                         name: "describe-other-maintained",
                         label: "Describe",
                         labelClassName: "font-bold",
@@ -382,6 +402,16 @@ export const v202401: FormSchema = {
     {
       title: "Additional information",
       sectionId: "addtnl-info",
+      dependency: {
+        conditions: [
+          {
+            name: "abp2a_benefit-align-and-require_is-state-territory-aligned",
+            type: "expectedValue",
+            expectedValue: "no",
+          },
+        ],
+        effect: { type: "show" },
+      },
       form: [
         {
           description:

@@ -34,6 +34,21 @@ export type SelectProps = React.ComponentPropsWithoutRef<
   className?: string;
 };
 
+export interface MultiselectOption {
+  readonly value: string;
+  readonly label: string;
+  readonly color?: string;
+  readonly isFixed?: boolean;
+  readonly isDisabled?: boolean;
+}
+
+export type MultiselectProps = {
+  className?: string;
+  options: MultiselectOption[];
+  value?: string[];
+  onChange?: (selectedValues: string[]) => void;
+};
+
 export type SwitchProps = React.ComponentPropsWithoutRef<
   typeof SwitchPrimitives.Root
 > & {
