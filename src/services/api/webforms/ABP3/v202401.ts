@@ -53,7 +53,7 @@ export const v202401: FormSchema = {
       form: [
         {
           description:
-            "The state/territory selects as its Section 1937 coverage option the following type of benchmark benefit package or benchmark-equivalent benefit package under this Alternative Benefit Plan:",
+            "The state/territory selects as its Section 1937 coverage option the following type of benchmark or benchmark-equivalent benefit package under this Alternative Benefit Plan (ABP):",
           slots: [
             {
               rhf: "Radio",
