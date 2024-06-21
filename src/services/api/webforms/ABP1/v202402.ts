@@ -513,7 +513,7 @@ export const v202402: FormSchema = {
                                                     name: "income-def-specific-state",
                                                     props: {
                                                       appendText:
-                                                        "Add Standard",
+                                                        "Add standard",
                                                     },
                                                     fields: [
                                                       {
@@ -629,7 +629,7 @@ export const v202402: FormSchema = {
                                                     props: {
                                                       appendText: "Add region",
                                                       removeText:
-                                                        "Remove Region",
+                                                        "Remove region",
                                                     },
                                                     fields: [
                                                       {
@@ -967,12 +967,12 @@ export const v202402: FormSchema = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "add-some-other-way",
+                                                    name: "add-other-way",
                                                     props: {
                                                       appendText:
                                                         "Add other way",
                                                       removeText:
-                                                        "Remove some other way",
+                                                        "Remove other way",
                                                     },
                                                     fields: [
                                                       {
