@@ -301,8 +301,9 @@ export const v202401: FormSchema = {
                                   ],
                                 },
                                 {
-                                  label: "Secretary-approved coverage",
-                                  value: "secretary_approved_coverage",
+                                  label:
+                                    "The Medicaid state plan coverage provided to categorically needy (mandatory and options for coverage) eligibility groups.",
+                                  value: "medicaid_categorically_needy",
                                 },
                               ],
                             },
