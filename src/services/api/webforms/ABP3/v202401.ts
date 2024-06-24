@@ -35,6 +35,9 @@ export const v202401: FormSchema = {
               name: "name",
               label: "Benefit package name",
               labelClassName: "font-bold",
+              props: {
+                className: "w-[355px]",
+              },
               rules: {
                 required: "* Required",
                 pattern: {
