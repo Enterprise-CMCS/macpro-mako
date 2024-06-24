@@ -240,8 +240,6 @@ export const v202401: FormSchema = {
                     value: "benchmark_equivalent_benefit_package",
                     form: [
                       {
-                        description:
-                          "The state/territory will provide the following benchmark-equivalent benefit package:",
                         slots: [
                           {
                             rhf: "Radio",
