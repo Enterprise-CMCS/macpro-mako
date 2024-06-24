@@ -1,4 +1,9 @@
-import { RHFComponentMap, RHFOption, RHFSlotProps } from "shared-types";
+import {
+  RHFComponentMap,
+  RHFOption,
+  RHFSlotProps,
+  MultiselectOption,
+} from "shared-types";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/utils";
@@ -19,6 +24,7 @@ import {
   FormField,
   FormLabel,
   Input,
+  Multiselect,
   RadioGroup,
   RadioGroupItem,
   Select,
@@ -111,6 +117,19 @@ export const SlotField = ({
             ))}
           </SelectContent>
         </Select>
+      );
+    }
+    case "Multiselect": {
+      const options = props?.options as MultiselectOption[];
+      const value = field.value as string[];
+
+      return (
+        <Multiselect
+          options={options}
+          value={value}
+          onChange={(selectedValues) => field.onChange(selectedValues)}
+          {...props}
+        />
       );
     }
     case "DatePicker":

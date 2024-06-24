@@ -118,7 +118,7 @@ export const v202401: FormSchema = {
                     value: "other",
                     slots: [
                       {
-                        rhf: "Input",
+                        rhf: "Textarea",
                         name: "describe-other-enrollment",
                         label: "Describe",
                         labelClassName: "font-bold",
@@ -238,7 +238,7 @@ export const v202401: FormSchema = {
                     value: "other",
                     slots: [
                       {
-                        rhf: "Input",
+                        rhf: "Textarea",
                         name: "where-will-info-be-doc-describe-other",
                         label: "Describe",
                         labelClassName: "font-bold",
@@ -285,7 +285,7 @@ export const v202401: FormSchema = {
                       "what_documentation_will_be_maintained_in_the_eligibility_file_other",
                     slots: [
                       {
-                        rhf: "Input",
+                        rhf: "Textarea",
                         name: "describe-other-maintained",
                         label: "Describe",
                         labelClassName: "font-bold",

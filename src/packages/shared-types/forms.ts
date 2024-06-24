@@ -7,6 +7,7 @@ import {
 import {
   CalendarProps,
   InputProps,
+  MultiselectProps,
   RadioProps,
   SelectProps,
   SwitchProps,
@@ -94,6 +95,7 @@ export type RHFComponentMap = {
   Textarea: TextareaProps;
   Switch: SwitchProps;
   Select: SelectProps & { sort?: "ascending" | "descending" };
+  Multiselect: MultiselectProps;
   Radio: RadioProps & {
     options: RHFOption[];
   };
