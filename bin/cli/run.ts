@@ -27,39 +27,10 @@ async function install_deps(runner: LabeledProcessRunner) {
     `Installing Dependencies`,
     ["yarn"],
     ".",
-    true
+    true,
   );
 }
 
-yargs(process.argv.slice(2))
-  .command("install", "install all service dependencies", {}, async () => {
-    await install_deps(runner);
-  })
-  .command(
-    "ui",
-    "configure and start a local react ui against a remote backend",
-    {
-      stage: { type: "string", demandOption: true },
-    },
-    async (options) => {
-      await install_deps(runner);
-      await runner.run_command_and_output(
-        `config vars`,
-        ["sls", "ui", "package", "--stage", options.stage],
-        "."
-      );
-      await runner.run_command_and_output(
-        `config vars`,
-        ["sls", "ui", "useLocalhost", "--stage", options.stage],
-        "."
-      );
-      await runner.run_command_and_output(
-        `ui start`,
-        ["yarn", "dev"],
-        `src/services/ui`
-      );
-    }
-  );
 yargs
   .command(
     "deploy",
@@ -82,18 +53,18 @@ yargs
               ...baseCmd,
               `${process.env.PROJECT}-${options.stack}-${options.stage}`,
             ],
-            "."
+            ".",
           );
         }
       } else {
         await runner.run_command_and_output(
           "CDK Deploy",
           [...baseCmd, "--all"],
-          "."
+          ".",
         );
         deployUiToAws(options.stage);
       }
-    }
+    },
   )
   .command(
     "ui",
@@ -104,7 +75,7 @@ yargs
     async (options) => {
       await install_deps(runner);
       await runLocalUiAgainstAwsBackend(options.stage);
-    }
+    },
   )
   .command(
     "test",
@@ -118,9 +89,9 @@ yargs
       await runner.run_command_and_output(
         `Load test data`,
         ["sls", "database", "seed", "--stage", options.stage],
-        "."
+        ".",
       );
-    }
+    },
   )
   .command(
     "e2e",
@@ -133,26 +104,26 @@ yargs
       await runner.run_command_and_output(
         `Install playwright`,
         ["yarn", "playwright", "install", "--with-deps"],
-        "."
+        ".",
       );
 
       if (argv.ui) {
         await runner.run_command_and_output(
           `e2e:ui tests`,
           ["yarn", "e2e:ui"],
-          "."
+          ".",
         );
       } else {
         await runner.run_command_and_output(`e2e tests`, ["yarn", "e2e"], ".");
       }
-    }
+    },
   )
   .command("test-gui", "open unit-testing gui for vitest.", {}, async () => {
     await install_deps(runner);
     await runner.run_command_and_output(
       `Unit Tests`,
       ["yarn", "test-gui"],
-      "."
+      ".",
     );
   })
   .command(
@@ -209,13 +180,13 @@ yargs
           }
         } else {
           console.log(
-            `Stack ${stackName} delete initiated. Not waiting for completion as --wait is set to false.`
+            `Stack ${stackName} delete initiated. Not waiting for completion as --wait is set to false.`,
           );
         }
       } catch (error) {
         console.error(`Error deleting stack ${stackName}:`, error);
       }
-    }
+    },
   )
   .command(
     "docs",
@@ -228,7 +199,7 @@ yargs
       await runner.run_command_and_output(
         `Stop any existing container.`,
         ["docker", "rm", "-f", "jekyll"],
-        "docs"
+        "docs",
       );
 
       // If we're starting...
@@ -252,10 +223,10 @@ yargs
             "-c",
             "bundle install && bundle exec jekyll serve --force_polling --host 0.0.0.0",
           ],
-          "docs"
+          "docs",
         );
       }
-    }
+    },
   )
   .command(
     ["securityHubJiraSync", "securityHubSync", "secHubSync"],
@@ -271,7 +242,7 @@ yargs
             "* All findings of this type are resolved or suppressed, indicated by a Workflow Status of Resolved or Suppressed.  (Note:  this ticket will automatically close when the AC is met.)",
         },
       }).sync();
-    }
+    },
   )
   // .command(
   //   ["open-kibana", "open-os"],
@@ -350,12 +321,12 @@ async function deployUiToAws(stage) {
   const s3BucketName = await fetchDeployOutput(
     "ui-infra",
     stage,
-    "s3BucketName"
+    "s3BucketName",
   );
   const cloudfrontDistributionId = await fetchDeployOutput(
     "ui-infra",
     stage,
-    "cloudfrontDistributionId"
+    "cloudfrontDistributionId",
   );
 
   if (!s3BucketName || !cloudfrontDistributionId) {
@@ -381,7 +352,7 @@ async function deployUiToAws(stage) {
   await runner.run_command_and_output(
     `S3 Sync`,
     ["aws", "s3", "sync", buildDir, `s3://${s3BucketName}/`, "--delete"],
-    "."
+    ".",
   );
 
   // Create CloudFront invalidation
@@ -400,11 +371,11 @@ async function deployUiToAws(stage) {
   };
 
   await cloudfrontClient.send(
-    new CreateInvalidationCommand(invalidationParams)
+    new CreateInvalidationCommand(invalidationParams),
   );
 
   console.log(
-    `Deployed UI to S3 bucket ${s3BucketName} and invalidated CloudFront distribution ${cloudfrontDistributionId}`
+    `Deployed UI to S3 bucket ${s3BucketName} and invalidated CloudFront distribution ${cloudfrontDistributionId}`,
   );
 }
 
@@ -434,12 +405,12 @@ async function writeEnvFileForUi(stage, local = false) {
   const googleAnalytics = await fetchSecret(
     process.env.PROJECT!,
     stage,
-    "googleAnalytics"
+    "googleAnalytics",
   );
   const launchdarklyClientID = await fetchSecret(
     process.env.PROJECT!,
     stage,
-    "launchdarklyClientID"
+    "launchdarklyClientID",
   );
   const idmInfo = await fetchSecret(process.env.PROJECT!, stage, "idmInfo");
 
@@ -487,7 +458,7 @@ const client = new SecretsManagerClient({ region: process.env.REGION_A });
 export async function fetchSecret(
   project: string,
   stage: string,
-  secretNameSuffix: string
+  secretNameSuffix: string,
 ): Promise<any> {
   const secretName = `${project}/${stage}/${secretNameSuffix}`;
 
@@ -531,7 +502,7 @@ export async function fetchSecret(
       }
     } catch (fallbackError: any) {
       throw new Error(
-        `Failed to fetch default secret ${defaultSecretName}: ${fallbackError.message}`
+        `Failed to fetch default secret ${defaultSecretName}: ${fallbackError.message}`,
       );
     }
   }
