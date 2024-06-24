@@ -10,6 +10,7 @@
       "cache": false
     },
     "build:cli": {
+      "inputs": ["bin/cli/"],
       "cache": false
     },
     "test:watch": {},
