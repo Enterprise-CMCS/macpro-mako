@@ -92,6 +92,9 @@ export const v202401: FormSchema = {
                                           rhf: "Input",
                                           label: "Plan name",
                                           name: "state-employee-coverage-plan-name",
+                                          props: {
+                                            className: "w-[658px]",
+                                          },
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -116,6 +119,9 @@ export const v202401: FormSchema = {
                                           rhf: "Input",
                                           label: "Plan name",
                                           name: "commercial-hmo",
+                                          props: {
+                                            className: "w-[658px]",
+                                          },
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -212,6 +218,9 @@ export const v202401: FormSchema = {
                                         {
                                           rhf: "Textarea",
                                           name: "benefits-and-limits",
+                                          props: {
+                                            className: "min-h-[114px]",
+                                          },
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -263,6 +272,9 @@ export const v202401: FormSchema = {
                                           rhf: "Input",
                                           name: "state-employee-coverage-plan-name",
                                           label: "Plan name",
+                                          props: {
+                                            className: "w-[658px]",
+                                          },
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -287,6 +299,9 @@ export const v202401: FormSchema = {
                                           rhf: "Input",
                                           name: "commercial-hmo-plan-name",
                                           label: "Plan name",
+                                          props: {
+                                            className: "w-[658px]",
+                                          },
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -376,6 +391,9 @@ export const v202401: FormSchema = {
               rhf: "Input",
               label: "Plan name",
               name: "name",
+              props: {
+                className: "w-[527px]",
+              },
               rules: {
                 required: "* Required",
                 pattern: {
@@ -399,6 +417,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               name: "description",
+              props: {
+                className: "min-h-[114px]",
+              },
               rules: {
                 pattern: {
                   value: /^\S(.*\S)?$/,
