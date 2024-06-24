@@ -32,6 +32,9 @@ async function install_deps(runner: LabeledProcessRunner) {
 }
 
 yargs
+  .command("install", "install all service dependencies", {}, async () => {
+    await install_deps(runner);
+  })
   .command(
     "deploy",
     "deploy the project",
