@@ -1,3 +1,4 @@
+// @ts-nocheck
 const config = {
   apiGateway: {
     REGION: import.meta.env.VITE_API_REGION,
