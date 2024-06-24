@@ -23,7 +23,6 @@ export class UploadsStack extends cdk.NestedStack {
     // S3 Buckets
     const attachmentsBucket = new s3.Bucket(this, "AttachmentsBucket", {
       bucketName: attachmentsBucketName,
-      removalPolicy: RemovalPolicy.RETAIN,
       cors: [
         {
           allowedOrigins: ["*"],
