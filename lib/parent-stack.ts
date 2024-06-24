@@ -39,25 +39,13 @@ export class ParentStack extends cdk.Stack {
       region: process.env.CDK_DEFAULT_REGION,
     };
 
-    const networkingStack = new NetworkingStack(
-      this,
-      `${project}-networking-${stage}`,
-      {
-        vpcInfo,
-      }
-    );
-    const alertsStack = new AlertsStack(this, `${project}-alerts-${stage}`, {});
-    const uiInfraStack = new UiInfraStack(
-      this,
-      `${project}-ui-infra-${stage}`,
-      { project, stage }
-    );
-    const uploadsStack = new UploadsStack(
-      this,
-      `${project}-uploads-${stage}`,
-      {}
-    );
-    const dataStack = new DataStack(this, `${project}-data-${stage}`, {
+    const networkingStack = new NetworkingStack(this, "networking", {
+      vpcInfo,
+    });
+    const alertsStack = new AlertsStack(this, "alerts", {});
+    const uiInfraStack = new UiInfraStack(this, "ui-infra", { project, stage });
+    const uploadsStack = new UploadsStack(this, "uploads", {});
+    const dataStack = new DataStack(this, "data", {
       project,
       stage,
       vpcInfo,
@@ -66,7 +54,7 @@ export class ParentStack extends cdk.Stack {
 
     dataStack.addDependency(networkingStack);
 
-    const apiStack = new ApiStack(this, `${project}-api-${stage}`, {
+    const apiStack = new ApiStack(this, "api", {
       project,
       stage,
       vpcInfo,
@@ -80,7 +68,7 @@ export class ParentStack extends cdk.Stack {
     apiStack.addDependency(uploadsStack);
     apiStack.addDependency(networkingStack);
 
-    const authStack = new AuthStack(this, `${project}-auth-${stage}`, {
+    const authStack = new AuthStack(this, "auth", {
       project,
       stage,
     });
