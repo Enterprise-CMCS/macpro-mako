@@ -138,8 +138,9 @@ details by clicking on its ID number.</li>
 <p>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
-<br><b>Email:</b> {{submitterEmail}}
-<br><b>1915(b) {{actionType}} Number:</b> {{id}}</b>
+<br><b>Email Address:</b> {{submitterEmail}}
+<br><b>Amendment Title:</b> {{title}}
+<br><b>{{actionType}} Number:</b> {{id}}</b>
 <br><b>Waiver Authority:</b> {{authority}}
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
 </p>
@@ -171,7 +172,7 @@ details by clicking on its ID number.
 State or territory: {{territory}}
 Name: {{submitterName}}
 Email: {{submitterEmail}}
-1915(b) {{actionType}} Number: {{id}}</b>
+{{actionType}} Number: {{id}}</b>
 Waiver Authority: {{authority}}
 Proposed Effective Date: {{proposedEffectiveDateNice}}
 
@@ -211,7 +212,7 @@ before {{ninetyDaysDate}}.</p>
 responses to Requests for Additional Information (RAI) on Waivers,
 and extension requests on Waivers only. Any other correspondence will be disregarded</p>
 <p>If you have questions or did not expect this email, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
+<a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
 This response confirms the submission of your 1915(b) {{actionType}} to CMS for review:
@@ -237,7 +238,7 @@ responses to Requests for Additional Information (RAI) on Waivers,
 and extension requests on Waivers only. Any other correspondence will be disregarded</p>
 
 If you have questions or did not expect this email, please contact
-SPA@cms.hhs.gov or your state lead.
+spa@cms.hhs.gov or your state lead.
 
 Thank you!`,
   },
@@ -358,11 +359,11 @@ Summary:
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
 before {{ninetyDaysDate}}.</p>
-<p>This mailbox is for the submittal of State Plan Amendments and non-web 
-based responses to Requests for Additional Information (RAI) on submitted 
-SPAs only. Any other correspondence will be disregarded.</p>
+<<p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
+responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
+Any other correspondence will be disregarded.</p>
 <p>If you have questions, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
+<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
 This response confirms you submitted a Medicaid SPA RAI Response to CMS for review:
@@ -385,7 +386,7 @@ This mailbox is for the submittal of State Plan Amendments and non-web
 based responses to Requests for Additional Information (RAI) on submitted 
 SPAs only. Any other correspondence will be disregarded.
 
-If you have questions, please contact SPA@cms.hhs.gov.
+If you have questions, please contact SPA@cms.hhs.gov or your state lead.
 
 Thank you!`,
   },
@@ -449,7 +450,7 @@ Summary:
 <br>{{additionalInformation}}
 <br>
 <p>If you have questions or did not expect this email, please contact 
-<a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a>.
+<a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.
 <p>Thank you!</p>`,
     text: `
 The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -465,7 +466,7 @@ Summary:
 {{additionalInformation}}
 
 If you have questions or did not expect this email, please contact 
-spa@cms.hhs.gov.
+spa@cms.hhs.gov or your state lead.
 
 Thank you!`,
   },
@@ -556,14 +557,14 @@ Thank you!`,
 <p>This email is to confirm Medicaid SPA {{id}} was withdrawn
 by {{submitterName}}. The review of Medicaid SPA {{id}} has concluded.</p>
 <p>If you have questions or did not expect this email, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
+<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
 This email is to confirm Medicaid SPA {{id}} was withdrawn
 by {{submitterName}}. The review of Medicaid SPA {{id}} has concluded.</p>
-<p>If you have questions or did not expect this email, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
-<p>Thank you!</p>`,
+If you have questions or did not expect this email, please contact 
+SPA@cms.hhs.gov or your state lead.
+Thank you!`,
   },
 
   // CHIP SPA email template group
@@ -647,7 +648,7 @@ Summary:
 at a later date.
 </p>
 <p>If you have questions or did not expect this email, please contact 
-<a href='mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov'>CHIPSPASubmissionMailBox@CMS.HHS.gov</a>.</p>
+<a href='mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov'>CHIPSPASubmissionMailBox@CMS.HHS.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
 This is confirmation that you submitted a CHIP State Plan Amendment 
@@ -987,12 +988,13 @@ Summary:
 response to a Waiver Request for Additional Information (RAI).
 You can expect a formal response to your submittal to be issued within 90 days,
 before {{ninetyDaysDate}}.</p>
+<p>
 <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
 responses to Requests for Additional Information (RAI) on Waivers, and extension
 requests on Waivers only.  Any other correspondence will be disregarded.
 </p>
 <p>If you have questions, please contact 
-<a href='mailto:CHIPSPASubmissionMailbox@cms.hhs.gov'>CHIPSPASubmissionMailbox@cms.hhs.gov</a>
+<a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a>
 or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
@@ -1164,7 +1166,7 @@ Summary:
 responses to Requests for Additional Information (RAI) on Waivers,
 and extension requests on Waivers only. Any other correspondence will be disregarded</p>
 <p>If you have questions or did not expect this email, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
+<a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
     text: "",
   },
