@@ -2,7 +2,7 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header:
-    "ABP 3: Selection of benchmark benefit package or benchmark-equivalent benefit package",
+    "ABP 3: Selection of benchmark or benchmark-equivalent benefit package",
   formId: "abp3",
   sections: [
     {
