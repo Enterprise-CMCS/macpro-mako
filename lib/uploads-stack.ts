@@ -10,9 +10,15 @@ import * as targets from "aws-cdk-lib/aws-events-targets";
 import { EmptyBuckets } from "./empty-buckets-construct";
 import { cdkExport } from "./utils/cdk-export";
 
+interface UploadsStackProps extends cdk.NestedStackProps {
+  project: string;
+  stage: string;
+}
+
 export class UploadsStack extends cdk.NestedStack {
-  constructor(scope: Construct, id: string, props?: cdk.NestedStackProps) {
+  constructor(scope: Construct, id: string, props: UploadsStackProps) {
     super(scope, id, props);
+    const { project, stage } = props;
     const attachmentsBucketName = `${this.node.id}-attachments-${cdk.Aws.ACCOUNT_ID}`;
     // S3 Buckets
     const attachmentsBucket = new s3.Bucket(this, "AttachmentsBucket", {
@@ -37,19 +43,20 @@ export class UploadsStack extends cdk.NestedStack {
 
     new EmptyBuckets(this, "EmptyBuckets", {
       buckets: [attachmentsBucket],
+      stackName: `${project}-${stage}-uploads`,
     });
 
     cdkExport(
       this,
       this.node.id,
       "attachmentsBucketName",
-      attachmentsBucket.bucketName
+      attachmentsBucket.bucketName,
     );
     cdkExport(
       this,
       this.node.id,
       "attachmentsBucketArn",
-      attachmentsBucket.bucketArn
+      attachmentsBucket.bucketArn,
     );
     cdkExport(this, this.node.id, "attachmentsBucketRegion", this.region);
   }
