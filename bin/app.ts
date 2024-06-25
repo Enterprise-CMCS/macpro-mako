@@ -17,15 +17,17 @@ async function main() {
     const onemacLegacyS3AccessRoleArn = await fetchSecret(
       project,
       stage,
-      "onemacLegacyS3AccessRoleArn"
+      "onemacLegacyS3AccessRoleArn",
     );
     const dbInfo = await fetchSecret(project, stage, "seatool/dbInfo");
     const launchdarklySDKKey = await fetchSecret(
       project,
       stage,
-      "launchdarklySDKKey"
+      "launchdarklySDKKey",
     );
     const idmInfo = await fetchSecret(project, stage, "idmInfo");
+
+    const isDev = !["master", "val", "production"].includes(stage);
 
     cdk.Tags.of(app).add("PROJECT", project);
     cdk.Tags.of(app).add("STAGE", stage);
@@ -39,12 +41,14 @@ async function main() {
       env,
       project,
       stage,
+      isDev,
       vpcInfo,
       brokerString,
       onemacLegacyS3AccessRoleArn,
       dbInfo,
       launchdarklySDKKey,
       idmInfo,
+      terminationProtection: !isDev,
     });
 
     app.synth();
@@ -60,7 +64,7 @@ function validateEnvVariable(variableName: string): string {
   const value = process.env[variableName];
   if (!value || typeof value !== "string" || value.trim() === "") {
     console.error(
-      `ERROR: Environment variable ${variableName} must be set and be a non-empty string.`
+      `ERROR: Environment variable ${variableName} must be set and be a non-empty string.`,
     );
     process.exit(1);
   }

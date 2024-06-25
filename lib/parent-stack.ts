@@ -11,6 +11,7 @@ import { AuthStack } from "./auth-stack";
 interface ParentStackProps extends cdk.StackProps {
   project: string;
   stage: string;
+  isDev: boolean;
   vpcInfo: any;
   brokerString: any;
   onemacLegacyS3AccessRoleArn: any;
@@ -26,6 +27,7 @@ export class ParentStack extends cdk.Stack {
     const {
       project,
       stage,
+      isDev,
       vpcInfo,
       brokerString,
       onemacLegacyS3AccessRoleArn,
@@ -34,52 +36,40 @@ export class ParentStack extends cdk.Stack {
       idmInfo,
     } = props;
 
-    const isDev = !["master", "val", "production"].includes(stage);
+    const commonProps = { project, stage, isDev };
 
     const networkingStack = new NetworkingStack(this, "networking", {
-      project,
-      stage,
+      ...commonProps,
       stack: "networking",
-      isDev,
       vpcInfo,
     });
 
     const alertsStack = new AlertsStack(this, "alerts", {
-      project,
-      stage,
+      ...commonProps,
       stack: "alerts",
-      isDev,
     });
 
     const uiInfraStack = new UiInfraStack(this, "ui-infra", {
-      project,
-      stage,
+      ...commonProps,
       stack: "ui-infra",
-      isDev,
     });
 
     const uploadsStack = new UploadsStack(this, "uploads", {
-      project,
-      stage,
+      ...commonProps,
       stack: "uploads",
-      isDev,
     });
 
     const dataStack = new DataStack(this, "data", {
-      project,
-      stage,
+      ...commonProps,
       stack: "data",
-      isDev,
       vpcInfo,
       brokerString,
     });
     dataStack.addDependency(networkingStack);
 
     const apiStack = new ApiStack(this, "api", {
-      project,
-      stage,
+      ...commonProps,
       stack: "api",
-      isDev,
       vpcInfo,
       brokerString,
       dbInfo,
@@ -91,10 +81,8 @@ export class ParentStack extends cdk.Stack {
     apiStack.addDependency(networkingStack);
 
     const authStack = new AuthStack(this, "auth", {
-      project,
-      stage,
+      ...commonProps,
       stack: "auth",
-      isDev,
     });
     authStack.addDependency(uiInfraStack);
     authStack.addDependency(apiStack);
