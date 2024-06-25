@@ -33,7 +33,7 @@ interface ApiStackProps extends cdk.NestedStackProps {
   onemacLegacyS3AccessRoleArn: string;
   lambdaSecurityGroup: ec2.SecurityGroup;
   topicNamespace: string;
-  openSearchDomain: opensearch.Domain;
+  openSearchDomain: opensearch.CfnDomain;
   openSearchDomainEndpoint: string;
   alertsTopic: Topic;
   attachmentsBucket: Bucket;
@@ -94,7 +94,7 @@ export class ApiStack extends cdk.NestedStack {
                 "es:ESHttpDelete",
                 "es:ESHttpPut",
               ],
-              resources: [`${openSearchDomain.domainArn}/*`],
+              resources: [`${openSearchDomain.attrArn}/*`],
             }),
             new iam.PolicyStatement({
               effect: iam.Effect.ALLOW,

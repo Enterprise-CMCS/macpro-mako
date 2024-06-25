@@ -69,24 +69,20 @@ export class ParentStack extends cdk.Stack {
       topicNamespace,
     });
 
-    // const apiStack = new ApiStack(this, "api", {
-    //   ...commonProps,
-    //   stack: "api",
-    //   vpcInfo,
-    //   brokerString,
-    //   dbInfo,
-    //   onemacLegacyS3AccessRoleArn,
-    //   lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
-    //   topicNamespace,
-    //   openSearchDomain: dataStack.openSearchDomain,
-    //   openSearchDomainEndpoint: dataStack.openSearchDomainEndpoint
-    //   alertsTopic: alerts.topic
-    //   attachmentsBucket: uploads.attachmentsBucket
-    // });
-    // apiStack.addDependency(alertsStack);
-    // apiStack.addDependency(dataStack);
-    // apiStack.addDependency(uploadsStack);
-    // apiStack.addDependency(networkingStack);
+    const apiStack = new ApiStack(this, "api", {
+      ...commonProps,
+      stack: "api",
+      vpcInfo,
+      brokerString,
+      dbInfo,
+      onemacLegacyS3AccessRoleArn,
+      lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
+      topicNamespace,
+      openSearchDomain: dataStack.openSearchDomain,
+      openSearchDomainEndpoint: dataStack.openSearchDomainEndpoint,
+      alertsTopic: alertsStack.topic,
+      attachmentsBucket: uploadsStack.attachmentsBucket,
+    });
 
     // const authStack = new AuthStack(this, "auth", {
     //   ...commonProps,
