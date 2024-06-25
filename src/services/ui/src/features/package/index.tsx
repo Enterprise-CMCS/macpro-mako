@@ -74,10 +74,12 @@ export const Details = () => {
   const id = query.get("id") as string;
 
   return (
-    <div className="max-w-screen-xl mx-auto flex px-4 lg:px-8">
-      <div className="hidden lg:block">
+    <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row px-4 lg:px-8">
+      <div>
         <BreadCrumbs options={detailsAndActionsCrumbs({ id })} />
-        <DetailsSidebar id={id} />
+        <div className="hidden lg:block">
+          <DetailsSidebar id={id} />
+        </div>
       </div>
       <DetailsContent id={id} />
     </div>
