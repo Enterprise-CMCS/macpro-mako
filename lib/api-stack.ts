@@ -9,8 +9,10 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import * as path from "path";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { CdkImport } from "./cdk-import-construct";
 import { CdkExport } from "./cdk-export-construct";
+import * as opensearch from "aws-cdk-lib/aws-opensearchservice";
+import { Topic } from "aws-cdk-lib/aws-sns";
+import { Bucket } from "aws-cdk-lib/aws-s3";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -29,6 +31,12 @@ interface ApiStackProps extends cdk.NestedStackProps {
     password: string;
   };
   onemacLegacyS3AccessRoleArn: string;
+  lambdaSecurityGroup: ec2.SecurityGroup;
+  topicNamespace: string;
+  openSearchDomain: opensearch.Domain;
+  openSearchDomainEndpoint: string;
+  alertsTopic: Topic;
+  attachmentsBucket: Bucket;
 }
 
 export class ApiStack extends cdk.NestedStack {
@@ -39,8 +47,18 @@ export class ApiStack extends cdk.NestedStack {
 
   private initializeResources(props: ApiStackProps) {
     const { project, stage, stack, isDev } = props;
-    const { vpcInfo, brokerString, dbInfo, onemacLegacyS3AccessRoleArn } =
-      props;
+    const {
+      vpcInfo,
+      brokerString,
+      dbInfo,
+      onemacLegacyS3AccessRoleArn,
+      lambdaSecurityGroup,
+      topicNamespace,
+      openSearchDomain,
+      openSearchDomainEndpoint,
+      alertsTopic,
+      attachmentsBucket,
+    } = props;
 
     const privateSubnets = vpcInfo.privateSubnets.map((subnetId: string) =>
       ec2.Subnet.fromSubnetId(this, `Subnet${subnetId}`, subnetId),
@@ -48,68 +66,7 @@ export class ApiStack extends cdk.NestedStack {
     const vpc = ec2.Vpc.fromLookup(this, "MyVpc", {
       vpcId: vpcInfo.id,
     });
-    const lambdaSecurityGroupId = new CdkImport(
-      this,
-      project,
-      stage,
-      `networking`,
-      "lambdaSecurityGroupId",
-    ).value;
-    const importedLambdaSecurityGroup = ec2.SecurityGroup.fromSecurityGroupId(
-      this,
-      "ImportedSecurityGroup",
-      lambdaSecurityGroupId,
-    );
-    const osDomain = new CdkImport(
-      this,
-      project,
-      stage,
-      `data`,
-      "openSearchDomainEndpoint",
-    ).value;
-
-    const osDomainArn = new CdkImport(
-      this,
-      project,
-      stage,
-      `data`,
-      "openSearchDomainArn",
-    ).value;
-
-    const topicName = new CdkImport(this, project, stage, `data`, "topicName")
-      .value;
-
-    const attachmentsBucketArn = new CdkImport(
-      this,
-      project,
-      stage,
-      `uploads`,
-      "attachmentsBucketArn",
-    ).value;
-
-    const attachmentsBucketName = new CdkImport(
-      this,
-      project,
-      stage,
-      `uploads`,
-      "attachmentsBucketName",
-    ).value;
-
-    const attachmentsBucketRegion = new CdkImport(
-      this,
-      project,
-      stage,
-      `uploads`,
-      "attachmentsBucketRegion",
-    ).value;
-
-    const ecsFailureTopicArn = new CdkImport(
-      this,
-      project,
-      stage,
-      `alerts`,
-      "ecsFailureTopicArn",
-    ).value;
+    const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
 
     // Define IAM role
     const lambdaRole = new iam.Role(this, "LambdaExecutionRole", {
@@ -137,7 +94,7 @@ export class ApiStack extends cdk.NestedStack {
                 "es:ESHttpDelete",
                 "es:ESHttpPut",
               ],
-              resources: [`${osDomainArn}/*`],
+              resources: [`${openSearchDomain.domainArn}/*`],
             }),
             new iam.PolicyStatement({
               effect: iam.Effect.ALLOW,
@@ -157,7 +114,7 @@ export class ApiStack extends cdk.NestedStack {
                 "s3:GetObject",
                 "s3:GetObjectTagging",
               ],
-              resources: [`${attachmentsBucketArn}/*`],
+              resources: [`${attachmentsBucket.bucketArn}/*`],
             }),
           ],
         }),
@@ -207,22 +164,22 @@ export class ApiStack extends cdk.NestedStack {
         id: "GetUploadUrlLambda",
         entry: path.join(__dirname, "lambda/getUploadUrl.ts"),
         environment: {
-          attachmentsBucketName,
-          attachmentsBucketRegion,
+          attachmentsBucketName: attachmentsBucket.bucketName,
+          attachmentsBucketRegion: this.region,
         },
       },
       {
         id: "SearchLambda",
         entry: path.join(__dirname, "lambda/search.ts"),
         environment: {
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
         },
       },
       {
         id: "GetPackageActionsLambda",
         entry: path.join(__dirname, "lambda/getPackageActions.ts"),
         environment: {
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
           onemacLegacyS3AccessRoleArn,
         },
       },
@@ -230,7 +187,7 @@ export class ApiStack extends cdk.NestedStack {
         id: "GetAttachmentUrlLambda",
         entry: path.join(__dirname, "lambda/getAttachmentUrl.ts"),
         environment: {
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
           onemacLegacyS3AccessRoleArn,
         },
       },
@@ -238,7 +195,7 @@ export class ApiStack extends cdk.NestedStack {
         id: "ItemLambda",
         entry: path.join(__dirname, "lambda/item.ts"),
         environment: {
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
         },
       },
       {
@@ -251,7 +208,7 @@ export class ApiStack extends cdk.NestedStack {
           dbPassword: dbInfo.password,
           topicName,
           brokerString,
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
         },
       },
       {
@@ -264,49 +221,49 @@ export class ApiStack extends cdk.NestedStack {
           dbPassword: dbInfo.password,
           topicName,
           brokerString,
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
         },
       },
       {
         id: "GetTypesLambda",
         entry: path.join(__dirname, "lambda/getTypes.ts"),
         environment: {
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
         },
       },
       {
         id: "GetSubTypesLambda",
         entry: path.join(__dirname, "lambda/getSubTypes.ts"),
         environment: {
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
         },
       },
       {
         id: "GetCpocsLambda",
         entry: path.join(__dirname, "lambda/getCpocs.ts"),
         environment: {
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
         },
       },
       {
         id: "ItemExistsLambda",
         entry: path.join(__dirname, "lambda/itemExists.ts"),
         environment: {
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
         },
       },
       {
         id: "FormsLambda",
         entry: path.join(__dirname, "lambda/getForm.ts"),
         environment: {
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
         },
       },
       {
         id: "GetAllFormsLambda",
         entry: path.join(__dirname, "lambda/getAllForms.ts"),
         environment: {
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
         },
       },
       {
@@ -319,7 +276,7 @@ export class ApiStack extends cdk.NestedStack {
           dbPassword: dbInfo.password,
           topicName,
           brokerString,
-          osDomain,
+          osDomain: openSearchDomainEndpoint,
         },
       },
     ];
@@ -330,7 +287,7 @@ export class ApiStack extends cdk.NestedStack {
         lambdaDef.entry,
         lambdaDef.environment,
         vpc,
-        importedLambdaSecurityGroup,
+        lambdaSecurityGroup,
         privateSubnets,
       );
       return acc;
@@ -514,7 +471,7 @@ export class ApiStack extends cdk.NestedStack {
 
       alarm.addAlarmAction({
         bind: () => ({
-          alarmActionArn: ecsFailureTopicArn!,
+          alarmActionArn: alertsTopic.topicArn!,
         }),
       });
     };

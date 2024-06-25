@@ -1,7 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { SecurityGroup, Vpc } from "aws-cdk-lib/aws-ec2";
-import { CdkExport } from "./cdk-export-construct";
 
 interface NetworkingStackProps extends cdk.NestedStackProps {
   project: string;
@@ -14,41 +13,27 @@ interface NetworkingStackProps extends cdk.NestedStackProps {
 }
 
 export class NetworkingStack extends cdk.NestedStack {
+  public readonly lambdaSecurityGroup: SecurityGroup;
   constructor(scope: Construct, id: string, props: NetworkingStackProps) {
     super(scope, id, props);
-    this.initializeResources(props);
+    this.lambdaSecurityGroup = this.initializeResources(props);
   }
 
-  private async initializeResources(props: NetworkingStackProps) {
+  private initializeResources(props: NetworkingStackProps): SecurityGroup {
     const { project, stage, stack, isDev } = props;
     const { vpcInfo } = props;
-    try {
-      const vpc = Vpc.fromLookup(this, "MyVpc", {
-        vpcId: vpcInfo.id,
-      });
+    const vpc = Vpc.fromLookup(this, "MyVpc", {
+      vpcId: vpcInfo.id,
+    });
 
-      const lambdaSecurityGroup = new SecurityGroup(
-        this,
-        `LambdaSecurityGroup`,
-        {
-          vpc,
-          description: `Outbound permissive sg for lambdas in ${project}-${stage}.`,
-          allowAllOutbound: true, // Set to false to customize egress rules
-        },
-      );
+    const lambdaSecurityGroup = new SecurityGroup(this, `LambdaSecurityGroup`, {
+      vpc,
+      description: `Outbound permissive sg for lambdas in ${project}-${stage}.`,
+      allowAllOutbound: true, // Set to false to customize egress rules
+    });
 
-      lambdaSecurityGroup.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
-      new CdkExport(
-        this,
-        project,
-        stage,
-        stack,
-        "lambdaSecurityGroupId",
-        lambdaSecurityGroup.securityGroupId,
-      );
-    } catch (error) {
-      console.error("Error initializing resources:", error);
-      process.exit(1);
-    }
+    lambdaSecurityGroup.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
+
+    return lambdaSecurityGroup;
   }
 }

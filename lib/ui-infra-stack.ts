@@ -23,7 +23,6 @@ import {
   FunctionEventType,
 } from "aws-cdk-lib/aws-cloudfront";
 import { EmptyBuckets } from "./empty-buckets-construct";
-import { CdkExport } from "./cdk-export-construct";
 
 interface UiInfraStackProps extends cdk.NestedStackProps {
   project: string;
@@ -33,11 +32,22 @@ interface UiInfraStackProps extends cdk.NestedStackProps {
 }
 
 export class UiInfraStack extends cdk.NestedStack {
+  public readonly distribution: CloudFrontWebDistribution;
+  public readonly bucket: Bucket;
   constructor(scope: Construct, id: string, props: UiInfraStackProps) {
     super(scope, id, props);
+    const resources = this.initializeResources(props);
+    this.distribution = resources.distribution;
+    this.bucket = resources.bucket;
+  }
+
+  private initializeResources(props: UiInfraStackProps): {
+    distribution: CloudFrontWebDistribution;
+    bucket: Bucket;
+  } {
     const { project, stage, stack, isDev } = props;
     // S3 Bucket for hosting static website
-    const s3Bucket = new Bucket(this, "S3Bucket", {
+    const bucket = new Bucket(this, "S3Bucket", {
       bucketName: `${project}-${stage}-${cdk.Aws.ACCOUNT_ID}`,
       websiteIndexDocument: "index.html",
       websiteErrorDocument: "index.html",
@@ -102,7 +112,7 @@ export class UiInfraStack extends cdk.NestedStack {
         originConfigs: [
           {
             s3OriginSource: {
-              s3BucketSource: s3Bucket,
+              s3BucketSource: bucket,
               originAccessIdentity: cloudFrontOAI,
             },
             behaviors: [
@@ -148,40 +158,41 @@ export class UiInfraStack extends cdk.NestedStack {
     );
 
     new EmptyBuckets(this, "EmptyBuckets", {
-      buckets: [s3Bucket, loggingBucket],
+      buckets: [bucket, loggingBucket],
     });
 
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "s3BucketName",
-      s3Bucket.bucketName,
-    );
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "cloudfrontDistributionId",
-      distribution.distributionId,
-    );
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "cloudfrontEndpointUrl",
-      `https://${distribution.distributionDomainName}`,
-    );
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "applicationEndpointUrl",
-      `https://${distribution.distributionDomainName}/`,
-    );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "s3BucketName",
+    //   bucket.bucketName,
+    // );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "cloudfrontDistributionId",
+    //   distribution.distributionId,
+    // );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "cloudfrontEndpointUrl",
+    //   `https://${distribution.distributionDomainName}`,
+    // );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "applicationEndpointUrl",
+    //   `https://${distribution.distributionDomainName}/`,
+    // );
+    return { distribution, bucket };
   }
 }

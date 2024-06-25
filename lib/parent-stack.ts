@@ -37,6 +37,7 @@ export class ParentStack extends cdk.Stack {
     } = props;
 
     const commonProps = { project, stage, isDev };
+    const topicNamespace = isDev ? `--${project}--${stage}--` : "";
 
     const networkingStack = new NetworkingStack(this, "networking", {
       ...commonProps,
@@ -64,28 +65,35 @@ export class ParentStack extends cdk.Stack {
       stack: "data",
       vpcInfo,
       brokerString,
+      lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
+      topicNamespace,
     });
-    dataStack.addDependency(networkingStack);
 
-    const apiStack = new ApiStack(this, "api", {
-      ...commonProps,
-      stack: "api",
-      vpcInfo,
-      brokerString,
-      dbInfo,
-      onemacLegacyS3AccessRoleArn,
-    });
-    apiStack.addDependency(alertsStack);
-    apiStack.addDependency(dataStack);
-    apiStack.addDependency(uploadsStack);
-    apiStack.addDependency(networkingStack);
+    // const apiStack = new ApiStack(this, "api", {
+    //   ...commonProps,
+    //   stack: "api",
+    //   vpcInfo,
+    //   brokerString,
+    //   dbInfo,
+    //   onemacLegacyS3AccessRoleArn,
+    //   lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
+    //   topicNamespace,
+    //   openSearchDomain: dataStack.openSearchDomain,
+    //   openSearchDomainEndpoint: dataStack.openSearchDomainEndpoint
+    //   alertsTopic: alerts.topic
+    //   attachmentsBucket: uploads.attachmentsBucket
+    // });
+    // apiStack.addDependency(alertsStack);
+    // apiStack.addDependency(dataStack);
+    // apiStack.addDependency(uploadsStack);
+    // apiStack.addDependency(networkingStack);
 
-    const authStack = new AuthStack(this, "auth", {
-      ...commonProps,
-      stack: "auth",
-    });
-    authStack.addDependency(uiInfraStack);
-    authStack.addDependency(apiStack);
-    authStack.addDependency(networkingStack);
+    // const authStack = new AuthStack(this, "auth", {
+    //   ...commonProps,
+    //   stack: "auth",
+    // });
+    // authStack.addDependency(uiInfraStack);
+    // authStack.addDependency(apiStack);
+    // authStack.addDependency(networkingStack);
   }
 }

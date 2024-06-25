@@ -12,8 +12,6 @@ import * as sfn from "aws-cdk-lib/aws-stepfunctions";
 import * as tasks from "aws-cdk-lib/aws-stepfunctions-tasks";
 import * as fs from "fs";
 import * as logs from "aws-cdk-lib/aws-logs";
-import { CdkExport } from "./cdk-export-construct";
-import { CdkImport } from "./cdk-import-construct";
 import { ManageUsers } from "./manage-users-construct";
 
 interface DataStackProps extends cdk.NestedStackProps {
@@ -26,42 +24,36 @@ interface DataStackProps extends cdk.NestedStackProps {
     privateSubnets: string[];
   };
   brokerString: string;
+  lambdaSecurityGroup: ec2.SecurityGroup;
+  topicNamespace: string;
 }
 
 export class DataStack extends cdk.NestedStack {
+  public readonly openSearchDomain: opensearch.CfnDomain;
+  public readonly openSearchDomainEndpoint: string;
+
   constructor(scope: Construct, id: string, props: DataStackProps) {
     super(scope, id, props);
-    this.initializeResources(props);
+    const resources = this.initializeResources(props);
+    this.openSearchDomain = resources.openSearchDomain;
+    this.openSearchDomainEndpoint = `https://${this.openSearchDomain.attrDomainEndpoint}`;
   }
 
-  private async initializeResources(props: DataStackProps) {
+  private initializeResources(props: DataStackProps): {
+    openSearchDomain: opensearch.CfnDomain;
+  } {
     const { project, stage, stack, isDev } = props;
-    const { vpcInfo, brokerString } = props;
+    const { vpcInfo, brokerString, lambdaSecurityGroup, topicNamespace } =
+      props;
     const privateSubnets = vpcInfo.privateSubnets.map((subnetId: string) =>
       ec2.Subnet.fromSubnetId(this, `Subnet${subnetId}`, subnetId),
     );
     const vpc = ec2.Vpc.fromLookup(this, "MyVpc", {
       vpcId: vpcInfo.id,
     });
-    const lambdaSecurityGroupId = new CdkImport(
-      this,
-      project,
-      stage,
-      `networking`,
-      "lambdaSecurityGroupId",
-    ).value;
-    const importedLambdaSecurityGroup = ec2.SecurityGroup.fromSecurityGroupId(
-      this,
-      "ImportedSecurityGroup",
-      lambdaSecurityGroupId,
-    );
 
-    // -- Set some important variables --
-    const topicNamespace = isDev ? `--${project}--${stage}--` : "";
     const consumerGroupPrefix = `--${project}--${stage}--`;
 
-    // -- Build resources --
-    // Cognito User Pool for Kibana
     const userPool = new cognito.UserPool(this, "UserPool", {
       userPoolName: `${project}-${stage}-search`,
       selfSignUpEnabled: false,
@@ -75,7 +67,6 @@ export class DataStack extends cdk.NestedStack {
       },
     });
 
-    // Cognito User Pool Domain for Kibana
     const userPoolDomain = new cognito.UserPoolDomain(this, "UserPoolDomain", {
       userPool,
       cognitoDomain: {
@@ -83,13 +74,11 @@ export class DataStack extends cdk.NestedStack {
       },
     });
 
-    // Cognito User Pool Client for Kibana
     const userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
       userPool,
       authFlows: { adminUserPassword: true },
     });
 
-    // Cognito Identity Pool for Kibana
     const identityPool = new cognito.CfnIdentityPool(this, "IdentityPool", {
       allowUnauthenticatedIdentities: false,
       cognitoIdentityProviders: [
@@ -100,7 +89,6 @@ export class DataStack extends cdk.NestedStack {
       ],
     });
 
-    // IAM Role to grant to identities authenticated through Cognito
     const cognitoAuthRole = new iam.Role(this, "CognitoAuthRole", {
       assumedBy: new iam.FederatedPrincipal(
         "cognito-identity.amazonaws.com",
@@ -127,7 +115,6 @@ export class DataStack extends cdk.NestedStack {
       }),
     );
 
-    // Attach the IAM Role to the Cognito Identity Pool
     new cognito.CfnIdentityPoolRoleAttachment(
       this,
       "IdentityPoolRoleAttachment",
@@ -139,7 +126,6 @@ export class DataStack extends cdk.NestedStack {
       },
     );
 
-    // Security Group for OpenSearch
     const openSearchSecurityGroup = new ec2.SecurityGroup(
       this,
       "OpenSearchSecurityGroup",
@@ -168,7 +154,6 @@ export class DataStack extends cdk.NestedStack {
       ],
     });
 
-    // Define the IAM Role
     const openSearchMasterRole = new iam.Role(this, "OpenSearchMasterRole", {
       assumedBy: new iam.ServicePrincipal("es.amazonaws.com"),
       managedPolicies: [
@@ -178,7 +163,6 @@ export class DataStack extends cdk.NestedStack {
       ],
     });
 
-    // Add the additional trust relationship for the account
     openSearchMasterRole.assumeRolePolicy?.addStatements(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
@@ -290,7 +274,7 @@ export class DataStack extends cdk.NestedStack {
       vpcSubnets: {
         subnets: privateSubnets,
       },
-      securityGroups: [importedLambdaSecurityGroup],
+      securityGroups: [lambdaSecurityGroup],
       environment: {
         brokerString,
         region: this.region,
@@ -353,7 +337,7 @@ export class DataStack extends cdk.NestedStack {
         vpcSubnets: {
           subnets: privateSubnets,
         },
-        securityGroups: [importedLambdaSecurityGroup],
+        securityGroups: [lambdaSecurityGroup],
         bundling: {
           minify: true,
           sourceMap: true,
@@ -426,7 +410,7 @@ export class DataStack extends cdk.NestedStack {
         vpcSubnets: {
           subnets: privateSubnets,
         },
-        securityGroups: [importedLambdaSecurityGroup],
+        securityGroups: [lambdaSecurityGroup],
         bundling: {
           minify: true,
           sourceMap: true,
@@ -496,7 +480,7 @@ export class DataStack extends cdk.NestedStack {
                   effect: iam.Effect.ALLOW,
                   actions: ["ec2:DescribeSecurityGroups"],
                   resources: [
-                    `arn:aws:ec2:${this.region}:${this.account}:security-group/${lambdaSecurityGroupId}`,
+                    `arn:aws:ec2:${this.region}:${this.account}:security-group/${lambdaSecurityGroup.securityGroupId}`,
                   ],
                 }),
               ],
@@ -507,7 +491,7 @@ export class DataStack extends cdk.NestedStack {
         vpcSubnets: {
           subnets: privateSubnets,
         },
-        securityGroups: [importedLambdaSecurityGroup],
+        securityGroups: [lambdaSecurityGroup],
         bundling: {
           minify: true,
           sourceMap: true,
@@ -556,7 +540,7 @@ export class DataStack extends cdk.NestedStack {
       vpcSubnets: {
         subnets: privateSubnets,
       },
-      securityGroups: [importedLambdaSecurityGroup],
+      securityGroups: [lambdaSecurityGroup],
       bundling: {
         minify: true,
         sourceMap: true,
@@ -607,7 +591,7 @@ export class DataStack extends cdk.NestedStack {
         vpcSubnets: {
           subnets: privateSubnets,
         },
-        securityGroups: [importedLambdaSecurityGroup],
+        securityGroups: [lambdaSecurityGroup],
         bundling: {
           minify: true,
           sourceMap: true,
@@ -656,7 +640,7 @@ export class DataStack extends cdk.NestedStack {
       vpcSubnets: {
         subnets: privateSubnets,
       },
-      securityGroups: [importedLambdaSecurityGroup],
+      securityGroups: [lambdaSecurityGroup],
       bundling: {
         minify: true,
         sourceMap: true,
@@ -732,7 +716,7 @@ export class DataStack extends cdk.NestedStack {
         vpcSubnets: {
           subnets: privateSubnets,
         },
-        securityGroups: [importedLambdaSecurityGroup],
+        securityGroups: [lambdaSecurityGroup],
         retryAttempts: 0,
         bundling: {
           minify: true,
@@ -910,7 +894,7 @@ export class DataStack extends cdk.NestedStack {
           "Context.$": "$$",
           osDomain: `https://${openSearchDomain.attrDomainEndpoint}`,
           brokerString,
-          securityGroup: lambdaSecurityGroupId,
+          securityGroup: lambdaSecurityGroup.securityGroupId,
           consumerGroupPrefix,
           subnets: vpcInfo.privateSubnets,
           triggers: [
@@ -1014,7 +998,7 @@ export class DataStack extends cdk.NestedStack {
           "Context.$": "$$",
           osDomain: `https://${openSearchDomain.attrDomainEndpoint}`,
           brokerString,
-          securityGroup: lambdaSecurityGroupId,
+          securityGroup: lambdaSecurityGroup.securityGroupId,
           consumerGroupPrefix,
           subnets: vpcInfo.privateSubnets,
           triggers: [
@@ -1165,7 +1149,7 @@ export class DataStack extends cdk.NestedStack {
           vpcSubnets: {
             subnets: privateSubnets,
           },
-          securityGroups: [importedLambdaSecurityGroup],
+          securityGroups: [lambdaSecurityGroup],
           bundling: {
             minify: true,
             sourceMap: true,
@@ -1192,40 +1176,41 @@ export class DataStack extends cdk.NestedStack {
       });
     }
 
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "openSearchDomainArn",
-      openSearchDomain.attrArn,
-    );
+    return { openSearchDomain };
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "openSearchDomainArn",
+    //   openSearchDomain.attrArn,
+    // );
 
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "openSearchDomainEndpoint",
-      `https://${openSearchDomain.attrDomainEndpoint}`,
-    );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "openSearchDomainEndpoint",
+    //   `https://${openSearchDomain.attrDomainEndpoint}`,
+    // );
 
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "openSearchDashboardEndpoint",
-      `https://${openSearchDomain.attrDomainEndpoint}/_dashboards`,
-    );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "openSearchDashboardEndpoint",
+    //   `https://${openSearchDomain.attrDomainEndpoint}/_dashboards`,
+    // );
 
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "topicName",
-      `${topicNamespace}aws.onemac.migration.cdc`,
-    );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "topicName",
+    //   `${topicNamespace}aws.onemac.migration.cdc`,
+    // );
   }
 }

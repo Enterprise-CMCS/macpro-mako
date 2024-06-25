@@ -8,7 +8,6 @@ import * as s3n from "aws-cdk-lib/aws-s3-notifications";
 import * as events from "aws-cdk-lib/aws-events";
 import * as targets from "aws-cdk-lib/aws-events-targets";
 import { EmptyBuckets } from "./empty-buckets-construct";
-import { CdkExport } from "./cdk-export-construct";
 
 interface UploadsStackProps extends cdk.NestedStackProps {
   project: string;
@@ -18,8 +17,16 @@ interface UploadsStackProps extends cdk.NestedStackProps {
 }
 
 export class UploadsStack extends cdk.NestedStack {
+  public readonly attachmentsBucket: s3.Bucket;
   constructor(scope: Construct, id: string, props: UploadsStackProps) {
     super(scope, id, props);
+    const resources = this.initializeResources(props);
+    this.attachmentsBucket = resources.attachmentsBucket;
+  }
+
+  private initializeResources(props: UploadsStackProps): {
+    attachmentsBucket: s3.Bucket;
+  } {
     const { project, stage, stack, isDev } = props;
     const attachmentsBucketName = `${project}-${stage}-attachments-${cdk.Aws.ACCOUNT_ID}`;
     // S3 Buckets
@@ -46,29 +53,30 @@ export class UploadsStack extends cdk.NestedStack {
       buckets: [attachmentsBucket],
     });
 
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "attachmentsBucketName",
-      attachmentsBucket.bucketName,
-    );
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "attachmentsBucketArn",
-      attachmentsBucket.bucketArn,
-    );
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "attachmentsBucketRegion",
-      this.region,
-    );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "attachmentsBucketName",
+    //   attachmentsBucket.bucketName,
+    // );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "attachmentsBucketArn",
+    //   attachmentsBucket.bucketArn,
+    // );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "attachmentsBucketRegion",
+    //   this.region,
+    // );
+    return { attachmentsBucket };
   }
 }
