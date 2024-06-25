@@ -219,6 +219,9 @@ export const v202401: FormSchema = {
                                           label:
                                             "Describe the benefits, source of benefits, and any limitations.",
                                           labelClassName: "font-bold",
+                                          props: {
+                                            className: "h-[114px]",
+                                          },
                                           rules: {
                                             required: "* Required",
                                             pattern: {
