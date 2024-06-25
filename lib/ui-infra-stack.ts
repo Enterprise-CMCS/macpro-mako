@@ -33,11 +33,15 @@ interface UiInfraStackProps extends cdk.NestedStackProps {
 
 export class UiInfraStack extends cdk.NestedStack {
   public readonly distribution: CloudFrontWebDistribution;
+  public readonly applicationEndpointUrl: string;
+  public readonly cloudfrontEndpointUrl: string;
   public readonly bucket: Bucket;
   constructor(scope: Construct, id: string, props: UiInfraStackProps) {
     super(scope, id, props);
     const resources = this.initializeResources(props);
     this.distribution = resources.distribution;
+    this.applicationEndpointUrl = `https://${this.distribution.distributionDomainName}/`;
+    this.cloudfrontEndpointUrl = `https://${this.distribution.distributionDomainName}`;
     this.bucket = resources.bucket;
   }
 

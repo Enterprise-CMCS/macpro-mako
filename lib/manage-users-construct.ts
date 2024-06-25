@@ -13,15 +13,17 @@ export class ManageUsers extends Construct {
     userPool: cognito.UserPool,
     project: string,
     stage: string,
+    stack: string,
     users: any,
   ) {
     super(scope, `ManageUsers`);
 
     const manageUsers = new NodejsFunction(this, "ManageUsersLambdaFunction", {
-      functionName: `${project}-${stage}-manageUsers`,
+      functionName: `${project}-${stage}-${stack}-manageUsers`,
       entry: path.join(__dirname, "lambda/manageUsers.ts"),
       handler: "handler",
       runtime: lambda.Runtime.NODEJS_18_X,
+      timeout: cdk.Duration.minutes(5),
       role: new iam.Role(this, "ManageUsersLambdaExecutionRole", {
         assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [

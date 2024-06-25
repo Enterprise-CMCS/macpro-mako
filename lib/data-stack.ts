@@ -305,6 +305,7 @@ export class DataStack extends cdk.NestedStack {
       userPool,
       project,
       stage,
+      stack,
       JSON.parse(
         fs.readFileSync(
           path.join(__dirname, "other/kibana-users.json"),

@@ -13,6 +13,7 @@ import { CdkExport } from "./cdk-export-construct";
 import * as opensearch from "aws-cdk-lib/aws-opensearchservice";
 import { Topic } from "aws-cdk-lib/aws-sns";
 import { Bucket } from "aws-cdk-lib/aws-s3";
+import { ApiGateway } from "aws-cdk-lib/aws-events-targets";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -40,12 +41,18 @@ interface ApiStackProps extends cdk.NestedStackProps {
 }
 
 export class ApiStack extends cdk.NestedStack {
+  public readonly apiGateway: apigateway.RestApi;
+  public readonly apiGatewayUrl: string;
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
-    this.initializeResources(props);
+    const resources = this.initializeResources(props);
+    this.apiGateway = resources.apiGateway;
+    this.apiGatewayUrl = `https://${this.apiGateway.restApiId}.execute-api.${this.region}.amazonaws.com/${props.stage}`;
   }
 
-  private initializeResources(props: ApiStackProps) {
+  private initializeResources(props: ApiStackProps): {
+    apiGateway: apigateway.RestApi;
+  } {
     const { project, stage, stack, isDev } = props;
     const {
       vpcInfo,
@@ -480,29 +487,6 @@ export class ApiStack extends cdk.NestedStack {
       createCloudWatchAlarm(`${lambdaFunc.node.id}ErrorAlarm`, lambdaFunc);
     });
 
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "apiGatewayRestApiName",
-      api.restApiName,
-    );
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "apiGatewayRestApiId",
-      api.restApiId,
-    );
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "apiGatewayRestApiUrl",
-      `https://${api.restApiId}.execute-api.${this.region}.amazonaws.com/${stage}`,
-    );
+    return { apiGateway: api };
   }
 }

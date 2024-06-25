@@ -84,12 +84,11 @@ export class ParentStack extends cdk.Stack {
       attachmentsBucket: uploadsStack.attachmentsBucket,
     });
 
-    // const authStack = new AuthStack(this, "auth", {
-    //   ...commonProps,
-    //   stack: "auth",
-    // });
-    // authStack.addDependency(uiInfraStack);
-    // authStack.addDependency(apiStack);
-    // authStack.addDependency(networkingStack);
+    const authStack = new AuthStack(this, "auth", {
+      ...commonProps,
+      stack: "auth",
+      apiGateway: apiStack.apiGateway,
+      applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
+    });
   }
 }

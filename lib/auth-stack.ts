@@ -4,15 +4,16 @@ import { aws_iam as iam, aws_cognito as cognito } from "aws-cdk-lib";
 import * as path from "path";
 import * as fs from "fs";
 import { CfnUserPoolDomain } from "aws-cdk-lib/aws-cognito";
-import { CdkImport } from "./cdk-import-construct";
-import { CdkExport } from "./cdk-export-construct";
 import { ManageUsers } from "./manage-users-construct";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
 
 interface AuthStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   stack: string;
   isDev: boolean;
+  apiGateway: apigateway.RestApi;
+  applicationEndpointUrl: string;
 }
 
 export class AuthStack extends cdk.NestedStack {
@@ -23,20 +24,7 @@ export class AuthStack extends cdk.NestedStack {
 
   private initializeResources(props: AuthStackProps) {
     const { project, stage, stack, isDev } = props;
-    const apiId = new CdkImport(
-      this,
-      project,
-      stage,
-      `api`,
-      "apiGatewayRestApiId",
-    ).value;
-    const applicationEndpointUrl = new CdkImport(
-      this,
-      project,
-      stage,
-      `ui-infra`,
-      "applicationEndpointUrl",
-    ).value;
+    const { apiGateway, applicationEndpointUrl } = props;
 
     // Cognito User Pool
     const userPool = new cognito.UserPool(this, "CognitoUserPool", {
@@ -61,8 +49,7 @@ export class AuthStack extends cdk.NestedStack {
       },
       customAttributes: {
         state: new cognito.StringAttribute({ mutable: true }),
-        cmsRoles: new cognito.StringAttribute({ mutable: true }), // Note: Use camelCase for custom attributes
-        username: new cognito.StringAttribute({ mutable: true }), // Note: This might be conflicting if used as a username alias
+        "cms-roles": new cognito.StringAttribute({ mutable: true }),
       },
     });
 
@@ -138,7 +125,7 @@ export class AuthStack extends cdk.NestedStack {
             new iam.PolicyStatement({
               actions: ["execute-api:Invoke"],
               resources: [
-                `arn:aws:execute-api:${this.region}:${this.account}:${apiId}/*`,
+                `arn:aws:execute-api:${this.region}:${this.account}:${apiGateway.restApiId}/*`,
               ],
               effect: iam.Effect.ALLOW,
             }),
@@ -161,45 +148,46 @@ export class AuthStack extends cdk.NestedStack {
       userPool,
       project,
       stage,
+      stack,
       JSON.parse(
         fs.readFileSync(path.join(__dirname, "other/users.json"), "utf8"),
       ),
     );
 
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "userPoolId",
-      userPool.userPoolId,
-    );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "userPoolId",
+    //   userPool.userPoolId,
+    // );
 
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "userPoolClientId",
-      userPoolClient.attrClientId,
-    );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "userPoolClientId",
+    //   userPoolClient.attrClientId,
+    // );
 
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "userPoolClientDomain",
-      `${userPoolDomain.domain}.auth.${this.region}.amazoncognito.com`,
-    );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "userPoolClientDomain",
+    //   `${userPoolDomain.domain}.auth.${this.region}.amazoncognito.com`,
+    // );
 
-    new CdkExport(
-      this,
-      project,
-      stage,
-      stack,
-      "identityPoolId",
-      identityPool.ref,
-    );
+    // new CdkExport(
+    //   this,
+    //   project,
+    //   stage,
+    //   stack,
+    //   "identityPoolId",
+    //   identityPool.ref,
+    // );
   }
 }
