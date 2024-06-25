@@ -1178,40 +1178,5 @@ export class DataStack extends cdk.NestedStack {
     }
 
     return { openSearchDomain };
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "openSearchDomainArn",
-    //   openSearchDomain.attrArn,
-    // );
-
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "openSearchDomainEndpoint",
-    //   `https://${openSearchDomain.attrDomainEndpoint}`,
-    // );
-
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "openSearchDashboardEndpoint",
-    //   `https://${openSearchDomain.attrDomainEndpoint}/_dashboards`,
-    // );
-
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "topicName",
-    //   `${topicNamespace}aws.onemac.migration.cdc`,
-    // );
   }
 }

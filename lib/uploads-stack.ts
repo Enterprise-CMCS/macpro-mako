@@ -53,30 +53,6 @@ export class UploadsStack extends cdk.NestedStack {
       buckets: [attachmentsBucket],
     });
 
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "attachmentsBucketName",
-    //   attachmentsBucket.bucketName,
-    // );
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "attachmentsBucketArn",
-    //   attachmentsBucket.bucketArn,
-    // );
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "attachmentsBucketRegion",
-    //   this.region,
-    // );
     return { attachmentsBucket };
   }
 }

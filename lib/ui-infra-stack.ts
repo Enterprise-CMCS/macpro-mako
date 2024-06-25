@@ -165,38 +165,6 @@ export class UiInfraStack extends cdk.NestedStack {
       buckets: [bucket, loggingBucket],
     });
 
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "s3BucketName",
-    //   bucket.bucketName,
-    // );
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "cloudfrontDistributionId",
-    //   distribution.distributionId,
-    // );
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "cloudfrontEndpointUrl",
-    //   `https://${distribution.distributionDomainName}`,
-    // );
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "applicationEndpointUrl",
-    //   `https://${distribution.distributionDomainName}/`,
-    // );
     return { distribution, bucket };
   }
 }
