@@ -3,6 +3,8 @@ import { useGetForm } from "@/api";
 import { useReadOnlyUser } from "../../hooks/useReadOnlyUser";
 import { WebformBody } from "./WebFormBody";
 
+import { v202401 as TEST } from "../../../../api/webforms/ABP3/v202401";
+
 export function Webform() {
   const { id, version } = useParams("/webform/:id/:version");
 
@@ -22,7 +24,7 @@ export function Webform() {
 
   return (
     <WebformBody
-      data={data}
+      data={TEST}
       readonly={readonly}
       id={id}
       version={version}
