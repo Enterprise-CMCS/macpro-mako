@@ -40,6 +40,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Input",
               name: "name",
+              props: {
+                className: "w-[355px]",
+              },
               rules: {
                 required: "* Required",
                 pattern: {
