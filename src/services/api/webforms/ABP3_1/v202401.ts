@@ -1857,6 +1857,9 @@ export const v202401: FormSchema = {
             {
               name: "description",
               rhf: "Textarea",
+              props: {
+                className: "h-[114px]",
+              },
               rules: {
                 pattern: {
                   value: /^\S(.*\S)?$/,
