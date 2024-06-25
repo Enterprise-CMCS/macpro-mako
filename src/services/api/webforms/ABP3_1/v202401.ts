@@ -100,6 +100,9 @@ export const v202401: FormSchema = {
                                       name: "state-territory-bench-plan-name",
                                       label: "Plan name",
                                       labelClassName: "font-bold",
+                                      props: {
+                                        className: "w-[658px]",
+                                      },
                                       rules: {
                                         required: "* Required",
                                         pattern: {
@@ -264,6 +267,9 @@ export const v202401: FormSchema = {
                                       name: "bench-equivalent-state-coverage-plan-name",
                                       label: "Plan name",
                                       labelClassName: "font-bold",
+                                      props: {
+                                        className: "w-[658px]",
+                                      },
                                       rules: {
                                         required: "* Required",
                                         pattern: {
