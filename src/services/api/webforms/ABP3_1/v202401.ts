@@ -343,6 +343,9 @@ export const v202401: FormSchema = {
               rhf: "Input",
               label: "EHB-benchmark plan name",
               labelClassName: "font-bold",
+              props: {
+                className: "w-[355px]",
+              },
               rules: {
                 required: "* Required",
                 pattern: {
