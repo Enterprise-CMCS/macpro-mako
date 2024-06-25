@@ -1,7 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { SecurityGroup, Vpc } from "aws-cdk-lib/aws-ec2";
-import { cdkExport } from "./utils/cdk-export";
+import { CdkExport } from "./cdk-export-construct";
 
 interface NetworkingStackProps extends cdk.NestedStackProps {
   vpcInfo: {
@@ -16,7 +16,11 @@ export class NetworkingStack extends cdk.NestedStack {
   }
 
   private async initializeResources(props: NetworkingStackProps) {
+    const parentName = this.node.id;
+    const stackName = this.nestedStackResource!.logicalId;
     try {
+      const parentName = this.node.id;
+      const stackName = this.nestedStackResource!.logicalId;
       const { vpcInfo } = props;
 
       const vpc = Vpc.fromLookup(this, "MyVpc", {
@@ -30,16 +34,16 @@ export class NetworkingStack extends cdk.NestedStack {
           vpc,
           description: `Outbound permissive sg for lambdas in ${this.node.id}.`,
           allowAllOutbound: true, // Set to false to customize egress rules
-        }
+        },
       );
 
       lambdaSecurityGroup.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
-
-      cdkExport(
+      new CdkExport(
         this,
-        this.node.id,
+        parentName,
+        stackName,
         "lambdaSecurityGroupId",
-        lambdaSecurityGroup.securityGroupId
+        lambdaSecurityGroup.securityGroupId,
       );
     } catch (error) {
       console.error("Error initializing resources:", error);

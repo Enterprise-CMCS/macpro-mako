@@ -13,7 +13,8 @@ import * as sfn from "aws-cdk-lib/aws-stepfunctions";
 import * as tasks from "aws-cdk-lib/aws-stepfunctions-tasks";
 import * as fs from "fs";
 import * as logs from "aws-cdk-lib/aws-logs";
-import { cdkExport, cdkImport } from "./utils/cdk-export";
+import { CdkExport } from "./cdk-export-construct";
+import { CdkImport } from "./cdk-import-construct";
 
 interface DataStackProps extends cdk.NestedStackProps {
   project: string;
@@ -32,25 +33,25 @@ export class DataStack extends cdk.NestedStack {
   }
 
   private async initializeResources(props: DataStackProps) {
+    const parentName = this.node.id;
+    const stackName = this.nestedStackResource!.logicalId;
     const { project, stage, vpcInfo, brokerString } = props;
     const privateSubnets = vpcInfo.privateSubnets.map((subnetId: string) =>
-      ec2.Subnet.fromSubnetId(this, `Subnet${subnetId}`, subnetId)
+      ec2.Subnet.fromSubnetId(this, `Subnet${subnetId}`, subnetId),
     );
     const vpc = ec2.Vpc.fromLookup(this, "MyVpc", {
       vpcId: vpcInfo.id,
     });
-    const lambdaSecurityGroupId = cdkImport(
+    const lambdaSecurityGroupId = new CdkImport(
       this,
-      this.node.id,
-      project,
-      stage,
+      parentName,
       `networking`,
-      "lambdaSecurityGroupId"
-    ).getAttString("Value");
+      "lambdaSecurityGroupId",
+    ).value;
     const importedLambdaSecurityGroup = ec2.SecurityGroup.fromSecurityGroupId(
       this,
       "ImportedSecurityGroup",
-      lambdaSecurityGroupId
+      lambdaSecurityGroupId,
     );
 
     // -- Set some important variables --
@@ -111,7 +112,7 @@ export class DataStack extends cdk.NestedStack {
             "cognito-identity.amazonaws.com:amr": "authenticated",
           },
         },
-        "sts:AssumeRoleWithWebIdentity"
+        "sts:AssumeRoleWithWebIdentity",
       ),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonCognitoReadOnly"),
@@ -123,7 +124,7 @@ export class DataStack extends cdk.NestedStack {
         effect: iam.Effect.ALLOW,
         principals: [new iam.ServicePrincipal("es.amazonaws.com")],
         actions: ["sts:AssumeRole"],
-      })
+      }),
     );
 
     // Attach the IAM Role to the Cognito Identity Pool
@@ -135,7 +136,7 @@ export class DataStack extends cdk.NestedStack {
         roles: {
           authenticated: cognitoAuthRole.roleArn,
         },
-      }
+      },
     );
 
     // Security Group for OpenSearch
@@ -145,24 +146,24 @@ export class DataStack extends cdk.NestedStack {
       {
         vpc,
         description: "Security group for OpenSearch",
-      }
+      },
     );
     openSearchSecurityGroup.addIngressRule(
       ec2.Peer.ipv4("10.0.0.0/8"),
       ec2.Port.tcp(443),
-      "Allow HTTPS access from VPC"
+      "Allow HTTPS access from VPC",
     );
     openSearchSecurityGroup.addEgressRule(
       ec2.Peer.ipv4("127.0.0.1/32"),
       ec2.Port.tcp(443),
-      "Allow HTTPS access to localhost"
+      "Allow HTTPS access to localhost",
     );
 
     const openSearchRole = new iam.Role(this, "OpenSearchRole", {
       assumedBy: new iam.ServicePrincipal("es.amazonaws.com"),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "AmazonOpenSearchServiceCognitoAccess"
+          "AmazonOpenSearchServiceCognitoAccess",
         ),
       ],
     });
@@ -172,7 +173,7 @@ export class DataStack extends cdk.NestedStack {
       assumedBy: new iam.ServicePrincipal("es.amazonaws.com"),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "AmazonOpenSearchServiceFullAccess"
+          "AmazonOpenSearchServiceFullAccess",
         ),
       ],
     });
@@ -183,7 +184,7 @@ export class DataStack extends cdk.NestedStack {
         effect: iam.Effect.ALLOW,
         principals: [new iam.AccountPrincipal(cdk.Stack.of(this).account)],
         actions: ["sts:AssumeRole"],
-      })
+      }),
     );
 
     // OpenSearch Domain
@@ -243,7 +244,7 @@ export class DataStack extends cdk.NestedStack {
             ? [vpcInfo.privateSubnets[0]]
             : vpcInfo.privateSubnets,
         },
-      }
+      },
     );
 
     const mapRole = new NodejsFunction(this, "MapRoleLambdaFunction", {
@@ -255,10 +256,10 @@ export class DataStack extends cdk.NestedStack {
         assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole"
+            "service-role/AWSLambdaBasicExecutionRole",
           ),
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaVPCAccessExecutionRole"
+            "service-role/AWSLambdaVPCAccessExecutionRole",
           ),
         ],
         inlinePolicies: {
@@ -302,7 +303,7 @@ export class DataStack extends cdk.NestedStack {
       "CustomResourceProvider",
       {
         onEventHandler: mapRole,
-      }
+      },
     );
 
     const mapRoleCustomResource = new cdk.CustomResource(this, "MapRole", {
@@ -324,7 +325,7 @@ export class DataStack extends cdk.NestedStack {
         assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole"
+            "service-role/AWSLambdaBasicExecutionRole",
           ),
         ],
         inlinePolicies: {
@@ -362,7 +363,7 @@ export class DataStack extends cdk.NestedStack {
       "ManageUsersCustomResourceProvider",
       {
         onEventHandler: manageUsers,
-      }
+      },
     );
 
     new cdk.CustomResource(this, "ManageUsers", {
@@ -372,8 +373,8 @@ export class DataStack extends cdk.NestedStack {
         users: JSON.parse(
           fs.readFileSync(
             path.join(__dirname, "other/kibana-users.json"),
-            "utf8"
-          )
+            "utf8",
+          ),
         ),
         project,
         stage,
@@ -393,10 +394,10 @@ export class DataStack extends cdk.NestedStack {
           assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
           managedPolicies: [
             iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaBasicExecutionRole"
+              "service-role/AWSLambdaBasicExecutionRole",
             ),
             iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaVPCAccessExecutionRole"
+              "service-role/AWSLambdaVPCAccessExecutionRole",
             ),
           ],
         }),
@@ -411,7 +412,7 @@ export class DataStack extends cdk.NestedStack {
           target: "es2020",
           externalModules: ["aws-sdk"],
         },
-      }
+      },
     );
 
     const createTopicsCustomResourceProvider = new cr.Provider(
@@ -419,7 +420,7 @@ export class DataStack extends cdk.NestedStack {
       "CreateTopicsCustomResourceProvider",
       {
         onEventHandler: createTopics,
-      }
+      },
     );
 
     new cdk.CustomResource(this, "CreateTopics", {
@@ -448,10 +449,10 @@ export class DataStack extends cdk.NestedStack {
           assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
           managedPolicies: [
             iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaBasicExecutionRole"
+              "service-role/AWSLambdaBasicExecutionRole",
             ),
             iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaVPCAccessExecutionRole"
+              "service-role/AWSLambdaVPCAccessExecutionRole",
             ),
           ],
           inlinePolicies: {
@@ -484,7 +485,7 @@ export class DataStack extends cdk.NestedStack {
           target: "es2020",
           externalModules: ["aws-sdk"],
         },
-      }
+      },
     );
 
     const cfnNotify = new NodejsFunction(this, "CfnNotifyLambdaFunctiopn", {
@@ -497,7 +498,7 @@ export class DataStack extends cdk.NestedStack {
         assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole"
+            "service-role/AWSLambdaBasicExecutionRole",
           ),
         ],
       }),
@@ -522,10 +523,10 @@ export class DataStack extends cdk.NestedStack {
           assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
           managedPolicies: [
             iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaBasicExecutionRole"
+              "service-role/AWSLambdaBasicExecutionRole",
             ),
             iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaVPCAccessExecutionRole"
+              "service-role/AWSLambdaVPCAccessExecutionRole",
             ),
           ],
           inlinePolicies: {
@@ -565,7 +566,7 @@ export class DataStack extends cdk.NestedStack {
           target: "es2020",
           externalModules: ["aws-sdk"],
         },
-      }
+      },
     );
 
     const deleteIndex = new NodejsFunction(this, "DeleteIndexLambdaFunctiopn", {
@@ -578,10 +579,10 @@ export class DataStack extends cdk.NestedStack {
         assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole"
+            "service-role/AWSLambdaBasicExecutionRole",
           ),
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaVPCAccessExecutionRole"
+            "service-role/AWSLambdaVPCAccessExecutionRole",
           ),
         ],
         inlinePolicies: {
@@ -629,10 +630,10 @@ export class DataStack extends cdk.NestedStack {
           assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
           managedPolicies: [
             iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaBasicExecutionRole"
+              "service-role/AWSLambdaBasicExecutionRole",
             ),
             iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaVPCAccessExecutionRole"
+              "service-role/AWSLambdaVPCAccessExecutionRole",
             ),
           ],
           inlinePolicies: {
@@ -665,7 +666,7 @@ export class DataStack extends cdk.NestedStack {
           target: "es2020",
           externalModules: ["aws-sdk"],
         },
-      }
+      },
     );
 
     const setupIndex = new NodejsFunction(this, "SetupIndexLambdaFunctiopn", {
@@ -678,10 +679,10 @@ export class DataStack extends cdk.NestedStack {
         assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole"
+            "service-role/AWSLambdaBasicExecutionRole",
           ),
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaVPCAccessExecutionRole"
+            "service-role/AWSLambdaVPCAccessExecutionRole",
           ),
         ],
         inlinePolicies: {
@@ -742,10 +743,10 @@ export class DataStack extends cdk.NestedStack {
           assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
           managedPolicies: [
             iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaBasicExecutionRole"
+              "service-role/AWSLambdaBasicExecutionRole",
             ),
             iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaVPCAccessExecutionRole"
+              "service-role/AWSLambdaVPCAccessExecutionRole",
             ),
           ],
           inlinePolicies: {
@@ -807,7 +808,7 @@ export class DataStack extends cdk.NestedStack {
           assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
           managedPolicies: [
             iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaBasicExecutionRole"
+              "service-role/AWSLambdaBasicExecutionRole",
             ),
           ],
           inlinePolicies: {
@@ -835,7 +836,7 @@ export class DataStack extends cdk.NestedStack {
           target: "es2020",
           externalModules: ["aws-sdk"],
         },
-      }
+      },
     );
 
     const cleanupTriggersOnDeleteProvider = new cr.Provider(
@@ -843,7 +844,7 @@ export class DataStack extends cdk.NestedStack {
       "CleanupTriggersOnDeleteProvider",
       {
         onEventHandler: cleanupTriggersOnDelete,
-      }
+      },
     );
 
     new cdk.CustomResource(this, "CleanupTriggersOnDelete", {
@@ -860,10 +861,10 @@ export class DataStack extends cdk.NestedStack {
         assumedBy: new iam.ServicePrincipal("states.amazonaws.com"),
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole"
+            "service-role/AWSLambdaBasicExecutionRole",
           ),
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "CloudWatchLogsFullAccess"
+            "CloudWatchLogsFullAccess",
           ),
         ],
         inlinePolicies: {
@@ -878,7 +879,7 @@ export class DataStack extends cdk.NestedStack {
             ],
           }),
         },
-      }
+      },
     );
 
     const successState = new sfn.Succeed(this, "SuccessState");
@@ -892,7 +893,7 @@ export class DataStack extends cdk.NestedStack {
           "Context.$": "$$",
           Success: true,
         }),
-      }
+      },
     );
 
     const failureState = new sfn.Fail(this, "FailureState");
@@ -906,7 +907,7 @@ export class DataStack extends cdk.NestedStack {
           "Context.$": "$$",
           Success: false,
         }),
-      }
+      },
     ).next(failureState);
 
     const deleteAllTriggersStep = new tasks.LambdaInvoke(
@@ -918,10 +919,10 @@ export class DataStack extends cdk.NestedStack {
         payload: sfn.TaskInput.fromObject({
           "Context.$": "$$",
           functions: Object.values(lambdaFunctions).map(
-            (fn) => fn.functionName
+            (fn) => fn.functionName,
           ),
         }),
-      }
+      },
     ).addCatch(notifyOfFailureStep, {
       errors: ["States.ALL"],
       resultPath: "$.error",
@@ -997,7 +998,7 @@ export class DataStack extends cdk.NestedStack {
             },
           ],
         }),
-      }
+      },
     ).addCatch(notifyOfFailureStep, {
       errors: ["States.ALL"],
       resultPath: "$.error",
@@ -1044,7 +1045,7 @@ export class DataStack extends cdk.NestedStack {
             },
           ],
         }),
-      }
+      },
     ).addCatch(notifyOfFailureStep, {
       errors: ["States.ALL"],
       resultPath: "$.error",
@@ -1082,7 +1083,7 @@ export class DataStack extends cdk.NestedStack {
             },
           ],
         }),
-      }
+      },
     ).addCatch(notifyOfFailureStep, {
       errors: ["States.ALL"],
       resultPath: "$.error",
@@ -1099,12 +1100,12 @@ export class DataStack extends cdk.NestedStack {
             sfn.Condition.booleanEquals("$.ready", true),
             startIndexingInsightsStep
               .next(notifyOfSuccessStep)
-              .next(successState)
+              .next(successState),
           )
           .when(
             sfn.Condition.booleanEquals("$.ready", false),
-            waitForData.next(checkDataProgressStep)
-          )
+            waitForData.next(checkDataProgressStep),
+          ),
       );
 
     const stateMachineLogGroup = new logs.LogGroup(
@@ -1113,7 +1114,7 @@ export class DataStack extends cdk.NestedStack {
       {
         logGroupName: `/aws/vendedlogs/states/${this.node.id}-${stage}-reindex`,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
-      }
+      },
     );
 
     const reindexStateMachine = new sfn.StateMachine(
@@ -1128,7 +1129,7 @@ export class DataStack extends cdk.NestedStack {
           level: sfn.LogLevel.ALL,
           includeExecutionData: true,
         },
-      }
+      },
     );
 
     const runReindexLambda = new NodejsFunction(
@@ -1144,7 +1145,7 @@ export class DataStack extends cdk.NestedStack {
           assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
           managedPolicies: [
             iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaBasicExecutionRole"
+              "service-role/AWSLambdaBasicExecutionRole",
             ),
           ],
           inlinePolicies: {
@@ -1167,7 +1168,7 @@ export class DataStack extends cdk.NestedStack {
           target: "es2020",
           externalModules: ["aws-sdk"],
         },
-      }
+      },
     );
 
     const runReindexProviderProvider = new cr.Provider(
@@ -1175,7 +1176,7 @@ export class DataStack extends cdk.NestedStack {
       "RunReindexProvider",
       {
         onEventHandler: runReindexLambda,
-      }
+      },
     );
 
     const runReindexCustomResource = new cdk.CustomResource(
@@ -1186,7 +1187,7 @@ export class DataStack extends cdk.NestedStack {
         properties: {
           stateMachine: reindexStateMachine.stateMachineArn,
         },
-      }
+      },
     );
 
     runReindexCustomResource.node.addDependency(mapRoleCustomResource);
@@ -1205,10 +1206,10 @@ export class DataStack extends cdk.NestedStack {
             assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
             managedPolicies: [
               iam.ManagedPolicy.fromAwsManagedPolicyName(
-                "service-role/AWSLambdaBasicExecutionRole"
+                "service-role/AWSLambdaBasicExecutionRole",
               ),
               iam.ManagedPolicy.fromAwsManagedPolicyName(
-                "service-role/AWSLambdaVPCAccessExecutionRole"
+                "service-role/AWSLambdaVPCAccessExecutionRole",
               ),
             ],
           }),
@@ -1223,7 +1224,7 @@ export class DataStack extends cdk.NestedStack {
             target: "es2020",
             externalModules: ["aws-sdk"],
           },
-        }
+        },
       );
 
       const cleanupKafkaProvider = new cr.Provider(
@@ -1231,7 +1232,7 @@ export class DataStack extends cdk.NestedStack {
         "CleanupKafkaProvider",
         {
           onEventHandler: cleanupKafka,
-        }
+        },
       );
 
       new cdk.CustomResource(this, "CleanupKafka", {
@@ -1243,32 +1244,36 @@ export class DataStack extends cdk.NestedStack {
       });
     }
 
-    cdkExport(
+    new CdkExport(
       this,
-      this.node.id,
+      parentName,
+      stackName,
       "openSearchDomainArn",
-      openSearchDomain.attrArn
+      openSearchDomain.attrArn,
     );
 
-    cdkExport(
+    new CdkExport(
       this,
-      this.node.id,
+      parentName,
+      stackName,
       "openSearchDomainEndpoint",
-      `https://${openSearchDomain.attrDomainEndpoint}`
+      `https://${openSearchDomain.attrDomainEndpoint}`,
     );
 
-    cdkExport(
+    new CdkExport(
       this,
-      this.node.id,
+      parentName,
+      stackName,
       "openSearchDashboardEndpoint",
-      `https://${openSearchDomain.attrDomainEndpoint}/_dashboards`
+      `https://${openSearchDomain.attrDomainEndpoint}/_dashboards`,
     );
 
-    cdkExport(
+    new CdkExport(
       this,
-      this.node.id,
+      parentName,
+      stackName,
       "topicName",
-      `${topicNamespace}aws.onemac.migration.cdc`
+      `${topicNamespace}aws.onemac.migration.cdc`,
     );
   }
 }

@@ -23,17 +23,15 @@ import {
   FunctionEventType,
 } from "aws-cdk-lib/aws-cloudfront";
 import { EmptyBuckets } from "./empty-buckets-construct";
-import { cdkExport } from "./utils/cdk-export";
+import { CdkExport } from "./cdk-export-construct";
 
-interface UiInfraStackProps extends cdk.NestedStackProps {
-  project: string;
-  stage: string;
-}
+interface UiInfraStackProps extends cdk.NestedStackProps {}
 
 export class UiInfraStack extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: UiInfraStackProps) {
     super(scope, id, props);
-    const { project, stage } = props;
+    const parentName = this.node.id;
+    const stackName = this.nestedStackResource!.logicalId;
     // S3 Bucket for hosting static website
     const s3Bucket = new Bucket(this, "S3Bucket", {
       bucketName: `${this.node.id}-${cdk.Aws.ACCOUNT_ID}`,
@@ -142,32 +140,40 @@ export class UiInfraStack extends cdk.NestedStack {
             errorCachingMinTtl: 300,
           },
         ],
-      }
+      },
     );
 
     new EmptyBuckets(this, "EmptyBuckets", {
       buckets: [s3Bucket, loggingBucket],
-      stackName: `${project}-${stage}-ui-infra`,
     });
 
-    cdkExport(this, this.node.id, "s3BucketName", s3Bucket.bucketName);
-    cdkExport(
+    new CdkExport(
       this,
-      this.node.id,
+      parentName,
+      stackName,
+      "s3BucketName",
+      s3Bucket.bucketName,
+    );
+    new CdkExport(
+      this,
+      parentName,
+      stackName,
       "cloudfrontDistributionId",
-      distribution.distributionId
+      distribution.distributionId,
     );
-    cdkExport(
+    new CdkExport(
       this,
-      this.node.id,
+      parentName,
+      stackName,
       "cloudfrontEndpointUrl",
-      `https://${distribution.distributionDomainName}`
+      `https://${distribution.distributionDomainName}`,
     );
-    cdkExport(
+    new CdkExport(
       this,
-      this.node.id,
+      parentName,
+      stackName,
       "applicationEndpointUrl",
-      `https://${distribution.distributionDomainName}/`
+      `https://${distribution.distributionDomainName}/`,
     );
   }
 }

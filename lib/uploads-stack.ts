@@ -8,7 +8,7 @@ import * as s3n from "aws-cdk-lib/aws-s3-notifications";
 import * as events from "aws-cdk-lib/aws-events";
 import * as targets from "aws-cdk-lib/aws-events-targets";
 import { EmptyBuckets } from "./empty-buckets-construct";
-import { cdkExport } from "./utils/cdk-export";
+import { CdkExport } from "./cdk-export-construct";
 
 interface UploadsStackProps extends cdk.NestedStackProps {
   project: string;
@@ -18,6 +18,8 @@ interface UploadsStackProps extends cdk.NestedStackProps {
 export class UploadsStack extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: UploadsStackProps) {
     super(scope, id, props);
+    const parentName = this.node.id;
+    const stackName = this.nestedStackResource!.logicalId;
     const { project, stage } = props;
     const attachmentsBucketName = `${this.node.id}-attachments-${cdk.Aws.ACCOUNT_ID}`;
     // S3 Buckets
@@ -42,21 +44,28 @@ export class UploadsStack extends cdk.NestedStack {
 
     new EmptyBuckets(this, "EmptyBuckets", {
       buckets: [attachmentsBucket],
-      stackName: `${project}-${stage}-uploads`,
     });
 
-    cdkExport(
+    new CdkExport(
       this,
-      this.node.id,
+      parentName,
+      stackName,
       "attachmentsBucketName",
       attachmentsBucket.bucketName,
     );
-    cdkExport(
+    new CdkExport(
       this,
-      this.node.id,
+      parentName,
+      stackName,
       "attachmentsBucketArn",
       attachmentsBucket.bucketArn,
     );
-    cdkExport(this, this.node.id, "attachmentsBucketRegion", this.region);
+    new CdkExport(
+      this,
+      parentName,
+      stackName,
+      "attachmentsBucketRegion",
+      this.region,
+    );
   }
 }

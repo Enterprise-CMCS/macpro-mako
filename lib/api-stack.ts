@@ -9,7 +9,8 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import * as path from "path";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { cdkExport, cdkImport } from "./utils/cdk-export";
+import { CdkImport } from "./cdk-import-construct";
+import { CdkExport } from "./cdk-export-construct";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -35,6 +36,8 @@ export class ApiStack extends cdk.NestedStack {
   }
 
   private initializeResources(props: ApiStackProps) {
+    const parentName = this.node.id;
+    const stackName = this.nestedStackResource!.logicalId;
     const {
       project,
       stage,
@@ -45,86 +48,66 @@ export class ApiStack extends cdk.NestedStack {
     } = props;
 
     const privateSubnets = vpcInfo.privateSubnets.map((subnetId: string) =>
-      ec2.Subnet.fromSubnetId(this, `Subnet${subnetId}`, subnetId)
+      ec2.Subnet.fromSubnetId(this, `Subnet${subnetId}`, subnetId),
     );
     const vpc = ec2.Vpc.fromLookup(this, "MyVpc", {
       vpcId: vpcInfo.id,
     });
-    const lambdaSecurityGroupId = cdkImport(
+    const lambdaSecurityGroupId = new CdkImport(
       this,
-      this.node.id,
-      project,
-      stage,
+      parentName,
       `networking`,
-      "lambdaSecurityGroupId"
-    ).getAttString("Value");
+      "lambdaSecurityGroupId",
+    ).value;
     const importedLambdaSecurityGroup = ec2.SecurityGroup.fromSecurityGroupId(
       this,
       "ImportedSecurityGroup",
-      lambdaSecurityGroupId
+      lambdaSecurityGroupId,
     );
-    const osDomain = cdkImport(
+    const osDomain = new CdkImport(
       this,
-      this.node.id,
-      project,
-      stage,
+      parentName,
       `data`,
-      "openSearchDomainEndpoint"
-    ).getAttString("Value");
+      "openSearchDomainEndpoint",
+    ).value;
 
-    const osDomainArn = cdkImport(
+    const osDomainArn = new CdkImport(
       this,
-      this.node.id,
-      project,
-      stage,
+      parentName,
       `data`,
-      "openSearchDomainArn"
-    ).getAttString("Value");
+      "openSearchDomainArn",
+    ).value;
 
-    const topicName = cdkImport(
-      this,
-      this.node.id,
-      project,
-      stage,
-      `data`,
-      "topicName"
-    ).getAttString("Value");
+    const topicName = new CdkImport(this, parentName, `data`, "topicName")
+      .value;
 
-    const attachmentsBucketArn = cdkImport(
+    const attachmentsBucketArn = new CdkImport(
       this,
-      this.node.id,
-      project,
-      stage,
+      parentName,
       `uploads`,
-      "attachmentsBucketArn"
-    ).getAttString("Value");
+      "attachmentsBucketArn",
+    ).value;
 
-    const attachmentsBucketName = cdkImport(
+    const attachmentsBucketName = new CdkImport(
       this,
-      this.node.id,
-      project,
-      stage,
+      parentName,
       `uploads`,
-      "attachmentsBucketName"
-    ).getAttString("Value");
+      "attachmentsBucketName",
+    ).value;
 
-    const attachmentsBucketRegion = cdkImport(
+    const attachmentsBucketRegion = new CdkImport(
       this,
-      this.node.id,
-      project,
-      stage,
+      parentName,
       `uploads`,
-      "attachmentsBucketRegion"
-    ).getAttString("Value");
+      "attachmentsBucketRegion",
+    ).value;
 
-    const ecsFailureTopicArn = cdkImport(
+    const ecsFailureTopicArn = new CdkImport(
       this,
-      this.node.id,
-      project,
-      stage,
+      parentName,
       `alerts`,
-      "ecsFailureTopicArn"
-    ).getAttString("Value");
+      "ecsFailureTopicArn",
+    ).value;
 
     // -- Set some important variables --
     const isDev = !["master", "val", "production"].includes(stage);
@@ -135,10 +118,10 @@ export class ApiStack extends cdk.NestedStack {
       path: "/delegatedadmin/developer/",
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaBasicExecutionRole"
+          "service-role/AWSLambdaBasicExecutionRole",
         ),
         iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaVPCAccessExecutionRole"
+          "service-role/AWSLambdaVPCAccessExecutionRole",
         ),
         iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
       ],
@@ -189,7 +172,7 @@ export class ApiStack extends cdk.NestedStack {
       environment: { [key: string]: string | undefined },
       vpc?: ec2.IVpc,
       securityGroup?: ec2.ISecurityGroup,
-      subnets?: ec2.ISubnet[]
+      subnets?: ec2.ISubnet[],
     ) => {
       // Remove any undefined values from the environment object
       const sanitizedEnvironment: { [key: string]: string } = {};
@@ -349,7 +332,7 @@ export class ApiStack extends cdk.NestedStack {
         lambdaDef.environment,
         vpc,
         importedLambdaSecurityGroup,
-        privateSubnets
+        privateSubnets,
       );
       return acc;
     }, {} as { [key: string]: NodejsFunction });
@@ -365,7 +348,7 @@ export class ApiStack extends cdk.NestedStack {
         effect: iam.Effect.ALLOW,
         actions: ["lambda:InvokeFunction"],
         resources: ["arn:aws:lambda:*:*:function:*"], // Adjust to limit to your Lambda functions
-      })
+      }),
     );
 
     // Define API Gateway
@@ -476,7 +459,7 @@ export class ApiStack extends cdk.NestedStack {
     const addApiResource = (
       path: string,
       lambdaFunction: lambda.Function,
-      method: string = "POST"
+      method: string = "POST",
     ) => {
       const resource = api.root.resourceForPath(path);
 
@@ -510,7 +493,7 @@ export class ApiStack extends cdk.NestedStack {
     // Define CloudWatch Alarms
     const createCloudWatchAlarm = (
       id: string,
-      lambdaFunction: lambda.Function
+      lambdaFunction: lambda.Function,
     ) => {
       const alarm = new cloudwatch.Alarm(this, id, {
         alarmName: `${this.node.id}-${id}Alarm`,
@@ -541,13 +524,26 @@ export class ApiStack extends cdk.NestedStack {
       createCloudWatchAlarm(`${lambdaFunc.node.id}ErrorAlarm`, lambdaFunc);
     });
 
-    cdkExport(this, this.node.id, "apiGatewayRestApiName", api.restApiName);
-    cdkExport(this, this.node.id, "apiGatewayRestApiId", api.restApiId);
-    cdkExport(
+    new CdkExport(
       this,
-      this.node.id,
+      parentName,
+      stackName,
+      "apiGatewayRestApiName",
+      api.restApiName,
+    );
+    new CdkExport(
+      this,
+      parentName,
+      stackName,
+      "apiGatewayRestApiId",
+      api.restApiId,
+    );
+    new CdkExport(
+      this,
+      parentName,
+      stackName,
       "apiGatewayRestApiUrl",
-      `https://${api.restApiId}.execute-api.${this.region}.amazonaws.com/${stage}`
+      `https://${api.restApiId}.execute-api.${this.region}.amazonaws.com/${stage}`,
     );
   }
 }

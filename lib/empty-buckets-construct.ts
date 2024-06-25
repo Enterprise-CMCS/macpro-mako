@@ -4,25 +4,17 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import * as cr from "aws-cdk-lib/custom-resources";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as iam from "aws-cdk-lib/aws-iam";
-import * as logs from "aws-cdk-lib/aws-logs";
 import * as path from "path";
 
 interface EmptyBucketsProps extends cdk.StackProps {
   buckets: s3.IBucket[];
-  stackName: string;
 }
 
 export class EmptyBuckets extends Construct {
   constructor(scope: Construct, id: string, props: EmptyBucketsProps) {
     super(scope, id);
 
-    const { buckets, stackName } = props;
-
-    // Create the log group
-    const logGroup = new logs.LogGroup(this, "EmptyBucketsLogGroup", {
-      logGroupName: `/aws/lambda/${stackName}-emptyBuckets`,
-      removalPolicy: cdk.RemovalPolicy.DESTROY, // Adjust as per your need
-    });
+    const { buckets } = props;
 
     const emptyBucketsFunction = new NodejsFunction(
       this,
@@ -32,8 +24,7 @@ export class EmptyBuckets extends Construct {
         handler: "handler",
         entry: path.join(__dirname, "lambda", "emptyBuckets.ts"),
         timeout: cdk.Duration.minutes(15),
-        logGroup,
-      }
+      },
     );
 
     const bucketArns = buckets.map((bucket) => bucket.bucketArn);
@@ -46,7 +37,7 @@ export class EmptyBuckets extends Construct {
       new iam.PolicyStatement({
         actions: ["s3:ListBucket", "s3:ListBucketVersions"],
         resources: bucketArns,
-      })
+      }),
     );
 
     const bucketNames = buckets.map((bucket) => bucket.bucketName);

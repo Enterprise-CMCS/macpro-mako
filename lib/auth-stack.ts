@@ -7,7 +7,8 @@ import * as path from "path";
 import * as fs from "fs";
 import * as cr from "aws-cdk-lib/custom-resources";
 import { CfnUserPoolDomain } from "aws-cdk-lib/aws-cognito";
-import { cdkExport, cdkImport } from "./utils/cdk-export";
+import { CdkImport } from "./cdk-import-construct";
+import { CdkExport } from "./cdk-export-construct";
 
 interface AuthStackProps extends cdk.NestedStackProps {
   project: string;
@@ -21,24 +22,17 @@ export class AuthStack extends cdk.NestedStack {
   }
 
   private initializeResources(props: AuthStackProps) {
+    const parentName = this.node.id;
+    const stackName = this.nestedStackResource!.logicalId;
     const { project, stage } = props;
-    const apiId = cdkImport(
+    const apiId = new CdkImport(this, parentName, `api`, "apiGatewayRestApiId")
+      .value;
+    const applicationEndpointUrl = new CdkImport(
       this,
-      this.node.id,
-      project,
-      stage,
-      `api`,
-      "apiGatewayRestApiId"
-    ).getAttString("Value");
-
-    const applicationEndpointUrl = cdkImport(
-      this,
-      this.node.id,
-      project,
-      stage,
+      parentName,
       `ui-infra`,
-      "applicationEndpointUrl"
-    ).getAttString("Value");
+      "applicationEndpointUrl",
+    ).value;
 
     // Cognito User Pool
     const userPool = new cognito.CfnUserPool(this, "CognitoUserPool", {
@@ -113,7 +107,7 @@ export class AuthStack extends cdk.NestedStack {
           idToken: "minutes",
           refreshToken: "hours",
         },
-      }
+      },
     );
 
     const userPoolDomain = new CfnUserPoolDomain(this, "UserPoolDomain", {
@@ -134,7 +128,7 @@ export class AuthStack extends cdk.NestedStack {
             providerName: userPool.attrProviderName,
           },
         ],
-      }
+      },
     );
 
     // IAM Role for Cognito Authenticated Users
@@ -149,7 +143,7 @@ export class AuthStack extends cdk.NestedStack {
             "cognito-identity.amazonaws.com:amr": "authenticated",
           },
         },
-        "sts:AssumeRoleWithWebIdentity"
+        "sts:AssumeRoleWithWebIdentity",
       ),
       inlinePolicies: {
         CognitoAuthorizedPolicy: new iam.PolicyDocument({
@@ -172,7 +166,7 @@ export class AuthStack extends cdk.NestedStack {
       {
         identityPoolId: identityPool.ref,
         roles: { authenticated: authRole.roleArn },
-      }
+      },
     );
 
     const manageUsers = new NodejsFunction(this, "ManageUsersLambdaFunction", {
@@ -185,7 +179,7 @@ export class AuthStack extends cdk.NestedStack {
         assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole"
+            "service-role/AWSLambdaBasicExecutionRole",
           ),
         ],
         inlinePolicies: {
@@ -223,7 +217,7 @@ export class AuthStack extends cdk.NestedStack {
       "ManageUsersCustomResourceProvider",
       {
         onEventHandler: manageUsers,
-      }
+      },
     );
 
     new cdk.CustomResource(this, "ManageUsers", {
@@ -231,26 +225,43 @@ export class AuthStack extends cdk.NestedStack {
       properties: {
         userPoolId: userPool.attrUserPoolId,
         users: JSON.parse(
-          fs.readFileSync(path.join(__dirname, "other/users.json"), "utf8")
+          fs.readFileSync(path.join(__dirname, "other/users.json"), "utf8"),
         ),
         project,
         stage,
       },
     });
 
-    cdkExport(this, this.node.id, "userPoolId", userPool.attrUserPoolId);
-    cdkExport(
+    new CdkExport(
       this,
-      this.node.id,
+      parentName,
+      stackName,
+      "userPoolId",
+      userPool.attrUserPoolId,
+    );
+
+    new CdkExport(
+      this,
+      parentName,
+      stackName,
       "userPoolClientId",
-      userPoolClient.attrClientId
+      userPoolClient.attrClientId,
     );
-    cdkExport(
+
+    new CdkExport(
       this,
-      this.node.id,
+      parentName,
+      stackName,
       "userPoolClientDomain",
-      `${userPoolDomain.domain}.auth.${this.region}.amazoncognito.com`
+      `${userPoolDomain.domain}.auth.${this.region}.amazoncognito.com`,
     );
-    cdkExport(this, this.node.id, "identityPoolId", identityPool.ref);
+
+    new CdkExport(
+      this,
+      parentName,
+      stackName,
+      "identityPoolId",
+      identityPool.ref,
+    );
   }
 }

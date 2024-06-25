@@ -8,7 +8,7 @@ import {
 } from "aws-cdk-lib/aws-iam";
 import { CfnTopicPolicy, Topic } from "aws-cdk-lib/aws-sns";
 import { Key } from "aws-cdk-lib/aws-kms";
-import { cdkExport } from "./utils/cdk-export";
+import { CdkExport } from "./cdk-export-construct";
 
 export class AlertsStack extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props?: cdk.NestedStackProps) {
@@ -16,6 +16,8 @@ export class AlertsStack extends cdk.NestedStack {
     this.initializeResources();
   }
   private async initializeResources() {
+    const parentName = this.node.id;
+    const stackName = this.nestedStackResource!.logicalId;
     try {
       // Create Alerts Topic with KMS Key
       const alertsTopic = new Topic(this, "AlertsTopic", {
@@ -34,7 +36,7 @@ export class AlertsStack extends cdk.NestedStack {
           principals: [new AccountPrincipal(cdk.Aws.ACCOUNT_ID)],
           actions: ["kms:*"],
           resources: ["*"],
-        })
+        }),
       );
       kmsKeyForSns.addToResourcePolicy(
         new PolicyStatement({
@@ -43,7 +45,7 @@ export class AlertsStack extends cdk.NestedStack {
           principals: [new ServicePrincipal("sns.amazonaws.com")],
           actions: ["kms:GenerateDataKey", "kms:Decrypt"],
           resources: ["*"],
-        })
+        }),
       );
       kmsKeyForSns.addToResourcePolicy(
         new PolicyStatement({
@@ -55,7 +57,7 @@ export class AlertsStack extends cdk.NestedStack {
           ],
           actions: ["kms:Decrypt", "kms:GenerateDataKey"],
           resources: ["*"],
-        })
+        }),
       );
 
       // Output the Alerts Topic ARN
@@ -81,7 +83,13 @@ export class AlertsStack extends cdk.NestedStack {
         },
       });
 
-      cdkExport(this, this.node.id, "ecsFailureTopicArn", alertsTopic.topicArn);
+      new CdkExport(
+        this,
+        parentName,
+        stackName,
+        "ecsFailureTopicArn",
+        alertsTopic.topicArn,
+      );
     } catch (error) {
       console.error("Error initializing resources:", error);
       process.exit(1);
