@@ -22,6 +22,15 @@ import {
 dotenv.config();
 
 const runner = new LabeledProcessRunner();
+const secretsManagerClient = new SecretsManagerClient({
+  region: process.env.REGION_A,
+});
+const cloudFormationClient = new CloudFormationClient({
+  region: process.env.REGION_A,
+});
+const cloudfrontClient = new CloudFrontClient({
+  region: process.env.REGION_A,
+});
 
 async function install_deps(runner: LabeledProcessRunner) {
   await runner.run_command_and_output(
@@ -248,6 +257,7 @@ yargs
       }).sync();
     },
   )
+  // TODO reimplement
   // .command(
   //   ["open-kibana", "open-os"],
   //   "Open the Kibana dashboard, the frontend for OpenSearch.",
@@ -263,6 +273,8 @@ yargs
   //     open(url);
   //   }
   // )
+
+  // TODO reimplement
   // .command(
   //   ["open-app"],
   //   "Open the Kibana dashboard, the frontend for OpenSearch.",
@@ -282,37 +294,6 @@ yargs
   .scriptName("run") // This modifies the displayed help menu to show 'run' isntead of 'dev.js'
   .demandCommand(1, "").argv; // this prints out the help if you don't call a subcommand
 
-// async function getCloudFormationOutputValue(
-//   service: string,
-//   stage: string,
-//   outputKey: string,
-//   region: string = ""
-// ): Promise<string> {
-//   const cliRegion = region !== "" ? region : process.env.REGION_A;
-//   const client = new CloudFormationClient({ region: cliRegion });
-//   const stackName = `${process.env.PROJECT}-${service}-${stage}`;
-//   const command = new DescribeStacksCommand({
-//     StackName: stackName,
-//   });
-
-//   try {
-//     const response = await client.send(command);
-//     const stack = response.Stacks?.[0];
-//     const outputValue = stack?.Outputs?.find(
-//       (output) => output.OutputKey === outputKey
-//     )?.OutputValue;
-//     if (outputValue === undefined || outputValue.trim() === "") {
-//       throw new Error("Output not found");
-//     }
-//     return outputValue;
-//   } catch (error) {
-//     console.error(
-//       `Failed to retrieve output [${outputKey}] from stack [${stackName}]:`,
-//       error
-//     );
-//     throw error; // Rethrow or handle as needed
-//   }
-// }
 async function runLocalUiAgainstAwsBackend(stage) {
   await writeEnvFileForUi(stage, true);
   await runner.run_command_and_output(`Build`, ["yarn", "build"], "react-app");
@@ -355,9 +336,6 @@ async function deployUiToAws(stage) {
   );
 
   // Create CloudFront invalidation
-  const cloudfrontClient = new CloudFrontClient({
-    region: process.env.REGION_A,
-  });
   const invalidationParams = {
     DistributionId: cloudfrontDistributionId,
     InvalidationBatch: {
@@ -445,8 +423,6 @@ import {
   GetSecretValueCommand,
 } from "@aws-sdk/client-secrets-manager";
 
-const client = new SecretsManagerClient({ region: process.env.REGION_A });
-
 export async function fetchSecret(
   project: string,
   stage: string,
@@ -456,7 +432,7 @@ export async function fetchSecret(
 
   try {
     const command = new GetSecretValueCommand({ SecretId: secretName });
-    const data = await client.send(command);
+    const data = await secretsManagerClient.send(command);
     console.log(`Using secret at ${secretName}`);
     if (data.SecretString) {
       try {
@@ -478,7 +454,7 @@ export async function fetchSecret(
       const defaultCommand = new GetSecretValueCommand({
         SecretId: defaultSecretName,
       });
-      const defaultData = await client.send(defaultCommand);
+      const defaultData = await secretsManagerClient.send(defaultCommand);
       console.log(`Using secret at ${defaultSecretName}`);
       if (defaultData.SecretString) {
         try {
@@ -501,9 +477,8 @@ export async function fetchSecret(
 }
 
 async function fetchCloudFormationExport(stage, exportName) {
-  const client = new CloudFormationClient({ region: process.env.REGION_A });
   const command = new ListExportsCommand({});
-  const response = await client.send(command);
+  const response = await cloudFormationClient.send(command);
 
   const exportValue = response.Exports?.find(
     (exp) => exp.Name === `${process.env.PROJECT}-${stage}-${exportName}`,
