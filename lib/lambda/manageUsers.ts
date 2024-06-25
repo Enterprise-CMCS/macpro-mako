@@ -14,7 +14,7 @@ export const handler: Handler = async (event, context) => {
       const devUserPassword = await fetchSecret(
         project,
         stage,
-        "devUserPassword"
+        "devUserPassword",
       );
 
       for (let i = 0; i < users.length; i++) {

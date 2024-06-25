@@ -1,14 +1,12 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { aws_iam as iam, aws_cognito as cognito } from "aws-cdk-lib";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
-import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as path from "path";
 import * as fs from "fs";
-import * as cr from "aws-cdk-lib/custom-resources";
 import { CfnUserPoolDomain } from "aws-cdk-lib/aws-cognito";
 import { CdkImport } from "./cdk-import-construct";
 import { CdkExport } from "./cdk-export-construct";
+import { ManageUsers } from "./manage-users-construct";
 
 interface AuthStackProps extends cdk.NestedStackProps {
   project: string;
@@ -35,48 +33,31 @@ export class AuthStack extends cdk.NestedStack {
     ).value;
 
     // Cognito User Pool
-    const userPool = new cognito.CfnUserPool(this, "CognitoUserPool", {
-      adminCreateUserConfig: {
-        allowAdminCreateUserOnly: true,
-      },
+    const userPool = new cognito.UserPool(this, "CognitoUserPool", {
       userPoolName: this.node.id,
-      usernameAttributes: ["email"],
-      autoVerifiedAttributes: ["email"],
-      emailConfiguration: {
-        emailSendingAccount: "COGNITO_DEFAULT",
+      signInAliases: {
+        email: true,
       },
-      schema: [
-        {
-          name: "given_name",
-          attributeDataType: "String",
-          mutable: true,
+      autoVerify: {
+        email: true,
+      },
+      selfSignUpEnabled: false, // This corresponds to allowAdminCreateUserOnly: true
+      email: cognito.UserPoolEmail.withCognito("no-reply@yourdomain.com"),
+      standardAttributes: {
+        givenName: {
           required: true,
-        },
-        {
-          name: "family_name",
-          attributeDataType: "String",
           mutable: true,
+        },
+        familyName: {
           required: true,
-        },
-        {
-          name: "state",
-          attributeDataType: "String",
           mutable: true,
-          required: false,
         },
-        {
-          name: "cms-roles",
-          attributeDataType: "String",
-          mutable: true,
-          required: false,
-        },
-        {
-          name: "username",
-          attributeDataType: "String",
-          mutable: true,
-          required: false,
-        },
-      ],
+      },
+      customAttributes: {
+        state: new cognito.StringAttribute({ mutable: true }),
+        cmsRoles: new cognito.StringAttribute({ mutable: true }), // Note: Use camelCase for custom attributes
+        username: new cognito.StringAttribute({ mutable: true }), // Note: This might be conflicting if used as a username alias
+      },
     });
 
     // Cognito User Pool Client
@@ -85,7 +66,7 @@ export class AuthStack extends cdk.NestedStack {
       "CognitoUserPoolClient",
       {
         clientName: this.node.id,
-        userPoolId: userPool.attrUserPoolId,
+        userPoolId: userPool.userPoolId,
         explicitAuthFlows: ["ADMIN_NO_SRP_AUTH"],
         generateSecret: false,
         allowedOAuthFlows: ["code"],
@@ -112,7 +93,7 @@ export class AuthStack extends cdk.NestedStack {
 
     const userPoolDomain = new CfnUserPoolDomain(this, "UserPoolDomain", {
       domain: `${stage}-login-${userPoolClient.ref}`,
-      userPoolId: userPool.attrUserPoolId,
+      userPoolId: userPool.userPoolId,
     });
 
     // Cognito Identity Pool
@@ -125,7 +106,7 @@ export class AuthStack extends cdk.NestedStack {
         cognitoIdentityProviders: [
           {
             clientId: userPoolClient.ref,
-            providerName: userPool.attrProviderName,
+            providerName: userPool.userPoolProviderName,
           },
         ],
       },
@@ -169,75 +150,22 @@ export class AuthStack extends cdk.NestedStack {
       },
     );
 
-    const manageUsers = new NodejsFunction(this, "ManageUsersLambdaFunction", {
-      functionName: `${this.node.id}-manageUsers`,
-      entry: path.join(__dirname, "lambda/manageUsers.ts"),
-      handler: "handler",
-      runtime: lambda.Runtime.NODEJS_18_X,
-      timeout: cdk.Duration.minutes(1),
-      role: new iam.Role(this, "ManageUsersLambdaExecutionRole", {
-        assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-        managedPolicies: [
-          iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole",
-          ),
-        ],
-        inlinePolicies: {
-          LambdaAssumeRolePolicy: new iam.PolicyDocument({
-            statements: [
-              new iam.PolicyStatement({
-                effect: iam.Effect.ALLOW,
-                actions: [
-                  "cognito-idp:AdminGetUser",
-                  "cognito-idp:AdminCreateUser",
-                  "cognito-idp:AdminSetUserPassword",
-                  "cognito-idp:AdminUpdateUserAttributes",
-                ],
-                resources: [userPool.attrArn],
-              }),
-              new iam.PolicyStatement({
-                effect: iam.Effect.ALLOW,
-                actions: ["secretsmanager:GetSecretValue"],
-                resources: ["*"],
-              }),
-            ],
-          }),
-        },
-      }),
-      bundling: {
-        minify: true,
-        sourceMap: true,
-        target: "es2020",
-        externalModules: ["aws-sdk"],
-      },
-    });
-
-    const manageUsersCustomResourceProvider = new cr.Provider(
+    const manageUsers = new ManageUsers(
       this,
-      "ManageUsersCustomResourceProvider",
-      {
-        onEventHandler: manageUsers,
-      },
+      userPool,
+      project,
+      stage,
+      JSON.parse(
+        fs.readFileSync(path.join(__dirname, "other/users.json"), "utf8"),
+      ),
     );
-
-    new cdk.CustomResource(this, "ManageUsers", {
-      serviceToken: manageUsersCustomResourceProvider.serviceToken,
-      properties: {
-        userPoolId: userPool.attrUserPoolId,
-        users: JSON.parse(
-          fs.readFileSync(path.join(__dirname, "other/users.json"), "utf8"),
-        ),
-        project,
-        stage,
-      },
-    });
 
     new CdkExport(
       this,
       parentName,
       stackName,
       "userPoolId",
-      userPool.attrUserPoolId,
+      userPool.userPoolId,
     );
 
     new CdkExport(

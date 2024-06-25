@@ -1,5 +1,4 @@
 import * as cdk from "aws-cdk-lib";
-import { StackProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as cognito from "aws-cdk-lib/aws-cognito";
@@ -15,6 +14,7 @@ import * as fs from "fs";
 import * as logs from "aws-cdk-lib/aws-logs";
 import { CdkExport } from "./cdk-export-construct";
 import { CdkImport } from "./cdk-import-construct";
+import { ManageUsers } from "./manage-users-construct";
 
 interface DataStackProps extends cdk.NestedStackProps {
   project: string;
@@ -316,70 +316,18 @@ export class DataStack extends cdk.NestedStack {
       },
     });
 
-    const manageUsers = new NodejsFunction(this, "ManageUsersLambdaFunction", {
-      functionName: `${this.node.id}-manageUsers`,
-      entry: path.join(__dirname, "lambda/manageUsers.ts"),
-      handler: "handler",
-      runtime: lambda.Runtime.NODEJS_18_X,
-      role: new iam.Role(this, "ManageUsersLambdaExecutionRole", {
-        assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-        managedPolicies: [
-          iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole",
-          ),
-        ],
-        inlinePolicies: {
-          LambdaAssumeRolePolicy: new iam.PolicyDocument({
-            statements: [
-              new iam.PolicyStatement({
-                effect: iam.Effect.ALLOW,
-                actions: [
-                  "cognito-idp:AdminGetUser",
-                  "cognito-idp:AdminCreateUser",
-                  "cognito-idp:AdminSetUserPassword",
-                  "cognito-idp:AdminUpdateUserAttributes",
-                ],
-                resources: [userPool.userPoolArn],
-              }),
-              new iam.PolicyStatement({
-                effect: iam.Effect.ALLOW,
-                actions: ["secretsmanager:GetSecretValue"],
-                resources: ["*"],
-              }),
-            ],
-          }),
-        },
-      }),
-      bundling: {
-        minify: true,
-        sourceMap: true,
-        target: "es2020",
-        externalModules: ["aws-sdk"],
-      },
-    });
-
-    const manageUsersCustomResourceProvider = new cr.Provider(
+    const manageUsers = new ManageUsers(
       this,
-      "ManageUsersCustomResourceProvider",
-      {
-        onEventHandler: manageUsers,
-      },
-    );
-
-    new cdk.CustomResource(this, "ManageUsers", {
-      serviceToken: manageUsersCustomResourceProvider.serviceToken,
-      properties: {
-        userPoolId: userPool.userPoolId,
-        users: JSON.parse(
-          fs.readFileSync(
-            path.join(__dirname, "other/kibana-users.json"),
-            "utf8",
-          ),
+      userPool,
+      project,
+      stage,
+      JSON.parse(
+        fs.readFileSync(
+          path.join(__dirname, "other/kibana-users.json"),
+          "utf8",
         ),
-        project,
-        stage,
-      },
-    });
+      ),
+    );
 
     const createTopics = new NodejsFunction(
       this,
