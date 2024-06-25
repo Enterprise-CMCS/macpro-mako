@@ -593,7 +593,8 @@ export const v202401: FormSchema = {
                           {
                             rhf: "Checkbox",
                             name: "one-or-more-EHBs-other-states",
-                            label: "Select one or more EHBs from other states.",
+                            label:
+                              "Select one or more essential health benefits (EHBs) from other states.",
                             labelClassName: "font-bold",
                             rules: { required: "* Required" },
                             props: {
@@ -605,8 +606,8 @@ export const v202401: FormSchema = {
                                     {
                                       rhf: "Select",
                                       name: "ambulatory-patient-services-state-territory",
-                                      label: "Identify the state/territory",
-                                      labelClassName: "p-3",
+                                      label: "From state/territory",
+                                      labelClassName: "p-3 font-bold",
                                       formItemClassName: "flex-row",
                                       props: {
                                         className: "w-[150px]",
