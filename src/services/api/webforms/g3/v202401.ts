@@ -373,6 +373,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "identify-exempt-from-cost-share",
               labelClassName: "font-bold",
+              formItemClassName: "border-slate-300 border-t-2 mt-2",
               label:
                 "To identify all other individuals exempt from cost sharing, the state uses:",
               rules: {
