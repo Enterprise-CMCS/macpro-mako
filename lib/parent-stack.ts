@@ -40,14 +40,30 @@ export class ParentStack extends cdk.Stack {
     };
 
     const networkingStack = new NetworkingStack(this, "networking", {
+      project,
+      stage,
+      stack: "networking",
       vpcInfo,
     });
-    const alertsStack = new AlertsStack(this, "alerts", {});
-    const uiInfraStack = new UiInfraStack(this, "ui-infra", { project, stage });
-    const uploadsStack = new UploadsStack(this, "uploads", {});
+    const alertsStack = new AlertsStack(this, "alerts", {
+      project,
+      stage,
+      stack: "alerts",
+    });
+    const uiInfraStack = new UiInfraStack(this, "ui-infra", {
+      project,
+      stage,
+      stack: "ui-infra",
+    });
+    const uploadsStack = new UploadsStack(this, "uploads", {
+      project,
+      stage,
+      stack: "uploads",
+    });
     const dataStack = new DataStack(this, "data", {
       project,
       stage,
+      stack: "data",
       vpcInfo,
       brokerString,
     });
@@ -57,6 +73,7 @@ export class ParentStack extends cdk.Stack {
     const apiStack = new ApiStack(this, "api", {
       project,
       stage,
+      stack: "api",
       vpcInfo,
       brokerString,
       dbInfo,
@@ -71,6 +88,7 @@ export class ParentStack extends cdk.Stack {
     const authStack = new AuthStack(this, "auth", {
       project,
       stage,
+      stack: "auth",
     });
 
     authStack.addDependency(uiInfraStack);

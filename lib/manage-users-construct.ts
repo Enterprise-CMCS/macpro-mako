@@ -18,7 +18,7 @@ export class ManageUsers extends Construct {
     super(scope, `ManageUsers`);
 
     const manageUsers = new NodejsFunction(this, "ManageUsersLambdaFunction", {
-      functionName: `${this.node.id}-manageUsers`,
+      functionName: `${project}-${stage}-manageUsers`,
       entry: path.join(__dirname, "lambda/manageUsers.ts"),
       handler: "handler",
       runtime: lambda.Runtime.NODEJS_18_X,

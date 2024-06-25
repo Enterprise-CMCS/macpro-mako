@@ -15,6 +15,7 @@ import { CdkExport } from "./cdk-export-construct";
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
+  stack: string;
   vpcInfo: {
     id: string;
     privateSubnets: string[];
@@ -36,16 +37,9 @@ export class ApiStack extends cdk.NestedStack {
   }
 
   private initializeResources(props: ApiStackProps) {
-    const parentName = this.node.id;
-    const stackName = this.nestedStackResource!.logicalId;
-    const {
-      project,
-      stage,
-      vpcInfo,
-      brokerString,
-      dbInfo,
-      onemacLegacyS3AccessRoleArn,
-    } = props;
+    const { project, stage, stack } = props;
+    const { vpcInfo, brokerString, dbInfo, onemacLegacyS3AccessRoleArn } =
+      props;
 
     const privateSubnets = vpcInfo.privateSubnets.map((subnetId: string) =>
       ec2.Subnet.fromSubnetId(this, `Subnet${subnetId}`, subnetId),
@@ -55,7 +49,8 @@ export class ApiStack extends cdk.NestedStack {
     });
     const lambdaSecurityGroupId = new CdkImport(
       this,
-      parentName,
+      project,
+      stage,
       `networking`,
       "lambdaSecurityGroupId",
     ).value;
@@ -66,45 +61,51 @@ export class ApiStack extends cdk.NestedStack {
     );
     const osDomain = new CdkImport(
       this,
-      parentName,
+      project,
+      stage,
       `data`,
       "openSearchDomainEndpoint",
     ).value;
 
     const osDomainArn = new CdkImport(
       this,
-      parentName,
+      project,
+      stage,
       `data`,
       "openSearchDomainArn",
     ).value;
 
-    const topicName = new CdkImport(this, parentName, `data`, "topicName")
+    const topicName = new CdkImport(this, project, stage, `data`, "topicName")
       .value;
 
     const attachmentsBucketArn = new CdkImport(
       this,
-      parentName,
+      project,
+      stage,
       `uploads`,
       "attachmentsBucketArn",
     ).value;
 
     const attachmentsBucketName = new CdkImport(
       this,
-      parentName,
+      project,
+      stage,
       `uploads`,
       "attachmentsBucketName",
     ).value;
 
     const attachmentsBucketRegion = new CdkImport(
       this,
-      parentName,
+      project,
+      stage,
       `uploads`,
       "attachmentsBucketRegion",
     ).value;
 
     const ecsFailureTopicArn = new CdkImport(
       this,
-      parentName,
+      project,
+      stage,
       `alerts`,
       "ecsFailureTopicArn",
     ).value;
@@ -183,7 +184,7 @@ export class ApiStack extends cdk.NestedStack {
       }
 
       const logGroup = new logs.LogGroup(this, `${id}LogGroup`, {
-        logGroupName: `/aws/lambda/${this.node.id}-${id}`,
+        logGroupName: `/aws/lambda/${project}-${stage}-${id}`,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       });
 
@@ -353,7 +354,7 @@ export class ApiStack extends cdk.NestedStack {
 
     // Define API Gateway
     const api = new apigateway.RestApi(this, "APIGateway", {
-      restApiName: `${this.node.id}`,
+      restApiName: `${project}-${stage}`,
       deployOptions: {
         stageName: stage,
         loggingLevel: apigateway.MethodLoggingLevel.INFO,
@@ -496,7 +497,7 @@ export class ApiStack extends cdk.NestedStack {
       lambdaFunction: lambda.Function,
     ) => {
       const alarm = new cloudwatch.Alarm(this, id, {
-        alarmName: `${this.node.id}-${id}Alarm`,
+        alarmName: `${project}-${stage}-${id}Alarm`,
         metric: new cloudwatch.Metric({
           namespace: `${project}-api/Errors`,
           metricName: "LambdaErrorCount",
@@ -526,22 +527,25 @@ export class ApiStack extends cdk.NestedStack {
 
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "apiGatewayRestApiName",
       api.restApiName,
     );
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "apiGatewayRestApiId",
       api.restApiId,
     );
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "apiGatewayRestApiUrl",
       `https://${api.restApiId}.execute-api.${this.region}.amazonaws.com/${stage}`,
     );

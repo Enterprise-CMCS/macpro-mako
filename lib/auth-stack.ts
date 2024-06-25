@@ -11,6 +11,7 @@ import { ManageUsers } from "./manage-users-construct";
 interface AuthStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
+  stack: string;
 }
 
 export class AuthStack extends cdk.NestedStack {
@@ -20,21 +21,25 @@ export class AuthStack extends cdk.NestedStack {
   }
 
   private initializeResources(props: AuthStackProps) {
-    const parentName = this.node.id;
-    const stackName = this.nestedStackResource!.logicalId;
-    const { project, stage } = props;
-    const apiId = new CdkImport(this, parentName, `api`, "apiGatewayRestApiId")
-      .value;
+    const { project, stage, stack } = props;
+    const apiId = new CdkImport(
+      this,
+      project,
+      stage,
+      `api`,
+      "apiGatewayRestApiId",
+    ).value;
     const applicationEndpointUrl = new CdkImport(
       this,
-      parentName,
+      project,
+      stage,
       `ui-infra`,
       "applicationEndpointUrl",
     ).value;
 
     // Cognito User Pool
     const userPool = new cognito.UserPool(this, "CognitoUserPool", {
-      userPoolName: this.node.id,
+      userPoolName: `${project}-${stage}-${stack}`,
       signInAliases: {
         email: true,
       },
@@ -65,7 +70,7 @@ export class AuthStack extends cdk.NestedStack {
       this,
       "CognitoUserPoolClient",
       {
-        clientName: this.node.id,
+        clientName: `${project}-${stage}-${stack}`,
         userPoolId: userPool.userPoolId,
         explicitAuthFlows: ["ADMIN_NO_SRP_AUTH"],
         generateSecret: false,
@@ -101,7 +106,7 @@ export class AuthStack extends cdk.NestedStack {
       this,
       "CognitoIdentityPool",
       {
-        identityPoolName: this.node.id,
+        identityPoolName: `${project}-${stage}-${stack}`,
         allowUnauthenticatedIdentities: false,
         cognitoIdentityProviders: [
           {
@@ -162,32 +167,36 @@ export class AuthStack extends cdk.NestedStack {
 
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "userPoolId",
       userPool.userPoolId,
     );
 
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "userPoolClientId",
       userPoolClient.attrClientId,
     );
 
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "userPoolClientDomain",
       `${userPoolDomain.domain}.auth.${this.region}.amazoncognito.com`,
     );
 
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "identityPoolId",
       identityPool.ref,
     );

@@ -7,12 +7,13 @@ export class CdkImport extends Construct {
   public readonly value: string;
   constructor(
     scope: Construct,
-    parentName: string,
-    stackName: string,
+    project: string,
+    stage: string,
+    stack: string,
     name: string,
   ) {
     super(scope, `CdkImport${name}`);
-    const secretName = `cdkExports/${parentName}-${stackName}/${name}`;
+    const secretName = `cdkExports/${project}-${stage}-${stack}/${name}`;
     const customResourcePolicy = cr.AwsCustomResourcePolicy.fromStatements([
       new iam.PolicyStatement({
         actions: ["secretsmanager:GetSecretValue"],

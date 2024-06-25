@@ -25,16 +25,19 @@ import {
 import { EmptyBuckets } from "./empty-buckets-construct";
 import { CdkExport } from "./cdk-export-construct";
 
-interface UiInfraStackProps extends cdk.NestedStackProps {}
+interface UiInfraStackProps extends cdk.NestedStackProps {
+  project: string;
+  stage: string;
+  stack: string;
+}
 
 export class UiInfraStack extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: UiInfraStackProps) {
     super(scope, id, props);
-    const parentName = this.node.id;
-    const stackName = this.nestedStackResource!.logicalId;
+    const { project, stage, stack } = props;
     // S3 Bucket for hosting static website
     const s3Bucket = new Bucket(this, "S3Bucket", {
-      bucketName: `${this.node.id}-${cdk.Aws.ACCOUNT_ID}`,
+      bucketName: `${project}-${stage}-${cdk.Aws.ACCOUNT_ID}`,
       websiteIndexDocument: "index.html",
       websiteErrorDocument: "index.html",
       encryption: BucketEncryption.S3_MANAGED,
@@ -43,7 +46,7 @@ export class UiInfraStack extends cdk.NestedStack {
 
     // S3 Bucket for CloudFront logs
     const loggingBucket = new Bucket(this, "LoggingBucket", {
-      bucketName: `${this.node.id}-cloudfront-logs-${cdk.Aws.ACCOUNT_ID}`,
+      bucketName: `${project}-${stage}-cloudfront-logs-${cdk.Aws.ACCOUNT_ID}`,
       encryption: BucketEncryption.S3_MANAGED,
       publicReadAccess: false,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
@@ -117,7 +120,7 @@ export class UiInfraStack extends cdk.NestedStack {
             ],
           },
         ],
-        comment: `CloudFront Distro for the static website hosted in S3 for ${this.node.id}`,
+        comment: `CloudFront Distro for the static website hosted in S3 for ${project}-${stage}`,
         defaultRootObject: "index.html",
         httpVersion: HttpVersion.HTTP2,
         viewerCertificate: ViewerCertificate.fromCloudFrontDefaultCertificate(), // need switch
@@ -149,29 +152,33 @@ export class UiInfraStack extends cdk.NestedStack {
 
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "s3BucketName",
       s3Bucket.bucketName,
     );
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "cloudfrontDistributionId",
       distribution.distributionId,
     );
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "cloudfrontEndpointUrl",
       `https://${distribution.distributionDomainName}`,
     );
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "applicationEndpointUrl",
       `https://${distribution.distributionDomainName}/`,
     );

@@ -19,6 +19,7 @@ import { ManageUsers } from "./manage-users-construct";
 interface DataStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
+  stack: string;
   vpcInfo: {
     id: string;
     privateSubnets: string[];
@@ -33,9 +34,8 @@ export class DataStack extends cdk.NestedStack {
   }
 
   private async initializeResources(props: DataStackProps) {
-    const parentName = this.node.id;
-    const stackName = this.nestedStackResource!.logicalId;
-    const { project, stage, vpcInfo, brokerString } = props;
+    const { project, stage, stack } = props;
+    const { vpcInfo, brokerString } = props;
     const privateSubnets = vpcInfo.privateSubnets.map((subnetId: string) =>
       ec2.Subnet.fromSubnetId(this, `Subnet${subnetId}`, subnetId),
     );
@@ -44,7 +44,8 @@ export class DataStack extends cdk.NestedStack {
     });
     const lambdaSecurityGroupId = new CdkImport(
       this,
-      parentName,
+      project,
+      stage,
       `networking`,
       "lambdaSecurityGroupId",
     ).value;
@@ -62,7 +63,7 @@ export class DataStack extends cdk.NestedStack {
     // -- Build resources --
     // Cognito User Pool for Kibana
     const userPool = new cognito.UserPool(this, "UserPool", {
-      userPoolName: `${this.node.id}-search`,
+      userPoolName: `${project}-${stage}-search`,
       selfSignUpEnabled: false,
       signInAliases: { email: true },
       autoVerify: { email: true },
@@ -73,13 +74,12 @@ export class DataStack extends cdk.NestedStack {
         },
       },
     });
-    console.log("asdfasdf");
-    console.log(this.node.id);
+
     // Cognito User Pool Domain for Kibana
     const userPoolDomain = new cognito.UserPoolDomain(this, "UserPoolDomain", {
       userPool,
       cognitoDomain: {
-        domainPrefix: `${this.node.id}-search`,
+        domainPrefix: `${project}-${stage}-search`,
       },
     });
 
@@ -248,7 +248,7 @@ export class DataStack extends cdk.NestedStack {
     );
 
     const mapRole = new NodejsFunction(this, "MapRoleLambdaFunction", {
-      functionName: `${this.node.id}-mapRole`,
+      functionName: `${project}-${stage}-mapRole`,
       entry: path.join(__dirname, "lambda/mapRole.ts"),
       handler: "handler",
       runtime: lambda.Runtime.NODEJS_18_X,
@@ -333,7 +333,7 @@ export class DataStack extends cdk.NestedStack {
       this,
       "CreateTopicsLambdaFunction",
       {
-        functionName: `${this.node.id}-createTopics`,
+        functionName: `${project}-${stage}-createTopics`,
         entry: path.join(__dirname, "lambda/createTopics.ts"),
         handler: "handler",
         runtime: lambda.Runtime.NODEJS_18_X,
@@ -388,7 +388,7 @@ export class DataStack extends cdk.NestedStack {
       this,
       "CheckConsumerLagLambdaFunctiopn",
       {
-        functionName: `${this.node.id}-checkConsumerLag`,
+        functionName: `${project}-${stage}-checkConsumerLag`,
         entry: path.join(__dirname, "lambda/checkConsumerLag.ts"),
         handler: "handler",
         runtime: lambda.Runtime.NODEJS_18_X,
@@ -437,7 +437,7 @@ export class DataStack extends cdk.NestedStack {
     );
 
     const cfnNotify = new NodejsFunction(this, "CfnNotifyLambdaFunctiopn", {
-      functionName: `${this.node.id}-cfnNotify`,
+      functionName: `${project}-${stage}-cfnNotify`,
       entry: path.join(__dirname, "lambda/cfnNotify.ts"),
       handler: "handler",
       runtime: lambda.Runtime.NODEJS_18_X,
@@ -462,7 +462,7 @@ export class DataStack extends cdk.NestedStack {
       this,
       "CreateTriggersLambdaFunctiopn",
       {
-        functionName: `${this.node.id}-createTriggers`,
+        functionName: `${project}-${stage}-createTriggers`,
         entry: path.join(__dirname, "lambda/createTriggers.ts"),
         handler: "handler",
         runtime: lambda.Runtime.NODEJS_18_X,
@@ -518,7 +518,7 @@ export class DataStack extends cdk.NestedStack {
     );
 
     const deleteIndex = new NodejsFunction(this, "DeleteIndexLambdaFunctiopn", {
-      functionName: `${this.node.id}-deleteIndex`,
+      functionName: `${project}-${stage}-deleteIndex`,
       entry: path.join(__dirname, "lambda/deleteIndex.ts"),
       handler: "handler",
       runtime: lambda.Runtime.NODEJS_18_X,
@@ -569,7 +569,7 @@ export class DataStack extends cdk.NestedStack {
       this,
       "DeleteTriggersLambdaFunctiopn",
       {
-        functionName: `${this.node.id}-deleteTriggers`,
+        functionName: `${project}-${stage}-deleteTriggers`,
         entry: path.join(__dirname, "lambda/deleteTriggers.ts"),
         handler: "handler",
         runtime: lambda.Runtime.NODEJS_18_X,
@@ -618,7 +618,7 @@ export class DataStack extends cdk.NestedStack {
     );
 
     const setupIndex = new NodejsFunction(this, "SetupIndexLambdaFunctiopn", {
-      functionName: `${this.node.id}-setupIndex`,
+      functionName: `${project}-${stage}-setupIndex`,
       entry: path.join(__dirname, "lambda/setupIndex.ts"),
       handler: "handler",
       runtime: lambda.Runtime.NODEJS_18_X,
@@ -679,7 +679,7 @@ export class DataStack extends cdk.NestedStack {
 
     functionNames.forEach((functionName) => {
       lambdaFunctions[functionName] = new NodejsFunction(this, functionName, {
-        functionName: `${this.node.id}-${functionName}`,
+        functionName: `${project}-${stage}-${functionName}`,
         runtime: lambda.Runtime.NODEJS_18_X,
         entry: path.join(__dirname, `lambda/${functionName}.ts`),
         handler: "handler",
@@ -747,7 +747,7 @@ export class DataStack extends cdk.NestedStack {
       this,
       "CleanupTriggersOnDeleteLambdaFunctiopn",
       {
-        functionName: `${this.node.id}-cleanupTriggersOnDelete`,
+        functionName: `${project}-${stage}-cleanupTriggersOnDelete`,
         entry: path.join(__dirname, "lambda/deleteTriggers.ts"),
         handler: "customResourceWrapper",
         runtime: lambda.Runtime.NODEJS_18_X,
@@ -821,7 +821,7 @@ export class DataStack extends cdk.NestedStack {
               new iam.PolicyStatement({
                 actions: ["lambda:InvokeFunction"],
                 resources: [
-                  `arn:aws:lambda:${this.region}:${this.account}:function:${this.node.id}-${stage}-*`,
+                  `arn:aws:lambda:${this.region}:${this.account}:function:${project}-${stage}-${stage}-*`,
                 ],
               }),
             ],
@@ -1060,7 +1060,7 @@ export class DataStack extends cdk.NestedStack {
       this,
       "StateMachineLogGroup",
       {
-        logGroupName: `/aws/vendedlogs/states/${this.node.id}-${stage}-reindex`,
+        logGroupName: `/aws/vendedlogs/states/${project}-${stage}-${stage}-reindex`,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       },
     );
@@ -1071,7 +1071,7 @@ export class DataStack extends cdk.NestedStack {
       {
         definition,
         role: reindexDataStateMachineRole,
-        stateMachineName: `${this.node.id}-${stage}-reindex`,
+        stateMachineName: `${project}-${stage}-${stage}-reindex`,
         logs: {
           destination: stateMachineLogGroup,
           level: sfn.LogLevel.ALL,
@@ -1084,7 +1084,7 @@ export class DataStack extends cdk.NestedStack {
       this,
       "runReindexLambdaFunction",
       {
-        functionName: `${this.node.id}-runReindex`,
+        functionName: `${project}-${stage}-runReindex`,
         entry: path.join(__dirname, "lambda/runReindex.ts"),
         handler: "handler",
         runtime: lambda.Runtime.NODEJS_18_X,
@@ -1103,7 +1103,7 @@ export class DataStack extends cdk.NestedStack {
                   effect: iam.Effect.ALLOW,
                   actions: ["states:StartExecution"],
                   resources: [
-                    `arn:aws:states:${this.region}:${this.account}:stateMachine:${this.node.id}-${stage}-reindex`,
+                    `arn:aws:states:${this.region}:${this.account}:stateMachine:${project}-${stage}-${stage}-reindex`,
                   ],
                 }),
               ],
@@ -1145,7 +1145,7 @@ export class DataStack extends cdk.NestedStack {
         this,
         "CleanupKafkaLambdaFunctiopn",
         {
-          functionName: `${this.node.id}-cleanupKafka`,
+          functionName: `${project}-${stage}-cleanupKafka`,
           entry: path.join(__dirname, "lambda/cleanupKafka.ts"),
           handler: "handler",
           runtime: lambda.Runtime.NODEJS_18_X,
@@ -1194,32 +1194,36 @@ export class DataStack extends cdk.NestedStack {
 
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "openSearchDomainArn",
       openSearchDomain.attrArn,
     );
 
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "openSearchDomainEndpoint",
       `https://${openSearchDomain.attrDomainEndpoint}`,
     );
 
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "openSearchDashboardEndpoint",
       `https://${openSearchDomain.attrDomainEndpoint}/_dashboards`,
     );
 
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "topicName",
       `${topicNamespace}aws.onemac.migration.cdc`,
     );

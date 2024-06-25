@@ -10,18 +10,23 @@ import { CfnTopicPolicy, Topic } from "aws-cdk-lib/aws-sns";
 import { Key } from "aws-cdk-lib/aws-kms";
 import { CdkExport } from "./cdk-export-construct";
 
+interface AlertsStackProps extends cdk.NestedStackProps {
+  project: string;
+  stage: string;
+  stack: string;
+}
+
 export class AlertsStack extends cdk.NestedStack {
-  constructor(scope: Construct, id: string, props?: cdk.NestedStackProps) {
+  constructor(scope: Construct, id: string, props: AlertsStackProps) {
     super(scope, id, props);
-    this.initializeResources();
+    this.initializeResources(props);
   }
-  private async initializeResources() {
-    const parentName = this.node.id;
-    const stackName = this.nestedStackResource!.logicalId;
+  private async initializeResources(props: AlertsStackProps) {
+    const { project, stage, stack } = props;
     try {
       // Create Alerts Topic with KMS Key
       const alertsTopic = new Topic(this, "AlertsTopic", {
-        topicName: `Alerts-${this.node.id}`,
+        topicName: `Alerts-${project}-${stage}`,
       });
 
       const kmsKeyForSns = new Key(this, "KmsKeyForSns", {
@@ -85,8 +90,9 @@ export class AlertsStack extends cdk.NestedStack {
 
       new CdkExport(
         this,
-        parentName,
-        stackName,
+        project,
+        stage,
+        stack,
         "ecsFailureTopicArn",
         alertsTopic.topicArn,
       );

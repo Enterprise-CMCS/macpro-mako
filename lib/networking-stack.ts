@@ -4,6 +4,9 @@ import { SecurityGroup, Vpc } from "aws-cdk-lib/aws-ec2";
 import { CdkExport } from "./cdk-export-construct";
 
 interface NetworkingStackProps extends cdk.NestedStackProps {
+  project: string;
+  stage: string;
+  stack: string;
   vpcInfo: {
     id: string;
   };
@@ -16,23 +19,19 @@ export class NetworkingStack extends cdk.NestedStack {
   }
 
   private async initializeResources(props: NetworkingStackProps) {
-    const parentName = this.node.id;
-    const stackName = this.nestedStackResource!.logicalId;
+    const { project, stage, stack } = props;
+    const { vpcInfo } = props;
     try {
-      const parentName = this.node.id;
-      const stackName = this.nestedStackResource!.logicalId;
-      const { vpcInfo } = props;
-
       const vpc = Vpc.fromLookup(this, "MyVpc", {
         vpcId: vpcInfo.id,
       });
 
       const lambdaSecurityGroup = new SecurityGroup(
         this,
-        "LambdaSecurityGroup",
+        `LambdaSecurityGroup`,
         {
           vpc,
-          description: `Outbound permissive sg for lambdas in ${this.node.id}.`,
+          description: `Outbound permissive sg for lambdas in ${project}-${stage}.`,
           allowAllOutbound: true, // Set to false to customize egress rules
         },
       );
@@ -40,8 +39,9 @@ export class NetworkingStack extends cdk.NestedStack {
       lambdaSecurityGroup.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
       new CdkExport(
         this,
-        parentName,
-        stackName,
+        project,
+        stage,
+        stack,
         "lambdaSecurityGroupId",
         lambdaSecurityGroup.securityGroupId,
       );

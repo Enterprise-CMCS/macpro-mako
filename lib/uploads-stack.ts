@@ -13,15 +13,14 @@ import { CdkExport } from "./cdk-export-construct";
 interface UploadsStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
+  stack: string;
 }
 
 export class UploadsStack extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: UploadsStackProps) {
     super(scope, id, props);
-    const parentName = this.node.id;
-    const stackName = this.nestedStackResource!.logicalId;
-    const { project, stage } = props;
-    const attachmentsBucketName = `${this.node.id}-attachments-${cdk.Aws.ACCOUNT_ID}`;
+    const { project, stage, stack } = props;
+    const attachmentsBucketName = `${project}-${stage}-attachments-${cdk.Aws.ACCOUNT_ID}`;
     // S3 Buckets
     const attachmentsBucket = new s3.Bucket(this, "AttachmentsBucket", {
       bucketName: attachmentsBucketName,
@@ -48,22 +47,25 @@ export class UploadsStack extends cdk.NestedStack {
 
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "attachmentsBucketName",
       attachmentsBucket.bucketName,
     );
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "attachmentsBucketArn",
       attachmentsBucket.bucketArn,
     );
     new CdkExport(
       this,
-      parentName,
-      stackName,
+      project,
+      stage,
+      stack,
       "attachmentsBucketRegion",
       this.region,
     );
