@@ -2,6 +2,7 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header: "Premiums and cost sharing G1: Cost-sharing requirements",
+  subheader: "1916 | 1916A | 42 CFR 447.50 through 447.57 (excluding 447.55)",
   formId: "g1",
   sections: [
     {
