@@ -88,6 +88,7 @@ export const v202401: FormSchema = {
                                         {
                                           rhf: "Input",
                                           label: "Plan name",
+                                          labelClassName: "font-bold",
                                           name: "state-employee-coverage-plan-name",
                                           rules: {
                                             required: "* Required",
@@ -112,6 +113,7 @@ export const v202401: FormSchema = {
                                         {
                                           rhf: "Input",
                                           label: "Plan name",
+                                          labelClassName: "font-bold",
                                           name: "commercial-hmo",
                                           rules: {
                                             required: "* Required",
@@ -262,6 +264,7 @@ export const v202401: FormSchema = {
                                           rhf: "Input",
                                           name: "state-employee-coverage-plan-name",
                                           label: "Plan name",
+                                          labelClassName: "font-bold",
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -286,6 +289,7 @@ export const v202401: FormSchema = {
                                           rhf: "Input",
                                           name: "commercial-hmo-plan-name",
                                           label: "Plan name",
+                                          labelClassName: "font-bold",
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -324,11 +328,13 @@ export const v202401: FormSchema = {
         {
           description:
             "The state/territory must select a base benchmark plan as the basis for providing essential health benefits in its benchmark or benchmark-equivalent package.",
+          descriptionClassName: "font-normal",
           slots: [
             {
               rhf: "Select",
               label:
                 "Is the base benchmark plan the same as the Section 1937 coverage option?",
+              labelClassName: "font-bold",
               name: "same-as-sect-1937",
               rules: { required: "* Required" },
               props: {
@@ -373,6 +379,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Input",
               label: "Plan name",
+              labelClassName: "font-bold",
               name: "name",
               rules: {
                 required: "* Required",
