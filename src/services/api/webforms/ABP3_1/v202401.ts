@@ -413,7 +413,7 @@ export const v202401: FormSchema = {
                         labelClassName: "mt-3 pr-4 font-bold",
                         formItemClassName: "flex-row",
                         props: {
-                          className: "w-[150px]",
+                          className: "w-[256px]",
                           options: [
                             { label: "Alabama", value: "AL" },
                             { label: "Alaska", value: "AK" },
