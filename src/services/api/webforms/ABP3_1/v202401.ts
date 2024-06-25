@@ -311,7 +311,7 @@ export const v202401: FormSchema = {
                                 },
                                 {
                                   label:
-                                    "The Medicaid state plan coverage provided to Categorically Needy (Mandatory and Options for Coverage) eligibility groups",
+                                    "The Medicaid state plan coverage provided to categorically needy (mandatory and options for coverage) eligibility groups",
                                   value: "state_plan_to_categorically_needy",
                                 },
                               ],
