@@ -116,7 +116,7 @@ export const v202401: FormSchema = {
                                 },
                                 {
                                   label:
-                                    "A commercial HMO with the largest insured commercial, non-Medicaid enrollment in the state/territory (commercial HMO)",
+                                    "A commercial HMO with the largest insured commercial, non-Medicaid enrollment in the state/territory",
                                   value: "commerical_HMO",
                                   slots: [
                                     {
@@ -124,6 +124,9 @@ export const v202401: FormSchema = {
                                       name: "bench-hmo-plan-name",
                                       label: "Plan name",
                                       labelClassName: "font-bold",
+                                      props: {
+                                        className: "w-[658px]",
+                                      },
                                       rules: {
                                         required: "* Required",
                                         pattern: {
@@ -283,7 +286,7 @@ export const v202401: FormSchema = {
                                 },
                                 {
                                   label:
-                                    "A commercial HMO with the largest insured commercial, non-Medicaid enrollment in the state/territory (commercial HMO)",
+                                    "A commercial HMO with the largest insured commercial, non-Medicaid enrollment in the state/territory",
                                   value: "commerical_HMO",
                                   slots: [
                                     {
@@ -291,6 +294,9 @@ export const v202401: FormSchema = {
                                       name: "bench-equivalent-hmo-plan-name",
                                       label: "Plan name",
                                       labelClassName: "font-bold",
+                                      props: {
+                                        className: "w-[658px]",
+                                      },
                                       rules: {
                                         required: "* Required",
                                         pattern: {
