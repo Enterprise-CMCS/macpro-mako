@@ -92,7 +92,7 @@ export const v202401: FormSchema = {
                                 },
                                 {
                                   label:
-                                    "State employee coverage that is offered and generally available to state employees (state employee coverage)",
+                                    "State employee coverage that is offered and generally available to state employees",
                                   value: "state_employee_coverage",
                                   slots: [
                                     {
@@ -256,7 +256,7 @@ export const v202401: FormSchema = {
                                 },
                                 {
                                   label:
-                                    "State employee coverage that is offered and generally available to state employees (state employee coverage)",
+                                    "State employee coverage that is offered and generally available to state employees",
                                   value: "state_employee_coverage",
                                   slots: [
                                     {
