@@ -13,6 +13,7 @@ import * as readlineSync from "readline-sync";
 import {
   CloudFormationClient,
   DeleteStackCommand,
+  ListExportsCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
 // import open from "open";
@@ -321,13 +322,8 @@ async function deployUiToAws(stage) {
   await writeEnvFileForUi(stage);
   await runner.run_command_and_output(`Build`, ["yarn", "build"], "react-app");
 
-  const s3BucketName = await fetchDeployOutput(
-    "ui-infra",
-    stage,
-    "s3BucketName",
-  );
-  const cloudfrontDistributionId = await fetchDeployOutput(
-    "ui-infra",
+  const s3BucketName = await fetchCloudFormationExport(stage, "s3BucketName");
+  const cloudfrontDistributionId = await fetchCloudFormationExport(
     stage,
     "cloudfrontDistributionId",
   );
@@ -383,26 +379,19 @@ async function deployUiToAws(stage) {
 }
 
 async function writeEnvFileForUi(stage, local = false) {
-  const exportKeys = {
-    "ui-infra": [
-      `cloudfrontDistributionId`,
-      `s3BucketName`,
-      `applicationEndpointUrl`,
-    ],
-    api: [`apiGatewayRestApiUrl`],
-    auth: [
-      `identityPoolId`,
-      `userPoolId`,
-      `userPoolClientId`,
-      `userPoolClientDomain`,
-    ],
-  };
+  const exportKeys = [
+    `apiGatewayRestApiUrl`,
+    `identityPoolId`,
+    `userPoolId`,
+    `userPoolClientId`,
+    `userPoolClientDomain`,
+    `applicationEndpointUrl`,
+  ];
 
-  const secrets = {};
-  for (const [stack, keys] of Object.entries(exportKeys)) {
-    for (const key of keys) {
-      secrets[key] = await fetchDeployOutput(stack, stage, key);
-    }
+  const exports = {};
+  for (const key of exportKeys) {
+    exports[key] = await fetchCloudFormationExport(stage, key);
+    console.log(exports[key]);
   }
 
   const googleAnalytics = await fetchSecret(
@@ -419,19 +408,19 @@ async function writeEnvFileForUi(stage, local = false) {
 
   const envVariables = {
     VITE_API_REGION: `"${process.env.REGION_A}"`,
-    VITE_API_URL: `"${secrets["apiGatewayRestApiUrl"]}"`,
+    VITE_API_URL: exports["apiGatewayRestApiUrl"],
     VITE_NODE_ENV: `"development"`,
-    VITE_COGNITO_REGION: `"${process.env.REGION_A}"`,
-    VITE_COGNITO_IDENTITY_POOL_ID: `"${secrets["identityPoolId"]}"`,
-    VITE_COGNITO_USER_POOL_ID: `"${secrets["userPoolId"]}"`,
-    VITE_COGNITO_USER_POOL_CLIENT_ID: `"${secrets["userPoolClientId"]}"`,
-    VITE_COGNITO_USER_POOL_CLIENT_DOMAIN: `"${secrets["userPoolClientDomain"]}"`,
+    VITE_COGNITO_REGION: process.env.REGION_A,
+    VITE_COGNITO_IDENTITY_POOL_ID: exports["identityPoolId"],
+    VITE_COGNITO_USER_POOL_ID: exports["userPoolId"],
+    VITE_COGNITO_USER_POOL_CLIENT_ID: exports["userPoolClientId"],
+    VITE_COGNITO_USER_POOL_CLIENT_DOMAIN: exports["userPoolClientDomain"],
     VITE_COGNITO_REDIRECT_SIGNIN: local
       ? `"http://localhost:5000/"`
-      : `"${secrets["applicationEndpointUrl"]}"`,
+      : exports["applicationEndpointUrl"],
     VITE_COGNITO_REDIRECT_SIGNOUT: local
       ? `"http://localhost:5000/"`
-      : `"${secrets["applicationEndpointUrl"]}"`,
+      : exports["applicationEndpointUrl"],
     VITE_IDM_HOME_URL: `"${
       idmInfo.home_url || "https://test.home.idm.cms.gov"
     }"`,
@@ -511,23 +500,21 @@ export async function fetchSecret(
   }
 }
 
-const secretsManagerClient = new SecretsManagerClient({
-  region: process.env.REGION_A,
-});
+async function fetchCloudFormationExport(stage, exportName) {
+  const client = new CloudFormationClient({ region: process.env.REGION_A });
+  const command = new ListExportsCommand({});
+  const response = await client.send(command);
 
-const fetchDeployOutput = async (stack, stage, key) => {
-  const secretName = `cdkExports/${process.env.PROJECT}-${stack}-${stage}/${key}`;
-  const command = new GetSecretValueCommand({ SecretId: secretName });
-  const response = await secretsManagerClient.send(command);
+  const exportValue = response.Exports?.find(
+    (exp) => exp.Name === `${process.env.PROJECT}-${stage}-${exportName}`,
+  )?.Value;
 
-  const secretString = response.SecretString!;
-  return secretString;
-  // try {
-  //   return JSON.parse(secretString);
-  // } catch (e) {
-  //   return secretString;
-  // }
-};
+  if (!exportValue) {
+    throw new Error(`Export not found for ${exportName}`);
+  }
+
+  return exportValue;
+}
 
 function confirmDestroyCommand(stack) {
   const orange = "\x1b[38;5;208m";

@@ -90,6 +90,7 @@ export class ParentStack extends cdk.Stack {
       apiGateway: apiStack.apiGateway,
       applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
     });
+
     this.exportValue(apiStack.apiGatewayUrl, {
       name: `${project}-${stage}-apiGatewayRestApiUrl`,
     });
@@ -107,6 +108,12 @@ export class ParentStack extends cdk.Stack {
     });
     this.exportValue(uiInfraStack.applicationEndpointUrl, {
       name: `${project}-${stage}-applicationEndpointUrl`,
+    });
+    this.exportValue(uiInfraStack.bucket.bucketName, {
+      name: `${project}-${stage}-s3BucketName`,
+    });
+    this.exportValue(uiInfraStack.distribution.distributionId, {
+      name: `${project}-${stage}-cloudfrontDistributionId`,
     });
   }
 }
