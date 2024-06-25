@@ -34,52 +34,57 @@ export class ParentStack extends cdk.Stack {
       idmInfo,
     } = props;
 
-    const env = {
-      account: process.env.CDK_DEFAULT_ACCOUNT,
-      region: process.env.CDK_DEFAULT_REGION,
-    };
+    const isDev = !["master", "val", "production"].includes(stage);
 
     const networkingStack = new NetworkingStack(this, "networking", {
       project,
       stage,
       stack: "networking",
+      isDev,
       vpcInfo,
     });
+
     const alertsStack = new AlertsStack(this, "alerts", {
       project,
       stage,
       stack: "alerts",
+      isDev,
     });
+
     const uiInfraStack = new UiInfraStack(this, "ui-infra", {
       project,
       stage,
       stack: "ui-infra",
+      isDev,
     });
+
     const uploadsStack = new UploadsStack(this, "uploads", {
       project,
       stage,
       stack: "uploads",
+      isDev,
     });
+
     const dataStack = new DataStack(this, "data", {
       project,
       stage,
       stack: "data",
+      isDev,
       vpcInfo,
       brokerString,
     });
-
     dataStack.addDependency(networkingStack);
 
     const apiStack = new ApiStack(this, "api", {
       project,
       stage,
       stack: "api",
+      isDev,
       vpcInfo,
       brokerString,
       dbInfo,
       onemacLegacyS3AccessRoleArn,
     });
-
     apiStack.addDependency(alertsStack);
     apiStack.addDependency(dataStack);
     apiStack.addDependency(uploadsStack);
@@ -89,8 +94,8 @@ export class ParentStack extends cdk.Stack {
       project,
       stage,
       stack: "auth",
+      isDev,
     });
-
     authStack.addDependency(uiInfraStack);
     authStack.addDependency(apiStack);
     authStack.addDependency(networkingStack);

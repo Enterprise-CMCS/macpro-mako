@@ -14,6 +14,7 @@ interface AlertsStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   stack: string;
+  isDev: boolean;
 }
 
 export class AlertsStack extends cdk.NestedStack {
@@ -22,7 +23,7 @@ export class AlertsStack extends cdk.NestedStack {
     this.initializeResources(props);
   }
   private async initializeResources(props: AlertsStackProps) {
-    const { project, stage, stack } = props;
+    const { project, stage, stack, isDev } = props;
     try {
       // Create Alerts Topic with KMS Key
       const alertsTopic = new Topic(this, "AlertsTopic", {

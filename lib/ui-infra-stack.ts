@@ -29,12 +29,13 @@ interface UiInfraStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   stack: string;
+  isDev: boolean;
 }
 
 export class UiInfraStack extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: UiInfraStackProps) {
     super(scope, id, props);
-    const { project, stage, stack } = props;
+    const { project, stage, stack, isDev } = props;
     // S3 Bucket for hosting static website
     const s3Bucket = new Bucket(this, "S3Bucket", {
       bucketName: `${project}-${stage}-${cdk.Aws.ACCOUNT_ID}`,

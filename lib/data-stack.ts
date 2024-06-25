@@ -20,6 +20,7 @@ interface DataStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   stack: string;
+  isDev: boolean;
   vpcInfo: {
     id: string;
     privateSubnets: string[];
@@ -34,7 +35,7 @@ export class DataStack extends cdk.NestedStack {
   }
 
   private async initializeResources(props: DataStackProps) {
-    const { project, stage, stack } = props;
+    const { project, stage, stack, isDev } = props;
     const { vpcInfo, brokerString } = props;
     const privateSubnets = vpcInfo.privateSubnets.map((subnetId: string) =>
       ec2.Subnet.fromSubnetId(this, `Subnet${subnetId}`, subnetId),
@@ -56,7 +57,6 @@ export class DataStack extends cdk.NestedStack {
     );
 
     // -- Set some important variables --
-    const isDev = !["master", "val", "production"].includes(stage);
     const topicNamespace = isDev ? `--${project}--${stage}--` : "";
     const consumerGroupPrefix = `--${project}--${stage}--`;
 

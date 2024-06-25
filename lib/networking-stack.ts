@@ -7,6 +7,7 @@ interface NetworkingStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   stack: string;
+  isDev: boolean;
   vpcInfo: {
     id: string;
   };
@@ -19,7 +20,7 @@ export class NetworkingStack extends cdk.NestedStack {
   }
 
   private async initializeResources(props: NetworkingStackProps) {
-    const { project, stage, stack } = props;
+    const { project, stage, stack, isDev } = props;
     const { vpcInfo } = props;
     try {
       const vpc = Vpc.fromLookup(this, "MyVpc", {

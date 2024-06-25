@@ -14,12 +14,13 @@ interface UploadsStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   stack: string;
+  isDev: boolean;
 }
 
 export class UploadsStack extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: UploadsStackProps) {
     super(scope, id, props);
-    const { project, stage, stack } = props;
+    const { project, stage, stack, isDev } = props;
     const attachmentsBucketName = `${project}-${stage}-attachments-${cdk.Aws.ACCOUNT_ID}`;
     // S3 Buckets
     const attachmentsBucket = new s3.Bucket(this, "AttachmentsBucket", {

@@ -16,6 +16,7 @@ interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   stack: string;
+  isDev: boolean;
   vpcInfo: {
     id: string;
     privateSubnets: string[];
@@ -37,7 +38,7 @@ export class ApiStack extends cdk.NestedStack {
   }
 
   private initializeResources(props: ApiStackProps) {
-    const { project, stage, stack } = props;
+    const { project, stage, stack, isDev } = props;
     const { vpcInfo, brokerString, dbInfo, onemacLegacyS3AccessRoleArn } =
       props;
 
@@ -109,9 +110,6 @@ export class ApiStack extends cdk.NestedStack {
       `alerts`,
       "ecsFailureTopicArn",
     ).value;
-
-    // -- Set some important variables --
-    const isDev = !["master", "val", "production"].includes(stage);
 
     // Define IAM role
     const lambdaRole = new iam.Role(this, "LambdaExecutionRole", {

@@ -12,6 +12,7 @@ interface AuthStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   stack: string;
+  isDev: boolean;
 }
 
 export class AuthStack extends cdk.NestedStack {
@@ -21,7 +22,7 @@ export class AuthStack extends cdk.NestedStack {
   }
 
   private initializeResources(props: AuthStackProps) {
-    const { project, stage, stack } = props;
+    const { project, stage, stack, isDev } = props;
     const apiId = new CdkImport(
       this,
       project,
