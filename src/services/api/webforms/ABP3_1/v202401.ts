@@ -96,6 +96,7 @@ export const v202401: FormSchema = {
                                       rhf: "Input",
                                       name: "state-territory-bench-plan-name",
                                       label: "Plan name",
+                                      labelClassName: "font-bold",
                                       rules: {
                                         required: "* Required",
                                         pattern: {
@@ -116,6 +117,7 @@ export const v202401: FormSchema = {
                                       rhf: "Input",
                                       name: "bench-hmo-plan-name",
                                       label: "Plan name",
+                                      labelClassName: "font-bold",
                                       rules: {
                                         required: "* Required",
                                         pattern: {
@@ -258,6 +260,7 @@ export const v202401: FormSchema = {
                                       rhf: "Input",
                                       name: "bench-equivalent-state-coverage-plan-name",
                                       label: "Plan name",
+                                      labelClassName: "font-bold",
                                       rules: {
                                         required: "* Required",
                                         pattern: {
@@ -278,6 +281,7 @@ export const v202401: FormSchema = {
                                       rhf: "Input",
                                       name: "bench-equivalent-hmo-plan-name",
                                       label: "Plan name",
+                                      labelClassName: "font-bold",
                                       rules: {
                                         required: "* Required",
                                         pattern: {
@@ -316,6 +320,7 @@ export const v202401: FormSchema = {
         {
           description:
             "The state or territory must select an EHB-benchmark plan as the basis for providing essential health benefits in its benchmark or benchmark-equivalent package.",
+          descriptionClassName: "text-base",
           slots: [
             {
               name: "plan-name",
@@ -360,6 +365,16 @@ export const v202401: FormSchema = {
               rules: {
                 required: "* Required",
               },
+              dependency: {
+                conditions: [
+                  {
+                    name: "abp3-1_select-of-ehb-bench-plan_is-ehb-bench-plan-same-section-1937",
+                    type: "expectedValue",
+                    expectedValue: "no",
+                  },
+                ],
+                effect: { type: "show" },
+              },
               props: {
                 options: [
                   {
@@ -376,7 +391,7 @@ export const v202401: FormSchema = {
                         rhf: "Select",
                         name: "is-geo-area",
                         label: "State/territory",
-                        labelClassName: "p-3",
+                        labelClassName: "mt-3 pr-4 font-bold",
                         formItemClassName: "flex-row",
                         props: {
                           className: "w-[150px]",
@@ -1752,6 +1767,16 @@ export const v202401: FormSchema = {
     {
       title: "Assurances",
       sectionId: "assurances",
+      dependency: {
+        conditions: [
+          {
+            name: "abp3-1_select-of-ehb-bench-plan_is-ehb-bench-plan-same-section-1937",
+            type: "expectedValue",
+            expectedValue: "no",
+          },
+        ],
+        effect: { type: "show" },
+      },
       form: [
         {
           slots: [

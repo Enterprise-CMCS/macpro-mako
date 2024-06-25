@@ -21,7 +21,7 @@ export const SearchForm: FC<{
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const updateText = event.target.value;
+    const updateText = event.target.value.trim();
     setSearchText(updateText);
     if (!updateText) handleSearch("");
   };
