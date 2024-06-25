@@ -90,5 +90,23 @@ export class ParentStack extends cdk.Stack {
       apiGateway: apiStack.apiGateway,
       applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
     });
+    this.exportValue(apiStack.apiGatewayUrl, {
+      name: `${project}-${stage}-apiGatewayRestApiUrl`,
+    });
+    this.exportValue(authStack.identityPool.attrId, {
+      name: `${project}-${stage}-identityPoolId`,
+    });
+    this.exportValue(authStack.userPool.userPoolId, {
+      name: `${project}-${stage}-userPoolId`,
+    });
+    this.exportValue(authStack.userPoolClient.attrClientId, {
+      name: `${project}-${stage}-userPoolClientId`,
+    });
+    this.exportValue(authStack.userPoolClientDomain, {
+      name: `${project}-${stage}-userPoolClientDomain`,
+    });
+    this.exportValue(uiInfraStack.applicationEndpointUrl, {
+      name: `${project}-${stage}-applicationEndpointUrl`,
+    });
   }
 }

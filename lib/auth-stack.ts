@@ -17,12 +17,27 @@ interface AuthStackProps extends cdk.NestedStackProps {
 }
 
 export class AuthStack extends cdk.NestedStack {
+  public readonly userPool: cognito.UserPool;
+  public readonly userPoolClient: cognito.CfnUserPoolClient;
+  public readonly userPoolClientDomain: string;
+  public readonly identityPool: cognito.CfnIdentityPool;
+
   constructor(scope: Construct, id: string, props: AuthStackProps) {
     super(scope, id, props);
-    this.initializeResources(props);
+    const resources = this.initializeResources(props);
+    resources.userPool;
+    this.userPool = resources.userPool;
+    this.userPoolClient = resources.userPoolClient;
+    this.userPoolClientDomain = `${resources.userPoolDomain.domain}.auth.${this.region}.amazoncognito.com`;
+    this.identityPool = resources.identityPool;
   }
 
-  private initializeResources(props: AuthStackProps) {
+  private initializeResources(props: AuthStackProps): {
+    userPool: cognito.UserPool;
+    userPoolClient: cognito.CfnUserPoolClient;
+    userPoolDomain: cognito.CfnUserPoolDomain;
+    identityPool: cognito.CfnIdentityPool;
+  } {
     const { project, stage, stack, isDev } = props;
     const { apiGateway, applicationEndpointUrl } = props;
 
@@ -154,40 +169,6 @@ export class AuthStack extends cdk.NestedStack {
       ),
     );
 
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "userPoolId",
-    //   userPool.userPoolId,
-    // );
-
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "userPoolClientId",
-    //   userPoolClient.attrClientId,
-    // );
-
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "userPoolClientDomain",
-    //   `${userPoolDomain.domain}.auth.${this.region}.amazoncognito.com`,
-    // );
-
-    // new CdkExport(
-    //   this,
-    //   project,
-    //   stage,
-    //   stack,
-    //   "identityPoolId",
-    //   identityPool.ref,
-    // );
+    return { userPool, userPoolClient, userPoolDomain, identityPool };
   }
 }
