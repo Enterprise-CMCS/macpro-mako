@@ -528,6 +528,280 @@ export const v202401: FormSchema = {
                 ],
               },
             },
+            {
+              rhf: "Input",
+              label:
+                "Percentage of family income used for aggregate limit (must be between 0% and 5%)",
+              labelClassName: "font-bold",
+              name: "percent-fam-income-used-for-agg",
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^(?:[0-4](?:\.\d)?|5(?:\.0)?|0?\.\d)$/,
+                  message: "Must be between 0% and 5%",
+                },
+              },
+              props: {
+                className: "w-[229px]",
+                icon: "%",
+              },
+            },
+
+            {
+              rhf: "Radio",
+              label:
+                "Basis on which the state calculates family income for the purpose of the aggregate limit",
+              labelClassName: "font-bold",
+              name: "basis-state-calc-agg-limit",
+              rules: { required: "* Required" },
+              props: {
+                options: [
+                  {
+                    label: "Quarterly",
+                    value: "quarterly",
+                  },
+                  {
+                    label: "Monthly",
+                    value: "monthly",
+                  },
+                ],
+              },
+            },
+
+            {
+              rhf: "Select",
+              label:
+                "Does the state have a process to track each family’s incurred premiums and cost sharing through a mechanism that does not rely on beneficiary documentation?",
+              labelClassName: "font-bold",
+              name: "does-state-track-fam-incur-prem-and-cost-share",
+              rules: { required: "* Required" },
+              props: {
+                className: "w-[125px]",
+                options: [
+                  { label: "Yes", value: "yes" },
+                  { label: "No", value: "no" },
+                ],
+              },
+            },
+            // yes option
+            {
+              rhf: "Checkbox",
+              name: "how-does-state-track-incurred-prems-and-cost",
+              label:
+                "How does the state track each family’s incurred premiums and cost sharing?",
+              labelClassName: "font-bold",
+              formItemClassName:
+                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              dependency: {
+                conditions: [
+                  {
+                    name: "g3_agg-limits_does-state-track-fam-incur-prem-and-cost-share",
+                    type: "expectedValue",
+                    expectedValue: "yes",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+              props: {
+                options: [
+                  {
+                    label:
+                      "As claims are submitted for dates of services within the family's current monthly or quarterly cap period, the state applies the incurred cost sharing for that service to the family's aggregate limit. Once the family reaches the aggregate limit, based on incurred cost sharing and any applicable premiums, the state notifies the family and providers that the family has reached its aggregate limit for the current monthly or quarterly cap period and is no longer subject to premiums or cost sharing.",
+                    value: "claims_are_submitted_for_dates",
+                  },
+                  {
+                    label: "MCOs track each family’s incurred cost sharing.",
+                    value: "mco_track_each_family",
+                    form: [
+                      {
+                        slots: [
+                          {
+                            rhf: "Textarea",
+                            label: "Describe",
+                            labelClassName: "font-bold",
+                            name: "state-track-mco-desc",
+                            rules: {
+                              required: "* Required",
+                              pattern: {
+                                value: /^\S(.*\S)?$/,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    label: "Other",
+                    value: "other",
+                    form: [
+                      {
+                        slots: [
+                          {
+                            rhf: "Textarea",
+                            label: "Describe",
+                            labelClassName: "font-bold",
+                            name: "state-track-other-desc",
+                            rules: {
+                              required: "* Required",
+                              pattern: {
+                                value: /^\S(.*\S)?$/,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+
+            // end yes option
+            {
+              rhf: "Textarea",
+              label:
+                "Explain how the state's premium and cost sharing rules do not place beneficiaries at risk of reaching the aggregate family limit.",
+              labelClassName: "font-bold",
+              formItemClassName:
+                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              name: "explain-state-prem-cost-share-dont-place-risk",
+              dependency: {
+                conditions: [
+                  {
+                    name: "g3_agg-limits_does-state-track-fam-incur-prem-and-cost-share",
+                    type: "expectedValue",
+                    expectedValue: "no",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
+            },
+
+            {
+              rhf: "Select",
+              label:
+                "Does the state have a documented appeals process for families that believe they have incurred premiums or cost sharing over the aggregate limit for the current monthly or quarterly cap period?",
+              labelClassName: "font-bold",
+              name: "does-state-doc-appeals",
+              rules: { required: "* Required" },
+              props: {
+                className: "w-[125px]",
+                options: [
+                  { label: "Yes", value: "yes" },
+                  { label: "No", value: "no" },
+                ],
+              },
+            },
+
+            {
+              rhf: "Textarea",
+              label: "Describe",
+              labelClassName: "font-bold",
+              formItemClassName:
+                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              dependency: {
+                conditions: [
+                  {
+                    name: "g3_agg-limits_does-state-doc-appeals",
+                    type: "expectedValue",
+                    expectedValue: "yes",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+              name: "does-state-doc-appeals-other",
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
+            },
+
+            {
+              rhf: "Textarea",
+              label:
+                "What is the process for reimbursing beneficiaries and/or providers if the family is identified as paying over the aggregate limit for the month/quarter?",
+              labelClassName: "font-bold",
+              name: "process-reimburse-over-agg-limit",
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
+            },
+
+            {
+              rhf: "Textarea",
+              label:
+                "What is the process for beneficiaries to request a reassessment of their family aggregate limit if they have a change in circumstances or if they are being terminated for failure to pay a premium?",
+              labelClassName: "font-bold",
+              name: "process-for-reimbirse-reqiest-reassess",
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
+            },
+
+            {
+              rhf: "Select",
+              label:
+                "Does the state impose additional aggregate limits, consistent with 42 CFR 447.56(f)(5)?",
+              labelClassName: "font-bold",
+              name: "does-state-impose-add-agg-limits",
+              rules: { required: "* Required" },
+              props: {
+                className: "w-[125px]",
+                options: [
+                  { label: "Yes", value: "yes" },
+                  { label: "No", value: "no" },
+                ],
+              },
+            },
+
+            {
+              rhf: "Textarea",
+              label: "Describe",
+              labelClassName: "font-bold",
+              formItemClassName:
+                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              dependency: {
+                conditions: [
+                  {
+                    name: "g3_agg-limits_does-state-impose-add-agg-limits",
+                    type: "expectedValue",
+                    expectedValue: "yes",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+              name: "does-state-impose-add-agg-limits-other",
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
+            },
           ],
         },
       ],
