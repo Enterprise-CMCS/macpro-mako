@@ -9,11 +9,9 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import * as path from "path";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { CdkExport } from "./cdk-export-construct";
 import * as opensearch from "aws-cdk-lib/aws-opensearchservice";
 import { Topic } from "aws-cdk-lib/aws-sns";
 import { Bucket } from "aws-cdk-lib/aws-s3";
-import { ApiGateway } from "aws-cdk-lib/aws-events-targets";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
