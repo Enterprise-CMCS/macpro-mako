@@ -595,7 +595,7 @@ export const v202401: FormSchema = {
                             name: "one-or-more-EHBs-other-states",
                             label:
                               "Select one or more essential health benefits (EHBs) from other states.",
-                            labelClassName: "font-bold border-t-2 pt-5",
+                            labelClassName: "font-bold border-t-[1px] pt-5",
                             rules: { required: "* Required" },
                             props: {
                               options: [
