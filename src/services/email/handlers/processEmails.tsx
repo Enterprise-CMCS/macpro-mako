@@ -24,7 +24,7 @@ export const main = handler(async (record) => {
       try {
         return await SES.send(
           new SendTemplatedEmailCommand({
-            Source: process.env.emailSource ?? "aswift@fearless.tech",
+            Source: process.env.emailSource ?? "kgrue@fearless.tech",
             Destination: buildDestination(command, emailData),
             TemplateData: JSON.stringify(emailData),
             Template: command.Template,
