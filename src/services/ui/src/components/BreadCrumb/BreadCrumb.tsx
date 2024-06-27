@@ -65,7 +65,11 @@ export const BreadCrumb = ({
           {children}
         </Link>
       )}
-      {!active && <span aria-disabled>{children}</span>}
+      {!active && (
+        <span className="whitespace-nowrap" aria-disabled>
+          {children}
+        </span>
+      )}
     </li>
   );
 };
