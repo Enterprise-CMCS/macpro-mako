@@ -17,7 +17,7 @@ export const v202401: FormSchema = {
               rules: { required: "* Required" },
               label:
                 "Does the state charge cost sharing (deductibles, coinsurance, or copayments) to individuals covered under Medicaid?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               props: {
                 className: "w-[125px]",
                 options: [
@@ -110,7 +110,7 @@ export const v202401: FormSchema = {
               name: "state-process-to-inform-cost-shar-for-item-or-serv",
               label:
                 "What is the state’s process to inform providers whether cost sharing for a specific item or service may be imposed on a beneficiary and whether the provider requires the beneficiary to pay the cost-sharing charge as a condition for receiving the item or service?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -171,7 +171,7 @@ export const v202401: FormSchema = {
               rules: { required: "* Required" },
               label:
                 "Does the state impose cost sharing for non-emergency services provided in a hospital emergency department?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               props: {
                 className: "w-[125px]",
                 options: [
@@ -199,7 +199,7 @@ export const v202401: FormSchema = {
                       {
                         text: "The state ensures that before providing non-emergency services and imposing cost sharing for such services, the hospitals providing care:",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block",
                       },
                       {
                         text: "• 	Conduct an appropriate medical screening under 42 CFR 489.24, Subpart G to determine that the individual does not need emergency services",
@@ -250,7 +250,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               rules: { required: "* Required" },
               label: "Describe the process.",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               formItemClassName: "pl-9",
             },
           ],
@@ -269,7 +269,7 @@ export const v202401: FormSchema = {
               rules: { required: "* Required" },
               label:
                 "Does the state charge cost sharing (deductibles, coinsurance, or copayments) to individuals covered under Medicaid?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               props: {
                 className: "w-[125px]",
                 options: [
@@ -290,7 +290,7 @@ export const v202401: FormSchema = {
               rules: { required: "* Required" },
               label:
                 "Has the state established differential cost sharing for preferred and non-preferred drugs?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               props: {
                 className: "w-[125px]",
                 options: [
@@ -407,7 +407,7 @@ export const v202401: FormSchema = {
                       {
                         text: "Consistent with 42 CFR 447.57, the state makes available a public schedule describing current cost-sharing requirements in a manner that ensures that affected applicants, beneficiaries, and providers are likely to have access to the notice.",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block",
                       },
                       {
                         text: "• 	Prior to submitting a state plan amendment (SPA) that establishes or substantially modifies existing cost-sharing amounts or policies, the state provides the public with advance notice of the SPA, specifying the amount of cost sharing and who is subject to the charges. The state also provides reasonable opportunity for stakeholder comment.",
