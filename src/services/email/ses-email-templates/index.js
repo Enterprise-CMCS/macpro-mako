@@ -69,7 +69,7 @@ Thank you!`,
   },
   {
     name: "new-submission-medicaid-spa-state",
-    subject: "Your Medicaid SPA {{id}} has been submitted to CMS",
+    subject: "Your SPA {{id}} has been submitted to CMS",
     html: `
 <p>This response confirms that you submitted a Medicaid SPA to CMS for review:</p>
 <p>
@@ -124,7 +124,7 @@ Thank you!`,
     name: "new-submission-1915b-cms",
     subject: "{{authority}} {{id}} Submitted",
     html: `
-<p>The OneMAC Submission Portal received a 1915(b) {{actionType}} submission:</p>
+<p>The OneMAC Submission Portal received a 1915(b) {{actionType}} Submission:</p>
 <ul>
 <li>The submission can be accessed in the OneMAC application, which you 
 can find at <a href='{{applicationEndpoint}}'>this link</a>.</li>
@@ -139,9 +139,8 @@ details by clicking on its ID number.</li>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
-<br><b>Amendment Title:</b> {{title}}
-<br><b>{{actionType}} Number:</b> {{id}}</b>
-<br><b>Waiver Authority:</b> {{authority}}
+<br><b>Initial Waiver Number:</b> {{id}}
+<br><br><b>Waiver Authority:</b> {{authority}}
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
 </p>
 <b>Summary:</b>
@@ -172,7 +171,8 @@ details by clicking on its ID number.
 State or territory: {{territory}}
 Name: {{submitterName}}
 Email: {{submitterEmail}}
-{{actionType}} Number: {{id}}</b>
+Initial Waiver Number: {{id}}
+
 Waiver Authority: {{authority}}
 Proposed Effective Date: {{proposedEffectiveDateNice}}
 
@@ -196,7 +196,7 @@ Thank you!`,
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
-<br><b>1915(b) {{actionType}} Number:</b> {{id}}</b>
+<br><b>Initial Waiver Number:</b> {{id}}</b>
 <br><b>Waiver Authority:</b> {{authority}}
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
 <br><b>90th Day Deadline:</b> {{ninetyDaysDate}}
@@ -220,7 +220,7 @@ This response confirms the submission of your 1915(b) {{actionType}} to CMS for 
 State or territory: {{territory}}
 Name: {{submitterName}}
 Email Address: {{submitterEmail}}
-1915(b) {{actionType}} Number: {{id}}</b>
+1915(b) {{actionType}} Number: {{id}}
 Waiver Authority: {{authority}}
 Proposed Effective Date: {{proposedEffectiveDateNice}}
 90th Day Deadline: {{ninetyDaysDate}}
@@ -260,6 +260,21 @@ Summary:
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
+text: `
+he OneMAC Submission Portal received a request to withdraw the package below.
+The package will no longer be considered for CMS review:
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email: {{submitterEmail}}
+Initial Waiver Number: {{id}}
+
+Summary:
+{{additionalInformation}}
+
+If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@cms.hhs.gov.
+
+Thank you!`
   },
   {
     name: "withdraw-package-1915b-state",
@@ -492,6 +507,26 @@ Summary:
 instead forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.
 </p>
 <p>Thank you!</p>`,
+    text: `
+The OneMAC Submission Portal received a request to withdraw the Formal 
+RAI Response. You are receiving this email notification as the Formal RAI 
+for {{id}} was withdrawn by {{submitterName}} {{submitterEmail}}.
+
+State or territory: {{territory}}
+Name: {{initialSubmitterName}}
+Email Address: {{initialSubmitterEmail}}
+Medicaid SPA Package ID: {{id}}
+
+Summary:
+{{additionalInformation}}
+
+This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
+responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
+Any other correspondence will be disregarded.
+
+If you have any questions, please contact spa@cms.hhs.gov or your state lead.
+
+Thank you!`
   },
   {
     name: "withdraw-rai-1915b-state",
@@ -515,6 +550,26 @@ SPAs only. Any other correspondence will be disregarded.</p>
 <p>If you have questions, please contact 
 <a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
+    text: `
+The OneMAC Submission Portal received a request to withdraw the Formal 
+RAI Response. You are receiving this email notification as the Formal RAI 
+for {{id}} was withdrawn by {{submitterName}} {{submitterEmail}}.
+
+State or territory: {{territory}}
+Name: {{initialSubmitterName}}
+Email Address: {{initialSubmitterEmail}}
+Medicaid SPA Package ID: {{id}}
+
+Summary:
+{{additionalInformation}}
+
+This mailbox is for the submittal of State Plan Amendments and non-web 
+based responses to Requests for Additional Information (RAI) on submitted 
+SPAs only. Any other correspondence will be disregarded.
+
+If you have any questions, please contact spa@cms.hhs.gov or your state lead.
+
+Thank you!`
   },
   {
     name: "withdraw-package-medicaid-spa-cms",
@@ -1019,42 +1074,9 @@ This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
 responses to Requests for Additional Information (RAI) on Waivers, and extension
 requests on Waivers only.  Any other correspondence will be disregarded.
 
-If you have questions, please contact 
-<a href='mailto:CHIPSPASubmissionMailbox@cms.hhs.gov'>CHIPSPASubmissionMailbox@cms.hhs.gov</a>
-or your state lead.
+If you have questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov or your state lead.
 
 Thank you!`,
-  },
-  {
-    name: "new-submission-1915c-state",
-    subject: "Your 1915(c) {{id}} has been submitted to CMS",
-    html: `
-<p>This response confirms the submission of your 1915(c) Waiver to CMS for review:</p>
-<p>
-<br><b>State or territory:</b> {{territory}}
-<br><b>Name:</b> {{submitterName}}
-<br><b>Email Address:</b> {{submitterEmail}}
-<br><b>Waiver Amendment Number:</b> {{id}}
-<br><b>Waiver Authority:</b> 1915(c)
-<br><b>Proposed Effective Date: {{proposedEffectiveDateNice}}
-<br><b>90th Day Deadline: {{ninetyDaysDate}}
-</p>
-Summary:
-<br>{{additionalInformation}}
-<p>
-This response confirms the receipt of your Waiver request or your response
-to a Waiver Request for Additional Information (RAI). You can expect a formal
-response to your submittal to be issued within 90 days, before {{ninetyDaysDate}}.
-</p>
-<p>
-This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
-responses to Requests for Additional Information (RAI) on Waivers, and
-extension requests on Waivers only.  Any other correspondence will be disregarded.
-</p>
-<p>If you have questions, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
-<p>Thank you!</p>`,
-    text: "",
   },
   {
     name: "new-submission-1915c-cms",
@@ -1075,6 +1097,7 @@ details by clicking on its ID number.</li>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
+<br><b>Amendment Title:</b> {{title}}
 <br><b>Waiver Amendment Number:</b> {{id}}
 <br><b>Waiver Authority:</b> 1915(c)
 <br><b>Proposed Effective Date: {{proposedEffectiveDateNice}}
@@ -1087,7 +1110,82 @@ Summary:
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
-    text: "",
+    text: `
+This response confirms the submission of your [insert Waiver Action] to CMS for review:
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
+Initial Waiver Number: {{id}}
+Waiver Authority: 1915(c)
+Proposed Effective Date: {{proposedEffectiveDateNice}}
+90th Day Deadline: {{ninetyDaysDate}}
+
+Summary:
+{{additionalInformation}}
+
+Files:
+{{formattedFileList}}
+
+If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@CMS.HHS.gov
+
+Thank you!
+`,
+  },
+  {
+    name: "new-submission-1915c-state",
+    subject: "Your 1915(c) {{id}} has been submitted to CMS",
+    html: `
+<p>This response confirms the submission of your 1915(c) Waiver to CMS for review:</p>
+<p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Name:</b> {{submitterName}}
+<br><b>Email Address:</b> {{submitterEmail}}
+<br><b>Initial Waiver Number:</b> {{id}}
+<br><b>Waiver Authority:</b> 1915(c)
+<br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
+<br><b>90th Day Deadline:</b> {{ninetyDaysDate}}
+</p>
+Summary:
+<br>{{additionalInformation}}
+<p>
+This response confirms the receipt of your Waiver request or your response
+to a Waiver Request for Additional Information (RAI). You can expect a formal
+response to your submittal to be issued within 90 days, before {{ninetyDaysDate}}.
+</p>
+<p>
+This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
+responses to Requests for Additional Information (RAI) on Waivers, and
+extension requests on Waivers only.  Any other correspondence will be disregarded.
+</p>
+<p>If you have questions, please contact 
+<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
+<p>Thank you!</p>`,
+    text: `
+This response confirms the submission of your 1915(c) Waiver to CMS for review:
+
+State or territory:{{territory}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
+Initial Waiver Number: {{id}}
+Waiver Authority: 1915(c)
+Proposed Effective Date: {{proposedEffectiveDateNice}}
+90th Day Deadline: {{ninetyDaysDate}}
+
+Summary:
+{{additionalInformation}}
+
+This response confirms the receipt of your Waiver request or your response
+to a Waiver Request for Additional Information (RAI). You can expect a formal
+response to your submittal to be issued within 90 days, before {{ninetyDaysDate}}.
+
+This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
+responses to Requests for Additional Information (RAI) on Waivers, and
+extension requests on Waivers only.  Any other correspondence will be disregarded.
+
+If you have questions, please contact SPA@cms.hhs.gov or your state lead.
+
+Thank you!`,
   },
   {
     name: "withdraw-rai-1915c-cms",
@@ -1110,7 +1208,25 @@ Summary:
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
-    text: "",
+    text: `
+The OneMAC Submission Portal received a request to withdraw the Formal 
+RAI Response. You are receiving this email notification as the Formal RAI 
+for {{id}} was withdrawn by {{submitterName}} {{submitterEmail}}.
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
+Waiver Number: {{id}}
+
+Summary:
+{{additionalInformation}}
+
+Files:
+{{formattedFileList}}
+
+If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@cms.hhs.gov.
+
+Thank you!`,
   },
   {
     name: "temporary-extension-cms",
@@ -1142,7 +1258,30 @@ Summary:
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
-    text: "",
+    text: `
+The Submission Portal received a {{authority}} Waiver Extension Submission:
+
+- The submission can be accessed in the OneMAC application, which you 
+can find at {{applicationEndpoint}}.
+- If you are not already logged in, please click the "Login" link 
+at the top of the page and log in using your Enterprise User 
+Administration (EUA) credentials.
+- fter you have logged in, you will be taken to the OneMAC application. 
+The submission will be listed on the dashboard page, and you can view its 
+details by clicking on its ID number.
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
+Temporary Extension Request Number: {{id}}
+Temporary Extension Type: {{authority}}
+
+Files:
+{{formattedFileList}}
+
+If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@cms.hhs.gov.
+
+Thank you!`,
   },
   {
     name: "temporary-extension-state",
@@ -1157,7 +1296,7 @@ This response confirms you have submitted a {{authority}} Waiver Extension to CM
 <br><b>Email Address:</b> {{submitterEmail}}
 <br><b>Temporary Extension Request Number:</b> {{id}}
 <br><b>Temporary Extension Type:</b> {{authority}}
-<br><b>90th Day Deadline: {{ninetyDaysDate}}
+<br><b>90th Day Deadline:</b> {{ninetyDaysDate}}
 </p>
 Summary:
 <br>{{additionalInformation}}
@@ -1168,6 +1307,23 @@ and extension requests on Waivers only. Any other correspondence will be disrega
 <p>If you have questions or did not expect this email, please contact 
 <a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
-    text: "",
+    text: `
+This response confirms you have submitted a {{authority}} Waiver Extension to CMS for review:
+
+State or territory: {{territory}}
+Name: {{submitterName}}
+Email Address: {{submitterEmail}}
+Temporary Extension Request Number: {{id}}
+Temporary Extension Type: {{authority}}
+90th day deadline: {{ninetyDaysDate}}
+Summary:
+{{additionalInformation}}
+
+This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI), 
+and extension requests on Waivers only. Any other correspondence will be disregarded.
+
+If you have any questions, please contact spa@cms.hhs.gov or your state lead.
+
+Thank you!`,
   },
 ];
