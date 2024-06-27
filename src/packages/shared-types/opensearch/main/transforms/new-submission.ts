@@ -54,13 +54,14 @@ export const transform = (id: string) => {
         changedDate: getDateStringOrNullFromEpoc(data.changedDate),
         subject: null,
         description: null,
-        makoChangedDate: new Date(data.timestamp).toISOString(),
+        makoChangedDate: !!data.timestamp
+          ? new Date(data.timestamp).toISOString()
+          : null,
         // ----------
       };
     } else {
       return {
         id,
-        makoChangedDate: data.timestamp,
         attachments: data.attachments,
         appkParentId: data.appkParentId,
         appkTitle: data.appkTitle, // this probably maps to subject, but for now we're just going to put it in main directly
@@ -71,6 +72,9 @@ export const transform = (id: string) => {
         submitterName:
           data.submitterName === "-- --" ? null : data.submitterName,
         origin: "OneMAC",
+        makoChangedDate: !!data.timestamp
+          ? new Date(data.timestamp).toISOString()
+          : null,
       };
     }
   });
