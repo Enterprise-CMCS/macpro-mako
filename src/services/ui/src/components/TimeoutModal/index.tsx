@@ -23,7 +23,7 @@ export const TimeoutModal = () => {
     initialState: false,
   });
 
-  const [count, { startCountdown, resetCountdown }] =
+  const [timeoutModalCountdown, { startCountdown, resetCountdown }] =
     useCountdown(TEN_MINS_IN_MILS);
   const { data: user } = useGetUser();
 
@@ -41,10 +41,10 @@ export const TimeoutModal = () => {
   };
 
   useEffect(() => {
-    if (count === 0) {
+    if (timeoutModalCountdown === 0) {
       onLogOut();
     }
-  }, [count]);
+  }, [timeoutModalCountdown]);
 
   useEffect(() => {
     if (user?.user && isIdleForTwentyMins) {
@@ -53,7 +53,10 @@ export const TimeoutModal = () => {
     }
   }, [isIdleForTwentyMins]);
 
-  const duration = intervalToDuration({ start: 0, end: count * 1000 });
+  const duration = intervalToDuration({
+    start: 0,
+    end: timeoutModalCountdown * 1000,
+  });
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onExtendSession}>
