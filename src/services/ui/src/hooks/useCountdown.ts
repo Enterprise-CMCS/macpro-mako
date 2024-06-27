@@ -11,8 +11,8 @@ type CountdownControllers = {
 export const useCountdown = (
   countStart: number,
 ): [number, CountdownControllers] => {
-  const [count, setCount] = useState(countStart);
-  const [isCountdownRunning, setIsCountdownRunning] = useState(false);
+  const [count, setCount] = useState<number>(countStart);
+  const [isCountdownRunning, setIsCountdownRunning] = useState<boolean>(false);
 
   const startCountdown = () => {
     setIsCountdownRunning(true);
