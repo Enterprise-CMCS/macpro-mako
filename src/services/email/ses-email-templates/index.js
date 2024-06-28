@@ -91,7 +91,7 @@ before {{ninetyDaysDate}}.</p>
 responses to Requests for Additional Information (RAI) on submitted SPAs only.
 Any other correspondence will be disregarded.</p>
 <p>If you have questions or did not expect this email, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
+<a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
     text: `
 This response confirms that you submitted a Medicaid SPA to CMS for review:
@@ -116,7 +116,7 @@ responses to Requests for Additional Information (RAI) on submitted SPAs only.
 Any other correspondence will be disregarded.
 
 If you have questions or did not expect this email, please contact 
-SPA@cms.hhs.gov.
+spa@cms.hhs.gov.
 
 Thank you!`,
   },
@@ -378,7 +378,7 @@ before {{ninetyDaysDate}}.</p>
 responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
 Any other correspondence will be disregarded.</p>
 <p>If you have questions, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
+<a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
 This response confirms you submitted a Medicaid SPA RAI Response to CMS for review:
@@ -548,7 +548,7 @@ Summary:
 based responses to Requests for Additional Information (RAI) on submitted 
 SPAs only. Any other correspondence will be disregarded.</p>
 <p>If you have questions, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
+<a href='mailto:SPA@cms.hhs.gov'>spa@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
     text: `
 The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -612,7 +612,7 @@ Thank you!`,
 <p>This email is to confirm Medicaid SPA {{id}} was withdrawn
 by {{submitterName}}. The review of Medicaid SPA {{id}} has concluded.</p>
 <p>If you have questions or did not expect this email, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
+<a href='mailto:SPA@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
 This email is to confirm Medicaid SPA {{id}} was withdrawn
@@ -1097,7 +1097,7 @@ details by clicking on its ID number.</li>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
-<br><b>Amendment Title:</b> {{title}}
+<br><b>Amendment Title:</b> {{appkTitle}}
 <br><b>Waiver Amendment Number:</b> {{id}}
 <br><b>Waiver Authority:</b> 1915(c)
 <br><b>Proposed Effective Date: {{proposedEffectiveDateNice}}
@@ -1159,7 +1159,7 @@ responses to Requests for Additional Information (RAI) on Waivers, and
 extension requests on Waivers only.  Any other correspondence will be disregarded.
 </p>
 <p>If you have questions, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
+<a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
 This response confirms the submission of your 1915(c) Waiver to CMS for review:
