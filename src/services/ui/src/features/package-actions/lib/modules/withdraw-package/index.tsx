@@ -41,7 +41,8 @@ export const defaultWithdrawPackageFields: ReactElement[] = [
     Complete this form to withdraw a package. Once complete, you will not be
     able to resubmit this package. CMS will be notified and will use this
     content to review your request. If CMS needs any additional information,
-    they will follow up by email.
+    they will follow up by email. If you leave this page, you will lose your
+    progress on this form.
   </ActionFormDescription>,
   <AttachmentsSection
     faqAttLink="/faq"

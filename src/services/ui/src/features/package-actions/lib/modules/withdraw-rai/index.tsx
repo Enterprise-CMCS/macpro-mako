@@ -19,7 +19,8 @@ export const defaultWithdrawRaiSchema = z.object({
 export const defaultWithdrawRaiFields: ReactElement[] = [
   <ActionFormDescription key="content-description">
     Complete this form to withdraw the Formal RAI response. Once complete, you
-    and CMS will receive an email confirmation.
+    and CMS will receive an email confirmation. If you leave this page, you will
+    lose your progress on this form.
   </ActionFormDescription>,
   <AttachmentsSection
     faqAttLink="/faq"
