@@ -58,7 +58,7 @@ export const OPTIONS_STATE = [
   { label: "West Virginia", value: "WV" },
   { label: "Wisconsin", value: "WI" },
   { label: "Wyoming", value: "WY" },
-  { label: "ZZ Test Date", value: "ZZ" },
+  { label: "ZZ Test Data", value: "ZZ" },
 ];
 
 export const FORM = z.object({

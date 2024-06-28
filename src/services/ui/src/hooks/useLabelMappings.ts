@@ -64,7 +64,7 @@ export const STATES = {
   KS: "Kansas, KS",
   MP: "Northern Mariana Islands, MP",
   WY: "Wyoming, WY",
-  ZZ: "ZZ Test Date, ZZ",
+  ZZ: "ZZ Test Data, ZZ",
 };
 
 export const useLabelMapping = () => {
