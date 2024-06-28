@@ -74,7 +74,7 @@ export const AttachmentsSizeTypesDesc = ({
     <p>
       We accept the following file formats:{" "}
       <strong className="bold">
-        .docx, .docx, .pdf, .jpg, .xlsx, and more.{" "}
+        .doc, .docx, .pdf, .jpg, .xlsx, and more.{" "}
       </strong>{" "}
       {
         <Link
