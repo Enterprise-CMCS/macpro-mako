@@ -54,7 +54,7 @@ export const v202401: FormSchema = {
 
             {
               rhf: "Select",
-              name: "abp9_employee-sponsored-insurance-or-pay_does-provide-pay-of-premiums",
+              name: "does-provide-pay-of-premiums",
               label:
                 "Does the state/territory otherwise provide for payment of premiums?",
               labelClassName: "font-bold",
@@ -85,7 +85,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "abp9_employee-sponsored-insurance-or-pay_does-provide-pay-of-premiums",
+                    name: "abp9_employee-sponsored-insur-or-pay_does-provide-pay-of-premiums",
                     type: "expectedValue",
                     expectedValue: "yes",
                   },
