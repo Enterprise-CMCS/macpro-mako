@@ -29,7 +29,6 @@ details by clicking on its ID number.</li>
 <b>Summary:</b>
 <br>{{additionalInformation}}
 <br>
-<p>
 <br><b>Files:</b>
 <br>{{formattedFileList}}
 <br>
@@ -146,7 +145,6 @@ details by clicking on its ID number.</li>
 <b>Summary:</b>
 <br>{{additionalInformation}}
 <br>
-<p>
 <br><b>Files:</b>
 <br>{{formattedFileList}}
 <br>
@@ -317,7 +315,6 @@ details by clicking on its ID number.</li>
 Summary:
 <br>{{additionalInformation}}
 <br>
-<p>
 <br>Files:
 <br>{{formattedFileList}}
 <br>
@@ -648,7 +645,6 @@ can view its details by clicking on its ID number.</li>
 Summary:
 <br>{{additionalInformation}}
 <br>
-<p>
 <br>Files:
 <br>{{formattedFileList}}
 <br></p>
@@ -750,7 +746,6 @@ details by clicking on its ID number.</li>
 Summary:
 <br>{{additionalInformation}}
 <br>
-<p>
 <br>Files:
 <br>{{formattedFileList}}
 <br>
@@ -988,7 +983,6 @@ details by clicking on its ID number.</li>
 Summary:
 <br>{{additionalInformation}}
 <br>
-<p>
 <br>Files:
 <br>{{formattedFileList}}
 <p>If the contents of this email seem suspicious, do not open them, and instead 
@@ -1104,7 +1098,6 @@ details by clicking on its ID number.</li>
 </p>
 Summary:
 <br>{{additionalInformation}}
-<p>
 <br>Files:
 <br>{{formattedFileList}}
 <p>If the contents of this email seem suspicious, do not open them, and instead 
@@ -1252,7 +1245,6 @@ details by clicking on its ID number.</li>
 </p>
 Summary:
 <br>{{additionalInformation}}
-<p>
 <br>Files:
 <br>{{formattedFileList}}
 <p>If the contents of this email seem suspicious, do not open them, and instead 
