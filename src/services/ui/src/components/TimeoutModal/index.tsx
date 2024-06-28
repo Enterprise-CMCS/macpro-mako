@@ -12,6 +12,7 @@ import { useIdle } from "@/hooks/useIdle";
 import { useGetUser } from "@/api";
 import { useCountdown } from "@/hooks/useCountdown";
 import { intervalToDuration } from "date-fns";
+import pluralize from "pluralize";
 
 const TWENTY_MINS_IN_MILS = 1000 * 60 * 20;
 const TEMP_5_SEC_IN_MILS = 5000;
@@ -67,8 +68,10 @@ export const TimeoutModal = () => {
         <div className="py-4">
           <span>
             Due to inactivity, you&#39;ll be automatically logged out in{" "}
-            <strong>{duration.minutes}</strong> minutes and{" "}
-            <strong>{duration.seconds}</strong> seconds.
+            <strong>{duration.minutes}</strong>{" "}
+            {pluralize("minute", duration.minutes)} and{" "}
+            <strong>{duration.seconds}</strong>{" "}
+            {pluralize("second", duration.seconds)}.
           </span>
           <br />
           <span className="inline-block pt-4">
