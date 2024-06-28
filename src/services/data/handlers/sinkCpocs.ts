@@ -7,7 +7,7 @@ import {
   getTopic,
   logError,
 } from "../libs/sink-lib";
-import { decode } from "base-64";
+import { decodeBase64WithUtf8 } from "shared-utils";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
@@ -48,7 +48,7 @@ const officers = async (
       }
 
       // Set id
-      const id: string = decode(key);
+      const id: string = decodeBase64WithUtf8(key);
 
       const decodedValue = Buffer.from(value, "base64").toString("utf-8");
       const record = JSON.parse(decodedValue).payload.after;
