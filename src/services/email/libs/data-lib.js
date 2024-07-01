@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 
 import { getLookupValues } from "./lookup-lib";
+import { attachmentTitleMap } from "shared-types";
 
 const actionTypeLookup = {
   New: "Initial Waiver",
@@ -27,8 +28,14 @@ const formatAttachments = (formatType, attachmentList) => {
     return "attachment List";
   }
   if (!attachmentList || attachmentList.length === 0) return "no attachments";
-  else
-    return `${format.begin}${attachmentList.map((a) => `${a.title}: ${a.filename}`).join(format.joiner)}${format.end}`;
+  else {
+    const attachmentFormat = attachmentList.map((a) => {
+      const attachmentTitle = attachmentTitleMap[a.title] ?? a.title;
+      return `${attachmentTitle}: ${a.filename}`;
+    });
+    return `${format.begin}${attachmentFormat.join(format.joiner)}${format.end}`;
+  }
+    
 };
 
 const formatDateFromTimestamp = (timestamp) => {

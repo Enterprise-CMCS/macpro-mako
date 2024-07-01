@@ -46,6 +46,7 @@ export const v202402: FormSchema = {
                     required: "* Required",
                   },
                   label: "Eligibility group",
+                  labelClassName: "font-bold",
                   props: {
                     sort: "ascending",
                     className: "w-[300px]",
@@ -277,6 +278,7 @@ export const v202402: FormSchema = {
                   rhf: "Select",
                   name: "mandatory-voluntary",
                   label: "Mandatory or voluntary",
+                  labelClassName: "font-bold",
                   rules: {
                     required: "* Required",
                   },
@@ -420,6 +422,7 @@ export const v202402: FormSchema = {
                                                 name: "fed-poverty-level-percent",
                                                 label:
                                                   "Percentage of federal poverty level",
+                                                labelClassName: "font-bold",
                                               },
                                             ],
                                           },
@@ -432,6 +435,7 @@ export const v202402: FormSchema = {
                                                 name: "ssi-fed-benefit-percentage",
                                                 label:
                                                   "Percentage of SSI federal benefit",
+                                                labelClassName: "font-bold",
                                                 props: {
                                                   icon: "%",
                                                   iconRight: true,
@@ -456,6 +460,7 @@ export const v202402: FormSchema = {
                                                 rhf: "Input",
                                                 name: "other-percentage",
                                                 label: "Other percentage",
+                                                labelClassName: "font-bold",
                                                 props: {
                                                   icon: "%",
                                                   iconRight: true,
@@ -474,6 +479,7 @@ export const v202402: FormSchema = {
                                                 rhf: "Textarea",
                                                 name: "other-describe",
                                                 label: "Describe",
+                                                labelClassName: "font-bold",
                                                 rules: {
                                                   required: "* Required",
                                                   pattern: {
@@ -809,7 +815,6 @@ export const v202402: FormSchema = {
                                                           "Name of living arrangement",
                                                         labelClassName:
                                                           "font-bold",
-
                                                         rules: {
                                                           required:
                                                             "* Required",
@@ -1201,6 +1206,7 @@ export const v202402: FormSchema = {
                                   rhf: "Textarea",
                                   name: "other_descript",
                                   label: "Describe",
+                                  labelClassName: "font-bold",
                                   rules: {
                                     required: "* Required",
                                     pattern: {
@@ -1225,6 +1231,7 @@ export const v202402: FormSchema = {
                         rhf: "Textarea",
                         name: "other_target_criteria_descript",
                         label: "Describe",
+                        labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
                           pattern: {
