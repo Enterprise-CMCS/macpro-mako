@@ -38,22 +38,25 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
     mode: "onChange",
   });
 
+  if (type === "temporary-extension") {
+    form.setValue("seaActionType", "Extend");
+  }
+
   // Submission Handler
-  const handler = form.handleSubmit(
-    async (data) =>
-      await submitActionForm({
-        data,
-        id: id!,
-        type: type!,
-        authority: authority!,
-        user: user!,
-        alert,
-        navigate,
-        originRoute: origin,
-        statusToCheck: successCheckSwitch(type),
-        locationState: location.state,
-      }),
-  );
+  const handler = form.handleSubmit(async (data) => {
+    await submitActionForm({
+      data,
+      id: data?.id ?? id,
+      type: type!,
+      authority: authority!,
+      user: user!,
+      alert,
+      navigate,
+      originRoute: origin,
+      statusToCheck: successCheckSwitch(type),
+      locationState: location.state,
+    });
+  });
   useEffect(() => {
     content?.successBanner && alert.setContent(content.successBanner);
   }, [content]);
