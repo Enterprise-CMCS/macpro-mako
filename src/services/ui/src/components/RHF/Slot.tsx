@@ -24,7 +24,6 @@ export const RHFSlot = <
   descriptionClassName,
   labelClassName,
   formItemClassName,
-  horizontalLayout,
   ...rest
 }: RHFSlotProps & { control: any; parentId?: string }): ControllerProps<
   TFieldValues,
@@ -40,11 +39,9 @@ export const RHFSlot = <
 
     return (
       <FormItem
-        className={`flex gap-1 py-2${
+        className={`flex flex-col gap-1 py-2${
           formItemClassName ? ` ${formItemClassName}` : ""
-        }
-        ${horizontalLayout ? "" : " flex-col"}
-        `}
+        }`}
         data-testid={rest.name + "Wrapper"}
       >
         {(label || styledLabel) && (
@@ -58,12 +55,7 @@ export const RHFSlot = <
           </FormDescription>
         )}
         <FormControl>
-          <SlotField
-            {...rest}
-            horizontalLayout={horizontalLayout}
-            control={control}
-            field={field}
-          />
+          <SlotField {...rest} control={control} field={field} />
         </FormControl>
         {description && !descriptionAbove && (
           <FormDescription className={descriptionClassName}>

@@ -4,7 +4,7 @@ import { DependencyRule, DependencyWrapperProps } from "shared-types";
 
 const checkTriggeringValue = (
   dependentValue: unknown[],
-  dependency?: DependencyRule,
+  dependency?: DependencyRule
 ) => {
   return !!dependency?.conditions?.every((d, i) => {
     switch (d.type) {
@@ -27,7 +27,7 @@ const checkTriggeringValue = (
 };
 
 export const DependencyWrapper = (
-  props: PropsWithChildren<DependencyWrapperProps>,
+  props: PropsWithChildren<DependencyWrapperProps>
 ) => {
   // Check for dependencies which won't exist outside of forms
   if (
@@ -51,7 +51,7 @@ const DependencyWrapperHandler = ({
   const { watch, setValue } = useFormContext();
   const [wasSetLast, setWasSetLast] = useState(false);
   const dependentValues = watch(
-    dependency?.conditions?.map((c) => c.name) ?? [],
+    dependency?.conditions?.map((c) => c.name) ?? []
   );
   const isTriggered =
     dependency && checkTriggeringValue(dependentValues, dependency);
