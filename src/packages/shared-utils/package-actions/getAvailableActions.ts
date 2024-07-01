@@ -6,7 +6,7 @@ export const getAvailableActions = (
   user: CognitoUserAttributes,
   result: opensearch.main.Document,
 ) => {
-  let allActions: any[] = [];
+  let allActions: Action[][] = [];
 
   let allMembers = [result];
   if (result.appkChildren) {
