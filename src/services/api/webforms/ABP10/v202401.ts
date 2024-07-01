@@ -46,7 +46,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label: "Describe the approach",
               labelClassName: "font-bold",
-              name: "describe-approach",
+              name: "approach-description",
               formItemClassName:
                 "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               rules: {
