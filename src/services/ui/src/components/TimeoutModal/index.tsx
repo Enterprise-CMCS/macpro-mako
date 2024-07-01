@@ -67,24 +67,18 @@ export const TimeoutModal = () => {
         </DialogHeader>
         <div className="py-4">
           <span>
-            Due to inactivity, you&#39;ll be automatically logged out in{" "}
-            <strong>{duration.minutes}</strong>{" "}
+            Your session will expire in <strong>{duration.minutes}</strong>{" "}
             {pluralize("minute", duration.minutes)} and{" "}
             <strong>{duration.seconds}</strong>{" "}
             {pluralize("second", duration.seconds)}.
           </span>
-          <br />
-          <span className="inline-block pt-4">
-            Do you want to stay logged in?
-          </span>
         </div>
         <DialogFooter>
-          <Button type="button" variant="outline" onClick={onLogOut}>
-            No, log out
-          </Button>
-
           <Button type="submit" onClick={onExtendSession}>
             Yes, extend session
+          </Button>
+          <Button type="button" variant="outline" onClick={onLogOut}>
+            No, log out
           </Button>
         </DialogFooter>
       </DialogContent>
