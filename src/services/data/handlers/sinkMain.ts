@@ -24,7 +24,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
         case undefined:
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
-        case "aws.onemac.migration.cdc": // mako
+        case "aws.onemac.migration.cdc":
           await onemac(event.records[topicPartition], topicPartition);
           break;
         case "aws.seatool.ksql.onemac.agg.State_Plan":
@@ -98,7 +98,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         docs.push(opensearch.main.legacyPackageView.tombstone(id));
         continue;
       }
-      const record = { ...JSON.parse(decode(value)), timestamp };
+      const record = { timestamp, ...JSON.parse(decode(value)) };
       // Process legacy events
       if (record?.origin !== "micro") {
         // Is a Package View from legacy onemac
