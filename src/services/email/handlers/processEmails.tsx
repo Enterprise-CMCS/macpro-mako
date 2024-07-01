@@ -18,12 +18,10 @@ export const main = handler(async (record) => {
 
   // data is at bundle level since often identical between emails and saves on lookups
   const emailData = await buildEmailData(emailBundle, record);
-  console.log("Email Data,", JSON.stringify(emailData));
 
   const sendResults = await Promise.allSettled(
     emailBundle.emailCommands.map(async (command) => {
       try {
-        console.log("template", command.Template);
         return await SES.send(
           new SendTemplatedEmailCommand({
             Source: process.env.emailSource ?? "kgrue@fearless.tech",
