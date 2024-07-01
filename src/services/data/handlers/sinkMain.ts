@@ -99,10 +99,10 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         docs.push(opensearch.main.legacyPackageView.tombstone(id));
         continue;
       }
-      console.log("the type of this value is: ", typeof value)
+      console.log("the type of this value is: ", typeof value);
       const record = JSON.parse(decodeBase64WithUtf8(value));
-      console.log("raw record, just parsed")
-      console.log(JSON.stringify(record,null,2))
+      console.log("raw record, just parsed");
+      console.log(JSON.stringify(record, null, 2));
       // Process legacy events
       if (record?.origin !== "micro") {
         // Is a Package View from legacy onemac
@@ -256,7 +256,8 @@ const changed_date = async (
     const { key, value } = kafkaRecord;
     try {
       // Set id
-      const id: string = JSON.parse(decodeBase64WithUtf8(key)).payload.ID_Number;
+      const id: string = JSON.parse(decodeBase64WithUtf8(key)).payload
+        .ID_Number;
 
       // Handle delete events and continue
       if (value === undefined) {
