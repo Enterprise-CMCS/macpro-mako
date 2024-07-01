@@ -16,6 +16,7 @@ export const v202402: FormSchema = {
               rhf: "Input",
               name: "abp-pop-name",
               label: "ABP package name",
+              labelClassName: "font-bold",
               props: {
                 className: "w-[355px]",
               },
