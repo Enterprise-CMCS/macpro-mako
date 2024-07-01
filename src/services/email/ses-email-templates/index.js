@@ -371,7 +371,7 @@ Summary:
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
 before {{ninetyDaysDate}}.</p>
-<<p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
+<p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
 responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
 Any other correspondence will be disregarded.</p>
 <p>If you have questions, please contact 
@@ -645,6 +645,7 @@ can view its details by clicking on its ID number.</li>
 Summary:
 <br>{{additionalInformation}}
 <br>
+<p>
 <br>Files:
 <br>{{formattedFileList}}
 <br></p>
@@ -1037,7 +1038,6 @@ Summary:
 response to a Waiver Request for Additional Information (RAI).
 You can expect a formal response to your submittal to be issued within 90 days,
 before {{ninetyDaysDate}}.</p>
-<p>
 <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
 responses to Requests for Additional Information (RAI) on Waivers, and extension
 requests on Waivers only.  Any other correspondence will be disregarded.
@@ -1091,7 +1091,7 @@ details by clicking on its ID number.</li>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
-<br><b>Amendment Title:</b> {{appkTitle}}
+<br><b>Amendment Title:</b> {{submitterName}}
 <br><b>Waiver Amendment Number:</b> {{id}}
 <br><b>Waiver Authority:</b> 1915(c)
 <br><b>Proposed Effective Date: {{proposedEffectiveDateNice}}
