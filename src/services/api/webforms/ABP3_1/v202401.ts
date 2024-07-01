@@ -610,7 +610,7 @@ export const v202401: FormSchema = {
                                       labelClassName: "p-3 font-bold",
                                       formItemClassName: "flex-row",
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -726,7 +726,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -842,7 +842,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -958,7 +958,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1076,7 +1076,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1192,7 +1192,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1310,7 +1310,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1426,7 +1426,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1544,7 +1544,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1662,7 +1662,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
