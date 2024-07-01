@@ -5,3 +5,4 @@ export * from "./regex";
 export * from "./s3-url-parser";
 export * from "./seatool-date-helper";
 export * from "./user-helper";
+export * from "./decode"
