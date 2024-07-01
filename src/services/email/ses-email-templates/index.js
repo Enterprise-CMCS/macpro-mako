@@ -1091,7 +1091,7 @@ details by clicking on its ID number.</li>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
-<br><b>Amendment Title:</b> {{submitterName}}
+<br><b>Amendment Title:</b> {{appKTitle}}
 <br><b>Waiver Amendment Number:</b> {{id}}
 <br><b>Waiver Authority:</b> 1915(c)
 <br><b>Proposed Effective Date: {{proposedEffectiveDateNice}}
