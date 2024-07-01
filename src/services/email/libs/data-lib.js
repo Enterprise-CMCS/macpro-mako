@@ -65,8 +65,6 @@ export const buildEmailData = async (bundle, data) => {
     return { error: "init statement fail", bundle, data, lookupValues };
 
   bundle.dataList.forEach((dataType) => {
-
-    if(dataType === "appKTitle") console.log("andie", data);
     switch (dataType) {
       case "territory":
         returnObject["territory"] = data.id.toString().substring(0, 2);
