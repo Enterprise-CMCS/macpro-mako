@@ -16,6 +16,7 @@ import {
 
 export interface FormSchema {
   header: string;
+  subheader?: string;
   formId: string;
   sections: Section[];
 }
@@ -32,6 +33,7 @@ export type RHFSlotProps = {
   descriptionClassName?: string;
   dependency?: DependencyRule;
   rules?: RegisterOptions;
+  horizontalLayout?: boolean;
 } & {
   [K in keyof RHFComponentMap]: {
     rhf: K;
