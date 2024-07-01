@@ -11,7 +11,7 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
 }) => {
   return (
     <DependencyWrapper {...props.section}>
-      <div className="py-4">
+      <div className={props.section.subsection ? "" : "py-4"}>
         {props.section.title && (
           <div
             className={
