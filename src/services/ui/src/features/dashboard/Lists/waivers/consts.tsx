@@ -175,5 +175,30 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       transform: (data) => data.submitterName ?? BLANK_VALUE,
       cell: (data) => data.submitterName,
     },
+    {
+      field: "makoChangedDate.keyword",
+      label: "Latest Package Activity",
+      transform: (data) => {
+        if (data.makoChangedDate) {
+          return formatSeatoolDate(data.makoChangedDate);
+        }
+
+        if (data.changedDate) {
+          return formatSeatoolDate(data.changedDate);
+        }
+
+        return BLANK_VALUE;
+      },
+      cell: (data) => {
+        if (data.makoChangedDate) {
+          return formatSeatoolDate(data.makoChangedDate);
+        }
+        if (data.changedDate) {
+          return formatSeatoolDate(data.changedDate);
+        }
+
+        return BLANK_VALUE;
+      },
+    },
   ];
 };
