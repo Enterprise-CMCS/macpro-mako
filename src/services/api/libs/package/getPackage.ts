@@ -16,7 +16,10 @@ export const getPackage = async (id: string) => {
   )) as ExtendedItemResult;
   if (packageResult._source.appkParent) {
     const children = await getAppkChildren(packageResult._id);
-    packageResult.appkChildren = children.hits.hits;
+    return {
+      ...packageResult,
+      appkChildren: children.hits.hits,
+    };
   }
   return packageResult;
 };
