@@ -29,8 +29,11 @@ export const v202401: FormSchema = {
         },
       ],
     },
-    { title: "Exemptions", sectionId: "exemptions", form: [] },
-
+    {
+      title: "Exemptions",
+      sectionId: "exemptions",
+      form: [],
+    },
     {
       title: "Groups of individuals—Mandatory exemptions",
       sectionId: "exemptions-group-indiv-manda",
