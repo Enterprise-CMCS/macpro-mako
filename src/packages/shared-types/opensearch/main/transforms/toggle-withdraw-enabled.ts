@@ -4,7 +4,9 @@ export const transform = (id: string) => {
   return toggleWithdrawRaiEnabledSchema.transform((data) => ({
     id,
     raiWithdrawEnabled: data.raiWithdrawEnabled,
-    makoChangedDate: new Date(data.timestamp).toISOString(),
+    makoChangedDate: !!data.timestamp
+      ? new Date(data.timestamp).toISOString()
+      : null,
   }));
 };
 
