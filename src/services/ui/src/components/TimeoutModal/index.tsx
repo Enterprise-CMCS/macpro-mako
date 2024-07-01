@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components";
+import { Button, Dialog, DialogContent, DialogFooter } from "@/components";
 import { Auth } from "aws-amplify";
 import { useIdle } from "@/hooks/useIdle";
 import { useGetUser } from "@/api";
@@ -62,9 +55,6 @@ export const TimeoutModal = () => {
   return (
     <Dialog open={isModalOpen} onOpenChange={onExtendSession}>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Session expiring soon</DialogTitle>
-        </DialogHeader>
         <div className="py-4">
           <span>
             Your session will expire in <strong>{duration.minutes}</strong>{" "}
