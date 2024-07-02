@@ -56,16 +56,18 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     );
 
     if (results) {
-      for (const key in results) {
-        if (Object.prototype.hasOwnProperty.call(results, key)) {
-          const value = results[key];
-          if (value._source && value._source.appkParent) {
-            const children = await getAppkChildren(value.id);
-            value.appkChildren = children;
+      results.hits.hits = await Promise.all(
+        results?.hits.hits.map(async (item: any) => {
+          if (item._source.appkParent) {
+            item._source.appkChildren = (
+              await getAppkChildren(item._id)
+            ).hits.hits;
           }
-        }
-      }
+          return item;
+        }),
+      );
     }
+
     return response<unknown>({
       statusCode: 200,
       body: results,

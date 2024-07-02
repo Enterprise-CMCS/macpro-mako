@@ -21,7 +21,7 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
   }
   const body = JSON.parse(event.body) as GetPackageActionsBody;
   try {
-    const result = await getPackage(body.id);
+    const result = await getPackage(body.id); // this needs to include the children
     const passedStateAuth = await isAuthorizedToGetPackageActions(
       event,
       result._source.state,
@@ -42,14 +42,12 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
       authDetails.poolId,
     );
 
-    if (!result._source.appkParent) {
-      return response({
-        statusCode: 200,
-        body: {
-          actions: getAvailableActions(userAttr, result._source),
-        },
-      });
-    }
+    return response({
+      statusCode: 200,
+      body: {
+        actions: getAvailableActions(userAttr, result._source),
+      },
+    });
   } catch (err) {
     console.error({ err });
     return response({

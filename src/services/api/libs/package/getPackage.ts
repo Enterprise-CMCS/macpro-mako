@@ -18,7 +18,10 @@ export const getPackage = async (id: string) => {
     const children = await getAppkChildren(packageResult._id);
     return {
       ...packageResult,
-      appkChildren: children.hits.hits,
+      _source: {
+        ...packageResult._source,
+        appkChildren: children.hits.hits,
+      },
     };
   }
   return packageResult;

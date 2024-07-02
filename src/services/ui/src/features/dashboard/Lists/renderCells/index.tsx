@@ -27,9 +27,10 @@ export const renderCellIdLink = (pathResolver: (id: string) => string) =>
     );
   };
 
-export const renderCellActions = (user: CognitoUserAttributes | null) =>
-  function Cell(data: opensearch.main.Document) {
+export const renderCellActions = (user: CognitoUserAttributes | null) => {
+  return function Cell(data: opensearch.main.Document) {
     if (!user) return <></>;
+
     const actions = getAvailableActions(user, data);
     return (
       <>
@@ -78,3 +79,4 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
       </>
     );
   };
+};

@@ -14,7 +14,7 @@ export const getAvailableActions = (
   }
 
   allMembers.forEach((element) => {
-    const checks = PackageCheck(result);
+    const checks = PackageCheck(element);
     allActions.push([
       ...(checks.isWaiver || checks.isSpa
         ? rules.filter((r) => r.check(checks, user)).map((r) => r.action)
