@@ -16,9 +16,9 @@ export const useDetailsSidebarLinks = (
 
   useLayoutEffect(() => {
     const ids = [
-      "package_detailss",
+      "package_details",
       "package_activity",
-      "administrative_package_changess",
+      "administrative_package_changes",
     ];
 
     // Check if dataId is not undefined before proceeding
@@ -27,7 +27,7 @@ export const useDetailsSidebarLinks = (
         .filter((id) => document.getElementById(id) != null)
         .map((id) => ({
           id,
-          href: `?id=${encodeURIComponent(dataId)}#${id}`,
+          href: `#${id}`,
           displayName: removeUnderscoresAndCapitalize(id),
         }));
 
