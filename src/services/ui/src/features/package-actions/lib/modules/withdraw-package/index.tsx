@@ -37,7 +37,7 @@ export const defaultWithdrawPackageSchema = z
     }
   });
 export const defaultWithdrawPackageFields: ReactElement[] = [
-  <ActionFormDescription key="content-description">
+  <ActionFormDescription key="content-description" boldReminder>
     Complete this form to withdraw a package. Once complete, you will not be
     able to resubmit this package. CMS will be notified and will use this
     content to review your request. If CMS needs any additional information,
