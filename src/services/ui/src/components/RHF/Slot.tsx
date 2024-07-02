@@ -11,6 +11,7 @@ import {
 } from "../Inputs";
 import { RHFTextDisplay } from ".";
 import { SlotField } from "./SlotField";
+import { cn } from "@/utils";
 
 export const RHFSlot = <
   TFieldValues extends FieldValues = FieldValues,
@@ -40,11 +41,11 @@ export const RHFSlot = <
 
     return (
       <FormItem
-        className={`flex gap-1 py-2${
+        className={cn(`flex gap-1 py-2${
           formItemClassName ? ` ${formItemClassName}` : ""
         }
         ${horizontalLayout ? "" : " flex-col"}
-        `}
+        `)}
         data-testid={rest.name + "Wrapper"}
       >
         {(label || styledLabel) && (
