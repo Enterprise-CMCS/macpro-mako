@@ -78,8 +78,7 @@ const abp_forms: Guide[] = [
   },
   {
     title: "ABP3.1",
-    linkTitle:
-      "Selection of Benchmark Benefit Package or Benchmark-Equivalent Benefit Package",
+    linkTitle: "Selection of benchmark or benchmark-equivalent benefit package",
     href: "/forms/abp/IG_ABP3.1_SelectionOfBenchmark20190819-Final.docx",
   },
   {
