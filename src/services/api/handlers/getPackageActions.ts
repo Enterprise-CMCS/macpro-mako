@@ -21,7 +21,7 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
   }
   const body = JSON.parse(event.body) as GetPackageActionsBody;
   try {
-    const result = await getPackage(body.id); // this needs to include the children
+    const result = await getPackage(body.id);
     const passedStateAuth = await isAuthorizedToGetPackageActions(
       event,
       result._source.state,
