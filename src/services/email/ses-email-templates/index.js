@@ -138,7 +138,7 @@ details by clicking on its ID number.</li>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
-<br><b>Initial Waiver Number:</b> {{id}}
+<br><b>{{actionType}} Number:</b> {{id}}
 <br><br><b>Waiver Authority:</b> {{authority}}
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
 </p>
@@ -169,7 +169,7 @@ details by clicking on its ID number.
 State or territory: {{territory}}
 Name: {{submitterName}}
 Email: {{submitterEmail}}
-Initial Waiver Number: {{id}}
+{{actionType}} Number: {{id}}
 
 Waiver Authority: {{authority}}
 Proposed Effective Date: {{proposedEffectiveDateNice}}
@@ -194,7 +194,7 @@ Thank you!`,
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
 <br><b>Email Address:</b> {{submitterEmail}}
-<br><b>Initial Waiver Number:</b> {{id}}</b>
+<br><b>{{actionType}} Number:</b> {{id}}</b>
 <br><b>Waiver Authority:</b> {{authority}}
 <br><b>Proposed Effective Date:</b> {{proposedEffectiveDateNice}}
 <br><b>90th Day Deadline:</b> {{ninetyDaysDate}}
@@ -371,9 +371,9 @@ Summary:
 or your response to a SPA Request for Additional Information (RAI)). You can 
 expect a formal response to your submittal to be issued within 90 days, 
 before {{ninetyDaysDate}}.</p>
-<p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
-responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
-Any other correspondence will be disregarded.</p>
+<p>This mailbox is for the submittal of State Plan Amendments and non-web based responses to
+ Requests for Additional Information (RAI) on submitted SPAs only. 
+ Any other correspondence will be disregarded.</p>
 <p>If you have questions, please contact 
 <a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
