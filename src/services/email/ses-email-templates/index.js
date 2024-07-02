@@ -218,7 +218,7 @@ This response confirms the submission of your 1915(b) {{actionType}} to CMS for 
 State or territory: {{territory}}
 Name: {{submitterName}}
 Email Address: {{submitterEmail}}
-1915(b) {{actionType}} Number: {{id}}
+{{actionType}} Number: {{id}}
 Waiver Authority: {{authority}}
 Proposed Effective Date: {{proposedEffectiveDateNice}}
 90th Day Deadline: {{ninetyDaysDate}}
@@ -265,7 +265,7 @@ The package will no longer be considered for CMS review:
 State or territory: {{territory}}
 Name: {{submitterName}}
 Email: {{submitterEmail}}
-Initial Waiver Number: {{id}}
+{{actionType}} Number: {{id}}
 
 Summary:
 {{additionalInformation}}
@@ -1109,10 +1109,10 @@ This response confirms the submission of your [insert Waiver Action] to CMS for 
 State or territory: {{territory}}
 Name: {{submitterName}}
 Email Address: {{submitterEmail}}
-Initial Waiver Number: {{id}}
+Amendment Title: {{appkTitle}}
+Waiver Amendment Number: {{id}}
 Waiver Authority: 1915(c)
 Proposed Effective Date: {{proposedEffectiveDateNice}}
-90th Day Deadline: {{ninetyDaysDate}}
 
 Summary:
 {{additionalInformation}}
