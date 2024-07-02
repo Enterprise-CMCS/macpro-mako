@@ -17,9 +17,6 @@ export const v202402: FormSchema = {
               name: "abp-pop-name",
               label: "ABP package name",
               labelClassName: "font-bold",
-              props: {
-                className: "w-[355px]",
-              },
               rules: {
                 required: "* Required",
                 pattern: {
@@ -27,6 +24,7 @@ export const v202402: FormSchema = {
                   message: "Must not have leading or trailing whitespace.",
                 },
               },
+              props: { placeholder: "enter name" },
             },
           ],
         },
@@ -53,224 +51,222 @@ export const v202402: FormSchema = {
                     className: "w-[300px]",
                     options: [
                       {
-                        label: "Adult",
-                        value: "adult",
+                        label: "Parents and Other Caretaker Relatives",
+                        value: "parents_caretaker_relatives",
+                      },
+                      {
+                        label: "Transitional Medical Assistance",
+                        value: "transitional_medical_assist",
                       },
                       {
                         label:
-                          "Aged, blind, and disabled individuals in 209(b) states",
-                        value: "aged_blind_disabled_individuals_209b_states",
+                          "Extended Medicaid Due to Spousal Support Collections",
+                        value: "extend_medicaid_spousal_support_collect",
+                      },
+                      {
+                        label: "Pregnant Women",
+                        value: "pregnant_women",
+                      },
+                      {
+                        label: "Deemed Newborns",
+                        value: "deemed_newborns",
+                      },
+                      {
+                        label: "Infants and Children under Age 19",
+                        value: "infants_children_under_19",
                       },
                       {
                         label:
-                          "Aged, blind, or disabled individuals eligible for but not receiving cash",
-                        value:
-                          "aged_blind_disabled_eligible_but_not_receiving_cash",
-                      },
-                      {
-                        label: "Blind or disabled individuals eligible in 1937",
-                        value: "blind_disabled_eligible_1973",
-                      },
-                      {
-                        label:
-                          "Certain individuals needing treatment for breast or cervical cancer",
-                        value:
-                          "individuals_need_treatment_for_breasts_cervical_cancer",
-                      },
-                      {
-                        label: "Children with non-IV-E adoption assistance",
-                        value: "children_non-IV-E_adoption_assistance",
-                      },
-                      {
-                        label:
-                          "Children with Title IV-E adoption assistance, foster care, or guardianship care",
+                          "Children with Title IV-E Adoption Assistance, Foster Care or Guardianship Care",
                         value:
                           "children_title_IV-E_adoption_assist_foster_guardianship_care",
                       },
                       {
-                        label: "Deemed newborns",
-                        value: "deemed_newborns",
-                      },
-                      {
-                        label: "Disabled adult children",
-                        value: "disabled_adult_children",
-                      },
-                      {
-                        label:
-                          "Disabled widows and widowers ineligible for SSI due to early receipt of Social Security",
-                        value:
-                          "disabled_widows_ineligible_SSI_due_to_early_receipt_social_security",
-                      },
-                      {
-                        label:
-                          "Disabled widows and widowers ineligible for SSI due to increase in OASDI",
-                        value:
-                          "disabled_widows_ineligible_SSI_due_to_increase_OASDI",
-                      },
-                      {
-                        label:
-                          "Extended Medicaid due to spousal support collections",
-                        value: "extend_medicaid_spousal_support_collect",
-                      },
-                      {
-                        label:
-                          "Family Opportunity Act children with disabilities",
-                        value: "family_opportunity_act_children_disabilities",
-                      },
-                      {
-                        label: "Former foster care children",
+                        label: "Former Foster Care Children",
                         value: "former_foster_children",
                       },
                       {
-                        label: "Independent foster care adolescents",
-                        value: "independent_foster_care_adolescents",
+                        label: "Adult Group",
+                        value: "adult_group",
+                      },
+                      {
+                        label: "SSI Beneficiaries",
+                        value: "ssi_beneficiaries",
                       },
                       {
                         label:
-                          "Individuals eligible for cash except for institutionalization",
-                        value: "eligible_cash_except_for_institutionalization",
+                          "Aged, Blind and Disabled Individuals in 209(b) States",
+                        value: "aged_blind_disabled_individuals_209b_states",
                       },
                       {
                         label:
-                          "Individuals eligible for SSI/SSP but for OASDI COLA increases since April 1977",
+                          "Individuals Receiving Mandatory State Supplements",
+                        value:
+                          "individuals_receiving_mandatory_state_supplements",
+                      },
+                      {
+                        label: "Individuals Who Are Essential Spouses",
+                        value: "essential_spouses",
+                      },
+                      {
+                        label: "Institutionalized Individuals Eligible in 1973",
+                        value: "institutionalized_eligible_1973",
+                      },
+                      {
+                        label: "Blind or Disabled Individuals Eligible in 1937",
+                        value: "blind_disabled_eligible_1937",
+                      },
+                      {
+                        label:
+                          "Individuals Who Lost Eligibility for SSI/SSP Due to an Increase in OASDI Benefits in 1972",
+                        value:
+                          "lost_eligibility_SSI_SSP_increase_in_OASDI_benefits_1972",
+                      },
+                      {
+                        label:
+                          "Individuals Eligible for SSI/SSP but for OASDI COLA increases since April, 1977",
                         value:
                           "eligible_SSI_SSP_but_for_OASDI_COLA_increases_April_1977",
                       },
                       {
                         label:
-                          "Individuals receiving home and community-based services under institutional rules",
+                          "Disabled Widows and Widowers Ineligible for SSI due to Increase in OASDI",
                         value:
-                          "receiving_home_community_services_under_inst_rule",
-                      },
-                      {
-                        label: "Individuals receiving hospice care",
-                        value: "hospice_care",
+                          "disabled_widows_ineligible_SSI_due_to_increase_OASDI",
                       },
                       {
                         label:
-                          "Individuals receiving mandatory state supplements",
+                          "Disabled Widows and Widowers Ineligible for SSI due to Early Receipt of Social Security",
                         value:
-                          "individuals_receiving_mandatory_state_supplements",
+                          "disabled_widows_ineligible_SSI_due_to_early_receipt_social_security",
                       },
                       {
-                        label: "Individuals who are essential spouses",
-                        value: "essential_spouses",
+                        label: "Working Disabled under 1619(b)",
+                        value: "working_disabled_under_1619b",
                       },
                       {
-                        label:
-                          "Individuals who lost eligibility for SSI/SSP due to an increase in OASDI benefits in 1972",
-                        value:
-                          "lost_eligibility_SSI_SSP_increase_in_OASDI_benefits_1972",
-                      },
-                      {
-                        label: "Individuals with tuberculosis",
-                        value: "tuberculosis",
-                      },
-                      {
-                        label: "Infants and children under age 19",
-                        value: "infants_children_under_19",
+                        label: "Disabled Adult Children",
+                        value: "disabled_adult_children",
                       },
                       {
                         label:
-                          "Institutionalized individuals continuously eligible since 1973",
-                        value: "institutionalized_eligible_1973",
-                      },
-                      {
-                        label:
-                          "Institutionalized individuals eligible under a special income level",
-                        value: "inst_eligible_under_special_income_level",
-                      },
-                      {
-                        label: "Medically needy aged, blind, or disabled",
-                        value: "med_needy_aged_blind_disabled",
-                      },
-                      {
-                        label:
-                          "Medically needy blind or disabled individuals eligible in 1973",
-                        value:
-                          "med_needy_aged_blind_disabled_individuals_eligible_in_1973",
-                      },
-                      {
-                        label: "Medically needy children age 18 through 20",
-                        value: "med_needy_age_18_through_20",
-                      },
-                      {
-                        label: "Medically needy children under age 18",
-                        value: "med_needy_children_under_18",
-                      },
-                      {
-                        label: "Medically needy parents and other caretakers",
-                        value: "med_needy_parents_caretakers",
-                      },
-                      {
-                        label: "Medically needy pregnant women",
-                        value: "med_needy_pregnant_women",
-                      },
-                      {
-                        label:
-                          "Optional coverage of parents and other caretaker relatives",
+                          "Optional Coverage of Parents and Other Caretaker Relatives",
                         value: "opt_coverage_parents_other_caretaker_relatives",
                       },
                       {
                         label:
-                          "Optional state supplement - 1634 states and SSI criteria states with 1616 agreements",
+                          "Reasonable Classifications of Individuals under Age 21",
+                        value: "reasonable_class_under_21",
+                      },
+                      {
+                        label: "Children with Non-IV-E Adoption Assistance",
+                        value: "children_Non-IV-E_adoption_assistance",
+                      },
+                      {
+                        label: "Independent Foster Care Adolescents",
+                        value: "independent_foster_care_adolescents",
+                      },
+                      {
+                        label: "Optional Targeted Low Income Children",
+                        value: "opt_targeted_low_income_children",
+                      },
+                      {
+                        label:
+                          "Certain Individuals Needing Treatment for Breast or Cervical Cancer",
+                        value:
+                          "individuals_need_treatment_for_breasts_cervical_cancer",
+                      },
+                      {
+                        label: "Individuals with Tuberculosis",
+                        value: "tuberculosis",
+                      },
+                      {
+                        label:
+                          "Aged, Blind or Disabled Individuals Eligible for but Not Receiving Cash",
+                        value:
+                          "aged_blind_disabled_eligible_but_not_receiving_cash",
+                      },
+                      {
+                        label:
+                          "Individuals Eligible for Cash except for Institutionalization",
+                        value: "eligible_cash_except_for_institutionalization",
+                      },
+                      {
+                        label:
+                          "Individuals Receiving Home and Community Based Services under Institutional Rules",
+                        value:
+                          "receiving_home_community_services_under_inst_rule",
+                      },
+                      {
+                        label:
+                          "Optional State Supplement - 1634 States and SSI Criteria States with 1616 Agreements",
                         value:
                           "opt_state_supp_1634_states_SSI_criteria_states_1616_agreements",
                       },
                       {
                         label:
-                          "Optional state supplement - 209(b) states and SSI criteria states without 1616 agreements",
+                          "Optional State Supplement - 209(b) States and SSI Criteria States without 1616 Agreements",
                         value:
                           "opt_state_supp_209b_states_SSI_criteria_states_without_1616_agreements",
                       },
                       {
-                        label: "Optional targeted low-income children",
-                        value: "opt_targ_low_income_children",
+                        label:
+                          "Institutionalized Individuals Eligible under a Special Income Level",
+                        value: "inst_eligible_under_special_income_level",
                       },
                       {
-                        label: "Parents and other caretaker relatives",
-                        value: "parents_caretaker_relatives",
+                        label: "Individuals Receiving Hospice Care",
+                        value: "hospice_care",
                       },
                       {
-                        label: "Poverty-level aged or disabled",
-                        value: "poverty_level_aged_or_disabled",
-                      },
-                      {
-                        label: "Pregnant women",
-                        value: "pregnant_women",
-                      },
-                      {
-                        label: "Qualified disabled children under age 19",
+                        label: "Qualified Disabled Children under Age 19 ",
                         value: "qualified_disabled_children_under_19",
                       },
                       {
-                        label:
-                          "Reasonable classifications of individuals under age 21",
-                        value: "reasonable_class_under_21",
+                        label: "Poverty Level Aged or Disabled",
+                        value: "poverty_level_aged_disabled",
                       },
                       {
-                        label: "SSI beneficiaries",
-                        value: "ssi_beneficiaries",
+                        label: "Work Incentives Eligibility Group",
+                        value: "work_incentives_eligibility_group",
                       },
                       {
-                        label: "Ticket to Work basic",
-                        value: "ticket_work_basic",
+                        label: "Ticket to Work Basic Group",
+                        value: "ticket_work_basic_group",
                       },
                       {
-                        label: "Ticket to Work medical improvements",
+                        label: "Ticket to Work Medical Improvements Group",
                         value: "ticket_work_medical_imp_group",
                       },
                       {
-                        label: "Transitional medical assistance",
-                        value: "transitional_medical_assist",
+                        label:
+                          "Family Opportunity Act Children with Disabilities",
+                        value: "family_opportunity_act_children_disabilities",
                       },
                       {
-                        label: "Work incentives",
-                        value: "work_incentives",
+                        label: "Medically Needy Pregnant Women",
+                        value: "med_needy_pregnant_women",
                       },
                       {
-                        label: "Working disabled under 1619(b)",
-                        value: "working_disabled_under_1619b",
+                        label: "Medically Needy Children under Age 18",
+                        value: "med_needy_children_under_18",
+                      },
+                      {
+                        label: "Medically Needy Children Age 18 through 20",
+                        value: "med_needy_age_18_through_20",
+                      },
+                      {
+                        label: "Medically Needy Parents and Other Caretakers",
+                        value: "med_needy_parents_caretakers",
+                      },
+                      {
+                        label: "Medically Needy Aged, Blind or Disabled",
+                        value: "med_needy_aged_blind_disabled",
+                      },
+                      {
+                        label:
+                          "Medically Needy Blind or Disabled Individuals Eligible in 1973",
+                        value: "med_needy_blind_disabled_eligible_1973",
                       },
                     ],
                   },
@@ -409,8 +405,6 @@ export const v202402: FormSchema = {
                                                 rhf: "Input",
                                                 props: {
                                                   icon: "%",
-                                                  iconRight: true,
-                                                  className: "w-[229px]",
                                                 },
                                                 rules: {
                                                   pattern: {
@@ -439,8 +433,6 @@ export const v202402: FormSchema = {
                                                 labelClassName: "font-bold",
                                                 props: {
                                                   icon: "%",
-                                                  iconRight: true,
-                                                  className: "w-[229px]",
                                                 },
                                                 rules: {
                                                   pattern: {
@@ -464,8 +456,6 @@ export const v202402: FormSchema = {
                                                 labelClassName: "font-bold",
                                                 props: {
                                                   icon: "%",
-                                                  iconRight: true,
-                                                  className: "w-[229px]",
                                                 },
                                                 rules: {
                                                   pattern: {
@@ -520,18 +510,20 @@ export const v202402: FormSchema = {
                                                     name: "income-def-specific-state",
                                                     props: {
                                                       appendText:
-                                                        "Add standard",
+                                                        "Add Standard",
                                                     },
                                                     fields: [
                                                       {
                                                         rhf: "Input",
                                                         label: "Household size",
-                                                        name: "house-size",
                                                         labelClassName:
                                                           "font-bold",
+                                                        name: "house-size",
                                                         props: {
+                                                          placeholder:
+                                                            "enter size",
                                                           className:
-                                                            "w-[150px]",
+                                                            "w-[300px]",
                                                         },
                                                         rules: {
                                                           pattern: {
@@ -552,6 +544,8 @@ export const v202402: FormSchema = {
                                                         props: {
                                                           className:
                                                             "w-[200px]",
+                                                          placeholder:
+                                                            "enter amount",
                                                           icon: "$",
                                                         },
                                                         rules: {
@@ -567,57 +561,50 @@ export const v202402: FormSchema = {
                                                       },
                                                     ],
                                                   },
+                                                ],
+                                              },
+                                              {
+                                                slots: [
                                                   {
-                                                    rhf: "Radio",
+                                                    rhf: "Checkbox",
                                                     name: "is-increment-amount",
-                                                    label:
-                                                      "Is there an additional incremental amount?",
-                                                    labelClassName:
-                                                      "font-bold mt-3",
-                                                    horizontalLayout: true,
-
                                                     props: {
                                                       options: [
                                                         {
-                                                          label: "Yes",
+                                                          label:
+                                                            "There is an additional incremental amount.",
+                                                          optionlabelClassName:
+                                                            "font-bold",
                                                           value: "yes",
-                                                        },
-                                                        {
-                                                          label: "No",
-                                                          value: "no",
+                                                          form: [
+                                                            {
+                                                              slots: [
+                                                                {
+                                                                  rhf: "Input",
+                                                                  label:
+                                                                    "Incremental amount",
+                                                                  labelClassName:
+                                                                    "font-bold",
+                                                                  name: "increment-amount",
+                                                                  props: {
+                                                                    icon: "$",
+                                                                  },
+                                                                  rules: {
+                                                                    pattern: {
+                                                                      value:
+                                                                        /^\d*(?:\.\d{1,2})?$/,
+                                                                      message:
+                                                                        "Must be all numbers, no commas. e.g. 1234.56",
+                                                                    },
+                                                                    required:
+                                                                      "* Required",
+                                                                  },
+                                                                },
+                                                              ],
+                                                            },
+                                                          ],
                                                         },
                                                       ],
-                                                    },
-                                                  },
-                                                  {
-                                                    rhf: "Input",
-                                                    label: "Incremental amount",
-                                                    name: "increment-amount",
-                                                    labelClassName: "font-bold",
-                                                    props: {
-                                                      icon: "$",
-                                                      className: "w-[200px]",
-                                                    },
-                                                    dependency: {
-                                                      conditions: [
-                                                        {
-                                                          name: "abp1_target-criteria_is-increment-amount",
-                                                          type: "expectedValue",
-                                                          expectedValue: "yes",
-                                                        },
-                                                      ],
-                                                      effect: {
-                                                        type: "show",
-                                                      },
-                                                    },
-                                                    rules: {
-                                                      pattern: {
-                                                        value:
-                                                          /^\d*(?:\.\d{1,2})?$/,
-                                                        message:
-                                                          "Must be all numbers, no commas. e.g. 1234.56",
-                                                      },
-                                                      required: "* Required",
                                                     },
                                                   },
                                                 ],
@@ -634,9 +621,9 @@ export const v202402: FormSchema = {
                                                     rhf: "FieldGroup",
                                                     name: "income-def-specific-statewide-group-region",
                                                     props: {
-                                                      appendText: "Add region",
+                                                      appendText: "Add Region",
                                                       removeText:
-                                                        "Remove region",
+                                                        "Remove Region",
                                                     },
                                                     fields: [
                                                       {
@@ -689,8 +676,10 @@ export const v202402: FormSchema = {
                                                               "font-bold",
                                                             name: "house-size",
                                                             props: {
+                                                              placeholder:
+                                                                "enter size",
                                                               className:
-                                                                "w-[150px]",
+                                                                "w-[300px]",
                                                             },
                                                             rules: {
                                                               pattern: {
@@ -712,6 +701,8 @@ export const v202402: FormSchema = {
                                                             props: {
                                                               className:
                                                                 "w-[200px]",
+                                                              placeholder:
+                                                                "enter amount",
                                                               icon: "$",
                                                             },
                                                             rules: {
@@ -728,61 +719,46 @@ export const v202402: FormSchema = {
                                                         ],
                                                       },
                                                       {
-                                                        rhf: "Radio",
+                                                        rhf: "Checkbox",
                                                         name: "is-increment-amount",
-                                                        label:
-                                                          "Is there an additional incremental amount?",
-                                                        labelClassName:
-                                                          "font-bold mt-3",
-                                                        horizontalLayout: true,
-
                                                         props: {
                                                           options: [
                                                             {
-                                                              label: "Yes",
+                                                              label:
+                                                                "There is an additional incremental amount.",
+                                                              optionlabelClassName:
+                                                                "font-bold",
                                                               value: "yes",
-                                                            },
-                                                            {
-                                                              label: "No",
-                                                              value: "no",
+                                                              form: [
+                                                                {
+                                                                  slots: [
+                                                                    {
+                                                                      rhf: "Input",
+                                                                      label:
+                                                                        "Incremental amount",
+                                                                      labelClassName:
+                                                                        "font-bold",
+                                                                      name: "increment-amount",
+                                                                      props: {
+                                                                        icon: "$",
+                                                                      },
+                                                                      rules: {
+                                                                        pattern:
+                                                                          {
+                                                                            value:
+                                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                                            message:
+                                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                                          },
+                                                                        required:
+                                                                          "* Required",
+                                                                      },
+                                                                    },
+                                                                  ],
+                                                                },
+                                                              ],
                                                             },
                                                           ],
-                                                        },
-                                                      },
-                                                      {
-                                                        rhf: "Input",
-                                                        label:
-                                                          "Incremental amount",
-                                                        name: "increment-amount",
-                                                        labelClassName:
-                                                          "font-bold",
-                                                        props: {
-                                                          icon: "$",
-                                                          className:
-                                                            "w-[200px]",
-                                                        },
-                                                        dependency: {
-                                                          conditions: [
-                                                            {
-                                                              name: "is-increment-amount",
-                                                              type: "expectedValue",
-                                                              expectedValue:
-                                                                "yes",
-                                                            },
-                                                          ],
-                                                          effect: {
-                                                            type: "show",
-                                                          },
-                                                        },
-                                                        rules: {
-                                                          pattern: {
-                                                            value:
-                                                              /^\d*(?:\.\d{1,2})?$/,
-                                                            message:
-                                                              "Must be all numbers, no commas. e.g. 1234.56",
-                                                          },
-                                                          required:
-                                                            "* Required",
                                                         },
                                                       },
                                                     ],
@@ -804,7 +780,7 @@ export const v202402: FormSchema = {
                                                     name: "liv-arrange",
                                                     props: {
                                                       appendText:
-                                                        "Add living arrangement",
+                                                        "Add Living Arrangement",
                                                       removeText:
                                                         "Remove living arrangement",
                                                     },
@@ -860,8 +836,10 @@ export const v202402: FormSchema = {
                                                               "font-bold",
                                                             name: "house-size",
                                                             props: {
+                                                              placeholder:
+                                                                "enter size",
                                                               className:
-                                                                "w-[150px]",
+                                                                "w-[300px]",
                                                             },
                                                             rules: {
                                                               pattern: {
@@ -883,6 +861,8 @@ export const v202402: FormSchema = {
                                                             props: {
                                                               className:
                                                                 "w-[200px]",
+                                                              placeholder:
+                                                                "enter amount",
                                                               icon: "$",
                                                             },
                                                             rules: {
@@ -899,62 +879,46 @@ export const v202402: FormSchema = {
                                                         ],
                                                       },
                                                       {
-                                                        rhf: "Radio",
+                                                        rhf: "Checkbox",
                                                         name: "is-increment-amount",
-                                                        label:
-                                                          "Is there an additional incremental amount?",
-                                                        labelClassName:
-                                                          "font-bold mt-3",
-                                                        horizontalLayout: true,
-
                                                         props: {
                                                           options: [
                                                             {
-                                                              label: "Yes",
+                                                              label:
+                                                                "There is an additional incremental amount.",
+                                                              optionlabelClassName:
+                                                                "font-bold",
                                                               value: "yes",
-                                                            },
-                                                            {
-                                                              label: "No",
-                                                              value: "no",
+                                                              form: [
+                                                                {
+                                                                  slots: [
+                                                                    {
+                                                                      rhf: "Input",
+                                                                      label:
+                                                                        "Incremental amount",
+                                                                      labelClassName:
+                                                                        "font-bold",
+                                                                      name: "incremental_amount",
+                                                                      props: {
+                                                                        icon: "$",
+                                                                      },
+                                                                      rules: {
+                                                                        pattern:
+                                                                          {
+                                                                            value:
+                                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                                            message:
+                                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                                          },
+                                                                        required:
+                                                                          "* Required",
+                                                                      },
+                                                                    },
+                                                                  ],
+                                                                },
+                                                              ],
                                                             },
                                                           ],
-                                                        },
-                                                      },
-
-                                                      {
-                                                        rhf: "Input",
-                                                        label:
-                                                          "Incremental amount",
-                                                        name: "increment-amount",
-                                                        labelClassName:
-                                                          "font-bold",
-                                                        props: {
-                                                          icon: "$",
-                                                          className:
-                                                            "w-[200px]",
-                                                        },
-                                                        dependency: {
-                                                          conditions: [
-                                                            {
-                                                              name: "is-increment-amount",
-                                                              type: "expectedValue",
-                                                              expectedValue:
-                                                                "yes",
-                                                            },
-                                                          ],
-                                                          effect: {
-                                                            type: "show",
-                                                          },
-                                                        },
-                                                        rules: {
-                                                          pattern: {
-                                                            value:
-                                                              /^\d*(?:\.\d{1,2})?$/,
-                                                            message:
-                                                              "Must be all numbers, no commas. e.g. 1234.56",
-                                                          },
-                                                          required:
-                                                            "* Required",
                                                         },
                                                       },
                                                     ],
@@ -973,7 +937,7 @@ export const v202402: FormSchema = {
                                                 slots: [
                                                   {
                                                     rhf: "FieldGroup",
-                                                    name: "add-other-way",
+                                                    name: "add-some-other-way",
                                                     props: {
                                                       appendText:
                                                         "Add other way",
@@ -1027,12 +991,14 @@ export const v202402: FormSchema = {
                                                             rhf: "Input",
                                                             label:
                                                               "Household size",
-                                                            name: "house-size",
                                                             labelClassName:
                                                               "font-bold",
+                                                            name: "house-size",
                                                             props: {
+                                                              placeholder:
+                                                                "enter size",
                                                               className:
-                                                                "w-[150px]",
+                                                                "w-[300px]",
                                                             },
                                                             rules: {
                                                               pattern: {
@@ -1054,6 +1020,8 @@ export const v202402: FormSchema = {
                                                             props: {
                                                               className:
                                                                 "w-[200px]",
+                                                              placeholder:
+                                                                "enter amount",
                                                               icon: "$",
                                                             },
                                                             rules: {
@@ -1070,61 +1038,46 @@ export const v202402: FormSchema = {
                                                         ],
                                                       },
                                                       {
-                                                        rhf: "Radio",
+                                                        rhf: "Checkbox",
                                                         name: "is-increment-amount",
-                                                        label:
-                                                          "Is there an additional incremental amount?",
-                                                        labelClassName:
-                                                          "font-bold mt-3",
-                                                        horizontalLayout: true,
-
                                                         props: {
                                                           options: [
                                                             {
-                                                              label: "Yes",
+                                                              label:
+                                                                "There is an additional incremental amount.",
+                                                              optionlabelClassName:
+                                                                "font-bold",
                                                               value: "yes",
-                                                            },
-                                                            {
-                                                              label: "No",
-                                                              value: "no",
+                                                              form: [
+                                                                {
+                                                                  slots: [
+                                                                    {
+                                                                      rhf: "Input",
+                                                                      label:
+                                                                        "Incremental amount",
+                                                                      labelClassName:
+                                                                        "font-bold",
+                                                                      name: "increment-amount",
+                                                                      props: {
+                                                                        icon: "$",
+                                                                      },
+                                                                      rules: {
+                                                                        pattern:
+                                                                          {
+                                                                            value:
+                                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                                            message:
+                                                                              "Must be all numbers, no commas. e.g. 1234.56",
+                                                                          },
+                                                                        required:
+                                                                          "* Required",
+                                                                      },
+                                                                    },
+                                                                  ],
+                                                                },
+                                                              ],
                                                             },
                                                           ],
-                                                        },
-                                                      },
-                                                      {
-                                                        rhf: "Input",
-                                                        label:
-                                                          "Incremental amount",
-                                                        name: "increment-amount",
-                                                        labelClassName:
-                                                          "font-bold",
-                                                        props: {
-                                                          icon: "$",
-                                                          className:
-                                                            "w-[200px]",
-                                                        },
-                                                        dependency: {
-                                                          conditions: [
-                                                            {
-                                                              name: "is-increment-amount",
-                                                              type: "expectedValue",
-                                                              expectedValue:
-                                                                "yes",
-                                                            },
-                                                          ],
-                                                          effect: {
-                                                            type: "show",
-                                                          },
-                                                        },
-                                                        rules: {
-                                                          pattern: {
-                                                            value:
-                                                              /^\d*(?:\.\d{1,2})?$/,
-                                                            message:
-                                                              "Must be all numbers, no commas. e.g. 1234.56",
-                                                          },
-                                                          required:
-                                                            "* Required",
                                                         },
                                                       },
                                                     ],
@@ -1147,7 +1100,8 @@ export const v202402: FormSchema = {
                   },
                   {
                     value: "health",
-                    label: "Disease, condition, diagnosis, or disorder",
+                    label:
+                      "Disease, condition, diagnosis, or disorder (check all that apply)",
                     slots: [
                       {
                         rhf: "Checkbox",
@@ -1252,7 +1206,7 @@ export const v202402: FormSchema = {
       ],
     },
     {
-      title: "Geographic area",
+      title: "Geographic Area",
       sectionId: "geo-area",
       form: [
         {
@@ -1400,14 +1354,12 @@ export const v202402: FormSchema = {
       sectionId: "additional-info",
       form: [
         {
-          description: "Other information about the population (optional)",
+          description:
+            "Any other information the state/territory wishes to provide about the population (optional)",
           slots: [
             {
               name: "description",
               rhf: "Textarea",
-              props: {
-                className: "min-h-[114px]",
-              },
               rules: {
                 pattern: {
                   value: /^\S(.*\S)?$/,
