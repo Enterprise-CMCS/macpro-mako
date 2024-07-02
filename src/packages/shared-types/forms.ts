@@ -33,6 +33,7 @@ export type RHFSlotProps = {
   descriptionClassName?: string;
   dependency?: DependencyRule;
   rules?: RegisterOptions;
+  horizontalLayout?: boolean;
 } & {
   [K in keyof RHFComponentMap]: {
     rhf: K;
