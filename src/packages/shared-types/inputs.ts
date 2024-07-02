@@ -18,7 +18,6 @@ export type DatePickerProps = {
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: string;
-  iconRight?: boolean;
 }
 
 export type RadioProps = React.ComponentPropsWithoutRef<
