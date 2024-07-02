@@ -1,4 +1,4 @@
-import { getLatestDate, isCmsUser } from "shared-utils";
+import { isCmsUser } from "shared-utils";
 
 import { BLANK_VALUE } from "@/consts";
 import { Authority, opensearch } from "shared-types";
@@ -121,12 +121,9 @@ export const recordDetails = (
   {
     label: "Latest package activity",
     value: (() => {
-      const latest = getLatestDate(data.changedDate, data.makoChangedDate);
-      if (latest) {
-        return format(new Date(latest), "eee, MMM d, yyyy hh:mm:ss a");
-      } else {
-        return BLANK_VALUE;
-      }
+      return data.makoChangedDate
+        ? format(new Date(data.makoChangedDate), "eee, MMM d, yyyy hh:mm:ss a")
+        : BLANK_VALUE;
     })(),
     canView: () => {
       return true;

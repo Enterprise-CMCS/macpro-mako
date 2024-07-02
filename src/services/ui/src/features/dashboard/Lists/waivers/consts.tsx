@@ -142,6 +142,14 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       },
     },
     {
+      label: "Latest Package Activity",
+      cell: (data) => {
+        return data.makoChangedDate
+          ? formatSeatoolDate(data.makoChangedDate)
+          : BLANK_VALUE;
+      },
+    },
+    {
       field: "raiRequestedDate",
       label: "Formal RAI Requested",
       hidden: true,
@@ -174,31 +182,6 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       label: "Submitted By",
       transform: (data) => data.submitterName ?? BLANK_VALUE,
       cell: (data) => data.submitterName,
-    },
-    {
-      field: "makoChangedDate.keyword",
-      label: "Latest Package Activity",
-      transform: (data) => {
-        if (data.makoChangedDate) {
-          return formatSeatoolDate(data.makoChangedDate);
-        }
-
-        if (data.changedDate) {
-          return formatSeatoolDate(data.changedDate);
-        }
-
-        return BLANK_VALUE;
-      },
-      cell: (data) => {
-        if (data.makoChangedDate) {
-          return formatSeatoolDate(data.makoChangedDate);
-        }
-        if (data.changedDate) {
-          return formatSeatoolDate(data.changedDate);
-        }
-
-        return BLANK_VALUE;
-      },
     },
   ];
 };

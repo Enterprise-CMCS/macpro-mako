@@ -8,7 +8,7 @@ import {
   renderCellIdLink,
 } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
-import { formatSeatoolDate, getLatestDate } from "shared-utils";
+import { formatSeatoolDate } from "shared-utils";
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -128,8 +128,9 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       label: "Latest Package Activity",
       cell: (data) => {
-        const latest = getLatestDate(data.makoChangedDate, data.changedDate);
-        return latest ? formatSeatoolDate(latest) : BLANK_VALUE;
+        return data.makoChangedDate
+          ? formatSeatoolDate(data.makoChangedDate)
+          : BLANK_VALUE;
       },
     },
     {
