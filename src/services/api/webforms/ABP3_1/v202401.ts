@@ -2,7 +2,7 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header:
-    "ABP 3.1 Selection of benchmark benefit package or benchmark-equivalent benefit package",
+    "ABP 3.1 Selection of benchmark or benchmark-equivalent benefit package",
   formId: "abp3-1",
   sections: [
     {
@@ -40,6 +40,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Input",
               name: "name",
+              props: {
+                className: "w-[355px]",
+              },
               rules: {
                 required: "* Required",
                 pattern: {
@@ -58,7 +61,7 @@ export const v202401: FormSchema = {
       form: [
         {
           description:
-            "The state/territory selects as its Section 1937 coverage option the following type of benchmark benefit package or benchmark-equivalent benefit package under this Alternative Benefit Plan:",
+            "The state/territory selects as its Section 1937 coverage option the following type of benchmark or benchmark-equivalent benefit package under this Alternative Benefit Plan (ABP):",
           slots: [
             {
               name: "benchmark",
@@ -89,7 +92,7 @@ export const v202401: FormSchema = {
                                 },
                                 {
                                   label:
-                                    "State employee coverage that is offered and generally available to state employees (state employee coverage)",
+                                    "State employee coverage that is offered and generally available to state employees",
                                   value: "state_employee_coverage",
                                   slots: [
                                     {
@@ -97,6 +100,9 @@ export const v202401: FormSchema = {
                                       name: "state-territory-bench-plan-name",
                                       label: "Plan name",
                                       labelClassName: "font-bold",
+                                      props: {
+                                        className: "w-[658px]",
+                                      },
                                       rules: {
                                         required: "* Required",
                                         pattern: {
@@ -110,7 +116,7 @@ export const v202401: FormSchema = {
                                 },
                                 {
                                   label:
-                                    "A commercial HMO with the largest insured commercial, non-Medicaid enrollment in the state/territory (commercial HMO)",
+                                    "A commercial HMO with the largest insured commercial, non-Medicaid enrollment in the state/territory",
                                   value: "commerical_HMO",
                                   slots: [
                                     {
@@ -118,6 +124,9 @@ export const v202401: FormSchema = {
                                       name: "bench-hmo-plan-name",
                                       label: "Plan name",
                                       labelClassName: "font-bold",
+                                      props: {
+                                        className: "w-[658px]",
+                                      },
                                       rules: {
                                         required: "* Required",
                                         pattern: {
@@ -210,6 +219,9 @@ export const v202401: FormSchema = {
                                           label:
                                             "Describe the benefits, source of benefits, and any limitations.",
                                           labelClassName: "font-bold",
+                                          props: {
+                                            className: "h-[114px]",
+                                          },
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -235,8 +247,6 @@ export const v202401: FormSchema = {
                     value: "equivalent",
                     form: [
                       {
-                        description:
-                          "The state/territory will provide the following benchmark-equivalent benefit package:",
                         slots: [
                           {
                             rhf: "Radio",
@@ -253,7 +263,7 @@ export const v202401: FormSchema = {
                                 },
                                 {
                                   label:
-                                    "State employee coverage that is offered and generally available to state employees (state employee coverage)",
+                                    "State employee coverage that is offered and generally available to state employees",
                                   value: "state_employee_coverage",
                                   slots: [
                                     {
@@ -261,6 +271,9 @@ export const v202401: FormSchema = {
                                       name: "bench-equivalent-state-coverage-plan-name",
                                       label: "Plan name",
                                       labelClassName: "font-bold",
+                                      props: {
+                                        className: "w-[658px]",
+                                      },
                                       rules: {
                                         required: "* Required",
                                         pattern: {
@@ -274,7 +287,7 @@ export const v202401: FormSchema = {
                                 },
                                 {
                                   label:
-                                    "A commercial HMO with the largest insured commercial, non-Medicaid enrollment in the state/territory (commercial HMO)",
+                                    "A commercial HMO with the largest insured commercial, non-Medicaid enrollment in the state/territory",
                                   value: "commerical_HMO",
                                   slots: [
                                     {
@@ -282,6 +295,9 @@ export const v202401: FormSchema = {
                                       name: "bench-equivalent-hmo-plan-name",
                                       label: "Plan name",
                                       labelClassName: "font-bold",
+                                      props: {
+                                        className: "w-[658px]",
+                                      },
                                       rules: {
                                         required: "* Required",
                                         pattern: {
@@ -295,7 +311,7 @@ export const v202401: FormSchema = {
                                 },
                                 {
                                   label:
-                                    "The Medicaid state plan coverage provided to Categorically Needy (Mandatory and Options for Coverage) eligibility groups",
+                                    "The Medicaid state plan coverage provided to categorically needy (mandatory and options for coverage) eligibility groups",
                                   value: "state_plan_to_categorically_needy",
                                 },
                               ],
@@ -327,6 +343,9 @@ export const v202401: FormSchema = {
               rhf: "Input",
               label: "EHB-benchmark plan name",
               labelClassName: "font-bold",
+              props: {
+                className: "w-[355px]",
+              },
               rules: {
                 required: "* Required",
                 pattern: {
@@ -394,7 +413,7 @@ export const v202401: FormSchema = {
                         labelClassName: "mt-3 pr-4 font-bold",
                         formItemClassName: "flex-row",
                         props: {
-                          className: "w-[150px]",
+                          className: "w-[256px]",
                           options: [
                             { label: "Alabama", value: "AL" },
                             { label: "Alaska", value: "AK" },
@@ -574,8 +593,9 @@ export const v202401: FormSchema = {
                           {
                             rhf: "Checkbox",
                             name: "one-or-more-EHBs-other-states",
-                            label: "Select one or more EHBs from other states.",
-                            labelClassName: "font-bold",
+                            label:
+                              "Select one or more essential health benefits (EHBs) from other states.",
+                            labelClassName: "font-bold border-t-[1px] pt-5",
                             rules: { required: "* Required" },
                             props: {
                               options: [
@@ -586,11 +606,11 @@ export const v202401: FormSchema = {
                                     {
                                       rhf: "Select",
                                       name: "ambulatory-patient-services-state-territory",
-                                      label: "Identify the state/territory",
-                                      labelClassName: "p-3",
+                                      label: "From state/territory",
+                                      labelClassName: "p-3 font-bold",
                                       formItemClassName: "flex-row",
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -699,14 +719,14 @@ export const v202401: FormSchema = {
                                     {
                                       rhf: "Select",
                                       name: "emergency-services-state-territory",
-                                      label: "Identify the state/territory",
-                                      labelClassName: "p-3",
+                                      label: "From state/territory",
+                                      labelClassName: "p-3 font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -815,14 +835,14 @@ export const v202401: FormSchema = {
                                     {
                                       rhf: "Select",
                                       name: "hospital-state-territory",
-                                      label: "Identify the state/territory",
-                                      labelClassName: "p-3",
+                                      label: "From state/territory",
+                                      labelClassName: "p-3 font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -931,14 +951,14 @@ export const v202401: FormSchema = {
                                     {
                                       rhf: "Select",
                                       name: "maternity-and-newborn-care-state-territory",
-                                      label: "Identify the state/territory",
-                                      labelClassName: "p-3",
+                                      label: "From state/territory",
+                                      labelClassName: "p-3 font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1049,14 +1069,14 @@ export const v202401: FormSchema = {
                                     {
                                       rhf: "Select",
                                       name: "mental-health-and-substance-use-disorders-state-territory",
-                                      label: "Identify the state/territory",
-                                      labelClassName: "p-3",
+                                      label: "From state/territory",
+                                      labelClassName: "p-3 font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1165,14 +1185,14 @@ export const v202401: FormSchema = {
                                     {
                                       rhf: "Select",
                                       name: "prescription-drugs-state-territory",
-                                      label: "Identify the state/territory",
-                                      labelClassName: "p-3",
+                                      label: "From state/territory",
+                                      labelClassName: "p-3 font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1283,14 +1303,14 @@ export const v202401: FormSchema = {
                                     {
                                       rhf: "Select",
                                       name: "rehab-and-habilitative-services-and-devices-state-territory",
-                                      label: "Identify the state/territory",
-                                      labelClassName: "p-3",
+                                      label: "From state/territory",
+                                      labelClassName: "p-3 font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1399,14 +1419,14 @@ export const v202401: FormSchema = {
                                     {
                                       rhf: "Select",
                                       name: "laboratory-services-state-territory",
-                                      label: "Identify the state/territory",
-                                      labelClassName: "p-3",
+                                      label: "From state/territory",
+                                      labelClassName: "p-3 font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1517,14 +1537,14 @@ export const v202401: FormSchema = {
                                     {
                                       rhf: "Select",
                                       name: "prevent-and-well-services-and-chronic-disease-management-state-territory",
-                                      label: "Identify the state/territory",
-                                      labelClassName: "p-3",
+                                      label: "From state/territory",
+                                      labelClassName: "p-3 font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1635,14 +1655,14 @@ export const v202401: FormSchema = {
                                     {
                                       rhf: "Select",
                                       name: "pediatric-services-including-oral-and-vision-care-state-territory",
-                                      label: "Identify the state/territory",
-                                      labelClassName: "p-3",
+                                      label: "From state/territory",
+                                      labelClassName: "p-3 font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
                                       },
                                       props: {
-                                        className: "w-[150px]",
+                                        className: "w-[256px]",
                                         options: [
                                           { label: "Alabama", value: "AL" },
                                           { label: "Alaska", value: "AK" },
@@ -1837,6 +1857,9 @@ export const v202401: FormSchema = {
             {
               name: "description",
               rhf: "Textarea",
+              props: {
+                className: "h-[114px]",
+              },
               rules: {
                 pattern: {
                   value: /^\S(.*\S)?$/,

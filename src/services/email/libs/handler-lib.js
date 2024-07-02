@@ -1,8 +1,8 @@
-import { decode } from "base-64";
+import { decodeBase64WithUtf8 } from "shared-utils";
 
 const decodeRecord = (encodedRecord) => {
     if (!encodedRecord.value) return;
-    return { id: decode(encodedRecord.key), ...JSON.parse(decode(encodedRecord.value)) };
+    return { id: decodeBase64WithUtf8(encodedRecord.key), ...JSON.parse(decodeBase64WithUtf8(encodedRecord.value)) };
   };  
 
 export default function handler(lambda) {
