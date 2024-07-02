@@ -2,6 +2,7 @@ import { response } from "../libs/handler";
 import { APIGatewayEvent } from "aws-lambda";
 import { getStateFilter } from "../libs/auth/user";
 import * as os from "./../../../libs/opensearch-lib";
+import { getAppkChildren } from "../libs/package";
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
@@ -53,6 +54,20 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       event.pathParameters.index as any,
       query,
     );
+
+    if (results) {
+      results.hits.hits = await Promise.all(
+        results?.hits.hits.map(async (item: any) => {
+          if (item._source.appkParent) {
+            item._source.appkChildren = (
+              await getAppkChildren(item._id)
+            ).hits.hits;
+          }
+          return item;
+        }),
+      );
+    }
+
     return response<unknown>({
       statusCode: 200,
       body: results,
