@@ -49,7 +49,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
           </POP.PopoverTrigger>
           <POP.PopoverContent>
             <div className="flex flex-col">
-              {actions.map((action, idx) => (
+              {actions.map((action: Action, idx: any) => (
                 <TypedLink
                   state={{
                     from: `${location.pathname}${location.search}`,
