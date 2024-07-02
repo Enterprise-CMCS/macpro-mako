@@ -96,13 +96,6 @@ export const recordDetails = (
     },
   },
   {
-    label: "Initial submission date",
-    value: data.submissionDate
-      ? formatSeatoolDate(data.submissionDate)
-      : BLANK_VALUE,
-    canView: () => true,
-  },
-  {
     label: "Approved Initial or Renewal Number",
     value: data.originalWaiverNumber,
     canView: () => {
@@ -117,6 +110,13 @@ export const recordDetails = (
     canView: () => {
       return !(data.actionType === "Extend");
     },
+  },
+  {
+    label: "Initial submission date",
+    value: data.submissionDate
+      ? formatSeatoolDate(data.submissionDate)
+      : BLANK_VALUE,
+    canView: () => true,
   },
   {
     label: "Latest package activity",
