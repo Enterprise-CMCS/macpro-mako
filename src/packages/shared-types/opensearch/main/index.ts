@@ -24,6 +24,7 @@ export type Document = z.infer<newSubmission.Schema> &
   z.infer<toggleWithdrawEnabled.Schema> &
   z.infer<seatool.Schema> &
   z.infer<changedDate.Schema> & {
+    makoChangedDate: string;
     changelog?: Changelog[];
     appkChildren?: ItemResult[];
   };

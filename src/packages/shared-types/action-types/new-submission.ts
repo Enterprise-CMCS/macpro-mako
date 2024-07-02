@@ -17,6 +17,7 @@ export const onemacSchema = z.object({
   attachments: z.array(attachmentSchema).nullish(),
   raiWithdrawEnabled: z.boolean().default(false),
   notificationMetadata: notificationMetadataSchema.nullish(),
+  timestamp: z.number().optional(),
   // these are specific to TEs... should be broken into its own schema
   statusDate: z.number().optional(),
   submissionDate: z.number().optional(),

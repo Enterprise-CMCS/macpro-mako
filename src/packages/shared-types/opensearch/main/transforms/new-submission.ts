@@ -26,6 +26,7 @@ export const transform = (id: string) => {
   return onemacSchema.transform((data) => {
     if (data.seaActionType === "Extend") {
       // We should have a separate transform for TE new submission, and possibly for each new-submission that's unique (appk)... todo
+      // TODO: mako timestamp
       return {
         id,
         attachments: data.attachments,
@@ -53,6 +54,7 @@ export const transform = (id: string) => {
         changedDate: getDateStringOrNullFromEpoc(data.changedDate),
         subject: null,
         description: null,
+        makoChangedDate: new Date(data.timestamp).toISOString(),
         // ----------
       };
     } else {
@@ -68,6 +70,7 @@ export const transform = (id: string) => {
         submitterName:
           data.submitterName === "-- --" ? null : data.submitterName,
         origin: "OneMAC",
+        makoChangedDate: new Date(data.timestamp).toISOString(),
       };
     }
   });

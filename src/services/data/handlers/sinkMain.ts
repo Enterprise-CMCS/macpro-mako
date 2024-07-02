@@ -89,7 +89,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
 const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   let docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
-    const { key, value } = kafkaRecord;
+    const { key, value, timestamp } = kafkaRecord;
     try {
       const id: string = decode(key);
 
@@ -98,7 +98,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         docs.push(opensearch.main.legacyPackageView.tombstone(id));
         continue;
       }
-      const record = JSON.parse(decode(value));
+      const record = { timestamp, ...JSON.parse(decode(value)) };
       // Process legacy events
       if (record?.origin !== "micro") {
         // Is a Package View from legacy onemac

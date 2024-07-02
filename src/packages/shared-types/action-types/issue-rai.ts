@@ -10,5 +10,6 @@ export const raiIssueSchema = z.object({
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),
+  timestamp: z.number().optional(),
 });
 export type RaiIssue = z.infer<typeof raiIssueSchema>;
