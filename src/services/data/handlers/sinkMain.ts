@@ -1,5 +1,4 @@
 import { Handler } from "aws-lambda";
-import { decode } from "base-64";
 import * as os from "./../../../libs/opensearch-lib";
 import { Action, Authority, KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
@@ -9,6 +8,8 @@ import {
   getTopic,
   logError,
 } from "../libs/sink-lib";
+import { decodeBase64WithUtf8 } from "shared-utils";
+
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
@@ -46,7 +47,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
     try {
-      const id: string = JSON.parse(decode(key));
+      const id: string = JSON.parse(decodeBase64WithUtf8(key));
 
       // Handle deletes and continue
       if (!value) {
@@ -57,7 +58,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       // Handle everything else and continue
       const record = {
         id,
-        ...JSON.parse(decode(value)),
+        ...JSON.parse(decodeBase64WithUtf8(value)),
       };
       const result = opensearch.main.seatool.transform(id).safeParse(record);
       if (!result.success) {
@@ -91,14 +92,14 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   for (const kafkaRecord of kafkaRecords) {
     const { key, value, timestamp } = kafkaRecord;
     try {
-      const id: string = decode(key);
+      const id: string = decodeBase64WithUtf8(key);
 
       // Handle deletes and continue
       if (!value) {
         docs.push(opensearch.main.legacyPackageView.tombstone(id));
         continue;
       }
-      const record = { timestamp, ...JSON.parse(decode(value)) };
+      const record = { timestamp, ...JSON.parse(decodeBase64WithUtf8(value)) };
       // Process legacy events
       if (record?.origin !== "micro") {
         // Is a Package View from legacy onemac
@@ -252,7 +253,8 @@ const changed_date = async (
     const { key, value } = kafkaRecord;
     try {
       // Set id
-      const id: string = JSON.parse(decode(key)).payload.ID_Number;
+      const id: string = JSON.parse(decodeBase64WithUtf8(key)).payload
+        .ID_Number;
 
       // Handle delete events and continue
       if (value === undefined) {

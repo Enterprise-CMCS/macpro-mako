@@ -26,13 +26,14 @@ export type Document = z.infer<newSubmission.Schema> &
   z.infer<changedDate.Schema> & {
     makoChangedDate: string;
     changelog?: Changelog[];
-    appkChildren?: ItemResult[];
+    appkChildren?: OmitFoundItemResult[];
   };
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
   found: boolean;
 };
+export type OmitFoundItemResult = Omit<ItemResult, "found">;
 
 export type Field = keyof Document | `${keyof Document}.keyword`;
 export type Filterable = FIL<Field>;

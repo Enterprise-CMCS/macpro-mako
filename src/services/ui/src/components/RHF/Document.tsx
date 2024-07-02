@@ -14,6 +14,11 @@ export const RHFDocument = <TFieldValues extends FieldValues>(props: {
           <h1 className="font-bold text-4xl px-8 inline-block leading-[48px]">
             {props.document.header}
           </h1>
+          {props.document.subheader && (
+            <h2 className="font-bold text-1xl px-8 inline-block leading-[48px]">
+              {props.document.subheader}
+            </h2>
+          )}
         </div>
         {props.document.sections.map((SEC, index) => (
           <RHFSection

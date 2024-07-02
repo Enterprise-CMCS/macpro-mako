@@ -1,13 +1,13 @@
 import { useGetUser } from "@/api";
 import { Alert, CardWithTopBorder, SubNavHeader, Button } from "@/components";
 import { RoleDescriptionStrings } from "shared-types";
-import { convertStateAbbreviations } from "@/utils";
+import { useConvertStateAbbreviations } from "@/utils";
 import config from "@/config";
 
 export const Profile = () => {
   const { data } = useGetUser();
   const stateAbbreviations = data?.user?.["custom:state"];
-  const fullStateNames = convertStateAbbreviations(stateAbbreviations);
+  const fullStateNames = useConvertStateAbbreviations(stateAbbreviations);
 
   // Returns comma-separated string of user role descriptions:
   function rolesDescriptions(roles: string | undefined) {
