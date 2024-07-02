@@ -285,6 +285,7 @@ export const v202401: FormSchema = {
               },
               label: "Describe the process for processing requests.",
               labelClassName: "font-bold text-black",
+              formItemClassName: "pl-8",
             },
           ],
         },
@@ -302,6 +303,9 @@ export const v202401: FormSchema = {
               label:
                 "Other information about enrollment assurances for mandatory participants (optional)",
               labelClassName: "font-bold text-black",
+              props: {
+                className: "min-h-[114px]",
+              },
               rules: {
                 pattern: {
                   value: /^\S(.*\S)?$/,

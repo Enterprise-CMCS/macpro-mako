@@ -16,6 +16,7 @@ import {
 
 export interface FormSchema {
   header: string;
+  subheader?: string;
   formId: string;
   sections: Section[];
 }
