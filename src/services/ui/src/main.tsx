@@ -6,14 +6,14 @@ import "./index.css"; // this one second
 import { queryClient, router } from "./router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { UserContextProvider } from "@/components";
+import { UserContextProvider, TimeoutModal } from "@/components";
 import config from "@/config";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
 if (ldClientId === undefined) {
   throw new Error(
-    "To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID"
+    "To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID",
   );
 }
 
@@ -33,12 +33,13 @@ const initializeLaunchDarkly = async () => {
       <QueryClientProvider client={queryClient}>
         <UserContextProvider>
           <LDProvider>
+            <TimeoutModal />
             <RouterProvider router={router} />
           </LDProvider>
         </UserContextProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-    </React.StrictMode>
+    </React.StrictMode>,
   );
 };
 
