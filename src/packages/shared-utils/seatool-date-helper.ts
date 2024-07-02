@@ -27,7 +27,7 @@ export const formatSeatoolDate = (date: string): string => {
 };
 
 export const getNextBusinessDayTimestamp = (
-  date: Date = new Date()
+  date: Date = new Date(),
 ): number => {
   let localeStringDate = date.toLocaleString("en-US", {
     timeZone: "America/New_York",
@@ -53,3 +53,19 @@ export const getNextBusinessDayTimestamp = (
   let ret = offsetToUtc(localeDate).getTime();
   return ret;
 };
+
+export function getLatestDate(
+  date1: string | null,
+  date2: string | null,
+): string | null {
+  if (date1 === null && date2 === null) {
+    return null;
+  }
+  if (date1 === null) {
+    return date2;
+  }
+  if (date2 === null) {
+    return date1;
+  }
+  return new Date(date1) > new Date(date2) ? date1 : date2;
+}

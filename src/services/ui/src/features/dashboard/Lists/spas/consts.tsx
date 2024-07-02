@@ -8,7 +8,7 @@ import {
   renderCellIdLink,
 } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
-import { formatSeatoolDate } from "shared-utils";
+import { formatSeatoolDate, getLatestDate } from "shared-utils";
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -126,6 +126,13 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       cell: (data) => data.origin,
     },
     {
+      label: "Latest Package Activity",
+      cell: (data) => {
+        const latest = getLatestDate(data.makoChangedDate, data.changedDate);
+        return latest ? formatSeatoolDate(latest) : BLANK_VALUE;
+      },
+    },
+    {
       field: "raiRequestedDate",
       label: "Formal RAI Requested",
       hidden: true,
@@ -158,31 +165,6 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       label: "Submitted By",
       transform: (data) => data.submitterName ?? BLANK_VALUE,
       cell: (data) => data.submitterName,
-    },
-    {
-      field: "makoChangedDate.keyword",
-      label: "Latest Package Activity",
-      transform: (data) => {
-        if (data.makoChangedDate) {
-          return formatSeatoolDate(data.makoChangedDate);
-        }
-
-        if (data.changedDate) {
-          return formatSeatoolDate(data.changedDate);
-        }
-
-        return BLANK_VALUE;
-      },
-      cell: (data) => {
-        if (data.makoChangedDate) {
-          return formatSeatoolDate(data.makoChangedDate);
-        }
-        if (data.changedDate) {
-          return formatSeatoolDate(data.changedDate);
-        }
-
-        return BLANK_VALUE;
-      },
     },
   ];
 };
