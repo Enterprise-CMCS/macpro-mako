@@ -15,11 +15,12 @@ import { intervalToDuration } from "date-fns";
 import pluralize from "pluralize";
 
 const TWENTY_MINS_IN_MILS = 1000 * 60 * 20;
+const TEMP_5_SEC_IN_MILS = 5000;
 const TEN_MINS_IN_MILS = 60 * 10;
 
 export const TimeoutModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const isIdleForTwentyMins = useIdle(TWENTY_MINS_IN_MILS, {
+  const isIdleForTwentyMins = useIdle(TEMP_5_SEC_IN_MILS, {
     initialState: false,
   });
 
