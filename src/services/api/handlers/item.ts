@@ -62,6 +62,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
         body: { message: "No record found for the given id" },
       });
     }
+    console.log(JSON.stringify(changelog,null,2))
 
     return response<unknown>({
       statusCode: 200,

@@ -3,7 +3,11 @@ import defaultTheme from "tailwindcss/defaultTheme";
 
 export default {
   darkMode: ["class"],
-  content: ["./src/**/*.{ts,tsx}", "./index.html", "../api/webforms/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./src/**/*.{ts,tsx}",
+    "./index.html",
+    "../api/webforms/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     fontFamily: {
       serif: ["Merriweather", "serif"],
@@ -23,9 +27,9 @@ export default {
       "5xl": "3rem",
     },
     screens: {
-      "xs": "350px",
+      xs: "350px",
       ...defaultTheme.screens,
-    }, 
+    },
     container: {
       center: true,
       padding: "2rem",
