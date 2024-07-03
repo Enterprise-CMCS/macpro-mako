@@ -2,7 +2,7 @@ import { FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header:
-    "ABP 3: Selection of benchmark benefit package or benchmark-equivalent benefit package",
+    "ABP 3: Selection of benchmark or benchmark-equivalent benefit package",
   formId: "abp3",
   sections: [
     {
@@ -35,6 +35,9 @@ export const v202401: FormSchema = {
               name: "name",
               label: "Benefit package name",
               labelClassName: "font-bold",
+              props: {
+                className: "w-[355px]",
+              },
               rules: {
                 required: "* Required",
                 pattern: {
@@ -53,7 +56,7 @@ export const v202401: FormSchema = {
       form: [
         {
           description:
-            "The state/territory selects as its Section 1937 coverage option the following type of benchmark benefit package or benchmark-equivalent benefit package under this Alternative Benefit Plan:",
+            "The state/territory selects as its Section 1937 coverage option the following type of benchmark or benchmark-equivalent benefit package under this Alternative Benefit Plan (ABP):",
           slots: [
             {
               rhf: "Radio",
@@ -88,7 +91,11 @@ export const v202401: FormSchema = {
                                         {
                                           rhf: "Input",
                                           label: "Plan name",
+                                          labelClassName: "font-bold",
                                           name: "state-employee-coverage-plan-name",
+                                          props: {
+                                            className: "w-[658px]",
+                                          },
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -112,7 +119,11 @@ export const v202401: FormSchema = {
                                         {
                                           rhf: "Input",
                                           label: "Plan name",
+                                          labelClassName: "font-bold",
                                           name: "commercial-hmo",
+                                          props: {
+                                            className: "w-[658px]",
+                                          },
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -209,6 +220,9 @@ export const v202401: FormSchema = {
                                         {
                                           rhf: "Textarea",
                                           name: "benefits-and-limits",
+                                          props: {
+                                            className: "min-h-[114px]",
+                                          },
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -237,8 +251,6 @@ export const v202401: FormSchema = {
                     value: "benchmark_equivalent_benefit_package",
                     form: [
                       {
-                        description:
-                          "The state/territory will provide the following benchmark-equivalent benefit package:",
                         slots: [
                           {
                             rhf: "Radio",
@@ -262,6 +274,10 @@ export const v202401: FormSchema = {
                                           rhf: "Input",
                                           name: "state-employee-coverage-plan-name",
                                           label: "Plan name",
+                                          props: {
+                                            className: "w-[658px]",
+                                          },
+                                          labelClassName: "font-bold",
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -286,6 +302,10 @@ export const v202401: FormSchema = {
                                           rhf: "Input",
                                           name: "commercial-hmo-plan-name",
                                           label: "Plan name",
+                                          props: {
+                                            className: "w-[658px]",
+                                          },
+                                          labelClassName: "font-bold",
                                           rules: {
                                             required: "* Required",
                                             pattern: {
@@ -300,8 +320,9 @@ export const v202401: FormSchema = {
                                   ],
                                 },
                                 {
-                                  label: "Secretary-approved coverage",
-                                  value: "secretary_approved_coverage",
+                                  label:
+                                    "The Medicaid state plan coverage provided to categorically needy (mandatory and options for coverage) eligibility groups.",
+                                  value: "medicaid_categorically_needy",
                                 },
                               ],
                             },
@@ -324,11 +345,13 @@ export const v202401: FormSchema = {
         {
           description:
             "The state/territory must select a base benchmark plan as the basis for providing essential health benefits in its benchmark or benchmark-equivalent package.",
+          descriptionClassName: "font-normal",
           slots: [
             {
               rhf: "Select",
               label:
                 "Is the base benchmark plan the same as the Section 1937 coverage option?",
+              labelClassName: "font-bold",
               name: "same-as-sect-1937",
               rules: { required: "* Required" },
               props: {
@@ -373,7 +396,11 @@ export const v202401: FormSchema = {
             {
               rhf: "Input",
               label: "Plan name",
+              labelClassName: "font-bold",
               name: "name",
+              props: {
+                className: "w-[527px]",
+              },
               rules: {
                 required: "* Required",
                 pattern: {
@@ -397,6 +424,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               name: "description",
+              props: {
+                className: "min-h-[114px]",
+              },
               rules: {
                 pattern: {
                   value: /^\S(.*\S)?$/,

@@ -13,7 +13,6 @@ import {
   startOfDay,
 } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-import { DateRange } from "react-day-picker";
 
 import { cn } from "@/utils";
 import {
@@ -42,16 +41,22 @@ type Props = Omit<
 
 export function FilterableDateRange({ value, onChange, ...props }: Props) {
   const [open, setOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<DateRange | undefined>({
-    from: value?.gte ? offsetToUtc(new Date(value?.gte)) : undefined,
-    to: value?.lte ? offsetToUtc(new Date(value?.lte)) : undefined,
-  });
-  const [fromValue, setFromValue] = useState<string>(
-    value?.gte ? format(offsetToUtc(new Date(value?.gte)), "MM/dd/yyyy") : "",
-  );
-  const [toValue, setToValue] = useState<string>(
-    value?.lte ? format(offsetToUtc(new Date(value?.lte)), "MM/dd/yyyy") : "",
-  );
+  const selectedDate = useMemo(() => {
+    return {
+      from: value?.gte ? offsetFromUtc(new Date(value?.gte)) : undefined,
+      to: value?.lte ? offsetToUtc(new Date(value?.lte)) : undefined,
+    };
+  }, [value.gte, value.lte]);
+  const fromValue = useMemo(() => {
+    return value?.gte
+      ? format(offsetFromUtc(new Date(value?.gte)), "MM/dd/yyyy")
+      : "";
+  }, [value.gte]);
+  const toValue = useMemo(() => {
+    return value?.lte
+      ? format(offsetToUtc(new Date(value?.lte)), "MM/dd/yyyy")
+      : "";
+  }, [value.lte]);
 
   const handleClose = (updateOpen: boolean) => {
     setOpen(updateOpen);
@@ -67,27 +72,25 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     const input = e.target.value;
 
     if (/^[0-9/]*$/.test(input)) {
-      setFromValue(e.target.value);
-      const date = parse(e.target.value, "MM/dd/yyyy", new Date());
+      const fromDate = parse(e.target.value, "MM/dd/yyyy", new Date());
+      const toDate = value?.lte ? offsetToUtc(new Date(value?.lte)) : "";
+
+      const date: { gte: undefined | string; lte: undefined | string } = {
+        gte: fromDate.toISOString(),
+        lte: value?.lte,
+      };
+
       if (
-        !isValid(date) ||
-        getYear(date) < minValidYear ||
-        isAfter(date, new Date())
+        !isValid(fromDate) ||
+        getYear(fromDate) < minValidYear ||
+        isAfter(fromDate, new Date())
       ) {
-        return setSelectedDate({ from: undefined, to: selectedDate?.to });
+        date.gte = undefined;
       }
-      if (selectedDate?.to && isAfter(date, selectedDate.to)) {
-        setSelectedDate({ from: date, to: undefined });
-        setToValue("");
-      } else {
-        setSelectedDate({ from: date, to: selectedDate?.to });
-        onChange(
-          offsetRangeToUtc({
-            gte: date.toISOString(),
-            lte: selectedDate?.to?.toISOString() || "",
-          }),
-        );
+      if (toDate && isAfter(fromDate, toDate)) {
+        date.lte = undefined;
       }
+      onChange(offsetRangeToUtc({ ...date }));
     }
   };
 
@@ -96,29 +99,24 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     const inputValue = e.target.value;
 
     if (/^[0-9/]*$/.test(inputValue)) {
-      setToValue(e.target.value);
-      const date = parse(inputValue, "MM/dd/yyyy", new Date());
+      const fromDate = value?.gte ? offsetFromUtc(new Date(value?.gte)) : "";
+      const toDate = parse(inputValue, "MM/dd/yyyy", new Date());
+
+      const date: { gte: undefined | string; lte: undefined | string } = {
+        gte: value?.gte,
+        lte: toDate.toISOString(),
+      };
 
       if (
-        !isValid(date) ||
-        getYear(date) < minValidYear ||
-        isAfter(date, new Date())
+        !isValid(toDate) ||
+        getYear(toDate) < minValidYear ||
+        isAfter(toDate, new Date())
       ) {
-        return setSelectedDate({ from: selectedDate?.from, to: undefined });
+        date.lte = undefined;
       }
+      if (fromDate && isBefore(toDate, fromDate)) date.gte = undefined;
 
-      if (selectedDate?.from && isBefore(date, selectedDate.from)) {
-        setSelectedDate({ from: undefined, to: selectedDate.from });
-        setFromValue("");
-      } else {
-        setSelectedDate({ from: selectedDate?.from, to: date });
-        onChange(
-          offsetRangeToUtc({
-            gte: selectedDate?.from?.toISOString() || "",
-            lte: endOfDay(date).toISOString(),
-          }),
-        );
-      }
+      onChange(offsetRangeToUtc({ ...date }));
     }
   };
 
@@ -145,9 +143,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
 
     const rangeObject = getDateRange(startDate, endOfDay(today));
     onChange(offsetRangeToUtc(rangeObject));
-    setSelectedDate({ from: startDate, to: today });
-    setFromValue(format(startDate, "MM/dd/yyyy"));
-    setToValue(format(today, "MM/dd/yyyy"));
   };
 
   // Calendar props
@@ -156,7 +151,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   ];
 
   const onSelect = (d: any) => {
-    setSelectedDate(d);
     if (!!d?.from && !!d.to) {
       onChange(
         offsetRangeToUtc({
@@ -164,8 +158,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
           lte: endOfDay(d.to).toISOString(),
         }),
       );
-      setFromValue(format(d.from, "MM/dd/yyyy"));
-      setToValue(format(d.to, "MM/dd/yyyy"));
     } else if (!d?.from && !d?.to) {
       onChange(
         offsetRangeToUtc({
@@ -173,24 +165,23 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
           lte: "",
         }),
       );
-      setFromValue("");
-      setToValue("");
     } else if (d?.from && !d?.to) {
-      setFromValue(format(d.from, "MM/dd/yyyy"));
       onChange(offsetRangeToUtc(getDateRange(d.from, endOfDay(d.from))));
     }
   };
 
   const label = useMemo(() => {
-    const from = selectedDate?.from
-      ? format(selectedDate.from, "LLL dd, y")
+    const from = value?.gte
+      ? format(offsetFromUtc(new Date(value?.gte)), "LLL dd, y")
       : "";
-    const to = selectedDate?.to ? format(selectedDate.to, "LLL dd, y") : "";
+    const to = value?.lte
+      ? format(offsetToUtc(new Date(value?.lte)), "LLL dd, y")
+      : "";
 
     if (from && to) return `${from} - ${to}`;
     if (from) return `${from}`;
     return "Pick a date";
-  }, [selectedDate]);
+  }, [value.gte, value.lte]);
 
   return (
     <div className="flex items-center">
@@ -213,19 +204,19 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
           side="left"
           sideOffset={1}
         >
-          <div className="hidden lg:block">
-            <Calendar
-              disabled={disableDates}
-              initialFocus
-              mode="range"
-              defaultMonth={selectedDate?.from}
-              selected={selectedDate}
-              numberOfMonths={2}
-              className="bg-white"
-              onSelect={onSelect}
-              {...props}
-            />
-          </div>
+          <Calendar
+            disabled={[
+              { after: offsetFromUtc(new Date(getNextBusinessDayTimestamp())) },
+            ]}
+            initialFocus
+            mode="range"
+            defaultMonth={selectedDate?.from}
+            selected={selectedDate}
+            numberOfMonths={2}
+            className="bg-white"
+            onSelect={onSelect}
+            {...props}
+          />
           <div className="lg:hidden flex align-center">
             <Calendar
               disabled={disableDates}
@@ -289,12 +280,9 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
       </Popover>
       <Button
         className="text-white"
-        onClick={() => {
-          setSelectedDate({ from: undefined, to: undefined });
-          onChange(offsetRangeToUtc({ gte: undefined, lte: undefined }));
-          setToValue("");
-          setFromValue("");
-        }}
+        onClick={() =>
+          onChange(offsetRangeToUtc({ gte: undefined, lte: undefined }))
+        }
       >
         Clear
       </Button>

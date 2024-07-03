@@ -88,6 +88,7 @@ export const TemporaryExtension = () => {
   const { handleSubmit, formMethods } = useSubmitForm();
   const { id: urlId } = useParams();
   const formId = formMethods.getValues("originalWaiverNumber");
+  formMethods.setValue("seaActionType", "Extend");
 
   const parentId = urlId ? urlId : formId;
   useDisplaySubmissionAlert(

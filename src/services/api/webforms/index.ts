@@ -12,6 +12,7 @@ import * as ABP9 from "./ABP9";
 import * as ABP10 from "./ABP10";
 import * as ABP11 from "./ABP11";
 import * as G2A from "./G2A";
+import * as G1 from "./G1";
 import { FormSchema } from "shared-types";
 
 export const webformVersions: Record<string, Record<string, FormSchema>> = {
@@ -54,6 +55,9 @@ export const webformVersions: Record<string, Record<string, FormSchema>> = {
   },
   ABP11: {
     v202401: ABP11.v202401,
+  },
+  G1: {
+    v202401: G1.v202401,
   },
   G2A: {
     v202401: G2A.v202401,

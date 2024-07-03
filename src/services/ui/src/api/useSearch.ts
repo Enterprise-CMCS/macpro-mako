@@ -19,9 +19,9 @@ type QueryProps<T> = {
 
 export const getOsData = async <
   TProps,
-  TResponse extends opensearch.Response<any>
+  TResponse extends opensearch.Response<any>,
 >(
-  props: QueryProps<TProps>
+  props: QueryProps<TProps>,
 ): Promise<TResponse> => {
   const searchData = await API.post("os", `/search/${props.index}`, {
     body: {
@@ -37,12 +37,12 @@ export const getOsData = async <
 };
 
 export const getMainExportData = async (
-  filters?: opensearch.main.Filterable[]
+  filters?: opensearch.main.Filterable[],
 ) => {
   if (!filters) return [];
 
   const recursiveSearch = async (
-    startPage: number
+    startPage: number,
   ): Promise<opensearch.main.Document[]> => {
     if (startPage * 1000 >= 10000) {
       return [];
@@ -74,12 +74,12 @@ export const useOsSearch = <TProps, TResponse>(
     TResponse,
     ReactQueryApiError,
     QueryProps<TProps>
-  >
+  >,
 ) => {
   //@ts-ignore
   return useMutation<TResponse, ReactQueryApiError, QueryProps<TProps>>(
     (props) => getOsData(props),
-    options
+    options,
   );
 };
 
@@ -88,7 +88,7 @@ export const useChangelogSearch = (
     opensearch.changelog.Response,
     ReactQueryApiError,
     QueryProps<opensearch.changelog.Field>
-  >
+  >,
 ) => {
   return useMutation<
     opensearch.changelog.Response,

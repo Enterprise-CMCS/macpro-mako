@@ -118,7 +118,7 @@ export const v202401: FormSchema = {
                     value: "other",
                     slots: [
                       {
-                        rhf: "Input",
+                        rhf: "Textarea",
                         name: "describe-other-enrollment",
                         label: "Describe",
                         labelClassName: "font-bold",
@@ -192,7 +192,7 @@ export const v202401: FormSchema = {
                       {
                         text: "The state/territory assures it will document in the exempt individual's eligibility file that the individual:",
                         type: "default",
-                        classname: "block py-1 font-bold",
+                        classname: "block py-1",
                       },
                       {
                         text: "A. Was informed in accordance with this section prior to enrollment",
@@ -238,7 +238,7 @@ export const v202401: FormSchema = {
                     value: "other",
                     slots: [
                       {
-                        rhf: "Input",
+                        rhf: "Textarea",
                         name: "where-will-info-be-doc-describe-other",
                         label: "Describe",
                         labelClassName: "font-bold",
@@ -285,7 +285,7 @@ export const v202401: FormSchema = {
                       "what_documentation_will_be_maintained_in_the_eligibility_file_other",
                     slots: [
                       {
-                        rhf: "Input",
+                        rhf: "Textarea",
                         name: "describe-other-maintained",
                         label: "Describe",
                         labelClassName: "font-bold",

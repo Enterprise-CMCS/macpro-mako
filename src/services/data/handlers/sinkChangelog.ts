@@ -1,5 +1,5 @@
 import { Handler } from "aws-lambda";
-import { decode } from "base-64";
+import { decodeBase64WithUtf8 } from "shared-utils";
 import * as os from "./../../../libs/opensearch-lib";
 import { Action, KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
@@ -48,10 +48,10 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       if (!value) continue;
 
       // Set id
-      const id: string = decode(key);
+      const id: string = decodeBase64WithUtf8(key);
 
       // Parse event data
-      const record = JSON.parse(decode(value));
+      const record = JSON.parse(decodeBase64WithUtf8(value));
 
       // Process legacy events
       if (record?.origin !== "micro") {
@@ -178,10 +178,10 @@ const legacyAdminChanges = async (
       if (!value) continue;
 
       // Set id
-      const id: string = decode(key);
+      const id: string = decodeBase64WithUtf8(key);
 
       // Parse event data
-      const record = JSON.parse(decode(value));
+      const record = JSON.parse(decodeBase64WithUtf8(value));
 
       // Process legacy events
       if (record?.origin !== "micro") {
