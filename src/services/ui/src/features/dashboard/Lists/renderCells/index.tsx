@@ -27,9 +27,10 @@ export const renderCellIdLink = (pathResolver: (id: string) => string) =>
     );
   };
 
-export const renderCellActions = (user: CognitoUserAttributes | null) =>
-  function Cell(data: opensearch.main.Document) {
+export const renderCellActions = (user: CognitoUserAttributes | null) => {
+  return function Cell(data: opensearch.main.Document) {
     if (!user) return <></>;
+
     const actions = getAvailableActions(user, data);
     return (
       <>
@@ -49,7 +50,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
           </POP.PopoverTrigger>
           <POP.PopoverContent>
             <div className="flex flex-col">
-              {actions.map((action, idx) => (
+              {actions.map((action: Action, idx: any) => (
                 <TypedLink
                   state={{
                     from: `${location.pathname}${location.search}`,
@@ -78,3 +79,4 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =>
       </>
     );
   };
+};
