@@ -128,10 +128,11 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
     {
       field: "makoChangedDate",
       label: "Latest Package Activity",
-      cell: (data) =>
+      transform: (data) =>
         data.makoChangedDate
           ? formatSeatoolDate(data.makoChangedDate)
           : BLANK_VALUE,
+      cell: renderCellDate("makoChangedDate"),
     },
     {
       field: "raiRequestedDate",
