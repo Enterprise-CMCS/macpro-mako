@@ -31,3 +31,4 @@ export * from "./MaintenanceBanner";
 export * from "./Modal";
 export * from "./Modal/ConfirmationModal";
 export * from "./SearchForm";
+export * from "./TimeoutModal";
