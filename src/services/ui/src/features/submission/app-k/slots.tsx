@@ -196,7 +196,7 @@ export const WaiverIdFieldArray = (props: any) => {
             size="sm"
             onClick={() => fieldArr.append("")}
             variant="outline"
-            className="w-[120px] mt-2"
+            className="w-[13%] mt-2"
           >
             <Plus className="h-5 w-5 mr-1" />
             Add ID
