@@ -19,7 +19,7 @@ export const defaultEnableRaiWithdrawContent: FormContentHydrator = () => ({
 });
 
 export const defaultDisableRaiWithdrawFields: ReactElement[] = [
-  <ActionFormDescription boldReminder key={"section-description"}>
+  <ActionFormDescription key={"section-description"}>
     The state will not be able to withdraw its RAI response. It may take up to a
     minute for this change to be applied.
   </ActionFormDescription>,
