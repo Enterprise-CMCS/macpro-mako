@@ -1,20 +1,15 @@
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 import { ReactElement } from "react";
 import { ActionFormDescription } from "@/components";
-import { z } from "zod";
 import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 
-// react-hook-form needs any kind of schema to prevent an undefined error
-export const defaultEnableRaiWithdrawSchema = z.object({});
 export const defaultEnableRaiWithdrawFields: ReactElement[] = [
-  <ActionFormDescription boldReminder key={"field-description"}>
+  <ActionFormDescription key="field-description">
     Once you submit this form, the most recent Formal RAI Response for this
     package will be able to be withdrawn by the state.
   </ActionFormDescription>,
 ];
-export const defaultEnableRaiWithdrawContent: FormContentHydrator = (
-  document,
-) => ({
+export const defaultEnableRaiWithdrawContent: FormContentHydrator = () => ({
   title: "Enable Formal RAI Response Withdraw Details",
   enableSubmit: true,
   successBanner: {
@@ -23,17 +18,13 @@ export const defaultEnableRaiWithdrawContent: FormContentHydrator = (
   },
 });
 
-// react-hook-form needs any kind of schema to prevent an undefined error
-export const defaultDisableRaiWithdrawSchema = z.object({});
 export const defaultDisableRaiWithdrawFields: ReactElement[] = [
   <ActionFormDescription boldReminder key={"section-description"}>
     The state will not be able to withdraw its RAI response. It may take up to a
     minute for this change to be applied.
   </ActionFormDescription>,
 ];
-export const defaultDisableRaiWithdrawContent: FormContentHydrator = (
-  document,
-) => ({
+export const defaultDisableRaiWithdrawContent: FormContentHydrator = () => ({
   title: "Disable Formal RAI Response Withdraw Details",
   enableSubmit: true,
   successBanner: {
