@@ -7,7 +7,7 @@ import { OneMacUser } from "@/api/useGetUser";
 
 import { formatSeatoolDate } from "shared-utils";
 import { useMemo, useState } from "react";
-import { LABELS } from "@/utils";
+import { convertStateAbbrToFullName, LABELS } from "@/utils";
 
 export const ReviewTeamList: FC<opensearch.main.Document> = (props) => {
   const [expanded, setExpanded] = useState(false);
@@ -60,7 +60,7 @@ export const recordDetails = (
   },
   {
     label: "State",
-    value: data.state,
+    value: convertStateAbbrToFullName(data.state),
     canView: () => true,
   },
   {
