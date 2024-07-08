@@ -541,13 +541,15 @@ export const v202401: FormSchema = {
               rules: {
                 required: "* Required",
                 pattern: {
-                  value: /^(?:[0-4](?:\.\d)?|5(?:\.0)?|0?\.\d)$/,
-                  message: "Must be between 0% and 5%",
+                  value: /^(?:[0-4]\.\d|5\.0)$/,
+                  message:
+                    "Must be between 0% and 5% with only one decimal place",
                 },
               },
               props: {
                 className: "w-[229px]",
                 icon: "%",
+                iconRight: true,
               },
             },
 
@@ -606,6 +608,9 @@ export const v202401: FormSchema = {
                 ],
                 effect: { type: "show" },
               },
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -662,6 +667,32 @@ export const v202401: FormSchema = {
                     ],
                   },
                 ],
+              },
+            },
+            {
+              rhf: "Textarea",
+              label:
+                "How does the state inform beneficiaries and providers of the beneficiaries' aggregate family limit? How does the state notify beneficiaries and providers when a beneficiary has incurred premiums and cost sharing up to the aggregate family limit and that individual family members are no longer subject to premiums or cost sharing for the remainder of the family's current monthly or quarterly cap period?",
+              labelClassName: "font-bold",
+              formItemClassName:
+                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              name: "how-state-bene-agg-fam-limit",
+              dependency: {
+                conditions: [
+                  {
+                    name: "g3_agg-limits_does-state-track-fam-incur-prem-and-cost-share",
+                    type: "expectedValue",
+                    expectedValue: "yes",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
             },
 
