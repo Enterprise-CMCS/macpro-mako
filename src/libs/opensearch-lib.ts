@@ -171,7 +171,7 @@ export async function mapRole(
         },
       ],
     );
-    return decodeUtf8(patchResponse).data;
+    return decodeUtf8(patchResponse.data);
   } catch (error) {
     console.error("Error making PUT request:", error);
     throw error;

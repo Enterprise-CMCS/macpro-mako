@@ -8,6 +8,7 @@ import { OneMacUser } from "@/api/useGetUser";
 import { formatSeatoolDate } from "shared-utils";
 import { useMemo, useState } from "react";
 import { LABELS } from "@/utils";
+import { format } from "date-fns";
 
 export const ReviewTeamList: FC<opensearch.main.Document> = (props) => {
   const [expanded, setExpanded] = useState(false);
@@ -95,13 +96,6 @@ export const recordDetails = (
     },
   },
   {
-    label: "Initial submission date",
-    value: data.submissionDate
-      ? formatSeatoolDate(data.submissionDate)
-      : BLANK_VALUE,
-    canView: () => true,
-  },
-  {
     label: "Approved Initial or Renewal Number",
     value: data.originalWaiverNumber,
     canView: () => {
@@ -116,6 +110,20 @@ export const recordDetails = (
     canView: () => {
       return !(data.actionType === "Extend");
     },
+  },
+  {
+    label: "Initial submission date",
+    value: data.submissionDate
+      ? formatSeatoolDate(data.submissionDate)
+      : BLANK_VALUE,
+    canView: () => true,
+  },
+  {
+    label: "Latest package activity",
+    value: data.makoChangedDate
+      ? format(new Date(data.makoChangedDate), "eee, MMM d yyyy, hh:mm:ss a")
+      : BLANK_VALUE,
+    canView: () => true,
   },
   {
     label: "Formal RAI received",
